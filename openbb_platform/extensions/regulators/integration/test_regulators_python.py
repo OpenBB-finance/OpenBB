@@ -1,7 +1,6 @@
 """Test Regulators extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -19,7 +18,7 @@ def obb(pytestconfig):
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"symbol": "TSLA", "provider": "sec", "use_cache": None}),
@@ -36,7 +35,7 @@ def test_regulators_sec_cik_map(params, obb):
     assert isinstance(result.results.cik, str)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"query": "berkshire hathaway", "provider": "sec", "use_cache": None}),
@@ -51,7 +50,7 @@ def test_regulators_sec_institutions_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -81,7 +80,7 @@ def test_regulators_sec_schema_files(params, obb):
     assert len(result.results.files) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"query": "0000909832", "provider": "sec", "use_cache": None}),
@@ -98,9 +97,9 @@ def test_regulators_sec_symbol_map(params, obb):
     assert isinstance(result.results.symbol, str)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
-    [({"provider": "sec"})],
+    [{"provider": "sec"}],
 )
 @pytest.mark.integration
 def test_regulators_sec_rss_litigation(params, obb):
@@ -111,9 +110,9 @@ def test_regulators_sec_rss_litigation(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
-    [({"query": "oil", "use_cache": False, "provider": "sec"})],
+    [{"query": "oil", "use_cache": False, "provider": "sec"}],
 )
 @pytest.mark.integration
 def test_regulators_sec_sic_search(params, obb):
@@ -124,7 +123,7 @@ def test_regulators_sec_sic_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"query": "grain", "provider": "cftc"}),
@@ -139,7 +138,7 @@ def test_regulators_cftc_cot_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -163,7 +162,7 @@ def test_regulators_cftc_cot(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -187,7 +186,7 @@ def test_regulators_sec_filing_headers(params, obb):
     assert hasattr(result.results, "cover_page")
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

@@ -11,7 +11,7 @@ from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
-from providers.tests.utils.credentials_schema import test_credentials
+from .credentials_schema import test_credentials
 
 PROVIDERS_PATH = Path(__file__).parent.parent.parent.resolve()
 

@@ -77,6 +77,9 @@ class LoggingService(metaclass=SingletonMeta):
         user_settings : UserSettings
             User Settings, by default None
         """
+        if system_settings.logging_suppress is True:
+            return
+
         self._user_settings = user_settings
         self._system_settings = system_settings
         self._logging_settings = LoggingSettings(
@@ -85,6 +88,8 @@ class LoggingService(metaclass=SingletonMeta):
         )
         self._handlers_manager = self._setup_handlers()
         self._log_startup()
+
+        return
 
     @property
     def logging_settings(self) -> LoggingSettings:
@@ -226,7 +231,6 @@ class LoggingService(metaclass=SingletonMeta):
                 # Remove CommandContext if any
                 kwargs.pop("cc", None)
 
-                # Get provider for posthog logs
                 passed_model = kwargs.get("provider_choices", DummyProvider())
                 provider = (
                     passed_model.provider

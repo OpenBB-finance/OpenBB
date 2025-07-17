@@ -26,8 +26,19 @@ def unit_test_platform(session):
     )
     session.install("pytest")
     session.install("pytest-cov")
+
+    # Determine if we should ignore mcp_server tests based on Python version
+    ignore_args = []
+    if session.python == "3.9":
+        ignore_args = ["--ignore=" + str(PLATFORM_DIR / "extensions/mcp_server/tests")]
+
     session.run(
-        "pytest", *PLATFORM_TESTS, f"--cov={PLATFORM_DIR}", "-m", "not integration"
+        "pytest",
+        *PLATFORM_TESTS,
+        *ignore_args,
+        f"--cov={PLATFORM_DIR}",
+        "-m",
+        "not integration",
     )
 
 

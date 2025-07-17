@@ -13,6 +13,7 @@ from openbb_core.app.constants import (
 )
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.api_settings import APISettings
+
 from openbb_core.app.model.python_settings import PythonSettings
 from openbb_core.app.version import CORE_VERSION, VERSION
 from pydantic import ConfigDict, Field, field_validator, model_validator
@@ -42,8 +43,7 @@ class SystemSettings(Tagged):
     logging_rolling_clock: bool = False
     logging_verbosity: int = 20
     logging_sub_app: Literal["python", "api", "pro", "cli"] = "python"
-    logging_suppress: bool = False
-    log_collect: bool = True
+    logging_suppress: bool = True
 
     # API section
     api_settings: APISettings = Field(default_factory=APISettings)
@@ -92,24 +92,11 @@ class SystemSettings(Tagged):
 
         return values
 
-    @model_validator(mode="after")  # type: ignore
-    @classmethod
-    def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
-        """If the user has enabled log collection, then we need to add the Posthog."""
-        if (
-            not any([values.test_mode, values.debug_mode, values.logging_suppress])
-            and values.log_collect
-            and "posthog" not in values.logging_handlers
-        ):
-            values.logging_handlers.append("posthog")
-
-        return values
-
     @field_validator("logging_handlers")
     @classmethod
     def validate_logging_handlers(cls, v):
         """Validate the logging handlers."""
         for value in v:
-            if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
+            if value not in ["stdout", "stderr", "noop", "file"]:
                 raise ValueError("Invalid logging handler")
         return v

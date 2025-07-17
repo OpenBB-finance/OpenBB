@@ -1,5 +1,5 @@
 import { Icons as PlotlyIcons } from "plotly.js-dist-min";
-import { downloadCSV, downloadImage } from "../utils/utils";
+import * as Plotly from "plotly.js-dist-min";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ICONS } from "./Config";
 
@@ -32,59 +32,31 @@ export function PlotConfig({
   autoScaling,
   Loading,
   changeColor,
-  downloadFinished,
 }: {
   setModal: (modal: { name: string; data?: any }) => void;
   changeTheme: (change: boolean) => void;
   autoScaling: (change: boolean) => void;
   Loading: (change: boolean) => void;
   changeColor: (change: boolean) => void;
-  downloadFinished: (change: boolean) => void;
 }) {
   const CONFIG = {
     plotGlPixelRatio: 1,
     scrollZoom: true,
     responsive: true,
     displaylogo: false,
-    displayModeBar: true,
+    displayModeBar: "hover",
     edits: {
       legendPosition: true,
       legendText: true,
       colorbarPosition: true,
+      annotationPosition: true,
+      annotationTail: true,
+      annotationText: true,
     },
     showTips: false,
     setBackground: "transparent",
-    modeBarButtonsToRemove: ["lasso2d", "select2d", "downloadImage"],
+    modeBarButtonsToRemove: ["lasso2d", "select2d", "saveImage"],
     modeBarButtons: [
-      [
-        {
-          name: "Download CSV (Ctrl+Shift+S)",
-          icon: ICONS.downloadCsv,
-          click: async function (gd: any) {
-            await downloadCSV(gd, downloadFinished);
-          },
-        },
-        {
-          name: "Download Chart as Image (Ctrl+S)",
-          icon: ICONS.downloadImage,
-          click: async function () {
-            hideModebar(true);
-            await downloadImage(
-              "MainChart",
-              hideModebar,
-              Loading,
-              downloadFinished,
-            );
-          },
-        },
-        // {
-        //   name: "Upload Image (Ctrl+U)",
-        //   icon: Plotly.Icons.uploadImage,
-        //   click: function (gd) {
-        //     downloadImage();
-        //   },
-        // },
-      ],
       [
         {
           name: "Edit Color (Ctrl+E)",
@@ -154,12 +126,10 @@ export function ChartHotkeys({
   setModal,
   Loading,
   changeColor,
-  downloadFinished,
 }: {
   setModal: (modal: { name: string; data?: any }) => void;
   Loading: (change: boolean) => void;
   changeColor: (change: boolean) => void;
-  downloadFinished: (change: boolean) => void;
 }) {
   useHotkeys(
     "ctrl+shift+t",
@@ -188,6 +158,41 @@ export function ChartHotkeys({
       hideModebar();
     },
     { preventDefault: true },
+  );  useHotkeys(
+    "ctrl+l",
+    () => {
+      // Toggle log scale when Ctrl+L is pressed
+      const plotDiv = document.getElementById("plotlyChart") as any;
+      if (plotDiv && plotDiv._fullLayout) {
+        // Check if this is an OHLC/Candle chart or a time series Scatter
+        const isOHLCOrCandle = plotDiv._fullData.some((trace: any) =>
+          trace.type === 'ohlc' || trace.type === 'candlestick'
+        );
+
+        const isTimeSeriesScatter = plotDiv._fullData.some((trace: any) =>
+          trace.type === 'scatter' && (trace.mode === 'lines' || trace.mode === 'lines+markers') &&
+          trace.x && trace.x.length > 0 && (typeof trace.x[0] === 'string' || trace.x[0] instanceof Date)
+        );
+
+        if (isOHLCOrCandle || isTimeSeriesScatter) {
+          // Only toggle the main y-axis (yaxis or y1)
+          const currentType = plotDiv._fullLayout.yaxis?.type || 'linear';
+          const newType = currentType === 'linear' ? 'log' : 'linear';
+
+          // Only modify the main y-axis, leaving all others unchanged
+          const updateObj: any = {
+            'yaxis.type': newType
+          };
+
+          // Apply change ONLY to main y-axis
+          console.log("Changing main y-axis scale to:", newType);
+          Plotly.relayout(plotDiv, updateObj as any);
+        } else {
+          console.log("Log scale toggle is only available for OHLC/Candle charts or time series Scatter plots");
+        }
+      }
+    },
+    { preventDefault: true },
   );
   useHotkeys(
     "ctrl+e",
@@ -196,25 +201,17 @@ export function ChartHotkeys({
     },
     { preventDefault: true },
   );
-  useHotkeys(
-    "ctrl+shift+s",
-    async () => {
-      setModal({ name: "downloadCsv" });
-      await downloadCSV(
-        document.getElementById("plotlyChart") as any,
-        downloadFinished,
-      );
-    },
-    { preventDefault: true },
-  );
+
+  // Removed the ctrl+shift+s export shortcut
+
   useHotkeys(
     "ctrl+s",
-    async () => {
-      hideModebar();
-      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
+    () => {
+      // Download feature removed
     },
     { preventDefault: true },
   );
+
   useHotkeys(
     "ctrl+w",
     () => {

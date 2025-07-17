@@ -1,0 +1,962 @@
+{
+    "nasdaq_company_filings": {
+      "name": "SEC Filings",
+      "description": "View SEC filings by company.",
+      "category": "Open Document",
+      "type": "multi_file_viewer",
+      "searchCategory": "Open Document",
+      "widgetId": "nasdaq_company_filings",
+      "params": [
+        {
+          "paramName": "symbol",
+          "label": "Symbol",
+          "description": "Ticker symbol for the company. Foreign (dual-listed) companies may not be required to file with the SEC.",
+          "type": "endpoint",
+          "value": "AAPL",
+          "optionsEndpoint": "/get_symbol_choices",
+          "style": {
+            "popupWidth": 850
+          }
+        },
+        {
+          "paramName": "document_url",
+          "label": "Document URL",
+          "description": "Select the document to open.",
+          "type": "endpoint",
+          "optionsEndpoint": "/get_symbol_choices",
+          "optionsParams": {
+            "symbol": "$symbol",
+            "year": "$year",
+            "form_group": "$form_group"
+          },
+          "show": false,
+          "roles": [
+            "fileSelector"
+          ],
+          "multiSelect": true
+        },
+        {
+          "paramName": "year",
+          "label": "Calendar Year",
+          "description": "Calendar year for the filings.",
+          "value": 2025,
+          "type": "number",
+          "options": [
+            {
+              "label": "2025",
+              "value": 2025
+            },
+            {
+              "label": "2024",
+              "value": 2024
+            },
+            {
+              "label": "2023",
+              "value": 2023
+            },
+            {
+              "label": "2022",
+              "value": 2022
+            },
+            {
+              "label": "2021",
+              "value": 2021
+            },
+            {
+              "label": "2020",
+              "value": 2020
+            },
+            {
+              "label": "2019",
+              "value": 2019
+            },
+            {
+              "label": "2018",
+              "value": 2018
+            },
+            {
+              "label": "2017",
+              "value": 2017
+            },
+            {
+              "label": "2016",
+              "value": 2016
+            },
+            {
+              "label": "2015",
+              "value": 2015
+            },
+            {
+              "label": "2014",
+              "value": 2014
+            },
+            {
+              "label": "2013",
+              "value": 2013
+            },
+            {
+              "label": "2012",
+              "value": 2012
+            },
+            {
+              "label": "2011",
+              "value": 2011
+            },
+            {
+              "label": "2010",
+              "value": 2010
+            },
+            {
+              "label": "2009",
+              "value": 2009
+            },
+            {
+              "label": "2008",
+              "value": 2008
+            },
+            {
+              "label": "2007",
+              "value": 2007
+            },
+            {
+              "label": "2006",
+              "value": 2006
+            },
+            {
+              "label": "2005",
+              "value": 2005
+            },
+            {
+              "label": "2004",
+              "value": 2004
+            },
+            {
+              "label": "2003",
+              "value": 2003
+            },
+            {
+              "label": "2002",
+              "value": 2002
+            },
+            {
+              "label": "2001",
+              "value": 2001
+            },
+            {
+              "label": "2000",
+              "value": 2000
+            },
+            {
+              "label": "1999",
+              "value": 1999
+            },
+            {
+              "label": "1998",
+              "value": 1998
+            },
+            {
+              "label": "1997",
+              "value": 1997
+            },
+            {
+              "label": "1996",
+              "value": 1996
+            },
+            {
+              "label": "1995",
+              "value": 1995
+            },
+            {
+              "label": "1994",
+              "value": 1994
+            }
+          ]
+        },
+        {
+          "paramName": "form_group",
+          "label": "Form Group",
+          "description": "Form group for the filings.",
+          "value": "8k",
+          "type": "text",
+          "options": [
+            {
+              "label": "Annual",
+              "value": "annual"
+            },
+            {
+              "label": "Quarterly",
+              "value": "quarterly"
+            },
+            {
+              "label": "Proxy",
+              "value": "proxy"
+            },
+            {
+              "label": "Insider",
+              "value": "insider"
+            },
+            {
+              "label": "8-K",
+              "value": "8k"
+            },
+            {
+              "label": "Registration",
+              "value": "registration"
+            },
+            {
+              "label": "Comment",
+              "value": "comment"
+            }
+          ]
+        }
+      ],
+      "endpoint": "open_document",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 30
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": true
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "refetchInterval": false
+    },
+    "nasdaq_earnings_calendar": {
+      "name": "Earnings Calendar",
+      "description": "Upcoming, and historical, company earnings releases (US Markets).",
+      "category": "Equity",
+      "type": "table",
+      "searchCategory": "Equity",
+      "widgetId": "nasdaq_earnings_calendar",
+      "params": [
+        {
+          "label": "Start Date",
+          "description": "Start date of the data.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "start_date"
+        },
+        {
+          "label": "End Date",
+          "description": "End date of the data.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "end_date"
+        },
+        {
+          "paramName": "symbol",
+          "show": false,
+          "type": "endpoint",
+          "value": "AAPL",
+          "optionsEndpoint": "/get_symbol_choices",
+          "style": {
+            "popupWidth": 850
+          }
+        }
+      ],
+      "endpoint": "earnings_calendar",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 20
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": true,
+          "columnsDefs": [
+            {
+              "field": "report_date",
+              "formatterFn": null,
+              "headerName": "Report Date",
+              "headerTooltip": "The date of the earnings report.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "symbol",
+              "pinned": "left",
+              "formatterFn": "none",
+              "headerName": "Symbol",
+              "headerTooltip": "Click on a ticker in the column to change the SEC documents viewer.",
+              "cellDataType": "text",
+              "renderFn": "cellOnClick",
+              "renderFnParams": {
+                "actionType": "groupBy",
+                "groupByParamName": "symbol"
+              }
+            },
+            {
+              "field": "name",
+              "pinned": "left",
+              "formatterFn": null,
+              "headerName": "Name",
+              "headerTooltip": "Name of the entity.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "eps_previous",
+              "formatterFn": null,
+              "headerName": "EPS Previous",
+              "headerTooltip": "The earnings-per-share from the same previously reported period.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "eps_consensus",
+              "formatterFn": null,
+              "headerName": "EPS Consensus",
+              "headerTooltip": "The analyst conesus earnings-per-share estimate.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "eps_actual",
+              "formatterFn": null,
+              "headerName": "EPS Actual",
+              "headerTooltip": "The actual earnings per share (USD) announced.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "surprise_percent",
+              "formatterFn": "normalizedPercent",
+              "headerName": "Surprise Percent",
+              "headerTooltip": "The earnings surprise as normalized percentage points.",
+              "cellDataType": "number",
+              "renderFn": "greenRed"
+            },
+            {
+              "field": "num_estimates",
+              "formatterFn": null,
+              "headerName": "Num Estimates",
+              "headerTooltip": "The number of analysts providing estimates for the consensus.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "period_ending",
+              "formatterFn": null,
+              "headerName": "Period Ending",
+              "headerTooltip": "The fiscal period end date.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "previous_report_date",
+              "formatterFn": null,
+              "headerName": "Previous Report Date",
+              "headerTooltip": "The previous report date for the same period last year.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "reporting_time",
+              "formatterFn": null,
+              "headerName": "Reporting Time",
+              "headerTooltip": "The reporting time - e.g. after market close.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "market_cap",
+              "formatterFn": null,
+              "headerName": "Market Cap",
+              "headerTooltip": "The market cap (USD) of the reporting entity.",
+              "cellDataType": "number"
+            }
+          ],
+          "enableAdvanced": true
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "subCategory": "Calendar",
+      "refetchInterval": false
+    },
+    "nasdaq_dividends_calendar": {
+      "name": "Dividend Calendar",
+      "description": "Upcoming, and historical, dividend payments (US Markets).",
+      "category": "Equity",
+      "type": "table",
+      "searchCategory": "Equity",
+      "widgetId": "nasdaq_dividends_calendar",
+      "params": [
+        {
+          "label": "Start Date",
+          "description": "Start date of the data.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "start_date"
+        },
+        {
+          "label": "End Date",
+          "description": "End date of the data.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "end_date"
+        },
+        {
+          "paramName": "symbol2",
+          "show": false,
+          "type": "endpoint",
+          "value": "AAPL",
+          "optionsEndpoint": "/get_symbol_choices",
+          "style": {
+            "popupWidth": 850
+          }
+        }
+      ],
+      "endpoint": "dividend_calendar",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 20
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": true,
+          "columnsDefs": [
+            {
+              "field": "ex_dividend_date",
+              "formatterFn": null,
+              "headerName": "Ex Dividend Date",
+              "headerTooltip": "The ex-dividend date - the date on which the stock begins trading without rights to the dividend.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "symbol",
+              "pinned": "left",
+              "formatterFn": "none",
+              "headerName": "Symbol",
+              "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+              "cellDataType": "text",
+              "renderFn": "cellOnClick",
+              "renderFnParams": {
+                "actionType": "groupBy",
+                "groupByParamName": "symbol2"
+              }
+            },
+            {
+              "field": "amount",
+              "formatterFn": null,
+              "headerName": "Amount",
+              "headerTooltip": "The dividend amount per share.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "name",
+              "pinned": "left",
+              "formatterFn": null,
+              "headerName": "Name",
+              "headerTooltip": "Name of the entity.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "record_date",
+              "formatterFn": null,
+              "headerName": "Record Date",
+              "headerTooltip": "The record date of ownership for eligibility.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "payment_date",
+              "formatterFn": null,
+              "headerName": "Payment Date",
+              "headerTooltip": "The payment date of the dividend.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "declaration_date",
+              "formatterFn": null,
+              "headerName": "Declaration Date",
+              "headerTooltip": "Declaration date of the dividend.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "annualized_amount",
+              "formatterFn": null,
+              "headerName": "Annualized Amount",
+              "headerTooltip": "The indicated annualized dividend amount.",
+              "cellDataType": "number"
+            }
+          ],
+          "enableAdvanced": true
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "subCategory": "Calendar",
+      "refetchInterval": false
+    },
+    "nasdaq_historical_dividends": {
+      "name": "Historical Dividends",
+      "description": "Historical dividend payments for a given symbol.",
+      "category": "Equity",
+      "type": "table",
+      "searchCategory": "Equity",
+      "widgetId": "nasdaq_historical_dividends",
+      "params": [
+        {
+          "label": "Symbol",
+          "description": "Select a ticker from the dividend calendar to update the historical dividends.",
+          "optional": false,
+          "type": "endpoint",
+          "value": "AAPL",
+          "show": true,
+          "paramName": "symbol2",
+          "optionsEndpoint": "/get_symbol_choices",
+          "style": {
+            "popupWidth": 850
+          }
+        },
+        {
+          "label": "Start Date",
+          "description": "Start date of the data, in YYYY-MM-DD format.(Default: 5 years ago)",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "start_date"
+        },
+        {
+          "label": "End Date",
+          "description": "End date of the data, in YYYY-MM-DD format.(Default: today)",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "end_date"
+        }
+      ],
+      "endpoint": "historical_dividends",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 15
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": true,
+          "columnsDefs": [
+            {
+              "field": "ex_dividend_date",
+              "formatterFn": null,
+              "headerName": "Ex Dividend Date",
+              "headerTooltip": "The ex-dividend date - the date on which the stock begins trading without rights to the dividend.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "amount",
+              "formatterFn": null,
+              "headerName": "Amount",
+              "headerTooltip": "The dividend amount per share.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "dividend_type",
+              "formatterFn": null,
+              "headerName": "Dividend Type",
+              "headerTooltip": "The type of dividend - i.e., cash, stock.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "currency",
+              "formatterFn": null,
+              "headerName": "Currency",
+              "headerTooltip": "The currency in which the dividend is paid.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "record_date",
+              "formatterFn": null,
+              "headerName": "Record Date",
+              "headerTooltip": "The record date of ownership for eligibility.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "payment_date",
+              "formatterFn": null,
+              "headerName": "Payment Date",
+              "headerTooltip": "The payment date of the dividend.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "declaration_date",
+              "formatterFn": null,
+              "headerName": "Declaration Date",
+              "headerTooltip": "Declaration date of the dividend.",
+              "cellDataType": "date"
+            }
+          ]
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "subCategory": "Dividends",
+      "refetchInterval": false
+    },
+    "nasdaq_ipo_calendar": {
+      "name": "IPO Calendar",
+      "description": "IPO announcements and calendar.",
+      "category": "Equity",
+      "type": "table",
+      "searchCategory": "Equity",
+      "widgetId": "nasdaq_ipo_calendar",
+      "params": [
+        {
+          "label": "Start Date",
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "start_date"
+        },
+        {
+          "label": "End Date",
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "end_date"
+        },
+        {
+          "paramName": "symbol3",
+          "show": false,
+          "type": "endpoint",
+          "value": "AAPL",
+          "optionsEndpoint": "/get_symbol_choices",
+          "style": {
+            "popupWidth": 850
+          }
+        },
+        {
+          "label": "Status",
+          "description": "Status of the IPO. [upcoming, priced, or withdrawn]",
+          "optional": true,
+          "type": "text",
+          "show": true,
+          "options": [
+            {
+              "label": "upcoming",
+              "value": "upcoming"
+            },
+            {
+              "label": "priced",
+              "value": "priced"
+            },
+            {
+              "label": "filed",
+              "value": "filed"
+            },
+            {
+              "label": "withdrawn",
+              "value": "withdrawn"
+            }
+          ],
+          "paramName": "status"
+        },
+        {
+          "label": "Is SPO",
+          "description": "If True, returns data for secondary public offerings (SPOs).",
+          "optional": true,
+          "type": "boolean",
+          "value": false,
+          "show": true,
+          "paramName": "is_spo"
+        }
+      ],
+      "endpoint": "ipo_calendar",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 20
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": true,
+          "columnsDefs": [
+            {
+              "field": "symbol",
+              "pinned": "left",
+              "formatterFn": "none",
+              "headerName": "Symbol",
+              "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+              "cellDataType": "text",
+              "renderFn": "cellOnClick",
+              "renderFnParams": {
+                "actionType": "groupBy",
+                "groupByParamName": "symbol3"
+              }
+            },
+            {
+              "field": "ipo_date",
+              "formatterFn": null,
+              "headerName": "IPO Date",
+              "headerTooltip": "The date of the IPO, when the stock first trades on a major exchange.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "name",
+              "pinned": "left",
+              "formatterFn": null,
+              "headerName": "Name",
+              "headerTooltip": "The name of the company.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "offer_amount",
+              "formatterFn": null,
+              "headerName": "Offer Amount",
+              "headerTooltip": "The dollar value of the shares offered.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "share_count",
+              "formatterFn": null,
+              "headerName": "Share Count",
+              "headerTooltip": "The number of shares offered.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "expected_price_date",
+              "formatterFn": null,
+              "headerName": "Expected Price Date",
+              "headerTooltip": "The date the pricing is expected.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "filed_date",
+              "formatterFn": null,
+              "headerName": "Filed Date",
+              "headerTooltip": "The date the IPO was filed.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "withdraw_date",
+              "formatterFn": null,
+              "headerName": "Withdraw Date",
+              "headerTooltip": "The date the IPO was withdrawn.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "deal_status",
+              "formatterFn": null,
+              "headerName": "Deal Status",
+              "headerTooltip": "The status of the deal.",
+              "cellDataType": "text"
+            }
+          ],
+          "enableAdvanced": true
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "subCategory": "Calendar",
+      "refetchInterval": false
+    },
+    "nasdaq_economic_calendar": {
+      "name": "Economic Calendar",
+      "description": "Upcoming, and historical, macroeconomic events.",
+      "category": "Economy",
+      "type": "table",
+      "searchCategory": "Equity",
+      "widgetId": "nasdaq_economic_calendar",
+      "params": [
+        {
+          "label": "Start Date",
+          "description": "Start Date",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "start_date"
+        },
+        {
+          "label": "End Date",
+          "description": "End Date",
+          "optional": true,
+          "type": "date",
+          "value": null,
+          "show": true,
+          "paramName": "end_date"
+        },
+        {
+          "label": "Country",
+          "description": "Country",
+          "optional": true,
+          "type": "text",
+          "value": null,
+          "show": true,
+          "paramName": "country",
+          "options": [
+            {
+              "label": "United States",
+              "value": "united_states"
+            },
+            {
+              "label": "China",
+              "value": "china"
+            },
+            {
+              "label": "Hong Kong",
+              "value": "hong_kong"
+            },
+            {
+              "label": "Japan",
+              "value": "japan"
+            },
+            {
+              "label": "Singapore",
+              "value": "signapore"
+            },
+            {
+              "label": "South Korea",
+              "value": "south_korea"
+            },
+            {
+              "label": "India",
+              "value": "india"
+            },
+            {
+              "label": "Russia",
+              "value": "russia"
+            },
+            {
+              "label": "Euro Zone",
+              "value": "euro_zone"
+            },
+            {
+              "label": "Germany",
+              "value": "germany"
+            },
+            {
+              "label": "United Kingdom",
+              "value": "united_kingdom"
+            },
+            {
+              "label": "France",
+              "value": "france"
+            },
+            {
+              "label": "Spain",
+              "value": "spain"
+            },
+            {
+              "label": "Italy",
+              "value": "italy"
+            },
+            {
+              "label": "Switzerland",
+              "value": "switzerland"
+            },
+            {
+              "label": "Canada",
+              "value": "canada"
+            },
+            {
+              "label": "Australia",
+              "value": "australia"
+            },
+            {
+              "label": "New Zealand",
+              "value": "new_zealand"
+            },
+            {
+              "label": "South Africa",
+              "value": "south_africa"
+            },
+            {
+              "label": "Brazil",
+              "value": "brazil"
+            }
+          ]
+        }
+      ],
+      "endpoint": "economic_calendar",
+      "runButton": false,
+      "gridData": {
+        "w": 40,
+        "h": 20
+      },
+      "data": {
+        "dataKey": "",
+        "table": {
+          "showAll": false,
+          "enableAdvanced": true,
+          "columnsDefs": [
+            {
+              "field": "date",
+              "pinned": "left",
+              "headerName": "Date",
+              "headerTooltip": "The date of the data.",
+              "cellDataType": "date"
+            },
+            {
+              "field": "country",
+              "headerName": "Country",
+              "headerTooltip": "Country of event.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "event",
+              "renderFn": "hoverCard",
+              "renderFnParams": {
+                "hoverCard": {
+                  "cellField": "value",
+                  "markdown": "{description}"
+                }
+              },
+              "headerName": "Event",
+              "headerTooltip": "Event name.",
+              "cellDataType": "text"
+            },
+            {
+              "field": "consensus",
+              "headerName": "Consensus",
+              "headerTooltip": "Average forecast among a representative group of economists.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "actual",
+              "headerName": "Actual",
+              "headerTooltip": "Latest released value.",
+              "cellDataType": "number"
+            },
+            {
+              "field": "previous",
+              "headerName": "Previous",
+              "headerTooltip": "Value for the previous period after the revision (if revision is applicable).",
+              "cellDataType": "number"
+            },
+            {
+              "field": "revised",
+              "headerName": "Revised",
+              "headerTooltip": "Revised previous value, if applicable.",
+              "cellDataType": "number"
+            }
+          ]
+        }
+      },
+      "source": [
+        "Custom"
+      ],
+      "subCategory": "Calendar",
+      "refetchInterval": false
+    }
+}

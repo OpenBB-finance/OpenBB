@@ -1,7 +1,6 @@
 """Test economy extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -18,7 +17,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -60,7 +59,7 @@ def test_economy_calendar(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -108,7 +107,7 @@ def test_economy_cpi(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "fmp"}),
@@ -123,7 +122,7 @@ def test_economy_risk_premium(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -149,7 +148,7 @@ def test_economy_gdp_forecast(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -185,7 +184,7 @@ def test_economy_gdp_nominal(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -219,7 +218,7 @@ def test_economy_gdp_real(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -267,7 +266,7 @@ def test_economy_balance_of_payments(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -334,7 +333,7 @@ def test_economy_fred_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -373,7 +372,7 @@ def test_economy_fred_series(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06", "adjusted": True}),
@@ -398,7 +397,7 @@ def test_economy_money_measures(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -426,7 +425,7 @@ def test_economy_unemployment(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -452,7 +451,7 @@ def test_economy_composite_leading_indicator(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
@@ -478,7 +477,7 @@ def test_economy_short_term_interest_rate(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
@@ -504,11 +503,12 @@ def test_economy_long_term_interest_rate(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
-    argnames="params",
-    argvalues=[
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
+                "provider": "fred",
                 "symbol": "156241",
                 "is_series_group": True,
                 "start_date": "2000-01-01",
@@ -519,12 +519,12 @@ def test_economy_long_term_interest_rate(params, obb):
                 "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
-                "provider": "fred",
                 "limit": None,
             }
         ),
         (
             {
+                "provider": "fred",
                 "symbol": "CAICLAIMS",
                 "is_series_group": False,
                 "start_date": "1990-01-01",
@@ -535,7 +535,6 @@ def test_economy_long_term_interest_rate(params, obb):
                 "season": None,
                 "aggregation_method": "avg",
                 "transform": "chg",
-                "provider": "fred",
                 "limit": None,
             }
         ),
@@ -552,7 +551,7 @@ def test_economy_fred_regional(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -576,7 +575,7 @@ def test_economy_country_profile(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
@@ -594,7 +593,7 @@ def test_economy_available_indicators(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -654,7 +653,7 @@ def test_economy_indicators(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -692,7 +691,7 @@ def test_economy_central_bank_holdings(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -717,7 +716,7 @@ def test_economy_share_price_index(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -743,7 +742,7 @@ def test_economy_house_price_index(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -768,7 +767,7 @@ def test_economy_immediate_interest_rate(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -794,7 +793,7 @@ def test_economy_interest_rates(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -822,7 +821,7 @@ def test_economy_retail_prices(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -848,7 +847,7 @@ def test_economy_survey_university_of_michigan(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -872,7 +871,7 @@ def test_economy_survey_sloos(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -898,7 +897,7 @@ def test_economy_survey_economic_conditions_chicago(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -925,7 +924,7 @@ def test_economy_survey_manufacturing_outlook_texas(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -952,7 +951,7 @@ def test_economy_survey_manufacturing_outlook_ny(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -976,7 +975,7 @@ def test_economy_primary_dealer_positioning(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -999,7 +998,7 @@ def test_economy_survey_nonfarm_payrolls(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1022,7 +1021,7 @@ def test_economy_pce(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1054,7 +1053,7 @@ def test_economy_fred_release_table(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1079,7 +1078,7 @@ def test_economy_survey_bls_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1106,7 +1105,7 @@ def test_economy_survey_bls_series(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1128,7 +1127,7 @@ def test_economy_export_destinations(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1153,7 +1152,7 @@ def test_economy_primary_dealer_fails(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1161,6 +1160,15 @@ def test_economy_primary_dealer_fails(params, obb):
                 "provider": "econdb",
                 "start_date": None,
                 "end_date": None,
+            }
+        ),
+        (
+            {
+                "provider": "imf",
+                "port_code": "port1201",
+                "start_date": "2020-01-01",
+                "end_date": "2020-01-31",
+                "country": None,
             }
         ),
     ],
@@ -1176,7 +1184,7 @@ def test_economy_port_volume(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1203,7 +1211,7 @@ def test_economy_direction_of_trade(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1213,7 +1221,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": None,
             }
         ),
         (
@@ -1223,7 +1230,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
             }
         ),
         (
@@ -1233,7 +1239,6 @@ def test_economy_direction_of_trade(params, obb):
                 "document_type": "minutes",
                 "pdf_only": True,
                 "as_choices": True,
-                "url": None,
             }
         ),
     ],
@@ -1247,3 +1252,109 @@ def test_economy_fomc_documents(params, obb):
     assert result
     assert isinstance(result, (list, dict))
     assert len(result) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "CRI",
+                "continent": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_info(params, obb):
+    """Test economy shipping port info."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.shipping_port_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_info(params, obb):
+    """Test economy shipping chokepoint info."""
+    result = obb.economy.shipping.chokepoint_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chokepoint": "chokepoint1",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_chokepoint_volume(params, obb):
+    """Test economy shipping chokepoint volume."""
+    result = obb.economy.shipping.chokepoint_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "port_code": "port1201",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-31",
+                "country": None,
+            }
+        ),
+        (
+            {
+                "provider": "econdb",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_shipping_port_volume(params, obb):
+    """Test economy shipping chokepoint volume."""
+    result = obb.economy.shipping.chokepoint_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.skip(reason="Endpoint not available to Python SDK.")
+def test_economy_fomc_documents_download(obb):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+    result = obb.economy.fomc_documents_download(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

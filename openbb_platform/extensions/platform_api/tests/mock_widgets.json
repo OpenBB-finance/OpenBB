@@ -147,10 +147,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "value",
@@ -161,7 +162,6 @@
                     },
                     {
                         "field": "title",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "Survey title.",
@@ -807,7 +807,11 @@
                 "value": null,
                 "show": true,
                 "multiSelect": true,
-                "paramName": "date"
+                "paramName": "date",
+                "multiple": true,
+                "style": {
+                    "popupWidth": 400
+                }
             },
             {
                 "label": "Category",
@@ -916,10 +920,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "value",
@@ -938,24 +943,27 @@
                     },
                     {
                         "field": "element_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "parent_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "children",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "level",
@@ -1870,7 +1878,6 @@
                     },
                     {
                         "field": "title",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "The title of the series.",
@@ -2012,7 +2019,11 @@
                 "value": null,
                 "show": true,
                 "multiSelect": true,
-                "paramName": "symbol"
+                "paramName": "symbol",
+                "multiple": true,
+                "style": {
+                    "popupWidth": 400
+                }
             },
             {
                 "label": "Start Date",
@@ -2223,7 +2234,11 @@
                 "value": null,
                 "show": true,
                 "multiSelect": true,
-                "paramName": "symbol"
+                "paramName": "symbol",
+                "multiple": true,
+                "style": {
+                    "popupWidth": 400
+                }
             },
             {
                 "label": "Start Date",
@@ -2462,7 +2477,11 @@
                 "value": null,
                 "show": true,
                 "multiSelect": true,
-                "paramName": "date"
+                "paramName": "date",
+                "multiple": true,
+                "style": {
+                    "popupWidth": 400
+                }
             },
             {
                 "paramName": "provider",
@@ -2512,32 +2531,36 @@
                     },
                     {
                         "field": "element_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "parent_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "children",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "name",
@@ -3054,10 +3077,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "country",
@@ -3104,7 +3128,11 @@
                 "value": null,
                 "show": true,
                 "multiSelect": true,
-                "paramName": "date"
+                "paramName": "date",
+                "multiple": true,
+                "style": {
+                    "popupWidth": 400
+                }
             },
             {
                 "label": "Category",
@@ -3177,10 +3205,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "value",
@@ -3199,24 +3228,27 @@
                     },
                     {
                         "field": "element_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Element ID",
                         "headerTooltip": "The element id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "parent_id",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Parent ID",
                         "headerTooltip": "The parent id in the parent/child relationship.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "children",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Children",
                         "headerTooltip": "The element_id of each child, as a comma-separated string.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     },
                     {
                         "field": "level",
@@ -3285,10 +3317,11 @@
                 "columnsDefs": [
                     {
                         "field": "cik",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "CIK",
                         "headerTooltip": "Central Index Key (CIK) for the requested entity.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     }
                 ]
             }
@@ -3476,10 +3509,11 @@
                     {
                         "field": "symbol",
                         "pinned": "left",
-                        "formatterFn": null,
+                        "formatterFn": "none",
                         "headerName": "Symbol",
                         "headerTooltip": "Symbol representing the entity requested in the data.",
-                        "cellDataType": "text"
+                        "cellDataType": "text",
+                        "renderFn": null
                     }
                 ]
             }
@@ -3524,7 +3558,6 @@
                     },
                     {
                         "field": "title",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Title",
                         "headerTooltip": "The title of the release.",

@@ -35,7 +35,7 @@
             "API_BIZTOC_TOKEN": "biztoc_api_key"
         },
         "website": "https://api.biztoc.com",
-        "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\n![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key.\n\n![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)"
+        "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key. Use this value to enter as `biztoc_api_key`."
     },
     {
         "packageName": "openbb-bls",
@@ -92,7 +92,16 @@
         "credentials": [
             "econdb_api_key"
         ],
-        "website": "https://econdb.com"
+        "website": "https://econdb.com",
+        "instructions": "Note: API key is not required to get started, but it is recommended. Register an account by clicking on the Subscribe icon in the top right corner of the website."
+    },
+    {
+        "packageName": "openbb-famafrench",
+        "optional": true,
+        "reprName": "Fama-French Research Portfolios and Factors",
+        "description": "\n    This provider implements the Fama-French research portfolios and factors data library,\n    maintained and hosted by Kenneth R. French at Dartmouth College.\n    ",
+        "credentials": [],
+        "website": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
     },
     {
         "packageName": "openbb-federal-reserve",
@@ -157,8 +166,8 @@
     {
         "packageName": "openbb-imf",
         "optional": false,
-        "reprName": "International Monetary Fund (IMF) Public Data API",
-        "description": "This provider allows you to access International Monetary Fund data through the IMF Public Data API.",
+        "reprName": "International Monetary Fund (IMF) Data APIs",
+        "description": "Access International Monetary Fund (IMF) data APIs.",
         "credentials": [],
         "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service"
     },

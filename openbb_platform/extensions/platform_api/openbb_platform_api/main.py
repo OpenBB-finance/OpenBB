@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 import uvicorn
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
@@ -52,15 +52,19 @@ _app = kwargs.pop("app", None)
 if _app:
     app = _app
 
-WIDGETS_PATH = kwargs.pop("widgets-path", None)
-TEMPLATES_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
+
+# These are handled for backwards compatibility, and in ./utils/api::parse_args.
+# It should be handled by this point in the code execution, but in case the key
+# still exists for some reason, we will pop it so it doesn't get passed to uvicorn.run
+# It would be reasonable to remove special handling by V1.3
+WIDGETS_PATH = kwargs.pop("widgets-json", None) or kwargs.pop("widgets-path", None)
+APPS_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
+
 EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
-
-
-DEFAULT_TEMPLATES_PATH = (
+DEFAULT_APPS_PATH = (
     Path(__file__).absolute().parent.joinpath("assets").joinpath("default_apps.json")
 )
-COPILOTS = kwargs.pop("copilots", None)
+AGENTS_PATH = kwargs.pop("agents-json", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
@@ -78,12 +82,38 @@ for key, value in uvicorn_settings.items():
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
     with open(WIDGET_SETTINGS) as widget_settings_file:
         try:
-            widget_exclude_filter_json = json.load(widget_settings_file)["exclude"]
+            widget_exclude_filter_json = json.load(widget_settings_file).get(
+                "exclude", []
+            )
             if isinstance(widget_exclude_filter_json, list):
                 widget_exclude_filter.extend(widget_exclude_filter_json)
         except json.JSONDecodeError as e:
             logger.info("Error loading widget filter settings -> %s", e)
 
+
+def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
+    """Check for data-processing Platform extensions and add them to the widget exclude filter."""
+    to_check_for = ["econometrics", "quantitative", "technical"]
+    tags = (
+        [
+            d.get("name") if isinstance(d, dict) and d.get("name") else d
+            for d in fastapi_app.openapi_tags
+            if d and d in to_check_for
+        ]
+        if fastapi_app.openapi_tags
+        else []
+    )
+    if tags and (any(f"openbb_{mod}" in sys.modules for mod in to_check_for)):
+        api_prefix = SystemService().system_settings.api_settings.prefix
+        for tag in tags:
+            if f"openbb_{tag}" in sys.modules:
+                # If the module is loaded, we can safely add it to the exclude filter.
+                widgets_to_exclude.append(f"{api_prefix}/{tag}/*")
+
+    return widgets_to_exclude
+
+
+widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter)
 
 openapi = app.openapi()
 
@@ -96,25 +126,25 @@ widgets_json = get_widgets_json(
 
 # A template file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
-TEMPLATES_PATH = (
-    TEMPLATES_PATH
-    + f"{'/' if TEMPLATES_PATH[-1] != '/' else ''}"
-    + f"{'workspace_apps.json' if '.json' not in TEMPLATES_PATH else ''}"
-    if TEMPLATES_PATH
+APPS_PATH = (
+    APPS_PATH
+    if APPS_PATH
     else (
-        current_settings["preferences"].get("data_directory", HOME + "/OpenBBUserData")
+        current_settings.get("preferences", {}).get(
+            "data_directory", HOME + "/OpenBBUserData"
+        )
         + "/workspace_apps.json"
     )
 )
 
 
 @app.get("/")
-async def get_root():
-    """Root response and welcome message."""
-    return JSONResponse(
-        content="Welcome to the OpenBB Platform API and Custom Workspace Backend."
-        + " Learn how to connect to the OpenBB Workspace here: https://docs.openbb.co/pro/custom-backend,"
-    )
+async def root():
+    """Serve the landing page HTML content."""
+    html_path = Path(__file__).parent / "assets" / "landing_page.html"
+    with open(html_path) as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
 
 
 @app.get("/widgets.json")
@@ -137,23 +167,25 @@ async def get_widgets():
 # If a custom implementation, you might want to override.
 @app.get("/apps.json")
 async def get_apps_json():
-    """Get the default apps.json file."""
+    """Get the apps.json file."""
     new_templates: list = []
     default_templates: list = []
     widgets = await get_widgets()
 
-    if not os.path.exists(TEMPLATES_PATH):
-        os.makedirs(os.path.dirname(TEMPLATES_PATH), exist_ok=True)
-        # Write an empty file for the user to export templates to for any backend.
-        with open(TEMPLATES_PATH, "w", encoding="utf-8") as templates_file:
+    if not os.path.exists(APPS_PATH):
+        apps_dir = os.path.dirname(APPS_PATH)
+        if not os.path.exists(apps_dir):
+            os.makedirs(apps_dir, exist_ok=True)
+        # Write an empty file for the user to add exported apps from Workspace to.
+        with open(APPS_PATH, "w", encoding="utf-8") as templates_file:
             templates_file.write(json.dumps([]))
 
-    if os.path.exists(DEFAULT_TEMPLATES_PATH):
-        with open(DEFAULT_TEMPLATES_PATH) as f:
+    if os.path.exists(DEFAULT_APPS_PATH):
+        with open(DEFAULT_APPS_PATH) as f:
             default_templates = json.load(f)
 
-    if os.path.exists(TEMPLATES_PATH):
-        with open(TEMPLATES_PATH) as templates_file:
+    if os.path.exists(APPS_PATH):
+        with open(APPS_PATH) as templates_file:
             templates = json.load(templates_file)
 
         if isinstance(templates, dict):
@@ -189,12 +221,16 @@ async def get_apps_json():
     return JSONResponse(content=[])
 
 
-if COPILOTS:
+if AGENTS_PATH:
 
-    @app.get("/copilots.json")
-    async def get_copilots():
-        """Get the copilots.json file."""
-        return JSONResponse(content=COPILOTS)
+    @app.get("/agents.json")
+    async def get_agents():
+        """Get the agents.json file."""
+        if os.path.exists(AGENTS_PATH):
+            with open(AGENTS_PATH) as f:
+                agents = json.load(f)
+            return JSONResponse(content=agents)
+        return JSONResponse(content=[])
 
 
 def launch_api(**_kwargs):  # noqa PRL0912

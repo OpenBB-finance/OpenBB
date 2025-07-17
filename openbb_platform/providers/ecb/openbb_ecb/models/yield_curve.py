@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.yield_curve import (
     YieldCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class ECBYieldCurveQueryParams(YieldCurveQueryParams):
@@ -39,63 +39,59 @@ class ECBYieldCurveQueryParams(YieldCurveQueryParams):
 class ECBYieldCurveData(YieldCurveData):
     """ECB Yield Curve Data."""
 
-    @field_validator("rate", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):
-        """Normalize percent."""
-        return float(v) / 100 if v else None
-
 
 class ECBYieldCurveFetcher(
     Fetcher[
         ECBYieldCurveQueryParams,
-        List[ECBYieldCurveData],
+        list[ECBYieldCurveData],
     ]
 ):
     """ECB Yield Curve Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> ECBYieldCurveQueryParams:
+    def transform_query(params: dict[str, Any]) -> ECBYieldCurveQueryParams:
         """Transform query."""
         return ECBYieldCurveQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: ECBYieldCurveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from aiohttp_client_cache import SQLiteBackend  # noqa
-        from aiohttp_client_cache.session import CachedSession  # noqa
-        from openbb_core.app.utils import get_user_cache_directory  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache.session import CachedSession
+        from openbb_core.app.utils import get_user_cache_directory
+        from openbb_core.provider.utils.helpers import amake_request
         from openbb_ecb.utils.yield_curve_series import (
             MATURITIES,
             get_yield_curve_ids,
-        )  # noqa
+        )
 
-        results: List = []
+        results: list = []
 
-        IDS = get_yield_curve_ids(
+        ids = get_yield_curve_ids(
             rating=query.rating,
             yield_curve_type=query.yield_curve_type,
         )
-        YIELD_CURVE = IDS["SERIES_IDS"]
+        yield_curve = ids["SERIES_IDS"]
 
-        BASE_URL = "https://data.ecb.europa.eu/data-detail-api"
+        base_url = "https://data.ecb.europa.eu/data-detail-api"
 
         async def get_one(maturity, use_cache):
             """Each maturity is a separate download."""
-            url = f"{BASE_URL}/{YIELD_CURVE[maturity]}"
-            response: Union[Dict, List[Dict]] = []
+            url = f"{base_url}/{yield_curve[maturity]}"
+            response: Union[dict, list[dict]] = []
+
             if use_cache is True:
                 cache_dir = f"{get_user_cache_directory()}/http/ecb_yield_curve"
                 async with CachedSession(
                     cache=SQLiteBackend(cache_dir, expire_after=3600 * 4)
                 ) as session:
+                    await session.delete_expired_responses()
                     try:
                         response = await amake_request(
                             url, session=session  # type: ignore
@@ -104,9 +100,11 @@ class ECBYieldCurveFetcher(
                         await session.close()
             else:
                 response = await amake_request(url=url)
+
             if not response:
                 raise OpenBBError("No data was returned.")
-            if isinstance(response, List):
+
+            if isinstance(response, list):
                 for item in response:
                     d = {
                         "date": item.get("PERIOD"),
@@ -124,9 +122,9 @@ class ECBYieldCurveFetcher(
     @staticmethod
     def transform_data(
         query: ECBYieldCurveQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[ECBYieldCurveData]:
+    ) -> list[ECBYieldCurveData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from openbb_ecb.utils.yield_curve_series import MATURITIES  # noqa
@@ -156,13 +154,14 @@ class ECBYieldCurveFetcher(
         flattened_data = flattened_data.rename(columns={"index": "date"}).sort_values(
             "date"
         )
-        flattened_data["maturity"] = Categorical(
-            flattened_data["maturity"], categories=MATURITIES, ordered=True
+        flattened_data.loc[:, "maturity"] = Categorical(
+            flattened_data.maturity, categories=MATURITIES, ordered=True
         )
         flattened_data = flattened_data.sort_values(
             by=["date", "maturity"]
         ).reset_index(drop=True)
-        flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
+        flattened_data.date = flattened_data.date.dt.strftime("%Y-%m-%d")
+        flattened_data.rate = flattened_data.rate.astype(float).div(100)
         records = flattened_data.to_dict(orient="records")
 
         return [ECBYieldCurveData.model_validate(d) for d in records]

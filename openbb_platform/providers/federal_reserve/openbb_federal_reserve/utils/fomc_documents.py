@@ -11,7 +11,6 @@ FomcDocumentType = Literal[
     "materials",
     "press_release",
     "press_conference",
-    "conference_call",
     "agenda",
     "transcript",
     "speaker_key",
@@ -39,8 +38,8 @@ def load_historical_fomc_documents() -> list:
     return historical_docs
 
 
-@lru_cache(maxsize=1)
-def get_current_fomc_documents() -> list:
+@lru_cache(maxsize=64)
+def get_current_fomc_documents(url: Optional[str] = None) -> list:
     """
     Get the current FOMC documents from https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.
 
@@ -63,10 +62,20 @@ def get_current_fomc_documents() -> list:
     from bs4 import BeautifulSoup
     from openbb_core.provider.utils.helpers import make_request
 
-    url = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    data_releases: list = []
+    if url is None:
+        beige_books = get_beige_books()
+
+        if beige_books:
+            data_releases.extend(beige_books)
+
+    url = (
+        url
+        if url is not None
+        else "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    )
     response = make_request(url, method="GET")
     soup = BeautifulSoup(response.content, "html.parser")
-    data_releases: list = []
 
     for link in soup.find_all("a"):
         url = link.get("href", "")
@@ -74,14 +83,22 @@ def get_current_fomc_documents() -> list:
         if "/newsevents/pressreleases" in url:
             continue
 
-        file_url = f"https://www.federalreserve.gov{url}"
-        date = file_url.rsplit("/", 1)[-1].split(".")[0]
+        file_url = (
+            f"https://www.federalreserve.gov{url}"
+            if not url.startswith("https://www.federalreserve.gov")
+            else url
+        )
+        date = file_url.split("/")[
+            -2 if file_url.endswith("/default.htm") else -1
+        ].split(".")[0]
         date_match = re.search(r"(\d{4})(\d{2})(\d{2})", date)
         if date_match:
             new_date = (
                 f"{date_match.group(1)}-{date_match.group(2)}-{date_match.group(3)}"
             )
             file_type = ""
+            if "beige" in url.lower():
+                file_type = "beige_book"
             if "files" in url and "monetary" in date:
                 file_type = "monetary_policy"
             if "fomcproj" in date:
@@ -100,6 +117,7 @@ def get_current_fomc_documents() -> list:
                     "url": file_url,
                 }
             )
+
     data_releases = sorted(data_releases, key=lambda x: x["date"], reverse=True)
 
     return data_releases
@@ -176,7 +194,7 @@ def get_fomc_documents_by_year(
     if year:
         docs = (
             get_current_fomc_documents()
-            if year > 2019
+            if year > 2024
             else load_historical_fomc_documents()
         )
     else:
@@ -192,4 +210,36 @@ def get_fomc_documents_by_year(
             continue
         if document_type in ("all", doc["doc_type"]):
             filtered_docs.append(doc)
-    return filtered_docs
+
+    return sorted(filtered_docs, key=lambda x: x["date"], reverse=True)
+
+
+def get_beige_books(year: Optional[int] = None) -> list[dict]:
+    """
+    Get a list of Beige Books by year.
+
+    Parameters
+    ----------
+    year : Optional[int]
+        The year of the Beige Books to retrieve. If None, all years since 1959 are returned.
+
+    Returns
+    -------
+    list[dict]
+        A list of dictionaries mapping Beige Books to URLs.
+        Each dictionary contains the following:
+        - date: str
+            The date of the document, formatted as YYYY-MM-DD.
+        - doc_type: str
+            The type of the document (always "beige_book").
+        - doc_format: str
+            The format of the document.
+        - url: str
+            The URL of the document.
+    """
+    url = (
+        "https://www.federalreserve.gov/monetarypolicy/publications/beige-book-default.htm"
+        if year is None
+        else f"https://www.federalreserve.gov/monetarypolicy/beigebook{year}.htm"
+    )
+    return get_current_fomc_documents(url=url)

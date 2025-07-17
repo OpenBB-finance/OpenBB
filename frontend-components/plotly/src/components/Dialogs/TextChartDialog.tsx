@@ -1,5 +1,5 @@
 import CommonDialog from "./CommonDialog";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const style = {
   padding: "5px 2px 2px 5px",
@@ -17,65 +17,118 @@ export default function TextChartDialog({
   open: boolean;
   close: () => void;
   addAnnotation: (annotation: any) => void;
-  updateAnnotation: (annotation: any) => void;
+  updateAnnotation?: (annotation: any) => void;
   deleteAnnotation: (annotation: any) => void;
   popupData: any | null;
 }) {
+  // Prevent multiple renderings
+  const hasLoaded = useRef(false);
+
   const defaultPopupData = {
     text: "",
     color: "#0088CC",
     size: 18,
     bordercolor: "#822661",
+    arrowcolor: "#822661",
+    bgcolor: "#000000",
+    arrowsize: 1,
+    arrowwidth: 2,
     yanchor: "above",
   };
-  const [popUpData, setPopUpData] = useState<any>(defaultPopupData);
-  const [newPopupData, setNewPopupData] = useState<any>(defaultPopupData);
 
-  if (popupData && popupData !== popUpData) {
-    if (popupData.annotation) {
-      popupData.annotation = popupData?.annotation || {};
-      setPopUpData(popupData);
-      setNewPopupData(popupData);
+  // Use a single state object to hold all form data
+  const [formData, setFormData] = useState<any>(defaultPopupData);
+  const [editMode, setEditMode] = useState(false);
+
+  // Handle initialization when dialog opens
+  useEffect(() => {
+    if (open && popupData?.annotation && !hasLoaded.current) {
+      const annotation = popupData.annotation;
+
+      // Get properties from annotation for editing
+      let data = {
+        text: annotation.text || "",
+        color: annotation.font?.color || defaultPopupData.color,
+        size: annotation.font?.size || defaultPopupData.size,
+        bordercolor: annotation.bordercolor || defaultPopupData.bordercolor,
+        bgcolor: annotation.bgcolor || defaultPopupData.bgcolor,
+        arrowcolor: annotation.arrowcolor || defaultPopupData.arrowcolor,
+        arrowsize: annotation.arrowsize || defaultPopupData.arrowsize,
+        arrowwidth: annotation.arrowwidth || defaultPopupData.arrowwidth,
+        yanchor: "above",
+      };
+
+      // Determine position based on annotation coordinates
+      if (annotation.y !== undefined && annotation.ay !== undefined) {
+        data.yanchor = annotation.y < annotation.ay ? "above" : "below";
+      }
+
+      setFormData(data);
+      setEditMode(true);
+      hasLoaded.current = true;
+    } else if (!open) {
+      // Reset when dialog closes
+      setFormData(defaultPopupData);
+      setEditMode(false);
+      hasLoaded.current = false;
+    } else if (open && !popupData?.annotation) {
+      // Reset for new annotations
+      setFormData(defaultPopupData);
+      setEditMode(false);
     }
+  }, [open, popupData]);
+
+  function onChange(e: any) {
+    const name = e.target.id.replace("addtext_", "");
+    let value = e.target.value;
+
+    // Convert numeric values
+    if (name === "size" || name === "arrowsize" || name === "arrowwidth") {
+      value = parseFloat(value);
+    }
+
+    setFormData((prev: any) => ({
+      ...prev,
+      [name]: value
+    }));
   }
 
   function onClose() {
-    console.log("closing");
-    setPopUpData(defaultPopupData);
-    setNewPopupData(defaultPopupData);
     close();
   }
 
-  function onChange(e: any) {
-    console.log(e.target.id.replace("addtext_", ""), e.target.value);
-    const name = e.target.id.replace("addtext_", "");
-    const value = e.target.value;
-    setNewPopupData({ ...newPopupData, [name]: value });
-  }
-
   function onSubmit() {
-    console.log("submitting", newPopupData);
-    if (newPopupData.text !== "") {
-      if (popUpData?.annotation) {
-        setNewPopupData({ ...newPopupData, annotation: popUpData.annotation });
+    if (formData.text) {
+      const dataToSubmit = { ...formData };
+
+      // Add the annotation reference for editing
+      if (editMode && popupData?.annotation) {
+        dataToSubmit.annotation = popupData.annotation;
       }
-      addAnnotation(newPopupData);
+
+      addAnnotation(dataToSubmit);
       close();
     } else {
-      document.getElementById("popup_textarea_warning")!.style.display =
-        "block";
-      document.getElementById("addtext_text")!.style.border = "1px solid red";
+      if (document.getElementById("popup_textarea_warning")) {
+        document.getElementById("popup_textarea_warning")!.style.display = "block";
+      }
+      if (document.getElementById("addtext_text")) {
+        document.getElementById("addtext_text")!.style.border = "1px solid red";
+      }
     }
   }
+
   function onDelete() {
-    deleteAnnotation(popUpData);
-    onClose();
+    if (editMode && popupData) {
+      deleteAnnotation(popupData);
+    }
+    close();
   }
 
   return (
     <CommonDialog
-      title="Add Text to Chart"
-      description="Change the titles on the chart."
+      title={editMode ? "Edit Annotation" : "Add Text to Chart"}
+      description="Add or edit text annotations on the chart."
       open={open}
       close={onClose}
     >
@@ -84,7 +137,7 @@ export default function TextChartDialog({
           <div style={{ marginBottom: 20 }}>
             <label htmlFor="popup_text">
               <b>Text:</b>
-              <div id="popup_textarea_warning" className="popup_warning">
+              <div id="popup_textarea_warning" className="popup_warning" style={{display: "none"}}>
                 Text is required
               </div>
             </label>
@@ -101,65 +154,127 @@ export default function TextChartDialog({
               cols={50}
               placeholder="Enter text here"
               onChange={onChange}
-              defaultValue={popUpData?.annotation?.text || newPopupData?.text}
+              value={formData.text || ""}
             ></textarea>
           </div>
+
           <div
             style={{
-              display: "flex",
-              gap: 15,
-              alignItems: "center",
-              flexWrap: "wrap",
-              columnCount: 2,
-              justifyContent: "space-between",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "12px",
               marginBottom: 20,
-
             }}
           >
-            <label htmlFor="addtext_color">
-              <b>Font color</b>
-            </label>
-            <input
-              type="color"
-              id="addtext_color"
-              style={{ margin: "2px 2px 2px 15px" }}
-              defaultValue={popUpData?.annotation?.color || newPopupData?.color}
-              onChange={onChange}
-            ></input>
-            <label htmlFor="addtext_bordercolor" style={{ marginLeft: 20 }}>
-              <b>Border color</b>
-            </label>
-            <input
-              type="color"
-              id="addtext_bordercolor"
-              style={{ margin: "2px 2px 10px 15px" }}
-              defaultValue={
-                popUpData?.annotation?.bordercolor || newPopupData?.bordercolor
-              }
-              onChange={onChange}
-            ></input>
+            {/* Row 1 */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_color">
+                <b>Font color</b>
+              </label>
+              <input
+                type="color"
+                id="addtext_color"
+                style={{ margin: "2px 0" }}
+                value={formData.color}
+                onChange={onChange}
+              />
+            </div>
 
-            <label htmlFor="addtext_size">
-              <b>Font size</b>
-            </label>
-            <input
-              style={{ ...style, width: "52px", margin: "0px 0px 0px 2px" }}
-              type="number"
-              id="addtext_size"
-              onChange={onChange}
-              defaultValue={popUpData?.annotation?.size || newPopupData?.size}
-            ></input>
-            <div>
-              <label htmlFor="addtext_yanchor" style={{ marginRight: 31 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_size">
+                <b>Font size</b>
+              </label>
+              <input
+                style={{ width: "52px" }}
+                type="number"
+                id="addtext_size"
+                value={formData.size}
+                onChange={onChange}
+              />
+            </div>
+
+            {/* Row 2 */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_bgcolor">
+                <b>Background</b>
+              </label>
+              <input
+                type="color"
+                id="addtext_bgcolor"
+                style={{ margin: "2px 0" }}
+                value={formData.bgcolor}
+                onChange={onChange}
+              />
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_bordercolor">
+                <b>Border color</b>
+              </label>
+              <input
+                type="color"
+                id="addtext_bordercolor"
+                style={{ margin: "2px 0" }}
+                value={formData.bordercolor}
+                onChange={onChange}
+              />
+            </div>
+
+            {/* Row 3 */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_arrowcolor">
+                <b>Arrow color</b>
+              </label>
+              <input
+                type="color"
+                id="addtext_arrowcolor"
+                style={{ margin: "2px 0" }}
+                value={formData.arrowcolor}
+                onChange={onChange}
+              />
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_arrowsize">
+                <b>Arrow size</b>
+              </label>
+              <input
+                style={{ width: "52px" }}
+                type="number"
+                id="addtext_arrowsize"
+                min="0.1"
+                max="5"
+                step="0.1"
+                value={formData.arrowsize}
+                onChange={onChange}
+              />
+            </div>
+
+            {/* Row 4 */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_arrowwidth">
+                <b>Arrow width</b>
+              </label>
+              <input
+                style={{ width: "52px" }}
+                type="number"
+                id="addtext_arrowwidth"
+                min="1"
+                max="10"
+                value={formData.arrowwidth}
+                onChange={onChange}
+              />
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <label htmlFor="addtext_yanchor">
                 <b>Position</b>
               </label>
               <select
                 id="addtext_yanchor"
                 name="yanchor"
                 style={{ width: "100px" }}
-                defaultValue={
-                  popUpData?.annotation?.yanchor || newPopupData?.yanchor
-                }
+                value={formData.yanchor}
                 onChange={onChange}
               >
                 <option value="above">Above</option>
@@ -177,13 +292,15 @@ export default function TextChartDialog({
           >
             Cancel
           </button>
-          <button
-            className="_btn ph-capture"
-            id="title_delete"
-            onClick={onDelete}
-          >
-            Delete
-          </button>
+          {editMode && (
+            <button
+              className="_btn ph-capture"
+              id="title_delete"
+              onClick={onDelete}
+            >
+              Delete
+            </button>
+          )}
           <button
             className="_btn ph-capture"
             id="title_submit"

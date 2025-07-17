@@ -26,7 +26,7 @@ class ROUTER_derivatives_futures(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         date: Annotated[
-            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
+            Union[str, datetime.date, None, list[Union[str, datetime.date, None]]],
             OpenBBField(
                 description="A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
@@ -47,7 +47,7 @@ class ROUTER_derivatives_futures(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
         symbol : str
             Symbol to get data for.
-        date : Union[date, str, None, list[Union[date, str, None]]]
+        date : Union[str, date, None, list[Union[str, date, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): yfinance.
 
         Returns

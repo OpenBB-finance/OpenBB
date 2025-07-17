@@ -76,7 +76,7 @@ class FixedIncomeViews:
             for date in dates:
                 color = colors[color_count % len(colors)]
                 plot_df = dataframe[dataframe["date"] == date].copy()
-                plot_df["rate"] = plot_df["rate"].apply(lambda x: x * 100)
+                plot_df.rate = plot_df.rate.astype(float).multiply(100).round(4)
                 plot_df = plot_df.rename(columns={"rate": "Yield"})
                 plot_df = (
                     plot_df.drop(columns=["date"])
@@ -89,6 +89,7 @@ class FixedIncomeViews:
                     (d.split("_")[1] + " " + d.split("_")[0].title())
                     for d in plot_df["Maturity"]
                 ]
+
                 figure.add_scatter(
                     x=plot_df["Maturity"],
                     y=plot_df["Yield"],
@@ -101,9 +102,9 @@ class FixedIncomeViews:
                     line=dict(width=3, color=color),
                     marker=dict(size=10, color=color),
                     hovertemplate=(
-                        "Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
+                        "Maturity: %{x}<br>Yield: %{y}<extra></extra>"
                         if len(dates) == 1 and not countries
-                        else "%{fullData.name}<br>Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
+                        else "%{fullData.name}<br>Maturity: %{x}<br>Yield: %{y}<extra></extra>"
                     ),
                 )
                 color_count += 1
@@ -177,7 +178,8 @@ class FixedIncomeViews:
             ),
             xaxis=dict(
                 title="Maturity",
-                ticklen=0,
+                ticklen=10,
+                ticks="outside",
                 showgrid=False,
                 type="category",
                 categoryorder="array",
@@ -187,12 +189,15 @@ class FixedIncomeViews:
                         for d in maturities
                     ]
                 ),
+                ticklabeloverflow="hide past domain",
             ),
             yaxis=dict(
-                title="Yield (%)",
                 ticklen=0,
                 showgrid=True,
                 gridcolor="rgba(128,128,128,0.3)",
+                side="left",
+                ticklabelstandoff=10,
+                ticksuffix=" %",
             ),
             legend=dict(
                 orientation="v",
@@ -207,9 +212,10 @@ class FixedIncomeViews:
                 ),
             ),
             margin=dict(
-                b=25,
-                t=10,
-                l=20,
+                b=10,
+                t=20,
+                l=30,
+                r=0,
             ),
         )
 
@@ -217,6 +223,6 @@ class FixedIncomeViews:
         if layout_kwargs:
             figure.update_layout(layout_kwargs)
 
-        content = figure.show(external=True)
+        content = figure.show(external=True).to_plotly_json()
 
         return figure, content

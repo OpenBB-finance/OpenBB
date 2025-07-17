@@ -91,67 +91,6 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
 
 
 @pytest.mark.parametrize(
-    "values, expected_handlers",
-    [
-        # Test case: test_mode is True, logging_suppress is True
-        (
-            {
-                "debug_mode": True,
-                "test_mode": True,
-                "logging_suppress": True,
-                "log_collect": True,
-                "logging_handlers": [],
-            },
-            [],
-        ),
-        # Test case: test_mode is False, logging_suppress is True
-        (
-            {
-                "debug_mode": False,
-                "test_mode": False,
-                "logging_suppress": True,
-                "log_collect": True,
-                "logging_handlers": [],
-            },
-            [],
-        ),
-        # Test case: test_mode is False, logging_suppress is False, log_collect is True,
-        # and "posthog" handler is not present in logging_handlers
-        (
-            {
-                "debug_mode": False,
-                "test_mode": False,
-                "logging_suppress": False,
-                "log_collect": True,
-                "logging_handlers": ["file", "console"],
-            },
-            ["file", "console", "posthog"],
-        ),
-        # Test case: test_mode is False, logging_suppress is False, log_collect is True,
-        # and "posthog" handler is already present in logging_handlers
-        (
-            {
-                "debug_mode": False,
-                "test_mode": False,
-                "logging_suppress": False,
-                "log_collect": True,
-                "logging_handlers": ["file", "console", "posthog"],
-            },
-            ["file", "console", "posthog"],
-        ),
-    ],
-)
-def test_validate_posthog_handler(values, expected_handlers):
-    """Test the validate_posthog_handler method."""
-    values = MockSystemSettings(**values)
-    # Act
-    result = SystemSettings.validate_posthog_handler(values)  # type: ignore[operator]
-
-    # Assert
-    assert result.logging_handlers == expected_handlers
-
-
-@pytest.mark.parametrize(
     "handlers, valid",
     [
         # Test case: Valid handlers

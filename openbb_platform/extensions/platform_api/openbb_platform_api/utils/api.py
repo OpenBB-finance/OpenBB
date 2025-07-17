@@ -26,9 +26,9 @@ Launcher specific arguments:
     --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
-    --widgets-path                  Absolute path to the widgets.json file. Default is ~/envs/{env}/assets/widgets.json. Supplying this sets --editable true.
-    --apps-json                     Absolute path to the workspace_apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
-    --copilots-path                 Absolute path to the copilots.json file. Including this will add the /copilots endpoint to the API.
+    --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
+    --apps-json                     Absolute/relative path to use as the apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
+    --agents-json                   Absolute/relative path to use as the agents.json file. Including this will add the /agents endpoint to the API.
 
 
 The FastAPI app instance can be imported to another script, modified, and launched by using the --app argument.
@@ -219,15 +219,14 @@ def get_widgets_json(
             )
             widgets_json_path = parent_path.joinpath("assets", "widgets.json").resolve()
         else:
-            widgets_json_path = (
-                Path(widgets_path).absolute().joinpath("widgets.json").resolve()
-            )
+            widgets_json_path = Path(widgets_path).absolute().resolve()
 
         json_exists = widgets_json_path.exists()
 
         if not json_exists:
             widgets_json_path.parent.mkdir(parents=True, exist_ok=True)
             _build = True
+            json_exists = widgets_json_path.exists()
 
         existing_widgets_json: dict = {}
 
@@ -369,7 +368,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
     return app
 
 
-def parse_args():
+def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
     """Parse the launch script command line arguments."""
     args = sys.argv[1:].copy()
     cwd = Path.cwd()
@@ -393,26 +392,6 @@ def parse_args():
             else:
                 _kwargs[key] = True
 
-    if isinstance(_kwargs.get("exclude"), str):
-        _kwargs["exclude"] = [_kwargs["exclude"]]
-
-    if _kwargs.get("copilots-path"):
-        _copilots_path = _kwargs.pop("copilots-path", None)
-
-        if not str(_copilots_path).endswith("copilots.json"):
-            _copilots_path = f"{_copilots_path}{'' if _copilots_path.endswith('/') else '/'}copilots.json"
-
-        if not str(_copilots_path).startswith("/"):
-            _copilots_path = str(cwd.joinpath(_copilots_path).resolve())
-
-        if not Path(_copilots_path).exists():
-            raise FileNotFoundError(
-                f"Error: The copilots file '{_copilots_path}' does not exist"
-            )
-
-        with open(_copilots_path, encoding="utf-8") as f:
-            _kwargs["copilots"] = json.load(f)
-
     if _kwargs.get("app"):
         _app_path = _kwargs.pop("app", None)
         _name = _kwargs.pop("name", "app")
@@ -428,19 +407,68 @@ def parse_args():
             )
         _kwargs["app"] = import_app(_app_path, _name, _factory)
 
-    if (widget_path := _kwargs.get("widgets-path")) and not str(widget_path).startswith(
-        "/"
-    ):
-        widget_path = str(cwd.joinpath(widget_path).resolve())
-        _kwargs["widgets-path"] = widget_path
+    if isinstance(_kwargs.get("exclude"), str):
+        _kwargs["exclude"] = [_kwargs["exclude"]]
 
-    if (
-        template_path := _kwargs.get("apps-json") or _kwargs.get("templates-path")
-    ) and not str(template_path).startswith("/"):
-        template_path = str(cwd.joinpath(template_path).resolve())
-        _kwargs["apps-json"] = template_path
+    if _kwargs.get("agents-json") or _kwargs.get("copilots-path"):
+        _agents_path = _kwargs.pop("agents-json", None) or _kwargs.pop(
+            "copilots-path", None
+        )
 
-    if _kwargs.get("widgets-path") and not _kwargs.get("editable"):
+        if not str(_agents_path).endswith(".json"):
+            _agents_path = (
+                f"{_agents_path}{'' if _agents_path.endswith('/') else '/'}agents.json"
+            )
+
+        if str(_agents_path).startswith("./"):
+            _agents_path = str(cwd.joinpath(_agents_path).resolve())
+
+        _kwargs["agents-json"] = _agents_path
+
+    if _kwargs.get("widgets-json") or _kwargs.get("widgets-path"):
+        _widgets_path = _kwargs.pop("widgets-json", None) or _kwargs.pop(
+            "widgets-path", None
+        )
+
+        # If it's a file (endswith .json), use as is; else treat as directory and append widgets.json
+        if str(_widgets_path).endswith(".json"):
+            widgets_file_path = _widgets_path
+        else:
+            widgets_file_path = f"{_widgets_path}{'' if str(_widgets_path).endswith('/') else '/'}widgets.json"
+
+        # Resolve relative paths to absolute
+        if str(widgets_file_path).startswith("./"):
+            widgets_file_path = str(cwd.joinpath(widgets_file_path).resolve())
+
+        _kwargs["widgets-json"] = widgets_file_path
+
+    if _kwargs.get("widgets-json"):
         _kwargs["editable"] = True
+        # If the file already exists, we assume that it is already built.
+        if os.path.exists(_kwargs["widgets-json"]):
+            _kwargs["no-build"] = True
+
+    # Handle apps-json and templates-path in the same way as widgets-path
+    if _kwargs.get("apps-json") or _kwargs.get("templates-path"):
+        _apps_path = _kwargs.pop("apps-json", None) or _kwargs.pop(
+            "templates-path", None
+        )
+
+        # If it's a file (endswith .json), use as is; else treat as directory and append apps.json
+        if str(_apps_path).endswith(".json"):
+            apps_file_path = _apps_path
+        else:
+            # Check if "workspace_apps.json" exists in the given path
+            possible_workspace_file = f"{_apps_path}{'' if str(_apps_path).endswith('/') else '/'}workspace_apps.json"
+            if os.path.isfile(possible_workspace_file):
+                apps_file_path = possible_workspace_file
+            else:
+                apps_file_path = f"{_apps_path}{'' if str(_apps_path).endswith('/') else '/'}apps.json"
+
+        # Resolve relative paths to absolute
+        if str(apps_file_path).startswith("./"):
+            apps_file_path = str(cwd.joinpath(apps_file_path).resolve())
+
+        _kwargs["apps-json"] = apps_file_path
 
     return _kwargs

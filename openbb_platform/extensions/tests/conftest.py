@@ -5,7 +5,7 @@ from typing import Dict, List
 import pytest
 from openbb_core.app.router import CommandMap
 
-from extensions.tests.utils.helpers import list_openbb_extensions
+from .utils.helpers import list_openbb_extensions
 
 cm = CommandMap()
 commands = list(cm.map.keys())

@@ -106,7 +106,6 @@ async def get_custom_screener(
     response = _data.post(
         "https://query2.finance.yahoo.com/v1/finance/screener",
         body=body,
-        user_agent_headers=_data.user_agent_headers,
         params=params_dict,
     )
     response.raise_for_status()
@@ -126,7 +125,6 @@ async def get_custom_screener(
         response = _data.post(
             "https://query2.finance.yahoo.com/v1/finance/screener",
             body=body,
-            user_agent_headers=_data.user_agent_headers,
             params=params_dict,
         )
         if not res:

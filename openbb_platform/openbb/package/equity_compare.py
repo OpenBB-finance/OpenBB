@@ -96,7 +96,7 @@ class ROUTER_equity_compare(Container):
             The fiscal year.
         fiscal_period : Optional[str]
             The fiscal period of the fiscal year.
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) for the requested entity. (provider: sec)
         location : Optional[str]
             Geographic location of the reporting entity. (provider: sec)

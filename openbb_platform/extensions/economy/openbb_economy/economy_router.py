@@ -1,7 +1,10 @@
 """Economy Router."""
 
-from typing import Union
+# pylint: disable=unused-argument
 
+from typing import Annotated, Union
+
+from fastapi import Body
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -13,15 +16,25 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+from openbb_core.app.service.system_service import SystemService
 
 from openbb_economy.gdp.gdp_router import router as gdp_router
+from openbb_economy.shipping.shipping_router import router as shipping_router
 from openbb_economy.survey.survey_router import router as survey_router
 
 router = Router(prefix="", description="Economic data.")
 router.include_router(gdp_router)
+router.include_router(shipping_router)
 router.include_router(survey_router)
 
-# pylint: disable=unused-argument
+
+api_prefix = (
+    SystemService()
+    .system_settings.python_settings.model_dump()
+    .get("api_settings", {})
+    .get("prefix", "")
+    or "/api/v1"
+)
 
 
 @router.command(
@@ -270,6 +283,11 @@ async def composite_leading_indicator(
             parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def short_term_interest_rate(
     cc: CommandContext,
@@ -303,6 +321,11 @@ async def short_term_interest_rate(
             parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def long_term_interest_rate(
     cc: CommandContext,
@@ -565,6 +588,11 @@ async def house_price_index(
             },
         ),
     ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def immediate_interest_rate(
     cc: CommandContext,
@@ -745,7 +773,27 @@ async def primary_dealer_fails(
     model="PortVolume",
     examples=[
         APIEx(parameters={"provider": "econdb"}),
+        APIEx(
+            description="Get daily port calls and estimated trading volumes for specific ports"
+            + " Get the list of available ports with `openbb shipping port_info`",
+            parameters={
+                "provider": "imf",
+                "port_code": "rotterdam,singapore",
+            },
+        ),
     ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint has been moved and will be removed in a future version."
+        + " Use, `/economy/shipping/port_volume`, instead.",
+        since=(4, 4),
+        expected_removal=(4, 5),
+    ),
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
 )
 async def port_volume(
     cc: CommandContext,
@@ -810,29 +858,38 @@ async def direction_of_trade(
                 "document_type": "minutes",
             },
         ),
-        APIEx(
-            description="The `url` parameter will override all other parameters to download the document."
-            + " The response will be a dictionary with keys `filename`, `content`, and `data_format`."
-            + " PDF content will be a base64 encoded string of the document.",
-            parameters={
-                "provider": "federal_reserve",
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf",
-            },
-        ),
     ],
+    response_model=Union[list, dict],
     openapi_extra={
         "widget_config": {
             "type": "multi_file_viewer",
-            "name": "FOMC Document Viewer",
-            "description": "View FOMC materials.",
+            "name": "FOMC PDF Document Viewer",
+            "description": "Current and historical FOMC PDF materials.",
             "gridData": {
                 "w": 30,
                 "h": 27,
             },
             "refetchInterval": False,
+            "endpoint": "/api/v1/economy/fomc_documents/download",
+            "params": [
+                {
+                    "type": "endpoint",
+                    "paramName": "url",
+                    "optionsEndpoint": f"{api_prefix}/economy/fomc_documents",
+                    "optionsParams": {
+                        "document_type": "$document_type",
+                        "year": "$year",
+                        "pdf_only": True,
+                        "as_choices": True,
+                        "provider": "federal_reserve",
+                    },
+                    "show": False,
+                    "multiSelect": True,
+                    "roles": ["fileSelector"],
+                },
+            ],
         }
     },
-    response_model=Union[list, dict],
 )
 async def fomc_documents(
     cc: CommandContext,
@@ -842,9 +899,9 @@ async def fomc_documents(
 ) -> OBBject:
     """
     Get FOMC documents by year and document type.
-    Optionally, download the file directly from the Federal Reserve's website.
 
     Source: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm
+
     Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
 
     This function does not return the typical OBBject response.
@@ -855,9 +912,68 @@ async def fomc_documents(
 
     If `as_choices` is True, the response is a list of valid Workspace parameter choices.
     Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
-
-    If `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
     """
     results = await OBBject.from_query(Query(**locals()))
 
     return results.results.content
+
+
+# This endpoint is used to download FOMC documents in Workspace.
+# This is not included in the OpenAPI schema or Python SDK.
+
+
+# pylint: disable=protected-access
+@router._api_router.post(
+    "/fomc_documents/download",
+    include_in_schema=False,
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
+)
+async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
+    """
+    Download FOMC documents from the Federal Reserve's website.
+
+    This function does not return the typical OBBject response.
+
+    The response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
+    """
+    # pylint: disable=import-outside-toplevel
+    import base64  # noqa
+    from io import BytesIO
+    from openbb_core.provider.utils.helpers import make_request
+
+    urls = params.get("url", [])
+
+    results = []
+    for url in urls:
+        try:
+            response = make_request(url)
+            response.raise_for_status()
+            pdf = (
+                base64.b64encode(BytesIO(response.content).getvalue()).decode("utf-8")
+                if isinstance(response.content, bytes)
+                else response.content
+            )
+            results.append(
+                {
+                    "content": pdf,
+                    "data_format": {
+                        "data_type": "pdf",
+                        "filename": url.split("/")[-1],
+                    },
+                }
+            )
+        except Exception as exc:
+            results.append(
+                {
+                    "error_type": "download_error",
+                    "content": f"{exc.__class__.__name__}: {exc.args[0]}",
+                    "filename": url.split("/")[-1],
+                }
+            )
+            continue
+
+    return results

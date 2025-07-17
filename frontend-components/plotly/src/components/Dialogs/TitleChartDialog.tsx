@@ -123,8 +123,28 @@ export default function TitleChartDialog({
             className="_btn ph-capture"
             id="title_submit"
             onClick={() => {
+              // Update parent state - this will trigger the useEffect in Chart.tsx
               updateTitle(title);
               updateAxesTitles(axesTitles);
+
+              // Force an immediate update to the plotly chart directly
+              if (window.Plotly && document.getElementById('plotlyChart')) {
+                const chart = document.getElementById('plotlyChart');
+
+                // Only update axis titles, not the main chart title
+                const updateObj: { [key: string]: string } = {};
+
+                // Add all axis title changes
+                Object.entries(axesTitles).forEach(([axis, text]) => {
+                  updateObj[`${axis}.title.text`] = String(text);
+                });
+
+                if (Object.keys(updateObj).length > 0) {
+                  console.log("Applying immediate axis title updates:", updateObj);
+                  window.Plotly.relayout(chart, updateObj);
+                }
+              }
+
               close();
             }}
           >

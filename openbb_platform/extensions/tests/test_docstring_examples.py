@@ -2,7 +2,7 @@
 
 import pytest
 
-from extensions.tests.utils.helpers import check_docstring_examples
+from .utils.helpers import check_docstring_examples
 
 
 @pytest.mark.integration

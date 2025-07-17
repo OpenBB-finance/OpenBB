@@ -27,7 +27,7 @@ def get_fama_raw(start_date: str, end_date: str) -> "DataFrame":
     ) as url:
         # Download Zipfile and create pandas DataFrame
         with ZipFile(BytesIO(url.read())) as zipfile:
-            with zipfile.open("F-F_Research_Data_Factors.CSV") as zip_open:
+            with zipfile.open("F-F_Research_Data_Factors.csv") as zip_open:
                 df = read_csv(
                     zip_open,
                     header=0,

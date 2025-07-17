@@ -18,6 +18,7 @@ from typing import (
 from warnings import warn
 
 from importlib_metadata import entry_points
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
@@ -122,8 +123,8 @@ class Charting:
 
         create_backend(self._charting_settings)
         backend = get_backend()
-        backend.start(debug=self._charting_settings.debug_mode)
-        return backend
+        backend.start(debug=self._charting_settings.debug_mode)  # type: ignore
+        return backend  # type: ignore
 
     def _get_chart_function(self, route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
@@ -178,9 +179,9 @@ class Charting:
             else None
         )
         data_as_df: DataFrame = (
-            basemodel_to_df(convert_to_basemodel(data), index=index)
+            basemodel_to_df(convert_to_basemodel(data), index=index)  # type: ignore
             if has_data
-            else self._obbject.to_dataframe(index=index)
+            else self._obbject.to_dataframe(index=index)  # type: ignore
         )
         if "date" in data_as_df.columns:
             data_as_df = data_as_df.set_index("date")
@@ -369,6 +370,65 @@ class Charting:
 
         return fig
 
+    def create_3d_surface(
+        self,
+        X: "Series",
+        Y: "Series",
+        Z: "Series",
+        xtitle: Optional[str] = "DTE",
+        ytitle: Optional[str] = "Strike",
+        ztitle: Optional[str] = "IV",
+        colorscale: Optional[Union[str, list]] = None,
+        title: Optional[str] = None,
+        layout_kwargs: Optional[dict[str, Any]] = None,
+        theme: Optional[Literal["dark", "light"]] = None,
+    ) -> Union["OpenBBFigure", "Figure"]:
+        """Create a 3D surface chart.
+
+        Parameters
+        ----------
+        X : pd.Series
+            The x-axis data.
+        Y : pd.Series
+            The y-axis data.
+        Z : pd.Series
+            The z-axis data.
+        xtitle : str, optional
+            The title for the x-axis, by default "DTE".
+        ytitle : str, optional
+            The title for the y-axis, by default "Strike".
+        ztitle : str, optional
+            The title for the z-axis, by default "IV".
+        colorscale : Union[str, list], optional
+            The colorscale to use for the surface, by default None.
+        title : str, optional
+            The title of the chart, by default None.
+        layout_kwargs : Optional[dict[str, Any]], optional
+            Additional keyword arguments to apply with figure.update_layout(), by default None.
+
+        Returns
+        -------
+        OpenBBFigure
+            The OpenBBFigure object.
+        """
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import surface3d
+
+        fig = surface3d(
+            X=X,
+            Y=Y,
+            Z=Z,
+            xtitle=xtitle,
+            ytitle=ytitle,
+            ztitle=ztitle,
+            colorscale=colorscale,
+            title=title,
+            layout_kwargs=layout_kwargs,
+            theme=theme,
+        )
+        fig = self._set_chart_style(fig)
+        return fig
+
     def create_correlation_matrix(
         self,
         data: Union[
@@ -417,7 +477,6 @@ class Charting:
         fig = self._set_chart_style(fig)
         return fig
 
-    # pylint: disable=inconsistent-return-statements
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
         try:
@@ -435,24 +494,27 @@ class Charting:
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
-            fig = self._set_chart_style(fig)
-            content = fig.show(external=True, **kwargs).to_plotly_json()
             self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
             if render:
                 fig.show(**kwargs)
+
+        except (RuntimeError, OpenBBError) as e:
+            raise e from e
+
         except Exception:  # pylint: disable=W0718
             try:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
-                fig = self._set_chart_style(fig)
+                fig = self._set_chart_style(fig)  # type: ignore
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=self._format
                 )
                 if render:
-                    return fig.show(**kwargs)  # type: ignore
+                    fig.show(**kwargs)  # type: ignore
             except Exception as e:
                 raise RuntimeError(
                     "Failed to automatically create a generic chart with the data provided."
+                    + f" -> {e} -> {e.args}"
                 ) from e
 
     # pylint: disable=too-many-locals,inconsistent-return-statements
@@ -556,7 +618,7 @@ class Charting:
         except Exception:  # pylint: disable=W0718
             try:
                 fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
-                fig = self._set_chart_style(fig)
+                fig = self._set_chart_style(fig)  # type: ignore
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=self._format
@@ -590,11 +652,11 @@ class Charting:
         new = "light" if current == "dark" else "dark"
         self._charting_settings.chart_style = new
         figure = self._obbject.chart.fig  # type: ignore[union-attr]
-        updated_figure = self._set_chart_style(figure)
+        updated_figure = self._set_chart_style(figure)  # type: ignore[union-attr]
         self._obbject.chart.fig = updated_figure  # type: ignore[union-attr]
         self._obbject.chart.content = updated_figure.show(  # type: ignore[union-attr]
             external=True
-        ).to_plotly_json()
+        ).to_plotly_json()  # type: ignore[union-attr]
 
     @staticmethod
     def _convert_to_string(x):

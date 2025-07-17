@@ -56,22 +56,6 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
         "as_choices": {
             "x-widget_config": {"value": True, "type": "boolean", "show": False}
         },
-        "url": {
-            "x-widget_config": {
-                "type": "endpoint",
-                "paramName": "url",
-                "optionsEndpoint": "api/v1/economy/fomc_documents",
-                "optionsParams": {
-                    "document_type": "$document_type",
-                    "year": "$year",
-                    "pdf_only": True,
-                    "as_choices": True,
-                    "provider": "federal_reserve",
-                },
-                "show": False,
-                "roles": ["fileSelector"],
-            }
-        },
     }
 
     year: Optional[int] = Field(
@@ -91,12 +75,6 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
         description="Whether to return cast as a list of valid Workspace parameter choices."
         + " Leave as False for typical use.",
     )
-    url: Optional[str] = Field(
-        default=None,
-        description="Download a document from the supplied URL."
-        + " When provided, all other parameters are ignored."
-        + " Content is returned as a base64 encoded string.",
-    )
 
     @field_validator("document_type", mode="before", check_fields=False)
     @classmethod
@@ -107,14 +85,6 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
                 f"Invalid document type. Must be one of: {', '.join(choice_types)}"
             )
         return v
-
-    @field_validator("url", mode="before", check_fields=False)
-    @classmethod
-    def _validate_url(cls, v):
-        """Validate URL."""
-        if v and "federalreserve.gov" not in v:
-            raise ValueError("Invalid URL. Must be a Federal Reserve URL.")
-        return v if v else None
 
 
 class FederalReserveFomcDocumentsData(Data):
@@ -152,34 +122,9 @@ class FederalReserveFomcDocumentsFetcher(
     ) -> dict:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import make_request
         from openbb_federal_reserve.utils.fomc_documents import (
             get_fomc_documents_by_year,
         )
-        from openbb_platform_api.response_models import PdfResponseModel
-
-        if query.url:
-            response = make_request(query.url)
-            response.raise_for_status()
-            pdf = response.content
-            if query.url.endswith(".pdf"):
-                content = PdfResponseModel(
-                    filename=query.url.split("/")[-1], content=pdf
-                )
-                output = {
-                    "content": content.model_dump(exclude_unset=True, exclude_none=True)
-                }
-                return output
-
-            output = {
-                "content": {
-                    "filename": query.url.split("/")[-1],
-                    "content": pdf,
-                    "data_format": "markdown",
-                }
-            }
-
-            return output
 
         docs = get_fomc_documents_by_year(
             query.year, query.document_type, query.pdf_only
@@ -197,7 +142,12 @@ class FederalReserveFomcDocumentsFetcher(
                 )
                 value = doc.get("url", "")
                 if title and value:
-                    choices_list.append({"label": title, "value": value})
+                    choices_list.append(
+                        {
+                            "label": title,
+                            "value": value,
+                        }
+                    )
 
             output = {"content": choices_list}
 

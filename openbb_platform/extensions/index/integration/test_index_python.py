@@ -1,7 +1,6 @@
 """Test economy extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -18,7 +17,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"symbol": "dowjones", "provider": "fmp"}),
@@ -35,7 +34,7 @@ def test_index_constituents(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -117,7 +116,7 @@ def test_index_price_historical(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({}),
@@ -136,7 +135,7 @@ def test_index_available(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -158,7 +157,7 @@ def test_index_search(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"region": "us", "provider": "cboe"}),
@@ -174,7 +173,7 @@ def test_index_snapshots(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -196,7 +195,7 @@ def test_index_sp500_multiples(params, obb):
     assert len(result.results) > 0
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"symbol": "^TX60", "provider": "tmx"}),

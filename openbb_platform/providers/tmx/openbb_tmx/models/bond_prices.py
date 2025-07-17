@@ -5,8 +5,9 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.bond_reference import (
     BondReferenceData,
@@ -27,9 +28,8 @@ class TmxBondPricesQueryParams(BondReferenceQueryParams):
     Source: https://bondtradedata.iiroc.ca/#/
     """
 
-    __alias_dict__ = {
-        # "isin": "isins",
-    }
+    __json_schema_extra__ = {"isin": {"multiple_items_allowed": True}}
+
     issue_date_min: Optional[dateType] = Field(
         default=None,
         description="Filter by the minimum original issue date.",
@@ -126,13 +126,13 @@ class TmxBondPricesData(BondReferenceData):
 class TmxBondPricesFetcher(
     Fetcher[
         TmxBondPricesQueryParams,
-        List[TmxBondPricesData],
+        list[TmxBondPricesData],
     ]
 ):
     """Tmx Bond Reference Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxBondPricesQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxBondPricesQueryParams:
         """Transform query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -150,7 +150,7 @@ class TmxBondPricesFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxBondPricesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
     ) -> "DataFrame":
         """Get the raw data containing all bond data."""
@@ -165,17 +165,34 @@ class TmxBondPricesFetcher(
         query: TmxBondPricesQueryParams,
         data: "DataFrame",
         **kwargs: Any,
-    ) -> List[TmxBondPricesData]:
+    ) -> list[TmxBondPricesData]:
         """Transform data."""
-        bonds = data.copy()
-        results = []
-        data = data[data["bondType"] == "Corp"]
+        # pylint: disable=import-outside-toplevel
+        from numpy import nan
 
-        data = bonds.query(
-            "bondType == 'Corp'"
-            "& maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
-        ).sort_values(by=["maturityDate"])
-        data.issuer = data.loc[:, "issuer"].str.strip()
+        bonds = data.copy()
+
+        if query.isin is not None:
+            isin_list = (
+                query.isin.split(",") if isinstance(query.isin, str) else query.isin
+            )
+
+            data = bonds[
+                bonds["isin"].str.contains("|".join(isin_list), na=False, case=False)
+            ].query("bondType == 'Corp'")
+
+            if data.empty or len(data) == 0:
+                raise OpenBBError(
+                    f"No bonds found for the provided ISIN(s) -> {', '.join(isin_list)}",
+                )
+        else:
+            data = bonds.query(
+                "bondType == 'Corp'"
+                "& maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
+            ).sort_values(by=["maturityDate"])
+
+        data.loc[:, "issuer"] = data.issuer.str.strip()
+
         if query.maturity_date_max:
             data = data.query(
                 "maturityDate <= @query.maturity_date_max.strftime('%Y-%m-%d')"
@@ -190,9 +207,13 @@ class TmxBondPricesFetcher(
             data = data.query("couponRate <= @query.coupon_max")
         if query.issuer_name:
             data = data.query("issuer.str.contains(@query.issuer_name, case=False)")
+
         if len(data) > 0:
             data = data.drop(columns=["bondType", "securityId", "secKey"])
-            data = data.fillna("N/A").replace("N/A", None)
-            results = data.to_dict("records")
+            data = data.replace({nan: None})
+        else:
+            raise OpenBBError(
+                "No bonds found for the provided query parameters.",
+            )
 
-        return [TmxBondPricesData.model_validate(d) for d in results]
+        return [TmxBondPricesData.model_validate(d) for d in data.to_dict("records")]
