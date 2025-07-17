@@ -3259,14 +3259,14 @@ openbb-core = ">=1.4.8,<2.0.0"
 
 [[package]]
 name = "openbb-sec"
-version = "1.4.4"
+version = "1.4.5"
 description = "SEC extension for OpenBB"
 optional = false
 python-versions = "<3.13,>=3.9.21"
 groups = ["main"]
 files = [
-    {file = "openbb_sec-1.4.4-py3-none-any.whl", hash = "sha256:9012a6bd849d3a139a0957dcc93de77763d3272aa5e799913827b5bdf8ed1d90"},
-    {file = "openbb_sec-1.4.4.tar.gz", hash = "sha256:936340aca9b9ac54bc7d53ddd7446bbe2250377289a3a803cee46ed39af86ec3"},
+    {file = "openbb_sec-1.4.5-py3-none-any.whl", hash = "sha256:7f212180680a09f6b9ec00775e869eaa1c8aa8f93fe7228aa6e3a0ab3a8fb3bd"},
+    {file = "openbb_sec-1.4.5.tar.gz", hash = "sha256:34e681e442438f0d740a34aa490a0611575999ecfe38ce32c55c98161af18246"},
 ]
 
 [package.dependencies]
@@ -5676,4 +5676,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9.21,<3.13"
-content-hash = "279be7c8660e6ac37b40ef41a3d1de39ea4fac2176e8710aa1ccc0edcf4eec0a"
+content-hash = "025f6da3fc116a690a2c89859312c08ba325b0957779dfc979b369599d7f6f07"

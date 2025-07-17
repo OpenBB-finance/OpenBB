@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-sec"
-version = "1.4.4"
+version = "1.4.5"
 description = "SEC extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
