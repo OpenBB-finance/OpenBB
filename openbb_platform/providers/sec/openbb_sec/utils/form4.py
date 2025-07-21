@@ -158,7 +158,7 @@ def add_missing_column(conn, column_name):
         )
     )
     cursor = conn.cursor()
-    cursor.execute(f"ALTER TABLE form4_data ADD COLUMN {column_name} {missing_type}")
+    cursor.execute(query_with_params)
     conn.commit()
 
 
