@@ -1,7 +1,6 @@
 """Test charting extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_core.app.model.obbject import OBBject
 
@@ -37,7 +36,7 @@ def get_equity_data():
     return data["stocks_data"]
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -60,7 +59,7 @@ def test_charting_equity_price_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -83,7 +82,7 @@ def test_charting_currency_price_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -106,7 +105,7 @@ def test_charting_crypto_price_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -129,7 +128,7 @@ def test_charting_index_price_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -152,7 +151,7 @@ def test_charting_etf_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -182,7 +181,7 @@ def test_charting_technical_adx(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -211,7 +210,7 @@ def test_charting_technical_aroon(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -241,7 +240,7 @@ def test_charting_technical_ema(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -271,7 +270,7 @@ def test_charting_technical_hma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -302,7 +301,7 @@ def test_charting_technical_macd(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -333,7 +332,7 @@ def test_charting_technical_rsi(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -363,7 +362,7 @@ def test_charting_technical_sma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -393,7 +392,7 @@ def test_charting_technical_wma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -423,16 +422,14 @@ def test_charting_technical_zlma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "model": "yang_zhang",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "model": "yang_zhang",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -450,18 +447,16 @@ def test_charting_technical_cones(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "DGS10",
-                "transform": "pc1",
-                "chart": True,
-                "provider": "fred",
-            }
-        )
+        {
+            "data": None,
+            "symbol": "DGS10",
+            "transform": "pc1",
+            "chart": True,
+            "provider": "fred",
+        }
     ],
 )
 @pytest.mark.integration
@@ -475,7 +470,7 @@ def test_charting_economy_fred_series(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -517,18 +512,16 @@ def test_charting_technical_relative_rotation(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)  # type: ignore
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "finviz",
-                "chart_params": {"limit": 4, "orientation": "h"},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "finviz",
+            "chart_params": {"limit": 4, "orientation": "h"},
+        }
     ],
 )
 @pytest.mark.integration
@@ -542,18 +535,16 @@ def test_charting_equity_price_performance(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
-                "chart": True,
-                "provider": "intrinio",
-                "chart_params": {"orientation": "v"},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+            "chart": True,
+            "provider": "fmp",
+            "chart_params": {"orientation": "v"},
+        }
     ],
 )
 @pytest.mark.integration
@@ -567,18 +558,16 @@ def test_charting_etf_price_performance(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": None,
-                "symbol": "XRT",
-                "chart": True,
-                "provider": "fmp",
-                "chart_params": {"orientation": "v", "limit": 10},
-            }
-        )
+        {
+            "data": None,
+            "symbol": "XRT",
+            "chart": True,
+            "provider": "fmp",
+            "chart_params": {"orientation": "v", "limit": 10},
+        }
     ],
 )
 @pytest.mark.integration
@@ -592,7 +581,7 @@ def test_charting_etf_holdings(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -623,18 +612,16 @@ def test_charting_fixedincome_government_yield_curve(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "provider": "yfinance",
-                "symbol": "ES",
-                "start_date": "2022-01-01",
-                "end_date": "2022-02-01",
-                "chart": True,
-            }
-        )
+        {
+            "provider": "yfinance",
+            "symbol": "ES",
+            "start_date": "2022-01-01",
+            "end_date": "2022-02-01",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
@@ -648,7 +635,7 @@ def test_charting_derivatives_futures_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -680,7 +667,7 @@ def test_charting_derivatives_futures_curve(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -705,7 +692,7 @@ def test_charting_equity_historical_market_cap(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -730,23 +717,21 @@ def test_charting_economy_survey_bls_series(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "data": "",
-                "method": "pearson",
-                "chart": True,
-            }
-        )
+        {
+            "data": "",
+            "method": "pearson",
+            "chart": True,
+        }
     ],
 )
 @pytest.mark.integration
 def test_charting_econometrics_correlation_matrix(params, obb):
     """Test chart econometrics correlation matrix."""
 
-    symbols = "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK".split(",")
+    symbols = ["XRT", "XLB", "XLI", "XLH", "XLC", "XLY", "XLU", "XLK"]
     params["data"] = (
         obb.equity.price.historical(symbol=symbols, provider="yfinance")
         .to_df()
@@ -754,6 +739,79 @@ def test_charting_econometrics_correlation_matrix(params, obb):
         .filter(items=symbols, axis=1)
     )
     result = obb.econometrics.correlation_matrix(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "country": "CRI",
+                "continent": None,
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_shipping_port_info(params, obb):
+    """Test chart economy shipping port info."""
+    result = obb.economy.shipping.port_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "imf",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_shipping_chokepoint_info(params, obb):
+    """Test chart economy shipping chokepoint info."""
+    result = obb.economy.shipping.chokepoint_info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "moneyness": 20,
+                "dte_min": 5,
+                "dte_max": 60,
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_derivatives_options_surface(params, obb):
+    """Test chart equity price historical."""
+    data = obb.derivatives.options.chains("AAPL", provider="cboe")
+    params["data"] = data.results
+    result = obb.derivatives.options.surface(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

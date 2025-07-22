@@ -57,7 +57,7 @@ def test_get_user_service(mock_user_service):
 def test_get_user_settings_(mock_user_service):
     """Test get_user."""
     mock_user_settings = MagicMock(spec=UserSettings, profile=MagicMock(active=True))
-    mock_user_service.default_user_settings = mock_user_settings
+    mock_user_service.read_from_file.return_value = mock_user_settings
     mock_user_service.return_value = mock_user_service
     result = asyncio.run(get_user_settings(MagicMock(), mock_user_service))  # type: ignore[arg-type]
 

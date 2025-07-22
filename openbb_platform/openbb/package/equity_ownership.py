@@ -380,7 +380,7 @@ class ROUTER_equity_ownership(Container):
             Whether the owner is having a derivative transaction. (provider: intrinio)
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
-        form : Optional[Union[int, str]]
+        form : Optional[Union[str, int]]
             Form type. (provider: sec)
         other : Optional[bool]
             Whether the owner is classified as other. (provider: sec)

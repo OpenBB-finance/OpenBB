@@ -1,0 +1,127 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_chokepoints_database/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Request-Context
+      Cache-Control:
+      - public, max-age=3600, s-maxage=3600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2995'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 May 2025 05:00:12 GMT
+      Etag:
+      - sd1198_2131478034
+      Last-Modified:
+      - Mon, 12 May 2025 12:42:34 GMT
+      Request-Context:
+      - appId=cid-v1:091e3ef9-df68-4d69-9df4-ab8f80183701
+      - appId=cid-v1:eccdbd2e-a85f-4676-a932-e967891b0fc6
+      Set-Cookie: null
+      Strict-Transport-Security:
+      - max-age=63072000
+      Vary:
+      - X-Esri-Authorization
+      Via:
+      - 1.1 53d43c59da0241f882094df4d0a28056.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 8UezT5773nHwSCsAkjnDVxtBtn9YtxseUmwny6kDPFljgfECTQNuJw==
+      X-Amz-Cf-Pop:
+      - YVR52-P2
+      X-ArcGIS-Correlation-Id:
+      - 00-1d0797ed03dfe10de0b16ca231d23928-34eafa382ffc7da6-00
+      X-ArcGIS-Instance:
+      - wziaf7inz00000D
+      X-ArcGIS-Trace-Id:
+      - 9ZJi8kEQVQTsDJD8MMNP1AcNklspTqGDNqYtzuVNY72-OYWUygop3A==
+      X-Cache:
+      - RefreshHit from cloudfront
+      x-arcgis-upstream:
+      - us1h09c00
+      x-esri-org-request-units-per-min:
+      - usage=39;max=6000
+      x-esri-query-geometry-field-name:
+      - Shape
+      x-esri-query-request-units:
+      - '2'
+      x-esri-tiles-basic-query-mode:
+      - 'true'
+      x-esri-tiles-basic-query-type:
+      - Basic
+    status:
+      code: 200
+      message: OK
+version: 1

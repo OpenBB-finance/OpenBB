@@ -15,23 +15,81 @@
 </a>
 [![PyPI](https://img.shields.io/pypi/v/openbb?color=blue&label=PyPI%20Package)](https://pypi.org/project/openbb/)
 
-The first financial Platform that is free and fully open source.
+The first financial Platform that is open source.
 
 The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
 
-Sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
+Get started with: `pip install openbb`
+
+```python
+from openbb import obb
+output = obb.equity.price.historical("AAPL")
+df = output.to_dataframe()
+```
+
+You can sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
+
+Data integrations available can be found here: <https://docs.openbb.co/platform/reference>
 
 ---
 
-If you are looking for our **FREE** AI-powered Research and Analytics Workspace, you can find it here: [pro.openbb.co](https://pro.openbb.co).
+## OpenBB Workspace
+
+While the OpenBB Platform is all about an integration to dozens of different data vendors, the interface is either Python or a CLI.
+
+If you want an enterprise UI to visualize this datasets and use AI agents on top, you can find OpenBB Workspace at <https://pro.openbb.co>.
 
 <a href="https://pro.openbb.co">
   <div align="center">
-  <img src="https://openbb.co/api/image?src=https%3A%2F%2Fopenbb-cms.directus.app%2Fassets%2Ff431ed60-5e46-439a-a9f7-4b06e72d0720.png&width=2400&height=1552&fit=cover&position=center&background[]=0&background[]=0&background[]=0&background[]=0&quality=100&compressionLevel=9&loop=0&delay=100&crop=null" alt="Logo" width="600">
+  <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">
   </div>
 </a>
 
-We also have an open source AI financial analyst agent that can access all of the data within OpenBB, and that repo can be found [here](https://github.com/OpenBB-finance/openbb-agents).
+Data integration:
+
+- You can learn more about adding data to the OpenBB workspace from the [docs](https://docs.openbb.co/workspace) or [this open source repository](https://github.com/OpenBB-finance/backends-for-openbb).
+
+AI Agents integration:
+
+- You can learn more about adding AI agents to the OpenBB workspace from [this open source repository](https://github.com/OpenBB-finance/agents-for-openbb).
+
+### Integrating OpenBB Platform to the OpenBB Workspace
+
+Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
+
+#### Run OpenBB Platform backend
+
+- Install the packages.
+
+```sh
+pip install "openbb[all]"
+```
+
+- Start the API server over localhost.
+
+```sh
+openbb-api
+```
+
+This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
+
+You can check that it works by going to <http://127.0.0.1:6900>.
+
+#### Integrate OpenBB Platform backend to OpenBB Workspace
+
+Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the following steps:
+
+![CleanShot 2025-05-17 at 09 51 56@2x](https://github.com/user-attachments/assets/75cffb4a-5e95-470a-b9d0-6ffd4067e069)
+
+1. Go to the "Apps" tab
+2. Click on "Connect backend"
+3. Fill in the form with:
+   Name: OpenBB Platform
+   URL: <http://127.0.0.1:6900>
+4. Click on "Test". You should get a "Test successful" with the number of apps found.
+5. Click on "Add".
+
+That's it.
 
 ---
 
@@ -55,7 +113,7 @@ The OpenBB Platform can be installed as a [PyPI package](https://pypi.org/projec
 
 or by cloning the repository directly with `git clone https://github.com/OpenBB-finance/OpenBB.git`.
 
-Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
+Please find more about the installation process, in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
 
 ### OpenBB Platform CLI installation
 
@@ -73,15 +131,15 @@ There are three main ways of contributing to this project. (Hopefully you have s
 
 ### Become a Contributor
 
-* More information on our [Contributing Documentation](https://docs.openbb.co/platform/developer_guide/contributing).
+- More information on our [Contributing Documentation](https://docs.openbb.co/platform/developer_guide/misc/contributing).
 
 ### Create a GitHub ticket
 
 Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBB/issues)
 
-* [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
-* [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
-* [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
+- [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
+- [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
+- [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
 ### Provide feedback
 
