@@ -469,6 +469,14 @@ class ROUTER_derivatives_options(Container):
         OBBject[list]
             An OBBject containing the processed options data.
             Results are a list of dictionaries.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # Filter and process options chains data for volatility.
+        >>> data = obb.derivatives.options.chains('AAPL', provider='cboe')
+        >>> surface = obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)
+        >>> surface.show()
         """  # noqa: E501
 
         return self._run(

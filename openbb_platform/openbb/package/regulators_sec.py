@@ -65,7 +65,7 @@ class ROUTER_regulators_sec(Container):
 
         CikMap
         ------
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) for the requested entity.
 
         Examples
@@ -288,7 +288,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) (provider: sec)
 
         Examples
