@@ -2033,9 +2033,9 @@ class ROUTER_economy(Container):
         **kwargs
     ) -> OBBject:
         """Get FOMC documents by year and document type.
-        Optionally, download the file directly from the Federal Reserve's website.
 
         Source: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm
+
         Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
 
         This function does not return the typical OBBject response.
@@ -2047,8 +2047,6 @@ class ROUTER_economy(Container):
         If `as_choices` is True, the response is a list of valid Workspace parameter choices.
         Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
 
-        If `url` was provided, the response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
-
 
         Parameters
         ----------
@@ -2057,13 +2055,11 @@ class ROUTER_economy(Container):
         year : Optional[int]
             The year of FOMC documents to retrieve. If None, all years since 1959 are returned. (provider: federal_reserve)
         document_type : Optional[str]
-            Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, conference_call, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book (provider: federal_reserve)
+            Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book (provider: federal_reserve)
         pdf_only : bool
             Whether to return as a list with only the PDF documents. Default is False. (provider: federal_reserve)
         as_choices : bool
             Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use. (provider: federal_reserve)
-        url : Optional[str]
-            Download a document from the supplied URL. When provided, all other parameters are ignored. Content is returned as a base64 encoded string. (provider: federal_reserve)
 
         Returns
         -------
@@ -2092,8 +2088,6 @@ class ROUTER_economy(Container):
         >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022)
         >>> # Filter all documents by year and document type.
         >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type='minutes')
-        >>> # The `url` parameter will override all other parameters to download the document. The response will be a dictionary with keys `filename`, `content`, and `data_format`. PDF content will be a base64 encoded string of the document.
-        >>> obb.economy.fomc_documents(provider='federal_reserve', url='https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20220126.pdf')
         """  # noqa: E501
 
         return self._run(
@@ -2209,10 +2203,6 @@ class ROUTER_economy(Container):
                                         "label": "Press Conference",
                                         "value": "press_conference",
                                     },
-                                    {
-                                        "label": "Conference Call",
-                                        "value": "conference_call",
-                                    },
                                     {"label": "Agenda", "value": "agenda"},
                                     {"label": "Transcript", "value": "transcript"},
                                     {"label": "Speaker Key", "value": "speaker_key"},
@@ -2240,24 +2230,6 @@ class ROUTER_economy(Container):
                                 "value": True,
                                 "type": "boolean",
                                 "show": False,
-                            }
-                        }
-                    },
-                    "url": {
-                        "federal_reserve": {
-                            "x-widget_config": {
-                                "type": "endpoint",
-                                "paramName": "url",
-                                "optionsEndpoint": "api/v1/economy/fomc_documents",
-                                "optionsParams": {
-                                    "document_type": "$document_type",
-                                    "year": "$year",
-                                    "pdf_only": True,
-                                    "as_choices": True,
-                                    "provider": "federal_reserve",
-                                },
-                                "show": False,
-                                "roles": ["fileSelector"],
                             }
                         }
                     },
@@ -4116,7 +4088,7 @@ class ROUTER_economy(Container):
         port_code : Optional[str]
             Port code to filter results by a specific port. This parameter is ignored if `country` parameter is provided. To get a list of available ports, use `obb.economy.shipping.port_info()`. Multiple comma separated items allowed. (provider: imf)
         country : Optional[Literal['ABW', 'AGO', 'AIA', 'ALB', 'ARE', 'ARG', 'ASM', 'ATG', 'AUS', 'AZE', 'BEL', 'BEN', 'BES', 'BGD', 'BGR', 'BHR', 'BHS', 'BLM', 'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHL', 'CHN', 'CIV', 'CMR', 'COD', 'COG', 'COK', 'COL', 'COM', 'CPV', 'CRI', 'CUB', 'CUW', 'CYM', 'CYP', 'DEU', 'DJI', 'DMA', 'DNK', 'DOM', 'DZA', 'ECU', 'EGY', 'ERI', 'ESP', 'EST', 'FIN', 'FJI', 'FRA', 'FRO', 'FSM', 'GAB', 'GBR', 'GEO', 'GHA', 'GIB', 'GIN', 'GLP', 'GMB', 'GNB', 'GNQ', 'GRC', 'GRD', 'GTM', 'GUF', 'GUM', 'GUY', 'HKG', 'HND', 'HRV', 'HTI', 'IDN', 'IND', 'IRL', 'IRN', 'IRQ', 'ISL', 'ISR', 'ITA', 'JAM', 'JOR', 'JPN', 'KAZ', 'KEN', 'KHM', 'KIR', 'KNA', 'KOR', 'KWT', 'LBN', 'LBR', 'LBY', 'LCA', 'LKA', 'LTU', 'LVA', 'MAC', 'MAF', 'MAR', 'MDA', 'MDG', 'MDV', 'MEX', 'MHL', 'MLT', 'MMR', 'MNE', 'MNP', 'MOZ', 'MRT', 'MSR', 'MTQ', 'MUS', 'MYS', 'MYT', 'NAM', 'NCL', 'NGA', 'NIC', 'NLD', 'NOR', 'NRU', 'NZL', 'OMN', 'PAK', 'PAN', 'PER', 'PHL', 'PLW', 'PNG', 'POL', 'PRI', 'PRT', 'PYF', 'QAT', 'REU', 'ROU', 'RUS', 'SAU', 'SDN', 'SEN', 'SGP', 'SLB', 'SLE', 'SLV', 'SOM', 'STP', 'SUR', 'SVN', 'SWE', 'SXM', 'SYC', 'SYR', 'TCA', 'TGO', 'THA', 'TKM', 'TLS', 'TON', 'TTO', 'TUN', 'TUR', 'TUV', 'TWN', 'TZA', 'UKR', 'URY', 'USA', 'VCT', 'VEN', 'VGB', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF']]
-            Country to focus on. Enter as a 3-letter ISO country code. This parameter supercedes `continent` if both are provided. (provider: imf)
+            Country to focus on. Enter as a 3-letter ISO country code. This parameter is overridden by `port_code` if both are provided. (provider: imf)
 
         Returns
         -------
@@ -9089,10 +9061,9 @@ class ROUTER_economy(Container):
                                     {"label": "Vanuatu", "value": "VUT"},
                                     {"label": "Venezuela", "value": "VEN"},
                                     {"label": "Vietnam", "value": "VNM"},
-                                    {"label": "World", "value": "WLD"},
                                     {"label": "Yemen", "value": "YEM"},
                                 ],
-                                "description": "Filter by country. This parameter supercedes `port_code` if both are provided.",
+                                "description": "Filter by country. This parameter is overridden by `port_code` if both are provided.",
                                 "style": {"popupWidth": 350},
                             }
                         }

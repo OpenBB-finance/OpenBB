@@ -94,7 +94,15 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
 def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
     """Check for data-processing Platform extensions and add them to the widget exclude filter."""
     to_check_for = ["econometrics", "quantitative", "technical"]
-    tags = [d["name"] for d in fastapi_app.openapi_tags if d["name"] in to_check_for]
+    tags = (
+        [
+            d.get("name") if isinstance(d, dict) and d.get("name") else d
+            for d in fastapi_app.openapi_tags
+            if d and d in to_check_for
+        ]
+        if fastapi_app.openapi_tags
+        else []
+    )
     if tags and (any(f"openbb_{mod}" in sys.modules for mod in to_check_for)):
         api_prefix = SystemService().system_settings.api_settings.prefix
         for tag in tags:

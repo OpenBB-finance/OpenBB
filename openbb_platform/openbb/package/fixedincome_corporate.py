@@ -190,7 +190,7 @@ class ROUTER_fixedincome_corporate(Container):
     def hqm(
         self,
         date: Annotated[
-            Union[datetime.date, str, None, list[Union[datetime.date, str, None]]],
+            Union[str, datetime.date, None, list[Union[str, datetime.date, None]]],
             OpenBBField(
                 description="A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
@@ -215,7 +215,7 @@ class ROUTER_fixedincome_corporate(Container):
         ----------
         provider : str
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        date : Union[date, str, None, list[Union[date, str, None]]]
+        date : Union[str, date, None, list[Union[str, date, None]]]
             A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         yield_curve : Literal['spot', 'par']
             The yield curve type. (provider: fred)

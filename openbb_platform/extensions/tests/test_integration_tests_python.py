@@ -2,9 +2,9 @@
 
 from typing import Literal
 
-from openbb_charting import Charting
+import pytest
 
-from extensions.tests.utils.integration_tests_testers import (
+from .utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
     check_missing_integration_tests,
@@ -39,8 +39,14 @@ def test_python_interface_wrong_integration_test_params() -> None:
     run_test("python", check_wrong_integration_test_params)
 
 
+@pytest.mark.skipif(
+    "openbb_charting" not in __import__("sys").modules,
+    reason="Charting extension not installed",
+)
 def test_charting_extension_function_coverage() -> None:
     """Test if all charting extension functions are covered by integration tests."""
+    from openbb_charting import Charting  # pylint: disable=import-outside-toplevel
+
     functions = Charting.functions()
 
     test_names = [f"test_charting_{func}" for func in functions]

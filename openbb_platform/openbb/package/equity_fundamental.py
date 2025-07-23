@@ -1228,7 +1228,7 @@ class ROUTER_equity_fundamental(Container):
             End date of the data, in YYYY-MM-DD format. (provider: intrinio, sec)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
-        cik : Union[int, str, None]
+        cik : Union[str, int, None]
             Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)
         use_cache : bool
             Whether or not to use cache.  If True, cache will store for one day. (provider: sec)
@@ -1279,7 +1279,7 @@ class ROUTER_equity_fundamental(Container):
             Number of words in the filing, if available. (provider: intrinio)
         report_date : Optional[date]
             The date of the filing. (provider: sec)
-        act : Optional[Union[int, str]]
+        act : Optional[Union[str, int]]
             The SEC Act number. (provider: sec)
         items : Optional[Union[str, float]]
             The SEC Item numbers. (provider: sec)
@@ -1287,17 +1287,17 @@ class ROUTER_equity_fundamental(Container):
             The description of the primary document. (provider: sec)
         primary_doc : Optional[str]
             The filename of the primary document. (provider: sec)
-        accession_number : Optional[Union[int, str]]
+        accession_number : Optional[Union[str, int]]
             The accession number. (provider: sec)
-        file_number : Optional[Union[int, str]]
+        file_number : Optional[Union[str, int]]
             The file number. (provider: sec)
-        film_number : Optional[Union[int, str]]
+        film_number : Optional[Union[str, int]]
             The film number. (provider: sec)
-        is_inline_xbrl : Optional[Union[int, str]]
+        is_inline_xbrl : Optional[Union[str, int]]
             Whether the filing is an inline XBRL filing. (provider: sec)
-        is_xbrl : Optional[Union[int, str]]
+        is_xbrl : Optional[Union[str, int]]
             Whether the filing is an XBRL filing. (provider: sec)
-        size : Optional[Union[int, str]]
+        size : Optional[Union[str, int]]
             The size of the filing. (provider: sec)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
