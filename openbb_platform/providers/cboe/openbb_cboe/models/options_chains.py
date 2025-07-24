@@ -151,6 +151,12 @@ class CboeOptionsChainsFetcher(
         option_df_index = option_df_index.reset_index().drop(
             columns=["match", "level_0"]
         )
+        # Filter out adjusted options.
+        valid_expiration_mask = option_df_index["expiration"].str.len() <= 6
+        option_df_index = option_df_index[valid_expiration_mask]
+        valid_indices = option_df_index.index
+        options_df = options_df.iloc[valid_indices]
+
         option_df_index.option_type = option_df_index.option_type.str.replace(
             "C", "call"
         ).str.replace("P", "put")

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-equity"
-version = "1.4.1"
+version = "1.4.2"
 description = "Equity extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_equity" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.13"
-openbb-core = "^1.4.6"
+openbb-core = "^1.4.8"
 
 [build-system]
 requires = ["poetry-core"]

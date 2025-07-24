@@ -1,12 +1,11 @@
 """OpenBB Workspace Application.
 
 This includes widgets and endpoints for fetching and displaying
-SEC filings, as well as calendars for earnings, dividends, ipos,
-and global economic events from the public Nasdaq website.
+SEC filings, as well as calendars for earnings, dividends, and IPOs.
 
 To use this app, launch it with:
 
-```bash
+```sh
 openbb-api --app openbb_nasdaq.app:main --factory
 ```
 
@@ -22,7 +21,7 @@ def main():
     """Return a FastAPI app instance."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime
-    from typing import Annotated, Literal, Optional
+    from typing import Annotated, Any, Literal, Optional
 
     from async_lru import alru_cache
     from fastapi import Depends, FastAPI
@@ -32,6 +31,9 @@ def main():
     from openbb_nasdaq.models.company_filings import NasdaqCompanyFilingsFetcher
     from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
     from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
+    from openbb_nasdaq.models.historical_dividends import (
+        NasdaqHistoricalDividendsFetcher,
+    )
     from pandas import DataFrame
 
     listings = DataFrame()
@@ -128,7 +130,65 @@ def main():
 
         return docs
 
+    @alru_cache(maxsize=128)
+    async def download_pdf_file(document_url: str):
+        """Download a PDF file from the given URL."""
+        # pylint: disable=import-outside-toplevel
+        import base64  # noqa
+        from openbb_core.provider.utils.helpers import make_request
+
+        response = make_request(document_url)
+        response.raise_for_status()
+        encoded_content = base64.b64encode(response.content).decode("utf-8")
+
+        return encoded_content
+
     @app.get(
+        "/open_document",
+        include_in_schema=False,
+    )
+    async def open_document(
+        document_url: str,
+    ) -> dict[str, Any]:
+        """Open the selected PDF filing document."""
+        encoded_content: str = ""
+        error_message: str = ""
+
+        try:
+            if document_url and document_url.startswith("http"):
+                encoded_content = await download_pdf_file(document_url)
+
+        except Exception as e:  # pylint: disable=broad-except
+            error_message = f"Error fetching document: {e.args[0]}"
+
+        symbol = document_url.split("&symbol=", maxsplit=1)[1].split("&", maxsplit=1)[0]
+        form_type = (
+            document_url.split("&formType=", maxsplit=1)[1]
+            .split("&", maxsplit=1)[0]
+            .replace("-", "")
+        )
+        date_str = document_url.split("&dateFiled=", maxsplit=1)[1][:10].replace(
+            "-", ""
+        )
+        filename = f"{symbol}-{date_str}-{form_type}.pdf"
+        content: dict[str, Any] = {}
+        if error_message != "":
+            content = {
+                "error_type": "download_error",
+                "content": error_message,
+            }
+        else:
+            content = {
+                "content": encoded_content,
+                "data_format": {
+                    "data_type": "pdf",
+                    "filename": filename,
+                },
+            }
+
+        return content
+
+    @app.post(
         "/open_document",
         openapi_extra={
             "widget_config": {
@@ -138,6 +198,18 @@ def main():
                 "refetchInterval": False,
                 "widgetId": "nasdaq_company_filings",
                 "params": [
+                    {
+                        "paramName": "symbol",
+                        "label": "Symbol",
+                        "description": (
+                            "Ticker symbol for the company."
+                            " Foreign (dual-listed) companies may not be required to file with the SEC."
+                        ),
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
                     {
                         "paramName": "document_url",
                         "label": "Document URL",
@@ -152,18 +224,6 @@ def main():
                         "show": False,
                         "roles": ["fileSelector"],
                         "multiSelect": True,
-                    },
-                    {
-                        "paramName": "symbol",
-                        "label": "Symbol",
-                        "description": (
-                            "Ticker symbol for the company."
-                            " Foreign (dual-listed) companies may not be required to file with the SEC."
-                        ),
-                        "type": "endpoint",
-                        "value": "AAPL",
-                        "optionsEndpoint": "/get_symbol_choices",
-                        "style": {"popupWidth": 850},
                     },
                     {
                         "paramName": "year",
@@ -194,27 +254,20 @@ def main():
             }
         },
     )
-    async def open_document(
-        document_url: str,
-    ) -> dict:
-        """Open the selected PDF filing document."""
-        import base64  # noqa
-        from openbb_core.provider.utils.helpers import make_request
+    async def post_open_document(
+        params: dict,
+    ) -> list:
+        """POST request to open the selected PDF filing document(s)."""
+        urls = params.get("document_url", [])
+        documents: list = []
+        if urls:
+            for document_url in urls:
+                if document_url.startswith("http"):
+                    document = await open_document(document_url)
+                    if document:
+                        documents.append(document)
 
-        encoded_content: str = ""
-
-        if document_url and document_url.startswith("http"):
-            response = make_request(document_url)
-            response.raise_for_status()
-            encoded_content = base64.b64encode(response.content).decode("utf-8")
-
-        return {
-            "data_format": {
-                "data_type": "pdf",
-                "filename": document_url.split("/")[-1],
-            },
-            "content": encoded_content,
-        }
+        return documents
 
     @app.get(
         "/earnings_calendar",
@@ -229,6 +282,14 @@ def main():
                 "widgetId": "nasdaq_earnings_calendar",
                 "refetchInterval": False,
                 "params": [
+                    {
+                        "paramName": "symbol",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
                     {
                         "label": "Start Date",
                         "description": "Start date of the data.",
@@ -247,6 +308,7 @@ def main():
                 "gridData": {"w": 40, "h": 20},
                 "data": {
                     "table": {
+                        "enableAdvanced": True,
                         "columnsDefs": [
                             {
                                 "field": "surprise_percent",
@@ -254,7 +316,16 @@ def main():
                                 "cellDataType": "number",
                                 "renderFn": "greenRed",
                             },
-                        ]
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to change the SEC documents viewer.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol",
+                                },
+                            },
+                        ],
                     }
                 },
             },
@@ -288,6 +359,14 @@ def main():
                 "refetchInterval": False,
                 "params": [
                     {
+                        "paramName": "symbol2",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
                         "label": "Start Date",
                         "description": "Start date of the data.",
                         "type": "date",
@@ -303,6 +382,22 @@ def main():
                     },
                 ],
                 "gridData": {"w": 40, "h": 20},
+                "data": {
+                    "table": {
+                        "enableAdvanced": True,
+                        "columnsDefs": [
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol2",
+                                },
+                            },
+                        ],
+                    }
+                },
             }
         },
     )
@@ -321,6 +416,75 @@ def main():
         return await fetcher.fetch_data(params, {})  # type: ignore
 
     @app.get(
+        "/historical_dividends",
+        openapi_extra={
+            "widget_config": {
+                "name": "Historical Dividends",
+                "description": "Historical dividend payments for a given symbol.",
+                "category": "Equity",
+                "subCategory": "Dividends",
+                "type": "table",
+                "searchCategory": "Equity",
+                "widgetId": "nasdaq_historical_dividends",
+                "refetchInterval": False,
+                "params": [
+                    {
+                        "paramName": "symbol2",
+                        "label": "Symbol",
+                        "description": (
+                            "Select a ticker from the dividend calendar to update the historical dividends."
+                        ),
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
+                    {
+                        "label": "Start Date",
+                        "description": (
+                            "Start date of the data, in YYYY-MM-DD format."
+                            "(Default: 5 years ago)"
+                        ),
+                        "optional": True,
+                        "type": "date",
+                        "value": None,
+                        "show": True,
+                        "paramName": "start_date",
+                    },
+                    {
+                        "label": "End Date",
+                        "description": (
+                            "End date of the data, in YYYY-MM-DD format."
+                            "(Default: today)"
+                        ),
+                        "optional": True,
+                        "type": "date",
+                        "value": None,
+                        "show": True,
+                        "paramName": "end_date",
+                    },
+                ],
+            }
+        },
+        response_model=list[NasdaqHistoricalDividendsFetcher.data_type],
+    )
+    async def historical_dividends(
+        symbol2: str,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ):
+        """Get historical dividends for a given symbol."""
+        fetcher = NasdaqHistoricalDividendsFetcher()
+
+        params = {
+            "symbol": symbol2,
+            "start_date": start_date,
+            "end_date": end_date,
+        }
+
+        return await fetcher.fetch_data(params, {})
+
+    @app.get(
         "/ipo_calendar",
         openapi_extra={
             "widget_config": {
@@ -333,6 +497,14 @@ def main():
                 "widgetId": "nasdaq_ipo_calendar",
                 "refetchInterval": False,
                 "params": [
+                    {
+                        "paramName": "symbol3",
+                        "show": False,
+                        "type": "endpoint",
+                        "value": "AAPL",
+                        "optionsEndpoint": "/get_symbol_choices",
+                        "style": {"popupWidth": 850},
+                    },
                     {
                         "label": "Start Date",
                         "description": "Start date of the data, in YYYY-MM-DD format.",
@@ -377,6 +549,22 @@ def main():
                     },
                 ],
                 "gridData": {"w": 40, "h": 20},
+                "data": {
+                    "table": {
+                        "enableAdvanced": True,
+                        "columnsDefs": [
+                            {
+                                "field": "symbol",
+                                "headerTooltip": "Click on a ticker in the column to update the historical dividends.",
+                                "renderFn": "cellOnClick",
+                                "renderFnParams": {
+                                    "actionType": "groupBy",
+                                    "groupByParamName": "symbol3",
+                                },
+                            },
+                        ],
+                    }
+                },
             }
         },
     )
@@ -437,6 +625,7 @@ def main():
                 "data": {
                     "table": {
                         "showAll": False,
+                        "enableAdvanced": True,
                         "columnsDefs": [
                             {
                                 "field": "date",
@@ -663,7 +852,14 @@ def main():
                                     }
                                 },
                             },
-                        }
+                        },
+                        {
+                            "i": "nasdaq_historical_dividends",
+                            "x": 0,
+                            "y": 12,
+                            "w": 40,
+                            "h": 30,
+                        },
                     ],
                 },
                 "ipo-calendar": {
@@ -675,7 +871,7 @@ def main():
                             "x": 0,
                             "y": 2,
                             "w": 40,
-                            "h": 21,
+                            "h": 15,
                             "state": {
                                 "chartView": {"enabled": False, "chartType": "line"},
                                 "columnState": {
@@ -704,7 +900,19 @@ def main():
                                     }
                                 },
                             },
-                        }
+                        },
+                        {
+                            "i": "nasdaq_company_filings",
+                            "x": 0,
+                            "y": 16,
+                            "w": 40,
+                            "h": 30,
+                            "state": {
+                                "params": {
+                                    "form_group": "registration",
+                                }
+                            },
+                        },
                     ],
                 },
                 "economic-calendar": {
@@ -717,11 +925,55 @@ def main():
                             "y": 2,
                             "w": 40,
                             "h": 20,
+                            "state": {
+                                "chartView": {"enabled": False, "chartType": "line"},
+                                "columnState": {
+                                    "default": {
+                                        "sort": {
+                                            "sortModel": [
+                                                {"colId": "date", "sort": "desc"}
+                                            ]
+                                        },
+                                        "columnPinning": {
+                                            "leftColIds": ["date"],
+                                            "rightColIds": [],
+                                        },
+                                    }
+                                },
+                            },
                         }
                     ],
                 },
             },
-            "groups": [],
+            "groups": [
+                {
+                    "name": "Group 1",
+                    "type": "endpointParam",
+                    "paramName": "symbol",
+                    "defaultValue": "AAPL",
+                    "widgetIds": [
+                        "nasdaq_earnings_calendar",
+                        "nasdaq_company_filings",
+                    ],
+                },
+                {
+                    "name": "Group 2",
+                    "type": "endpointParam",
+                    "paramName": "symbol2",
+                    "defaultValue": "AAPL",
+                    "widgetIds": [
+                        "nasdaq_dividends_calendar",
+                        "nasdaq_historical_dividends",
+                    ],
+                },
+                {
+                    "name": "Group 3",
+                    "type": "endpointParam",
+                    "paramName": "document_url",
+                    "defaultValue": "AAPL",
+                    "widgetIds": ["nasdaq_ipo_calendar", "nasdaq_company_filings"],
+                },
+            ],
         }
 
     return app

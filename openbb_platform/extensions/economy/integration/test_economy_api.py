@@ -1,10 +1,11 @@
 """Test Economy API."""
 
+# pylint: disable=too-many-lines
+
 import base64
 
 import pytest
 import requests
-from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -22,7 +23,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -65,7 +66,7 @@ def test_economy_calendar(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -116,7 +117,7 @@ def test_economy_cpi(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [{"provider": "fmp"}],
 )
@@ -132,7 +133,7 @@ def test_economy_risk_premium(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -159,7 +160,7 @@ def test_economy_gdp_forecast(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -196,7 +197,7 @@ def test_economy_gdp_nominal(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -231,7 +232,7 @@ def test_economy_gdp_real(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -280,7 +281,7 @@ def test_economy_balance_of_payments(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -348,7 +349,7 @@ def test_economy_fred_search(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -388,7 +389,7 @@ def test_economy_fred_series(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06", "adjusted": True}),
@@ -414,7 +415,7 @@ def test_economy_money_measures(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -443,7 +444,7 @@ def test_economy_unemployment(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -470,7 +471,7 @@ def test_economy_composite_leading_indicator(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
@@ -497,7 +498,7 @@ def test_economy_short_term_interest_rate(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
@@ -524,11 +525,12 @@ def test_economy_long_term_interest_rate(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
-    argnames="params",
-    argvalues=[
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
+                "provider": "fred",
                 "symbol": "156241",
                 "is_series_group": True,
                 "start_date": "2000-01-01",
@@ -539,12 +541,12 @@ def test_economy_long_term_interest_rate(params, headers):
                 "season": "nsa",
                 "aggregation_method": "eop",
                 "transform": "ch1",
-                "provider": "fred",
                 "limit": None,
             }
         ),
         (
             {
+                "provider": "fred",
                 "symbol": "CAICLAIMS",
                 "is_series_group": False,
                 "start_date": "1990-01-01",
@@ -555,7 +557,6 @@ def test_economy_long_term_interest_rate(params, headers):
                 "season": None,
                 "aggregation_method": None,
                 "transform": None,
-                "provider": "fred",
                 "limit": None,
             }
         ),
@@ -573,7 +574,7 @@ def test_economy_fred_regional(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -634,7 +635,7 @@ def test_economy_indicators(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
@@ -653,7 +654,7 @@ def test_economy_available_indicators(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -678,7 +679,7 @@ def test_economy_country_profile(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -717,7 +718,7 @@ def test_economy_central_bank_holdings(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -743,7 +744,7 @@ def test_economy_share_price_index(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -770,7 +771,7 @@ def test_economy_house_price_index(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -796,7 +797,7 @@ def test_economy_immediate_interest_rate(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -823,7 +824,7 @@ def test_economy_interest_rates(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -852,7 +853,7 @@ def test_economy_retail_prices(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -881,7 +882,7 @@ def test_economy_survey_university_of_michigan(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -906,7 +907,7 @@ def test_economy_survey_sloos(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -933,7 +934,7 @@ def test_economy_survey_economic_conditions_chicago(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -961,7 +962,7 @@ def test_economy_survey_manufacturing_outlook_texas(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -989,7 +990,7 @@ def test_economy_survey_manufacturing_outlook_ny(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1014,7 +1015,7 @@ def test_economy_primary_dealer_positioning(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1038,7 +1039,7 @@ def test_economy_survey_nonfarm_payrolls(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1062,7 +1063,7 @@ def test_economy_pce(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1095,7 +1096,7 @@ def test_economy_fred_release_table(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1121,7 +1122,7 @@ def test_economy_survey_bls_search(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1149,7 +1150,7 @@ def test_economy_survey_bls_series(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1172,7 +1173,7 @@ def test_economy_export_destinations(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1198,7 +1199,7 @@ def test_economy_primary_dealer_fails(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1231,7 +1232,7 @@ def test_economy_port_volume(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1259,7 +1260,7 @@ def test_economy_direction_of_trade(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1269,7 +1270,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": None,
             }
         ),
         (
@@ -1279,7 +1279,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": None,
                 "pdf_only": False,
                 "as_choices": False,
-                "url": "https://www.federalreserve.gov/monetarypolicy/files/fomcminutes20250129.pdf",
             }
         ),
         (
@@ -1289,7 +1288,6 @@ def test_economy_direction_of_trade(params, headers):
                 "document_type": "minutes",
                 "pdf_only": True,
                 "as_choices": True,
-                "url": None,
             }
         ),
     ],
@@ -1306,7 +1304,20 @@ def test_economy_fomc_documents(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.integration
+def test_economy_fomc_documents_download(headers):
+    """Test the economy fomc documents download endpoint."""
+    params = {
+        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+    }
+
+    url = "http://0.0.0.0:8000/api/v1/economy/fomc_documents/download?"
+    result = requests.post(url, headers=headers, timeout=10, json=params)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1339,7 +1350,7 @@ def test_economy_shipping_port_volume(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1364,7 +1375,7 @@ def test_economy_shipping_chokepoint_volume(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -1386,7 +1397,7 @@ def test_economy_shipping_chokepoint_info(params, headers):
     assert result.status_code == 200
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

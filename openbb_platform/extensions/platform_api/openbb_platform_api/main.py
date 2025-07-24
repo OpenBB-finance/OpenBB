@@ -91,6 +91,30 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
             logger.info("Error loading widget filter settings -> %s", e)
 
 
+def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
+    """Check for data-processing Platform extensions and add them to the widget exclude filter."""
+    to_check_for = ["econometrics", "quantitative", "technical"]
+    tags = (
+        [
+            d.get("name") if isinstance(d, dict) and d.get("name") else d
+            for d in fastapi_app.openapi_tags
+            if d and d in to_check_for
+        ]
+        if fastapi_app.openapi_tags
+        else []
+    )
+    if tags and (any(f"openbb_{mod}" in sys.modules for mod in to_check_for)):
+        api_prefix = SystemService().system_settings.api_settings.prefix
+        for tag in tags:
+            if f"openbb_{tag}" in sys.modules:
+                # If the module is loaded, we can safely add it to the exclude filter.
+                widgets_to_exclude.append(f"{api_prefix}/{tag}/*")
+
+    return widgets_to_exclude
+
+
+widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter)
+
 openapi = app.openapi()
 
 # We don't need the current settings,

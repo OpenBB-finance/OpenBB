@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional
 
 from openbb_core.app.provider_interface import ProviderInterface
 
-from extensions.tests.utils.helpers import (
+from .helpers import (
     collect_router_functions,
     collect_routers,
     find_decorator,

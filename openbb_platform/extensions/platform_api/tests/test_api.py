@@ -85,7 +85,23 @@ def test_import_module_app():
             super().__init__(*args, **kwargs)
             self.add_middleware = MagicMock()
 
+    # Create mock modules to prevent real imports
+    mock_rest_api = MagicMock()
+    mock_rest_api.system = MagicMock()
+
     with (
+        patch.dict(
+            "sys.modules",
+            {
+                "openbb_core.api.rest_api": mock_rest_api,
+                "openbb_core.api.router.commands": MagicMock(),
+                "openbb_core.app.command_runner": MagicMock(),
+                "openbb_core.app.static.package_builder": MagicMock(),
+                "openbb_core.app.provider_interface": MagicMock(),
+                "openbb_core.provider.registry": MagicMock(),
+                "openbb_core.app.extension_loader": MagicMock(),
+            },
+        ),
         patch("importlib.import_module") as mock_import,
         patch("fastapi.FastAPI", new=MockFastAPI),
         patch("openbb_core.app.service.system_service.SystemService") as mock_system,
@@ -101,6 +117,7 @@ def test_import_module_app():
 
         # Rest of test setup...
         mock_module = MagicMock()
+        mock_module.__spec__ = MagicMock()
         mock_module.app = MockFastAPI()
         mock_import.return_value = mock_module
 
@@ -152,7 +169,23 @@ def test_import_factory_app():
             super().__init__(*args, **kwargs)
             self.add_middleware = MagicMock()
 
+    # Create mock modules to prevent real imports
+    mock_rest_api = MagicMock()
+    mock_rest_api.system = MagicMock()
+
     with (
+        patch.dict(
+            "sys.modules",
+            {
+                "openbb_core.api.rest_api": mock_rest_api,
+                "openbb_core.api.router.commands": MagicMock(),
+                "openbb_core.app.command_runner": MagicMock(),
+                "openbb_core.app.static.package_builder": MagicMock(),
+                "openbb_core.app.provider_interface": MagicMock(),
+                "openbb_core.provider.registry": MagicMock(),
+                "openbb_core.app.extension_loader": MagicMock(),
+            },
+        ),
         patch("importlib.import_module") as mock_import,
         patch("fastapi.FastAPI", new=MockFastAPI),
         patch("openbb_core.app.service.system_service.SystemService") as mock_system,
@@ -168,7 +201,9 @@ def test_import_factory_app():
         mock_system.return_value.system_settings.cors.allow_methods = ["*"]
         mock_system.return_value.system_settings.cors.allow_headers = ["*"]
 
+        # Create a proper mock module with __spec__ attribute
         mock_module = MagicMock()
+        mock_module.__spec__ = MagicMock()
         factory = MagicMock(return_value=MockFastAPI())
         mock_module.factory_func = factory
         mock_import.return_value = mock_module

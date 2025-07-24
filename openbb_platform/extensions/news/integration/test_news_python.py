@@ -1,7 +1,6 @@
 """Test news extension."""
 
 import pytest
-from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -18,7 +17,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (
@@ -95,7 +94,7 @@ def test_news_world(params, obb):
     assert isinstance(result, OBBject)
 
 
-@parametrize(
+@pytest.mark.parametrize(
     "params",
     [
         (

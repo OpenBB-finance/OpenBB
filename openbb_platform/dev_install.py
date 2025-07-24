@@ -50,6 +50,7 @@ openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-index = { path = "./extensions/index", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
+openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
@@ -58,6 +59,7 @@ openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-congress-gov = { path = "./providers/congress_gov", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
+openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
 openbb-government-us = { path = "./providers/government_us", optional = true, develop = true }
