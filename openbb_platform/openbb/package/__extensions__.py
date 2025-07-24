@@ -16,6 +16,7 @@ Routers:
     /equity
     /etf
     /fixedincome
+    /government
     /index
     /news
     /regulators
@@ -29,6 +30,7 @@ Extensions:
     - equity@1.4.2
     - etf@1.4.2
     - fixedincome@1.4.4
+    - government@1.4.2
     - index@1.4.2
     - news@1.4.2
     - regulators@1.4.3
@@ -109,6 +111,13 @@ Extensions:
         from . import fixedincome
 
         return fixedincome.ROUTER_fixedincome(command_runner=self._command_runner)
+
+    @property
+    def government(self):
+        # pylint: disable=import-outside-toplevel
+        from . import government
+
+        return government.ROUTER_government(command_runner=self._command_runner)
 
     @property
     def index(self):
