@@ -15,6 +15,16 @@
 </a>
 [![PyPI](https://img.shields.io/pypi/v/openbb?color=blue&label=PyPI%20Package)](https://pypi.org/project/openbb/)
 
+<!-- Keep these links. Translations will automatically update with the README. -->
+[Deutsch](https://readme-i18n.com/de/OpenBB-finance/OpenBB) | 
+[Español](https://readme-i18n.com/es/OpenBB-finance/OpenBB) | 
+[français](https://readme-i18n.com/fr/OpenBB-finance/OpenBB) | 
+[日本語](https://readme-i18n.com/ja/OpenBB-finance/OpenBB) | 
+[한국어](https://readme-i18n.com/ko/OpenBB-finance/OpenBB) | 
+[Português](https://readme-i18n.com/pt/OpenBB-finance/OpenBB) | 
+[Русский](https://readme-i18n.com/ru/OpenBB-finance/OpenBB) | 
+[中文](https://readme-i18n.com/zh/OpenBB-finance/OpenBB)
+
 The first financial Platform that is open source.
 
 The OpenBB Platform offers access to equity, options, crypto, forex, macro economy, fixed income, and more while also offering a broad range of extensions to enhance the user experience according to their needs.
