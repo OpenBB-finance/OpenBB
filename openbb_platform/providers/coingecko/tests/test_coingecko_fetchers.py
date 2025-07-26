@@ -4,17 +4,26 @@ import pytest
 from datetime import date, datetime
 from unittest.mock import Mock, patch
 
-from openbb_coingecko.models.crypto_historical import (
-    CoinGeckoCryptoHistoricalFetcher,
-    CoinGeckoCryptoHistoricalQueryParams,
-)
-from openbb_coingecko.models.crypto_price import (
-    CoinGeckoCryptoPriceFetcher,
-    CoinGeckoCryptoPriceQueryParams,
-)
-from openbb_coingecko.models.crypto_search import (
-    CoinGeckoCryptoSearchFetcher,
-    CoinGeckoCryptoSearchQueryParams,
+# Skip tests if imports fail (e.g., in CI without provider installed)
+try:
+    from openbb_coingecko.models.crypto_historical import (
+        CoinGeckoCryptoHistoricalFetcher,
+        CoinGeckoCryptoHistoricalQueryParams,
+    )
+    from openbb_coingecko.models.crypto_price import (
+        CoinGeckoCryptoPriceFetcher,
+        CoinGeckoCryptoPriceQueryParams,
+    )
+    from openbb_coingecko.models.crypto_search import (
+        CoinGeckoCryptoSearchFetcher,
+        CoinGeckoCryptoSearchQueryParams,
+    )
+    IMPORTS_AVAILABLE = True
+except ImportError:
+    IMPORTS_AVAILABLE = False
+
+pytestmark = pytest.mark.skipif(
+    not IMPORTS_AVAILABLE, reason="CoinGecko provider not available"
 )
 
 

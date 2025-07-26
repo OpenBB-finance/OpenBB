@@ -4,15 +4,24 @@ import pytest
 from unittest.mock import Mock, patch
 import requests
 
-from openbb_coingecko.utils.helpers import (
-    build_headers,
-    build_url,
-    get_coingecko_base_url,
-    get_supported_vs_currencies,
-    make_request,
-    parse_interval_to_days,
-    validate_symbol,
-    CoinGeckoAPIError,
+# Skip tests if imports fail (e.g., in CI without provider installed)
+try:
+    from openbb_coingecko.utils.helpers import (
+        build_headers,
+        build_url,
+        get_coingecko_base_url,
+        get_supported_vs_currencies,
+        make_request,
+        parse_interval_to_days,
+        validate_symbol,
+        CoinGeckoAPIError,
+    )
+    IMPORTS_AVAILABLE = True
+except ImportError:
+    IMPORTS_AVAILABLE = False
+
+pytestmark = pytest.mark.skipif(
+    not IMPORTS_AVAILABLE, reason="CoinGecko provider not available"
 )
 
 

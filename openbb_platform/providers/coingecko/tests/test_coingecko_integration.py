@@ -6,9 +6,14 @@ from datetime import date
 # Skip integration tests in CI to avoid network dependencies
 pytestmark = pytest.mark.skip(reason="Integration tests require network access")
 
-from openbb_coingecko.models.crypto_historical import CoinGeckoCryptoHistoricalFetcher
-from openbb_coingecko.models.crypto_price import CoinGeckoCryptoPriceFetcher
-from openbb_coingecko.models.crypto_search import CoinGeckoCryptoSearchFetcher
+# Skip tests if imports fail (e.g., in CI without provider installed)
+try:
+    from openbb_coingecko.models.crypto_historical import CoinGeckoCryptoHistoricalFetcher
+    from openbb_coingecko.models.crypto_price import CoinGeckoCryptoPriceFetcher
+    from openbb_coingecko.models.crypto_search import CoinGeckoCryptoSearchFetcher
+    IMPORTS_AVAILABLE = True
+except ImportError:
+    IMPORTS_AVAILABLE = False
 
 
 @pytest.mark.integration
