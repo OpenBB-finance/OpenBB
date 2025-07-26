@@ -111,9 +111,6 @@ def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
 
 
 widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter)
-
-print(widget_exclude_filter)
-
 openapi = app.openapi()
 
 # We don't need the current settings,
