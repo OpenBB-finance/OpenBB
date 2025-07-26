@@ -73,13 +73,21 @@ def make_request(
         
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 429:
-            raise CoinGeckoAPIError("Rate limit exceeded. Please try again later or upgrade your API plan.") from e
+            raise CoinGeckoAPIError(
+                "Rate limit exceeded. Please try again later or upgrade your API plan."
+            ) from e
         elif e.response.status_code == 401:
-            raise CoinGeckoAPIError("Invalid API key. Please check your CoinGecko API key.") from e
+            raise CoinGeckoAPIError(
+                "Invalid API key. Please check your CoinGecko API key."
+            ) from e
         elif e.response.status_code == 404:
-            raise CoinGeckoAPIError("Endpoint not found or invalid parameters.") from e
+            raise CoinGeckoAPIError(
+                "Endpoint not found or invalid parameters."
+            ) from e
         else:
-            raise CoinGeckoAPIError(f"HTTP error {e.response.status_code}: {e.response.text}") from e
+            raise CoinGeckoAPIError(
+                f"HTTP error {e.response.status_code}: {e.response.text}"
+            ) from e
     
     except requests.exceptions.RequestException as e:
         raise CoinGeckoAPIError(f"Request failed: {str(e)}") from e

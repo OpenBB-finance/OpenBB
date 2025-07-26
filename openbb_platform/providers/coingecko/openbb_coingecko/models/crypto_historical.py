@@ -1,6 +1,8 @@
 """CoinGecko Crypto Historical Price Model."""
 
-from datetime import datetime, timedelta
+"""CoinGecko Crypto Historical Price Model."""
+
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
@@ -39,7 +41,10 @@ class CoinGeckoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     )
     precision: Optional[Literal["full"]] = Field(
         default=None,
-        description="The precision of the data. Use 'full' for full precision, otherwise 2 decimals.",
+        description=(
+            "The precision of the data. Use 'full' for full precision, "
+            "otherwise 2 decimals."
+        ),
     )
 
     @field_validator("vs_currency", mode="before", check_fields=False)
