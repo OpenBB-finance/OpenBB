@@ -81,7 +81,7 @@ All other arguments will be passed to uvicorn. Here are the most common ones:
                                       [default: 6900]
     --ssl_keyfile TEXT              SSL key file.
     --ssl_certfile TEXT             SSL certificate file.
-    --ssl_keyfile-password TEXT     SSL keyfile password.
+    --ssl_keyfile_password TEXT     SSL keyfile password.
     --ssl_version INTEGER           SSL version to use.
                                       (see stdlib ssl module's)
                                       [default: 17]
