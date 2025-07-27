@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -76,7 +76,7 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
 class NasdaqEconomicCalendarFetcher(
     Fetcher[
         NasdaqEconomicCalendarQueryParams,
-        List[NasdaqEconomicCalendarData],
+        list[NasdaqEconomicCalendarData],
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
@@ -84,7 +84,7 @@ class NasdaqEconomicCalendarFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqEconomicCalendarQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqEconomicCalendarQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import datetime, timedelta
@@ -93,48 +93,53 @@ class NasdaqEconomicCalendarFetcher(
         transformed_params = params
 
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=3)
+            transformed_params["start_date"] = now - timedelta(days=2)
 
         if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+            transformed_params["end_date"] = now + timedelta(days=3)
 
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
         query: NasdaqEconomicCalendarQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_nasdaq.utils.helpers import get_headers, date_range
 
         IPO_HEADERS = get_headers(accept_type="json")
-        data: List[Dict] = []
+        data: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
+            if date.weekday() < 5  # Exclude weekends
         ]
 
         async def get_calendar_data(date: str):
             """Get the calendar data for a single date."""
-            response: List = []
+            response: list = []
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS)
+
             if (
                 isinstance(r_json, dict)
                 and (status := r_json.get("status", {}))
                 and (messages := status.get("bCodeMessage", []))
                 and (error_message := messages[0].get("errorMessage", ""))
+                and not data
             ):
                 raise OpenBBError(
                     f"Nasdaq Error -> {error_message}",
                 )
+
             if r_json is not None and r_json.get("data"):  # type: ignore
                 response = r_json["data"].get("rows")  # type: ignore
+
             if response:
                 response = [
                     {
@@ -175,8 +180,8 @@ class NasdaqEconomicCalendarFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqEconomicCalendarQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqEconomicCalendarData]:
+    ) -> list[NasdaqEconomicCalendarData]:
         """Return the transformed data."""
         return [NasdaqEconomicCalendarData.model_validate(d) for d in data]
