@@ -56,7 +56,7 @@ def download_bills(urls: list[str]) -> list:
     This helper is not intended to be used directly.
 
     OpenBB Workspace uses this, as a POST endpoint, to download
-    the selected bill(s) in PDF format. Results are returnd as base64-encoded PDF content.
+    the selected bill(s) in PDF format. Results are returned as base64-encoded PDF content.
 
     Parameters
     ----------
