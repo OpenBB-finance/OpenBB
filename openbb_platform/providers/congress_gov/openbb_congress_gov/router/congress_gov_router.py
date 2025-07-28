@@ -115,7 +115,7 @@ async def bill_text_urls(
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Helper function to populate document choices for a specific bill.
+    """Get document choices for a specific bill.
 
     This function is used by the Congressional Bills Viewer widget, in OpenBB Workspace,
     to populate PDF document choices for the selected bill.

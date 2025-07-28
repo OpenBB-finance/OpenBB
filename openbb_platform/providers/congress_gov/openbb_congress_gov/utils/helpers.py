@@ -311,7 +311,7 @@ async def get_bill_choices(
     bill_url: Optional[str] = None,
     is_document_choices: Optional[bool] = None,
 ) -> list:
-    """Fetches a list of bills of a specific type for a given Congress number.
+    """Fetch a list of bills of a specific type for a given Congress number.
 
     This function is not intended to be used directly.
 
