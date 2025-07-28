@@ -25,6 +25,7 @@ openbb-platform-api = { path = "./extensions/platform_api", develop = true }
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-bls = { path = "./providers/bls", develop = true }
 openbb-cftc = { path = "./providers/cftc", develop = true }
+openbb-congress-gov = { path = "./providers/congress_gov", develop = true }
 openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
@@ -56,7 +57,6 @@ openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers 
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
-openbb-congress-gov = { path = "./providers/congress_gov", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }

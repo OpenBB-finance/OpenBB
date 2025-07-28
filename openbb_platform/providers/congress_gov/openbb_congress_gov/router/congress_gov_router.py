@@ -1,8 +1,7 @@
 # pylint: disable=import-outside-toplevel,unused-argument
 """US Congress Router."""
 
-from typing import Annotated, Optional
-
+from fastapi.exceptions import HTTPException
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -14,10 +13,8 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query as OpenBBQuery
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
-from openbb_core.provider.abstract.data import Data
 
-router = Router(prefix="", description="U.S. Congress API.")
-
+router = Router(prefix="", description="Data connector to Congress.gov API.")
 api_prefix = SystemService().system_settings.api_settings.prefix
 
 
@@ -32,6 +29,15 @@ api_prefix = SystemService().system_settings.api_settings.prefix
                 "provider": "congress_gov",
             }
         ),
+        APIEx(
+            description="Get all bills of type 's' (Senate) for the 118th Congress.",
+            parameters={
+                "bill_type": "s",
+                "congress": 118,
+                "limit": 0,
+                "provider": "congress_gov",
+            },
+        ),
     ],
 )
 async def bills(
@@ -40,168 +46,104 @@ async def bills(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Congress Bills Data."""
+    """Get and filter lists of Congressional Bills."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
-@router.command(
-    methods=["POST"],
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
-)
-async def download_bill_text(params: Data) -> list:
-    """Downloads a bill in PDF format.
-
-    This endpoint is used by the Congressional Bills Viewer widget to download
-    the selected bill in PDF format. It accepts a list of URLs to download and
-    returns a a list of dictionaries with base64-encoded PDF content.
-
-    Parameters
-    ----------
-    params : Data
-        A pydantic base model with a single field `document_url` which is a list of URLs to download.
-        The function expects the following structure in the body of the request:
-            {
-                "url": list,  # List of URLs to download
-            }
-
-    Returns
-    -------
-    list
-        A list of dictionaries containing the base64-encoded PDF content.
-        The dictionaries have the following structure:
-            [
-                {
-                    "content": str,  # Base64-encoded PDF content
-                    "data_format": {
-                        "data_type": "pdf",
-                        "filename": str,  # The filename of the downloaded PDF
-                    },
-                },
-                ...
-            ]
-
-        If an error occurs during the download, the dictionary will contain:
-            [
-                {
-                    "error_type": str,  # Type of error (e.g., "download_error")
-                    "content": str,  # Error content
-                    "filename": str,  # The filename of the attempted download
-                },
-                ...
-            ]
-    """
-    # pylint: disable=import-outside-toplevel
-    import base64  # noqa
-    from io import BytesIO
-    from openbb_core.provider.utils.helpers import make_request
-
-    urls = getattr(params, "document_url", [])
-    results: list = []
-
-    for url in urls:
-        if "congress.gov" not in url:
-            results.append(
-                {
-                    "error_type": "invalid_url",
-                    "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
-                    "filename": url.split("/")[-1],
-                }
-            )
-            continue
-        try:
-            response = make_request(url)
-            response.raise_for_status()
-            pdf = (
-                base64.b64encode(BytesIO(response.content).getvalue()).decode("utf-8")
-                if isinstance(response.content, bytes)
-                else response.content
-            )
-            results.append(
-                {
-                    "content": pdf,
-                    "data_format": {
-                        "data_type": "pdf",
-                        "filename": url.split("/")[-1],
-                    },
-                }
-            )
-        except Exception as exc:  # pylint: disable=broad-except
-            results.append(
-                {
-                    "error_type": "download_error",
-                    "content": f"{exc.__class__.__name__}: {exc.args[0]}",
-                    "filename": url.split("/")[-1],
-                }
-            )
-            continue
-
-    return results
-
-
 # pylint: disable=W0212
-@router._api_router.get(
-    "/bills/bill_text_choices",
+@router.command(
+    methods=["GET"],
+    examples=[
+        APIEx(
+            parameters={
+                "provider": "congress_gov",
+                "bill_url": "https://api.congress.gov/v3/bill/119/s/1947?",
+            },
+        ),
+        APIEx(
+            parameters={
+                "provider": "congress_gov",
+                "bill_url": "119/s/1947",
+            },
+        ),
+    ],
     openapi_extra={
         "widget_config": {
-            "name": "Congressional Bills Viewer",
+            "name": "Congressional Bill Viewer",
             "description": "View current and historical U.S. Congressional Bills.",
             "category": "Government",
+            "subCategory": "Congress",
             "type": "multi_file_viewer",
             "searchCategory": "Congress",
-            "widgetId": "uscongress_download_bill_text_congress_gov_obb",
-            "endpoint": f"{api_prefix}/uscongress/download_bill_text",
+            "widgetId": "uscongress_bill_text_congress_gov_obb",
+            "endpoint": f"{api_prefix}/uscongress/bill_text",
             "params": [
                 {
-                    "paramName": "document_url",
+                    "paramName": "urls",
                     "type": "endpoint",
-                    "optionsEndpoint": f"{api_prefix}/uscongress/bills/bill_text_choices",
+                    "optionsEndpoint": f"{api_prefix}/uscongress/bill_text_urls",
                     "optionsParams": {
                         "bill_url": "$bill_url",
+                        "is_workspace": True,
                     },
                     "show": False,
                     "multiSelect": True,
                     "roles": ["fileSelector"],
                 },
                 {
+                    "paramName": "is_workspace",
+                    "value": True,
+                    "show": False,
+                },
+                {
                     "label": "Bill URL",
                     "description": "Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json')."
+                    + " Alternatively, you can enter a bill number (e.g., '119/s/1947')."
                     + " Create a group on the 'Bill URL' field of the 'Congressional Bills' widget"
                     + " and click on the cell to view the available documents.",
                     "show": True,
                     "paramName": "bill_url",
-                    "row": 1,
+                    "value": "119/hr/1",
                 },
             ],
+            "refecthInterval": False,
         }
     },
 )
-async def get_bill_text_links(bill_url: str, provider: str = "congress_gov") -> list:
+async def bill_text_urls(
+    bill_url: str,
+    provider: str = "congress_gov",
+    is_workspace: bool = False,
+) -> list:
     """Helper function to populate document choices for a specific bill.
 
-    This function is not intended to be used directly and is used by the Congressional Bills Viewer widget,
-    in OpenBB Workspace, to populate the document choices
-    for the selected bill.
+    This function is used by the Congressional Bills Viewer widget, in OpenBB Workspace,
+    to populate PDF document choices for the selected bill.
+
+    When 'is_workspace' is False (default), it returns a list of the available text versions
+    of the specified bill and their download links for the different formats.
 
     Parameters
     ----------
     bill_url : str
         The base URL of the bill (e.g., "https://api.congress.gov/v3/bill/119/s/1947?format=json").
+        This can also be a shortened version like "119/s/1947".
     provider : str
         The provider name, always "congress_gov". This is a dummy parameter.
+    is_workspace : bool
+        Whether the request is coming from the OpenBB Workspace.
+        This alters the output format to conform to the Workspace's expectations.
 
     Returns
     -------
-    str
-        The text of the specified bill.
+    list[dict]
+        Returns a list of dictionaries with 'label' and 'value' keys, when `is_workspace` is True.
+        Otherwise, returns the 'text' object from the Congress.gov API response.
     """
     # pylint: disable=import-outside-toplevel
     from openbb_congress_gov.utils.helpers import get_bill_text_choices
 
-    if not bill_url:
+    if not bill_url and is_workspace is True:
         return [
             {
                 "label": "Enter a valid bill URL to view available documents.",
@@ -209,4 +151,93 @@ async def get_bill_text_links(bill_url: str, provider: str = "congress_gov") -> 
             }
         ]
 
-    return await get_bill_text_choices(bill_url=bill_url)
+    if not bill_url:
+        raise HTTPException(
+            status_code=500,
+            detail="Bill URL is required. Please provide a valid bill URL or number.",
+        )
+
+    if (bill_url.startswith("/") and bill_url[1].isdigit()) or bill_url[0].isdigit():
+        # If the bill_url is a number, assume it is a congress number and append the base URL
+        base_url = "https://api.congress.gov/v3/bill"
+        bill_url = (
+            base_url + bill_url
+            if bill_url.startswith("/")
+            else (base_url + "/" + bill_url if bill_url[0].isdigit() else bill_url)
+        ) + "?format=json"
+
+    return await get_bill_text_choices(bill_url=bill_url, is_workspace=is_workspace)
+
+
+@router.command(
+    model="CongressBillInfo",
+    examples=[
+        APIEx(
+            parameters={
+                "provider": "congress_gov",
+                "bill_url": "https://api.congress.gov/v3/bill/119/s/1947?",
+            }
+        ),
+        APIEx(
+            description="The bill URL can be shortened to just the bill number (e.g., '119/s/1947').",
+            parameters={
+                "bill_url": "119/s/1947",
+                "provider": "congress_gov",
+            },
+        ),
+    ],
+)
+async def bill_info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get summary, status, and other metadata for a specific bill.
+
+    Enter the URL of the bill as: https://api.congress.gov/v3/bill/119/hr/131?
+
+    URLs for bills can be found from the `uscongress.bills` endpoint.
+
+    The raw JSON response from the API will be returned along with a formatted
+    text version of the key information from the raw response.
+
+    In OpenBB Workspace, this command returns as a Markdown widget.
+    """
+    return await OBBject.from_query(OpenBBQuery(**locals()))
+
+
+@router.command(
+    model="CongressBillText",
+    response_model=list,
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "provider": "congress_gov",
+                "urls": ["https://www.congress.gov/119/bills/hr1/BILLS-119hr1eh.pdf"],
+            }
+        ),
+    ],
+    openapi_extra={
+        "widget_config": {
+            "exclude": True,
+        }
+    },
+)
+async def bill_text(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Download the text of a specific bill in PDF format.
+
+    This endpoint accepts a list of URLs to download and returns the base64-encoded
+    PDF content along with the filename.
+
+    In OpenBB Workspace, this command returns as a multi-file viewer widget.
+
+    This command outputs only the results array of the OBBject.
+    """
+    return (await OBBject.from_query(OpenBBQuery(**locals()))).results  # type: ignore[return-value]

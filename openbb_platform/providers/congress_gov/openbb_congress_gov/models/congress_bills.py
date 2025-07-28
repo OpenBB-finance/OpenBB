@@ -134,21 +134,23 @@ class CongressBillsData(Data):
             "x-widget_config": {
                 "$.name": "Congressional Bills",
                 "$.category": "Government",
-                "$.subcategory": "Congress",
+                "$.subCategory": "Congress",
                 "$.searchCategory": "Government",
                 "$.description": "Current and historical U.S. Congressional Bills.",
-                "$.label": "Congress Bills",
                 "$.params": [
                     {
                         "paramName": "bill_url",
                         "label": "Bill URL",
                         "description": "Ghost parameter to group by the bill URL."
-                        + " Create a group and use the 'Congressional Bills Viewer' widget to view the bill.",
+                        + " Create a group and use the 'Congressional Bill Viewer' widget to view the bill."
+                        + " The 'Congressional Bill Info' widget can also be grouped by this field to provide"
+                        + " a comprehensive overview of the bill.",
                         "type": "text",
                         "value": None,
                         "show": True,
                     },
                 ],
+                "$.refetchInterval": False,
             },
         }
     )
@@ -160,7 +162,9 @@ class CongressBillsData(Data):
         description="Base URL to the bill for the congress.gov API.",
         json_schema_extra={
             "x-widget_config": {
-                "headerTooltip": "Click to change the documents in the Congressional Bills Viewer widget.",
+                "headerTooltip": "Create a group for the 'bill_url' parameter and then"
+                + " click in the cell to change the documents in the 'Congressional Bill Viewer'"
+                + " or 'Congression Bill Info widgets.",
                 "renderFn": "cellOnClick",
                 "renderFnParams": {
                     "actionType": "groupBy",
@@ -228,7 +232,6 @@ class CongressBillsFetcher(
         from openbb_core.provider.utils.helpers import amake_request  # noqa
         from openbb_congress_gov.utils.helpers import (
             get_all_bills_by_type,
-            year_to_congress,
         )
 
         api_key = credentials.get("congress_gov_api_key") if credentials else ""
@@ -320,7 +323,8 @@ class CongressBillsFetcher(
 
         for bill in sorted(
             data,
-            key=lambda x: x.get("updateDate"),
+            key=lambda x: x.get("latestAction", {}).get("actionDate")
+            or x.get("updateDate"),
             reverse=query.sort_by == "desc",
         ):
             latest_action = bill.pop("latestAction", {})

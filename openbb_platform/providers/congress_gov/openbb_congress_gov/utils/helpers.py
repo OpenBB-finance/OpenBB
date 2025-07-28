@@ -50,60 +50,6 @@ def check_api_key() -> str:
     return api_key
 
 
-async def get_bill_text_choices(bill_url: str) -> list:
-    """Helper function to fetch to fetch the directo download links
-    for the PDF versions of the specified bill.
-
-    This function is used by the Congressional Bills Viewer widget,
-    in OpenBB Workspace, to populate the document choices
-    for the selected bill.
-
-    Parameters
-    ----------
-    bill_url : str
-        The base URL of the bill (e.g., "https://api.congress.gov/v3/bill/119/s/1947?format=json").
-
-    Returns
-    -------
-    str
-        The text of the specified bill.
-    """
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import amake_request
-
-    api_key = check_api_key()
-    results: list = []
-    url = bill_url.replace("?", "/text?") + f"&api_key={api_key}"
-    response = await amake_request(url)
-    bill_text = response.get("textVersions", [])  # type: ignore
-
-    if not bill_text:
-        return [
-            {
-                "label": "No PDFs available for this bill.",
-                "value": "",
-            }
-        ]
-
-    for version in bill_text:
-        version_date = version.get("date")
-        formats = version.get("formats", [])
-        for fmt in formats:
-            if (doc_type := fmt.get("type")) and doc_type == "PDF":
-                doc_url = fmt.get("url")
-                doc_name = doc_url.split("/")[-1]
-                filename = f"{version_date}_{doc_name}" if version_date else doc_name
-                results.append(
-                    {
-                        "label": filename,
-                        "value": doc_url,
-                    }
-                )
-                break
-
-    return results
-
-
 def download_bills(urls: list[str]) -> list:
     """Downloads a bill's text in PDF format.
 
@@ -275,7 +221,7 @@ async def get_bills_by_type(
 
 async def get_all_bills_by_type(
     congress: Optional[int] = None,
-    bill_type: BillTypes = "hr",
+    bill_type: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ):
@@ -286,8 +232,10 @@ async def get_all_bills_by_type(
     congress : Optional[int]
         The Congress number (e.g., 118 for the 118th Congress).
         If None, defaults to the current Congress based on the current year.
-    bill_type : BillTypes
+    bill_type : Optional[str]
         The type of bill to fetch (e.g., "hr" for House bills).
+        Must be one of: "hr", "s", "hjres", "sjres", "hconres", "sconres", "hres", "sres"
+        If None, defaults to "hr".
     start_date : Optional[str]
         The start date in ISO format (YYYY-MM-DD) for filtering bills.
         If None, no start date filter is applied.
@@ -302,6 +250,13 @@ async def get_all_bills_by_type(
     # pylint: disable=import-outside-toplevel
     import math  # noqa
     from openbb_core.provider.utils.helpers import amake_requests
+
+    bill_type = "hr" if bill_type is None else bill_type.lower()
+
+    if bill_type not in BillTypes:
+        raise ValueError(
+            f"Invalid bill type: {bill_type}. Must be one of {', '.join(BillTypes)}."
+        )
 
     api_key = check_api_key()
     results: list = []
@@ -438,13 +393,14 @@ async def get_bill_choices(
     return results
 
 
-async def get_bill_text_choices(bill_url: str) -> list:
-    """Helper function to fetch to fetch the directo download links
-    for the PDF versions of the specified bill.
+async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> list:
+    """Helper function to fetch to fetch the direct download links
+    for the available text versions of the specified bill.
 
     This function is used by the Congressional Bills Viewer widget,
     in OpenBB Workspace, to populate the document choices
-    for the selected bill.
+    for the selected bill. When `is_workspace` is True,
+    it returns a list of dictionaries with 'label' and 'value' keys.
 
     Parameters
     ----------
@@ -453,8 +409,8 @@ async def get_bill_text_choices(bill_url: str) -> list:
 
     Returns
     -------
-    str
-        The text of the specified bill.
+    list[dict]
+        List of dictionaries with the results.
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
@@ -465,10 +421,40 @@ async def get_bill_text_choices(bill_url: str) -> list:
     response = await amake_request(url)
     bill_text = response.get("textVersions", [])  # type: ignore
 
+    # Return the results for non-
+    if is_workspace is False:
+
+        if not bill_text:
+            raise HTTPException(
+                status_code=404,
+                detail="No text available for this bill currently.",
+            )
+
+        text_output: list = []
+
+        for version in bill_text:
+            bill_version: dict = {}
+            formats = version.get("formats", [])
+            bill_type = version.get("type", "")
+            version_date = version.get("date", "")
+            if not formats or not version_date:
+                continue
+            bill_version["version_type"] = bill_type
+            bill_version["version_date"] = version_date
+            for fmt in formats:
+                doc_url = fmt.get("url")
+                doc_type = fmt.get("type", "").replace("Formatted ", "").lower()
+                bill_version[doc_type] = doc_url
+
+            if bill_version:
+                text_output.append(bill_version)
+
+        return text_output
+
     if not bill_text:
         return [
             {
-                "label": "No PDFs available for this bill.",
+                "label": "No text available for this bill currently.",
                 "value": "",
             }
         ]
@@ -476,11 +462,16 @@ async def get_bill_text_choices(bill_url: str) -> list:
     for version in bill_text:
         version_date = version.get("date")
         formats = version.get("formats", [])
+        version_type = version.get("type", "")
         for fmt in formats:
             if (doc_type := fmt.get("type")) and doc_type == "PDF":
                 doc_url = fmt.get("url")
                 doc_name = doc_url.split("/")[-1]
-                filename = f"{version_date}_{doc_name}" if version_date else doc_name
+                filename = (
+                    f"{version_type} - {version_date} - {doc_name}"
+                    if version_date
+                    else doc_name
+                )
                 results.append(
                     {
                         "label": filename,

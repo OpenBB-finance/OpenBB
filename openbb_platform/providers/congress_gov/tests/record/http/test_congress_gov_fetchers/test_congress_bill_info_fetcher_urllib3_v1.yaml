@@ -1,0 +1,460 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7VVTW8aMRC98yusPQf2ozQUpKpKyQWpIhHQIjXKwdgD68jYW3ucFEX898pmgSVs
+        CFXT29rzZt6bmZ3xc4MQQqKZkDLqkedwCjeUodDKHlwGA9NOYdQj2cXhvTM+QpQjFrYXx7QQLabV
+        woC1rYV+jB8/xJ4lTtNubOO02+7EJceXuTZLip8frFbRLuh6Hz9ierkUiAAn9KT/rmdPc46kTSzP
+        nHYPDLbQymrzF7UL9wPFpONCLaYCc27ok+pXQ2Xvkd823tv5CYVGc8eAX1MEz5Ql2cdmctlM2lEF
+        JymCxavQyeOENx0+GSHgEH77ukQjoJzgk2BAqOLEwByMAU5QE8yB9LcNIlqFAxgGF2TMBCj/4X0m
+        hipbaIPUU7fqs1NuOQPjGX1hqvloIxZC9XO6BYxBefmvQfqah9zGVUShpWCrKwP0uCSKLoPDrZtJ
+        wcg3qrgNwocUnaGSjMBqZxjYeumVX+LuIPIhTznWeuEEhwH3jNMkST4l2YvaB+BcGIvDUtk4B8m1
+        qsU5KXcwUC0yzQVCrp31bdj4kbvr5mhwX+cu7NfVCH45sKHbwzqMpHsl++h1yIIaXHnYdZ3VYvnX
+        jQZ15jPGZwm+wXFZtvqRCd3Zne6rfXKzB2D4fzfWluTtefYT9gOMPb3U30GSJzpDjkAZunPTn9zc
+        fh+TK4ZEz4lfEdFL3AnB7XcQHCjOkLwqjifdFZwiHC64TjNrT7Kkl3V62eXPevRu2U/KzVfr2qho
+        iMxucCrPtE9m+Ooy89ZJKdtG9a9XlKbdFyYEhVs3WhRSsLBL41CbCnRTMo/aV23dWP8BvNiwAFQI
+        AAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7d86a9aff0d-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:32 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:32 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:32 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=lRCAtfyRd3BucvCK2W3DQVTmsZFE4rnG3gnUUlqNd5c-1753740092-1.0.1.1-S4cCnSHfl01q_NBIxwcQ1_Z8PJZl47kdo8z1QCXMo8kI9ACp2OMOdGrNbL89w8S0S4NAkOLSCS1efWAN6cDSFO8fcidieJA9QX.hY2k8lfU;
+        path=/; expires=Mon, 28-Jul-25 22:31:32 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac726fopfdg1lfad4g
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4871'
+      X-Vcap-Request-Id:
+      - 126412b5-6b7a-4345-44a2-7639e17419e5
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947/cosponsors?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WTW0/CMBzF3/kUTZ83unGVJcYYeUFEEtT4QHwooxuV0tZeNMTw3U03riUIxj01
+        Paen/55f9l0BAACYCi0F10JpmIBxsee+7+2qcE2oyC2dkt4UJgAOoiiOm3UYHJoyqrR5xAviPA9U
+        4yODZWyjPxFeBQOr5uJLz2kAnB+MR+Ft/80/RvVQ0ZxyzO42w8IEGGWJZ2R4d/822k+TWJmlc4x8
+        ZVPEjMouNkVKLao1w6gVRo0js1lbbvu+ZBVzwswYqROEsKTVVPBcEa2rufhEn3W0IIsJUWhd5E0m
+        1AKb63ctONxmrYI/0Gi3fqVxT7LsPA2i5owsA+DcYNwNh6MLWWSY6V9hlMknUXQvRtEOo6uTKIaj
+        f6Jot06gKFZvZTiU2BVgqOAw2UMDU2G5gQmoBd5ej6fMTinPX6mZTRX+4nf7f12tsocbKvJhiTaH
+        0RPK2KN1g7rnxJ1Ge++lhfq8lEUH2hdezlfgbCiOO0gjF33QwcFbymPFCHHHkwzhZjMElpLRtKgI
+        +SlluHPtOl5VVj86D0dOjwQAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7db79e78b90-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:32 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:32 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:32 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947/cosponsors>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=eX1P8hklyib6T8ukIOIIlWTVbpJvx.W9mw1s5T5SnsI-1753740092-1.0.1.1-LY_0Zun1r2l32RLRDjVKfFX0hGVZLUPe6Ne0Xju3oMQMnrhXeNaiJ2y7Mn26dTpveGHu7QgWJnLoPGXORL7Cmad3BEYIk8K5XcQ_p1KCSB0;
+        path=/; expires=Mon, 28-Jul-25 22:31:32 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac72aaobbi0dj664u0
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4870'
+      X-Vcap-Request-Id:
+      - 588eacdd-8235-4a5b-4614-b4d48d505f59
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947/subjects?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA12QUUvDMBSF3/crQp63Za3TsoKI4KMM0fmi+HCb3dWMNInJTWGM/ndpyrTd6/nO
+        OdxzzzPGGOMOamWAlDW8ZOekJV3aaIiXLEtSNx/cHn8iBppaK6X1NjYVel4ynm3WBZ9P6e7ksGfh
+        Grx73evfRC6UQoBTS2lN7TGEZW1b0d6I3iaybCOC6KsfDtY3QPfHYM247RJLJ2SbK0Ro6HIEOKeV
+        TJPFdctQ3rsSmWwPsTqipDAdr7FWQQOpFt/+DZ9fo1JntZKnR48wiSZmoElHvcRKK8mewewDA7Nn
+        W6DoQbNXDDZ6iePXpWR0eyB8Akr5fJXfLlbFIl/v8lWZF2V+98H/At0wZNb9AkCvkHv1AQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7dd8effef3f-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:33 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:33 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:33 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947/subjects>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=QfGVvN0qQdxtXnf.rVntfKz4GgAQRCIs15KcehiyqnA-1753740093-1.0.1.1-K1u914Za6dm_G71OGZkHR_Q3HBD2gmNKfCJ5gocmqFEDSzjwode11Mz8Z.It4yRFWyLTTg8tuVWs_NhDWVsAR6kDVD7Rs6tjbX4NVyZT4_U;
+        path=/; expires=Mon, 28-Jul-25 22:31:33 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac72ctrlhbbvkufgjg
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4869'
+      X-Vcap-Request-Id:
+      - bfb54c2d-e855-401f-5067-0198a938e8f9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947/committees?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4VRsW7CMBDd+QrLM+Ak0FZEqjqwdyjp0qqDcY7gKrZT+4KEUP69skOAuEj1dLr3
+        7t2959OEEEKoMEpJRABHc/IZev6dLlVgcYHyIFFGrPvsy1TJEWhOaJZkD7PkcZYsiyzNs2WeLD7o
+        9P6M5irMvMEOrIWSFIb+YXajztdYioo9V1uwXmUD2t8QEYYda6MUWAFTshEStC+4LklhuXaNschR
+        Gk3WQ0KxjDs6BLU2ZRBzTqgkiTl4bAK6Qa5LqasYb23t4T1i43LGeCPnwujKgnPzyhzYYcEuP8Rc
+        cMP6TS87YxXH529n9DWhPplzIrThldTBBc1vPokK02qkOUlDqzuzLfy04HBM3cq6fm2HPNPV8unG
+        QkCLs0UXA+//e/M0lqYr5piXHnma3t7bj4UT0lUEIWgcjuBNU0sRLLNYpRf3rGtm3aT7BVyDgr0J
+        AwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7df6c25d82e-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:33 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:33 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:33 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947/committees>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=nHKUtWJbOTmqLWdxe_Aq2Zce371jaF_pz80zD3xDyh8-1753740093-1.0.1.1-isb60hSq4f5NaFaJ_ZMtF1Bsubaqi16SgHSMbFQmOh7nSRdrV5hL9lpQ0tJtyOlGY.YiMGw97Xpw35bYdvNdmJNdrDNnqgUsQnHt4WKl740;
+        path=/; expires=Mon, 28-Jul-25 22:31:33 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac72f9agh4194l3ia0
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4868'
+      X-Vcap-Request-Id:
+      - 0718865c-a8ab-470b-6cb9-7f48e9f5ac18
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947/actions?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WTP2/CMBDFdz7FyTPFgf4TSFUHulSqOkA7VR2Mc1BXsZ3al7YI8d0rmxCSAIJm
+        suKXd+9+d1l1AACYkKSs8WwEb/FFeFbVqSZ5EIRsBGyQDK4vkpuL5Ip1mzpptVZEiE23w67VV0bo
+        6Du2WqOT2IWpVGjCQZgUXpwwPreORAgB422NVvHKzi89oR7bNJp6L3WSHNMWLguiD6LcjzgXuepJ
+        axYOve8t7Df/vuRVT9yjEYR843g/t04Luvv01rA983XjzXsLk7eFkziNOdnoAJYKyTSWbPqvW26E
+        vxS0ExQp0I+SGLE5nKNzmAJZoA/ccYMS4knUvfZ4aZnHVI+GnJ1Ef5HtwtWCHdyf7Uj6SbI3kbNX
+        7DQ7uSkz7B7H+qRmTrgl2DmMy3Gfxzh2nhYSU1AGyun8k1KnthIsFwtlIu1GM0zawoSKg04tDnP4
+        VaCnpnSmsuy50DN0Ee7w6raWKN6+lIl8++L19PoHGe/3h9zzYN1Y+249b4kxROgPW1eEhrYhRJ5n
+        SsaWedtlYx5Uu99q3Vn/AbYTTJ2pBAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7e23a91c895-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:34 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:33 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:33 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947/actions>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=zCcob6_JyGGJacyKVdQAN9nu.89OlDM2vUwKzewrOJo-1753740094-1.0.1.1-YF4VyfjpweSLbdUN3KH1InXhhJcqTvepr9D70uoiUMGBBEQug19_2ONnCG_bhfTN.u3LI0PLABh_2JdElPdBQiolpZOrSYpukcR2WzfZMy4;
+        path=/; expires=Mon, 28-Jul-25 22:31:34 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac72iopk02c3asbd5g
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4867'
+      X-Vcap-Request-Id:
+      - ead26c6a-a28e-4734-6289-13e35f371850
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill/119/s/1947/titles?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2STW/bMAyG7/0VhE8bkNRxPtrFwDAU6aWXpoCTHTbsoMhMrMEWVYnKmhb974OU
+        5qMeurXADjvsZpCPXr5+yYcTAIDEiJXSghXpJIeHWIt1SV5zksMwlh47W9rirUfHz9GFqutr3yzQ
+        Jjkk2Xh4nnSed2cbg6Hn2o25rUO9YjYuT1Nh1KkkvbLo3OmK1ul6kAYszbJx6tIg/WlJthH88bsj
+        fay2exYtZONWi1HzzoQwplYy/nLaVtmKByp2nv07K64x6H/d84cQDkR4PJ3MpjfzAi4kAy2h3+uP
+        jqYc2J2lS+VMLTYwiwIvkRMqAz0ctQBvSsF4KThqhWHd3nm3N55lWd4b5Nn4S7J/8Nh5yXzcE97x
+        Z7ROkX4allwVbT8t8Fo0W1CzpdJLLEFpKFAHP52/FFBRkeVtPO/cexAODuP+lFfWy14R2Fk36896
+        w3w0yLPRPxiYMeSUXgFXCBNfs1rHCwahS5hZUWLIcSqZjHdwsxPmypJfVTDXyJWSooaCrWBcKXT/
+        w39t+BcQVIAJjKVKLRTHNRQoLbKwm5BiKFxpRqvIxqX8QkyoadBKhKWlBoTniqy6DzuV244SNdDT
+        BsWtF9LX7C0CGbRx2S54DbpzrRhLKFgwuk4s4Z2svVNrBJSkqVES7kljZ+/lh2C0bme1pRCgJVkg
+        rtCC8daQQ3f627OYLpcqeo6X8bazOHvDUQw/5P3+8VHEr28njz8BfyDqPsIGAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7e54e47da91-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:34 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:34 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:34 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill/119/s/1947/titles>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=ypMMDm8JRU.Zxf.9xEpvb7uQsWPMay6qnUYSGnX2DKU-1753740094-1.0.1.1-Wu5WE6LQFHz41JZGjeCfsTVwJ1NTEkWi8aNdGT5tuD6stLvsH4zTT1rESywGYEAwHsNCkM3cQ3.yQwtUNdNaG3lfXAYnv7FYu27Qc6h9qRQ;
+        path=/; expires=Mon, 28-Jul-25 22:31:34 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac72mjqd9n66ga5gsg
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4866'
+      X-Vcap-Request-Id:
+      - fe6b1a80-4a0d-4562-4d1a-7a9c1ce09314
+    status:
+      code: 200
+      message: OK
+version: 1
