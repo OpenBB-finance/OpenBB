@@ -13,13 +13,14 @@ class BillsState(metaclass=SingletonMeta):
     """Singleton class to manage application cache."""
 
     def __init__(self):
+        """Initialize the BillsState."""
         if not hasattr(self, "bills"):
             self.bills = {}
 
 
 def year_to_congress(year: int) -> int:
     """
-    Maps a year (1935-present) to the corresponding U.S. Congress number.
+    Map a year (1935-present) to the corresponding U.S. Congress number.
 
     Raises ValueError if the year is before 1935.
     """
@@ -51,7 +52,7 @@ def check_api_key() -> str:
 
 
 def download_bills(urls: list[str]) -> list:
-    """Downloads a bill's text in PDF format.
+    """Download a bill's text in PDF format.
 
     This helper is not intended to be used directly.
 
@@ -146,7 +147,7 @@ async def get_bills_by_type(
     offset: Optional[int] = 0,
     sort_by: Literal["asc", "desc"] = "desc",
 ) -> Union[dict, list]:
-    """Fetches bills of a specific type for a given Congress number.
+    """Fetch bills of a specific type for a given Congress number.
 
     Results are sorted by date of the latest action on the bill.
 
@@ -230,7 +231,7 @@ async def get_all_bills_by_type(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ):
-    """Fetches all bills of a specific type for a given Congress number.
+    """Fetch all bills of a specific type for a given Congress number.
 
     Parameters
     ----------
@@ -399,8 +400,7 @@ async def get_bill_choices(
 
 
 async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> list:
-    """Helper function to fetch to fetch the direct download links
-    for the available text versions of the specified bill.
+    """Fetch the direct download links for the available text versions of the specified bill.
 
     This function is used by the Congressional Bills Viewer widget,
     in OpenBB Workspace, to populate the document choices

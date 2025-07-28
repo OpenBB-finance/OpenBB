@@ -72,6 +72,7 @@ class CongressBillInfoFetcher(
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressBillInfoQueryParams:
+        """Transform the query parameters into a CongressBillInfoQueryParams object."""
         return CongressBillInfoQueryParams(**params)
 
     @staticmethod
