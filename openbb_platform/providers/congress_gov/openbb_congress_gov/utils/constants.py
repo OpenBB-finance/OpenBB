@@ -1,9 +1,5 @@
 """US Congress Constants."""
 
-from typing import Annotated, Optional
-
-from fastapi import Query
-
 base_url = "https://api.congress.gov/v3/"
 
 BillTypes: list = ["hr", "s", "hjres", "sjres", "hconres", "sconres", "hres", "sres"]
