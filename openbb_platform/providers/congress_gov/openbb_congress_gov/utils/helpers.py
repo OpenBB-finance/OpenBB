@@ -139,7 +139,7 @@ def download_bills(urls: list[str]) -> list:
 # pylint: disable=R0917
 async def get_bills_by_type(
     congress: Optional[int] = None,
-    bill_type: BillTypes = "hr",
+    bill_type: str = "hr",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     limit: Optional[int] = None,
@@ -155,7 +155,7 @@ async def get_bills_by_type(
     congress : Optional[int]
         The Congress number (e.g., 118 for the 118th Congress).
         If None, defaults to the current Congress based on the current year.
-    bill_type : BillTypes
+    bill_type : str
         The type of bill to fetch (e.g., "hr" for House bills).
     start_date : Optional[str]
         The start date in ISO format (YYYY-MM-DD) for filtering bills.
@@ -183,6 +183,11 @@ async def get_bills_by_type(
         datetime,
     )
     from openbb_core.provider.utils.helpers import amake_request
+
+    if bill_type and bill_type not in BillTypes:
+        raise ValueError(
+            f"Invalid bill type: {bill_type}. Must be one of {', '.join(BillTypes)}."
+        )
 
     api_key = check_api_key()
 
