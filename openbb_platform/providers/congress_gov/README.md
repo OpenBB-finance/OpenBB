@@ -1,25 +1,32 @@
 # Congress.gov Provider
 
-This provider integrates with the Congress.gov API and Federal Register API to provide access to U.S. legislative data and presidential documents.
+This provider integrates with the Congress.gov API to provide access to U.S. legislative data and text.
 
 ## Features
 
 ### Congress Bills
-- Fetch bills from the U.S. Congress
-- Filter by congress session, bill type, date range
-- Sort by update date
-- Support for pagination
 
-### Bill Summaries  
-- Get summaries for specific bills
-- Detailed bill information including action dates and descriptions
-- Full text content of bill summaries
+- Fetch lists of bills from the U.S. Congress.
+- Filter by congress session, bill type, date range.
 
-### Presidential Documents
-- Access presidential documents from the Federal Register
-- Filter by president and document type
-- Support for executive orders, memoranda, proclamations, and more
-- No API key required for this endpoint
+### Bill Summaries & Metadata
+
+- Get summaries of, and metadata for, a specific bill.
+- Lists all actions, sponsors, committees, related bills, and titles.
+- Returned as both a raw JSON object and formatted Markdown text.
+
+### Bill Text URLs and Downloads
+
+- Get URLs for different versions and file formats.
+- Download full bill text as a base64-encoded string.
+
+### OpenBB Workspace Application
+
+With this extension installed, along with `openbb-platform-api`,
+an OpenBB Workspace App is added to your backend.
+
+The application provides a PDF viewer, bill summaries and metadata as rendered Markdown,
+and a linked query tool for finding and reading legislation.
 
 ## Installation
 
@@ -27,6 +34,12 @@ This provider is part of the OpenBB Platform. Install it using:
 
 ```bash
 pip install openbb-congress-gov
+```
+
+The Workspace Application can be launched as a standalone, with only `openbb-congress-gov` and `openbb-platform-api` installed. Launch it from the terminal command line with:
+
+```sh
+openbb-api
 ```
 
 ## Configuration
@@ -37,92 +50,83 @@ To use the Congress Bills and Bill Summaries endpoints, you need a Congress.gov 
 
 1. Go to https://api.congress.gov/sign-up/
 2. Fill out the registration form
-3. Agree to the terms of service  
+3. Agree to the terms of service
 4. You will receive an API key via email
 
 The API key is free and provides access to all Congress.gov data.
 
-### Setting up credentials
+### Entering Credentials
+
+Add the credential into OpenBB Platform from any of:
+
+- Entry in `user_settings.json`
+
+```json
+{
+    "credentials" : {
+        "congress_gov_api_key": "YOUR KEY"
+    }
+}
+```
+
+- Set environment variable
+
+```env
+CONGRESS_GOV_API_KEY = "YOUR KEY"
+```
+
+- Add to the current session only
 
 ```python
-import openbb
-openbb.account.credentials.congress_api_key = "YOUR_API_KEY_HERE"
+from openbb import obb
+
+obb.user.credentials.congress_gov_api_key = "YOUR KEY"
 ```
+
+## Coverage
+
+All endpoints are under the `obb.uscongress` path:
+
+```python
+In [1]: from openbb import obb
+In [2]: obb.uscongress
+Out[2]:
+/uscongress
+    bill_info
+    bill_text
+    bill_text_urls
+    bills
+```
+
+### Bill Text
+
+The `bill_text` endpoint is a POST request from the API, and expects a dictionary in the body of the request.
+
+```json
+{
+    "urls": ["https://url-to-PDF-document"]
+}
+```
+
 
 ## Usage Examples
 
 ### Fetching Recent Bills
 
 ```python
-import openbb
+from openbb import obb
 
 # Get the 10 most recently updated bills
-bills = openbb.government.congress_bills(limit=10, sort="updateDate+desc")
+bills = obb.uscongress.bills(limit=10)
 ```
 
 ### Getting Bill Summaries
 
-```python
-# Get summaries for a specific bill
-summaries = openbb.government.congress_bill_summaries(
-    congress=118,
-    bill_type="hr", 
-    bill_number="1"
-)
-```
-
-### Presidential Documents
+Reference individual bills by either their base URL (returned in the `obb.uscongress.bills` response),
+or by the concatenated bill number.
 
 ```python
-# Get recent executive orders from President Biden
-docs = openbb.government.presidential_documents(
-    president="joe-biden",
-    document_types="executive_order",
-    per_page=20
-)
+bill_info = obb.uscongress.bill_info(bill_url="119/hr/1")
 ```
 
-## API Endpoints
-
-- **Congress Bills**: `https://api.congress.gov/v3/bill`
-- **Bill Summaries**: `https://api.congress.gov/v3/bill/{congress}/{type}/{number}/summaries`  
-- **Presidential Documents**: `https://www.federalregister.gov/api/v1/documents.json`
-
-## Data Models
-
-### CongressBillsData
-- congress: Congress session number
-- number: Bill number
-- bill_type: Type of bill (HR, S, etc.)
-- title: Bill title
-- latest_action_date: Date of latest action
-- latest_action_text: Description of latest action
-- origin_chamber: Chamber where bill originated
-- update_date: Last update date
-- url: Link to bill on congress.gov
-
-### CongressBillSummariesData  
-- action_date: Date of summary action
-- action_desc: Description of summary action
-- text: Summary text content
-- update_date: Date summary was updated
-- version_code: Summary version code
-
-### PresidentialDocumentsData
-- title: Document title
-- document_type: Type of document
-- document_number: Document number
-- html_url: Link to HTML version
-- pdf_url: Link to PDF version
-- publication_date: Date published
-- abstract: Document abstract
-- excerpts: Document excerpts
-
-## Rate Limits
-
-- Congress.gov API: No specific rate limits documented
-- Federal Register API: No authentication required, reasonable use expected
-
-## Support
-
-For issues with this provider, please open an issue on the OpenBB Platform repository.
+See the function signatures and docstrings for parameters and detailed descriptions.

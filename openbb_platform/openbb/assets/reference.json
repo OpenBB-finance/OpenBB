@@ -14,10 +14,10 @@
                 "equity@1.4.2",
                 "etf@1.4.2",
                 "fixedincome@1.4.4",
-                "government@1.4.2",
                 "index@1.4.2",
                 "news@1.4.2",
-                "regulators@1.4.3"
+                "regulators@1.4.3",
+                "uscongress@1.0.0"
             ],
             "openbb_provider_extension": [
                 "benzinga@1.4.2",
@@ -3210,7 +3210,7 @@
                     },
                     {
                         "name": "date",
-                        "type": "Union[Union[date, str], list[Union[date, str]]]",
+                        "type": "Union[Union[str, date], list[Union[str, date]]]",
                         "description": "A specific date to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": null,
                         "optional": true,
@@ -8441,6 +8441,9 @@
             },
             "model": "STIR",
             "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                },
                 "model": "STIR"
             }
         },
@@ -8549,6 +8552,9 @@
             },
             "model": "LTIR",
             "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                },
                 "model": "LTIR"
             }
         },
@@ -10315,6 +10321,9 @@
             },
             "model": "ImmediateInterestRate",
             "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                },
                 "model": "ImmediateInterestRate"
             }
         },
@@ -11174,16 +11183,16 @@
         },
         "/economy/port_volume": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint has been moved and will be removed in a future version. Use, `/economy/shipping/port_volume`, instead. Deprecated in OpenBB Platform V4.4 to be removed in V4.5."
             },
             "description": "Get average dwelling times and TEU volumes from the top ports.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.port_volume(provider='econdb')\n# Get daily port calls and estimated trading volumes for specific ports Get the list of available ports with `openbb shipping port_info`\nobb.economy.port_volume(provider='imf', port_code=rotterdam,singapore)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "start_date",
-                        "type": "Union[date, str]",
+                        "type": "date",
                         "description": "Start date of the data, in YYYY-MM-DD format.",
                         "default": null,
                         "optional": true,
@@ -11227,7 +11236,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['econdb']]",
+                        "type": "Optional[Literal['econdb', 'imf']]",
                         "description": "Provider name."
                     },
                     {
@@ -11315,10 +11324,183 @@
                         "optional": true,
                         "choices": null
                     }
+                ],
+                "imf": [
+                    {
+                        "name": "country_code",
+                        "type": "str",
+                        "description": "3-letter ISO country code of the country where the port is located.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls",
+                        "type": "int",
+                        "description": "Total number of ships entering the port at this date. This is the sum of portcalls_container, portcalls_dry_bulk, portcalls_general_cargo, portcalls_roro and portcalls_tanker.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls_tanker",
+                        "type": "int",
+                        "description": "Number of tankers transiting through the chokepoint or making a port call.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls_container",
+                        "type": "int",
+                        "description": "Number of containers transiting through the chokepoint or making a port call.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls_general_cargo",
+                        "type": "int",
+                        "description": "Number of general cargo ships transiting through the chokepoint or making a port call.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls_dry_bulk",
+                        "type": "int",
+                        "description": "Number of dry bulk carriers transiting through the chokepoint or making a port call.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "portcalls_roro",
+                        "type": "int",
+                        "description": "Number of Ro-Ro ships transiting through the chokepoint or making a port call.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of all ships entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo, import_roro and import_tanker.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_cargo",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of import_container, import_dry_bulk, import_general_cargo and import_roro.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_tanker",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of tankers entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_container",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of all container ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_general_cargo",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of general cargo ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_dry_bulk",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of dry bulk carriers entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "imports_roro",
+                        "type": "float",
+                        "description": "Total import volume (in metric tons) of Ro-Ro ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of all ships entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo, export_roro and export_tanker.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_cargo",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of all ships (excluding tankers) entering the port at this date. This is the sum of export_container, export_dry_bulk, export_general_cargo and export_roro.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_tanker",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of tankers entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_container",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of all container ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_general_cargo",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of general cargo ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_dry_bulk",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of dry bulk carriers entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "exports_roro",
+                        "type": "float",
+                        "description": "Total export volume (in metric tons) of Ro-Ro ships entering the port at this date.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
                 ]
             },
             "model": "PortVolume",
             "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                },
                 "model": "PortVolume"
             }
         },
@@ -26995,7 +27177,7 @@
                 "sec": [
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
                         "default": null,
                         "optional": true,
@@ -27581,7 +27763,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true,
@@ -27613,7 +27795,7 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true,
@@ -27621,7 +27803,7 @@
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true,
@@ -27629,7 +27811,7 @@
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true,
@@ -27637,7 +27819,7 @@
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true,
@@ -27645,7 +27827,7 @@
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true,
@@ -27653,7 +27835,7 @@
                     },
                     {
                         "name": "size",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true,
@@ -29293,7 +29475,7 @@
                     },
                     {
                         "name": "form",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Form type.",
                         "default": null,
                         "optional": true,
@@ -36629,7 +36811,7 @@
                 "sec": [
                     {
                         "name": "date",
-                        "type": "Union[Union[date, str], str]",
+                        "type": "Union[Union[str, date], str]",
                         "description": "A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing.",
                         "default": null,
                         "optional": true,
@@ -37364,7 +37546,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The rate tenor unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37380,7 +37562,7 @@
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The reset date unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37436,7 +37618,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -37452,7 +37634,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true,
@@ -41231,185 +41413,6 @@
                 "model": "MortgageIndices"
             }
         },
-        "/government/us/congress_bills": {
-            "deprecated": {
-                "flag": null,
-                "message": null
-            },
-            "description": "Get Congress Bills Data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.government.us.congress_bills(provider='congress_gov')\nobb.government.us.congress_bills(start_date=2025-01-01, end_date=2025-01-31, provider='congress_gov')\n```\n\n",
-            "parameters": {
-                "standard": [],
-                "congress_gov": [
-                    {
-                        "name": "format",
-                        "type": "Literal['json', 'xml']",
-                        "description": "The data format. Value can be xml or json.",
-                        "default": "json",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "limit",
-                        "type": "int",
-                        "description": "The number of records returned. The maximum limit is 250.",
-                        "default": 100,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "offset",
-                        "type": "int",
-                        "description": "The starting record returned. 0 is the first record.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "sort",
-                        "type": "Literal['asc', 'desc']",
-                        "description": "Sort by update date in Congress.gov.",
-                        "default": "asc",
-                        "optional": true,
-                        "choices": null
-                    }
-                ]
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "list[CongressBills]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['congress_gov']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[list[Warning_]]",
-                        "description": "list of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [],
-                "congress_gov": [
-                    {
-                        "name": "congress",
-                        "type": "int",
-                        "description": "The congress session number.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "latestAction",
-                        "type": "LatestAction",
-                        "description": "Latest action information for the bill.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "number",
-                        "type": "str",
-                        "description": "The bill number.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "origin_chamber",
-                        "type": "str",
-                        "description": "The chamber where the bill originated.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "origin_chamber_code",
-                        "type": "str",
-                        "description": "The chamber code where the bill originated.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "title",
-                        "type": "str",
-                        "description": "The title of the bill.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "type",
-                        "type": "str",
-                        "description": "The type of bill (e.g., HR, S).",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "update_date",
-                        "type": "date",
-                        "description": "The date the bill was last updated.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "update_date_including_text",
-                        "type": "str",
-                        "description": "The date and time the bill text was last updated.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "url",
-                        "type": "str",
-                        "description": "URL to the bill on congress.gov.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "CongressBills",
-            "openapi_extra": {
-                "model": "CongressBills"
-            }
-        },
         "/index/price/historical": {
             "deprecated": {
                 "flag": null,
@@ -43362,7 +43365,7 @@
                 "standard": [
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Central Index Key (CIK) for the requested entity.",
                         "default": null,
                         "optional": true,
@@ -43447,7 +43450,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true,
@@ -44141,6 +44144,401 @@
             "openapi_extra": {
                 "model": "COT"
             }
+        },
+        "/uscongress/bills": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get and filter lists of Congressional Bills.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.uscongress.bills(provider='congress_gov')\nobb.uscongress.bills(start_date=2025-01-01, end_date=2025-01-31, provider='congress_gov')\n# Get all bills of type 's' (Senate) for the 118th Congress.\nobb.uscongress.bills(bill_type=s, congress=118, limit=0, provider='congress_gov')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "congress",
+                        "type": "int",
+                        "description": "Congress number (e.g., 118 for the 118th Congress). The 103rd Congress started in 1993, which is the earliest date supporting full text versions. Each Congress spans two years, starting in odd-numbered years.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bill_type",
+                        "type": "str",
+                        "description": "Bill type (e.g., 'hr' for House bills).\n\nMust be one of: hr, s, hjres, sjres, hconres, sconres, hres, sres.\n\nBills\n-----\n\nA bill is the form used for most legislation, whether permanent or temporary, general or special, public or private.\n\nA bill originating in the House of Representatives is designated by the letters \u201cH.R.\u201d,\nsignifying \u201cHouse of Representatives\u201d, followed by a number that it retains throughout all its parliamentary stages.\n\nBills are presented to the President for action when approved in identical form\nby both the House of Representatives and the Senate.\n\nJoint Resolutions\n-----------------\n\nJoint resolutions may originate either in the House of Representatives or in the Senate.\n\nThere is little practical difference between a bill and a joint resolution. Both are subject to the same procedure,\nexcept for a joint resolution proposing an amendment to the Constitution.\n\nOn approval of such a resolution by two-thirds of both the House and Senate,\nit is sent directly to the Administrator of General Services for submission to the individual states for ratification.\n\nIt is not presented to the President for approval.\nA joint resolution originating in the House of Representatives is designated \u201cH.J.Res.\u201d followed by its individual number.\nJoint resolutions become law in the same manner as bills.\n\nConcurrent Resolutions\n----------------------\n\nMatters affecting the operations of both the House of Representatives and Senate\nare usually initiated by means of concurrent resolutions.\n\nA concurrent resolution originating in the House of Representatives is designated \u201cH.Con.Res.\u201d\nfollowed by its individual number.\n\nOn approval by both the House of Representatives and Senate,\nthey are signed by the Clerk of the House and the Secretary of the Senate.\n\nThey are not presented to the President for action.\n\nSimple Resolutions\n------------------\n\nA matter concerning the operation of either the House of Representatives or Senate\nalone is initiated by a simple resolution.\n\nA resolution affecting the House of Representatives is designated \u201cH.Res.\u201d followed by its number.\n\nThey are not presented to the President for action.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format. Filters bills by the last updated date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format. Filters bills by the last updated date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return. When None, default sets to 100 (max 250). Set to 0 for no limit (must be used with 'bill_type' and 'congress').",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "offset",
+                        "type": "int",
+                        "description": "The starting record returned. 0 is the first record.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "sort_by",
+                        "type": "Literal['asc', 'desc']",
+                        "description": "Sort by update date. Default is latest first.",
+                        "default": "desc",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[CongressBills]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['congress_gov']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "update_date",
+                        "type": "date",
+                        "description": "The date the bill was last updated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "latest_action_date",
+                        "type": "date",
+                        "description": "The date of the latest action on the bill.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bill_url",
+                        "type": "str",
+                        "description": "Base URL to the bill for the congress.gov API.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "congress",
+                        "type": "int",
+                        "description": "The congress session number.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "bill_number",
+                        "type": "int",
+                        "description": "The bill number.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "origin_chamber",
+                        "type": "str",
+                        "description": "The chamber where the bill originated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "origin_chamber_code",
+                        "type": "str",
+                        "description": "The chamber code where the bill originated.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "bill_type",
+                        "type": "str",
+                        "description": "The type of bill (e.g., HR, S).",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the bill.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "latest_action",
+                        "type": "str",
+                        "description": "Latest action information for the bill.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "update_date_including_text",
+                        "type": "datetime",
+                        "description": "The date and time the bill text was last updated.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CongressBills",
+            "openapi_extra": {
+                "model": "CongressBills"
+            }
+        },
+        "/uscongress/bill_text_urls": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Helper function to populate document choices for a specific bill.\n\n This function is used by the Congressional Bills Viewer widget, in OpenBB Workspace,\n to populate PDF document choices for the selected bill.\n\n When 'is_workspace' is False (default), it returns a list of the available text versions\n of the specified bill and their download links for the different formats.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.uscongress.bill_text_urls(provider='congress_gov', bill_url='https://api.congress.gov/v3/bill/119/s/1947?')\nobb.uscongress.bill_text_urls(provider='congress_gov', bill_url='119/s/1947')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "bill_url",
+                        "type": "str",
+                        "description": "The base URL of the bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json').",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "provider",
+                        "type": "str",
+                        "description": "The provider name, always 'congress_gov'. This is a dummy parameter.",
+                        "default": "congress_gov",
+                        "optional": true
+                    },
+                    {
+                        "name": "is_workspace",
+                        "type": "bool",
+                        "description": "Whether the request is coming from the OpenBB Workspace.",
+                        "default": "",
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": "list",
+            "data": {},
+            "model": null,
+            "openapi_extra": {
+                "widget_config": {
+                    "name": "Congressional Bill Viewer",
+                    "description": "View current and historical U.S. Congressional Bills.",
+                    "category": "Government",
+                    "subCategory": "Congress",
+                    "type": "multi_file_viewer",
+                    "searchCategory": "Congress",
+                    "widgetId": "uscongress_bill_text_congress_gov_obb",
+                    "endpoint": "/api/v1/uscongress/bill_text",
+                    "params": [
+                        {
+                            "paramName": "urls",
+                            "type": "endpoint",
+                            "optionsEndpoint": "/api/v1/uscongress/bill_text_urls",
+                            "optionsParams": {
+                                "bill_url": "$bill_url",
+                                "is_workspace": true
+                            },
+                            "show": false,
+                            "multiSelect": true,
+                            "roles": [
+                                "fileSelector"
+                            ]
+                        },
+                        {
+                            "paramName": "is_workspace",
+                            "value": true,
+                            "show": false
+                        },
+                        {
+                            "label": "Bill URL",
+                            "description": "Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json'). Alternatively, you can enter a bill number (e.g., '119/s/1947'). Create a group on the 'Bill URL' field of the 'Congressional Bills' widget and click on the cell to view the available documents.",
+                            "show": true,
+                            "paramName": "bill_url",
+                            "value": "119/hr/1"
+                        }
+                    ],
+                    "refecthInterval": false
+                }
+            }
+        },
+        "/uscongress/bill_info": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get summary, status, and other metadata for a specific bill.\n\nEnter the URL of the bill as: https://api.congress.gov/v3/bill/119/hr/131?\n\nURLs for bills can be found from the `uscongress.bills` endpoint.\n\nThe raw JSON response from the API will be returned along with a formatted\ntext version of the key information from the raw response.\n\nIn OpenBB Workspace, this command returns as a Markdown widget.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.uscongress.bill_info(provider='congress_gov', bill_url=https://api.congress.gov/v3/bill/119/s/1947?)\n# The bill URL can be shortened to just the bill number (e.g., '119/s/1947').\nobb.uscongress.bill_info(bill_url=119/s/1947, provider='congress_gov')\n```\n\n",
+            "parameters": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "bill_url",
+                        "type": "str",
+                        "description": "Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json'). Alternatively, you can enter a bill number (e.g., '119/s/1947').",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[CongressBillInfo]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['congress_gov']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [],
+                "congress_gov": [
+                    {
+                        "name": "markdown_content",
+                        "type": "str",
+                        "description": "Aggregated metadata for the bill in Markdown format.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "raw_data",
+                        "type": "dict[str, Any]",
+                        "description": "Raw JSON data from the collected bill information.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CongressBillInfo",
+            "openapi_extra": {
+                "model": "CongressBillInfo"
+            }
+        },
+        "/uscongress/bill_text": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Download the text of a specific bill in PDF format.\n\n This endpoint accepts a list of URLs to download and returns the base64-encoded\n PDF content along with the filename.\n\n In OpenBB Workspace, this command returns as a multi-file viewer widget.\n\n This command outputs only the results array of the OBBject.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.uscongress.bill_text(provider='congress_gov', urls=['https://www.congress.gov/119/bills/hr1/BILLS-119hr1eh.pdf'])\n```\n\n",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "list[Data]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": null,
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[list[Warning_]]",
+                        "description": "list of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {},
+            "model": null,
+            "openapi_extra": {
+                "widget_config": {
+                    "exclude": true
+                },
+                "model": "CongressBillText"
+            }
         }
     },
     "routers": {
@@ -44171,9 +44569,6 @@
         "/fixedincome": {
             "description": "Fixed Income market data."
         },
-        "/government": {
-            "description": "Government data."
-        },
         "/index": {
             "description": "Indices data."
         },
@@ -44182,6 +44577,9 @@
         },
         "/regulators": {
             "description": "Financial market regulators data."
+        },
+        "/uscongress": {
+            "description": "Data connector to Congress.gov API."
         }
     }
 }
