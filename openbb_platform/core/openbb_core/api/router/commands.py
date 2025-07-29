@@ -53,20 +53,25 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     new_parameter_list = []
     var_kw_pos = len(parameter_list)
     for pos, parameter in enumerate(parameter_list):
+        var_kind = None
+        var_name = None
+        var_annotation = None
         if parameter.name == "cc" and parameter.annotation == CommandContext:
             continue
 
         if parameter.kind == Parameter.VAR_KEYWORD:
-            # We track VAR_KEYWORD parameter to insert the any additional
-            # parameters we need to add before it and avoid a SyntaxError
             var_kw_pos = pos
+            var_kind = Parameter.POSITIONAL_OR_KEYWORD
+            var_default = None
+            var_name = parameter.name
+            var_annotation = Optional[Dict[str, Any]]
 
         new_parameter_list.append(
             Parameter(
-                parameter.name,
-                kind=parameter.kind,
-                default=parameter.default,
-                annotation=parameter.annotation,
+                name=var_name if var_name else parameter.name,
+                kind=var_kind if var_kind else parameter.kind,
+                default=parameter.default if not var_kind else var_default,
+                annotation=var_annotation if var_annotation else parameter.annotation,
             )
         )
 
