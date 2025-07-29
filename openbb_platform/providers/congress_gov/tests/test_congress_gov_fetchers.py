@@ -12,6 +12,11 @@ from openbb_core.app.service.user_service import UserService
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
+test_credentials = (
+    test_credentials
+    if test_credentials and test_credentials.get("congress_gov_api_key")
+    else {"congress_gov_api_key": "MOCK_API_KEY"}
+)
 
 
 @pytest.fixture(scope="module")
