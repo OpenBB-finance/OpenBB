@@ -17,6 +17,6 @@
 ./**/node_modules
 ./frontend-components/**
 ./openbb_platform/providers/econdb/openbb_econdb/utils/helpers.py
-./openbb_platform/openbb/package/**
+./openbb_platform/core/openbb/package/**
 ./openbb_platform/providers/imf/openbb_imf/utils/constants.py
 ./openbb_platform/extensions/economy/openbb_economy/economy_views.py

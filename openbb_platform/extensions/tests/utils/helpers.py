@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO)
 def get_packages_info() -> Dict[str, str]:
     """Get the paths and names of all the static packages."""
     paths_and_names: Dict[str, str] = {}
-    package_paths = glob.glob("openbb_platform/openbb/package/*.py")
+    package_paths = glob.glob("openbb_platform/core/openbb/package/*.py")
     for path in package_paths:
         name = os.path.basename(path).split(".")[0]
         paths_and_names[path] = name
