@@ -5,7 +5,7 @@ description = "Investment research for everyone, anywhere."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
-packages = [{ include = "openbb" }]
+packages = [{ include = "./core/openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.14"

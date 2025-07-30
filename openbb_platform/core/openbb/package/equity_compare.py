@@ -453,37 +453,36 @@ class ROUTER_equity_compare(Container):
         Peers consist of companies trading on the same exchange, operating within the same sector
         and with comparable market capitalizations.
 
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+                symbol : str
+                    Symbol to get data for.
 
-        Parameters
-        ----------
-        provider : str
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
-        symbol : str
-            Symbol to get data for.
+                Returns
+                -------
+                OBBject
+                    results : EquityPeers
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        Returns
-        -------
-        OBBject
-            results : EquityPeers
-                Serializable results.
-            provider : Optional[str]
-                Provider name.
-            warnings : Optional[list[Warning_]]
-                list of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                EquityPeers
+                -----------
+                peers_list : list[str]
+                    A list of equity peers based on sector, exchange and market cap.
 
-        EquityPeers
-        -----------
-        peers_list : list[str]
-            A list of equity peers based on sector, exchange and market cap.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.equity.compare.peers(symbol='AAPL', provider='fmp')
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.equity.compare.peers(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(

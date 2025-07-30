@@ -5,7 +5,10 @@ description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
-packages = [{ include = "openbb_core" }]
+packages = [
+    { include = "openbb_core" },
+    { include = "openbb" }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.14"

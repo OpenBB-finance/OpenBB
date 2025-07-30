@@ -24,7 +24,7 @@ def mock_reference_data(tmp_path):
     directory.mkdir(parents=True)
     reference_file = directory / "reference.json"
     mock_data = {"key": "value"}
-    with open(reference_file, "w") as f:
+    with open(reference_file, "w", encoding="utf-8") as f:
         json.dump(mock_data, f)
     return tmp_path
 

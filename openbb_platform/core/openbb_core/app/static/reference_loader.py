@@ -31,12 +31,17 @@ class ReferenceLoader(metaclass=SingletonMeta):
 
     def _get_default_directory(self) -> Path:
         """Get the default directory for loading references."""
-        return Path(__file__).parents[4].resolve() / "openbb"
+        default_path = Path(__file__).parents[4].resolve() / "openbb"
+
+        if not default_path.exists():
+            default_path = Path(__file__).parents[4].resolve() / "core" / "openbb"
+
+        return default_path
 
     def _load(self, file_path: Path):
         """Load the reference data from a file."""
         try:
-            with open(file_path) as f:
+            with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)
         except FileNotFoundError:
             data = {}

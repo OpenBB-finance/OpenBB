@@ -1,6 +1,11 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Any, Literal, Optional, Union
+from typing import (
+    Any,
+    Literal,
+    Optional,
+    Union,
+)
 
 from numpy import ndarray
 from openbb_core.app.model.field import OpenBBField
@@ -422,61 +427,13 @@ class ROUTER_derivatives_options(Container):
 
         If `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.
 
-        Parameters
-        -----------
-        data: Union[list[Data], Data]
-        target: str
-            The field to use as the z-axis. Default is "implied_volatility".
-        underlying_price: Optional[float]
-            The price of the underlying asset.
-        option_type: Optional[str] = "otm"
-            The type of df to display. Default is "otm".
-            Choices are: ["otm", "itm", "puts", "calls"]
-        dte_min: Optional[int] = None
-            Minimum days to expiration (DTE) to filter options.
-        dte_max: Optional[int] = None
-            Maximum days to expiration (DTE) to filter options.
-        moneyness: Optional[float] = None
-            Specify a % moneyness to target for display,
-            entered as a value between 0 and 100.
-        strike_min: Optional[float] = None
-            Minimum strike price to filter options.
-        strike_max: Optional[float] = None
-            Maximum strike price to filter options.
-        oi: bool = False
-            Filter for only options that have open interest. Default is False.
-        volume: bool = False
-            Filter for only options that have trading volume. Default is False.
-        chart: bool = False
-            Whether to return a chart or not. Default is False.
-            Only valid if `openbb-charting` is installed.
-        theme: Literal["dark", "light"] = "dark"
-            The theme to use for the chart. Default is "dark".
-            Only valid if `openbb-charting` is installed.
-        chart_params: Optional[dict] = None
-            Additional parameters to pass to the charting library.
-            Only valid if `openbb-charting` is installed.
-            Valid keys are:
-            - `title`: The title of the chart.
-            - `xtitle`: Title for the x-axis.
-            - `ytitle`: Title for the y-axis.
-            - `ztitle`: Title for the z-axis.
-            - `colorscale`: The colorscale to use for the chart.
-            - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
-
-        Returns
-        -------
-        OBBject[list]
-            An OBBject containing the processed options data.
-            Results are a list of dictionaries.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> # Filter and process options chains data for volatility.
-        >>> data = obb.derivatives.options.chains('AAPL', provider='cboe')
-        >>> surface = obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)
-        >>> surface.show()
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> # Filter and process options chains data for volatility.
+                >>> data = obb.derivatives.options.chains('AAPL', provider='cboe')
+                >>> surface = obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)
+                >>> surface.show()
         """  # noqa: E501
 
         return self._run(

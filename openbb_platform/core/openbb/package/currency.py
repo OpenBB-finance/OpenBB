@@ -53,67 +53,66 @@ class ROUTER_currency(Container):
         (ref: Investopedia)
         Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
 
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.
+                query : Optional[str]
+                    Query to search for currency pairs.
 
-        Parameters
-        ----------
-        provider : str
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.
-        query : Optional[str]
-            Query to search for currency pairs.
+                Returns
+                -------
+                OBBject
+                    results : list[CurrencyPairs]
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        Returns
-        -------
-        OBBject
-            results : list[CurrencyPairs]
-                Serializable results.
-            provider : Optional[str]
-                Provider name.
-            warnings : Optional[list[Warning_]]
-                list of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                CurrencyPairs
+                -------------
+                symbol : str
+                    Symbol representing the entity requested in the data.
+                name : Optional[str]
+                    Name of the currency pair.
+                currency : Optional[str]
+                    Base currency of the currency pair. (provider: fmp)
+                stock_exchange : Optional[str]
+                    Stock exchange of the currency pair. (provider: fmp)
+                exchange_short_name : Optional[str]
+                    Short name of the stock exchange of the currency pair. (provider: fmp)
+                base_currency : Optional[str]
+                    ISO 4217 currency code of the base currency. (provider: intrinio)
+                quote_currency : Optional[str]
+                    ISO 4217 currency code of the quote currency. (provider: intrinio)
+                currency_symbol : Optional[str]
+                    The symbol of the quote currency. (provider: polygon)
+                base_currency_symbol : Optional[str]
+                    The symbol of the base currency. (provider: polygon)
+                base_currency_name : Optional[str]
+                    Name of the base currency. (provider: polygon)
+                market : Optional[str]
+                    Name of the trading market. Always 'fx'. (provider: polygon)
+                locale : Optional[str]
+                    Locale of the currency pair. (provider: polygon)
+                last_updated : Optional[date]
+                    The date the reference data was last updated. (provider: polygon)
+                delisted : Optional[date]
+                    The date the item was delisted. (provider: polygon)
 
-        CurrencyPairs
-        -------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        name : Optional[str]
-            Name of the currency pair.
-        currency : Optional[str]
-            Base currency of the currency pair. (provider: fmp)
-        stock_exchange : Optional[str]
-            Stock exchange of the currency pair. (provider: fmp)
-        exchange_short_name : Optional[str]
-            Short name of the stock exchange of the currency pair. (provider: fmp)
-        base_currency : Optional[str]
-            ISO 4217 currency code of the base currency. (provider: intrinio)
-        quote_currency : Optional[str]
-            ISO 4217 currency code of the quote currency. (provider: intrinio)
-        currency_symbol : Optional[str]
-            The symbol of the quote currency. (provider: polygon)
-        base_currency_symbol : Optional[str]
-            The symbol of the base currency. (provider: polygon)
-        base_currency_name : Optional[str]
-            Name of the base currency. (provider: polygon)
-        market : Optional[str]
-            Name of the trading market. Always 'fx'. (provider: polygon)
-        locale : Optional[str]
-            Locale of the currency pair. (provider: polygon)
-        last_updated : Optional[date]
-            The date the reference data was last updated. (provider: polygon)
-        delisted : Optional[date]
-            The date the item was delisted. (provider: polygon)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.currency.search(provider='fmp')
-        >>> # Search for 'EUR' currency pair using 'intrinio' as provider.
-        >>> obb.currency.search(provider='intrinio', query='EUR')
-        >>> # Search for terms  using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', query='EUR')
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.currency.search(provider='fmp')
+                >>> # Search for 'EUR' currency pair using 'intrinio' as provider.
+                >>> obb.currency.search(provider='intrinio', query='EUR')
+                >>> # Search for terms  using 'polygon' as provider.
+                >>> obb.currency.search(provider='polygon', query='EUR')
         """  # noqa: E501
 
         return self._run(

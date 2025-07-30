@@ -439,96 +439,95 @@ class ROUTER_fixedincome(Container):
         The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
         borrowing cash overnight collateralizing by Treasury securities.
 
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
+                start_date : Union[date, None, str]
+                    Start date of the data, in YYYY-MM-DD format.
+                end_date : Union[date, None, str]
+                    End date of the data, in YYYY-MM-DD format.
+                frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-        Parameters
-        ----------
-        provider : str
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
-        start_date : Union[date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+                            Frequency aggregation to convert daily data to lower frequency.
+                                a = Annual
+                                q = Quarterly
+                                m = Monthly
+                                w = Weekly
+                                wef = Weekly, Ending Friday
+                                weth = Weekly, Ending Thursday
+                                wew = Weekly, Ending Wednesday
+                                wetu = Weekly, Ending Tuesday
+                                wem = Weekly, Ending Monday
+                                wesu = Weekly, Ending Sunday
+                                wesa = Weekly, Ending Saturday
+                                bwew = Biweekly, Ending Wednesday
+                                bwem = Biweekly, Ending Monday
+                             (provider: fred)
+                aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
-                    Frequency aggregation to convert daily data to lower frequency.
-                        a = Annual
-                        q = Quarterly
-                        m = Monthly
-                        w = Weekly
-                        wef = Weekly, Ending Friday
-                        weth = Weekly, Ending Thursday
-                        wew = Weekly, Ending Wednesday
-                        wetu = Weekly, Ending Tuesday
-                        wem = Weekly, Ending Monday
-                        wesu = Weekly, Ending Sunday
-                        wesa = Weekly, Ending Saturday
-                        bwew = Biweekly, Ending Wednesday
-                        bwem = Biweekly, Ending Monday
-                     (provider: fred)
-        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+                            A key that indicates the aggregation method used for frequency aggregation.
+                                avg = Average
+                                sum = Sum
+                                eop = End of Period
+                             (provider: fred)
+                transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                    A key that indicates the aggregation method used for frequency aggregation.
-                        avg = Average
-                        sum = Sum
-                        eop = End of Period
-                     (provider: fred)
-        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+                            Transformation type
+                                None = No transformation
+                                chg = Change
+                                ch1 = Change from Year Ago
+                                pch = Percent Change
+                                pc1 = Percent Change from Year Ago
+                                pca = Compounded Annual Rate of Change
+                                cch = Continuously Compounded Rate of Change
+                                cca = Continuously Compounded Annual Rate of Change
+                                log = Natural Log
+                             (provider: fred)
 
-                    Transformation type
-                        None = No transformation
-                        chg = Change
-                        ch1 = Change from Year Ago
-                        pch = Percent Change
-                        pc1 = Percent Change from Year Ago
-                        pca = Compounded Annual Rate of Change
-                        cch = Continuously Compounded Rate of Change
-                        cca = Continuously Compounded Annual Rate of Change
-                        log = Natural Log
-                     (provider: fred)
+                Returns
+                -------
+                OBBject
+                    results : list[SOFR]
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        Returns
-        -------
-        OBBject
-            results : list[SOFR]
-                Serializable results.
-            provider : Optional[str]
-                Provider name.
-            warnings : Optional[list[Warning_]]
-                list of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                SOFR
+                ----
+                date : date
+                    The date of the data.
+                rate : float
+                    Effective federal funds rate.
+                percentile_1 : Optional[float]
+                    1st percentile of the distribution.
+                percentile_25 : Optional[float]
+                    25th percentile of the distribution.
+                percentile_75 : Optional[float]
+                    75th percentile of the distribution.
+                percentile_99 : Optional[float]
+                    99th percentile of the distribution.
+                volume : Optional[float]
+                    The trading volume.The notional volume of transactions (Billions of $).
+                average_30d : Optional[float]
+                    30-Day Average SOFR (provider: fred)
+                average_90d : Optional[float]
+                    90-Day Average SOFR (provider: fred)
+                average_180d : Optional[float]
+                    180-Day Average SOFR (provider: fred)
+                index : Optional[float]
+                    SOFR index as 2018-04-02 = 1 (provider: fred)
 
-        SOFR
-        ----
-        date : date
-            The date of the data.
-        rate : float
-            Effective federal funds rate.
-        percentile_1 : Optional[float]
-            1st percentile of the distribution.
-        percentile_25 : Optional[float]
-            25th percentile of the distribution.
-        percentile_75 : Optional[float]
-            75th percentile of the distribution.
-        percentile_99 : Optional[float]
-            99th percentile of the distribution.
-        volume : Optional[float]
-            The trading volume.The notional volume of transactions (Billions of $).
-        average_30d : Optional[float]
-            30-Day Average SOFR (provider: fred)
-        average_90d : Optional[float]
-            90-Day Average SOFR (provider: fred)
-        average_180d : Optional[float]
-            180-Day Average SOFR (provider: fred)
-        index : Optional[float]
-            SOFR index as 2018-04-02 = 1 (provider: fred)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.fixedincome.sofr(provider='fred')
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.fixedincome.sofr(provider='fred')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)

@@ -435,74 +435,73 @@ class ROUTER_economy_survey(Container):
 
         About 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.
 
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+                start_date : Union[date, None, str]
+                    Start date of the data, in YYYY-MM-DD format.
+                end_date : Union[date, None, str]
+                    End date of the data, in YYYY-MM-DD format.
+                topic : Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str]
+                    The topic for the survey response. Multiple comma separated items allowed. (provider: fred)
+                seasonally_adjusted : bool
+                    Whether the data is seasonally adjusted, default is False (provider: fred)
+                frequency : Optional[Literal['quarter', 'annual']]
+                    Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
+                aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+                    A key that indicates the aggregation method used for frequency aggregation.
+                            avg = Average
+                            sum = Sum
+                            eop = End of Period
+                             (provider: fred)
+                transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+                    Transformation type
+                            None = No transformation
+                            chg = Change
+                            ch1 = Change from Year Ago
+                            pch = Percent Change
+                            pc1 = Percent Change from Year Ago
+                            pca = Compounded Annual Rate of Change
+                            cch = Continuously Compounded Rate of Change
+                            cca = Continuously Compounded Annual Rate of Change
+                            log = Natural Log
+                             (provider: fred)
 
-        Parameters
-        ----------
-        provider : str
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        start_date : Union[date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        topic : Union[Literal['business_outlook', 'hours_worked', 'employment', 'inventories', 'prices_received', 'prices_paid', 'capex', 'unfilled_orders', 'new_orders', 'shipments', 'delivery_times'], str]
-            The topic for the survey response. Multiple comma separated items allowed. (provider: fred)
-        seasonally_adjusted : bool
-            Whether the data is seasonally adjusted, default is False (provider: fred)
-        frequency : Optional[Literal['quarter', 'annual']]
-            Frequency aggregation to convert monthly data to lower frequency. None is monthly. (provider: fred)
-        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
-            A key that indicates the aggregation method used for frequency aggregation.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                     (provider: fred)
-        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
-            Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                     (provider: fred)
+                Returns
+                -------
+                OBBject
+                    results : list[ManufacturingOutlookNY]
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        Returns
-        -------
-        OBBject
-            results : list[ManufacturingOutlookNY]
-                Serializable results.
-            provider : Optional[str]
-                Provider name.
-            warnings : Optional[list[Warning_]]
-                list of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                ManufacturingOutlookNY
+                ----------------------
+                date : date
+                    The date of the data.
+                topic : Optional[str]
+                    Topic of the survey response.
+                diffusion_index : Optional[float]
+                    Diffusion Index.
+                percent_reporting_increase : Optional[float]
+                    Percent of respondents reporting an increase over the last month.
+                percent_reporting_decrease : Optional[float]
+                    Percent of respondents reporting a decrease over the last month.
+                percent_reporting_no_change : Optional[float]
+                    Percent of respondents reporting no change over the last month.
 
-        ManufacturingOutlookNY
-        ----------------------
-        date : date
-            The date of the data.
-        topic : Optional[str]
-            Topic of the survey response.
-        diffusion_index : Optional[float]
-            Diffusion Index.
-        percent_reporting_increase : Optional[float]
-            Percent of respondents reporting an increase over the last month.
-        percent_reporting_decrease : Optional[float]
-            Percent of respondents reporting a decrease over the last month.
-        percent_reporting_no_change : Optional[float]
-            Percent of respondents reporting no change over the last month.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.economy.survey.manufacturing_outlook_ny(provider='fred')
-        >>> obb.economy.survey.manufacturing_outlook_ny(topic='hours_worked,new_orders', transform='pc1', provider='fred', seasonally_adjusted=True)
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.economy.survey.manufacturing_outlook_ny(provider='fred')
+                >>> obb.economy.survey.manufacturing_outlook_ny(topic='hours_worked,new_orders', transform='pc1', provider='fred', seasonally_adjusted=True)
         """  # noqa: E501
 
         return self._run(

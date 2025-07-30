@@ -184,50 +184,49 @@ class ROUTER_regulators_cftc(Container):
 
         Search a list of the current Commitment of Traders Reports series information.
 
+                Parameters
+                ----------
+                provider : str
+                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
+                query : str
+                    Search query.
 
-        Parameters
-        ----------
-        provider : str
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cftc.
-        query : str
-            Search query.
+                Returns
+                -------
+                OBBject
+                    results : list[COTSearch]
+                        Serializable results.
+                    provider : Optional[str]
+                        Provider name.
+                    warnings : Optional[list[Warning_]]
+                        list of warnings.
+                    chart : Optional[Chart]
+                        Chart object.
+                    extra : Dict[str, Any]
+                        Extra info.
 
-        Returns
-        -------
-        OBBject
-            results : list[COTSearch]
-                Serializable results.
-            provider : Optional[str]
-                Provider name.
-            warnings : Optional[list[Warning_]]
-                list of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                COTSearch
+                ---------
+                code : str
+                    CFTC market contract code of the report.
+                name : str
+                    Name of the underlying asset.
+                category : Optional[str]
+                    Category of the underlying asset.
+                subcategory : Optional[str]
+                    Subcategory of the underlying asset.
+                units : Optional[str]
+                    The units for one contract.
+                symbol : Optional[str]
+                    Symbol representing the entity requested in the data.
+                commodity : Optional[str]
+                    Name of the commodity. (provider: cftc)
 
-        COTSearch
-        ---------
-        code : str
-            CFTC market contract code of the report.
-        name : str
-            Name of the underlying asset.
-        category : Optional[str]
-            Category of the underlying asset.
-        subcategory : Optional[str]
-            Subcategory of the underlying asset.
-        units : Optional[str]
-            The units for one contract.
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data.
-        commodity : Optional[str]
-            Name of the commodity. (provider: cftc)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.regulators.cftc.cot_search(provider='cftc')
-        >>> obb.regulators.cftc.cot_search(query='gold', provider='cftc')
+                Examples
+                --------
+                >>> from openbb import obb
+                >>> obb.regulators.cftc.cot_search(provider='cftc')
+                >>> obb.regulators.cftc.cot_search(query='gold', provider='cftc')
         """  # noqa: E501
 
         return self._run(
