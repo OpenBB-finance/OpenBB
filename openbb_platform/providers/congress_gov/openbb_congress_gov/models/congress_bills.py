@@ -88,26 +88,18 @@ class CongressBillsQueryParams(QueryParams):
     @classmethod
     def validate_query(cls, values):
         """Validate the query parameters."""
-
-        if values.congress is not None and values.bill_type is None:
-            raise OpenBBError(
-                ValueError("'bill_type' must be specified when 'congress' is provided.")
-            )
-
         if values.bill_type is not None and values.bill_type not in BillTypes:
             raise OpenBBError(
                 ValueError(
                     f"Invalid bill_type: {values.bill_type}. Must be one of: {', '.join(BillTypes)}."
                 )
             )
-
         if values.limit == 0 and values.bill_type is None:
             raise OpenBBError(
                 ValueError(
                     "'limit' cannot be set to 0 without 'bill_type' and 'congress'."
                 )
             )
-
         return values
 
 
@@ -276,8 +268,12 @@ class CongressBillsFetcher(
         url = (
             (
                 f"{base_url}bill/{congress}/{query.bill_type}"
-                if congress is not None
-                else f"{base_url}bill"
+                if congress is not None and query.bill_type is not None
+                else (
+                    f"{base_url}bill/{congress}"
+                    if congress is not None
+                    else f"{base_url}bill"
+                )
             )
             + (
                 f"?fromDateTime={query.start_date.strftime('%Y-%m-%d') + 'T00:00:00Z'}"
