@@ -74,7 +74,8 @@ class CongressBillsQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " When None, default sets to 100 (max 250)."
-        + " Set to 0 for no limit (must be used with 'bill_type' and 'congress').",
+        + " Set to 0 for no limit (must be used with 'bill_type' and 'congress')."
+        + " Setting to 0 will nullify the start_date, end_date, and offset parameters.",
     )
     offset: Optional[int] = Field(
         default=None, description="The starting record returned. 0 is the first record."
@@ -89,33 +90,23 @@ class CongressBillsQueryParams(QueryParams):
         """Validate the query parameters."""
 
         if values.congress is not None and values.bill_type is None:
-            raise ValueError(
-                "'bill_type' must be specified when 'congress' is provided."
+            raise OpenBBError(
+                ValueError("'bill_type' must be specified when 'congress' is provided.")
             )
 
         if values.bill_type is not None and values.bill_type not in BillTypes:
-            raise ValueError(
-                f"Invalid bill_type: {values.bill_type}. Must be one of: {', '.join(BillTypes)}."
+            raise OpenBBError(
+                ValueError(
+                    f"Invalid bill_type: {values.bill_type}. Must be one of: {', '.join(BillTypes)}."
+                )
             )
 
         if values.limit == 0 and values.bill_type is None:
-            raise ValueError(
-                "'limit' cannot be set to 0 without 'bill_type' and 'congress'."
-            )
-
-        if (
-            values.bill_type is not None
-            and values.start_date is not None
-            and values.end_date is not None
-        ):
-            start_year = values.start_date.year
-            end_year = values.end_date.year
-            congress_start = year_to_congress(start_year)
-            congress_end = year_to_congress(end_year)
-            if congress_start != congress_end:
-                raise ValueError(
-                    "Start and end dates must be in the same Congress session."
+            raise OpenBBError(
+                ValueError(
+                    "'limit' cannot be set to 0 without 'bill_type' and 'congress'."
                 )
+            )
 
         return values
 
@@ -236,6 +227,11 @@ class CongressBillsFetcher(
 
         api_key = credentials.get("congress_gov_api_key") if credentials else ""
 
+        # Add congress number and bill type to the path parameters where required.
+        # If a bill_type is provided, we need to give the path a congress number.
+        # If no congress number is provided, we will use the current congress number
+        # or the congress number derived from the start or end date, when supplied.
+
         if (
             query.bill_type is not None
             and query.start_date is None
@@ -260,15 +256,23 @@ class CongressBillsFetcher(
             query.bill_type is not None
             and query.start_date is not None
             and query.end_date is not None
+            and query.congress is None
         ):
-            end_year = query.end_date.year
-            congress_end = year_to_congress(end_year)
-            congress = congress_end
+            congress_start = year_to_congress(query.start_date.year)
+            congress = congress_start
         elif query.bill_type is not None and query.congress is None:
             congress = year_to_congress(datetime.now().year)
         else:
-            congress = None
+            congress = query.congress
 
+        if query.limit == 0 and query.bill_type is not None and congress is not None:
+            # If limit is 0, we fetch all bills of the specified type for the congress
+            return await get_all_bills_by_type(
+                bill_type=query.bill_type,
+                congress=congress,
+                start_date=None,
+                end_date=None,
+            )
         url = (
             (
                 f"{base_url}bill/{congress}/{query.bill_type}"
@@ -294,18 +298,6 @@ class CongressBillsFetcher(
             + f"&format=json&api_key={api_key}"
         )
 
-        if query.limit == 0 and query.bill_type and congress:
-            # If limit is 0, we fetch all bills of the specified type for the congress
-            return await get_all_bills_by_type(
-                bill_type=query.bill_type,
-                congress=congress,
-                start_date=(
-                    query.start_date.strftime("%Y-%m-%d") if query.start_date else None
-                ),
-                end_date=(
-                    query.end_date.strftime("%Y-%m-%d") if query.end_date else None
-                ),
-            )
         try:
             response = await amake_request(url=url)
         except Exception as e:
