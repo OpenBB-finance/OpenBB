@@ -542,5 +542,103 @@
         }
       },
       "groups": []
+    },
+    {
+      "name": "The United States Congress",
+      "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
+      "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
+      "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
+      "description": "Find and view US federal legislative information and complete bill text.",
+      "allowCustomization": true,
+      "tabs": {
+        "": {
+          "id": "",
+          "name": "",
+          "layout": [
+            {
+              "i": "uscongress_bills_congress_gov_obb",
+              "x": 0,
+              "y": 0,
+              "w": 40,
+              "h": 11,
+              "state": {
+                "params": {
+                  "bill_url": "119/hr/1"
+                },
+                "chartView": {
+                  "enabled": false,
+                  "chartType": "line"
+                },
+                "columnState": {
+                  "default": {
+                    "columnVisibility": {
+                      "hiddenColIds": [
+                        "origin_chamber_code"
+                      ]
+                    },
+                    "columnOrder": {
+                      "orderedColIds": [
+                        "update_date",
+                        "latest_action_date",
+                        "bill_url",
+                        "congress",
+                        "bill_number",
+                        "origin_chamber",
+                        "origin_chamber_code",
+                        "bill_type",
+                        "title",
+                        "latest_action",
+                        "update_date_including_text"
+                      ]
+                    },
+                    "focusedCell": {
+                      "colId": "bill_url",
+                      "rowIndex": 2,
+                      "rowPinned": null
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "i": "uscongress_bill_text_congress_gov_obb",
+              "x": 16,
+              "y": 11,
+              "w": 24,
+              "h": 41,
+              "state": {
+                "params": {
+                  "bill_url": "119/hr/1"
+                }
+              }
+            },
+            {
+              "i": "uscongress_bill_info_congress_gov_obb",
+              "x": 0,
+              "y": 11,
+              "w": 16,
+              "h": 41,
+              "state": {
+                "params": {
+                  "bill_url": "119/hr/1"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "groups": [
+        {
+          "name": "Group 1",
+          "type": "param",
+          "paramName": "bill_url",
+          "defaultValue": "119/hr/1",
+          "widgetIds": [
+            "uscongress_bills_congress_gov_obb",
+            "uscongress_bill_text_congress_gov_obb",
+            "uscongress_bill_info_congress_gov_obb"
+          ]
+        }
+      ]
     }
 ]

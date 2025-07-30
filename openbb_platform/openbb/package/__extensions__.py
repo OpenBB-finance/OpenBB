@@ -19,6 +19,7 @@ Routers:
     /index
     /news
     /regulators
+    /uscongress
 
 Extensions:
     - commodity@1.3.2
@@ -32,10 +33,12 @@ Extensions:
     - index@1.4.2
     - news@1.4.2
     - regulators@1.4.3
+    - uscongress@1.0.0
 
     - benzinga@1.4.2
     - bls@1.1.3
     - cftc@1.1.2
+    - congress_gov@1.0.0
     - econdb@1.3.2
     - federal_reserve@1.4.4
     - fmp@1.4.3
@@ -130,3 +133,10 @@ Extensions:
         from . import regulators
 
         return regulators.ROUTER_regulators(command_runner=self._command_runner)
+
+    @property
+    def uscongress(self):
+        # pylint: disable=import-outside-toplevel
+        from . import uscongress
+
+        return uscongress.ROUTER_uscongress(command_runner=self._command_runner)
