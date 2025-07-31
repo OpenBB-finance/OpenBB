@@ -855,49 +855,50 @@ class ROUTER_economy(Container):
 
         CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
-                    Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
-                adjustment : Literal['amplitude', 'normalized']
-                    Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
-                growth_rate : bool
-                    Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
-                Returns
-                -------
-                OBBject
-                    results : list[CompositeLeadingIndicator]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        country : Union[Literal['g20', 'g7', 'asia5', 'north_america', 'europe4', 'australia', 'brazil', 'canada', 'china', 'france', 'germany', 'india', 'indonesia', 'italy', 'japan', 'mexico', 'south_africa', 'south_korea', 'spain', 'turkey', 'united_kingdom', 'united_states', 'all'], str]
+            Country to get the CLI for, default is G20. Multiple comma separated items allowed. (provider: oecd)
+        adjustment : Literal['amplitude', 'normalized']
+            Adjustment of the data, either 'amplitude' or 'normalized'. Default is amplitude. (provider: oecd)
+        growth_rate : bool
+            Return the 1-year growth rate (%) of the CLI, default is False. (provider: oecd)
 
-                CompositeLeadingIndicator
-                -------------------------
-                date : date
-                    The date of the data.
-                value : Optional[float]
-                    CLI value
-                country : str
-                    Country for the CLI value.
+        Returns
+        -------
+        OBBject
+            results : list[CompositeLeadingIndicator]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.composite_leading_indicator(provider='oecd')
-                >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
+        CompositeLeadingIndicator
+        -------------------------
+        date : date
+            The date of the data.
+        value : Optional[float]
+            CLI value
+        country : str
+            Country for the CLI value.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.composite_leading_indicator(provider='oecd')
+        >>> obb.economy.composite_leading_indicator(country='all', provider='oecd', growth_rate=True)
         """  # noqa: E501
 
         return self._run(
@@ -1099,58 +1100,59 @@ class ROUTER_economy(Container):
 
         Returns either the rescaled index value, or a rate of change (inflation).
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.
-                country : Union[str, list[str]]
-                    The country to get data. Multiple comma separated items allowed for provider(s): fred, oecd.
-                    Choices for fred: 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states'
-                    Choices for oecd: 'G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all'
-                transform : Literal['index', 'yoy', 'period']
-                    Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).
-                frequency : Literal['annual', 'quarter', 'monthly']
-                    The frequency of the data.
-                harmonized : bool
-                    If true, returns harmonized data.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                expenditure : Literal['total', 'all', 'actual_rentals', 'alcoholic_beverages_tobacco_narcotics', 'all_non_food_non_energy', 'clothing_footwear', 'communication', 'education', 'electricity_gas_other_fuels', 'energy', 'overall_excl_energy_food_alcohol_tobacco', 'food_non_alcoholic_beverages', 'fuels_lubricants_personal', 'furniture_household_equipment', 'goods', 'housing', 'housing_excluding_rentals', 'housing_water_electricity_gas', 'health', 'imputed_rentals', 'maintenance_repair_dwelling', 'miscellaneous_goods_services', 'recreation_culture', 'residuals', 'restaurants_hotels', 'services_less_housing', 'services_less_house_excl_rentals', 'services', 'transport', 'water_supply_other_services']
-                    Expenditure component of CPI. (provider: oecd)
 
-                Returns
-                -------
-                OBBject
-                    results : list[ConsumerPriceIndex]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.
+        country : Union[str, list[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): fred, oecd.
+            Choices for fred: 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states'
+            Choices for oecd: 'G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all'
+        transform : Literal['index', 'yoy', 'period']
+            Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).
+        frequency : Literal['annual', 'quarter', 'monthly']
+            The frequency of the data.
+        harmonized : bool
+            If true, returns harmonized data.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        expenditure : Literal['total', 'all', 'actual_rentals', 'alcoholic_beverages_tobacco_narcotics', 'all_non_food_non_energy', 'clothing_footwear', 'communication', 'education', 'electricity_gas_other_fuels', 'energy', 'overall_excl_energy_food_alcohol_tobacco', 'food_non_alcoholic_beverages', 'fuels_lubricants_personal', 'furniture_household_equipment', 'goods', 'housing', 'housing_excluding_rentals', 'housing_water_electricity_gas', 'health', 'imputed_rentals', 'maintenance_repair_dwelling', 'miscellaneous_goods_services', 'recreation_culture', 'residuals', 'restaurants_hotels', 'services_less_housing', 'services_less_house_excl_rentals', 'services', 'transport', 'water_supply_other_services']
+            Expenditure component of CPI. (provider: oecd)
 
-                ConsumerPriceIndex
-                ------------------
-                date : date
-                    The date of the data.
-                country : str
-                    None
-                value : float
-                    CPI index value or period change.
-                expenditure : Optional[str]
-                    Expenditure component of CPI. (provider: oecd)
+        Returns
+        -------
+        OBBject
+            results : list[ConsumerPriceIndex]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.cpi(country='japan,china,turkey', provider='fred')
-                >>> # Use the `transform` parameter to define the reference period for the change in values. Default is YoY.
-                >>> obb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')
+        ConsumerPriceIndex
+        ------------------
+        date : date
+            The date of the data.
+        country : str
+            None
+        value : float
+            CPI index value or period change.
+        expenditure : Optional[str]
+            Expenditure component of CPI. (provider: oecd)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.cpi(country='japan,china,turkey', provider='fred')
+        >>> # Use the `transform` parameter to define the reference period for the change in values. Default is YoY.
+        >>> obb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -1343,62 +1345,63 @@ class ROUTER_economy(Container):
         Time series data includes estimates derived from reports of partner countries
         for non-reporting and slow-reporting countries.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf.
-                country : Union[str, None, list[Optional[str]]]
-                    The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
-                    Choices for imf: 'all', 'advanced_economies', 'afghanistan', 'africa', 'africa_not_allocated', 'albania', 'algeria', 'american_samoa', 'angola', 'anguilla', 'antigua_and_barbuda', 'antilles', 'argentina', 'armenia', 'aruba', 'asia_not_allocated', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belgo-luxembourg_economic_union', 'belize', 'benin', 'bermuda', 'bhutan', 'bolivia', 'bosnia_and_herzegovina', 'botswana', 'brazil', 'brunei_darussalam', 'bulgaria', 'burkina_faso', 'burundi', 'cabo_verde', 'cambodia', 'cameroon', 'canada', 'central_african_republic', 'chad', 'chile', 'china', 'colombia', 'community_of_independent_states', 'comoros', 'congo', 'costa_rica', 'croatia', 'cuba', 'curacao', 'cyprus', 'czech_republic', 'democratic_republic_of_the_congo', 'denmark', 'developing_asia', 'djibouti', 'dominica', 'dominican_republic', 'east_germany', 'eastern_caribbean_currency_union', 'ecuador', 'egypt', 'el_salvador', 'emerging_and_developing_countries', 'emerging_and_developing_europe', 'equatorial_guinea', 'eritrea', 'estonia', 'eswatini', 'ethiopia', 'euro_area', 'europe', 'europe_not_allocated', 'european_union', 'export_earnings_fuel', 'export_earnings_nonfuel', 'falkland_islands', 'faroe_islands', 'fiji', 'finland', 'former_czechoslovakia', 'former_ussr', 'former_yugoslavia', 'france', 'french_polynesia', 'gabon', 'gambia', 'georgia', 'germany', 'ghana', 'gibraltar', 'greece', 'greenland', 'grenada', 'guam', 'guatemala', 'guinea', 'guyana', 'haiti', 'honduras', 'hong_kong', 'hungary', 'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland', 'israel', 'italy', 'ivory_coast', 'jamaica', 'japan', 'jordan', 'kazakhstan', 'kenya', 'kiribati', 'kosovo', 'kuwait', 'kyrgyzstan', 'lao', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya', 'lithuania', 'luxembourg', 'macao', 'madagascar', 'malawi', 'malaysia', 'maldives', 'mali', 'malta', 'marshall_islands', 'mauritania', 'mauritius', 'mexico', 'micronesia', 'middle_east', 'middle_east_and_central_asia', 'middle_east_and_central_asia_not_specified', 'middle_east_north_africa_afghanistan_and_pakistan', 'moldova', 'mongolia', 'montenegro', 'montserrat', 'morocco', 'mozambique', 'myanmar', 'namibia', 'nauru', 'nepal', 'netherlands', 'new_caledonia', 'new_zealand', 'nicaragua', 'niger', 'nigeria', 'north_korea', 'north_macedonia', 'north_vietnam', 'norway', 'oman', 'other_countries_nie', 'pakistan', 'palau', 'palestine', 'panama', 'papua_new_guinea', 'paraguay', 'peru', 'philippines', 'poland', 'portugal', 'qatar', 'romania', 'russia', 'rwanda', 'saint_kitts_and_nevis', 'saint_lucia', 'saint_vincent_and_the_grenadines', 'samoa', 'san_marino', 'sao_tome_and_principe', 'saudi_arabia', 'senegal', 'serbia', 'serbia_and_montenegro', 'seychelles', 'sierra_leone', 'singapore', 'sint_maarten', 'slovakia', 'slovenia', 'solomon_islands', 'somalia', 'south_africa', 'south_african_common_customs_area', 'south_korea', 'south_sudan', 'spain', 'special_categories_and_economic_zones', 'sri_lanka', 'sub-saharan_africa', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria', 'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo', 'tonga', 'trinidad_and_tobago', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu', 'uganda', 'ukraine', 'united_arab_emirates', 'united_kingdom', 'united_states', 'uruguay', 'uzbekistan', 'vanuatu', 'vatican_city_state', 'venezuela', 'viet_nam', 'west_malaysia', 'western_hemisphere', 'western_hemisphere_not_allocated', 'world', 'yemen', 'yemen_arab_rep', 'yemen_pd_rep', 'zambia', 'zimbabwe'
-                counterpart : Union[str, None, list[Optional[str]]]
-                    Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
-                    Choices for imf: 'all', 'advanced_economies', 'afghanistan', 'africa', 'africa_not_allocated', 'albania', 'algeria', 'american_samoa', 'angola', 'anguilla', 'antigua_and_barbuda', 'antilles', 'argentina', 'armenia', 'aruba', 'asia_not_allocated', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belgo-luxembourg_economic_union', 'belize', 'benin', 'bermuda', 'bhutan', 'bolivia', 'bosnia_and_herzegovina', 'botswana', 'brazil', 'brunei_darussalam', 'bulgaria', 'burkina_faso', 'burundi', 'cabo_verde', 'cambodia', 'cameroon', 'canada', 'central_african_republic', 'chad', 'chile', 'china', 'colombia', 'community_of_independent_states', 'comoros', 'congo', 'costa_rica', 'croatia', 'cuba', 'curacao', 'cyprus', 'czech_republic', 'democratic_republic_of_the_congo', 'denmark', 'developing_asia', 'djibouti', 'dominica', 'dominican_republic', 'east_germany', 'eastern_caribbean_currency_union', 'ecuador', 'egypt', 'el_salvador', 'emerging_and_developing_countries', 'emerging_and_developing_europe', 'equatorial_guinea', 'eritrea', 'estonia', 'eswatini', 'ethiopia', 'euro_area', 'europe', 'europe_not_allocated', 'european_union', 'export_earnings_fuel', 'export_earnings_nonfuel', 'falkland_islands', 'faroe_islands', 'fiji', 'finland', 'former_czechoslovakia', 'former_ussr', 'former_yugoslavia', 'france', 'french_polynesia', 'gabon', 'gambia', 'georgia', 'germany', 'ghana', 'gibraltar', 'greece', 'greenland', 'grenada', 'guam', 'guatemala', 'guinea', 'guyana', 'haiti', 'honduras', 'hong_kong', 'hungary', 'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland', 'israel', 'italy', 'ivory_coast', 'jamaica', 'japan', 'jordan', 'kazakhstan', 'kenya', 'kiribati', 'kosovo', 'kuwait', 'kyrgyzstan', 'lao', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya', 'lithuania', 'luxembourg', 'macao', 'madagascar', 'malawi', 'malaysia', 'maldives', 'mali', 'malta', 'marshall_islands', 'mauritania', 'mauritius', 'mexico', 'micronesia', 'middle_east', 'middle_east_and_central_asia', 'middle_east_and_central_asia_not_specified', 'middle_east_north_africa_afghanistan_and_pakistan', 'moldova', 'mongolia', 'montenegro', 'montserrat', 'morocco', 'mozambique', 'myanmar', 'namibia', 'nauru', 'nepal', 'netherlands', 'new_caledonia', 'new_zealand', 'nicaragua', 'niger', 'nigeria', 'north_korea', 'north_macedonia', 'north_vietnam', 'norway', 'oman', 'other_countries_nie', 'pakistan', 'palau', 'palestine', 'panama', 'papua_new_guinea', 'paraguay', 'peru', 'philippines', 'poland', 'portugal', 'qatar', 'romania', 'russia', 'rwanda', 'saint_kitts_and_nevis', 'saint_lucia', 'saint_vincent_and_the_grenadines', 'samoa', 'san_marino', 'sao_tome_and_principe', 'saudi_arabia', 'senegal', 'serbia', 'serbia_and_montenegro', 'seychelles', 'sierra_leone', 'singapore', 'sint_maarten', 'slovakia', 'slovenia', 'solomon_islands', 'somalia', 'south_africa', 'south_african_common_customs_area', 'south_korea', 'south_sudan', 'spain', 'special_categories_and_economic_zones', 'sri_lanka', 'sub-saharan_africa', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria', 'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo', 'tonga', 'trinidad_and_tobago', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu', 'uganda', 'ukraine', 'united_arab_emirates', 'united_kingdom', 'united_states', 'uruguay', 'uzbekistan', 'vanuatu', 'vatican_city_state', 'venezuela', 'viet_nam', 'west_malaysia', 'western_hemisphere', 'western_hemisphere_not_allocated', 'world', 'yemen', 'yemen_arab_rep', 'yemen_pd_rep', 'zambia', 'zimbabwe'
-                direction : Literal['exports', 'imports', 'balance', 'all']
-                    Trade direction. Use 'all' to get all data for this dimension.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                frequency : Literal['month', 'quarter', 'annual']
-                    The frequency of the data.
 
-                Returns
-                -------
-                OBBject
-                    results : list[DirectionOfTrade]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: imf.
+        country : Union[str, None, list[Optional[str]]]
+            The country to get data. None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
+            Choices for imf: 'all', 'advanced_economies', 'afghanistan', 'africa', 'africa_not_allocated', 'albania', 'algeria', 'american_samoa', 'angola', 'anguilla', 'antigua_and_barbuda', 'antilles', 'argentina', 'armenia', 'aruba', 'asia_not_allocated', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belgo-luxembourg_economic_union', 'belize', 'benin', 'bermuda', 'bhutan', 'bolivia', 'bosnia_and_herzegovina', 'botswana', 'brazil', 'brunei_darussalam', 'bulgaria', 'burkina_faso', 'burundi', 'cabo_verde', 'cambodia', 'cameroon', 'canada', 'central_african_republic', 'chad', 'chile', 'china', 'colombia', 'community_of_independent_states', 'comoros', 'congo', 'costa_rica', 'croatia', 'cuba', 'curacao', 'cyprus', 'czech_republic', 'democratic_republic_of_the_congo', 'denmark', 'developing_asia', 'djibouti', 'dominica', 'dominican_republic', 'east_germany', 'eastern_caribbean_currency_union', 'ecuador', 'egypt', 'el_salvador', 'emerging_and_developing_countries', 'emerging_and_developing_europe', 'equatorial_guinea', 'eritrea', 'estonia', 'eswatini', 'ethiopia', 'euro_area', 'europe', 'europe_not_allocated', 'european_union', 'export_earnings_fuel', 'export_earnings_nonfuel', 'falkland_islands', 'faroe_islands', 'fiji', 'finland', 'former_czechoslovakia', 'former_ussr', 'former_yugoslavia', 'france', 'french_polynesia', 'gabon', 'gambia', 'georgia', 'germany', 'ghana', 'gibraltar', 'greece', 'greenland', 'grenada', 'guam', 'guatemala', 'guinea', 'guyana', 'haiti', 'honduras', 'hong_kong', 'hungary', 'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland', 'israel', 'italy', 'ivory_coast', 'jamaica', 'japan', 'jordan', 'kazakhstan', 'kenya', 'kiribati', 'kosovo', 'kuwait', 'kyrgyzstan', 'lao', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya', 'lithuania', 'luxembourg', 'macao', 'madagascar', 'malawi', 'malaysia', 'maldives', 'mali', 'malta', 'marshall_islands', 'mauritania', 'mauritius', 'mexico', 'micronesia', 'middle_east', 'middle_east_and_central_asia', 'middle_east_and_central_asia_not_specified', 'middle_east_north_africa_afghanistan_and_pakistan', 'moldova', 'mongolia', 'montenegro', 'montserrat', 'morocco', 'mozambique', 'myanmar', 'namibia', 'nauru', 'nepal', 'netherlands', 'new_caledonia', 'new_zealand', 'nicaragua', 'niger', 'nigeria', 'north_korea', 'north_macedonia', 'north_vietnam', 'norway', 'oman', 'other_countries_nie', 'pakistan', 'palau', 'palestine', 'panama', 'papua_new_guinea', 'paraguay', 'peru', 'philippines', 'poland', 'portugal', 'qatar', 'romania', 'russia', 'rwanda', 'saint_kitts_and_nevis', 'saint_lucia', 'saint_vincent_and_the_grenadines', 'samoa', 'san_marino', 'sao_tome_and_principe', 'saudi_arabia', 'senegal', 'serbia', 'serbia_and_montenegro', 'seychelles', 'sierra_leone', 'singapore', 'sint_maarten', 'slovakia', 'slovenia', 'solomon_islands', 'somalia', 'south_africa', 'south_african_common_customs_area', 'south_korea', 'south_sudan', 'spain', 'special_categories_and_economic_zones', 'sri_lanka', 'sub-saharan_africa', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria', 'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo', 'tonga', 'trinidad_and_tobago', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu', 'uganda', 'ukraine', 'united_arab_emirates', 'united_kingdom', 'united_states', 'uruguay', 'uzbekistan', 'vanuatu', 'vatican_city_state', 'venezuela', 'viet_nam', 'west_malaysia', 'western_hemisphere', 'western_hemisphere_not_allocated', 'world', 'yemen', 'yemen_arab_rep', 'yemen_pd_rep', 'zambia', 'zimbabwe'
+        counterpart : Union[str, None, list[Optional[str]]]
+            Counterpart country to the trade. None is an equiavlent to 'all'. If 'all' is used, the country field cannot be 'all'. Multiple comma separated items allowed for provider(s): imf.
+            Choices for imf: 'all', 'advanced_economies', 'afghanistan', 'africa', 'africa_not_allocated', 'albania', 'algeria', 'american_samoa', 'angola', 'anguilla', 'antigua_and_barbuda', 'antilles', 'argentina', 'armenia', 'aruba', 'asia_not_allocated', 'australia', 'austria', 'azerbaijan', 'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belgo-luxembourg_economic_union', 'belize', 'benin', 'bermuda', 'bhutan', 'bolivia', 'bosnia_and_herzegovina', 'botswana', 'brazil', 'brunei_darussalam', 'bulgaria', 'burkina_faso', 'burundi', 'cabo_verde', 'cambodia', 'cameroon', 'canada', 'central_african_republic', 'chad', 'chile', 'china', 'colombia', 'community_of_independent_states', 'comoros', 'congo', 'costa_rica', 'croatia', 'cuba', 'curacao', 'cyprus', 'czech_republic', 'democratic_republic_of_the_congo', 'denmark', 'developing_asia', 'djibouti', 'dominica', 'dominican_republic', 'east_germany', 'eastern_caribbean_currency_union', 'ecuador', 'egypt', 'el_salvador', 'emerging_and_developing_countries', 'emerging_and_developing_europe', 'equatorial_guinea', 'eritrea', 'estonia', 'eswatini', 'ethiopia', 'euro_area', 'europe', 'europe_not_allocated', 'european_union', 'export_earnings_fuel', 'export_earnings_nonfuel', 'falkland_islands', 'faroe_islands', 'fiji', 'finland', 'former_czechoslovakia', 'former_ussr', 'former_yugoslavia', 'france', 'french_polynesia', 'gabon', 'gambia', 'georgia', 'germany', 'ghana', 'gibraltar', 'greece', 'greenland', 'grenada', 'guam', 'guatemala', 'guinea', 'guyana', 'haiti', 'honduras', 'hong_kong', 'hungary', 'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland', 'israel', 'italy', 'ivory_coast', 'jamaica', 'japan', 'jordan', 'kazakhstan', 'kenya', 'kiribati', 'kosovo', 'kuwait', 'kyrgyzstan', 'lao', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya', 'lithuania', 'luxembourg', 'macao', 'madagascar', 'malawi', 'malaysia', 'maldives', 'mali', 'malta', 'marshall_islands', 'mauritania', 'mauritius', 'mexico', 'micronesia', 'middle_east', 'middle_east_and_central_asia', 'middle_east_and_central_asia_not_specified', 'middle_east_north_africa_afghanistan_and_pakistan', 'moldova', 'mongolia', 'montenegro', 'montserrat', 'morocco', 'mozambique', 'myanmar', 'namibia', 'nauru', 'nepal', 'netherlands', 'new_caledonia', 'new_zealand', 'nicaragua', 'niger', 'nigeria', 'north_korea', 'north_macedonia', 'north_vietnam', 'norway', 'oman', 'other_countries_nie', 'pakistan', 'palau', 'palestine', 'panama', 'papua_new_guinea', 'paraguay', 'peru', 'philippines', 'poland', 'portugal', 'qatar', 'romania', 'russia', 'rwanda', 'saint_kitts_and_nevis', 'saint_lucia', 'saint_vincent_and_the_grenadines', 'samoa', 'san_marino', 'sao_tome_and_principe', 'saudi_arabia', 'senegal', 'serbia', 'serbia_and_montenegro', 'seychelles', 'sierra_leone', 'singapore', 'sint_maarten', 'slovakia', 'slovenia', 'solomon_islands', 'somalia', 'south_africa', 'south_african_common_customs_area', 'south_korea', 'south_sudan', 'spain', 'special_categories_and_economic_zones', 'sri_lanka', 'sub-saharan_africa', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria', 'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo', 'tonga', 'trinidad_and_tobago', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu', 'uganda', 'ukraine', 'united_arab_emirates', 'united_kingdom', 'united_states', 'uruguay', 'uzbekistan', 'vanuatu', 'vatican_city_state', 'venezuela', 'viet_nam', 'west_malaysia', 'western_hemisphere', 'western_hemisphere_not_allocated', 'world', 'yemen', 'yemen_arab_rep', 'yemen_pd_rep', 'zambia', 'zimbabwe'
+        direction : Literal['exports', 'imports', 'balance', 'all']
+            Trade direction. Use 'all' to get all data for this dimension.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        frequency : Literal['month', 'quarter', 'annual']
+            The frequency of the data.
 
-                DirectionOfTrade
-                ----------------
-                date : date
-                    The date of the data.
-                symbol : Optional[str]
-                    Symbol representing the entity requested in the data.
-                country : str
+        Returns
+        -------
+        OBBject
+            results : list[DirectionOfTrade]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                counterpart : str
-                    Counterpart country or region to the trade.
-                title : Optional[str]
-                    Title corresponding to the symbol.
-                value : float
-                    Trade value.
-                scale : Optional[str]
-                    Scale of the value.
+        DirectionOfTrade
+        ----------------
+        date : date
+            The date of the data.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        country : str
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')
-                >>> # Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.
-                >>> obb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')
+        counterpart : str
+            Counterpart country or region to the trade.
+        title : Optional[str]
+            Title corresponding to the symbol.
+        value : float
+            Trade value.
+        scale : Optional[str]
+            Scale of the value.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.direction_of_trade(provider='imf', country='all', counterpart='china')
+        >>> # Select multiple countries or counterparts by entering a comma-separated list. The direction of trade can be 'exports', 'imports', 'balance', or 'all'.
+        >>> obb.economy.direction_of_trade(provider='imf', country='us', counterpart='world,eu', frequency='annual', direction='exports')
         """  # noqa: E501
 
         return self._run(
@@ -2044,46 +2047,47 @@ class ROUTER_economy(Container):
         If `as_choices` is True, the response is a list of valid Workspace parameter choices.
         Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
-                year : Optional[int]
-                    The year of FOMC documents to retrieve. If None, all years since 1959 are returned. (provider: federal_reserve)
-                document_type : Optional[str]
-                    Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book (provider: federal_reserve)
-                pdf_only : bool
-                    Whether to return as a list with only the PDF documents. Default is False. (provider: federal_reserve)
-                as_choices : bool
-                    Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use. (provider: federal_reserve)
 
-                Returns
-                -------
-                OBBject
-                    results : FomcDocuments
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        year : Optional[int]
+            The year of FOMC documents to retrieve. If None, all years since 1959 are returned. (provider: federal_reserve)
+        document_type : Optional[str]
+            Filter by document type. Default is all. Choose from: all, monetary_policy, minutes, projections, materials, press_release, press_conference, agenda, transcript, speaker_key, beige_book, teal_book, green_book, blue_book, red_book (provider: federal_reserve)
+        pdf_only : bool
+            Whether to return as a list with only the PDF documents. Default is False. (provider: federal_reserve)
+        as_choices : bool
+            Whether to return cast as a list of valid Workspace parameter choices. Leave as False for typical use. (provider: federal_reserve)
 
-                FomcDocuments
-                -------------
-                content : Optional[Any]
-                    The content of request results. If `url` was provided, the content is a dictionary with keys `filename` and `content`. Otherwise, it is a list of dictionaries with a mapping of FOMC documents to URLs. The endpoint response will not be an OBBject.results object, but the content directly. (provider: federal_reserve)
+        Returns
+        -------
+        OBBject
+            results : FomcDocuments
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.fomc_documents(provider='federal_reserve')
-                >>> # Filter all documents by year.
-                >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022)
-                >>> # Filter all documents by year and document type.
-                >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type='minutes')
+        FomcDocuments
+        -------------
+        content : Optional[Any]
+            The content of request results. If `url` was provided, the content is a dictionary with keys `filename` and `content`. Otherwise, it is a list of dictionaries with a mapping of FOMC documents to URLs. The endpoint response will not be an OBBject.results object, but the content directly. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.fomc_documents(provider='federal_reserve')
+        >>> # Filter all documents by year.
+        >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022)
+        >>> # Filter all documents by year and document type.
+        >>> obb.economy.fomc_documents(provider='federal_reserve', year=2022, document_type='minutes')
         """  # noqa: E501
 
         return self._run(
@@ -2262,124 +2266,125 @@ class ROUTER_economy(Container):
 
         The series group ID is found by using `fred_search` and the `series_id` parameter.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                symbol : str
-                    Symbol to get data for.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                limit : Optional[int]
-                    The number of data entries to return.
-                is_series_group : bool
-                    When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
-                region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
-                    The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-                season : Literal['sa', 'nsa', 'ssa']
-                    The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-                units : Optional[str]
-                    The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
-                frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
-                    Frequency aggregation to convert high frequency data to lower frequency.
 
-                        None = No change
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        symbol : str
+            Symbol to get data for.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        limit : Optional[int]
+            The number of data entries to return.
+        is_series_group : bool
+            When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
+        region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
+            The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        season : Literal['sa', 'nsa', 'ssa']
+            The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        units : Optional[str]
+            The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+            Frequency aggregation to convert high frequency data to lower frequency.
 
-                        a = Annual
+                None = No change
 
-                        q = Quarterly
+                a = Annual
 
-                        m = Monthly
+                q = Quarterly
 
-                        w = Weekly
+                m = Monthly
 
-                        d = Daily
+                w = Weekly
 
-                        wef = Weekly, Ending Friday
+                d = Daily
 
-                        weth = Weekly, Ending Thursday
+                wef = Weekly, Ending Friday
 
-                        wew = Weekly, Ending Wednesday
+                weth = Weekly, Ending Thursday
 
-                        wetu = Weekly, Ending Tuesday
+                wew = Weekly, Ending Wednesday
 
-                        wem = Weekly, Ending Monday
+                wetu = Weekly, Ending Tuesday
 
-                        wesu = Weekly, Ending Sunday
+                wem = Weekly, Ending Monday
 
-                        wesa = Weekly, Ending Saturday
+                wesu = Weekly, Ending Sunday
 
-                        bwew = Biweekly, Ending Wednesday
+                wesa = Weekly, Ending Saturday
 
-                        bwem = Biweekly, Ending Monday
-                             (provider: fred)
-                aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
-                    A key that indicates the aggregation method used for frequency aggregation.
-                            This parameter has no affect if the frequency parameter is not set.
+                bwew = Biweekly, Ending Wednesday
 
-                        avg = Average
+                bwem = Biweekly, Ending Monday
+                     (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+            A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set.
 
-                        sum = Sum
+                avg = Average
 
-                        eop = End of Period
-                             (provider: fred)
-                transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
-                    Transformation type
+                sum = Sum
 
-                        None = No transformation
+                eop = End of Period
+                     (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+            Transformation type
 
-                        chg = Change
+                None = No transformation
 
-                        ch1 = Change from Year Ago
+                chg = Change
 
-                        pch = Percent Change
+                ch1 = Change from Year Ago
 
-                        pc1 = Percent Change from Year Ago
+                pch = Percent Change
 
-                        pca = Compounded Annual Rate of Change
+                pc1 = Percent Change from Year Ago
 
-                        cch = Continuously Compounded Rate of Change
+                pca = Compounded Annual Rate of Change
 
-                        cca = Continuously Compounded Annual Rate of Change
+                cch = Continuously Compounded Rate of Change
 
-                        log = Natural Log
-                             (provider: fred)
+                cca = Continuously Compounded Annual Rate of Change
 
-                Returns
-                -------
-                OBBject
-                    results : list[FredRegional]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+                log = Natural Log
+                     (provider: fred)
 
-                FredRegional
-                ------------
-                date : date
-                    The date of the data.
-                region : Optional[str]
-                    The name of the region. (provider: fred)
-                code : Optional[Union[str, int]]
-                    The code of the region. (provider: fred)
-                value : Optional[Union[int, float]]
-                    The obersvation value. The units are defined in the search results by series ID. (provider: fred)
-                series_id : Optional[str]
-                    The individual series ID for the region. (provider: fred)
+        Returns
+        -------
+        OBBject
+            results : list[FredRegional]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')
-                >>> # With a date, time series data is returned.
-                >>> obb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')
+        FredRegional
+        ------------
+        date : date
+            The date of the data.
+        region : Optional[str]
+            The name of the region. (provider: fred)
+        code : Optional[Union[str, int]]
+            The code of the region. (provider: fred)
+        value : Optional[Union[int, float]]
+            The obersvation value. The units are defined in the search results by series ID. (provider: fred)
+        series_id : Optional[str]
+            The individual series ID for the region. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')
+        >>> # With a date, time series data is returned.
+        >>> obb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -2535,100 +2540,101 @@ class ROUTER_economy(Container):
         This does not return the observation values, only the metadata.
         Use this function to find series IDs for `fred_series()`.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                query : Optional[str]
-                    The search word(s).
-                search_type : Literal['full_text', 'series_id', 'release']
-                    The type of search to perform. Automatically set to 'release' when a 'release_id' is provided. (provider: fred)
-                release_id : Optional[Annotated[int, Ge(ge=0)]]
-                    A specific release ID to target. (provider: fred)
-                limit : Optional[Annotated[int, Ge(ge=0)]]
-                    The number of data entries to return. (1-1000) (provider: fred)
-                offset : Optional[Annotated[int, Ge(ge=0)]]
-                    Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'. (provider: fred)
-                order_by : Literal['search_rank', 'series_id', 'title', 'units', 'frequency', 'seasonal_adjustment', 'realtime_start', 'realtime_end', 'last_updated', 'observation_start', 'observation_end', 'popularity', 'group_popularity']
-                    Order the results by a specific attribute. The default is 'observation_end'. (provider: fred)
-                sort_order : Literal['asc', 'desc']
-                    Sort the 'order_by' item in ascending or descending order. The default is 'desc'. (provider: fred)
-                filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
-                    Filter by an attribute. (provider: fred)
-                filter_value : Optional[str]
-                    String value to filter the variable by.  Used in conjunction with filter_variable. This parameter is ignored when search_type is 'release'. (provider: fred)
-                tag_names : Optional[str]
-                    A semicolon delimited list of tag names that series match all of.  Example: 'japan
-                exclude_tag_names : Optional[str]
-                    A semicolon delimited list of tag names that series match none of.  Example: 'imports
-                series_id : Optional[str]
-                    A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
-                Returns
-                -------
-                OBBject
-                    results : list[FredSearch]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        query : Optional[str]
+            The search word(s).
+        search_type : Literal['full_text', 'series_id', 'release']
+            The type of search to perform. Automatically set to 'release' when a 'release_id' is provided. (provider: fred)
+        release_id : Optional[Annotated[int, Ge(ge=0)]]
+            A specific release ID to target. (provider: fred)
+        limit : Optional[Annotated[int, Ge(ge=0)]]
+            The number of data entries to return. (1-1000) (provider: fred)
+        offset : Optional[Annotated[int, Ge(ge=0)]]
+            Offset the results in conjunction with limit. This parameter is ignored When search_type is 'release'. (provider: fred)
+        order_by : Literal['search_rank', 'series_id', 'title', 'units', 'frequency', 'seasonal_adjustment', 'realtime_start', 'realtime_end', 'last_updated', 'observation_start', 'observation_end', 'popularity', 'group_popularity']
+            Order the results by a specific attribute. The default is 'observation_end'. (provider: fred)
+        sort_order : Literal['asc', 'desc']
+            Sort the 'order_by' item in ascending or descending order. The default is 'desc'. (provider: fred)
+        filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
+            Filter by an attribute. (provider: fred)
+        filter_value : Optional[str]
+            String value to filter the variable by.  Used in conjunction with filter_variable. This parameter is ignored when search_type is 'release'. (provider: fred)
+        tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan
+        exclude_tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports
+        series_id : Optional[str]
+            A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
-                FredSearch
-                ----------
-                release_id : Optional[str]
-                    The release ID for queries.
-                series_id : Optional[str]
-                    The series ID for the item in the release.
-                series_group : Optional[str]
-                    The series group ID of the series. This value is used to query for regional data.
-                region_type : Optional[str]
-                    The region type of the series.
-                name : Optional[str]
-                    The name of the release.
-                title : Optional[str]
-                    The title of the series.
-                observation_start : Optional[date]
-                    The date of the first observation in the series.
-                observation_end : Optional[date]
-                    The date of the last observation in the series.
-                frequency : Optional[str]
-                    The frequency of the data.
-                frequency_short : Optional[str]
-                    Short form of the data frequency.
-                units : Optional[str]
-                    The units of the data.
-                units_short : Optional[str]
-                    Short form of the data units.
-                seasonal_adjustment : Optional[str]
-                    The seasonal adjustment of the data.
-                seasonal_adjustment_short : Optional[str]
-                    Short form of the data seasonal adjustment.
-                last_updated : Optional[datetime]
-                    The datetime of the last update to the data.
-                popularity : Optional[int]
-                    Popularity of the series
-                group_popularity : Optional[int]
-                    Group popularity of the release
-                realtime_start : Optional[date]
-                    The realtime start date of the series.
-                realtime_end : Optional[date]
-                    The realtime end date of the series.
-                notes : Optional[str]
-                    Description of the release.
-                press_release : Optional[bool]
-                    If the release is a press release.
-                url : Optional[str]
-                    URL to the release.
+        Returns
+        -------
+        OBBject
+            results : list[FredSearch]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.fred_search(provider='fred')
+        FredSearch
+        ----------
+        release_id : Optional[str]
+            The release ID for queries.
+        series_id : Optional[str]
+            The series ID for the item in the release.
+        series_group : Optional[str]
+            The series group ID of the series. This value is used to query for regional data.
+        region_type : Optional[str]
+            The region type of the series.
+        name : Optional[str]
+            The name of the release.
+        title : Optional[str]
+            The title of the series.
+        observation_start : Optional[date]
+            The date of the first observation in the series.
+        observation_end : Optional[date]
+            The date of the last observation in the series.
+        frequency : Optional[str]
+            The frequency of the data.
+        frequency_short : Optional[str]
+            Short form of the data frequency.
+        units : Optional[str]
+            The units of the data.
+        units_short : Optional[str]
+            Short form of the data units.
+        seasonal_adjustment : Optional[str]
+            The seasonal adjustment of the data.
+        seasonal_adjustment_short : Optional[str]
+            Short form of the data seasonal adjustment.
+        last_updated : Optional[datetime]
+            The datetime of the last update to the data.
+        popularity : Optional[int]
+            Popularity of the series
+        group_popularity : Optional[int]
+            Group popularity of the release
+        realtime_start : Optional[date]
+            The realtime start date of the series.
+        realtime_end : Optional[date]
+            The realtime end date of the series.
+        notes : Optional[str]
+            Description of the release.
+        press_release : Optional[bool]
+            If the release is a press release.
+        url : Optional[str]
+            URL to the release.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.fred_search(provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -3611,53 +3617,54 @@ class ROUTER_economy(Container):
         """Get interest rates by country(s) and duration.
         Most OECD countries publish short-term, a long-term, and immediate rates monthly.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-                country : Union[str, list[str]]
-                    The country to get data. Multiple comma separated items allowed for provider(s): oecd.
-                    Choices for oecd: 'belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all'
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                duration : Literal['immediate', 'short', 'long']
-                    Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate. (provider: oecd)
-                frequency : Literal['monthly', 'quarter', 'annual']
-                    Frequency to get interest rate for for. (provider: oecd)
 
-                Returns
-                -------
-                OBBject
-                    results : list[CountryInterestRates]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        country : Union[str, list[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+            Choices for oecd: 'belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all'
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        duration : Literal['immediate', 'short', 'long']
+            Duration of the interest rate. 'immediate' is the overnight rate, 'short' is the 3-month rate, and 'long' is the 10-year rate. (provider: oecd)
+        frequency : Literal['monthly', 'quarter', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
 
-                CountryInterestRates
-                --------------------
-                date : Optional[date]
-                    The date of the data.
-                value : Optional[float]
-                    The interest rate value.
-                country : Optional[str]
-                    Country for which the interest rate is given.
+        Returns
+        -------
+        OBBject
+            results : list[CountryInterestRates]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.interest_rates(provider='oecd')
-                >>> # For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.
-                >>> obb.economy.interest_rates(provider='oecd', country='all', duration='immediate', frequency='quarter')
-                >>> # Multiple countries can be passed in as a list.
-                >>> obb.economy.interest_rates(duration='long', country='united_kingdom,germany', frequency='monthly', provider='oecd')
+        CountryInterestRates
+        --------------------
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            The interest rate value.
+        country : Optional[str]
+            Country for which the interest rate is given.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.interest_rates(provider='oecd')
+        >>> # For OECD, duration can be 'immediate', 'short', or 'long'. Default is 'short', which is the 3-month rate. Overnight interbank rate is 'immediate', and 10-year rate is 'long'.
+        >>> obb.economy.interest_rates(provider='oecd', country='all', duration='immediate', frequency='quarter')
+        >>> # Multiple countries can be passed in as a list.
+        >>> obb.economy.interest_rates(duration='long', country='united_kingdom,germany', frequency='monthly', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -3784,47 +3791,48 @@ class ROUTER_economy(Container):
         Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
         Investment is, in turn, a major source of economic growth.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-                    Country to get interest rate for. (provider: oecd)
-                frequency : Literal['monthly', 'quarterly', 'annual']
-                    Frequency to get interest rate for for. (provider: oecd)
 
-                Returns
-                -------
-                OBBject
-                    results : list[LTIR]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+            Country to get interest rate for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
 
-                LTIR
-                ----
-                date : Optional[date]
-                    The date of the data.
-                value : Optional[float]
-                    Interest rate (given as a whole number, i.e 10=10%)
-                country : Optional[str]
-                    Country for which interest rate is given
+        Returns
+        -------
+        OBBject
+            results : list[LTIR]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.long_term_interest_rate(provider='oecd')
-                >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
+        LTIR
+        ----
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Interest rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which interest rate is given
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.long_term_interest_rate(provider='oecd')
+        >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
@@ -3880,55 +3888,56 @@ class ROUTER_economy(Container):
 
         The Federal Reserve publishes as part of the H.6 Release.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                adjusted : Optional[bool]
-                    Whether to return seasonally adjusted data.
 
-                Returns
-                -------
-                OBBject
-                    results : list[MoneyMeasures]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        adjusted : Optional[bool]
+            Whether to return seasonally adjusted data.
 
-                MoneyMeasures
-                -------------
-                month : date
-                    The date of the data.
-                M1 : float
-                    Value of the M1 money supply in billions.
-                M2 : float
-                    Value of the M2 money supply in billions.
-                currency : Optional[float]
-                    Value of currency in circulation in billions.
-                demand_deposits : Optional[float]
-                    Value of demand deposits in billions.
-                retail_money_market_funds : Optional[float]
-                    Value of retail money market funds in billions.
-                other_liquid_deposits : Optional[float]
-                    Value of other liquid deposits in billions.
-                small_denomination_time_deposits : Optional[float]
-                    Value of small denomination time deposits in billions.
+        Returns
+        -------
+        OBBject
+            results : list[MoneyMeasures]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.money_measures(provider='federal_reserve')
-                >>> obb.economy.money_measures(adjusted=False, provider='federal_reserve')
+        MoneyMeasures
+        -------------
+        month : date
+            The date of the data.
+        M1 : float
+            Value of the M1 money supply in billions.
+        M2 : float
+            Value of the M2 money supply in billions.
+        currency : Optional[float]
+            Value of currency in circulation in billions.
+        demand_deposits : Optional[float]
+            Value of demand deposits in billions.
+        retail_money_market_funds : Optional[float]
+            Value of retail money market funds in billions.
+        other_liquid_deposits : Optional[float]
+            Value of other liquid deposits in billions.
+        small_denomination_time_deposits : Optional[float]
+            Value of small denomination time deposits in billions.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.money_measures(provider='federal_reserve')
+        >>> obb.economy.money_measures(adjusted=False, provider='federal_reserve')
         """  # noqa: E501
 
         return self._run(
@@ -9097,50 +9106,51 @@ class ROUTER_economy(Container):
         Near-100 percent pass-through of fails suggests a high degree of collateral
         re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                asset_class : Literal['all', 'treasuries', 'tips', 'agency', 'mbs', 'corporate']
-                    Asset class to return, default is 'all'. (provider: federal_reserve)
-                unit : Literal['value', 'percent']
-                    Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class. (provider: federal_reserve)
 
-                Returns
-                -------
-                OBBject
-                    results : list[PrimaryDealerFails]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        asset_class : Literal['all', 'treasuries', 'tips', 'agency', 'mbs', 'corporate']
+            Asset class to return, default is 'all'. (provider: federal_reserve)
+        unit : Literal['value', 'percent']
+            Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class. (provider: federal_reserve)
 
-                PrimaryDealerFails
-                ------------------
-                date : date
-                    The date of the data.
-                symbol : str
-                    Symbol representing the entity requested in the data.
-                title : Optional[str]
-                    Title of the series' symbol. (provider: federal_reserve)
-                value : Optional[Union[int, float]]
-                    Value of the data returned, in millions of USD if the `unit` parameter is 'value' else a normalized percent. (provider: federal_reserve)
+        Returns
+        -------
+        OBBject
+            results : list[PrimaryDealerFails]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.primary_dealer_fails(provider='federal_reserve')
-                >>> # Transform the data to be percentage totals by asset class
-                >>> obb.economy.primary_dealer_fails(provider='federal_reserve', unit='percent')
+        PrimaryDealerFails
+        ------------------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        title : Optional[str]
+            Title of the series' symbol. (provider: federal_reserve)
+        value : Optional[Union[int, float]]
+            Value of the data returned, in millions of USD if the `unit` parameter is 'value' else a normalized percent. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.primary_dealer_fails(provider='federal_reserve')
+        >>> # Transform the data to be percentage totals by asset class
+        >>> obb.economy.primary_dealer_fails(provider='federal_reserve', unit='percent')
         """  # noqa: E501
 
         return self._run(
@@ -9726,47 +9736,48 @@ class ROUTER_economy(Container):
         Short-term interest rates are based on three-month money market rates where available.
         Typical standardised names are "money market rate" and "treasury bill rate".
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-                    Country to get interest rate for. (provider: oecd)
-                frequency : Literal['monthly', 'quarterly', 'annual']
-                    Frequency to get interest rate for for. (provider: oecd)
 
-                Returns
-                -------
-                OBBject
-                    results : list[STIR]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+            Country to get interest rate for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
 
-                STIR
-                ----
-                date : Optional[date]
-                    The date of the data.
-                value : Optional[float]
-                    Interest rate (given as a whole number, i.e 10=10%)
-                country : Optional[str]
-                    Country for which interest rate is given
+        Returns
+        -------
+        OBBject
+            results : list[STIR]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.economy.short_term_interest_rate(provider='oecd')
-                >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
+        STIR
+        ----
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Interest rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which interest rate is given
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.short_term_interest_rate(provider='oecd')
+        >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly', provider='oecd')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)

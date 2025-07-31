@@ -64,70 +64,71 @@ class ROUTER_equity_ownership(Container):
         Most funds wait until the end of this period in order to conceal
         their investment strategy from competitors and the public.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
-                symbol : str
-                    Symbol to get data for. A CIK or Symbol can be used.
-                date : Union[date, None, str]
-                    A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
-                limit : Optional[int]
-                    The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
 
-                Returns
-                -------
-                OBBject
-                    results : list[Form13FHR]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
+        symbol : str
+            Symbol to get data for. A CIK or Symbol can be used.
+        date : Union[date, None, str]
+            A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
+        limit : Optional[int]
+            The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
 
-                Form13FHR
-                ---------
-                period_ending : date
-                    The end-of-quarter date of the filing.
-                issuer : str
-                    The name of the issuer.
-                cusip : str
-                    The CUSIP of the security.
-                asset_class : str
-                    The title of the asset class for the security.
-                security_type : Optional[Literal['SH', 'PRN']]
-                    Whether the principal amount represents the number of shares or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
-                option_type : Optional[Literal['call', 'put']]
-                    Defined when the holdings being reported are put or call options. Only long positions are reported.
-                investment_discretion : Optional[str]
-                    The investment discretion held by the Manager. Sole, shared-defined (DFN), or shared-other (OTR).
-                voting_authority_sole : Optional[int]
-                    The number of shares for which the Manager exercises sole voting authority.
-                voting_authority_shared : Optional[int]
-                    The number of shares for which the Manager exercises a defined shared voting authority.
-                voting_authority_none : Optional[int]
-                    The number of shares for which the Manager exercises no voting authority.
-                principal_amount : int
-                    The total number of shares of the class of security or the principal amount of such class. Defined by the 'security_type'. Only long positions are reported
-                value : int
-                    The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with respect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
-                weight : Optional[float]
-                    The weight of the security relative to the market value of all securities in the filing , as a normalized percent. (provider: sec)
+        Returns
+        -------
+        OBBject
+            results : list[Form13FHR]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.equity.ownership.form_13f(symbol='NVDA', provider='sec')
-                >>> # Enter a date (calendar quarter ending) for a specific report.
-                >>> obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')
-                >>> # Example finding Michael Burry's filings.
-                >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
-                >>> # Use the `limit` parameter to return N number of reports from the most recent.
-                >>> obb.equity.ownership.form_13f(cik, limit=2).to_df()
+        Form13FHR
+        ---------
+        period_ending : date
+            The end-of-quarter date of the filing.
+        issuer : str
+            The name of the issuer.
+        cusip : str
+            The CUSIP of the security.
+        asset_class : str
+            The title of the asset class for the security.
+        security_type : Optional[Literal['SH', 'PRN']]
+            Whether the principal amount represents the number of shares or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
+        option_type : Optional[Literal['call', 'put']]
+            Defined when the holdings being reported are put or call options. Only long positions are reported.
+        investment_discretion : Optional[str]
+            The investment discretion held by the Manager. Sole, shared-defined (DFN), or shared-other (OTR).
+        voting_authority_sole : Optional[int]
+            The number of shares for which the Manager exercises sole voting authority.
+        voting_authority_shared : Optional[int]
+            The number of shares for which the Manager exercises a defined shared voting authority.
+        voting_authority_none : Optional[int]
+            The number of shares for which the Manager exercises no voting authority.
+        principal_amount : int
+            The total number of shares of the class of security or the principal amount of such class. Defined by the 'security_type'. Only long positions are reported
+        value : int
+            The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with respect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
+        weight : Optional[float]
+            The weight of the security relative to the market value of all securities in the filing , as a normalized percent. (provider: sec)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.ownership.form_13f(symbol='NVDA', provider='sec')
+        >>> # Enter a date (calendar quarter ending) for a specific report.
+        >>> obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')
+        >>> # Example finding Michael Burry's filings.
+        >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
+        >>> # Use the `limit` parameter to return N number of reports from the most recent.
+        >>> obb.equity.ownership.form_13f(cik, limit=2).to_df()
         """  # noqa: E501
 
         return self._run(
@@ -178,63 +179,64 @@ class ROUTER_equity_ownership(Container):
         """Obtain government transaction data, including data from the Senate
         and the House of Representatives.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
-                symbol : Union[str, None, list[Optional[str]]]
-                    Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-                chamber : Literal['house', 'senate', 'all']
-                    Government Chamber.
-                limit : Optional[Annotated[int, Ge(ge=0)]]
-                    The number of data entries to return.
 
-                Returns
-                -------
-                OBBject
-                    results : list[GovernmentTrades]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        symbol : Union[str, None, list[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+        chamber : Literal['house', 'senate', 'all']
+            Government Chamber.
+        limit : Optional[Annotated[int, Ge(ge=0)]]
+            The number of data entries to return.
 
-                GovernmentTrades
-                ----------------
-                symbol : Optional[str]
-                    Symbol representing the entity requested in the data.
-                date : date
-                    The date of the data.
-                transaction_date : Optional[date]
-                    Date of Transaction.
-                representative : Optional[str]
-                    Name of Representative.
-                chamber : Optional[Literal['house', 'senate']]
-                    Government Chamber - House or Senate. (provider: fmp)
-                owner : Optional[str]
-                    Ownership status (e.g., Spouse, Joint). (provider: fmp)
-                asset_type : Optional[str]
-                    Type of asset involved in the transaction. (provider: fmp)
-                asset_description : Optional[str]
-                    Description of the asset. (provider: fmp)
-                transaction_type : Optional[str]
-                    Type of transaction (e.g., Sale, Purchase). (provider: fmp)
-                amount : Optional[str]
-                    Transaction amount range. (provider: fmp)
-                comment : Optional[str]
-                    Additional comments on the transaction. (provider: fmp)
-                url : Optional[str]
-                    Link to the transaction document. (provider: fmp)
+        Returns
+        -------
+        OBBject
+            results : list[GovernmentTrades]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')
-                >>> obb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')
+        GovernmentTrades
+        ----------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        date : date
+            The date of the data.
+        transaction_date : Optional[date]
+            Date of Transaction.
+        representative : Optional[str]
+            Name of Representative.
+        chamber : Optional[Literal['house', 'senate']]
+            Government Chamber - House or Senate. (provider: fmp)
+        owner : Optional[str]
+            Ownership status (e.g., Spouse, Joint). (provider: fmp)
+        asset_type : Optional[str]
+            Type of asset involved in the transaction. (provider: fmp)
+        asset_description : Optional[str]
+            Description of the asset. (provider: fmp)
+        transaction_type : Optional[str]
+            Type of transaction (e.g., Sale, Purchase). (provider: fmp)
+        amount : Optional[str]
+            Transaction amount range. (provider: fmp)
+        comment : Optional[str]
+            Additional comments on the transaction. (provider: fmp)
+        url : Optional[str]
+            Link to the transaction document. (provider: fmp)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.ownership.government_trades(symbol='AAPL', chamber='all', provider='fmp')
+        >>> obb.equity.ownership.government_trades(limit=500, chamber='all', provider='fmp')
         """  # noqa: E501
 
         return self._run(

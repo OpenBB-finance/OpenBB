@@ -52,90 +52,91 @@ class ROUTER_fixedincome_corporate(Container):
         Many companies use CP to raise cash needed for current transactions,
         and many find it to be a lower-cost alternative to bank loans.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                maturity : Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]
-                    A target maturity. Multiple comma separated items allowed. (provider: fred)
-                category : Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]
-                    The category of asset. Multiple comma separated items allowed. (provider: fred)
-                frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                            Frequency aggregation to convert daily data to lower frequency.
-                                a = Annual
-                                q = Quarterly
-                                m = Monthly
-                                w = Weekly
-                                wef = Weekly, Ending Friday
-                                weth = Weekly, Ending Thursday
-                                wew = Weekly, Ending Wednesday
-                                wetu = Weekly, Ending Tuesday
-                                wem = Weekly, Ending Monday
-                                wesu = Weekly, Ending Sunday
-                                wesa = Weekly, Ending Saturday
-                                bwew = Biweekly, Ending Wednesday
-                                bwem = Biweekly, Ending Monday
-                             (provider: fred)
-                aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        maturity : Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]
+            A target maturity. Multiple comma separated items allowed. (provider: fred)
+        category : Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]
+            The category of asset. Multiple comma separated items allowed. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                            A key that indicates the aggregation method used for frequency aggregation.
-                                avg = Average
-                                sum = Sum
-                                eop = End of Period
-                             (provider: fred)
-                transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+                    Frequency aggregation to convert daily data to lower frequency.
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
-                            Transformation type
-                                None = No transformation
-                                chg = Change
-                                ch1 = Change from Year Ago
-                                pch = Percent Change
-                                pc1 = Percent Change from Year Ago
-                                pca = Compounded Annual Rate of Change
-                                cch = Continuously Compounded Rate of Change
-                                cca = Continuously Compounded Annual Rate of Change
-                                log = Natural Log
-                             (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
-                Returns
-                -------
-                OBBject
-                    results : list[CommercialPaper]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
-                CommercialPaper
-                ---------------
-                date : date
-                    The date of the data.
-                symbol : Optional[str]
-                    Symbol representing the entity requested in the data.
-                maturity : str
-                    Maturity length of the item.
-                rate : float
-                    Interest rate.
-                title : Optional[str]
-                    Title of the series.
-                asset_type : Optional[Literal['asset_backed', 'financial', 'nonfinancial', 'a2p2']]
-                    The category of asset. (provider: fred)
+        Returns
+        -------
+        OBBject
+            results : list[CommercialPaper]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.fixedincome.corporate.commercial_paper(provider='fred')
-                >>> obb.fixedincome.corporate.commercial_paper(category='all', maturity='15d', provider='fred')
+        CommercialPaper
+        ---------------
+        date : date
+            The date of the data.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        maturity : str
+            Maturity length of the item.
+        rate : float
+            Interest rate.
+        title : Optional[str]
+            Title of the series.
+        asset_type : Optional[Literal['asset_backed', 'financial', 'nonfinancial', 'a2p2']]
+            The category of asset. (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.commercial_paper(provider='fred')
+        >>> obb.fixedincome.corporate.commercial_paper(category='all', maturity='15d', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -209,43 +210,44 @@ class ROUTER_fixedincome_corporate(Container):
         These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
         that is the market-weighted average (MWA) quality of high quality bonds.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                date : Union[str, date, None, list[Union[str, date, None]]]
-                    A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
-                yield_curve : Literal['spot', 'par']
-                    The yield curve type. (provider: fred)
 
-                Returns
-                -------
-                OBBject
-                    results : list[HighQualityMarketCorporateBond]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        date : Union[str, date, None, list[Union[str, date, None]]]
+            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
+        yield_curve : Literal['spot', 'par']
+            The yield curve type. (provider: fred)
 
-                HighQualityMarketCorporateBond
-                ------------------------------
-                date : date
-                    The date of the data.
-                rate : float
-                    Interest rate.
-                maturity : str
-                    Maturity.
+        Returns
+        -------
+        OBBject
+            results : list[HighQualityMarketCorporateBond]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.fixedincome.corporate.hqm(provider='fred')
-                >>> obb.fixedincome.corporate.hqm(yield_curve='par', provider='fred')
+        HighQualityMarketCorporateBond
+        ------------------------------
+        date : date
+            The date of the data.
+        rate : float
+            Interest rate.
+        maturity : str
+            Maturity.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.hqm(provider='fred')
+        >>> obb.fixedincome.corporate.hqm(yield_curve='par', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -304,51 +306,52 @@ class ROUTER_fixedincome_corporate(Container):
         remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount
         outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
-                    The type of series.
-                category : Literal['all', 'duration', 'eur', 'usd']
-                    The type of category. (provider: fred)
-                area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
-                    The type of area. (provider: fred)
-                grade : Literal['a', 'aa', 'aaa', 'b', 'bb', 'bbb', 'ccc', 'crossover', 'high_grade', 'high_yield', 'non_financial', 'non_sovereign', 'private_sector', 'public_sector']
-                    The type of grade. (provider: fred)
-                options : bool
-                    Whether to include options in the results. (provider: fred)
 
-                Returns
-                -------
-                OBBject
-                    results : list[ICEBofA]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
+            The type of series.
+        category : Literal['all', 'duration', 'eur', 'usd']
+            The type of category. (provider: fred)
+        area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
+            The type of area. (provider: fred)
+        grade : Literal['a', 'aa', 'aaa', 'b', 'bb', 'bbb', 'ccc', 'crossover', 'high_grade', 'high_yield', 'non_financial', 'non_sovereign', 'private_sector', 'public_sector']
+            The type of grade. (provider: fred)
+        options : bool
+            Whether to include options in the results. (provider: fred)
 
-                ICEBofA
-                -------
-                date : date
-                    The date of the data.
-                rate : Optional[float]
-                    ICE BofA US Corporate Bond Indices Rate.
+        Returns
+        -------
+        OBBject
+            results : list[ICEBofA]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.fixedincome.corporate.ice_bofa(provider='fred')
-                >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')
+        ICEBofA
+        -------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            ICE BofA US Corporate Bond Indices Rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.ice_bofa(provider='fred')
+        >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
@@ -411,45 +414,46 @@ class ROUTER_fixedincome_corporate(Container):
         These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year
         Treasury Bill as an indicator of the interest rate.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                index_type : Literal['aaa', 'baa']
-                    The type of series.
-                spread : Optional[Literal['treasury', 'fed_funds']]
-                    The type of spread. (provider: fred)
 
-                Returns
-                -------
-                OBBject
-                    results : list[MoodyCorporateBondIndex]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        index_type : Literal['aaa', 'baa']
+            The type of series.
+        spread : Optional[Literal['treasury', 'fed_funds']]
+            The type of spread. (provider: fred)
 
-                MoodyCorporateBondIndex
-                -----------------------
-                date : date
-                    The date of the data.
-                rate : Optional[float]
-                    Moody Corporate Bond Index Rate.
+        Returns
+        -------
+        OBBject
+            results : list[MoodyCorporateBondIndex]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.fixedincome.corporate.moody(provider='fred')
-                >>> obb.fixedincome.corporate.moody(index_type='baa', provider='fred')
+        MoodyCorporateBondIndex
+        -----------------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Moody Corporate Bond Index Rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.moody(provider='fred')
+        >>> obb.fixedincome.corporate.moody(index_type='baa', provider='fred')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
@@ -517,46 +521,47 @@ class ROUTER_fixedincome_corporate(Container):
         Because each spot rate pertains to a single cashflow, it is the relevant interest rate
         concept for discounting a pension liability at the same maturity.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                maturity : Union[float, str, list[Union[float, str]]]
-                    Maturities in years. Multiple comma separated items allowed for provider(s): fred.
-                category : Union[str, list[str]]
-                    Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
-                    Choices for fred: 'par_yield', 'spot_rate'
 
-                Returns
-                -------
-                OBBject
-                    results : list[SpotRate]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        maturity : Union[float, str, list[Union[float, str]]]
+            Maturities in years. Multiple comma separated items allowed for provider(s): fred.
+        category : Union[str, list[str]]
+            Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
+            Choices for fred: 'par_yield', 'spot_rate'
 
-                SpotRate
-                --------
-                date : date
-                    The date of the data.
-                rate : Optional[float]
-                    Spot Rate.
+        Returns
+        -------
+        OBBject
+            results : list[SpotRate]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.fixedincome.corporate.spot_rates(provider='fred')
-                >>> obb.fixedincome.corporate.spot_rates(maturity='10,20,30,50', provider='fred')
+        SpotRate
+        --------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Spot Rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.spot_rates(provider='fred')
+        >>> obb.fixedincome.corporate.spot_rates(maturity='10,20,30,50', provider='fred')
         """  # noqa: E501
 
         return self._run(

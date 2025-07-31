@@ -260,85 +260,86 @@ class ROUTER_commodity(Container):
 
         Source: www.eia.gov/steo/
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                symbol : Optional[str]
-                    Symbol to get data for. If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API. Multiple comma separated items allowed. (provider: eia)
-                table : Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']
-                    The specific table within the STEO dataset. Default is '01'. When 'symbol' is provided, this parameter is ignored.
-                            01: US Energy Markets Summary
-                            02: Nominal Energy Prices
-                            03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
-                            03b: Non-OPEC Petroleum and Other Liquid Fuels Production
-                            03c: World Petroleum and Other Liquid Fuels Production
-                            03d: World Crude Oil Production
-                            03e: World Petroleum and Other Liquid Fuels Consumption
-                            04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
-                            04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
-                            04c: US Regional Motor Gasoline Prices and Inventories
-                            04d: US Biofuel Supply, Consumption, and Inventories
-                            05a: US Natural Gas Supply, Consumption, and Inventories
-                            05b: US Regional Natural Gas Prices
-                            06: US Coal Supply, Consumption, and Inventories
-                            07a: US Electricity Industry Overview
-                            07b: US Regional Electricity Retail Sales
-                            07c: US Regional Electricity Prices
-                            07d1: US Regional Electricity Generation, Electric Power Sector
-                            07d2: US Regional Electricity Generation, Electric Power Sector, continued
-                            07e: US Electricity Generating Capacity
-                            08: US Renewable Energy Consumption
-                            09a: US Macroeconomic Indicators and CO2 Emissions
-                            09b: US Regional Macroeconomic Data
-                            09c: US Regional Weather Data
-                            10a: Drilling Productivity Metrics
-                            10b: Crude Oil and Natural Gas Production from Shale and Tight Formations (provider: eia)
-                frequency : Literal['month', 'quarter', 'annual']
-                    The frequency of the data. Default is 'month'. (provider: eia)
 
-                Returns
-                -------
-                OBBject
-                    results : list[ShortTermEnergyOutlook]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: eia.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        symbol : Optional[str]
+            Symbol to get data for. If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API. Multiple comma separated items allowed. (provider: eia)
+        table : Literal['01', '02', '03a', '03b', '03c', '03d', '03e', '04a', '04b', '04c', '04d', '05a', '05b', '06', '07a', '07b', '07c', '07d1', '07d2', '07e', '08', '09a', '09b', '09c', '10a', '10b']
+            The specific table within the STEO dataset. Default is '01'. When 'symbol' is provided, this parameter is ignored.
+                    01: US Energy Markets Summary
+                    02: Nominal Energy Prices
+                    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
+                    03b: Non-OPEC Petroleum and Other Liquid Fuels Production
+                    03c: World Petroleum and Other Liquid Fuels Production
+                    03d: World Crude Oil Production
+                    03e: World Petroleum and Other Liquid Fuels Consumption
+                    04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
+                    04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
+                    04c: US Regional Motor Gasoline Prices and Inventories
+                    04d: US Biofuel Supply, Consumption, and Inventories
+                    05a: US Natural Gas Supply, Consumption, and Inventories
+                    05b: US Regional Natural Gas Prices
+                    06: US Coal Supply, Consumption, and Inventories
+                    07a: US Electricity Industry Overview
+                    07b: US Regional Electricity Retail Sales
+                    07c: US Regional Electricity Prices
+                    07d1: US Regional Electricity Generation, Electric Power Sector
+                    07d2: US Regional Electricity Generation, Electric Power Sector, continued
+                    07e: US Electricity Generating Capacity
+                    08: US Renewable Energy Consumption
+                    09a: US Macroeconomic Indicators and CO2 Emissions
+                    09b: US Regional Macroeconomic Data
+                    09c: US Regional Weather Data
+                    10a: Drilling Productivity Metrics
+                    10b: Crude Oil and Natural Gas Production from Shale and Tight Formations (provider: eia)
+        frequency : Literal['month', 'quarter', 'annual']
+            The frequency of the data. Default is 'month'. (provider: eia)
 
-                ShortTermEnergyOutlook
-                ----------------------
-                date : date
-                    The date of the data.
-                table : Optional[str]
-                    Table name for the data.
-                symbol : str
-                    Symbol representing the entity requested in the data.
-                order : Optional[int]
-                    Presented order of the data, relative to the table.
-                title : Optional[str]
-                    Title of the data.
-                value : Union[int, float]
-                    Value of the data.
-                unit : Optional[str]
-                    Unit or scale of the data.
+        Returns
+        -------
+        OBBject
+            results : list[ShortTermEnergyOutlook]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> # Get the EIA's Short Term Energy Outlook.
-                >>> obb.commodity.short_term_energy_outlook(provider='eia')
-                >>> # Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.
-                >>> obb.commodity.short_term_energy_outlook(table='03d', provider='eia')
+        ShortTermEnergyOutlook
+        ----------------------
+        date : date
+            The date of the data.
+        table : Optional[str]
+            Table name for the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        order : Optional[int]
+            Presented order of the data, relative to the table.
+        title : Optional[str]
+            Title of the data.
+        value : Union[int, float]
+            Value of the data.
+        unit : Optional[str]
+            Unit or scale of the data.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # Get the EIA's Short Term Energy Outlook.
+        >>> obb.commodity.short_term_energy_outlook(provider='eia')
+        >>> # Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.
+        >>> obb.commodity.short_term_energy_outlook(table='03d', provider='eia')
         """  # noqa: E501
 
         return self._run(

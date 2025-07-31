@@ -624,132 +624,133 @@ class ROUTER_equity(Container):
 
         These criteria include market cap, price, beta, volume, and dividend yield.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
-                mktcap_min : Optional[int]
-                    Filter by market cap greater than this value. (provider: fmp, yfinance)
-                mktcap_max : Optional[int]
-                    Filter by market cap less than this value. (provider: fmp, yfinance)
-                price_min : Optional[float]
-                    Filter by price greater than this value. (provider: fmp, yfinance)
-                price_max : Optional[float]
-                    Filter by price less than this value. (provider: fmp, yfinance)
-                beta_min : Optional[float]
-                    Filter by a beta greater than this value. (provider: fmp, yfinance)
-                beta_max : Optional[float]
-                    Filter by a beta less than this value. (provider: fmp, yfinance)
-                volume_min : Optional[int]
-                    Filter by volume greater than this value. (provider: fmp, yfinance)
-                volume_max : Optional[int]
-                    Filter by volume less than this value. (provider: fmp, yfinance)
-                dividend_min : Optional[float]
-                    Filter by dividend amount greater than this value. (provider: fmp)
-                dividend_max : Optional[float]
-                    Filter by dividend amount less than this value. (provider: fmp)
-                is_etf : Optional[bool]
-                    If true, returns only ETFs. (provider: fmp)
-                is_active : Optional[bool]
-                    If false, returns only inactive tickers. (provider: fmp)
-                sector : str
-                    Filter by sector. (provider: fmp, yfinance)
-                industry : Optional[str]
-                    Filter by industry. (provider: fmp, yfinance)
-                country : Optional[str]
-                    Filter by country, as a two-letter country code. (provider: fmp)
-                exchange : str
-                    Filter by exchange. (provider: fmp, yfinance)
-                limit : Optional[int]
-                    Limit the number of results to return. (provider: fmp)
 
-                Returns
-                -------
-                OBBject
-                    results : list[EquityScreener]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
+        mktcap_min : Optional[int]
+            Filter by market cap greater than this value. (provider: fmp, yfinance)
+        mktcap_max : Optional[int]
+            Filter by market cap less than this value. (provider: fmp, yfinance)
+        price_min : Optional[float]
+            Filter by price greater than this value. (provider: fmp, yfinance)
+        price_max : Optional[float]
+            Filter by price less than this value. (provider: fmp, yfinance)
+        beta_min : Optional[float]
+            Filter by a beta greater than this value. (provider: fmp, yfinance)
+        beta_max : Optional[float]
+            Filter by a beta less than this value. (provider: fmp, yfinance)
+        volume_min : Optional[int]
+            Filter by volume greater than this value. (provider: fmp, yfinance)
+        volume_max : Optional[int]
+            Filter by volume less than this value. (provider: fmp, yfinance)
+        dividend_min : Optional[float]
+            Filter by dividend amount greater than this value. (provider: fmp)
+        dividend_max : Optional[float]
+            Filter by dividend amount less than this value. (provider: fmp)
+        is_etf : Optional[bool]
+            If true, returns only ETFs. (provider: fmp)
+        is_active : Optional[bool]
+            If false, returns only inactive tickers. (provider: fmp)
+        sector : str
+            Filter by sector. (provider: fmp, yfinance)
+        industry : Optional[str]
+            Filter by industry. (provider: fmp, yfinance)
+        country : Optional[str]
+            Filter by country, as a two-letter country code. (provider: fmp)
+        exchange : str
+            Filter by exchange. (provider: fmp, yfinance)
+        limit : Optional[int]
+            Limit the number of results to return. (provider: fmp)
 
-                EquityScreener
-                --------------
-                symbol : str
-                    Symbol representing the entity requested in the data.
-                name : Optional[str]
-                    Name of the company.
-                market_cap : Optional[Union[int, float]]
-                    The market cap of ticker. (provider: fmp);
-                    Market Cap. (provider: yfinance)
-                sector : Optional[str]
-                    The sector the ticker belongs to. (provider: fmp)
-                industry : Optional[str]
-                    The industry ticker belongs to. (provider: fmp)
-                beta : Optional[float]
-                    The beta of the ETF. (provider: fmp)
-                price : Optional[float]
-                    The current price. (provider: fmp)
-                last_annual_dividend : Optional[float]
-                    The last annual amount dividend paid. (provider: fmp)
-                volume : Optional[int]
-                    The current trading volume. (provider: fmp)
-                exchange : Optional[str]
-                    The exchange code the asset trades on. (provider: fmp);
-                    Exchange where the stock is listed. (provider: yfinance)
-                exchange_name : Optional[str]
-                    The full name of the primary exchange. (provider: fmp)
-                country : Optional[str]
-                    The two-letter country abbreviation where the head office is located. (provider: fmp)
-                is_etf : Optional[Literal[True, False]]
-                    Whether the ticker is an ETF. (provider: fmp)
-                actively_trading : Optional[Literal[True, False]]
-                    Whether the ETF is actively trading. (provider: fmp)
-                open : Optional[float]
-                    Open price for the day. (provider: yfinance)
-                high : Optional[float]
-                    High price for the day. (provider: yfinance)
-                low : Optional[float]
-                    Low price for the day. (provider: yfinance)
-                previous_close : Optional[float]
-                    Previous close price. (provider: yfinance)
-                ma50 : Optional[float]
-                    50-day moving average. (provider: yfinance)
-                ma200 : Optional[float]
-                    200-day moving average. (provider: yfinance)
-                year_high : Optional[float]
-                    52-week high. (provider: yfinance)
-                year_low : Optional[float]
-                    52-week low. (provider: yfinance)
-                shares_outstanding : Optional[float]
-                    Shares outstanding. (provider: yfinance)
-                book_value : Optional[float]
-                    Book value per share. (provider: yfinance)
-                price_to_book : Optional[float]
-                    Price to book ratio. (provider: yfinance)
-                eps_ttm : Optional[float]
-                    Earnings per share over the trailing twelve months. (provider: yfinance)
-                eps_forward : Optional[float]
-                    Forward earnings per share. (provider: yfinance)
-                pe_forward : Optional[float]
-                    Forward price-to-earnings ratio. (provider: yfinance)
-                dividend_yield : Optional[float]
-                    Trailing twelve month dividend yield. (provider: yfinance)
-                exchange_timezone : Optional[str]
-                    Timezone of the exchange. (provider: yfinance)
-                earnings_date : Optional[datetime]
-                    Most recent earnings date. (provider: yfinance)
-                currency : Optional[str]
-                    Currency of the price data. (provider: yfinance)
+        Returns
+        -------
+        OBBject
+            results : list[EquityScreener]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.equity.screener(provider='fmp')
+        EquityScreener
+        --------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the company.
+        market_cap : Optional[Union[int, float]]
+            The market cap of ticker. (provider: fmp);
+            Market Cap. (provider: yfinance)
+        sector : Optional[str]
+            The sector the ticker belongs to. (provider: fmp)
+        industry : Optional[str]
+            The industry ticker belongs to. (provider: fmp)
+        beta : Optional[float]
+            The beta of the ETF. (provider: fmp)
+        price : Optional[float]
+            The current price. (provider: fmp)
+        last_annual_dividend : Optional[float]
+            The last annual amount dividend paid. (provider: fmp)
+        volume : Optional[int]
+            The current trading volume. (provider: fmp)
+        exchange : Optional[str]
+            The exchange code the asset trades on. (provider: fmp);
+            Exchange where the stock is listed. (provider: yfinance)
+        exchange_name : Optional[str]
+            The full name of the primary exchange. (provider: fmp)
+        country : Optional[str]
+            The two-letter country abbreviation where the head office is located. (provider: fmp)
+        is_etf : Optional[Literal[True, False]]
+            Whether the ticker is an ETF. (provider: fmp)
+        actively_trading : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
+        open : Optional[float]
+            Open price for the day. (provider: yfinance)
+        high : Optional[float]
+            High price for the day. (provider: yfinance)
+        low : Optional[float]
+            Low price for the day. (provider: yfinance)
+        previous_close : Optional[float]
+            Previous close price. (provider: yfinance)
+        ma50 : Optional[float]
+            50-day moving average. (provider: yfinance)
+        ma200 : Optional[float]
+            200-day moving average. (provider: yfinance)
+        year_high : Optional[float]
+            52-week high. (provider: yfinance)
+        year_low : Optional[float]
+            52-week low. (provider: yfinance)
+        shares_outstanding : Optional[float]
+            Shares outstanding. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share over the trailing twelve months. (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        pe_forward : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Trailing twelve month dividend yield. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            Timezone of the exchange. (provider: yfinance)
+        earnings_date : Optional[datetime]
+            Most recent earnings date. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price data. (provider: yfinance)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.screener(provider='fmp')
         """  # noqa: E501
 
         return self._run(

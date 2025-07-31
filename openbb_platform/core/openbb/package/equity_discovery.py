@@ -307,56 +307,57 @@ class ROUTER_equity_discovery(Container):
         filed annually and includes the company's financial statements, management discussion and analysis,
         and audited financial statements.
 
-                Parameters
-                ----------
-                provider : str
-                    The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
-                start_date : Union[date, None, str]
-                    Start date of the data, in YYYY-MM-DD format.
-                end_date : Union[date, None, str]
-                    End date of the data, in YYYY-MM-DD format.
-                form_type : Optional[str]
-                    Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
-                limit : int
-                    The number of data entries to return.
-                is_done : Optional[bool]
-                    Flag for whether or not the filing is done. (provider: fmp)
 
-                Returns
-                -------
-                OBBject
-                    results : list[DiscoveryFilings]
-                        Serializable results.
-                    provider : Optional[str]
-                        Provider name.
-                    warnings : Optional[list[Warning_]]
-                        list of warnings.
-                    chart : Optional[Chart]
-                        Chart object.
-                    extra : Dict[str, Any]
-                        Extra info.
+        Parameters
+        ----------
+        provider : str
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        start_date : Union[date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        form_type : Optional[str]
+            Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
+        limit : int
+            The number of data entries to return.
+        is_done : Optional[bool]
+            Flag for whether or not the filing is done. (provider: fmp)
 
-                DiscoveryFilings
-                ----------------
-                symbol : str
-                    Symbol representing the entity requested in the data.
-                cik : str
-                    Central Index Key (CIK) for the requested entity.
-                title : str
-                    Title of the filing.
-                date : datetime
-                    The date of the data.
-                form_type : str
-                    The form type of the filing
-                link : str
-                    URL to the filing page on the SEC site.
+        Returns
+        -------
+        OBBject
+            results : list[DiscoveryFilings]
+                Serializable results.
+            provider : Optional[str]
+                Provider name.
+            warnings : Optional[list[Warning_]]
+                list of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-                Examples
-                --------
-                >>> from openbb import obb
-                >>> obb.equity.discovery.filings(provider='fmp')
-                >>> # Get filings for the year 2023, limited to 100 results
-                >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')
+        DiscoveryFilings
+        ----------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        cik : str
+            Central Index Key (CIK) for the requested entity.
+        title : str
+            Title of the filing.
+        date : datetime
+            The date of the data.
+        form_type : str
+            The form type of the filing
+        link : str
+            URL to the filing page on the SEC site.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.filings(provider='fmp')
+        >>> # Get filings for the year 2023, limited to 100 results
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')
         """  # noqa: E501
 
         return self._run(

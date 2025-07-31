@@ -2413,7 +2413,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Filter and process the options chains data for volatility.\n\nData posted can be an instance of OptionsChainsData,\na pandas DataFrame, or a list of dictionaries.\nData should contain the fields:\n\n- `expiration`: The expiration date of the option.\n- `strike`: The strike price of the option.\n- `option_type`: The type of the option (call or put).\n- `implied_volatility`: The implied volatility of the option. Or 'target' field.\n- `open_interest`: The open interest of the option.\n- `volume`: The trading volume of the option.\n- `dte` : Optional, days to expiration (DTE) of the option.\n- `underlying_price`: Optional, the price of the underlying asset.\n\nResults from the `/derivatives/options/chains` endpoint are the preferred input.\n\nIf `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.",
+            "description": "Filter and process the options chains data for volatility.\n\n Data posted can be an instance of OptionsChainsData,\n a pandas DataFrame, or a list of dictionaries.\n Data should contain the fields:\n\n - `expiration`: The expiration date of the option.\n - `strike`: The strike price of the option.\n - `option_type`: The type of the option (call or put).\n - `implied_volatility`: The implied volatility of the option. Or 'target' field.\n - `open_interest`: The open interest of the option.\n - `volume`: The trading volume of the option.\n - `dte` : Optional, days to expiration (DTE) of the option.\n - `underlying_price`: Optional, the price of the underlying asset.\n\n Results from the `/derivatives/options/chains` endpoint are the preferred input.\n\n If `underlying_price` is not supplied in the data as a field, it must be provided as a parameter.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Filter and process options chains data for volatility.\ndata = obb.derivatives.options.chains('AAPL', provider='cboe')\nsurface = obb.derivatives.options.surface(data=data.results, moneyness=20, dte_min=10, dte_max=60, chart=True)\nsurface.show()\n```\n\n",
             "parameters": {
                 "standard": [
@@ -12279,7 +12279,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Download FOMC documents from the Federal Reserve's website.\n\nThis function does not return the typical OBBject response.\n\nThe response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
+            "description": "Download FOMC documents from the Federal Reserve's website.\n\n This function does not return the typical OBBject response.\n\n The response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.",
             "examples": "",
             "parameters": {
                 "standard": [
