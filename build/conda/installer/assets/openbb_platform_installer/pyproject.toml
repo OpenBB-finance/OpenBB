@@ -15,7 +15,7 @@ packages = [{ include = "openbb_platform_installer" }]  # Update accordingly - t
 openbb-update = "openbb_platform_installer.update:main"
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<3.13"
+python = ">=3.9.21,<3.14"
 openbb-platform-api = "^1.1.8"
 
 [tool.poetry.group.openbb-all]

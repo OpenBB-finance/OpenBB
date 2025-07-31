@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_tmx" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<3.13"
+python = ">=3.9.21,<3.14"
 aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
 random-user-agent = "^1.0.1"

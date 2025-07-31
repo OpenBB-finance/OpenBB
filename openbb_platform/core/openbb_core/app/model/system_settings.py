@@ -13,7 +13,6 @@ from openbb_core.app.constants import (
 )
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.api_settings import APISettings
-
 from openbb_core.app.model.python_settings import PythonSettings
 from openbb_core.app.version import CORE_VERSION, VERSION
 from pydantic import ConfigDict, Field, field_validator, model_validator

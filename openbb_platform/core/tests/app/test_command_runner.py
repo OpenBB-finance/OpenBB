@@ -246,12 +246,12 @@ def test_parameters_builder__warn_kwargs(extra_params, base, expect):
         model_config = ConfigDict(arbitrary_types_allowed=True)
         extra_params: SomeModel
 
-    with pytest.warns(expect) as warning_info:
-        # pylint: disable=protected-access
+    if expect is not None:
+        with pytest.warns(expect) as warning_info:
+            ParametersBuilder._warn_kwargs(extra_params, Model)
+        assert len(warning_info) > 0
+    else:
         ParametersBuilder._warn_kwargs(extra_params, Model)
-
-        if not expect:
-            assert len(warning_info) == 0
 
 
 def test_parameters_builder_build(mock_func, execution_context):

@@ -36,7 +36,10 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
 def test_extension_map():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
     this_dir = Path(__file__).parent
-    with open(Path(this_dir, "..", "openbb", "assets", "reference.json")) as f:
+    with open(
+        Path(this_dir, "..", "core", "openbb", "assets", "reference.json"),
+        encoding="utf-8",
+    ) as f:
         reference = json.load(f)
     ext_map = create_ext_map(reference.get("info", {}).get("extensions", {}))
     req_ext = load_req_ext(Path(this_dir, "..", "pyproject.toml"))
