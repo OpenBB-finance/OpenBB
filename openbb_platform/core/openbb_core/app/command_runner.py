@@ -240,6 +240,23 @@ class StaticCommandRunner:
             )
         return obbject
 
+    @staticmethod
+    def _get_chart_params(obbject: OBBject, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Get chart parameters from various sources."""
+        chart_params = {}
+        extra_params = getattr(obbject, "_extra_params", {})
+
+        if extra_params and "chart_params" in extra_params:
+            chart_params.update(extra_params.get("chart_params", {}))
+
+        if "chart_params" in kwargs:
+            chart_params.update(kwargs.pop("chart_params", {}))
+
+        if "kwargs" in kwargs and "chart_params" in kwargs["kwargs"]:
+            chart_params.update(kwargs.pop("kwargs").get("chart_params", {}))
+
+        return chart_params
+
     @classmethod
     def _chart(
         cls,
@@ -253,21 +270,7 @@ class StaticCommandRunner:
                     "Charting is not installed. Please install `openbb-charting`."
                 )
             # Here we will pop the chart_params kwargs and flatten them into the kwargs.
-            chart_params = {}
-            extra_params = getattr(obbject, "_extra_params", {})
-
-            if extra_params and "chart_params" in extra_params:
-                chart_params = extra_params.get("chart_params", {})
-
-            if kwargs.get("chart_params"):
-                chart_params.update(kwargs.pop("chart_params", {}))
-            # Verify that kwargs is not nested as kwargs so we don't miss any chart params.
-            if (
-                "kwargs" in kwargs
-                and "chart_params" in kwargs["kwargs"]
-                and kwargs["kwargs"].get("chart_params")
-            ):
-                chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
+            chart_params = cls._get_chart_params(obbject, kwargs)
 
             if chart_params:
                 kwargs.update(chart_params)
