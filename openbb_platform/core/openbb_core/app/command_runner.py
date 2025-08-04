@@ -252,8 +252,9 @@ class StaticCommandRunner:
         if "chart_params" in kwargs:
             chart_params.update(kwargs.pop("chart_params", {}))
 
-        if "kwargs" in kwargs and "chart_params" in kwargs["kwargs"]:
-            chart_params.update(kwargs.pop("kwargs").get("chart_params", {}))
+        # Verify that kwargs is not nested as kwargs so we don't miss any chart params.
+        if "kwargs" in kwargs and "chart_params" in kwargs.get("kwargs", {}):
+            chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
         return chart_params
 

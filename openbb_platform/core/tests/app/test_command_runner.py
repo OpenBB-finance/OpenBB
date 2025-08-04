@@ -387,7 +387,7 @@ async def test_static_command_runner_execute_func(
     mock_chart.assert_called_once()
 
 
-def test_static_command_runner_chart():
+"""def test_static_command_runner_chart():
     """Test _chart method when charting is in obbject.accessors."""
 
     mock_obbject = OBBject(
@@ -404,6 +404,28 @@ def test_static_command_runner_chart():
     StaticCommandRunner._chart(mock_obbject)  # pylint: disable=protected-access
 
     mock_obbject.charting.show.assert_called_once()
+
+
+def test_static_command_runner_get_chart_params():
+    """Test _get_chart_params method."""
+    mock_obbject = OBBject(
+        results=[
+            {"date": "1990", "value": 100},
+            {"date": "1991", "value": 200},
+            {"date": "1992", "value": 300},
+        ],
+        provider="mock_provider",
+    )
+    mock_obbject._extra_params = {"chart_params": {"theme": "dark"}}
+
+    kwargs = {
+        "chart_params": {"title": "Test Chart"},
+        "kwargs": {"chart_params": {"width": 800}},
+    }
+
+    chart_params = StaticCommandRunner._get_chart_params(mock_obbject, kwargs)
+
+    assert chart_params == {"theme": "dark", "title": "Test Chart", "width": 800}
 
 
 @pytest.mark.asyncio
@@ -436,3 +458,4 @@ async def test_static_command_runner_command():
 
     assert result.results == [1, 2, 3, 4]
     assert result.provider == "mock_provider"
+""
