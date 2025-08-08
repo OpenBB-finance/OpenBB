@@ -29,7 +29,7 @@ from openbb_finviz.utils.screener_helper import (
     Recommendation,
     Sectors,
 )
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class FinvizEquityScreenerQueryParams(EquityScreenerQueryParams):
@@ -222,11 +222,11 @@ class FinvizEquityScreenerData(EquityScreenerData):
         "price_to_book": "P/B",
         "price_to_cash": "P/C",
         "price_to_free_cash_flow": "P/FCF",
-        "eps_growth_past_1y": "EPS this Y",
-        "eps_growth_next_1y": "EPS next Y",
-        "eps_growth_past_5y": "EPS past 5Y",
-        "eps_growth_next_5y": "EPS next 5Y",
-        "sales_growth_past_5y": "Sales past 5Y",
+        "eps_growth_past_1y": "EPS This Y",
+        "eps_growth_next_1y": "EPS Next Y",
+        "eps_growth_past_5y": "EPS Past 5Y",
+        "eps_growth_next_5y": "EPS Next 5Y",
+        "sales_growth_past_5y": "Sales Past 5Y",
         "dividend_yield": "Dividend",
         "return_on_assets": "ROA",
         "return_on_equity": "ROE",
@@ -516,6 +516,15 @@ class FinvizEquityScreenerData(EquityScreenerData):
         description="Profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_data(cls, values):
+        """Strip % from strings and convert to float."""
+        for k, v in values.items():
+            if isinstance(v, str) and v.strip().endswith("%"):
+                values[k] = float(v.strip().rstrip("%")) / 100
+        return values
 
 
 class FinvizEquityScreenerFetcher(
