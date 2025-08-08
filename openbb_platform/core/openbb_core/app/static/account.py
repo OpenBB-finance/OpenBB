@@ -139,6 +139,10 @@ class Account:  # noqa: D205, D400
                     self._hub_service.session.model_dump(mode="json"), f, indent=4
                 )
 
+        self._base_app._command_runner.user_settings.profile.hub_session = getattr(
+            self._base_app._account._hub_service, "_session", None
+        )
+
         if return_settings:
             return self._base_app._command_runner.user_settings
         return None
@@ -189,6 +193,7 @@ class Account:  # noqa: D205, D400
             self._base_app.user.defaults.update(incoming.defaults)
         if return_settings:
             return self._base_app._command_runner.user_settings
+
         return None
 
     @_log_account_command  # type: ignore
