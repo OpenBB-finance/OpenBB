@@ -83,30 +83,45 @@ class CongressBillTextFetcher(
         results: list = []
 
         for url in urls:
+            filename = url.split("/")[-1]
+
             if "congress.gov" not in url.strip():
                 results.append(
                     {
                         "error_type": "invalid_url",
                         "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
-                        "filename": url.split("/")[-1],
+                        "filename": filename,
                     }
                 )
                 continue
             try:
                 response = make_request(url)
                 response.raise_for_status()
-                pdf_content = base64.b64encode(BytesIO(response.content).read()).decode(
-                    "utf-8"
-                )
-                results.append(
-                    {
-                        "content": pdf_content,
-                        "data_format": {
-                            "data_type": "pdf",
-                            "filename": url.split("/")[-1],
-                        },
-                    }
-                )
+                datatype = filename.split(".")[-1].lower()
+
+                if datatype == "pdf":
+                    pdf_content = base64.b64encode(
+                        BytesIO(response.content).read()
+                    ).decode("utf-8")
+                    results.append(
+                        {
+                            "content": pdf_content,
+                            "data_format": {
+                                "data_type": "pdf",
+                                "filename": url.split("/")[-1],
+                            },
+                        }
+                    )
+                else:
+                    results.append(
+                        {
+                            "content": response.text,
+                            "data_format": {
+                                "data_type": "text",
+                                "filename": filename,
+                            },
+                        }
+                    )
             except Exception as exc:  # pylint: disable=broad-except
                 results.append(
                     {

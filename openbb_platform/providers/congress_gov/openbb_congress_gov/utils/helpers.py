@@ -426,7 +426,7 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
     response = await amake_request(url)
     bill_text = response.get("textVersions", [])  # type: ignore
 
-    # Return the results for non-
+    # Return the results for non-Workspace queries
     if is_workspace is False:
 
         if not bill_text:
