@@ -106,7 +106,7 @@ async def bills(
                     "value": "119/hr/1",
                 },
             ],
-            "refecthInterval": False,
+            "refetchInterval": False,
         }
     },
 )
