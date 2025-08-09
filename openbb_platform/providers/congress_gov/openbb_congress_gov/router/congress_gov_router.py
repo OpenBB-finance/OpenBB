@@ -231,13 +231,12 @@ async def bill_text(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Download the text of a specific bill in PDF format.
+    """Download the text of a specific bill from a Congress.gov file.
 
-    This endpoint accepts a list of URLs to download and returns the base64-encoded
-    PDF content along with the filename.
+    This endpoint accepts a list of URLs to download and returns the content.
 
     In OpenBB Workspace, this command returns as a multi-file viewer widget.
 
-    This command outputs only the results array of the OBBject.
+    The command outputs only the results array of the OBBject.
     """
     return (await OBBject.from_query(OpenBBQuery(**locals()))).results  # type: ignore[return-value]
