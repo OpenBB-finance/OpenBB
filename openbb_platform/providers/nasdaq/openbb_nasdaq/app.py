@@ -966,13 +966,6 @@ def main():
                         "nasdaq_historical_dividends",
                     ],
                 },
-                {
-                    "name": "Group 3",
-                    "type": "endpointParam",
-                    "paramName": "document_url",
-                    "defaultValue": "AAPL",
-                    "widgetIds": ["nasdaq_ipo_calendar", "nasdaq_company_filings"],
-                },
             ],
         }
 
