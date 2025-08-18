@@ -210,7 +210,7 @@
           ]
         }
       ],
-      "endpoint": "open_document",
+      "endpoint": "/open_document",
       "runButton": false,
       "gridData": {
         "w": 40,
@@ -264,7 +264,7 @@
           }
         }
       ],
-      "endpoint": "earnings_calendar",
+      "endpoint": "/earnings_calendar",
       "runButton": false,
       "gridData": {
         "w": 40,
@@ -414,7 +414,7 @@
           }
         }
       ],
-      "endpoint": "dividend_calendar",
+      "endpoint": "/dividend_calendar",
       "runButton": false,
       "gridData": {
         "w": 40,
@@ -538,7 +538,7 @@
           "paramName": "end_date"
         }
       ],
-      "endpoint": "historical_dividends",
+      "endpoint": "/historical_dividends",
       "runButton": false,
       "gridData": {
         "w": 40,
@@ -548,6 +548,7 @@
         "dataKey": "",
         "table": {
           "showAll": true,
+          "enableAdvanced": true,
           "columnsDefs": [
             {
               "field": "ex_dividend_date",
@@ -679,7 +680,7 @@
           "paramName": "is_spo"
         }
       ],
-      "endpoint": "ipo_calendar",
+      "endpoint": "/ipo_calendar",
       "runButton": false,
       "gridData": {
         "w": 40,
@@ -888,7 +889,7 @@
           ]
         }
       ],
-      "endpoint": "economic_calendar",
+      "endpoint": "/economic_calendar",
       "runButton": false,
       "gridData": {
         "w": 40,
