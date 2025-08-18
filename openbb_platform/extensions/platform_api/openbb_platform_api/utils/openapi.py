@@ -1,5 +1,8 @@
 """OpenAPI parsing Utils."""
 
+# pylint: disable=C0302,R0912
+# flake8: noqa: PLR0912
+
 from typing import Optional
 
 from openbb_core.provider.utils.helpers import to_snake_case
