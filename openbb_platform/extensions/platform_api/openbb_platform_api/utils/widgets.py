@@ -443,7 +443,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                                     {
                                         "paramName": "submit",
                                         "label": "Submit",
-                                        "type": "buton",
+                                        "type": "button",
                                         "value": True,
                                         "description": "Submit the form.",
                                     }
