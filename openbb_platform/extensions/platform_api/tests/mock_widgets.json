@@ -125,7 +125,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/survey/sloos",
+        "endpoint": "/api/v1/economy/survey/sloos",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -167,7 +167,8 @@
                         "headerTooltip": "Survey title.",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -292,7 +293,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/survey/university_of_michigan",
+        "endpoint": "/api/v1/economy/survey/university_of_michigan",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -326,7 +327,8 @@
                         "cellDataType": "number",
                         "renderFn": "greenRed"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -451,7 +453,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/survey/economic_conditions_chicago",
+        "endpoint": "/api/v1/economy/survey/economic_conditions_chicago",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -533,7 +535,8 @@
                         "headerTooltip": "Non-Labor Costs Index.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -726,7 +729,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/survey/manufacturing_outlook_texas",
+        "endpoint": "/api/v1/economy/survey/manufacturing_outlook_texas",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -783,7 +786,8 @@
                         "cellDataType": "number",
                         "renderFn": "greenRed"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -898,7 +902,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/survey/nonfarm_payrolls",
+        "endpoint": "/api/v1/economy/survey/nonfarm_payrolls",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -972,7 +976,8 @@
                         "headerTooltip": "The indentation level of the element.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -1275,7 +1280,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/cpi",
+        "endpoint": "/api/v1/economy/cpi",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -1308,7 +1313,8 @@
                         "headerTooltip": "CPI index value or period change.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -1551,7 +1557,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/balance_of_payments",
+        "endpoint": "/api/v1/economy/balance_of_payments",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -1714,7 +1720,8 @@
                         "headerTooltip": "Current Account Debits Total Secondary Income (USD)",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -1842,7 +1849,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/fred_search",
+        "endpoint": "/api/v1/economy/fred_search",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -1995,7 +2002,8 @@
                         "headerTooltip": "The series group ID of the series. This value is used to query for regional data.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -2191,7 +2199,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/fred_series",
+        "endpoint": "/api/v1/economy/fred_series",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -2210,7 +2218,8 @@
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -2415,7 +2424,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/fred_series",
+        "endpoint": "/api/v1/economy/fred_series",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -2434,7 +2443,8 @@
                         "headerTooltip": "The date of the data.",
                         "cellDataType": "date"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -2489,7 +2499,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/fred_release_table",
+        "endpoint": "/api/v1/economy/fred_release_table",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -2577,7 +2587,8 @@
                         "headerTooltip": "The reported value of the series.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -2852,7 +2863,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/fred_regional",
+        "endpoint": "/api/v1/economy/fred_regional",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -2900,7 +2911,8 @@
                         "headerTooltip": "The individual series ID for the region.",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3055,7 +3067,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/retail_prices",
+        "endpoint": "/api/v1/economy/retail_prices",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3104,7 +3116,8 @@
                         "headerTooltip": "Price, or change in price, per unit.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3183,7 +3196,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/economy/pce",
+        "endpoint": "/api/v1/economy/pce",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3264,7 +3277,8 @@
                         "headerTooltip": "The line number of the series in the table.",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3304,7 +3318,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/cik_map",
+        "endpoint": "/api/v1/regulators/sec/cik_map",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3323,7 +3337,8 @@
                         "cellDataType": "text",
                         "renderFn": null
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3363,7 +3378,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/institutions_search",
+        "endpoint": "/api/v1/regulators/sec/institutions_search",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3388,7 +3403,8 @@
                         "headerTooltip": "Central Index Key (CIK)",
                         "cellDataType": "number"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3437,7 +3453,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/schema_files",
+        "endpoint": "/api/v1/regulators/sec/schema_files",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3455,7 +3471,8 @@
                         "headerTooltip": "Dictionary of URLs to SEC Schema Files",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3495,7 +3512,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/symbol_map",
+        "endpoint": "/api/v1/regulators/sec/symbol_map",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3515,7 +3532,8 @@
                         "cellDataType": "text",
                         "renderFn": null
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3537,7 +3555,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/rss_litigation",
+        "endpoint": "/api/v1/regulators/sec/rss_litigation",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3584,7 +3602,8 @@
                         "headerTooltip": "URL to the release.",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3624,7 +3643,7 @@
                 "show": false
             }
         ],
-        "endpoint": "api/v1/regulators/sec/sic_search",
+        "endpoint": "/api/v1/regulators/sec/sic_search",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3656,7 +3675,8 @@
                         "headerTooltip": "Reporting office within the Corporate Finance Office",
                         "cellDataType": "text"
                     }
-                ]
+                ],
+                "enableAdvanced": true
             }
         },
         "source": [
@@ -3664,13 +3684,13 @@
         ],
         "subCategory": "SEC"
     },
-    "form_submit_custom_obb": {
-        "name": "Form Submit",
+    "form_widget_custom_obb": {
+        "name": "Form Widget",
         "description": "",
-        "category": "Form Submit",
+        "category": "Form Widget",
         "type": "table",
-        "searchCategory": "Form Submit",
-        "widgetId": "form_submit_custom_obb",
+        "searchCategory": "Form Widget",
+        "widgetId": "form_widget_custom_obb",
         "params": [
             {
                 "label": "Some Param",
@@ -3683,10 +3703,10 @@
             },
             {
                 "type": "form",
-                "paramName": "",
+                "paramName": "form",
                 "label": "Submit Form",
                 "description": "Submit a form via POST request.",
-                "endpoint": "form_submit",
+                "endpoint": "/form_submit",
                 "inputParams": [
                     {
                         "label": "Date",
@@ -3762,7 +3782,7 @@
                 ]
             }
         ],
-        "endpoint": "form_submit",
+        "endpoint": "/form_widget",
         "runButton": false,
         "gridData": {
             "w": 40,
@@ -3771,11 +3791,13 @@
         "data": {
             "dataKey": "",
             "table": {
-                "showAll": true
+                "showAll": true,
+                "enableAdvanced": true
             }
         },
         "source": [
             "Custom"
-        ]
+        ],
+        "form_endpoint": "/form_submit"
     }
 }

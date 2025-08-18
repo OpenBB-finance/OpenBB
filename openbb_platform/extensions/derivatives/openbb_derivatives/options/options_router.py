@@ -54,6 +54,7 @@ async def chains(
             ],
         ),
     ],
+    openapi_extra={"widget_config": {"exclude": True}},
 )
 async def surface(  # pylint: disable=R0913, R0917
     data: Union[list[Data], Data],
