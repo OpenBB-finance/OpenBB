@@ -541,7 +541,12 @@ async def general_intake() -> list[IntakeForm]:
 
 ### Omni Widget Example
 
-An Omni Widget is a POST request where all parameters are sent to the request body, along with the text input box (keyed as "prompt")
+An Omni Widget is a POST request where all parameters are sent to the request body, along with the text input box (keyed as "prompt").
+
+The returned type can be a list of records (table), a Plotly Figure, or formatted Markdwon.
+The model will attempt to assign the correct return type dynamically.
+
+Set the response model as `OmniWidgetResponseModel`, then return `{"content": your_content}` from the endpoint.
 
 ```python
 from typing import Literal, Optional
