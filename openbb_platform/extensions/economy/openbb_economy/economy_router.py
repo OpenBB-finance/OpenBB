@@ -926,6 +926,7 @@ async def fomc_documents(
 @router._api_router.post(
     "/fomc_documents/download",
     include_in_schema=False,
+    openapi_extra={},
 )
 async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
     """

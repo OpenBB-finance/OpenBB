@@ -711,6 +711,13 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             if source := widget_config_dict.get("source", []):
                 widget_config["source"] = source
 
+            if route_method == "post" and widget_config.get("type", "") not in [
+                "ssrm_table",
+                "omni",
+                "multi_file_viewer",
+            ]:
+                widget_exclude_filter.append(widget_config["widgetId"])
+
             # Add the widget configuration to the widgets.json
             if widget_config["widgetId"] not in widget_exclude_filter:
                 widgets_json[widget_config["widgetId"]] = widget_config
