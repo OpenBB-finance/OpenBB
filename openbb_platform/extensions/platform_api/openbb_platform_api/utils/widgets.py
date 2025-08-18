@@ -554,7 +554,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     #    modified_query_schema.extend(modified_post_params)
                     elif route_method == "post":
 
-                        var_key: dict = {}
+                        var_key = {}
                         # Widget Config at the model level goes first.
                         if post_config := var_schema.get("x-widget_config", {}):
                             for key, value in post_config.copy().items():

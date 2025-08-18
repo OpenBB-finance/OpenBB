@@ -1023,7 +1023,7 @@ def post_query_schema_for_widget(
                             continue
                         set_param(k, v)
 
-            route_params: list[dict] = []
+            route_params = []
 
             for new_param_values in new_params.values():
                 _new_values = new_param_values.copy()
