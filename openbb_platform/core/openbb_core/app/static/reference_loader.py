@@ -22,7 +22,7 @@ class ReferenceLoader(metaclass=SingletonMeta):
             The directory from which to load the assets where the reference file lives.
         """
         self.directory = directory or directory or self._get_default_directory()
-        self._reference = self._load(self.directory / "assets" / "reference.json")
+        self._reference = self._load(self.directory / "reference.json")
 
     @property
     def reference(self) -> Dict[str, Dict]:
@@ -31,10 +31,9 @@ class ReferenceLoader(metaclass=SingletonMeta):
 
     def _get_default_directory(self) -> Path:
         """Get the default directory for loading references."""
-        default_path = Path(__file__).parents[4].resolve() / "openbb"
-
-        if not default_path.exists():
-            default_path = Path(__file__).parents[4].resolve() / "core" / "openbb"
+        default_path = (
+            Path(__file__).parents[4].resolve() / "core" / "openbb" / "assets"
+        )
 
         return default_path
 
