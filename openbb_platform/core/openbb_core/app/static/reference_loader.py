@@ -22,7 +22,7 @@ class ReferenceLoader(metaclass=SingletonMeta):
             The directory from which to load the assets where the reference file lives.
         """
         self.directory = directory or directory or self._get_default_directory()
-        self._reference = self._load(self.directory / "reference.json")
+        self._reference = self._load(self.directory / "assets" / "reference.json")
 
     @property
     def reference(self) -> Dict[str, Dict]:
