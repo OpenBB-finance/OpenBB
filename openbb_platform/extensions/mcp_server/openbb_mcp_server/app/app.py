@@ -304,14 +304,15 @@ def create_mcp_server(
             with open(settings.server_prompts_file, encoding="utf-8") as f:
                 prompts_json = json.load(f) or []
         except Exception as e:  # pylint: disable=broad-except
-            logger.warning("Failed to load prompts from JSON file: %s", e)
+            logger.error("Failed to load prompts from JSON file: %s", e)
 
     if prompts_json:
+        prompts_added: list = []
         for prompt_def in prompts_json:
             prompt_name = prompt_def.get("name", "")
 
             if not prompt_name:
-                logger.warning(
+                logger.error(
                     "Skipping prompt definition without a name: %s", prompt_def
                 )
                 continue
@@ -319,7 +320,7 @@ def create_mcp_server(
             prompt_description = prompt_def.get("description", "")
 
             if not prompt_description:
-                logger.warning(
+                logger.error(
                     "Skipping prompt definition without a description: %s",
                     prompt_def,
                 )
@@ -328,14 +329,14 @@ def create_mcp_server(
             prompt_content = prompt_def.get("content", "")
 
             if not prompt_content:
-                logger.warning(
+                logger.error(
                     "Skipping prompt definition without content: %s",
                     prompt_def,
                 )
                 continue
 
             if prompt_content and not isinstance(prompt_content, str):
-                logger.warning(
+                logger.error(
                     "Skipping prompt definition with invalid content type. Expected string, got: %s",
                     prompt_def,
                 )
@@ -378,8 +379,12 @@ def create_mcp_server(
                 tags=tags,
             )
             mcp.add_prompt(static_prompt)
+            prompts_added.append(prompt_name)
+
+        logger.info("Successfully added %d server prompts.", len(prompts_added))
 
     # Add inline prompts from route configurations
+    inline_prompts_added: list = []
     for prompt_def in processed_data.prompt_definitions:
         try:
             prompt_name = prompt_def["name"]
@@ -414,6 +419,7 @@ def create_mcp_server(
                 enabled=True,
             )
             mcp.add_prompt(static_prompt)
+            inline_prompts_added.append(prompt_name)
 
         except (KeyError, TypeError) as e:
             logger.warning(
@@ -422,6 +428,9 @@ def create_mcp_server(
                 prompt_def,
             )
             continue
+
+    if inline_prompts_added:
+        logger.info("Successfully added %d inline prompts.", len(inline_prompts_added))
 
     # Admin/discovery tools if enabled
     if settings.enable_tool_discovery:

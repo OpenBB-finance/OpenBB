@@ -107,7 +107,7 @@ def test_skip_invalid_prompts(
     create_mcp_server(settings, fastapi_app)
 
     mock_mcp_instance.add_prompt.assert_not_called()
-    assert mock_logger.warning.call_count == 4
+    assert mock_logger.error.call_count == 4
 
 
 @patch("openbb_mcp_server.app.app.logger")

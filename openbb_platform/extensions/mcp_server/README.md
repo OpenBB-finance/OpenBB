@@ -179,7 +179,7 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | dict | `{"host": "127.0.0.1", "port": "8001"}` | Configuration for the Uvicorn server. |
 | `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | dict | `{}` | Configuration for the async httpx client. |
 
-> **Note:** With runtime arguments, in general, "-" and "_" are interchangeable. Nested uvicorn arguments should use `_`.
+> **Note:** Runtime argument keys, in general, "-" and "_" are interchangeable. Nested uvicorn arguments should use `_`.
 
 ## Tool Categories
 
@@ -245,6 +245,64 @@ It should be a valid, relative or absolute, path to a `.txt` file.
 The system prompt is made available as a resource, `resource://system_prompt`, and is discoverable from the, `list_prompts`, tool.
 
 Clients will not automatically use the system prompt, instruct them to use it as part of their onboarding and orientation.
+
+## Server Prompts
+
+A system prompt file can be added on initialization, or defined in the configuration file, or as an environment variable.
+It should be a valid, relative or absolute, path to a `.json` file with a list of prompt definitions.
+
+Each entry in the JSON file is a dictionary with the following properties:
+
+- **`name`**: Name of the prompt.
+- **`description`**: A brief description of the prompt.
+- **`content`**: The content for rendering the prompt. Endpoint parameters are inferred by placeholders.
+- **`arguments`**: Optional list of arguments. Items can be exclusive to the prompt, and not referenced in the endpoint.
+  - **`name`**: Name of the argument.
+  - **`type`**: Simple Python type as a string - i.e, "int".
+  - **`default`**: Supplying a default value makes the parameter Optional.
+  - **`description`**: Description of the parameter. Supply need-to-know details for the LLM.
+- **`tags`**: List of tags to apply to the argument.
+
+Prompts here should provide the LLM a clear path for executing a workflow combining multiple tools or steps, for example:
+
+```json
+[
+    {
+      "name": "equity_analysis",
+      "description": "Perform a comprehensive equity analysis using multiple data sources and metrics",
+      "content": "Conduct a comprehensive analysis of {symbol} for {analysis_period}. Follow this workflow:\n1. First, get basic stock quote and recent price performance using equity_price_performance.\n2. Retrieve fundamental data including financial statements, ratios, and key metrics using [equity_fundamental_ratios, equity_fundamental_metrics, quity_fundamental_balance].\n3. Gather recent news and analyst estimates for the company using [news_company, equity_estiments_price_target].\n4. Compare valuation metrics with industry peers using equity_compare_peers.\n5. Summarize findings with investment recommendation.\n\nFocus areas: {focus_areas}\nRisk tolerance: {risk_tolerance}",
+      "arguments": [
+        {
+          "name": "symbol",
+          "type": "str",
+          "description": "Stock ticker symbol to analyze (e.g., AAPL, TSLA)"
+        },
+        {
+          "name": "analysis_period",
+          "type": "str",
+          "default": "last 12 months",
+          "description": "Time period for the analysis"
+        },
+        {
+          "name": "focus_areas",
+          "type": "str",
+          "default": "growth, profitability, valuation",
+          "description": "Specific areas to focus on in the analysis"
+        },
+        {
+          "name": "risk_tolerance",
+          "type": "str",
+          "default": "moderate",
+          "description": "Risk tolerance level: conservative, moderate, or aggressive"
+        }
+      ],
+      "tags": ["equity", "analysis", "comprehensive"]
+    }
+]
+```
+
+An invalid prompt definition, or prompt argument, will be logged to the console as an error.
+The item will be ignored, and will not raise an error.
 
 ## Inline Prompts
 
@@ -378,7 +436,7 @@ Below are the properties you can define within `mcp_config`:
     - **`type`**: Simple Python type as a string - i.e, "int".
     - **`default`**: Supplying a default value makes the parameter Optional.
     - **`description`**: Description of the parameter. Supply need-to-know details for the LLM.
-    - **`tags`**: List of tags to apply to the prompt.
+  - **`tags`**: List of tags to apply to the argument.
 
 ### MCPConfigModel Validation
 
