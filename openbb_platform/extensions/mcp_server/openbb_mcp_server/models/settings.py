@@ -78,6 +78,12 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_SYSTEM_PROMPT_FILE",
     )
 
+    server_prompts_file: Optional[str] = Field(
+        default=None,
+        description="Path to a JSON file containing prompt templates for the server",
+        alias="OPENBB_MCP_SERVER_PROMPTS_FILE",
+    )
+
     # ===== FastMCP Core Configuration =====
 
     # Cache configuration

@@ -1,6 +1,7 @@
 """OpenBB MCP Server."""
 
 import asyncio
+import json
 import os
 import re
 import signal
@@ -28,6 +29,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from openbb_mcp_server.models.mcp_config import (
+    ArgumentDefinitionModel,
     is_valid_mcp_config,
 )
 from openbb_mcp_server.models.prompts import StaticPrompt
@@ -55,6 +57,7 @@ def _extract_brief_description(full_description: str) -> str:
 
 
 def _get_mcp_config_from_route(fa_route: APIRoute | None) -> dict:
+    """Extract the mcp_config dictionary from a FastAPI route's openapi_extra."""
     if fa_route is None:
         return {}
     extra = fa_route.openapi_extra or {}
@@ -65,8 +68,7 @@ def _get_mcp_config_from_route(fa_route: APIRoute | None) -> dict:
 
 
 def _strip_api_prefix(path: str, api_prefix: str) -> str:
-    """
-    Strip the exact api_prefix (from SystemService) from an absolute path.
+    """Strip the exact api_prefix (from SystemService) from an absolute path.
     Returns the remainder without a leading slash.
     """
     if not path:
@@ -280,14 +282,102 @@ def create_mcp_server(
                 FunctionPrompt.from_function(
                     system_prompt_func,
                     name="system_prompt",
-                    description="System prompt for the OpenBB MCP server.",
+                    description="This is the system prompt for the MCP Server."
+                    + " If you are an agent connected to this server,"
+                    + " please read this carefully to understand how to interact with, and utilize, the MCP features."
+                    + " This prompt provides essential guidance and usage instructions"
+                    + " for effective use of the tools and resources provided by this server.",
                     tags={"system"},
                 )
             )
 
             @mcp.resource("resource://system_prompt")
             def system_prompt_resource() -> str:
+                """System prompt resource for the MCP Server."""
                 return system_prompt_func()
+
+    # Load the prompts json file, if added to the settings configuration.
+    prompts_json: list = []
+
+    if settings.server_prompts_file:
+        try:
+            with open(settings.server_prompts_file, encoding="utf-8") as f:
+                prompts_json = json.load(f) or []
+        except Exception as e:  # pylint: disable=broad-except
+            logger.warning("Failed to load prompts from JSON file: %s", e)
+
+    if prompts_json:
+        for prompt_def in prompts_json:
+            prompt_name = prompt_def.get("name", "")
+
+            if not prompt_name:
+                logger.warning(
+                    "Skipping prompt definition without a name: %s", prompt_def
+                )
+                continue
+
+            prompt_description = prompt_def.get("description", "")
+
+            if not prompt_description:
+                logger.warning(
+                    "Skipping prompt definition without a description: %s",
+                    prompt_def,
+                )
+                continue
+
+            prompt_content = prompt_def.get("content", "")
+
+            if not prompt_content:
+                logger.warning(
+                    "Skipping prompt definition without content: %s",
+                    prompt_def,
+                )
+                continue
+
+            if prompt_content and not isinstance(prompt_content, str):
+                logger.warning(
+                    "Skipping prompt definition with invalid content type. Expected string, got: %s",
+                    prompt_def,
+                )
+                continue
+
+            prompt_arguments_def = prompt_def.get("arguments", [])
+            arguments: list = []
+
+            if prompt_arguments_def:
+                for arg in prompt_arguments_def:
+                    try:
+                        # Validate the argument definition
+                        validated_arg = ArgumentDefinitionModel(**arg).model_dump(
+                            exclude_none=True
+                        )
+                        arguments.append(
+                            PromptArgument(
+                                name=validated_arg["name"],
+                                description=validated_arg["description"],
+                                required="default" not in validated_arg,
+                            )
+                        )
+                    except Exception as e:
+                        logger.error(
+                            "Skipping argument definition in server prompt, %s, due to error: %s\nDefinition: %s",
+                            prompt_name,
+                            e,
+                            arg,
+                        )
+                        continue
+
+            prompt_tags = prompt_def.get("tags", [])
+            tags = set(prompt_tags) if isinstance(prompt_tags, (list, set)) else set()
+            tags.add("server")
+            static_prompt = StaticPrompt(
+                name=prompt_name,
+                description=prompt_description,
+                content=prompt_content,
+                arguments=arguments if arguments else None,
+                tags=tags,
+            )
+            mcp.add_prompt(static_prompt)
 
     # Add inline prompts from route configurations
     for prompt_def in processed_data.prompt_definitions:
@@ -365,6 +455,7 @@ def create_mcp_server(
         ) -> list[ToolInfo]:
             """List tools in a specific category and subcategory."""
             category_data = tool_registry.get_category_subcategories(category)
+
             if not category_data:
                 available_categories_names = list(tool_registry.get_categories().keys())
                 categories_str = ", ".join(sorted(available_categories_names))
@@ -381,6 +472,7 @@ def create_mcp_server(
                         f"Subcategory '{subcategory}' not found in category '{category}'. "
                         f"Available subcategories: {subcategories_str}"
                     )
+
                 return [
                     ToolInfo(
                         name=name,
@@ -391,6 +483,7 @@ def create_mcp_server(
                 ]
 
             tools_dict = tool_registry.get_category_tools(category)
+
             return [
                 ToolInfo(
                     name=name,
@@ -441,6 +534,41 @@ def create_mcp_server(
         ],
     ) -> PromptResult:
         """Execute a prompt by name."""
+        # Find the prompt definition to access default values for arguments
+        prompt_def = next(
+            (p for p in prompts_json if p.get("name") == prompt_name),
+            None,
+        )
+
+        if not prompt_def:
+            prompt_def = next(
+                (
+                    p
+                    for p in processed_data.prompt_definitions
+                    if p.get("name") == prompt_name
+                ),
+                None,
+            )
+
+        # If we found the definition, process arguments to include defaults
+        if prompt_def:
+            processed_args = arguments.copy()
+            prompt_arguments_def = prompt_def.get("arguments", [])
+            provided_arg_names = set(processed_args.keys())
+
+            for arg_def in prompt_arguments_def:
+                arg_name = arg_def.get("name")
+                if (
+                    "default" in arg_def
+                    and arg_name
+                    and arg_name not in provided_arg_names
+                ):
+                    processed_args[arg_name] = arg_def["default"]
+
+            return await mcp._prompt_manager.render_prompt(  # pylint: disable=protected-access
+                name=prompt_name, arguments=processed_args
+            )  # type: ignore
+
         return (
             await mcp._prompt_manager.render_prompt(  # pylint: disable=protected-access
                 name=prompt_name, arguments=arguments
@@ -465,6 +593,7 @@ class SSEShutdownWrapper:
 
         # Check if this is an SSE endpoint
         path = scope.get("path", "")
+
         if not path.endswith("/sse/"):
             await self.asgi_app(scope, receive, send)
             return
@@ -511,7 +640,7 @@ class SSEShutdownWrapper:
 
 
 async def stdio_main(mcp_server):
-    """Run the MCP server in STDIO mode with proper signal handling."""
+    """Run the MCP server in STDIO mode with signal handling."""
     loop = asyncio.get_running_loop()
 
     def signal_handler():
@@ -523,29 +652,31 @@ async def stdio_main(mcp_server):
         loop.add_signal_handler(sig, signal_handler)
 
     logger.info("Starting OpenBB MCP Server in STDIO mode. Press Ctrl+C to stop.")
-    # This will run forever until the signal handler kills the process.
+
     await loop.run_in_executor(None, mcp_server.run, "stdio")
 
 
 def main():
     """Start the OpenBB MCP server with enhanced FastAPI app import capabilities."""
     args = parse_args()
-
-    # Instantiate the MCPService to load base settings from file
     mcp_service = MCPService()
-
     # Collect all command-line overrides from parsed args
     cli_overrides = args.uvicorn_config.copy()
-
     # Add MCP-specific CLI arguments if they exist
     if hasattr(args, "allowed_categories") and args.allowed_categories:
         cli_overrides["allowed_categories"] = args.allowed_categories
+
     if hasattr(args, "default_categories") and args.default_categories:
         cli_overrides["default_categories"] = args.default_categories
+
     if hasattr(args, "no_tool_discovery") and args.no_tool_discovery:
         cli_overrides["no_tool_discovery"] = args.no_tool_discovery
+
     if hasattr(args, "system_prompt") and args.system_prompt:
         cli_overrides["system_prompt"] = args.system_prompt
+
+    if hasattr(args, "server_prompts") and args.server_prompts:
+        cli_overrides["server_prompts"] = args.server_prompts
 
     # Load settings with proper priority order (CLI > env > config file > defaults)
     settings = mcp_service.load_with_overrides(**cli_overrides)
@@ -566,19 +697,20 @@ def main():
         else:
             cors_middleware = _build_runtime_middleware()
 
-            # For HTTP transports, extract host/port from uvicorn_config and pass directly
+            # Start building arguments mcp.run
             run_kwargs = {
                 "transport": args.transport,
                 "middleware": cors_middleware,
             }
 
-            # Extract uvicorn settings and pass them directly instead of nested
+            # Extract uvicorn settings
             if http_run_kwargs.get("uvicorn_config"):
                 uvicorn_config = http_run_kwargs["uvicorn_config"].copy()
 
                 # Pop host and port to pass them as top-level args
                 if "host" in uvicorn_config:
                     run_kwargs["host"] = uvicorn_config.pop("host")
+
                 if "port" in uvicorn_config:
                     port = uvicorn_config.pop("port")
                     run_kwargs["port"] = int(port) if isinstance(port, str) else port

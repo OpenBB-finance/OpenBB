@@ -14,6 +14,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False) -> FastA
     from importlib import import_module, util
 
     def _load_module_from_file_path(file_path: str):
+        """Load a Python module from a file path."""
         spec_name = os.path.basename(file_path).split(".")[0]
         spec = util.spec_from_file_location(spec_name, file_path)
 
@@ -149,18 +150,15 @@ Options:
     --system-prompt <path>
         Path to a TXT file with the system prompt.
 
-Additional uvicorn arguments can be passed as well. For example:
-    --reload
-        Enable auto-reload on code changes.
-    --ssl_certfile <path>
-        Path to the SSL certificate file.
-    --ssl_keyfile <path>
-        Path to the SSL key file.
+    --server-prompts <path>
+        Path to a JSON file with a list of server prompts.
+
+All other arguments are passed through as MCPSettings.
 """
 
 
 def parse_args():
-    """Parse command line arguments using the same approach as OpenBB Platform API."""
+    """Parse command line arguments."""
     # pylint: disable=import-outside-toplevel
     from openbb_core.env import Env
 
@@ -227,16 +225,20 @@ def parse_args():
     default_categories = _kwargs.pop("default_categories", "all")
     no_tool_discovery = _kwargs.pop("no_tool_discovery", False)
     system_prompt = _kwargs.pop("system_prompt", None)
+    server_prompts = _kwargs.pop("server_prompts", None)
 
-    # Create a simple namespace object to hold our parsed arguments
     class Args:
+        """Container for parsed command line arguments."""
+
         def __init__(self):
+            """Initialize the Args container."""
             self.imported_app = imported_app
             self.transport = transport
             self.allowed_categories = allowed_categories
             self.default_categories = default_categories
             self.no_tool_discovery = no_tool_discovery
             self.system_prompt = system_prompt
+            self.server_prompts = server_prompts
             self.uvicorn_config = _kwargs  # All remaining kwargs go to uvicorn
 
     return Args()

@@ -201,6 +201,8 @@ class MCPService(metaclass=SingletonMeta):
             "no_tool_discovery": "enable_tool_discovery",
             "system_prompt": "system_prompt_file",
             "system-prompt": "system_prompt_file",
+            "server_prompts": "server_prompts_file",
+            "server-prompts": "server_prompts_file",
         }
         uvicorn_fields = {
             "host",
