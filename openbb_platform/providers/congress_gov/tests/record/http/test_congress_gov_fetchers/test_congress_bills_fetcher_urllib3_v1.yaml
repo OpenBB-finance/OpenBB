@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/bill?api_key=MOCK_API_KEY&format=json&limit=1&offset=0&sort=updateDate+desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4WS0W/aMBDG3/tXnPzQJyCEwZoioaoCTd3LmArrS7sHJ7kk3hxfZl/QUMX/XtnQ
+        QYPa5cW27ufP35e75wsAAJEqrZ2YwmM4+u/53y4AGZnSovNMHCe9t0UtGR3fZqzIiGnnaiBkqC0k
+        o5iCGA1H4/7wuh8nonfOMv5lTy1tjhZzYIIU4R4bsow5pFt4IJUhPBDjQLy5v+sYM22dovViyST+
+        3HlMkFWlMvNKvkJ31Dr8kJpTHhLcdSlWrENlTZCjU6WRjMAVQiEzpRVvgYpw/mGUj7Fi/9PgOzmW
+        GlZoNz6Tpkz6qmRIxkP4YskwrNgiMigDc+kcaibTg29kuYKF/E0seyBd0H4Sc6praXK0sECdomW4
+        bR0rA0vtyITnYFkUKsMnMTgLsW326e67lbbJJeNJ/yb94VV/lLzPfTWZbnNlyvWhnR9cstoDFXPj
+        plEkGzV4HbdBSZto8yny8xnFcRJVNvKtvCnI1pJnvxyZ4wjswu7nXl40slRGns2kyKg13tE4vp5M
+        ro5ehDk4/Z+RG0eWZ8eovuHZJRWFQ57Fl1rVyq9nFg/TKSz+adFx15VhNLw+tEA2jVZZcB8FhROf
+        e2FPnWhf7F4AZUIs38sDAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '2'
+      Cache-Control:
+      - no-store
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9667a7c5fb972d7c-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Jul 2025 22:01:31 GMT
+      Expires:
+      - Mon, 28 Jul 2025 22:16:31 GMT
+      Last-Modified:
+      - Mon, 28 Jul 2025 22:01:31 GMT
+      Link:
+      - <https://api.congress.gov/v3/bill>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=msfrzcgCucD2ZVRWXzewfc500khJNQeYgKlkFlYxpf0-1753740091-1.0.1.1-krI1yNcWYfZ5migq9wUvWUHgQvNwY_ezItJAIlg18M.kTupE4qTDnMDY91otQfxqIbAOE2B9D63OPUYgrzlagcGAA3xcviuuusq8JXE5eK0;
+        path=/; expires=Mon, 28-Jul-25 22:31:31 GMT; domain=.congress.gov; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - coac71feq3f6sfr3i790
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4872'
+      X-Vcap-Request-Id:
+      - 7ac6de81-9ad1-4b2c-42e0-dcd0620e3242
+    status:
+      code: 200
+      message: OK
+version: 1
