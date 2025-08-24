@@ -231,12 +231,22 @@ async def bill_text(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Download the text of a specific bill from a Congress.gov file.
+    """Download the content of bill(s) from a Congress.gov file.
 
-    This endpoint accepts a list of URLs to download and returns the content.
+    Note: This endpoint returns only the results array of the OBBject.
+
+    Enter a list of URLs to download the bill text.
+
+    For the API, the body of the request will look like this:
+
+    ```json
+    {
+        "urls": [
+            "https://www.congress.gov/119/bills/hr1/BILLS-119hr1eh.pdf"
+        ]
+    }
+    ```
 
     In OpenBB Workspace, this command returns as a multi-file viewer widget.
-
-    The command outputs only the results array of the OBBject.
     """
     return (await OBBject.from_query(OpenBBQuery(**locals()))).results  # type: ignore[return-value]
