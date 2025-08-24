@@ -166,6 +166,7 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable tool discovery. |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
 | `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
+| `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | string | `None` | Path to a JSON file with a list of server prompt definitions. |
 | `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
 | `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
 | `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
