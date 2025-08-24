@@ -256,8 +256,8 @@ Each entry in the JSON file is a dictionary with the following properties:
 
 - **`name`**: Name of the prompt.
 - **`description`**: A brief description of the prompt.
-- **`content`**: The content for rendering the prompt. Endpoint parameters are inferred by placeholders.
-- **`arguments`**: Optional list of arguments. Items can be exclusive to the prompt, and not referenced in the endpoint.
+- **`content`**: The content for rendering the prompt.
+- **`arguments`**: Optional list of arguments.
   - **`name`**: Name of the argument.
   - **`type`**: Simple Python type as a string - i.e, "int".
   - **`default`**: Supplying a default value makes the parameter Optional.
