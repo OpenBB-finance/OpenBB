@@ -114,8 +114,29 @@ def create_mcp_server(
     fastapi_app: FastAPI,
     httpx_kwargs: dict | None = None,
     auth: Any | None = None,
-):
-    """Create and configure the FastMCP server from a FastAPI app instance."""
+) -> FastMCP:
+    """Create and configure the FastMCP server from a FastAPI app instance.
+
+    Parameters
+    ----------
+
+    settings: MCPSettings
+        The MCPSettings instance containing configuration options for the server.
+    fastapi_app: FastAPI
+        The FastAPI app instance to be used for the server.
+    httpx_kwargs: dict | None
+        Optional keyword arguments to pass to the httpx client.
+    auth: Any | None
+        The authentication provider to use for the server.
+        Should be a valid FastMCP.server.auth.AuthProvider instance,
+        or an object accepted by the `auth` parameter of FastMCP initialization.
+
+    Returns
+    -------
+
+    FastMCP
+        The configured FastMCP server instance.
+    """
     if auth is None:
         # pylint: disable=import-outside-toplevel
         from .auth import get_auth_provider
