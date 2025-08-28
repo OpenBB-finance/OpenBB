@@ -119,7 +119,6 @@ def create_mcp_server(
 
     Parameters
     ----------
-
     settings: MCPSettings
         The MCPSettings instance containing configuration options for the server.
     fastapi_app: FastAPI
@@ -133,7 +132,6 @@ def create_mcp_server(
 
     Returns
     -------
-
     FastMCP
         The configured FastMCP server instance.
     """
