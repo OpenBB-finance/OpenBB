@@ -1,5 +1,6 @@
 """MCP Server Settings model."""
 
+import json
 from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -172,6 +173,24 @@ the exact same operations available to REST clients.""",
         + " All items passed directly to FastMCP.from_fastapi(httpx_client_kwargs=httpx_client_kwargs)",
         alias="OPENBB_MCP_HTTPX_CLIENT_KWARGS",
     )
+    client_auth: Optional[tuple[str, str]] = Field(
+        default=None,
+        description="""
+        A tuple of (username, password) for client-side basic authentication.
+        If provided, this will be passed to the httpx client for downstream requests.
+        Example: OPENBB_MCP_CLIENT_AUTH='["user","pass"]'
+        """,
+        alias="OPENBB_MCP_CLIENT_AUTH",
+    )
+    server_auth: Optional[tuple[str, str]] = Field(
+        default=None,
+        description="""
+        A tuple of (username, password) for server-side basic authentication.
+        If provided, the MCP server will require incoming requests to provide these credentials.
+        Example: OPENBB_MCP_SERVER_AUTH='["user","pass"]'
+        """,
+        alias="OPENBB_MCP_SERVER_AUTH",
+    )
 
     @field_validator(
         "default_tool_categories",
@@ -192,6 +211,18 @@ the exact same operations available to REST clients.""",
             return {part.strip() for part in v.split(",") if part.strip()}
         if isinstance(v, list):
             return set(v)
+        return v
+
+    @field_validator("httpx_client_kwargs", "client_auth", "server_auth", mode="before")
+    @classmethod
+    def _validate_json_or_tuple(cls, v):
+        """Validate json or tuple."""
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except json.JSONDecodeError:
+                # Fallback for simple string if not valid JSON
+                return v
         return v
 
     def get_fastmcp_kwargs(self) -> dict:
@@ -237,7 +268,10 @@ the exact same operations available to REST clients.""",
 
         Returns a dictionary containing httpx client settings.
         """
-        return self.httpx_client_kwargs or {}
+        kwargs = self.httpx_client_kwargs or {}
+        if self.client_auth:
+            kwargs["auth"] = self.client_auth
+        return kwargs
 
     def __repr__(self) -> str:
         """Return string representation."""

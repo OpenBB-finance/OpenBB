@@ -7,7 +7,7 @@ import re
 import signal
 import sys
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
@@ -108,11 +108,19 @@ def _build_runtime_middleware() -> list:
     ]
 
 
-# pylint: disable=R0915
+# pylint: disable=R0914,R0915
 def create_mcp_server(
-    settings: MCPSettings, fastapi_app: FastAPI, httpx_kwargs: dict | None = None
+    settings: MCPSettings,
+    fastapi_app: FastAPI,
+    httpx_kwargs: dict | None = None,
+    auth: Any | None = None,
 ):
-    """Create and configure the MCP server with efficient single-pass route processing."""
+    """Create and configure the FastMCP server from a FastAPI app instance."""
+    if auth is None:
+        # pylint: disable=import-outside-toplevel
+        from .auth import get_auth_provider
+
+        auth = get_auth_provider(settings)
     tool_registry = ToolRegistry()
 
     # Single-pass processing: filter routes, build route maps, and create lookup dictionary
@@ -255,17 +263,18 @@ def create_mcp_server(
             )
 
     # Extract httpx_client_kwargs from settings/kwargs if available
-    httpx_client_kwargs = httpx_kwargs or settings.httpx_client_kwargs
+    httpx_client_kwargs = httpx_kwargs or settings.get_httpx_kwargs()
 
     # Get only FastMCP constructor parameters (excludes uvicorn_config, httpx_client_kwargs)
     fastmcp_kwargs = settings.get_fastmcp_kwargs()
 
-    # Create MCP server from the processed FastAPI app (without custom lifespan to preserve original)
+    # Create MCP server from the processed FastAPI app.
     mcp = FastMCP.from_fastapi(
         app=fastapi_app,  # app has been modified in-place
         mcp_component_fn=customize_components,
         route_maps=processed_data.route_maps,
         httpx_client_kwargs=httpx_client_kwargs,
+        auth=auth,
         **fastmcp_kwargs,
     )
 
@@ -699,7 +708,9 @@ def main():
         httpx_kwargs = settings.get_httpx_kwargs()
 
         # Create MCP server with comprehensive configuration
-        mcp_server = create_mcp_server(settings, target_app, httpx_kwargs)
+        mcp_server = create_mcp_server(
+            settings, target_app, httpx_kwargs, auth=settings.server_auth
+        )
 
         if args.transport == "stdio":
             asyncio.run(stdio_main(mcp_server))

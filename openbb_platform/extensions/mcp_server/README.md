@@ -75,6 +75,9 @@ Enter `openbb-mcp --help` to see the docstring from the command line.
 
 --system-prompt <path>
     Path to a TXT file with the system prompt.
+
+--server-prompts <path>
+    Path to a JSON file with a list of server prompts.
 ```
 
 #### All other arguments will be passed to `uvicorn.run`.
@@ -90,6 +93,63 @@ The server can be configured through multiple methods, with settings applied in 
   - If the cnofiguration file does not exist, one will be populated with the defaults.
 
 > **Note:** For some data providers you need to set your API key in the `~/.openbb_platform/user_settings.json` file.
+
+### Authentication
+
+The MCP server supports client-side and server-side authentication to secure your endpoints.
+
+#### Server-Side Authentication
+
+Server-side authentication requires incoming requests to provide credentials. This is configured using the `server_auth` setting, which accepts a tuple of `(username, password)`.
+
+When `server_auth` is enabled, clients must include an `Authorization` header with a `Bearer` token. The token should be a Base64-encoded string of `username:password`.
+
+**Example: Environment Variable**
+
+```env
+OPENBB_MCP_SERVER_AUTH='["myuser", "mypass"]'
+```
+
+**Example: `mcp_settings.json`**
+
+```json
+{
+  "server_auth": ["myuser", "mypass"]
+}
+```
+
+#### Client-Side Authentication
+
+Client-side authentication configures the MCP server to use credentials when making downstream requests. This is useful when the server needs to authenticate with other services.
+
+**Example: Environment Variable**
+
+```env
+OPENBB_MCP_CLIENT_AUTH='["client_user", "client_pass"]'
+```
+
+**Example: `mcp_settings.json`**
+
+```json
+{
+  "client_auth": ["client_user", "client_pass"]
+}
+```
+
+#### Programmatic Authentication
+
+For advanced use cases, you can pass a pre-configured authentication object directly to the `create_mcp_server` function using the `auth` parameter. This allows you to implement custom authentication logic or use third-party authentication providers.
+
+```python
+from fastmcp.server.auth.providers import BearerProvider
+from openbb_mcp_server.app import create_mcp_server
+
+# Create a custom auth provider
+custom_auth = BearerProvider(...)
+
+# Pass it to the server
+mcp_server = create_mcp_server(settings, fastapi_app, auth=custom_auth)
+```
 
 ### Advanced Configuration: Lists and Dictionaries
 
@@ -179,6 +239,8 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | dict[str, str] | `None` | Map API tags to Python module names for exclusion. |
 | `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | dict | `{"host": "127.0.0.1", "port": "8001"}` | Configuration for the Uvicorn server. |
 | `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | dict | `{}` | Configuration for the async httpx client. |
+| `client_auth` | `OPENBB_MCP_CLIENT_AUTH` | tuple[string, string] | `None` | `(username, password)` for client-side basic authentication (passed-through to HTTPX). |
+| `server_auth` | `OPENBB_MCP_SERVER_AUTH` | tuple[string, string] | `None` | `(username, password)` for server-side basic authentication. |
 
 > **Note:** Runtime argument keys, in general, "-" and "_" are interchangeable. Nested uvicorn arguments should use `_`.
 

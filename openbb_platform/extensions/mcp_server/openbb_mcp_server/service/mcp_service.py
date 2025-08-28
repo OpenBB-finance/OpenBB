@@ -147,15 +147,16 @@ class MCPService(metaclass=SingletonMeta):
                 annotation = getattr(field_info, "annotation", None)
                 origin = get_origin(annotation)
 
-                is_dict_field = False
-                if origin is dict:
-                    is_dict_field = True
+                is_json_field = False
+                if origin in (dict, list, tuple):
+                    is_json_field = True
                 elif origin is Union:
-                    is_dict_field = any(
-                        get_origin(arg) is dict for arg in get_args(annotation)
+                    is_json_field = any(
+                        get_origin(arg) in (dict, list, tuple)
+                        for arg in get_args(annotation)
                     )
 
-                if is_dict_field:
+                if is_json_field:
                     try:
                         if (value.startswith("{") and value.endswith("}")) or (
                             value.startswith("[") and value.endswith("]")
