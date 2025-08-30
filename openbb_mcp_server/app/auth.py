@@ -1,6 +1,6 @@
 """Custom authentication for the MCP server."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from fastapi import HTTPException
 from fastmcp.server.auth.auth import AuthProvider
@@ -34,7 +34,7 @@ class TokenAuthProvider(AuthProvider):
 
         return True
 
-    async def verify_token(self, token: str) -> Optional[Dict[str, Any]]:
+    async def verify_token(self, token: str) -> Optional[dict[str, Any]]:
         """Verify the token."""
         try:
             user = self.user_service.get_user_from_token(token)
