@@ -26,7 +26,8 @@ logger.setLevel(logging.WARN)
 
 dep_warning = (
     "\nDeprecation Warning: The Account module is deprecated and will be removed in a future version."
-    + " Please migrate to using the `user_settings.json` file."
+    + " Please migrate to using the `user_settings.json` file. For more information, visit:"
+    + " https://docs.openbb.co/platform/settings/user_settings/api_keys"
 )
 
 
