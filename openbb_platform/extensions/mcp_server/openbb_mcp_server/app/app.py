@@ -135,11 +135,13 @@ def create_mcp_server(
     FastMCP
         The configured FastMCP server instance.
     """
-    if auth is None:
+    auth_provider = None
+    if auth and isinstance(auth, (list, tuple)) and len(auth) == 2 and all(auth):
         # pylint: disable=import-outside-toplevel
         from .auth import get_auth_provider
 
-        auth = get_auth_provider(settings)
+        auth_provider = get_auth_provider(settings)
+
     tool_registry = ToolRegistry()
 
     # Single-pass processing: filter routes, build route maps, and create lookup dictionary
@@ -293,7 +295,7 @@ def create_mcp_server(
         mcp_component_fn=customize_components,
         route_maps=processed_data.route_maps,
         httpx_client_kwargs=httpx_client_kwargs,
-        auth=auth,
+        auth=auth_provider,
         **fastmcp_kwargs,
     )
 
@@ -768,7 +770,8 @@ def main():
         logger.info("Shutdown requested via keyboard interrupt.")
         sys.exit(0)
     except Exception as e:
-        logger.error("Server error: %s", e)
+        raise e from e
+        logger.error("Server error: %s", e.args[0])
         sys.exit(1)
 
 

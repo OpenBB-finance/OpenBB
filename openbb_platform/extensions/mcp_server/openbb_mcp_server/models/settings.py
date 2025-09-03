@@ -218,6 +218,8 @@ the exact same operations available to REST clients.""",
     def _validate_json_or_tuple(cls, v):
         """Validate json or tuple."""
         if isinstance(v, str):
+            if not v.strip():
+                return None
             try:
                 return json.loads(v)
             except json.JSONDecodeError:
