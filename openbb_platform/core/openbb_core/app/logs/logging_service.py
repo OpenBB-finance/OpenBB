@@ -43,7 +43,7 @@ class LoggingService(metaclass=SingletonMeta):
     __init__(system_settings, user_settings)
         Logging Manager Constructor.
 
-    log(user_settings, system_settings, route, func, kwargs, exec_info, custom_headers)
+    log(user_settings, system_settings, route, func, kwargs, exec_info or None, custom_headers or None)
         Log command output and relevant information.
 
     logging_settings
@@ -55,7 +55,7 @@ class LoggingService(metaclass=SingletonMeta):
     _setup_handlers()
         Setup Logging Handlers.
 
-    _log_startup(route, custom_headers)
+    _log_startup(route or None, custom_headers or None)
         Log startup information.
     """
 
