@@ -1,6 +1,6 @@
 # OpenBB Platform API Launcher
 
-This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace [custom backend](https://docs.openbb.co/terminal/custom-backend).
+This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace [custom backend](https://docs.openbb.co/workspace/data-integration).
 
 ## Installation
 
@@ -79,21 +79,23 @@ All other arguments will be passed to uvicorn. Here are the most common ones:
                                       [default: 127.0.0.1]
     --port INTEGER                  Port number.
                                       [default: 6900]
-    --ssl-keyfile TEXT              SSL key file.
-    --ssl-certfile TEXT             SSL certificate file.
-    --ssl-keyfile-password TEXT     SSL keyfile password.
-    --ssl-version INTEGER           SSL version to use.
+    --ssl_keyfile TEXT              SSL key file.
+    --ssl_certfile TEXT             SSL certificate file.
+    --ssl_keyfile_password TEXT     SSL keyfile password.
+    --ssl_version INTEGER           SSL version to use.
                                       (see stdlib ssl module's)
                                       [default: 17]
-    --ssl-cert-reqs INTEGER         Whether client certificate is required.
+    --ssl_cert_reqs INTEGER         Whether client certificate is required.
                                       (see stdlib ssl module's)
                                       [default: 0]
-    --ssl-ca-certs TEXT             CA certificates file.
-    --ssl-ciphers TEXT              Ciphers to use.
+    --ssl_ca_certs TEXT             CA certificates file.
+    --ssl_ciphers TEXT              Ciphers to use.
                                       (see stdlib ssl module's)
                                       [default: TLSv1]
 
 Run `uvicorn --help` to get the full list of arguments.
+
+**Note** Replace, '-', with, '_' in the command line arguments of `uvicorn` (as per `uvicorn.run`)
 
 ### API Over HTTPS
 
@@ -110,7 +112,7 @@ Two files will be created, in the current working directory, that are passed as 
 openbb-api --ssl_keyfile localhost.key --ssl_certfile localhost.crt
 ```
 
-**Note**: Adjust the command to include the full path to the file if the current working directory is not where they are located.
+**Note** Adjust the command to include the full path to the file if the current working directory is not where they are located.
 
 The certificate - `localhost.crt` - will need to be added to system's trust store. The process for this will depend on the operating system and the user account privilege.
 
