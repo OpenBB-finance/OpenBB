@@ -43,7 +43,7 @@ class LoggingService(metaclass=SingletonMeta):
     __init__(system_settings, user_settings)
         Logging Manager Constructor.
 
-    log(user_settings, system_settings, route, func, kwargs)
+    log(user_settings, system_settings, route, func, kwargs, exec_info, custom_headers)
         Log command output and relevant information.
 
     logging_settings
@@ -213,6 +213,8 @@ class LoggingService(metaclass=SingletonMeta):
             Tuple[None, None, None],
         ]
             Exception information, by default None
+        custom_headers : Optional[Dict[str, Any]]
+            Custom headers to include in the log, by default None
         """
         self._user_settings = user_settings
         self._system_settings = system_settings
