@@ -49,13 +49,13 @@ class LoggingService(metaclass=SingletonMeta):
     logging_settings
         Property to access the current logging settings.
 
-    logging_settings.setter
+    logging_settings.setter(value)
         Setter method to update the logging settings.
 
     _setup_handlers()
         Setup Logging Handlers.
 
-    _log_startup()
+    _log_startup(route, custom_headers)
         Log startup information.
     """
 
