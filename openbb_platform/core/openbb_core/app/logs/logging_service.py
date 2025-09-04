@@ -146,7 +146,18 @@ class LoggingService(metaclass=SingletonMeta):
         route: Optional[str] = None,
         custom_headers: Optional[Dict[str, Any]] = None,
     ) -> None:
-        """Log startup information."""
+        """
+        Log startup information.
+        Parameters
+        ----------
+        route : Optional[str]
+            Route for the command, by default None
+        custom_headers : Optional[Dict[str, Any]]
+            Custom headers to include in the log, by default None
+        Returns
+        -------
+        None
+        """
 
         def check_credentials_defined(credentials: Dict[str, Any]):
             class CredentialsDefinition(Enum):
