@@ -103,13 +103,16 @@ class LoggingService(metaclass=SingletonMeta):
         return self._logging_settings
 
     @logging_settings.setter
-    def logging_settings(self, value: Tuple[SystemSettings, UserSettings]):
+    def logging_settings(self, value: Tuple[SystemSettings, UserSettings]) -> None:
         """Define the Setter for updating the logging settings.
 
         Parameters
         ----------
         value : Tuple[SystemSettings, UserSettings]
             Tuple containing updated SystemSettings and UserSettings.
+        Returns
+        -------
+        None
         """
         system_settings, user_settings = value
         self._logging_settings = LoggingSettings(
@@ -204,7 +207,7 @@ class LoggingService(metaclass=SingletonMeta):
             Tuple[None, None, None],
         ],
         custom_headers: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> None:
         """Log command output and relevant information.
 
         Parameters
@@ -226,6 +229,9 @@ class LoggingService(metaclass=SingletonMeta):
             Exception information, by default None
         custom_headers : Optional[Dict[str, Any]]
             Custom headers to include in the log, by default None
+        Returns
+        -------
+        None
         """
         self._user_settings = user_settings
         self._system_settings = system_settings
