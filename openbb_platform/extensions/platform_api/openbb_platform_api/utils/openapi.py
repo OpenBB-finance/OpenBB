@@ -1,5 +1,8 @@
 """OpenAPI parsing Utils."""
 
+# pylint: disable=C0302,R0912
+# flake8: noqa: PLR0912
+
 from typing import Optional
 
 from openbb_core.provider.utils.helpers import to_snake_case
@@ -937,39 +940,93 @@ def post_query_schema_for_widget(
     ):
         # Get the reference to the schema for the request body.
 
-        param_ref = (
-            schema["items"].get("$ref")
-            if "items" in schema
-            else schema.get("$ref") or schema
-        )
+        title = schema.get("title")
+        providers: list[str] = []
 
-        if isinstance(param_ref, dict) and "type" in param_ref:
-            param_ref = param_ref["type"]
+        if title and title in schema:
+            providers = [title]
+        elif title and "," in title:
+            providers = title.split(",")
+        else:
+            providers = ["Custom"]
 
-        if param_ref and isinstance(param_ref, str):
-            # Extract the schema name from the reference
-            schema_name = param_ref.split("/")[-1]
-            schema = openapi_json["components"]["schemas"].get(schema_name, schema_name)
-            props = {} if isinstance(schema, str) else schema.get("properties", {})
-
-            for k, v in props.items():
-                if target_schema and target_schema != k:
-                    continue
-                if nested_schema := v.get("$ref"):
-                    nested_schema_name = nested_schema.split("/")[-1]
-                    nested_schema = openapi_json["components"]["schemas"].get(
-                        nested_schema_name, {}
-                    )
-                    for nested_k, nested_v in nested_schema.get(
-                        "properties", {}
-                    ).items():
-                        set_param(nested_k, nested_v)
-
-                else:
+        if params := _route.get("parameters"):
+            if isinstance(params, list):
+                for _param in params:
+                    set_param(_param["name"], _param["schema"])
+            elif isinstance(params, dict):
+                for k, v in params.items():
                     set_param(k, v)
 
-            route_params: list[dict] = []
-            providers = ["custom"]
+        if "items" in schema or "$ref" in schema:
+            param_ref = (
+                schema["items"].get("$ref")
+                if "items" in schema
+                else schema.get("$ref") or schema
+            )
+
+            if isinstance(param_ref, dict) and "type" in param_ref:
+                param_ref = param_ref["type"]
+
+            if param_ref and isinstance(param_ref, str):
+                # Extract the schema name from the reference
+                schema_name = param_ref.split("/")[-1]
+                schema = openapi_json["components"]["schemas"].get(
+                    schema_name, schema_name
+                )
+                props = {} if isinstance(schema, str) else schema.get("properties", {})
+
+                for k, v in props.items():
+                    if target_schema and target_schema != k:
+                        continue
+                    if nested_schema := v.get("$ref"):
+                        nested_schema_name = nested_schema.split("/")[-1]
+                        nested_schema = openapi_json["components"]["schemas"].get(
+                            nested_schema_name, {}
+                        )
+                        for nested_k, nested_v in nested_schema.get(
+                            "properties", {}
+                        ).items():
+                            set_param(nested_k, nested_v)
+
+                    else:
+                        set_param(k, v)
+
+                route_params: list[dict] = []
+
+                for new_param_values in new_params.values():
+                    _new_values = new_param_values.copy()
+                    p = process_parameter(_new_values, providers)
+                    if not p.get("exclude") and not p.get("x-widget_config", {}).get(
+                        "exclude"
+                    ):
+                        route_params.append(p)
+
+                return route_params
+        if "anyOf" in _route or "anyOf" in schema:
+            any_of_schema = (
+                schema.get("anyOf", [])
+                if "anyOf" in schema
+                else _route.get("anyOf", [])
+            )
+            for item in any_of_schema:
+                # If item is a $ref, resolve it
+                if "$ref" in item:
+                    ref_name = item["$ref"].split("/")[-1]
+                    ref_schema = openapi_json["components"]["schemas"].get(ref_name, {})
+                    if "properties" in ref_schema:
+                        for k, v in ref_schema["properties"].items():
+                            if target_schema and target_schema != k:
+                                continue
+                            set_param(k, v)
+                # If item has properties directly
+                elif "properties" in item:
+                    for k, v in item["properties"].items():
+                        if target_schema and target_schema != k:
+                            continue
+                        set_param(k, v)
+
+            route_params = []
 
             for new_param_values in new_params.values():
                 _new_values = new_param_values.copy()

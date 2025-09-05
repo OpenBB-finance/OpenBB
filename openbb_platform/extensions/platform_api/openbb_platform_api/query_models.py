@@ -7,16 +7,6 @@ from pydantic import AliasGenerator, ConfigDict, Field, field_validator
 from pydantic.alias_generators import to_snake
 
 
-class FormData(Data):
-    """Submit a form via POST request."""
-
-    model_config = ConfigDict(
-        extra="allow",
-        alias_generator=AliasGenerator(to_snake),
-        title="Submit Form",
-    )
-
-
 class OmniWidgetInput(Data):
     """Input for OmniWidget."""
 
