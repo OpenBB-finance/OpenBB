@@ -870,7 +870,7 @@ async def direction_of_trade(
                 "h": 27,
             },
             "refetchInterval": False,
-            "endpoint": "/api/v1/economy/fomc_documents/download",
+            "endpoint": f"{api_prefix}/economy/fomc_documents/download",
             "params": [
                 {
                     "type": "endpoint",
@@ -915,7 +915,7 @@ async def fomc_documents(
     """
     results = await OBBject.from_query(Query(**locals()))
 
-    return results.results.content
+    return results.results.content  # type: ignore
 
 
 # This endpoint is used to download FOMC documents in Workspace.
@@ -926,11 +926,7 @@ async def fomc_documents(
 @router._api_router.post(
     "/fomc_documents/download",
     include_in_schema=False,
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
+    openapi_extra={},
 )
 async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
     """
@@ -947,7 +943,7 @@ async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
 
     urls = params.get("url", [])
 
-    results = []
+    results: list = []
     for url in urls:
         try:
             response = make_request(url)
