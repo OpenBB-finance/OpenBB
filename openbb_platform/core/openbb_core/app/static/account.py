@@ -2,6 +2,7 @@
 
 # pylint: disable=W0212:protected-access
 import json
+import logging
 from functools import wraps
 from pathlib import Path
 from sys import exc_info
@@ -16,6 +17,18 @@ from openbb_core.app.service.user_service import UserService
 
 if TYPE_CHECKING:
     from openbb_core.app.static.app_factory import BaseApp
+
+logger = logging.getLogger(__name__)
+
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.WARN)
+
+
+dep_warning = (
+    "\nDeprecation Warning: The Account module is deprecated and will be removed in a future version."
+    + " Please migrate to using the `user_settings.json` file. For more information, visit:"
+    + " https://docs.openbb.co/platform/settings/user_settings/api_keys"
+)
 
 
 class Account:  # noqa: D205, D400
@@ -123,6 +136,7 @@ class Account:  # noqa: D205, D400
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
+        logger.warning(dep_warning)
         self._hub_service = self._create_hub_service(email, password, pat)
         incoming = self._hub_service.pull()
         self._base_app.user.profile = incoming.profile
@@ -161,6 +175,7 @@ class Account:  # noqa: D205, D400
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
+        logger.warning(dep_warning)
         if not self._hub_service:
             UserService.write_to_file(self._base_app._command_runner.user_settings)
         else:
@@ -184,6 +199,7 @@ class Account:  # noqa: D205, D400
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
+        logger.warning(dep_warning)
         if not self._hub_service:
             self._base_app._command_runner.user_settings = UserService.read_from_file()
         else:
@@ -210,6 +226,7 @@ class Account:  # noqa: D205, D400
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
+        logger.warning(dep_warning)
         if not self._hub_service:
             raise OpenBBError("Not connected to hub.")
 
