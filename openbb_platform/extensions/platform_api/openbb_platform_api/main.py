@@ -75,6 +75,8 @@ uvicorn_settings = (
     SystemService().system_settings.python_settings.model_dump().get("uvicorn", {})
 )
 
+obb_headers = {"X-Backend-Type": "OpenBB Platform"}
+
 for key, value in uvicorn_settings.items():
     if key not in kwargs and key != "app" and value is not None:
         kwargs[key] = value
@@ -150,14 +152,15 @@ async def get_widgets():
     global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
     if FIRST_RUN is True:
         FIRST_RUN = False
-        return JSONResponse(content=widgets_json)
+        return JSONResponse(content=widgets_json, headers=obb_headers)
     if EDITABLE:
         return JSONResponse(
             content=get_widgets_json(
                 False, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
-            )
+            ),
+            headers=obb_headers,
         )
-    return JSONResponse(content=widgets_json)
+    return JSONResponse(content=widgets_json, headers=obb_headers)
 
 
 # If a custom implementation, you might want to override.
@@ -212,9 +215,9 @@ async def get_apps_json():
                     new_templates.append(template)
 
         if new_templates:
-            return JSONResponse(content=new_templates)
+            return JSONResponse(content=new_templates, headers=obb_headers)
 
-    return JSONResponse(content=[])
+    return JSONResponse(content=[], headers=obb_headers)
 
 
 if AGENTS_PATH:
@@ -225,8 +228,8 @@ if AGENTS_PATH:
         if os.path.exists(AGENTS_PATH):
             with open(AGENTS_PATH) as f:
                 agents = json.load(f)
-            return JSONResponse(content=agents)
-        return JSONResponse(content=[])
+            return JSONResponse(content=agents, headers=obb_headers)
+        return JSONResponse(content=[], headers=obb_headers)
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
