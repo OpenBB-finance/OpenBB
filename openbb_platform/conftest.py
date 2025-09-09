@@ -1,4 +1,7 @@
-"""Root configuration for pytest - applies to ALL tests."""
+"""Root configuration for pytest."""
+
+# flake8: noqa: S101
+# pylint: disable=unused-argument
 
 import os
 import shutil
@@ -12,8 +15,6 @@ ROOT_DIR = Path(__file__).parent
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_generated_files():
     """Clean up generated files and restore original state before and after test session."""
-
-    # Fix the path - it's core/openbb/assets/, not core/assets/
     reference_file = ROOT_DIR / "core" / "openbb" / "assets" / "reference.json"
     reference_backup = ROOT_DIR / "core" / "openbb" / "reference.json.original"
 
@@ -25,31 +26,24 @@ def cleanup_generated_files():
                 if item.name != "__init__.py":
                     if item.is_file():
                         item.unlink()
-                        print(f"Removed file: {item}")
                     elif item.is_dir():
                         shutil.rmtree(item)
-                        print(f"Removed directory: {item}")
 
         # 2. Create backup before first cleanup if it doesn't exist
         if reference_file.exists() and not reference_backup.exists():
             shutil.copy2(reference_file, reference_backup)
-            print(f"Created backup: {reference_backup}")
 
         # 3. Restore from backup if it exists
         elif reference_backup.exists() and reference_file.exists():
             shutil.copy2(reference_backup, reference_file)
-            print(f"Restored from backup: {reference_file}")
             reference_backup.unlink()
-            print(f"Removed backup: {reference_backup}")
 
     # Clean before tests
-    print("=== CLEANUP: Before tests ===")
     clean_and_restore()
 
     yield
 
     # Clean after tests
-    print("=== CLEANUP: After tests ===")
     clean_and_restore()
 
 
@@ -77,8 +71,8 @@ def pytest_configure():
 def pytest_collection_modifyitems(config, items):
     """Modify test collection to ensure cleanup-dependent tests run first."""
     # Find tests that should run early (checking clean state)
-    early_tests = []
-    other_tests = []
+    early_tests: list = []
+    other_tests: list = []
 
     for item in items:
         # Tests that check repository state should run first
