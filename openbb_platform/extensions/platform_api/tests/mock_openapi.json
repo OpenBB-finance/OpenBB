@@ -3538,10 +3538,15 @@
             }
           }
         }
-      },
+      }
+    },
+    "/form_widget": {
       "get": {
         "summary": "All Forms",
         "operationId": "all_forms_form_submit_get",
+        "widget_config": {
+          "form_endpoint": "/form_submit"
+        },
         "parameters": [
           {
             "name": "some_param",

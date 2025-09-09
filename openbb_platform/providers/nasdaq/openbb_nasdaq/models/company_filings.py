@@ -41,10 +41,6 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """Nasdaq Company Filings Query Parameters."""
 
     __json_schema_extra__ = {
-        "form_group": {
-            "multiple_items_allowed": False,
-            "choices": list(form_groups),
-        },
         "year": {
             "x-widget_config": {
                 "options": sorted(
@@ -71,10 +67,10 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     year: Optional[int] = Field(
         description=(
             "Calendar year of the data, default is current year."
-            " The earliest year available is 1994, for all companies and form types."
+            + " The earliest year available is 1994, for all companies and form types."
         ),
         default=None,
-        gte=1994,
+        ge=1994,
     )
     form_group: FormGroups = Field(
         default="8k",
@@ -186,7 +182,7 @@ class NasdaqCompanyFilingsFetcher(
 
             if response.status_code != 200:
                 raise OpenBBError(
-                    f"Error fetching data from Nasdaq: {response.status} - {response.reason}"
+                    f"Error fetching data from Nasdaq: {response.status_code} - {response.reason}"
                 )
             data = response.json().get("data", {})
             rows = data.get("rows", [])
@@ -204,7 +200,7 @@ class NasdaqCompanyFilingsFetcher(
                 response = session.get(url=next_url, headers=headers, timeout=10)
                 if response.status_code != 200:
                     raise OpenBBError(
-                        f"Error fetching data from Nasdaq: {response.status} - {response.reason}"
+                        f"Error fetching data from Nasdaq: {response.status_code} - {response.reason}"
                     )
                 next_data = response.json().get("data", {})
                 new_rows = next_data.get("rows", [])

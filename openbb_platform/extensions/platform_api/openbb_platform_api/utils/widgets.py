@@ -239,6 +239,16 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
     return modified_query_schema
 
 
+def get_form_input_paths(openapi: dict) -> dict:
+    """Get a mapping of form input paths, defined by 'widget_config.form_endpoint'."""
+    return {
+        path: config.get("form_endpoint")
+        for path, path_config in openapi["paths"].items()
+        if (config := path_config.get("get", {}).get("widget_config"))
+        and config.get("form_endpoint")
+    }
+
+
 def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-locals, too-many-statements
     openapi: dict, widget_exclude_filter: list
 ):
@@ -261,6 +271,8 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             starred_list.append(item)
             widget_exclude_filter.remove(item)
 
+    # Collect all routes that are designated as form endpoints to exclude them from direct widget generation
+    form_endpoint_paths = get_form_input_paths(openapi)
     widgets_json: dict = {}
     routes = [
         p
@@ -269,13 +281,20 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         and ("get" in openapi["paths"][p] or "post" in openapi["paths"][p])
     ]
     for route in routes:
-        has_form_endpoint = False
-        form_route: dict = {}
-        if "post" in openapi["paths"][route] and "get" in openapi["paths"][route]:
-            has_form_endpoint = True
-            form_route = openapi["paths"][route]["post"]
-        elif "post" in openapi["paths"][route]:
-            form_route = openapi["paths"][route]["post"]
+        # Skip routes that are only used as form endpoints for other routes
+        if route in form_endpoint_paths.values():
+            continue
+
+        route_api = openapi["paths"][route]
+
+        has_form_endpoint = route in list(form_endpoint_paths)
+        form_endpoint_path = form_endpoint_paths.get(route) if has_form_endpoint else ""
+        form_route: dict = (
+            openapi["paths"][form_endpoint_path]["post"] if has_form_endpoint else {}
+        )
+        # Determine the primary method for the widget
+        # If a GET exists, it's the primary. Otherwise, it's a POST.
+        route_method = "get" if "get" in route_api else "post"
 
         skip = False
         for starred in starred_list:
@@ -292,10 +311,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         if skip is True:
             continue
 
-        route_api = openapi["paths"][route]
-        route_method = (
-            "post" if "post" in route_api and not has_form_endpoint else "get"
-        )
         widget_id = (
             (
                 route[1:].replace("/", "_")
@@ -318,7 +333,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         # Prepare the query schema of the widget
         if route_method == "get":
             query_schema, has_chart = get_query_schema_for_widget(openapi, route)
-        else:
+        else:  # post
             query_schema = (
                 post_query_schema_for_widget(
                     openapi, route_api.get("post", {}).get("operationId", ""), route
@@ -349,7 +364,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             columns_defs = (
                 data_schema_to_columns_defs(openapi, widget_id, provider, route)
                 if widget_config_dict.get("type")
-                not in ["multi_file_viewer", "pdf", "metric", "omni"]
+                not in ["multi_file_viewer", "pdf", "metric"]
                 else []
             )
             _cats = [
@@ -383,121 +398,182 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
 
             param_names: list = []
             var_schema: dict = {}
-            if (
-                _schema := route_api.get("post", {})
-                .get("requestBody", {})
-                .get("content", {})
-                .get("application/json", {})
-                .get("schema", {})
-            ):
-                schema_name = _schema.get("$ref", "").split("/")[-1]
-                var_schema = openapi["components"]["schemas"].get(schema_name, {})
 
-                if var_schema:
-                    var_props = var_schema.get("properties", {})
-                    for k, v in var_props.items():
-                        if "$ref" in v:
-                            param_names.append(k)
+            # Determine the source of the POST body schema
+            post_body_source = None
+            if has_form_endpoint:
+                post_body_source = form_route
+            elif route_method == "post":
+                post_body_source = route_api.get("post")
 
-            if param_names:
-                for _param in param_names:
+            if post_body_source:
+                if (
+                    _schema := post_body_source.get("requestBody", {})
+                    .get("content", {})
+                    .get("application/json", {})
+                    .get("schema", {})
+                ):
+                    schema_name = _schema.get("$ref", "").split("/")[-1]
+                    var_schema = openapi["components"]["schemas"].get(schema_name, {})
+
+                    if var_schema:
+                        var_props = var_schema.get("properties", {})
+                        for k, v in var_props.items():
+                            if "$ref" in v:
+                                param_names.append(k)
+
+                if param_names:
+                    for _param in param_names:
+                        post_params = post_query_schema_for_widget(
+                            openapi, post_body_source.get("operationId"), route, _param
+                        )
+                        modified_post_params = modify_query_schema(
+                            post_params, provider  # type: ignore
+                        )
+
+                        if has_form_endpoint:
+                            has_submit = False
+                            for item in modified_post_params:
+                                if item.get("type") == "button":
+                                    has_submit = True
+                                    break
+
+                            if not has_submit:
+                                modified_post_params.append(
+                                    {
+                                        "paramName": "submit",
+                                        "label": "Submit",
+                                        "type": "button",
+                                        "value": True,
+                                        "description": "Submit the form.",
+                                    }
+                                )
+
+                            form_params = {
+                                "type": "form",
+                                "paramName": _param,
+                                "label": "Form",
+                                "description": "Form Data",
+                                "endpoint": form_endpoint_path,
+                                "inputParams": modified_post_params,
+                            }
+
+                            if post_config := var_schema.get("x-widget_config", {}):
+                                form_params = deep_merge_configs(
+                                    form_params,
+                                    post_config,
+                                )
+
+                            modified_query_schema.append(form_params)
+                        else:
+                            # For non-form endpoints, extend with the modified params directly
+                            modified_query_schema.extend(modified_post_params)
+                else:  # This handles POST requests with no parameters in the body
                     post_params = post_query_schema_for_widget(
-                        openapi, form_route.get("operationId"), route, _param
+                        openapi,
+                        post_body_source.get("operationId"),
+                        form_endpoint_path if has_form_endpoint else route,
                     )
                     modified_post_params = modify_query_schema(
                         post_params, provider  # type: ignore
                     )
 
                     if has_form_endpoint:
+
+                        has_submit = False
+                        for item in modified_post_params:
+                            if item.get("type") == "button":
+                                has_submit = True
+                                break
+
+                        if not has_submit:
+                            modified_post_params.append(
+                                {
+                                    "paramName": "submit",
+                                    "label": "Submit",
+                                    "value": True,
+                                    "type": "button",
+                                    "description": "Submit the form.",
+                                }
+                            )
+
                         form_params = {
                             "type": "form",
-                            "paramName": _param,
-                            "label": "Form",
-                            "description": "Form Data",
-                            "endpoint": (
-                                route.replace("/api", "api")
-                                if "/api" in route
-                                else route[1:] if route[0] == "/" else route
-                            ),
+                            "paramName": "form",
+                            "label": var_schema.get("title", "Form"),
+                            "description": var_schema.get("description", ""),
+                            "endpoint": form_endpoint_path,
                             "inputParams": modified_post_params,
                         }
 
+                        var_key: dict = {}
+                        # Widget Config at the model level goes first.
                         if post_config := var_schema.get("x-widget_config", {}):
+                            for key, value in post_config.copy().items():
+                                if key.startswith("$."):
+                                    var_key[key] = value
+                                else:
+                                    form_params[key] = value
+
                             form_params = deep_merge_configs(
                                 form_params,
                                 post_config,
                             )
 
+                        # Then the widget config at the POST endpoint level takes priority.
+                        if post_config := form_route.get("widget_config", {}):
+                            for key, value in post_config.copy().items():
+                                if key.startswith("$."):
+                                    var_key[key] = value
+
+                            form_params = deep_merge_configs(
+                                form_params,
+                                {
+                                    k: v
+                                    for k, v in post_config.items()
+                                    if not k.startswith("$.")
+                                },
+                            )
+
                         modified_query_schema.append(form_params)
-                    else:
-                        # For non-form endpoints, extend with the modified params directly
-                        modified_query_schema.extend(modified_post_params)
-            else:
-                post_params = post_query_schema_for_widget(
-                    openapi, form_route.get("operationId"), route
-                )
-                modified_post_params = modify_query_schema(post_params, provider)  # type: ignore
 
-                if has_form_endpoint:
-                    form_params = {
-                        "type": "form",
-                        "paramName": "",
-                        "label": var_schema.get("title", "Form"),
-                        "description": var_schema.get("description", ""),
-                        "endpoint": (
-                            route.replace("/api", "api")
-                            if "/api" in route
-                            else route[1:] if route[0] == "/" else route
-                        ),
-                        "inputParams": modified_post_params,
-                    }
+                        if var_key:
+                            for key, value in var_key.items():
+                                if (
+                                    key.replace("$.", "") in widget_config_dict
+                                    and "params" not in key
+                                    and "inputParams" not in key
+                                ):
+                                    widget_config_dict.update(
+                                        {key.replace("$.", ""): value}
+                                    )
+                                else:
+                                    widget_config_dict[key.replace("$.", "")] = value
+                    # For POST-only routes, extend with the modified params directly
+                    # elif route_method == "post":
+                    #    modified_query_schema.extend(modified_post_params)
+                    elif route_method == "post":
 
-                    var_key: dict = {}
-                    # Widget Config at the model level goes first.
-                    if post_config := var_schema.get("x-widget_config", {}):
-                        for key, value in post_config.copy().items():
-                            if key.startswith("$."):
-                                var_key[key] = value
-                            else:
-                                form_params[key] = value
+                        var_key = {}
+                        # Widget Config at the model level goes first.
+                        if post_config := var_schema.get("x-widget_config", {}):
+                            for key, value in post_config.copy().items():
+                                if key.startswith("$."):
+                                    var_key[key] = value
 
-                        form_params = deep_merge_configs(
-                            form_params,
-                            post_config,
-                        )
+                        if var_key:
+                            for key, value in var_key.items():
+                                if (
+                                    key.replace("$.", "") in widget_config_dict
+                                    and "params" not in key
+                                    and "inputParams" not in key
+                                ):
+                                    widget_config_dict.update(
+                                        {key.replace("$.", ""): value}
+                                    )
+                                else:
+                                    widget_config_dict[key.replace("$.", "")] = value
 
-                    # Then the widget config at the POST endpoint level takes priority.
-                    if post_config := form_route.get("widget_config", {}):
-                        for key, value in post_config.copy().items():
-                            if key.startswith("$."):
-                                var_key[key] = value
-
-                        form_params = deep_merge_configs(
-                            form_params,
-                            {
-                                k: v
-                                for k, v in post_config.items()
-                                if not k.startswith("$.")
-                            },
-                        )
-
-                    modified_query_schema.append(form_params)
-
-                    if var_key:
-                        for key, value in var_key.items():
-                            if (
-                                key.replace("$.", "") in widget_config_dict
-                                and "params" not in key
-                                and "inputParams" not in key
-                            ):
-                                widget_config_dict.update(
-                                    {key.replace("$.", ""): value}
-                                )
-                            else:
-                                widget_config_dict[key.replace("$.", "")] = value
-                    # For non-form endpoints, extend with the modified params directly
-                # else:
-                #    modified_query_schema.extend(modified_post_params)
             provider_map = {
                 "tmx": "TMX",
                 "ecb": "ECB",
@@ -528,14 +604,10 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                 else ""
             )
             widget_type = (
-                (
-                    "markdown"
-                    if isinstance(response_schema, dict)
-                    and response_schema.get("type") == "string"
-                    else "table"
-                )
-                if route_method == "get"
-                else "omni"
+                "markdown"
+                if isinstance(response_schema, dict)
+                and response_schema.get("type") == "string"
+                else "table"
             )
             widget_config = {
                 "name": f"{name}" if name else route_api[route_method].get("summary"),
@@ -545,11 +617,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                 "searchCategory": category.replace("_", " ").title(),
                 "widgetId": f"{widget_id}_{provider}_obb",
                 "params": modified_query_schema,
-                "endpoint": (
-                    route.replace("/api", "api")
-                    if "/api" in route
-                    else route[1:] if route[0] == "/" else route
-                ),
+                "endpoint": route,
                 "runButton": False,
                 "gridData": {"w": 40, "h": 15},
                 "data": {
@@ -609,9 +677,9 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     widget_config,
                     widget_config_dict,
                 )
-            # TODO: uncomment when charting is implemented for advanced tables.
-            # if widget_config.get("type") == "table":
-            #    widget_config["data"]["table"]["enableAdvanced"] = True
+
+            if widget_config.get("type") == "table":
+                widget_config["data"]["table"]["enableAdvanced"] = True
 
             if widget_config.get("type") == "metric":
                 widget_config["gridData"]["w"] = (
@@ -639,6 +707,16 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     and "gridData" not in widget_config_dict
                     else widget_config["gridData"].get("h")
                 )
+
+            if source := widget_config_dict.get("source", []):
+                widget_config["source"] = source
+
+            if route_method == "post" and widget_config.get("type", "") not in [
+                "ssrm_table",
+                "omni",
+                "multi_file_viewer",
+            ]:
+                widget_exclude_filter.append(widget_config["widgetId"])
 
             # Add the widget configuration to the widgets.json
             if widget_config["widgetId"] not in widget_exclude_filter:

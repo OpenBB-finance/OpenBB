@@ -51,7 +51,7 @@ DMG/*
 cli/openbb_cli/assets/styles/user/hub.richstyle.json
 
 # Platform
-openbb_platform/openbb/package/*
+openbb_platform/core/openbb/package/*
 
 # Dev Container env
 obb/*

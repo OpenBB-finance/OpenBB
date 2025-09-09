@@ -39,7 +39,7 @@ def test_default_package_files():
     with open(ROOT_DIR / "pyproject.toml") as f:
         data = load(f)
     dependencies = data["tool"]["poetry"]["dependencies"]
-    package_files = glob.glob("openbb_platform/openbb/package/*.py")
+    package_files = glob.glob("openbb_platform/core/openbb/package/*.py")
 
     invalid_packages = []
     default_packages = []

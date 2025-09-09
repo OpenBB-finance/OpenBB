@@ -24,7 +24,7 @@ def main():
             [sys.executable, "-c", "import openbb"],
             capture_output=True,
             text=True,
-            check=True,
+            check=False,
         )
         logger.info(result.stdout)
         building_found = any(
@@ -32,12 +32,24 @@ def main():
         )
 
         if result.returncode != 0:
-            raise ModuleNotFoundError(result.stderr)
+            logger.error(result.stderr)
 
-    except (ModuleNotFoundError, subprocess.CalledProcessError):
+            if not result.stderr.endswith(
+                "ModuleNotFoundError: No module named 'openbb'\n"
+            ):
+                sys.exit(1)
+            raise subprocess.CalledProcessError(
+                returncode=result.returncode,
+                cmd=f"{sys.executable} -c import openbb",
+                output=result.stdout,
+                stderr=result.stderr,
+            )
+
+    except (ModuleNotFoundError, subprocess.CalledProcessError) as exc:
         logger.info(
             "\nOpenBB build script not found, installing from PyPI...\n",
         )
+        logger.info(exc)
 
         try:
             result = subprocess.run(
