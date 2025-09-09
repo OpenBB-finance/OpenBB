@@ -69,7 +69,14 @@ repos:
         types: [python]
       - id: check-generated-files
         name: Check for generated files
-        entry: bash -c 'if git ls-files | grep -E "(build/|_generated\.py|\.openbb_build/|openbb_platform/core/openbb/package/.*(?<!__init__\.py)$)"; then echo "Error: Attempting to commit generated files. Please remove them first."; exit 1; fi'
+        entry: bash
+        args:
+          - -c
+          - |
+            if git ls-files | grep "^openbb_platform/core/openbb/package/" | grep -v "^openbb_platform/core/openbb/package/__init__\.py$"; then
+              echo "Error: Attempting to commit generated files in package directory. Only __init__.py should exist."
+              exit 1
+            fi
         language: system
         pass_filenames: false
         always_run: true
