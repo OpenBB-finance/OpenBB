@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Dict
 
+import pytest
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
 from poetry.core.pyproject.toml import PyProjectTOML
 
@@ -33,31 +34,41 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     return req_ext
 
 
+@pytest.mark.order(1)
 def test_extension_map():
-    """Ensure only required extensions are built and versions respect pyproject.toml"""
+    """Ensure package folder exists, __init__.py is present, no static assets, and reference.json core version matches."""
     this_dir = Path(__file__).parent
-    with open(
-        Path(this_dir, "..", "core", "openbb", "assets", "reference.json"),
-        encoding="utf-8",
-    ) as f:
+    package_dir = Path(this_dir, "..", "core", "openbb", "package").resolve()
+    assert (
+        package_dir.exists() and package_dir.is_dir()
+    ), f"Package directory '{package_dir}' does not exist."
+    init_file = package_dir / "__init__.py"
+    assert (
+        init_file.exists() and init_file.is_file()
+    ), f"'__init__.py' not found in package directory '{package_dir}'."
+    contents = [
+        p.name
+        for p in package_dir.iterdir()
+        if p.name not in ("__init__.py", "__pycache__")
+    ]
+    assert (
+        not contents
+    ), f"Unexpected files or folders found in package directory: {contents}"
+
+    # Check reference.json core version matches pyproject.toml openbb-core version
+    ref_path = Path(this_dir, "..", "core", "openbb", "assets", "reference.json")
+    with open(ref_path, encoding="utf-8") as f:
         reference = json.load(f)
-    ext_map = create_ext_map(reference.get("info", {}).get("extensions", {}))
-    req_ext = load_req_ext(Path(this_dir, "..", "pyproject.toml"))
+    core_version = reference.get("info", {}).get("core")
 
-    for ext in req_ext:
-        if ext != "platform_api":
-            assert ext in ext_map, (
-                f"Extension '{ext}' is required in pyproject.toml but is not built, install"
-                " it and rebuild or remove it from mandatory requirements in pyproject.toml"
-            )
-
-    for name, version in ext_map.items():
-        _name = "congress_gov" if name == "uscongress" else name
-        assert _name in req_ext, (
-            f"'{_name}' is not a required extension in pyproject.toml, uninstall it and"
-            " rebuild, or add it to pyproject.toml"
-        )
-        assert req_ext[_name].allows(version), (
-            f"Version '{version}' of extension '{_name}' is not compatible with the"
-            f" version '{req_ext[_name]}' constraint in pyproject.toml"
-        )
+    pyproject_path = Path(this_dir, "..", "pyproject.toml")
+    pyproject = PyProjectTOML(pyproject_path)
+    openbb_core_version = pyproject.data["tool"]["poetry"]["dependencies"][
+        "openbb-core"
+    ]
+    if isinstance(openbb_core_version, dict):
+        openbb_core_version = openbb_core_version["version"]
+    assert core_version == openbb_core_version.lstrip("^"), (
+        f"reference.json core version '{core_version}'"
+        f" does not match pyproject.toml openbb-core version '{openbb_core_version}'"
+    )
