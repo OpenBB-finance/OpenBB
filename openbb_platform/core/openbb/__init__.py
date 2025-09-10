@@ -46,5 +46,5 @@ try:
     obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
     sdk = obb
 except (ImportError, ModuleNotFoundError):
-    print("Failed to import extensions.")
+    print("Failed to import extensions. Are any installed?")
     obb = sdk = _create_app()  # type: ignore

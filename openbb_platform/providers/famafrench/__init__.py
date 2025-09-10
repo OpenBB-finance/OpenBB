@@ -1,0 +1,1 @@
+"""Fama French module."""

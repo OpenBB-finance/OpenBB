@@ -7,6 +7,7 @@ from typing import Dict
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import RegistryLoader
+
 from providers.tests.utils.unit_tests_generator import (
     check_pattern_in_file,
     get_provider_fetchers,
@@ -18,7 +19,7 @@ def get_provider_test_files(provider: Provider):
     fetchers_dict = provider.fetcher_dict
     fetcher_module_name = fetchers_dict[list(fetchers_dict.keys())[0]].__module__
     parent_module = import_module(fetcher_module_name.split(".")[0])
-    parent_module_path = os.path.dirname(parent_module.__file__)
+    parent_module_path = os.path.dirname(parent_module.__file__)  # type: ignore
     root_provider_path = os.path.dirname(parent_module_path)
     provider_name = provider.name.lower()
 
@@ -53,5 +54,5 @@ class ProviderFetcherTest(unittest.TestCase):
                 # check that fetcher_cls is being instantiated in path
                 with self.subTest(i=fetcher_cls):
                     self.assertTrue(
-                        check_pattern_in_file(path, f"{fetcher_cls.__name__}()")
+                        check_pattern_in_file(path, f"{fetcher_cls.__name__}()")  # type: ignore
                     )

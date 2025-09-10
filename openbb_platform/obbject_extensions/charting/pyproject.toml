@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_charting" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<3.13"  # scipy forces python <4.0 explicitly
+python = ">=3.9.21,<3.14"  # scipy forces python <4.0 explicitly
 openbb-core = "^1.4.8"
 pandas-ta-openbb = "^0.4.20"
 plotly = "^6.2.0"

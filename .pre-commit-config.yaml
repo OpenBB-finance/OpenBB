@@ -15,7 +15,7 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.11.2"
+    rev: "v0.12.12"
     hooks:
       - id: ruff
   - repo: https://github.com/pycqa/pydocstyle
@@ -67,6 +67,19 @@ repos:
         entry: pylint
         language: system
         types: [python]
+      - id: check-generated-files
+        name: Check for generated files
+        entry: bash
+        args:
+          - -c
+          - |
+            if git ls-files | grep "^openbb_platform/core/openbb/package/" | grep -v "^openbb_platform/core/openbb/package/__init__\.py$"; then
+              echo "Error: Attempting to commit generated files in package directory. Only __init__.py should exist."
+              exit 1
+            fi
+        language: system
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
