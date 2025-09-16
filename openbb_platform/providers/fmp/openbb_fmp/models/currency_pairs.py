@@ -16,7 +16,7 @@ from pydantic import Field
 class FMPCurrencyPairsQueryParams(CurrencyPairsQueryParams):
     """FMP Currency Available Pairs Query.
 
-    Source: http://site.financialmodelingprep.com/developer/docs/stock-ticker-symbol-lookup-api/?direct=true
+    Source: https://site.financialmodelingprep.com/developer/docs#forex
     """
 
 
@@ -24,14 +24,10 @@ class FMPCurrencyPairsData(CurrencyPairsData):
     """FMP Currency Available Pairs Data."""
 
     symbol: str = Field(description="Symbol of the currency pair.")
-    currency: str = Field(description="Base currency of the currency pair.")
-    stock_exchange: Optional[str] = Field(
-        default=None, description="Stock exchange of the currency pair."
-    )
-    exchange_short_name: Optional[str] = Field(
-        default=None,
-        description="Short name of the stock exchange of the currency pair.",
-    )
+    from_currency: str = Field(description="Base currency of the currency pair.")
+    to_currency: str = Field(description="Quote currency of the currency pair.")
+    from_name: str = Field(description="Name of the base currency.")
+    to_name: str = Field(description="Name of the quote currency.")
 
 
 class FMPCurrencyPairsFetcher(
@@ -58,8 +54,7 @@ class FMPCurrencyPairsFetcher(
         from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        base_url = "https://financialmodelingprep.com/api/v3"
-        url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
+        url = f"https://financialmodelingprep.com/stable/forex-list?apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 
@@ -73,18 +68,20 @@ class FMPCurrencyPairsFetcher(
 
         if not data:
             raise EmptyDataError("The request was returned empty.")
+
         df = DataFrame(data)
+
         if query.query:
             df = df[
-                df["name"].str.contains(query.query, case=False)
-                | df["symbol"].str.contains(query.query, case=False)
-                | df["currency"].str.contains(query.query, case=False)
-                | df["stockExchange"].str.contains(query.query, case=False)
-                | df["exchangeShortName"].str.contains(query.query, case=False)
+                df["symbol"].str.contains(query.query, case=False)
+                | df["fromCurrency"].str.contains(query.query, case=False)
+                | df["toCurrency"].str.contains(query.query, case=False)
+                | df["fromName"].str.contains(query.query, case=False)
+                | df["toName"].str.contains(query.query, case=False)
             ]
+
         if len(df) == 0:
             raise EmptyDataError(
                 f"No results were found with the query supplied. -> {query.query}"
-                + " Hint: Names and descriptions are not searchable from FMP, try 3-letter symbols."
             )
         return [FMPCurrencyPairsData.model_validate(d) for d in df.to_dict("records")]

@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.data import Data
@@ -24,13 +24,16 @@ class CompanyNewsQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
     start_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", "")
+        + " The default is 16 weeks ago.",
     )
     end_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
     )
     limit: Optional[NonNegativeInt] = Field(
-        default=2500, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before")
@@ -61,12 +64,15 @@ class CompanyNewsData(Data):
     """Company News Data."""
 
     date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-        + " Here it is the published date of the article."
+        description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
     )
     title: str = Field(description="Title of the article.")
-    text: Optional[str] = Field(default=None, description="Text/body of the article.")
-    images: Optional[List[Dict[str, str]]] = Field(
+    author: Optional[str] = Field(default=None, description="Author of the article.")
+    excerpt: Optional[str] = Field(
+        default=None, description="Excerpt of the article text."
+    )
+    body: Optional[str] = Field(default=None, description="Body of the article text.")
+    images: Optional[Any] = Field(
         default=None, description="Images associated with the article."
     )
     url: str = Field(description="URL to the article.")

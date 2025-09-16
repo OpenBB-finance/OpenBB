@@ -1,6 +1,7 @@
 """FMP Helpers Module."""
 
 from datetime import date
+from functools import lru_cache
 from typing import Any, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -154,3 +155,114 @@ def get_interval(value: str) -> str:
     }
 
     return f"{value[:-1]}{intervals[value[-1]]}"
+
+
+async def get_historical_ohlc(query, credentials, **kwargs: Any) -> list[dict]:
+    """Return the raw data from the FMP endpoint."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio  # noqa
+    from openbb_core.provider.utils.helpers import (
+        amake_request,
+    )
+    from warnings import warn
+
+    api_key = credentials.get("fmp_api_key") if credentials else ""
+
+    base_url = "https://financialmodelingprep.com/stable/"
+
+    if hasattr(query, "adjustment") and query.adjustment == "unadjusted":
+        base_url += "historical-price-eod/non-split-adjusted?"
+    elif hasattr(query, "adjustment") and query.adjustment == "splits_and_dividends":
+        base_url += "historical-price-eod/dividend-adjusted?"
+    elif query.interval == "1d":
+        base_url += "historical-price-eod/full?"
+    elif query.interval == "1m":
+        base_url += "historical-chart/1min?"
+    elif query.interval == "5m":
+        base_url += "historical-chart/5min?"
+    elif query.interval in ["60m", "1h"]:
+        query.interval = "60m"
+        base_url += "historical-chart/1hour?"
+
+    query_str = get_querystring(query.model_dump(), ["symbol", "adjustment"])
+    symbols = query.symbol.split(",")
+
+    results: list = []
+    messages: list = []
+
+    async def get_one(symbol):
+        """Get data for one symbol."""
+        url = f"{base_url}symbol={symbol}&{query_str}&apikey={api_key}"
+        data: list = []
+
+        response = await amake_request(
+            url, response_callback=response_callback, **kwargs
+        )
+
+        if isinstance(response, dict) and response.get("Error Message"):
+            message = (
+                f"Error fetching data for {symbol}: {response.get('Error Message', '')}"
+            )
+            warn(message)
+            messages.append(message)
+
+        if not response:
+            message = f"No data found for {symbol}."
+            warn(message)
+            messages.append(message)
+
+        if isinstance(response, list) and len(response) > 0:
+            data = response
+            if len(symbols) > 1:
+                for d in data:
+                    d["symbol"] = symbol
+
+        if isinstance(response, dict) and response.get("historical"):
+            data = response["historical"]
+            if len(symbols) > 1:
+                for d in data:
+                    d["symbol"] = symbol
+
+        if data:
+            results.extend(data)
+
+    tasks = [get_one(symbol) for symbol in symbols]
+
+    await asyncio.gather(*tasks)
+
+    if not results:
+        raise EmptyDataError(
+            f"{str(','.join(messages)).replace(',',' ') if messages else 'No data found'}"
+        )
+
+    return results
+
+
+@lru_cache(maxsize=1)
+def get_available_transcript_symbols(api_key) -> list:
+    """Return the available symbols for earnings call transcripts."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import make_request
+
+    url = f"https://financialmodelingprep.com/stable/earnings-transcript-list?apikey={api_key}"
+
+    data = make_request(url)
+
+    data.raise_for_status()
+
+    return data.json()
+
+
+@lru_cache(maxsize=64)
+def get_transcript_dates_for_symbol(symbol: str, api_key: str) -> list:
+    """Return the available dates for a given symbol's earnings call transcripts."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import make_request
+
+    url = f"https://financialmodelingprep.com/stable/earning-call-transcript-dates?symbol={symbol}&apikey={api_key}"
+
+    data = make_request(url)
+
+    data.raise_for_status()
+
+    return data.json()

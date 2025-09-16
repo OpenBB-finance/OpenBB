@@ -167,15 +167,18 @@ MARKETS = Literal[
     "CAI",
     "CNQ",
     "CPH",
+    "CRYPTO",
     "DFM",
     "DOH",
     "DUS",
     "ETF",
     "EURONEXT",
+    "FOREX",
     "HEL",
     "HKSE",
     "ICE",
     "IOB",
+    "INDEX",
     "IST",
     "JKT",
     "JNB",
@@ -257,3 +260,24 @@ TRANSACTION_TYPES_DICT = {
     "itm": "X-InTheMoney",
     "trust": "Z-Trust",
 }
+
+FinancialPeriods = Literal[
+    "q1",
+    "q2",
+    "q3",
+    "q4",
+    "fy",
+    "annual",
+    "quarter",
+]
+
+FinancialStatementPeriods = Literal[
+    "q1",
+    "q2",
+    "q3",
+    "q4",
+    "fy",
+    "ttm",
+    "annual",
+    "quarter",
+]

@@ -8,12 +8,12 @@ from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
 from openbb_fmp.models.calendar_events import FMPCalendarEventsFetcher
+from openbb_fmp.models.calendar_ipo import FMPCalendarIpoFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
-from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
@@ -82,12 +82,12 @@ stock market information (news, currencies, and stock prices).""",
         "CalendarDividend": FMPCalendarDividendFetcher,
         "CalendarEarnings": FMPCalendarEarningsFetcher,
         "CalendarEvents": FMPCalendarEventsFetcher,
+        "CalendarIpo": FMPCalendarIpoFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
         "CompanyFilings": FMPCompanyFilingsFetcher,
         "CompanyNews": FMPCompanyNewsFetcher,
-        "CompanyOverview": FMPCompanyOverviewFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "CryptoSearch": FMPCryptoSearchFetcher,
         "CurrencyHistorical": FMPCurrencyHistoricalFetcher,

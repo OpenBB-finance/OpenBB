@@ -33,8 +33,8 @@ class DiscoveryFilingsQueryParams(QueryParams):
             "for a list of supported form types."
         ),
     )
-    limit: NonNegativeInt = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
+    limit: Optional[NonNegativeInt] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
 
@@ -43,7 +43,9 @@ class DiscoveryFilingsData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
-    title: str = Field(description="Title of the filing.")
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    filing_date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    accepted_date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("accepted_date", "")
+    )
     form_type: str = Field(description="The form type of the filing")
     link: str = Field(description="URL to the filing page on the SEC site.")

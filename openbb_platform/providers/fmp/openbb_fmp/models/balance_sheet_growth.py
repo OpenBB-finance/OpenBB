@@ -1,6 +1,8 @@
 """FMP Balance Sheet Growth Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet_growth import (
@@ -11,25 +13,22 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field, model_validator
+from openbb_fmp.utils.definitions import FinancialPeriods
+from pydantic import Field
 
 
 class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
     """FMP Balance Sheet Growth Query.
 
-    Source:  https://site.financialmodelingprep.com/developer/docs/#Financial-Statements-Growth
+    Source: https://site.financialmodelingprep.com/developer/docs#balance-sheet-statement-growth
     """
 
-    __json_schema_extra__ = {
-        "period": {
-            "choices": ["annual", "quarter"],
-        }
-    }
-
-    period: Literal["annual", "quarter"] = Field(
+    period: FinancialPeriods = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
+    limit: Optional[int] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "") + " (default 5)"
     )
 
 
@@ -40,13 +39,19 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         "period_ending": "date",
         "fiscal_year": "calendarYear",
         "fiscal_period": "period",
-        "growth_other_total_shareholders_equity": "growthOtherTotalStockholdersEquity",
+        "currency": "reportedCurrency",
+        "growth_other_total_shareholders_equity": "growthOthertotalStockholdersEquity",
         "growth_total_shareholders_equity": "growthTotalStockholdersEquity",
         "growth_total_liabilities_and_shareholders_equity": "growthTotalLiabilitiesAndStockholdersEquity",
         "growth_accumulated_other_comprehensive_income": "growthAccumulatedOtherComprehensiveIncomeLoss",
+        "growth_prepaid_expenses": "growthPrepaids",
     }
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the financial data is reported.",
+        default=None,
+    )
     growth_cash_and_cash_equivalents: Optional[float] = Field(
         default=None,
         description="Growth rate of cash and cash equivalents.",
@@ -60,6 +65,16 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     growth_cash_and_short_term_investments: Optional[float] = Field(
         default=None,
         description="Growth rate of cash and short-term investments.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_accounts_receivables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of accounts receivable.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_other_receivables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other receivables.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_net_receivables: Optional[float] = Field(
@@ -133,6 +148,31 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of accounts payable.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+    growth_other_payables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other payables.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_total_payables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total payables.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_accrued_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of accrued expenses.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_prepaid_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of prepaid expenses.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_capital_lease_obligations_current: Optional[float] = Field(
+        default=None,
+        description="Growth rate of current capital lease obligations.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     growth_short_term_debt: Optional[float] = Field(
         default=None,
         description="Growth rate of short-term debt.",
@@ -141,6 +181,11 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     growth_tax_payables: Optional[float] = Field(
         default=None,
         description="Growth rate of tax payables.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_deferred_tax_liabilities_non_current: Optional[float] = Field(
+        default=None,
+        description="Growth rate of non-current deferred tax liabilities.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_deferred_revenue: Optional[float] = Field(
@@ -158,14 +203,14 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of total current liabilities.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_long_term_debt: Optional[float] = Field(
-        default=None,
-        description="Growth rate of long-term debt.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     growth_deferred_revenue_non_current: Optional[float] = Field(
         default=None,
         description="Growth rate of non-current deferred revenue.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_long_term_debt: Optional[float] = Field(
+        default=None,
+        description="Growth rate of long-term debt.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_deferrred_tax_liabilities_non_current: Optional[float] = Field(
@@ -191,16 +236,22 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of total liabilities.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_common_stock: Optional[float] = Field(
-        description="Growth rate of common stock.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     growth_retained_earnings: Optional[float] = Field(
         description="Growth rate of retained earnings.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_accumulated_other_comprehensive_income: Optional[float] = Field(
         description="Growth rate of accumulated other comprehensive income/loss.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_minority_interest: Optional[float] = Field(
+        default=None,
+        description="Growth rate of minority interest.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_additional_paid_in_capital: Optional[float] = Field(
+        default=None,
+        description="Growth rate of additional paid-in capital.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_other_total_shareholders_equity: Optional[float] = Field(
@@ -211,6 +262,24 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     growth_total_shareholders_equity: Optional[float] = Field(
         default=None,
         description="Growth rate of total stockholders' equity.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_common_stock: Optional[float] = Field(
+        description="Growth rate of common stock.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_preferred_stock: Optional[float] = Field(
+        description="Growth rate of preferred stock.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_treasury_stock: Optional[float] = Field(
+        default=None,
+        description="Growth rate of treasury stock.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_total_equity: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total equity.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_total_liabilities_and_shareholders_equity: Optional[float] = Field(
@@ -234,52 +303,45 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def replace_zero(cls, values):
-        """Check for zero values and replace with None."""
-        return (
-            {k: None if v == 0 else v for k, v in values.items()}
-            if isinstance(values, dict)
-            else values
-        )
-
 
 class FMPBalanceSheetGrowthFetcher(
     Fetcher[
         FMPBalanceSheetGrowthQueryParams,
-        List[FMPBalanceSheetGrowthData],
+        list[FMPBalanceSheetGrowthData],
     ]
 ):
     """FMP Balance Sheet Growth Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPBalanceSheetGrowthQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPBalanceSheetGrowthQueryParams:
         """Transform the query params."""
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPBalanceSheetGrowthQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            3,
-            f"balance-sheet-statement-growth/{query.symbol}",
-            api_key,
-            query,
-            ["symbol"],
+        url = (
+            "https://financialmodelingprep.com/stable/balance-sheet-statement-growth"
+            + f"?symbol={query.symbol}"
+            + f"&period={query.period}"
+            + f"&limit={query.limit if query.limit else 5}"
+            + f"&apikey={api_key}"
         )
 
         return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPBalanceSheetGrowthQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPBalanceSheetGrowthData]:
+        query: FMPBalanceSheetGrowthQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPBalanceSheetGrowthData]:
         """Return the transformed data."""
         return [FMPBalanceSheetGrowthData.model_validate(d) for d in data]

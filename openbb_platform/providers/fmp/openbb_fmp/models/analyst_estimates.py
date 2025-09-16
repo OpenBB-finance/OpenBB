@@ -1,8 +1,8 @@
 """FMP Analyst Estimates Model."""
 
-import asyncio
-from typing import Any, Dict, List, Literal, Optional
-from warnings import warn
+# pylint: disable=unused-argument
+
+from typing import Any, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.analyst_estimates import (
@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.analyst_estimates import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import Field
 
 
@@ -30,48 +28,83 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     limit: Optional[int] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
+    page: Optional[int] = Field(
+        default=None, description="Page number for paginated results. Used with limit."
+    )
 
 
 class FMPAnalystEstimatesData(AnalystEstimatesData):
     """FMP Analyst Estimates Data."""
 
+    __alias_dict__ = {
+        "estimated_revenue_low": "revenueLow",
+        "estimated_revenue_high": "revenueHigh",
+        "estimated_revenue_avg": "revenueAvg",
+        "estimated_sga_expense_low": "sgaExpenseLow",
+        "estimated_sga_expense_high": "sgaExpenseHigh",
+        "estimated_sga_expense_avg": "sgaExpenseAvg",
+        "estimated_ebitda_low": "ebitdaLow",
+        "estimated_ebitda_high": "ebitdaHigh",
+        "estimated_ebitda_avg": "ebitdaAvg",
+        "estimated_ebit_low": "ebitLow",
+        "estimated_ebit_high": "ebitHigh",
+        "estimated_ebit_avg": "ebitAvg",
+        "estimated_net_income_low": "netIncomeLow",
+        "estimated_net_income_high": "netIncomeHigh",
+        "estimated_net_income_avg": "netIncomeAvg",
+        "estimated_eps_low": "epsLow",
+        "estimated_eps_high": "epsHigh",
+        "estimated_eps_avg": "epsAvg",
+        "number_analysts_estimated_revenue": "numAnalystsRevenue",
+        "number_analysts_eps": "numAnalystsEps",
+    }
+
 
 class FMPAnalystEstimatesFetcher(
     Fetcher[
         FMPAnalystEstimatesQueryParams,
-        List[FMPAnalystEstimatesData],
+        list[FMPAnalystEstimatesData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
         """Transform the query params."""
         return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPAnalystEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fmp.utils.helpers import response_callback
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         symbols = query.symbol.split(",")  # type: ignore
 
-        results: List[dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = create_url(
-                3, f"analyst-estimates/{symbol}", api_key, query, ["symbol"]
+            url = (
+                "https://financialmodelingprep.com/stable/analyst-estimates?"
+                + f"symbol={symbol}&period={query.period}"
+                + f"&page={query.page if query.page else 0}&limit={query.limit if query.limit else 1000}"
+                + f"&apikey={api_key}"
             )
             result = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
             if not result or len(result) == 0:
-                warn(f"Symbol Error: No data found for {symbol}")
+                warnings.warn(f"Symbol Error: No data found for {symbol}")
             if result:
                 results.extend(result)
 
@@ -84,7 +117,7 @@ class FMPAnalystEstimatesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPAnalystEstimatesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPAnalystEstimatesData]:
+        query: FMPAnalystEstimatesQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPAnalystEstimatesData]:
         """Return the transformed data."""
         return [FMPAnalystEstimatesData.model_validate(d) for d in data]

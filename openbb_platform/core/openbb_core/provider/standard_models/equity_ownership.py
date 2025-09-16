@@ -20,7 +20,10 @@ class EquityOwnershipQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     page: Optional[int] = Field(
-        default=0, description="Page number of the data to fetch."
+        default=None, description="Page number of the data to fetch."
+    )
+    limit: Optional[int] = Field(
+        default=None, description="Number of items to return per page."
     )
 
     @field_validator("date", mode="before", check_fields=False)
@@ -41,12 +44,9 @@ class EquityOwnershipData(Data):
     """Equity Ownership Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    cik: int = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
+    cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
     filing_date: dateType = Field(description="Filing date of the stock ownership.")
-    investor_name: str = Field(
-        ...,
-        description="Investor name of the stock ownership.",
-    )
+    investor_name: str = Field(description="Investor name of the stock ownership.")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     security_name: str = Field(
         ...,

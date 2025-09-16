@@ -1,16 +1,15 @@
 """FMP Dividend Calendar Model."""
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
+from typing import Any, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_dividend import (
     CalendarDividendData,
     CalendarDividendQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -35,14 +34,21 @@ class FMPCalendarDividendData(CalendarDividendData):
         "payment_date": "paymentDate",
         "declaration_date": "declarationDate",
         "adjusted_amount": "adjDividend",
+        "dividend_yield": "yield",
     }
 
     adjusted_amount: Optional[float] = Field(
         default=None,
         description="The adjusted-dividend amount.",
     )
-    label: Optional[str] = Field(
-        default=None, description="Ex-dividend date formatted for display."
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Annualized dividend yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    frequency: Optional[str] = Field(
+        default=None,
+        description="Frequency of the regular dividend payment.",
     )
 
     @field_validator(
@@ -54,50 +60,70 @@ class FMPCalendarDividendData(CalendarDividendData):
         check_fields=False,
     )
     @classmethod
-    def date_validate(cls, v: str):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
+
+    @field_validator("dividend_yield", mode="before", check_fields=False)
+    @classmethod
+    def dividend_yield_validate(cls, v):
+        """Return the dividend yield as a float."""
+        return v / 100 if v else None
 
 
 class FMPCalendarDividendFetcher(
     Fetcher[
         FMPCalendarDividendQueryParams,
-        List[FMPCalendarDividendData],
+        list[FMPCalendarDividendData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCalendarDividendQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCalendarDividendQueryParams:
         """Transform the query params."""
-        transformed_params = params
-
-        now = datetime.now().date()
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now + relativedelta(days=30)
-
-        return FMPCalendarDividendQueryParams(**transformed_params)
+        return FMPCalendarDividendQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCalendarDividendQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_requests  # noqa
+        from openbb_fmp.utils.helpers import response_callback
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.model_dump(), [])
-        url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
+        base_url = "https://financialmodelingprep.com/stable/dividends-calendar?"
+        start_date = query.start_date or datetime.now().date()
+        end_date = query.end_date or datetime.now().date() + timedelta(days=14)
 
-        return await get_data_many(url, **kwargs)
+        # Create 14-day chunks between start_date and end_date
+        urls: list = []
+        current_start = start_date
+
+        while current_start <= end_date:
+            chunk_end = min(current_start + timedelta(days=14), end_date)
+            url = f"{base_url}from={current_start}&to={chunk_end}&apikey={api_key}"
+            urls.append(url)
+            current_start = chunk_end + timedelta(days=1)
+
+        # Get data from all URLs
+        all_data: list = await amake_requests(
+            urls, response_callback=response_callback, **kwargs
+        )
+
+        return all_data
 
     @staticmethod
     def transform_data(
-        query: FMPCalendarDividendQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCalendarDividendData]:
+        query: FMPCalendarDividendQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCalendarDividendData]:
         """Return the transformed data."""
-        return [FMPCalendarDividendData.model_validate(d) for d in data]
+        return [
+            FMPCalendarDividendData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"])
+        ]

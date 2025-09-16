@@ -17,7 +17,6 @@ from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
-from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
@@ -304,16 +303,6 @@ def test_fmp_institutional_ownership_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPInstitutionalOwnershipFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_fmp_company_overview_fetcher(credentials=test_credentials):
-    """Test FMP company overview fetcher."""
-    params = {"symbol": "AAPL"}
-
-    fetcher = FMPCompanyOverviewFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

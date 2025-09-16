@@ -16,7 +16,7 @@ class BalanceSheetQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: Optional[NonNegativeInt] = Field(
-        default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
