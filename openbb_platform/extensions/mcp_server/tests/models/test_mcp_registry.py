@@ -6,8 +6,9 @@ from unittest.mock import MagicMock
 
 import pytest
 from fastmcp.server.openapi import OpenAPITool
-from openbb_mcp_server.registry import ToolRegistry
-from openbb_mcp_server.tool_models import ToggleResult
+from fastmcp.utilities.openapi import HTTPRoute
+from openbb_mcp_server.models.registry import ToolRegistry
+from openbb_mcp_server.models.tools import ToggleResult
 
 # Skip all tests if Python version < 3.10
 if sys.version_info < (3, 10):
@@ -16,12 +17,18 @@ if sys.version_info < (3, 10):
 
 @pytest.fixture
 def tool_registry():
+    """Fixture for a ToolRegistry instance."""
     return ToolRegistry()
 
 
 def test_register_tool(tool_registry):
+    """Test tool registration."""
     tool = OpenAPITool(
-        MagicMock(), "/dummy", name="test_tool", description="Test", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy", method="GET"),
+        name="test_tool",
+        description="Test",
+        parameters={},
     )
     tool_registry.register_tool(
         category="test_cat", subcategory="test_sub", tool_name="test_tool", tool=tool
@@ -33,11 +40,20 @@ def test_register_tool(tool_registry):
 
 
 def test_get_categories(tool_registry):
+    """Test getting all categories."""
     tool1 = OpenAPITool(
-        MagicMock(), "/dummy1", name="tool1", description="Tool1", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy1", method="GET"),
+        name="tool1",
+        description="Tool1",
+        parameters={},
     )
     tool2 = OpenAPITool(
-        MagicMock(), "/dummy2", name="tool2", description="Tool2", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy2", method="GET"),
+        name="tool2",
+        description="Tool2",
+        parameters={},
     )
 
     tool_registry.register_tool(
@@ -54,14 +70,27 @@ def test_get_categories(tool_registry):
 
 
 def test_get_category_tools(tool_registry):
+    """Test getting tools from a category."""
     tool1 = OpenAPITool(
-        MagicMock(), "/dummy1", name="tool1", description="Tool1", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy1", method="GET"),
+        name="tool1",
+        description="Tool1",
+        parameters={},
     )
     tool2 = OpenAPITool(
-        MagicMock(), "/dummy2", name="tool2", description="Tool2", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy2", method="GET"),
+        name="tool2",
+        description="Tool2",
+        parameters={},
     )
     tool3 = OpenAPITool(
-        MagicMock(), "/dummy3", name="tool3", description="Tool3", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy3", method="GET"),
+        name="tool3",
+        description="Tool3",
+        parameters={},
     )
 
     tool_registry.register_tool(
@@ -87,8 +116,13 @@ def test_get_category_tools(tool_registry):
 
 
 def test_get_tool(tool_registry):
+    """Test getting a single tool by name."""
     tool = OpenAPITool(
-        MagicMock(), "/dummy", name="test", description="Test", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy", method="GET"),
+        name="test",
+        description="Test",
+        parameters={},
     )
     tool_registry.register_tool(
         category="cat", subcategory="sub", tool_name="test", tool=tool
@@ -98,12 +132,52 @@ def test_get_tool(tool_registry):
     assert tool_registry.get_tool("nonexistent") is None
 
 
-def test_toggle_tools(tool_registry):
+def test_get_category_subcategories(tool_registry):
+    """Test getting subcategories for a category."""
     tool1 = OpenAPITool(
-        MagicMock(), "/dummy1", name="tool1", description="Tool1", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy1", method="GET"),
+        name="tool1",
+        description="Tool1",
+        parameters={},
     )
     tool2 = OpenAPITool(
-        MagicMock(), "/dummy2", name="tool2", description="Tool2", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy2", method="GET"),
+        name="tool2",
+        description="Tool2",
+        parameters={},
+    )
+    tool_registry.register_tool(
+        category="cat1", subcategory="sub1", tool_name="tool1", tool=tool1
+    )
+    tool_registry.register_tool(
+        category="cat1", subcategory="sub2", tool_name="tool2", tool=tool2
+    )
+
+    subcategories = tool_registry.get_category_subcategories("cat1")
+    assert subcategories is not None
+    assert set(subcategories.keys()) == {"sub1", "sub2"}
+    assert "tool1" in subcategories["sub1"]
+    assert "tool2" in subcategories["sub2"]
+    assert tool_registry.get_category_subcategories("nonexistent") is None
+
+
+def test_toggle_tools(tool_registry):
+    """Test enabling and disabling tools."""
+    tool1 = OpenAPITool(
+        MagicMock(),
+        HTTPRoute(path="/dummy1", method="GET"),
+        name="tool1",
+        description="Tool1",
+        parameters={},
+    )
+    tool2 = OpenAPITool(
+        MagicMock(),
+        HTTPRoute(path="/dummy2", method="GET"),
+        name="tool2",
+        description="Tool2",
+        parameters={},
     )
 
     tool_registry.register_tool(
@@ -130,10 +204,19 @@ def test_toggle_tools(tool_registry):
     assert not tool1.enabled
     assert tool2.enabled  # Still enabled
 
+    # Empty list
+    result = tool_registry.toggle_tools([], enable=True)
+    assert result.message == "No tools processed."
+
 
 def test_clear(tool_registry):
+    """Test clearing the registry."""
     tool = OpenAPITool(
-        MagicMock(), "/dummy", name="test", description="Test", parameters={}
+        MagicMock(),
+        HTTPRoute(path="/dummy", method="GET"),
+        name="test",
+        description="Test",
+        parameters={},
     )
     tool_registry.register_tool(
         category="cat", subcategory="sub", tool_name="test", tool=tool
