@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "openbb-estat"
+version = "1.0.0"
+description = "The e-Stat API provides access to Japanese government statistical data from various ministries and agencies."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_estat" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9.21,<3.14"
+openbb-core = "^1.4.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+estat = "openbb_estat:estat_provider"
+[dependency-groups]
+dev = [
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-asyncio (>=1.2.0,<2.0.0)"
+]
