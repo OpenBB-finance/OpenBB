@@ -490,6 +490,41 @@ async def indicators(
 
 
 @router.command(
+    model="EstatStatisticalData",
+    examples=[
+        APIEx(
+            parameters={"symbol": "0003433219", "provider": "estat"},
+            description="Get Japanese population statistics data.",
+        ),
+        APIEx(
+            parameters={
+                "symbol": "0003433219",
+                "area_code": "00000",
+                "provider": "estat",
+            },
+            description="Get data for a specific area code.",
+        ),
+    ],
+)
+async def estat_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get Japanese government statistical data from e-Stat.
+
+    e-Stat is the portal site for Japanese government statistics.
+    It provides access to economic, demographic, and social statistics
+    from various ministries and agencies.
+
+    Attribution: This service uses API functions from e-Stat,
+    however its contents are not guaranteed by government.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="CentralBankHoldings",
     examples=[
         APIEx(

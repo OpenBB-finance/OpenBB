@@ -1,6 +1,6 @@
 """e-Stat API Helper Functions."""
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 
 def handle_estat_error(status_code: int, error_msg: str) -> str:

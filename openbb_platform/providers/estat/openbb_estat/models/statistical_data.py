@@ -4,8 +4,8 @@ ATTRIBUTION: This service uses API functions from e-Stat,
 however its contents are not guaranteed by government.
 """
 
-from typing import Any, Dict, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.bls_series import (
@@ -13,12 +13,13 @@ from openbb_core.provider.standard_models.bls_series import (
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field
+
 from openbb_estat.utils.helpers import (
+    format_estat_date,
     handle_estat_error,
     validate_stats_params,
-    format_estat_date,
 )
-from pydantic import Field
 
 
 class EstatStatisticalDataQueryParams(SeriesQueryParams):
@@ -96,8 +97,8 @@ class EstatStatisticalDataFetcher(Fetcher[EstatStatisticalDataQueryParams, List[
     ) -> List[Dict]:
         """Extract data from e-Stat API."""
         # pylint: disable=import-outside-toplevel
+
         import aiohttp
-        from datetime import datetime
 
         # Use provided key or fall back to OpenBB's shared test key
         api_key = credentials.get("estat_api_key") if credentials else None
@@ -194,10 +195,12 @@ class EstatStatisticalDataFetcher(Fetcher[EstatStatisticalDataQueryParams, List[
                 if formatted_date:
                     date = datetime.strptime(formatted_date, "%Y-%m-%d").date()
                 else:
-                    date = None
+                    continue  # Skip records without valid dates (required by SeriesData)
 
                 # Parse value - it's stored as a string in '$' field
-                value_str = item.get("$", "0")
+                value_str = item.get("$")
+                if value_str is None:
+                    continue  # Skip records without values
                 try:
                     value = float(value_str)
                 except (ValueError, TypeError):

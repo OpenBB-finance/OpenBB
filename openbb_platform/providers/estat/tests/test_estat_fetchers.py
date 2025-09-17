@@ -4,23 +4,22 @@ ATTRIBUTION: This service uses API functions from e-Stat,
 however its contents are not guaranteed by government.
 """
 
-import pytest
-from datetime import date
-from unittest.mock import patch, AsyncMock, MagicMock
 import sys
 from pathlib import Path
+from unittest.mock import AsyncMock, patch
+
+import pytest
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from openbb_estat.models.statistical_data import (
     EstatStatisticalDataFetcher,
-    EstatStatisticalDataQueryParams,
 )
 from openbb_estat.utils.helpers import (
+    format_estat_date,
     handle_estat_error,
     validate_stats_params,
-    format_estat_date,
 )
 
 
@@ -81,13 +80,17 @@ async def test_estat_statistical_data_fetcher_aextract_data():
     fetcher = EstatStatisticalDataFetcher()
     query = fetcher.transform_query(params)
 
-    with patch("aiohttp.ClientSession") as mock_session:
-        mock_get = AsyncMock()
-        mock_get.__aenter__.return_value.status = 200
-        mock_get.__aenter__.return_value.json = AsyncMock(return_value=mock_response)
-        mock_session.return_value.__aenter__.return_value.get = mock_get
+    with patch("aiohttp.ClientSession.get") as mock_get:
+        # Mock the response object
+        mock_response_obj = AsyncMock()
+        mock_response_obj.status = 200
+        mock_response_obj.json.return_value = mock_response
 
-        data = await fetcher.aextract_data(query, {'estat_api_key': 'test_key'})
+        # Create a mock context manager for the get() call
+        mock_get.return_value.__aenter__ = AsyncMock(return_value=mock_response_obj)
+        mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
+
+        data = await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
 
         assert len(data) == 2
         assert data[0]["$"] == "126226568"
@@ -146,16 +149,20 @@ async def test_estat_error_handling():
     fetcher = EstatStatisticalDataFetcher()
     query = fetcher.transform_query(params)
 
-    with patch("aiohttp.ClientSession") as mock_session:
-        mock_get = AsyncMock()
-        mock_get.__aenter__.return_value.status = 200
-        mock_get.__aenter__.return_value.json = AsyncMock(return_value=mock_error_response)
-        mock_session.return_value.__aenter__.return_value.get = mock_get
+    with patch("aiohttp.ClientSession.get") as mock_get:
+        # Mock the response object
+        mock_response_obj = AsyncMock()
+        mock_response_obj.status = 200
+        mock_response_obj.json.return_value = mock_error_response
+
+        # Create a mock context manager for the get() call
+        mock_get.return_value.__aenter__ = AsyncMock(return_value=mock_response_obj)
+        mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
         with pytest.raises(Exception) as exc_info:
-            await fetcher.aextract_data(query, {'estat_api_key': 'test_key'})
+            await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
 
-        assert "Data not found" in str(exc_info.value)
+        assert "Statistical data not found" in str(exc_info.value)
 
 
 # Test helper functions
@@ -219,23 +226,31 @@ def test_query_params_validation():
 
 
 @pytest.mark.asyncio
-async def test_missing_api_key():
-    """Test handling of missing API key."""
+async def test_missing_api_key_uses_default():
+    """Test that missing API key uses default key."""
     params = {"symbol": "0003433219"}
     fetcher = EstatStatisticalDataFetcher()
     query = fetcher.transform_query(params)
 
-    # Test with no credentials
-    with pytest.raises(ValueError) as exc_info:
-        await fetcher.aextract_data(query, None)
+    # Mock response to check default key is used
+    with patch("aiohttp.ClientSession.get") as mock_get:
+        # Mock the response object
+        mock_response_obj = AsyncMock()
+        mock_response_obj.status = 200
+        mock_response_obj.json.return_value = {
+            "GET_STATS_DATA": {
+                "RESULT": {"STATUS": 0},
+                "STATISTICAL_DATA": {"DATA_INF": {"VALUE": []}}
+            }
+        }
 
-    assert "API key is required" in str(exc_info.value)
+        # Create a mock context manager for the get() call
+        mock_get.return_value.__aenter__ = AsyncMock(return_value=mock_response_obj)
+        mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
-    # Test with empty credentials
-    with pytest.raises(ValueError) as exc_info:
-        await fetcher.aextract_data(query, {})
-
-    assert "API key is required" in str(exc_info.value)
+        # Should not raise error, uses default key
+        data = await fetcher.aextract_data(query, None)
+        assert data == []
 
 
 @pytest.mark.asyncio
@@ -255,14 +270,18 @@ async def test_api_response_with_no_data():
     fetcher = EstatStatisticalDataFetcher()
     query = fetcher.transform_query(params)
 
-    with patch("aiohttp.ClientSession") as mock_session:
-        mock_get = AsyncMock()
-        mock_get.__aenter__.return_value.status = 200
-        mock_get.__aenter__.return_value.json = AsyncMock(return_value=mock_response)
-        mock_session.return_value.__aenter__.return_value.get = mock_get
+    with patch("aiohttp.ClientSession.get") as mock_get:
+        # Mock the response object
+        mock_response_obj = AsyncMock()
+        mock_response_obj.status = 200
+        mock_response_obj.json.return_value = mock_response
+
+        # Create a mock context manager for the get() call
+        mock_get.return_value.__aenter__ = AsyncMock(return_value=mock_response_obj)
+        mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
         with pytest.raises(Exception) as exc_info:
-            await fetcher.aextract_data(query, {'estat_api_key': 'test_key'})
+            await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
 
         assert "No statistical data found" in str(exc_info.value)
 
@@ -279,7 +298,7 @@ def test_transform_data_with_edge_cases():
             "@unit": "people",
             "$": "126226568"
         },
-        # Missing value - will use default 0
+        # Missing value - will be skipped
         {
             "@tab": "2020_02",
             "@time": "2020000000",
@@ -305,11 +324,9 @@ def test_transform_data_with_edge_cases():
 
     result = fetcher.transform_data(query, raw_data)
 
-    # Should have 3 valid records (1st with valid data, 2nd with default value, 4th with None date)
-    assert len(result) == 3
+    # Should have 1 valid record (only the 1st with valid data and date)
+    # Records with missing values, invalid values, or missing dates are skipped
+    # because the SeriesData model requires both date and value to be valid
+    assert len(result) == 1
     assert result[0].value == 126226568.0
-    # Second record has missing value, uses default
-    assert result[1].value == 0.0
-    # Third record has no date but valid value
-    assert result[2].value == 1000000.0
-    assert result[2].date is None
+    assert result[0].date.year == 2020

@@ -4,8 +4,9 @@ ATTRIBUTION: This service uses API functions from e-Stat,
 however its contents are not guaranteed by government.
 """
 
-from openbb_estat.models.statistical_data import EstatStatisticalDataFetcher
 from openbb_core.provider.abstract.provider import Provider
+
+from openbb_estat.models.statistical_data import EstatStatisticalDataFetcher
 
 estat_provider = Provider(
     name="estat",
