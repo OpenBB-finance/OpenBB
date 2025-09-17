@@ -2541,4 +2541,4 @@ pywry = ["pywry"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9.21,<3.14"
-content-hash = "5c4ce63c9f778c30e8d44c9570fd1f739b038936312c7dee57ce8c8de5278bf3"
+content-hash = "e3b2eded3b76fe00723c65527d60b410ed56b855809b2fffda32227d440c06fb"
