@@ -6,7 +6,7 @@ from typing import Mapping
 
 from fastmcp.server.openapi import OpenAPITool
 
-from .tool_models import ToggleResult
+from openbb_mcp_server.models.tools import ToggleResult
 
 
 @dataclass

@@ -1,11 +1,11 @@
+"""OpenBB CLI Console Module."""
+
 from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 
 from rich import panel
-from rich.console import (
-    Console as RichConsole,
-    Theme,
-)
+from rich.console import Console as RichConsole
 from rich.text import Text
+from rich.theme import Theme
 
 from openbb_cli.config.menu_text import RICH_TAGS
 

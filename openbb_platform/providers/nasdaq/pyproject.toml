@@ -9,8 +9,8 @@ packages = [{ include = "openbb_nasdaq" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.14"
-openbb-core = "^1.4.8"
-openbb-platform-api = "^1.1.13"
+openbb-core = "^1.5.0"
+openbb-platform-api = "^1.2.0"
 async-lru = "^2.0.5"
 random-user-agent = "^1.0.1"
 nasdaq-data-link = "^1.0.4"

@@ -41,7 +41,7 @@ _ReferenceLoader(_this_dir)
 
 try:
     # pylint: disable=import-outside-toplevel
-    from openbb.package.__extensions__ import Extensions as _Extensions
+    from openbb.package.__extensions__ import Extensions as _Extensions  # type: ignore
 
     obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
     sdk = obb
