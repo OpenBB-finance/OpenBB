@@ -49,6 +49,7 @@ def _get_module_exclusion_targets(settings: Optional[MCPSettings]) -> dict[str, 
         "econometrics": "openbb_econometrics",
         "quantitative": "openbb_quantitative",
         "technical": "openbb_technical",
+        "coverage": "openbb_core",
     }
 
 
