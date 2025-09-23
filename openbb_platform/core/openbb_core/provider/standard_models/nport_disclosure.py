@@ -1,6 +1,5 @@
 """N-PORT Discolsure Standard Model."""
 
-from datetime import date as dateType
 from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data

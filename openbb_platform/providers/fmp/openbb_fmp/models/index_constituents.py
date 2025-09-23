@@ -1,5 +1,7 @@
 """FMP Index Constituents Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,

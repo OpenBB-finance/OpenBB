@@ -1,5 +1,7 @@
 """FMP Historical Splits Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Optional
 

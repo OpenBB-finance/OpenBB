@@ -1,5 +1,7 @@
 """FMP Share Statistics Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
