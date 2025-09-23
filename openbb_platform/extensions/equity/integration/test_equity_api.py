@@ -1640,7 +1640,10 @@ def test_equity_discovery_losers(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"sort": "desc", "provider": "yfinance", "limit": 10}],
+    [
+        ({"sort": "desc", "provider": "yfinance", "limit": 10}),
+        ({"provider": "fmp"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_discovery_active(params, headers):

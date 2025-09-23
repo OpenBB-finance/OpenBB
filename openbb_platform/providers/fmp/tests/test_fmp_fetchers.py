@@ -29,6 +29,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_gainers import FMPGainersFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_losers import FMPLosersFetcher
+from openbb_fmp.models.equity_most_active import FMPEquityActiveFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
@@ -814,5 +815,14 @@ def test_fmp_calendar_ipo_fetcher(credentials=test_credentials):
     """Test FMP calendar IPO fetcher."""
     params = {"start_date": date(2024, 9, 20), "end_date": date(2024, 10, 20)}
     fetcher = FMPCalendarIpoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_active_fetcher(credentials=test_credentials):
+    """Test FMP equity active fetcher."""
+    params = {}
+    fetcher = FMPEquityActiveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

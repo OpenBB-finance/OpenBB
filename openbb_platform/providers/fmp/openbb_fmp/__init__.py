@@ -25,6 +25,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_gainers import FMPGainersFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_losers import FMPLosersFetcher
+from openbb_fmp.models.equity_most_active import FMPEquityActiveFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
@@ -96,6 +97,7 @@ stock market information (news, currencies, and stock prices).""",
         "DiscoveryFilings": FMPDiscoveryFilingsFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
         "EconomicCalendar": FMPEconomicCalendarFetcher,
+        "EquityActive": FMPEquityActiveFetcher,
         "EquityHistorical": FMPEquityHistoricalFetcher,
         "EquityOwnership": FMPEquityOwnershipFetcher,
         "EquityPeers": FMPEquityPeersFetcher,
