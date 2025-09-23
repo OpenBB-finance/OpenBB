@@ -139,4 +139,7 @@ class TiingoWorldNewsFetcher(
         query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoWorldNewsData]:
         """Return the transformed data."""
-        return [TiingoWorldNewsData.model_validate(d) for d in data[: query.limit]]
+        return [
+            TiingoWorldNewsData.model_validate(d)
+            for d in data[: query.limit if query.limit else len(data)]
+        ]
