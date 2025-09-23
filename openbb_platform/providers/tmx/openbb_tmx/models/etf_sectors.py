@@ -2,18 +2,20 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_sectors import (
     EtfSectorsData,
     EtfSectorsQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class TmxEtfSectorsQueryParams(EtfSectorsQueryParams):
     """TMX ETF Sectors Query Params"""
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     use_cache: bool = Field(
         default=True,
@@ -25,71 +27,73 @@ class TmxEtfSectorsQueryParams(EtfSectorsQueryParams):
 class TmxEtfSectorsData(EtfSectorsData):
     """TMX ETF Sectors Data."""
 
+    @field_validator("weight", mode="before", check_fields=False)
+    @classmethod
+    def _normalize_percent(cls, v):
+        """Normalize percent values."""
+        return v / 100 if v else None
+
 
 class TmxEtfSectorsFetcher(
     Fetcher[
         TmxEtfSectorsQueryParams,
-        List[TmxEtfSectorsData],
+        list[TmxEtfSectorsData],
     ]
 ):
     """TMX ETF Sectors Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEtfSectorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEtfSectorsQueryParams:
         """Transform the query."""
         return TmxEtfSectorsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxEtfSectorsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.errors import EmptyDataError  # noqa
+        import warnings  # noqa
+        from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
 
-        target = DataFrame()
+        results: list = []
         _data = DataFrame(await get_all_etfs(use_cache=query.use_cache))
-        symbol = (
-            query.symbol.upper()
-            .replace("-", ".")
-            .replace(".TO", "")
-            .replace(".TSX", "")
-        )
-        _target = _data[_data["symbol"] == symbol]["sectors"]
+        symbols = query.symbol.split(",")
 
-        if len(_target) > 0:
-            target = DataFrame.from_records(_target.iloc[0]).rename(
-                columns={"name": "sector", "percent": "weight"}
-            )
-            return target.to_dict(orient="records")
-        raise EmptyDataError(f"No sectors info found for ETF symbol: {query.symbol}.")
+        for symbol in symbols:
+            s = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
+            target = DataFrame()
+            _target = _data[_data["symbol"] == s]["sectors"]
+
+            if len(_target) > 0:
+                target = DataFrame.from_records(_target.iloc[0]).rename(
+                    columns={"name": "sector", "percent": "weight"}
+                )
+                target.loc[:, "symbol"] = symbol.upper()
+                result = (
+                    target[["symbol", "sector", "weight"]]
+                    .replace({float("nan"): None})
+                    .reset_index(drop=True)
+                    .to_dict("records")
+                )
+                results.extend(result)
+            else:
+                warnings.warn(f"No sectors info found for ETF symbol: {symbol}.")
+
+        if not results:
+            raise EmptyDataError("No data found for the given ETF symbols.")
+
+        return results
 
     @staticmethod
     def transform_data(
         query: TmxEtfSectorsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxEtfSectorsData]:
+    ) -> list[TmxEtfSectorsData]:
         """Return the transformed data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.errors import EmptyDataError  # noqa
-        from numpy import nan
-        from pandas import DataFrame
-
-        target = DataFrame(data)
-        try:
-            target["weight"] = target["weight"] / 100
-        except KeyError:
-            raise EmptyDataError(  # pylint: disable=raise-missing-from
-                f"No sectors info found for ETF symbol: {query.symbol}."
-            )
-
-        target = target.replace({nan: None})
-        return [
-            TmxEtfSectorsData.model_validate(d)
-            for d in target.to_dict(orient="records")
-        ]
+        return [TmxEtfSectorsData.model_validate(d) for d in data]
