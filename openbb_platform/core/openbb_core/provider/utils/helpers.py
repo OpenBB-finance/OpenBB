@@ -441,7 +441,7 @@ async def amake_requests(
                 isinstance(result, UnauthorizedError)
                 or kwargs.get("raise_for_status", False)
             ):
-                raise result from result
+                raise result
 
             if is_exception and ret_exceptions:
                 results.append(result)  # type: ignore[arg-type]
@@ -460,7 +460,7 @@ async def amake_requests(
                 )
 
         if exceptions and not results and not ret_exceptions:
-            raise exceptions[0] from exceptions[0]  # type: ignore[misc]
+            raise exceptions[0]  # type: ignore
 
         return results
 
