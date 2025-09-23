@@ -22,19 +22,18 @@ from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
 from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.equity_gainers import FMPGainersFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
+from openbb_fmp.models.equity_losers import FMPLosersFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
-from openbb_fmp.models.equity_valuation_multiples import (
-    FMPEquityValuationMultiplesFetcher,
-)
+from openbb_fmp.models.esg_score import FMPEsgScoreFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
-from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
@@ -57,6 +56,7 @@ from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipF
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
+from openbb_fmp.models.nport_disclosure import FMPNportDisclosureFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
@@ -99,14 +99,14 @@ stock market information (news, currencies, and stock prices).""",
         "EquityHistorical": FMPEquityHistoricalFetcher,
         "EquityOwnership": FMPEquityOwnershipFetcher,
         "EquityPeers": FMPEquityPeersFetcher,
-        "EquityInfo": FMPEquityProfileFetcher,
+        "EquityGainers": FMPGainersFetcher,
+        "EquityLosers": FMPLosersFetcher,
         "EquityQuote": FMPEquityQuoteFetcher,
         "EquityScreener": FMPEquityScreenerFetcher,
-        "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
+        "EsgScore": FMPEsgScoreFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
         "EtfEquityExposure": FMPEtfEquityExposureFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
-        "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
         "EtfInfo": FMPEtfInfoFetcher,
         "EtfPricePerformance": FMPPricePerformanceFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
@@ -129,6 +129,7 @@ stock market information (news, currencies, and stock prices).""",
         "KeyExecutives": FMPKeyExecutivesFetcher,
         "KeyMetrics": FMPKeyMetricsFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
+        "NportDisclosure": FMPNportDisclosureFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "PriceTarget": FMPPriceTargetFetcher,
         "PriceTargetConsensus": FMPPriceTargetConsensusFetcher,

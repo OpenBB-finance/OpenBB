@@ -43,7 +43,6 @@ class FMPIncomeStatementData(IncomeStatementData):
         "revenue": "revenue",
         "cost_of_revenue": "costOfRevenue",
         "gross_profit": "grossProfit",
-        "gross_profit_margin": "grossProfitRatio",
         "general_and_admin_expense": "generalAndAdministrativeExpenses",
         "research_and_development_expense": "researchAndDevelopmentExpenses",
         "selling_and_marketing_expense": "sellingAndMarketingExpenses",
@@ -55,15 +54,11 @@ class FMPIncomeStatementData(IncomeStatementData):
         "total_interest_expense": "interestExpense",
         "depreciation_and_amortization": "depreciationAndAmortization",
         "ebitda": "ebitda",
-        "ebitda_margin": "ebitdaratio",
         "total_operating_income": "operatingIncome",
-        "operating_income_margin": "operatingIncomeRatio",
         "total_other_income_expenses": "totalOtherIncomeExpensesNet",
         "total_pre_tax_income": "incomeBeforeTax",
-        "pre_tax_income_margin": "incomeBeforeTaxRatio",
         "income_tax_expense": "incomeTaxExpense",
         "consolidated_net_income": "netIncome",
-        "net_income_margin": "netIncomeRatio",
         "basic_earnings_per_share": "eps",
         "diluted_earnings_per_share": "epsDiluted",
         "weighted_average_basic_shares_outstanding": "weightedAverageShsOut",
@@ -101,11 +96,6 @@ class FMPIncomeStatementData(IncomeStatementData):
     gross_profit: Optional[int] = Field(
         default=None,
         description="Gross profit.",
-    )
-    gross_profit_margin: Optional[int] = Field(
-        default=None,
-        description="Gross profit margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     general_and_admin_expense: Optional[int] = Field(
         default=None,
@@ -154,24 +144,16 @@ class FMPIncomeStatementData(IncomeStatementData):
     ebit: Optional[int] = Field(
         default=None,
         description="Earnings before interest and taxes (EBIT).",
+        title="EBIT",
     )
     ebitda: Optional[int] = Field(
         default=None,
         description="EBITDA.",
-    )
-    ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="EBITDA margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        title="EBITDA",
     )
     total_operating_income: Optional[int] = Field(
         default=None,
         description="Total operating income.",
-    )
-    operating_income_margin: Optional[float] = Field(
-        default=None,
-        description="Operating income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     non_operating_income_excluding_interest: Optional[int] = Field(
         default=None,
@@ -193,11 +175,6 @@ class FMPIncomeStatementData(IncomeStatementData):
         default=None,
         description="Total pre-tax income.",
     )
-    pre_tax_income_margin: Optional[float] = Field(
-        default=None,
-        description="Pre-tax income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     income_tax_expense: Optional[int] = Field(
         default=None,
         description="Income tax expense.",
@@ -213,11 +190,6 @@ class FMPIncomeStatementData(IncomeStatementData):
     consolidated_net_income: Optional[int] = Field(
         default=None,
         description="Consolidated net income.",
-    )
-    net_income_margin: Optional[float] = Field(
-        default=None,
-        description="Net income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     bottom_line_net_income: Optional[int] = Field(
         default=None,
@@ -247,7 +219,7 @@ class FMPIncomeStatementFetcher(
         list[FMPIncomeStatementData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Income Statement Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FMPIncomeStatementQueryParams:

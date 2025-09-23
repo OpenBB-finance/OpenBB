@@ -26,18 +26,21 @@ class FMPDiscoveryFilingsQueryParams(DiscoveryFilingsQueryParams):
         "form_type": "formType",
     }
 
+    limit: Optional[int] = Field(
+        default=None,
+        description="The maximum number of results to return. Default is 10000.",
+    )
+
     @model_validator(mode="before")
     @classmethod
     def _check_date_range(cls, values):
         """Validate date range."""
-        start_date = values.get("start_date") or datetime.now().date() - timedelta(
-            days=89 if values.get("form_type") else 2
-        )
-        values["start_date"] = start_date
-        end_date = values.get("end_date") or datetime.now().date()
+        start_date = values.get("start_date")
+        end_date = values.get("end_date")
+
+        # Validate date range
         if start_date and end_date and end_date - start_date > timedelta(days=90):
             raise ValueError("Date range cannot exceed 90 days.")
-        values["end_date"] = end_date
 
         return values
 
@@ -76,17 +79,24 @@ class FMPDiscoveryFilingsFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
         data: list[dict] = []
-        query.limit = query.limit or 100000
+        limit = query.limit or 10000
         base_url = (
             "https://financialmodelingprep.com/stable/sec-filings-search/form-type"
             if query.form_type
             else "https://financialmodelingprep.com/stable/sec-filings-financials/"
         )
+        start_date = (
+            query.start_date
+            or (datetime.now() - timedelta(days=89 if query.form_type else 2)).date()
+        )
+        end_date = query.end_date or datetime.now().date()
+        query.start_date = start_date
+        query.end_date = end_date
 
         query_str = get_querystring(query.model_dump(by_alias=True), ["limit"])
 
         # FMP only allows 1000 results per page
-        pages = math.ceil(query.limit / 1000)
+        pages = math.ceil(limit / 1000)
 
         urls = [
             f"{base_url}?{query_str}&page={page}&limit=1000&apikey={api_key}"

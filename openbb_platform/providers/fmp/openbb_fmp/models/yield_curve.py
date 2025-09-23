@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
@@ -44,13 +44,13 @@ class FMPYieldCurveData(YieldCurveData):
 class FMPYieldCurveFetcher(
     Fetcher[
         FMPYieldCurveQueryParams,
-        List[FMPYieldCurveData],
+        list[FMPYieldCurveData],
     ]
 ):
     """FMP Yield Curve Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPYieldCurveQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPYieldCurveQueryParams:
         """Transform the query params."""
         transformed_params = params
         if not transformed_params.get("date"):
@@ -60,13 +60,13 @@ class FMPYieldCurveFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPYieldCurveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta  # noqa
-        from openbb_core.provider.utils.helpers import amake_requests  # noqa
+        from openbb_fmp.utils.helpers import get_data_urls
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -76,7 +76,7 @@ class FMPYieldCurveFetcher(
             from_date = (date - timedelta(days=3)).strftime("%Y-%m-%d")
             to_date = (date + timedelta(days=3)).strftime("%Y-%m-%d")
             url = (
-                "https://financialmodelingprep.com/api/v4/treasury?"
+                "https://financialmodelingprep.com/stable/treasury-rates?"
                 + f"from={from_date}&to={to_date}&apikey={api_key}"
             )
             return url
@@ -84,20 +84,21 @@ class FMPYieldCurveFetcher(
         dates = query.date.split(",")  # type: ignore
         urls = [generate_url(date) for date in dates]
 
-        return await amake_requests(urls, **kwargs)
+        return await get_data_urls(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: FMPYieldCurveQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPYieldCurveData]:
+        query: FMPYieldCurveQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPYieldCurveData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
+        from numpy import nan
         from pandas import Categorical, DataFrame, DatetimeIndex
 
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data).set_index("date").sort_index()
-        dates = query.date.split(",") if query.date else [df.index.max()]
+        dates = query.date.split(",") if query.date else [df.index.max()]  # type: ignore
         df.index = DatetimeIndex(df.index)
         dates_list = DatetimeIndex(dates)
         df = df.rename(columns=maturity_dict)
@@ -109,7 +110,7 @@ class FMPYieldCurveFetcher(
         # Filter for only the nearest dates
         df = df[df.index.isin(nearest_dates)]
 
-        df = df.fillna("N/A").replace("N/A", None)
+        df = df.replace({nan: None})
 
         # Flatten the DataFrame
         flattened_data = df.reset_index().melt(

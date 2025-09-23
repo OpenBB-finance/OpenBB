@@ -2,8 +2,8 @@
 
 # pylint: disable=unused-argument
 
+import warnings
 from typing import Any, Literal, Optional
-from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
@@ -56,13 +56,15 @@ class FMPWorldNewsFetcher(
         list[FMPWorldNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP World News Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FMPWorldNewsQueryParams:
         """Transform the query params."""
         if params.get("start_date") or params.get("end_date"):
-            warn("start_date and end_date are not supported for this endpoint.")
+            warnings.warn(
+                "start_date and end_date are not supported for this endpoint."
+            )
         return FMPWorldNewsQueryParams(**params)
 
     @staticmethod

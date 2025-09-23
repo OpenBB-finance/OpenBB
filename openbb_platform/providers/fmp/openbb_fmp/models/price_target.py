@@ -2,10 +2,7 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
@@ -13,93 +10,83 @@ from openbb_core.provider.standard_models.price_target import (
     PriceTargetQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url, response_callback
-from pydantic import Field, field_validator
+from pydantic import ConfigDict, Field
 
 
 class FMPPriceTargetQueryParams(PriceTargetQueryParams):
     """FMP Price Target Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/#Price-Target
+    Source: https://site.financialmodelingprep.com/developer/docs#analyst
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
-
-    with_grade: bool = Field(
-        False,
-        description="Include upgrades and downgrades in the response.",
-    )
 
 
 class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
+    model_config = ConfigDict(extra="ignore")
+
     __alias_dict__ = {
-        "analyst_firm": "gradingCompany",
+        "analyst_firm": "analystCompany",
         "rating_current": "newGrade",
         "rating_previous": "previousGrade",
         "news_title": "newsTitle",
-        "url_news": "newsURL",
-        "url_base": "newsBaseURL",
+        "news_url": "newsURL",
     }
 
-    news_url: Optional[str] = Field(
-        default=None, description="News URL of the price target."
-    )
     news_title: Optional[str] = Field(
         default=None, description="News title of the price target."
     )
-    news_publisher: Optional[str] = Field(
-        default=None, description="News publisher of the price target."
+    news_url: Optional[str] = Field(
+        default=None, description="News URL of the price target."
     )
-    news_base_url: Optional[str] = Field(
-        default=None, description="News base URL of the price target."
-    )
-
-    @field_validator("published_date", mode="before", check_fields=False)
-    def validate_date(cls, v: str):  # pylint: disable=E0213
-        """Validate the published date."""
-        v = v.replace("\n", "")
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")  # type: ignore
 
 
 class FMPPriceTargetFetcher(
     Fetcher[
         FMPPriceTargetQueryParams,
-        List[FMPPriceTargetData],
+        list[FMPPriceTargetData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Price Target Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPPriceTargetQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPPriceTargetQueryParams:
         """Transform the query params."""
         return FMPPriceTargetQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPPriceTargetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import math
+        from warnings import warn
+        from openbb_fmp.utils.helpers import get_data_urls
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        endpoint = "upgrades-downgrades" if query.with_grade else "price-target"
-
+        base_url = "https://financialmodelingprep.com/stable/price-target-news?"
         symbols = query.symbol.split(",")  # type: ignore
-
-        results: List[dict] = []
+        limit = query.limit if query.limit else 100
+        pages = math.ceil(limit / 100)
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = create_url(4, endpoint, api_key, query, exclude=["limit", "symbol"])
-            url += f"&symbol={symbol}"
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            urls = [
+                f"{base_url}symbol={symbol}&page={page}&limit={limit}&apikey={api_key}"
+                for page in range(pages)
+            ]
+            result = await get_data_urls(urls, **kwargs)
+
             if not result or len(result) == 0:
                 warn(f"Symbol Error: No data found for {symbol}")
+
             if result:
                 results.extend(result)
 
@@ -114,14 +101,7 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPPriceTargetQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPPriceTargetData]:
+        query: FMPPriceTargetQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPPriceTargetData]:
         """Return the transformed data."""
-        results: List[FMPPriceTargetData] = []
-        for item in data:
-            new_item = {
-                k if k != "analystCompany" else "analyst_firm": v
-                for k, v in item.items()
-            }
-            results.append(FMPPriceTargetData.model_validate(new_item))
-        return results
+        return [FMPPriceTargetData.model_validate(item) for item in data]

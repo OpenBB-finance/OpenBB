@@ -163,10 +163,10 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
                 ]
             )
 
-        if "x-widget_config" in _item:
+        if xwidget := _item.pop("x-widget_config", {}):
             provider_value_widget_config[
                 provider_value if provider_value else "custom"
-            ] = _item.pop("x-widget_config", {})
+            ] = xwidget.get(provider_value if provider_value else "custom", {})
 
         if (
             provider_value_widget_config
@@ -176,11 +176,12 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             if provider_value_widget_config[provider_value].get("exclude"):
                 continue
 
-            _item = deep_merge_configs(
-                _item,
-                provider_value_widget_config[provider_value],
-                ["paramName", "value"],
-            )
+            if provider_value_widget_config[provider_value]:
+                _item = deep_merge_configs(
+                    _item,
+                    provider_value_widget_config[provider_value],
+                    ["paramName", "value"],
+                )
 
         if not _item.get("label") and _item["paramName"] in [
             "url",
@@ -198,24 +199,6 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
                     (word.upper() if word in TO_CAPS_STRINGS else word)
                     for word in _label.split()
                 ]
-            )
-
-        if "x-widget_config" in _item:
-            provider_value_widget_config = _item.pop("x-widget_config")
-            _item.update(provider_value_widget_config)
-
-        if (
-            provider_value_widget_config
-            and provider_value in provider_value_widget_config
-        ):
-
-            if provider_value_widget_config[provider_value].get("exclude"):
-                continue
-
-            _item = deep_merge_configs(
-                _item,
-                provider_value_widget_config[provider_value],
-                ["paramName", "value"],
             )
 
         if (

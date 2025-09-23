@@ -57,6 +57,10 @@ class AlphaVantageHistoricalEpsData(HistoricalEpsData):
         default=None,
         description="Date of the earnings report.",
     )
+    report_time: Optional[str] = Field(
+        default=None,
+        description="Time of day when the earnings report was released, e.g., 'post-market'.",
+    )
 
     @field_validator(
         "eps_estimated",

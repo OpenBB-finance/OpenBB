@@ -1,0 +1,83 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/biggest-losers?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:53 GMT
+      Etag:
+      - W/"219a-QTN3ZnKH8JqfSl+Br2T3DAixQUY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

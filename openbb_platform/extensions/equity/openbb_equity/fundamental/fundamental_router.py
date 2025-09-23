@@ -526,3 +526,20 @@ async def management_discussion_analysis(
 ) -> OBBject:
     """Get the Management Discussion & Analysis section from the financial statements for a given company."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="EsgScore",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "TSLA,F", "provider": "fmp"}),
+    ],
+)
+async def esg_score(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get ESG (Environmental, Social, and Governance) scores from company disclosures."""
+    return await OBBject.from_query(Query(**locals()))

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,14 +11,13 @@ from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
-from pydantic import field_validator, model_validator
+from pydantic import model_validator
 
 
 class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
     """FMP Treasury Rates Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/treasury-rates-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#treasury-rates
     """
 
 
@@ -40,12 +39,6 @@ class FMPTreasuryRatesData(TreasuryRatesData):
         "year_30": "year30",
     }
 
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
-
     @model_validator(mode="before")
     @classmethod
     def normalize_percent(cls, values):
@@ -59,13 +52,13 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 class FMPTreasuryRatesFetcher(
     Fetcher[
         FMPTreasuryRatesQueryParams,
-        List[FMPTreasuryRatesData],
+        list[FMPTreasuryRatesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Treasury Rates Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPTreasuryRatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
         transformed_params = params
 
@@ -81,16 +74,20 @@ class FMPTreasuryRatesFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPTreasuryRatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_urls
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         def generate_urls(start_date, end_date):
             """Generate URLs for each 3-month interval between start_date and end_date."""
-            base_url = "https://financialmodelingprep.com/api/v4/treasury?from={}&to={}"
+            base_url = (
+                "https://financialmodelingprep.com/stable/treasury-rates?from={}&to={}"
+            )
             urls = []
             while start_date <= end_date:
                 next_date = start_date + relativedelta(months=3)
@@ -104,12 +101,13 @@ class FMPTreasuryRatesFetcher(
             return urls
 
         urls = generate_urls(query.start_date, query.end_date)
-        return await amake_requests(urls, **kwargs)
+
+        return await get_data_urls(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: FMPTreasuryRatesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPTreasuryRatesData]:
+        query: FMPTreasuryRatesQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPTreasuryRatesData]:
         """Return the transformed data."""
         return [
             FMPTreasuryRatesData.model_validate(d)

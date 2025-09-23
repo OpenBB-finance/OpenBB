@@ -28,7 +28,7 @@ class FMPAvailableIndicesFetcher(
         list[FMPAvailableIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Available Indices Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FMPAvailableIndicesQueryParams:

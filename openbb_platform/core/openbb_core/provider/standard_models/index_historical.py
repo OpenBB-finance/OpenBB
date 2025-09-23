@@ -7,13 +7,13 @@ from datetime import (
 from typing import Optional, Union
 
 from dateutil import parser
-from openbb_core.provider.abstract.data import Data, ForceInt
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, StrictFloat, field_validator
+from pydantic import Field, field_validator
 
 
 class IndexHistoricalQueryParams(QueryParams):
@@ -37,22 +37,25 @@ class IndexHistoricalQueryParams(QueryParams):
 class IndexHistoricalData(Data):
     """Index Historical Data."""
 
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     date: Union[dateType, datetime] = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
-    open: Optional[StrictFloat] = Field(
+    open: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[StrictFloat] = Field(
+    high: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[StrictFloat] = Field(
+    low: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
-    close: Optional[StrictFloat] = Field(
+    close: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
-    volume: Optional[ForceInt] = Field(
+    volume: Optional[Union[int, float]] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 

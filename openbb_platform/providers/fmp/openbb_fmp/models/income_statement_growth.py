@@ -38,13 +38,9 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         "fiscal_period": "period",
         "growth_ebit": "growthEBIT",
         "growth_ebitda": "growthEBITDA",
-        "growth_ebitda_ratio": "growthEBITDARatio",
         "growth_basic_earings_per_share": "growthEPS",
-        "growth_net_income_margin": "growthNetIncomeRatio",
-        "growth_consolidated_net_income": "growthNetIncome",
         "growth_gross_profit_margin": "growthGrossProfitRatio",
-        "growth_income_before_tax_margin": "growthIncomeBeforeTaxRatio",
-        "growth_operating_income_margin": "growthOperatingIncomeRatio",
+        "growth_consolidated_net_income": "growthNetIncome",
         "growth_diluted_earnings_per_share": "growthEPSDiluted",
         "growth_weighted_average_basic_shares_outstanding": "growthWeightedAverageShsOut",
         "growth_weighted_average_diluted_shares_outstanding": "growthWeightedAverageShsOutDil",
@@ -138,19 +134,9 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of EBITDA as a percentage of revenue.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     growth_operating_income: Optional[float] = Field(
         default=None,
         description="Growth rate of operating income.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    growth_operating_income_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of operating income as a percentage of revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_non_operating_income_excluding_interest: Optional[float] = Field(
@@ -178,11 +164,6 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of income before taxes.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_income_before_tax_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of income before taxes as a percentage of revenue.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     growth_income_tax_expense: Optional[float] = Field(
         default=None,
         description="Growth rate of income tax expenses.",
@@ -196,11 +177,6 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     growth_consolidated_net_income: Optional[float] = Field(
         default=None,
         description="Growth rate of net income.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    growth_net_income_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of net income as a percentage of revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_basic_earings_per_share: Optional[float] = Field(

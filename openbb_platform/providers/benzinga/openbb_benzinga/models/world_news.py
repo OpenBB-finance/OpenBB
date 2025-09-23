@@ -153,17 +153,13 @@ class BenzingaWorldNewsFetcher(
 
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
-
         query = query.model_copy(update={"sort": f"{query.sort}:{query.order}"})
         querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
-
-        pages = math.ceil(query.limit if query.limit else 2500 / 100)
-
+        pages = math.ceil((query.limit if query.limit else 2500) / 100)
         urls = [
             f"{base_url}?{querystring}&page={page}&token={token}"
             for page in range(pages)
         ]
-
         results: list = []
 
         async def get_one(url):

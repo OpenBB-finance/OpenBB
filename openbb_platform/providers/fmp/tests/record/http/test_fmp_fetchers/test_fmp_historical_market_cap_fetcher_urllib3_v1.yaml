@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-market-capitalization/AAPL?apikey=MOCK_API_KEY&from=2024-01-01&limit=5000&to=2024-01-31
+    uri: https://financialmodelingprep.com/stable/historical-market-capitalization?apikey=MOCK_API_KEY&from=2024-01-01&limit=5000&symbol=AAPL&to=2024-01-31
   response:
     body:
       string: !!binary |
@@ -38,7 +38,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 01 Aug 2024 05:31:14 GMT
+      - Tue, 23 Sep 2025 17:23:22 GMT
       Etag:
       - W/"73a-MDe9BxWD2CL5roRSOp6aLuALx48"
       Server:

@@ -1,22 +1,21 @@
 """FMP Price Performance Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Dict, List, Optional
-from warnings import warn
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_urls
-from pydantic import Field, model_validator
+from pydantic import model_validator
 
 
 class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
     """FMP Price Performance Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#quote-change
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -24,8 +23,6 @@ class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
 
 class FMPPricePerformanceData(RecentPerformanceData):
     """FMP Price Performance Data."""
-
-    symbol: str = Field(description="The ticker symbol.")
 
     __alias_dict__ = {
         "one_day": "1D",
@@ -53,49 +50,46 @@ class FMPPricePerformanceData(RecentPerformanceData):
 class FMPPricePerformanceFetcher(
     Fetcher[
         FMPPricePerformanceQueryParams,
-        List[FMPPricePerformanceData],
+        list[FMPPricePerformanceData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPPricePerformanceQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPPricePerformanceQueryParams:
         """Transform the query params."""
         return FMPPricePerformanceQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPPricePerformanceQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_urls
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.upper().split(",")
-        symbols = list(dict.fromkeys(symbols))
         chunk_size = 200
         chunks = [
             symbols[i : i + chunk_size] for i in range(0, len(symbols), chunk_size)
         ]
-        urls = [
-            create_url(
-                version=3,
-                endpoint=f"stock-price-change/{','.join(chunk)}",
-                api_key=api_key,
-                exclude=["symbol"],
-            )
-            for chunk in chunks
-        ]
-        data = await get_data_urls(urls, **kwargs)
-        return data
+        base_url = "https://financialmodelingprep.com/stable/stock-price-change?symbol="
+        urls = [f"{base_url}{','.join(chunk)}&apikey={api_key}" for chunk in chunks]
+
+        return await get_data_urls(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
         query: FMPPricePerformanceQueryParams,
-        data: List[Dict],
+        data: list,
         **kwargs: Any,
-    ) -> List[FMPPricePerformanceData]:
+    ) -> list[FMPPricePerformanceData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        import warnings
 
         symbols = query.symbol.upper().split(",")
         symbols = list(dict.fromkeys(symbols))
@@ -104,6 +98,6 @@ class FMPPricePerformanceFetcher(
             missing_symbols = [
                 symbol for symbol in symbols if symbol not in data_symbols
             ]
-            warn(f"Missing data for symbols: {missing_symbols}")
+            warnings.warn(f"Missing data for symbols: {missing_symbols}")
 
         return [FMPPricePerformanceData.model_validate(i) for i in data]

@@ -15,7 +15,13 @@ class MarketSnapshotsQueryParams(QueryParams):
 class MarketSnapshotsData(Data):
     """Market Snapshots Data."""
 
+    exchange: Optional[str] = Field(
+        description="Exchange the security is listed on.", default=None
+    )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    name: Optional[str] = Field(
+        description="Name of the company, fund, or security.", default=None
+    )
     open: Optional[float] = Field(
         description=DATA_DESCRIPTIONS.get("open", ""),
         default=None,

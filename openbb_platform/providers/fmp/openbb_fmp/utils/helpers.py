@@ -2,7 +2,7 @@
 
 from datetime import date
 from functools import lru_cache
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
@@ -11,18 +11,30 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 async def response_callback(response, _):
     """Use callback for make_request."""
+    if response.status != 200:
+        msg = await response.text()
+        code = response.status
+        raise UnauthorizedError(f"Unauthorized FMP request -> {code} -> {msg}")
+
     data = await response.json()
+
     if isinstance(data, dict):
         error_message = data.get("Error Message", data.get("error"))
+
         if error_message is not None:
             conditions = (
                 "upgrade" in error_message.lower()
                 or "exclusive endpoint" in error_message.lower()
+                or "special endpoint" in error_message.lower()
+                or "premium query parameter" in error_message.lower()
                 or "subscription" in error_message.lower()
                 or "unauthorized" in error_message.lower()
+                or "premium" in error_message.lower()
             )
+
             if conditions:
                 raise UnauthorizedError(f"Unauthorized FMP request -> {error_message}")
+
             raise OpenBBError(
                 f"FMP Error Message -> Status code: {response.status} -> {error_message}"
             )
@@ -38,7 +50,7 @@ async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
-async def get_data_urls(urls: str, **kwargs: Any) -> Union[list, dict]:
+async def get_data_urls(urls: list[str], **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP for several urls."""
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_requests
@@ -51,7 +63,7 @@ def create_url(
     endpoint: str,
     api_key: Optional[str],
     query: Optional[Any] = None,
-    exclude: Optional[List[str]] = None,
+    exclude: Optional[list[str]] = None,
 ) -> str:
     """Return a URL for the FMP API.
 
@@ -65,7 +77,7 @@ def create_url(
         The API key to use.
     query: Optional[BaseModel]
         The dictionary to be turned into a querystring.
-    exclude: List[str]
+    exclude: list[str]
         The keys to be excluded from the querystring.
 
     Returns
@@ -86,7 +98,7 @@ def create_url(
 
 async def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[dict]:
+) -> list[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
 
     Parameters
@@ -98,7 +110,7 @@ async def get_data_many(
 
     Returns
     -------
-    List[dict]
+    list[dict]
         Dictionary of data.
     """
     data = await get_data(url, **kwargs)
@@ -184,7 +196,9 @@ async def get_historical_ohlc(query, credentials, **kwargs: Any) -> list[dict]:
         query.interval = "60m"
         base_url += "historical-chart/1hour?"
 
-    query_str = get_querystring(query.model_dump(), ["symbol", "adjustment"])
+    query_str = get_querystring(
+        query.model_dump(), ["symbol", "adjustment", "interval"]
+    )
     symbols = query.symbol.split(",")
 
     results: list = []
@@ -194,7 +208,6 @@ async def get_historical_ohlc(query, credentials, **kwargs: Any) -> list[dict]:
         """Get data for one symbol."""
         url = f"{base_url}symbol={symbol}&{query_str}&apikey={api_key}"
         data: list = []
-
         response = await amake_request(
             url, response_callback=response_callback, **kwargs
         )
@@ -206,29 +219,23 @@ async def get_historical_ohlc(query, credentials, **kwargs: Any) -> list[dict]:
             warn(message)
             messages.append(message)
 
-        if not response:
+        if isinstance(response, list) and len(response) > 0:
+            data = response
+
+        elif isinstance(response, dict) and response.get("historical"):
+            data = response.get("historical", [])
+
+        if not data:
             message = f"No data found for {symbol}."
             warn(message)
             messages.append(message)
 
-        if isinstance(response, list) and len(response) > 0:
-            data = response
-            if len(symbols) > 1:
-                for d in data:
-                    d["symbol"] = symbol
+        elif data:
+            for d in data:
+                d["symbol"] = symbol
+                results.append(d)
 
-        if isinstance(response, dict) and response.get("historical"):
-            data = response["historical"]
-            if len(symbols) > 1:
-                for d in data:
-                    d["symbol"] = symbol
-
-        if data:
-            results.extend(data)
-
-    tasks = [get_one(symbol) for symbol in symbols]
-
-    await asyncio.gather(*tasks)
+    await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
     if not results:
         raise EmptyDataError(

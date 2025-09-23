@@ -98,7 +98,7 @@ class FMPEconomicCalendarFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/stable/economic_calendar?"
+        base_url = "https://financialmodelingprep.com/stable/economic-calendar?"
 
         # FMP allows only 3-month windows to be queried, we need to chunk to request.
         def date_range(start_date, end_date):

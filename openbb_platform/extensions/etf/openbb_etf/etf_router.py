@@ -1,7 +1,7 @@
 """ETF Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -137,10 +137,6 @@ async def price_performance(
     examples=[
         APIEx(parameters={"symbol": "XLK", "provider": "fmp"}),
         APIEx(
-            description="Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.",
-            parameters={"symbol": "XLK", "date": "2022-03-31", "provider": "fmp"},
-        ),
-        APIEx(
             description="The same data can be returned from the SEC directly.",
             parameters={"symbol": "XLK", "date": "2022-03-31", "provider": "sec"},
         ),
@@ -157,16 +153,32 @@ async def holdings(
 
 
 @router.command(
-    model="EtfHoldingsDate",
-    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
+    model="NportDisclosure",
+    examples=[
+        APIEx(
+            parameters={"symbol": "XLK", "provider": "fmp", "year": 2025, "quarter": 1}
+        ),
+        APIEx(
+            description="The same data can be returned from the SEC directly.",
+            parameters={"symbol": "XLK", "provider": "sec", "year": 2025, "quarter": 1},
+        ),
+        PythonEx(
+            description="Additional disclosures, such as flow and returns are included in the SEC's response"
+            + " under the `extra['results_metadata']` field.",
+            code=[
+                "response = obb.etf.nport_disclosure(symbol='XLK', provider='sec', year=2025, quarter=1)",
+                "print(response.extra['results_metadata'])",
+            ],
+        ),
+    ],
 )
-async def holdings_date(
+async def nport_disclosure(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use this function to get the holdings dates, if available."""
+    """Get SEC NPORT-P disclosure filings for a given ETF or mutual fund (US only)."""
     return await OBBject.from_query(Query(**locals()))
 
 

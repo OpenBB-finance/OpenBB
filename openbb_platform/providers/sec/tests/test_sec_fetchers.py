@@ -9,7 +9,6 @@ from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
-from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
@@ -18,6 +17,7 @@ from openbb_sec.models.latest_financial_reports import SecLatestFinancialReports
 from openbb_sec.models.management_discussion_analysis import (
     SecManagementDiscussionAnalysisFetcher,
 )
+from openbb_sec.models.nport_disclosure import SecNportDisclosureFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sec_filing import SecFilingFetcher
@@ -59,11 +59,11 @@ def test_sec_schema_files_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_sec_etf_holdings_fetcher(credentials=test_credentials):
-    """Test the SEC ETF Holdings fetcher."""
-    params = {"symbol": "TQQQ", "use_cache": False}
+def test_sec_nport_disclosure_fetcher(credentials=test_credentials):
+    """Test the SEC NPORT Disclosure fetcher."""
+    params = {"symbol": "DIA", "year": 2025, "quarter": 1, "use_cache": False}
 
-    fetcher = SecEtfHoldingsFetcher()
+    fetcher = SecNportDisclosureFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

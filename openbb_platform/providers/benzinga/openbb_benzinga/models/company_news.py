@@ -143,23 +143,19 @@ class BenzingaCompanyNewsFetcher(
         from openbb_benzinga.utils.helpers import response_callback
 
         token = credentials.get("benzinga_api_key") if credentials else ""
-
         base_url = "https://api.benzinga.com/api/v2/news"
         query.limit = query.limit if query.limit else 2500
-
         model = query.model_dump(by_alias=True)
         model["sort"] = (
             f"{query.sort}:{query.order}" if query.sort and query.order else ""
         )
         querystring = get_querystring(model, ["order", "pageSize"])
-
-        pages = math.ceil(query.limit / 100) if query.limit else 1
         page_size = 100 if query.limit and query.limit > 100 else query.limit
+        pages = math.ceil(query.limit / page_size) if query.limit else 1
         urls = [
             f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
             for page in range(pages)
         ]
-
         results: list = []
 
         async def get_one(url):

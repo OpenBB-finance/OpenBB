@@ -3,25 +3,27 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v4/stock_peers?apikey=MOCK_API_KEY&symbol=AAPL
+    uri: https://financialmodelingprep.com/stable/stock-peers?apikey=MOCK_API_KEY&symbol=AAPL
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"peersList\": [\n      \"LPL\",\n
-        \     \"SNEJF\",\n      \"PCRFY\",\n      \"SONO\",\n      \"VZIO\",\n      \"MICS\",\n
-        \     \"WLDSW\",\n      \"KOSS\",\n      \"GPRO\",\n      \"SONY\",\n      \"UEIC\",\n
-        \     \"HEAR\",\n      \"VUZI\",\n      \"WLDS\"\n    ]\n  }\n]"
+      string: !!binary |
+        H4sIAAAAAAAAA33QsWrDMBAG4D1PcXg2QidLstQ1gRAISahpQhs6KK4H09gSslPqlr571bRd4ijD
+        Lf8dfNy/nwB8hgFIuqE52GNyB8l8c79O0t+0tI0z7bAyTXVe2Y23KSzakvxfOF+XPztGNIrsL2xe
+        +6lxIeUSuUataci/0mtasV7FtMK2truuoSAKM3HJoUYUnDJ503uMewPMvT05mFrvrDd9bdvRo5oo
+        OpZzLXOUNPyaR+3tw9MiYm9PH/X7LTYjXIxUJqXKlFIsSu6WsyJC7irjzeFYwax6C0YHy/5lVHTo
+        WVF16QqmkcuzOnn+BoqeWkRFAgAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -30,16 +32,20 @@ interactions:
       - '3600'
       Connection:
       - keep-alive
-      Content-Length:
-      - '255'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:33 GMT
-      ETag:
-      - W/"ff-HJTrlTghkVRaOX8gByhhLvxuWfA"
+      - Tue, 23 Sep 2025 17:23:00 GMT
+      Etag:
+      - W/"245-FdMa0JwtXof3gkma2+hGSIe7g1s"
       Server:
       - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
       X-Frame-Options:
       - SAMEORIGIN
       X-Powered-By:

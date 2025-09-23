@@ -3,32 +3,29 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?apikey=MOCK_API_KEY&from=2023-01-01&to=2023-01-10
+    uri: https://financialmodelingprep.com/stable/historical-price-eod/full?apikey=MOCK_API_KEY&from=2023-01-01&symbol=AAPL&to=2023-01-10
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA43VPU/jQBAG4J5fYbmOVzP7bTp0HUI6itM1pytMYpGcEhvlCyHEf7/1gnc29uK4
-        SfHueBk/GsbvN1mWH952T+02v83yu7vHh3zRZevN4djuN8uqy/+4JMve/a87W1XHuqvmwEUBWCD4
-        Z/xZ+1I37gwFMK5Dut48r32KcbptX7uQW4Y8hMtte6i/bjAixNXq3w86CfG53Z52XaiFLTUHOjk1
-        7pHT4Vivfn9bs1xXzXN3AkyaQfpY75d1c/SHQoOlDs+v1ctXgyDpZaqn2hveV82p2r9lCIuMi3xw
-        7c9zvf+12X3+UQB/s6/4WEwjQ5lEjvoOyIJJHCGXzJZJZFRJZPeAJP7gbMCUYKedRzXBuXCWfBAT
-        tDvlUnF6oyCNcZcjaSivSBcdtb96HrUeU3PNgFADteuYVHtqmaR2oJre/YLaMqoP0tYYJc209Kgm
-        SAumcZASNGeW/gt7ZNdFRD9G1tfHmVs9D1glgA1Dmrce2KUmaioAG+qfgJXrIA0smUjMsgW3Dq4J
-        D2toljnD74kLZDphrJidGmQ1Y5BRz0SWySmORjMg27jXHtlp2gSydtswjawu3jgAlohuy00jD2vi
-        haHEIL5YGBKNpjaDs2ZToyxnMIO/eZ60GEt3m4H6ivZFal1g9PGJp5ni4TRHO7JHROSIRk1Lj4uI
-        WjE+Mc/0pYuRo+/MSFnMUJafwO73783HfyK15uCNCAAA
+        H4sIAAAAAAAAA53UPW+DQAwG4L2/AjEHy74vH92yd8hedUhTlFQiIWrSRFXV/94jxcdnhjKwvAf4
+        Hmzu+SFJvsOVJOnpa/9aleljki6Xq6d08Ze+rc9FnSlUOkPKCGWlOhaHsEIaQbkm271vd7eM2qys
+        rnWkPJBqok1ZnYrmWdZNeKnKz32dOu1zpxDl5t36sK1zBMO9bFV8bIrD+bakHXp5/eW6PjZvx1zZ
+        EP4s/uvEfMIZ60enBkMDZw4+n3CSHToZOUdP4o/OLGji3UNpWFTGKtlIh5r7eVA3hCoHKKgIDWVF
+        JVAzAQ16F9sgUM9sDQ9IIdfgqJe1TAVe5keIioFxbjftCMkQv7wg6wryYVsky0ZapAUcIzEMLaMf
+        dVMB3VNmBG7EdEA8D2kmOhlbFJG+rSnI4In7jkgX/qkRMifSTk+NrO2HvYk1xE4KdJxseGY79dQh
+        JBU6MzseWYpHSLeb8XcSKJEiYjs+hDIL6m47zdDI4PBGfHj5BUrZ11tqBQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -42,9 +39,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 20 Nov 2023 16:20:05 GMT
+      - Tue, 23 Sep 2025 17:22:40 GMT
       Etag:
-      - W/"88d-adA4cXKEeZidNHszMb/I+j1svdc"
+      - W/"56a-X8I0y3QptEWCGv3fTqy0PnWTBvM"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

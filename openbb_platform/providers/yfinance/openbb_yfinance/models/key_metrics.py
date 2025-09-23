@@ -60,6 +60,10 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         "currency": "financialCurrency",
     }
 
+    pe_ratio: Optional[float] = Field(
+        default=None,
+        description="Price-to-earnings ratio (TTM).",
+    )
     forward_pe: Optional[float] = Field(
         default=None,
         description="Forward price-to-earnings ratio.",

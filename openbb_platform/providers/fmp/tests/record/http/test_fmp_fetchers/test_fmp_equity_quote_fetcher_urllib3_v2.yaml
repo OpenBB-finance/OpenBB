@@ -9,17 +9,15 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/quote?apikey=MOCK_API_KEY&symbol=AAPL
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA12Rz0+DMBzF7/srCFdd8+1PYDcyD5osOqPxsniorGFEaAkFdDH+77aMzumhl897
-        PPped4so+nInimJ7bN5MHa+iOM+3m/j6RLVs1MTatlbRnS5QUNquKrxEMEWEz7A4SF0qu1VdoXQv
-        S2/AKMsy+sfgKEM4ndleHjfmY4oCJNgvva3Kw4QZSsWMj0p2gRNA5AKfQrBgCEJ0I7t31a9l6wRK
-        hLuISAkHgMsS+Vhy8F+mKcKEkX8agZNIEU54ENXnuUl8nz/d5I9hl9HUw7SZYISyhCUzl2P5cpZS
-        IgRA6GRapaeeGPHzz9VYmcGua2OnlSFDEKJUa30IYmGr1luouyAODtnpSpc219oMulCNew1/VQKE
-        LSFdAn7GsOLZCgC5Na7cgVDAHmSn7MPQ217qvUvx7TmlDHtXWK6vGuUMjV8WJzhj1O2Enfa9eP0B
-        gulaQFYCAAA=
+        H4sIAAAAAAAAA12Qu07DMBSG9z6FlbmyfIljh80qQ5EqVMSIGEw4SiPiOErSQIR4d+LELqWDl+87
+        /s/lZYPQ9/wQSvrJvrk6uUOJ1sdDsl1pYywsrG1rQA9NgaNpu6rwiokMExVgcTJNCUfoCmgGU3qf
+        Yk5yIf8VzJgSLOKv0dVnu0KqMkHzPIh3Mx3cp2+SKkzZH91X5Sn0znjAE5gu8oxgeoXXEJrlmEVs
+        TfcBw860s+CKEM4kkZQRcr2eHktBfB5LsWIyvXFz9SIpllzkIlj4uiyZPOrne/0UT+ZaaMIy/BIF
+        Y+XO/a52/XLNVOAYNFQW+sFYPyKVQgk/H53dz+b1Fw2v2Pu5AQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -39,9 +37,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:49 GMT
+      - Tue, 23 Sep 2025 03:08:38 GMT
       Etag:
-      - W/"256-qpQaNUXwR9TbVagzq8aRbKwbGPU"
+      - W/"1b9-Y0olwV4IWG5k9+ZadKCVZLhK6Pc"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

@@ -9,13 +9,13 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/QQQ?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=QQQ
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4vmUlCoBmIFBaXk/NK8kqJKJSsFpdC8zJLUFIXgksSS1GIlHYh8eWpmekZJQGpR
-        cmpeSWJ6KkihpbmegamqElBBrQ5Wk/xSSzJSi3IS81LwmmOoZ2CGzxjnjMy8RHwGGOiZWeAzwKko
-        sSozh4AJJvhMgIaJd2Zeekp+Ln6TTM0hJnHFAgAYy0GqYAEAAA==
+        H4sIAAAAAAAAA4XQwQrCMAwG4PueIhS8jeKgrurVkwgiyE7iIayhHcwOuhQZ4ru7sXs85JTkI38e
+        BcBnLgDVDjlymtQRVBM7Jgd3RqZRlWv/TZ0PfKPUUmT0tAwejK7tRs0D31KSLl30bnhJVKXtXpJO
+        GNGhLOwk4EocKPUYnRhpq63INCn7jJNM1GKUc6LlDJkwf74xBnm/Mut+8fwBdWcClOQBAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -35,9 +35,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:13:00 GMT
+      - Tue, 23 Sep 2025 03:08:45 GMT
       Etag:
-      - W/"160-iFjtDAB5RW/TnT0Ntq9QU33+meY"
+      - W/"1e4-F0AaD6+55M11HBiPGdu0rnriKKY"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -61,14 +61,14 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/IWM?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VTI
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XSPQvCMBAG4L2/IgTcRNqq+DHqoCIUoTqJw2GONqAXOSNFxf9uxI5yGRySJcfD
-        5b3bJ0o9w1FKH92NPN/1VOkdWY9GlR48XnX3+96grWq/QT4ieajwUzgZ9/J+R4eCV/enNGN42JNE
-        pL3BUBLmQGBAFvJcEgrHDdxlIRN7WF0ZMPKLLJOENtG1pcq4c0QSW2E8AZk/hC3YBkgG0pEkLJDP
-        QJFEUzHRAn2N/PmJuF+BEddr6ahS63BFEHE/yjAUuDjGv5AGDcZSbeeSHN6lDXuzdwMAAA==
+        H4sIAAAAAAAAA4XRsQqDMBAG4N2nCIFuEqIith3rJO0glU6lQ6pHDNQEYoK1pe9exY7lHG66+z/u
+        uGtAyHsqQmhtvHZ2pHtCL1o5aEjlhIOehkt/ACVbV4KtQTshYR7cZYxnGzoNfMK/UmHhIXSDGRFL
+        Eoz4LXNUWjamwyTOUlTKRd/i+WSL5atBuRfYtYM4i1OMOYDtfCNwIkKJXGixKsS4MHZCk6Kfr0F/
+        zBlHdyk9WGfIWdVmhUGfc/JP6O7GW4kqCxHcvn32WlS5AgAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -88,9 +88,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:13:00 GMT
+      - Tue, 23 Sep 2025 03:08:45 GMT
       Etag:
-      - W/"377-4qG4pI5c1g7/G7QTpmKl38gyGtQ"
+      - W/"2b9-DFGVPONOY09byJpikrEwhZGst9g"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -114,13 +114,14 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VOO?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VOO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4vmUlCoBmIFBaXk/NK8kqJKJSsFpdC8zJLUFIXgksSS1GIlHYh8eWpmekZJQGpR
-        cmpeSWJ6KkihpaWeibGqElBBrQ5Wk4LLM0uqUotyEvNS8JljoGdkic8Yv9SSDIgpeJ1joGdogs8Y
-        qL+8M/PSU/JzCZiE11tAExIL8otS8ZthAHUNVywAEXDLRmgBAAA=
+        H4sIAAAAAAAAA4XQPQvCMBAG4L2/IgTcSkhq/aijTiKIUJzEITRHEmhTSK8UFf+7lTrKdbjp7h7e
+        u1vC2GssxnjV9gHjg+8YvwaPYFiJGqHj6dQfwFuHF4gVBNQWvoPFRqj1go8D7/SvdIxQ62AoQ4l8
+        SxG/MCcfrGkbSpJilVFSOXh8QpwLJMVSUcxBd47ez8j9M6CbUpC/lYJU9hCb3mhakAV9SNCzQj4J
+        yf0DPWIxhisCAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -140,9 +141,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:13:00 GMT
+      - Tue, 23 Sep 2025 03:08:45 GMT
       Etag:
-      - W/"168-0GbxuYWVIJbcZWMc4sHFwj5Fwzc"
+      - W/"22b-4C+qQF9f4H26zobrlljEgLQOUeM"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -166,14 +167,16 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VTI?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=IWM
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XSwQqCQBAG4LtPsSx0E1ExyG7RpRAisE7RYXAHXbAx1hGp6N0z7Bgj1GH3sjMf
-        +zNz8pR6DEcpXTQdsbvppdJHsoxG5QyMrfbH9x5tWfEeXYHEUOK7ME2DZD7TQ8HT/yrlveU7uhrI
-        SE4YxCKzBgIDshDFkvCJlFkqTXORpXAhRhoIuDYOJ5BEQrZk7ESeMBKB1gHW/wgHsD2QKIgfcDg5
-        Val/h1yNiyFumGhsGipVNlw/C6uuZQf1xCxGwTu/AJNtR/kuAwAA
+        H4sIAAAAAAAAA6XUz0vDMBQH8Pv+ilDwNsa6H7p5swOlqDAcehke3tpHG2gSeU2Ym/i/m6FH+Waw
+        Q0/N+5D3K9uBUl/xUyqrXLBeDtmtyl6t9lyrjSfPfTb8/b9n3bR+zVKx9dTw6eByOlreXGXxwPfw
+        X2lFB0NWlX1HtoZUPppfI6lgMaEmTExyRPyl9ahtUzuDpPFoMcNp9S2On81R/Gav/ZHlVBTMTGFN
+        1oHFO/WiK4eZyRIxpXD6JphYkSXcnChMkPDsLKXSyKcwDVvrxBVyOB9lL8QdFsYL2Nc4WvThhC9B
+        7oVsdZFQUEuG4LpFAi5uIXTUqVrg1XedM7tUR8Z4wONYmZQAN+0pfLLZuSBNQoH7XnrqDgkATnfB
+        XaND4s1JEKK97lv1pqXRZz2pUYTzvtlzzRYKKPwu9F6oS3QYCQ96FwFPcoYweP8BTHM21qwGAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -193,9 +196,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:13:00 GMT
+      - Tue, 23 Sep 2025 03:08:46 GMT
       Etag:
-      - W/"32e-EveZZWXOpfzdjNd+MbnzFoHYm/s"
+      - W/"6ac-9ABQIuc/fslKehW+7+TdT9N4pfE"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

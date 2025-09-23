@@ -171,10 +171,10 @@ class FixedIncomeViews:
         figure.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=20)),
             plot_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                "rgba(21,21,21,0)" if text_color == "white" else "rgba(230,230,230,0)"
             ),
             paper_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
+                "rgba(21,21,21,1)" if text_color == "white" else "rgba(230,230,230,1)"
             ),
             xaxis=dict(
                 title="Maturity",

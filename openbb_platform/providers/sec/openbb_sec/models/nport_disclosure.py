@@ -1,128 +1,50 @@
-"""SEC ETF Holings Model."""
+"""SEC NPORT Holings Model."""
 
 # pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.etf_holdings import (
-    EtfHoldingsData,
-    EtfHoldingsQueryParams,
+from openbb_core.provider.standard_models.nport_disclosure import (
+    NportDisclosureData,
+    NportDisclosureQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator, model_validator
 
 
-class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
-    """SEC ETF Holdings Query.
+class SecNportDisclosureQueryParams(NportDisclosureQueryParams):
+    """SEC NPORT Holdings Query.
 
     Source: https://www.sec.gov/Archives/edgar/data/
     """
 
-    date: Optional[Union[str, dateType]] = Field(
-        description=QUERY_DESCRIPTIONS.get("date", "")
-        + "  The date represents the period ending."
-        + " The date entered will return the closest filing.",
-        default=None,
-    )
     use_cache: bool = Field(
         description="Whether or not to use cache for the request.",
         default=True,
     )
 
 
-class SecEtfHoldingsData(EtfHoldingsData):
-    """SEC ETF Holdings Data."""
+class SecNportDisclosureData(NportDisclosureData):
+    """SEC NPORT Holdings Data."""
 
     __alias_dict__ = {
-        "name": "title",
         "weight": "pctVal",
         "value": "valUSD",
-        "payoff_profile": "payoffProfile",
+        "payoff_profile": "derivative_payoff",
         "currency": "curCd",
         "asset_category": "assetCat",
         "issuer_category": "issuerCat",
         "country": "invCountry",
         "is_restricted": "isRestrictedSec",
         "fair_value_level": "fairValLevel",
-        "is_cash_collateral": "isCashCollateral",
-        "is_non_cash_collateral": "isNonCashCollateral",
-        "is_loan_by_fund": "isLoanByFund",
         "loan_value": "loanVal",
     }
 
-    lei: Optional[str] = Field(description="The LEI of the holding.", default=None)
-    cusip: Optional[str] = Field(description="The CUSIP of the holding.", default=None)
-    isin: Optional[str] = Field(description="The ISIN of the holding.", default=None)
-    other_id: Optional[str] = Field(
-        description="Internal identifier for the holding.", default=None
-    )
-    balance: Optional[float] = Field(
-        description="The balance of the holding.", default=None
-    )
-    weight: Optional[float] = Field(
-        description="The weight of the holding in ETF in %.",
-        default=None,
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    value: Optional[float] = Field(
-        description="The value of the holding in USD.", default=None
-    )
-    payoff_profile: Optional[str] = Field(
-        description="The payoff profile of the holding.",
-        default=None,
-    )
-    units: Optional[Union[float, str]] = Field(
-        description="The units of the holding.", default=None
-    )
-    currency: Optional[str] = Field(
-        description="The currency of the holding.", default=None
-    )
-    asset_category: Optional[str] = Field(
-        description="The asset category of the holding.", default=None
-    )
-    issuer_category: Optional[str] = Field(
-        description="The issuer category of the holding.",
-        default=None,
-    )
-    country: Optional[str] = Field(
-        description="The country of the holding.", default=None
-    )
-    is_restricted: Optional[str] = Field(
-        description="Whether the holding is restricted.",
-        default=None,
-    )
-    fair_value_level: Optional[int] = Field(
-        description="The fair value level of the holding.",
-        default=None,
-    )
-    is_cash_collateral: Optional[str] = Field(
-        description="Whether the holding is cash collateral.",
-        default=None,
-    )
-    is_non_cash_collateral: Optional[str] = Field(
-        description="Whether the holding is non-cash collateral.",
-        default=None,
-    )
-    is_loan_by_fund: Optional[str] = Field(
-        description="Whether the holding is loan by fund.",
-        default=None,
-    )
-    loan_value: Optional[float] = Field(
-        description="The loan value of the holding.",
-        default=None,
-    )
-    issuer_conditional: Optional[str] = Field(
-        description="The issuer conditions of the holding.", default=None
-    )
-    asset_conditional: Optional[str] = Field(
-        description="The asset conditions of the holding.", default=None
-    )
     maturity_date: Optional[dateType] = Field(
         description="The maturity date of the debt security.", default=None
     )
@@ -307,36 +229,35 @@ class SecEtfHoldingsData(EtfHoldingsData):
         )
 
 
-class SecEtfHoldingsFetcher(
+class SecNportDisclosureFetcher(
     Fetcher[
-        SecEtfHoldingsQueryParams,
-        List[SecEtfHoldingsData],
+        SecNportDisclosureQueryParams,
+        list[SecNportDisclosureData],
     ]
 ):
-    """SEC ETF Holdings."""
+    """SEC NPORT Disclosure Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecEtfHoldingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecNportDisclosureQueryParams:
         """Transform the query."""
-        params["symbol"] = params["symbol"].upper()
-        return SecEtfHoldingsQueryParams(**params)
+        return SecNportDisclosureQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: SecEtfHoldingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        query: SecNportDisclosureQueryParams,
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        import xmltodict  # noqa
-        from aiohttp_client_cache import SQLiteBackend  # noqa
-        from aiohttp_client_cache.session import CachedSession  # noqa
-        from openbb_core.app.utils import get_user_cache_directory  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
-        from openbb_sec.utils.helpers import HEADERS, get_nport_candidates  # noqa
-        from pandas import DataFrame, Series, to_datetime  # noqa
+        import xmltodict
+        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache.session import CachedSession
+        from openbb_core.app.utils import get_user_cache_directory
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
+        from pandas import DataFrame, Series, Timestamp, offsets, to_datetime
 
         # Implement a retry mechanism in case of RemoteDisconnected Error.
         retries = 3
@@ -354,13 +275,22 @@ class SecEtfHoldingsFetcher(
                     await asyncio.sleep(1)
                     continue
                 raise e
+
         filing_candidates = DataFrame.from_records(filings)
+
         if filing_candidates.empty:
             raise OpenBBError(f"No N-Port records found for {query.symbol}.")
+
         dates = filing_candidates.period_ending.to_list()
         new_date: str = ""
-        if query.date is not None:
-            date = query.date
+
+        if query.year is not None and query.quarter is None:
+            query.quarter = 4 if query.year < max(dates).year else 1
+
+        if query.quarter is not None and query.year is not None:
+            date = (
+                Timestamp(f"{query.year}-Q{query.quarter}") + offsets.QuarterEnd()
+            ).date()
             # Gets the URL for the nearest date to the requested date.
             __dates = Series(to_datetime(dates))
             __date = to_datetime(date)
@@ -368,7 +298,6 @@ class SecEtfHoldingsFetcher(
             __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
             new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
             date = new_date if new_date else date
-            warn(f"Closest filing date to, {query.date}, is the period ending: {date}")
             filing_url = filing_candidates[filing_candidates["period_ending"] == date][
                 "primary_doc"
             ].values[0]
@@ -379,7 +308,7 @@ class SecEtfHoldingsFetcher(
             """Response callback for the request."""
             return await response.read()
 
-        response: Union[dict, List[dict]] = []
+        response: Union[dict, list[dict]] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
             async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
@@ -393,17 +322,17 @@ class SecEtfHoldingsFetcher(
             response = await amake_request(
                 filing_url, headers=HEADERS, response_callback=callback  # type: ignore
             )
-        results = xmltodict.parse(response)
+        results = xmltodict.parse(response)  # type: ignore
 
         return results
 
     # pylint: disable=too-many-statements
     @staticmethod
     def transform_data(  # noqa: PLR0912
-        query: SecEtfHoldingsQueryParams,
-        data: Dict,
+        query: SecNportDisclosureQueryParams,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[SecEtfHoldingsData]]:
+    ) -> AnnotatedResult[list[SecNportDisclosureData]]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime
@@ -865,6 +794,6 @@ class SecEtfHoldingsFetcher(
         except Exception as e:  # pylint: disable=W0718
             warn(f"Error extracting metadata: {e}")
         return AnnotatedResult(
-            result=[SecEtfHoldingsData.model_validate(d) for d in results],
+            result=[SecNportDisclosureData.model_validate(d) for d in results],
             metadata=metadata,
         )

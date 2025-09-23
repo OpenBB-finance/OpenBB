@@ -51,7 +51,7 @@ class FMPCalendarSplitsFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/stable/dividends-calendar?"
+        base_url = "https://financialmodelingprep.com/stable/splits-calendar?"
         start_date = query.start_date or datetime.now().date() - timedelta(days=7)
         end_date = query.end_date or datetime.now().date() + timedelta(days=14)
 

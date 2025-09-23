@@ -2,14 +2,16 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from datetime import datetime
+from typing import Any, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
-from pydantic import Field, field_validator
+from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import ConfigDict, Field, field_validator
 
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
@@ -21,50 +23,55 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
+    model_config = ConfigDict(extra="ignore")
+
     __alias_dict__ = {
         "issuer": "etfCompany",
+        "cusip": "securityCusip",
+        "aum": "assetsUnderManagement",
+        "nav": "netAssetValue",
+        "currency": "navCurrency",
+        "volume_avg": "avgVolume",
+        "updated": "updatedAt",
     }
 
-    issuer: Optional[str] = Field(
-        default=None,
-        description="Company of the ETF.",
-    )
     cusip: Optional[str] = Field(default=None, description="CUSIP of the ETF.")
     isin: Optional[str] = Field(default=None, description="ISIN of the ETF.")
-    domicile: Optional[str] = Field(default=None, description="Domicile of the ETF.")
     asset_class: Optional[str] = Field(
         default=None, description="Asset class of the ETF."
+    )
+    currency: Optional[str] = Field(
+        default=None, description="Currency of the ETF's net asset value."
+    )
+    holdings_count: Optional[int] = Field(
+        default=None, description="Number of holdings."
     )
     aum: Optional[float] = Field(
         default=None,
         description="Assets under management.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    nav: Optional[float] = Field(
-        default=None,
-        description="Net asset value of the ETF.",
-        json_schema_extra={"x-unit_measurement": "currency"},
-    )
-    nav_currency: Optional[str] = Field(
-        default=None, description="Currency of the ETF's net asset value."
-    )
     expense_ratio: Optional[float] = Field(
         default=None,
         description="The expense ratio, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    holdings_count: Optional[int] = Field(
-        default=None, description="Number of holdings."
+    nav: Optional[float] = Field(
+        default=None,
+        description="Net asset value of the ETF.",
+        json_schema_extra={"x-unit_measurement": "currency"},
     )
-    avg_volume: Optional[float] = Field(
+    volume_avg: Optional[Union[int, float]] = Field(
         default=None, description="Average daily trading volume."
     )
-    website: Optional[str] = Field(default=None, description="Website of the issuer.")
+    updated: Optional[datetime] = Field(
+        default=None, description="As of date for the latest data point."
+    )
 
     @field_validator("expense_ratio", mode="before", check_fields=False)
     @classmethod
-    def validate_expense_ratio(cls, v):
-        """Format expense ratio as percent."""
+    def _normalize_percent(cls, v):
+        """Normalize percent values."""
         return v / 100 if v else None
 
 
@@ -74,7 +81,7 @@ class FMPEtfInfoFetcher(
         list[FMPEtfInfoData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP ETF Info Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FMPEtfInfoQueryParams:
@@ -86,13 +93,12 @@ class FMPEtfInfoFetcher(
         query: FMPEtfInfoQueryParams,
         credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> list[dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_fmp.utils.helpers import response_callback
-        from warnings import warn
+        import warnings
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
@@ -100,25 +106,24 @@ class FMPEtfInfoFetcher(
 
         async def get_one(symbol):
             """Get one symbol."""
-            url = f"https://financialmodelingprep.com/api/v4/etf-info?symbol={symbol}&apikey={api_key}"
-            response = await amake_request(url, response_callback=response_callback)
+            url = f"https://financialmodelingprep.com/stable/etf/info?symbol={symbol}&apikey={api_key}"
+            response = await get_data_many(url, **kwargs)
             if not response:
-                warn(f"No results found for {symbol}.")
+                warnings.warn(f"No results found for {symbol}.")
             results.extend(response)
 
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
-        return results
+        return sorted(
+            results,
+            key=(lambda item: (symbols.index(item.get("symbol", len(symbols))))),
+        )
 
     @staticmethod
     def transform_data(
-        query: FMPEtfInfoQueryParams, data: list[dict], **kwargs: Any
+        query: FMPEtfInfoQueryParams, data: list, **kwargs: Any
     ) -> list[FMPEtfInfoData]:
         """Return the transformed data."""
-        # Pop the nested dictionaries from the data returned by other endpoints.
-        transformed: list[FMPEtfInfoData] = []
-        for d in data:
-            if d.get("sectorsList"):
-                d.pop("sectorsList")
-            transformed.append(FMPEtfInfoData.model_validate(d))
-        return transformed
+        if not data:
+            raise EmptyDataError("No data was found for the given symbols.")
+        return [FMPEtfInfoData.model_validate(d) for d in data]

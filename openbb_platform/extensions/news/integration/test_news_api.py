@@ -50,6 +50,8 @@ def headers():
                 "limit": 30,
                 "start_date": None,
                 "end_date": None,
+                "topic": "general",
+                "page": 1,
             }
         ),
         (
@@ -154,6 +156,7 @@ def test_news_world(params, headers):
                 "page": 1,
                 "start_date": None,
                 "end_date": None,
+                "press_release": False,
             }
         ),
         (

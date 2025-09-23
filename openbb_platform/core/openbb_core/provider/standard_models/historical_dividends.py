@@ -6,6 +6,7 @@ from typing import Optional
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 from pydantic import Field, field_validator
@@ -32,6 +33,9 @@ class HistoricalDividendsQueryParams(QueryParams):
 class HistoricalDividendsData(Data):
     """Historical Dividends Data."""
 
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     ex_dividend_date: dateType = Field(
         description="The ex-dividend date - the date on which the stock begins trading without rights to the dividend."
     )

@@ -27,7 +27,6 @@ class CalendarSplitsData(Data):
     """Calendar Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    label: str = Field(description="Label of the stock splits.")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    numerator: float = Field(description="Numerator of the stock splits.")
-    denominator: float = Field(description="Denominator of the stock splits.")
+    numerator: float = Field(description="Numerator of the stock split.")
+    denominator: float = Field(description="Denominator of the stock split.")

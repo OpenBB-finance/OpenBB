@@ -1,12 +1,9 @@
 """FMP Executive Compensation Model."""
 
-import asyncio
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Any, Dict, List, Optional
-from warnings import warn
+# pylint: disable=unused-argument
+
+from datetime import datetime
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.executive_compensation import (
@@ -14,20 +11,22 @@ from openbb_core.provider.standard_models.executive_compensation import (
     ExecutiveCompensationQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import response_callback
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
     """FMP Executive Compensation Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/executive-compensation-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#executive-compensation
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    year: Optional[int] = Field(default=None, description="Year of the compensation.")
+    year: int = Field(
+        default=-1,
+        description="Filters results by year, enter 0 for all data available."
+        + " Default is the most recent year in the dataset, -1.",
+    )
 
 
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
@@ -36,67 +35,53 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
     __alias_dict__ = {
         "company_name": "companyName",
         "industry": "industryTitle",
+        "url": "link",
+        "executive": "nameAndPosition",
+        "report_date": "filingDate",
     }
-
-    filing_date: Optional[dateType] = Field(
-        default=None, description="Date of the filing."
-    )
     accepted_date: Optional[datetime] = Field(
         default=None, description="Date the filing was accepted."
     )
     url: Optional[str] = Field(default=None, description="URL to the filing data.")
 
-    @field_validator("filingDate", mode="before", check_fields=False)
-    @classmethod
-    def filing_date_validate(cls, v):  # pylint: disable=E0213
-        """Return the filing date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
-
-    @field_validator("acceptedDate", mode="before", check_fields=False)
-    @classmethod
-    def accepted_date_validate(cls, v):  # pylint: disable=E0213
-        """Return the accepted date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-
 
 class FMPExecutiveCompensationFetcher(
     Fetcher[
         FMPExecutiveCompensationQueryParams,
-        List[FMPExecutiveCompensationData],
+        list[FMPExecutiveCompensationData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Executive Compensation Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
         """Transform the query params."""
         return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPExecutiveCompensationQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        base_url = "https://financialmodelingprep.com/api/v4/"
-
+        base_url = "https://financialmodelingprep.com/stable/governance-executive-compensation?"
         symbols = query.symbol.split(",")
-
-        results: List[dict] = []
+        results: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
+            url = f"{base_url}symbol={symbol}&apikey={api_key}"
+            result = await get_data_many(url, **kwargs)
 
-            url = f"{base_url}/governance/executive_compensation?symbol={symbol}&apikey={api_key}"
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
             if not result:
-                warn(f"Symbol Error: No data found for {symbol}.")
+                warnings.warn(f"Symbol Error: No data found for {symbol}.")
 
             if result:
                 results.extend(result)
@@ -106,20 +91,64 @@ class FMPExecutiveCompensationFetcher(
         if not results:
             raise EmptyDataError("No data found for given symbols.")
 
-        return sorted(results, key=lambda x: (x["year"]), reverse=True)
+        return results
 
     @staticmethod
     def transform_data(
         query: FMPExecutiveCompensationQueryParams,
-        data: List[Dict],
+        data: list,
         **kwargs: Any,
-    ) -> List[FMPExecutiveCompensationData]:
+    ) -> list[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        results: List[FMPExecutiveCompensationData] = []
-        for d in data:
-            if "year" in d and query.year is not None:
-                if d["year"] >= query.year and d["year"] <= query.year:
-                    results.append(FMPExecutiveCompensationData.model_validate(d))
+        # pylint: disable=import-outside-toplevel
+        import warnings
+
+        symbols = query.symbol.split(",")
+        filtered_results: list[FMPExecutiveCompensationData] = []
+
+        for symbol in symbols:
+            symbol_data = [item for item in data if item.get("symbol") == symbol]
+
+            if symbol_data and query.year != 0:
+                max_year_for_symbol = (
+                    (
+                        max(
+                            item.get("year", 0)
+                            for item in symbol_data
+                            if item.get("year")
+                        )
+                    )
+                    if query.year == -1
+                    else query.year
+                )
+                symbol_max_year_data = [
+                    item
+                    for item in symbol_data
+                    if int(item.get("year", 0)) == max_year_for_symbol
+                ]
+                if not symbol_max_year_data:
+                    warnings.warn(
+                        f"ValueError: No data found for {symbol} and year {query.year}."
+                    )
+                    continue
+
+                filtered_results.extend(
+                    [
+                        FMPExecutiveCompensationData.model_validate(item)
+                        for item in symbol_max_year_data
+                    ]
+                )
             else:
-                results.append(FMPExecutiveCompensationData.model_validate(d))
-        return results
+                filtered_results.extend(
+                    [
+                        FMPExecutiveCompensationData.model_validate(item)
+                        for item in sorted(
+                            symbol_data, key=lambda x: x.get("year", 0), reverse=True
+                        )
+                    ]
+                )
+
+        if not filtered_results:
+            raise EmptyDataError("No data found for given symbols and year.")
+
+        return filtered_results

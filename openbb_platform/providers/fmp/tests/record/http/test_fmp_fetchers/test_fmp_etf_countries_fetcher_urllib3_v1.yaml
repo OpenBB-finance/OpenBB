@@ -3,26 +3,28 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VTI?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=IWM
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XSTQuCQBAG4Hu/YlnoJqKG9nGrTkZUEJ2iw6SDCrnCOItZ9N9TusYYdNjTvPPw
-        srvnkVLP7iilk8oaplYvlD6ZgjFVRwbGWjufeYNFlvMBKUHDkGEfnEfuzB/rLvByvkp7zpEkwXOn
-        kQTEhDcwqUT4bhhKxLEp+IE0xHjuRGTWYCAFWQgCSVjamgluxQDiTSVkhVTa/3qsoS3BqLjur0R8
-        366MKG2QamxFQVrfYf89hltIxtbesbxWlrIfiNHlDcqTD93xAgAA
+        H4sIAAAAAAAAA6XUwUrDQBAG4HufYgl4K6GprVaPKShBhWLQi3iYJkMykN2VyYbaiu9uih7l30IP
+        OW3mY2Z2Zt8mxnyNnzFJ5QcXdJ/cmuTFSeDalIEC98n093zH0rRhw1qxC9Tw8cebRZpdJOP59/Rf
+        aE17S84UfUeuhlKWLq+RlLPaoSZMZCtE/FX1IK6pvUXSLF0tcFl9i+Mvr1B8uZNwYD025RxmM7AG
+        b56l8hEGKYVyPJE57OyaHOG7GYU5Ep68o1gVGRQKV0skBTiq5TgW9OGVsTGDjSh6Je7OEe6UXHVW
+        Djm1ZAku20jgZVM6SKwMOJpr33m7jV0INjbjVNmYsETC4/DJdusHbSIK3PYiULePAHA0c+4aGSIv
+        zgxOZ64SpG/Nq2gjJz2oMbHccc0OCij8XrZKXSA9QZi8/wDb2JnEZwYAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -36,9 +38,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:21 GMT
-      ETag:
-      - W/"2f1-z5/4g/ulC3y6Aw5o83OT94EFKKU"
+      - Tue, 23 Sep 2025 17:23:13 GMT
+      Etag:
+      - W/"667-3dRappnSIix6xBSnj53j86JcF54"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -56,25 +58,25 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/QQQ?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=QQQ
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4XPwQrCMAyA4fueIhS8jTI3nc6beFdBPImHsIa2MCp0KTLEd3djV8kOOSV8/Hlk
-        AJ9xAFT7SoHjoA6g7sEzGbgxMvUqn/dv8tbxlWJLgdHSdNjUulmpcf/N/0Mx2YSDRBR6KxIn5wPK
-        QC0CZ2JHscNgxFcKvd+JHRjQLIRsSkm4TB0yUK0l4Jh6jtj5hYqympHs+QNActKX3gEAAA==
+        H4sIAAAAAAAAA4XQwQrCMAwG4PueIhS8jeKgrurVkwgiyE7iIayhHcwOuhQZ4ru7sXs85JTkI38e
+        BcBnLgDVDjlymtQRVBM7Jgd3RqZRlWv/TZ0PfKPUUmT0tAwejK7tRs0D31KSLl30bnhJVKXtXpJO
+        GNGhLOwk4EocKPUYnRhpq63INCn7jJNM1GKUc6LlDJkwf74xBnm/Mut+8fwBdWcClOQBAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -88,9 +90,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:21 GMT
-      ETag:
-      - W/"1de-u/Rt0fxDvduVLpiU+/1mhnLcZeE"
+      - Tue, 23 Sep 2025 17:23:13 GMT
+      Etag:
+      - W/"1e4-F0AaD6+55M11HBiPGdu0rnriKKY"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -108,25 +110,26 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/VOO?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VTI
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4XQPQvCQAwG4L2/Ihy4leOqpX6Mbi4qFCdxOHqhPagnpClFxf/uHV0lDpne5CHJ
-        NQN4xwJQzWMMTE+1A3UJntFBzZZxUPmcT+jbjs9IDQa2LabG7XqhYvrJfzIHwt4GJwGFrjYSceIO
-        SQKMrqT5evL8Qvq3htHlSmL2SPfRWZkoROKI6ZS0iPjRyJTiTwey2MuCWc5CdvsCtZKIl98BAAA=
+        H4sIAAAAAAAAA4XRsQqDMBAG4N2nCIFuEqIith3rJO0glU6lQ6pHDNQEYoK1pe9exY7lHG66+z/u
+        uGtAyHsqQmhtvHZ2pHtCL1o5aEjlhIOehkt/ACVbV4KtQTshYR7cZYxnGzoNfMK/UmHhIXSDGRFL
+        Eoz4LXNUWjamwyTOUlTKRd/i+WSL5atBuRfYtYM4i1OMOYDtfCNwIkKJXGixKsS4MHZCk6Kfr0F/
+        zBlHdyk9WGfIWdVmhUGfc/JP6O7GW4kqCxHcvn32WlS5AgAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -140,9 +143,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:22 GMT
-      ETag:
-      - W/"1df-OEmfqekeHOVvwG/zgq/j7mJKmsQ"
+      - Tue, 23 Sep 2025 17:23:13 GMT
+      Etag:
+      - W/"2b9-DFGVPONOY09byJpikrEwhZGst9g"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -160,27 +163,26 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/IWM?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VOO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XTTUvDQBAG4Ht/xbLQWwlJa9R6jNAS8aNQPImHaTIkgWQik100iv/dBPEm7woe
-        9rTLw7vz8bQw5mM6xtii9+J0tFfG5sotSWlX3zev3FS1O7AWLI4qnp/EUbpZ2un+c/Ur8SiN49Ic
-        HTkeELRNo80aSdc0diQmH+ZIkJoynSEpY+18SYhIovMEEQ+uZsUZtrAud71Q0WMhuUTCsZGKXnrl
-        AAJLsVOSIiQgIB+UuP1PhEzpvQkI8QWeDCHczjhap0i49W/cnXqvVSAHVDKqqaPAaMawGIfpK13g
-        KzEcrL1nlYHHgAFX7YY1LMCx2DcnpdYR3hEk3PO8Yn/Y9Z+eLJ6/ANaC2CnFBAAA
+        H4sIAAAAAAAAA4XQPQvCMBAG4L2/IgTcSkhq/aijTiKIUJzEITRHEmhTSK8UFf+7lTrKdbjp7h7e
+        u1vC2GssxnjV9gHjg+8YvwaPYFiJGqHj6dQfwFuHF4gVBNQWvoPFRqj1go8D7/SvdIxQ62AoQ4l8
+        SxG/MCcfrGkbSpJilVFSOXh8QpwLJMVSUcxBd47ez8j9M6CbUpC/lYJU9hCb3mhakAV9SNCzQj4J
+        yf0DPWIxhisCAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -194,9 +196,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:22 GMT
-      ETag:
-      - W/"4c5-b5x+LUJL2Tk17h5pypIQmPJe3ag"
+      - Tue, 23 Sep 2025 17:23:13 GMT
+      Etag:
+      - W/"22b-4C+qQF9f4H26zobrlljEgLQOUeM"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
