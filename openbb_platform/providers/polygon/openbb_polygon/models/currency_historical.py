@@ -44,8 +44,8 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: Optional[PositiveInt] = PrivateAttr(default=None)
+    _timespan: Optional[str] = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -158,7 +158,7 @@ class PolygonCurrencyHistoricalFetcher(
 
             for r in results:
                 v = r.get("t") / 1000  # milliseconds to seconds
-                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
+                r["t"] = safe_fromtimestamp(v, tz=timezone("UTC"))  # type: ignore
                 if query._timespan not in [  # pylint: disable=protected-access
                     "second",
                     "minute",

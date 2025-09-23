@@ -221,6 +221,7 @@ class PolygonBalanceSheetFetcher(
 
         base_url = "https://api.polygon.io/vX/reference/financials"
         period = "quarterly" if query.period == "quarter" else query.period
+        query.limit = query.limit or 5
         query_string = get_querystring(
             query.model_dump(by_alias=True), ["ticker", "timeframe"]
         )
