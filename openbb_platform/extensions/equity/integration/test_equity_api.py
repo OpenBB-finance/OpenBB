@@ -1039,7 +1039,7 @@ def test_equity_ownership_share_statistics(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "year": 2023, "period": "q2", "provider": "fmp"}],
+    [{"symbol": "AAPL", "year": 2023, "quarter": 2, "provider": "fmp"}],
 )
 @pytest.mark.integration
 def test_equity_fundamental_transcript(params, headers):

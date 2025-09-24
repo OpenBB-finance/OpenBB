@@ -44,10 +44,10 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
                         + " When not provided, or not available, the most recent will be used.",
                     },
                     {
-                        "paramName": "period",
+                        "paramName": "quarter",
                         "label": "Fiscal Quarter",
                         "description": "Fiscal quarter of the earnings call transcript."
-                        + " When not provided, the latest period available will be used.",
+                        + " When not provided, the latest quarter available will be used.",
                     },
                 ],
                 "$.refetchInterval": False,
@@ -112,28 +112,28 @@ class FMPEarningsCallTranscriptFetcher(
 
         year = query.year if query.year in df_dates.fiscalYear.values else year
 
-        period = int(query.period[1]) if query.period else df_dates.iloc[0].quarter
+        quarter = query.quarter if query.quarter else df_dates.iloc[0].quarter
 
         if (
-            query.period
-            and int(query.period[1])
+            query.quarter
+            and query.quarter
             not in df_dates.query("fiscalYear == @year").quarter.values
         ):
             warnings.warn(
-                f"Period {query.period} not found in available transcripts for {query.symbol} in {year}."
-                + f" Using latest period q{df_dates.query('fiscalYear == @year').iloc[0].quarter} instead."
+                f"Quarter {query.quarter} not found in available transcripts for {query.symbol} in {year}."
+                + f" Using latest quarter q{df_dates.query('fiscalYear == @year').iloc[0].quarter} instead."
             )
 
         url = (
             "https://financialmodelingprep.com/stable/earning-call-transcript?symbol="
-            + f"{query.symbol.upper()}&year={year}&quarter={period}&apikey={api_key}"
+            + f"{query.symbol.upper()}&year={year}&quarter={quarter}&apikey={api_key}"
         )
 
         try:
             return await get_data_one(url, **kwargs)
         except ValueError as e:
             raise OpenBBError(
-                f"No transcript found for {query.symbol} in {year} Q{period}"
+                f"No transcript found for {query.symbol} in {year} Q{quarter}"
                 f". \n Latest available transcript is {df_dates.iloc[0].fiscalYear} Q{df_dates.iloc[0].quarter}."
             ) from e
 
@@ -145,7 +145,7 @@ class FMPEarningsCallTranscriptFetcher(
         if not data:
             raise OpenBBError(
                 ValueError(
-                    f"No data found for {query.symbol} for year {query.year} and period {query.period}."
+                    f"No data found for {query.symbol} for year {query.year} and period {query.quarter}."
                 )
             )
         transcript = data.get("content", "")

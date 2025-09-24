@@ -19,7 +19,7 @@ class EarningsCallTranscriptQueryParams(QueryParams):
     year: Optional[int] = Field(
         default=None, description="Year of the earnings call transcript."
     )
-    period: Optional[Literal["q1", "q2", "q3", "q4"]] = Field(
+    quarter: Optional[Literal[1, 2, 3, 4]] = Field(
         default=None, description="Quarterly period of the earnings call transcript."
     )
 

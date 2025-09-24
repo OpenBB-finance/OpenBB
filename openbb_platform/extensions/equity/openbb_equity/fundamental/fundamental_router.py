@@ -444,7 +444,11 @@ async def historical_splits(
 
 @router.command(
     model="EarningsCallTranscript",
-    examples=[APIEx(parameters={"symbol": "AAPL", "year": 2020, "provider": "fmp"})],
+    examples=[
+        APIEx(
+            parameters={"symbol": "AAPL", "year": 2020, "quarter": 1, "provider": "fmp"}
+        )
+    ],
 )
 async def transcript(
     cc: CommandContext,

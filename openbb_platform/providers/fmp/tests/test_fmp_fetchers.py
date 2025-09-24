@@ -378,7 +378,7 @@ def test_fmp_historical_eps_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_earnings_call_transcript_fetcher(credentials=test_credentials):
     """Test FMP earnings call transcript fetcher."""
-    params = {"symbol": "AAPL", "year": 2025, "quarter": 2}
+    params = {"symbol": "AAPL", "year": 2025, "quarter": 3}
 
     fetcher = FMPEarningsCallTranscriptFetcher()
     result = fetcher.test(params, credentials)

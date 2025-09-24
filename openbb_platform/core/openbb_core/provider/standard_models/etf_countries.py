@@ -4,7 +4,10 @@ from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic import Field, field_validator
 
 
@@ -24,7 +27,7 @@ class EtfCountriesData(Data):
     """ETF Countries Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     country: str = Field(
         description="The country of the exposure.  Corresponding values are normalized percentage points."
