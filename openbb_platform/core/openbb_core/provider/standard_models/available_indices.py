@@ -4,6 +4,9 @@ from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+)
 from pydantic import Field
 
 
@@ -17,8 +20,10 @@ class AvailableIndicesData(Data):
     Returns the list of available indices from a provider.
     """
 
-    symbol: str = Field(description="Ticker symbol of the index.")
-    name: Optional[str] = Field(default=None, description="Name of the index.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    name: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("name", "")
+    )
     exchange: Optional[str] = Field(
         default=None, description="Stock exchange where the index is listed."
     )
