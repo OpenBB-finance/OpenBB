@@ -120,8 +120,6 @@ class FMPCalendarEarningsFetcher(
             urls.append(url)
             current_start = chunk_end + timedelta(days=1)
 
-        print(urls)
-
         # Get data from all URLs
         all_data: list = await amake_requests(
             urls, response_callback=response_callback, **kwargs
