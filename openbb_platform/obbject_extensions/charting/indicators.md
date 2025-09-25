@@ -17,15 +17,13 @@ keywords:
 - PyWry
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Indicators - OpenBB Charting - Extensions | OpenBB Platform Docs" />
-
 ## Introduction
 
-Select indicators (technical) can be added to a chart where the data is OHLC+V prices over time, and the data is for one symbol only.
+Select indicators (technical) can be added to a chart where the data is OHLC+V
+prices over time, and the data is for one symbol only.
 They are meant as quick visualizations, and a way to build more complex charts.
-As starting points, they can be refined to perfection by manipulating the figure object directly.
+As starting points, they can be refined to perfection by manipulating the figure
+object directly.
 
 ```python
 from datetime import datetime, timedelta
@@ -57,7 +55,8 @@ The object returned is a Pydantic model where each indicator is field.
 If you don't catch it, it will print as a docstring to the console.
 
 :::danger
-Some indicators, like RSI and MACD, create subplots. Only 4 subplots (not including the main candles + volume) can be created within the same view.
+Some indicators, like RSI and MACD, create subplots. Only 4 subplots (not
+including the main candles + volume) can be created within the same view.
 :::
 
 ```python
@@ -358,7 +357,8 @@ Stoch:
         The slow K period, by default 3.
 ```
 
-The model can be converted to a dictionary and then passed through the `indicators` params.
+The model can be converted to a dictionary and then passed through the
+`indicators` params.
 
 The chart below is built from the same object as the one above.
 
@@ -380,5 +380,6 @@ data.charting.to_chart(**chart_params)
 ![indicators2](https://github.com/OpenBB-finance/OpenBB/assets/85772166/76c06aff-a568-4b7f-80d4-c58a73c0f1d7)
 
 :::tip
-Data can be exported directly from the chart as a CSV. Use the button at the bottom-right of the mode bar.
+Data can be exported directly from the chart as a CSV. Use the button at the
+bottom-right of the mode bar.
 :::

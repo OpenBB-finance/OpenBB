@@ -38,7 +38,8 @@
     - TRXUSDC
     - UNIUSDC
     - XRPUSDC
-  - Additional symbols include all Deribit instrument names of current open contracts for BTC, ETH, and PAXG futures.
+  - Additional symbols include all Deribit instrument names of current open
+    contracts for BTC, ETH, and PAXG futures.
 - obb.derivatives.futures.instruments
   - Reference data for all current futures instruments.
 - obb.derivatives.futures.info

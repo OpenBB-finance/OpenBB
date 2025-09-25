@@ -1,6 +1,7 @@
 # Congress.gov Provider
 
-This provider integrates with the Congress.gov API to provide access to U.S. legislative data and text.
+This provider integrates with the Congress.gov API to provide access to U.S.
+legislative data and text.
 
 ## Features
 
@@ -25,7 +26,8 @@ This provider integrates with the Congress.gov API to provide access to U.S. leg
 With this extension installed, along with `openbb-platform-api`,
 an OpenBB Workspace App is added to your backend.
 
-The application provides a PDF viewer, bill summaries and metadata as rendered Markdown,
+The application provides a PDF viewer, bill summaries and metadata as rendered
+Markdown,
 and a linked query tool for finding and reading legislation.
 
 ## Installation
@@ -36,7 +38,9 @@ This provider is part of the OpenBB Platform. Install it using:
 pip install openbb-congress-gov
 ```
 
-The Workspace Application can be launched as a standalone, with only `openbb-congress-gov` and `openbb-platform-api` installed. Launch it from the terminal command line with:
+The Workspace Application can be launched as a standalone, with only
+`openbb-congress-gov` and `openbb-platform-api` installed. Launch it from the
+terminal command line with:
 
 ```sh
 openbb-api
@@ -46,9 +50,10 @@ openbb-api
 
 ### Congress.gov API Key
 
-To use the Congress Bills and Bill Summaries endpoints, you need a Congress.gov API key:
+To use the Congress Bills and Bill Summaries endpoints, you need a Congress.gov
+API key:
 
-1. Go to https://api.congress.gov/sign-up/
+1. Go to <https://api.congress.gov/sign-up/>
 2. Fill out the registration form
 3. Agree to the terms of service
 4. You will receive an API key via email
@@ -100,7 +105,8 @@ Out[2]:
 
 ### Bill Text
 
-The `bill_text` endpoint is a POST request from the API, and expects a dictionary in the body of the request.
+The `bill_text` endpoint is a POST request from the API, and expects a
+dictionary in the body of the request.
 
 ```json
 {
@@ -122,11 +128,13 @@ bills = obb.uscongress.bills(limit=10)
 
 ### Getting Bill Summaries
 
-Reference individual bills by either their base URL (returned in the `obb.uscongress.bills` response),
+Reference individual bills by either their base URL (returned in the
+`obb.uscongress.bills` response),
 or by the concatenated bill number.
 
 ```python
 bill_info = obb.uscongress.bill_info(bill_url="119/hr/1")
 ```
 
-See the function signatures and docstrings for parameters and detailed descriptions.
+See the function signatures and docstrings for parameters and detailed
+descriptions.

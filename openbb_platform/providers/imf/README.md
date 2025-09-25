@@ -12,9 +12,10 @@ pip install openbb-imf
 
 ## Implementation
 
-The extension utilizes the JSON RESTful Web Service ((https://datahelp.imf.org/knowledgebase/articles/630877-data-services)[https://datahelp.imf.org/knowledgebase/articles/630877-data-services])
+The extension utilizes the [JSON RESTful Web Service](https://datahelp.imf.org/knowledgebase/articles/630877-data-services)
 
-No authorization is required to use, but IP addresses are bound by the limitations described in the link above.
+No authorization is required to use, but IP addresses are bound by the
+limitations described in the link above.
 
 ## Coverage
 
@@ -25,10 +26,12 @@ No authorization is required to use, but IP addresses are bound by the limitatio
   - Port Watch
 
 Coverage:
-  - All IRFCL tables.
-  - Individual, or multiple, time series from single or multiple countries.
-  - Core and Encouraged Set tables, plus all individual underlying series.
-  - Daily Port and Chokepoints data, with charts for metadata and average annual statistics.
+
+- All IRFCL tables.
+- Individual, or multiple, time series from single or multiple countries.
+- Core and Encouraged Set tables, plus all individual underlying series.
+- Daily Port and Chokepoints data, with charts for metadata and average annual
+  statistics.
 
 ### Endpoints
 

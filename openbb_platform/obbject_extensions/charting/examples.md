@@ -18,15 +18,13 @@ keywords:
 - figure
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Examples - OpenBB Charting - Extensions | OpenBB Platform Docs" />
-
 ## Overview
 
-This page will walk through creating different charts using the `openbb-charting` extension.
+This page will walk through creating different charts using the
+`openbb-charting` extension.
 The perspective for this content is from the Python Interface,
-and the examples will assume that the OpenBB Platform is installed with all optional packages.
+and the examples will assume that the OpenBB Platform is installed with all
+optional packages.
 
 ```python
 from datetime import datetime, timedelta
@@ -37,11 +35,13 @@ from openbb import obb
 
 The historical (equity) prices can be requested for multiple symbols.
 The extension will attempt to handle variations accordingly.
-By default, more than three symbols will draw the chart as cumulative returns from the beginning of the series.
+By default, more than three symbols will draw the chart as cumulative returns
+from the beginning of the series.
 
 ### Default View
 
-The tickers below are a collection of State Street Global Advisors SPDR funds, representing S&P 500 components.
+The tickers below are a collection of State Street Global Advisors SPDR funds,
+representing S&P 500 components.
 The data is looking back five years.
 
 ```python
@@ -62,7 +62,9 @@ SPDRS = [
     "XLRE",
 ]
 start_date = (datetime.now() - timedelta(weeks=52*5)).date()
-spdrs = obb.equity.price.historical(SPDRS, start_date=start_date, provider="yfinance", chart=True)
+spdrs = obb.equity.price.historical(
+    SPDRS, start_date=start_date, provider="yfinance", chart=True
+)
 
 spdrs.show()
 ```
@@ -71,8 +73,10 @@ spdrs.show()
 
 ### Redraw as YTD
 
-The `charting` attribute of the command output has methods for creating the chart again.
-The `data` parameter allows modifications to the data before creating the figure.
+The `charting` attribute of the command output has methods for creating the
+chart again.
+The `data` parameter allows modifications to the data before creating the
+figure.
 In this example, the length of the data is trimmed to the beginning of the year.
 
 ```python
@@ -88,7 +92,8 @@ This replaces the chart that was already created.
 
 ## Price Performance Bar Chart
 
-The `obb.equity.price.performance` endpoint will create a bar chart over intervals.
+The `obb.equity.price.performance` endpoint will create a bar chart over
+intervals.
 
 ```python
 price_performance = obb.equity.price.performance(SPDRS, chart=True)
@@ -99,7 +104,8 @@ price_performance.show()
 
 ### Create Bar Chart
 
-This example uses the `create_bar_chart()` method, which does not replace the existing chart, in `price_performance.chart`.
+This example uses the `create_bar_chart()` method, which does not replace the
+existing chart, in `price_performance.chart`.
 It isolates the one-month performance and orients the layout as horizontal.
 
 ```python
@@ -118,7 +124,8 @@ price_performance.charting.create_bar_chart(
 
 ## Create Your Own
 
-This example analyzes the share volume turnover of the S&P 500 Energy Sector constituents, year-to-date.
+This example analyzes the share volume turnover of the S&P 500 Energy Sector
+constituents, year-to-date.
 
 ```python
 symbols = [
@@ -146,7 +153,9 @@ symbols = [
     'CTRA',
     'APA',
 ]
-data = obb.equity.price.historical(symbols, start_date="2025-01-01", provider="yfinance")
+data = obb.equity.price.historical(
+    symbols, start_date="2025-01-01", provider="yfinance"
+)
 create_bar_chart = data.charting.create_bar_chart
 volume = data.to_df().groupby("symbol").sum()["volume"]
 shares = obb.equity.profile(

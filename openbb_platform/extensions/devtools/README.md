@@ -1,7 +1,8 @@
 # The OpenBB DevTools Extension
 
-This extension aggregates the dependencies that facilitate a nice development experience
-for OpenBB. It does not contain any code itself, but rather pulls in the following dependencies:
+This extension aggregates the dependencies that facilitate a nice development
+experience for OpenBB. It does not contain any code itself, but rather pulls
+in the following dependencies:
 
 - Linters (ruff, pylint, mypy)
 - Code formatters (black)
@@ -13,7 +14,7 @@ for OpenBB. It does not contain any code itself, but rather pulls in the followi
 
 ## Installation
 
-The extension is included into the dev_install.py script.
+The extension is included with the dev_install.py script.
 
 Standalone installation:
 

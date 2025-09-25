@@ -1,6 +1,7 @@
 # OpenBB Fama-French Extension
 
-This extension implements the Ken French data library (Source: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html)
+This extension implements the Ken French data library (Source:
+<https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html>)
 as an OpenBB Platform Provider and Router extension.
 
 ## Installation
@@ -32,7 +33,8 @@ Out[2]:
 
 ## Usage
 
-The most common use will be for retrieving the 3 and 5-factor models, default state is 3-factors, at a monthly interval, for the United States.
+The most common use will be for retrieving the 3 and 5-factor models, default
+state is 3-factors, at a monthly interval, for the United States.
 
 ```python
 from openbb import obb
@@ -46,7 +48,8 @@ Or, by region and factor:
 momentum = obb.famafrench.factors(factor="momentum", region="europe")
 ```
 
-Metadata corresponding to the file downloaded is available under, `extra["results_metadata"]`, of the results object.
+Metadata corresponding to the file downloaded is available under,
+`extra["results_metadata"]`, of the results object.
 
 ```python
 factors.extra["results_metadata"]

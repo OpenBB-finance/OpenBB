@@ -1,6 +1,8 @@
 # OpenBB FRED Provider
 
-This extension integrates the [FRED](https://fred.stlouisfed.org/docs/api/fred/) data provider into the OpenBB Platform.
+This extension integrates the
+[FRED](https://fred.stlouisfed.org/docs/api/fred/) data provider into the OpenBB
+Platform.
 
 ## Installation
 
@@ -10,4 +12,5 @@ To install the extension:
 pip install openbb-fred
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
+Documentation available
+[here](https://docs.openbb.co/platform/developer_guide/misc/contributing).

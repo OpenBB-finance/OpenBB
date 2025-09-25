@@ -1,6 +1,7 @@
 # OpenBB EconDB Provider
 
-This extension integrates the [EconDB](https://econdb.com/) data provider into the OpenBB Platform.
+This extension integrates the [EconDB](https://econdb.com/) data provider into
+the OpenBB Platform.
 
 ## Installation
 
@@ -10,4 +11,5 @@ To install the extension:
 pip install openbb-econdb
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
+Documentation available
+[here](https://docs.openbb.co/platform/developer_guide/misc/contributing).

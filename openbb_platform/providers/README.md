@@ -1,6 +1,7 @@
 # Providers
 
-In this folder you can find the providers that were created or are supported by OpenBB.
+In this folder you can find the providers that were created or are supported by
+OpenBB.
 
 ## Recommended structure
 
@@ -24,6 +25,7 @@ openbb_platform
                 └───...
 ```
 
-The models define the data structures that are used to query the provider endpoints and store the response data.
+The models define the data structures that are used to query the provider
+endpoints and store the response data.
 
 See [CONTRIBUTING file](../CONTRIBUTING.md) for more details

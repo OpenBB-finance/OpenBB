@@ -1,6 +1,7 @@
 # OpenBB EIA Provider Extension
 
-This module integrates the [EIA](https://eia.gov) data provider into the OpenBB Platform.
+This module integrates the [EIA](https://eia.gov) data provider into the OpenBB
+Platform.
 
 ## Installation
 
@@ -26,11 +27,13 @@ pip install -e .
 
 ## Authorization
 
-Functions calling the EIA's API require free registration and an API key, obtained [here](https://www.eia.gov/opendata/register.php).
+Functions calling the EIA's API require free registration and an API key,
+obtained [here](https://www.eia.gov/opendata/register.php).
 
 ### OpenBB Hub
 
-Add the key as "eia_api_key" in the OpenBB Hub Credentials page, [here](https://my.openbb.co/app/platform/credentials)
+Add the key as "eia_api_key" in the OpenBB Hub Credentials page,
+[here](https://my.openbb.co/app/platform/credentials)
 
 ### `user_settings.json`
 
@@ -46,7 +49,8 @@ Add it to the credentials section of `~/.openbb_platform/user_settings.json`
 
 ### Current Python Session
 
-The credential can be added for the current session only, after importing the OpenBB package.
+The credential can be added for the current session only, after importing the
+OpenBB package.
 
 ```python
 from openbb import obb
@@ -63,11 +67,18 @@ obb.user.credentials.eia_api_key = "REPLACE_WITH_YOUR_KEY"
 
 ### Weekly Petroluem Status Report
 
-The WPSR is comprised of thirteen (excludes discontinued series) high-level categories with each containing a subset of tables. Data is from the static Excel files published [here](https://www.eia.gov/petroleum/supply/weekly/), and each file represents a single category.
+The WPSR is comprised of thirteen (excludes discontinued series) high-level
+categories with each containing a subset of tables. Data is from the static
+Excel files published
+[here](https://www.eia.gov/petroleum/supply/weekly/), and each file represents a
+single category.
 
-All data from a single category is returned by supplying "all" to the `table` parameter of the WPSR endpoint.
+All data from a single category is returned by supplying "all" to the `table`
+parameter of the WPSR endpoint.
 
-Tables from the WPSR are returned in a flat format in the same order as presented in the Excel files. The response is suitable for pivot tables and SQL storage.
+Tables from the WPSR are returned in a flat format in the same order as
+presented in the Excel files. The response is suitable for pivot tables and SQL
+storage.
 
 Category choices are defined as:
 
@@ -87,7 +98,9 @@ Category choices are defined as:
 
 ### Short Term Energy Outlook
 
-The Short Term Energy Outlook (STEO) is curated by table, and relies on the EIA V2 API. Tables are defined by their alphanumeric code, and return in the same format as the WPSR tables.
+The Short Term Energy Outlook (STEO) is curated by table, and relies on the EIA
+V2 API. Tables are defined by their alphanumeric code, and return in the same
+format as the WPSR tables.
 
     01: US Energy Markets Summary
     02: Nominal Energy Prices

@@ -1,6 +1,7 @@
 # OpenBB Nasdaq Provider
 
-This extension integrates the [Nasdaq](https://www.nasdaq.com) data provider into the OpenBB Platform.
+This extension integrates the [Nasdaq](https://www.nasdaq.com) data provider into
+the OpenBB Platform.
 
 ## Installation
 
@@ -23,7 +24,9 @@ The following endpoints are covered by this extension:
 - `obb.equity.fundamental.dividend`
 - `obb.equity.fundamental.filings`
 
-Router extensions are required (`openbb-economy` & `openbb-equity`) to populate endpoints, but fetchers can be used independent of the Python and API interfaces.
+Router extensions are required (`openbb-economy` & `openbb-equity`) to populate
+endpoints, but fetchers can be used independent of the Python and API
+interfaces.
 
 ```python
 from openbb_nasdaq import nasdaq_provider
@@ -45,7 +48,8 @@ nasdaq_provider.fetcher_dict
 
 ## OpenBB Workspace App
 
-This package includes a standalone Workspace application for viewing market calendars and company filings.
+This package includes a standalone Workspace application for viewing market
+calendars and company filings.
 
 Launch it from the command line, with the environment active, by entering:
 
@@ -53,7 +57,8 @@ Launch it from the command line, with the environment active, by entering:
 openbb-api --app openbb_nasdaq.app:main --factory
 ```
 
-This will start the FastAPI application via Uvicorn and serve the configuration files to Workspace when added as a backend data source.
+This will start the FastAPI application via Uvicorn and serve the configuration
+files to Workspace when added as a backend data source.
 
 To see all the launch arguments, use:
 
@@ -61,7 +66,8 @@ To see all the launch arguments, use:
 openbb-api --help
 ```
 
-The application is served by a factory function, and the FastAPI instance can be utilized by calling the `main` function.
+The application is served by a factory function, and the FastAPI instance can be
+utilized by calling the `main` function.
 
 ```python
 from openbb_nasdaq.app import main
@@ -73,4 +79,5 @@ app = main()
 
 OpenBB Platform documentation is available [here](https://docs.openbb.co/platform).
 
-OpenBB Workspace documentation is available [here](https://docs.openbb.co/workspace).
+OpenBB Workspace documentation is available
+[here](https://docs.openbb.co/workspace).

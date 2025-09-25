@@ -19,35 +19,51 @@ keywords:
 - PyWry
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="OpenBB Charting - Extensions | OpenBB Platform Docs" />
-
 ## Overview
 
-The `openbb-charting` extension provides elements for building and displaying interactive charts, tables, dashboards, and more, directly from the OpenBB Platform's Python Interface and FAST API.
+The `openbb-charting` extension provides elements for building and displaying
+interactive charts, tables, dashboards, and more, directly from the OpenBB
+Platform's Python Interface and FAST API.
 
-It allows users to create a custom view, without any previous experience working with Plotly, from any response served by the OpenBB Platform.
+It allows users to create a custom view, without any previous experience working
+with Plotly, from any response served by the OpenBB Platform.
 
-The Python Interface includes a custom [PyWry](https://github.com/OpenBB-finance/pywry) backend for displaying any content, in a WebKit HTML window served over `localhost`. In an IDE setting, they will be rendered inline.
+The Python Interface includes a custom
+[PyWry](https://github.com/OpenBB-finance/pywry) backend for displaying any
+content, in a WebKit HTML window served over `localhost`. In an IDE setting,
+they will be rendered inline.
 
-To install, follow the instructions [here](installation). The sections below provide a general explanation of the extension.
+To install, follow the instructions [here](installation). The sections below
+provide a general explanation of the extension.
 
 ## How Does It Work?
 
-It works by extending the `OBBject` class with a new attribute, `charting`. When it is installed, every response from the OpenBB Platform will be equipped with these tools.
+It works by extending the `OBBject` class with a new attribute, `charting`. When
+it is installed, every response from the OpenBB Platform will be equipped with
+these tools.
 
-For functions that have pre-defined views, it serves as an intermediary between the user request and the response, activated when `chart=True`. When a chart is created, it will populate the existing, `chart`, attribute of the `OBBject`. This is where it is served by the FAST API from the function request. In the Python Interface, charts can be generated post-request, regardless of `chart=True`.
+For functions that have pre-defined views, it serves as an intermediary between
+the user request and the response, activated when `chart=True`. When a chart is
+created, it will populate the existing, `chart`, attribute of the `OBBject`.
+This is where it is served by the FAST API from the function request. In the
+Python Interface, charts can be generated post-request, regardless of
+`chart=True`.
 
-The `chart` attribute in the OBBject contains three items, responses from the API have two:
+The `chart` attribute in the OBBject contains three items, responses from the
+API have two:
 
-- `fig`: The OpenBBFigure object - an extended Plotly GraphObjects class. Not included in the API response.
+- `fig`: The OpenBBFigure object - an extended Plotly GraphObjects class. Not
+  included in the API response.
 - `content`: The Plotly JSON representation of the chart - Returned to the API.
-- `format`: The format of the chart - 'plotly' is currently the only charting library.
+- `format`: The format of the chart - 'plotly' is currently the only charting
+  library.
 
-There is one OBBject class method, `show()`, which will display the contents of the `chart` attribute, if populated.
+There is one OBBject class method, `show()`, which will display the contents of
+the `chart` attribute, if populated.
 
-The new `charting` attribute that binds to the OBBject also has a `show()` method.  This differs in that it overwrites the existing chart, effectively a 'reset' for the view.
+The new `charting` attribute that binds to the OBBject also has a `show()`
+method.  This differs in that it overwrites the existing chart, effectively a
+'reset' for the view.
 
 The extension has a docstring, and it lists the class methods within `charting`.
 
@@ -81,7 +97,8 @@ create_bar_chart
 ```
 
 :::note
-When creating a chart directly from the OpenBB Platform endpoint, chart parameters must be passed as a nested dictionary under the name, `chart_params`.
+When creating a chart directly from the OpenBB Platform endpoint, chart
+parameters must be passed as a nested dictionary under the name, `chart_params`.
 
 ```python
 chart_params = dict(
@@ -103,7 +120,8 @@ data = obb.equity.price.historical(**params)
 `chart_params` are sent in the body of the request when using the API.
 :::
 
-Passing only `chart=True` will return a default view which can be modified and drawn again post-request, via the `OBBject`.
+Passing only `chart=True` will return a default view which can be modified and
+drawn again post-request, via the `OBBject`.
 
 ```console
 OBBject
@@ -124,13 +142,21 @@ data.show()
 
 ### No Render
 
-The charts can be created without opening the PyWry window, and this is the default behaviour when `chart=True`.
-With the `charting.show()` and `charting.to_chart()` methods, the default is `render=True`.
-Setting as `False` will return the chart to itself, populating the `chart` attribute of OBBject.
+The charts can be created without opening the PyWry window, and this is the
+default behaviour when `chart=True`.
+With the `charting.show()` and `charting.to_chart()` methods, the default is
+`render=True`.
+Setting as `False` will return the chart to itself, populating the `chart`
+attribute of OBBject.
 
 ## What Endpoints Have Charts?
 
-The OpenBB Platform router, open_api.json, function signatures, and documentation are all generated based on your specific configuration. When the `openbb-charting` extension is installed, any function found in the "[charting_router](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)" adds `chart: bool = False` to the command on build. For example, `obb.index.price.historical?`
+The OpenBB Platform router, open_api.json, function signatures, and
+documentation are all generated based on your specific configuration. When the
+`openbb-charting` extension is installed, any function found in the
+"[charting_router](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)"
+adds `chart: bool = False` to the command on build. For example,
+`obb.index.price.historical?`
 
 ```python
 Signature:
@@ -144,8 +170,11 @@ obb.index.price.historical(
 
 ### Charting Functions
 
-The `charting` attribute of every command output has methods for identifying the charting functions and parameters.
-While able to serve JSON-serializable charts, the `openbb-charting` extension is best-suited for use with the Python Interface. Much of the functionality is realized post-request.
+The `charting` attribute of every command output has methods for identifying the
+charting functions and parameters.
+While able to serve JSON-serializable charts, the `openbb-charting` extension is
+best-suited for use with the Python Interface. Much of the functionality is
+realized post-request.
 
 Examine the extension by returning any command at all.
 
@@ -180,10 +209,12 @@ data.charting.functions()
 ```
 
 :::tip
-The list above should, as shown here, should not be considered as the source of truth. It's just a sample.
+The list above should, as shown here, should not be considered as the source of
+truth. It's just a sample.
 :::
 
-If the `OBBject` in question has a dedicated charting function associated with it, parameters are detailed by the `get_params()` method.
+If the `OBBject` in question has a dedicated charting function associated with
+it, parameters are detailed by the `get_params()` method.
 
 ```console
 EquityPriceHistoricalChartQueryParams
@@ -236,7 +267,10 @@ EquityPriceHistoricalChartQueryParams
             )
 ```
 
-Not all commands will have the same `chart_params`, and some less than others, but it is always possible to redraw the chart with a different combination post-request. Here's what the default chart is from the output of the command above.
+Not all commands will have the same `chart_params`, and some less than others,
+but it is always possible to redraw the chart with a different combination
+post-request. Here's what the default chart is from the output of the command
+above.
 
 If `chart=True` was not specified, it will need to be created.
 
@@ -246,7 +280,8 @@ data.charting.to_chart()
 
 ![obb.equity.price.historical()](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9231c455-ee1b-47a8-a627-b0034ea52ecd)
 
-The extension recognized that multiple symbols were within the object, and made a determination to display cumulative returns by default.
+The extension recognized that multiple symbols were within the object, and made
+a determination to display cumulative returns by default.
 
 A candlestick chart will draw only when there is one symbol in the data.
 
@@ -264,7 +299,9 @@ obb.equity.price.historical(
 
 ## Endpoints Without Charts
 
-Most functions do not have dedicated charts. However, it's still possible to generate one automatically. Using the `data` above, we can try passing it through a quantitative analysis command.
+Most functions do not have dedicated charts. However, it's still possible to
+generate one automatically. Using the `data` above, we can try passing it
+through a quantitative analysis command.
 
 ```python
 data = obb.equity.price.historical(
@@ -282,12 +319,14 @@ qa.charting.show(title="XLK Rolling 21 Day Standard Deviation")
 ## Charts From Any Data
 
 There are methods for creating a generic chart from any external data.
-They will bypass any data contained in the parent object, unless specifically fed into itself.
+They will bypass any data contained in the parent object, unless specifically
+fed into itself.
 
 - charting.create_bar_chart()
 - charting.create_line_chart()
 
-They can also be used as standalone components by initializing an empty instance of the OBBject class.
+They can also be used as standalone components by initializing an empty instance
+of the OBBject class.
 
 ```python
 from openbb import obb
@@ -333,7 +372,8 @@ OpenBBFigure
 
 ## Tables
 
-The `openbb-charting` extension is equipped with interactive tables, utilizing the React framework. They are displayed by using the `table` method.
+The `openbb-charting` extension is equipped with interactive tables, utilizing
+the React framework. They are displayed by using the `table` method.
 
 ```python
 data = obb.equity.price.quote("AAPL,MSFT,GOOGL,META,TSLA,AMZN", provider="yfinance")
@@ -342,7 +382,8 @@ data.charting.table()
 
 ![Interactive Tables](https://github.com/OpenBB-finance/OpenBB/assets/85772166/77f5f812-b933-4ced-929c-c1e39b2a3eed)
 
-External data can also be supplied, providing an opportunity to filter or apply Pandas operations before display.
+External data can also be supplied, providing an opportunity to filter or apply
+Pandas operations before display.
 
 ```python
 new_df = df.to_df().T
@@ -355,5 +396,6 @@ data.charting.table(data=new_df)
 ![Tables From External Data](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d02f8c34-e1d1-4001-a73e-d3b948a4c5c1)
 
 :::important
-This does not alter the contents of the original object, the displayed data is a copy.
+This does not alter the contents of the original object, the displayed data is a
+copy.
 :::

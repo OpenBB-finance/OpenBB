@@ -1,6 +1,7 @@
 # OpenBB OECD Provider
 
-This extension integrates the [OECD](https://stats.oecd.org) data provider into the OpenBB Platform.
+This extension integrates the [OECD](https://stats.oecd.org) data provider into
+the OpenBB Platform.
 
 ## Installation
 
@@ -10,4 +11,5 @@ To install the extension:
 pip install openbb-oecd
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
+Documentation available
+[here](https://docs.openbb.co/platform/developer_guide/misc/contributing).
