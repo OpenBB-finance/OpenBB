@@ -77,10 +77,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Check out the code
-      - name: Lint Code Base
-        uses: docker://avtodev/markdown-lint:v1
+
+      - name: Lint Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v16
         with:
-          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
+          globs: |
+            ./*.md
+            ./changelogs/*.md
+            ./openbb_platform/**/*.md
 
   json-yaml-validate:
     name: JSON Check
