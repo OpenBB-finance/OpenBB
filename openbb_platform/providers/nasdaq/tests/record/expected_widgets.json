@@ -6,6 +6,10 @@
       "type": "multi_file_viewer",
       "searchCategory": "Open Document",
       "widgetId": "nasdaq_company_filings",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "open_document"
+      },
       "params": [
         {
           "paramName": "symbol",
@@ -234,6 +238,10 @@
       "type": "table",
       "searchCategory": "Equity",
       "widgetId": "nasdaq_earnings_calendar",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "earnings_calendar"
+      },
       "params": [
         {
           "label": "Start Date",
@@ -384,6 +392,10 @@
       "type": "table",
       "searchCategory": "Equity",
       "widgetId": "nasdaq_dividends_calendar",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "dividend_calendar"
+      },
       "params": [
         {
           "label": "Start Date",
@@ -505,6 +517,10 @@
       "type": "table",
       "searchCategory": "Equity",
       "widgetId": "nasdaq_historical_dividends",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "historical_dividends"
+      },
       "params": [
         {
           "label": "Symbol",
@@ -615,6 +631,10 @@
       "type": "table",
       "searchCategory": "Equity",
       "widgetId": "nasdaq_ipo_calendar",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "ipo_calendar"
+      },
       "params": [
         {
           "label": "Start Date",
@@ -778,6 +798,10 @@
       "type": "table",
       "searchCategory": "Equity",
       "widgetId": "nasdaq_economic_calendar",
+      "mcp_tool": {
+        "mcp_server": "Open Data Platform",
+        "tool_id": "economic_calendar"
+      },
       "params": [
         {
           "label": "Start Date",
