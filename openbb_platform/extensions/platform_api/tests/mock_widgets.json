@@ -6,6 +6,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_sloos_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_survey_sloos"
+        },
         "params": [
             {
                 "label": "Start Date",
@@ -183,6 +187,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_university_of_michigan_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_survey_university_of_michigan"
+        },
         "params": [
             {
                 "label": "Start Date",
@@ -343,6 +351,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_survey_economic_conditions_chicago"
+        },
         "params": [
             {
                 "label": "Start Date",
@@ -551,6 +563,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_survey_manufacturing_outlook_texas"
+        },
         "params": [
             {
                 "label": "Start Date",
@@ -802,6 +818,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_survey_nonfarm_payrolls"
+        },
         "params": [
             {
                 "label": "Date",
@@ -992,6 +1012,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_cpi_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_cpi"
+        },
         "params": [
             {
                 "label": "Country",
@@ -1329,6 +1353,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_balance_of_payments_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_balance_of_payments"
+        },
         "params": [
             {
                 "label": "Country",
@@ -1736,6 +1764,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_search_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_fred_search"
+        },
         "params": [
             {
                 "label": "Query",
@@ -2018,6 +2050,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_series_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_fred_series"
+        },
         "params": [
             {
                 "label": "Symbol",
@@ -2234,6 +2270,10 @@
         "type": "chart",
         "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_fred_series"
+        },
         "params": [
             {
                 "label": "Symbol",
@@ -2460,6 +2500,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_release_table_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_fred_release_table"
+        },
         "params": [
             {
                 "label": "Release ID",
@@ -2603,6 +2647,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_fred_regional_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_fred_regional"
+        },
         "params": [
             {
                 "label": "Symbol",
@@ -2927,6 +2975,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_retail_prices_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_retail_prices"
+        },
         "params": [
             {
                 "label": "Item",
@@ -3132,6 +3184,10 @@
         "type": "table",
         "searchCategory": "Economy",
         "widgetId": "economy_pce_fred_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "economy_pce"
+        },
         "params": [
             {
                 "label": "Date",
@@ -3293,6 +3349,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_cik_map_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_cik_map"
+        },
         "params": [
             {
                 "label": "Symbol",
@@ -3353,6 +3413,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_institutions_search_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_institutions_search"
+        },
         "params": [
             {
                 "label": "Query",
@@ -3419,6 +3483,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_schema_files_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_schema_files"
+        },
         "params": [
             {
                 "label": "Query",
@@ -3487,6 +3555,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_symbol_map_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_symbol_map"
+        },
         "params": [
             {
                 "label": "Query",
@@ -3548,6 +3620,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_rss_litigation_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_rss_litigation"
+        },
         "params": [
             {
                 "paramName": "provider",
@@ -3618,6 +3694,10 @@
         "type": "table",
         "searchCategory": "Regulators",
         "widgetId": "regulators_sec_sic_search_sec_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "regulators_sec_sic_search"
+        },
         "params": [
             {
                 "label": "Query",
@@ -3691,6 +3771,10 @@
         "type": "table",
         "searchCategory": "Form Widget",
         "widgetId": "form_widget_custom_obb",
+        "mcp_tool": {
+            "mcp_server": "Open Data Platform",
+            "tool_id": "form_widget"
+        },
         "params": [
             {
                 "label": "Some Param",
