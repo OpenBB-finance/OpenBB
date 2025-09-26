@@ -14,6 +14,8 @@ concurrency:
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
         fail-fast: false
 
@@ -36,7 +38,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('cli/poetry.lock') }}
+          key: ${{ runner.os }}-pip-${{ matrix.python_version }}-${{ hashFiles('cli/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
