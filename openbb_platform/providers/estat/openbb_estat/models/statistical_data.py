@@ -54,10 +54,6 @@ class EstatStatisticalDataQueryParams(SeriesQueryParams):
         default="Y",
         description="Include explanations: 'Y' or 'N'.",
     )
-    data_format: Optional[str] = Field(
-        default="JSON",
-        description="Response format: 'JSON', 'XML', or 'CSV'.",
-    )
 
 
 class EstatStatisticalData(SeriesData):

@@ -2,29 +2,11 @@
 
 ## Overview
 
-The e-Stat provider integrates Japan's official government statistical portal API into OpenBB, providing access to comprehensive economic, demographic, and social statistics from Japanese government ministries and agencies.
+The e-Stat provider integrates Japan's official government statistical portal API into OpenBB. [e-Stat](https://www.e-stat.go.jp/en) is operated by the Ministry of Internal Affairs and Communications and provides access to 28+ statistical databases including population census, labor surveys, economic indicators, trade statistics, and regional data.
 
 **Attribution Notice**: This service uses API functions from e-Stat, however its contents are not guaranteed by government.
 
-## What is e-Stat?
-
-[e-Stat](https://www.e-stat.go.jp/en) is the official portal site of Japanese government statistics, operated by the Ministry of Internal Affairs and Communications. It provides access to statistical data from all Japanese government ministries and agencies in a centralized location.
-
-### Available Data Categories
-
-The e-Stat API provides access to 28+ statistical databases including:
-
-- **Population & Households**: Population Census, Vital Statistics, Population Estimates
-- **Labor & Wages**: Labour Force Survey, Employment Status Survey, Basic Wage Structure
-- **Economic Data**: Economic Census, Consumer Price Index, Retail Price Survey
-- **Trade Statistics**: Import/Export data, Trade indices
-- **Industry**: Industrial Production Index, Manufacturing data
-- **Regional Data**: Prefecture and municipality-level statistics
-- **Social Statistics**: Education, Health, Housing, and more
-
 ## Setup Instructions
-
-To use the e-Stat provider, you need to register for a free API key:
 
 ### Step 1: Register for e-Stat Account
 
@@ -46,76 +28,136 @@ To use the e-Stat provider, you need to register for a free API key:
 ![e-Stat Application ID Dashboard](./appId.png)
 *Example of the API functions dashboard showing Application IDs*
 
-### Step 3: Configure Your Personal API Key
+### Step 3: Configure Your API Key
 
 ```python
 from openbb import obb
 
-# Override the default with your personal API key
+# Set your API key (required)
 obb.account.credentials.estat_api_key = "your_application_id_here"
 ```
 
-## Usage Examples
-
-### Basic Statistical Data Query
+## Quick Start
 
 ```python
-from openbb import obb
-
-# First, set your API key (required)
-obb.account.credentials.estat_api_key = "your_application_id_here"
-
 # Get Japanese population census data
 data = obb.economy.statistical_data(
     provider="estat",
     symbol="0003433219",  # Population Census dataset ID
 )
 
-# Get data with specific parameters
+# Get data with filters
 data = obb.economy.statistical_data(
     provider="estat",
     symbol="0003433219",
-    area_code="13000",  # Tokyo
+    area_code="13000",    # Tokyo Prefecture
     start_date="2020-01",
-    end_date="2023-12"
+    end_date="2020-12"
 )
 ```
 
-### Query Parameters
+## Finding Your Data
 
-- `symbol` / `stats_data_id`: Statistical dataset ID (required)
-- `stats_code`: Statistical survey code (e.g., "00200521" for Population Census)
-- `area_code`: Area code for specific regions
-- `category_code`: Category filter
+### Understanding the Data Structure
+
+Think of e-Stat as Japan's official government data library. To use it effectively, understand these key concepts:
+
+**Dataset IDs** (like `0003433219`): Unique identifiers for each data collection. You'll find these on the e-Stat website when browsing datasets.
+
+**Area Codes**: Geographic filters
+- `00000` = All of Japan (national data)
+- `13000` = Tokyo Prefecture  
+- `27000` = Osaka Prefecture
+- City codes are longer (e.g., `13101` for Chiyoda-ku, Tokyo)
+
+**Stats Codes**: Survey identifiers (e.g., `00200521` for Population Census)
+
+**Category Codes**: Vary by dataset - check the specific dataset documentation for valid values
+
+### Three Ways to Find Dataset IDs
+
+#### Method 1: Browse the Website (Easiest)
+
+1. Go to: https://www.e-stat.go.jp/en/stat-search/database
+2. Use categories like "Population and Households", "Labor and Wages", "Prices"
+3. Click on a dataset to view details
+4. The dataset ID appears in the URL and dataset information
+
+#### Method 2: Search by Keywords
+
+Use the search box on the e-Stat website with English terms like "population", "unemployment", "consumer price"
+
+#### Method 3: API Discovery
+
+```python
+import requests
+
+# Search for datasets programmatically
+url = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList"
+params = {
+    "appId": "your_api_key_here",
+    "lang": "E",
+    "searchWord": "population census",
+    "limit": 20
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+# Dataset IDs will be in the response
+```
+
+### Common Datasets
+
+**Population Census**: `0003433219` and similar IDs
+- Complete population count every 5 years
+- Includes demographics by prefecture/city
+
+**Consumer Price Index**: Various IDs in the `0003` series
+- Monthly inflation data
+- Price changes by category
+
+**Labor Force Survey**: Multiple IDs in the `0003` series
+- Monthly employment statistics
+- Unemployment rates
+
+Note: Dataset IDs can change when surveys are updated. Always verify current IDs on the e-Stat website.
+
+## Parameters
+
+- `symbol`: Statistical dataset ID (required) - the unique identifier from e-Stat
+- `stats_code`: Survey code like `00200521` for specific surveys
+- `area_code`: Geographic filter (see area codes above)
+- `category_code`: Dataset-specific category filters
 - `search_kind`: "1" for standard statistics, "2" for regional mesh statistics
 - `collect_area`: Collection area for aggregated data
-- `start_date` / `end_date`: Date range for time series data
+- `start_date` / `end_date`: Date range in YYYY-MM format
 
-### Finding Dataset IDs
+**Note**: This provider currently only supports JSON format responses.
 
-To find specific dataset IDs:
-1. Browse available databases: https://www.e-stat.go.jp/en/stat-search/database
-2. Use the API's `getStatsList` endpoint to search programmatically
-3. Common dataset examples:
-   - Population Census: Various IDs starting with "0003..."
-   - Consumer Price Index: IDs vary by category
-   - Labour Force Survey: Check current catalog
+## Troubleshooting
 
-## API Documentation
+**"Invalid Application ID" Error**
+- Verify your API key from the e-Stat API functions page
+- Ensure you've set `obb.account.credentials.estat_api_key`
+
+**"Statistical data not found" Error**
+- Check the dataset ID is current (IDs can change)
+- Not all parameters work with all datasets
+- Try removing optional parameters
+
+**Japanese Text in Responses**
+- Normal for some metadata despite `lang=E` parameter
+- Numerical data is universal
+
+**Empty Data**
+- Some datasets update infrequently (annually or every 5 years)
+- Check the e-Stat website for update schedules
+
+## API Reference
 
 - **API Guide**: https://www.e-stat.go.jp/api/api/index.php/en/api-info/api-guide
 - **API Specification**: https://www.e-stat.go.jp/api/api/index.php/en/api-info/api-spec
-- **Data Overview**: https://www.e-stat.go.jp/api/api/index.php/en/api-info/api-data
 - **Database Search**: https://www.e-stat.go.jp/en/stat-search/database
-
-### Technical Details
-
-- **Base URL**: `https://api.e-stat.go.jp/rest/3.0/app/`
-- **Formats**: JSON (default), XML, CSV
-- **Language**: English supported with `lang=E` parameter
-- **Rate Limits**: Not explicitly documented, use responsibly
-- **HTTPS**: Supported
-- **Compression**: gzip supported
 
 ## Development
 
@@ -127,36 +169,14 @@ poetry install
 poetry run pytest tests/
 ```
 
-### Test Coverage
+### Contributing
 
-The test suite includes:
-- Parameter validation
-- Data transformation
-- Error handling (authentication, data not found, server errors)
-- Helper function tests
-- Edge case handling
+Contributions are welcome! Areas for improvement:
+- Additional data fetchers for specific statistical categories
+- Enhanced date parsing for Japanese fiscal periods
+- Caching for frequently accessed metadata
 
-## Troubleshooting
-
-### Common Issues
-
-1. **"Invalid Application ID" Error**
-   - Verify your API key is correct
-   - Ensure you're using the Application ID from the API functions page
-
-2. **"Statistical data not found" Error**
-   - Check the dataset ID is valid
-   - Some datasets may require specific parameter combinations
-
-3. **Japanese Text in Responses**
-   - The provider sets `lang=E` for English
-   - Some metadata may still contain Japanese text
-   - Use browser translation tools when browsing the e-Stat website
-
-### Support
-
-- e-Stat Support (Japanese): https://www.e-stat.go.jp/contact
-- OpenBB Issues: https://github.com/OpenBB-finance/OpenBB/issues
+Please ensure all contributions maintain the attribution notice and comply with e-Stat's terms of use.
 
 ## License & Attribution
 
@@ -165,13 +185,3 @@ When using this provider, you must acknowledge:
 > This service uses API functions from e-Stat, however its contents are not guaranteed by government.
 
 This attribution is required by e-Stat's terms of use: https://www.e-stat.go.jp/api/api/index.php/en/api-info/credit
-
-## Contributing
-
-Contributions are welcome! Areas for improvement:
-- Additional data fetchers for specific statistical categories
-- Support for CSV/XML response formats
-- Caching for frequently accessed metadata
-- Enhanced date parsing for various Japanese fiscal periods
-
-Please ensure all contributions maintain the attribution notice and comply with e-Stat's terms of use.
