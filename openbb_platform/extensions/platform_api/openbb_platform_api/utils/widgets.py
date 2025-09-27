@@ -616,6 +616,10 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                 "type": widget_type,
                 "searchCategory": category.replace("_", " ").title(),
                 "widgetId": f"{widget_id}_{provider}_obb",
+                "mcp_tool": {
+                    "mcp_server": "Open Data Platform",
+                    "tool_id": f"{widget_id}",
+                },
                 "params": modified_query_schema,
                 "endpoint": route,
                 "runButton": False,

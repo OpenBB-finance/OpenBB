@@ -7,6 +7,9 @@ on:
 jobs:
   label:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       # - uses: mheap/github-action-required-labels@v1
       #   with:

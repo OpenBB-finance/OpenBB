@@ -17,6 +17,8 @@ jobs:
   M1-MacOs-Build:
     name: M1 MacOS Build
     runs-on: [self-hosted, macos, ARM64]
+    permissions:
+      contents: read
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
@@ -119,6 +121,8 @@ jobs:
   Intel-MacOs-Build:
     name: Intel MacOS Build
     runs-on: [self-hosted, macos, x64]
+    permissions:
+      contents: read
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
