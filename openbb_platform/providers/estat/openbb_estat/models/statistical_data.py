@@ -100,13 +100,7 @@ class EstatStatisticalDataFetcher(Fetcher[EstatStatisticalDataQueryParams, List[
 
         import aiohttp
 
-        # Use provided key or fall back to OpenBB's shared test key
-        api_key = credentials.get("estat_api_key") if credentials else None
-        if not api_key:
-            # Use OpenBB's shared test Application ID (created for community use)
-            # This is a free government API - key provided for convenience
-            # May be revoked if necessary - users should get their own for production
-            api_key = "6c5cec40c971c443147bd81c2e439c90c128fdb2"
+        api_key = credentials.get("api_key") if credentials else ""
 
         base_url = "https://api.e-stat.go.jp/rest/3.0/app/json"
 

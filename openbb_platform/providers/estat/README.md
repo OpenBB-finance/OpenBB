@@ -22,25 +22,9 @@ The e-Stat API provides access to 28+ statistical databases including:
 - **Regional Data**: Prefecture and municipality-level statistics
 - **Social Statistics**: Education, Health, Housing, and more
 
-## Quick Start (No Setup Required!)
+## Setup Instructions
 
-The e-Stat provider works **out of the box** with OpenBB's shared Application ID. No registration needed for testing!
-
-```python
-from openbb import obb
-
-# Just start using it - no API key needed!
-data = obb.economy.statistical_data(
-    provider="estat",
-    symbol="0003433219"  # Population Census data
-)
-```
-
-**Note**: The default API key is provided for convenience but may be revoked if necessary. For production use, please register for your own free API key.
-
-## Setup Instructions (For Production Use)
-
-While the provider includes a default API key for convenience, you may want your own for production use:
+To use the e-Stat provider, you need to register for a free API key:
 
 ### Step 1: Register for e-Stat Account
 
@@ -76,6 +60,11 @@ obb.account.credentials.estat_api_key = "your_application_id_here"
 ### Basic Statistical Data Query
 
 ```python
+from openbb import obb
+
+# First, set your API key (required)
+obb.account.credentials.estat_api_key = "your_application_id_here"
+
 # Get Japanese population census data
 data = obb.economy.statistical_data(
     provider="estat",

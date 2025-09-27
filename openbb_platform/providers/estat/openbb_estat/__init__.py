@@ -14,7 +14,7 @@ estat_provider = Provider(
     description="The e-Stat API provides access to Japanese government statistical data"
     + " from various ministries and agencies including economic, demographic, and social statistics."
     + " Attribution: This service uses API functions from e-Stat, however its contents are not guaranteed by government.",
-    credentials=["estat_api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "EstatStatisticalData": EstatStatisticalDataFetcher,
     },

@@ -90,7 +90,7 @@ async def test_estat_statistical_data_fetcher_aextract_data():
         mock_get.return_value.__aenter__ = AsyncMock(return_value=mock_response_obj)
         mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        data = await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
+        data = await fetcher.aextract_data(query, {"api_key": "test_key"})
 
         assert len(data) == 2
         assert data[0]["$"] == "126226568"
@@ -160,7 +160,7 @@ async def test_estat_error_handling():
         mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
         with pytest.raises(Exception) as exc_info:
-            await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
+            await fetcher.aextract_data(query, {"api_key": "test_key"})
 
         assert "Statistical data not found" in str(exc_info.value)
 
@@ -281,7 +281,7 @@ async def test_api_response_with_no_data():
         mock_get.return_value.__aexit__ = AsyncMock(return_value=None)
 
         with pytest.raises(Exception) as exc_info:
-            await fetcher.aextract_data(query, {"estat_api_key": "test_key"})
+            await fetcher.aextract_data(query, {"api_key": "test_key"})
 
         assert "No statistical data found" in str(exc_info.value)
 
