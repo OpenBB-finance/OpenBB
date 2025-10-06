@@ -55,37 +55,6 @@ def test_fixedincome_government_treasury_rates(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_sofr(params, obb):
-    """Test the SOFR endpoint."""
-    result = obb.fixedincome.sofr(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "federal_reserve",
-            }
-        ),
-        (
-            {
-                "frequency": None,
-                "transform": None,
-                "aggregation_method": None,
-                "provider": "fred",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
 def test_fixedincome_rate_sofr(params, obb):
     """Test the fixedincome rate sofr endpoint."""
     result = obb.fixedincome.rate.sofr(**params)
@@ -270,50 +239,6 @@ def test_fixedincome_rate_ecb(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.rate.ecb(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "index_type": "yield"}),
-        (
-            {
-                "category": "all",
-                "area": "us",
-                "grade": "non_sovereign",
-                "options": True,
-                "provider": "fred",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "index_type": "yield",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_fixedincome_corporate_ice_bofa(params, obb):
-    """Test the ICE BofA endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.fixedincome.corporate.ice_bofa(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"start_date": "2023-01-01", "end_date": "2023-06-06", "index_type": "aaa"}],
-)
-@pytest.mark.integration
-def test_fixedincome_corporate_moody(params, obb):
-    """Test the Moody endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.fixedincome.corporate.moody(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -5,7 +5,6 @@
 from typing import Annotated, Union
 
 from fastapi import Body
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -270,84 +269,6 @@ async def composite_leading_indicator(
 
 
 @router.command(
-    model="STIR",
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
-        since=(4, 3),
-        expected_removal=(4, 5),
-    ),
-    examples=[
-        APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
-        ),
-    ],
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
-)
-async def short_term_interest_rate(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get Short-term interest rates.
-
-    They are the rates at which short-term borrowings are effected between
-    financial institutions or the rate at which short-term government paper is issued or traded in the market.
-
-    Short-term interest rates are generally averages of daily rates, measured as a percentage.
-    Short-term interest rates are based on three-month money market rates where available.
-    Typical standardised names are "money market rate" and "treasury bill rate".
-    """
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="LTIR",
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
-        since=(4, 3),
-        expected_removal=(4, 5),
-    ),
-    examples=[
-        APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
-        ),
-    ],
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
-)
-async def long_term_interest_rate(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get Long-term interest rates that refer to government bonds maturing in ten years.
-
-    Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
-    fall in the capital value. Long-term interest rates are generally averages of daily rates,
-    measured as a percentage. These interest rates are implied by the prices at which the government bonds are
-    traded on financial markets, not the interest rates at which the loans were issued.
-    In all cases, they refer to bonds whose capital repayment is guaranteed by governments.
-    Long-term interest rates are one of the determinants of business investment.
-    Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
-    Investment is, in turn, a major source of economic growth.
-    """
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="FredRegional",
     examples=[
         APIEx(
@@ -570,41 +491,6 @@ async def house_price_index(
 
 
 @router.command(
-    model="ImmediateInterestRate",
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint will be removed in a future version. Use, `/economy/interest_rates`, instead.",
-        since=(4, 3),
-        expected_removal=(4, 5),
-    ),
-    examples=[
-        APIEx(parameters={"provider": "oecd"}),
-        APIEx(
-            description="Multiple countries can be passed in as a list.",
-            parameters={
-                "country": "united_kingdom,germany",
-                "frequency": "monthly",
-                "provider": "oecd",
-            },
-        ),
-    ],
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
-)
-async def immediate_interest_rate(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get immediate interest rates by country."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="CountryInterestRates",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
@@ -766,42 +652,6 @@ async def primary_dealer_fails(
     Near-100 percent pass-through of fails suggests a high degree of collateral
     re-hypothecation together with the inability or unwillingness to borrow or buy the needed securities."
     """
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="PortVolume",
-    examples=[
-        APIEx(parameters={"provider": "econdb"}),
-        APIEx(
-            description="Get daily port calls and estimated trading volumes for specific ports"
-            + " Get the list of available ports with `openbb shipping port_info`",
-            parameters={
-                "provider": "imf",
-                "port_code": "rotterdam,singapore",
-            },
-        ),
-    ],
-    deprecated=True,
-    deprecation=OpenBBDeprecationWarning(
-        message="This endpoint has been moved and will be removed in a future version."
-        + " Use, `/economy/shipping/port_volume`, instead.",
-        since=(4, 4),
-        expected_removal=(4, 5),
-    ),
-    openapi_extra={
-        "widget_config": {
-            "exclude": True,
-        }
-    },
-)
-async def port_volume(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get average dwelling times and TEU volumes from the top ports."""
     return await OBBject.from_query(Query(**locals()))
 
 
