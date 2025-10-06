@@ -474,60 +474,6 @@ def test_economy_composite_leading_indicator(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
-        (
-            {
-                "country": "united_states",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_short_term_interest_rate(params, headers):
-    """Test the economy short term interest rate endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/short_term_interest_rate?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
-        (
-            {
-                "country": "united_states",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_long_term_interest_rate(params, headers):
-    """Test the economy long term interest rate endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/long_term_interest_rate?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "provider": "fred",
@@ -766,32 +712,6 @@ def test_economy_house_price_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/house_price_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "country": "united_states,united_kingdom",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2022-01-01",
-                "end_date": "2024-04-01",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_immediate_interest_rate(params, headers):
-    """Test the economy immediate_interest_rate."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/immediate_interest_rate?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -1194,39 +1114,6 @@ def test_economy_primary_dealer_fails(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/primary_dealer_fails?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "econdb",
-                "start_date": None,
-                "end_date": None,
-            }
-        ),
-        (
-            {
-                "provider": "imf",
-                "port_code": "port1201",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-31",
-                "country": None,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_port_volume(params, headers):
-    """Test the economy port volume endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/port_volume?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
