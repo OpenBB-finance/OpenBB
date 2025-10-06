@@ -6,13 +6,14 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
+from dateutil import parser
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, PositiveFloat, field_validator
+from pydantic import Field, field_validator
 
 
 class CurrencyHistoricalQueryParams(QueryParams):
@@ -47,13 +48,27 @@ class CurrencyHistoricalData(Data):
     date: Union[dateType, datetime] = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    open: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
+    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: Optional[float] = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""), default=None
     )
-    vwap: Optional[PositiveFloat] = Field(
+    vwap: Optional[float] = Field(
         description=DATA_DESCRIPTIONS.get("vwap", ""), default=None
     )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

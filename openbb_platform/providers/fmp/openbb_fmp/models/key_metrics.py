@@ -1,334 +1,319 @@
-"""FMP Key Metrics Model."""
+"""FMP Equity Valuation Multiples Model."""
 
 # pylint: disable=unused-argument
 
-import asyncio
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Any, Dict, List, Literal, Optional
-from warnings import warn
+from datetime import datetime
+from typing import Any, Literal, Optional, Union
 
-from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import response_callback
+from openbb_fmp.utils.definitions import FinancialPeriods
 from pydantic import Field
 
 
 class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
-    """FMP Key Metrics Query.
+    """FMP Equity Valuation Multiples Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#key-metrics
     """
 
-    __json_schema_extra__ = {
-        "symbol": {"multiple_items_allowed": True},
-        "period": {
-            "choices": ["annual", "quarter"],
-        },
-    }
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    period: Literal["annual", "quarter"] = Field(
-        default="annual",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
+    ttm: Literal["include", "exclude", "only"] = Field(
+        default="only",
+        description="Specify whether to include, exclude, or only show TTM (Trailing Twelve Months) data."
+        + " The default is 'only'.",
     )
-    with_ttm: bool = Field(
-        default=False, description="Include trailing twelve months (TTM) data."
+    period: FinancialPeriods = Field(
+        default="annual",
+        description="Specify the fiscal period for the data. Ignored when TTM is set to 'only'.",
+    )
+    limit: Optional[int] = Field(
+        default=None,
+        description="Only applicable when TTM is not set to 'only'."
+        + " Defines the number of most recent reporting periods to return."
+        + " The default is 5.",
     )
 
 
 class FMPKeyMetricsData(KeyMetricsData):
-    """FMP Key Metrics Data."""
+    """FMP Equity Valuation Multiples Data."""
 
     __alias_dict__ = {
-        "dividend_yield": "dividend_yiel",
-        "market_cap": "marketCap",
-        "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
-        "fiscal_period": "period",
         "period_ending": "date",
-        "price_to_sales": "priceToSalesRatio",
-        "price_to_operating_cash_flow": "pocfratio",
-        "price_to_free_cash_flow": "pfcfRatio",
-        "price_to_book": "pbRatio",
-        "price_to_tangible_book": "ptbRatio",
-        "ev_to_sales": "evToSales",
-        "ev_to_ebitda": "enterpriseValueOverEBITDA",
-        "net_debt_to_ebitda": "netDebtToEBITDA",
-        "return_on_equity": "roe",
-        "return_on_invested_capital": "roic",
+        "fiscal_period": "period",
+        "currency": "reportedCurrency",
+        "enterprise_value": "enterpriseValueTTM",
+        "ev_to_sales": "evToSalesTTM",
+        "ev_to_operating_cash_flow": "evToOperatingCashFlowTTM",
+        "ev_to_free_cash_flow": "evToFreeCashFlowTTM",
+        "ev_to_ebitda": "evToEBITDATTM",
+        "net_debt_to_ebitda": "netDebtToEBITDATTM",
+        "current_ratio": "currentRatioTTM",
+        "income_quality": "incomeQualityTTM",
+        "graham_number": "grahamNumberTTM",
+        "graham_net_net": "grahamNetNetTTM",
+        "tax_burden": "taxBurdenTTM",
+        "interest_burden": "interestBurdenTTM",
+        "working_capital": "workingCapitalTTM",
+        "invested_capital": "investedCapitalTTM",
+        "return_on_assets": "returnOnAssetsTTM",
+        "operating_return_on_assets": "operatingReturnOnAssetsTTM",
+        "return_on_tangible_assets": "returnOnTangibleAssetsTTM",
+        "return_on_equity": "returnOnEquityTTM",
+        "return_on_invested_capital": "returnOnInvestedCapitalTTM",
+        "return_on_capital_employed": "returnOnCapitalEmployedTTM",
+        "earnings_yield": "earningsYieldTTM",
+        "free_cash_flow_yield": "freeCashFlowYieldTTM",
+        "capex_to_operating_cash_flow": "capexToOperatingCashFlowTTM",
+        "capex_to_depreciation": "capexToDepreciationTTM",
+        "capex_to_revenue": "capexToRevenueTTM",
+        "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenueTTM",
+        "research_and_developement_to_revenue": "researchAndDevelopementToRevenueTTM",
+        "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenueTTM",
+        "intangibles_to_total_assets": "intangiblesToTotalAssetsTTM",
+        "average_receivables": "averageReceivablesTTM",
+        "average_payables": "averagePayablesTTM",
+        "average_inventory": "averageInventoryTTM",
+        "days_of_sales_outstanding": "daysOfSalesOutstandingTTM",
+        "days_of_payables_outstanding": "daysOfPayablesOutstandingTTM",
+        "days_of_inventory_outstanding": "daysOfInventoryOutstandingTTM",
+        "operating_cycle": "operatingCycleTTM",
+        "cash_conversion_cycle": "cashConversionCycleTTM",
+        "free_cash_flow_to_equity": "freeCashFlowToEquityTTM",
+        "free_cash_flow_to_firm": "freeCashFlowToFirmTTM",
+        "tangible_asset_value": "tangibleAssetValueTTM",
+        "net_current_asset_value": "netCurrentAssetValueTTM",
     }
-    period_ending: dateType = Field(description="Period ending date.")
-    fiscal_period: str = Field(description="Period of the data.")
-    calendar_year: Optional[ForceInt] = Field(
-        default=None, description="Calendar year for the fiscal period."
-    )
-    revenue_per_share: Optional[float] = Field(
-        default=None, description="Revenue per share"
-    )
-    capex_per_share: Optional[float] = Field(
-        default=None, description="Capital expenditures per share"
-    )
-    net_income_per_share: Optional[float] = Field(
-        default=None, description="Net income per share"
-    )
-    operating_cash_flow_per_share: Optional[float] = Field(
-        default=None, description="Operating cash flow per share"
-    )
-    free_cash_flow_per_share: Optional[float] = Field(
-        default=None, description="Free cash flow per share"
-    )
-    cash_per_share: Optional[float] = Field(default=None, description="Cash per share")
-    book_value_per_share: Optional[float] = Field(
-        default=None, description="Book value per share"
-    )
-    tangible_book_value_per_share: Optional[float] = Field(
-        default=None, description="Tangible book value per share"
-    )
-    shareholders_equity_per_share: Optional[float] = Field(
-        default=None, description="Shareholders equity per share"
-    )
-    interest_debt_per_share: Optional[float] = Field(
-        default=None, description="Interest debt per share"
-    )
-    price_to_sales: Optional[float] = Field(
-        default=None,
-        description="Price-to-sales ratio",
-    )
-    price_to_operating_cash_flow: Optional[float] = Field(
-        default=None,
-        description="Price-to-operating cash flow ratio",
-    )
-    price_to_free_cash_flow: Optional[float] = Field(
-        default=None,
-        description="Price-to-free cash flow ratio",
-    )
-    price_to_book: Optional[float] = Field(
-        default=None,
-        description="Price-to-book ratio",
-    )
-    price_to_tangible_book: Optional[float] = Field(
-        default=None,
-        description="Price-to-tangible book ratio",
+
+    enterprise_value: Optional[Union[int, float]] = Field(
+        default=None, description="Enterprise Value."
     )
     ev_to_sales: Optional[float] = Field(
+        default=None, description="Enterprise Value to Sales ratio.", title="EV/Sales"
+    )
+    ev_to_operating_cash_flow: Optional[float] = Field(
         default=None,
-        description="Enterprise value-to-sales ratio",
+        description="Enterprise Value to Operating Cash Flow ratio.",
+        title="EV/Operating Cash Flow",
+    )
+    ev_to_free_cash_flow: Optional[float] = Field(
+        default=None,
+        description="Enterprise Value to Free Cash Flow ratio.",
+        title="EV/Free Cash Flow",
     )
     ev_to_ebitda: Optional[float] = Field(
         default=None,
-        description="Enterprise value-to-EBITDA ratio",
-    )
-    ev_to_operating_cash_flow: Optional[float] = Field(
-        default=None, description="Enterprise value-to-operating cash flow ratio"
-    )
-    ev_to_free_cash_flow: Optional[float] = Field(
-        default=None, description="Enterprise value-to-free cash flow ratio"
-    )
-    earnings_yield: Optional[float] = Field(
-        default=None,
-        description="Earnings yield",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    free_cash_flow_yield: Optional[float] = Field(
-        default=None,
-        description="Free cash flow yield",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    debt_to_market_cap: Optional[float] = Field(
-        default=None, description="Debt-to-market capitalization ratio"
-    )
-    debt_to_equity: Optional[float] = Field(
-        default=None, description="Debt-to-equity ratio"
-    )
-    debt_to_assets: Optional[float] = Field(
-        default=None, description="Debt-to-assets ratio"
+        description="Enterprise Value to EBITDA ratio.",
+        title="EV/EBITDA",
+        alias="evToEBITDA",
     )
     net_debt_to_ebitda: Optional[float] = Field(
         default=None,
-        description="Net debt-to-EBITDA ratio",
+        description="Net Debt to EBITDA ratio.",
+        title="Net Debt/EBITDA",
+        alias="netDebtToEBITDA",
     )
-    current_ratio: Optional[float] = Field(default=None, description="Current ratio")
-    interest_coverage: Optional[float] = Field(
-        default=None, description="Interest coverage"
+    current_ratio: Optional[float] = Field(default=None, description="Current Ratio.")
+    income_quality: Optional[float] = Field(default=None, description="Income Quality.")
+    graham_number: Optional[float] = Field(default=None, description="Graham Number.")
+    graham_net_net: Optional[float] = Field(default=None, description="Graham Net Net.")
+    tax_burden: Optional[float] = Field(default=None, description="Tax Burden.")
+    interest_burden: Optional[float] = Field(
+        default=None, description="Interest Burden."
     )
-    income_quality: Optional[float] = Field(default=None, description="Income quality")
-    payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")
-    sales_general_and_administrative_to_revenue: Optional[float] = Field(
+    working_capital: Optional[Union[int, float]] = Field(
+        default=None, description="Working Capital."
+    )
+    invested_capital: Optional[Union[int, float]] = Field(
+        default=None, description="Invested Capital."
+    )
+    return_on_assets: Optional[float] = Field(
         default=None,
-        description="Sales general and administrative expenses-to-revenue ratio",
-    )
-    research_and_development_to_revenue: Optional[float] = Field(
-        default=None,
-        description="Research and development expenses-to-revenue ratio",
-        alias="researchAndDevelopementToRevenue",
-    )
-    intangibles_to_total_assets: Optional[float] = Field(
-        default=None, description="Intangibles-to-total assets ratio"
-    )
-    capex_to_operating_cash_flow: Optional[float] = Field(
-        default=None, description="Capital expenditures-to-operating cash flow ratio"
-    )
-    capex_to_revenue: Optional[float] = Field(
-        default=None, description="Capital expenditures-to-revenue ratio"
-    )
-    capex_to_depreciation: Optional[float] = Field(
-        default=None, description="Capital expenditures-to-depreciation ratio"
-    )
-    stock_based_compensation_to_revenue: Optional[float] = Field(
-        default=None, description="Stock-based compensation-to-revenue ratio"
-    )
-    working_capital: Optional[float] = Field(
-        default=None, description="Working capital"
-    )
-    tangible_asset_value: Optional[float] = Field(
-        default=None, description="Tangible asset value"
-    )
-    net_current_asset_value: Optional[float] = Field(
-        default=None, description="Net current asset value"
-    )
-    enterprise_value: Optional[float] = Field(
-        default=None, description="Enterprise value"
-    )
-    invested_capital: Optional[float] = Field(
-        default=None, description="Invested capital"
-    )
-    average_receivables: Optional[float] = Field(
-        default=None, description="Average receivables"
-    )
-    average_payables: Optional[float] = Field(
-        default=None, description="Average payables"
-    )
-    average_inventory: Optional[float] = Field(
-        default=None, description="Average inventory"
-    )
-    days_sales_outstanding: Optional[float] = Field(
-        default=None, description="Days sales outstanding"
-    )
-    days_payables_outstanding: Optional[float] = Field(
-        default=None, description="Days payables outstanding"
-    )
-    days_of_inventory_on_hand: Optional[float] = Field(
-        default=None, description="Days of inventory on hand"
-    )
-    receivables_turnover: Optional[float] = Field(
-        default=None, description="Receivables turnover"
-    )
-    payables_turnover: Optional[float] = Field(
-        default=None, description="Payables turnover"
-    )
-    inventory_turnover: Optional[float] = Field(
-        default=None, description="Inventory turnover"
-    )
-    return_on_equity: Optional[float] = Field(
-        default=None,
-        description="Return on equity",
+        description="Return on Assets.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_invested_capital: Optional[float] = Field(
+    operating_return_on_assets: Optional[float] = Field(
         default=None,
-        description="Return on invested capital",
+        description="Operating Return on Assets.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_tangible_assets: Optional[float] = Field(
         default=None,
-        description="Return on tangible assets",
+        description="Return on Tangible Assets.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield: Optional[float] = Field(
+    return_on_equity: Optional[float] = Field(
         default=None,
-        description="Dividend yield, as a normalized percent.",
+        description="Return on Equity.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="dividendYield",
     )
-    graham_number: Optional[float] = Field(default=None, description="Graham number")
-    graham_net_net: Optional[float] = Field(
-        default=None, description="Graham net-net working capital"
+    return_on_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Return on Invested Capital.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    return_on_capital_employed: Optional[float] = Field(
+        default=None,
+        description="Return on Capital Employed.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    earnings_yield: Optional[float] = Field(
+        default=None,
+        description="Earnings Yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    free_cash_flow_yield: Optional[float] = Field(
+        default=None,
+        description="Free Cash Flow Yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    capex_to_operating_cash_flow: Optional[float] = Field(
+        default=None, description="Capex to Operating Cash Flow."
+    )
+    capex_to_depreciation: Optional[float] = Field(
+        default=None, description="Capex to Depreciation."
+    )
+    capex_to_revenue: Optional[float] = Field(
+        default=None, description="Capex to Revenue."
+    )
+    sales_general_and_administrative_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Sales, General and Administrative to Revenue.",
+        title="SG&A to Revenue",
+    )
+    research_and_developement_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Research and Development to Revenue.",
+        title="R&D to Revenue",
+    )
+    stock_based_compensation_to_revenue: Optional[float] = Field(
+        default=None, description="Stock Based Compensation to Revenue."
+    )
+    intangibles_to_total_assets: Optional[float] = Field(
+        default=None, description="Intangibles to Total Assets."
+    )
+    average_receivables: Optional[Union[int, float]] = Field(
+        default=None, description="Average Receivables."
+    )
+    average_payables: Optional[Union[int, float]] = Field(
+        default=None, description="Average Payables."
+    )
+    average_inventory: Optional[Union[int, float]] = Field(
+        default=None, description="Average Inventory."
+    )
+    days_of_sales_outstanding: Optional[float] = Field(
+        default=None, description="Days of Sales Outstanding."
+    )
+    days_of_payables_outstanding: Optional[float] = Field(
+        default=None, description="Days of Payables Outstanding."
+    )
+    days_of_inventory_outstanding: Optional[float] = Field(
+        default=None, description="Days of Inventory Outstanding."
+    )
+    operating_cycle: Optional[float] = Field(
+        default=None, description="Operating Cycle."
+    )
+    cash_conversion_cycle: Optional[float] = Field(
+        default=None, description="Cash Conversion Cycle."
+    )
+    free_cash_flow_to_equity: Optional[float] = Field(
+        default=None, description="Free Cash Flow to Equity."
+    )
+    free_cash_flow_to_firm: Optional[float] = Field(
+        default=None, description="Free Cash Flow to Firm."
+    )
+    tangible_asset_value: Optional[Union[int, float]] = Field(
+        default=None, description="Tangible Asset Value."
+    )
+    net_current_asset_value: Optional[Union[int, float]] = Field(
+        default=None, description="Net Current Asset Value."
     )
 
 
 class FMPKeyMetricsFetcher(
     Fetcher[
         FMPKeyMetricsQueryParams,
-        List[FMPKeyMetricsData],
+        list[FMPKeyMetricsData],
     ]
 ):
     """FMP Key Metrics Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
+    def transform_query(
+        params: dict[str, Any],
+    ) -> FMPKeyMetricsQueryParams:
         """Transform the query params."""
         return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPKeyMetricsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        base_url = "https://financialmodelingprep.com/api/v3"
         symbols = query.symbol.split(",")
-        results: List = []
+        results: list = []
+        base_url: str = "https://financialmodelingprep.com/stable/key-metrics"
+        limit = query.limit if query.limit and query.ttm != "only" else 1
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = (
-                f"{base_url}/key-metrics/{symbol}?period={query.period}"
-                + f"&limit={query.limit}&apikey={api_key}"
-            )
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            ttm = f"{base_url}-ttm?symbol={symbol}&apikey={api_key}"
+            metrics = f"{base_url}?symbol={symbol}&period={query.period}&limit={limit}&apikey={api_key}"
+            result: list = []
+            ttm_data = await get_data_many(ttm, **kwargs)
+            metrics_data = await get_data_many(metrics, **kwargs)
+            currency = None
+
+            if metrics_data:
+                if query.ttm != "only":
+                    result.extend(metrics_data)
+                currency = metrics_data[0].get("reportedCurrency")
+
+            if ttm_data and query.ttm != "exclude":
+                ttm_result = ttm_data[0]
+                ttm_result["date"] = datetime.today().date().isoformat()
+                ttm_result["fiscal_period"] = "TTM"
+                ttm_result["fiscal_year"] = datetime.today().year
+                if currency:
+                    ttm_result["reportedCurrency"] = currency
+                result.insert(0, ttm_result)
+
             if not result:
-                warn(f"Symbol Error: No data found for {symbol}.")
+                warnings.warn(f"Symbol Error: No data found for {symbol}.")
 
             if result:
-                ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
-                if query.with_ttm and (
-                    metrics_ttm := await amake_request(
-                        ttm_url, response_callback=response_callback, **kwargs
-                    )
-                ):
-                    metrics_ttm_data = {
-                        k: v
-                        for k, v in metrics_ttm[0].items()
-                        if k
-                        not in ("dividendYieldPercentageTTM", "dividendPerShareTTM")
-                    }
-                    result.insert(  # type: ignore
-                        0,
-                        {
-                            "symbol": symbol,
-                            "period": "TTM",
-                            "date": datetime.now().strftime("%Y-%m-%d"),
-                            "calendar_year": datetime.now().year,
-                            **{
-                                k.replace("TTM", ""): v
-                                for k, v in metrics_ttm_data.items()
-                            },
-                        },
-                    )
                 results.extend(result)
 
-        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+        tasks = [get_one(symbol) for symbol in symbols]
+
+        await asyncio.gather(*tasks)
 
         if not results:
-            raise EmptyDataError(f"No data found for given symbols -> {query.symbol}.")
+            raise EmptyDataError("No data found for given symbols.")
 
         return results
 
     @staticmethod
     def transform_data(
-        query: FMPKeyMetricsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPKeyMetricsData]:
+        query: FMPKeyMetricsQueryParams,
+        data: list[dict],
+        **kwargs: Any,
+    ) -> list[FMPKeyMetricsData]:
         """Return the transformed data."""
-        return [FMPKeyMetricsData.model_validate(d) for d in data]
+        return [
+            FMPKeyMetricsData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=True)
+        ]

@@ -1,21 +1,21 @@
 """FMP Calendar Splits Model."""
 
-from datetime import date
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
 
-from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
+from typing import Any, Optional
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_splits import (
     CalendarSplitsData,
     CalendarSplitsQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
     """FMP Calendar Splits Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#splits-calendar
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
@@ -28,42 +28,53 @@ class FMPCalendarSplitsData(CalendarSplitsData):
 class FMPCalendarSplitsFetcher(
     Fetcher[
         FMPCalendarSplitsQueryParams,
-        List[FMPCalendarSplitsData],
+        list[FMPCalendarSplitsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Calendar Splits Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCalendarSplitsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCalendarSplitsQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
-        transformed_params = params
-
-        now = date.today()
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now + relativedelta(days=30)
-
-        return FMPCalendarSplitsQueryParams(**transformed_params)
+        return FMPCalendarSplitsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCalendarSplitsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_requests  # noqa
+        from openbb_fmp.utils.helpers import response_callback
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query_str = f"from={query.start_date}&to={query.end_date}"
-        url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
+        base_url = "https://financialmodelingprep.com/stable/splits-calendar?"
+        start_date = query.start_date or datetime.now().date() - timedelta(days=7)
+        end_date = query.end_date or datetime.now().date() + timedelta(days=14)
 
-        return await get_data_many(url, **kwargs)
+        # Create 90-day chunks between start_date and end_date
+        urls: list = []
+        current_start = start_date
+
+        while current_start <= end_date:
+            chunk_end = min(current_start + timedelta(days=89), end_date)
+            url = f"{base_url}from={current_start}&to={chunk_end}&apikey={api_key}"
+            urls.append(url)
+            current_start = chunk_end + timedelta(days=1)
+
+        # Get data from all URLs
+        all_data: list = await amake_requests(
+            urls, response_callback=response_callback, **kwargs
+        )
+
+        return all_data
 
     @staticmethod
     def transform_data(
-        query: FMPCalendarSplitsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCalendarSplitsData]:
+        query: FMPCalendarSplitsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCalendarSplitsData]:
         """Return the transformed data."""
         return [FMPCalendarSplitsData.model_validate(d) for d in data]

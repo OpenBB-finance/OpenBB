@@ -11,7 +11,9 @@ from pydantic import Field, field_validator
 class EtfEquityExposureQueryParams(QueryParams):
     """ETF Equity Exposure Query Params."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (Stock)")
+    symbol: str = Field(
+        description=QUERY_DESCRIPTIONS.get("symbol", "") + " (underlying equity)"
+    )
 
     @field_validator("symbol")
     @classmethod
@@ -27,10 +29,6 @@ class EtfEquityExposureData(Data):
     etf_symbol: str = Field(
         description="The symbol of the ETF with exposure to the requested equity."
     )
-    shares: Optional[float] = Field(
-        default=None,
-        description="The number of shares held in the ETF.",
-    )
     weight: Optional[float] = Field(
         default=None,
         description="The weight of the equity in the ETF, as a normalized percent.",
@@ -39,4 +37,8 @@ class EtfEquityExposureData(Data):
     market_value: Optional[Union[int, float]] = Field(
         default=None,
         description="The market value of the equity position in the ETF.",
+    )
+    shares: Optional[Union[int, float]] = Field(
+        default=None,
+        description="Number of reported shares controlled by the ETF.",
     )

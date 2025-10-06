@@ -14,15 +14,15 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, StrictInt, field_validator
+from pydantic import Field, field_validator
 
 
 class InsiderTradingQueryParams(QueryParams):
     """Insider Trading Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: StrictInt = Field(
-        default=500,
+    limit: Optional[int] = Field(
+        default=None,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
 
@@ -39,8 +39,10 @@ class InsiderTradingData(Data):
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    company_cik: Optional[Union[int, str]] = Field(
-        default=None, description="CIK number of the company."
+    company_cik: Optional[str] = Field(
+        default=None,
+        description="CIK number of the company.",
+        coerce_numbers_to_str=True,
     )
     filing_date: Optional[Union[dateType, datetime]] = Field(
         default=None, description="Filing date of the trade."
@@ -56,6 +58,9 @@ class InsiderTradingData(Data):
     )
     owner_title: Optional[str] = Field(
         default=None, description="The title held by the reporting individual."
+    )
+    ownership_type: Optional[str] = Field(
+        default=None, description="Type of ownership, e.g., direct or indirect."
     )
     transaction_type: Optional[str] = Field(
         default=None, description="Type of transaction being reported."

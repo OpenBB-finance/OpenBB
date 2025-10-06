@@ -20,3 +20,4 @@
 ./openbb_platform/core/openbb/package/**
 ./openbb_platform/providers/imf/openbb_imf/utils/constants.py
 ./openbb_platform/extensions/economy/openbb_economy/economy_views.py
+./openbb_platform/providers/fmp/openbb_fmp/models/calendar_ipo.py

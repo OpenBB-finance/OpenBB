@@ -3,27 +3,27 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/IOO?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/sector-weightings?apikey=MOCK_API_KEY&symbol=IOO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA43TS0sDMRAA4Ht/RQh4KyHt9pUerRV7EMXHSTyEdNwdyE4gmW0p4n83IoIHGRvI
-        KZOPzCMvI6Xe61ZKFwicsl4rfekLBnXrGTL6WPT4O+AI2HZ8DzkAsW/hK3RiFhe6Hn+M/4I2qe8H
-        wuAZE6lHyAcMIHorsxI9KkMPWW1OIVY2ik+zxp6FXcEbUMEDSJozUydgW4LcniRgYawEXCN5CrXc
-        Z5XJGdcI2A34yF3wWUxpMjVLqUA72g+F/x2BmZktBeWOO8jS/dom634t6+xc8B5qbmpbuE6nrDbS
-        q54gdJRiknvWzI2TKvTMGJFR7pX9+SKj108ovQZxbgMAAA==
+        H4sIAAAAAAAAA52STU/DMAyG7/sVUc+T1bK03TgyhtgBDfFxQjuEzGstpY6UpEMV4r8TEFzDwiEX
+        x3psvY9fZkK8xydE4afh1ZriUhTb3a6Y/xRRB+u+ilfKkxZ3KqAjZfxvwxtS14d7dBo5qA5jawVN
+        Ez8/5mez13YYRiatAlkWj+hOpDE1Ygm1zB3BfhzQifWkTZxkEvQVVP+lX+MR2dMJE/gGmlUefsPo
+        uimBXEDb5iFviBXraPKcuKsS6kylt6hM6LVyqSSWIOs87JYPow9/XaCENlPgQ1xXbHyI553glnCR
+        ae4Jdc/W2KQ9WUO7yOM+BzIUKGmtBPmdwmz/CYYUDGTmAwAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -37,9 +37,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 28 Oct 2023 13:06:21 GMT
-      ETag:
-      - W/"36e-QHhgqRHZ+lmslr6jTbT2OEyVRmE"
+      - Tue, 23 Sep 2025 17:23:11 GMT
+      Etag:
+      - W/"3e6-mX9CPZ79gCzyKisUhJmCIafXKs4"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

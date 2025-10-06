@@ -3,29 +3,27 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/quote?apikey=MOCK_API_KEY&symbol=AAPL
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA1WRMU/DMBCF9/6KKCvUOjtxbHeLygBSBUUgFsRgUiuNSBwrTgIV4r/jpHYog5fv
-        3b13d35dRdG3e1EU21Pz3tbxJorzfL+Lr89Uy0bNzJhaRXe6QEExXVVMEmYccephcZS6VHavukLp
-        XpZTwRojICL5V3HGPPPwIE+79tOb4fSP3lblccIco8XhpGQXuOCIXHLvQlKEmceN7D5Uv5XGCYSJ
-        DLOMcsEZvdwjH0sKcz5DXCwTBI3ALGYuTTAcOtXXskx8nz/d5I/hNmNbD/PdKE5pBpx4LsfyZZF4
-        CpRm3EutUdpvmpIlXo1VO9ht3dr51BwQwyHd2MkFiXBEM5UkgGCpkJ2udGlzrdtBF6pxXzLNSoAk
-        awxrQp8xbKjYgGsCuHIPwgb2KDtlH4be9lIfnMsUT7MkxUJQGgbsq0a5gsbM1xGMEEYAO+1n9fYL
-        3z4z+lsCAAA=
+        H4sIAAAAAAAAA12QTU+EMBCG7/srGs5r0w79whvZPWiyMWs8Gg8VJywRKAEWJcb/LgW6rh56eZ7m
+        nXnneUPI1/QIibqxenVldEuiND0eou1Ca1vhzJqmRHJfZzSYpi0yr0AKatQKs5Otczxim2Hd29z7
+        G0aFVoL/+eE5pwArHFx5nufEIFiiWeBvdjy4j3WI+IV3RX6aqaZxwCPaNnDFKL/CSwZXCYWAK9u+
+        Y7+zjR+qDQBwnUjB2HW7dMgl83kwVQQt/jlgi+RUxzKRq8XPS8XoIX3ap4/hYq7Bet5aUqPlJQyH
+        wp27Xem65ZyKMrPKvqiw623lt+RaGiUMNzC5783LD797d327AQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -39,9 +37,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:43 GMT
-      ETag:
-      - W/"25b-mdm4Ln2JCfkNOpR6goqZDOqjg50"
+      - Tue, 23 Sep 2025 17:23:05 GMT
+      Etag:
+      - W/"1bb-kEwlRL5woGSLu7AKVqXRbjQn+hQ"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

@@ -567,6 +567,15 @@
           "enableAdvanced": true,
           "columnsDefs": [
             {
+                "cellDataType": "text",
+                "field": "symbol",
+                "formatterFn": "none",
+                "headerName": "Symbol",
+                "headerTooltip": "Symbol representing the entity requested in the data.",
+                "pinned": "left",
+                "renderFn": null
+            },
+            {
               "field": "ex_dividend_date",
               "formatterFn": null,
               "headerName": "Ex Dividend Date",

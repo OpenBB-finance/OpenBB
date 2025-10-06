@@ -2,8 +2,11 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from datetime import (
+    date as dateType,
+    timedelta,
+)
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -13,23 +16,37 @@ from openbb_core.provider.standard_models.company_filings import (
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
 
 class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
-    """FMP Copmany Filings Query.
+    """FMP Company Filings Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/sec-filings-api/
     """
 
-    __alias_dict__ = {"form_type": "type"}
-
-    form_type: Optional[str] = Field(
-        default=None, description="SEC form type to filter by."
+    cik: Optional[str] = Field(
+        default=None, description="CIK number to look up. Overrides symbol."
+    )
+    start_date: Optional[dateType] = Field(
+        default=None,
+        description="Start date for filtering filings. Default is one year ago.",
+    )
+    end_date: Optional[dateType] = Field(
+        default=None, description="End date for filtering filings."
     )
     limit: int = Field(
         default=1000,
-        description="Number of results to return.",
+        le=1000,
+        gt=0,
+        description="Number of results to return. Max results is 1000.",
+    )
+    page: int = Field(
+        default=0,
+        description="Page number for paginated results. Max page is 100.",
+        le=100,
+        gt=0,
     )
 
 
@@ -37,9 +54,8 @@ class FMPCompanyFilingsData(CompanyFilingsData):
     """FMP Company Filings Data."""
 
     __alias_dict__ = {
-        "filing_date": "fillingDate",  # FMP spells 'filing' wrong everywhere.
         "accepted_date": "acceptedDate",
-        "report_type": "type",
+        "report_type": "formType",
         "filing_url": "link",
         "report_url": "finalLink",
     }
@@ -52,7 +68,7 @@ class FMPCompanyFilingsData(CompanyFilingsData):
     cik: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: Optional[dateType] = Field(
         default=None, description="Accepted date of the filing."
     )
 
@@ -60,65 +76,58 @@ class FMPCompanyFilingsData(CompanyFilingsData):
 class FMPCompanyFilingsFetcher(
     Fetcher[
         FMPCompanyFilingsQueryParams,
-        List[FMPCompanyFilingsData],
+        list[FMPCompanyFilingsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Company Filings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCompanyFilingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCompanyFilingsQueryParams:
         """Transform the query params."""
         return FMPCompanyFilingsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCompanyFilingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import math
-        from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import amake_request, get_querystring
-        from openbb_fmp.utils.helpers import response_callback
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3/sec_filings"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
+        base_url = "https://financialmodelingprep.com/stable/sec-filings-search"
+        url: str = ""
 
-        # FMP only allows 1000 results per page
-        pages = math.ceil(query.limit / 1000)
+        if query.symbol and not query.cik:
+            url = base_url + f"/symbol?symbol={query.symbol}"
+        elif query.cik:
+            url = base_url + f"/cik?cik={query.cik}"
 
-        urls = [
-            f"{base_url}/{query.symbol}?{query_str}&page={page}&apikey={api_key}"
-            for page in range(pages)
-        ]
+        if not url:
+            raise ValueError("Either symbol or cik must be provided.")
 
-        results: list = []
+        start_date = (
+            query.start_date
+            if query.start_date
+            else dateType.today() - timedelta(days=360)
+        )
+        url += f"&from={start_date}"
+        end_date = query.end_date if query.end_date else dateType.today()
+        url += f"&to={end_date}"
+        url += f"&page={query.page}&limit={query.limit}&apikey={api_key}"
 
-        async def get_one(url):
-            """Get the data from one URL."""
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
-            if result:
-                results.extend(result)
-
-        await asyncio.gather(*[get_one(url) for url in urls])
-
-        if not results:
-            raise EmptyDataError("No data was returned for the symbol provided.")
-
-        return sorted(results, key=lambda x: x["fillingDate"], reverse=True)[
-            : query.limit
-        ]
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCompanyFilingsData]:
+        query: FMPCompanyFilingsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCompanyFilingsData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError(
+                f"No data found for the given query -> {query.model_dump()}"
+            )
         return [FMPCompanyFilingsData.model_validate(d) for d in data]

@@ -2,10 +2,8 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
-from warnings import warn
+from typing import Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -15,15 +13,13 @@ from openbb_core.provider.standard_models.forward_ebitda_estimates import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import Field, field_validator
 
 
 class FMPForwardEbitdaEstimatesQueryParams(ForwardEbitdaEstimatesQueryParams):
     """FMP Forward EBITDA Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#financial-estimates
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -35,7 +31,9 @@ class FMPForwardEbitdaEstimatesQueryParams(ForwardEbitdaEstimatesQueryParams):
         description="The future fiscal period to retrieve estimates for.",
     )
     limit: Optional[int] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("limit", "")
+        + " Number of historical periods.",
     )
     include_historical: bool = Field(
         default=False,
@@ -56,46 +54,49 @@ class FMPForwardEbitdaEstimatesData(ForwardEbitdaEstimatesData):
 
     __alias_dict__ = {
         "period_ending": "date",
-        "high_estimate": "estimatedEbitdaHigh",
-        "low_estimate": "estimatedEbitdaLow",
-        "mean": "estimatedEbitdaAvg",
+        "high_estimate": "ebitdaHigh",
+        "low_estimate": "ebitdaLow",
+        "mean": "ebitdaAvg",
     }
 
 
 class FMPForwardEbitdaEstimatesFetcher(
     Fetcher[
         FMPForwardEbitdaEstimatesQueryParams,
-        List[FMPForwardEbitdaEstimatesData],
+        list[FMPForwardEbitdaEstimatesData],
     ]
 ):
     """FMP Forward EBITDA Estimates Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPForwardEbitdaEstimatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPForwardEbitdaEstimatesQueryParams:
         """Transform the query params."""
         return FMPForwardEbitdaEstimatesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPForwardEbitdaEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")  # type: ignore
-        results: List[Dict] = []
+        results: list[dict] = []
+        base_url = "https://financialmodelingprep.com/stable/analyst-estimates?"
+        limit = query.limit if query.limit else 1000
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = create_url(
-                3, f"analyst-estimates/{symbol}", api_key, query, ["symbol"]
-            )
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            url = f"{base_url}symbol={symbol}&period={query.fiscal_period}&limit={limit}&apikey={api_key}"
+            result = await get_data_many(url, **kwargs)
             if not result or len(result) == 0:
-                warn(f"Symbol Error: No data found for {symbol}")
+                warnings.warn(f"Symbol Error: No data found for {symbol}")
             if result:
                 results.extend(result)
 
@@ -108,19 +109,19 @@ class FMPForwardEbitdaEstimatesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPForwardEbitdaEstimatesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPForwardEbitdaEstimatesData]:
+        query: FMPForwardEbitdaEstimatesQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPForwardEbitdaEstimatesData]:
         """Return the transformed data."""
         symbols = query.symbol.split(",") if query.symbol else []
         cols = [
             "symbol",
             "date",
-            "estimatedEbitdaAvg",
-            "estimatedEbitdaHigh",
-            "estimatedEbitdaLow",
+            "ebitdaAvg",
+            "ebitdaHigh",
+            "ebitdaLow",
         ]
         year = datetime.now().year
-        results: List[FMPForwardEbitdaEstimatesData] = []
+        results: list[FMPForwardEbitdaEstimatesData] = []
         for item in sorted(
             data,
             key=lambda item: (  # type: ignore
@@ -132,7 +133,7 @@ class FMPForwardEbitdaEstimatesFetcher(
                 else item.get("date")
             ),
         ):
-            temp: Dict[str, Any] = {}
+            temp: dict[str, Any] = {}
             for col in cols:
                 temp[col] = item.get(col)
 
@@ -143,8 +144,4 @@ class FMPForwardEbitdaEstimatesFetcher(
                 continue
             results.append(FMPForwardEbitdaEstimatesData.model_validate(temp))
 
-        return (
-            results[: query.limit]
-            if query.limit and query.include_historical is False
-            else results
-        )
+        return results

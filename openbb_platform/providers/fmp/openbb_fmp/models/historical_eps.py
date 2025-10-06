@@ -1,10 +1,9 @@
 """FMP Historical EPS Model."""
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Any, Dict, List, Optional, Union
+# pylint: disable=unused-argument
+
+from datetime import date as dateType
+from typing import Any, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_eps import (
@@ -12,19 +11,20 @@ from openbb_core.provider.standard_models.historical_eps import (
     HistoricalEpsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     """FMP Historical EPS Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#earnings-company
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     limit: Optional[int] = Field(
         default=None,
-        description=QUERY_DESCRIPTIONS.get("limit", ""),
+        description=QUERY_DESCRIPTIONS.get("limit", "") + " Default is all.",
     )
 
 
@@ -32,80 +32,79 @@ class FMPHistoricalEpsData(HistoricalEpsData):
     """FMP Historical EPS Data."""
 
     __alias_dict__ = {
-        "eps_actual": "eps",
+        "eps_actual": "epsActual",
+        "eps_estimated": "epsEstimated",
         "revenue_estimated": "revenueEstimated",
-        "revenue_actual": "revenue",
-        "reporting_time": "time",
-        "updated_at": "updatedFromDate",
-        "period_ending": "fiscalDateEnding",
+        "revenue_actual": "revenueActual",
+        "updated": "lastUpdated",
     }
 
-    revenue_estimated: Optional[float] = Field(
+    revenue_estimated: Optional[Union[int, float]] = Field(
         default=None,
         description="Estimated consensus revenue for the reporting period.",
     )
-    revenue_actual: Optional[float] = Field(
+    revenue_actual: Optional[Union[int, float]] = Field(
         default=None,
         description="The actual reported revenue.",
     )
-    reporting_time: Optional[str] = Field(
-        default=None,
-        description="The reporting time - e.g. after market close.",
-    )
-    updated_at: Optional[dateType] = Field(
+    updated: Optional[dateType] = Field(
         default=None,
         description="The date when the data was last updated.",
     )
-    period_ending: Optional[dateType] = Field(
-        default=None,
-        description="The fiscal period end date.",
-    )
-
-    @field_validator(
-        "date",
-        "updated_date",
-        "period_ending",
-        mode="before",
-        check_fields=False,
-    )
-    def date_validate(cls, v: Union[datetime, str]):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        if isinstance(v, str):
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strftime(v, "%Y-%m-%d") if v else None
 
 
 class FMPHistoricalEpsFetcher(
     Fetcher[
         FMPHistoricalEpsQueryParams,
-        List[FMPHistoricalEpsData],
+        list[FMPHistoricalEpsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Historical EPS Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPHistoricalEpsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPHistoricalEpsQueryParams:
         """Transform the query params."""
         return FMPHistoricalEpsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPHistoricalEpsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import warnings  # noqa
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        limit = query.limit + 5 if query.limit is not None else 1000
+        results: list = []
+        symbols = query.symbol.split(",")
 
-        url = create_url(
-            3, f"historical/earning_calendar/{query.symbol}", api_key, query, ["symbol"]
-        )
+        for symbol in symbols:
+            url = f"https://financialmodelingprep.com/stable/earnings?symbol={symbol}&limit={limit}&apikey={api_key}"
+            result: list = await get_data_many(url, **kwargs)
 
-        return await get_data_many(url, **kwargs)
+            if not result:
+                warnings.warn(f"No data found for symbol: {symbol}")
+                continue
+
+            results.extend(
+                [
+                    d
+                    for d in sorted(result, key=lambda x: x.get("date"), reverse=True)
+                    if d.get("epsActual")
+                    or d.get("revenueActual")
+                    and d.get("date") <= str(dateType.today())
+                ][: query.limit if query.limit is not None else None]
+            )
+
+        return results
 
     @staticmethod
     def transform_data(
-        query: FMPHistoricalEpsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPHistoricalEpsData]:
+        query: FMPHistoricalEpsQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPHistoricalEpsData]:
         """Return the transformed data."""
         return [FMPHistoricalEpsData.model_validate(d) for d in data]

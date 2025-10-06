@@ -1,19 +1,20 @@
 """FMP Risk Premium Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.risk_premium import (
     RiskPremiumData,
     RiskPremiumQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
     """FMP Risk Premium Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/market-risk-premium-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#market-risk-premium
     """
 
 
@@ -24,32 +25,34 @@ class FMPRiskPremiumData(RiskPremiumData):
 class FMPRiskPremiumFetcher(
     Fetcher[
         FMPRiskPremiumQueryParams,
-        List[FMPRiskPremiumData],
+        list[FMPRiskPremiumData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Risk Premium Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPRiskPremiumQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPRiskPremiumQueryParams:
         """Transform the query params."""
         return FMPRiskPremiumQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPRiskPremiumQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
 
-        url = create_url(4, "market_risk_premium", api_key)
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        url = f"https://financialmodelingprep.com/stable/market-risk-premium?apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPRiskPremiumQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPRiskPremiumData]:
+        query: FMPRiskPremiumQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPRiskPremiumData]:
         """Return the transformed data."""
-        return [FMPRiskPremiumData(**item) for item in data]
+        return [FMPRiskPremiumData.model_validate(d) for d in data]

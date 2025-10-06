@@ -1,5 +1,7 @@
 """Intrinio Insider Trading Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
@@ -146,6 +148,7 @@ class IntrinioInsiderTradingFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
+        query.limit = query.limit or 500
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
         url = f"{base_url}/{query.symbol}/insider_transaction_filings?{query_str}&api_key={api_key}"
 

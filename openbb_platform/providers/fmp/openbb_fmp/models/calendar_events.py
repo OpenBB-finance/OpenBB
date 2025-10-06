@@ -76,6 +76,7 @@ class FMPCalendarEventsFetcher(
         """Extract data from the API."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        import warnings
         from datetime import timedelta
         from openbb_core.provider.utils.errors import EmptyDataError, OpenBBError
         from openbb_fmp.utils.helpers import get_data
@@ -83,6 +84,9 @@ class FMPCalendarEventsFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
+        warnings.warn(
+            message="This endpoint appears to be deprecated. Please use the earnings calendar endpoint instead.",
+        )
         base_url = (
             "https://financialmodelingprep.com/api/v4/earning-calendar-confirmed?"
         )

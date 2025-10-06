@@ -51,9 +51,12 @@ def test_extension_map():
         for p in package_dir.iterdir()
         if p.name not in ("__init__.py", "__pycache__")
     ]
-    assert (
-        not contents
-    ), f"Unexpected files or folders found in package directory: {contents}"
+    assert not contents, (
+        "If you are running this test locally, you can ignore this failure."
+        + " This test is to ensure files are not added to the repository."
+        + " Do not add these files to a commit."
+        f" Unexpected files or folders found in package directory: {contents}"
+    )
 
     # Check reference.json core version matches pyproject.toml openbb-core version
     ref_path = Path(this_dir, "..", "core", "openbb", "assets", "reference.json")

@@ -1,8 +1,9 @@
 """FMP Historical Market Cap Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_market_cap import (
@@ -15,7 +16,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 class FmpHistoricalMarketCapQueryParams(HistoricalMarketCapQueryParams):
     """FMP Historical Market Cap Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs#historical-market-cap-company-information
+    Source: https://site.financialmodelingprep.com/developer/docs#historical-market-cap
 
     """
 
@@ -35,49 +36,38 @@ class FmpHistoricalMarketCapData(HistoricalMarketCapData):
 class FmpHistoricalMarketCapFetcher(
     Fetcher[
         FmpHistoricalMarketCapQueryParams,
-        List[FmpHistoricalMarketCapData],
+        list[FmpHistoricalMarketCapData],
     ]
 ):
     """FMP Historical Market Cap Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FmpHistoricalMarketCapQueryParams:
+    def transform_query(params: dict[str, Any]) -> FmpHistoricalMarketCapQueryParams:
         """Transform the query params."""
-        # pylint: disable=import-outside-toplevel
-        from dateutil.relativedelta import relativedelta
-
-        transformed_params = params
-        now = datetime.now().date()
-
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - relativedelta(years=5)
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
-
-        return FmpHistoricalMarketCapQueryParams(**transformed_params)
+        return FmpHistoricalMarketCapQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FmpHistoricalMarketCapQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
+        import warnings  # noqa
         from dateutil.relativedelta import relativedelta
-        from openbb_core.provider.utils.helpers import amake_requests
+        from openbb_fmp.utils.helpers import get_data_urls
 
         symbols = query.symbol.split(",")
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        urls: List = []
-        results: List = []
+        results: list = []
 
         def generate_urls(symbol, start_date, end_date):
             """Generate URLs for each 5-year interval between start_date and end_date."""
-            base_url = f"https://financialmodelingprep.com/api/v3/historical-market-capitalization/{symbol}?limit=5000"
+            urls: list = []
+            base_url = f"https://financialmodelingprep.com/stable/historical-market-capitalization?symbol={symbol}&limit=5000"
             base_url = base_url + "&from={}&to={}"
+
             while start_date <= end_date:
                 next_date = start_date + relativedelta(months=60)
                 url = base_url.format(
@@ -88,39 +78,49 @@ class FmpHistoricalMarketCapFetcher(
                 urls.append(url)
                 start_date = next_date
 
+            return urls
+
         for symbol in symbols:
-            generate_urls(symbol, query.start_date, query.end_date)
+            end_date = (
+                query.end_date
+                if query.end_date is not None
+                else datetime.today().date()
+            )
 
-        async def response_callback(response, _):
-            """Return the response data."""
-            res = await response.json()
-            if res:
-                results.extend(res)
+            urls = (
+                generate_urls(symbol, query.start_date, end_date)
+                if query.start_date and end_date
+                else [
+                    f"https://financialmodelingprep.com/stable/historical-market-capitalization?symbol={symbol}&limit=5000&apikey={api_key}"
+                ]
+            )
+            data = await get_data_urls(urls, **kwargs)
 
-        await amake_requests(urls, response_callback, **kwargs)
+            if not data:
+                warnings.warn(f"No data was found for: {symbol}")
+                continue
+
+            results.extend(data)
 
         return results
 
     @staticmethod
     def transform_data(
         query: FmpHistoricalMarketCapQueryParams,
-        data: List[Dict],
+        data: list,
         **kwargs: Any,
-    ) -> List[FmpHistoricalMarketCapData]:
+    ) -> list[FmpHistoricalMarketCapData]:
         """Return the transformed data."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame
-
         if not data:
-            raise EmptyDataError("The request was returned empty.")
-
+            raise EmptyDataError("No data was returned for the given symbols.")
         symbols = query.symbol.split(",")
-        df = DataFrame(data)
-
-        for symbol in symbols:
-            if symbol not in df["symbol"].unique():
-                warn(f"No data was found for: {symbol}")
-
-        records = df.sort_values(by=["date", "marketCap"]).to_dict(orient="records")
-
-        return [FmpHistoricalMarketCapData.model_validate(d) for d in records]
+        return [
+            FmpHistoricalMarketCapData.model_validate(d)
+            for d in sorted(
+                data,
+                key=lambda x: (
+                    x.get("date", len(symbols)),
+                    -(x.get("marketCap", 0) or 0),
+                ),
+            )
+        ]

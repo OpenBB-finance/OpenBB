@@ -2,12 +2,10 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import (
     date as dateType,
 )
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,15 +14,13 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import response_callback
-from pydantic import Field, field_validator, model_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 
 class FMPEquityProfileQueryParams(EquityInfoQueryParams):
     """FMP Equity Profile Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#profile-symbol
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -47,12 +43,12 @@ class FMPEquityProfileData(EquityInfoData):
         "employees": "fullTimeEmployees",
         "long_description": "description",
         "first_stock_price_date": "ipoDate",
-        "market_cap": "mktCap",
         "last_price": "price",
-        "volume_avg": "volAvg",
-        "annualized_dividend_amount": "lastDiv",
+        "volume_avg": "averageVolume",
+        "annualized_dividend_amount": "lastDividend",
     }
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    model_config = ConfigDict(extra="ignore")
 
     is_etf: bool = Field(description="If the symbol is an ETF.")
     is_actively_trading: bool = Field(description="If the company is actively trading.")
@@ -110,37 +106,43 @@ class FMPEquityProfileData(EquityInfoData):
 class FMPEquityProfileFetcher(
     Fetcher[
         FMPEquityProfileQueryParams,
-        List[FMPEquityProfileData],
+        list[FMPEquityProfileData],
     ]
 ):
     """FMP Equity Profile Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEquityProfileQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEquityProfileQueryParams:
         """Transform the query params."""
         return FMPEquityProfileQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEquityProfileQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fmp.utils.helpers import response_callback
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        base_url = "https://financialmodelingprep.com/api/v3"
+        base_url = "https://financialmodelingprep.com/stable/"
 
-        results = []
+        results: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = f"{base_url}/profile/{symbol}?apikey={api_key}"
+            url = f"{base_url}profile?symbol={symbol}&apikey={api_key}"
             result = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
             if not result:
-                warn(f"Symbol Error: No data found for {symbol}")
+                warnings.warn(f"Symbol Error: No data found for {symbol}")
 
             if result:
                 results.append(result[0])
@@ -158,27 +160,16 @@ class FMPEquityProfileFetcher(
     @staticmethod
     def transform_data(
         query: FMPEquityProfileQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FMPEquityProfileData]:
+    ) -> list[FMPEquityProfileData]:
         """Return the transformed data."""
-        results: List[FMPEquityProfileData] = []
+        results: list[FMPEquityProfileData] = []
+
         for d in data:
             d["year_low"], d["year_high"] = (
-                d.get("range", "-").split("-") if d.get("range") else (None, None)
+                d.pop("range", "-").split("-") if d.get("range") else (None, None)
             )
-
-            # Clear out fields that don't belong and can be had elsewhere.
-            entries_to_remove = (
-                "exchangeShortName",
-                "defaultImage",
-                "dcf",
-                "dcfDiff",
-                "changes",
-                "range",
-            )
-            for key in entries_to_remove:
-                d.pop(key, None)
-
             results.append(FMPEquityProfileData.model_validate(d))
+
         return results

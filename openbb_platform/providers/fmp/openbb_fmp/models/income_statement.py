@@ -1,11 +1,12 @@
 """FMP Income Statement Model."""
 
 # pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -13,8 +14,8 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, model_validator
+from openbb_fmp.utils.definitions import FinancialStatementPeriods
+from pydantic import Field
 
 
 class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -23,13 +24,7 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """
 
-    __json_schema_extra__ = {
-        "period": {
-            "choices": ["annual", "quarter"],
-        }
-    }
-
-    period: Literal["annual", "quarter"] = Field(
+    period: FinancialStatementPeriods = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
@@ -48,7 +43,6 @@ class FMPIncomeStatementData(IncomeStatementData):
         "revenue": "revenue",
         "cost_of_revenue": "costOfRevenue",
         "gross_profit": "grossProfit",
-        "gross_profit_margin": "grossProfitRatio",
         "general_and_admin_expense": "generalAndAdministrativeExpenses",
         "research_and_development_expense": "researchAndDevelopmentExpenses",
         "selling_and_marketing_expense": "sellingAndMarketingExpenses",
@@ -60,21 +54,15 @@ class FMPIncomeStatementData(IncomeStatementData):
         "total_interest_expense": "interestExpense",
         "depreciation_and_amortization": "depreciationAndAmortization",
         "ebitda": "ebitda",
-        "ebitda_margin": "ebitdaratio",
         "total_operating_income": "operatingIncome",
-        "operating_income_margin": "operatingIncomeRatio",
         "total_other_income_expenses": "totalOtherIncomeExpensesNet",
         "total_pre_tax_income": "incomeBeforeTax",
-        "pre_tax_income_margin": "incomeBeforeTaxRatio",
         "income_tax_expense": "incomeTaxExpense",
         "consolidated_net_income": "netIncome",
-        "net_income_margin": "netIncomeRatio",
         "basic_earnings_per_share": "eps",
-        "diluted_earnings_per_share": "epsdiluted",
+        "diluted_earnings_per_share": "epsDiluted",
         "weighted_average_basic_shares_outstanding": "weightedAverageShsOut",
         "weighted_average_diluted_shares_outstanding": "weightedAverageShsOutDil",
-        "link": "link",
-        "final_link": "finalLink",
     }
 
     filing_date: Optional[dateType] = Field(
@@ -85,110 +73,127 @@ class FMPIncomeStatementData(IncomeStatementData):
         default=None,
         description="The date and time when the filing was accepted.",
     )
+    cik: Optional[str] = Field(
+        default=None,
+        description="The Central Index Key (CIK) assigned by the SEC, if applicable.",
+    )
+    symbol: Optional[str] = Field(
+        default=None,
+        description="The stock ticker symbol.",
+    )
     reported_currency: Optional[str] = Field(
         default=None,
         description="The currency in which the balance sheet was reported.",
     )
-    revenue: Optional[float] = Field(
+    revenue: Optional[int] = Field(
         default=None,
         description="Total revenue.",
     )
-    cost_of_revenue: Optional[float] = Field(
+    cost_of_revenue: Optional[int] = Field(
         default=None,
         description="Cost of revenue.",
     )
-    gross_profit: Optional[float] = Field(
+    gross_profit: Optional[int] = Field(
         default=None,
         description="Gross profit.",
     )
-    gross_profit_margin: Optional[float] = Field(
-        default=None,
-        description="Gross profit margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    general_and_admin_expense: Optional[float] = Field(
+    general_and_admin_expense: Optional[int] = Field(
         default=None,
         description="General and administrative expenses.",
     )
-    research_and_development_expense: Optional[float] = Field(
+    research_and_development_expense: Optional[int] = Field(
         default=None,
         description="Research and development expenses.",
     )
-    selling_and_marketing_expense: Optional[float] = Field(
+    selling_and_marketing_expense: Optional[int] = Field(
         default=None,
         description="Selling and marketing expenses.",
     )
-    selling_general_and_admin_expense: Optional[float] = Field(
+    selling_general_and_admin_expense: Optional[int] = Field(
         default=None,
         description="Selling, general and administrative expenses.",
     )
-    other_expenses: Optional[float] = Field(
+    other_expenses: Optional[int] = Field(
         default=None,
         description="Other expenses.",
     )
-    total_operating_expenses: Optional[float] = Field(
+    total_operating_expenses: Optional[int] = Field(
         default=None,
         description="Total operating expenses.",
     )
-    cost_and_expenses: Optional[float] = Field(
+    cost_and_expenses: Optional[int] = Field(
         default=None,
         description="Cost and expenses.",
     )
-    interest_income: Optional[float] = Field(
+    interest_income: Optional[int] = Field(
         default=None,
         description="Interest income.",
     )
-    total_interest_expense: Optional[float] = Field(
+    total_interest_expense: Optional[int] = Field(
         default=None,
         description="Total interest expenses.",
     )
-    depreciation_and_amortization: Optional[float] = Field(
+    net_interest_income: Optional[int] = Field(
+        default=None,
+        description="Net interest income.",
+    )
+    depreciation_and_amortization: Optional[int] = Field(
         default=None,
         description="Depreciation and amortization.",
     )
-    ebitda: Optional[float] = Field(
+    ebit: Optional[int] = Field(
+        default=None,
+        description="Earnings before interest and taxes (EBIT).",
+        title="EBIT",
+    )
+    ebitda: Optional[int] = Field(
         default=None,
         description="EBITDA.",
+        title="EBITDA",
     )
-    ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="EBITDA margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    total_operating_income: Optional[float] = Field(
+    total_operating_income: Optional[int] = Field(
         default=None,
         description="Total operating income.",
     )
-    operating_income_margin: Optional[float] = Field(
+    non_operating_income_excluding_interest: Optional[int] = Field(
         default=None,
-        description="Operating income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        description="Non-operating income excluding interest.",
     )
-    total_other_income_expenses: Optional[float] = Field(
+    net_income_from_continuing_operations: Optional[int] = Field(
+        default=None,
+        description="Net income from continuing operations.",
+    )
+    net_income_from_discontinued_operations: Optional[int] = Field(
+        default=None,
+        description="Net income from discontinued operations.",
+    )
+    total_other_income_expenses: Optional[int] = Field(
         default=None,
         description="Total other income and expenses.",
     )
-    total_pre_tax_income: Optional[float] = Field(
+    total_pre_tax_income: Optional[int] = Field(
         default=None,
         description="Total pre-tax income.",
     )
-    pre_tax_income_margin: Optional[float] = Field(
-        default=None,
-        description="Pre-tax income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    income_tax_expense: Optional[float] = Field(
+    income_tax_expense: Optional[int] = Field(
         default=None,
         description="Income tax expense.",
     )
-    consolidated_net_income: Optional[float] = Field(
+    other_adjustments_to_net_income: Optional[int] = Field(
+        default=None,
+        description="Other adjustments to net income.",
+    )
+    net_income_deductions: Optional[int] = Field(
+        default=None,
+        description="Net income deductions.",
+    )
+    consolidated_net_income: Optional[int] = Field(
         default=None,
         description="Consolidated net income.",
     )
-    net_income_margin: Optional[float] = Field(
+    bottom_line_net_income: Optional[int] = Field(
         default=None,
-        description="Net income margin.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        description="Bottom line net income.",
     )
     basic_earnings_per_share: Optional[float] = Field(
         default=None,
@@ -198,72 +203,57 @@ class FMPIncomeStatementData(IncomeStatementData):
         default=None,
         description="Diluted earnings per share.",
     )
-    weighted_average_basic_shares_outstanding: Optional[float] = Field(
+    weighted_average_basic_shares_outstanding: Optional[int] = Field(
         default=None,
         description="Weighted average basic shares outstanding.",
     )
-    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+    weighted_average_diluted_shares_outstanding: Optional[int] = Field(
         default=None,
         description="Weighted average diluted shares outstanding.",
     )
-    link: Optional[str] = Field(
-        default=None,
-        description="Link to the filing.",
-    )
-    final_link: Optional[str] = Field(
-        default=None,
-        description="Link to the filing document.",
-    )
-
-    @model_validator(mode="before")
-    @classmethod
-    def replace_zero(cls, values):  # pylint: disable=no-self-argument
-        """Check for zero values and replace with None."""
-        return (
-            {k: None if v == 0 else v for k, v in values.items()}
-            if isinstance(values, dict)
-            else values
-        )
 
 
 class FMPIncomeStatementFetcher(
     Fetcher[
         FMPIncomeStatementQueryParams,
-        List[FMPIncomeStatementData],
+        list[FMPIncomeStatementData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Income Statement Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPIncomeStatementQueryParams:
         """Transform the query params."""
         return FMPIncomeStatementQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPIncomeStatementQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
 
-        symbol = query.symbol
-        base_url = "https://financialmodelingprep.com/api/v3"
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        base_url = "https://financialmodelingprep.com/stable/income-statement"
+
+        if query.period == "ttm":
+            base_url += "-ttm"
 
         url = (
-            f"{base_url}/income-statement/{symbol}?"
-            f"period={query.period}&limit={query.limit}&apikey={api_key}"
+            base_url
+            + f"?symbol={query.symbol}{'&period=' + query.period if query.period != 'ttm' else ''}"
+            + f"&limit={query.limit if query.limit else 5}"
+            + f"&apikey={api_key}"
         )
 
         return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPIncomeStatementQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPIncomeStatementData]:
+        query: FMPIncomeStatementQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPIncomeStatementData]:
         """Return the transformed data."""
-        for result in data:
-            result.pop("symbol", None)
-            result.pop("cik", None)
         return [FMPIncomeStatementData.model_validate(d) for d in data]

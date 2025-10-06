@@ -8,12 +8,12 @@ from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
 from openbb_fmp.models.calendar_events import FMPCalendarEventsFetcher
+from openbb_fmp.models.calendar_ipo import FMPCalendarIpoFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
-from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
@@ -22,19 +22,19 @@ from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
 from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.equity_gainers import FMPGainersFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
+from openbb_fmp.models.equity_losers import FMPLosersFetcher
+from openbb_fmp.models.equity_most_active import FMPEquityActiveFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
-from openbb_fmp.models.equity_valuation_multiples import (
-    FMPEquityValuationMultiplesFetcher,
-)
+from openbb_fmp.models.esg_score import FMPEsgScoreFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
-from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
@@ -57,6 +57,7 @@ from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipF
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
+from openbb_fmp.models.nport_disclosure import FMPNportDisclosureFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
@@ -82,12 +83,12 @@ stock market information (news, currencies, and stock prices).""",
         "CalendarDividend": FMPCalendarDividendFetcher,
         "CalendarEarnings": FMPCalendarEarningsFetcher,
         "CalendarEvents": FMPCalendarEventsFetcher,
+        "CalendarIpo": FMPCalendarIpoFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
         "CompanyFilings": FMPCompanyFilingsFetcher,
         "CompanyNews": FMPCompanyNewsFetcher,
-        "CompanyOverview": FMPCompanyOverviewFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "CryptoSearch": FMPCryptoSearchFetcher,
         "CurrencyHistorical": FMPCurrencyHistoricalFetcher,
@@ -96,17 +97,18 @@ stock market information (news, currencies, and stock prices).""",
         "DiscoveryFilings": FMPDiscoveryFilingsFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
         "EconomicCalendar": FMPEconomicCalendarFetcher,
+        "EquityActive": FMPEquityActiveFetcher,
         "EquityHistorical": FMPEquityHistoricalFetcher,
         "EquityOwnership": FMPEquityOwnershipFetcher,
         "EquityPeers": FMPEquityPeersFetcher,
-        "EquityInfo": FMPEquityProfileFetcher,
+        "EquityGainers": FMPGainersFetcher,
+        "EquityLosers": FMPLosersFetcher,
         "EquityQuote": FMPEquityQuoteFetcher,
         "EquityScreener": FMPEquityScreenerFetcher,
-        "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
+        "EsgScore": FMPEsgScoreFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
         "EtfEquityExposure": FMPEtfEquityExposureFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
-        "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
         "EtfInfo": FMPEtfInfoFetcher,
         "EtfPricePerformance": FMPPricePerformanceFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
@@ -129,6 +131,7 @@ stock market information (news, currencies, and stock prices).""",
         "KeyExecutives": FMPKeyExecutivesFetcher,
         "KeyMetrics": FMPKeyMetricsFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
+        "NportDisclosure": FMPNportDisclosureFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "PriceTarget": FMPPriceTargetFetcher,
         "PriceTargetConsensus": FMPPriceTargetConsensusFetcher,

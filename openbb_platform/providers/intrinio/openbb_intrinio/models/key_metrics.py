@@ -68,6 +68,10 @@ class IntrinioKeyMetricsData(KeyMetricsData):
         "eps": "basiceps",
     }
 
+    pe_ratio: Optional[float] = Field(
+        default=None,
+        description="Price-to-earnings ratio (TTM).",
+    )
     price_to_book: Optional[float] = Field(
         default=None,
         description="Price to book ratio.",
@@ -207,7 +211,7 @@ class IntrinioKeyMetricsData(KeyMetricsData):
         default=None,
         description="52 week high",
     )
-    year_low: float = Field(default=None, description="52 week low")
+    year_low: Optional[float] = Field(default=None, description="52 week low")
     volume_avg: Optional[ForceInt] = Field(
         default=None,
         description="Average daily volume.",

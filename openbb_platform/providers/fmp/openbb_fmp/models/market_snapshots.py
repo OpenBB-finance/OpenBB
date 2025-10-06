@@ -5,20 +5,15 @@
 from datetime import (
     date as dateType,
     datetime,
-    timezone,
 )
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
-from dateutil import parser
-from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_core.provider.utils.helpers import safe_fromtimestamp
-from openbb_fmp.utils.definitions import EXCHANGES, Exchanges
-from openbb_fmp.utils.helpers import get_data
+from openbb_fmp.utils.definitions import MARKETS
 from pydantic import Field, field_validator
 
 
@@ -30,12 +25,13 @@ class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
 
     __json_schema_extra__ = {
         "market": {
-            "multiple_items_allowed": False,
-            "choices": EXCHANGES,
+            "x-widget_config": {
+                "options": [{"label": m.upper(), "value": m} for m in MARKETS.__args__]
+            }
         }
     }
 
-    market: Exchanges = Field(
+    market: MARKETS = Field(
         description="The market to fetch data for.", default="nasdaq"
     )
 
@@ -47,25 +43,15 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "high": "dayHigh",
         "low": "dayLow",
         "prev_close": "previousClose",
-        "change_percent": "changesPercentage",
-        "last_price": "price",
+        "change_percent": "changePercentage",
+        "close": "price",
         "last_price_timestamp": "timestamp",
-        "shares_outstanding": "sharesOutstanding",
-        "volume_avg": "avgVolume",
         "ma50": "priceAvg50",
         "ma200": "priceAvg200",
         "year_high": "yearHigh",
         "year_low": "yearLow",
         "market_cap": "marketCap",
-        "earnings_date": "earningsAnnouncement",
     }
-
-    last_price: Optional[float] = Field(
-        description="The last price of the stock.", default=None
-    )
-    last_price_timestamp: Optional[Union[datetime, dateType]] = Field(
-        description="The timestamp of the last price.", default=None
-    )
     ma50: Optional[float] = Field(
         description="The 50-day moving average.", default=None
     )
@@ -74,121 +60,95 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     )
     year_high: Optional[float] = Field(description="The 52-week high.", default=None)
     year_low: Optional[float] = Field(description="The 52-week low.", default=None)
-    volume_avg: Optional[ForceInt] = Field(
-        description="Average daily trading volume.", default=None
-    )
-    market_cap: Optional[ForceInt] = Field(
+    market_cap: Optional[Union[int, float]] = Field(
         description="Market cap of the stock.", default=None
     )
-    eps: Optional[float] = Field(description="Earnings per share.", default=None)
-    pe: Optional[float] = Field(description="Price to earnings ratio.", default=None)
-    shares_outstanding: Optional[ForceInt] = Field(
-        description="Number of shares outstanding.",
-        default=None,
+    last_price_timestamp: Optional[Union[datetime, dateType]] = Field(
+        description="The timestamp of the last price.", default=None
     )
-    name: Optional[str] = Field(
-        description="The company name associated with the symbol.", default=None
-    )
-    exchange: Optional[str] = Field(
-        description="The exchange of the stock.", default=None
-    )
-    earnings_date: Optional[Union[datetime, dateType]] = Field(
-        description="The upcoming earnings announcement date.",
-        default=None,
-    )
-
-    @field_validator("last_price_timestamp", mode="before", check_fields=False)
-    @classmethod
-    def validate_timestamp(cls, v: Union[str, int, float]) -> Optional[dateType]:
-        """Validate the timestamp."""
-        if isinstance(v, str):
-            try:
-                v = float(v)
-            except ValueError:
-                return None
-
-        if isinstance(v, (int, float)) and v != 0:
-            try:
-                v = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
-                if v.hour == 0 and v.minute == 0 and v.second == 0:  # type: ignore
-                    v = v.date()  # type: ignore
-                return v  # type: ignore
-            except ValueError:
-                return None
-        return None
-
-    @field_validator("earnings_date", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Validate the ISO date string."""
-        if v and ":" in str(v):
-            v = parser.isoparse(str(v))
-            if v.hour == 0 and v.minute == 0 and v.second == 0:
-                return v.date()
-            return v
-        return parser.parse(str(v)).date() if v else None
 
     @field_validator("change_percent", mode="before", check_fields=False)
     @classmethod
-    def normalize_percent(cls, v):
+    def _normalize_percent(cls, v):
         """Normalize the percent."""
-        return float(v) / 100 if v else None
-
-    @field_validator(
-        "shares_outstanding",
-        "volume",
-        "volume_avg",
-        "change",
-        "ma50",
-        "ma200",
-        "eps",
-        "pe",
-        "market_cap",
-        "year_high",
-        "year_low",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_empty_numbers(cls, v):
-        """Validate empty fields."""
-        return v if v != 0 else None
+        return float(v) / 100 if v else 0
 
     @field_validator("name", mode="before", check_fields=False)
     @classmethod
-    def validate_empty_strings(cls, v):
-        """Validate the name."""
+    def _empty_strings(cls, v):
+        """Clear empty strings."""
         return v if v and v not in (" ", "''") else None
 
 
 class FMPMarketSnapshotsFetcher(
     Fetcher[
         FMPMarketSnapshotsQueryParams,
-        List[FMPMarketSnapshotsData],
+        list[FMPMarketSnapshotsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Market Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPMarketSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPMarketSnapshotsQueryParams:
         """Transform the query params."""
         return FMPMarketSnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPMarketSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
-        api_key = credentials.get("fmp_api_key") if credentials else ""
-        url = f"https://financialmodelingprep.com/api/v3/quotes/{query.market}?apikey={api_key}"
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
 
-        return await get_data(url, **kwargs)
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        base_url = "https://financialmodelingprep.com/stable/batch-"
+        market = query.market.upper()
+
+        if market == "ETF":
+            url = f"{base_url}etf-quotes?short=false&apikey={api_key}"
+        elif market == "MUTUAL_FUND":
+            url = f"{base_url}mutualfund-quotes?short=false&apikey={api_key}"
+        elif market == "FOREX":
+            url = f"{base_url}forex-quotes?short=false&apikey={api_key}"
+        elif market == "CRYPTO":
+            url = f"{base_url}crypto-quotes?short=false&apikey={api_key}"
+        elif market == "INDEX":
+            url = f"{base_url}index-quotes?short=false&apikey={api_key}"
+        elif market == "COMMODITY":
+            url = f"{base_url}commodity-quotes?short=false&apikey={api_key}"
+        else:
+            url = f"{base_url}exchange-quote?exchange={market}&short=false&apikey={api_key}"
+
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPMarketSnapshotsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPMarketSnapshotsData]:
+        query: FMPMarketSnapshotsQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPMarketSnapshotsData]:
         """Return the transformed data."""
-        return [FMPMarketSnapshotsData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        import pandas as pd
+        from openbb_core.provider.utils.errors import EmptyDataError
+
+        df = pd.DataFrame(data)
+
+        if df.empty:
+            raise EmptyDataError("No data was returned")
+
+        # We need to clean up the response because there is lots of very old data included.
+        # Purge to most recent day only
+        df.timestamp = pd.to_datetime(df.timestamp, unit="s", utc=True).dt.tz_localize(
+            None
+        )
+        max_date = df.timestamp.max().date()
+        df = df[df.timestamp.dt.date == max_date]
+
+        return [
+            FMPMarketSnapshotsData.model_validate(d)
+            for d in df.sort_values(by="timestamp", ascending=False).to_dict(
+                orient="records"
+            )
+        ]

@@ -283,8 +283,8 @@ class BenzingaPriceTargetFetcher(
         from openbb_core.provider.utils.helpers import amake_request, get_querystring
 
         token = credentials.get("benzinga_api_key") if credentials else ""
-
         base_url = "https://api.benzinga.com/api/v2.1/calendar/ratings"
+        query.limit = query.limit or 200
         querystring = get_querystring(query.model_dump(by_alias=True), [])
 
         url = f"{base_url}?{querystring}&token={token}"

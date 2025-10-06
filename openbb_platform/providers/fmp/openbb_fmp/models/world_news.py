@@ -2,9 +2,8 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-from warnings import warn
+import warnings
+from typing import Any, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
@@ -12,7 +11,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FMPWorldNewsQueryParams(WorldNewsQueryParams):
@@ -21,83 +20,89 @@ class FMPWorldNewsQueryParams(WorldNewsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
     """
 
+    topic: Literal[
+        "fmp_articles", "general", "press_releases", "stocks", "forex", "crypto"
+    ] = Field(
+        default="general",
+        description="The topic of the news to be fetched.",
+    )
+
+    page: Optional[int] = Field(
+        default=None,
+        le=100,
+        ge=0,
+        description="Page number of the results. Use in combination with limit.",
+    )
+
 
 class FMPWorldNewsData(WorldNewsData):
     """FMP World News Data."""
 
-    __alias_dict__ = {"date": "publishedDate", "images": "image"}
+    __alias_dict__ = {
+        "date": "publishedDate",
+        "images": "image",
+        "excerpt": "text",
+        "source": "site",
+        "author": "publisher",
+        "symbols": "symbol",
+    }
 
-    site: str = Field(description="News source.")
-
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")
-
-    @field_validator("images", mode="before", check_fields=False)
-    @classmethod
-    def images_validate(cls, v):
-        """Conform the response to a list."""
-        if isinstance(v, str):
-            return [{"o": v}]
-        return v if isinstance(v, list) else None
+    source: str = Field(description="News source.")
 
 
 class FMPWorldNewsFetcher(
     Fetcher[
         FMPWorldNewsQueryParams,
-        List[FMPWorldNewsData],
+        list[FMPWorldNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP World News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPWorldNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPWorldNewsQueryParams:
         """Transform the query params."""
         if params.get("start_date") or params.get("end_date"):
-            warn("start_date and end_date are not supported for this endpoint.")
+            warnings.warn(
+                "start_date and end_date are not supported for this endpoint."
+            )
         return FMPWorldNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPWorldNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
-        import math  # noqa
-        import asyncio
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_fmp.utils.helpers import response_callback
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        pages = math.ceil(query.limit / 20)
-        base_url = "https://financialmodelingprep.com/api/v4"
-        results: List = []
+        base_url = "https://financialmodelingprep.com/stable/"
 
-        async def get_one(url):
-            """Get data for one URL."""
-            data = await amake_request(url, response_callback=response_callback)
-            if data:
-                results.extend(data)
+        if query.topic == "fmp_articles":
+            base_url = f"{base_url}news/fmp-articles?"
+            url = (
+                base_url
+                + f"page={query.page}&limit={query.limit if query.limit else 20}&apikey={api_key}"
+            )
+        else:
+            base_url = f"{base_url}news/{query.topic.replace('_', '-')}-latest?"
+            url = (
+                base_url
+                + f"from={query.start_date}&to={query.end_date}"
+                + f"&limit={query.limit if query.limit else 250}&page={query.page if query.page else 0}&apikey={api_key}"
+            )
 
-        urls = [
-            f"{base_url}/general_news?page={page}&apikey={api_key}"
-            for page in range(pages)
-        ]
-        await asyncio.gather(*[get_one(url) for url in urls])
+        results: list = await get_data_many(url, **kwargs)
 
-        if results:
-            data = sorted(results, key=lambda x: x["publishedDate"], reverse=True)
-
-            return data[: query.limit]
-        raise EmptyDataError("The request was returned empty.")
+        return sorted(results, key=lambda x: x["publishedDate"], reverse=True)
 
     @staticmethod
     def transform_data(
-        query: FMPWorldNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPWorldNewsData]:
+        query: FMPWorldNewsQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPWorldNewsData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError("No data was returned from FMP query.")
         return [FMPWorldNewsData.model_validate(d) for d in data]

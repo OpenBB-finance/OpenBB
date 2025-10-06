@@ -35,7 +35,12 @@ async def major_holders(
 
 @router.command(
     model="InstitutionalOwnership",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={"symbol": "AAPL", "year": 2024, "quarter": 2, "provider": "fmp"}
+        ),
+    ],
 )
 async def institutional(
     cc: CommandContext,
@@ -43,7 +48,7 @@ async def institutional(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get data about institutional ownership for a given company over time."""
+    """Net statistics on institutional ownership for a given company, reported on 13-F filings."""
     return await OBBject.from_query(Query(**locals()))
 
 

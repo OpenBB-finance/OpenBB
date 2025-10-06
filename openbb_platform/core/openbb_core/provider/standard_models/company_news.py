@@ -4,9 +4,8 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -27,10 +26,11 @@ class CompanyNewsQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     limit: Optional[NonNegativeInt] = Field(
-        default=2500, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before")
@@ -39,34 +39,20 @@ class CompanyNewsQueryParams(QueryParams):
         """Validate the symbols."""
         return v.upper() if v else None
 
-    @field_validator("start_date", mode="before")
-    @classmethod
-    def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate start date if empty."""
-        if not v:
-            now = datetime.now().date()
-            v = now - relativedelta(weeks=16)
-        return v
-
-    @field_validator("end_date", mode="before")
-    @classmethod
-    def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate end date if empty."""
-        if not v:
-            v = datetime.now().date()
-        return v
-
 
 class CompanyNewsData(Data):
     """Company News Data."""
 
     date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-        + " Here it is the published date of the article."
+        description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
     )
     title: str = Field(description="Title of the article.")
-    text: Optional[str] = Field(default=None, description="Text/body of the article.")
-    images: Optional[List[Dict[str, str]]] = Field(
+    author: Optional[str] = Field(default=None, description="Author of the article.")
+    excerpt: Optional[str] = Field(
+        default=None, description="Excerpt of the article text."
+    )
+    body: Optional[str] = Field(default=None, description="Body of the article text.")
+    images: Optional[Any] = Field(
         default=None, description="Images associated with the article."
     )
     url: str = Field(description="URL to the article.")

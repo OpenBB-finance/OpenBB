@@ -1,10 +1,11 @@
 """Equity Peers Standard Model."""
 
-from typing import List
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic import Field, field_validator
 
 
@@ -23,7 +24,4 @@ class EquityPeersQueryParams(QueryParams):
 class EquityPeersData(Data):
     """Equity Peers Data."""
 
-    peers_list: List[str] = Field(
-        default_factory=list,
-        description="A list of equity peers based on sector, exchange and market cap.",
-    )
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

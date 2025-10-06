@@ -9,22 +9,22 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v4/etf-info?apikey=MOCK_API_KEY&symbol=IOO
+    uri: https://financialmodelingprep.com/stable/etf/info?apikey=MOCK_API_KEY&symbol=IOO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA51U32vbMBB+718hAntrncR2aqePS9OtsFFY272UPijyJRbIkqeTkprR/30nO04Z
-        zJ23QJC57/Tddz90T2eM/aQ/YxNsqo1Rkys2ub27m5x3Ro4IbqXoCMD6h5euOWG+IuMiX+T5ZZ7O
-        Fr15v/tulK+AwHkWE3wEhEdZB5r0Mo3zbJHFPVMBKKysnTQ64A8lsK3XBduBBsuVapjUe0CHjDum
-        gKNj+ewDM1smgy1oRHJhji4KU9VGg3YMQXgrnQTsPYkTrGqk3pF3AS+MUxC617FXdAmJg2KUfA8M
-        hNGmkoKJklsuHFiJToqjC7fA0G/Qce1kp7EgAim4Ys78n5SK95kyXweW+E9ZCrCO07n1zlvAc2ba
-        ymFLgQdeU2DtgmLCBMeyBdoPoAbuuQqJRqfihxylCu2aPN73VnDbFcnnumkn4p5KAHgCX2rQCN84
-        xSV4FqXz2W+/5OgotYBW3DV3bYCYwIt5fDHLey6JUnehT2NxmgvN2ymayC48+6TMhspLwdj64ebN
-        a09Oy8sozd8sK28taNF01Ne9LzXCGYtfqJOEPLXG/gUcFRcenW3vfeRI3f/KQ+e56rPvK2CQqh9m
-        PEqSI/B6/j4hVbTymkYklITdg91LAUO8WZTFo3k10oOzbNUIFSZwSOo8mv8z5zVsqdlyDwOkeTTP
-        RnKu6TnvmgGeNBpLcyM114Ja8rcSLqMsH8n5GbhypaAxG65dlo4ku+2+3xkaSnbs0HwjZWxNe8YN
-        SZtFydg0H0CU2igz2IVkGY3lenRStTttUNbilGN7Ph8f4QE2KLt9UDpX49V0ejgcIontK49obU49
-        TmtrCk87bBonyyzJpv0TLo0qaG3iynjt2sYEwa9nz78Adho0scwGAAA=
+        H4sIAAAAAAAAA5VUTVPbMBC98ys0OWP5I/4gubUhtMyUYYaEHspwEPIm0aBIrlZOSDv975XsOHDA
+        1D1krOw+vd19b+2HM0J+ux8hIzxsn7QcTcno+vZ2dN4GFduCD4nFhhlA8kXqJyZJHEVkvrzqUCUg
+        N6KyQisPXm6AvH+BIMAzEquJNYw/E+uRagdot6AscRdqaZHoFWHKJUp4IVxvK41Q+qBnkcysIeCs
+        EpZJ8Yv5omTdVoGftbACkHaNCRRNR/eLNE+TiyIrkqTLMUSwM+keHjH3Vw9dDoHXxv2f1Sgqnz5d
+        P42st4ILCS17F93DEwrbBDfWVjgNw/1+TwU2YlA3S8g3YWX0ChBd40xiCMoHyppbDJPxpBgX4REf
+        tGMFbuwA7Kor4o4zJwpTh8asVuhT8qUChXDndXHpiKZvx8V7p6m5YYqtwSvuEEWST8ZZPMnzDrhb
+        f9eybnx3/UR50YmpODQeX7J2xCRyjcVJEGWv67JziTie0Kh4Dc1qY0DxQ6vVZQfeaFkKtcaZrptO
+        4ig5ZuqqdCXKT7atkmRBNAmSZBln0yibxhmN8uTHG6+sNvhNoIc/NMFuqY99lzVa05T/zFBwcuPY
+        jXDiHzk65TTWxk8W0zw/Jv6cf0zonNjWSvB2DxdgdoJDH+8FzdLBvAqdB4bMDlw6etlDOaHxf1Ne
+        wsrtiNhBD2dO88lAzrkCsz708IxpUQzkuRKKKe4s+ZeEcUSzod58BSbthrvXo9ePNBvIdd2eP1ia
+        lBZDnbhzjZE5Wv8evU8W0WSoBUvgG6Wl7rUhzWgxHkh2b4VsPqG9faWnIZvn45k/Pf4FVlx6+0gG
+        AAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -44,9 +44,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:57 GMT
+      - Tue, 23 Sep 2025 03:08:42 GMT
       Etag:
-      - W/"6cc-6D5FvskZREvMXh6VZ9uD04k648A"
+      - W/"648-WeMcFFuxsFW70AT4IZ8DRchPbqc"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

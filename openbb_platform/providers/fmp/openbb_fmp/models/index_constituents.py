@@ -1,31 +1,35 @@
 """FMP Index Constituents Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
+from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_constituents import (
     IndexConstituentsData,
     IndexConstituentsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
 class FMPIndexConstituentsQueryParams(IndexConstituentsQueryParams):
     """FMP Index Constituents Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/list-of-dow-companies-api/
-            https://site.financialmodelingprep.com/developer/docs/list-of-sp-500-companies-api/
-            https://site.financialmodelingprep.com/developer/docs/list-of-nasdaq-companies-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#sp-500
     """
 
     symbol: Literal["dowjones", "sp500", "nasdaq"] = Field(
         default="dowjones",
+    )
+    historical: bool = Field(
+        default=False,
+        description="Flag to retrieve historical removals and additions.",
     )
 
 
@@ -34,83 +38,116 @@ class FMPIndexConstituentsData(IndexConstituentsData):
 
     __alias_dict__ = {
         "headquarter": "headQuarter",
-        "date_first_added": "dateFirstAdded",
-        "sub_sector": "subSector",
+        "date_added": "dateFirstAdded",
+        "industry": "subSector",
+        "name": "addedSecurity",
+        "removed_symbol": "removedTicker",
+        "removed_name": "removedSecurity",
     }
 
-    sector: str = Field(
-        description="Sector the constituent company in the index belongs to."
-    )
-    sub_sector: Optional[str] = Field(
+    sector: Optional[str] = Field(
         default=None,
-        description="Sub-sector the constituent company in the index belongs to.",
+        description="Sector classification for the constituent company in the index.",
+    )
+    industry: Optional[str] = Field(
+        default=None,
+        description="Industry classification for the constituent company in the index.",
     )
     headquarter: Optional[str] = Field(
         default=None,
-        description="Location of the headquarter of the constituent company in the index.",
+        description="Location of the company's headquarters.",
     )
-    date_first_added: Optional[Union[dateType, str]] = Field(
+    date_added: Optional[Union[dateType, str]] = Field(
         default=None, description="Date the constituent company was added to the index."
     )
-    cik: Optional[int] = Field(
-        description=DATA_DESCRIPTIONS.get("cik", ""), default=None
+    cik: Optional[str] = Field(
+        description=DATA_DESCRIPTIONS.get("cik", ""),
+        default=None,
+        coerce_numbers_to_str=True,
     )
     founded: Optional[Union[dateType, str]] = Field(
         default=None,
-        description="Founding year of the constituent company in the index.",
+        description="When the company was founded.",
+    )
+    removed_symbol: Optional[str] = Field(
+        default=None,
+        description="Symbol of the company removed from the index.",
+    )
+    removed_name: Optional[str] = Field(
+        default=None,
+        description="Name of the company removed from the index.",
+    )
+    reason: Optional[str] = Field(
+        default=None,
+        description="Reason for the removal from the index.",
+    )
+    date: Optional[dateType] = Field(
+        default=None,
+        description="Date of the historical constituent data.",
     )
 
-    @field_validator("dateFirstAdded", mode="before", check_fields=False)
+    @field_validator("date_added", "founded", "date", mode="before", check_fields=False)
     @classmethod
-    def date_first_added_validate(cls, v):  # pylint: disable=E0213
+    def date_first_added_validate(cls, v):
         """Return the date_first_added date as a datetime object for valid cases."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d") if v else None
-        except Exception:
-            # For returning string in case of mismatched dates
-            return v
+        if not v:
+            return None
 
-    @field_validator("founded", mode="before", check_fields=False)
-    @classmethod
-    def founded_validate(cls, v):  # pylint: disable=E0213
-        """Return the founded date as a datetime object for valid cases."""
         try:
-            return datetime.strptime(v, "%Y-%m-%d") if v else None
-        except Exception:
-            # For returning string in case of mismatched dates
-            return v
+            # First try ISO format for performance
+            return datetime.fromisoformat(str(v)).date()
+        except (ValueError, TypeError):
+            try:
+                # Fall back to dateutil parser for flexible parsing
+                return parser.parse(str(v)).date()
+            except Exception:
+                # Return as string if all parsing fails
+                return str(v)
+
+    @field_validator(
+        "removed_symbol", "removed_name", "reason", mode="before", check_fields=False
+    )
+    @classmethod
+    def _clean_empty_strings(cls, v):  # pylint: disable=E0213
+        """Return the removed fields as strings."""
+        if not v or v in ("''", "", "None"):
+            return None
+        return v
 
 
 class FMPIndexConstituentsFetcher(
     Fetcher[
         FMPIndexConstituentsQueryParams,
-        List[FMPIndexConstituentsData],
+        list[FMPIndexConstituentsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Index Constituents Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPIndexConstituentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPIndexConstituentsQueryParams:
         """Transform the query params."""
         return FMPIndexConstituentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPIndexConstituentsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3"
-        url = f"{base_url}/{query.symbol}_constituent/?apikey={api_key}"
+        base_url = "https://financialmodelingprep.com/stable"
+        url = f"{base_url}/{'historical-' if query.historical else ''}{query.symbol}-constituent/?apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPIndexConstituentsData]:
-        """Return the raw data from the FMP endpoint."""
+        query: FMPIndexConstituentsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPIndexConstituentsData]:
+        """Transform the raw data into a list of FMPIndexConstituentsData."""
         return [FMPIndexConstituentsData.model_validate(d) for d in data]

@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from importlib.metadata import EntryPoint, entry_points
 from inspect import getmembers, isfunction
 from sys import version_info
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Optional, Set, Tuple, Union
 
 from importlib_metadata import EntryPoints
 from openbb_core.app.provider_interface import ProviderInterface
@@ -22,9 +22,9 @@ pi = ProviderInterface()
 logging.basicConfig(level=logging.INFO)
 
 
-def get_packages_info() -> Dict[str, str]:
+def get_packages_info() -> dict[str, str]:
     """Get the paths and names of all the static packages."""
-    paths_and_names: Dict[str, str] = {}
+    paths_and_names: dict[str, str] = {}
     package_paths = glob.glob("openbb_platform/core/openbb/package/*.py")
     for path in package_paths:
         name = os.path.basename(path).split(".")[0]
@@ -36,7 +36,7 @@ def get_packages_info() -> Dict[str, str]:
     return paths_and_names
 
 
-def execute_docstring_examples(module_name: str, path: str) -> List[str]:
+def execute_docstring_examples(module_name: str, path: str) -> list[str]:
     """Execute the docstring examples of a module."""
     errors = []
     module = importlib.import_module(f"openbb.package.{module_name}")
@@ -57,7 +57,7 @@ def execute_docstring_examples(module_name: str, path: str) -> List[str]:
     return errors
 
 
-def check_docstring_examples() -> List[str]:
+def check_docstring_examples() -> list[str]:
     """Test that the docstring examples execute without errors."""
     errors = []
     paths_and_names = get_packages_info()
@@ -77,7 +77,7 @@ def filter_eps(eps: Union[EntryPoints, dict], group: str) -> Tuple[EntryPoint, .
 
 
 def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
-    """List installed openbb extensions and providers.
+    """list installed openbb extensions and providers.
 
     Returns
     -------
@@ -103,9 +103,9 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
             group="openbb_obbject_extension"
         )
     else:
-        core_entry_points = entry_points_dict.get("openbb_core_extension", [])
-        provider_entry_points = entry_points_dict.get("openbb_provider_extension", [])
-        obbject_entry_points = entry_points_dict.get("openbb_obbject_extension", [])
+        core_entry_points = entry_points_dict.get("openbb_core_extension", [])  # type: ignore  pylint: disable=E1101
+        provider_entry_points = entry_points_dict.get("openbb_provider_extension", [])  # type: ignore  pylint: disable=E1101
+        obbject_entry_points = entry_points_dict.get("openbb_obbject_extension", [])  # type: ignore  pylint: disable=E1101
 
     for entry_point in core_entry_points:
         core_extensions.add(f"{entry_point.name}")
@@ -119,7 +119,7 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     return core_extensions, provider_extensions, obbject_extensions
 
 
-def collect_routers(target_dir: str) -> List[str]:
+def collect_routers(target_dir: str) -> list[str]:
     """Collect all routers in the target directory."""
     current_dir = os.path.dirname(__file__)
     base_path = os.path.abspath(os.path.join(current_dir, "../../../"))
@@ -139,9 +139,9 @@ def collect_routers(target_dir: str) -> List[str]:
     return routers
 
 
-def import_routers(routers: List) -> List:
+def import_routers(routers: list) -> list:
     """Import all routers."""
-    loaded_routers: List = []
+    loaded_routers: list = []
     for router in routers:
         module = importlib.import_module(router)
         loaded_routers.append(module)
@@ -149,7 +149,7 @@ def import_routers(routers: List) -> List:
     return loaded_routers
 
 
-def collect_router_functions(loaded_routers: List) -> Dict:
+def collect_router_functions(loaded_routers: list) -> dict:
     """Collect all router functions."""
     router_functions = {}
     for router in loaded_routers:
@@ -235,10 +235,10 @@ def get_decorator_details(function) -> Optional[Decorator]:
 
 
 def find_missing_router_function_models(
-    router_functions: Dict, pi_map: Dict
-) -> List[str]:
+    router_functions: dict, pi_map: dict
+) -> list[str]:
     """Find the missing models in the router functions."""
-    missing_models: List[str] = []
+    missing_models: list[str] = []
     for router_name, functions in router_functions.items():
         for function in functions:
             decorator = find_decorator(
@@ -251,7 +251,12 @@ def find_missing_router_function_models(
                 and "POST" not in decorator
                 and "GET" not in decorator
             ):
-                model = decorator.split("model=")[1].split(",")[0].strip('"')
+                if (
+                    returns := str(function.__annotations__.get("return"))
+                ) and returns.rsplit(".", maxsplit=1)[-1].startswith("OBBject"):
+                    model = returns.rsplit("_", maxsplit=1)[-1].replace("'>", "")
+                else:
+                    model = decorator.split("model=")[1].split(",")[0].strip('"')
                 if (
                     model not in pi_map
                     and "POST" not in decorator
@@ -264,7 +269,7 @@ def find_missing_router_function_models(
     return missing_models
 
 
-def parse_example_string(example_string: str) -> Dict[str, Any]:
+def parse_example_string(example_string: str) -> dict[str, Any]:
     """Parse a string of examples into nested dictionaries.
 
     This is capturing all instances of PythonEx and APIEx, including their "parameters", "code", and "description".
@@ -296,15 +301,15 @@ def parse_example_string(example_string: str) -> Dict[str, Any]:
     return result
 
 
-def get_required_fields(model: str) -> List[str]:
+def get_required_fields(model: str) -> list[str]:
     """Get the required fields of a model."""
     fields = pi.map[model]["openbb"]["QueryParams"]["fields"]
     return [field for field, info in fields.items() if info.is_required()]
 
 
-def get_all_fields(model: str) -> List[str]:
+def get_all_fields(model: str) -> list[str]:
     """Get all the fields of a model."""
-    all_fields: List[str] = []
+    all_fields: list[str] = []
     info = pi.map[model]
     # for every key, grab the fields
     for _, provider_info in info.items():

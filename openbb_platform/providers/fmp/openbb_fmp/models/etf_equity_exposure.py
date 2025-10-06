@@ -2,9 +2,7 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_equity_exposure import (
@@ -12,8 +10,6 @@ from openbb_core.provider.standard_models.etf_equity_exposure import (
     EtfEquityExposureQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import response_callback
 from pydantic import field_validator
 
 
@@ -21,7 +17,7 @@ class FMPEtfEquityExposureQueryParams(EtfEquityExposureQueryParams):
     """
     FMP ETF Equity Exposure Query Params.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/etf-stock-exposure-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#etf-asset-exposure
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -31,8 +27,8 @@ class FMPEtfEquityExposureData(EtfEquityExposureData):
     """FMP ETF Equity Exposure Data."""
 
     __alias_dict__ = {
-        "equity_symbol": "assetExposure",
-        "etf_symbol": "etfSymbol",
+        "equity_symbol": "asset",
+        "etf_symbol": "symbol",
         "shares": "sharesNumber",
         "weight": "weightPercentage",
         "market_value": "marketValue",
@@ -46,34 +42,37 @@ class FMPEtfEquityExposureData(EtfEquityExposureData):
 
 
 class FMPEtfEquityExposureFetcher(
-    Fetcher[FMPEtfEquityExposureQueryParams, List[FMPEtfEquityExposureData]]
+    Fetcher[FMPEtfEquityExposureQueryParams, list[FMPEtfEquityExposureData]]
 ):
     """FMP ETF Equity Exposure Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEtfEquityExposureQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEtfEquityExposureQueryParams:
         """Transform the query."""
         return FMPEtfEquityExposureQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEtfEquityExposureQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_fmp.utils.helpers import get_data
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results: List[dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get one symbol."""
-            url = f"https://financialmodelingprep.com/api/v3/etf-stock-exposure/{symbol}?apikey={api_key}"
-            response = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            url = f"https://financialmodelingprep.com/stable/etf/asset-exposure?symbol={symbol}&apikey={api_key}"
+            response = await get_data(url, **kwargs)
             if not response:
-                warn(f"No results found for {symbol}.")
+                warnings.warn(f"No results found for {symbol}.")
             if response:
                 results.extend(response)
 
@@ -87,9 +86,9 @@ class FMPEtfEquityExposureFetcher(
     @staticmethod
     def transform_data(
         query: FMPEtfEquityExposureQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FMPEtfEquityExposureData]:
+    ) -> list[FMPEtfEquityExposureData]:
         """Return the transformed data."""
         return [
             FMPEtfEquityExposureData.model_validate(d)

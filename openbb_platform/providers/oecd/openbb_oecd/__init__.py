@@ -10,10 +10,7 @@ from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
 from openbb_oecd.models.house_price_index import OECDHousePriceIndexFetcher
-from openbb_oecd.models.immediate_interest_rate import OECDImmediateInterestRateFetcher
-from openbb_oecd.models.long_term_interest_rate import OECDLTIRFetcher
 from openbb_oecd.models.share_price_index import OECDSharePriceIndexFetcher
-from openbb_oecd.models.short_term_interest_rate import OECDSTIRFetcher
 from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
 oecd_provider = Provider(
@@ -31,9 +28,6 @@ non-member economies.""",
         "HousePriceIndex": OECDHousePriceIndexFetcher,
         "SharePriceIndex": OECDSharePriceIndexFetcher,
         "Unemployment": OECDUnemploymentFetcher,
-        "ImmediateInterestRate": OECDImmediateInterestRateFetcher,  # TODO: deprecated
-        "STIR": OECDSTIRFetcher,  # TODO: deprecated
-        "LTIR": OECDLTIRFetcher,  # TODO: deprecated
     },
     repr_name="Organization for Economic Co-operation and Development (OECD)",
 )

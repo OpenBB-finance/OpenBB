@@ -1,29 +1,36 @@
 """FMP Institutional Ownership Model."""
 
-from datetime import date as dateType
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.institutional_ownership import (
     InstitutionalOwnershipData,
     InstitutionalOwnershipQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from openbb_fmp.utils.helpers import get_data_urls
+from pydantic import Field, field_validator
 
 
 class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
     """FMP Institutional Ownership Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/institutional-stock-ownership-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#positions-summary
     """
 
-    include_current_quarter: Optional[bool] = Field(
-        default=False, description="Include current quarter data."
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    year: Optional[int] = Field(
+        default=None,
+        description="Calendar year for the data. If not provided, the latest year is used.",
     )
-    date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    quarter: Optional[int] = Field(
+        default=None,
+        description="Calendar quarter for the data. Valid values are 1, 2, 3, or 4."
+        + " If not provided, the quarter previous to the current quarter is used.",
+        ge=1,
+        le=4,
     )
 
 
@@ -34,6 +41,7 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
         "number_of_13f_shares": "numberOf13Fshares",
         "last_number_of_13f_shares": "lastNumberOf13Fshares",
         "number_of_13f_shares_change": "numberOf13FsharesChange",
+        "ownership_percent_change": "changeInOwnershipPercentage",
     }
 
     investors_holding: int = Field(description="Number of investors holding the stock.")
@@ -43,15 +51,15 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     investors_holding_change: int = Field(
         description="Change in the number of investors holding the stock."
     )
-    number_of_13f_shares: int = Field(
+    number_of_13f_shares: Optional[int] = Field(
         default=None,
         description="Number of 13F shares.",
     )
-    last_number_of_13f_shares: int = Field(
+    last_number_of_13f_shares: Optional[int] = Field(
         default=None,
         description="Number of 13F shares in the last quarter.",
     )
-    number_of_13f_shares_change: int = Field(
+    number_of_13f_shares_change: Optional[int] = Field(
         default=None,
         description="Change in the number of 13F shares.",
     )
@@ -62,12 +70,17 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     total_invested_change: float = Field(
         description="Change in the total amount invested."
     )
-    ownership_percent: float = Field(description="Ownership percent.")
+    ownership_percent: float = Field(
+        description="Ownership percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     last_ownership_percent: float = Field(
-        description="Ownership percent in the last quarter."
+        description="Ownership percent in the last quarter.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ownership_percent_change: float = Field(
-        description="Change in the ownership percent."
+        description="Change in the ownership percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     new_positions: int = Field(description="Number of new positions.")
     last_new_positions: int = Field(
@@ -128,36 +141,72 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
         description="Change in the put-call ratio between the current and previous reporting dates."
     )
 
+    @field_validator(
+        "ownership_percent",
+        "last_ownership_percent",
+        "ownership_percent_change",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def _normalize_percent(cls, v):
+        """Normalize percent fields to be in decimal form."""
+        return v / 100 if v else None
+
 
 class FMPInstitutionalOwnershipFetcher(
     Fetcher[
         FMPInstitutionalOwnershipQueryParams,
-        List[FMPInstitutionalOwnershipData],
+        list[FMPInstitutionalOwnershipData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPInstitutionalOwnershipQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPInstitutionalOwnershipQueryParams:
         """Transform the query params."""
         return FMPInstitutionalOwnershipQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPInstitutionalOwnershipQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Timestamp, offsets
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = query.symbol.split(",")
+        year = query.year if query.year else None
+        quarter = query.quarter if query.quarter else None
 
-        url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
+        if year is None and quarter is None:
+            current = (Timestamp("now") + offsets.QuarterEnd()) - offsets.QuarterEnd()
+            quarter = current.quarter
+            year = current.year
+        elif year is None and quarter is not None:
+            year = Timestamp("now").year
+        elif year is not None and quarter is None:
+            current = Timestamp("now")
+            quarter = (
+                4
+                if year < current.year
+                else current.quarter - 1 if current.quarter > 1 else 1
+            )
 
-        return await get_data_many(url, **kwargs)
+        urls: list[str] = [
+            "https://financialmodelingprep.com/stable/institutional-ownership/symbol-positions-summary"
+            + f"?symbol={symbol}&year={year}&quarter={quarter}&apikey={api_key}"
+            for symbol in symbols
+        ]
+
+        return await get_data_urls(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: FMPInstitutionalOwnershipQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPInstitutionalOwnershipData]:
+        query: FMPInstitutionalOwnershipQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPInstitutionalOwnershipData]:
         """Return the transformed data."""
         return [FMPInstitutionalOwnershipData.model_validate(d) for d in data]

@@ -45,6 +45,7 @@ class EquityPerformanceData(Data):
         description="Percent change.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Union[int, float] = Field(
+    volume: Optional[Union[int, float]] = Field(
+        default=None,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )

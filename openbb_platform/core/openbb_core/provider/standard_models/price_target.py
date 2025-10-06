@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, NonNegativeInt, field_validator
+from pydantic import Field, field_validator
 
 
 class PriceTargetQueryParams(QueryParams):
@@ -22,8 +22,8 @@ class PriceTargetQueryParams(QueryParams):
     symbol: Optional[str] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
-    limit: NonNegativeInt = Field(
-        default=200, description=QUERY_DESCRIPTIONS.get("limit", "")
+    limit: Optional[int] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)

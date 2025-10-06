@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_snapshots import (
@@ -17,7 +17,7 @@ from pydantic import Field, field_validator
 class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     """FMP Currency Snapshots Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
+    Source: https://site.financialmodelingprep.com/developer/docs#all-forex-quotes
     """
 
     __json_schema_extra__ = {"base": {"multiple_items_allowed": True}}
@@ -35,7 +35,7 @@ class FMPCurrencySnapshotsData(CurrencySnapshotsData):
         "year_high": "yearHigh",
         "year_low": "yearLow",
         "prev_close": "previousClose",
-        "change_percent": "changesPercentage",
+        "change_percent": "changePercentage",
         "last_rate_timestamp": "timestamp",
     }
 
@@ -67,52 +67,49 @@ class FMPCurrencySnapshotsData(CurrencySnapshotsData):
 
 
 class FMPCurrencySnapshotsFetcher(
-    Fetcher[FMPCurrencySnapshotsQueryParams, List[FMPCurrencySnapshotsData]]
+    Fetcher[FMPCurrencySnapshotsQueryParams, list[FMPCurrencySnapshotsData]]
 ):
     """FMP Currency Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCurrencySnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCurrencySnapshotsQueryParams:
         """Transform the query parameters."""
         return FMPCurrencySnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCurrencySnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = f"https://financialmodelingprep.com/api/v3/quotes/forex?apikey={api_key}"
+        url = f"https://financialmodelingprep.com/stable/batch-forex-quotes?short=false&apikey={api_key}"
 
-        return await amake_request(url, **kwargs)  # type: ignore
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
         query: FMPCurrencySnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FMPCurrencySnapshotsData]:
+    ) -> list[FMPCurrencySnapshotsData]:
         """Filter by the query parameters and validate the model."""
         # pylint: disable=import-outside-toplevel
         from datetime import timezone  # noqa
-        from pandas import DataFrame, concat  # noqa
-        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+        from numpy import nan
+        from pandas import DataFrame, concat
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp
 
         if not data:
             raise EmptyDataError("No data was returned from the FMP endpoint.")
 
         # Drop all the zombie columns FMP returns.
-        df = (
-            DataFrame(data)
-            .dropna(how="all", axis=1)
-            .drop(columns=["exchange", "avgVolume"])
-        )
+        df = DataFrame(data).dropna(how="all", axis=1).drop(columns=["exchange"])
 
         new_df = DataFrame()
 
@@ -154,8 +151,8 @@ class FMPCurrencySnapshotsFetcher(
                 raise EmptyDataError(
                     "No data was found using the applied filters. Check the parameters."
                 )
-            # Fill and replace any NaN values with NoneType.
-            new_df = new_df.fillna("N/A").replace("N/A", None)
+            new_df = new_df.replace({nan: None})
+
         return [
             FMPCurrencySnapshotsData.model_validate(d)
             for d in new_df.reset_index(drop=True).to_dict(orient="records")

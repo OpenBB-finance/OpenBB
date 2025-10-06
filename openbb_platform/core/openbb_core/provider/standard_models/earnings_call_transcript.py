@@ -1,7 +1,7 @@
 """Earnings Call Transcript Standard Model."""
 
-from datetime import datetime
-from typing import List, Set, Union
+from datetime import date as dateType
+from typing import Literal, Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,7 +16,12 @@ class EarningsCallTranscriptQueryParams(QueryParams):
     """Earnings Call Transcript rating Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    year: Union[int, str] = Field(description="Year of the earnings call transcript.")
+    year: Optional[int] = Field(
+        default=None, description="Year of the earnings call transcript."
+    )
+    quarter: Optional[Literal[1, 2, 3, 4]] = Field(
+        default=None, description="Quarterly period of the earnings call transcript."
+    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
@@ -29,15 +34,7 @@ class EarningsCallTranscriptData(Data):
     """Earnings Call Transcript Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    quarter: int = Field(description="Quarter of the earnings call transcript.")
     year: int = Field(description="Year of the earnings call transcript.")
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    quarter: str = Field(description="Quarter of the earnings call transcript.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     content: str = Field(description="Content of the earnings call transcript.")
-
-    @field_validator("symbol", mode="before")
-    @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert field to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

@@ -9,15 +9,15 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/IOO?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/etf/sector-weightings?apikey=MOCK_API_KEY&symbol=IOO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA43STUsDMRAG4Ht/RQh4K0O3W0nrsR/SHgTx4yQeQpzuDmQnkMxWivjfjehRxh5y
-        SvIw78u8TIz5qMcYWzBIyvbG2LUvFMydF8zkY7HTnwfvSF0v95gDsvgOv5820LZXtt5/Tv+SNmkY
-        RqbghRKbR8wnCqiCDtxcBbmMA2azOYdY3agO10BzEbbFI3KhE2raEhqnYDvG3J01YAHa/1tiz6H2
-        fVFNK3BLBdujj9IHn9VEtR+3UJQDv41F/t2BmkvbgYc6i9kVqeukKTNotURPGHpOMekVtyvQkGeh
-        SEJ6tTO4/o0zef0Ctt7SzB8DAAA=
+        H4sIAAAAAAAAA52STU/DMAyG7/sVUc+T1bK03TgyhtgBDfFxQjuEzGstpY6UpEMV4r8TEFzDwiEX
+        x3psvY9fZkK8xydE4afh1ZriUhTb3a6Y/xRRB+u+ilfKkxZ3KqAjZfxvwxtS14d7dBo5qA5jawVN
+        Ez8/5mez13YYRiatAlkWj+hOpDE1Ygm1zB3BfhzQifWkTZxkEvQVVP+lX+MR2dMJE/gGmlUefsPo
+        uimBXEDb5iFviBXraPKcuKsS6kylt6hM6LVyqSSWIOs87JYPow9/XaCENlPgQ1xXbHyI553glnCR
+        ae4Jdc/W2KQ9WUO7yOM+BzIUKGmtBPmdwmz/CYYUDGTmAwAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -37,9 +37,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:57 GMT
+      - Tue, 23 Sep 2025 03:08:43 GMT
       Etag:
-      - W/"31f-ACuXYbLsitvOI3rGCqF19CtQFLE"
+      - W/"3e6-mX9CPZ79gCzyKisUhJmCIafXKs4"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

@@ -119,27 +119,33 @@ class PolygonCompanyNewsFetcher(
             query.model_dump(by_alias=True), ["limit", "ticker"]
         )
         results = []
+        limit = query.limit if query.limit and query.limit <= 1000 else 1000
 
         async def get_one(symbol):
             """Get one symbol."""
             url = (
                 f"{base_url}?ticker={symbol}&{query_str}&limit="
-                + f"{query.limit if query.limit and query.limit <= 1000 else 1000}"
+                + f"{limit}"
                 + f"&apiKey={api_key}"
             )
             response = await amake_request(url)
             data = response.get("results", [])  # type: ignore
-            next_url = response.get("next_url", None)  # type: ignore
+            next_url = response.get("next_url")  # type: ignore
             records = len(data)
-            while next_url and records < query.limit:  # type: ignore
+
+            while next_url and records < query.limit if query.limit else limit:  # type: ignore
+
+                if not next_url:
+                    break
+
                 url = f"{next_url}&apiKey={api_key}"
                 response = await amake_request(url)
                 data.extend(response.get("results", []))  # type: ignore
                 records = len(data)
-                next_url = response.get("next_url", None)  # type: ignore
+                next_url = response.get("next_url")  # type: ignore
 
             if data:
-                results.extend(data[: query.limit])
+                results.extend(data[: query.limit if query.limit else limit])  # type: ignore
 
         await asyncio.gather(*[get_one(symbol) for symbol in query.symbol.split(",")])  # type: ignore
 

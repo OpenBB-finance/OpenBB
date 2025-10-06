@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.data import Data
@@ -19,16 +19,19 @@ from pydantic import Field, NonNegativeInt, field_validator
 class WorldNewsQueryParams(QueryParams):
     """World News Query."""
 
-    limit: NonNegativeInt = Field(
-        default=2500,
-        description=QUERY_DESCRIPTIONS.get("limit", "")
-        + " The number of articles to return.",
-    )
     start_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", "")
+        + " The default is 2 weeks ago.",
     )
     end_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
+    )
+    limit: Optional[NonNegativeInt] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("limit", "")
+        + " The number of articles to return.",
     )
 
     @field_validator("start_date", mode="before")
@@ -53,12 +56,15 @@ class WorldNewsData(Data):
     """World News Data."""
 
     date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-        + " The published date of the article."
+        description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
     )
     title: str = Field(description="Title of the article.")
-    images: Optional[List[Dict[str, str]]] = Field(
+    author: Optional[str] = Field(default=None, description="Author of the article.")
+    excerpt: Optional[str] = Field(
+        default=None, description="Excerpt of the article text."
+    )
+    body: Optional[str] = Field(default=None, description="Body of the article text.")
+    images: Optional[Any] = Field(
         default=None, description="Images associated with the article."
     )
-    text: Optional[str] = Field(default=None, description="Text/body of the article.")
     url: Optional[str] = Field(default=None, description="URL to the article.")

@@ -2,9 +2,7 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,15 +11,13 @@ from openbb_core.provider.standard_models.price_target_consensus import (
     PriceTargetConsensusQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
-from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import field_validator
 
 
 class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """FMP Price Target Consensus Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/price-target-consensus-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#price-target-consensus
     """
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
@@ -42,39 +38,41 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
         FMPPriceTargetConsensusQueryParams,
-        List[FMPPriceTargetConsensusData],
+        list[FMPPriceTargetConsensusData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Price Target Consensus Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
         """Transform the query params."""
         return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPPriceTargetConsensusQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import warnings
+        from openbb_fmp.utils.helpers import get_data_urls
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         symbols = query.symbol.split(",")  # type: ignore
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = create_url(
-                4, "price-target-consensus", api_key, query, exclude=["symbol"]
-            )
-            url = f"{url}&symbol={symbol}"
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            url = f"https://financialmodelingprep.com/stable/price-target-consensus?symbol={symbol}&apikey={api_key}"
+            result = await get_data_urls([url], **kwargs)
+
             if not result or len(result) == 0:
-                warn(f"Symbol Error: No data found for {symbol}")
+                warnings.warn(f"Symbol Error: No data found for {symbol}")
+
             if result:
                 results.extend(result)
 
@@ -91,8 +89,8 @@ class FMPPriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         query: FMPPriceTargetConsensusQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FMPPriceTargetConsensusData]:
+    ) -> list[FMPPriceTargetConsensusData]:
         """Return the transformed data."""
         return [FMPPriceTargetConsensusData.model_validate(d) for d in data]

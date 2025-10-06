@@ -1,6 +1,6 @@
 """FMP Company News Model."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
@@ -8,8 +8,6 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import filter_by_dates
-from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -21,9 +19,15 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    page: Optional[int] = Field(
+    page: int = Field(
         default=0,
+        le=100,
+        ge=0,
         description="Page number of the results. Use in combination with limit.",
+    )
+    press_release: Optional[bool] = Field(
+        default=None,
+        description="When true, will return only press releases for the given symbol(s).",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -41,49 +45,59 @@ class FMPCompanyNewsData(CompanyNewsData):
     __alias_dict__ = {
         "symbols": "symbol",
         "date": "publishedDate",
+        "author": "publisher",
         "images": "image",
         "source": "site",
+        "excerpt": "text",
     }
 
-    source: str = Field(description="Name of the news source.")
-
-    @field_validator("images", mode="before", check_fields=False)
-    @classmethod
-    def validate_images(cls, v):
-        """Validate the images field."""
-        if v is None:
-            return v
-        if isinstance(v, str):
-            return [{"url": v}]
-        if isinstance(v, dict):
-            return [v]
-        return v
+    source: str = Field(description="Name of the news site.")
 
 
 class FMPCompanyNewsFetcher(
     Fetcher[
         FMPCompanyNewsQueryParams,
-        List[FMPCompanyNewsData],
+        list[FMPCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCompanyNewsQueryParams:
         """Transform the query params."""
         return FMPCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
 
-        base_url = "https://financialmodelingprep.com/api/v3/stock_news"
-        url = f"{base_url}?page={query.page}&tickers={query.symbol}&limit={query.limit}&apikey={api_key}"
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        limit = query.limit if query.limit else 250
+        page = query.page if query.page else 0
+        base_url = "https://financialmodelingprep.com/stable/news/"
+        symbols = query.symbol
+
+        if query.press_release:
+            base_url += "press-releases?"
+        else:
+            base_url += "stock?"
+
+        url = base_url + f"symbols={symbols}"
+
+        if query.start_date:
+            url += f"&from={query.start_date}"
+
+        if query.end_date:
+            url += f"&to={query.end_date}"
+
+        url += f"&limit={limit}&page={page}&apikey={api_key}"
+
         response = await get_data_many(url, **kwargs)
 
         if not response:
@@ -94,8 +108,7 @@ class FMPCompanyNewsFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCompanyNewsData]:
+        query: FMPCompanyNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCompanyNewsData]:
         """Return the transformed data."""
-        modeled_data = [FMPCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(modeled_data, query.start_date, query.end_date)
+        return [FMPCompanyNewsData.model_validate(d) for d in data]

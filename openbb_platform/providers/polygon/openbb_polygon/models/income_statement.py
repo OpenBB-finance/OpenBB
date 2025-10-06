@@ -26,7 +26,6 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
             "choices": ["annual", "quarter", "ttm"],
         }
     }
-
     period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
@@ -288,6 +287,7 @@ class PolygonIncomeStatementFetcher(
         from openbb_polygon.utils.helpers import get_data_many
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
+        query.limit = query.limit or 5
 
         base_url = "https://api.polygon.io/vX/reference/financials"
         period = "quarterly" if query.period == "quarter" else query.period

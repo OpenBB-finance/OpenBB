@@ -1,6 +1,8 @@
 """FMP Income Statement Growth Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement_growth import (
@@ -11,23 +13,17 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field, model_validator
+from openbb_fmp.utils.definitions import FinancialPeriods
+from pydantic import Field
 
 
 class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
     """FMP Income Statement Growth Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#income-statement-growth
     """
 
-    __json_schema_extra__ = {
-        "period": {
-            "choices": ["annual", "quarter"],
-        }
-    }
-
-    period: Literal["annual", "quarter"] = Field(
+    period: FinancialPeriods = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
@@ -40,14 +36,11 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         "period_ending": "date",
         "fiscal_year": "calendarYear",
         "fiscal_period": "period",
+        "growth_ebit": "growthEBIT",
         "growth_ebitda": "growthEBITDA",
-        "growth_ebitda_ratio": "growthEBITDARatio",
         "growth_basic_earings_per_share": "growthEPS",
-        "growth_net_income_margin": "growthNetIncomeRatio",
-        "growth_consolidated_net_income": "growthNetIncome",
         "growth_gross_profit_margin": "growthGrossProfitRatio",
-        "growth_income_before_tax_margin": "growthIncomeBeforeTaxRatio",
-        "growth_operating_income_margin": "growthOperatingIncomeRatio",
+        "growth_consolidated_net_income": "growthNetIncome",
         "growth_diluted_earnings_per_share": "growthEPSDiluted",
         "growth_weighted_average_basic_shares_outstanding": "growthWeightedAverageShsOut",
         "growth_weighted_average_diluted_shares_outstanding": "growthWeightedAverageShsOutDil",
@@ -57,6 +50,10 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     }
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the financial data is reported.",
+        default=None,
+    )
     growth_revenue: Optional[float] = Field(
         default=None,
         description="Growth rate of total revenue.",
@@ -107,14 +104,29 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of total costs and expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+    growth_depreciation_and_amortization: Optional[float] = Field(
+        default=None,
+        description="Growth rate of depreciation and amortization expenses.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_interest_income: Optional[float] = Field(
+        default=None,
+        description="Growth rate of interest income.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     growth_interest_expense: Optional[float] = Field(
         default=None,
         description="Growth rate of interest expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_depreciation_and_amortization: Optional[float] = Field(
+    growth_net_interest_income: Optional[float] = Field(
         default=None,
-        description="Growth rate of depreciation and amortization expenses.",
+        description="Growth rate of net interest income.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_ebit: Optional[float] = Field(
+        default=None,
+        description="Growth rate of Earnings Before Interest and Taxes (EBIT).",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_ebitda: Optional[float] = Field(
@@ -122,19 +134,14 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of EBITDA as a percentage of revenue.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     growth_operating_income: Optional[float] = Field(
         default=None,
         description="Growth rate of operating income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_operating_income_margin: Optional[float] = Field(
+    growth_non_operating_income_excluding_interest: Optional[float] = Field(
         default=None,
-        description="Growth rate of operating income as a percentage of revenue.",
+        description="Growth rate of non-operating income excluding interest.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_total_other_income_expenses_net: Optional[float] = Field(
@@ -142,14 +149,19 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of net total other income and expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+    growth_other_adjustments_to_net_income: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other adjustments to net income.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    growth_net_income_deductions: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net income deductions.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     growth_income_before_tax: Optional[float] = Field(
         default=None,
         description="Growth rate of income before taxes.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    growth_income_before_tax_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of income before taxes as a percentage of revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_income_tax_expense: Optional[float] = Field(
@@ -157,14 +169,14 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of income tax expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+    growth_net_income_from_continuing_operations: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net income from continuing operations.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     growth_consolidated_net_income: Optional[float] = Field(
         default=None,
         description="Growth rate of net income.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    growth_net_income_margin: Optional[float] = Field(
-        default=None,
-        description="Growth rate of net income as a percentage of revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     growth_basic_earings_per_share: Optional[float] = Field(
@@ -188,48 +200,45 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def replace_zero(cls, values):
-        """Check for zero values and replace with None."""
-        return (
-            {k: None if v == 0 else v for k, v in values.items()}
-            if isinstance(values, dict)
-            else values
-        )
-
 
 class FMPIncomeStatementGrowthFetcher(
     Fetcher[
         FMPIncomeStatementGrowthQueryParams,
-        List[FMPIncomeStatementGrowthData],
+        list[FMPIncomeStatementGrowthData],
     ]
 ):
     """FMP Income Statement Growth Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementGrowthQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPIncomeStatementGrowthQueryParams:
         """Transform the query params."""
         return FMPIncomeStatementGrowthQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPIncomeStatementGrowthQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            3, f"income-statement-growth/{query.symbol}", api_key, query, ["symbol"]
+        url = (
+            "https://financialmodelingprep.com/stable/income-statement-growth"
+            + f"?symbol={query.symbol}"
+            + f"&period={query.period}"
+            + f"&limit={query.limit if query.limit else 5}"
+            + f"&apikey={api_key}"
         )
 
         return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPIncomeStatementGrowthQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPIncomeStatementGrowthData]:
+        query: FMPIncomeStatementGrowthQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPIncomeStatementGrowthData]:
         """Return the transformed data."""
         return [FMPIncomeStatementGrowthData.model_validate(d) for d in data]

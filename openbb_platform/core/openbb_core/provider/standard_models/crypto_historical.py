@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
+from typing import Optional, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -19,10 +19,7 @@ from pydantic import Field, field_validator
 class CryptoHistoricalQueryParams(QueryParams):
     """Crypto Historical Price Query."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " Can use CURR1-CURR2 or CURR1CURR2 format."
-    )
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
@@ -34,11 +31,9 @@ class CryptoHistoricalQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def _to_upper(cls, v):
         """Convert field to uppercase and remove '-'."""
-        if isinstance(v, str):
-            return v.upper().replace("-", "")
-        return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
+        return str(v).upper()
 
 
 class CryptoHistoricalData(Data):
@@ -47,9 +42,15 @@ class CryptoHistoricalData(Data):
     date: Union[dateType, datetime] = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
-    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    open: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")

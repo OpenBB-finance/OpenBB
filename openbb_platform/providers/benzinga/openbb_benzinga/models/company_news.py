@@ -80,23 +80,13 @@ class BenzingaCompanyNewsData(CompanyNewsData):
     __alias_dict__ = {
         "symbols": "stocks",
         "date": "created",
-        "text": "body",
+        "excerpt": "teaser",
         "images": "image",
     }
 
-    id: str = Field(description="Article ID.")
-    author: Optional[str] = Field(default=None, description="Author of the article.")
-    teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
-    images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="URL to the images of the news."
-    )
     channels: Optional[str] = Field(
         default=None,
         description="Channels associated with the news.",
-    )
-    stocks: Optional[str] = Field(
-        description="Stocks associated with the news.",
-        default=None,
     )
     tags: Optional[str] = Field(
         description="Tags associated with the news.",
@@ -105,29 +95,25 @@ class BenzingaCompanyNewsData(CompanyNewsData):
     updated: Optional[datetime] = Field(
         default=None, description="Updated date of the news."
     )
-
-    @field_validator("symbols", mode="before", check_fields=False)
-    @classmethod
-    def symbols_string(cls, v):
-        """Symbols string validator."""
-        return ",".join([item["name"] for item in v])
+    id: str = Field(description="Article ID.")
+    original_id: Optional[str] = Field(
+        default=None, description="Original ID of the news article."
+    )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
-    @field_validator("stocks", "channels", "tags", mode="before", check_fields=False)
+    @field_validator("symbols", "channels", "tags", mode="before", check_fields=False)
     def list_validate(cls, v):  # pylint: disable=E0213
         """Return the list as a string."""
-        return ",".join(
-            [item.get("name", None) for item in v if item.get("name", None)]
-        )
+        return ",".join([item.get("name") for item in v if item.get("name")])
 
-    @field_validator("id", mode="before", check_fields=False)
+    @field_validator("id", "original_id", mode="before", check_fields=False)
     def id_validate(cls, v):  # pylint: disable=E0213
         """Return the id as a string."""
-        return str(v)
+        return str(v) if v else None
 
 
 class BenzingaCompanyNewsFetcher(
@@ -157,29 +143,28 @@ class BenzingaCompanyNewsFetcher(
         from openbb_benzinga.utils.helpers import response_callback
 
         token = credentials.get("benzinga_api_key") if credentials else ""
-
         base_url = "https://api.benzinga.com/api/v2/news"
-
+        query.limit = query.limit if query.limit else 2500
         model = query.model_dump(by_alias=True)
         model["sort"] = (
             f"{query.sort}:{query.order}" if query.sort and query.order else ""
         )
         querystring = get_querystring(model, ["order", "pageSize"])
-
-        pages = math.ceil(query.limit / 100) if query.limit else 1
         page_size = 100 if query.limit and query.limit > 100 else query.limit
+        pages = math.ceil(query.limit / page_size) if query.limit else 1
         urls = [
             f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
             for page in range(pages)
         ]
-
         results: list = []
 
         async def get_one(url):
             """Get data for one url."""
             try:
                 response = await amake_request(
-                    url, response_callback=response_callback, **kwargs
+                    url,
+                    response_callback=response_callback,
+                    **kwargs,
                 )
                 if response:
                     results.extend(response)

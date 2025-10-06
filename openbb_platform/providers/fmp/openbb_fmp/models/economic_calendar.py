@@ -3,8 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
-from warnings import warn
+from typing import Any, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,14 +18,14 @@ from pydantic import Field, field_validator, model_validator
 class FMPEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     """FMP Economic Calendar Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/economic-calendar-api
+    Source: https://site.financialmodelingprep.com/developer/docs#economics-calendar
     """
 
 
 class FMPEconomicCalendarData(EconomicCalendarData):
     """FMP Economics Calendar Data.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/economic-calendar-api
+    Source: https://site.financialmodelingprep.com/developer/docs#economics-calendar
     """
 
     __alias_dict__ = {
@@ -44,21 +43,14 @@ class FMPEconomicCalendarData(EconomicCalendarData):
     change_percent: Optional[float] = Field(
         description="Percentage change since previous.",
         default=None,
-    )
-    last_updated: Optional[datetime] = Field(
-        description="Last updated timestamp.", default=None
-    )
-    created_at: Optional[datetime] = Field(
-        description="Created at timestamp.", default=None
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    @field_validator(
-        "date", "last_updated", "created_at", mode="before", check_fields=False
-    )
+    @field_validator("change_percent", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v: str):
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S") if v else None
+    def _normalize_percent(cls, v):
+        """Normalize percentage value."""
+        return v / 100 if v else None
 
     @model_validator(mode="before")
     @classmethod
@@ -74,17 +66,19 @@ class FMPEconomicCalendarData(EconomicCalendarData):
 class FMPEconomicCalendarFetcher(
     Fetcher[
         FMPEconomicCalendarQueryParams,
-        List[FMPEconomicCalendarData],
+        list[FMPEconomicCalendarData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Economic Calendar Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEconomicCalendarQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEconomicCalendarQueryParams:
         """Transform the query."""
         transformed_params = params
         if not transformed_params.get("start_date"):
-            transformed_params["start_date"] = datetime.now().date()
+            transformed_params["start_date"] = (
+                datetime.now() - timedelta(days=1)
+            ).date()
         if not transformed_params.get("end_date"):
             transformed_params["end_date"] = (datetime.now() + timedelta(days=7)).date()
         return FMPEconomicCalendarQueryParams(**transformed_params)
@@ -92,18 +86,19 @@ class FMPEconomicCalendarFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEconomicCalendarQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        import warnings
         from openbb_core.provider.utils.helpers import amake_request
         from openbb_fmp.utils.helpers import response_callback
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3/economic_calendar?"
+        base_url = "https://financialmodelingprep.com/stable/economic-calendar?"
 
         # FMP allows only 3-month windows to be queried, we need to chunk to request.
         def date_range(start_date, end_date):
@@ -117,10 +112,11 @@ class FMPEconomicCalendarFetcher(
 
         date_ranges = list(date_range(query.start_date, query.end_date))
         urls = [
-            f"{base_url}from={start_date.strftime('%Y-%m-%d')}&to={end_date.strftime('%Y-%m-%d')}&apikey={api_key}"
+            f"{base_url}from={start_date.strftime('%Y-%m-%d')}"  # type: ignore
+            + f"&to={end_date.strftime('%Y-%m-%d')}&apikey={api_key}"
             for start_date, end_date in date_ranges
         ]
-        results: List[Dict] = []
+        results: list[dict] = []
 
         # We need to do this because Pytest does not seem to be able to handle `amake_requests`.
         async def get_one(url):
@@ -135,7 +131,7 @@ class FMPEconomicCalendarFetcher(
             except OpenBBError as e:
                 if len(urls) == 1 or (len(urls) > 1 and n_urls == len(urls)):
                     raise e from e
-                warn(f"Error in fetching part of the data from FMP -> {e}")
+                warnings.warn(f"Error in fetching part of the data from FMP -> {e}")
             n_urls += 1
 
         await asyncio.gather(*[get_one(url) for url in urls])
@@ -148,8 +144,8 @@ class FMPEconomicCalendarFetcher(
     @staticmethod
     def transform_data(
         query: FMPEconomicCalendarQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FMPEconomicCalendarData]:
+    ) -> list[FMPEconomicCalendarData]:
         """Transform the data."""
         return [FMPEconomicCalendarData.model_validate(d) for d in data]

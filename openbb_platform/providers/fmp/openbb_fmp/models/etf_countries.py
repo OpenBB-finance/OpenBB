@@ -1,14 +1,14 @@
 """FMP ETF Countries Model."""
 
-from typing import Any, Dict, List, Optional
-from warnings import warn
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_countries import (
     EtfCountriesData,
     EtfCountriesQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
 
 
 class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
@@ -24,85 +24,80 @@ class FMPEtfCountriesData(EtfCountriesData):
 class FMPEtfCountriesFetcher(
     Fetcher[
         FMPEtfCountriesQueryParams,
-        List[FMPEtfCountriesData],
+        list[FMPEtfCountriesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP ETF Countries Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEtfCountriesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEtfCountriesQueryParams:
         """Transform the query."""
         return FMPEtfCountriesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEtfCountriesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
-        from openbb_fmp.utils.helpers import create_url, response_callback  # noqa
-        from pandas import DataFrame  # noqa
+        import warnings
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_fmp.utils.helpers import get_data
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results = {}
+        results: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            data = {}
-            url = create_url(
-                version=3,
-                endpoint=f"etf-country-weightings/{symbol}",
-                api_key=api_key,
-            )
-            result = await amake_request(
-                url, response_callback=response_callback, **kwargs
-            )
+            url = f"https://financialmodelingprep.com/stable/etf/country-weightings?symbol={symbol}&apikey={api_key}"
+            result = await get_data(url, **kwargs)
 
             if not result:
-                warn(f"Symbol Error: No data found for {symbol}")
+                warnings.warn(f"Symbol Error: No data found for {symbol}")
+                return
 
+            new_data: list = []
             if result:
-                df = DataFrame(result).set_index("country")
-                if len(df) > 0:
-                    for i in df.index:
-                        data.update(
-                            {
-                                i: float(df.loc[i]["weightPercentage"].replace("%", ""))
-                                * 0.01
-                            }
-                        )
-                    results.update({symbol: data})
+                for row in result:
+                    row_weight = row.get("weightPercentage", "0%").replace("%", "")
+                    if not row_weight or row_weight == "0":
+                        continue
+                    new_row = {
+                        "symbol": symbol,
+                        "country": row["country"],
+                        "weight": float(row_weight) * 0.01,
+                    }
+                    new_data.append(new_row)
+
+                if new_data:
+                    results.extend(new_data)
+            return
 
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
         if not results:
             raise EmptyDataError("No data found for the given symbols.")
 
-        output = (
-            DataFrame(results)
-            .transpose()
-            .reset_index()
-            .fillna(value=0)
-            .replace(0, None)
-            .rename(columns={"index": "symbol"})
-        ).transpose()
-        output.columns = output.loc["symbol"].to_list()  # type: ignore
-        output = output.drop("symbol", axis=0).sort_values(
-            by=output.columns[0], ascending=False
-        )
-
-        return (
-            output.reset_index().rename(columns={"index": "country"}).to_dict("records")
-        )
+        return results
 
     @staticmethod
     def transform_data(
-        query: FMPEtfCountriesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPEtfCountriesData]:
+        query: FMPEtfCountriesQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPEtfCountriesData]:
         """Return the transformed data."""
-        return [FMPEtfCountriesData.model_validate(d) for d in data]
+        symbols = query.symbol.split(",")
+
+        return [
+            FMPEtfCountriesData.model_validate(d)
+            for d in sorted(
+                data,
+                key=lambda x: (
+                    symbols.index(x.get("symbol", len(symbols))),
+                    -(x.get("weightPercentage", 0) or 0),
+                ),
+            )
+        ]

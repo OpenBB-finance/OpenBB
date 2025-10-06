@@ -167,6 +167,7 @@ class PolygonCashFlowStatementFetcher(
             "quarter": "quarterly",
             "ttm": "ttm",
         }
+        query.limit = query.limit or 5
         query_string = get_querystring(
             query.model_dump(by_alias=True), ["ticker", "timeframe"]
         )

@@ -1,55 +1,119 @@
 """FMP Historical Employees Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from pydantic import ConfigDict, Field
 
 
 class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
     """FMP Historical Employees Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/historical-numer-of-employees-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#historical-employee-count
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    limit: Optional[int] = Field(
+        default=None,
+        description="Number of records to return. Default is all.",
+    )
 
 
 class FMPHistoricalEmployeesData(HistoricalEmployeesData):
     """FMP Historical Employees Data."""
 
+    model_config = ConfigDict(extra="ignore")
+
+    __alias_dict__ = {
+        "company_name": "companyName",
+        "employees": "employeeCount",
+        "date": "periodOfReport",
+        "source": "formType",
+        "url": "source",
+    }
+
+    company_name: Optional[str] = Field(
+        default=None,
+        description="Company name associated with the data.",
+    )
+    source: Optional[str] = Field(
+        default=None,
+        description="Source reference for the data.",
+    )
+    url: Optional[str] = Field(
+        default=None,
+        description="URL link to the source of the data.",
+    )
+
 
 class FMPHistoricalEmployeesFetcher(
     Fetcher[
         FMPHistoricalEmployeesQueryParams,
-        List[FMPHistoricalEmployeesData],
+        list[FMPHistoricalEmployeesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Historical Employees Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
         """Transform the query params."""
         return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPHistoricalEmployeesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import warnings  # noqa
+        from openbb_fmp.utils.helpers import get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = query.symbol.split(",")
+        results: list = []
+        limit = query.limit if query.limit is not None else 10000
 
-        url = create_url(4, "historical/employee_count", api_key, query)
+        for symbol in symbols:
+            url = f"https://financialmodelingprep.com/stable/historical-employee-count?symbol={symbol}&limit={limit}&apikey={api_key}"
+            result = await get_data_many(url, **kwargs)
 
-        return await get_data_many(url, **kwargs)
+            if not result:
+                warnings.warn(f"No data found for symbol {symbol}")
+                continue
+
+            results.extend(result)
+
+        return results
 
     @staticmethod
     def transform_data(
-        query: FMPHistoricalEmployeesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPHistoricalEmployeesData]:
+        query: FMPHistoricalEmployeesQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPHistoricalEmployeesData]:
         """Return the transformed data."""
-        return [FMPHistoricalEmployeesData.model_validate(d) for d in data]
+        result: list[FMPHistoricalEmployeesData] = []
+
+        for d in data:
+            if query.start_date or query.end_date:
+                dt = d.get("periodOfReport")
+
+                if not dt:
+                    continue
+
+                if query.start_date and dt < query.start_date.isoformat():
+                    continue
+
+                if query.end_date and dt > query.end_date.isoformat():
+                    continue
+
+            result.append(FMPHistoricalEmployeesData(**d))
+
+        return sorted(result, key=lambda x: x.date, reverse=True)

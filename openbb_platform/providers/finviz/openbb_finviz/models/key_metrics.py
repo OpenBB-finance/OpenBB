@@ -26,6 +26,9 @@ class FinvizKeyMetricsQueryParams(KeyMetricsQueryParams):
 class FinvizKeyMetricsData(KeyMetricsData):
     """Finviz Key Metrics Data."""
 
+    pe_ratio: Optional[float] = Field(
+        default=None, description="Price-to-earnings ratio (TTM)."
+    )
     foward_pe: Optional[float] = Field(
         default=None, description="Forward price-to-earnings ratio (forward P/E)"
     )

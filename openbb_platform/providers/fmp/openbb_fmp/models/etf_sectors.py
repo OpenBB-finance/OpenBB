@@ -1,17 +1,22 @@
 """FMP ETF Sectors Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_sectors import (
     EtfSectorsData,
     EtfSectorsQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import field_validator
 
 
 class FMPEtfSectorsQueryParams(EtfSectorsQueryParams):
     """FMP ETF Sectors Query."""
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEtfSectorsData(EtfSectorsData):
@@ -19,45 +24,73 @@ class FMPEtfSectorsData(EtfSectorsData):
 
     __alias_dict__ = {"weight": "weightPercentage"}
 
+    @field_validator("weight", mode="before", check_fields=False)
+    @classmethod
+    def _normalize_percent(cls, v):
+        """Normalize percent values."""
+        return float(v) / 100 if v else None
+
 
 class FMPEtfSectorsFetcher(
     Fetcher[
         FMPEtfSectorsQueryParams,
-        List[FMPEtfSectorsData],
+        list[FMPEtfSectorsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP ETF Sectors Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEtfSectorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPEtfSectorsQueryParams:
         """Transform the query."""
         return FMPEtfSectorsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPEtfSectorsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_fmp.utils.helpers import get_data_urls
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = query.symbol.split(",")
 
-        url = create_url(
-            version=3,
-            endpoint=f"etf-sector-weightings/{query.symbol.upper()}",
-            api_key=api_key,
-        )
+        urls = [
+            f"https://financialmodelingprep.com/stable/etf/sector-weightings?symbol={symbol.upper()}&apikey={api_key}"
+            for symbol in symbols
+        ]
 
-        return await get_data_many(url, **kwargs)
+        return await get_data_urls(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: FMPEtfSectorsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPEtfSectorsData]:
+        query: FMPEtfSectorsQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPEtfSectorsData]:
         """Return the transformed data."""
-        for d in data:
-            if d["weightPercentage"] is not None and d["weightPercentage"].endswith(
-                "%"
-            ):
-                d["weightPercentage"] = float(d["weightPercentage"][:-1]) / 100
-        return [FMPEtfSectorsData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        import warnings
+
+        if not data:
+            raise EmptyDataError("No data found")
+
+        symbols = set(query.symbol.split(","))
+        returned_symbols = {
+            d.get("symbol", "").upper() for d in data if d.get("symbol")
+        }
+        missing_symbols = symbols - returned_symbols
+
+        if missing_symbols:
+            warnings.warn(f"Missing symbols in response: {missing_symbols}")
+
+        return [
+            FMPEtfSectorsData.model_validate(d)
+            for d in sorted(
+                data,
+                key=lambda x: (
+                    query.symbol.split(",").index(x.get("symbol", len(symbols))),
+                    -(x.get("weightPercentage", 0) or 0),
+                ),
+            )
+        ]
