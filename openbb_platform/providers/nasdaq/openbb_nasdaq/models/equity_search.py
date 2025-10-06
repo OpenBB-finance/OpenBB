@@ -2,9 +2,8 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional
 
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
@@ -16,12 +15,12 @@ from pydantic import Field
 class NasdaqEquitySearchQueryParams(EquitySearchQueryParams):
     """Nasdaq Equity Search Query.
 
-    Source: https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt
+    Source: ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqtraded.txt
     """
 
-    is_etf: Union[bool, None] = Field(
-        default=None,
-        description="If True, returns ETFs.",
+    is_etf: bool = Field(
+        default=False,
+        description="If True, returns only ETFs.",
     )
 
 
@@ -32,7 +31,7 @@ class NasdaqEquitySearchData(EquitySearchData):
         "symbol": "Symbol",
         "name": "Security Name",
         "nasdaq_traded": "Nasdaq Traded",
-        "exchange": "Listing Exchange",
+        "exchange": "listing Exchange",
         "market_category": "Market Category",
         "etf": "ETF",
         "round_lot_size": "Round Lot Size",
@@ -86,41 +85,35 @@ class NasdaqEquitySearchData(EquitySearchData):
 
 
 class NasdaqEquitySearchFetcher(
-    Fetcher[NasdaqEquitySearchQueryParams, List[NasdaqEquitySearchData]]
+    Fetcher[NasdaqEquitySearchQueryParams, list[NasdaqEquitySearchData]]
 ):
     """Nasdaq Equity Search Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqEquitySearchQueryParams:
         """Transform the query parameters."""
         return NasdaqEquitySearchQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: NasdaqEquitySearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[dict[str, str]],
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import make_request
+        from openbb_nasdaq.utils.helpers import get_nasdaq_directory
 
-        url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
-        response = make_request(url)
-        if response.status_code != 200:
-            raise OpenBBError(
-                f"Failed to fetch data from Nasdaq: {response.status_code}"
-            )
-        return response.text
+        return get_nasdaq_directory()
 
     @staticmethod
     def transform_data(
         query: NasdaqEquitySearchQueryParams,
         data: str,
         **kwargs: Any,
-    ) -> List[NasdaqEquitySearchData]:
+    ) -> list[NasdaqEquitySearchData]:
         """Transform the data and filter the results."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa

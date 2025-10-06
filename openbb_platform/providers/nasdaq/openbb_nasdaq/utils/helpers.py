@@ -1,5 +1,7 @@
 """Nasdaq Helpers Module."""
 
+from functools import lru_cache
+
 
 def remove_html_tags(text: str):
     """Remove HTML tags from a string."""
@@ -55,3 +57,22 @@ def date_range(start_date, end_date):
 
     for n in range(int((end_date - start_date).days) + 1):
         yield start_date + timedelta(n)
+
+
+@lru_cache(maxsize=1)
+def get_nasdaq_directory() -> str:
+    """Get the Nasdaq directory from the FTP site."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.model.abstract.error import OpenBBError  # noqa
+    from urllib.error import URLError
+    from urllib.request import urlopen
+
+    url = "ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqtraded.txt"
+
+    try:
+        with urlopen(url) as response:  # noqa: S310
+            data = response.read().decode("utf-8")
+    except URLError as e:
+        raise OpenBBError(e) from e
+
+    return data

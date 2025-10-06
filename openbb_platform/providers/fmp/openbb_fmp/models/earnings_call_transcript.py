@@ -55,6 +55,10 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
         }
     )
 
+    __alias_dict__ = {
+        "quarter": "period",
+    }
+
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[

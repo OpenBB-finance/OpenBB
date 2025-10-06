@@ -6,7 +6,6 @@ from datetime import (
 )
 from typing import Any, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -24,13 +23,11 @@ class CompanyNewsQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
     start_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("start_date", "")
-        + " The default is 16 weeks ago.",
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: Optional[dateType] = Field(
         default=None,
-        description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     limit: Optional[NonNegativeInt] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
@@ -41,23 +38,6 @@ class CompanyNewsQueryParams(QueryParams):
     def symbols_validate(cls, v):
         """Validate the symbols."""
         return v.upper() if v else None
-
-    @field_validator("start_date", mode="before")
-    @classmethod
-    def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate start date if empty."""
-        if not v:
-            now = datetime.now().date()
-            v = now - relativedelta(weeks=16)
-        return v
-
-    @field_validator("end_date", mode="before")
-    @classmethod
-    def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate end date if empty."""
-        if not v:
-            v = datetime.now().date()
-        return v
 
 
 class CompanyNewsData(Data):

@@ -35,6 +35,6 @@ class EarningsCallTranscriptData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     year: int = Field(description="Year of the earnings call transcript.")
-    period: str = Field(description="Quarter of the earnings call transcript.")
+    quarter: str = Field(description="Quarter of the earnings call transcript.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     content: str = Field(description="Content of the earnings call transcript.")
