@@ -25,8 +25,8 @@
   - [ ] Ensure the new provider and/or fetcher is stable and usable.
   - [ ] If applicable, please add new tests for the provider and/or fetcher (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing).
 - If a new provider or extension was added:
-  - [ ] Update the list of [Extensions](/openbb_platform/EXTENSIONS.md).
-  - [ ] Update the list of [Providers](/openbb_platform/PROVIDERS.md).
+  - [ ] Update the list of [Extensions](/openbb_platform/extensions).
+  - [ ] Update the list of [Providers](/openbb_platform/providers).
   - [ ] If it's a community extension or provider, update the [integration tests GitHub Action workflow](/.github/workflows/platform-api-integration-test.yml).
 
 ## Checklist
