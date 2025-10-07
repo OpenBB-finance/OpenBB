@@ -27,8 +27,6 @@ output = obb.equity.price.historical("AAPL")
 df = output.to_dataframe()
 ```
 
-You can sign up to the [OpenBB Hub](https://my.openbb.co/login) to get the most out of the OpenBB ecosystem.
-
 Data integrations available can be found here: <https://docs.openbb.co/platform/reference>
 
 ---
@@ -75,7 +73,7 @@ This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
 
 You can check that it works by going to <http://127.0.0.1:6900>.
 
-#### Integrate OpenBB Platform backend to OpenBB Workspace
+#### Integrate OpenBB Platform Backend to OpenBB Workspace
 
 Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the following steps:
 
