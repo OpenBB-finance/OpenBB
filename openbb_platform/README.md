@@ -125,7 +125,7 @@ Credentials can be set for the current session only, using the Python interface.
 >>> obb.user.credentials.polygon_api_key = "REPLACE_ME"
 ```
 
-Go to the [documention](https://docs.openbb.co/platform/settings/user_settings/api_keys) for more details.
+Go to the [documentation](https://docs.openbb.co/platform/settings/user_settings/api_keys) for more details.
 
 ## REST API
 
