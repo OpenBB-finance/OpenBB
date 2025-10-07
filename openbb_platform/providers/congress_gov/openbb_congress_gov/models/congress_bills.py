@@ -212,7 +212,8 @@ class CongressBillsFetcher(
     ) -> list:
         """Extract data from the Congress API."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_core.provider.utils.errors import UnauthorizedError  # noqa
+        from openbb_core.provider.utils.helpers import amake_request
         from openbb_congress_gov.utils.helpers import (
             get_all_bills_by_type,
         )
@@ -296,6 +297,15 @@ class CongressBillsFetcher(
 
         try:
             response = await amake_request(url=url)
+            if isinstance(response, dict) and (error := response.get("error", {})):
+                if "API_KEY" in error.get("code", ""):
+                    raise UnauthorizedError(
+                        f"{error.get('code', '' )} -> {error.get('message', '')}"
+                    )
+                raise OpenBBError(
+                    f"{error.get('code', '' )} -> {error.get('message', '')}"
+                )
+
         except Exception as e:
             # Handle exceptions
             raise OpenBBError(e) from e

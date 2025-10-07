@@ -83,6 +83,8 @@ class CongressBillInfoFetcher(
     ) -> dict:
         """Extract data from the query."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import UnauthorizedError
         from openbb_core.provider.utils.helpers import amake_request
 
         api_key = credentials.get("congress_gov_api_key", "") if credentials else ""
@@ -96,6 +98,14 @@ class CongressBillInfoFetcher(
 
         url = bill_url + "&api_key=" + api_key
         base_info: dict = await amake_request(url)  # type: ignore
+
+        if isinstance(base_info, dict) and (error := base_info.get("error", {})):
+            if "API_KEY" in error.get("code", ""):
+                raise UnauthorizedError(
+                    f"{error.get('code', '' )} -> {error.get('message', '')}"
+                )
+            raise OpenBBError(f"{error.get('code', '' )} -> {error.get('message', '')}")
+
         base_info = base_info.get("bill", {})
         cosponsors = base_info.get("cosponsors", {})
 
