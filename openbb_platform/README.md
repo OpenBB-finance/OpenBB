@@ -3,10 +3,10 @@
 [![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
 [![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBB)
 
-| OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
+| OpenBB is committed to building the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 | :---------------------------------------------------------------------------------------------------------------------------------------------: |
 |              ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png)               |
-|                                                 Check our website at [openbb.co](www.openbb.co)                                                 |
+|                                                 Check our website at [openbb.co](https://www.openbb.co)                                         |
 
 ## Overview
 
@@ -77,7 +77,7 @@ Alternatively, you can install all extensions at once.
 pip install openbb[all]
 ```
 
-> Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
+> Note: These instructions are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
 ## Python
 
