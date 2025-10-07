@@ -149,7 +149,7 @@ To develop with the source code, you need to have the following:
   - Activate your virtual environment and run, `pip install poetry`.
 - A local copy of the [GitHub repository](https://github.com/OpenBB-finance/OpenBB.git)
 
-Install the repository in for local development by using the installation script.
+Install the repository for local development by using the installation script.
 
   1. Activate your virtual environment.
   2. Navigate into the `openbb_platform` folder.
