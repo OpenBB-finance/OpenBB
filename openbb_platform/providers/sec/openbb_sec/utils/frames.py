@@ -187,6 +187,7 @@ async def get_concept(
     symbol: str,
     fact: str = "Revenues",
     year: Optional[int] = None,
+    fiscal_period: Optional[FISCAL_PERIODS] = None,
     taxonomy: Optional[TAXONOMIES] = "us-gaap",
     use_cache: bool = True,
 ) -> Dict:
@@ -206,6 +207,8 @@ async def get_concept(
         In previous years, they may have reported as "Revenues".
     year : int, optional
         The year to retrieve the data for. If not provided, all reported values will be returned.
+    fiscal_period: Literal["fy", "q1", "q2", "q3", "q4"], optional
+        The fiscal period to retrieve the data for. If not provided, all reported values will be returned.
     taxonomy : Literal["us-gaap", "dei", "ifrs-full", "srt"], optional
         The taxonomy to use. Defaults to "us-gaap".
     use_cache: bool
@@ -267,6 +270,18 @@ async def get_concept(
 
     if not results:
         raise EmptyDataError(f"{messages}")
+
+    if fiscal_period is not None:
+        filtered_results = [
+            d for d in results if str(fiscal_period) == str(d.get("fp"))
+        ]
+        if len(filtered_results) > 0:
+            results = filtered_results
+        if len(filtered_results) == 0:
+            warn(
+                f"No results were found for {fact} in the fiscal period, {fiscal_period}."
+                " Returning all entries instead. Concept and fact names may differ by company and year."
+            )
 
     if year is not None:
         filtered_results = [d for d in results if str(year) == str(d.get("fy"))]

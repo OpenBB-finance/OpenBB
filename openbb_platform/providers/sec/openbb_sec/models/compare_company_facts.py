@@ -158,14 +158,11 @@ class SecCompareCompanyFactsFetcher(
                 warn(
                     "The 'instantaneous' parameter is ignored when a symbol is supplied."
                 )
-            if query.fiscal_period is not None:
-                warn(
-                    "The 'fiscal_period' parameter is ignored when a symbol is supplied."
-                )
             results = await get_concept(
                 symbol=query.symbol,
                 fact=query.fact,
                 year=query.year,
+                fiscal_period=query.fiscal_period,
                 use_cache=query.use_cache,
             )
         if not results:
