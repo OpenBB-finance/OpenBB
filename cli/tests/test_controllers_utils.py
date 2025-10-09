@@ -52,7 +52,10 @@ def test_remove_file_directory():
 
 def test_remove_file_failure(mock_session):
     """Test removing a file that fails."""
-    with patch("os.path.isfile", return_value=True), patch("os.remove", side_effect=Exception("Error")):
+    with (
+        patch("os.path.isfile", return_value=True),
+        patch("os.remove", side_effect=Exception("Error")),
+    ):
         assert not remove_file(Path("/path/to/file"))
         mock_session.console.print.assert_called()
 
@@ -93,7 +96,9 @@ def test_print_guest_block_msg(mock_session):
 def test_welcome_message(mock_session):
     """Test printing the welcome message."""
     welcome_message()
-    mock_session.console.print.assert_called_with("\nWelcome to OpenBB Platform CLI v1.0")
+    mock_session.console.print.assert_called_with(
+        "\nWelcome to OpenBB Platform CLI v1.0"
+    )
 
 
 def test_get_flair_and_username(mock_session):

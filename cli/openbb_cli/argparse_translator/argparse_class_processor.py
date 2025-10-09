@@ -41,7 +41,9 @@ class ArgparseClassProcessor:
 
         ArgparseClassProcessor._reference = reference or {}
 
-        self._translators = self._process_class(target=self._target_class, add_help=self._add_help)
+        self._translators = self._process_class(
+            target=self._target_class, add_help=self._add_help
+        )
         self._paths[self._get_class_name(self._target_class)] = "path"
         self._build_paths(target=self._target_class)
 
@@ -101,14 +103,22 @@ class ArgparseClassProcessor:
             elif isinstance(member, Container):
                 methods = {
                     **methods,
-                    **cls._process_class(target=getattr(target, name), add_help=add_help),
+                    **cls._process_class(
+                        target=getattr(target, name), add_help=add_help
+                    ),
                 }
 
         return methods
 
     @staticmethod
     def _get_class_name(target: type) -> str:
-        return str(type(target)).rsplit(".", maxsplit=1)[-1].replace("'>", "").replace("ROUTER_", "").lower()
+        return (
+            str(type(target))
+            .rsplit(".", maxsplit=1)[-1]
+            .replace("'>", "")
+            .replace("ROUTER_", "")
+            .lower()
+        )
 
     def get_translator(self, command: str) -> ArgparseTranslator:
         """

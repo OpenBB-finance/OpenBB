@@ -66,7 +66,9 @@ class SettingsController(BaseController):
                 )
         session.console.print(text=mt.menu_text, menu="Settings")
 
-    def _generate_command(self, cmd_name: str, field: dict, action_type: Literal["toggle", "set"]):
+    def _generate_command(
+        self, cmd_name: str, field: dict, action_type: Literal["toggle", "set"]
+    ):
         """Generate command call."""
 
         def _toggle(self, other_args: list[str], field=field) -> None:
@@ -80,7 +82,9 @@ class SettingsController(BaseController):
             )
             ns_parser, _ = self.parse_simple_args(parser, other_args)
             if ns_parser:
-                session.settings.set_item(field_name, not getattr(session.settings, field_name))
+                session.settings.set_item(
+                    field_name, not getattr(session.settings, field_name)
+                )
 
         def _set(self, other_args: list[str], field=field) -> None:
             """Set preference value."""
@@ -116,9 +120,13 @@ class SettingsController(BaseController):
                     if command == "console_style":
                         session.style.apply(ns_parser.value)
                     session.settings.set_item(field_name, ns_parser.value)
-                    session.console.print(f"[info]Current value:[/info] {getattr(session.settings, field_name)}")
+                    session.console.print(
+                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
+                    )
                 elif not other_args:
-                    session.console.print(f"[info]Current value:[/info] {getattr(session.settings, field_name)}")
+                    session.console.print(
+                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
+                    )
 
         action = None
         if action_type == "toggle":
@@ -128,5 +136,7 @@ class SettingsController(BaseController):
         else:
             raise ValueError(f"Action type '{action_type}' not allowed.")
 
-        bound_method = update_wrapper(wrapper=partial(MethodType(action, self), field=field), wrapped=action)
+        bound_method = update_wrapper(
+            wrapper=partial(MethodType(action, self), field=field), wrapped=action
+        )
         setattr(self, f"call_{cmd_name}", bound_method)

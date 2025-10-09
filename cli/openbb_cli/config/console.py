@@ -40,7 +40,9 @@ class Console:
         return text
 
     @staticmethod
-    def _blend_text(message: str, color1: tuple[int, int, int], color2: tuple[int, int, int]) -> Text:
+    def _blend_text(
+        message: str, color1: tuple[int, int, int], color2: tuple[int, int, int]
+    ) -> Text:
         """Blend text from one color to another."""
         text = Text(message)
         r1, g1, b1 = color1
@@ -64,7 +66,9 @@ class Console:
                         version = self._settings.VERSION
                         version = f"[param]OpenBB Platform CLI v{version}[/param] (https://openbb.co)"
                     else:
-                        version = "[param]OpenBB Platform CLI[/param] (https://openbb.co)"
+                        version = (
+                            "[param]OpenBB Platform CLI[/param] (https://openbb.co)"
+                        )
                     self._console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

@@ -10,9 +10,15 @@ from openbb_core.app.model.obbject import OBBject
 def test_registry_operations():
     """Test the registry operations."""
     registry = Registry()
-    obbject1 = OBBject(id="1", results=True, extra={"register_key": "key1", "command": "cmd1"})
-    obbject2 = OBBject(id="2", results=True, extra={"register_key": "key2", "command": "cmd2"})
-    obbject3 = OBBject(id="3", results=True, extra={"register_key": "key3", "command": "cmd3"})  # noqa: F841
+    obbject1 = OBBject(
+        id="1", results=True, extra={"register_key": "key1", "command": "cmd1"}
+    )
+    obbject2 = OBBject(
+        id="2", results=True, extra={"register_key": "key2", "command": "cmd2"}
+    )
+    obbject3 = OBBject(
+        id="3", results=True, extra={"register_key": "key3", "command": "cmd3"}
+    )  # noqa: F841
 
     # Add obbjects to the registry
     assert registry.register(obbject1) is True

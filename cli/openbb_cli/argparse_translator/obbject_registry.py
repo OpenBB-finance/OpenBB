@@ -19,7 +19,11 @@ class Registry:
 
     def register(self, obbject: OBBject) -> bool:
         """Designed to add an OBBject instance to the registry."""
-        if isinstance(obbject, OBBject) and not self._contains_obbject(obbject.id, self._obbjects) and obbject.results:
+        if (
+            isinstance(obbject, OBBject)
+            and not self._contains_obbject(obbject.id, self._obbjects)
+            and obbject.results
+        ):
             self._obbjects.append(obbject)
             return True
         return False
@@ -67,9 +71,13 @@ class Registry:
         def _handle_standard_params(obbject: OBBject) -> str:
             """Handle standard params for obbjects."""
             standard_params_json = ""
-            std_params = getattr(obbject, "_standard_params", {})  # pylint: disable=protected-access
+            std_params = getattr(
+                obbject, "_standard_params", {}
+            )  # pylint: disable=protected-access
             if std_params:
-                standard_params = {k: str(v)[:30] for k, v in std_params.items() if v and k != "data"}
+                standard_params = {
+                    k: str(v)[:30] for k, v in std_params.items() if v and k != "data"
+                }
                 standard_params_json = json.dumps(standard_params)
 
             return standard_params_json
@@ -113,4 +121,8 @@ class Registry:
     @property
     def obbject_keys(self) -> list[str]:
         """Return all obbject keys in the registry."""
-        return [obbject.extra["register_key"] for obbject in self._obbjects if "register_key" in obbject.extra]
+        return [
+            obbject.extra["register_key"]
+            for obbject in self._obbjects
+            if "register_key" in obbject.extra
+        ]

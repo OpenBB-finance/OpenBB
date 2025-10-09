@@ -90,7 +90,9 @@ def upload_routine(
                     f"{hub_url}/u/{username}/routine/{name.replace(' ', '-')}[/]"
                 )
         elif response.status_code != 409:  # 409: routine already exists
-            _console.print("[red]" + response.json().get("detail", "Unknown error.") + "[/red]")
+            _console.print(
+                "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
+            )
         return response
     except requests.exceptions.ConnectionError:
         _console.print(f"\n{CONNECTION_ERROR_MSG}")

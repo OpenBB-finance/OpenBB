@@ -16,8 +16,12 @@ from openbb_cli.controllers.cli_controller import (
 def test_parse_and_split_input_custom_filters():
     """Test the parse_and_split_input function with custom filters."""
     input_cmd = "query -q AAPL/P"
-    result = parse_and_split_input(input_cmd, custom_filters=[r"((\ -q |\ --question|\ ).*?(/))"])
-    assert "AAPL/P" not in result, "Should filter out terms that look like a sorting parameter"
+    result = parse_and_split_input(
+        input_cmd, custom_filters=[r"((\ -q |\ --question|\ ).*?(/))"]
+    )
+    assert (
+        "AAPL/P" not in result
+    ), "Should filter out terms that look like a sorting parameter"
 
 
 @patch("openbb_cli.controllers.cli_controller.CLIController.print_help")
@@ -67,5 +71,9 @@ def test_execute_openbb_routine_with_mocked_requests():
         mock_get.return_value = response
         # Here we need to call the correct function, assuming it's something like `call_exe` for URL-based scripts
         controller = CLIController()
-        controller.call_exe(["--url", "https://my.openbb.co/u/test/routine/test.openbb"])
-        mock_get.assert_called_with("https://my.openbb.co/u/test/routine/test.openbb?raw=true", timeout=10)
+        controller.call_exe(
+            ["--url", "https://my.openbb.co/u/test/routine/test.openbb"]
+        )
+        mock_get.assert_called_with(
+            "https://my.openbb.co/u/test/routine/test.openbb?raw=true", timeout=10
+        )

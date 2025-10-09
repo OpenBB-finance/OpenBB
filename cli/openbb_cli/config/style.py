@@ -95,7 +95,9 @@ class Style:
         with open(file) as f:
             json_style: dict = json.load(f)
             for key, value in json_style.items():
-                json_style[key] = value.replace(" ", "")  # remove whitespaces so Rich can parse it
+                json_style[key] = value.replace(
+                    " ", ""
+                )  # remove whitespaces so Rich can parse it
             return json_style
 
     @property

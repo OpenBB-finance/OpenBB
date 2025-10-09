@@ -37,7 +37,9 @@ def test_call_n_rows(input_rows, expected, mock_session):
     controller = SettingsController()
     args = ["--value", str(input_rows)]
     controller.call_n_rows(args)
-    mock_session.settings.set_item.assert_called_with("ALLOWED_NUMBER_OF_ROWS", expected)
+    mock_session.settings.set_item.assert_called_with(
+        "ALLOWED_NUMBER_OF_ROWS", expected
+    )
 
 
 def test_call_n_rows_no_args_provided(mock_session):
@@ -94,7 +96,9 @@ def test_call_obbject_display(mock_session):
     controller = SettingsController()
     args = ["--value", "5"]
     controller.call_obbject_display(args)
-    mock_session.settings.set_item.assert_called_once_with("N_TO_DISPLAY_OBBJECT_REGISTRY", 5)
+    mock_session.settings.set_item.assert_called_once_with(
+        "N_TO_DISPLAY_OBBJECT_REGISTRY", 5
+    )
 
 
 def test_call_obbject_display_no_args(mock_session):
@@ -117,6 +121,8 @@ def test_call_n_rows_v2(args, expected, mock_session):
     controller = SettingsController()
     controller.call_n_rows(args)
     if args:
-        mock_session.settings.set_item.assert_called_with("ALLOWED_NUMBER_OF_ROWS", expected)
+        mock_session.settings.set_item.assert_called_with(
+            "ALLOWED_NUMBER_OF_ROWS", expected
+        )
     else:
         mock_session.console.print.assert_called_with("[info]Current value:[/info] 20")

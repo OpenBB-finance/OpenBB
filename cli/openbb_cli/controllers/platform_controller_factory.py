@@ -16,7 +16,11 @@ class PlatformControllerFactory:
             target_class=self.platform_router, reference=kwargs.get("reference", {})
         )
         self.router_name = (
-            str(type(self.platform_router)).rsplit(".", maxsplit=1)[-1].replace("'>", "").replace("ROUTER_", "").lower()
+            str(type(self.platform_router))
+            .rsplit(".", maxsplit=1)[-1]
+            .replace("'>", "")
+            .replace("ROUTER_", "")
+            .lower()
         )
         self.controller_name = f"{self.router_name.capitalize()}Controller"
 

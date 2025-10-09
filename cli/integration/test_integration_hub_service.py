@@ -41,7 +41,9 @@ def routine_data():
 @pytest.mark.integration
 def test_upload_routine_timeout(auth_header, routine_data):
     """Test upload_routine with a timeout exception."""
-    with patch("requests.post", side_effect=requests.exceptions.Timeout) as mocked_post:  # noqa: F841
+    with patch(
+        "requests.post", side_effect=requests.exceptions.Timeout
+    ) as mocked_post:  # noqa: F841
         response = upload_routine(auth_header, **routine_data)
 
         assert response is None
@@ -50,7 +52,9 @@ def test_upload_routine_timeout(auth_header, routine_data):
 @pytest.mark.integration
 def test_upload_routine_connection_error(auth_header, routine_data):
     """Test upload_routine with a connection error."""
-    with patch("requests.post", side_effect=requests.exceptions.ConnectionError) as mocked_post:  # noqa: F841
+    with patch(
+        "requests.post", side_effect=requests.exceptions.ConnectionError
+    ) as mocked_post:  # noqa: F841
         response = upload_routine(auth_header, **routine_data)
 
         assert response is None

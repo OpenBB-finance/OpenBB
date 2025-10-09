@@ -45,7 +45,9 @@ class Session(metaclass=SingletonMeta):
             style=self._settings.RICH_STYLE,
             directory=Path(self._obb.user.preferences.user_styles_directory),  # type: ignore[union-attr]
         )
-        self._console = Console(settings=self._settings, style=self._style.console_style)
+        self._console = Console(
+            settings=self._settings, style=self._style.console_style
+        )
         self._prompt_session = self._get_prompt_session()
         self._obbject_registry = Registry()
 
@@ -85,7 +87,9 @@ class Session(metaclass=SingletonMeta):
         """Initialize prompt session."""
         try:
             if sys.stdin.isatty():
-                prompt_session: PromptSession | None = PromptSession(history=CustomFileHistory(str(HIST_FILE_PROMPT)))
+                prompt_session: PromptSession | None = PromptSession(
+                    history=CustomFileHistory(str(HIST_FILE_PROMPT))
+                )
             else:
                 prompt_session = None
         except Exception:
@@ -99,4 +103,6 @@ class Session(metaclass=SingletonMeta):
 
     def max_obbjects_exceeded(self) -> bool:
         """Check if max obbjects exceeded."""
-        return len(self.obbject_registry.all) >= self.settings.N_TO_KEEP_OBBJECT_REGISTRY
+        return (
+            len(self.obbject_registry.all) >= self.settings.N_TO_KEEP_OBBJECT_REGISTRY
+        )
