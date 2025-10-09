@@ -1,0 +1,1269 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      accept:
+      - application/vnd.sdmx.data+csv;version=1.0.0
+    method: GET
+    uri: https://stats.bis.org/api/v2/data/dataflow/BIS/WS_DPP/%2B/Q.GB.0.1.0.1.0.0?c%5BTIME_PERIOD%5D=eq%3A2023-11
+  response:
+    body:
+      string: "DATAFLOW,FREQ,REF_AREA,COVERED_AREA,RE_TYPE,RE_VINTAGE,COMPILING_ORG,PRICED_UNIT,ADJUST_CODED,TIME_PERIOD,OBS_VALUE,COLLECTION,TIME_FORMAT,AVAILABILITY,BREAKS,COLLECTION_DETAIL,COVERAGE,DATA_COMP,DECIMALS,DOC_METHOD,MEASURE_DETAIL,META_UPDATE,PUBLICATIONS,TITLE_GRP,TITLE_GRP_COMPL,TITLE_GRP_NAT,UNIT_MEASURE,UNIT_MULT,OBS_CONF,OBS_PRE_BREAK,OBS_STATUS\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2005-Q1,53.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2005-Q2,54.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2005-Q3,56.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2005-Q4,56.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2006-Q1,56.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2006-Q2,58.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2006-Q3,60.6,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2006-Q4,61.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2007-Q1,62.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2007-Q2,65.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2007-Q3,66.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2007-Q4,66.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2008-Q1,65,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2008-Q2,64.6,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2008-Q3,62.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2008-Q4,58,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2009-Q1,55,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2009-Q2,55.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2009-Q3,57.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2009-Q4,59,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2010-Q1,59.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2010-Q2,60.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2010-Q3,61.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2010-Q4,59.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2011-Q1,58.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2011-Q2,59.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2011-Q3,60,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2011-Q4,59.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2012-Q1,58.5,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2012-Q2,59.6,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2012-Q3,60.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2012-Q4,59.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2013-Q1,59.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2013-Q2,60.5,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2013-Q3,62,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2013-Q4,62.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2014-Q1,63.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2014-Q2,65.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2014-Q3,67.5,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2014-Q4,67.6,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2015-Q1,67.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2015-Q2,68.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2015-Q3,71.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2015-Q4,72,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2016-Q1,72.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2016-Q2,74.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2016-Q3,75.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2016-Q4,75.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2017-Q1,76,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2017-Q2,77.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2017-Q3,79.5,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2017-Q4,79.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2018-Q1,79.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2018-Q2,80.2,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2018-Q3,81.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2018-Q4,81.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2019-Q1,80.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2019-Q2,81,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2019-Q3,82.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2019-Q4,82,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2020-Q1,81.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2020-Q2,82,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2020-Q3,84.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2020-Q4,86.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2021-Q1,88.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2021-Q2,89.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2021-Q3,91.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2021-Q4,93.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2022-Q1,95.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2022-Q2,97.7,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2022-Q3,101.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2022-Q4,101.5,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2023-Q1,99.1,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2023-Q2,98.6,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2023-Q3,100.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2023-Q4,99,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q1,97.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q2,99,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q3,101.3,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q4,101.9,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2025-Q1,102.4,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2025-Q2,101.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\n"
+    headers:
+      cache-control:
+      - private
+      content-disposition:
+      - inline; filename="data.csv"
+      content-encoding:
+      - gzip
+      content-length:
+      - '2071'
+      content-type:
+      - text/csv;charset=UTF-8
+      date:
+      - Thu, 09 Oct 2025 04:13:06 GMT
+      etag:
+      - 6f90f0ca-7e69-4998-9b15-a1ff5cbc855e
+      set-cookie:
+      - JSESSIONID=1582C8C327E324FA563FFF3C8D07250A; Path=/FusionEdgeServer; Secure;
+        HttpOnly
+      - c7433a849bcd78486014ee1ceaae0775=3d55fe99f4c8860d6d57e7d4d61f8e82; path=/;
+        HttpOnly; Secure; SameSite=None
+    status:
+      code: 200
+      message: ''
+version: 1

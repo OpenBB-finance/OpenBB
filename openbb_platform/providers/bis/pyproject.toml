@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-bis"
+version = "1.0.0"
+description = "BIS Extension for the OpenBB Platform"
+authors = ["finestday <179567039+finestday@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{ include = "openbb_bis" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+bis = "openbb_bis:bis_provider"
