@@ -272,12 +272,12 @@ def test_build_func_params(method_definition):
         "param3": Parameter(
             "param3",
             kind=Parameter.POSITIONAL_OR_KEYWORD,
-            annotation=pandas.core.frame.DataFrame,
+            annotation=dict[str, Any] | pandas.DataFrame,
         ),
     }
 
     expected_output = (
-        "param1: None,\n        param2: int,\n        param3: pandas.DataFrame"
+        "param1: None,\nparam2: int,\nparam3: dict[str, Any] | pandas.DataFrame"
     )
     output = method_definition.build_func_params(param_map)
 

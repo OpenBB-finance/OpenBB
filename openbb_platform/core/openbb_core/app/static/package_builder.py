@@ -366,8 +366,8 @@ class ImportDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
-                if route.deprecated:
-                    hint_type_list.append(type(route.summary.metadata))
+                if route.deprecated:  # type: ignore
+                    hint_type_list.append(type(route.summary.metadata))  # type: ignore
                 function_hint_type_list = cls.get_function_hint_type_list(route=route)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
@@ -415,7 +415,7 @@ class ImportDefinition:
             for hint_type in hint_type_list
         ]
         module_list = list(set(module_list))
-        module_list.sort()
+        module_list.sort()  # type: ignore
 
         code += "\n"
         for module in module_list:
@@ -530,18 +530,18 @@ class ClassDefinition:
         for c in child_path_list:
             route = PathHandler.get_route(c, route_map)
             if route:
-                doc += f"    {route.name}\n"
+                doc += f"    {route.name}\n"  # type: ignore
                 methods += MethodDefinition.build_command_method(
-                    path=route.path,
-                    func=route.endpoint,
+                    path=route.path,  # type: ignore
+                    func=route.endpoint,  # type: ignore
                     model_name=(
-                        route.openapi_extra.get("model", None)
-                        if route.openapi_extra
+                        route.openapi_extra.get("model", None)  # type: ignore
+                        if route.openapi_extra  # type: ignore
                         else None
                     ),
                     examples=(
-                        route.openapi_extra.get("examples", [])
-                        if route.openapi_extra
+                        route.openapi_extra.get("examples", [])  # type: ignore
+                        if route.openapi_extra  # type: ignore
                         else []
                     ),
                 )
@@ -1851,10 +1851,11 @@ class DocstringGenerator:
                             provider_field = model_providers.__dataclass_fields__.get(
                                 "provider"
                             )
-                            if provider_field:
-                                providers = list(provider_field.type.__args__)
-                            else:
-                                providers = []
+                            providers = (
+                                list(provider_field.type.__args__)
+                                if provider_field
+                                else []
+                            )
                         else:
                             providers = []
 
@@ -2058,8 +2059,6 @@ class DocstringGenerator:
                     elif current_indent > 0:
                         # Detect if it's using spaces or tabs
                         if "\t" in line[:current_indent]:
-                            # Tab-based indentation - convert to spaces
-                            tab_count = line[:current_indent].count("\t")
                             fixed_lines.append(
                                 f"{create_indent(target_indent)}{stripped}"
                             )
@@ -2068,14 +2067,11 @@ class DocstringGenerator:
                             fixed_lines.append(
                                 f"{create_indent(target_indent)}{stripped}"
                             )
+                    # No indentation - add target indentation for non-empty lines
+                    elif stripped:
+                        fixed_lines.append(f"{create_indent(target_indent)}{stripped}")
                     else:
-                        # No indentation - add target indentation for non-empty lines
-                        if stripped:
-                            fixed_lines.append(
-                                f"{create_indent(target_indent)}{stripped}"
-                            )
-                        else:
-                            fixed_lines.append("")
+                        fixed_lines.append("")
 
                 return "\n".join(fixed_lines)
 
@@ -2105,7 +2101,7 @@ class DocstringGenerator:
                     annotation = getattr(param, "_annotation", None)
                     if isinstance(annotation, _AnnotatedAlias):
                         # Extract from OpenBBField annotations
-                        p_type = annotation.__args__[0]
+                        p_type = annotation.__args__[0]  # type: ignore
                         metadata = getattr(annotation, "__metadata__", [])
                         description = (
                             getattr(metadata[0], "description", "") if metadata else ""

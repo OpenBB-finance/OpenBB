@@ -186,12 +186,6 @@ class SecManagementDiscussionAnalysisFetcher(
         else:
             response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-        if response and not isinstance(response, str):
-            raise OpenBBError(
-                f"Unexpected response received. Expected string and got -> {response.__class__.__name__}"
-                f" -> {response[:100]}"
-            )
-
         if isinstance(response, str):
             return {
                 "symbol": query.symbol,
@@ -208,6 +202,11 @@ class SecManagementDiscussionAnalysisFetcher(
                 "url": url,
                 "content": response,
             }
+
+        raise OpenBBError(
+            f"Unexpected response received. Expected string and got -> {response.__class__.__name__}"
+            f" -> {response[:100]}"
+        )
 
     @staticmethod
     def transform_data(  # noqa: PLR0912

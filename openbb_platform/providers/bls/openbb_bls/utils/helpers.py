@@ -230,8 +230,10 @@ async def get_survey_asset(survey: str, asset: str) -> "DataFrame | None":
     }
     url = f"https://download.bls.gov/pub/time.series/{survey.lower()}/{survey.lower()}.{asset.lower()}"
     res = make_request(url=url, method="GET", headers=headers)
+
     if res.status_code != 200:
-        return
+        return None
+
     df = read_csv(StringIO(res.text), sep="\t", low_memory=False, dtype="object")
     df.columns = [d.strip() for d in df.columns]
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)

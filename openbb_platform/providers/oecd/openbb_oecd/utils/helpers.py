@@ -22,7 +22,7 @@ Path(cache).mkdir(parents=True, exist_ok=True)
 # to create a custom session:
 
 
-class CustomHttpAdapter(requests.adapters.HTTPAdapter):
+class CustomHttpAdapter(requests.adapters.HTTPAdapter):  # type: ignore
     """Transport adapter" that allows us to use custom ssl_context."""
 
     def __init__(self, ssl_context=None, **kwargs):

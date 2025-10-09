@@ -26,42 +26,6 @@ class FredSeriesQueryParams(SeriesQueryParams):
     }
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True},
-        "frequency": {
-            "multiple_items_allowed": False,
-            "choices": [
-                "a",
-                "q",
-                "m",
-                "w",
-                "d",
-                "wef",
-                "weth",
-                "wew",
-                "wetu",
-                "wem",
-                "wesu",
-                "wesa",
-                "bwew",
-                "bwem",
-            ],
-        },
-        "aggregation_method": {
-            "multiple_items_allowed": False,
-            "choices": ["avg", "sum", "eop"],
-        },
-        "transform": {
-            "multiple_items_allowed": False,
-            "choices": [
-                "chg",
-                "ch1",
-                "pch",
-                "pc1",
-                "pca",
-                "cch",
-                "cca",
-                "log",
-            ],
-        },
     }
 
     frequency: (
@@ -85,22 +49,21 @@ class FredSeriesQueryParams(SeriesQueryParams):
     ) = Field(
         default=None,
         description="""Frequency aggregation to convert high frequency data to lower frequency.
-        None = No change
-        a = Annual
-        q = Quarterly
-        m = Monthly
-        w = Weekly
-        d = Daily
-        wef = Weekly, Ending Friday
-        weth = Weekly, Ending Thursday
-        wew = Weekly, Ending Wednesday
-        wetu = Weekly, Ending Tuesday
-        wem = Weekly, Ending Monday
-        wesu = Weekly, Ending Sunday
-        wesa = Weekly, Ending Saturday
-        bwew = Biweekly, Ending Wednesday
-        bwem = Biweekly, Ending Monday
-        """,
+    None = No change
+    a = Annual
+    q = Quarterly
+    m = Monthly
+    w = Weekly
+    d = Daily
+    wef = Weekly, Ending Friday
+    weth = Weekly, Ending Thursday
+    wew = Weekly, Ending Wednesday
+    wetu = Weekly, Ending Tuesday
+    wem = Weekly, Ending Monday
+    wesu = Weekly, Ending Sunday
+    wesa = Weekly, Ending Saturday
+    bwew = Biweekly, Ending Wednesday
+    bwem = Biweekly, Ending Monday""",
     )
     aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default="eop",
@@ -116,18 +79,17 @@ class FredSeriesQueryParams(SeriesQueryParams):
     ) = Field(
         default=None,
         description="""Transformation type
-        None = No transformation
-        chg = Change
-        ch1 = Change from Year Ago
-        pch = Percent Change
-        pc1 = Percent Change from Year Ago
-        pca = Compounded Annual Rate of Change
-        cch = Continuously Compounded Rate of Change
-        cca = Continuously Compounded Annual Rate of Change
-        log = Natural Log
-        """,
+    None = No transformation
+    chg = Change
+    ch1 = Change from Year Ago
+    pch = Percent Change
+    pc1 = Percent Change from Year Ago
+    pca = Compounded Annual Rate of Change
+    cch = Continuously Compounded Rate of Change
+    cca = Continuously Compounded Annual Rate of Change
+    log = Natural Log""",
     )
-    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
+    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=10000)
 
 
 class FredSeriesData(SeriesData):
@@ -224,7 +186,9 @@ class FredSeriesFetcher(
             }
 
         try:
-            results = await amake_requests(urls, callback, timeout=5, **kwargs)
+            results = await amake_requests(
+                urls, response_callback=callback, timeout=5, **kwargs
+            )
             return results
         except Exception as e:
             raise OpenBBError(e) from e
@@ -235,7 +199,8 @@ class FredSeriesFetcher(
     ) -> AnnotatedResult[list[FredSeriesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame
+        from pandas import DataFrame  # noqa
+        from numpy import nan
 
         series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
         metadata = {_id: m for d in data for _id, m in d.items()}
@@ -244,8 +209,7 @@ class FredSeriesFetcher(
             .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})
-            .fillna("N/A")
-            .replace("N/A", None)
+            .replace({nan: None})
             .to_dict("records")
         )
         validated = [FredSeriesData.model_validate(r) for r in records]
