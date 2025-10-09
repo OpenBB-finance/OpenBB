@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -32,7 +32,7 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         description="Cash flow statements are reported as YTD, Q4 is the same as FY.",
     )
     period: Literal["annual", "quarter"] = Field(default="annual")
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
@@ -49,14 +49,14 @@ class IntrinioReportedFinancialsData(ReportedFinancialsData):
 class IntrinioReportedFinancialsFetcher(
     Fetcher[
         IntrinioReportedFinancialsQueryParams,
-        List[IntrinioReportedFinancialsData],
+        list[IntrinioReportedFinancialsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioReportedFinancialsQueryParams:
         """Transform the query params."""
         return IntrinioReportedFinancialsQueryParams(**params)
@@ -64,9 +64,9 @@ class IntrinioReportedFinancialsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioReportedFinancialsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -103,7 +103,7 @@ class IntrinioReportedFinancialsFetcher(
         if ids == []:
             raise OpenBBError("No reports found.")
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             statement_data = await response.json()
             return {
@@ -122,16 +122,16 @@ class IntrinioReportedFinancialsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioReportedFinancialsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioReportedFinancialsData]:
+        query: IntrinioReportedFinancialsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioReportedFinancialsData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import to_snake_case
 
-        transformed_data: List[IntrinioReportedFinancialsData] = []
+        transformed_data: list[IntrinioReportedFinancialsData] = []
         data_tag = "xbrl_tag"
         for item in data:
-            sub_dict: Dict[str, Any] = {}
+            sub_dict: dict[str, Any] = {}
 
             for sub_item in item["financials"]:
                 field_name = to_snake_case(sub_item[data_tag]["tag"])

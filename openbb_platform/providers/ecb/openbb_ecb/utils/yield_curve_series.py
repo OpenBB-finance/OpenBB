@@ -1,6 +1,6 @@
 """ECB Yield Curve Series IDs"""
 
-from typing import Dict, Literal
+from typing import Literal
 
 RATING_DICT = {"aaa": "A", "all_ratings": "C"}
 
@@ -51,7 +51,7 @@ def get_yield_curve_ids(
     yield_curve_type: Literal[
         "spot_rate", "instantaneous_forward", "par_yield"
     ] = "spot_rate",
-) -> Dict:
+) -> dict:
     """Get Yield Curve Series IDs"""
 
     YIELD_CURVE = {

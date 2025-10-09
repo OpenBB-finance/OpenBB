@@ -2,18 +2,15 @@
 
 import asyncio
 import os
+from collections.abc import Awaitable, Callable
 from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import (
     TYPE_CHECKING,
-    Awaitable,
-    Callable,
     Literal,
-    Optional,
     TypeVar,
-    Union,
     cast,
 )
 
@@ -207,9 +204,7 @@ def get_requests_session(**kwargs) -> "Session":
         )
 
     if auth := python_settings.get("auth"):
-        _session.auth = (
-            auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)  # type: ignore
-        )
+        _session.auth = auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)  # type: ignore
 
     if kwargs:
         for key, value in kwargs.items():
@@ -348,11 +343,11 @@ async def amake_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, list[dict]]]]
-    ] = None,
+    response_callback: (
+        Callable[[ClientResponse, ClientSession], Awaitable[dict | list[dict]]] | None
+    ) = None,
     **kwargs,
-) -> Union[dict, list[dict]]:
+) -> dict | list[dict]:
     """
     Abstract helper to make requests from a url with potential headers and params.
 
@@ -396,10 +391,10 @@ async def amake_request(
 
 
 async def amake_requests(
-    urls: Union[str, list[str]],
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, list[dict]]]]
-    ] = None,
+    urls: str | list[str],
+    response_callback: (
+        Callable[[ClientResponse, ClientSession], Awaitable[dict | list[dict]]] | None
+    ) = None,
     **kwargs,
 ):
     """Make multiple requests asynchronously.
@@ -455,9 +450,7 @@ async def amake_requests(
                 continue
 
             if not isinstance(result, Exception):
-                results.extend(
-                    result if isinstance(result, list) else [result]  # type: ignore[list-item]
-                )
+                results.extend(result if isinstance(result, list) else [result])  # type: ignore[list-item]
 
         if exceptions and not results and not ret_exceptions:
             raise exceptions[0]  # type: ignore
@@ -468,7 +461,7 @@ async def amake_requests(
         await session.close()
 
 
-def combine_certificates(cert: str, bundle: Optional[str] = None) -> str:
+def combine_certificates(cert: str, bundle: str | None = None) -> str:
     """Combine a certificate and a bundle into a single certificate file. Use the default bundle if none is provided."""
     # pylint: disable=import-outside-toplevel
     import atexit  # noqa
@@ -586,7 +579,7 @@ def to_snake_case(string: str) -> str:
 
 
 async def maybe_coroutine(
-    func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
+    func: Callable[P, T | Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
     if not iscoroutinefunction(func):
@@ -610,7 +603,7 @@ def run_async(
 
 
 def filter_by_dates(
-    data: list[D], start_date: Optional[date] = None, end_date: Optional[date] = None
+    data: list[D], start_date: date | None = None, end_date: date | None = None
 ) -> list[D]:
     """Filter data by dates."""
     if start_date is None and end_date is None:
@@ -632,9 +625,7 @@ def filter_by_dates(
     return list(filter(_filter, data))
 
 
-def safe_fromtimestamp(
-    timestamp: Union[float, int], tz: Optional[timezone] = None
-) -> datetime:
+def safe_fromtimestamp(timestamp: float | int, tz: timezone | None = None) -> datetime:
     """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
     if os.name == "nt" and timestamp < 0:
         return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)

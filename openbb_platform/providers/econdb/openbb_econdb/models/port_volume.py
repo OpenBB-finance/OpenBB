@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -32,24 +32,24 @@ class EconDbPortVolumeQueryParams(PortVolumeQueryParams):
 class EconDbPortVolumeData(PortVolumeData):
     """EconDB Port Volume Data."""
 
-    export_dwell_time: Optional[float] = Field(
+    export_dwell_time: float | None = Field(
         default=None,
         description="EconDB model estimate for the average number of days from when a container"
         + " enters the terminal gates until it is loaded on a vessel."
         + " High dwelling times can indicate vessel delays.",
     )
-    import_dwell_time: Optional[float] = Field(
+    import_dwell_time: float | None = Field(
         default=None,
         description="EconDB model estimate for the average number of days from when a container is discharged"
         + " from a vessel until it exits the terminal gates."
         + " High dwelling times can indicate trucking or port congestion.",
     )
-    import_teu: Optional[int] = Field(
+    import_teu: int | None = Field(
         default=None,
         description="EconDB model estimate for the number of twenty-foot equivalent units (TEUs)"
         + " of containers imported through the port.",
     )
-    export_teu: Optional[int] = Field(
+    export_teu: int | None = Field(
         default=None,
         description="EconDB model estimate for the number of twenty-foot equivalent units (TEUs)"
         + " of containers exported through the port.",
@@ -57,23 +57,23 @@ class EconDbPortVolumeData(PortVolumeData):
 
 
 class EconDbPortVolumeFetcher(
-    Fetcher[EconDbPortVolumeQueryParams, List[EconDbPortVolumeData]]
+    Fetcher[EconDbPortVolumeQueryParams, list[EconDbPortVolumeData]]
 ):
     """EconDB Port Volume Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbPortVolumeQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbPortVolumeQueryParams:
         """Transform the query."""
         return EconDbPortVolumeQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: EconDbPortVolumeQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -94,9 +94,9 @@ class EconDbPortVolumeFetcher(
     @staticmethod
     def transform_data(
         query: EconDbPortVolumeQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[EconDbPortVolumeData]:
+    ) -> list[EconDbPortVolumeData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_econdb.utils.helpers import COUNTRY_MAP
@@ -114,7 +114,7 @@ class EconDbPortVolumeFetcher(
         port_codes = list(code_to_city_map)
 
         for code in port_codes:
-            new_data: List = []
+            new_data: list = []
             for k, v in res.items():
                 new_data.extend(
                     {
@@ -125,7 +125,7 @@ class EconDbPortVolumeFetcher(
                         "measure": k,
                         "value": d.get(code),
                     }
-                    for d in res[k]
+                    for d in v
                     if d.get(code)
                 )
             df = (

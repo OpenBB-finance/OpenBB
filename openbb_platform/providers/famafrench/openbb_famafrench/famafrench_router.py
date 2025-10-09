@@ -1,7 +1,7 @@
 # pylint: disable=import-outside-toplevel,unused-argument
 """Fama-French Router."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from fastapi import Query as FastAPIQuery
 from openbb_core.app.model.command_context import CommandContext
@@ -127,23 +127,23 @@ async def factors(
 )
 async def factor_choices(
     region: Annotated[
-        Optional[str],
+        str | None,
         FastAPIQuery(description="Region to get factor choices for."),
     ] = None,
     factor: Annotated[
-        Optional[str],
+        str | None,
         FastAPIQuery(
             description="Factor to get interval choices for.",
         ),
     ] = None,
     is_portfolio: Annotated[
-        Optional[bool],
+        bool | None,
         FastAPIQuery(
             description="When True, returns portfolio choices by region.",
         ),
     ] = None,
     portfolio: Annotated[
-        Optional[str],
+        str | None,
         FastAPIQuery(
             description="When supplied, returns regional choices for the portfolio.",
         ),

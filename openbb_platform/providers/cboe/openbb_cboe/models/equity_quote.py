@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,invalid-name,too-many-locals, expression-not-assigned
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
@@ -47,51 +47,51 @@ class CboeEquityQuoteData(EquityQuoteData):
         "change_percent": "price_change_percent",
     }
 
-    iv30: Optional[float] = Field(
+    iv30: float | None = Field(
         default=None, description="The 30-day implied volatility of the stock."
     )
-    iv30_change: Optional[float] = Field(
+    iv30_change: float | None = Field(
         default=None, description="Change in 30-day implied volatility of the stock."
     )
-    iv30_change_percent: Optional[float] = Field(
+    iv30_change_percent: float | None = Field(
         default=None,
         description="Change in 30-day implied volatility of the"
         + " stock as a normalized percentage value.",
     )
-    iv30_annual_high: Optional[float] = Field(
+    iv30_annual_high: float | None = Field(
         default=None, description="The 1-year high of 30-day implied volatility."
     )
-    hv30_annual_high: Optional[float] = Field(
+    hv30_annual_high: float | None = Field(
         default=None, description="The 1-year high of 30-day realized volatility."
     )
-    iv30_annual_low: Optional[float] = Field(
+    iv30_annual_low: float | None = Field(
         default=None, description="The 1-year low of 30-day implied volatility."
     )
-    hv30_annual_low: Optional[float] = Field(
+    hv30_annual_low: float | None = Field(
         default=None, description="The 1-year low of 30-dayrealized volatility."
     )
-    iv60_annual_high: Optional[float] = Field(
+    iv60_annual_high: float | None = Field(
         default=None, description="The 1-year high of 60-day implied volatility."
     )
-    hv60_annual_high: Optional[float] = Field(
+    hv60_annual_high: float | None = Field(
         default=None, description="The 1-year high of 60-day realized volatility."
     )
-    iv60_annual_low: Optional[float] = Field(
+    iv60_annual_low: float | None = Field(
         default=None, description="The 1-year low of 60-day implied volatility."
     )
-    hv60_annual_low: Optional[float] = Field(
+    hv60_annual_low: float | None = Field(
         default=None, description="The 1-year low of 60-day realized volatility."
     )
-    iv90_annual_high: Optional[float] = Field(
+    iv90_annual_high: float | None = Field(
         default=None, description="The 1-year high of 90-day implied volatility."
     )
-    hv90_annual_high: Optional[float] = Field(
+    hv90_annual_high: float | None = Field(
         default=None, description="The 1-year high of 90-day realized volatility."
     )
-    iv90_annual_low: Optional[float] = Field(
+    iv90_annual_low: float | None = Field(
         default=None, description="The 1-year low of 90-day implied volatility."
     )
-    hv90_annual_low: Optional[float] = Field(
+    hv90_annual_low: float | None = Field(
         default=None, description="The 1-year low of 90-day realized volatility."
     )
 
@@ -99,20 +99,20 @@ class CboeEquityQuoteData(EquityQuoteData):
 class CboeEquityQuoteFetcher(
     Fetcher[
         CboeEquityQuoteQueryParams,
-        List[CboeEquityQuoteData],
+        list[CboeEquityQuoteData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeEquityQuoteQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeEquityQuoteQueryParams:
         """Transform the query."""
         return CboeEquityQuoteQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeEquityQuoteQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Return the raw data from the Cboe endpoint."""
@@ -220,7 +220,7 @@ class CboeEquityQuoteFetcher(
     @staticmethod
     def transform_data(
         query: CboeEquityQuoteQueryParams, data: "DataFrame", **kwargs: Any
-    ) -> List[CboeEquityQuoteData]:
+    ) -> list[CboeEquityQuoteData]:
         """Transform the data to the standard format."""
         data = data.replace(0, None).dropna(how="all", axis=1)
         # We need to convert the percent columns to normalized values.

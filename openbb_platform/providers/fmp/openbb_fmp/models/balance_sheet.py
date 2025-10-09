@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
@@ -88,244 +88,244 @@ class FMPBalanceSheetData(BalanceSheetData):
         "net_debt": "netDebt",
     }
 
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None,
         description="The date when the filing was made.",
     )
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: datetime | None = Field(
         default=None,
         description="The date and time when the filing was accepted.",
     )
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None,
         description="The Central Index Key (CIK) assigned by the SEC, if applicable.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="The stock ticker symbol.",
     )
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         default=None,
         description="The currency in which the balance sheet was reported.",
     )
-    cash_and_cash_equivalents: Optional[int] = Field(
+    cash_and_cash_equivalents: int | None = Field(
         default=None,
         description="Cash and cash equivalents.",
     )
-    short_term_investments: Optional[int] = Field(
+    short_term_investments: int | None = Field(
         default=None,
         description="Short term investments.",
     )
-    cash_and_short_term_investments: Optional[int] = Field(
+    cash_and_short_term_investments: int | None = Field(
         default=None,
         description="Cash and short term investments.",
     )
-    accounts_receivables: Optional[int] = Field(
+    accounts_receivables: int | None = Field(
         default=None,
         description="Accounts receivables.",
     )
-    other_receivables: Optional[int] = Field(
+    other_receivables: int | None = Field(
         default=None,
         description="Other receivables.",
     )
-    net_receivables: Optional[int] = Field(
+    net_receivables: int | None = Field(
         default=None,
         description="Net receivables.",
     )
-    inventory: Optional[int] = Field(
+    inventory: int | None = Field(
         default=None,
         description="Inventory.",
     )
-    other_current_assets: Optional[int] = Field(
+    other_current_assets: int | None = Field(
         default=None,
         description="Other current assets.",
     )
-    total_current_assets: Optional[int] = Field(
+    total_current_assets: int | None = Field(
         default=None,
         description="Total current assets.",
     )
-    plant_property_equipment_net: Optional[int] = Field(
+    plant_property_equipment_net: int | None = Field(
         default=None,
         description="Plant property equipment net.",
     )
-    goodwill: Optional[int] = Field(
+    goodwill: int | None = Field(
         default=None,
         description="Goodwill.",
     )
-    intangible_assets: Optional[int] = Field(
+    intangible_assets: int | None = Field(
         default=None,
         description="Intangible assets.",
     )
-    goodwill_and_intangible_assets: Optional[int] = Field(
+    goodwill_and_intangible_assets: int | None = Field(
         default=None,
         description="Goodwill and intangible assets.",
     )
-    long_term_investments: Optional[int] = Field(
+    long_term_investments: int | None = Field(
         default=None,
         description="Long term investments.",
     )
-    tax_assets: Optional[int] = Field(
+    tax_assets: int | None = Field(
         default=None,
         description="Tax assets.",
     )
-    other_non_current_assets: Optional[int] = Field(
+    other_non_current_assets: int | None = Field(
         default=None,
         description="Other non current assets.",
     )
-    non_current_assets: Optional[int] = Field(
+    non_current_assets: int | None = Field(
         default=None,
         description="Total non current assets.",
     )
-    other_assets: Optional[int] = Field(
+    other_assets: int | None = Field(
         default=None,
         description="Other assets.",
     )
-    total_assets: Optional[int] = Field(
+    total_assets: int | None = Field(
         default=None,
         description="Total assets.",
     )
-    accounts_payable: Optional[int] = Field(
+    accounts_payable: int | None = Field(
         default=None,
         description="Accounts payable.",
     )
-    prepaid_expenses: Optional[int] = Field(
+    prepaid_expenses: int | None = Field(
         default=None,
         description="Prepaid expenses.",
     )
-    accrued_expenses: Optional[int] = Field(
+    accrued_expenses: int | None = Field(
         default=None,
         description="Accrued expenses.",
     )
-    short_term_debt: Optional[int] = Field(
+    short_term_debt: int | None = Field(
         default=None,
         description="Short term debt.",
     )
-    tax_payables: Optional[int] = Field(
+    tax_payables: int | None = Field(
         default=None,
         description="Tax payables.",
     )
-    current_deferred_revenue: Optional[int] = Field(
+    current_deferred_revenue: int | None = Field(
         default=None,
         description="Current deferred revenue.",
     )
-    other_current_liabilities: Optional[int] = Field(
+    other_current_liabilities: int | None = Field(
         default=None,
         description="Other current liabilities.",
     )
-    other_payables: Optional[int] = Field(
+    other_payables: int | None = Field(
         default=None,
         description="Other payables.",
     )
-    total_current_liabilities: Optional[int] = Field(
+    total_current_liabilities: int | None = Field(
         default=None,
         description="Total current liabilities.",
     )
-    total_payables: Optional[int] = Field(
+    total_payables: int | None = Field(
         default=None,
         description="Total payables.",
     )
-    long_term_debt: Optional[int] = Field(
+    long_term_debt: int | None = Field(
         default=None,
         description="Long term debt.",
     )
-    deferred_revenue_non_current: Optional[int] = Field(
+    deferred_revenue_non_current: int | None = Field(
         default=None,
         description="Non current deferred revenue.",
     )
-    deferred_tax_liabilities_non_current: Optional[int] = Field(
+    deferred_tax_liabilities_non_current: int | None = Field(
         default=None,
         description="Deferred tax liabilities non current.",
     )
-    other_non_current_liabilities: Optional[int] = Field(
+    other_non_current_liabilities: int | None = Field(
         default=None,
         description="Other non current liabilities.",
     )
-    total_non_current_liabilities: Optional[int] = Field(
+    total_non_current_liabilities: int | None = Field(
         default=None,
         description="Total non current liabilities.",
     )
 
-    capital_lease_obligations_current: Optional[int] = Field(
+    capital_lease_obligations_current: int | None = Field(
         default=None,
         description="Current capital lease obligations.",
     )
-    capital_lease_obligations_non_current: Optional[int] = Field(
+    capital_lease_obligations_non_current: int | None = Field(
         default=None,
         description="Non current capital lease obligations.",
     )
-    capital_lease_obligations: Optional[int] = Field(
+    capital_lease_obligations: int | None = Field(
         default=None,
         description="Capital lease obligations.",
     )
-    other_liabilities: Optional[int] = Field(
+    other_liabilities: int | None = Field(
         default=None,
         description="Other liabilities.",
     )
-    total_liabilities: Optional[int] = Field(
+    total_liabilities: int | None = Field(
         default=None,
         description="Total liabilities.",
     )
-    preferred_stock: Optional[int] = Field(
+    preferred_stock: int | None = Field(
         default=None,
         description="Preferred stock.",
     )
-    common_stock: Optional[int] = Field(
+    common_stock: int | None = Field(
         default=None,
         description="Common stock.",
     )
-    treasury_stock: Optional[int] = Field(
+    treasury_stock: int | None = Field(
         default=None,
         description="Treasury stock.",
     )
-    retained_earnings: Optional[int] = Field(
+    retained_earnings: int | None = Field(
         default=None,
         description="Retained earnings.",
     )
-    additional_paid_in_capital: Optional[int] = Field(
+    additional_paid_in_capital: int | None = Field(
         default=None,
         description="Additional paid in capital.",
     )
-    accumulated_other_comprehensive_income: Optional[int] = Field(
+    accumulated_other_comprehensive_income: int | None = Field(
         default=None,
         description="Accumulated other comprehensive income (loss).",
     )
-    other_shareholders_equity: Optional[int] = Field(
+    other_shareholders_equity: int | None = Field(
         default=None,
         description="Other shareholders equity.",
     )
-    other_total_shareholders_equity: Optional[int] = Field(
+    other_total_shareholders_equity: int | None = Field(
         default=None,
         description="Other total shareholders equity.",
     )
-    total_common_equity: Optional[int] = Field(
+    total_common_equity: int | None = Field(
         default=None,
         description="Total common equity.",
     )
-    total_equity_non_controlling_interests: Optional[int] = Field(
+    total_equity_non_controlling_interests: int | None = Field(
         default=None,
         description="Total equity non controlling interests.",
     )
-    total_liabilities_and_shareholders_equity: Optional[int] = Field(
+    total_liabilities_and_shareholders_equity: int | None = Field(
         default=None,
         description="Total liabilities and shareholders equity.",
     )
-    minority_interest: Optional[int] = Field(
+    minority_interest: int | None = Field(
         default=None,
         description="Minority interest.",
     )
-    total_liabilities_and_total_equity: Optional[int] = Field(
+    total_liabilities_and_total_equity: int | None = Field(
         default=None,
         description="Total liabilities and total equity.",
     )
-    total_investments: Optional[int] = Field(
+    total_investments: int | None = Field(
         default=None,
         description="Total investments.",
     )
-    total_debt: Optional[int] = Field(
+    total_debt: int | None = Field(
         default=None,
         description="Total debt.",
     )
-    net_debt: Optional[int] = Field(
+    net_debt: int | None = Field(
         default=None,
         description="Net debt.",
     )
@@ -347,7 +347,7 @@ class FMPBalanceSheetFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPBalanceSheetQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

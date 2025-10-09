@@ -4,7 +4,7 @@
 import re
 import warnings
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
@@ -50,16 +50,14 @@ class IntrinioEquityQuoteData(EquityQuoteData):
         "last_timestamp": "last_time",
         "volume": "market_volume",
     }
-    is_darkpool: Optional[bool] = Field(
+    is_darkpool: bool | None = Field(
         default=None, description="Whether or not the current trade is from a darkpool."
     )
-    source: Optional[str] = Field(
-        default=None, description="Source of the Intrinio data."
-    )
+    source: str | None = Field(default=None, description="Source of the Intrinio data.")
     updated_on: datetime = Field(
         description="Date and Time when the data was last updated."
     )
-    security: Optional[IntrinioSecurity] = Field(
+    security: IntrinioSecurity | None = Field(
         default=None, description="Security details related to the quote."
     )
 
@@ -95,22 +93,22 @@ class IntrinioEquityQuoteData(EquityQuoteData):
 class IntrinioEquityQuoteFetcher(
     Fetcher[
         IntrinioEquityQuoteQueryParams,
-        List[IntrinioEquityQuoteData],
+        list[IntrinioEquityQuoteData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEquityQuoteQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEquityQuoteQueryParams:
         """Transform the query params."""
         return IntrinioEquityQuoteQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioEquityQuoteQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -136,7 +134,7 @@ class IntrinioEquityQuoteFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioEquityQuoteQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioEquityQuoteData]:
+        query: IntrinioEquityQuoteQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioEquityQuoteData]:
         """Return the transformed data."""
         return [IntrinioEquityQuoteData.model_validate(d) for d in data]

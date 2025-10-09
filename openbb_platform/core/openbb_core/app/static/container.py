@@ -1,6 +1,6 @@
 """Container class."""
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -48,7 +48,7 @@ class Container:
             return obbject
         return getattr(obbject, "to_" + output_type)()
 
-    def _check_credentials(self, provider: str) -> Optional[bool]:
+    def _check_credentials(self, provider: str) -> bool | None:
         """Check required credentials are populated."""
         credentials = self._command_runner.user_settings.credentials
         if provider not in credentials.origins:
@@ -57,7 +57,7 @@ class Container:
         return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
-        self, choice: Optional[str], command: str, default_priority: tuple[str, ...]
+        self, choice: str | None, command: str, default_priority: tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution.
 
@@ -101,5 +101,5 @@ class Container:
                     tries.append((p, f"not installed, please install openbb-{p}"))
 
             msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
-            raise OpenBBError(f"Provider fallback failed.\n" f"[Providers]\n  {msg}")
+            raise OpenBBError(f"Provider fallback failed.\n[Providers]\n  {msg}")
         return choice

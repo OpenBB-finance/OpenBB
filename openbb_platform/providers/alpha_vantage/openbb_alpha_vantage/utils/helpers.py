@@ -1,7 +1,7 @@
 """Alpha Vantage Helpers Module."""
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -36,8 +36,8 @@ def extract_key_name(key):
 
 
 def filter_by_dates(
-    data: List[Dict[str, Any]], start_date: datetime, end_date: datetime
-) -> List[Dict[str, Any]]:
+    data: list[dict[str, Any]], start_date: datetime, end_date: datetime
+) -> list[dict[str, Any]]:
     """Filter the data by start and end dates."""
     return list(
         filter(

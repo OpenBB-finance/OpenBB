@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.share_statistics import (
@@ -26,7 +26,7 @@ class FMPShareStatisticsData(ShareStatisticsData):
 
     __alias_dict__ = {"url": "source"}
 
-    url: Optional[str] = Field(
+    url: str | None = Field(
         default=None,
         description="URL to the source document, if available.",
     )
@@ -54,7 +54,7 @@ class FMPShareStatisticsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPShareStatisticsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

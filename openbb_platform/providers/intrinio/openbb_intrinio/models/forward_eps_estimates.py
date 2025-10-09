@@ -4,7 +4,7 @@
 
 import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -30,21 +30,21 @@ class IntrinioForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The future fiscal year to retrieve estimates for."
         + " When no symbol and year is supplied the current calendar year is used.",
     )
-    fiscal_period: Optional[Literal["fy", "q1", "q2", "q3", "q4"]] = Field(
+    fiscal_period: Literal["fy", "q1", "q2", "q3", "q4"] | None = Field(
         default=None,
         description="The future fiscal period to retrieve estimates for.",
     )
-    calendar_year: Optional[int] = Field(
+    calendar_year: int | None = Field(
         default=None,
         description="The future calendar year to retrieve estimates for."
         + " When no symbol and year is supplied the current calendar year is used.",
     )
-    calendar_period: Optional[Literal["q1", "q2", "q3", "q4"]] = Field(
+    calendar_period: Literal["q1", "q2", "q3", "q4"] | None = Field(
         default=None,
         description="The future calendar period to retrieve estimates for.",
     )
@@ -75,24 +75,24 @@ class IntrinioForwardEpsEstimatesData(ForwardEpsEstimatesData):
         "mean_3m": "mean_90_days_ago",
     }
 
-    revisions_change_percent: Optional[float] = Field(
+    revisions_change_percent: float | None = Field(
         default=None,
         description="The earnings per share (EPS) percent change in estimate for the period.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    mean_1w: Optional[float] = Field(
+    mean_1w: float | None = Field(
         default=None,
         description="The mean estimate for the period one week ago.",
     )
-    mean_1m: Optional[float] = Field(
+    mean_1m: float | None = Field(
         default=None,
         description="The mean estimate for the period one month ago.",
     )
-    mean_2m: Optional[float] = Field(
+    mean_2m: float | None = Field(
         default=None,
         description="The mean estimate for the period two months ago.",
     )
-    mean_3m: Optional[float] = Field(
+    mean_3m: float | None = Field(
         default=None,
         description="The mean estimate for the period three months ago.",
     )
@@ -103,23 +103,21 @@ class IntrinioForwardEpsEstimatesData(ForwardEpsEstimatesData):
         check_fields=False,
     )
     @classmethod
-    def normalize_percent(
-        cls, v: Optional[Union[int, float]]
-    ) -> Optional[Union[int, float]]:
+    def normalize_percent(cls, v: int | float | None) -> int | float | None:
         """Normalize percent values."""
         return v / 100 if v else None
 
 
 class IntrinioForwardEpsEstimatesFetcher(
     Fetcher[
-        IntrinioForwardEpsEstimatesQueryParams, List[IntrinioForwardEpsEstimatesData]
+        IntrinioForwardEpsEstimatesQueryParams, list[IntrinioForwardEpsEstimatesData]
     ]
 ):
     """Intrinio Forward EPS Estimates Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioForwardEpsEstimatesQueryParams:
         """Transform the query params."""
         return IntrinioForwardEpsEstimatesQueryParams(**params)
@@ -127,9 +125,9 @@ class IntrinioForwardEpsEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioForwardEpsEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -142,12 +140,12 @@ class IntrinioForwardEpsEstimatesFetcher(
             ["symbol", "calendar_period", "fiscal_period", "limit"],
         )
 
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get the data for one symbol."""
             url = f"{BASE_URL}&identifier={symbol}&{query_str}&api_key={api_key}"
-            new_data: List[Dict] = []
+            new_data: list[dict] = []
             data = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
@@ -180,10 +178,7 @@ class IntrinioForwardEpsEstimatesFetcher(
                     next_page = data["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     data = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "estimates" in data
-                        and len(data.get("estimates")) > 0  # type: ignore
-                    ):
+                    if "estimates" in data and len(data.get("estimates")) > 0:  # type: ignore
                         results.extend(data.get("estimates"))  # type: ignore
             return results
 
@@ -199,12 +194,12 @@ class IntrinioForwardEpsEstimatesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioForwardEpsEstimatesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioForwardEpsEstimatesData]:
+    ) -> list[IntrinioForwardEpsEstimatesData]:
         """Transform the raw data into the standard format."""
         symbols = query.symbol.split(",") if query.symbol else []
-        results: List[IntrinioForwardEpsEstimatesData] = []
+        results: list[IntrinioForwardEpsEstimatesData] = []
         for item in sorted(
             data,
             key=lambda item: (  # type: ignore
@@ -216,7 +211,7 @@ class IntrinioForwardEpsEstimatesFetcher(
                 else item.get("date")
             ),
         ):
-            temp: Dict[str, Any] = {}
+            temp: dict[str, Any] = {}
             company = item.pop("company")
             if company.get("ticker") is None:
                 continue

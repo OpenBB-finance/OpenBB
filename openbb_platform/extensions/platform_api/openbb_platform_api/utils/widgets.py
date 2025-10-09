@@ -1,13 +1,12 @@
 """Utils for building the widgets.json file."""
 
 from copy import deepcopy
-from typing import Union
 
 
 def deep_merge_configs(
     base: dict,
     update: dict,
-    match_keys: Union[str, tuple, list, None] = None,
+    match_keys: str | tuple | list | None = None,
 ) -> dict:
     """Deep merge two nested dictionaries."""
 
@@ -172,7 +171,6 @@ def modify_query_schema(query_schema: list[dict], provider_value: str):
             provider_value_widget_config
             and provider_value in provider_value_widget_config
         ):
-
             if provider_value_widget_config[provider_value].get("exclude"):
                 continue
 
@@ -343,7 +341,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             providers = ["custom"]
 
         for provider in providers:
-
             columns_defs = (
                 data_schema_to_columns_defs(openapi, widget_id, provider, route)
                 if widget_config_dict.get("type")
@@ -411,7 +408,8 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                             openapi, post_body_source.get("operationId"), route, _param
                         )
                         modified_post_params = modify_query_schema(
-                            post_params, provider  # type: ignore
+                            post_params,
+                            provider,  # type: ignore
                         )
 
                         if has_form_endpoint:
@@ -458,11 +456,11 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                         form_endpoint_path if has_form_endpoint else route,
                     )
                     modified_post_params = modify_query_schema(
-                        post_params, provider  # type: ignore
+                        post_params,
+                        provider,  # type: ignore
                     )
 
                     if has_form_endpoint:
-
                         has_submit = False
                         for item in modified_post_params:
                             if item.get("type") == "button":
@@ -536,7 +534,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                     # elif route_method == "post":
                     #    modified_query_schema.extend(modified_post_params)
                     elif route_method == "post":
-
                         var_key = {}
                         # Widget Config at the model level goes first.
                         if post_config := var_schema.get("x-widget_config", {}):

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.federal_funds_rate import (
@@ -37,19 +37,19 @@ class FederalReserveFederalFundsRateData(FederalFundsRateData):
         "revision_indicator": "revisionIndicator",
     }
 
-    intraday_low: Optional[float] = Field(
+    intraday_low: float | None = Field(
         default=None,
         description="Intraday low. This field is only present for data before 2016.",
     )
-    intraday_high: Optional[float] = Field(
+    intraday_high: float | None = Field(
         default=None,
         description="Intraday high. This field is only present for data before 2016.",
     )
-    standard_deviation: Optional[float] = Field(
+    standard_deviation: float | None = Field(
         default=None,
         description="Standard deviation. This field is only present for data before 2016.",
     )
-    revision_indicator: Optional[str] = Field(
+    revision_indicator: str | None = Field(
         default=None,
         description="Indicates a revision of the data for that date.",
     )
@@ -84,14 +84,14 @@ class FederalReserveFederalFundsRateData(FederalFundsRateData):
 class FederalReserveFederalFundsRateFetcher(
     Fetcher[
         FederalReserveFederalFundsRateQueryParams,
-        List[FederalReserveFederalFundsRateData],
+        list[FederalReserveFederalFundsRateData],
     ]
 ):
     """Federal Reserve Federal Funds Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReserveFederalFundsRateQueryParams:
         """Transform query."""
         transformed_params = params.copy()
@@ -106,9 +106,9 @@ class FederalReserveFederalFundsRateFetcher(
     @staticmethod
     async def aextract_data(
         query: FederalReserveFederalFundsRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -117,7 +117,7 @@ class FederalReserveFederalFundsRateFetcher(
             "https://markets.newyorkfed.org/api/rates/unsecured/effr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"
         )
-        results: List[Dict] = []
+        results: list[dict] = []
         response = await amake_request(url, **kwargs)  # type: ignore
         if response.get("refRates"):  # type: ignore
             results = response["refRates"]  # type: ignore
@@ -128,11 +128,11 @@ class FederalReserveFederalFundsRateFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveFederalFundsRateQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FederalReserveFederalFundsRateData]:
+    ) -> list[FederalReserveFederalFundsRateData]:
         """Transform data."""
-        results: List[FederalReserveFederalFundsRateData] = []
+        results: list[FederalReserveFederalFundsRateData] = []
         for d in data.copy():
             _ = d.pop("type", None)
             _ = d.pop("footnoteId", None)

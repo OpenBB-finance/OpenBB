@@ -3,7 +3,6 @@
 # pylint: disable=R0912,R0913,R0914,R0917,R1702,W0612,W0613
 
 from functools import lru_cache
-from typing import Optional
 
 from openbb_famafrench.utils.constants import (
     BASE_URL,
@@ -19,10 +18,10 @@ from openbb_famafrench.utils.constants import (
 
 
 async def get_factor_choices(
-    region: Optional[str] = None,
-    factor: Optional[str] = None,
+    region: str | None = None,
+    factor: str | None = None,
     is_portfolio: bool = False,
-    portfolio: Optional[str] = None,
+    portfolio: str | None = None,
 ):
     """Get the list of choices for factors based on combinations of parameters.
 
@@ -76,7 +75,6 @@ async def get_factor_choices(
     region = region or ""
     mapped_region = REGIONS_MAP.get(region, "").replace("_", " ")
     if is_portfolio and region and not portfolio:
-
         portfolios = (
             [
                 {
@@ -437,9 +435,9 @@ def read_dat_file(data: str) -> list:
             line = lines[i].strip()
             # Check if this line looks like the start of data or spanner rows
             if (
-                "--" in line  # Spanner line
+                "--" in line
                 or "Firms" in line.split()
-                and any(c.isdigit() for c in lines[i + 1])
+                and any(c.isdigit() for c in lines[i + 1])  # Spanner line
                 if i + 1 < len(lines)
                 else False  # Firms header
                 or line in ["", " "]  # Empty separator
@@ -515,8 +513,8 @@ def read_dat_file(data: str) -> list:
 
 
 def get_international_portfolio_data(
-    index: Optional[str] = None,
-    country: Optional[str] = None,
+    index: str | None = None,
+    country: str | None = None,
     dividends: bool = True,
 ) -> str:
     """Download and extract the international index or country portfolio data.
@@ -686,12 +684,12 @@ def process_international_portfolio_data(tables: list, dividends: bool = True) -
 
 @lru_cache(maxsize=64)
 def get_international_portfolio(
-    index: Optional[str] = None,
-    country: Optional[str] = None,
+    index: str | None = None,
+    country: str | None = None,
     dividends: bool = True,
-    frequency: Optional[str] = None,
-    measure: Optional[str] = None,
-    all_data_items_required: Optional[bool] = None,
+    frequency: str | None = None,
+    measure: str | None = None,
+    all_data_items_required: bool | None = None,
 ) -> tuple:
     """Get the international portfolio data for a given index or country.
 
@@ -781,7 +779,7 @@ def get_international_portfolio(
 
 @lru_cache(maxsize=64)
 def get_portfolio_data(
-    dataset: str, frequency: Optional[str] = None, measure: Optional[str] = None
+    dataset: str, frequency: str | None = None, measure: str | None = None
 ) -> tuple:
     """Get US portfolio data for a given dataset.
 

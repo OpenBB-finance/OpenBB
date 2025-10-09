@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -71,13 +71,13 @@ class YFinanceIndexHistoricalData(IndexHistoricalData):
 class YFinanceIndexHistoricalFetcher(
     Fetcher[
         YFinanceIndexHistoricalQueryParams,
-        List[YFinanceIndexHistoricalData],
+        list[YFinanceIndexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceIndexHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceIndexHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -124,9 +124,9 @@ class YFinanceIndexHistoricalFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceIndexHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> list[dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_yfinance.utils.helpers import yf_download
@@ -149,6 +149,6 @@ class YFinanceIndexHistoricalFetcher(
         query: YFinanceIndexHistoricalQueryParams,
         data: dict,
         **kwargs: Any,
-    ) -> List[YFinanceIndexHistoricalData]:
+    ) -> list[YFinanceIndexHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceIndexHistoricalData.model_validate(d) for d in data]

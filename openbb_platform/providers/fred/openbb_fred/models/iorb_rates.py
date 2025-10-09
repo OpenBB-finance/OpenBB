@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.iorb_rates import (
@@ -31,18 +31,18 @@ class FREDIORBData(IORBData):
             return None
 
 
-class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, List[FREDIORBData]]):
+class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, list[FREDIORBData]]):
     """FRED IORB Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDIORBQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDIORBQueryParams:
         """Transform query."""
         return FREDIORBQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDIORBQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> Dict:
+        query: FREDIORBQueryParams, credentials: dict[str, str] | None, **kwargs: Any
+    ) -> dict:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -55,8 +55,8 @@ class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, List[FREDIORBData]]):
 
     @staticmethod
     def transform_data(
-        query: FREDIORBQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FREDIORBData]:
+        query: FREDIORBQueryParams, data: dict, **kwargs: Any
+    ) -> list[FREDIORBData]:
         """Transform data."""
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]

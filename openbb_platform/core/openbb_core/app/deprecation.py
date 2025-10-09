@@ -4,8 +4,6 @@ OpenBB-specific deprecation warnings.
 This implementation was inspired from Pydantic's specific warnings and modified to suit OpenBB's needs.
 """
 
-from typing import Optional, Tuple
-
 from openbb_core.app.version import VERSION, get_major_minor
 
 
@@ -40,15 +38,15 @@ class OpenBBDeprecationWarning(DeprecationWarning):
     # to ensure consistency and clarity in our deprecation warnings across the platform.
 
     message: str
-    since: Tuple[int, int]
-    expected_removal: Tuple[int, int]
+    since: tuple[int, int]
+    expected_removal: tuple[int, int]
 
     def __init__(
         self,
         message: str,
         *args: object,
-        since: Optional[Tuple[int, int]] = None,
-        expected_removal: Optional[Tuple[int, int]] = None,
+        since: tuple[int, int] | None = None,
+        expected_removal: tuple[int, int] | None = None,
     ) -> None:
         """Initialize the warning."""
         super().__init__(message, *args)

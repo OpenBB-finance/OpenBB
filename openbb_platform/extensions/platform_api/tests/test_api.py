@@ -64,7 +64,7 @@ def test_parse_args():
     with patch("sys.argv", ["script.py", "--help"]):
         with pytest.raises(SystemExit) as e:
             parse_args()
-        assert e.type == SystemExit
+        assert e.type is SystemExit
         assert e.value.code == 0
 
     with patch("sys.argv", ["script.py", "--key", "value"]):
@@ -109,7 +109,6 @@ def test_import_module_app():
         patch("openbb_core.app.model.credentials.CredentialsLoader.load"),
         patch("openbb_core.api.app_loader.AppLoader.add_routers"),
     ):
-
         # Mock system settings
         mock_system.return_value.system_settings.cors.allow_origins = ["*"]
         mock_system.return_value.system_settings.cors.allow_methods = ["*"]

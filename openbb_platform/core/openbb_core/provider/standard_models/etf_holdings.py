@@ -1,7 +1,5 @@
 """ETF Holdings Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -26,10 +24,10 @@ class EtfHoldingsQueryParams(QueryParams):
 class EtfHoldingsData(Data):
     """ETF Holdings Data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="Name of the asset.",
     )

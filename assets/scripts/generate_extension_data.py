@@ -3,7 +3,7 @@
 from importlib import import_module
 from json import dump
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from poetry.core.pyproject.toml import PyProjectTOML
 
@@ -21,11 +21,11 @@ def to_title(string: str) -> str:
     return " ".join(string.split("_")).title()
 
 
-def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
+def get_packages(path: Path, plugin_key: str) -> dict[str, Any]:
     """Get packages."""
     SKIP = ["tests", "__pycache__"]
     folders = [f for f in path.glob("*") if f.is_dir() and f.stem not in SKIP]
-    packages: Dict[str, Any] = {}
+    packages: dict[str, Any] = {}
     for f in folders:
         pyproject = PyProjectTOML(Path(f, "pyproject.toml"))
 
@@ -51,23 +51,19 @@ def to_camel(string: str):
     return components[0] + "".join(x.title() for x in components[1:])
 
 
-def create_item(package_name: str, obj: object, obj_attrs: List[str]) -> Dict[str, Any]:
+def create_item(package_name: str, obj: object, obj_attrs: list[str]) -> dict[str, Any]:
     """Create dictionary item from object attributes."""
-    pkg_spec = OPENBB_PLATFORM_TOML.data["tool"]["poetry"]["dependencies"].get(
-        package_name
-    )
+    pkg_spec = OPENBB_PLATFORM_TOML.data["tool"]["poetry"]["dependencies"].get(package_name)
     optional = pkg_spec.get("optional", False) if isinstance(pkg_spec, dict) else False
     item = {"packageName": package_name, "optional": optional}
-    item.update(
-        {to_camel(a): getattr(obj, a) for a in obj_attrs if getattr(obj, a) is not None}
-    )
+    item.update({to_camel(a): getattr(obj, a) for a in obj_attrs if getattr(obj, a) is not None})
     return item
 
 
 def generate_provider_extensions() -> None:
     """Generate providers_extensions.json."""
     packages = get_packages(PROVIDERS_PATH, "openbb_provider_extension")
-    data: List[Dict[str, Any]] = []
+    data: list[dict[str, Any]] = []
     obj_attrs = [
         "repr_name",
         "description",
@@ -91,7 +87,7 @@ def generate_provider_extensions() -> None:
 def generate_router_extensions() -> None:
     """Generate router_extensions.json."""
     packages = get_packages(EXTENSIONS_PATH, "openbb_core_extension")
-    data: List[Dict[str, Any]] = []
+    data: list[dict[str, Any]] = []
     obj_attrs = ["description"]
     for pkg_name, details in sorted(packages.items()):
         plugin = details.get("plugin", "")
@@ -107,7 +103,7 @@ def generate_router_extensions() -> None:
 def generate_obbject_extensions() -> None:
     """Generate obbject_extensions.json."""
     packages = get_packages(OBBJECT_EXTENSIONS_PATH, "openbb_obbject_extension")
-    data: List[Dict[str, Any]] = []
+    data: list[dict[str, Any]] = []
     obj_attrs = ["description"]
     for pkg_name, details in sorted(packages.items()):
         plugin = details.get("plugin", "")

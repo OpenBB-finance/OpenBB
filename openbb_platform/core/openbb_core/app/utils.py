@@ -3,7 +3,7 @@
 import ast
 import json
 from datetime import time
-from typing import TYPE_CHECKING, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
@@ -18,8 +18,8 @@ if TYPE_CHECKING:
 
 
 def basemodel_to_df(
-    data: Union[List[Data], Data],
-    index: Optional[str] = None,
+    data: list[Data] | Data,
+    index: str | None = None,
 ) -> "DataFrame":
     """Convert list of BaseModel to a Pandas DataFrame."""
     # pylint: disable=import-outside-toplevel
@@ -60,7 +60,7 @@ def basemodel_to_df(
 
 def df_to_basemodel(
     df: Union["DataFrame", "Series"], index: bool = False
-) -> List[Data]:
+) -> list[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
     # pylint: disable=import-outside-toplevel
     from pandas import MultiIndex, Series, to_datetime
@@ -89,7 +89,7 @@ def df_to_basemodel(
     ]
 
 
-def list_to_basemodel(data_list: List) -> List[Data]:
+def list_to_basemodel(data_list: list) -> list[Data]:
     """Convert a list to a list of BaseModel."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, Series
@@ -107,7 +107,7 @@ def list_to_basemodel(data_list: List) -> List[Data]:
     return base_models
 
 
-def dict_to_basemodel(data_dict: Dict) -> Data:
+def dict_to_basemodel(data_dict: dict) -> Data:
     """Convert a dictionary to BaseModel."""
     try:
         return Data(**data_dict)
@@ -117,7 +117,7 @@ def dict_to_basemodel(data_dict: Dict) -> Data:
         ) from e
 
 
-def ndarray_to_basemodel(array: "ndarray") -> List[Data]:
+def ndarray_to_basemodel(array: "ndarray") -> list[Data]:
     """Convert a NumPy array to list of BaseModel."""
     # Assuming a 2D array where rows are records
     if array.ndim != 2:
@@ -127,7 +127,7 @@ def ndarray_to_basemodel(array: "ndarray") -> List[Data]:
     ]
 
 
-def convert_to_basemodel(data) -> Union[Data, List[Data]]:
+def convert_to_basemodel(data) -> Data | list[Data]:
     """Dispatch function to convert different types to BaseModel."""
     # pylint: disable=import-outside-toplevel
     from numpy import ndarray
@@ -156,7 +156,7 @@ def get_target_column(df: "DataFrame", target: str) -> "Series":
     return df[target]
 
 
-def get_target_columns(df: "DataFrame", target_columns: List[str]) -> "DataFrame":
+def get_target_columns(df: "DataFrame", target_columns: list[str]) -> "DataFrame":
     """Get target columns from time series data."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
@@ -186,9 +186,7 @@ def get_user_cache_directory() -> str:
     return cache_dir
 
 
-def check_single_item(
-    value: Optional[str], message: Optional[str] = None
-) -> Optional[str]:
+def check_single_item(value: str | None, message: str | None = None) -> str | None:
     """Check that string contains a single item."""
     if value and isinstance(value, str) and ("," in value or ";" in value):
         raise OpenBBError(message if message else "multiple items not allowed")

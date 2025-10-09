@@ -1,10 +1,11 @@
 """This module contains functions to build the choice map for the controllers."""
 
 from argparse import SUPPRESS, ArgumentParser
+from collections.abc import Callable
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
-from typing import Callable, List, Literal, Tuple
+from typing import Literal
 from unittest.mock import patch
 
 from openbb_cli.controllers.utils import (
@@ -20,10 +21,8 @@ session = Session()
 def __mock_parse_known_args_and_warn(
     controller,  # pylint: disable=unused-argument
     parser: ArgumentParser,
-    other_args: List[str],
-    export_allowed: Literal[
-        "no_export", "raw_data_only", "figures_only", "raw_data_and_figures"
-    ] = "no_export",
+    other_args: list[str],
+    export_allowed: Literal["no_export", "raw_data_only", "figures_only", "raw_data_and_figures"] = "no_export",
     raw: bool = False,
     limit: int = 0,
 ) -> None:
@@ -47,9 +46,7 @@ def __mock_parse_known_args_and_warn(
     """
     _ = other_args
 
-    parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
-    )
+    parser.add_argument("-h", "--help", action="store_true", help="show this help message")
 
     if export_allowed != "no_export":
         choices_export = []
@@ -63,9 +60,7 @@ def __mock_parse_known_args_and_warn(
             help_export = "Export figure into png or jpg."
         else:
             choices_export = ["csv", "json", "xlsx", "png", "jpg"]
-            help_export = (
-                "Export raw data into csv, json, xlsx and figure into png or jpg."
-            )
+            help_export = "Export raw data into csv, json, xlsx and figure into png or jpg."
 
         parser.add_argument(
             "--export",
@@ -110,7 +105,7 @@ def __mock_parse_known_args_and_warn(
     )
 
 
-def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> Tuple:
+def __mock_parse_simple_args(parser: ArgumentParser, other_args: list[str]) -> tuple:
     """Add arguments.
 
     Add the arguments that would have normally added by:
@@ -123,9 +118,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> T
     other_args: List[str]
         List of arguments to parse
     """
-    parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
-    )
+    parser.add_argument("-h", "--help", action="store_true", help="show this help message")
     _ = other_args
     return None, None
 
@@ -145,9 +138,7 @@ def __get_command_func(controller, command: str):
     Callable: Command function.
     """
     if command not in controller.CHOICES_COMMANDS:
-        raise AttributeError(
-            f"The following command is not inside `CHOICES_COMMANDS` : '{command}'"
-        )
+        raise AttributeError(f"The following command is not inside `CHOICES_COMMANDS` : '{command}'")
 
     command = f"call_{command}"
     command_func = getattr(controller, command)
@@ -177,9 +168,7 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
     """
     co_names = command_func.__code__.co_names
 
-    return bool(
-        "parse_simple_args" in co_names or "parse_known_args_and_warn" in co_names
-    )
+    return bool("parse_simple_args" in co_names or "parse_known_args_and_warn" in co_names)
 
 
 @contextmanager
@@ -280,9 +269,7 @@ def _get_argument_parser(
             call_count += patched_function.call_count
             if patched_function.call_count == 1:
                 args, kwargs = patched_function.call_args
-                argument_parser = (
-                    kwargs["parser"] if kwargs.get("parser", None) else args[0]
-                )
+                argument_parser = kwargs["parser"] if kwargs.get("parser", None) else args[0]
 
         if call_count != 1:
             raise AssertionError(
@@ -332,13 +319,9 @@ def build_controller_choice_map(controller) -> dict:
                 controller=controller,
                 command=command,
             )
-            controller_choice_map[command] = _build_command_choice_map(
-                argument_parser=argument_parser
-            )
+            controller_choice_map[command] = _build_command_choice_map(argument_parser=argument_parser)
         except Exception as exception:
             if session.settings.DEBUG_MODE:
-                raise Exception(
-                    f"On command : `{command}`.\n{str(exception)}"
-                ) from exception
+                raise Exception(f"On command : `{command}`.\n{str(exception)}") from exception
 
     return controller_choice_map

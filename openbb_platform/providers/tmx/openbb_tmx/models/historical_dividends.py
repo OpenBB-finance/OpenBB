@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_dividends import (
@@ -26,37 +26,37 @@ class TmxHistoricalDividendsData(HistoricalDividendsData):
         "payment_date": "payableDate",
         "declaration_date": "declarationDate",
     }
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None, description="The currency the dividend is paid in."
     )
-    decalaration_date: Optional[dateType] = Field(
+    decalaration_date: dateType | None = Field(
         default=None, description="The date of the announcement."
     )
-    record_date: Optional[dateType] = Field(
+    record_date: dateType | None = Field(
         default=None,
         description="The record date of ownership for rights to the dividend.",
     )
-    payment_date: Optional[dateType] = Field(
+    payment_date: dateType | None = Field(
         default=None, description="The date the dividend is paid."
     )
 
 
 class TmxHistoricalDividendsFetcher(
-    Fetcher[TmxHistoricalDividendsQueryParams, List[TmxHistoricalDividendsData]]
+    Fetcher[TmxHistoricalDividendsQueryParams, list[TmxHistoricalDividendsData]]
 ):
     """TMX Historical Dividends Fetcher"""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxHistoricalDividendsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxHistoricalDividendsQueryParams:
         """Transform the query."""
         return TmxHistoricalDividendsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxHistoricalDividendsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
@@ -104,8 +104,8 @@ class TmxHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(
         query: TmxHistoricalDividendsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxHistoricalDividendsData]:
+    ) -> list[TmxHistoricalDividendsData]:
         """Return the transformed data."""
         return [TmxHistoricalDividendsData.model_validate(d) for d in data]

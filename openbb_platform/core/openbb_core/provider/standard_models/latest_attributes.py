@@ -1,7 +1,5 @@
 """Latest Attributes Standard Model."""
 
-from typing import List, Optional, Set, Union
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -19,7 +17,7 @@ class LatestAttributesQueryParams(QueryParams):
 
     @field_validator("tag", mode="before", check_fields=False)
     @classmethod
-    def multiple_tags(cls, v: Union[str, List[str], Set[str]]):
+    def multiple_tags(cls, v: str | list[str] | set[str]):
         """Accept a comma-separated string or list of tags."""
         if isinstance(v, str):
             return v.lower()
@@ -36,9 +34,7 @@ class LatestAttributesData(Data):
     """Latest Attributes Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol"))
-    tag: Optional[str] = Field(
-        default=None, description="Tag name for the fetched data."
-    )
-    value: Optional[Union[str, float]] = Field(
+    tag: str | None = Field(default=None, description="Tag name for the fetched data.")
+    value: str | float | None = Field(
         default=None, description="The value of the data."
     )

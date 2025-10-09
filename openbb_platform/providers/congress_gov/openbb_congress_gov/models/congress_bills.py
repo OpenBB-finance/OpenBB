@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_congress_gov.utils.constants import (
     BillTypes,
@@ -47,7 +47,7 @@ class CongressBillsQueryParams(QueryParams):
             },
         },
     }
-    congress: Optional[int] = Field(
+    congress: int | None = Field(
         default=None,
         description="Congress number (e.g., 118 for the 118th Congress)."
         + " The 103rd Congress started in 1993,"
@@ -55,29 +55,29 @@ class CongressBillsQueryParams(QueryParams):
         + " Each Congress spans two years,"
         + " starting in odd-numbered years.",
     )
-    bill_type: Optional[str] = Field(
+    bill_type: str | None = Field(
         default=None,
         description=bill_type_docstring,
         examples=["hr", "s", "hjres", "sjres", "hconres", "sconres", "hres", "sres"],
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", "")
         + " Filters bills by the last updated date.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", "")
         + " Filters bills by the last updated date.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " When None, default sets to 100 (max 250)."
         + " Set to 0 for no limit (must be used with 'bill_type' and 'congress')."
         + " Setting to 0 will nullify the start_date, end_date, and offset parameters.",
     )
-    offset: Optional[int] = Field(
+    offset: int | None = Field(
         default=None, description="The starting record returned. 0 is the first record."
     )
     sort_by: Literal["asc", "desc"] = Field(
@@ -138,7 +138,7 @@ class CongressBillsData(Data):
         }
     )
     update_date: dateType = Field(description="The date the bill was last updated.")
-    latest_action_date: Optional[dateType] = Field(
+    latest_action_date: dateType | None = Field(
         default=None, description="The date of the latest action on the bill."
     )
     bill_url: str = Field(
@@ -181,10 +181,10 @@ class CongressBillsData(Data):
         description="The type of bill (e.g., HR, S).",
     )
     title: str = Field(description="The title of the bill.")
-    latest_action: Optional[str] = Field(
+    latest_action: str | None = Field(
         default=None, description="Latest action information for the bill."
     )
-    update_date_including_text: Optional[datetime] = Field(
+    update_date_including_text: datetime | None = Field(
         default=None,
         description="The date and time the bill text was last updated.",
         json_schema_extra={"x-widget_config": {"label": "Text Update Date"}},
@@ -207,7 +207,7 @@ class CongressBillsFetcher(
     @staticmethod
     async def aextract_data(
         query: CongressBillsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract data from the Congress API."""
@@ -300,10 +300,10 @@ class CongressBillsFetcher(
             if isinstance(response, dict) and (error := response.get("error", {})):
                 if "API_KEY" in error.get("code", ""):
                     raise UnauthorizedError(
-                        f"{error.get('code', '' )} -> {error.get('message', '')}"
+                        f"{error.get('code', '')} -> {error.get('message', '')}"
                     )
                 raise OpenBBError(
-                    f"{error.get('code', '' )} -> {error.get('message', '')}"
+                    f"{error.get('code', '')} -> {error.get('message', '')}"
                 )
 
         except Exception as e:

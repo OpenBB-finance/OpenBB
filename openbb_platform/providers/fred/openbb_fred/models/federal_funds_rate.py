@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,9 +30,9 @@ EFFR_SERIES_IDS = {
 class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
     """FRED Federal Funds Rate Query."""
 
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -46,8 +46,8 @@ class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -83,7 +83,7 @@ class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -93,9 +93,9 @@ class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -124,12 +124,12 @@ class FredFederalFundsRateData(FederalFundsRateData):
 
 
 class FredFederalFundsRateFetcher(
-    Fetcher[FredFederalFundsRateQueryParams, List[FredFederalFundsRateData]]
+    Fetcher[FredFederalFundsRateQueryParams, list[FredFederalFundsRateData]]
 ):
     """FRED Federal Funds Rate Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredFederalFundsRateQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredFederalFundsRateQueryParams:
         """Transform query."""
         transformed_params = params.copy()
         now = datetime.now().date()
@@ -146,9 +146,9 @@ class FredFederalFundsRateFetcher(
     @staticmethod
     async def aextract_data(
         query: FredFederalFundsRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the raw data."""
         ids = (
             "DFF"
@@ -177,8 +177,8 @@ class FredFederalFundsRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredFederalFundsRateQueryParams, data: Dict, **kwargs: Any
-    ) -> AnnotatedResult[List[FredFederalFundsRateData]]:
+        query: FredFederalFundsRateQueryParams, data: dict, **kwargs: Any
+    ) -> AnnotatedResult[list[FredFederalFundsRateData]]:
         """Transform and validate the data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime

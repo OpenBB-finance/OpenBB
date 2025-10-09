@@ -3,7 +3,7 @@
 import argparse
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import List, Literal, Optional, get_origin
+from typing import Literal, get_origin
 
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
@@ -30,11 +30,11 @@ class SettingsController(BaseController):
         )
         if v.json_schema_extra
     }
-    CHOICES_COMMANDS: List[str] = list(_COMMANDS.keys())
+    CHOICES_COMMANDS: list[str] = list(_COMMANDS.keys())
     PATH = "/settings/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: Optional[List[str]] = None):
+    def __init__(self, queue: list[str] | None = None):
         """Initialize the Constructor."""
         super().__init__(queue)
         for cmd, field in self._COMMANDS.items():
@@ -66,12 +66,10 @@ class SettingsController(BaseController):
                 )
         session.console.print(text=mt.menu_text, menu="Settings")
 
-    def _generate_command(
-        self, cmd_name: str, field: dict, action_type: Literal["toggle", "set"]
-    ):
+    def _generate_command(self, cmd_name: str, field: dict, action_type: Literal["toggle", "set"]):
         """Generate command call."""
 
-        def _toggle(self, other_args: List[str], field=field) -> None:
+        def _toggle(self, other_args: list[str], field=field) -> None:
             """Toggle setting value."""
             field_name = field["field_name"]
             parser = argparse.ArgumentParser(
@@ -82,11 +80,9 @@ class SettingsController(BaseController):
             )
             ns_parser, _ = self.parse_simple_args(parser, other_args)
             if ns_parser:
-                session.settings.set_item(
-                    field_name, not getattr(session.settings, field_name)
-                )
+                session.settings.set_item(field_name, not getattr(session.settings, field_name))
 
-        def _set(self, other_args: List[str], field=field) -> None:
+        def _set(self, other_args: list[str], field=field) -> None:
             """Set preference value."""
             field_name = field["field_name"]
             annotation = field["annotation"]
@@ -120,13 +116,9 @@ class SettingsController(BaseController):
                     if command == "console_style":
                         session.style.apply(ns_parser.value)
                     session.settings.set_item(field_name, ns_parser.value)
-                    session.console.print(
-                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
-                    )
+                    session.console.print(f"[info]Current value:[/info] {getattr(session.settings, field_name)}")
                 elif not other_args:
-                    session.console.print(
-                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
-                    )
+                    session.console.print(f"[info]Current value:[/info] {getattr(session.settings, field_name)}")
 
         action = None
         if action_type == "toggle":
@@ -136,7 +128,5 @@ class SettingsController(BaseController):
         else:
             raise ValueError(f"Action type '{action_type}' not allowed.")
 
-        bound_method = update_wrapper(
-            wrapper=partial(MethodType(action, self), field=field), wrapped=action
-        )
+        bound_method = update_wrapper(wrapper=partial(MethodType(action, self), field=field), wrapped=action)
         setattr(self, f"call_{cmd_name}", bound_method)

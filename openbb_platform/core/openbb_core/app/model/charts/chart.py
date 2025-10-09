@@ -1,6 +1,6 @@
 """OpenBB Core Chart model."""
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -8,15 +8,15 @@ from pydantic import BaseModel, ConfigDict, Field
 class Chart(BaseModel):
     """Model for Chart."""
 
-    content: Optional[Dict[str, Any]] = Field(
+    content: dict[str, Any] | None = Field(
         default=None,
         description="Raw textual representation of the chart.",
     )
-    format: Optional[str] = Field(
+    format: str | None = Field(
         default=None,
         description="Complementary attribute to the `content` attribute. It specifies the format of the chart.",
     )
-    fig: Optional[Any] = Field(
+    fig: Any | None = Field(
         default=None,
         description="The figure object.",
         json_schema_extra={"exclude_from_api": True},

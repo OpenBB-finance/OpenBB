@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -27,10 +27,10 @@ class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
     }
     __json_schema_extra__ = {"source": {"multiple_items_allowed": True}}
 
-    offset: Optional[int] = Field(
+    offset: int | None = Field(
         default=0, description="Page offset, used in conjunction with limit."
     )
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
 
@@ -46,13 +46,13 @@ class TiingoWorldNewsData(WorldNewsData):
         "site": "source",
     }
 
-    symbols: Optional[str] = Field(
+    symbols: str | None = Field(
         default=None,
         description="Ticker tagged in the fetched news.",
     )
     article_id: int = Field(description="Unique ID of the news article.")
     site: str = Field(description="News source.")
-    tags: Optional[str] = Field(
+    tags: str | None = Field(
         default=None,
         description="Tags associated with the news article.",
     )
@@ -74,22 +74,22 @@ class TiingoWorldNewsData(WorldNewsData):
 class TiingoWorldNewsFetcher(
     Fetcher[
         TiingoWorldNewsQueryParams,
-        List[TiingoWorldNewsData],
+        list[TiingoWorldNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TiingoWorldNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TiingoWorldNewsQueryParams:
         """Transform the query params."""
         return TiingoWorldNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TiingoWorldNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the tiingo endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -136,8 +136,8 @@ class TiingoWorldNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TiingoWorldNewsData]:
+        query: TiingoWorldNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[TiingoWorldNewsData]:
         """Return the transformed data."""
         return [
             TiingoWorldNewsData.model_validate(d)

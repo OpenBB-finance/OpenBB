@@ -1,7 +1,5 @@
 """Provider Abstract Class."""
 
-from typing import Dict, List, Optional, Type
-
 from openbb_core.provider.abstract.fetcher import Fetcher
 
 
@@ -13,12 +11,12 @@ class Provider:
         self,
         name: str,
         description: str,
-        website: Optional[str] = None,
-        credentials: Optional[List[str]] = None,
-        fetcher_dict: Optional[Dict[str, Type[Fetcher]]] = None,
-        repr_name: Optional[str] = None,
-        deprecated_credentials: Optional[Dict[str, Optional[str]]] = None,
-        instructions: Optional[str] = None,
+        website: str | None = None,
+        credentials: list[str] | None = None,
+        fetcher_dict: dict[str, type[Fetcher]] | None = None,
+        repr_name: str | None = None,
+        deprecated_credentials: dict[str, str | None] | None = None,
+        instructions: str | None = None,
     ) -> None:
         """Initialize the provider.
 
@@ -46,7 +44,7 @@ class Provider:
         self.website = website
         self.fetcher_dict = fetcher_dict or {}
         if credentials is None:
-            self.credentials: List = []
+            self.credentials: list = []
         else:
             self.credentials = []
             for c in credentials:

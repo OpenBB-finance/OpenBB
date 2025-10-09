@@ -1,8 +1,8 @@
 """Tool registry for managing MCP tools and tool discovery."""
 
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Mapping
 
 from fastmcp.server.openapi import OpenAPITool
 

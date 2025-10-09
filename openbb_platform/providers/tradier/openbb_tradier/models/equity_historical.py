@@ -3,7 +3,7 @@
 # pylint: disable = unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -43,18 +43,18 @@ class TradierEquityHistoricalData(EquityHistoricalData):
 
     __alias_dict__ = {"date": "timestamp", "last_price": "price"}
 
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None, description="The last price of the equity."
     )
 
 
 class TradierEquityHistoricalFetcher(
-    Fetcher[TradierEquityHistoricalQueryParams, List[TradierEquityHistoricalData]]
+    Fetcher[TradierEquityHistoricalQueryParams, list[TradierEquityHistoricalData]]
 ):
     """Tradier Equity Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TradierEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> TradierEquityHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -71,9 +71,7 @@ class TradierEquityHistoricalFetcher(
                 "5m": 55,
                 "15m": 55,
             }
-            params["start_date"] = (
-                datetime.now() - timedelta(days=interval_dict[params["interval"]])
-            ).strftime(  # type: ignore
+            params["start_date"] = (datetime.now() - timedelta(days=interval_dict[params["interval"]])).strftime(  # type: ignore
                 "%Y-%m-%d"
             )
             params["end_date"] = datetime.now().strftime("%Y-%m-%d")
@@ -83,9 +81,9 @@ class TradierEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: TradierEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tradier endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -180,9 +178,9 @@ class TradierEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: TradierEquityHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TradierEquityHistoricalData]:
+    ) -> list[TradierEquityHistoricalData]:
         """Transform and validate the data."""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -363,7 +363,7 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
         },
     }
 
-    topic: Union[NyManufacturingOutlookChoices, str] = Field(
+    topic: NyManufacturingOutlookChoices | str = Field(
         default="new_orders",
         description="The topic for the survey response.",
     )
@@ -371,11 +371,11 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
         default=False,
         description="Whether the data is seasonally adjusted, default is False",
     )
-    frequency: Optional[Literal["quarter", "annual"]] = Field(
+    frequency: Literal["quarter", "annual"] | None = Field(
         default=None,
         description="Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default=None,
         description="""A key that indicates the aggregation method used for frequency aggregation.
         avg = Average
@@ -383,9 +383,9 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
         eop = End of Period
         """,
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         None = No transformation
@@ -447,7 +447,7 @@ class FredManufacturingOutlookNYFetcher(
     @staticmethod
     async def aextract_data(
         query: FredManufacturingOutlookNYQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Fetch data."""

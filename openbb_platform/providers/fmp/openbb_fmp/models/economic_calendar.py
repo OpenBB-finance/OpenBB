@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -36,11 +36,11 @@ class FMPEconomicCalendarData(EconomicCalendarData):
         "change_percent": "changePercentage",
     }
 
-    change: Optional[float] = Field(
+    change: float | None = Field(
         description="Value change since previous.",
         default=None,
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         description="Percentage change since previous.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -86,7 +86,7 @@ class FMPEconomicCalendarFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEconomicCalendarQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the data from the FMP endpoint."""

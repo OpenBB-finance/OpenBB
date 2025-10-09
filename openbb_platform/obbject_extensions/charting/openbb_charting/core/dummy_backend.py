@@ -2,7 +2,6 @@
 
 import asyncio
 from queue import Queue
-from typing import List
 
 import dotenv
 from openbb_core.app.constants import OPENBB_DIRECTORY
@@ -16,8 +15,8 @@ class DummyBackend:
     __version__ = "0.0.0"
 
     max_retries = 0
-    outgoing: List[str] = []
-    init_engine: List[str] = []
+    outgoing: list[str] = []
+    init_engine: list[str] = []
     daemon = True
     debug = False
     shell = False

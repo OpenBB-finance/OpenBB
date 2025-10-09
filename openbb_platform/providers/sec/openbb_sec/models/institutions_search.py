@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,7 +16,7 @@ class SecInstitutionsSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: Optional[bool] = Field(
+    use_cache: bool | None = Field(
         default=True,
         description="Whether or not to use cache.",
     )
@@ -30,11 +30,11 @@ class SecInstitutionsSearchData(Data):
         "cik": "CIK Number",
     }
 
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the institution.",
     )
-    cik: Optional[Union[str, int]] = Field(
+    cik: str | int | None = Field(
         default=None,
         description="Central Index Key (CIK)",
     )
@@ -43,22 +43,22 @@ class SecInstitutionsSearchData(Data):
 class SecInstitutionsSearchFetcher(
     Fetcher[
         SecInstitutionsSearchQueryParams,
-        List[SecInstitutionsSearchData],
+        list[SecInstitutionsSearchData],
     ]
 ):
     """SEC Institutions Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecInstitutionsSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecInstitutionsSearchQueryParams:
         """Transform the query."""
         return SecInstitutionsSearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecInstitutionsSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import get_all_ciks
@@ -69,7 +69,7 @@ class SecInstitutionsSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecInstitutionsSearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[SecInstitutionsSearchData]:
+        query: SecInstitutionsSearchQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[SecInstitutionsSearchData]:
         """Transform the data to the standard format."""
         return [SecInstitutionsSearchData.model_validate(d) for d in data]

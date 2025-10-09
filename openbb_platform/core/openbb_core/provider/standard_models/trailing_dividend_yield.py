@@ -1,7 +1,6 @@
 """Trailing Dividend Yield Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,10 +15,9 @@ class TrailingDivYieldQueryParams(QueryParams):
     """Trailing Dividend Yield Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=252,
-        description=f"{QUERY_DESCRIPTIONS.get('limit', '')}"
-        " Default is 252, the number of trading days in a year.",
+        description=f"{QUERY_DESCRIPTIONS.get('limit', '')} Default is 252, the number of trading days in a year.",
     )
 
 

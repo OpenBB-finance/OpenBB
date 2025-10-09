@@ -1,7 +1,5 @@
 """ETF Equity Exposure Standard Model."""
 
-from typing import Optional, Union
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
@@ -29,16 +27,16 @@ class EtfEquityExposureData(Data):
     etf_symbol: str = Field(
         description="The symbol of the ETF with exposure to the requested equity."
     )
-    weight: Optional[float] = Field(
+    weight: float | None = Field(
         default=None,
         description="The weight of the equity in the ETF, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    market_value: Optional[Union[int, float]] = Field(
+    market_value: int | float | None = Field(
         default=None,
         description="The market value of the equity position in the ETF.",
     )
-    shares: Optional[Union[int, float]] = Field(
+    shares: int | float | None = Field(
         default=None,
         description="Number of reported shares controlled by the ETF.",
     )

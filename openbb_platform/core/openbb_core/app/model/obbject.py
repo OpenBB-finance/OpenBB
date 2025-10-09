@@ -2,20 +2,14 @@
 
 # pylint: disable=too-many-branches, too-many-locals, too-many-statements
 
-from collections.abc import Hashable
+from collections.abc import Callable, Hashable
 from typing import (
     TYPE_CHECKING,
     Any,
-    Callable,
     ClassVar,
-    Dict,
     Generic,
-    List,
     Literal,
-    Optional,
-    Set,
     TypeVar,
-    Union,
 )
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -42,37 +36,37 @@ T = TypeVar("T")
 class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
 
-    accessors: ClassVar[Set[str]] = set()
-    _user_settings: ClassVar[Optional[BaseModel]] = None
-    _system_settings: ClassVar[Optional[BaseModel]] = None
+    accessors: ClassVar[set[str]] = set()
+    _user_settings: ClassVar[BaseModel | None] = None
+    _system_settings: ClassVar[BaseModel | None] = None
 
-    results: Optional[T] = Field(
+    results: T | None = Field(
         default=None,
         description="Serializable results.",
     )
-    provider: Optional[str] = Field(  # type: ignore
+    provider: str | None = Field(  # type: ignore
         default=None,
         description="Provider name.",
     )
-    warnings: Optional[List[Warning_]] = Field(
+    warnings: list[Warning_] | None = Field(
         default=None,
         description="List of warnings.",
     )
-    chart: Optional[Chart] = Field(
+    chart: Chart | None = Field(
         default=None,
         description="Chart object.",
     )
-    extra: Dict[str, Any] = Field(
+    extra: dict[str, Any] = Field(
         default_factory=dict,
         description="Extra info.",
     )
     _route: str = PrivateAttr(
         default=None,
     )
-    _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
+    _standard_params: dict[str, Any] | None = PrivateAttr(
         default_factory=dict,
     )
-    _extra_params: Optional[Dict[str, Any]] = PrivateAttr(
+    _extra_params: dict[str, Any] | None = PrivateAttr(
         default_factory=dict,
     )
 
@@ -86,9 +80,9 @@ class OBBject(Tagged, Generic[T]):
 
     def to_df(
         self,
-        index: Optional[Union[str, None]] = "date",
-        sort_by: Optional[str] = None,
-        ascending: Optional[bool] = None,
+        index: str | None | None = "date",
+        sort_by: str | None = None,
+        ascending: bool | None = None,
     ) -> "DataFrame":
         """Alias for `to_dataframe`.
 
@@ -126,9 +120,9 @@ class OBBject(Tagged, Generic[T]):
 
     def to_dataframe(  # noqa: PLR0912
         self,
-        index: Optional[Union[str, None]] = "date",
-        sort_by: Optional[str] = None,
-        ascending: Optional[bool] = None,
+        index: str | None | None = "date",
+        sort_by: str | None = None,
+        ascending: bool | None = None,
     ) -> "DataFrame":
         """Convert results field to Pandas DataFrame.
 
@@ -166,7 +160,7 @@ class OBBject(Tagged, Generic[T]):
         from pandas import DataFrame, Series, concat  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
-        def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
+        def is_list_of_basemodel(items: list[T] | T) -> bool:
             return isinstance(items, list) and all(
                 isinstance(item, BaseModel) for item in items
             )
@@ -184,9 +178,9 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                res_dict = res.model_dump(  # pylint: disable=no-member
+                res_dict = res.model_dump(
                     exclude_unset=True, exclude_none=True
-                )
+                )  # pylint: disable=no-member
                 # Model is serialized as a dict[str, list] or list[dict]
                 if (
                     (
@@ -234,11 +228,10 @@ class OBBject(Tagged, Generic[T]):
 
             # List[BaseModel]
             elif is_list_of_basemodel(res):
-                dt: Union[List[Data], Data] = res  # type: ignore
+                dt: list[Data] | Data = res  # type: ignore
                 r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None  # type: ignore
                 if r and all(
-                    prop.get("type") == "array"
-                    for prop in r.model_json_schema()["properties"].values()  # type: ignore
+                    prop.get("type") == "array" for prop in r.model_json_schema()["properties"].values()  # type: ignore
                 ):
                     sort_columns = False
                     df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))  # type: ignore
@@ -311,7 +304,7 @@ class OBBject(Tagged, Generic[T]):
         orient: Literal[
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
-    ) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+    ) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:
         """Convert results field to a dictionary using any of Pandas `to_dict` options.
 
         Parameters
@@ -329,9 +322,8 @@ class OBBject(Tagged, Generic[T]):
             orient == "list"
             and isinstance(self.results, dict)
             and all(
-                isinstance(value, dict)
-                for value in self.results.values()  # pylint: disable=no-member
-            )
+                isinstance(value, dict) for value in self.results.values()
+            )  # pylint: disable=no-member
         ):
             df = df.T
         results = df.to_dict(orient=orient)
@@ -339,7 +331,7 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
-    def to_llm(self) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+    def to_llm(self) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:
         """Convert results field to an LLM compatible output.
 
         Returns

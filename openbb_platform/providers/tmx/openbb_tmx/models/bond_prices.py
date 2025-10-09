@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,15 +30,15 @@ class TmxBondPricesQueryParams(BondReferenceQueryParams):
 
     __json_schema_extra__ = {"isin": {"multiple_items_allowed": True}}
 
-    issue_date_min: Optional[dateType] = Field(
+    issue_date_min: dateType | None = Field(
         default=None,
         description="Filter by the minimum original issue date.",
     )
-    issue_date_max: Optional[dateType] = Field(
+    issue_date_max: dateType | None = Field(
         default=None,
         description="Filter by the maximum original issue date.",
     )
-    last_traded_min: Optional[dateType] = Field(
+    last_traded_min: dateType | None = Field(
         default=None,
         description="Filter by the minimum last trade date.",
     )
@@ -66,7 +66,7 @@ class TmxBondPricesData(BondReferenceData):
         "issuer_name": "issuer",
     }
 
-    ytm: Optional[float] = Field(
+    ytm: float | None = Field(
         default=None,
         description="Yield to maturity (YTM) is the rate of return anticipated on a bond"
         + " if it is held until the maturity date. It takes into account"
@@ -75,38 +75,38 @@ class TmxBondPricesData(BondReferenceData):
         + " Values are returned as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price: Optional[float] = Field(
+    price: float | None = Field(
         default=None,
         description="The last price for the bond.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    highest_price: Optional[float] = Field(
+    highest_price: float | None = Field(
         default=None,
         description="The highest price for the bond on the last traded date.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    lowest_price: Optional[float] = Field(
+    lowest_price: float | None = Field(
         default=None,
         description="The lowest price for the bond on the last traded date.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    total_trades: Optional[int] = Field(
+    total_trades: int | None = Field(
         default=None,
         description="Total number of trades on the last traded date.",
     )
-    last_traded_date: Optional[dateType] = Field(
+    last_traded_date: dateType | None = Field(
         default=None,
         description="Last traded date of the bond.",
     )
-    maturity_date: Optional[dateType] = Field(
+    maturity_date: dateType | None = Field(
         default=None,
         description="Maturity date of the bond.",
     )
-    issue_date: Optional[dateType] = Field(
+    issue_date: dateType | None = Field(
         default=None,
         description="Issue date of the bond. This is the date when the bond first accrues interest.",
     )
-    issuer_name: Optional[str] = Field(
+    issuer_name: str | None = Field(
         default=None,
         description="Name of the issuing entity.",
     )
@@ -150,7 +150,7 @@ class TmxBondPricesFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxBondPricesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Get the raw data containing all bond data."""
@@ -187,8 +187,7 @@ class TmxBondPricesFetcher(
                 )
         else:
             data = bonds.query(
-                "bondType == 'Corp'"
-                "& maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
+                "bondType == 'Corp'& maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
             ).sort_values(by=["maturityDate"])
 
         data.loc[:, "issuer"] = data.issuer.str.strip()

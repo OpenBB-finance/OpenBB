@@ -1,1 +1,1 @@
-""" The ECB provider."""
+"""The ECB provider."""

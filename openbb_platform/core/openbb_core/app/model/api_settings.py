@@ -1,7 +1,5 @@
 """FastAPI configuration settings model."""
 
-from typing import Dict, List, Optional
-
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
@@ -10,9 +8,9 @@ class Cors(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    allow_origins: List[str] = Field(default_factory=lambda: ["*"])
-    allow_methods: List[str] = Field(default_factory=lambda: ["*"])
-    allow_headers: List[str] = Field(default_factory=lambda: ["*"])
+    allow_origins: list[str] = Field(default_factory=lambda: ["*"])
+    allow_methods: list[str] = Field(default_factory=lambda: ["*"])
+    allow_headers: list[str] = Field(default_factory=lambda: ["*"])
 
 
 class Servers(BaseModel):
@@ -38,9 +36,9 @@ class APISettings(BaseModel):
     contact_email: str = "hello@openbb.co"
     license_name: str = "AGPLv3"
     license_url: str = "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE"
-    servers: List[Servers] = Field(default_factory=lambda: [Servers()])
+    servers: list[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
-    custom_headers: Optional[Dict[str, str]] = Field(
+    custom_headers: dict[str, str] | None = Field(
         default=None, description="Custom headers and respective default value."
     )
 

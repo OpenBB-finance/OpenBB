@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Annotated, Union
+from typing import Annotated
 
 from fastapi import Body
 from openbb_core.app.model.command_context import CommandContext
@@ -709,7 +709,7 @@ async def direction_of_trade(
             },
         ),
     ],
-    response_model=Union[list, dict],
+    response_model=list | dict,
     openapi_extra={
         "widget_config": {
             "type": "multi_file_viewer",

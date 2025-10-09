@@ -3,8 +3,6 @@
 # pylint: disable=C0302,R0912
 # flake8: noqa: PLR0912
 
-from typing import Optional
-
 from openbb_core.provider.utils.helpers import to_snake_case
 
 TO_CAPS_STRINGS = [
@@ -515,7 +513,7 @@ def get_query_schema_for_widget(
     return route_params, has_chart
 
 
-def get_data_schema_for_widget(openapi_json, operation_id, route: Optional[str] = None):
+def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = None):
     """
     Get the data schema for a widget based on its operationId.
 
@@ -578,7 +576,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
     openapi_json,
     operation_id,
     provider,
-    route: Optional[str] = None,
+    route: str | None = None,
     get_widget_config: bool = False,
 ):
     """Convert data schema to column definitions for the widget."""
@@ -830,7 +828,6 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def["renderFn"] = "greenRed"
 
         if _widget_config := prop.get("x-widget_config", {}):
-
             if _widget_config.get("exclude"):
                 continue
 
@@ -843,8 +840,8 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
 def post_query_schema_for_widget(
     openapi_json,
     operation_id,
-    route: Optional[str] = None,
-    target_schema: Optional[str] = None,
+    route: str | None = None,
+    target_schema: str | None = None,
 ):
     """
     Get the POST query schema for a widget based on its operationId.

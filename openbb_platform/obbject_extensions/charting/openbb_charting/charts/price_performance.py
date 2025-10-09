@@ -1,6 +1,6 @@
 """Price performance charting implementation."""
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple, Union
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from plotly.graph_objs import Figure  # noqa
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 def price_performance(
     **kwargs,
-) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:  # noqa: PLR0912
+) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Performance Chart."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame  # noqa
@@ -22,7 +22,8 @@ def price_performance(
         data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "symbol"))  # type: ignore
     else:
         data = basemodel_to_df(
-            kwargs["obbject_item"], index=kwargs.get("index", "symbol")  # type: ignore
+            kwargs["obbject_item"],
+            index=kwargs.get("index", "symbol"),  # type: ignore
         )
 
     cols = [
@@ -67,7 +68,7 @@ def price_performance(
         limit = kwargs.pop("limit", 10)
         chart_df = chart_df.head(limit)  # type: ignore
 
-    layout_kwargs: Dict[str, Any] = kwargs.get("layout_kwargs", {})
+    layout_kwargs: dict[str, Any] = kwargs.get("layout_kwargs", {})
 
     title = (
         f"{kwargs.pop('title')}" if "title" in kwargs else "Equity Price Performance"

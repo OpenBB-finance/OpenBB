@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
@@ -50,21 +50,21 @@ class FREDYieldCurveData(YieldCurveData):
 
 
 class FREDYieldCurveFetcher(
-    Fetcher[FREDYieldCurveQueryParams, List[FREDYieldCurveData]]
+    Fetcher[FREDYieldCurveQueryParams, list[FREDYieldCurveData]]
 ):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDYieldCurveQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDYieldCurveQueryParams:
         """Transform query."""
         return FREDYieldCurveQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FREDYieldCurveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
         series_ids = ",".join(list(YIELD_CURVES[query.yield_curve_type]))
@@ -80,8 +80,8 @@ class FREDYieldCurveFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDYieldCurveQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FREDYieldCurveData]:
+        query: FREDYieldCurveQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FREDYieldCurveData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame, DatetimeIndex

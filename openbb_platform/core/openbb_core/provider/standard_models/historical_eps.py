@@ -1,7 +1,6 @@
 """Historical EPS Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -29,9 +28,9 @@ class HistoricalEpsData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    eps_actual: Optional[Union[int, float]] = Field(
+    eps_actual: int | float | None = Field(
         default=None, description="Actual EPS from the earnings date."
     )
-    eps_estimated: Optional[Union[int, float]] = Field(
+    eps_estimated: int | float | None = Field(
         default=None, description="Estimated EPS for the earnings date."
     )

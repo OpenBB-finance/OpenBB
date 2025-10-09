@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -48,7 +48,7 @@ class FederalReservePrimaryDealerFailsData(PrimaryDealerFailsData):
     """Federal Reserve Primary Dealer Fails Data."""
 
     title: str = Field(description="Title of the series' symbol.")
-    value: Union[int, float] = Field(
+    value: int | float = Field(
         description="Value of the data returned, in millions of USD if the `unit`"
         + " parameter is 'value' else a normalized percent."
     )
@@ -57,14 +57,14 @@ class FederalReservePrimaryDealerFailsData(PrimaryDealerFailsData):
 class FederalReservePrimaryDealerFailsFetcher(
     Fetcher[
         FederalReservePrimaryDealerFailsQueryParams,
-        List[FederalReservePrimaryDealerFailsData],
+        list[FederalReservePrimaryDealerFailsData],
     ]
 ):
     """Federal Reserve Primary Dealer Fails Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReservePrimaryDealerFailsQueryParams:
         """Transform the query parameters."""
         return FederalReservePrimaryDealerFailsQueryParams(**params)
@@ -72,9 +72,9 @@ class FederalReservePrimaryDealerFailsFetcher(
     @staticmethod
     async def aextract_data(
         query: FederalReservePrimaryDealerFailsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Federal Reserve endpoint."""
         # pylint: disable=import-outside-toplevel
         from datetime import datetime  # noqa
@@ -86,7 +86,6 @@ class FederalReservePrimaryDealerFailsFetcher(
             + "PDFTR-OM_PDFTD-UST_PDFTR-UST_PDFTD-USTET_PDFTR-USTET.json"
         )
         try:
-
             response = await amake_request(url, **kwargs)
             data = response.get("pd", {}).get("timeseries", [])  # type: ignore
             if query.start_date and query.start_date < datetime(2013, 4, 1).date():
@@ -113,9 +112,9 @@ class FederalReservePrimaryDealerFailsFetcher(
     @staticmethod
     def transform_data(
         query: FederalReservePrimaryDealerFailsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FederalReservePrimaryDealerFailsData]:
+    ) -> list[FederalReservePrimaryDealerFailsData]:
         """Transform the raw data into the standard format."""
         # pylint: disable=import-outside-toplevel
         from pandas import NA, DataFrame, concat, to_datetime

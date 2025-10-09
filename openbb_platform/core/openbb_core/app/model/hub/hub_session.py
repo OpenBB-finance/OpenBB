@@ -1,14 +1,12 @@
 """Model for HubSession."""
 
-from typing import Optional
-
 from pydantic import BaseModel, SecretStr, field_serializer
 
 
 class HubSession(BaseModel):
     """Model for HubSession."""
 
-    username: Optional[str] = None
+    username: str | None = None
     email: str
     primary_usage: str
     user_uuid: str

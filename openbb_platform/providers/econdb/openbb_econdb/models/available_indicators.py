@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.available_indicators import (
@@ -34,56 +34,56 @@ class EconDbAvailableIndicatorsData(AvailableIndicatorsData):
         "symbol": "short_ticker",
         "country": "entity",
     }
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="The currency, or unit, the data is based in.",
     )
-    scale: Optional[str] = Field(
+    scale: str | None = Field(
         default=None,
         description="The scale of the data.",
     )
-    multiplier: Optional[int] = Field(
+    multiplier: int | None = Field(
         description="The multiplier of the data to arrive at whole units.",
     )
     transformation: str = Field(
         description="Transformation type.",
     )
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None,
         description="The original source of the data.",
     )
-    first_date: Optional[dateType] = Field(
+    first_date: dateType | None = Field(
         default=None,
         description="The first date of the data.",
     )
-    last_date: Optional[dateType] = Field(
+    last_date: dateType | None = Field(
         default=None,
         description="The last date of the data.",
     )
-    last_insert_timestamp: Optional[datetime] = Field(
+    last_insert_timestamp: datetime | None = Field(
         default=None,
         description="The time of the last update. Data is typically reported with a lag.",
     )
 
 
 class EconDbAvailableIndicatorsFetcher(
-    Fetcher[EconDbAvailableIndicatorsQueryParams, List[EconDbAvailableIndicatorsData]]
+    Fetcher[EconDbAvailableIndicatorsQueryParams, list[EconDbAvailableIndicatorsData]]
 ):
     """EconDB Available Indicators Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbAvailableIndicatorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbAvailableIndicatorsQueryParams:
         """Transform query."""
         return EconDbAvailableIndicatorsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: EconDbAvailableIndicatorsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_econdb.utils.helpers import download_indicators
@@ -96,8 +96,8 @@ class EconDbAvailableIndicatorsFetcher(
     @staticmethod
     def transform_data(
         query: EconDbAvailableIndicatorsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[EconDbAvailableIndicatorsData]:
+    ) -> list[EconDbAvailableIndicatorsData]:
         """Transform data."""
         return [EconDbAvailableIndicatorsData.model_validate(d) for d in data]

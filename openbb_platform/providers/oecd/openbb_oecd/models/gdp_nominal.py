@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -68,7 +68,7 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import check_item
 
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_GDP:
@@ -92,12 +92,12 @@ class OECDGdpNominalData(GdpNominalData):
 
 
 class OECDGdpNominalFetcher(
-    Fetcher[OECDGdpNominalQueryParams, List[OECDGdpNominalData]]
+    Fetcher[OECDGdpNominalQueryParams, list[OECDGdpNominalData]]
 ):
     """OECD GDP Nominal Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDGdpNominalQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDGdpNominalQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -116,9 +116,9 @@ class OECDGdpNominalFetcher(
     @staticmethod
     async def aextract_data(
         query: OECDGdpNominalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -169,14 +169,10 @@ class OECDGdpNominalFetcher(
             url, timeout=30, response_callback=response_callback
         )
 
-        df = read_csv(StringIO(response)).get(  # type: ignore
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
         if df.empty:  # type: ignore
             raise EmptyDataError()
-        df = df.rename(  # type: ignore
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
+        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
 
         def apply_map(x):
             """Apply the country map."""
@@ -197,8 +193,8 @@ class OECDGdpNominalFetcher(
     @staticmethod
     def transform_data(
         query: OECDGdpNominalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[OECDGdpNominalData]:
+    ) -> list[OECDGdpNominalData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpNominalData.model_validate(d) for d in data]

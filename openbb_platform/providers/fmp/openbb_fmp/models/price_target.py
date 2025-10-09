@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
@@ -35,10 +35,10 @@ class FMPPriceTargetData(PriceTargetData):
         "news_url": "newsURL",
     }
 
-    news_title: Optional[str] = Field(
+    news_title: str | None = Field(
         default=None, description="News title of the price target."
     )
-    news_url: Optional[str] = Field(
+    news_url: str | None = Field(
         default=None, description="News URL of the price target."
     )
 
@@ -59,7 +59,7 @@ class FMPPriceTargetFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPPriceTargetQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

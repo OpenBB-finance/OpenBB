@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,7 +19,7 @@ class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=1, description="The page number to start from. Use with limit."
     )
 
@@ -40,7 +40,7 @@ class TmxCompanyNewsData(CompanyNewsData):
         "title": "headline",
     }
 
-    source: Optional[str] = Field(description="Source of the news.", default=None)
+    source: str | None = Field(description="Source of the news.", default=None)
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
@@ -54,21 +54,21 @@ class TmxCompanyNewsData(CompanyNewsData):
 
 
 class TmxCompanyNewsFetcher(
-    Fetcher[TmxCompanyNewsQueryParams, List[TmxCompanyNewsData]],
+    Fetcher[TmxCompanyNewsQueryParams, list[TmxCompanyNewsData]],
 ):
     """TMX Stock News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxCompanyNewsQueryParams:
         """Transform the query."""
         return TmxCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -78,7 +78,7 @@ class TmxCompanyNewsFetcher(
 
         user_agent = get_random_agent()
         symbols = query.symbol.split(",")  # type: ignore
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def create_task(symbol, results):
             """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
@@ -91,7 +91,7 @@ class TmxCompanyNewsFetcher(
             payload["variables"]["limit"] = query.limit
             payload["variables"]["locale"] = "en"
             url = "https://app-money.tmx.com/graphql"
-            data: Dict = {}
+            data: dict = {}
             response = await get_data_from_gql(
                 method="POST",
                 url=url,
@@ -130,7 +130,7 @@ class TmxCompanyNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TmxCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TmxCompanyNewsData]:
+        query: TmxCompanyNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[TmxCompanyNewsData]:
         """Return the transformed data."""
         return [TmxCompanyNewsData.model_validate(d) for d in data]

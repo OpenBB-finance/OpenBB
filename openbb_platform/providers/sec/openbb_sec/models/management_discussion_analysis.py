@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-branches,too-many-locals,too-many-statements,too-many-nested-blocks,too-many-boolean-expressions,too-many-lines
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -62,7 +62,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
     @staticmethod
     def transform_query(
-        params: dict[str, Any]
+        params: dict[str, Any],
     ) -> SecManagementDiscussionAnalysisQueryParams:
         """Transform the query."""
         return SecManagementDiscussionAnalysisQueryParams(**params)
@@ -70,9 +70,9 @@ class SecManagementDiscussionAnalysisFetcher(
     @staticmethod
     async def aextract_data(
         query: SecManagementDiscussionAnalysisQueryParams,
-        credentials: Optional[dict[str, Any]],
+        credentials: dict[str, Any] | None,
         **kwargs: Any,
-    ) -> dict:
+    ) -> dict:  # type: ignore[override]
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         from aiohttp_client_cache import SQLiteBackend
@@ -118,7 +118,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         if query.calendar_year is None and query.calendar_period is None:
             target_filing = (
-                filings[0]
+                filings[0]  # type: ignore
                 if not query.calendar_year and not query.calendar_period
                 else None
             )
@@ -138,12 +138,12 @@ class SecManagementDiscussionAnalysisFetcher(
                 target_filing = [
                     f
                     for f in filings
-                    if f.report_type == "10-K"
-                    and f.filing_date.year == query.calendar_year
+                    if f.report_type == "10-K"  # type: ignore
+                    and f.filing_date.year == query.calendar_year  # type: ignore
                 ]
                 if not target_filing:
                     target_filing = [
-                        f for f in filings if f.filing_date.year == query.calendar_year
+                        f for f in filings if f.filing_date.year == query.calendar_year  # type: ignore
                     ]
                 if target_filing:
                     target_filing = target_filing[0]
@@ -158,7 +158,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 ).date()
 
                 for filing in filings:
-                    if start_date < filing.filing_date < end_date:
+                    if start_date < filing.filing_date < end_date:  # type: ignore
                         target_filing = filing
                         break
 
@@ -871,7 +871,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 include_images=True,
                 include_links=False,
             )
-            new_lines = process_extracted_text(extracted_text, False)
+            new_lines = process_extracted_text(extracted_text, False)  # type: ignore
 
             if not new_lines:
                 warn("Trafilatura extraction failed, trying Inscriptis.")
@@ -1361,7 +1361,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         document = "\n".join(new_lines)
 
-        cleaned_lines = process_document(document.splitlines(), is_inscriptis)
+        cleaned_lines = process_document(document.splitlines(), is_inscriptis)  # type: ignore
 
         finished_lines: list = []
 

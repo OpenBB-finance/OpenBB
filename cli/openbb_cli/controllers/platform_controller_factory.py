@@ -1,7 +1,5 @@
 """Platform controller factory to create a platform controller."""
 
-from typing import Dict, List, Union
-
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
@@ -18,11 +16,7 @@ class PlatformControllerFactory:
             target_class=self.platform_router, reference=kwargs.get("reference", {})
         )
         self.router_name = (
-            str(type(self.platform_router))
-            .rsplit(".", maxsplit=1)[-1]
-            .replace("'>", "")
-            .replace("ROUTER_", "")
-            .lower()
+            str(type(self.platform_router)).rsplit(".", maxsplit=1)[-1].replace("'>", "").replace("ROUTER_", "").lower()
         )
         self.controller_name = f"{self.router_name.capitalize()}Controller"
 
@@ -30,11 +24,11 @@ class PlatformControllerFactory:
         """Create the platform controller."""
         ClassName = self.controller_name
         Parents = (PlatformController,)
-        Attributes: Dict[str, Union[bool, List[str]]] = {"CHOICES_GENERATION": True}
+        Attributes: dict[str, bool | list[str]] = {"CHOICES_GENERATION": True}
 
         # Menu and Command choices generation
-        choices_menus: List[str] = []
-        choices_commands: List[str] = []
+        choices_menus: list[str] = []
+        choices_commands: list[str] = []
         translators = self._translated_target.translators
         paths = self._translated_target.paths
         # menus

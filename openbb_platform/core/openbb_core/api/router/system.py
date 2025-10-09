@@ -1,9 +1,10 @@
 """System router."""
 
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from openbb_core.api.dependency.system import get_system_settings
 from openbb_core.app.model.system_settings import SystemSettings
-from typing_extensions import Annotated
 
 router = APIRouter(prefix="/system", tags=["System"])
 

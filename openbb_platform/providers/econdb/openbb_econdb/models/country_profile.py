@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -109,23 +109,23 @@ class EconDbCountryProfileData(CountryProfileData):
 
 
 class EconDbCountryProfileFetcher(
-    Fetcher[EconDbCountryProfileQueryParams, List[EconDbCountryProfileData]]
+    Fetcher[EconDbCountryProfileQueryParams, list[EconDbCountryProfileData]]
 ):
     """EconDB Country Profile Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbCountryProfileQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbCountryProfileQueryParams:
         """Transform the query parameters."""
         return EconDbCountryProfileQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: EconDbCountryProfileQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -297,9 +297,9 @@ class EconDbCountryProfileFetcher(
     @staticmethod
     def transform_data(
         query: EconDbCountryProfileQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[EconDbCountryProfileData]:
+    ) -> list[EconDbCountryProfileData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_econdb.utils.helpers import PROFILE_ORDER

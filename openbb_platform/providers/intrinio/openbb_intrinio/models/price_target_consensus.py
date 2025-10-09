@@ -4,7 +4,7 @@
 
 import asyncio
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -30,7 +30,7 @@ class IntrinioPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    industry_group_number: Optional[int] = Field(
+    industry_group_number: int | None = Field(
         default=None,
         description="The Zacks industry group number.",
     )
@@ -47,27 +47,27 @@ class IntrinioPriceTargetConsensusData(PriceTargetConsensusData):
         "target_consensus": "mean",
         "target_median": "median",
     }
-    standard_deviation: Optional[float] = Field(
+    standard_deviation: float | None = Field(
         default=None,
         description="The standard deviation of target price estimates.",
     )
-    total_anaylsts: Optional[int] = Field(
+    total_anaylsts: int | None = Field(
         default=None,
         description="The total number of target price estimates in consensus.",
     )
-    raised: Optional[int] = Field(
+    raised: int | None = Field(
         default=None,
         description="The number of analysts that have raised their target price estimates.",
     )
-    lowered: Optional[int] = Field(
+    lowered: int | None = Field(
         default=None,
         description="The number of analysts that have lowered their target price estimates.",
     )
-    most_recent_date: Optional[dateType] = Field(
+    most_recent_date: dateType | None = Field(
         default=None,
         description="The date of the most recent estimate.",
     )
-    industry_group_number: Optional[int] = Field(
+    industry_group_number: int | None = Field(
         default=None,
         description="The Zacks industry group number.",
     )
@@ -75,14 +75,14 @@ class IntrinioPriceTargetConsensusData(PriceTargetConsensusData):
 
 class IntrinioPriceTargetConsensusFetcher(
     Fetcher[
-        IntrinioPriceTargetConsensusQueryParams, List[IntrinioPriceTargetConsensusData]
+        IntrinioPriceTargetConsensusQueryParams, list[IntrinioPriceTargetConsensusData]
     ]
 ):
     """Intrinio Price Target Consensus  Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioPriceTargetConsensusQueryParams:
         """Transform the query params."""
         return IntrinioPriceTargetConsensusQueryParams(**params)
@@ -90,9 +90,9 @@ class IntrinioPriceTargetConsensusFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioPriceTargetConsensusQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -104,12 +104,12 @@ class IntrinioPriceTargetConsensusFetcher(
 
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
 
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get the data for one symbol."""
             url = f"{BASE_URL}&identifier={symbol}&{query_str}&api_key={api_key}"
-            new_data: List[Dict] = []
+            new_data: list[dict] = []
             data = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
@@ -141,10 +141,7 @@ class IntrinioPriceTargetConsensusFetcher(
                     next_page = data["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     data = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "" in data
-                        and len(data.get("target_price_consensuses")) > 0  # type: ignore
-                    ):
+                    if "" in data and len(data.get("target_price_consensuses")) > 0:  # type: ignore
                         results.extend(data.get("target_price_consensuses"))  # type: ignore
             return results
 
@@ -159,12 +156,12 @@ class IntrinioPriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioPriceTargetConsensusQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioPriceTargetConsensusData]:
+    ) -> list[IntrinioPriceTargetConsensusData]:
         """Transform the raw data into the standard format."""
         symbols = query.symbol.split(",") if query.symbol else []
-        results: List[IntrinioPriceTargetConsensusData] = []
+        results: list[IntrinioPriceTargetConsensusData] = []
         for item in sorted(  # type: ignore
             sorted(  # type: ignore
                 data,
@@ -172,9 +169,7 @@ class IntrinioPriceTargetConsensusFetcher(
                 reverse=True,
             ),
             key=lambda item: (
-                symbols.index(item.get("symbol"))  # type: ignore
-                if item.get("symbol") in symbols
-                else len(symbols)
+                symbols.index(item.get("symbol")) if item.get("symbol") in symbols else len(symbols)  # type: ignore
             ),
         ):
             _ = item.pop("company")

@@ -7,7 +7,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from dateutil.parser import parse
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -40,7 +40,7 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
         "trade_type": "activity_type",
     }
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", "")
         + " If no symbol is supplied, requests are only allowed for a single date."
         + " Use the start_date for the target date."
@@ -48,24 +48,24 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
         + " but is unclear when it actually began.",
         default=None,
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", "")
         + " If a symbol is not supplied, do not include an end date.",
         default=None,
     )
-    trade_type: Optional[Literal["block", "sweep", "large"]] = Field(
+    trade_type: Literal["block", "sweep", "large"] | None = Field(
         description="The type of unusual activity to query for.",
         default=None,
     )
-    sentiment: Optional[Literal["bullish", "bearish", "neutral"]] = Field(
+    sentiment: Literal["bullish", "bearish", "neutral"] | None = Field(
         description="The sentiment type to query for.",
         default=None,
     )
-    min_value: Optional[Union[int, float]] = Field(
+    min_value: int | float | None = Field(
         description="The inclusive minimum total value for the unusual activity.",
         default=None,
     )
-    max_value: Optional[Union[int, float]] = Field(
+    max_value: int | float | None = Field(
         description="The inclusive maximum total value for the unusual activity.",
         default=None,
     )
@@ -100,9 +100,7 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
 
         # Ensure the start date is not on a weekend.
         if params.get("start_date").weekday() > 4:  # type: ignore
-            params["start_date"] = params.get("start_date") + timedelta(
-                days=4 - params.get("start_date").weekday()
-            )  # type: ignore
+            params["start_date"] = params.get("start_date") + timedelta(days=4 - params.get("start_date").weekday())  # type: ignore
 
         # If the end date is not provided, set it to the start date.
         if params.get("end_date") is None:
@@ -128,9 +126,7 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
 
         # Ensure the end date is not on a weekend.
         if params.get("end_date").weekday() > 4:  # type: ignore
-            params["end_date"] = params.get("end_date") + timedelta(
-                days=7 - params.get("end_date").weekday()
-            )  # type: ignore
+            params["end_date"] = params.get("end_date") + timedelta(days=7 - params.get("end_date").weekday())  # type: ignore
 
         # Intrinio appears to make the end date not inclusive.
         # It doesn't want the start/end dates to be the same, set the end date to the next day.
@@ -167,14 +163,14 @@ class IntrinioOptionsUnusualData(OptionsUnusualData):
     average_price: float = Field(
         description="The average premium paid per option contract."
     )
-    underlying_price_at_execution: Optional[float] = Field(
+    underlying_price_at_execution: float | None = Field(
         default=None,
         description="Price of the underlying security at execution of trade.",
     )
     total_size: int = Field(
         description="The total number of contracts involved in a single transaction."
     )
-    total_value: Union[int, float] = Field(
+    total_value: int | float = Field(
         description="The aggregated value of all option contract premiums included in the trade."
     )
 
@@ -213,25 +209,25 @@ class IntrinioOptionsUnusualData(OptionsUnusualData):
 
 
 class IntrinioOptionsUnusualFetcher(
-    Fetcher[IntrinioOptionsUnusualQueryParams, List[IntrinioOptionsUnusualData]]
+    Fetcher[IntrinioOptionsUnusualQueryParams, list[IntrinioOptionsUnusualData]]
 ):
     """Intrinio Unusual Options Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioOptionsUnusualQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioOptionsUnusualQueryParams:
         """Transform the query."""
         return IntrinioOptionsUnusualQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioOptionsUnusualQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
-        data: List = []
+        data: list = []
 
         base_url = "https://api-v2.intrinio.com/options/unusual_activity"
 
@@ -267,10 +263,7 @@ class IntrinioOptionsUnusualFetcher(
                     next_page = results["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     results = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "trades" in results
-                        and len(results.get("trades")) > 0  # type: ignore
-                    ):
+                    if "trades" in results and len(results.get("trades")) > 0:  # type: ignore
                         data.extend(
                             sorted(
                                 results["trades"],  # type: ignore
@@ -286,9 +279,9 @@ class IntrinioOptionsUnusualFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioOptionsUnusualQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioOptionsUnusualData]:
+    ) -> list[IntrinioOptionsUnusualData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()

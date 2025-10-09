@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -26,47 +26,47 @@ class IntrinioWorldNewsQueryParams(WorldNewsQueryParams):
         "source": "specific_source",
         "limit": "page_size",
     }
-    source: Optional[
-        Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]
-    ] = Field(
+    source: (
+        Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"] | None
+    ) = Field(
         default=None,
         description="The source of the news article.",
     )
-    sentiment: Union[None, Literal["positive", "neutral", "negative"]] = Field(
+    sentiment: None | Literal["positive", "neutral", "negative"] = Field(
         default=None,
         description="Return news only from this source.",
     )
-    language: Optional[str] = Field(
+    language: str | None = Field(
         default=None,
         description="Filter by language. Unsupported for yahoo source.",
     )
-    topic: Optional[str] = Field(
+    topic: str | None = Field(
         default=None,
         description="Filter by topic. Unsupported for yahoo source.",
     )
-    word_count_greater_than: Optional[int] = Field(
+    word_count_greater_than: int | None = Field(
         default=None,
         description="News stories will have a word count greater than this value."
         + " Unsupported for yahoo source.",
     )
-    word_count_less_than: Optional[int] = Field(
+    word_count_less_than: int | None = Field(
         default=None,
         description="News stories will have a word count less than this value."
         + " Unsupported for yahoo source.",
     )
-    is_spam: Optional[bool] = Field(
+    is_spam: bool | None = Field(
         default=None,
         description="Filter whether it is marked as spam or not."
         + " Unsupported for yahoo source.",
     )
-    business_relevance_greater_than: Optional[float] = Field(
+    business_relevance_greater_than: float | None = Field(
         default=None,
         ge=0,
         le=1,
         description="News stories will have a business relevance score more than this value."
         + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
-    business_relevance_less_than: Optional[float] = Field(
+    business_relevance_less_than: float | None = Field(
         default=None,
         ge=0,
         le=1,
@@ -83,52 +83,52 @@ class IntrinioWorldNewsData(WorldNewsData):
         "sentiment": "article_sentiment",
         "sentiment_confidence": "article_sentiment_confidence",
     }
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None,
         description="The source of the news article.",
     )
-    summary: Optional[str] = Field(
+    summary: str | None = Field(
         default=None,
         description="The summary of the news article.",
     )
-    topics: Optional[str] = Field(
+    topics: str | None = Field(
         default=None,
         description="The topics related to the news article.",
     )
-    word_count: Optional[int] = Field(
+    word_count: int | None = Field(
         default=None,
         description="The word count of the news article.",
     )
-    business_relevance: Optional[float] = Field(
+    business_relevance: float | None = Field(
         default=None,
         description=" 	How strongly correlated the news article is to the business",
     )
-    sentiment: Optional[str] = Field(
+    sentiment: str | None = Field(
         default=None,
         description="The sentiment of the news article - i.e, negative, positive.",
     )
-    sentiment_confidence: Optional[float] = Field(
+    sentiment_confidence: float | None = Field(
         default=None,
         description="The confidence score of the sentiment rating.",
     )
-    language: Optional[str] = Field(
+    language: str | None = Field(
         default=None,
         description="The language of the news article.",
     )
-    spam: Optional[bool] = Field(
+    spam: bool | None = Field(
         default=None,
         description="Whether the news article is spam.",
     )
-    copyright: Optional[str] = Field(
+    copyright: str | None = Field(
         default=None,
         description="The copyright notice of the news article.",
     )
     id: str = Field(description="Article ID.")
-    company: Optional[IntrinioCompany] = Field(
+    company: IntrinioCompany | None = Field(
         default=None,
         description="The Intrinio Company object. Contains details company reference data.",
     )
-    security: Optional[IntrinioSecurity] = Field(
+    security: IntrinioSecurity | None = Field(
         default=None,
         description="The Intrinio Security object. Contains the security details related to the news article.",
     )
@@ -158,13 +158,13 @@ class IntrinioWorldNewsData(WorldNewsData):
 class IntrinioWorldNewsFetcher(
     Fetcher[
         IntrinioWorldNewsQueryParams,
-        List[IntrinioWorldNewsData],
+        list[IntrinioWorldNewsData],
     ]
 ):
     """Intrinio World News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioWorldNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioWorldNewsQueryParams:
         """Transform the query params."""
         transformed_params = params
         if not transformed_params.get("start_date"):
@@ -180,9 +180,9 @@ class IntrinioWorldNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioWorldNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request, get_querystring
@@ -213,9 +213,7 @@ class IntrinioWorldNewsFetcher(
 
             _data = result.get("news", [])
             data = []
-            data.extend(
-                [x for x in _data if not (x["url"] in seen or seen.add(x["url"]))]  # type: ignore
-            )
+            data.extend([x for x in _data if not (x["url"] in seen or seen.add(x["url"]))])  # type: ignore
             articles = len(data)
             next_page = result.get("next_page")
             while next_page and articles < query.limit:
@@ -224,13 +222,7 @@ class IntrinioWorldNewsFetcher(
                 _data = result.get("news", [])
                 if _data:
                     # Remove duplicates based on URL
-                    data.extend(
-                        [
-                            x
-                            for x in _data
-                            if not (x["url"] in seen or seen.add(x["url"]))  # type: ignore
-                        ]
-                    )
+                    data.extend([x for x in _data if not (x["url"] in seen or seen.add(x["url"]))])  # type: ignore
                     articles = len(data)
                 next_page = result.get("next_page")
             return sorted(data, key=lambda x: x["publication_date"], reverse=True)[
@@ -241,15 +233,15 @@ class IntrinioWorldNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioWorldNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioWorldNewsData]:
+        query: IntrinioWorldNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioWorldNewsData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError(
                 "Error: The request was returned as empty."
                 + " Try adjusting the requested date ranges, if applicable."
             )
-        results: List[IntrinioWorldNewsData] = []
+        results: list[IntrinioWorldNewsData] = []
         for item in data:
             body = item.get("body", {})
             if not body:

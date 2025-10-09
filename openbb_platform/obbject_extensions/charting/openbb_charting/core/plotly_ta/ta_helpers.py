@@ -1,6 +1,6 @@
 """Helper functions for technical analysis indicators."""
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 def check_columns(
     data: "DataFrame", high: bool = True, low: bool = True, close: bool = True
-) -> Optional[str]:
+) -> str | None:
     """Return the close columns, or None if the dataframe does not have required columns.
 
     Parameters
@@ -40,8 +40,7 @@ def check_columns(
         and close
     ):
         raise ValueError(
-            " Please make sure that the columns 'High', 'Low', and 'Close'"
-            " are in the dataframe."
+            " Please make sure that the columns 'High', 'Low', and 'Close' are in the dataframe."
         )
 
     close_col = [col for col in close_col if col in data.columns]

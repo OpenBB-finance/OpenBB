@@ -6,51 +6,42 @@ import nox
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 PLATFORM_DIR = ROOT_DIR / "openbb_platform"
-PLATFORM_TESTS = [
-    str(PLATFORM_DIR / p) for p in ["tests", "core", "providers", "extensions"]
-]
+PLATFORM_TESTS = [str(PLATFORM_DIR / p) for p in ["tests", "core", "providers", "extensions"]]
 CLI_DIR = ROOT_DIR / "cli"
 CLI_TESTS = CLI_DIR / "tests"
 
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13"])
+@nox.session(python=["3.10", "3.11", "3.12", "3.13"])
 def unit_test_platform(session):
     """Run the test suite."""
-    session.install("poetry", "toml")
+    session.install("poetry")
     session.run(
         "python",
         str(PLATFORM_DIR / "dev_install.py"),
         "-e",
-        "all",
         external=True,
     )
     session.install("pytest")
     session.install("pytest-cov")
 
-    # Determine if we should ignore mcp_server tests based on Python version
-    ignore_args = []
-    if session.python == "3.9":
-        ignore_args = ["--ignore=" + str(PLATFORM_DIR / "extensions/mcp_server/tests")]
-
     session.run(
         "pytest",
         *PLATFORM_TESTS,
-        *ignore_args,
         f"--cov={PLATFORM_DIR}",
         "-m",
         "not integration",
     )
 
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13"])
+@nox.session(python=["3.10", "3.11", "3.12", "3.13"])
 def unit_test_cli(session):
     """Run the test suite."""
-    session.install("poetry", "toml")
+    session.install("poetry")
     session.run(
         "python",
         str(PLATFORM_DIR / "dev_install.py"),
         "-e",
-        "all",
+        "--cli",
         external=True,
     )
     session.install("pytest")

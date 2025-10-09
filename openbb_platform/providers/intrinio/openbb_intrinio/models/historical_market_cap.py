@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -51,7 +51,7 @@ class IntrinioHistoricalMarketCapFetcher(
 
     @staticmethod
     def transform_query(
-        params: dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioHistoricalMarketCapQueryParams:
         """Transform the query params."""
         transformed_params = params
@@ -71,7 +71,7 @@ class IntrinioHistoricalMarketCapFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioHistoricalMarketCapQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""

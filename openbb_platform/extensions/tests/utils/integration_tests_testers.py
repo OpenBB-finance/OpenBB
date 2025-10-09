@@ -3,15 +3,10 @@
 import importlib.util
 import inspect
 import os
+from collections.abc import Callable
 from typing import (
     Any,
-    Callable,
-    Dict,
-    List,
     Literal,
-    Optional,
-    Tuple,
-    Union,
     get_type_hints,
 )
 
@@ -25,10 +20,10 @@ from .integration_tests_generator import (
 
 
 def get_integration_tests(
-    test_type: Literal["api", "python"], filter_charting_ext: Optional[bool] = True
-) -> List[Any]:
+    test_type: Literal["api", "python"], filter_charting_ext: bool | None = True
+) -> list[Any]:
     """Get integration tests for the OpenBB Platform."""
-    integration_tests: List[Any] = []
+    integration_tests: list[Any] = []
 
     if test_type == "python":
         file_end = "_python.py"
@@ -54,7 +49,7 @@ def get_integration_tests(
     return integration_tests
 
 
-def get_module_functions(module_list: List[Any]) -> Dict[str, Any]:
+def get_module_functions(module_list: list[Any]) -> dict[str, Any]:
     """Get all functions from a list of modules."""
     functions = {}
     for module in module_list:
@@ -65,16 +60,16 @@ def get_module_functions(module_list: List[Any]) -> Dict[str, Any]:
 
 
 def check_missing_providers(
-    command_params: Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
-    function_params: List[dict],
+    command_params: dict[str, dict[str, dict]] | list[tuple[dict[str, str], str]],
+    function_params: list[dict],
     function,
     processing: bool = False,
-) -> List[str]:
+) -> list[str]:
     """Check if there are any missing providers for a command."""
     if processing or not isinstance(command_params, dict):
         return []
 
-    missing_providers: List[str] = []
+    missing_providers: list[str] = []
     providers = list(command_params.keys())
     providers.remove("openbb")
     if not providers:
@@ -102,11 +97,11 @@ def check_missing_providers(
 
 
 def check_wrong_params(
-    command_params: Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
-    function_params: List[dict],
+    command_params: dict[str, dict[str, dict]] | list[tuple[dict[str, str], str]],
+    function_params: list[dict],
     function,
     processing: bool = False,
-) -> List[str]:
+) -> list[str]:
     """Check if there are any wrong params passed to a command."""
     wrong_params = []
     if not processing:
@@ -118,8 +113,7 @@ def check_wrong_params(
                         if (
                             param
                             not in command_params[provider]["QueryParams"]["fields"]
-                            and param
-                            not in command_params["openbb"]["QueryParams"]["fields"]  # type: ignore
+                            and param not in command_params["openbb"]["QueryParams"]["fields"]  # type: ignore
                             and param != "provider"
                         ):
                             wrong_params.append(
@@ -169,11 +163,11 @@ def check_wrong_params(
 
 
 def check_missing_params(
-    command_params: Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
-    function_params: List[dict],
+    command_params: dict[str, dict[str, dict]] | list[tuple[dict[str, str], str]],
+    function_params: list[dict],
     function,
     processing: bool = False,
-) -> List[str]:
+) -> list[str]:
     """Check if there are any missing params for a command."""
     missing_params = []
     if not processing:
@@ -218,30 +212,30 @@ def check_missing_params(
 
 
 def check_integration_tests(
-    functions: Dict[str, Any],
+    functions: dict[str, Any],
     check_function: Callable[
         [
-            Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
-            List[dict],
+            dict[str, dict[str, dict]] | list[tuple[dict[str, str], str]],
+            list[dict],
             str,
             bool,
         ],
-        List[str],
+        list[str],
     ],
-) -> List[str]:
+) -> list[str]:
     """Check if there are any missing items for integration tests."""
     pi = ProviderInterface()
     provider_interface_map = pi.map
     cm = CommandMap(coverage_sep=".")
 
-    function_params: List[dict] = []
-    all_missing_items: List[str] = []
-    used_functions: List[str] = []
+    function_params: list[dict] = []
+    all_missing_items: list[str] = []
+    used_functions: list[str] = []
 
     for command, model in cm.commands_model.items():
         for function in functions:
             if command[1:].replace(".", "_") == function.replace("test_", ""):
-                command_params: Dict[str, Dict[str, dict]] = provider_interface_map[
+                command_params: dict[str, dict[str, dict]] = provider_interface_map[
                     model
                 ]
                 try:
@@ -284,7 +278,10 @@ def check_integration_tests(
                     function_params = functions[function].pytestmark[2].args[1]
 
                 missing_items = check_function(
-                    processing_command_params, function_params, function, True  # type: ignore
+                    processing_command_params,
+                    function_params,
+                    function,
+                    True,  # type: ignore
                 )
 
                 # if "chart" is in missing_items, remove it
@@ -296,11 +293,11 @@ def check_integration_tests(
     return all_missing_items
 
 
-def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List[str]:
+def check_missing_integration_tests(test_type: Literal["api", "python"]) -> list[str]:
     """Check if all endpoints have integration tests."""
     cm = CommandMap(coverage_sep=".")
     routes = [route[1:].replace("/", "_") for route in cm.map]
-    missing_integration_tests: List[str] = []
+    missing_integration_tests: list[str] = []
 
     if test_type == "api":
         functions = get_module_functions(get_integration_tests(test_type="api"))
@@ -326,11 +323,11 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List
     return missing_integration_tests
 
 
-def check_outdated_integration_tests(test_type: Literal["api", "python"]) -> List[str]:
+def check_outdated_integration_tests(test_type: Literal["api", "python"]) -> list[str]:
     """Check if there are any outdated integration tests."""
     cm = CommandMap(coverage_sep=".")
     routes = [route[1:].replace("/", "_") for route in cm.map]
-    outdated_integration_tests: List[str] = []
+    outdated_integration_tests: list[str] = []
 
     if test_type == "api":
         functions = get_module_functions(get_integration_tests(test_type="api"))
@@ -356,16 +353,16 @@ def check_outdated_integration_tests(test_type: Literal["api", "python"]) -> Lis
     return outdated_integration_tests
 
 
-def check_missing_integration_test_providers(functions: Dict[str, Any]) -> List[str]:
+def check_missing_integration_test_providers(functions: dict[str, Any]) -> list[str]:
     """Check if there are any missing providers for integration tests."""
     return check_integration_tests(functions, check_missing_providers)
 
 
-def check_missing_integration_test_params(functions: Dict[str, Any]) -> List[str]:
+def check_missing_integration_test_params(functions: dict[str, Any]) -> list[str]:
     """Check if there are any missing params for integration tests."""
     return check_integration_tests(functions, check_missing_params)
 
 
-def check_wrong_integration_test_params(functions: Dict[str, Any]) -> List[str]:
+def check_wrong_integration_test_params(functions: dict[str, Any]) -> list[str]:
     """Check if there are any wrong params for integration tests."""
     return check_integration_tests(functions, check_wrong_params)

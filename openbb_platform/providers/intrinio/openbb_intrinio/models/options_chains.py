@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -57,10 +57,10 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
         description="Whether to return delayed, realtime, or eod data.",
         default="eod",
     )
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description="The end-of-day date for options chains data."
     )
-    option_type: Optional[Literal["call", "put"]] = Field(
+    option_type: Literal["call", "put"] | None = Field(
         default=None,
         description="The option type, call or put, 'None' is both (default).",
     )
@@ -69,32 +69,32 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
         description="Return only contracts that are in or out of the money, default is 'all'."
         + " Parameter is ignored when a date is supplied.",
     )
-    strike_gt: Optional[int] = Field(
+    strike_gt: int | None = Field(
         default=None,
         description="Return options with a strike price greater than the given value."
         + " Parameter is ignored when a date is supplied.",
     )
-    strike_lt: Optional[int] = Field(
+    strike_lt: int | None = Field(
         default=None,
         description="Return options with a strike price less than the given value."
         + " Parameter is ignored when a date is supplied.",
     )
-    volume_gt: Optional[int] = Field(
+    volume_gt: int | None = Field(
         default=None,
         description="Return options with a volume greater than the given value."
         + " Parameter is ignored when a date is supplied.",
     )
-    volume_lt: Optional[int] = Field(
+    volume_lt: int | None = Field(
         default=None,
         description="Return options with a volume less than the given value."
         + " Parameter is ignored when a date is supplied.",
     )
-    oi_gt: Optional[int] = Field(
+    oi_gt: int | None = Field(
         default=None,
         description="Return options with an open interest greater than the given value."
         + " Parameter is ignored when a date is supplied.",
     )
-    oi_lt: Optional[int] = Field(
+    oi_lt: int | None = Field(
         default=None,
         description="Return options with an open interest less than the given value."
         + " Parameter is ignored when a date is supplied.",
@@ -188,16 +188,16 @@ class IntrinioOptionsChainsFetcher(
     """Intrinio Options Chains Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
         """Transform the query."""
         return IntrinioOptionsChainsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioOptionsChainsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta  # noqa
@@ -222,7 +222,7 @@ class IntrinioOptionsChainsFetcher(
             query.symbol = "SPX"
             warn("For weekly SPX options, use the symbol SPXW instead of SPX.")
 
-        async def get_urls(date: str) -> List[str]:
+        async def get_urls(date: str) -> list[str]:
             """Return the urls for the given date."""
             date = (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1)).strftime(
                 "%Y-%m-%d"
@@ -288,8 +288,8 @@ class IntrinioOptionsChainsFetcher(
         if not results:
             raise OpenBBError(f"No data found for the given symbol: {query.symbol}")
 
-        output: Dict = {}
-        underlying_price: Dict = {}
+        output: dict = {}
+        underlying_price: dict = {}
         # If the EOD chains are requested, get the underlying price on the given date.
         if query.date is not None:
             if query.symbol.endswith("W") and query.symbol.startswith("SPX"):
@@ -323,7 +323,7 @@ class IntrinioOptionsChainsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioOptionsChainsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
     ) -> IntrinioOptionsChainsData:
         """Return the transformed data."""
@@ -331,7 +331,7 @@ class IntrinioOptionsChainsFetcher(
         from numpy import nan
         from pandas import DataFrame
 
-        results: List = []
+        results: list = []
         chains = data.get("data", [])
         underlying = data.get("underlying", {})
         last_price = underlying.get("price")

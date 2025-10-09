@@ -1,7 +1,6 @@
 """Logging settings."""
 
 from pathlib import Path
-from typing import List, Optional
 
 from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 from openbb_core.app.model.system_settings import SystemSettings
@@ -14,8 +13,8 @@ class LoggingSettings:
 
     def __init__(
         self,
-        user_settings: Optional[UserSettings] = None,
-        system_settings: Optional[SystemSettings] = None,
+        user_settings: UserSettings | None = None,
+        system_settings: SystemSettings | None = None,
     ):
         """Initialize the logging settings."""
         user_settings = user_settings if user_settings is not None else UserSettings()
@@ -43,7 +42,7 @@ class LoggingSettings:
         self.app_id: str = get_app_id(user_data_directory)
         self.session_id: str = get_session_id()
         self.frequency: str = system_settings.logging_frequency
-        self.handler_list: List[str] = system_settings.logging_handlers
+        self.handler_list: list[str] = system_settings.logging_handlers
         self.rolling_clock: bool = system_settings.logging_rolling_clock
         self.verbosity: int = system_settings.logging_verbosity
         self.platform: str = system_settings.platform
@@ -51,7 +50,7 @@ class LoggingSettings:
         self.platform_version: str = system_settings.version
         self.logging_suppress: bool = system_settings.logging_suppress
         # User
-        self.user_id: Optional[str] = user_id
+        self.user_id: str | None = user_id
         self.user_logs_directory: Path = get_log_dir(user_data_directory)
-        self.user_email: Optional[str] = user_email
-        self.user_primary_usage: Optional[str] = user_primary_usage
+        self.user_email: str | None = user_email
+        self.user_primary_usage: str | None = user_primary_usage

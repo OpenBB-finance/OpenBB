@@ -1,9 +1,7 @@
 """Unit tests for app module."""
 
-import sys
 from unittest.mock import MagicMock, patch
 
-import pytest
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastmcp.server.openapi import OpenAPITool
@@ -16,10 +14,6 @@ from openbb_mcp_server.app.app import (
     create_mcp_server,
 )
 from openbb_mcp_server.models.settings import MCPSettings
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 def test_extract_brief_description():

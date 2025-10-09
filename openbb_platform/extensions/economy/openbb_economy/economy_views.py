@@ -3,7 +3,7 @@
 # flake8: noqa: PLR0912
 # pylint: disable=too-many-branches
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 from warnings import warn
 
 if TYPE_CHECKING:
@@ -102,10 +102,7 @@ class EconomyViews:
             and len(y_units) > 1
             and (
                 has_params is False
-                or not any(
-                    i in params.transform  # type: ignore
-                    for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
-                )
+                or not any(i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"])  # type: ignore
             )
         ):
             normalize = True
@@ -125,10 +122,7 @@ class EconomyViews:
         xtitle = str(kwargs.get("xtitle", ""))
 
         # If the request was transformed, the y-axis will be shared under these conditions.
-        if has_params and any(
-            i in params.transform  # type: ignore
-            for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
-        ):
+        if has_params and any(i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]):  # type: ignore
             y1title = "Log" if params.transform == "Log" else "Percent"  # type: ignore
             y2title = None
 
@@ -145,7 +139,7 @@ class EconomyViews:
             title = f"{title} - {transform_title}" if transform_title else title
 
         # Define this to use as a check.
-        y3title: Optional[str] = ""
+        y3title: str | None = ""
 
         if kwargs.get("plot_bar") is True or len(df_ta.index) < 100:
             margin = dict(l=10, r=5, b=75 if xtitle else 30)
@@ -410,16 +404,12 @@ class EconomyViews:
             ytitle = (
                 ytitle
                 if ytitle
-                else target_col.replace("change_percent_", "").replace("M", " Month")  # type: ignore
-                + " Change (%)"
+                else target_col.replace("change_percent_", "").replace("M", " Month") + " Change (%)"  # type: ignore
             )
             new_df = new_df.apply(lambda x: x * 100)
         elif "change" in target_col.lower() and "percent" not in target_col.lower():  # type: ignore
             ytitle = (
-                ytitle
-                if ytitle
-                else target_col.replace("change_", "").replace("M", " Month")  # type: ignore
-                + " Change"
+                ytitle if ytitle else target_col.replace("change_", "").replace("M", " Month") + " Change"  # type: ignore
             )
 
         title_map: dict = {}
@@ -445,9 +435,7 @@ class EconomyViews:
 
         if plot_type is None:
             plot_type = (
-                "line"  # type: ignore
-                if (len(new_df.index) > 36 and len(new_df.columns.to_list()) >= 1)
-                else "bar"
+                "line" if (len(new_df.index) > 36 and len(new_df.columns.to_list()) >= 1) else "bar"  # type: ignore
             )
 
         layout_kwargs: dict = kwargs.pop("layout_kwargs", {})  # type: ignore

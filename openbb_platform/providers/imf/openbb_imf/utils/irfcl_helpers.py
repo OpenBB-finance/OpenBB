@@ -1,7 +1,5 @@
 """IMF IRFCL Data Set Helpers."""
 
-from typing import Optional
-
 
 def load_irfcl_symbols() -> dict:
     """Load IMF IRFCL symbols."""
@@ -208,12 +206,12 @@ async def _get_irfcl_data(**kwargs) -> list[dict]:
             if k != "Obs"
         }
         _symbol = meta.get("indicator")
-        _parent: Optional[str] = None
-        _order: Optional[str] = None
-        _level: Optional[str] = None
-        _table: Optional[str] = None
-        _title: Optional[str] = None
-        _unit: Optional[str] = None
+        _parent: str | None = None
+        _order: str | None = None
+        _level: str | None = None
+        _table: str | None = None
+        _title: str | None = None
+        _unit: str | None = None
 
         if _symbol not in all_symbols:
             continue

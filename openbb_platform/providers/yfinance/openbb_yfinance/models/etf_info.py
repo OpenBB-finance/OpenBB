@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
@@ -51,132 +51,132 @@ class YFinanceEtfInfoData(EtfInfoData):
         "prev_close": "previousClose",
     }
 
-    fund_type: Optional[str] = Field(
+    fund_type: str | None = Field(
         default=None,
         description="The legal type of fund.",
     )
-    fund_family: Optional[str] = Field(
+    fund_family: str | None = Field(
         default=None,
         description="The fund family.",
     )
-    category: Optional[str] = Field(
+    category: str | None = Field(
         default=None,
         description="The fund category.",
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="The exchange the fund is listed on.",
     )
-    exchange_timezone: Optional[str] = Field(
+    exchange_timezone: str | None = Field(
         default=None,
         description="The timezone of the exchange.",
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="The currency in which the fund is listed.",
     )
-    nav_price: Optional[float] = Field(
+    nav_price: float | None = Field(
         default=None,
         description="The net asset value per unit of the fund.",
     )
-    total_assets: Optional[int] = Field(
+    total_assets: int | None = Field(
         default=None,
         description="The total value of assets held by the fund.",
     )
-    trailing_pe: Optional[float] = Field(
+    trailing_pe: float | None = Field(
         default=None,
         description="The trailing twelve month P/E ratio of the fund's assets.",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="The dividend yield of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_rate_ttm: Optional[float] = Field(
+    dividend_rate_ttm: float | None = Field(
         default=None,
         description="The trailing twelve month annual dividend rate of the fund, in currency units.",
     )
-    dividend_yield_ttm: Optional[float] = Field(
+    dividend_yield_ttm: float | None = Field(
         default=None,
         description="The trailing twelve month annual dividend yield of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None,
         description="The fifty-two week high price.",
     )
-    year_low: Optional[float] = Field(
+    year_low: float | None = Field(
         default=None,
         description="The fifty-two week low price.",
     )
-    ma_50d: Optional[float] = Field(
+    ma_50d: float | None = Field(
         default=None,
         description="50-day moving average price.",
     )
-    ma_200d: Optional[float] = Field(
+    ma_200d: float | None = Field(
         default=None,
         description="200-day moving average price.",
     )
-    return_ytd: Optional[float] = Field(
+    return_ytd: float | None = Field(
         default=None,
         description="The year-to-date return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_3y_avg: Optional[float] = Field(
+    return_3y_avg: float | None = Field(
         default=None,
         description="The three year average return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_5y_avg: Optional[float] = Field(
+    return_5y_avg: float | None = Field(
         default=None,
         description="The five year average return of the fund, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta_3y_avg: Optional[float] = Field(
+    beta_3y_avg: float | None = Field(
         default=None,
         description="The three year average beta of the fund.",
     )
-    volume_avg: Optional[float] = Field(
+    volume_avg: float | None = Field(
         default=None,
         description="The average daily trading volume of the fund.",
     )
-    volume_avg_10d: Optional[float] = Field(
+    volume_avg_10d: float | None = Field(
         default=None,
         description="The average daily trading volume of the fund over the past ten days.",
     )
-    bid: Optional[float] = Field(
+    bid: float | None = Field(
         default=None,
         description="The current bid price.",
     )
-    bid_size: Optional[float] = Field(
+    bid_size: float | None = Field(
         default=None,
         description="The current bid size.",
     )
-    ask: Optional[float] = Field(
+    ask: float | None = Field(
         default=None,
         description="The current ask price.",
     )
-    ask_size: Optional[float] = Field(
+    ask_size: float | None = Field(
         default=None,
         description="The current ask size.",
     )
-    open: Optional[float] = Field(
+    open: float | None = Field(
         default=None,
         description="The open price of the most recent trading session.",
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None,
         description="The highest price of the most recent trading session.",
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None,
         description="The lowest price of the most recent trading session.",
     )
-    volume: Optional[int] = Field(
+    volume: int | None = Field(
         default=None,
         description="The trading volume of the most recent trading session.",
     )
-    prev_close: Optional[float] = Field(
+    prev_close: float | None = Field(
         default=None,
         description="The previous closing price.",
     )
@@ -193,21 +193,21 @@ class YFinanceEtfInfoData(EtfInfoData):
 
 
 class YFinanceEtfInfoFetcher(
-    Fetcher[YFinanceEtfInfoQueryParams, List[YFinanceEtfInfoData]]
+    Fetcher[YFinanceEtfInfoQueryParams, list[YFinanceEtfInfoData]]
 ):
     """YFinance ETF Info fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceEtfInfoQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceEtfInfoQueryParams:
         """Transform the query."""
         return YFinanceEtfInfoQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceEtfInfoQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -325,8 +325,8 @@ class YFinanceEtfInfoFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceEtfInfoQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceEtfInfoData]:
+    ) -> list[YFinanceEtfInfoData]:
         """Transform the data."""
         return [YFinanceEtfInfoData.model_validate(d) for d in data]

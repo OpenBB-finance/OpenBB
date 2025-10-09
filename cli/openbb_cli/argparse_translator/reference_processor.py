@@ -1,21 +1,7 @@
 """Module for the ReferenceToArgumentsProcessor class."""
 
-# `ForwardRef`needs to be imported because the usage of `eval()`,
-# which creates a ForwardRef
-# which would raise a not defined error if it's not imported here.
-# pylint: disable=unused-import
-from typing import (
-    Any,
-    Dict,
-    ForwardRef,  # noqa: F401
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    Union,
-    get_args,
-    get_origin,
-)
+import re
+from typing import Any, Literal, get_origin
 
 from openbb_cli.argparse_translator.argparse_argument import (
     ArgparseArgumentGroupModel,
@@ -26,81 +12,75 @@ from openbb_cli.argparse_translator.argparse_argument import (
 class ReferenceToArgumentsProcessor:
     """Class to process the reference and build custom argument groups."""
 
-    def __init__(self, reference: Dict[str, Dict]):
+    def __init__(self, reference: dict[str, dict]):
         """Initialize the ReferenceToArgumentsProcessor."""
         self._reference = reference
-        self._custom_groups: Dict[str, List[ArgparseArgumentGroupModel]] = {}
+        self._custom_groups: dict[str, list[ArgparseArgumentGroupModel]] = {}
 
         self._build_custom_groups()
 
     @property
-    def custom_groups(self) -> Dict[str, List[ArgparseArgumentGroupModel]]:
+    def custom_groups(self) -> dict[str, list[ArgparseArgumentGroupModel]]:
         """Get the custom groups."""
         return self._custom_groups
 
     @staticmethod
-    def _make_type_parsable(type_: str) -> type:
-        """Make the type parsable by removing the annotations."""
-        if "Union" in type_ and "str" in type_:
-            return str
-        if "Union" in type_ and "int" in type_:
-            return int
-        if type_ in ["date", "datetime.time", "time"]:
-            return str
-
-        if any(x in type_ for x in ["gt=", "ge=", "lt=", "le="]):
-            if "Annotated" in type_:
-                type_ = type_.replace("Annotated[", "").replace("]", "")
-            type_ = type_.split(",")[0]
-
-        return eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
-
-    def _parse_type(self, type_: str) -> type:
+    def _parse_type(type_string: str) -> type:
         """Parse the type from the string representation."""
-        type_ = self._make_type_parsable(type_)  # type: ignore
+        # Handle Optional[T] or T | None
+        if "Optional" in type_string or "|" in type_string:
+            # Extract the inner type, defaulting to str if parsing fails
+            match = re.search(r"Optional\[(\w+)]|(\w+)\s*\|\s*None", type_string)
+            if match:
+                type_string = next(
+                    (group for group in match.groups() if group is not None), "str"
+                )
 
-        if get_origin(type_) is Literal:
-            type_ = type(get_args(type_)[0])  # type: ignore
+        # Handle Literal types
+        if "Literal" in type_string:
+            return str  # Treat all Literal types as strings for simplicity
 
-        return type_  # type: ignore
+        # Handle Annotated types by extracting the base type
+        if "Annotated" in type_string:
+            match = re.search(r"Annotated\[(\w+),", type_string)
+            if match:
+                type_string = match.group(1)
 
-    def _get_nargs(self, type_: type) -> Optional[Union[int, str]]:
+        # Map common string representations to actual types
+        type_map = {
+            "str": str,
+            "int": int,
+            "float": float,
+            "bool": bool,
+            "date": str,
+            "datetime": str,
+            "time": str,
+        }
+        return type_map.get(type_string, str)
+
+    def _get_nargs(self, type_: type) -> Literal["+"] | None:
         """Get the nargs for the given type."""
         if get_origin(type_) is list:
             return "+"
         return None
 
-    def _get_choices(self, type_: str, custom_choices: Any) -> Tuple:
+    def _get_choices(self, type_string: str, custom_choices: Any) -> tuple | None:
         """Get the choices for the given type."""
-        type_ = self._make_type_parsable(type_)  # type: ignore
-        type_origin = get_origin(type_)
-
-        choices: tuple[Any, ...] = ()
-
-        if type_origin is Literal:
-            choices = get_args(type_)
-
-        if type_origin is list:
-            type_ = get_args(type_)[0]
-
-            if get_origin(type_) is Literal:
-                choices = get_args(type_)
-
-        if type_origin is Union and type(None) in get_args(type_):
-            # remove NoneType from the args
-            args = [arg for arg in get_args(type_) if arg != type(None)]
-            # if there is only one arg left, use it
-            if len(args) > 1:
-                raise ValueError("Union with NoneType should have only one type left")
-            type_ = args[0]
-
-            if get_origin(type_) is Literal:
-                choices = get_args(type_)
-
         if custom_choices:
             return tuple(custom_choices)
 
-        return choices
+        # Find all occurrences of Literal[...]
+        literal_matches = re.findall(r"Literal\[(.*?)\]", type_string)
+        if not literal_matches:
+            return None
+
+        all_choices: list = []
+        for match in literal_matches:
+            # Split by comma and strip quotes and whitespace
+            choices = [c.strip().strip("'\"") for c in match.split(",") if c.strip()]
+            all_choices.extend(choices)
+
+        return tuple(set(all_choices)) if all_choices else None
 
     def _build_custom_groups(self):
         """Build the custom groups from the reference."""
@@ -123,9 +103,9 @@ class ReferenceToArgumentsProcessor:
                             dest=arg["name"],
                             default=arg["default"],
                             required=not (arg["optional"]),
-                            action="store" if type_ != bool else "store_true",
+                            action="store" if type_ is not bool else "store_true",
                             help=arg["description"],
-                            nargs=self._get_nargs(type_),  # type: ignore
+                            nargs=self._get_nargs(type_),
                             choices=self._get_choices(
                                 arg["type"], custom_choices=arg["choices"]
                             ),

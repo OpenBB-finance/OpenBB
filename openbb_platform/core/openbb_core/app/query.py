@@ -2,7 +2,7 @@
 
 import warnings
 from dataclasses import asdict
-from typing import Any, Dict
+from typing import Any
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -37,7 +37,7 @@ class Query:
         self,
         extra_params: ExtraParams,
         provider_name: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Filter extra params based on the provider and warn if not supported."""
         original = asdict(extra_params)
         filtered = {}
@@ -67,9 +67,7 @@ class Query:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
-            self.filter_extra_params(self.extra_params, self.provider)  # type: ignore
-            if self.extra_params
-            else {}
+            self.filter_extra_params(self.extra_params, self.provider) if self.extra_params else {}  # type: ignore
         )
         query_executor = self.provider_interface.create_executor()
 

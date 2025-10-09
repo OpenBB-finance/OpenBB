@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -20,11 +19,11 @@ class CryptoHistoricalQueryParams(QueryParams):
     """Crypto Historical Price Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -39,23 +38,21 @@ class CryptoHistoricalQueryParams(QueryParams):
 class CryptoHistoricalData(Data):
     """Crypto Historical Price Data."""
 
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-    )
-    open: Optional[float] = Field(
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
 

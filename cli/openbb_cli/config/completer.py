@@ -1,16 +1,9 @@
 """Nested completer for completion of OpenBB hierarchical data structures."""
 
+from collections.abc import Callable, Iterable, Mapping
+from re import Pattern
 from typing import (
     Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Pattern,
-    Set,
-    Union,
 )
 
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
@@ -18,7 +11,7 @@ from prompt_toolkit.document import Document
 from prompt_toolkit.formatted_text import AnyFormattedText
 from prompt_toolkit.history import FileHistory
 
-NestedDict = Mapping[str, Union[Any, Set[str], None, Completer]]
+NestedDict = Mapping[str, Any | set[str] | None | Completer]
 
 # pylint: disable=too-many-arguments,global-statement,too-many-branches,global-variable-not-assigned
 
@@ -44,14 +37,14 @@ class WordCompleter(Completer):
 
     def __init__(
         self,
-        words: Union[List[str], Callable[[], List[str]]],
+        words: list[str] | Callable[[], list[str]],
         ignore_case: bool = False,
-        display_dict: Optional[Mapping[str, AnyFormattedText]] = None,
-        meta_dict: Optional[Mapping[str, AnyFormattedText]] = None,
+        display_dict: Mapping[str, AnyFormattedText] | None = None,
+        meta_dict: Mapping[str, AnyFormattedText] | None = None,
         WORD: bool = True,
         sentence: bool = False,
         match_middle: bool = False,
-        pattern: Optional[Pattern[str]] = None,
+        pattern: Pattern[str] | None = None,
     ) -> None:
         """Initialize the WordCompleter."""
         assert not (WORD and sentence)  # noqa: S101
@@ -80,15 +73,11 @@ class WordCompleter(Completer):
         if self.sentence:
             word_before_cursor = document.text_before_cursor
         else:
-            word_before_cursor = document.get_word_before_cursor(
-                WORD=self.WORD, pattern=self.pattern
-            )
-            if (
-                "--" in document.text_before_cursor
-                and document.text_before_cursor.rfind(" --")
-                >= document.text_before_cursor.rfind(" -")
-            ):
-                word_before_cursor = f'--{document.text_before_cursor.split("--")[-1]}'
+            word_before_cursor = document.get_word_before_cursor(WORD=self.WORD, pattern=self.pattern)
+            if "--" in document.text_before_cursor and document.text_before_cursor.rfind(
+                " --"
+            ) >= document.text_before_cursor.rfind(" -"):
+                word_before_cursor = f"--{document.text_before_cursor.split('--')[-1]}"
             elif f"--{word_before_cursor}" == document.text_before_cursor:
                 word_before_cursor = document.text_before_cursor
 
@@ -127,13 +116,11 @@ class NestedCompleter(Completer):
     If you need multiple levels, check out the `from_nested_dict` classmethod.
     """
 
-    complementary: List = list()
+    complementary: list = list()
 
-    def __init__(
-        self, options: Dict[str, Optional[Completer]], ignore_case: bool = True
-    ) -> None:
+    def __init__(self, options: dict[str, Completer | None], ignore_case: bool = True) -> None:
         """Initialize the NestedCompleter."""
-        self.flags_processed: List = list()
+        self.flags_processed: list = list()
         self.original_options = options
         self.options = options
         self.ignore_case = ignore_case
@@ -168,7 +155,7 @@ class NestedCompleter(Completer):
 
         Values in this data structure can be a completers as well.
         """
-        options: Dict[str, Any] = {}
+        options: dict[str, Any] = {}
         for key, value in data.items():
             if isinstance(value, Completer):
                 options[key] = value
@@ -190,9 +177,7 @@ class NestedCompleter(Completer):
 
         return cls(options)
 
-    def get_completions(  # noqa: PLR0912
-        self, document: Document, complete_event: CompleteEvent
-    ) -> Iterable[Completion]:
+    def get_completions(self, document: Document, complete_event: CompleteEvent) -> Iterable[Completion]:  # noqa: PLR0912
         """Get completions."""
         # Split document.
         cmd = ""
@@ -211,12 +196,8 @@ class NestedCompleter(Completer):
         # Check if there are multiple flags for the same command
         if self.complementary:
             for same_flags in self.complementary:
-                if (
-                    same_flags[0] in self.flags_processed
-                    and same_flags[1] not in self.flags_processed
-                ) or (
-                    same_flags[1] in self.flags_processed
-                    and same_flags[0] not in self.flags_processed
+                if (same_flags[0] in self.flags_processed and same_flags[1] not in self.flags_processed) or (
+                    same_flags[1] in self.flags_processed and same_flags[0] not in self.flags_processed
                 ):
                     if same_flags[0] in self.flags_processed:
                         self.flags_processed.append(same_flags[1])
@@ -231,9 +212,7 @@ class NestedCompleter(Completer):
                         }
                     else:
                         self.options = {
-                            k: self.original_options[k]
-                            for k in self.original_options
-                            if k not in self.flags_processed
+                            k: self.original_options[k] for k in self.original_options if k not in self.flags_processed
                         }
 
         # If there is a space, check for the first term, and use a subcompleter.
@@ -242,18 +221,12 @@ class NestedCompleter(Completer):
 
             # user is updating one of the values
             if unprocessed_text[-1] != " ":
-                self.flags_processed = [
-                    flag for flag in self.flags_processed if flag != first_term
-                ]
+                self.flags_processed = [flag for flag in self.flags_processed if flag != first_term]
 
                 if self.complementary:
                     for same_flags in self.complementary:
-                        if (
-                            same_flags[0] in self.flags_processed
-                            and same_flags[1] not in self.flags_processed
-                        ) or (
-                            same_flags[1] in self.flags_processed
-                            and same_flags[0] not in self.flags_processed
+                        if (same_flags[0] in self.flags_processed and same_flags[1] not in self.flags_processed) or (
+                            same_flags[1] in self.flags_processed and same_flags[0] not in self.flags_processed
                         ):
                             if same_flags[0] in self.flags_processed:
                                 self.flags_processed.remove(same_flags[0])
@@ -264,9 +237,7 @@ class NestedCompleter(Completer):
                     self.options = self.original_options
                 else:
                     self.options = {
-                        k: self.original_options[k]
-                        for k in self.original_options
-                        if k not in self.flags_processed
+                        k: self.original_options[k] for k in self.original_options if k not in self.flags_processed
                     }
 
             if "-" not in text:
@@ -288,10 +259,7 @@ class NestedCompleter(Completer):
 
                 # Provides auto-completion but if user doesn't take it still keep going
                 if " " in new_document.text:
-                    if (
-                        new_document.text in [f"{opt} " for opt in self.options]
-                        or unprocessed_text[-1] == " "
-                    ):
+                    if new_document.text in [f"{opt} " for opt in self.options] or unprocessed_text[-1] == " ":
                         self.flags_processed.append(first_term)
                         if cmd:
                             self.options = {
@@ -312,12 +280,8 @@ class NestedCompleter(Completer):
 
                     if self.complementary:
                         for same_flags in self.complementary:
-                            if (
-                                same_flags[0] in self.flags_processed
-                                and same_flags[1] not in self.flags_processed
-                            ) or (
-                                same_flags[1] in self.flags_processed
-                                and same_flags[0] not in self.flags_processed
+                            if (same_flags[0] in self.flags_processed and same_flags[1] not in self.flags_processed) or (
+                                same_flags[1] in self.flags_processed and same_flags[0] not in self.flags_processed
                             ):
                                 if same_flags[0] in self.flags_processed:
                                     self.flags_processed.append(same_flags[1])
@@ -332,9 +296,7 @@ class NestedCompleter(Completer):
                         }
                     else:
                         self.options = {
-                            k: self.original_options[k]
-                            for k in self.original_options
-                            if k not in self.flags_processed
+                            k: self.original_options[k] for k in self.original_options if k not in self.flags_processed
                         }
 
                 else:
@@ -345,18 +307,12 @@ class NestedCompleter(Completer):
         else:
             # check if the prompt has been updated in the meantime
             if " " in text or "-" in text:
-                actual_flags_processed = [
-                    flag for flag in self.flags_processed if flag in text
-                ]
+                actual_flags_processed = [flag for flag in self.flags_processed if flag in text]
 
                 if self.complementary:
                     for same_flags in self.complementary:
-                        if (
-                            same_flags[0] in actual_flags_processed
-                            and same_flags[1] not in actual_flags_processed
-                        ) or (
-                            same_flags[1] in actual_flags_processed
-                            and same_flags[0] not in actual_flags_processed
+                        if (same_flags[0] in actual_flags_processed and same_flags[1] not in actual_flags_processed) or (
+                            same_flags[1] in actual_flags_processed and same_flags[0] not in actual_flags_processed
                         ):
                             if same_flags[0] in actual_flags_processed:
                                 actual_flags_processed.append(same_flags[1])
@@ -373,9 +329,7 @@ class NestedCompleter(Completer):
                         }
                     else:
                         self.options = {
-                            k: self.original_options[k]
-                            for k in self.original_options
-                            if k not in self.flags_processed
+                            k: self.original_options[k] for k in self.original_options if k not in self.flags_processed
                         }
 
             command = self.options.get(cmd)
@@ -388,17 +342,13 @@ class NestedCompleter(Completer):
                     ignore_case=self.ignore_case,
                 )
             elif bool([val for val in self.options if text in val]):
-                completer = WordCompleter(
-                    list(self.options.keys()), ignore_case=self.ignore_case
-                )
+                completer = WordCompleter(list(self.options.keys()), ignore_case=self.ignore_case)
             else:
                 # The user has delete part of the first command and we need to reset options
                 if bool([val for val in self.original_options if text in val]):
                     self.options = self.original_options
                     self.flags_processed = list()
-                completer = WordCompleter(
-                    list(self.options.keys()), ignore_case=self.ignore_case
-                )
+                completer = WordCompleter(list(self.options.keys()), ignore_case=self.ignore_case)
 
             # This is a WordCompleter
             yield from completer.get_completions(document, complete_event)

@@ -4,7 +4,7 @@ import ssl
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional, Union
+from typing import Any, Literal
 
 import requests
 import urllib3
@@ -53,7 +53,7 @@ def get_legacy_session():
     return session
 
 
-def fetch_data(url: str, csv_kwargs: Optional[Dict] = None, **kwargs: Any) -> DataFrame:
+def fetch_data(url: str, csv_kwargs: dict | None = None, **kwargs: Any) -> DataFrame:
     """Create a session and fetch data from the OECD API."""
     session = get_legacy_session()
     response = helpers.make_request(url, session=session, **kwargs)
@@ -158,9 +158,7 @@ def check_cache_exists_and_valid(cache_str: str, cache_method: str = "csv") -> b
         with open(time_cache_path) as f:
             cached_date = f.read().strip()
         # TODO:  More robust caching logic
-        if cached_date == str(date.today()):
-            return True
-        return False
+        return cached_date == str(date.today())
     return False
 
 
@@ -206,8 +204,8 @@ def query_dict_to_path(query_dict: dict) -> str:
 
 def get_possibly_cached_data(
     url: str,
-    function: Optional[str] = None,
-    query_dict: Optional[dict] = None,
+    function: str | None = None,
+    query_dict: dict | None = None,
     cache_method: Literal["csv", "parquet"] = "csv",
     skip_cache: bool = False,
 ) -> DataFrame:
@@ -248,7 +246,7 @@ def get_possibly_cached_data(
     return data
 
 
-def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
+def oecd_date_to_python_date(input_date: str | int) -> date:
     """Date formatter helper."""
     input_date = str(input_date)
     if "Q" in input_date:

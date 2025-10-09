@@ -1,8 +1,8 @@
-"""Screener Helpers """
+"""Screener Helpers"""
 
 # pylint: disable=too-many-lines
 
-from typing import Dict, Literal
+from typing import Literal
 
 MARKET_CAP_MAP = {
     "all": "Any",
@@ -2061,7 +2061,7 @@ INDEX_MAP = {
 }
 
 
-def get_preset_choices(user_data_path) -> Dict:
+def get_preset_choices(user_data_path) -> dict:
     """Get a combined map of default and user screener presets."""
     # pylint: disable=import-outside-toplevel
     import shutil
@@ -2070,7 +2070,7 @@ def get_preset_choices(user_data_path) -> Dict:
 
     PRESETS_PATH = Path(user_data_path) / "presets" / "finviz"
     PRESETS_PATH_DEFAULT = Path(__file__).parent.resolve() / "presets"
-    preset_choices: Dict = {}
+    preset_choices: dict = {}
 
     if PRESETS_PATH_DEFAULT.exists():
         preset_choices.update(

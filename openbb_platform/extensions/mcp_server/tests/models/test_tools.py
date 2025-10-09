@@ -1,18 +1,11 @@
 """Unit tests for tools module."""
 
-import sys
-
-import pytest
 from openbb_mcp_server.models.tools import (
     CategoryInfo,
     SubcategoryInfo,
     ToggleResult,
     ToolInfo,
 )
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 def test_tool_info():

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -23,7 +23,7 @@ class ImfMaritimeChokePointInfoQueryParams(MaritimeChokePointInfoQueryParams):
         "theme": {"x-widget_config": {"show": False}},
     }
 
-    theme: Optional[Literal["dark", "light"]] = Field(
+    theme: Literal["dark", "light"] | None = Field(
         default=None,
         description="Theme for the map."
         + " Only valid if `openbb-charting` is installed and `chart` parameter is set to `true`."
@@ -111,19 +111,19 @@ class ImfMaritimeChokePointInfoData(MaritimeChokePointInfoData):
         + " Estimated using AIS data beginning 2019.",
         title="Ro-Ro Vessel Count",
     )
-    industry_top1: Optional[str] = Field(
+    industry_top1: str | None = Field(
         default=None,
         description="First dominant traded industries"
         + " based on the volume of goods estimated to flow through the chokepoint.",
         title="Top Industry 1",
     )
-    industry_top2: Optional[str] = Field(
+    industry_top2: str | None = Field(
         default=None,
         description="Second dominant traded industries"
         + " based on the volume of goods estimated to flow through the chokepoint.",
         title="Top Industry 2",
     )
-    industry_top3: Optional[str] = Field(
+    industry_top3: str | None = Field(
         default=None,
         description="Third dominant traded industries"
         + " based on the volume of goods estimated to flow through the chokepoint.",
@@ -144,7 +144,7 @@ class ImfMaritimeChokePointInfoFetcher(
     @staticmethod
     async def aextract_data(
         query: ImfMaritimeChokePointInfoQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract the raw data from the IMF Port Watch API."""

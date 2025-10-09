@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-variable,unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -61,7 +61,7 @@ class BaseQueryParams(QueryParams):
 class ChartQueryParams(BaseQueryParams):
     """ChartParams."""
 
-    data: Optional[Union[Data, List[Data]]] = Field(
+    data: Data | list[Data] | None = Field(
         default=None,
         description="Filtered versions of the data contained in the original `self.results`."
         + " Columns should be the same as the original data."
@@ -72,7 +72,7 @@ class ChartQueryParams(BaseQueryParams):
 class EquityPricePerformanceChartQueryParams(ChartQueryParams):
     """Equity Price Performance Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
@@ -80,12 +80,12 @@ class EquityPricePerformanceChartQueryParams(ChartQueryParams):
         default="v",
         description="Orientation of the bars.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="Limit the number of bars to plot, from the most recent."
         + " If None, the periods from one-day to five-years will be plotted, if available.",
     )
-    layout_kwargs: Optional[Dict[str, Any]] = Field(
+    layout_kwargs: dict[str, Any] | None = Field(
         default=None,
         description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
     )
@@ -98,7 +98,7 @@ class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams
 class EtfHoldingsChartQueryParams(ChartQueryParams):
     """ETF Holdings Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
@@ -106,11 +106,11 @@ class EtfHoldingsChartQueryParams(ChartQueryParams):
         default="v",
         description="Orientation of the bars.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=20,
         description="Limit the number of bars to plot, ranked by top weighting.",
     )
-    layout_kwargs: Optional[Dict[str, Any]] = Field(
+    layout_kwargs: dict[str, Any] | None = Field(
         default=None,
         description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
     )
@@ -119,11 +119,11 @@ class EtfHoldingsChartQueryParams(ChartQueryParams):
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
     """Equity Historical Price Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
-    target: Optional[str] = Field(
+    target: str | None = Field(
         default=None,
         description="The specific column to target. If supplied, this will override the candles and volume parameters.",
     )
@@ -156,7 +156,7 @@ class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
         default=True,
         description="If True, and volume exists, and `candles=True`, volume will be plotted.",
     )
-    indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = Field(
+    indicators: ChartIndicators | dict[str, dict[str, Any]] | None = Field(
         default=None,
         description="Indicators to be plotted, formatted as a dictionary."
         + " Data containing multiple symbols will ignore indicators."
@@ -173,19 +173,19 @@ class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
 class EconomyFredSeriesChartQueryParams(ChartQueryParams):
     """FRED Series Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
-    y1title: Optional[str] = Field(
+    y1title: str | None = Field(
         default=None,
         description="Right Y-axis title.",
     )
-    y2title: Optional[str] = Field(
+    y2title: str | None = Field(
         default=None,
         description="Left Y-axis title.",
     )
-    xtitle: Optional[str] = Field(
+    xtitle: str | None = Field(
         default=None,
         description="X-axis title.",
     )
@@ -212,7 +212,7 @@ class EconomyFredSeriesChartQueryParams(ChartQueryParams):
         description="The mode to use for the bar chart, by default is 'group'."
         + " Has no effect if `bar=False`.",
     )
-    layout_kwargs: Optional[Dict[str, Any]] = Field(
+    layout_kwargs: dict[str, Any] | None = Field(
         default=None,
         description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
     )
@@ -221,11 +221,11 @@ class EconomyFredSeriesChartQueryParams(ChartQueryParams):
 class TechnicalConesChartQueryParams(ChartQueryParams):
     """Technical Cones Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="Symbol represented by the data. Used to label the chart.",
     )
@@ -242,12 +242,12 @@ class MAQueryParams(ChartQueryParams):
         default="date",
         description="The index column.",
     )
-    length: Optional[Union[int, List[int]]] = Field(
+    length: int | list[int] | None = Field(
         default=50,
         description="Window length for the moving average."
         "+ The number is relative to the interval of the time series data.",
     )
-    offset: Optional[int] = Field(
+    offset: int | None = Field(
         default=0,
         description="Number of periods to offset for the moving average.",
     )
@@ -256,7 +256,7 @@ class MAQueryParams(ChartQueryParams):
         description="If True, rows containing NaN will be dropped."
         + " This will reduce the length of the charted data by the longest window.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="Symbol represented by the data. Used to label the chart.",
     )
@@ -265,15 +265,15 @@ class MAQueryParams(ChartQueryParams):
 class FixedincomeGovernmentYieldCurve(ChartQueryParams):
     """Fixed Income Government Yield Curve Chart Query Params."""
 
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
-    colors: Optional[List[str]] = Field(
+    colors: list[str] | None = Field(
         default=None,
         description="List of colors to use for the lines.",
     )
-    layout_kwargs: Optional[Dict[str, Any]] = Field(
+    layout_kwargs: dict[str, Any] | None = Field(
         default=None,
         description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
     )
@@ -302,15 +302,15 @@ class TechnicalZLMAChartQueryParams(MAQueryParams):
 class TechnicalADXChartQueryParams(ChartQueryParams):
     """Technical ADX Chart Query Params."""
 
-    length: Optional[int] = Field(
+    length: int | None = Field(
         default=50,
         description="Window length for the ADX, by default is 50.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float | None = Field(
         default=100,
         description="Scalar to multiply the ADX by, default is 100.",
     )
-    drift: Optional[int] = Field(
+    drift: int | None = Field(
         default=1,
         description="Drift value for the ADX, by default is 1.",
     )
@@ -319,11 +319,11 @@ class TechnicalADXChartQueryParams(ChartQueryParams):
 class TechnicalArooonChartQueryParams(ChartQueryParams):
     """Technical Aroon Chart Query Params."""
 
-    length: Optional[int] = Field(
+    length: int | None = Field(
         default=25,
         description="Window length for the Aroon, by default is 50.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float | None = Field(
         default=100,
         description="Scalar to multiply the Aroon by, default is 100.",
     )
@@ -332,19 +332,19 @@ class TechnicalArooonChartQueryParams(ChartQueryParams):
 class TechnicalMACDChartQueryParams(ChartQueryParams):
     """Technical MACD Chart Query Params."""
 
-    fast: Optional[int] = Field(
+    fast: int | None = Field(
         default=12,
         description="Window length for the fast EMA, by default is 12.",
     )
-    slow: Optional[int] = Field(
+    slow: int | None = Field(
         default=26,
         description="Window length for the slow EMA, by default is 26.",
     )
-    signal: Optional[int] = Field(
+    signal: int | None = Field(
         default=9,
         description="Window length for the signal line, by default is 9.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float | None = Field(
         default=100,
         description="Scalar to multiply the MACD by, default is 100.",
     )
@@ -353,15 +353,15 @@ class TechnicalMACDChartQueryParams(ChartQueryParams):
 class TechnicalRSIChartQueryParams(ChartQueryParams):
     """Technical RSI Chart Query Params."""
 
-    length: Optional[int] = Field(
+    length: int | None = Field(
         default=14,
         description="Window length for the RSI, by default is 14.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float | None = Field(
         default=100,
         description="Scalar to multiply the RSI by, default is 100.",
     )
-    drift: Optional[int] = Field(
+    drift: int | None = Field(
         default=1,
         description="Drift value for the RSI, by default is 1.",
     )
@@ -370,7 +370,7 @@ class TechnicalRSIChartQueryParams(ChartQueryParams):
 class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
     """Technical Relative Rotation Chart Query Params."""
 
-    date: Optional[str] = Field(
+    date: str | None = Field(
         default=None,
         description="A target end date within the data to use for the chart, by default is the last date in the data.",
     )
@@ -378,7 +378,7 @@ class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
         default=True,
         description="Show the tails on the chart, by default True.",
     )
-    tail_periods: Optional[int] = Field(
+    tail_periods: int | None = Field(
         default=16,
         description="Number of periods to show in the tails, by default 16.",
     )
@@ -386,7 +386,7 @@ class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
         default="week",
         description="The interval to show the tails, by default 'week'.",
     )
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="Title of the chart.",
     )
@@ -425,7 +425,7 @@ class IndicatorsQueryParams(BaseQueryParams):
 class MAIndicatorsQueryParams(IndicatorsQueryParams):
     """Moving Average Indicators Query Params."""
 
-    length: Union[int, List[int]] = Field(
+    length: int | list[int] = Field(
         default=50,
         description="Window length for the moving average, by default is 50."
         + " The number is relative to the interval of the time series data.",
@@ -549,15 +549,15 @@ class CCIIndicatorsQueryParams(IndicatorsQueryParams):
 class DonchianIndicatorsQueryParams(IndicatorsQueryParams):
     """Donchian Channel Indicators Query Params."""
 
-    lower: Optional[int] = Field(
+    lower: int | None = Field(
         default=20,
         description="Window length for the lower band, by default is 20.",
     )
-    upper: Optional[int] = Field(
+    upper: int | None = Field(
         default=20,
         description="Window length for the upper band, by default is 20.",
     )
-    offset: Optional[int] = Field(
+    offset: int | None = Field(
         default=0,
         description="Number of periods to offset the result, by default is 0.",
     )
@@ -600,19 +600,19 @@ class KCIndicatorsQueryParams(IndicatorsQueryParams):
 class MACDIndicatorsQueryParams(IndicatorsQueryParams):
     """MACD Indicators Query Params."""
 
-    fast: Optional[int] = Field(
+    fast: int | None = Field(
         default=12,
         description="Window length for the fast EMA, by default is 12.",
     )
-    slow: Optional[int] = Field(
+    slow: int | None = Field(
         default=26,
         description="Window length for the slow EMA, by default is 26.",
     )
-    signal: Optional[int] = Field(
+    signal: int | None = Field(
         default=9,
         description="Window length for the signal line, by default is 9.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float | None = Field(
         default=100,
         description="Scalar to multiply the MACD by, default is 100.",
     )
@@ -668,11 +668,11 @@ class FibIndicatorsQueryParams(IndicatorsQueryParams):
         default=120,
         description="The period to calculate the Fibonacci Retracement, by default 120.",
     )
-    start_date: Optional[str] = Field(
+    start_date: str | None = Field(
         default=None,
         description="The start date for the Fibonacci Retracement.",
     )
-    end_date: Optional[str] = Field(
+    end_date: str | None = Field(
         default=None,
         description="The end date for the Fibonacci Retracement.",
     )

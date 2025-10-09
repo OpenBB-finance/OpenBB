@@ -1,7 +1,6 @@
 """Executive Compensation Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -28,35 +27,23 @@ class ExecutiveCompensationData(Data):
     """Executive Compensation Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
-    )
-    report_date: Optional[dateType] = Field(
+    cik: str | None = Field(default=None, description=DATA_DESCRIPTIONS.get("cik", ""))
+    report_date: dateType | None = Field(
         default=None, description="Date of reported compensation."
     )
-    company_name: Optional[str] = Field(
+    company_name: str | None = Field(
         default=None, description="The name of the company."
     )
-    executive: Optional[str] = Field(default=None, description="Name and position.")
-    year: Optional[int] = Field(default=None, description="Year of the compensation.")
-    salary: Optional[Union[int, float]] = Field(
-        default=None, description="Base salary."
-    )
-    bonus: Optional[Union[int, float]] = Field(
-        default=None, description="Bonus payments."
-    )
-    stock_award: Optional[Union[int, float]] = Field(
-        default=None, description="Stock awards."
-    )
-    option_award: Optional[Union[int, float]] = Field(
-        default=None, description="Option awards."
-    )
-    incentive_plan_compensation: Optional[Union[int, float]] = Field(
+    executive: str | None = Field(default=None, description="Name and position.")
+    year: int | None = Field(default=None, description="Year of the compensation.")
+    salary: int | float | None = Field(default=None, description="Base salary.")
+    bonus: int | float | None = Field(default=None, description="Bonus payments.")
+    stock_award: int | float | None = Field(default=None, description="Stock awards.")
+    option_award: int | float | None = Field(default=None, description="Option awards.")
+    incentive_plan_compensation: int | float | None = Field(
         default=None, description="Incentive plan compensation."
     )
-    all_other_compensation: Optional[Union[int, float]] = Field(
+    all_other_compensation: int | float | None = Field(
         default=None, description="All other compensation."
     )
-    total: Optional[Union[int, float]] = Field(
-        default=None, description="Total compensation."
-    )
+    total: int | float | None = Field(default=None, description="Total compensation.")

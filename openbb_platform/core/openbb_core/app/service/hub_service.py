@@ -1,6 +1,5 @@
 """Hub manager class."""
 
-from typing import Optional, Tuple
 from warnings import warn
 
 from fastapi import HTTPException
@@ -34,8 +33,8 @@ class HubService:
 
     def __init__(
         self,
-        session: Optional[HubSession] = None,
-        base_url: Optional[str] = None,
+        session: HubSession | None = None,
+        base_url: str | None = None,
     ):
         """Initialize Hub service."""
         # pylint: disable=import-outside-toplevel
@@ -43,7 +42,7 @@ class HubService:
 
         self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
-        self._hub_user_settings: Optional[HubUserSettings] = None
+        self._hub_user_settings: HubUserSettings | None = None
         self._request_session = get_requests_session()
 
     @property
@@ -52,15 +51,15 @@ class HubService:
         return self._base_url
 
     @property
-    def session(self) -> Optional[HubSession]:
+    def session(self) -> HubSession | None:
         """Get session."""
         return self._session
 
     def connect(
         self,
-        email: Optional[str] = None,
-        password: Optional[str] = None,
-        pat: Optional[str] = None,
+        email: str | None = None,
+        password: str | None = None,
+        pat: str | None = None,
     ) -> HubSession:
         """Connect to Hub."""
         if email and password:
@@ -229,7 +228,7 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    def hub2platform(self, settings: HubUserSettings) -> Tuple[Credentials, Defaults]:
+    def hub2platform(self, settings: HubUserSettings) -> tuple[Credentials, Defaults]:
         """Convert Hub user settings to Platform models."""
         deprecated = {
             k: v for k, v in self.V3TOV4.items() if k in settings.features_keys

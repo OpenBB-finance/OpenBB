@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -47,9 +47,9 @@ class FredSeniorLoanOfficerSurveyQueryParams(SeniorLoanOfficerSurveyQueryParams)
         description="Category of survey response.",
         json_schema_extra={"choices": list(SLOOS_CATEGORIES.keys())},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -75,14 +75,14 @@ class FredSeniorLoanOfficerSurveyData(SeniorLoanOfficerSurveyData):
 
 class FredSeniorLoanOfficerSurveyFetcher(
     Fetcher[
-        FredSeniorLoanOfficerSurveyQueryParams, List[FredSeniorLoanOfficerSurveyData]
+        FredSeniorLoanOfficerSurveyQueryParams, list[FredSeniorLoanOfficerSurveyData]
     ]
 ):
     """FRED Senior Loan Officer Opinion Survey Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredSeniorLoanOfficerSurveyQueryParams:
         """Transform query."""
         return FredSeniorLoanOfficerSurveyQueryParams(**params)
@@ -90,9 +90,9 @@ class FredSeniorLoanOfficerSurveyFetcher(
     @staticmethod
     async def aextract_data(
         query: FredSeniorLoanOfficerSurveyQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         ids = SLOOS_CATEGORIES[query.category]
         try:
@@ -116,9 +116,9 @@ class FredSeniorLoanOfficerSurveyFetcher(
     @staticmethod
     def transform_data(
         query: FredSeniorLoanOfficerSurveyQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredSeniorLoanOfficerSurveyData]]:
+    ) -> AnnotatedResult[list[FredSeniorLoanOfficerSurveyData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

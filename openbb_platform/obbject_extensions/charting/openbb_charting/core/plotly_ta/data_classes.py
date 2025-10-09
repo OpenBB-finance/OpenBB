@@ -5,7 +5,7 @@
 import sys
 import warnings
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
-def columns_regex(df_ta: "DataFrame", name: str) -> List[str]:
+def columns_regex(df_ta: "DataFrame", name: str) -> list[str]:
     """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
@@ -63,13 +63,13 @@ class TAIndicator:
         "zlma",
         "rma",
     ]
-    args: List[Arguments]
+    args: list[Arguments]
 
     def __iter__(self):
         """Return iterator."""
         return iter(self.args)
 
-    def get_args(self, label: str) -> Union[Arguments, None]:
+    def get_args(self, label: str) -> Arguments | None:
         """Return arguments by label."""
         output = None
         for opt in self.args:
@@ -77,7 +77,7 @@ class TAIndicator:
                 output = opt
         return output
 
-    def get_argument_values(self, label: str) -> Union[List[Any], Any]:
+    def get_argument_values(self, label: str) -> list[Any] | Any:
         """Return arguments values by label."""
         output = []
         options = self.get_args(label)
@@ -90,9 +90,9 @@ class TAIndicator:
 class ChartIndicators:
     """Chart technical analysis indicators."""
 
-    indicators: Optional[List[TAIndicator]] = None
+    indicators: list[TAIndicator] | None = None
 
-    def get_indicator(self, name: str) -> Union[TAIndicator, None]:
+    def get_indicator(self, name: str) -> TAIndicator | None:
         """Return indicator with given name."""
         output = None
         for indicator in self.indicators:  # type: ignore
@@ -100,7 +100,7 @@ class ChartIndicators:
                 output = indicator
         return output
 
-    def get_indicator_args(self, name: str, label: str) -> Union[Arguments, None]:
+    def get_indicator_args(self, name: str, label: str) -> Arguments | None:
         """Return argument values for given indicator and label."""
         output = None
         indicator = self.get_indicator(name)
@@ -110,25 +110,25 @@ class ChartIndicators:
                 output = output.values
         return output
 
-    def get_indicators(self) -> Optional[List[TAIndicator]]:
+    def get_indicators(self) -> list[TAIndicator] | None:
         """Return active indicators and their arguments."""
         return self.indicators
 
-    def get_params(self) -> Dict[str, TAIndicator]:
+    def get_params(self) -> dict[str, TAIndicator]:
         """Return dictionary of active indicators and their arguments."""
         output = {}
         if self.indicators:
             output = {str(indicator.name): indicator for indicator in self.indicators}
         return output
 
-    def get_active_ids(self) -> List[str]:
+    def get_active_ids(self) -> list[str]:
         """Return list of names of active indicators."""
         active_ids = []
         if self.indicators:
             active_ids = [str(indicator.name) for indicator in self.indicators]
         return active_ids
 
-    def get_arg_names(self, name: str) -> List[str]:
+    def get_arg_names(self, name: str) -> list[str]:
         """Return list of argument labels for given indicator."""
         output = []
         indicator = self.get_indicator(name)
@@ -137,7 +137,7 @@ class ChartIndicators:
                 output.append(opt.label)
         return output
 
-    def get_options_dict(self, name: str) -> Dict[str, Optional[Arguments]]:
+    def get_options_dict(self, name: str) -> dict[str, Arguments | None]:
         """Return dictionary of argument labels and values for given indicator."""
         output = None
         options = self.get_arg_names(name)
@@ -149,15 +149,15 @@ class ChartIndicators:
         return output
 
     @staticmethod
-    def get_available_indicators() -> Tuple[str, ...]:
+    def get_available_indicators() -> tuple[str, ...]:
         """Return tuple of available indicators."""
         return tuple(
-            TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
-        )
+            TAIndicator.__annotations__["name"].__args__
+        )  # pylint: disable=E1101
 
     @classmethod
     def from_dict(
-        cls, indicators: Dict[str, Dict[str, List[Dict[str, Any]]]]
+        cls, indicators: dict[str, dict[str, list[dict[str, Any]]]]
     ) -> "ChartIndicators":
         """Return ChartIndicators from dictionary.
 
@@ -190,7 +190,7 @@ class ChartIndicators:
         )
 
     def to_dataframe(
-        self, df_ta: "DataFrame", ma_mode: Optional[List[str]] = None
+        self, df_ta: "DataFrame", ma_mode: list[str] | None = None
     ) -> "DataFrame":
         """Calculate technical analysis indicators and return dataframe."""
         output = df_ta.copy()
@@ -254,8 +254,8 @@ class TA_Data:
     def __init__(
         self,
         df_ta: Union["DataFrame", "Series"],
-        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
-        ma_mode: Optional[List[str]] = None,
+        indicators: ChartIndicators | dict[str, dict[str, Any]],
+        ma_mode: list[str] | None = None,
     ):
         """Initialize."""
         # pylint: disable=import-outside-toplevel
@@ -270,12 +270,12 @@ class TA_Data:
 
         self.df_ta: DataFrame = df_ta
         self.indicators: ChartIndicators = indicators
-        self.ma_mode: List[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
+        self.ma_mode: list[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = check_columns(df_ta)
         if self.close_col is None:
             raise ValueError("No close column found in dataframe")
 
-        self.columns: Dict[str, List[str]] = {
+        self.columns: dict[str, list[str]] = {
             "ad": ["high", "low", self.close_col, "volume"],
             "adosc": ["high", "low", self.close_col, "volume"],
             "adx": ["high", "low", self.close_col],

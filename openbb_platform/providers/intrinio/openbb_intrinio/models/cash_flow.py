@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -34,7 +34,7 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
@@ -95,136 +95,134 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "sale_of_property_plant_and_equipment": "saleofplantpropertyandequipment",
     }
 
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         description="The currency in which the balance sheet is reported.",
         default=None,
     )
-    net_income_continuing_operations: Optional[float] = Field(
+    net_income_continuing_operations: float | None = Field(
         default=None, description="Net Income (Continuing Operations)"
     )
-    net_income_discontinued_operations: Optional[float] = Field(
+    net_income_discontinued_operations: float | None = Field(
         default=None, description="Net Income (Discontinued Operations)"
     )
-    net_income: Optional[float] = Field(
+    net_income: float | None = Field(
         default=None, description="Consolidated Net Income."
     )
-    provision_for_loan_losses: Optional[float] = Field(
+    provision_for_loan_losses: float | None = Field(
         default=None, description="Provision for Loan Losses"
     )
-    provision_for_credit_losses: Optional[float] = Field(
+    provision_for_credit_losses: float | None = Field(
         default=None, description="Provision for credit losses"
     )
-    depreciation_expense: Optional[float] = Field(
+    depreciation_expense: float | None = Field(
         default=None, description="Depreciation Expense."
     )
-    amortization_expense: Optional[float] = Field(
+    amortization_expense: float | None = Field(
         default=None, description="Amortization Expense."
     )
-    share_based_compensation: Optional[float] = Field(
+    share_based_compensation: float | None = Field(
         default=None, description="Share-based compensation."
     )
-    non_cash_adjustments_to_reconcile_net_income: Optional[float] = Field(
+    non_cash_adjustments_to_reconcile_net_income: float | None = Field(
         default=None, description="Non-Cash Adjustments to Reconcile Net Income."
     )
-    changes_in_operating_assets_and_liabilities: Optional[float] = Field(
+    changes_in_operating_assets_and_liabilities: float | None = Field(
         default=None, description="Changes in Operating Assets and Liabilities (Net)"
     )
-    net_cash_from_continuing_operating_activities: Optional[float] = Field(
+    net_cash_from_continuing_operating_activities: float | None = Field(
         default=None, description="Net Cash from Continuing Operating Activities"
     )
-    net_cash_from_discontinued_operating_activities: Optional[float] = Field(
+    net_cash_from_discontinued_operating_activities: float | None = Field(
         default=None, description="Net Cash from Discontinued Operating Activities"
     )
-    net_cash_from_operating_activities: Optional[float] = Field(
+    net_cash_from_operating_activities: float | None = Field(
         default=None, description="Net Cash from Operating Activities"
     )
-    divestitures: Optional[float] = Field(default=None, description="Divestitures")
-    sale_of_property_plant_and_equipment: Optional[float] = Field(
+    divestitures: float | None = Field(default=None, description="Divestitures")
+    sale_of_property_plant_and_equipment: float | None = Field(
         default=None, description="Sale of Property, Plant, and Equipment"
     )
-    acquisitions: Optional[float] = Field(default=None, description="Acquisitions")
-    purchase_of_investments: Optional[float] = Field(
+    acquisitions: float | None = Field(default=None, description="Acquisitions")
+    purchase_of_investments: float | None = Field(
         default=None, description="Purchase of Investments"
     )
-    purchase_of_investment_securities: Optional[float] = Field(
+    purchase_of_investment_securities: float | None = Field(
         default=None, description="Purchase of Investment Securities"
     )
-    sale_and_maturity_of_investments: Optional[float] = Field(
+    sale_and_maturity_of_investments: float | None = Field(
         default=None, description="Sale and Maturity of Investments"
     )
-    loans_held_for_sale: Optional[float] = Field(
+    loans_held_for_sale: float | None = Field(
         default=None, description="Loans Held for Sale (Net)"
     )
-    purchase_of_property_plant_and_equipment: Optional[float] = Field(
+    purchase_of_property_plant_and_equipment: float | None = Field(
         default=None, description="Purchase of Property, Plant, and Equipment"
     )
-    other_investing_activities: Optional[float] = Field(
+    other_investing_activities: float | None = Field(
         default=None, description="Other Investing Activities (Net)"
     )
-    net_cash_from_continuing_investing_activities: Optional[float] = Field(
+    net_cash_from_continuing_investing_activities: float | None = Field(
         default=None, description="Net Cash from Continuing Investing Activities"
     )
-    net_cash_from_discontinued_investing_activities: Optional[float] = Field(
+    net_cash_from_discontinued_investing_activities: float | None = Field(
         default=None, description="Net Cash from Discontinued Investing Activities"
     )
-    net_cash_from_investing_activities: Optional[float] = Field(
+    net_cash_from_investing_activities: float | None = Field(
         default=None, description="Net Cash from Investing Activities"
     )
-    payment_of_dividends: Optional[float] = Field(
+    payment_of_dividends: float | None = Field(
         default=None, description="Payment of Dividends"
     )
-    repurchase_of_common_equity: Optional[float] = Field(
+    repurchase_of_common_equity: float | None = Field(
         default=None, description="Repurchase of Common Equity"
     )
-    repurchase_of_preferred_equity: Optional[float] = Field(
+    repurchase_of_preferred_equity: float | None = Field(
         default=None, description="Repurchase of Preferred Equity"
     )
-    issuance_of_common_equity: Optional[float] = Field(
+    issuance_of_common_equity: float | None = Field(
         default=None, description="Issuance of Common Equity"
     )
-    issuance_of_preferred_equity: Optional[float] = Field(
+    issuance_of_preferred_equity: float | None = Field(
         default=None, description="Issuance of Preferred Equity"
     )
-    issuance_of_debt: Optional[float] = Field(
-        default=None, description="Issuance of Debt"
-    )
-    repayment_of_debt: Optional[float] = Field(
+    issuance_of_debt: float | None = Field(default=None, description="Issuance of Debt")
+    repayment_of_debt: float | None = Field(
         default=None, description="Repayment of Debt"
     )
-    other_financing_activities: Optional[float] = Field(
+    other_financing_activities: float | None = Field(
         default=None, description="Other Financing Activities (Net)"
     )
-    cash_interest_received: Optional[float] = Field(
+    cash_interest_received: float | None = Field(
         default=None, description="Cash Interest Received"
     )
-    net_change_in_deposits: Optional[float] = Field(
+    net_change_in_deposits: float | None = Field(
         default=None, description="Net Change in Deposits"
     )
-    net_increase_in_fed_funds_sold: Optional[float] = Field(
+    net_increase_in_fed_funds_sold: float | None = Field(
         default=None, description="Net Increase in Fed Funds Sold"
     )
-    net_cash_from_continuing_financing_activities: Optional[float] = Field(
+    net_cash_from_continuing_financing_activities: float | None = Field(
         default=None, description="Net Cash from Continuing Financing Activities"
     )
-    net_cash_from_discontinued_financing_activities: Optional[float] = Field(
+    net_cash_from_discontinued_financing_activities: float | None = Field(
         default=None, description="Net Cash from Discontinued Financing Activities"
     )
-    net_cash_from_financing_activities: Optional[float] = Field(
+    net_cash_from_financing_activities: float | None = Field(
         default=None, description="Net Cash from Financing Activities"
     )
-    effect_of_exchange_rate_changes: Optional[float] = Field(
+    effect_of_exchange_rate_changes: float | None = Field(
         default=None, description="Effect of Exchange Rate Changes"
     )
-    other_net_changes_in_cash: Optional[float] = Field(
+    other_net_changes_in_cash: float | None = Field(
         default=None, description="Other Net Changes in Cash"
     )
-    net_change_in_cash_and_equivalents: Optional[float] = Field(
+    net_change_in_cash_and_equivalents: float | None = Field(
         default=None, description="Net Change in Cash and Equivalents"
     )
-    cash_income_taxes_paid: Optional[float] = Field(
+    cash_income_taxes_paid: float | None = Field(
         default=None, description="Cash Income Taxes Paid"
     )
-    cash_interest_paid: Optional[float] = Field(
+    cash_interest_paid: float | None = Field(
         default=None, description="Cash Interest Paid"
     )
 
@@ -242,22 +240,22 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
 class IntrinioCashFlowStatementFetcher(
     Fetcher[
         IntrinioCashFlowStatementQueryParams,
-        List[IntrinioCashFlowStatementData],
+        list[IntrinioCashFlowStatementData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioCashFlowStatementQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioCashFlowStatementQueryParams:
         """Transform the query params."""
         return IntrinioCashFlowStatementQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioCashFlowStatementQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "cash_flow_statement"
@@ -270,8 +268,8 @@ class IntrinioCashFlowStatementFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (
-            f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={period_type}"
+            f"{base_url}/companies/{query.symbol}"
+            f"/fundamentals?statement_code={statement_code}&type={period_type}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
@@ -289,7 +287,7 @@ class IntrinioCashFlowStatementFetcher(
         ]
         fiscal_periods = fiscal_periods[: query.limit]
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             statement_data = await response.json()
             return {
@@ -309,13 +307,13 @@ class IntrinioCashFlowStatementFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioCashFlowStatementData]:
+        query: IntrinioCashFlowStatementQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
-        transformed_data: List[IntrinioCashFlowStatementData] = []
+        transformed_data: list[IntrinioCashFlowStatementData] = []
         units = []
         for item in data:
-            sub_dict: Dict[str, Any] = {}
+            sub_dict: dict[str, Any] = {}
 
             for sub_item in item["financials"]:
                 unit = sub_item["data_tag"].get("unit", "")

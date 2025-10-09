@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -18,7 +18,7 @@ from pydantic import Field, field_validator
 class FredEuroShortTermRateQueryParams(EuroShortTermRateQueryParams):
     """FRED Euro Short Term Rate Query."""
 
-    frequency: Optional[
+    frequency: (
         Literal[
             "a",
             "q",
@@ -34,7 +34,8 @@ class FredEuroShortTermRateQueryParams(EuroShortTermRateQueryParams):
             "bwew",
             "bwem",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="""Frequency aggregation to convert daily data to lower frequency.
         \n    a = Annual
@@ -70,7 +71,7 @@ class FredEuroShortTermRateQueryParams(EuroShortTermRateQueryParams):
             ]
         },
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default=None,
         description="""A key that indicates the aggregation method used for frequency aggregation.
         \n    avg = Average
@@ -79,9 +80,9 @@ class FredEuroShortTermRateQueryParams(EuroShortTermRateQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         \n    None = No transformation
@@ -128,21 +129,21 @@ class FredEuroShortTermRateData(EuroShortTermRateData):
 
 
 class FredEuroShortTermRateFetcher(
-    Fetcher[FredEuroShortTermRateQueryParams, List[FredEuroShortTermRateData]]
+    Fetcher[FredEuroShortTermRateQueryParams, list[FredEuroShortTermRateData]]
 ):
     """FRED Euro Short Term Rate Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredEuroShortTermRateQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredEuroShortTermRateQueryParams:
         """Transform query"""
         return FredEuroShortTermRateQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredEuroShortTermRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data"""
 
         ids = [
@@ -177,9 +178,9 @@ class FredEuroShortTermRateFetcher(
     @staticmethod
     def transform_data(
         query: FredEuroShortTermRateQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredEuroShortTermRateData]]:
+    ) -> AnnotatedResult[list[FredEuroShortTermRateData]]:
         """Transform data"""
         if not data:
             raise EmptyDataError("The request was returned empty.")

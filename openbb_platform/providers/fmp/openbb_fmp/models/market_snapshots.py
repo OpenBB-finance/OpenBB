@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_snapshots import (
@@ -52,18 +52,14 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "year_low": "yearLow",
         "market_cap": "marketCap",
     }
-    ma50: Optional[float] = Field(
-        description="The 50-day moving average.", default=None
-    )
-    ma200: Optional[float] = Field(
-        description="The 200-day moving average.", default=None
-    )
-    year_high: Optional[float] = Field(description="The 52-week high.", default=None)
-    year_low: Optional[float] = Field(description="The 52-week low.", default=None)
-    market_cap: Optional[Union[int, float]] = Field(
+    ma50: float | None = Field(description="The 50-day moving average.", default=None)
+    ma200: float | None = Field(description="The 200-day moving average.", default=None)
+    year_high: float | None = Field(description="The 52-week high.", default=None)
+    year_low: float | None = Field(description="The 52-week low.", default=None)
+    market_cap: int | float | None = Field(
         description="Market cap of the stock.", default=None
     )
-    last_price_timestamp: Optional[Union[datetime, dateType]] = Field(
+    last_price_timestamp: datetime | dateType | None = Field(
         description="The timestamp of the last price.", default=None
     )
 
@@ -96,7 +92,7 @@ class FMPMarketSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPMarketSnapshotsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

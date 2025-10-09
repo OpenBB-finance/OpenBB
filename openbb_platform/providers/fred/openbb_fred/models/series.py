@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -64,7 +64,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
         },
     }
 
-    frequency: Optional[
+    frequency: (
         Literal[
             "a",
             "q",
@@ -81,7 +81,8 @@ class FredSeriesQueryParams(SeriesQueryParams):
             "bwew",
             "bwem",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="""Frequency aggregation to convert high frequency data to lower frequency.
         None = No change
@@ -101,7 +102,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
         bwem = Biweekly, Ending Monday
         """,
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default="eop",
         description="""A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
@@ -110,9 +111,9 @@ class FredSeriesQueryParams(SeriesQueryParams):
         eop = End of Period
         """,
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         None = No transformation
@@ -136,22 +137,22 @@ class FredSeriesData(SeriesData):
 class FredSeriesFetcher(
     Fetcher[
         FredSeriesQueryParams,
-        List[FredSeriesData],
+        list[FredSeriesData],
     ]
 ):
     """FRED Series Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredSeriesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredSeriesQueryParams:
         """Transform query."""
         return FredSeriesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredSeriesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -175,7 +176,7 @@ class FredSeriesFetcher(
             for series_id in series_ids
         ]
 
-        async def callback(response: ClientResponse, session: ClientSession) -> Dict:
+        async def callback(response: ClientResponse, session: ClientSession) -> dict:
             observations_response = await response.json()
             series_id = response.url.query.get("series_id")
 
@@ -230,8 +231,8 @@ class FredSeriesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredSeriesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> AnnotatedResult[List[FredSeriesData]]:
+        query: FredSeriesQueryParams, data: list[dict], **kwargs: Any
+    ) -> AnnotatedResult[list[FredSeriesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

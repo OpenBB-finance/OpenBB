@@ -1,7 +1,7 @@
 """Unemployment Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -24,10 +24,10 @@ class UnemploymentQueryParams(QueryParams):
         default="monthly",
         json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
@@ -35,14 +35,14 @@ class UnemploymentQueryParams(QueryParams):
 class UnemploymentData(Data):
     """Unemployment Data."""
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="Country for which unemployment rate is given",
     )
-    value: Optional[float] = Field(
+    value: float | None = Field(
         default=None,
         description="Unemployment rate, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},

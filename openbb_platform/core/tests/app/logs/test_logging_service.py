@@ -1,7 +1,6 @@
 """Test LoggingService class."""
 
 import json
-from typing import Optional
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
@@ -37,8 +36,8 @@ class MockLoggingSettings:
 class MockOBBject(BaseModel):
     """Mock object for testing."""
 
-    output: Optional[str] = None
-    error: Optional[str] = None
+    output: str | None = None
+    error: str | None = None
 
 
 @pytest.fixture(scope="function")
@@ -49,15 +48,19 @@ def logging_service():
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
 
-    with patch(
-        "openbb_core.app.logs.logging_service.LoggingSettings",
-        MockLoggingSettings,
-    ), patch(
-        "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
-        mock_setup_handlers,
-    ), patch(
-        "openbb_core.app.logs.logging_service.LoggingService._log_startup",
-        mock_log_startup,
+    with (
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingSettings",
+            MockLoggingSettings,
+        ),
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
+            mock_setup_handlers,
+        ),
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingService._log_startup",
+            mock_log_startup,
+        ),
     ):
         _logging_service = LoggingService(
             system_settings=mock_system_settings,  # type: ignore
@@ -77,15 +80,19 @@ def test_correctly_initialized():
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
 
-    with patch(
-        "openbb_core.app.logs.logging_service.LoggingSettings",
-        MockLoggingSettings,
-    ), patch(
-        "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
-        mock_setup_handlers,
-    ), patch(
-        "openbb_core.app.logs.logging_service.LoggingService._log_startup",
-        mock_log_startup,
+    with (
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingSettings",
+            MockLoggingSettings,
+        ),
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
+            mock_setup_handlers,
+        ),
+        patch(
+            "openbb_core.app.logs.logging_service.LoggingService._log_startup",
+            mock_log_startup,
+        ),
     ):
         _ = LoggingService(
             system_settings=mock_system_settings,

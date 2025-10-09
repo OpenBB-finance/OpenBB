@@ -147,9 +147,7 @@ class Settings(BaseModel):
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
-        return f"{self.__class__.__name__}\n\n" + "\n".join(
-            f"{k}: {v}" for k, v in self.model_dump().items()
-        )
+        return f"{self.__class__.__name__}\n\n" + "\n".join(f"{k}: {v}" for k, v in self.model_dump().items())
 
     @model_validator(mode="before")
     @classmethod

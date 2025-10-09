@@ -4,8 +4,6 @@ This was created as a way to handle short interest data from the FINRA.
 The files do not change, so there is no need to download them every time.
 """
 
-from typing import List
-
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_finra.utils.helpers import get_short_interest_dates
 
@@ -21,7 +19,7 @@ def get_db_path():
     return DB_PATH
 
 
-def get_cached_dates() -> List:
+def get_cached_dates() -> list:
     """Return the dates that are cached in the DB file."""
     # pylint: disable=import-outside-toplevel
     import sqlite3  # noqa

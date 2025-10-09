@@ -1,7 +1,6 @@
 """Helper functions for FINRA API."""
 
 import datetime
-from typing import List
 
 # pylint: disable=W0621
 
@@ -131,7 +130,7 @@ def get_adjusted_date(year, month, day):
     return date
 
 
-def get_short_interest_dates() -> List[str]:
+def get_short_interest_dates() -> list[str]:
     """Get a list of dates for which the short interest data is available.
 
     It is reported on the 15th and the last day of each month,but if the date falls on a weekend,

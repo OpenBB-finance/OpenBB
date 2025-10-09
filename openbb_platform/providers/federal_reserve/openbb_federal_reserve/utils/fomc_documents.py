@@ -1,7 +1,7 @@
 """FOMC document and release utilities."""
 
 from functools import lru_cache
-from typing import Literal, Optional
+from typing import Literal
 
 FomcDocumentType = Literal[
     "all",
@@ -39,7 +39,7 @@ def load_historical_fomc_documents() -> list:
 
 
 @lru_cache(maxsize=64)
-def get_current_fomc_documents(url: Optional[str] = None) -> list:
+def get_current_fomc_documents(url: str | None = None) -> list:
     """
     Get the current FOMC documents from https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.
 
@@ -125,8 +125,8 @@ def get_current_fomc_documents(url: Optional[str] = None) -> list:
 
 @lru_cache(maxsize=32)
 def get_fomc_documents_by_year(
-    year: Optional[int] = None,
-    document_type: Optional[FomcDocumentType] = None,
+    year: int | None = None,
+    document_type: FomcDocumentType | None = None,
     pdf_only: bool = False,
 ) -> list[dict]:
     """
@@ -214,7 +214,7 @@ def get_fomc_documents_by_year(
     return sorted(filtered_docs, key=lambda x: x["date"], reverse=True)
 
 
-def get_beige_books(year: Optional[int] = None) -> list[dict]:
+def get_beige_books(year: int | None = None) -> list[dict]:
     """
     Get a list of Beige Books by year.
 

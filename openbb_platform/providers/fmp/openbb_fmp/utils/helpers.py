@@ -2,7 +2,7 @@
 
 from datetime import date
 from functools import lru_cache
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
@@ -42,7 +42,7 @@ async def response_callback(response, _):
     return data
 
 
-async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
+async def get_data(url: str, **kwargs: Any) -> list | dict:
     """Get data from FMP endpoint."""
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
@@ -50,7 +50,7 @@ async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
-async def get_data_urls(urls: list[str], **kwargs: Any) -> Union[list, dict]:
+async def get_data_urls(urls: list[str], **kwargs: Any) -> list | dict:
     """Get data from FMP for several urls."""
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_requests
@@ -61,9 +61,9 @@ async def get_data_urls(urls: list[str], **kwargs: Any) -> Union[list, dict]:
 def create_url(
     version: int,
     endpoint: str,
-    api_key: Optional[str],
-    query: Optional[Any] = None,
-    exclude: Optional[list[str]] = None,
+    api_key: str | None,
+    query: Any | None = None,
+    exclude: list[str] | None = None,
 ) -> str:
     """Return a URL for the FMP API.
 
@@ -97,7 +97,7 @@ def create_url(
 
 
 async def get_data_many(
-    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+    url: str, sub_dict: str | None = None, **kwargs: Any
 ) -> list[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
 
@@ -140,7 +140,7 @@ async def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def most_recent_quarter(base: Optional[date] = None) -> date:
+def most_recent_quarter(base: date | None = None) -> date:
     """Get the most recent quarter date."""
     if base is None:
         base = date.today()
@@ -239,7 +239,7 @@ async def get_historical_ohlc(query, credentials, **kwargs: Any) -> list[dict]:
 
     if not results:
         raise EmptyDataError(
-            f"{str(','.join(messages)).replace(',',' ') if messages else 'No data found'}"
+            f"{str(','.join(messages)).replace(',', ' ') if messages else 'No data found'}"
         )
 
     return results

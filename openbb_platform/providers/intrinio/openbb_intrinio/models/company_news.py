@@ -2,7 +2,7 @@
 
 import asyncio
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -39,47 +39,47 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         "sentiment": {"choices": ["positive", "neutral", "negative"]},
     }
 
-    source: Optional[
-        Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]
-    ] = Field(
+    source: (
+        Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"] | None
+    ) = Field(
         default=None,
         description="The source of the news article.",
     )
-    sentiment: Optional[Literal["positive", "neutral", "negative"]] = Field(
+    sentiment: Literal["positive", "neutral", "negative"] | None = Field(
         default=None,
         description="Return news only from this source.",
     )
-    language: Optional[str] = Field(
+    language: str | None = Field(
         default=None,
         description="Filter by language. Unsupported for yahoo source.",
     )
-    topic: Optional[str] = Field(
+    topic: str | None = Field(
         default=None,
         description="Filter by topic. Unsupported for yahoo source.",
     )
-    word_count_greater_than: Optional[int] = Field(
+    word_count_greater_than: int | None = Field(
         default=None,
         description="News stories will have a word count greater than this value."
         + " Unsupported for yahoo source.",
     )
-    word_count_less_than: Optional[int] = Field(
+    word_count_less_than: int | None = Field(
         default=None,
         description="News stories will have a word count less than this value."
         + " Unsupported for yahoo source.",
     )
-    is_spam: Optional[bool] = Field(
+    is_spam: bool | None = Field(
         default=None,
         description="Filter whether it is marked as spam or not."
         + " Unsupported for yahoo source.",
     )
-    business_relevance_greater_than: Optional[float] = Field(
+    business_relevance_greater_than: float | None = Field(
         default=None,
         ge=0,
         le=1,
         description="News stories will have a business relevance score more than this value."
         + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
-    business_relevance_less_than: Optional[float] = Field(
+    business_relevance_less_than: float | None = Field(
         default=None,
         ge=0,
         le=1,
@@ -105,48 +105,48 @@ class IntrinioCompanyNewsData(CompanyNewsData):
         "sentiment_confidence": "article_sentiment_confidence",
         "symbols": "symbol",
     }
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None,
         description="The source of the news article.",
     )
-    summary: Optional[str] = Field(
+    summary: str | None = Field(
         default=None,
         description="The summary of the news article.",
     )
-    topics: Optional[str] = Field(
+    topics: str | None = Field(
         default=None,
         description="The topics related to the news article.",
     )
-    word_count: Optional[int] = Field(
+    word_count: int | None = Field(
         default=None,
         description="The word count of the news article.",
     )
-    business_relevance: Optional[float] = Field(
+    business_relevance: float | None = Field(
         default=None,
         description=" 	How strongly correlated the news article is to the business",
     )
-    sentiment: Optional[str] = Field(
+    sentiment: str | None = Field(
         default=None,
         description="The sentiment of the news article - i.e, negative, positive.",
     )
-    sentiment_confidence: Optional[float] = Field(
+    sentiment_confidence: float | None = Field(
         default=None,
         description="The confidence score of the sentiment rating.",
     )
-    language: Optional[str] = Field(
+    language: str | None = Field(
         default=None,
         description="The language of the news article.",
     )
-    spam: Optional[bool] = Field(
+    spam: bool | None = Field(
         default=None,
         description="Whether the news article is spam.",
     )
-    copyright: Optional[str] = Field(
+    copyright: str | None = Field(
         default=None,
         description="The copyright notice of the news article.",
     )
     id: str = Field(description="Article ID.")
-    security: Optional[IntrinioSecurity] = Field(
+    security: IntrinioSecurity | None = Field(
         default=None,
         description="The Intrinio Security object. Contains the security details related to the news article.",
     )
@@ -176,13 +176,13 @@ class IntrinioCompanyNewsData(CompanyNewsData):
 class IntrinioCompanyNewsFetcher(
     Fetcher[
         IntrinioCompanyNewsQueryParams,
-        List[IntrinioCompanyNewsData],
+        list[IntrinioCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioCompanyNewsQueryParams:
         """Transform the query params."""
         transformed_params = params
         if not transformed_params.get("start_date"):
@@ -200,9 +200,9 @@ class IntrinioCompanyNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -214,7 +214,7 @@ class IntrinioCompanyNewsFetcher(
         )
         query_str = get_querystring(query.model_dump(by_alias=True), ignore)
         symbols = query.symbol.split(",") if query.symbol else []
-        news: List = []
+        news: list = []
 
         async def callback(response, session):
             """Response callback."""
@@ -279,10 +279,10 @@ class IntrinioCompanyNewsFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: IntrinioCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioCompanyNewsData]:
+        query: IntrinioCompanyNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioCompanyNewsData]:
         """Return the transformed data."""
-        results: List[IntrinioCompanyNewsData] = []
+        results: list[IntrinioCompanyNewsData] = []
         for item in data:
             body = item.get("body", {})
             if not body:

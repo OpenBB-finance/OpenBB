@@ -3,16 +3,12 @@
 import argparse
 import inspect
 import re
+from collections.abc import Callable
 from copy import deepcopy
 from typing import (
+    Annotated,
     Any,
-    Callable,
-    Dict,
-    List,
     Literal,
-    Optional,
-    Tuple,
-    Type,
     Union,
     get_args,
     get_origin,
@@ -21,7 +17,6 @@ from typing import (
 
 from openbb_core.app.model.field import OpenBBField
 from pydantic import BaseModel
-from typing_extensions import Annotated
 
 from openbb_cli.argparse_translator.argparse_argument import (
     ArgparseArgumentGroupModel,
@@ -46,8 +41,8 @@ class ArgparseTranslator:
     def __init__(
         self,
         func: Callable,
-        custom_argument_groups: Optional[List[ArgparseArgumentGroupModel]] = None,
-        add_help: Optional[bool] = True,
+        custom_argument_groups: list[ArgparseArgumentGroupModel] | None = None,
+        add_help: bool | None = True,
     ):
         """
         Initialize the ArgparseTranslator.
@@ -59,7 +54,7 @@ class ArgparseTranslator:
         self.func = func
         self.signature = inspect.signature(func)
         self.type_hints = get_type_hints(func)
-        self.provider_parameters: Dict[str, List[str]] = {}
+        self.provider_parameters: dict[str, list[str]] = {}
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
@@ -82,9 +77,7 @@ class ArgparseTranslator:
     def _handle_argument_in_groups(self, argument, group):
         """Handle the argument and add it to the parser."""
 
-        def _update_providers(
-            input_string: str, new_provider: List[Optional[str]]
-        ) -> str:
+        def _update_providers(input_string: str, new_provider: list[str | None]) -> str:
             pattern = r"\(provider:\s*(.*?)\)"
             providers = re.findall(pattern, input_string)
             providers.extend(new_provider)
@@ -174,104 +167,87 @@ class ArgparseTranslator:
         """Return True if the parameter has a default value."""
         return param.default != inspect.Parameter.empty
 
-    def _get_action_type(self, param: inspect.Parameter) -> str:
+    def _get_action_type(
+        self, param: inspect.Parameter
+    ) -> Literal["store_true", "store"]:
         """Return the argparse action type for the given parameter."""
         param_type = self.type_hints[param.name]
-        type_origin = get_origin(param_type)
-        if param_type is bool or (
-            type_origin is Union and bool in get_args(param_type)
-        ):
+        origin = get_origin(param_type)
+        args = get_args(param_type)
+
+        if param_type is bool:
             return "store_true"
+
+        if origin is Union and bool in args:
+            return "store_true"
+
+        # Special case for Optional[bool] which is Union[bool, None]
+        if origin is Union and bool in args and type(None) in args:
+            return "store_true"
+
         return "store"
 
-    def _get_type_and_choices(  # noqa: PLR0912 # pylint: disable=too-many-return-statements, too-many-branches, too-many-statements
+    def _get_type_and_choices(
         self, param: inspect.Parameter
-    ) -> Tuple[Type[Any], Tuple[Any, ...]]:
+    ) -> tuple[type[Any], tuple[Any, ...]]:
         """Return the type and choices for the given parameter."""
-        param_type = self.type_hints[param.name]
-        type_origin = get_origin(param_type)
 
-        choices: tuple[Any, ...] = ()
+        def get_base_type(t: Any) -> type:
+            """Recursively find the base type for argparse."""
+            origin = get_origin(t)
+            args = get_args(t)
 
-        if type_origin is Literal:
-            choices = get_args(param_type)
-            # Special handling for boolean literals
-            if all(isinstance(choice, bool) for choice in choices):
-                return bool, ()
-            param_type = type(choices[0])  # type: ignore
+            if origin is Union or "types.UnionType" in str(type(t)):
+                non_none_args = [a for a in args if a is not type(None)]
+                if len(non_none_args) == 1:
+                    return get_base_type(non_none_args[0])
+                # For Union[A, B], default to str, as argparse can't handle multiple types
+                if bool in non_none_args:
+                    return bool
+                return str
+            if origin is Literal:
+                return type(args[0]) if args else str
+            if origin is list:
+                return get_base_type(args[0]) if args else Any  # type: ignore
+            if t is Any:
+                return str
+            return t
 
-        if type_origin is list:
-            param_type = get_args(param_type)[0]
+        def get_choices(t: Any) -> tuple:
+            """Recursively find the choices for argparse."""
+            origin = get_origin(t)
+            args = get_args(t)
 
-            if get_origin(param_type) is Literal:
-                choices = get_args(param_type)
-                # Special handling for boolean literals in lists
-                if all(isinstance(choice, bool) for choice in choices):
-                    return bool, ()
-                param_type = type(choices[0])  # type: ignore
+            if origin is Union or "types.UnionType" in str(type(t)):
+                non_none_args = [a for a in args if a is not type(None)]
+                all_choices: list = []
+                for arg in non_none_args:
+                    all_choices.extend(get_choices(arg))
+                return tuple(set(all_choices))
+            if origin is Literal:
+                return args
+            if origin is list and args:
+                return get_choices(args[0])
+            return ()
 
-        if type_origin is Union:
-            union_args = get_args(param_type)
-            # Check if Union contains bool type
-            if bool in union_args and (str in union_args or len(union_args) == 2):
-                return bool, ()
+        param_type_hint = self.type_hints[param.name]
 
-            # Check if Union contains Literal types and extract all choices
-            literal_choices: list = []
-            for arg in union_args:
-                if get_origin(arg) is Literal:
-                    literal_choices.extend(get_args(arg))
+        base_type = get_base_type(param_type_hint)
+        choices = get_choices(param_type_hint)
 
-            if literal_choices:
-                # Check if all choices are boolean
-                if all(isinstance(choice, bool) for choice in literal_choices):
-                    return bool, ()
-                # We have Literal types in the Union, use their choices
-                choices = tuple(literal_choices)
-                param_type = type(choices[0])  # type: ignore
-            elif str in union_args:
-                param_type = str
-
-            # check if it's an Optional, which would be a Union with NoneType
-            if type(None) in get_args(param_type):
-                # remove NoneType from the args
-                args = [arg for arg in get_args(param_type) if arg is not None]
-                # if there is only one arg left, use it
-                if len(args) == 1:
-                    param_type = args[0]
-
-                    if get_origin(param_type) is Literal:
-                        choices = get_args(param_type)
-                        # Special handling for boolean literals
-                        if all(isinstance(choice, bool) for choice in choices):
-                            return bool, ()
-                        param_type = type(choices[0])  # type: ignore
-                elif len(args) > 1:
-                    # Handle Union with multiple types (not just Optional)
-                    # Try to extract Literal types again from the filtered args
-                    literal_choices = []
-                    for arg in args:
-                        if get_origin(arg) is Literal:
-                            literal_choices.extend(get_args(arg))
-
-                    if literal_choices:
-                        # Check if all choices are boolean
-                        if all(isinstance(choice, bool) for choice in literal_choices):
-                            return bool, ()
-                        choices = tuple(set(literal_choices))
-                        param_type = type(choices[0])  # type: ignore
-
-        # if there are custom choices, override
         custom_choices = self._get_argument_custom_choices(param)
-        if custom_choices and param_type is not bool:
+        if custom_choices:
             choices = tuple(custom_choices)
 
-        return param_type, choices
+        if base_type is bool:
+            choices = ()
+
+        return base_type, choices
 
     @staticmethod
     def _split_annotation(
-        base_annotation: Type[Any], custom_annotation_type: Type
-    ) -> Tuple[Type[Any], List[Any]]:
+        base_annotation: type[Any], custom_annotation_type: type
+    ) -> tuple[type[Any], list[Any]]:
         """Find the base annotation and the custom annotations, namely the OpenBBField."""
         if get_origin(base_annotation) is not Annotated:
             return base_annotation, []
@@ -283,7 +259,7 @@ class ArgparseTranslator:
         ]
 
     @classmethod
-    def _get_argument_custom_help(cls, param: inspect.Parameter) -> Optional[str]:
+    def _get_argument_custom_help(cls, param: inspect.Parameter) -> str | None:
         """Return the help annotation for the given parameter."""
         base_annotation = param.annotation
         _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
@@ -293,7 +269,7 @@ class ArgparseTranslator:
         return help_annotation
 
     @classmethod
-    def _get_argument_custom_choices(cls, param: inspect.Parameter) -> Optional[str]:
+    def _get_argument_custom_choices(cls, param: inspect.Parameter) -> str | None:
         """Return the help annotation for the given parameter."""
         base_annotation = param.annotation
         _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
@@ -302,7 +278,7 @@ class ArgparseTranslator:
         )
         return choices_annotation
 
-    def _get_nargs(self, param: inspect.Parameter) -> Optional[str]:
+    def _get_nargs(self, param: inspect.Parameter) -> Literal["+"] | None:
         """Return the nargs annotation for the given parameter."""
         param_type = self.type_hints[param.name]
         origin = get_origin(param_type)
@@ -339,7 +315,7 @@ class ArgparseTranslator:
                 sig = inspect.signature(param_type)
 
                 # add help to the annotation
-                annotated_parameters: List[inspect.Parameter] = []
+                annotated_parameters: list[inspect.Parameter] = []
                 for child_param in sig.parameters.values():
                     new_child_param = child_param.replace(
                         name=f"{param.name}{SEP}{child_param.name}",
@@ -400,9 +376,9 @@ class ArgparseTranslator:
                 )
 
     @staticmethod
-    def _unflatten_args(args: dict) -> Dict[str, Any]:
+    def _unflatten_args(args: dict) -> dict[str, Any]:
         """Unflatten the args that were flattened by the custom types."""
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
         for key, value in args.items():
             if SEP in key:
                 parts = key.split(SEP)
@@ -416,7 +392,7 @@ class ArgparseTranslator:
                 result[key] = value
         return result
 
-    def _update_with_custom_types(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def _update_with_custom_types(self, kwargs: dict[str, Any]) -> dict[str, Any]:
         """Update the kwargs with the custom types."""
         # for each argument in the signature that is a custom type, we need to
         # update the kwargs with the custom type kwargs
@@ -432,7 +408,7 @@ class ArgparseTranslator:
 
     def execute_func(
         self,
-        parsed_args: Optional[argparse.Namespace] = None,
+        parsed_args: argparse.Namespace | None = None,
     ) -> Any:
         """
         Execute the original function with the parsed arguments.
@@ -447,7 +423,7 @@ class ArgparseTranslator:
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
         provider = kwargs.get("provider")
-        provider_args: List = []
+        provider_args: list = []
         if provider and provider in self.provider_parameters:
             provider_args = self.provider_parameters[provider]
         else:

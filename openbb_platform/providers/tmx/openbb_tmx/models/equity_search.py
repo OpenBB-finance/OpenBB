@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -31,22 +31,22 @@ class TmxEquitySearchData(EquitySearchData):
 class TmxEquitySearchFetcher(
     Fetcher[
         TmxEquitySearchQueryParams,
-        List[TmxEquitySearchData],
+        list[TmxEquitySearchData],
     ]
 ):
     """TMX Equity Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEquitySearchQueryParams:
         """Transform the query."""
         return TmxEquitySearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxEquitySearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_all_tmx_companies
@@ -66,7 +66,7 @@ class TmxEquitySearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: TmxEquitySearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TmxEquitySearchData]:
+        query: TmxEquitySearchQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[TmxEquitySearchData]:
         """Transform the data to the standard format."""
         return [TmxEquitySearchData.model_validate(d) for d in data]

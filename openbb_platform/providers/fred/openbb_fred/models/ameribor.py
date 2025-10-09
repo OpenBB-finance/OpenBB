@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -41,23 +41,18 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
         }
     }
 
-    maturity: Union[
+    maturity: (
         Literal[
-            "all",
-            "overnight",
-            "average_30d",
-            "average_90d",
-            "term_30d",
-            "term_90d",
-        ],
-        str,
-    ] = Field(
+            "all", "overnight", "average_30d", "average_90d", "term_30d", "term_90d"
+        ]
+        | str
+    ) = Field(
         default="all",
         description="Period of AMERIBOR rate.",
     )
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -71,8 +66,8 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -108,7 +103,7 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -118,9 +113,9 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -144,20 +139,20 @@ class FredAmeriborData(AmeriborData):
     """FRED AMERIBOR Data."""
 
 
-class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData]]):
+class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, list[FredAmeriborData]]):
     """FRED Ameribor Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredAmeriborQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredAmeriborQueryParams:
         """Transform query."""
         return FredAmeriborQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredAmeriborQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         maturities = query.maturity.split(",")
         ids = ""
@@ -189,9 +184,9 @@ class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData
     @staticmethod
     def transform_data(
         query: FredAmeriborQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredAmeriborData]]:
+    ) -> AnnotatedResult[list[FredAmeriborData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame

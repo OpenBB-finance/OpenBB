@@ -7,7 +7,7 @@ import inspect
 import sys
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -85,15 +85,15 @@ class PlotlyTA(PltTA):
     >>> fig2.show()
     """
 
-    inchart_colors: List[str] = []
-    plugins: List[Type[PltTA]] = []
+    inchart_colors: list[str] = []
+    plugins: list[type[PltTA]] = []
     df_ta: Optional["pd.DataFrame"] = None
-    close_column: Optional[str] = "close"
+    close_column: str | None = "close"
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
     charting_settings: Optional["ChartingSettings"] = None
-    theme: Optional[ChartStyle] = None
+    theme: ChartStyle | None = None
 
     def __new__(cls, *args, **kwargs):
         """Create a new instance of the class.
@@ -115,9 +115,7 @@ class PlotlyTA(PltTA):
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
             PLOTLY_TA = super().__new__(cls)  # type: ignore[attr-defined, assignment]
-            PLOTLY_TA._locate_plugins(  # type: ignore[attr-defined]
-                getattr(cls.charting_settings, "debug_mode", False)
-            )
+            PLOTLY_TA._locate_plugins(getattr(cls.charting_settings, "debug_mode", False))  # type: ignore[attr-defined]
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # type: ignore[attr-defined, assignment]
 
         return PLOTLY_TA
@@ -139,32 +137,32 @@ class PlotlyTA(PltTA):
         return ChartStyle(chart_style, user_styles_directory)
 
     @property
-    def ma_mode(self) -> List[str]:
+    def ma_mode(self) -> list[str]:
         """List of available moving average modes."""
         return list(set(self.__ma_mode__))
 
     @ma_mode.setter
-    def ma_mode(self, value: List[str]):
+    def ma_mode(self, value: list[str]):
         """Set list of available moving average modes."""
         self.__ma_mode__ = value
 
     @property
-    def inchart(self) -> List[str]:
+    def inchart(self) -> list[str]:
         """List of available inchart indicators."""
         return list(set(self.__inchart__))
 
     @inchart.setter
-    def inchart(self, value: List[str]):
+    def inchart(self, value: list[str]):
         """Set list of available inchart indicators."""
         self.__inchart__ = value
 
     @property
-    def subplots(self) -> List[str]:
+    def subplots(self) -> list[str]:
         """List of available subplots."""
         return list(set(self.__subplots__))
 
     @subplots.setter
-    def subplots(self, value: List[str]):
+    def subplots(self, value: list[str]):
         """Set list of available subplots."""
         self.__subplots__ = value
 
@@ -172,12 +170,12 @@ class PlotlyTA(PltTA):
     def __plot__(
         self,
         df_stock: Union["pd.DataFrame", "pd.Series"],
-        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
+        indicators: ChartIndicators | dict[str, dict[str, Any]] | None = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: Optional[OpenBBFigure] = None,
+        fig: OpenBBFigure | None = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Do not call this directly.
@@ -219,12 +217,12 @@ class PlotlyTA(PltTA):
     @staticmethod
     def plot(
         df_stock: Union["pd.DataFrame", "pd.Series"],
-        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
+        indicators: ChartIndicators | dict[str, dict[str, Any]] | None = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: Optional[OpenBBFigure] = None,
+        fig: OpenBBFigure | None = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
@@ -263,7 +261,7 @@ class PlotlyTA(PltTA):
         )
 
     @staticmethod
-    def _locate_plugins(debug: Optional[bool] = False) -> None:
+    def _locate_plugins(debug: bool | None = False) -> None:
         """Locate all the plugins in the plugins folder."""
         path = (
             Path(sys.executable).parent
@@ -443,7 +441,7 @@ class PlotlyTA(PltTA):
 
     def plot_fig(  # noqa: PLR0912
         self,
-        fig: Optional[OpenBBFigure] = None,
+        fig: OpenBBFigure | None = None,
         symbol: str = "",
         candles: bool = True,
         volume_ticks_x: int = 7,
@@ -468,11 +466,7 @@ class PlotlyTA(PltTA):
         """
         self.df_ta = self.calculate_indicators()
 
-        symbol = (  # type: ignore
-            self.df_stock.name
-            if hasattr(self.df_stock, "name") and not symbol
-            else symbol
-        )
+        symbol = self.df_stock.name if hasattr(self.df_stock, "name") and not symbol else symbol  # type: ignore
 
         figure = self.init_plot(symbol, candles) if fig is None else fig
         subplot_row, fig_new = 2, {}
@@ -524,8 +518,7 @@ class PlotlyTA(PltTA):
                 )
                 if subplot_row > 5 and remaining_subplots:
                     warnings.warn(
-                        f"[bold red]Reached max number of subplots.   "
-                        f"Skipping {', '.join(remaining_subplots)}[/]"
+                        f"[bold red]Reached max number of subplots.   Skipping {', '.join(remaining_subplots)}[/]"
                     )
                     break
             except Exception as e:
@@ -551,7 +544,7 @@ class PlotlyTA(PltTA):
 
         # We remove xaxis labels from all but bottom subplot,
         # and we make sure they all match the bottom one
-        xbottom = f"y{subplot_row+1}"
+        xbottom = f"y{subplot_row + 1}"
         xaxes = list(figure.select_xaxes())
         for xa in xaxes:
             if xa == xaxes[-1]:
@@ -632,7 +625,7 @@ class PlotlyTA(PltTA):
         new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
-        subplots: Dict[str, Dict[str, List[Any]]] = {}
+        subplots: dict[str, dict[str, list[Any]]] = {}
         grid_ref = fig._validate_get_grid_ref()  # pylint: disable=protected-access
         for r, plot_row in enumerate(grid_ref):
             for c, plot_refs in enumerate(plot_row):
@@ -670,7 +663,9 @@ class PlotlyTA(PltTA):
 
         if self.show_volume:
             new_subplot.add_inchart_volume(
-                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x  # type: ignore
+                self.df_stock,
+                self.close_column,
+                volume_ticks_x=volume_ticks_x,  # type: ignore
             )
 
         return new_subplot

@@ -3,7 +3,7 @@
 # pylint: disable =unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.insider_trading import (
@@ -53,13 +53,13 @@ class SecInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://www.sec.gov/Archives/edgar/data/
     """
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", "")
         + " Wide date ranges can result in long download times."
         + " Recommended to use a smaller date range, default is 120 days ago.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", "") + " Default is today.",
     )
@@ -74,63 +74,61 @@ class SecInsiderTradingQueryParams(InsiderTradingQueryParams):
 class SecInsiderTradingData(InsiderTradingData):
     """SEC Insider Trading Data."""
 
-    company_name: Optional[str] = Field(
-        default=None, description="Name of the company."
-    )
-    form: Optional[Union[str, int]] = Field(default=None, description="Form type.")
-    director: Optional[bool] = Field(
+    company_name: str | None = Field(default=None, description="Name of the company.")
+    form: str | int | None = Field(default=None, description="Form type.")
+    director: bool | None = Field(
         default=None, description="Whether the owner is a director."
     )
-    officer: Optional[bool] = Field(
+    officer: bool | None = Field(
         default=None, description="Whether the owner is an officer."
     )
-    ten_percent_owner: Optional[bool] = Field(
+    ten_percent_owner: bool | None = Field(
         default=None, description="Whether the owner is a 10% owner."
     )
-    other: Optional[bool] = Field(
+    other: bool | None = Field(
         default=None, description="Whether the owner is classified as other."
     )
-    other_text: Optional[str] = Field(
+    other_text: str | None = Field(
         default=None, description="Text for other classification."
     )
-    transaction_timeliness: Optional[str] = Field(
+    transaction_timeliness: str | None = Field(
         default=None, description="Timeliness of the transaction."
     )
-    ownership_type: Optional[str] = Field(
+    ownership_type: str | None = Field(
         default=None, description="Type of ownership, direct or indirect."
     )
-    nature_of_ownership: Optional[str] = Field(
+    nature_of_ownership: str | None = Field(
         default=None, description="Nature of the ownership."
     )
-    exercise_date: Optional[dateType] = Field(
+    exercise_date: dateType | None = Field(
         default=None, description="Date of exercise."
     )
-    expiration_date: Optional[dateType] = Field(
+    expiration_date: dateType | None = Field(
         default=None, description="Date of expiration for the derivative."
     )
-    deemed_execution_date: Optional[dateType] = Field(
+    deemed_execution_date: dateType | None = Field(
         default=None, description="Deemed execution date."
     )
-    underlying_security_title: Optional[str] = Field(
+    underlying_security_title: str | None = Field(
         default=None, description="Title of the underlying security."
     )
-    underlying_security_shares: Optional[float] = Field(
+    underlying_security_shares: float | None = Field(
         default=None,
         description="Number of underlying shares associated with the derivative.",
     )
-    underlying_security_value: Optional[float] = Field(
+    underlying_security_value: float | None = Field(
         default=None, description="Value of the underlying security."
     )
-    conversion_exercise_price: Optional[float] = Field(
+    conversion_exercise_price: float | None = Field(
         default=None, description="Price of conversion or exercise of the securities."
     )
-    transaction_value: Optional[float] = Field(
+    transaction_value: float | None = Field(
         default=None, description="Total value of the transaction."
     )
-    value_owned: Optional[float] = Field(
+    value_owned: float | None = Field(
         default=None, description="Value of the securities owned after the transaction."
     )
-    footnote: Optional[str] = Field(
+    footnote: str | None = Field(
         default=None, description="Footnote for the transaction."
     )
 
@@ -196,7 +194,7 @@ class SecInsiderTradingFetcher(
     @staticmethod
     async def aextract_data(
         query: SecInsiderTradingQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the SEC archives."""

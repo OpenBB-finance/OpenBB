@@ -1,7 +1,5 @@
 """App loader module."""
 
-from typing import List, Optional
-
 from fastapi import APIRouter, FastAPI
 from fastapi.exceptions import ResponseValidationError
 from openbb_core.api.exception_handlers import ExceptionHandlers
@@ -15,7 +13,7 @@ class AppLoader:
     """App loader."""
 
     @staticmethod
-    def add_routers(app: FastAPI, routers: List[Optional[APIRouter]], prefix: str):
+    def add_routers(app: FastAPI, routers: list[APIRouter | None], prefix: str):
         """Add routers."""
         for router in routers:
             if router:

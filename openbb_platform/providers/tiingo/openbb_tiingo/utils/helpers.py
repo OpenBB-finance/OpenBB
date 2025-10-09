@@ -1,9 +1,7 @@
 """Tiingo Helpers Module."""
 
-from typing import Optional, Union
 
-
-async def get_data(url: str) -> Union[dict, list]:
+async def get_data(url: str) -> dict | list:
     """Get data from Tiingo endpoint and parse the JSON response."""
     # pylint: disable=import-outside-toplevel
     from json import JSONDecodeError  # noqa
@@ -11,7 +9,7 @@ async def get_data(url: str) -> Union[dict, list]:
     from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
     from openbb_core.provider.utils.helpers import amake_request
 
-    response: Optional[Union[dict, list]] = None
+    response: dict | list | None = None
 
     try:
         response = await amake_request(url)

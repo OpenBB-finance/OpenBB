@@ -8,7 +8,7 @@ from datetime import (
     time,
     timezone,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -76,37 +76,37 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         },
     }
 
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=0,
         description="Page offset. For optimization, performance and technical reasons,"
         + " page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date."
         + " Used in conjunction with the limit and date parameters.",
     )
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None,
         description="Date for calendar data, shorthand for date_from and date_to.",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    updated: Optional[Union[dateType, int]] = Field(
+    updated: dateType | int | None = Field(
         default=None,
         description="Records last Updated Unix timestamp (UTC)."
         + " This will force the sort order to be Greater Than or Equal to the timestamp indicated."
         + " The date can be a date string or a Unix timestamp."
         + " The date string must be in the format of YYYY-MM-DD.",
     )
-    importance: Optional[int] = Field(
+    importance: int | None = Field(
         default=None,
         description="Importance level to filter by."
         + " Uses Greater Than or Equal To the importance indicated",
     )
-    action: Optional[
+    action: (
         Literal[
             "downgrades",
             "maintains",
@@ -120,20 +120,21 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
             "suspends",
             "firm_dissolved",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="Filter by a specific action_company.",
     )
-    analyst_ids: Optional[Union[List[str], str]] = Field(
+    analyst_ids: list[str] | str | None = Field(
         default=None,
         description="Comma-separated list of analyst (person) IDs."
         + " Omitting will bring back all available analysts.",
     )
-    firm_ids: Optional[Union[List[str], str]] = Field(
+    firm_ids: list[str] | str | None = Field(
         default=None,
         description="Comma-separated list of firm IDs.",
     )
-    fields: Optional[Union[List[str], str]] = Field(
+    fields: list[str] | str | None = Field(
         default=None,
         description="Comma-separated list of fields to include in the response."
         " See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
@@ -161,7 +162,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         "fields", "firm_ids", "analyst_ids", mode="before", check_fields=False
     )
     @classmethod
-    def convert_list(cls, v: Union[str, List[str]]):
+    def convert_list(cls, v: str | list[str]):
         """Convert a List[str] to a string list."""
         if isinstance(v, str):
             return v
@@ -188,7 +189,7 @@ class BenzingaPriceTargetData(PriceTargetData):
         "last_updated": "updated",
     }
 
-    action: Optional[
+    action: (
         Literal[
             "Downgrades",
             "Maintains",
@@ -202,33 +203,35 @@ class BenzingaPriceTargetData(PriceTargetData):
             "Suspends",
             "Firm Dissolved",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="Description of the change in rating from firm's last rating."
         "Note that all of these terms are precisely defined.",
     )
-    action_change: Optional[
+    action_change: (
         Literal["Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts"]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="Description of the change in price target from firm's last price target.",
     )
-    importance: Optional[Literal[0, 1, 2, 3, 4, 5]] = Field(
+    importance: Literal[0, 1, 2, 3, 4, 5] | None = Field(
         default=None,
         description="Subjective Basis of How Important Event is to Market. 5 = High",
     )
-    notes: Optional[str] = Field(default=None, description="Notes of the price target.")
-    analyst_id: Optional[str] = Field(default=None, description="Id of the analyst.")
-    url_news: Optional[str] = Field(
+    notes: str | None = Field(default=None, description="Notes of the price target.")
+    analyst_id: str | None = Field(default=None, description="Id of the analyst.")
+    url_news: str | None = Field(
         default=None,
         description="URL for analyst ratings news articles for this ticker on Benzinga.com.",
     )
-    url_analyst: Optional[str] = Field(
+    url_analyst: str | None = Field(
         default=None,
         description="URL for analyst ratings page for this ticker on Benzinga.com.",
     )
-    id: Optional[str] = Field(default=None, description="Unique ID of this entry.")
-    last_updated: Optional[datetime] = Field(
+    id: str | None = Field(default=None, description="Unique ID of this entry.")
+    last_updated: datetime | None = Field(
         default=None,
         description="Last updated timestamp, UTC.",
     )
@@ -241,7 +244,7 @@ class BenzingaPriceTargetData(PriceTargetData):
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v: float) -> Optional[dateType]:
+    def validate_date(cls, v: float) -> dateType | None:
         """Convert the Unix timestamp to a datetime object."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import safe_fromtimestamp
@@ -261,22 +264,22 @@ class BenzingaPriceTargetData(PriceTargetData):
 class BenzingaPriceTargetFetcher(
     Fetcher[
         BenzingaPriceTargetQueryParams,
-        List[BenzingaPriceTargetData],
+        list[BenzingaPriceTargetData],
     ]
 ):
     """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaPriceTargetQueryParams:
+    def transform_query(params: dict[str, Any]) -> BenzingaPriceTargetQueryParams:
         """Transform the query params."""
         return BenzingaPriceTargetQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: BenzingaPriceTargetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Benzinga endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_benzinga.utils.helpers import response_callback
@@ -306,11 +309,11 @@ class BenzingaPriceTargetFetcher(
     @staticmethod
     def transform_data(
         query: BenzingaPriceTargetQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[BenzingaPriceTargetData]:
+    ) -> list[BenzingaPriceTargetData]:
         """Return the transformed data."""
-        results: List[BenzingaPriceTargetData] = []
+        results: list[BenzingaPriceTargetData] = []
         # Remove duplicated field with a URL
         for item in data:
             item.pop("url_calendar", None)

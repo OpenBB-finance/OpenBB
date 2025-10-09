@@ -2,7 +2,6 @@
 
 import sys
 from pathlib import Path
-from typing import Optional
 
 from openbb import obb
 from openbb_charting.core.backend import create_backend, get_backend
@@ -26,7 +25,8 @@ def _get_backend():
     except ValueError:
         # backend might not be created yet
         charting_settings = ChartingSettings(
-            system_settings=obb.system, user_settings=obb.user  # type: ignore
+            system_settings=obb.system,
+            user_settings=obb.user,  # type: ignore
         )
         create_backend(charting_settings)
         get_backend().start(debug=charting_settings.debug_mode)  # type: ignore
@@ -45,9 +45,7 @@ class Session(metaclass=SingletonMeta):
             style=self._settings.RICH_STYLE,
             directory=Path(self._obb.user.preferences.user_styles_directory),  # type: ignore[union-attr]
         )
-        self._console = Console(
-            settings=self._settings, style=self._style.console_style
-        )
+        self._console = Console(settings=self._settings, style=self._style.console_style)
         self._prompt_session = self._get_prompt_session()
         self._obbject_registry = Registry()
 
@@ -79,17 +77,15 @@ class Session(metaclass=SingletonMeta):
         return self._obbject_registry
 
     @property
-    def prompt_session(self) -> Optional[PromptSession]:
+    def prompt_session(self) -> PromptSession | None:
         """Get prompt session."""
         return self._prompt_session
 
-    def _get_prompt_session(self) -> Optional[PromptSession]:
+    def _get_prompt_session(self) -> PromptSession | None:
         """Initialize prompt session."""
         try:
             if sys.stdin.isatty():
-                prompt_session: Optional[PromptSession] = PromptSession(
-                    history=CustomFileHistory(str(HIST_FILE_PROMPT))
-                )
+                prompt_session: PromptSession | None = PromptSession(history=CustomFileHistory(str(HIST_FILE_PROMPT)))
             else:
                 prompt_session = None
         except Exception:
@@ -103,6 +99,4 @@ class Session(metaclass=SingletonMeta):
 
     def max_obbjects_exceeded(self) -> bool:
         """Check if max obbjects exceeded."""
-        return (
-            len(self.obbject_registry.all) >= self.settings.N_TO_KEEP_OBBJECT_REGISTRY
-        )
+        return len(self.obbject_registry.all) >= self.settings.N_TO_KEEP_OBBJECT_REGISTRY

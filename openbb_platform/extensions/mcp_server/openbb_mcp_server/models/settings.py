@@ -1,7 +1,7 @@
 """MCP Server Settings model."""
 
 import json
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -20,7 +20,7 @@ class MCPSettings(BaseModel):
     )
 
     # ===== Basic OpenBB MCP Configuration =====
-    api_prefix: Optional[str] = Field(
+    api_prefix: str | None = Field(
         default=None,
         description="If set, overrides the API prefix from SystemService. For testing or special cases.",
         alias="OPENBB_MCP_API_PREFIX",
@@ -37,7 +37,7 @@ to query financial data, run screeners, and build workflows using
 the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_DESCRIPTION",
     )
-    version: Optional[str] = Field(
+    version: str | None = Field(
         default=None,
         description="Server version",
         alias="OPENBB_MCP_VERSION",
@@ -49,7 +49,7 @@ the exact same operations available to REST clients.""",
         description="Default active tool categories on startup",
         alias="OPENBB_MCP_DEFAULT_TOOL_CATEGORIES",
     )
-    allowed_tool_categories: Optional[list[str]] = Field(
+    allowed_tool_categories: list[str] | None = Field(
         default=None,
         description="If set, restricts available tool categories to this list",
         alias="OPENBB_MCP_ALLOWED_TOOL_CATEGORIES",
@@ -73,13 +73,13 @@ the exact same operations available to REST clients.""",
     )
 
     # Prompt configuration
-    system_prompt_file: Optional[str] = Field(
+    system_prompt_file: str | None = Field(
         default=None,
         description="Path to a text file containing the system prompt for the server",
         alias="OPENBB_MCP_SYSTEM_PROMPT_FILE",
     )
 
-    server_prompts_file: Optional[str] = Field(
+    server_prompts_file: str | None = Field(
         default=None,
         description="Path to a JSON file containing prompt templates for the server",
         alias="OPENBB_MCP_SERVER_PROMPTS_FILE",
@@ -88,69 +88,69 @@ the exact same operations available to REST clients.""",
     # ===== FastMCP Core Configuration =====
 
     # Cache configuration
-    cache_expiration_seconds: Optional[float] = Field(
+    cache_expiration_seconds: float | None = Field(
         default=None,
         description="Cache expiration time in seconds. set to 0 to disable caching.",
         alias="OPENBB_MCP_CACHE_EXPIRATION_SECONDS",
     )
 
     # Duplicate handling
-    on_duplicate_tools: Optional[DuplicateBehavior] = Field(
+    on_duplicate_tools: DuplicateBehavior | None = Field(
         default=None,
         description="Behavior when duplicate tools are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_TOOLS",
     )
 
-    on_duplicate_resources: Optional[DuplicateBehavior] = Field(
+    on_duplicate_resources: DuplicateBehavior | None = Field(
         default=None,
         description="Behavior when duplicate resources are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_RESOURCES",
     )
 
-    on_duplicate_prompts: Optional[DuplicateBehavior] = Field(
+    on_duplicate_prompts: DuplicateBehavior | None = Field(
         default=None,
         description="Behavior when duplicate prompts are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_PROMPTS",
     )
 
     # Resource and component configuration
-    resource_prefix_format: Optional[Literal["protocol", "path"]] = Field(
+    resource_prefix_format: Literal["protocol", "path"] | None = Field(
         default=None,
         description="Format for resource URI prefixes: 'protocol' (prefix+protocol://path) or 'path' (protocol://prefix/path)",
         alias="OPENBB_MCP_RESOURCE_PREFIX_FORMAT",
     )
 
-    mask_error_details: Optional[bool] = Field(
+    mask_error_details: bool | None = Field(
         default=None,
         description="If True, mask error details from user functions before sending to clients",
         alias="OPENBB_MCP_MASK_ERROR_DETAILS",
     )
 
-    dependencies: Optional[list[str]] = Field(
+    dependencies: list[str] | None = Field(
         default=None,
         description="list of dependencies to install in the server environment",
         alias="OPENBB_MCP_DEPENDENCIES",
     )
 
-    include_tags: Optional[set[str]] = Field(
+    include_tags: set[str] | None = Field(
         default=None,
         description="If provided, only components that match these tags will be exposed to clients",
         alias="OPENBB_MCP_INCLUDE_TAGS",
     )
 
-    exclude_tags: Optional[set[str]] = Field(
+    exclude_tags: set[str] | None = Field(
         default=None,
         description="If provided, components that match these tags will be excluded from the server",
         alias="OPENBB_MCP_EXCLUDE_TAGS",
     )
 
-    module_exclusion_map: Optional[dict[str, str]] = Field(
+    module_exclusion_map: dict[str, str] | None = Field(
         default=None,
         description="Key:Value pairs mapping API Tags with their Python module names."
         + " Example, {'econometrics': 'openbb_econometrics'}",
         alias="OPENBB_MCP_MODULE_EXCLUSION_MAP",
     )
-    deprecation_warnings: Optional[bool] = Field(
+    deprecation_warnings: bool | None = Field(
         default=False,
         description="If True, show deprecation warnings in the console.",
     )
@@ -158,7 +158,7 @@ the exact same operations available to REST clients.""",
     # ===== HTTP Transport Configuration =====
 
     # Uvicorn server configuration
-    uvicorn_config: Optional[dict[str, Any]] = Field(
+    uvicorn_config: dict[str, Any] | None = Field(
         default_factory=lambda: {"host": "127.0.0.1", "port": "8001"},
         description="Additional configuration object for the Uvicorn server."
         + " All items are passed as kwargs to `mcp.run(uvicorn_config=uvicorn_config)`",
@@ -166,14 +166,14 @@ the exact same operations available to REST clients.""",
     )
 
     # HTTP client configuration for outbound requests
-    httpx_client_kwargs: Optional[dict[str, Any]] = Field(
+    httpx_client_kwargs: dict[str, Any] | None = Field(
         default_factory=dict,
         description="Configuration object for async httpx client used by FastMCP."
         + " Add custom headers as a dictionary under the 'headers' key."
         + " All items passed directly to FastMCP.from_fastapi(httpx_client_kwargs=httpx_client_kwargs)",
         alias="OPENBB_MCP_HTTPX_CLIENT_KWARGS",
     )
-    client_auth: Optional[tuple[str, str]] = Field(
+    client_auth: tuple[str, str] | None = Field(
         default=None,
         description="""
         A tuple of (username, password) for client-side basic authentication.
@@ -182,7 +182,7 @@ the exact same operations available to REST clients.""",
         """,
         alias="OPENBB_MCP_CLIENT_AUTH",
     )
-    server_auth: Optional[tuple[str, str]] = Field(
+    server_auth: tuple[str, str] | None = Field(
         default=None,
         description="""
         A tuple of (username, password) for server-side basic authentication.

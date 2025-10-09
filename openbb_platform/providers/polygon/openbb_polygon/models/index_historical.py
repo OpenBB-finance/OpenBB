@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
@@ -61,12 +61,12 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(  # pylint: disable=protected-access
+        values._multiplier = int(
             values.interval[:-1]
-        )
-        values._timespan = intervals[  # pylint: disable=protected-access
+        )  # pylint: disable=protected-access
+        values._timespan = intervals[
             values.interval[-1]
-        ]
+        ]  # pylint: disable=protected-access
 
         return values
 
@@ -85,7 +85,7 @@ class PolygonIndexHistoricalData(IndexHistoricalData):
         "transactions": "n",
     }
 
-    transactions: Optional[PositiveInt] = Field(
+    transactions: PositiveInt | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
@@ -118,7 +118,7 @@ class PolygonIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: PolygonIndexHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract raw data from the Polygon endpoint."""

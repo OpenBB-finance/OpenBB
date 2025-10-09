@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 import warnings
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
@@ -27,7 +27,7 @@ class FMPWorldNewsQueryParams(WorldNewsQueryParams):
         description="The topic of the news to be fetched.",
     )
 
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=None,
         le=100,
         ge=0,
@@ -70,7 +70,7 @@ class FMPWorldNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPWorldNewsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

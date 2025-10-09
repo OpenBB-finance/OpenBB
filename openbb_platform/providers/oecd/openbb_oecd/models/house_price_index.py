@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -53,7 +53,7 @@ class OECDHousePriceIndexQueryParams(HousePriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_RGDP:
@@ -77,12 +77,12 @@ class OECDHousePriceIndexData(HousePriceIndexData):
 
 
 class OECDHousePriceIndexFetcher(
-    Fetcher[OECDHousePriceIndexQueryParams, List[OECDHousePriceIndexData]]
+    Fetcher[OECDHousePriceIndexQueryParams, list[OECDHousePriceIndexData]]
 ):
     """OECD House Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDHousePriceIndexQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDHousePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -101,9 +101,9 @@ class OECDHousePriceIndexFetcher(
     @staticmethod
     def extract_data(
         query: OECDHousePriceIndexQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -161,7 +161,7 @@ class OECDHousePriceIndexFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDHousePriceIndexQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDHousePriceIndexData]:
+        query: OECDHousePriceIndexQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[OECDHousePriceIndexData]:
         """Transform the data from the OECD endpoint."""
         return [OECDHousePriceIndexData.model_validate(d) for d in data]

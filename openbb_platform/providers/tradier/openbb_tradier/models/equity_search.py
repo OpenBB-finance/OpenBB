@@ -2,7 +2,7 @@
 
 # pylint: disable = unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -51,21 +51,21 @@ class TradierEquitySearchData(EquitySearchData):
 
 
 class TradierEquitySearchFetcher(
-    Fetcher[TradierEquitySearchQueryParams, List[TradierEquitySearchData]]
+    Fetcher[TradierEquitySearchQueryParams, list[TradierEquitySearchData]]
 ):
     """Tradier Equity Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TradierEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> TradierEquitySearchQueryParams:
         """Transform the query."""
         return TradierEquitySearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TradierEquitySearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tradier endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -113,11 +113,11 @@ class TradierEquitySearchFetcher(
     @staticmethod
     def transform_data(
         query: TradierEquitySearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TradierEquitySearchData]:
+    ) -> list[TradierEquitySearchData]:
         """Transform and validate the data."""
-        results: List[TradierEquitySearchData] = []
+        results: list[TradierEquitySearchData] = []
 
         for d in data:
             d["exchange"] = (

@@ -361,12 +361,21 @@ class TechnicalViews:
 
         if show_tails is True:
             fig = relative_rotation.create_rrg_with_tails(
-                ratios_df, momentum_df, study, benchmark_symbol, tail_periods, tail_interval  # type: ignore
+                ratios_df,
+                momentum_df,
+                study,
+                benchmark_symbol,
+                tail_periods,
+                tail_interval,  # type: ignore
             )
 
         if show_tails is False:
             fig = relative_rotation.create_rrg_without_tails(
-                ratios_df, momentum_df, benchmark_symbol, study, date  # type: ignore
+                ratios_df,
+                momentum_df,
+                benchmark_symbol,
+                study,
+                date,  # type: ignore
             )
 
         figure = OpenBBFigure(fig)  # pylint: disable=E0606

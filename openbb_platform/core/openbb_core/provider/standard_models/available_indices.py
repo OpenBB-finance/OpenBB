@@ -1,7 +1,5 @@
 """Available Indices Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -21,12 +19,12 @@ class AvailableIndicesData(Data):
     """
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("name", "")
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None, description="Stock exchange where the index is listed."
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None, description="Currency the index is traded in."
     )

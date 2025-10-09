@@ -1,7 +1,5 @@
 """Recent Performance Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -26,85 +24,85 @@ class RecentPerformanceQueryParams(QueryParams):
 class RecentPerformanceData(Data):
     """Recent Performance Data. All returns are normalized percents."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    one_day: Optional[float] = Field(
+    one_day: float | None = Field(
         default=None,
         description="One-day return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    wtd: Optional[float] = Field(
+    wtd: float | None = Field(
         default=None,
         description="Week to date return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    one_week: Optional[float] = Field(
+    one_week: float | None = Field(
         default=None,
         description="One-week return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    mtd: Optional[float] = Field(
+    mtd: float | None = Field(
         default=None,
         description="Month to date return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    one_month: Optional[float] = Field(
+    one_month: float | None = Field(
         default=None,
         description="One-month return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    qtd: Optional[float] = Field(
+    qtd: float | None = Field(
         default=None,
         description="Quarter to date return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    three_month: Optional[float] = Field(
+    three_month: float | None = Field(
         default=None,
         description="Three-month return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    six_month: Optional[float] = Field(
+    six_month: float | None = Field(
         default=None,
         description="Six-month return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ytd: Optional[float] = Field(
+    ytd: float | None = Field(
         default=None,
         description="Year to date return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    one_year: Optional[float] = Field(
+    one_year: float | None = Field(
         default=None,
         description="One-year return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    two_year: Optional[float] = Field(
+    two_year: float | None = Field(
         default=None,
         description="Two-year return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    three_year: Optional[float] = Field(
+    three_year: float | None = Field(
         default=None,
         description="Three-year return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    four_year: Optional[float] = Field(
+    four_year: float | None = Field(
         default=None,
         description="Four-year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    five_year: Optional[float] = Field(
+    five_year: float | None = Field(
         default=None,
         description="Five-year return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ten_year: Optional[float] = Field(
+    ten_year: float | None = Field(
         default=None,
         description="Ten-year return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    max: Optional[float] = Field(
+    max: float | None = Field(
         default=None,
         description="Return from the beginning of the time series.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},

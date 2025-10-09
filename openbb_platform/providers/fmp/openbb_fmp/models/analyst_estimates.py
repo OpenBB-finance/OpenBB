@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.analyst_estimates import (
@@ -25,10 +25,10 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     period: Literal["quarter", "annual"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=None, description="Page number for paginated results. Used with limit."
     )
 
@@ -76,7 +76,7 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPAnalystEstimatesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

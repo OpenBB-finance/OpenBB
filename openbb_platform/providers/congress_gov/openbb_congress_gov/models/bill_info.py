@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -78,7 +78,7 @@ class CongressBillInfoFetcher(
     @staticmethod
     async def aextract_data(
         query: CongressBillInfoQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract data from the query."""
@@ -102,9 +102,9 @@ class CongressBillInfoFetcher(
         if isinstance(base_info, dict) and (error := base_info.get("error", {})):
             if "API_KEY" in error.get("code", ""):
                 raise UnauthorizedError(
-                    f"{error.get('code', '' )} -> {error.get('message', '')}"
+                    f"{error.get('code', '')} -> {error.get('message', '')}"
                 )
-            raise OpenBBError(f"{error.get('code', '' )} -> {error.get('message', '')}")
+            raise OpenBBError(f"{error.get('code', '')} -> {error.get('message', '')}")
 
         base_info = base_info.get("bill", {})
         cosponsors = base_info.get("cosponsors", {})
@@ -255,15 +255,15 @@ class CongressBillInfoFetcher(
 
             return text
 
-        markdown_content = f"""# {data.get('title')}
+        markdown_content = f"""# {data.get("title")}
 
-- **Congress**: {data.get('congress')}
-- **Bill Number**: {data.get('number')}
-- **Type**: {data.get('type')}
-- **Chamber**: {data.get('originChamber')}
-- **Introduced**: {data.get('introducedDate')}
-- **Last Updated**: {data.get('updateDate', {})}
-- **Last Action**: {data.get('latestAction', {}).get('actionDate')} - {data.get('latestAction', {}).get('text', '')}
+- **Congress**: {data.get("congress")}
+- **Bill Number**: {data.get("number")}
+- **Type**: {data.get("type")}
+- **Chamber**: {data.get("originChamber")}
+- **Introduced**: {data.get("introducedDate")}
+- **Last Updated**: {data.get("updateDate", {})}
+- **Last Action**: {data.get("latestAction", {}).get("actionDate")} - {data.get("latestAction", {}).get("text", "")}
 """
         policy_area = data.get("policyArea", {}).get("name", "")
         if policy_area:

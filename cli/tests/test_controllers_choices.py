@@ -20,9 +20,7 @@ class MockController:
     def call_test_command(self, args):
         """Mock function for test_command."""
         parser = ArgumentParser()
-        parser.add_argument(
-            "--example", choices=["option1", "option2"], help="Example argument."
-        )
+        parser.add_argument("--example", choices=["option1", "option2"], help="Example argument.")
         return parser.parse_args(args)
 
 
@@ -34,13 +32,9 @@ def mock_controller():
 
 def test_build_command_choice_map(mock_controller):
     """Test the building of a command choice map."""
-    with patch(
-        "openbb_cli.controllers.choices._get_argument_parser"
-    ) as mock_get_parser:
+    with patch("openbb_cli.controllers.choices._get_argument_parser") as mock_get_parser:
         parser = ArgumentParser()
-        parser.add_argument(
-            "--option", choices=["opt1", "opt2"], help="A choice option."
-        )
+        parser.add_argument("--option", choices=["opt1", "opt2"], help="A choice option.")
         mock_get_parser.return_value = parser
 
         choice_map = build_controller_choice_map(controller=mock_controller)

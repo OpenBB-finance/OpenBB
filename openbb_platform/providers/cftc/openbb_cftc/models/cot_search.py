@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot_search import (
@@ -29,25 +29,25 @@ class CftcCotSearchData(CotSearchData):
         "subcategory": "commodity_subgroup_name",
     }
 
-    commodity: Optional[str] = Field(default=None, description="Name of the commodity.")
+    commodity: str | None = Field(default=None, description="Name of the commodity.")
 
 
-class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, List[CftcCotSearchData]]):
+class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, list[CftcCotSearchData]]):
     """CFTC COT Search Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CftcCotSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> CftcCotSearchQueryParams:
         """Transform the query params."""
         return CftcCotSearchQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: CftcCotSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Search a curated list of CFTC Commitment of Traders Reports."""
         # pylint: disable=import-outside-toplevel
         from importlib.resources import files  # noqa
@@ -83,8 +83,8 @@ class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, List[CftcCotSearchD
     @staticmethod
     def transform_data(
         query: CotSearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[CftcCotSearchData]:
+    ) -> list[CftcCotSearchData]:
         """Transform the data."""
         return [CftcCotSearchData.model_validate(d) for d in data]

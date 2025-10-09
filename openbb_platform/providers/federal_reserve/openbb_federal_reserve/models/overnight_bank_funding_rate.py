@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.overnight_bank_funding_rate import (
@@ -33,7 +33,7 @@ class FederalReserveOvernightBankFundingRateData(OvernightBankFundingRateData):
         "volume": "volumeInBillions",
     }
 
-    revision_indicator: Optional[str] = Field(
+    revision_indicator: str | None = Field(
         default=None,
         description="Indicates a revision of the data for that date.",
     )
@@ -64,14 +64,14 @@ class FederalReserveOvernightBankFundingRateData(OvernightBankFundingRateData):
 class FederalReserveOvernightBankFundingRateFetcher(
     Fetcher[
         FederalReserveOvernightBankFundingRateQueryParams,
-        List[FederalReserveOvernightBankFundingRateData],
+        list[FederalReserveOvernightBankFundingRateData],
     ]
 ):
     """Federal Reserve Federal Funds Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReserveOvernightBankFundingRateQueryParams:
         """Transform query."""
         transformed_params = params.copy()
@@ -86,9 +86,9 @@ class FederalReserveOvernightBankFundingRateFetcher(
     @staticmethod
     async def aextract_data(
         query: FederalReserveOvernightBankFundingRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -97,7 +97,7 @@ class FederalReserveOvernightBankFundingRateFetcher(
             "https://markets.newyorkfed.org/api/rates/unsecured/obfr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"
         )
-        results: List[Dict] = []
+        results: list[dict] = []
         response = await amake_request(url, **kwargs)
         if response.get("refRates", []):  # type: ignore
             results = response["refRates"]  # type: ignore
@@ -108,11 +108,11 @@ class FederalReserveOvernightBankFundingRateFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveOvernightBankFundingRateQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FederalReserveOvernightBankFundingRateData]:
+    ) -> list[FederalReserveOvernightBankFundingRateData]:
         """Transform data."""
-        results: List[FederalReserveOvernightBankFundingRateData] = []
+        results: list[FederalReserveOvernightBankFundingRateData] = []
         for d in data.copy():
             _ = d.pop("type", None)
             _ = d.pop("revisionIndicator", None)

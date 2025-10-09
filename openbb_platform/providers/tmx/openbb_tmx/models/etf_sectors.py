@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_sectors import (
@@ -50,7 +50,7 @@ class TmxEtfSectorsFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxEtfSectorsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""

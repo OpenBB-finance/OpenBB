@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-ancestors
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -57,35 +57,35 @@ class ECBBalanceOfPaymentsData(
 
 
 class ECBBalanceOfPaymentsFetcher(
-    Fetcher[ECBBalanceOfPaymentsQueryParams, List[ECBBalanceOfPaymentsData]]
+    Fetcher[ECBBalanceOfPaymentsQueryParams, list[ECBBalanceOfPaymentsData]]
 ):
     """Transform the query, extract and transform the data from the ECB endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> ECBBalanceOfPaymentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> ECBBalanceOfPaymentsQueryParams:
         """Transform query."""
         return ECBBalanceOfPaymentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: ECBBalanceOfPaymentsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_ecb.utils.ecb_helpers import get_series_data  # noqa
         from pandas import DataFrame  # noqa
 
-        results: List[Dict] = []
+        results: list[dict] = []
 
         _series_ids = generate_bps_series_ids(
             query.frequency, query.report_type, country=query.country
         )
         names = list(_series_ids)
         series_ids = list(_series_ids.values())
-        data: Dict = {}
+        data: dict = {}
 
         async def get_one(series_id, name):
             result = {}
@@ -111,7 +111,7 @@ class ECBBalanceOfPaymentsFetcher(
 
     @staticmethod
     def transform_data(
-        query: ECBBalanceOfPaymentsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[ECBBalanceOfPaymentsData]:
+        query: ECBBalanceOfPaymentsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[ECBBalanceOfPaymentsData]:
         """Transform and validate data through the model."""
         return [ECBBalanceOfPaymentsData.model_validate(d) for d in data]

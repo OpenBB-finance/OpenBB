@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_peers import (
@@ -27,11 +27,11 @@ class FMPEquityPeersData(EquityPeersData):
     name: str = Field(
         description="The name of the company.",
     )
-    price: Optional[float] = Field(
+    price: float | None = Field(
         default=None,
         description="The current stock price of the company.",
     )
-    market_cap: Optional[int] = Field(
+    market_cap: int | None = Field(
         default=None,
         description="The market capitalization of the company.",
     )
@@ -53,7 +53,7 @@ class FMPEquityPeersFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityPeersQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""
@@ -61,10 +61,7 @@ class FMPEquityPeersFetcher(
         from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        url = (
-            "https://financialmodelingprep.com/stable/stock-peers?"
-            f"symbol={query.symbol}&apikey={api_key}"
-        )
+        url = f"https://financialmodelingprep.com/stable/stock-peers?symbol={query.symbol}&apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 

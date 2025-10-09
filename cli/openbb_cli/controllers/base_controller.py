@@ -8,7 +8,7 @@ import shlex
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal
 
 import pandas as pd
 from openbb_cli.config.completer import NestedCompleter
@@ -35,7 +35,7 @@ from prompt_toolkit.styles import Style
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 # pylint: disable=R0912
 
-controllers: Dict[str, Any] = {}
+controllers: dict[str, Any] = {}
 session = Session()
 
 
@@ -70,8 +70,8 @@ class BaseController(metaclass=ABCMeta):
         "results",
     ]
 
-    CHOICES_COMMANDS: List[str] = []
-    CHOICES_MENUS: List[str] = []
+    CHOICES_COMMANDS: list[str] = []
+    CHOICES_MENUS: list[str] = []
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -90,7 +90,7 @@ class BaseController(metaclass=ABCMeta):
 
         return choices
 
-    def __init__(self, queue: Optional[List[str]] = None) -> None:
+    def __init__(self, queue: list[str] | None = None) -> None:
         """Create the base class for any controller in the codebase.
 
         Used to simplify the creation of menus.
@@ -113,7 +113,7 @@ class BaseController(metaclass=ABCMeta):
         else:
             self.controller_choices = self.CHOICES_COMMON
 
-        self.completer: Union[None, NestedCompleter] = None
+        self.completer: None | NestedCompleter = None
 
         self.parser = argparse.ArgumentParser(
             add_help=False,
@@ -154,7 +154,7 @@ class BaseController(metaclass=ABCMeta):
         """Save the current instance of the class to be loaded later."""
         controllers[self.PATH] = self
 
-    def custom_reset(self) -> List[str]:
+    def custom_reset(self) -> list[str]:
         """Implement custom reset.
 
         This will be replaced by any children with custom_reset functions.
@@ -167,34 +167,16 @@ class BaseController(metaclass=ABCMeta):
         raise NotImplementedError("Must override print_help.")
 
     def parse_input(self, an_input: str) -> list:
-        """Parse controller input.
+        """Parse controller input."""
+        # The original regex has been improved to handle quoted strings.
+        # It now splits by '/' only when it's not enclosed in single or double quotes.
+        # This allows commands like: exe --file "folder with spaces/file.openbb"
+        # or exe --file 'folder with spaces/file.openbb'
+        commands = re.split(r"/(?=(?:[^\"']*[\"'][^\"']*[\"'])*[^\"']*$)", an_input)
+        # Remove empty strings from the list of commands
+        return [cmd.strip() for cmd in commands if cmd.strip()]
 
-        Splits the command chain from user input into a list of individual commands
-        while respecting the forward slash in the command arguments.
-
-        In the default scenario only unix-like paths are handles by the parser.
-        Override this function in the controller classes that inherit from this one to
-        resolve edge cases specific to command arguments on those controllers.
-
-        When handling edge cases add additional regular expressions to the list.
-
-        Parameters
-        ----------
-        an_input : str
-            User input string
-
-        Returns
-        ----------
-        list
-            Command queue as list
-        """
-        custom_filters: list = []
-        commands = parse_and_split_input(
-            an_input=an_input, custom_filters=custom_filters
-        )
-        return commands
-
-    def switch(self, an_input: str) -> List[str]:
+    def switch(self, an_input: str) -> list[str]:
         """Process and dispatch input.
 
         Returns
@@ -507,8 +489,7 @@ class BaseController(metaclass=ABCMeta):
                     # If file already exists, add a timestamp to the name
                     if os.path.isfile(routine_file):
                         i = session.console.input(
-                            "A local routine with the same name already exists, "
-                            "do you want to override it? (y/n): "
+                            "A local routine with the same name already exists, do you want to override it? (y/n): "
                         )
                         session.console.print("")
                         while i.lower() not in ["y", "yes", "n", "no"]:
@@ -583,8 +564,7 @@ class BaseController(metaclass=ABCMeta):
                         response = upload_routine(**kwargs)  # type: ignore
                         if response is not None and response.status_code == 409:
                             i = session.console.input(
-                                "A routine with the same name already exists, "
-                                "do you want to replace it? (y/n): "
+                                "A routine with the same name already exists, do you want to replace it? (y/n): "
                             )
                             session.console.print("")
                             if i.lower() in ["y", "yes"]:
@@ -597,7 +577,7 @@ class BaseController(metaclass=ABCMeta):
                 RECORD_SESSION = False
                 SESSION_RECORDED = list()
 
-    def call_whoami(self, other_args: List[str]) -> None:
+    def call_whoami(self, other_args: list[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -621,7 +601,7 @@ class BaseController(metaclass=ABCMeta):
             else:
                 print_guest_block_msg()
 
-    def call_results(self, other_args: List[str]):
+    def call_results(self, other_args: list[str]):
         """Process results command."""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -708,9 +688,9 @@ class BaseController(metaclass=ABCMeta):
     @staticmethod
     def parse_simple_args(
         parser: argparse.ArgumentParser,
-        other_args: List[str],
+        other_args: list[str],
         unknown_args: bool = False,
-    ) -> Tuple[Optional[argparse.Namespace], Optional[List[str]]]:
+    ) -> tuple[argparse.Namespace | None, list[str] | None]:
         """Parse list of arguments into the supplied parser.
 
         Parameters
@@ -758,7 +738,7 @@ class BaseController(metaclass=ABCMeta):
     def parse_known_args_and_warn(
         cls,
         parser: argparse.ArgumentParser,
-        other_args: List[str],
+        other_args: list[str],
         export_allowed: Literal[
             "no_export", "raw_data_only", "figures_only", "raw_data_and_figures"
         ] = "no_export",
@@ -877,9 +857,8 @@ class BaseController(metaclass=ABCMeta):
                     if arg in ("-i", "--input")
                     and "routine_args"
                     in [
-                        action.dest
-                        for action in parser._actions  # pylint: disable=protected-access
-                    ]
+                        action.dest for action in parser._actions
+                    ]  # pylint: disable=protected-access
                 ),
                 -1,
             )
@@ -945,8 +924,7 @@ class BaseController(metaclass=ABCMeta):
                 # Print location because this was an instruction and we want user to know the action
                 if (
                     an_input
-                    and an_input != "home"
-                    and an_input != "help"
+                    and an_input not in ("home", "help")
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
                     session.console.print(

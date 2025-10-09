@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
@@ -36,19 +36,17 @@ class FMPEquityQuoteData(EquityQuoteData):
         "change_percent": "changePercentage",
         "prev_close": "previousClose",
     }
-    ma50: Optional[float] = Field(
-        default=None, description="50 day moving average price."
-    )
-    ma200: Optional[float] = Field(
+    ma50: float | None = Field(default=None, description="50 day moving average price.")
+    ma200: float | None = Field(
         default=None, description="200 day moving average price."
     )
-    market_cap: Optional[float] = Field(
+    market_cap: float | None = Field(
         default=None, description="Market cap of the company."
     )
 
     @field_validator("last_timestamp", mode="before", check_fields=False)
     @classmethod
-    def validate_last_timestamp(cls, v: Union[str, int]) -> Optional[dateType]:
+    def validate_last_timestamp(cls, v: str | int) -> dateType | None:
         """Return the date as a datetime object."""
         # pylint: disable=import-outside-toplevel
         from datetime import timezone  # noqa
@@ -82,7 +80,7 @@ class FMPEquityQuoteFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityQuoteQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

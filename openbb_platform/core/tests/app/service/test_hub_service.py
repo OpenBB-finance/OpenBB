@@ -3,7 +3,6 @@
 # pylint: disable=W0212
 # ruff: noqa: S105 S106
 
-
 from pathlib import Path
 from time import time
 from unittest.mock import MagicMock, patch
@@ -90,12 +89,15 @@ def test_v3tov4_map():
 def test_connect_with_email_password():
     """Test connect with email and password."""
     mock_hub_session = MagicMock(spec=HubSession)
-    with patch(
-        "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
-    ), patch.object(
-        HubService,
-        "_get_session_from_email_password",
-        return_value=mock_hub_session,
+    with (
+        patch(
+            "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
+        ),
+        patch.object(
+            HubService,
+            "_get_session_from_email_password",
+            return_value=mock_hub_session,
+        ),
     ):
         hub_service = HubService()
         result = hub_service.connect(email="test@example.com", password="password")
@@ -107,10 +109,15 @@ def test_connect_with_email_password():
 def test_connect_with_sdk_token():
     """Test connect with Platform personal access token."""
     mock_hub_session = MagicMock(spec=HubSession)
-    with patch(
-        "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
-    ), patch.object(
-        HubService, "_get_session_from_platform_token", return_value=mock_hub_session
+    with (
+        patch(
+            "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
+        ),
+        patch.object(
+            HubService,
+            "_get_session_from_platform_token",
+            return_value=mock_hub_session,
+        ),
     ):
         hub_service = HubService()
         result = hub_service.connect(pat="pat")
@@ -131,23 +138,26 @@ def test_connect_without_credentials():
 def test_get_session_from_email_password():
     """Test get session from email and password."""
     mock_hub_session = MagicMock(spec=HubSession)
-    with patch(
-        "requests.post",
-        return_value=MagicMock(
-            status_code=200,
-            json=lambda: {
-                "access_token": "token",
-                "token_type": "Bearer",
-                "uuid": "uuid",
-                "email": "email",
-                "username": "username",
-                "primary_usage": "primary_usage",
-            },
+    with (
+        patch(
+            "requests.post",
+            return_value=MagicMock(
+                status_code=200,
+                json=lambda: {
+                    "access_token": "token",
+                    "token_type": "Bearer",
+                    "uuid": "uuid",
+                    "email": "email",
+                    "username": "username",
+                    "primary_usage": "primary_usage",
+                },
+            ),
         ),
-    ), patch.object(
-        HubService,
-        "_get_session_from_email_password",
-        return_value=mock_hub_session,
+        patch.object(
+            HubService,
+            "_get_session_from_email_password",
+            return_value=mock_hub_session,
+        ),
     ):
         hub_service = HubService()
         result = hub_service._get_session_from_email_password("email", "password")
@@ -157,23 +167,26 @@ def test_get_session_from_email_password():
 def test_get_session_from_platform_token():
     """Test get session from Platform personal access token."""
     mock_hub_session = MagicMock(spec=HubSession)
-    with patch(
-        "requests.post",
-        return_value=MagicMock(
-            status_code=200,
-            json=lambda: {
-                "access_token": "token",
-                "token_type": "Bearer",
-                "uuid": "uuid",
-                "username": "username",
-                "email": "email",
-                "primary_usage": "primary_usage",
-            },
+    with (
+        patch(
+            "requests.post",
+            return_value=MagicMock(
+                status_code=200,
+                json=lambda: {
+                    "access_token": "token",
+                    "token_type": "Bearer",
+                    "uuid": "uuid",
+                    "username": "username",
+                    "email": "email",
+                    "primary_usage": "primary_usage",
+                },
+            ),
         ),
-    ), patch.object(
-        HubService,
-        "_get_session_from_platform_token",
-        return_value=mock_hub_session,
+        patch.object(
+            HubService,
+            "_get_session_from_platform_token",
+            return_value=mock_hub_session,
+        ),
     ):
         mock_token = (
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6ImRiMjEyZDdhZj"
@@ -190,16 +203,19 @@ def test_get_session_from_platform_token():
 
 def test_disconnect():
     """Test disconnect."""
-    with patch(
-        "requests.get",
-        return_value=MagicMock(
-            status_code=200,
-            json=lambda: {"success": True},
+    with (
+        patch(
+            "requests.get",
+            return_value=MagicMock(
+                status_code=200,
+                json=lambda: {"success": True},
+            ),
         ),
-    ), patch.object(
-        HubService,
-        "_post_logout",
-        return_value=True,
+        patch.object(
+            HubService,
+            "_post_logout",
+            return_value=True,
+        ),
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
@@ -212,16 +228,19 @@ def test_disconnect():
 
 def test_get_user_settings():
     """Test get user settings."""
-    with patch(
-        "requests.get",
-        return_value=MagicMock(
-            status_code=200,
-            json=lambda: {},
+    with (
+        patch(
+            "requests.get",
+            return_value=MagicMock(
+                status_code=200,
+                json=lambda: {},
+            ),
         ),
-    ), patch.object(
-        HubService,
-        "_get_user_settings",
-        return_value=MagicMock(spec=HubUserSettings),
+        patch.object(
+            HubService,
+            "_get_user_settings",
+            return_value=MagicMock(spec=HubUserSettings),
+        ),
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
@@ -234,15 +253,18 @@ def test_get_user_settings():
 def test_put_user_settings():
     """Test put user settings."""
 
-    with patch(
-        "requests.put",
-        return_value=MagicMock(
-            status_code=200,
+    with (
+        patch(
+            "requests.put",
+            return_value=MagicMock(
+                status_code=200,
+            ),
         ),
-    ), patch.object(
-        HubService,
-        "_put_user_settings",
-        return_value=True,
+        patch.object(
+            HubService,
+            "_put_user_settings",
+            return_value=True,
+        ),
     ):
         mock_hub_session = MagicMock(
             spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"

@@ -2,14 +2,13 @@
 
 import json
 from pathlib import Path
-from typing import Dict
 
 import pytest
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
 from poetry.core.pyproject.toml import PyProjectTOML
 
 
-def create_ext_map(extensions: dict) -> Dict[str, Version]:
+def create_ext_map(extensions: dict) -> dict[str, Version]:
     """Create the extension map from extension."""
     ext_map = {}
     for _, v in extensions.items():
@@ -19,7 +18,7 @@ def create_ext_map(extensions: dict) -> Dict[str, Version]:
     return ext_map
 
 
-def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
+def load_req_ext(file: Path) -> dict[str, VersionConstraint]:
     """Load the required extensions from pyproject.toml."""
     pyproject = PyProjectTOML(file)
     deps = pyproject.data["tool"]["poetry"]["dependencies"]

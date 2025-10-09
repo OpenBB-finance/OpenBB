@@ -2,7 +2,7 @@
 
 import ast
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.provider_interface import ProviderInterface
 
@@ -19,7 +19,7 @@ from .helpers import (
 )
 
 
-def check_router_function_models() -> List[str]:
+def check_router_function_models() -> list[str]:
     """Check if the models in the router functions exist in the provider interface map."""
     pi = ProviderInterface()
     pi_map = pi.map
@@ -31,12 +31,12 @@ def check_router_function_models() -> List[str]:
     return missing_models
 
 
-def check_router_model_functions_signature() -> List[str]:
+def check_router_model_functions_signature() -> list[str]:
     """Check if the router model functions have the correct signature."""
     expected_args = ["cc", "provider_choices", "standard_params", "extra_params"]
     expected_return_type = "OBBject"
-    missing_args: List[str] = []
-    missing_return_type: List[str] = []
+    missing_args: list[str] = []
+    missing_return_type: list[str] = []
 
     routers = collect_routers("extensions")
     loaded_routers = import_routers(routers)
@@ -71,10 +71,10 @@ def check_router_model_functions_signature() -> List[str]:
 
 
 def check_general(
-    keywords: Dict, examples: List, router_name: str, function: Any
-) -> List[str]:
+    keywords: dict, examples: list, router_name: str, function: Any
+) -> list[str]:
     """Check for general violations in the router command examples."""
-    general_violation: List[str] = []
+    general_violation: list[str] = []
 
     # Check if the endpoint has examples
     if "examples" not in keywords or not examples:
@@ -87,10 +87,10 @@ def check_general(
 
 
 def check_api(
-    examples: str, router_name: str, model: Optional[str], function: Any
-) -> List[str]:
+    examples: str, router_name: str, model: str | None, function: Any
+) -> list[str]:
     """Check for API examples."""
-    api_example_violation: List[str] = []
+    api_example_violation: list[str] = []
     parsed_examples = parse_example_string(examples)
     if model and "APIEx" in parsed_examples:
         required_fields = set(get_required_fields(model.strip("'")))
@@ -119,11 +119,11 @@ def check_api(
     return api_example_violation
 
 
-def check_router_command_examples() -> List[str]:
+def check_router_command_examples() -> list[str]:
     """Check if the router command examples satisfy criteria."""
-    general_violation: List[str] = []
-    api_example_violation: List[str] = []
-    python_example_violation: List[str] = []
+    general_violation: list[str] = []
+    api_example_violation: list[str] = []
+    python_example_violation: list[str] = []
 
     routers = collect_routers("extensions")
     loaded_routers = import_routers(routers)

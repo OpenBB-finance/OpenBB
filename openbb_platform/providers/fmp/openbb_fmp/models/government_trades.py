@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-locals
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.government_trades import (
@@ -37,23 +37,23 @@ class FMPGovernmentTradesData(GovernmentTradesData):
     chamber: Literal["House", "Senate"] = Field(
         description="Government Chamber - House or Senate."
     )
-    owner: Optional[str] = Field(
+    owner: str | None = Field(
         default=None, description="Ownership status (e.g., Spouse, Joint)."
     )
-    asset_type: Optional[str] = Field(
+    asset_type: str | None = Field(
         default=None, description="Type of asset involved in the transaction."
     )
-    asset_description: Optional[str] = Field(
+    asset_description: str | None = Field(
         default=None, description="Description of the asset."
     )
-    transaction_type: Optional[str] = Field(
+    transaction_type: str | None = Field(
         default=None, description="Type of transaction (e.g., Sale, Purchase)."
     )
-    amount: Optional[str] = Field(default=None, description="Transaction amount range.")
-    comment: Optional[str] = Field(
+    amount: str | None = Field(default=None, description="Transaction amount range.")
+    comment: str | None = Field(
         default=None, description="Additional comments on the transaction."
     )
-    url: Optional[str] = Field(
+    url: str | None = Field(
         default=None, description="Link to the transaction document."
     )
 
@@ -107,7 +107,7 @@ class FMPGovernmentTradesFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPGovernmentTradesQueryParams,
-        credentials: Optional[dict[str, str]] = None,
+        credentials: dict[str, str] | None = None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Government Trades endpoint."""

@@ -4,17 +4,12 @@
 # pylint: disable=W0621,W0212
 
 import json
-import sys
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.service.mcp_service import MCPService
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 @pytest.fixture

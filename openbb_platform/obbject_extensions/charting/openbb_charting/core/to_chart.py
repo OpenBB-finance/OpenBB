@@ -1,6 +1,6 @@
 """Module containing the to_chart function."""
 
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from openbb_charting.core.plotly_ta.data_classes import ChartIndicators  # noqa
@@ -10,13 +10,13 @@ if TYPE_CHECKING:
 
 def to_chart(
     data: Union["DataFrame", "Series"],
-    indicators: Optional[Union["ChartIndicators", Dict[str, Dict[str, Any]]]] = None,
+    indicators: Union["ChartIndicators", dict[str, dict[str, Any]]] | None = None,
     symbol: str = "",
     candles: bool = True,
     volume: bool = True,
     prepost: bool = False,
     volume_ticks_x: int = 7,
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+) -> tuple["OpenBBFigure", dict[str, Any]]:
     """Return the plotly json representation of the chart.
 
     This function is used so it can be called at the module level and used out of the box,

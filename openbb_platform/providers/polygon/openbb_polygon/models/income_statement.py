@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -30,51 +30,51 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None, description="Filing date of the financial statement."
     )
-    filing_date_lt: Optional[dateType] = Field(
+    filing_date_lt: dateType | None = Field(
         default=None, description="Filing date less than the given date."
     )
-    filing_date_lte: Optional[dateType] = Field(
+    filing_date_lte: dateType | None = Field(
         default=None,
         description="Filing date less than or equal to the given date.",
     )
-    filing_date_gt: Optional[dateType] = Field(
+    filing_date_gt: dateType | None = Field(
         default=None,
         description="Filing date greater than the given date.",
     )
-    filing_date_gte: Optional[dateType] = Field(
+    filing_date_gte: dateType | None = Field(
         default=None,
         description="Filing date greater than or equal to the given date.",
     )
-    period_of_report_date: Optional[dateType] = Field(
+    period_of_report_date: dateType | None = Field(
         default=None, description="Period of report date of the financial statement."
     )
-    period_of_report_date_lt: Optional[dateType] = Field(
+    period_of_report_date_lt: dateType | None = Field(
         default=None,
         description="Period of report date less than the given date.",
     )
-    period_of_report_date_lte: Optional[dateType] = Field(
+    period_of_report_date_lte: dateType | None = Field(
         default=None,
         description="Period of report date less than or equal to the given date.",
     )
-    period_of_report_date_gt: Optional[dateType] = Field(
+    period_of_report_date_gt: dateType | None = Field(
         default=None,
         description="Period of report date greater than the given date.",
     )
-    period_of_report_date_gte: Optional[dateType] = Field(
+    period_of_report_date_gte: dateType | None = Field(
         default=None,
         description="Period of report date greater than or equal to the given date.",
     )
-    include_sources: Optional[bool] = Field(
+    include_sources: bool | None = Field(
         default=None,
         description="Whether to include the sources of the financial statement.",
     )
-    order: Optional[Literal["asc", "desc"]] = Field(
+    order: Literal["asc", "desc"] | None = Field(
         default=None, description="Order of the financial statement."
     )
-    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
+    sort: Literal["filing_date", "period_of_report_date"] | None = Field(
         default=None, description="Sort of the financial statement."
     )
 
@@ -118,136 +118,130 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "diluted_earnings_per_share": "eps_diluted",
     }
 
-    revenue: Optional[float] = Field(default=None, description="Total Revenue")
-    cost_of_revenue_goods: Optional[float] = Field(
+    revenue: float | None = Field(default=None, description="Total Revenue")
+    cost_of_revenue_goods: float | None = Field(
         default=None, description="Cost of Revenue - Goods"
     )
-    cost_of_revenue_services: Optional[float] = Field(
+    cost_of_revenue_services: float | None = Field(
         default=None, description="Cost of Revenue - Services"
     )
-    cost_of_revenue: Optional[float] = Field(
-        default=None, description="Cost of Revenue"
-    )
-    gross_profit: Optional[float] = Field(default=None, description="Gross Profit")
-    provisions_for_loan_lease_and_other_losses: Optional[float] = Field(
+    cost_of_revenue: float | None = Field(default=None, description="Cost of Revenue")
+    gross_profit: float | None = Field(default=None, description="Gross Profit")
+    provisions_for_loan_lease_and_other_losses: float | None = Field(
         default=None, description="Provisions for loan lease and other losses"
     )
-    depreciation_and_amortization: Optional[float] = Field(
+    depreciation_and_amortization: float | None = Field(
         default=None, description="Depreciation and Amortization"
     )
-    income_tax_expense_benefit_current: Optional[float] = Field(
+    income_tax_expense_benefit_current: float | None = Field(
         default=None, description="Income tax expense benefit current"
     )
-    deferred_tax_benefit: Optional[float] = Field(
+    deferred_tax_benefit: float | None = Field(
         default=None, description="Deferred tax benefit"
     )
-    benefits_costs_expenses: Optional[float] = Field(
+    benefits_costs_expenses: float | None = Field(
         default=None, description="Benefits, costs and expenses"
     )
-    selling_general_and_administrative_expense: Optional[float] = Field(
+    selling_general_and_administrative_expense: float | None = Field(
         default=None, description="Selling, general and administrative expense"
     )
-    research_and_development: Optional[float] = Field(
+    research_and_development: float | None = Field(
         default=None, description="Research and development"
     )
-    costs_and_expenses: Optional[float] = Field(
+    costs_and_expenses: float | None = Field(
         default=None, description="Costs and expenses"
     )
-    other_operating_expenses: Optional[float] = Field(
+    other_operating_expenses: float | None = Field(
         default=None, description="Other Operating Expenses"
     )
-    operating_expenses: Optional[float] = Field(
+    operating_expenses: float | None = Field(
         default=None, description="Operating expenses"
     )
-    operating_income: Optional[float] = Field(
+    operating_income: float | None = Field(
         default=None, description="Operating Income/Loss"
     )
-    non_operating_income: Optional[float] = Field(
+    non_operating_income: float | None = Field(
         default=None, description="Non Operating Income/Loss"
     )
-    interest_and_dividend_income: Optional[float] = Field(
+    interest_and_dividend_income: float | None = Field(
         default=None, description="Interest and Dividend Income"
     )
-    total_interest_expense: Optional[float] = Field(
+    total_interest_expense: float | None = Field(
         default=None, description="Interest Expense"
     )
-    interest_and_debt_expense: Optional[float] = Field(
+    interest_and_debt_expense: float | None = Field(
         default=None, description="Interest and Debt Expense"
     )
-    net_interest_income: Optional[float] = Field(
+    net_interest_income: float | None = Field(
         default=None, description="Interest Income Net"
     )
-    interest_income_after_provision_for_losses: Optional[float] = Field(
+    interest_income_after_provision_for_losses: float | None = Field(
         default=None, description="Interest Income After Provision for Losses"
     )
-    non_interest_expense: Optional[float] = Field(
+    non_interest_expense: float | None = Field(
         default=None, description="Non-Interest Expense"
     )
-    non_interest_income: Optional[float] = Field(
+    non_interest_income: float | None = Field(
         default=None, description="Non-Interest Income"
     )
-    income_from_discontinued_operations_net_of_tax_on_disposal: Optional[float] = Field(
+    income_from_discontinued_operations_net_of_tax_on_disposal: float | None = Field(
         default=None,
         description="Income From Discontinued Operations Net of Tax on Disposal",
     )
-    income_from_discontinued_operations_net_of_tax: Optional[float] = Field(
+    income_from_discontinued_operations_net_of_tax: float | None = Field(
         default=None, description="Income From Discontinued Operations Net of Tax"
     )
-    income_before_equity_method_investments: Optional[float] = Field(
+    income_before_equity_method_investments: float | None = Field(
         default=None, description="Income Before Equity Method Investments"
     )
-    income_from_equity_method_investments: Optional[float] = Field(
+    income_from_equity_method_investments: float | None = Field(
         default=None, description="Income From Equity Method Investments"
     )
-    total_pre_tax_income: Optional[float] = Field(
+    total_pre_tax_income: float | None = Field(
         default=None, description="Income Before Tax"
     )
-    income_tax_expense: Optional[float] = Field(
+    income_tax_expense: float | None = Field(
         default=None, description="Income Tax Expense"
     )
-    income_after_tax: Optional[float] = Field(
-        default=None, description="Income After Tax"
-    )
-    consolidated_net_income: Optional[float] = Field(
+    income_after_tax: float | None = Field(default=None, description="Income After Tax")
+    consolidated_net_income: float | None = Field(
         default=None, description="Net Income/Loss"
     )
-    net_income_attributable_noncontrolling_interest: Optional[float] = Field(
+    net_income_attributable_noncontrolling_interest: float | None = Field(
         default=None,
         description="Net income (loss) attributable to noncontrolling interest",
     )
-    net_income_attributable_to_parent: Optional[float] = Field(
+    net_income_attributable_to_parent: float | None = Field(
         default=None, description="Net income (loss) attributable to parent"
     )
-    net_income_attributable_to_common_shareholders: Optional[float] = Field(
+    net_income_attributable_to_common_shareholders: float | None = Field(
         default=None,
         description="Net Income/Loss Available To Common Stockholders Basic",
     )
-    participating_securities_earnings: Optional[float] = Field(
+    participating_securities_earnings: float | None = Field(
         default=None,
         description="Participating Securities Distributed And Undistributed Earnings Loss Basic",
     )
-    undistributed_earnings_allocated_to_participating_securities: Optional[float] = (
-        Field(
-            default=None,
-            description="Undistributed Earnings Allocated To Participating Securities",
-        )
+    undistributed_earnings_allocated_to_participating_securities: float | None = Field(
+        default=None,
+        description="Undistributed Earnings Allocated To Participating Securities",
     )
-    common_stock_dividends: Optional[float] = Field(
+    common_stock_dividends: float | None = Field(
         default=None, description="Common Stock Dividends"
     )
-    preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
+    preferred_stock_dividends_and_other_adjustments: float | None = Field(
         default=None, description="Preferred stock dividends and other adjustments"
     )
-    basic_earnings_per_share: Optional[float] = Field(
+    basic_earnings_per_share: float | None = Field(
         default=None, description="Earnings Per Share"
     )
-    diluted_earnings_per_share: Optional[float] = Field(
+    diluted_earnings_per_share: float | None = Field(
         default=None, description="Diluted Earnings Per Share"
     )
-    weighted_average_basic_shares_outstanding: Optional[float] = Field(
+    weighted_average_basic_shares_outstanding: float | None = Field(
         default=None, description="Basic Average Shares"
     )
-    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+    weighted_average_diluted_shares_outstanding: float | None = Field(
         default=None, description="Diluted Average Shares"
     )
 
@@ -265,22 +259,22 @@ class PolygonIncomeStatementData(IncomeStatementData):
 class PolygonIncomeStatementFetcher(
     Fetcher[
         PolygonIncomeStatementQueryParams,
-        List[PolygonIncomeStatementData],
+        list[PolygonIncomeStatementData],
     ]
 ):
     """Polygon Income Statement Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonIncomeStatementQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonIncomeStatementQueryParams:
         """Transform the query params."""
         return PolygonIncomeStatementQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonIncomeStatementQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_querystring
@@ -307,11 +301,11 @@ class PolygonIncomeStatementFetcher(
     @staticmethod
     def transform_data(
         query: PolygonIncomeStatementQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[PolygonIncomeStatementData]:
+    ) -> list[PolygonIncomeStatementData]:
         """Return the transformed data."""
-        transformed_data: List[PolygonIncomeStatementData] = []
+        transformed_data: list[PolygonIncomeStatementData] = []
 
         for item in data:
             sub_data = {

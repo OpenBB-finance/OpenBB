@@ -5,7 +5,7 @@
 from datetime import (
     datetime,
 )
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -82,7 +82,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
     @staticmethod
     async def aextract_data(
         query: CftcCotQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the CFTC API."""

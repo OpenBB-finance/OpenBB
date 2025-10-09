@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.nport_disclosure import (
@@ -35,7 +35,7 @@ class FMPNportDisclosureData(NportDisclosureData):
         "fair_value_level": "fairValLevel",
     }
 
-    as_of: Optional[dateType] = Field(
+    as_of: dateType | None = Field(
         description="The acceptance datetime of the filing.",
         default=None,
     )
@@ -82,7 +82,7 @@ class FMPNportDisclosureFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPNportDisclosureQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

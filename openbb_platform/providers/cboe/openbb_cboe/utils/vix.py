@@ -1,6 +1,6 @@
 """VIX Utilities."""
 
-from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
     from pandas import DataFrame  # pylint: disable=import-outside-toplevel
@@ -34,7 +34,7 @@ VX_EOD_SYMBOL_TO_MONTH = {
 }
 
 
-def get_front_month(date: Optional[str] = None):
+def get_front_month(date: str | None = None):
     """Get the front month based on the third Wednesday of the month."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime  # noqa
@@ -51,7 +51,7 @@ def get_front_month(date: Optional[str] = None):
     return today.month
 
 
-def get_vx_symbols(date: Optional[str] = None) -> Dict:
+def get_vx_symbols(date: str | None = None) -> dict:
     """Get the VIX symbols based on relative position to the front month."""
     # pylint: disable=import-outside-toplevel
     from collections import deque
@@ -74,7 +74,7 @@ def get_vx_symbols(date: Optional[str] = None) -> Dict:
     )
     VIX_SYMBOLS.rotate(-(get_front_month(date) - 1))
 
-    return {f"VX{i+1}": symbol for i, symbol in enumerate(VIX_SYMBOLS)}
+    return {f"VX{i + 1}": symbol for i, symbol in enumerate(VIX_SYMBOLS)}
 
 
 def get_months(front_month):
@@ -86,7 +86,7 @@ def get_months(front_month):
     MONTHS = deque([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     MONTHS.rotate(-front_month + 1)
 
-    return {f"VX{i+1}": month for i, month in enumerate(MONTHS)}
+    return {f"VX{i + 1}": month for i, month in enumerate(MONTHS)}
 
 
 def check_date(date):
@@ -148,7 +148,7 @@ async def get_vx_current(
         df = df.filter(items=current_symbols, axis=0).reset_index()
         df = df.rename(columns={"index": "symbol"})
 
-    expirations: List = []
+    expirations: list = []
     for month in current_months:
         new_year = month == 1
         current_year = (
@@ -167,7 +167,7 @@ async def get_vx_current(
 
 # pylint: disable=too-many-locals
 async def get_vx_by_date(
-    date: Union[str, List[str]],
+    date: str | list[str],
     vx_type: Literal["am", "eod"] = "eod",
     use_cache: bool = True,
 ) -> "DataFrame":
@@ -254,11 +254,7 @@ async def get_vx_by_date(
     df.index = DatetimeIndex(df.index)
     dates_list = DatetimeIndex(dates)
     symbols = df.symbol.unique().tolist()
-    df = (
-        df.reset_index()
-        .pivot(columns="symbol", values="close", index="date")  # type: ignore
-        .copy()
-    )
+    df = df.reset_index().pivot(columns="symbol", values="close", index="date").copy()  # type: ignore
     if vx_type == "am":
         df = df.dropna(how="any")
 
@@ -286,7 +282,7 @@ async def get_vx_by_date(
         current_month = get_front_month(_date)
         current_months = get_months(current_month)
         current_year = int(_date.split("-")[0])
-        expirations: List = []
+        expirations: list = []
         for month in list(current_months.values())[:9]:
             new_year = month == 1
             current_year = (

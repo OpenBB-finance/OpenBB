@@ -3,7 +3,6 @@
 import hashlib
 import json
 from pathlib import Path
-from typing import Optional
 
 from openbb_core.app.constants import SYSTEM_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
@@ -36,7 +35,7 @@ class SystemService(metaclass=SingletonMeta):
         )
 
     @classmethod
-    def _compare_hash(cls, input_value, existing_hash: Optional[str] = None):
+    def _compare_hash(cls, input_value, existing_hash: str | None = None):
         existing_hash = existing_hash or cls.PRO_VALIDATION_HASH
 
         hash_object = hashlib.sha256()
@@ -46,7 +45,7 @@ class SystemService(metaclass=SingletonMeta):
         return hashed_input == existing_hash
 
     @classmethod
-    def _read_from_file(cls, path: Optional[Path] = None, **kwargs) -> SystemSettings:
+    def _read_from_file(cls, path: Path | None = None, **kwargs) -> SystemSettings:
         """Read default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
@@ -78,7 +77,7 @@ class SystemService(metaclass=SingletonMeta):
     def write_to_file(
         cls,
         system_settings: SystemSettings,
-        path: Optional[Path] = None,
+        path: Path | None = None,
     ) -> None:
         """Write default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH

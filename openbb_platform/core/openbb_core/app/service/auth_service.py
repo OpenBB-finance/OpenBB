@@ -1,9 +1,9 @@
 """Auth service."""
 
 import logging
+from collections.abc import Awaitable, Callable
 from importlib import import_module
 from types import ModuleType
-from typing import Awaitable, Callable, Optional
 
 from fastapi import APIRouter
 from openbb_core.api.router.user import (
@@ -28,7 +28,7 @@ class AuthServiceError(Exception):
 class AuthService(metaclass=SingletonMeta):
     """Auth service."""
 
-    def __init__(self, ext_name: Optional[str] = EXT_NAME) -> None:
+    def __init__(self, ext_name: str | None = EXT_NAME) -> None:
         """Initialize AuthService."""
         if not self._load_extension(ext_name):
             self._router = default_router
@@ -64,7 +64,7 @@ class AuthService(metaclass=SingletonMeta):
             raise AuthServiceError(f"Extension '{ext_name}' is not installed.")
         return import_module(extension.module)
 
-    def _load_extension(self, ext_name: Optional[str]) -> bool:
+    def _load_extension(self, ext_name: str | None) -> bool:
         """Load auth extension."""
         if ext_name and self._is_installed(ext_name):
             entry_mod = self._get_entry_mod(ext_name)

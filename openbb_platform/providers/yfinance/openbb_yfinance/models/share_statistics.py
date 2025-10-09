@@ -7,7 +7,7 @@ from datetime import (
     datetime,
     timezone,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -43,48 +43,48 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
         "institutions_count": "institutionsCount",
     }
 
-    implied_shares_outstanding: Optional[int] = Field(
+    implied_shares_outstanding: int | None = Field(
         default=None,
         description="Implied Shares Outstanding of common equity,"
         + " assuming the conversion of all convertible subsidiary equity into common.",
     )
-    short_interest: Optional[int] = Field(
+    short_interest: int | None = Field(
         default=None,
         description="Number of shares that are reported short.",
     )
-    short_percent_of_float: Optional[float] = Field(
+    short_percent_of_float: float | None = Field(
         default=None,
         description="Percentage of shares that are reported short, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    days_to_cover: Optional[float] = Field(
+    days_to_cover: float | None = Field(
         default=None,
         description="Number of days to repurchase the shares as a ratio of average daily volume",
     )
-    short_interest_prev_month: Optional[int] = Field(
+    short_interest_prev_month: int | None = Field(
         default=None,
         description="Number of shares that were reported short in the previous month.",
     )
-    short_interest_prev_date: Optional[dateType] = Field(
+    short_interest_prev_date: dateType | None = Field(
         default=None,
         description="Date of the previous month's report.",
     )
-    insider_ownership: Optional[float] = Field(
+    insider_ownership: float | None = Field(
         default=None,
         description="Percentage of shares held by insiders, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    institution_ownership: Optional[float] = Field(
+    institution_ownership: float | None = Field(
         default=None,
         description="Percentage of shares held by institutions, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    institution_float_ownership: Optional[float] = Field(
+    institution_float_ownership: float | None = Field(
         default=None,
         description="Percentage of float held by institutions, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    institutions_count: Optional[int] = Field(
+    institutions_count: int | None = Field(
         default=None,
         description="Number of institutions holding shares.",
     )
@@ -99,21 +99,21 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
 
 
 class YFinanceShareStatisticsFetcher(
-    Fetcher[YFinanceShareStatisticsQueryParams, List[YFinanceShareStatisticsData]]
+    Fetcher[YFinanceShareStatisticsQueryParams, list[YFinanceShareStatisticsData]]
 ):
     """YFinance Share Statistics Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceShareStatisticsQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceShareStatisticsQueryParams:
         """Transform the query."""
         return YFinanceShareStatisticsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceShareStatisticsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -189,8 +189,8 @@ class YFinanceShareStatisticsFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceShareStatisticsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceShareStatisticsData]:
+    ) -> list[YFinanceShareStatisticsData]:
         """Transform the data."""
         return [YFinanceShareStatisticsData.model_validate(d) for d in data]

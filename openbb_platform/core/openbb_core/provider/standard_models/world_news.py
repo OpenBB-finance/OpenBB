@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.data import Data
@@ -19,16 +19,16 @@ from pydantic import Field, NonNegativeInt, field_validator
 class WorldNewsQueryParams(QueryParams):
     """World News Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", "")
         + " The default is 2 weeks ago.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
     )
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " The number of articles to return.",
@@ -59,12 +59,12 @@ class WorldNewsData(Data):
         description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
     )
     title: str = Field(description="Title of the article.")
-    author: Optional[str] = Field(default=None, description="Author of the article.")
-    excerpt: Optional[str] = Field(
+    author: str | None = Field(default=None, description="Author of the article.")
+    excerpt: str | None = Field(
         default=None, description="Excerpt of the article text."
     )
-    body: Optional[str] = Field(default=None, description="Body of the article text.")
-    images: Optional[Any] = Field(
+    body: str | None = Field(default=None, description="Body of the article text.")
+    images: Any | None = Field(
         default=None, description="Images associated with the article."
     )
-    url: Optional[str] = Field(default=None, description="URL to the article.")
+    url: str | None = Field(default=None, description="URL to the article.")

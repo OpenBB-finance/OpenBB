@@ -1,6 +1,6 @@
 """Views for the Derivatives Extension."""
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -12,7 +12,7 @@ class DerivativesViews:
     @staticmethod
     def derivatives_futures_historical(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Get Derivatives Price Historical Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
@@ -24,7 +24,7 @@ class DerivativesViews:
     @staticmethod
     def derivatives_futures_curve(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Futures curve chart. All parameters are optional, and are kwargs.
         Parameters can be directly accessed from the function end point by
         entering as a nested dictionary to the 'chart_params' key.
@@ -90,10 +90,7 @@ class DerivativesViews:
                 pass
         else:
             df = DataFrame(
-                [
-                    d.model_dump(exclude_none=True, exclude_unset=True)  # type: ignore
-                    for d in kwargs["obbject_item"]
-                ]
+                [d.model_dump(exclude_none=True, exclude_unset=True) for d in kwargs["obbject_item"]]  # type: ignore
                 if isinstance(kwargs.get("obbject_item"), list)
                 else kwargs["obbject_item"].model_dump(exclude_none=True, exclude_unset=True)  # type: ignore
             )
@@ -246,7 +243,7 @@ class DerivativesViews:
     @staticmethod
     def derivatives_options_surface(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Options surface chart. All parameters are optional, and are kwargs.
 
         Data filtering is done by the POST request function.

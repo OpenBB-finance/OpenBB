@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_dividends import (
@@ -21,7 +21,7 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None, description="Return N most recent payments."
     )
 
@@ -38,27 +38,25 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
         "payment_date": "paymentDate",
         "declaration_date": "declarationDate",
     }
-    declaration_date: Optional[dateType] = Field(
+    declaration_date: dateType | None = Field(
         default=None,
         description="Declaration date of the historical dividends.",
     )
-    record_date: Optional[dateType] = Field(
+    record_date: dateType | None = Field(
         default=None,
         description="Record date of the historical dividends.",
     )
-    payment_date: Optional[dateType] = Field(
+    payment_date: dateType | None = Field(
         default=None,
         description="Payment date of the historical dividends.",
     )
     adjusted_amount: float = Field(description="Split-adjusted dividend amount.")
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend yield represented by the payment.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    frequency: Optional[str] = Field(
-        default=None, description="Frequency of the payment."
-    )
+    frequency: str | None = Field(default=None, description="Frequency of the payment.")
 
     @field_validator(
         "dividend_yield",
@@ -87,7 +85,7 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPHistoricalDividendsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

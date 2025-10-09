@@ -1,6 +1,6 @@
 """Congress.gov helpers."""
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from fastapi.exceptions import HTTPException
 from openbb_congress_gov.utils.constants import BillTypes, base_url, bill_type_options
@@ -139,14 +139,14 @@ def download_bills(urls: list[str]) -> list:
 
 # pylint: disable=R0917
 async def get_bills_by_type(
-    congress: Optional[int] = None,
+    congress: int | None = None,
     bill_type: str = "hr",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    limit: Optional[int] = None,
-    offset: Optional[int] = 0,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    limit: int | None = None,
+    offset: int | None = 0,
     sort_by: Literal["asc", "desc"] = "desc",
-) -> Union[dict, list]:
+) -> dict | list:
     """Fetch bills of a specific type for a given Congress number.
 
     Results are sorted by date of the latest action on the bill.
@@ -226,10 +226,10 @@ async def get_bills_by_type(
 
 
 async def get_all_bills_by_type(
-    congress: Optional[int] = None,
-    bill_type: Optional[str] = None,
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
+    congress: int | None = None,
+    bill_type: str | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
 ):
     """Fetch all bills of a specific type for a given Congress number.
 
@@ -304,12 +304,12 @@ async def get_all_bills_by_type(
 
 
 async def get_bill_choices(
-    congress: Optional[int] = None,
-    bill_type: Optional[str] = None,
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    bill_url: Optional[str] = None,
-    is_document_choices: Optional[bool] = None,
+    congress: int | None = None,
+    bill_type: str | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    bill_url: str | None = None,
+    is_document_choices: bool | None = None,
 ) -> list:
     """Fetch a list of bills of a specific type for a given Congress number.
 
@@ -428,7 +428,6 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
 
     # Return the results for non-Workspace queries
     if is_workspace is False:
-
         if not bill_text:
             raise HTTPException(
                 status_code=404,
