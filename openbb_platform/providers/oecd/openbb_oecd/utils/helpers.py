@@ -31,7 +31,7 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):  # type: ignore
         super().__init__(**kwargs)
 
     # pylint: disable=arguments-differ
-    def init_poolmanager(self, connections, maxsize, block=False):
+    def init_poolmanager(self, connections, maxsize, block=False):  # type: ignore
         """Initialize the poolmanager with a custom ssl_context."""
         self.poolmanager = urllib3.poolmanager.PoolManager(  # pylint: disable=attribute-defined-outside-init
             num_pools=connections,
@@ -102,10 +102,14 @@ def oecd_xml_to_df(xml_string: str) -> DataFrame:
             obs_data = series_data.copy()
             obs_data["TIME_PERIOD"] = obs.find(
                 "./generic:ObsDimension", namespaces=namespaces
-            ).get("value")
+            ).get(  # type: ignore
+                "value"
+            )
             obs_data["VALUE"] = obs.find(
                 "./generic:ObsValue", namespaces=namespaces
-            ).get("value")
+            ).get(  # type: ignore
+                "value"
+            )
             data.append(obs_data)
 
     # Create a DataFrame
