@@ -16,9 +16,9 @@ def test_registry_operations():
     obbject2 = OBBject(
         id="2", results=True, extra={"register_key": "key2", "command": "cmd2"}
     )
-    obbject3 = OBBject(
+    obbject3 = OBBject(  # noqa: F841
         id="3", results=True, extra={"register_key": "key3", "command": "cmd3"}
-    )  # noqa: F841
+    )
 
     # Add obbjects to the registry
     assert registry.register(obbject1) is True

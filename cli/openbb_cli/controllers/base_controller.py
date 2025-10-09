@@ -20,7 +20,6 @@ from openbb_cli.controllers.utils import (
     check_positive,
     get_flair_and_username,
     handle_obbject_display,
-    parse_and_split_input,
     parse_unknown_args_to_dict,
     print_guest_block_msg,
     print_rich_table,
