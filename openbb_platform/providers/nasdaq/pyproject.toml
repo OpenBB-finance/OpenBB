@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-nasdaq"
-version = "1.4.2"
+version = "1.5.0"
 description = "Nasdaq extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,8 +9,8 @@ packages = [{ include = "openbb_nasdaq" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.14"
-openbb-core = "^1.5.0"
-openbb-platform-api = "^1.2.0"
+openbb-core = "^1.5.1"
+openbb-platform-api = "^1.2.1"
 async-lru = "^2.0.5"
 random-user-agent = "^1.0.1"
 nasdaq-data-link = "^1.0.4"

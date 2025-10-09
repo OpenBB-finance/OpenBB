@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-charting"
-version = "2.3.5"
+version = "2.4.0"
 description = "Charting extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,9 +9,9 @@ packages = [{ include = "openbb_charting" }]
 
 [tool.poetry.dependencies]
 python = ">=3.9.21,<3.14"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.5.0"
-pandas-ta-openbb = "^0.4.20"
-plotly = "^6.2.0"
+openbb-core = "^1.5.1"
+pandas-ta-openbb = "^0.4.22"
+plotly = "^6.3.1"
 pywry = { version = "^0.6.2", optional = true }
 nbformat = "^5.10.0"
 

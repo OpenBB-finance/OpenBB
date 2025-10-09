@@ -14,7 +14,7 @@
     "dom-to-image": "^2.6.0",
     "esbuild": ">=0.25.0",
     "lodash": "^4.17.21",
-    "plotly.js-dist-min": "^3.0.1",
+    "plotly.js-dist-min": "^3.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-plotly.js": "^2.6.0",
