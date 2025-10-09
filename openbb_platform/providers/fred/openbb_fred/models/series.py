@@ -89,7 +89,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
     cca = Continuously Compounded Annual Rate of Change
     log = Natural Log""",
     )
-    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=10000)
+    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 
 
 class FredSeriesData(SeriesData):
