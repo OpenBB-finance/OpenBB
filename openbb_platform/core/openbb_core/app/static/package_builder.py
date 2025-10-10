@@ -6,6 +6,7 @@ import inspect
 import re
 import shutil
 import sys
+import textwrap
 from collections import OrderedDict
 from collections.abc import Callable
 from functools import partial
@@ -866,7 +867,7 @@ class MethodDefinition:
                             description=description,
                         ),
                     ],
-                    default=MethodDefinition.get_default(param),
+                    default=MethodDefinition.get_default(param),  # type: ignore
                 )
 
             else:
@@ -895,7 +896,7 @@ class MethodDefinition:
                             description=description,
                         ),
                     ],
-                    default=MethodDefinition.get_default(param),
+                    default=MethodDefinition.get_default(param),  # type: ignore
                 )
                 if param.kind == Parameter.VAR_KEYWORD:
                     var_kw.append(name)
@@ -1039,7 +1040,6 @@ class MethodDefinition:
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
-        import textwrap
 
         def get_type_repr(type_hint: Any) -> str:
             """Get the string representation of a type hint."""
@@ -1052,7 +1052,7 @@ class MethodDefinition:
             return s
 
         def stringify_param(param: Parameter) -> str:
-            """Custom stringify for a parameter."""
+            """String formatting for a parameter."""
             if not (
                 isinstance(param.annotation, _AnnotatedAlias)
                 and any(
