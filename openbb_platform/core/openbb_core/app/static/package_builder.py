@@ -145,7 +145,7 @@ class PackageBuilder:
             except BlockingIOError:
                 raise RuntimeError(
                     f"Another build process is running and has locked {self._lock_path}"
-                ) from None
+                )
             finally:
                 # Release lock
                 fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
@@ -1077,7 +1077,7 @@ class MethodDefinition:
             return s
 
         def stringify_param(param: Parameter) -> str:
-            """String formatting for a parameter."""
+            """Format a parameter as a string."""
             if not (
                 isinstance(param.annotation, _AnnotatedAlias)
                 and any(
