@@ -2,7 +2,9 @@
 
 # pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments
 import builtins
+import fcntl
 import inspect
+import os
 import re
 import shutil
 import sys
@@ -90,6 +92,7 @@ class PackageBuilder:
         self.console = Console(verbose)
         self.route_map = PathHandler.build_route_map()
         self.path_list = PathHandler.build_path_list(route_map=self.route_map)
+        self._lock_path = self.directory / ".build.lock"
 
     def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
@@ -116,14 +119,36 @@ class PackageBuilder:
         modules: str | list[str] | None = None,
     ) -> None:
         """Build the extensions for the Platform."""
-        self.console.log("\nBuilding extensions package...\n")
-        self._clean(modules)
-        ext_map = self._get_extension_map()
-        self._save_modules(modules, ext_map)
-        self._save_package()
-        self._save_reference_file(ext_map)
-        if self.lint:
-            self._run_linters()
+        self._lock_path.touch(exist_ok=True)
+
+        # Open lock file and acquire exclusive lock
+        with open(self._lock_path, "w", encoding="utf-8") as lock_file:
+            try:
+                # Get exclusive lock on file
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+                # Write PID to lock file for debugging
+                lock_file.seek(0)
+                lock_file.write(str(os.getpid()))
+                lock_file.flush()
+
+                # Actual build steps
+                self.console.log("\nBuilding extensions package...\n")
+                self._clean(modules)
+                ext_map = self._get_extension_map()
+                self._save_modules(modules, ext_map)
+                self._save_package()
+                self._save_reference_file(ext_map)
+                if self.lint:
+                    self._run_linters()
+
+            except BlockingIOError:
+                raise RuntimeError(
+                    f"Another build process is running and has locked {self._lock_path}"
+                ) from None
+            finally:
+                # Release lock
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
     def _clean(self, modules: str | list[str] | None = None) -> None:
         """Delete the assets and package folder or modules before building."""
@@ -179,7 +204,7 @@ class PackageBuilder:
     def _save_package(self):
         """Save the package."""
         self.console.log("\nWriting package __init__...")
-        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
+        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###"
         self._write(code=code, name="__init__")
 
     def _save_reference_file(self, ext_map: dict[str, list[str]] | None = None):
@@ -284,7 +309,7 @@ class ModuleBuilder:
     @staticmethod
     def build(path: str, ext_map: dict[str, list[str]] | None = None) -> str:
         """Build the module."""
-        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n"
+        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n#  pylint: disable=R0917\n\n"
         code += ImportDefinition.build(path)
         code += ClassDefinition.build(path, ext_map)
 
@@ -1039,7 +1064,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
-        """Stringify function params."""
+        """Convert function params to string representations."""
 
         def get_type_repr(type_hint: Any) -> str:
             """Get the string representation of a type hint."""

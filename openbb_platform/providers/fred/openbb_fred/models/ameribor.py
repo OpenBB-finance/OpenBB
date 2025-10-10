@@ -30,14 +30,6 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
     __json_schema_extra__ = {
         "maturity": {
             "multiple_items_allowed": True,
-            "choices": [
-                "all",
-                "overnight",
-                "average_30d",
-                "average_90d",
-                "term_30d",
-                "term_90d",
-            ],
         }
     }
 
@@ -69,39 +61,20 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
         ]
     ) = Field(
         default=None,
-        description="""
-        Frequency aggregation to convert daily data to lower frequency.
-            a = Annual
-            q = Quarterly
-            m = Monthly
-            w = Weekly
-            wef = Weekly, Ending Friday
-            weth = Weekly, Ending Thursday
-            wew = Weekly, Ending Wednesday
-            wetu = Weekly, Ending Tuesday
-            wem = Weekly, Ending Monday
-            wesu = Weekly, Ending Sunday
-            wesa = Weekly, Ending Saturday
-            bwew = Biweekly, Ending Wednesday
-            bwem = Biweekly, Ending Monday
-        """,
-        json_schema_extra={
-            "choices": [
-                "a",
-                "q",
-                "m",
-                "w",
-                "wef",
-                "weth",
-                "wew",
-                "wetu",
-                "wem",
-                "wesu",
-                "wesa",
-                "bwew",
-                "bwem",
-            ]
-        },
+        description="""Frequency aggregation to convert daily data to lower frequency.
+    a = Annual
+    q = Quarterly
+    m = Monthly
+    w = Weekly
+    wef = Weekly, Ending Friday
+    weth = Weekly, Ending Thursday
+    wew = Weekly, Ending Wednesday
+    wetu = Weekly, Ending Tuesday
+    wem = Weekly, Ending Monday
+    wesu = Weekly, Ending Sunday
+    wesa = Weekly, Ending Saturday
+    bwew = Biweekly, Ending Wednesday
+    bwem = Biweekly, Ending Monday""",
     )
     aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
@@ -117,21 +90,16 @@ class FredAmeriborQueryParams(AmeriborQueryParams):
         None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
     ) = Field(
         default=None,
-        description="""
-        Transformation type
-            None = No transformation
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
-        """,
-        json_schema_extra={
-            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-        },
+        description="""Transformation type
+    None = No transformation
+    chg = Change
+    ch1 = Change from Year Ago
+    pch = Percent Change
+    pc1 = Percent Change from Year Ago
+    pca = Compounded Annual Rate of Change
+    cch = Continuously Compounded Rate of Change
+    cca = Continuously Compounded Annual Rate of Change
+    log = Natural Log""",
     )
 
 
@@ -177,8 +145,8 @@ class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, list[FredAmeriborData
             raise e from e
 
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": response.metadata,  # type: ignore
+            "data": [d.model_dump() for d in response.result],  # type: ignore
         }
 
     @staticmethod
