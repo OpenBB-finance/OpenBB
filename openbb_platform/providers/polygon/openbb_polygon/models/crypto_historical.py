@@ -45,8 +45,8 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -63,12 +63,12 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 

@@ -1,5 +1,7 @@
 """Intrinio Financial Attributes Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any
 
@@ -49,7 +51,7 @@ class IntrinioFinancialAttributesFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioFinancialAttributesQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:

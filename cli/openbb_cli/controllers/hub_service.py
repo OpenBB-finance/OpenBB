@@ -17,7 +17,7 @@ from openbb_cli.session import Session
 session = Session()
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments, too-many-positional-arguments
 def upload_routine(
     auth_header: str,
     name: str = "",

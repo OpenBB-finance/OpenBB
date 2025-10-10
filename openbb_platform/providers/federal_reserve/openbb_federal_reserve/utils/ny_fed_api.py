@@ -78,7 +78,7 @@ HOLDING_TYPE_CHOICES = [
 ]
 
 
-def _get_endpoints(
+def _get_endpoints(  # pylint: disable=R0917
     category: CategoryChoices | None = None,
     start_date: str | None = "",
     end_date: str | None = "",
@@ -312,8 +312,8 @@ def get_nearest_date(dates: list[str], target_date: str) -> str:
     """Get the nearest date in the list of dates to the target date."""
     df = DataFrame(dates, columns=["dates"])
     df["dates"] = DatetimeIndex(df["dates"])
-    target_date = to_datetime(target_date)
-    differences = (df.dates - target_date).abs()
+    target_date = to_datetime(target_date)  # type: ignore
+    differences = (df.dates - target_date).abs()  # type: ignore
     nearest_date_index = differences.argmin()
     nearest_date = df.index[nearest_date_index]
     return df.iloc[nearest_date]["dates"].strftime("%Y-%m-%d")
@@ -482,7 +482,7 @@ class SomaHoldings:
 
         return holdings
 
-    async def get_treasury_holdings(
+    async def get_treasury_holdings(  # pylint: disable=R0917
         self,
         as_of: str | None = None,
         cusip: str | None = None,

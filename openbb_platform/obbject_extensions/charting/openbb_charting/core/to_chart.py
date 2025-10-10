@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
 
 
-def to_chart(
+def to_chart(  # pylint: disable=R0917
     data: Union["DataFrame", "Series"],
     indicators: Union["ChartIndicators", dict[str, dict[str, Any]]] | None = None,
     symbol: str = "",
@@ -50,7 +50,7 @@ def to_chart(
 
     try:
         ta = PlotlyTA()
-        fig = ta.plot(
+        fig = ta.plot(  # type: ignore
             df_stock=data,
             indicators=indicators,
             symbol=symbol,

@@ -1,5 +1,7 @@
 """Intrinio FRED Series Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from datetime import datetime
 from typing import Any

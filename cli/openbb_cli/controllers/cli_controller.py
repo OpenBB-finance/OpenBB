@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """Main CLI Module."""
 
+# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
+# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
+
 import argparse
 import contextlib
 import difflib
@@ -54,10 +57,6 @@ PLATFORM_ROUTERS = {
 }
 NON_DATA_ROUTERS = ["coverage", "account", "reference", "system", "user"]
 DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
-
-# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
-# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
 
@@ -634,7 +633,7 @@ def insert_start_slash(cmds: list[str]) -> list[str]:
     return cmds
 
 
-def run_scripts(
+def run_scripts(  # pylint: disable=R0917
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
@@ -665,7 +664,6 @@ def run_scripts(
         if not test_mode:
             run_cli()
 
-    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [

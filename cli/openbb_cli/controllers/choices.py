@@ -18,7 +18,7 @@ from openbb_cli.session import Session
 session = Session()
 
 
-def __mock_parse_known_args_and_warn(
+def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
     controller,  # pylint: disable=unused-argument
     parser: ArgumentParser,
     other_args: list[str],

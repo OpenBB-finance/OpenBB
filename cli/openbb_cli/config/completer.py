@@ -35,7 +35,7 @@ class WordCompleter(Completer):
         default one (see document._FIND_WORD_RE)
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=R0917
         self,
         words: list[str] | Callable[[], list[str]],
         ignore_case: bool = False,

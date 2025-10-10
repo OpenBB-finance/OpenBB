@@ -1,5 +1,7 @@
 """Intrinio Financial Ratios Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Literal
 from warnings import warn
 

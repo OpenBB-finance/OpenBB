@@ -1,5 +1,7 @@
 """Intrinio Institutional Ownership Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from typing import Any
 

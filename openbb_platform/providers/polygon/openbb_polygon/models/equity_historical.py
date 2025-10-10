@@ -53,8 +53,8 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod

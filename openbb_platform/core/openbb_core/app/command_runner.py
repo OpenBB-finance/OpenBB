@@ -51,7 +51,7 @@ class ExecutionContext:
     @property
     def api_route(self) -> "APIRoute":
         """API route."""
-        return self._route_map[self.route]
+        return self._route_map[self.route]  # type: ignore
 
 
 class ParametersBuilder:
@@ -341,11 +341,11 @@ class StaticCommandRunner:
                         kwargs if "data" in kwargs else {}
                     )
                     extra_params = cls._extract_params(kwargs, "extra_params")
-                    obbject._standard_params = (
-                        std_params  # pylint: disable=protected-access
+                    obbject._standard_params = (  # pylint: disable=protected-access
+                        std_params
                     )
-                    obbject._extra_params = (
-                        extra_params  # pylint: disable=protected-access
+                    obbject._extra_params = (  # pylint: disable=protected-access
+                        extra_params
                     )
                     if chart and obbject.results:
                         cls._chart(obbject, **kwargs)
@@ -357,7 +357,7 @@ class StaticCommandRunner:
                     obbject.warnings = []
                 for w in raised_warnings:
                     if isinstance(obbject, OBBject):
-                        obbject.warnings.append(cast_warning(w))
+                        obbject.warnings.append(cast_warning(w))  # type: ignore
                     if user_settings.preferences.show_warnings:
                         showwarning(
                             message=w.message,

@@ -619,48 +619,52 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
 
 def update_json_files() -> None:
     """Update the static JSON files with fresh values from EconDB."""
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     indicators = loop.run_until_complete(download_indicators(use_cache=False))
 
     def update_symbol_to_indicator() -> None:
         """Update the symbol to indicator mapping."""
         with open(
-            files("openbb_econdb.utils") / "symbol_to_indicator.json",
-            "w",  # type: ignore
+            files("openbb_econdb.utils") / "symbol_to_indicator.json",  # type: ignore
+            "w",
             encoding="utf-8",
-        ) as f:
+        ) as file:
             json_data = json.dumps(
                 indicators.set_index("short_ticker")
                 .sort_index()["symbol_root"]
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_multipliers() -> None:
         """Update the unit multipliers."""
-        with open(files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8") as f:  # type: ignore
+        with open(files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
                 indicators.set_index("short_ticker")
                 .sort_index()["multiplier"]
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_scales() -> None:
         """Update the scales."""
-        with open(files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8") as f:  # type: ignore
+        with open(files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
-                indicators.set_index("short_ticker").sort_index()["scale"].to_dict()
+                indicators.set_index("short_ticker").sort_index()["scale"].to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_units() -> None:
         """Update the units."""
-        with open(files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8") as f:  # type: ignore
+        with open(files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
-                indicators.set_index("short_ticker").sort_index()["currency"].to_dict()
+                indicators.set_index("short_ticker").sort_index()["currency"].to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_descriptions() -> None:
         """Update the indicator descriptions."""
@@ -668,28 +672,29 @@ def update_json_files() -> None:
             zip(indicators["symbol_root"], indicators["description"])
         )
         descriptions_dict = {k: descriptions_dict[k] for k in sorted(descriptions_dict)}
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "indicators_descriptions.json",
+        with open(
+            files("openbb_econdb.utils") / "indicators_descriptions.json",  # type: ignore
             "w",
             encoding="utf-8",
-        ) as f:
-            json_data = json.dumps(descriptions_dict)
-            f.write(json_data)
+        ) as file:
+            json_data = json.dumps(descriptions_dict, indent=4)
+            file.write(json_data)
 
     def update_indicator_countries() -> None:
         """Update the indicator countries."""
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "indicator_countries.json",
+        with open(
+            files("openbb_econdb.utils") / "indicator_countries.json",  # type: ignore
             "w",
             encoding="utf-8",
-        ) as f:
+        ) as file:
             json_data = json.dumps(
                 indicators[indicators["symbol_root"] != "[W00]"]
                 .groupby("symbol_root")["iso"]
                 .apply(lambda x: x.sort_values().unique().tolist())
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     update_symbol_to_indicator()
     update_multipliers()

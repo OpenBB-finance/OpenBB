@@ -734,7 +734,7 @@ class BaseController(metaclass=ABCMeta):
         return ns_parser, l_unknown_args
 
     @classmethod
-    def parse_known_args_and_warn(
+    def parse_known_args_and_warn(  # pylint: disable=R0917
         cls,
         parser: argparse.ArgumentParser,
         other_args: list[str],
@@ -856,8 +856,9 @@ class BaseController(metaclass=ABCMeta):
                     if arg in ("-i", "--input")
                     and "routine_args"
                     in [
-                        action.dest for action in parser._actions
-                    ]  # pylint: disable=protected-access
+                        action.dest
+                        for action in parser._actions  # pylint: disable=protected-access
+                    ]
                 ),
                 -1,
             )
@@ -870,7 +871,7 @@ class BaseController(metaclass=ABCMeta):
 
             # Check if the action has optional choices, if yes, remove them
             for action in parser._actions:  # pylint: disable=protected-access
-                if hasattr(action, "optional_choices") and action.optional_choices:
+                if getattr(action, "optional_choices", None):
                     action.choices = None
 
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)

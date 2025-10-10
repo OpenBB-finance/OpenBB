@@ -242,7 +242,7 @@ def process_data(
 class RelativeRotation:
     """Relative Rotation Class."""
 
-    def __init__(
+    def __init__(  # pylint: disable=R0917
         self,
         data: Union[list[Data], "DataFrame"],
         benchmark: str,

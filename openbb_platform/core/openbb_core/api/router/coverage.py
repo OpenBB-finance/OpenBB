@@ -40,8 +40,8 @@ async def get_commands_model_map(
 
             for field, field_info in query_fields.items():
                 attributes = (
-                    field_info._attributes_set
-                )  # pylint: disable=protected-access
+                    field_info._attributes_set  # pylint: disable=protected-access
+                )
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation
@@ -52,8 +52,8 @@ async def get_commands_model_map(
 
             for field, field_info in data_fields.items():
                 attributes = (
-                    field_info._attributes_set
-                )  # pylint: disable=protected-access
+                    field_info._attributes_set  # pylint: disable=protected-access
+                )
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation

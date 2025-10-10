@@ -1,5 +1,7 @@
 """Intrinio Equity Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -67,7 +69,7 @@ class IntrinioEquitySearchFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioEquitySearchQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioEquitySearchQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
@@ -78,12 +80,11 @@ class IntrinioEquitySearchFetcher(
         base_url = "https://api-v2.intrinio.com/companies/search?"
         url = f"{base_url}{query_str}&api_key={api_key}"
         data = await get_data_one(url, **kwargs)
-        return data
+        return data  # type: ignore
 
     @staticmethod
     def transform_data(
         query: IntrinioEquitySearchQueryParams, data: dict, **kwargs: Any
     ) -> list[IntrinioEquitySearchData]:
         """Transform the data to the standard format."""
-
         return [IntrinioEquitySearchData.model_validate(d) for d in data["companies"]]

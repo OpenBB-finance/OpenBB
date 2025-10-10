@@ -45,7 +45,7 @@ async def fetch_data(url, use_cache, persist) -> dict | list[dict]:
     return response
 
 
-async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too-many-statements
+async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
     fact: str = "Revenues",
     year: int | None = None,
     fiscal_period: FISCAL_PERIODS | None = None,
@@ -105,6 +105,9 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         Nested dictionary with keys, "metadata" and "data".
         The "metadata" key contains information about the frame.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import nan
+
     current_date = datetime.now().date()
     quarter = FISCAL_PERIODS_DICT.get(fiscal_period) if fiscal_period else None
     if year is None and quarter is None:
@@ -176,7 +179,7 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
     df["unit"] = metadata.get("unit")
     df["fact"] = metadata.get("label")
     df["frame"] = metadata.get("frame")
-    df = df.fillna("N/A").replace("N/A", None)
+    df = df.replace({nan: None})
     results = {"metadata": metadata, "data": df.to_dict("records")}
 
     return results

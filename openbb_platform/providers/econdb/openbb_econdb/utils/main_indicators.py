@@ -89,7 +89,7 @@ async def fetch_data(url, use_cache: bool = True):
     return response
 
 
-async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
+async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915,R0917
     country: str = "US",
     start_date: str = (datetime.now() - timedelta(weeks=52 * 3)).strftime("%Y-%m-%d"),
     end_date: str = datetime.now().strftime("%Y-%m-%d"),
@@ -139,7 +139,7 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
     df["is_parent"] = df.index.map(parent_map.get)
     df = df.set_index("is_parent", append=True)
 
-    async def get_children(  # pylint: disable=R0913
+    async def get_children(
         parent, country, freq, transform, start_date, end_date, use_cache
     ) -> DataFrame:
         """Get the child elements for the main indicator symbols."""

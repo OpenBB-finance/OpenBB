@@ -62,12 +62,12 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 

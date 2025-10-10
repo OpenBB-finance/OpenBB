@@ -43,8 +43,8 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -61,12 +61,12 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 
@@ -152,7 +152,7 @@ class PolygonIndexHistoricalFetcher(
             data = await response.json()
 
             if isinstance(data, dict) and data.get("status") == "NOT_AUTHORIZED":
-                raise UnauthorizedError(response.get("message", str(response)))
+                raise UnauthorizedError(response.get("message", str(response)))  # type: ignore
 
             symbol = response.url.parts[4]
             next_url = data.get("next_url", None)  # type: ignore[union-attr]

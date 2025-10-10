@@ -143,7 +143,7 @@ class PackageBuilder:
                     self._run_linters()
 
             except BlockingIOError:
-                raise RuntimeError(
+                raise RuntimeError(  # noqa # pylint: disable=W0707
                     f"Another build process is running and has locked {self._lock_path}"
                 )
             finally:
@@ -2236,9 +2236,9 @@ class DocstringGenerator:
                     examples,
                 )
 
-        if (
+        if (  # pylint: disable=chained-comparison
             max_length and len(doc) > max_length and max_length > 3
-        ):  # pylint: disable=chained-comparison
+        ):
             doc = doc[: max_length - 3] + "..."
         return doc
 

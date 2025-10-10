@@ -1,5 +1,7 @@
 """Nasdaq Top Retail Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any
 

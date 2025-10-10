@@ -25,11 +25,11 @@ from openbb_charting.charts.helpers import (
 
 if TYPE_CHECKING:
     from numpy import ndarray  # noqa
-    from pandas import DataFrame, Series  # noqa
-    from plotly.graph_objs import Figure  # noqa
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
-    from openbb_charting.query_params import ChartParams  # noqa
-    from openbb_charting.core.backend import Backend  # noqa
+    from pandas import DataFrame, Series
+    from plotly.graph_objs import Figure
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_charting.query_params import ChartParams
+    from openbb_charting.core.backend import Backend
 
 
 class Charting:
@@ -143,9 +143,9 @@ class Charting:
 
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
-        charting_function = (self._obbject._route).replace("/", "_")[
-            1:
-        ]  # pylint: disable=protected-access
+        charting_function = (
+            self._obbject._route  # pylint: disable=protected-access
+        ).replace("/", "_")[1:]
         if hasattr(ChartParams, charting_function):
             return getattr(ChartParams, charting_function)()
 
@@ -474,16 +474,16 @@ class Charting:
         """Display chart and save it to the OBBject."""
         try:
             charting_function = self._get_chart_function(
-                self._obbject._route
-            )  # pylint: disable=protected-access
+                self._obbject._route  # pylint: disable=protected-access
+            )
             kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings
             kwargs["standard_params"] = (
-                self._obbject._standard_params
-            )  # pylint: disable=protected-access
+                self._obbject._standard_params  # pylint: disable=protected-access
+            )
             kwargs["extra_params"] = (
-                self._obbject._extra_params
-            )  # pylint: disable=protected-access
+                self._obbject._extra_params  # pylint: disable=protected-access
+            )
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
@@ -597,11 +597,11 @@ class Charting:
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
         kwargs["standard_params"] = (
-            self._obbject._standard_params
-        )  # pylint: disable=protected-access
+            self._obbject._standard_params  # pylint: disable=protected-access
+        )
         kwargs["extra_params"] = (
-            self._obbject._extra_params
-        )  # pylint: disable=protected-access
+            self._obbject._extra_params  # pylint: disable=protected-access
+        )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
         try:
