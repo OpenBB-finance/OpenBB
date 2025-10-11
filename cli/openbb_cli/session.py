@@ -25,7 +25,7 @@ def _get_backend():
     except ValueError:
         # backend might not be created yet
         charting_settings = ChartingSettings(
-            system_settings=obb.system,
+            system_settings=obb.system,  # type: ignore
             user_settings=obb.user,  # type: ignore
         )
         create_backend(charting_settings)
@@ -96,10 +96,6 @@ class Session(metaclass=SingletonMeta):
             prompt_session = None
 
         return prompt_session
-
-    def is_local(self) -> bool:
-        """Check if user is local."""
-        return not bool(self.user.profile.hub_session)
 
     def max_obbjects_exceeded(self) -> bool:
         """Check if max obbjects exceeded."""

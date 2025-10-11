@@ -22,7 +22,6 @@ Launcher specific arguments:
     --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
     --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
     --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
-    --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
@@ -91,115 +90,18 @@ def check_port(host, port):
     return port
 
 
-def get_user_settings(
-    _login: bool, current_user_settings: str, user_settings_copy: str
-):
+def get_user_settings(current_user_settings: str) -> dict:
     """Login to the OpenBB Platform."""
-    # pylint: disable=import-outside-toplevel
-    import getpass
-
     if Path(current_user_settings).exists():
         with open(current_user_settings, encoding="utf-8") as f:
-            _current_settings = json.load(f)
+            user_settings = json.load(f)
     else:
-        _current_settings = {
+        user_settings = {
             "credentials": {},
             "preferences": {},
             "defaults": {"commands": {}},
         }
-    if (isinstance(_login, str) and _login.lower() == "false") or not _login:
-        return _current_settings
-
-    pat = getpass.getpass(
-        "\n\nEnter your personal access token (PAT) to authorize the API and update your local settings."
-        + "\nSkip to use a pre-configured 'user_settings.json' file."
-        + "\nPress Enter to skip or copy (entered values are not displayed on screen) your PAT to the command line: "
-    )
-
-    if pat:
-        from openbb_core.app.service.hub_service import HubService
-
-        hub_credentials: dict = {}
-        hub_preferences: dict = {}
-        hub_defaults: dict = {}
-        try:
-            Hub = HubService()
-            _ = Hub.connect(pat=pat)
-            hub_settings = Hub.pull()
-            hub_credentials = json.loads(
-                hub_settings.credentials.model_dump_json()
-            )  # pylint: disable=no-member
-            hub_preferences = json.loads(
-                hub_settings.preferences.model_dump_json()
-            )  # pylint: disable=no-member
-            hub_defaults = json.loads(
-                hub_settings.defaults.model_dump_json()
-            )  # pylint: disable=no-member
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            print(  # noqa: T201
-                f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n"
-            )
-
-        if hub_credentials:
-            # Prompt the user to ask if they want to persist the new settings
-            persist_input = (
-                input(
-                    "\n\nDo you want to persist the new settings?"
-                    + " Not recommended for public machines. (yes/no): "
-                )
-                .strip()
-                .lower()
-            )
-
-            if persist_input in ["yes", "y"]:
-                PERSIST = True
-            elif persist_input in ["no", "n"]:
-                PERSIST = False
-            else:
-                print(  # noqa
-                    "\n\nInvalid input. Defaulting to not persisting the new settings."
-                )
-                PERSIST = False
-
-            # Save the current settings to restore at the end of the session.
-            if PERSIST is False:
-                with open(user_settings_copy, "w", encoding="utf-8") as f:
-                    json.dump(_current_settings, f, indent=4)
-
-        new_settings = _current_settings.copy()
-        new_settings.setdefault("credentials", {})
-        new_settings.setdefault("preferences", {})
-        new_settings.setdefault("defaults", {"commands": {}})
-
-        # Update the current settings with the new settings
-        if hub_credentials:
-            for k, v in hub_credentials.items():
-                if v:
-                    new_settings["credentials"][k] = v.strip('"').strip("'")
-
-        if hub_preferences:
-            for k, v in hub_preferences.items():
-                if v:
-                    new_settings["preferences"][k] = v
-
-        if hub_defaults:
-            for k, v in hub_defaults.items():
-                if k == "commands":
-                    for key, value in hub_defaults["commands"].items():
-                        if value:
-                            new_settings["defaults"]["commands"][key] = value
-                elif v:
-                    new_settings["defaults"][k] = v
-                else:
-                    continue
-
-        # Write the new settings to the user_settings.json file
-        with open(current_user_settings, "w", encoding="utf-8") as f:
-            json.dump(new_settings, f, indent=4)
-
-        _current_settings = new_settings
-
-    return _current_settings
+    return user_settings
 
 
 def get_widgets_json(

@@ -5,7 +5,6 @@ from typing import TypeVar
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.static.account import Account
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.coverage import Coverage
 from openbb_core.app.static.reference_loader import ReferenceLoader
@@ -15,7 +14,6 @@ E = TypeVar("E", bound=type[Container])
 BASE_DOC = f"""OpenBB Platform v{VERSION}
 
 Utilities:
-    /account
     /user
     /system
     /coverage
@@ -29,14 +27,8 @@ class BaseApp:
         """Initialize the app."""
         command_runner.init_logging_service()
         self._command_runner = command_runner
-        self._account = Account(self)
         self._coverage = Coverage(self)
         self._reference = ReferenceLoader().reference
-
-    @property
-    def account(self) -> Account:
-        """Account menu."""
-        return self._account
 
     @property
     def user(self) -> UserSettings:
@@ -59,7 +51,7 @@ class BaseApp:
         return self._reference
 
 
-def create_app(extensions: E | None = None) -> type[BaseApp]:
+def create_app(extensions: E | None = None) -> type[BaseApp]:  # type: ignore
     """Create the app."""
 
     class App(BaseApp, extensions or object):  # type: ignore[misc]
@@ -68,4 +60,4 @@ def create_app(extensions: E | None = None) -> type[BaseApp]:
             ext_doc = extensions.__doc__ if extensions else ""
             return BASE_DOC + (ext_doc or "")
 
-    return App(command_runner=CommandRunner())
+    return App(command_runner=CommandRunner())  # type: ignore[call-arg]
