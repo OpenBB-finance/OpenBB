@@ -21,7 +21,6 @@ from openbb_cli.controllers.utils import (
     handle_obbject_display,
     parse_unknown_args_to_dict,
     print_rich_table,
-    remove_file,
     system_clear,
     validate_register_key,
 )
