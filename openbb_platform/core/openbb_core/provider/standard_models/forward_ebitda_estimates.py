@@ -1,7 +1,6 @@
 """Forward EBITDA Estimates Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,7 +14,7 @@ from pydantic import Field, field_validator
 class ForwardEbitdaEstimatesQueryParams(QueryParams):
     """Forward EBITDA Estimates Query Parameters."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["symbol"],
     )
@@ -31,44 +30,44 @@ class ForwardEbitdaEstimatesData(Data):
     """Forward EBITDA Estimates Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(default=None, description="Name of the entity.")
-    last_updated: Optional[dateType] = Field(
+    name: str | None = Field(default=None, description="Name of the entity.")
+    last_updated: dateType | None = Field(
         default=None,
         description="The date of the last update.",
     )
-    period_ending: Optional[dateType] = Field(
+    period_ending: dateType | None = Field(
         default=None,
         description="The end date of the reporting period.",
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None, description="Fiscal year for the estimate."
     )
-    fiscal_period: Optional[str] = Field(
+    fiscal_period: str | None = Field(
         default=None, description="Fiscal quarter for the estimate."
     )
-    calendar_year: Optional[int] = Field(
+    calendar_year: int | None = Field(
         default=None, description="Calendar year for the estimate."
     )
-    calendar_period: Optional[Union[int, str]] = Field(
+    calendar_period: int | str | None = Field(
         default=None, description="Calendar quarter for the estimate."
     )
-    low_estimate: Optional[ForceInt] = Field(
+    low_estimate: ForceInt | None = Field(
         default=None, description="The EBITDA estimate low for the period."
     )
-    high_estimate: Optional[ForceInt] = Field(
+    high_estimate: ForceInt | None = Field(
         default=None, description="The EBITDA estimate high for the period."
     )
-    mean: Optional[ForceInt] = Field(
+    mean: ForceInt | None = Field(
         default=None, description="The EBITDA estimate mean for the period."
     )
-    median: Optional[ForceInt] = Field(
+    median: ForceInt | None = Field(
         default=None, description="The EBITDA estimate median for the period."
     )
-    standard_deviation: Optional[ForceInt] = Field(
+    standard_deviation: ForceInt | None = Field(
         default=None,
         description="The EBITDA estimate standard deviation for the period.",
     )
-    number_of_analysts: Optional[int] = Field(
+    number_of_analysts: int | None = Field(
         default=None,
         description="Number of analysts providing estimates for the period.",
     )

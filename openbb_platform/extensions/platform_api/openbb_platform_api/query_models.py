@@ -1,6 +1,6 @@
 """OpenBB Workspace Query Models."""
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import AliasGenerator, ConfigDict, Field, field_validator
@@ -21,7 +21,7 @@ class OmniWidgetInput(Data):
         },
     )
 
-    prompt: Optional[Any] = Field(
+    prompt: Any | None = Field(
         default=None,
         description="The prompt text or JSON object sent from Workspace.",
         json_schema_extra={

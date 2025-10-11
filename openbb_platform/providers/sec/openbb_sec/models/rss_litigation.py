@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -35,21 +35,21 @@ class SecRssLitigationData(Data):
 
 
 class SecRssLitigationFetcher(
-    Fetcher[SecRssLitigationQueryParams, List[SecRssLitigationData]]
+    Fetcher[SecRssLitigationQueryParams, list[SecRssLitigationData]]
 ):
     """SEC RSS Litigration Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecRssLitigationQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecRssLitigationQueryParams:
         """Transform the query."""
         return SecRssLitigationQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: SecRssLitigationQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         import re  # noqa
@@ -57,7 +57,7 @@ class SecRssLitigationFetcher(
         from openbb_core.provider.utils.helpers import make_request
         from pandas import DataFrame, to_datetime
 
-        results: List = []
+        results: list = []
         url = "https://www.sec.gov/enforcement-litigation/litigation-releases/rss"
         r = make_request(url, headers=HEADERS)
 
@@ -92,7 +92,7 @@ class SecRssLitigationFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecRssLitigationQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[SecRssLitigationData]:
+        query: SecRssLitigationQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[SecRssLitigationData]:
         """Transform the data to the standard format."""
         return [SecRssLitigationData.model_validate(d) for d in data]

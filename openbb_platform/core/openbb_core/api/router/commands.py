@@ -1,9 +1,10 @@
 """Commands: generates the command map."""
 
 import inspect
+from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
+from typing import Annotated, Any, TypeVar
 
 from fastapi import APIRouter, Depends, Header
 from fastapi.routing import APIRoute
@@ -17,7 +18,7 @@ from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from pydantic import BaseModel
-from typing_extensions import Annotated, ParamSpec
+from typing_extensions import ParamSpec
 
 try:
     from openbb_charting import Charting
@@ -32,7 +33,7 @@ P = ParamSpec("P")
 router = APIRouter(prefix="")
 
 
-def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
+def build_new_annotation_map(sig: Signature) -> dict[str, Any]:
     """Build new annotation map."""
     annotation_map = {}
     parameter_list = sig.parameters.values()
@@ -90,9 +91,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                     name.replace("-", "_"),
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     default=default,
-                    annotation=Annotated[
-                        Optional[str], Header(include_in_schema=False)
-                    ],
+                    annotation=Annotated[str | None, Header(include_in_schema=False)],
                 ),
             )
             var_kw_pos += 1
@@ -199,7 +198,7 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> OBBject:
+    async def wrapper(*args: tuple[Any], **kwargs: dict[str, Any]) -> OBBject:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",

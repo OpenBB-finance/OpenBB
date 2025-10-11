@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,71 +30,71 @@ class FinvizEquityProfileData(EquityInfoData):
         "stock_exchange": "exchange",
     }
 
-    index: Optional[str] = Field(
+    index: str | None = Field(
         default=None,
         description="Included in indices - i.e., Dow, Nasdaq, or S&P.",
     )
-    optionable: Optional[str] = Field(
+    optionable: str | None = Field(
         default=None,
         description="Whether options trade against the ticker.",
     )
-    shortable: Optional[str] = Field(
+    shortable: str | None = Field(
         default=None,
         description="If the asset is shortable.",
     )
-    shares_outstanding: Optional[str] = Field(
+    shares_outstanding: str | None = Field(
         default=None,
         description="The number of shares outstanding, as an abbreviated string.",
     )
-    shares_float: Optional[str] = Field(
+    shares_float: str | None = Field(
         default=None,
         description="The number of shares in the public float, as an abbreviated string.",
     )
-    short_interest: Optional[str] = Field(
+    short_interest: str | None = Field(
         default=None,
         description="The last reported number of shares sold short, as an abbreviated string.",
     )
-    institutional_ownership: Optional[float] = Field(
+    institutional_ownership: float | None = Field(
         default=None,
         description="The institutional ownership of the stock, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    market_cap: Optional[str] = Field(
+    market_cap: str | None = Field(
         default=None,
         description="The market capitalization of the stock, as an abbreviated string.",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="The dividend yield of the stock, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    earnings_date: Optional[str] = Field(
+    earnings_date: str | None = Field(
         default=None,
         description="The last, or next confirmed, earnings date and announcement time, as a string."
         + " The format is Nov 02 AMC - for after market close.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None,
         description="The beta of the stock relative to the broad market.",
     )
 
 
 class FinvizEquityProfileFetcher(
-    Fetcher[FinvizEquityProfileQueryParams, List[FinvizEquityProfileData]]
+    Fetcher[FinvizEquityProfileQueryParams, list[FinvizEquityProfileData]]
 ):
     """Finviz Equity Profile Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizEquityProfileQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizEquityProfileQueryParams:
         """Transform the query params."""
         return FinvizEquityProfileQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FinvizEquityProfileQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
         from finvizfinance import util
@@ -104,12 +104,12 @@ class FinvizEquityProfileFetcher(
         from openbb_core.provider.utils.helpers import get_requests_session
 
         util.session = get_requests_session()
-        results: List = []
-        messages: List = []
+        results: list = []
+        messages: list = []
 
-        def get_one(symbol) -> Dict:
+        def get_one(symbol) -> dict:
             """Get the data for one symbol."""
-            result: Dict = {}
+            result: dict = {}
             try:
                 data = finvizfinance(symbol)
                 fundament = data.ticker_fundament()
@@ -234,8 +234,8 @@ class FinvizEquityProfileFetcher(
     @staticmethod
     def transform_data(
         query: FinvizEquityProfileQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizEquityProfileData]:
+    ) -> list[FinvizEquityProfileData]:
         """Transform and validate the raw data."""
         return [FinvizEquityProfileData.model_validate(d) for d in data]

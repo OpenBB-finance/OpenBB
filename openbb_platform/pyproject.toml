@@ -9,7 +9,7 @@ readme = "README.md"
 packages = [{ include = "openbb", from = "core" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<3.14"
+python = ">=3.10,<3.14"
 openbb-core = "^1.5.1"
 openbb-platform-api = "^1.2.1"
 
@@ -65,7 +65,7 @@ openbb-charting = { version = "^2.4.0", optional = true }
 openbb-econometrics = { version = "^1.6.0", optional = true }
 openbb-quantitative = { version = "^1.5.0", optional = true }
 openbb-technical = { version = "^1.5.0", optional = true }
-openbb-mcp-server = { version = "^1.2.0", optional = true, markers = "python_version >= '3.10'" }
+openbb-mcp-server = { version = "^1.2.0", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]

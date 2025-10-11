@@ -3,7 +3,6 @@
 import os
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Dict, List, Optional
 
 import pandas as pd
 from openbb import obb
@@ -37,10 +36,10 @@ class PlatformController(BaseController):
     def __init__(  # pylint: disable=too-many-positional-arguments
         self,
         name: str,
-        parent_path: List[str],
-        platform_target: Optional[type] = None,
-        queue: Optional[List[str]] = None,
-        translators: Optional[Dict] = None,
+        parent_path: list[str],
+        platform_target: type | None = None,
+        queue: list[str] | None = None,
+        translators: dict | None = None,
     ):
         """Construct a Platform based Controller."""
         self.PATH = f"/{'/'.join(parent_path)}/{name}/" if parent_path else f"/{name}/"
@@ -52,7 +51,8 @@ class PlatformController(BaseController):
 
         self._translated_target = (
             ArgparseClassProcessor(
-                target_class=platform_target, reference=obb.reference["paths"]  # type: ignore
+                target_class=platform_target,
+                reference=obb.reference["paths"],  # type: ignore
             )
             if platform_target
             else DummyTranslation()
@@ -151,7 +151,7 @@ class PlatformController(BaseController):
     def _generate_command_call(self, name, translator):
         """Generate command call."""
 
-        def method(self, other_args: List[str], translator=translator):
+        def method(self, other_args: list[str], translator=translator):
             """Call the translator."""
             parser = translator.parser
 
@@ -170,7 +170,7 @@ class PlatformController(BaseController):
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
                     df: pd.DataFrame = pd.DataFrame()
-                    fig: Optional[OpenBBFigure] = None
+                    fig: OpenBBFigure | None = None
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
@@ -278,9 +278,7 @@ class PlatformController(BaseController):
         bound_method = MethodType(method, self)
 
         # Update the wrapper and set the attribute
-        bound_method = update_wrapper(  # type: ignore
-            partial(bound_method, translator=translator), method
-        )
+        bound_method = update_wrapper(partial(bound_method, translator=translator), method)  # type: ignore
         setattr(self, f"call_{name}", bound_method)
 
     def _generate_controller_call(self, controller, name, parent_path, translators):
@@ -315,9 +313,7 @@ class PlatformController(BaseController):
     def _get_command_description(self, command: str) -> str:
         """Get command description."""
         command_description = (
-            obb.reference["paths"]  # type: ignore
-            .get(f"{self.PATH}{command}", {})
-            .get("description", "")
+            obb.reference["paths"].get(f"{self.PATH}{command}", {}).get("description", "")  # type: ignore
         )
 
         if not command_description:
@@ -334,7 +330,7 @@ class PlatformController(BaseController):
 
         def _get_sub_menu_commands():
             """Get sub menu commands."""
-            sub_path = f"{self.PATH[1:].replace('/','_')}{menu}"
+            sub_path = f"{self.PATH[1:].replace('/', '_')}{menu}"
             commands = []
             for trl in self.translators:
                 if sub_path in trl:
@@ -342,9 +338,7 @@ class PlatformController(BaseController):
             return commands
 
         menu_description = (
-            obb.reference["routers"]  # type: ignore
-            .get(f"{self.PATH}{menu}", {})
-            .get("description", "")
+            obb.reference["routers"].get(f"{self.PATH}{menu}", {}).get("description", "")  # type: ignore
         ) or ""
         if menu_description:
             return menu_description.split(".")[0].lower()

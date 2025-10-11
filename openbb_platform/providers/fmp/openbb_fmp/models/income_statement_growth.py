@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement_growth import (
@@ -50,151 +50,151 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     }
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         description="The currency in which the financial data is reported.",
         default=None,
     )
-    growth_revenue: Optional[float] = Field(
+    growth_revenue: float | None = Field(
         default=None,
         description="Growth rate of total revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_cost_of_revenue: Optional[float] = Field(
+    growth_cost_of_revenue: float | None = Field(
         default=None,
         description="Growth rate of cost of goods sold.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_gross_profit: Optional[float] = Field(
+    growth_gross_profit: float | None = Field(
         default=None,
         description="Growth rate of gross profit.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_gross_profit_margin: Optional[float] = Field(
+    growth_gross_profit_margin: float | None = Field(
         default=None,
         description="Growth rate of gross profit as a percentage of revenue.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_general_and_admin_expense: Optional[float] = Field(
+    growth_general_and_admin_expense: float | None = Field(
         default=None,
         description="Growth rate of general and administrative expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_research_and_development_expense: Optional[float] = Field(
+    growth_research_and_development_expense: float | None = Field(
         default=None,
         description="Growth rate of expenses on research and development.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_selling_and_marketing_expense: Optional[float] = Field(
+    growth_selling_and_marketing_expense: float | None = Field(
         default=None,
         description="Growth rate of expenses on selling and marketing activities.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_other_expenses: Optional[float] = Field(
+    growth_other_expenses: float | None = Field(
         default=None,
         description="Growth rate of other operating expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_operating_expenses: Optional[float] = Field(
+    growth_operating_expenses: float | None = Field(
         default=None,
         description="Growth rate of total operating expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_cost_and_expenses: Optional[float] = Field(
+    growth_cost_and_expenses: float | None = Field(
         default=None,
         description="Growth rate of total costs and expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_depreciation_and_amortization: Optional[float] = Field(
+    growth_depreciation_and_amortization: float | None = Field(
         default=None,
         description="Growth rate of depreciation and amortization expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_interest_income: Optional[float] = Field(
+    growth_interest_income: float | None = Field(
         default=None,
         description="Growth rate of interest income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_interest_expense: Optional[float] = Field(
+    growth_interest_expense: float | None = Field(
         default=None,
         description="Growth rate of interest expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_net_interest_income: Optional[float] = Field(
+    growth_net_interest_income: float | None = Field(
         default=None,
         description="Growth rate of net interest income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_ebit: Optional[float] = Field(
+    growth_ebit: float | None = Field(
         default=None,
         description="Growth rate of Earnings Before Interest and Taxes (EBIT).",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_ebitda: Optional[float] = Field(
+    growth_ebitda: float | None = Field(
         default=None,
         description="Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_operating_income: Optional[float] = Field(
+    growth_operating_income: float | None = Field(
         default=None,
         description="Growth rate of operating income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_non_operating_income_excluding_interest: Optional[float] = Field(
+    growth_non_operating_income_excluding_interest: float | None = Field(
         default=None,
         description="Growth rate of non-operating income excluding interest.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_total_other_income_expenses_net: Optional[float] = Field(
+    growth_total_other_income_expenses_net: float | None = Field(
         default=None,
         description="Growth rate of net total other income and expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_other_adjustments_to_net_income: Optional[float] = Field(
+    growth_other_adjustments_to_net_income: float | None = Field(
         default=None,
         description="Growth rate of other adjustments to net income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_net_income_deductions: Optional[float] = Field(
+    growth_net_income_deductions: float | None = Field(
         default=None,
         description="Growth rate of net income deductions.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_income_before_tax: Optional[float] = Field(
+    growth_income_before_tax: float | None = Field(
         default=None,
         description="Growth rate of income before taxes.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_income_tax_expense: Optional[float] = Field(
+    growth_income_tax_expense: float | None = Field(
         default=None,
         description="Growth rate of income tax expenses.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_net_income_from_continuing_operations: Optional[float] = Field(
+    growth_net_income_from_continuing_operations: float | None = Field(
         default=None,
         description="Growth rate of net income from continuing operations.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_consolidated_net_income: Optional[float] = Field(
+    growth_consolidated_net_income: float | None = Field(
         default=None,
         description="Growth rate of net income.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_basic_earings_per_share: Optional[float] = Field(
+    growth_basic_earings_per_share: float | None = Field(
         default=None,
         description="Growth rate of Earnings Per Share (EPS).",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_diluted_earnings_per_share: Optional[float] = Field(
+    growth_diluted_earnings_per_share: float | None = Field(
         default=None,
         description="Growth rate of diluted Earnings Per Share (EPS).",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_weighted_average_basic_shares_outstanding: Optional[float] = Field(
+    growth_weighted_average_basic_shares_outstanding: float | None = Field(
         default=None,
         description="Growth rate of weighted average shares outstanding.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+    growth_weighted_average_diluted_shares_outstanding: float | None = Field(
         default=None,
         description="Growth rate of diluted weighted average shares outstanding.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -217,7 +217,7 @@ class FMPIncomeStatementGrowthFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPIncomeStatementGrowthQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

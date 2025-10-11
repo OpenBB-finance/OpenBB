@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -241,17 +241,11 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
         }
     }
 
-    topic: Union[TexasManufacturingOutlookChoices, str] = Field(
+    topic: TexasManufacturingOutlookChoices | str = Field(
         default="new_orders_growth",
         description="The topic for the survey response.",
     )
-    frequency: Union[
-        None,
-        Literal[
-            "annual",
-            "quarter",
-        ],
-    ] = Field(
+    frequency: None | Literal["annual", "quarter"] = Field(
         default=None,
         description="""
         Frequency aggregation to convert monthly data to lower frequency. None is monthly.
@@ -263,7 +257,7 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -273,9 +267,9 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -300,8 +294,8 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
         """Validate topic."""
         if v is None:
             return "new_orders_growth"
-        new_topics: List = []
-        topics: List = []
+        new_topics: list = []
+        topics: list = []
         if isinstance(v, list):
             topics = v
         if isinstance(v, str):
@@ -326,14 +320,14 @@ class FredManufacturingOutlookTexasData(ManufacturingOutlookTexasData):
 class FredManufacturingOutlookTexasFetcher(
     Fetcher[
         FredManufacturingOutlookTexasQueryParams,
-        List[FredManufacturingOutlookTexasData],
+        list[FredManufacturingOutlookTexasData],
     ]
 ):
     """FRED Manufacturing Outlook - Texas - Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredManufacturingOutlookTexasQueryParams:
         """Transform query parameters."""
         return FredManufacturingOutlookTexasQueryParams(**params)
@@ -341,11 +335,11 @@ class FredManufacturingOutlookTexasFetcher(
     @staticmethod
     async def aextract_data(
         query: FredManufacturingOutlookTexasQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Fetch data."""
-        ids: List = []
+        ids: list = []
         topics = query.topic.split(",")
         for topic in topics:
             future_series = list(
@@ -381,9 +375,9 @@ class FredManufacturingOutlookTexasFetcher(
     @staticmethod
     def transform_data(
         query: FredManufacturingOutlookTexasQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredManufacturingOutlookTexasData]]:
+    ) -> AnnotatedResult[list[FredManufacturingOutlookTexasData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame

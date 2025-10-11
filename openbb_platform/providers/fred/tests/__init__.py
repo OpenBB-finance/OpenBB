@@ -1,1 +1,1 @@
-""" The FRED provider tests."""
+"""The FRED provider tests."""

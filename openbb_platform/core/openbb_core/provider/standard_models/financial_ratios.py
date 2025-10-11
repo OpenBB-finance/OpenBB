@@ -1,7 +1,6 @@
 """Financial Ratios Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,7 +15,7 @@ class FinancialRatiosQueryParams(QueryParams):
     """Financial Ratios Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
@@ -30,13 +29,13 @@ class FinancialRatiosQueryParams(QueryParams):
 class FinancialRatiosData(Data):
     """Financial Ratios Standard Model."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    period_ending: Optional[dateType] = Field(
+    period_ending: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    fiscal_period: Optional[str] = Field(
+    fiscal_period: str | None = Field(
         default=None, description="Period of the financial ratios."
     )
-    fiscal_year: Optional[int] = Field(default=None, description="Fiscal year.")
+    fiscal_year: int | None = Field(default=None, description="Fiscal year.")

@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from dateutil import parser
@@ -36,23 +36,23 @@ class NasdaqHistoricalDividendsData(HistoricalDividendsData):
         "dividend_type": "type",
     }
 
-    dividend_type: Optional[str] = Field(
+    dividend_type: str | None = Field(
         default=None,
         description="The type of dividend - i.e., cash, stock.",
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="The currency in which the dividend is paid.",
     )
-    record_date: Optional[dateType] = Field(
+    record_date: dateType | None = Field(
         default=None,
         description="The record date of ownership for eligibility.",
     )
-    payment_date: Optional[dateType] = Field(
+    payment_date: dateType | None = Field(
         default=None,
         description="The payment date of the dividend.",
     )
-    declaration_date: Optional[dateType] = Field(
+    declaration_date: dateType | None = Field(
         default=None,
         description="Declaration date of the dividend.",
     )
@@ -84,23 +84,23 @@ class NasdaqHistoricalDividendsData(HistoricalDividendsData):
 
 
 class NasdaqHistoricalDividendsFetcher(
-    Fetcher[NasdaqHistoricalDividendsQueryParams, List[NasdaqHistoricalDividendsData]]
+    Fetcher[NasdaqHistoricalDividendsQueryParams, list[NasdaqHistoricalDividendsData]]
 ):
     """Nasdaq Historical Dividends Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqHistoricalDividendsQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqHistoricalDividendsQueryParams:
         """Transform the params to the provider-specific query."""
         return NasdaqHistoricalDividendsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: NasdaqHistoricalDividendsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -147,11 +147,11 @@ class NasdaqHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqHistoricalDividendsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqHistoricalDividendsData]:
+    ) -> list[NasdaqHistoricalDividendsData]:
         """Return the transformed data."""
-        results: List[NasdaqHistoricalDividendsData] = []
+        results: list[NasdaqHistoricalDividendsData] = []
         for d in data:
             dt = parser.parse(str(d["exOrEffDate"])).date()
             if query.start_date and query.start_date > dt:

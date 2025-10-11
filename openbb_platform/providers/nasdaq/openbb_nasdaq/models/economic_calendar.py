@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -26,7 +26,7 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         }
     }
 
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="Country of the event",
     )
@@ -44,7 +44,7 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     __alias_dict__ = {
         "event": "eventName",
     }
-    description: Optional[str] = Field(default=None, description="Event description.")
+    description: str | None = Field(default=None, description="Event description.")
 
     @field_validator(
         "actual", "previous", "consensus", mode="before", check_fields=False
@@ -103,7 +103,7 @@ class NasdaqEconomicCalendarFetcher(
     @staticmethod
     async def aextract_data(
         query: NasdaqEconomicCalendarQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""

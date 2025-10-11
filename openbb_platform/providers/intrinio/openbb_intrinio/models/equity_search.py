@@ -1,6 +1,8 @@
 """Intrinio Equity Search Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -31,7 +33,7 @@ class IntrinioEquitySearchQueryParams(EquitySearchQueryParams):
         description="When true, return companies that are actively traded (having stock prices within the past 14 days)."
         + " When false, return companies that are not actively traded or never have been traded.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=10000,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -45,8 +47,8 @@ class IntrinioEquitySearchData(EquitySearchData):
         "symbol": "ticker",
     }
 
-    cik: Optional[str] = Field(description=DATA_DESCRIPTIONS.get("CIK", ""))
-    lei: Optional[str] = Field(
+    cik: str | None = Field(description=DATA_DESCRIPTIONS.get("CIK", ""))
+    lei: str | None = Field(
         description="The Legal Entity Identifier (LEI) of the company."
     )
     intrinio_id: str = Field(description="The Intrinio ID of the company.")
@@ -55,22 +57,22 @@ class IntrinioEquitySearchData(EquitySearchData):
 class IntrinioEquitySearchFetcher(
     Fetcher[
         IntrinioEquitySearchQueryParams,
-        List[IntrinioEquitySearchData],
+        list[IntrinioEquitySearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEquitySearchQueryParams:
         """Transform the query."""
         return IntrinioEquitySearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioEquitySearchQueryParams,  # pylint: disable=unused-argument
-        credentials: Optional[Dict[str, str]],
+        query: IntrinioEquitySearchQueryParams,
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
@@ -78,12 +80,11 @@ class IntrinioEquitySearchFetcher(
         base_url = "https://api-v2.intrinio.com/companies/search?"
         url = f"{base_url}{query_str}&api_key={api_key}"
         data = await get_data_one(url, **kwargs)
-        return data
+        return data  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: IntrinioEquitySearchQueryParams, data: Dict, **kwargs: Any
-    ) -> List[IntrinioEquitySearchData]:
+        query: IntrinioEquitySearchQueryParams, data: dict, **kwargs: Any
+    ) -> list[IntrinioEquitySearchData]:
         """Transform the data to the standard format."""
-
         return [IntrinioEquitySearchData.model_validate(d) for d in data["companies"]]

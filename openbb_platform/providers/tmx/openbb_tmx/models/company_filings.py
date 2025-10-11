@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -19,11 +19,11 @@ from pydantic import Field, field_validator
 class TmxCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """TMX Company Filings Query Parameters."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description="The start date to fetch.",
         default=None,
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description="The end date to fetch.",
         default=None,
     )
@@ -47,18 +47,18 @@ class TmxCompanyFilingsData(CompanyFilingsData):
     }
 
     description: str = Field(description="The description of the filing.")
-    size: Optional[str] = Field(
+    size: str | None = Field(
         description="The file size of the PDF document.", default=None
     )
 
 
 class TmxCompanyFilingsFetcher(
-    Fetcher[TmxCompanyFilingsQueryParams, List[TmxCompanyFilingsData]]
+    Fetcher[TmxCompanyFilingsQueryParams, list[TmxCompanyFilingsData]]
 ):
     """TMX Company Filings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxCompanyFilingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxCompanyFilingsQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -82,9 +82,9 @@ class TmxCompanyFilingsFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxCompanyFilingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -95,7 +95,7 @@ class TmxCompanyFilingsFetcher(
         from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
 
         user_agent = get_random_agent()
-        results: List[Dict] = []
+        results: list[dict] = []
 
         # Generate a list of dates from start_date to end_date with a frequency of 1 week
         dates = list(
@@ -177,8 +177,8 @@ class TmxCompanyFilingsFetcher(
     @staticmethod
     def transform_data(
         query: TmxCompanyFilingsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxCompanyFilingsData]:
+    ) -> list[TmxCompanyFilingsData]:
         """Return the transformed data."""
         return [TmxCompanyFilingsData.model_validate(d) for d in data]

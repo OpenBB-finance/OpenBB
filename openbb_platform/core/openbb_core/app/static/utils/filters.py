@@ -1,13 +1,13 @@
 """OpenBB filters."""
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openbb_core.app.utils import check_single_item, convert_to_basemodel
 
 
 def filter_inputs(
     data_processing: bool = False,
-    info: Optional[Dict[str, Dict[str, Any]]] = None,
+    info: dict[str, dict[str, Any]] | None = None,
     **kwargs,
 ) -> dict:
     """Filter command inputs."""
@@ -21,7 +21,6 @@ def filter_inputs(
         # into a comma-separated string
         provider = kwargs.get("provider_choices", {}).get("provider")
         for field, properties in info.items():
-
             for p in ("standard_params", "extra_params"):
                 if field in kwargs.get(p, {}):
                     current = kwargs[p][field]

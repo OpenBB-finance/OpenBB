@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_ipo import (
@@ -37,31 +37,31 @@ class FMPCalendarIpoData(CalendarIpoData):
         "name": "company",
     }
 
-    exchange_date: Optional[datetime] = Field(
+    exchange_date: datetime | None = Field(
         default=None,
         description="Timezone information for the exchange and date of the IPO.",
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the entity going public.",
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="The exchange where the IPO is listed.",
     )
-    actions: Optional[str] = Field(
+    actions: str | None = Field(
         default=None,
         description="Actions related to the IPO, such as, Expected, Priced, Filed, Amended.",
     )
-    shares: Optional[Union[int, float]] = Field(
+    shares: int | float | None = Field(
         default=None,
         description="The number of shares being offered in the IPO.",
     )
-    price_range: Optional[str] = Field(
+    price_range: str | None = Field(
         default=None,
         description="The expected price range for the IPO shares.",
     )
-    market_cap: Optional[Union[int, float]] = Field(
+    market_cap: int | float | None = Field(
         default=None,
         description="The estimated market capitalization of the company at the time of the IPO.",
     )
@@ -92,7 +92,7 @@ class FMPCalendarIpoFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCalendarIpoQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

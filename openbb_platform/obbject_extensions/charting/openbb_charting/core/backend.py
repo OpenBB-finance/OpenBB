@@ -1,7 +1,7 @@
 """Backend for Plotly."""
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
@@ -46,7 +46,7 @@ class Backend(PyWry):
 
         self.charting_settings = charting_settings
         has_version = hasattr(PyWry, "__version__")
-        init_kwargs: Dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
+        init_kwargs: dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
 
         if has_version and version.parse(PyWry.__version__) >= version.parse("0.4.8"):
             init_kwargs.update(dict(proc_name=proc_name))
@@ -59,9 +59,8 @@ class Backend(PyWry):
             if "IPKernelApp" not in get_ipython().config:
                 raise ImportError("console")
             if (
-                "parent_header"
-                in get_ipython().kernel._parent_ident  # pylint: disable=protected-access
-            ):
+                "parent_header" in get_ipython().kernel._parent_ident
+            ):  # pylint: disable=protected-access
                 raise ImportError("notebook")
         except (ImportError, AttributeError):
             JUPYTER_NOTEBOOK = False
@@ -107,8 +106,7 @@ class Backend(PyWry):
             return self.plotly_html
 
         warnings.warn(
-            "[bold red]plotly.html file not found, check the path:[/]"
-            f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
+            f"[bold red]plotly.html file not found, check the path:[/][green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
         )
         self.max_retries = 0  # pylint: disable=W0201
         raise FileNotFoundError
@@ -122,13 +120,12 @@ class Backend(PyWry):
         if self.table_html.exists():
             return self.table_html
         warnings.warn(
-            "[bold red]table.html file not found, check the path:[/]"
-            f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
+            f"[bold red]table.html file not found, check the path:[/][green]{PLOTS_CORE_PATH / 'table.html'}[/]"
         )
         self.max_retries = 0  # pylint: disable=W0201
         raise FileNotFoundError
 
-    def get_window_icon(self) -> Optional[Path]:
+    def get_window_icon(self) -> Path | None:
         """Get the window icon."""
         icon_path = PLOTS_CORE_PATH / "assets" / "Terminal_icon.png"
         if icon_path.exists():
@@ -137,8 +134,8 @@ class Backend(PyWry):
 
     def get_json_update(
         self,
-        cmd_loc: Optional[str] = None,
-        theme: Optional[str] = None,
+        cmd_loc: str | None = None,
+        theme: str | None = None,
     ) -> dict:
         """Get the json update for the backend."""
 
@@ -153,8 +150,8 @@ class Backend(PyWry):
     def send_figure(
         self,
         fig: "Figure",
-        export_image: Optional[Union[Path, str]] = "",
-        command_location: Optional[str] = "",
+        export_image: Path | str | None = "",
+        command_location: str | None = "",
     ):
         """Send a Plotly figure to the backend.
 
@@ -235,7 +232,7 @@ class Backend(PyWry):
         title: str = "",
         source: str = "",
         theme: str = "dark",
-        command_location: Optional[str] = "",
+        command_location: str | None = "",
     ):
         """Send table data to the backend to be displayed in a table.
 
@@ -302,8 +299,8 @@ class Backend(PyWry):
         self,
         url: str,
         title: str = "",
-        width: Optional[int] = None,
-        height: Optional[int] = None,
+        width: int | None = None,
+        height: int | None = None,
     ):
         """Send a URL to the backend to be displayed in a window.
 
@@ -332,7 +329,7 @@ class Backend(PyWry):
         )
         self.send_outgoing(outgoing)
 
-    def get_kwargs(self, title: Optional[str] = "") -> dict:
+    def get_kwargs(self, title: str | None = "") -> dict:
         """Get the kwargs for the backend."""
         return {
             "title": "OpenBB Platform" + (f" - {title}" if title else ""),
@@ -399,9 +396,12 @@ async def download_plotly_js():
     try:
         # we use aiohttp to download plotly.js
         # this is so we don't have to block the main thread
-        async with aiohttp.ClientSession(
-            connector=aiohttp.TCPConnector(verify_ssl=False), trust_env=True
-        ) as session, session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+        async with (
+            aiohttp.ClientSession(
+                connector=aiohttp.TCPConnector(verify_ssl=False), trust_env=True
+            ) as session,
+            session.get(f"https://cdn.plot.ly/{js_filename}") as resp,
+        ):
             with open(str(PLOTLYJS_PATH), "wb") as f:
                 while True:
                     chunk = await resp.content.read(1024)

@@ -3,7 +3,6 @@
 import os
 import unittest
 from importlib import import_module
-from typing import Dict
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import RegistryLoader
@@ -31,7 +30,7 @@ def get_provider_test_files(provider: Provider):
 class ProviderFetcherTest(unittest.TestCase):
     """Tests for providers and fetchers."""
 
-    providers: Dict[str, Provider] = RegistryLoader.from_extensions().providers
+    providers: dict[str, Provider] = RegistryLoader.from_extensions().providers
 
     def test_provider_w_tests(self):
         """Test the provider fetchers and ensure all providers have tests."""
@@ -53,6 +52,4 @@ class ProviderFetcherTest(unittest.TestCase):
 
                 # check that fetcher_cls is being instantiated in path
                 with self.subTest(i=fetcher_cls):
-                    self.assertTrue(
-                        check_pattern_in_file(path, f"{fetcher_cls.__name__}()")  # type: ignore
-                    )
+                    self.assertTrue(check_pattern_in_file(path, f"{fetcher_cls.__name__}()"))  # type: ignore

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
@@ -32,9 +32,7 @@ class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
 class YFinanceCompanyNewsData(CompanyNewsData):
     """YFinance Company News Data."""
 
-    source: Optional[str] = Field(
-        default=None, description="Source of the news article"
-    )
+    source: str | None = Field(default=None, description="Source of the news article")
 
 
 class YFinanceCompanyNewsFetcher(
@@ -53,7 +51,7 @@ class YFinanceCompanyNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: YFinanceCompanyNewsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""

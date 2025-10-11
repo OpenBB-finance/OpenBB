@@ -3,16 +3,15 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
-
 from openbb_famafrench.utils.constants import CountryPortfolios
+from pydantic import Field
 
 
 class FamaFrenchCountryPortfolioReturnsQueryParams(QueryParams):
@@ -47,19 +46,19 @@ class FamaFrenchCountryPortfolioReturnsQueryParams(QueryParams):
         description="The frequency of the data to fetch."
         + " Ignored when `measure` is set to 'ratios'.",
     )
-    dividends: Optional[bool] = Field(
+    dividends: bool | None = Field(
         default=None, description="When False, portoflios exclude dividends."
     )
-    all_data_items_required: Optional[bool] = Field(
+    all_data_items_required: bool | None = Field(
         default=None,
         description="If True (default), includes firms with data for all four ratios."
         + " When False, includes only firms with Book-to-Market (B/M) data.",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description="The start date for the data. Defaults to the earliest available date.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description="The end date for the data. Defaults to the latest available date.",
     )
@@ -90,7 +89,7 @@ class FamaFrenchCountryPortfolioReturnsData(Data):
     date: dateType = Field(
         description="The date of the data.",
     )
-    mkt: Optional[float] = Field(
+    mkt: float | None = Field(
         default=None,
         description="""
         The market return (Mkt) for the first set is the value weighted average
@@ -102,84 +101,84 @@ class FamaFrenchCountryPortfolioReturnsData(Data):
         Not returned if `measure` is set to 'ratios'.
         """,
     )
-    firms: Optional[int] = Field(
+    firms: int | None = Field(
         default=None,
         description="The number of firms, relative to `all_data_items_required` parameter."
         + " Only returned when `measure` is set to 'ratios'.",
     )
-    bm: Optional[float] = Field(
+    bm: float | None = Field(
         default=None,
         description="Book to Market equity ratio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="B/M",
     )
-    be_me_high: Optional[float] = Field(
+    be_me_high: float | None = Field(
         default=None,
         description="Book Equity to Market Equity returns for the value portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="BE/ME High",
     )
-    be_me_low: Optional[float] = Field(
+    be_me_low: float | None = Field(
         default=None,
         description="Book Equity to Market Equity returns for the growth portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="BE/ME Low",
     )
-    ep: Optional[float] = Field(
+    ep: float | None = Field(
         default=None,
         description="Earnings to Price ratio."
         + " Only returned when `measure` is set to 'ratios'.",
         title="E/P",
     )
-    e_p_high: Optional[float] = Field(
+    e_p_high: float | None = Field(
         default=None,
         description="Earnings to Price returns for the value portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="E/P High",
     )
-    e_p_low: Optional[float] = Field(
+    e_p_low: float | None = Field(
         default=None,
         description="Earnings to Price returns for the growth portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="E/P Low",
     )
-    ce_p: Optional[float] = Field(
+    ce_p: float | None = Field(
         default=None,
         description="Cash Earnings to Price ratio."
         + " Only returned when `measure` is set to 'ratios'.",
         title="CE/P",
     )
-    ce_p_high: Optional[float] = Field(
+    ce_p_high: float | None = Field(
         default=None,
         description="Cash Earnings to Price returns for the value portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="CE/P High",
     )
-    ce_p_low: Optional[float] = Field(
+    ce_p_low: float | None = Field(
         default=None,
         description="Cash Earnings to Price returns for the growth portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="CE/P Low",
     )
-    yld: Optional[float] = Field(
+    yld: float | None = Field(
         default=None,
         description="Dividend Yield ratio."
         + " Only returned when `measure` is set to 'ratios'.",
         title="Yld",
     )
-    yld_high: Optional[float] = Field(
+    yld_high: float | None = Field(
         default=None,
         description="Dividend Yield returns for the value portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="Yld High",
     )
-    yld_low: Optional[float] = Field(
+    yld_low: float | None = Field(
         default=None,
         description="Dividend Yield returns for the growth portfolio."
         + " Not returned if `measure` is set to 'ratios'.",
         title="Yld Low",
     )
-    yld_zero: Optional[float] = Field(
+    yld_zero: float | None = Field(
         default=None,
         description="Dividend Yield returns for firms not paying dividends."
         + " Not returned if `measure` is set to 'ratios'.",
@@ -205,7 +204,7 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
     @staticmethod
     async def aextract_data(
         query: FamaFrenchCountryPortfolioReturnsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> tuple:
         """Extract data from the Fama-French FTP."""

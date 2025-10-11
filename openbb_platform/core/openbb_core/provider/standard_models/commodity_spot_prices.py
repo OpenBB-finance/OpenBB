@@ -3,7 +3,6 @@
 from datetime import (
     date as dateType,
 )
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -17,11 +16,11 @@ from pydantic import Field
 class CommoditySpotPricesQueryParams(QueryParams):
     """Commodity Spot Prices Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -33,11 +32,11 @@ class CommoditySpotPricesData(Data):
     date: dateType = Field(
         description=DATA_DESCRIPTIONS.get("date", ""),
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    commodity: Optional[str] = Field(
+    commodity: str | None = Field(
         default=None,
         description="Commodity name.",
     )
@@ -45,7 +44,7 @@ class CommoditySpotPricesData(Data):
         description="Price of the commodity.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    unit: Optional[str] = Field(
+    unit: str | None = Field(
         default=None,
         description="Unit of the commodity price.",
     )

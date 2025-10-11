@@ -40,7 +40,7 @@ def test_add_cmd(menu_text):
 
 def test_format_cmd_name(menu_text):
     """Test formatting of command names that are too long."""
-    long_name = "x" * 50  # Assuming CMD_NAME_LENGTH is 23
+    long_name = "x" * 75  # Assuming CMD_NAME_LENGTH is 65
     formatted_name = menu_text._format_cmd_name(long_name)
     assert len(formatted_name) <= menu_text.CMD_NAME_LENGTH
     assert menu_text.warnings  # Check that a warning was added

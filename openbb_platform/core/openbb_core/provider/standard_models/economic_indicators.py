@@ -1,7 +1,6 @@
 """Economic Indicators Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,15 +14,15 @@ from pydantic import Field
 class EconomicIndicatorsQueryParams(QueryParams):
     """Economic Indicators Query."""
 
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("country", "")
         + " The country represented by the indicator, if available.",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
@@ -32,15 +31,15 @@ class EconomicIndicatorsData(Data):
     """Economic Indicators Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol_root: Optional[str] = Field(
+    symbol_root: str | None = Field(
         default=None, description="The root symbol for the indicator (e.g. GDP)."
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None, description="The country represented by the data."
     )
-    value: Optional[Union[int, float]] = Field(
+    value: int | float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("value", "")
     )

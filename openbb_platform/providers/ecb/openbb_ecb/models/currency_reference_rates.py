@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,16 +30,16 @@ class ECBCurrencyReferenceRatesFetcher(
     """Transform the query, extract and transform the data from the ECB endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> ECBCurrencyReferenceRatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> ECBCurrencyReferenceRatesQueryParams:
         """Transform query."""
         return ECBCurrencyReferenceRatesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: ECBCurrencyReferenceRatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the raw data from the ECB website."""
         # pylint: disable=import-outside-toplevel
         import xmltodict
@@ -64,7 +64,7 @@ class ECBCurrencyReferenceRatesFetcher(
 
     @staticmethod
     def transform_data(
-        query: ECBCurrencyReferenceRatesQueryParams, data: Dict, **kwargs: Any
+        query: ECBCurrencyReferenceRatesQueryParams, data: dict, **kwargs: Any
     ) -> ECBCurrencyReferenceRatesData:
         """Transform data."""
         return ECBCurrencyReferenceRatesData.model_validate(data)

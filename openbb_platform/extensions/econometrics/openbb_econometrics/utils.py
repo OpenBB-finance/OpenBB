@@ -1,7 +1,7 @@
 """Utility functions for the econometrics extension of the OpenBB platform."""
 
 import warnings
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pandas import Series
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: "Series", independent_series: "Series"
-) -> Tuple[float, float, float, "Series", float, float]:
+) -> tuple[float, float, float, "Series", float, float]:
     """Estimate long-run and short-run cointegration relationship for series y and x.
 
     Then apply the two-step Engle & Granger test for cointegration.

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -37,22 +37,22 @@ class SecEquitySearchData(EquitySearchData):
 class SecEquitySearchFetcher(
     Fetcher[
         SecEquitySearchQueryParams,
-        List[SecEquitySearchData],
+        list[SecEquitySearchData],
     ]
 ):
     """SEC Equity Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecEquitySearchQueryParams:
         """Transform the query."""
         return SecEquitySearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecEquitySearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import (
@@ -85,7 +85,7 @@ class SecEquitySearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecEquitySearchQueryParams, data: Dict, **kwargs: Any
-    ) -> List[SecEquitySearchData]:
+        query: SecEquitySearchQueryParams, data: dict, **kwargs: Any
+    ) -> list[SecEquitySearchData]:
         """Transform the data to the standard format."""
         return [SecEquitySearchData.model_validate(d) for d in data]

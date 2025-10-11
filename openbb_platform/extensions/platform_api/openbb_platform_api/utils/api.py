@@ -5,7 +5,6 @@ import os
 import socket
 import sys
 from pathlib import Path
-from typing import Optional
 
 from deepdiff import DeepDiff
 
@@ -128,14 +127,14 @@ def get_user_settings(
             _ = Hub.connect(pat=pat)
             hub_settings = Hub.pull()
             hub_credentials = json.loads(
-                hub_settings.credentials.model_dump_json()  # pylint: disable=no-member
-            )
+                hub_settings.credentials.model_dump_json()
+            )  # pylint: disable=no-member
             hub_preferences = json.loads(
-                hub_settings.preferences.model_dump_json()  # pylint: disable=no-member
-            )
+                hub_settings.preferences.model_dump_json()
+            )  # pylint: disable=no-member
             hub_defaults = json.loads(
-                hub_settings.defaults.model_dump_json()  # pylint: disable=no-member
-            )
+                hub_settings.defaults.model_dump_json()
+            )  # pylint: disable=no-member
         except Exception as e:  # pylint: disable=broad-exception-caught
             print(  # noqa: T201
                 f"\n\nError connecting with Hub:\n{e}\n\nUsing the local settings.\n"
@@ -157,7 +156,7 @@ def get_user_settings(
             elif persist_input in ["no", "n"]:
                 PERSIST = False
             else:
-                print(  # noqa: T201
+                print(  # noqa
                     "\n\nInvalid input. Defaulting to not persisting the new settings."
                 )
                 PERSIST = False
@@ -208,7 +207,7 @@ def get_widgets_json(
     _openapi,
     widget_exclude_filter: list,
     editable: bool = False,
-    widgets_path: Optional[str] = None,
+    widgets_path: str | None = None,
 ):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
     if editable is True:
@@ -259,7 +258,7 @@ def get_widgets_json(
                     with open(widgets_json_path, "w", encoding="utf-8") as f:
                         json.dump(_widgets_json, f, ensure_ascii=False, indent=4)
                 except Exception as e:  # pylint: disable=broad-exception-caught
-                    print(  # noqa: T201
+                    print(  # noqa
                         f"Error writing widgets.json: {e}.  Loading from memory instead."
                     )
                     _widgets_json = (

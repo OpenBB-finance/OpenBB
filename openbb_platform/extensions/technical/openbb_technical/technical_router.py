@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-lines,unused-import,too-many-arguments,too-many-positional-arguments
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -62,11 +62,11 @@ async def relative_rotation(
     data: list[Data],
     benchmark: str,
     study: Literal["price", "volume", "volatility"] = "price",
-    long_period: Optional[int] = 252,
-    short_period: Optional[int] = 21,
-    window: Optional[int] = 21,
-    trading_periods: Optional[int] = 252,
-    chart_params: Optional[dict[str, Any]] = None,
+    long_period: int | None = 252,
+    short_period: int | None = 21,
+    window: int | None = 21,
+    trading_periods: int | None = 252,
+    chart_params: dict[str, Any] | None = None,
 ) -> OBBject[RelativeRotationData]:
     """Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
 
@@ -249,8 +249,8 @@ def fib(
     index: str = "date",
     close_column: Literal["close", "adj_close"] = "close",
     period: PositiveInt = 120,
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
 ) -> OBBject[list[Data]]:
     """Create Fibonacci Retracement Levels.
 
@@ -1775,7 +1775,7 @@ def cones(
         "yang_zhang",
     ] = "std",
     is_crypto: bool = False,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
 ) -> OBBject[list[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 

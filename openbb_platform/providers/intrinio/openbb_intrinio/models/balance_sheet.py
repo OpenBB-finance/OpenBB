@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -33,7 +33,7 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
@@ -138,263 +138,257 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "total_equity_non_controlling_interests": "totalequityandnoncontrollinginterests",
         "total_liabilities_shareholders_equity": "totalliabilitiesandequity",
     }
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         description="The currency in which the balance sheet is reported.",
         default=None,
     )
-    cash_and_cash_equivalents: Optional[float] = Field(
+    cash_and_cash_equivalents: float | None = Field(
         description="Cash and cash equivalents.", default=None
     )
-    cash_and_due_from_banks: Optional[float] = Field(
+    cash_and_due_from_banks: float | None = Field(
         description="Cash and due from banks.", default=None
     )
-    restricted_cash: Optional[float] = Field(
-        description="Restricted cash.", default=None
-    )
-    short_term_investments: Optional[float] = Field(
+    restricted_cash: float | None = Field(description="Restricted cash.", default=None)
+    short_term_investments: float | None = Field(
         description="Short term investments.", default=None
     )
-    federal_funds_sold: Optional[float] = Field(
+    federal_funds_sold: float | None = Field(
         description="Federal funds sold.", default=None
     )
-    accounts_receivable: Optional[float] = Field(
+    accounts_receivable: float | None = Field(
         description="Accounts receivable.", default=None
     )
-    note_and_lease_receivable: Optional[float] = Field(
+    note_and_lease_receivable: float | None = Field(
         description="Note and lease receivable. (Vendor non-trade receivables)",
         default=None,
     )
-    inventories: Optional[float] = Field(description="Net Inventories.", default=None)
-    customer_and_other_receivables: Optional[float] = Field(
+    inventories: float | None = Field(description="Net Inventories.", default=None)
+    customer_and_other_receivables: float | None = Field(
         description="Customer and other receivables.", default=None
     )
-    interest_bearing_deposits_at_other_banks: Optional[float] = Field(
+    interest_bearing_deposits_at_other_banks: float | None = Field(
         description="Interest bearing deposits at other banks.", default=None
     )
-    time_deposits_placed_and_other_short_term_investments: Optional[float] = Field(
+    time_deposits_placed_and_other_short_term_investments: float | None = Field(
         description="Time deposits placed and other short term investments.",
         default=None,
     )
-    trading_account_securities: Optional[float] = Field(
+    trading_account_securities: float | None = Field(
         description="Trading account securities.", default=None
     )
-    loans_and_leases: Optional[float] = Field(
+    loans_and_leases: float | None = Field(
         description="Loans and leases.", default=None
     )
-    allowance_for_loan_and_lease_losses: Optional[float] = Field(
+    allowance_for_loan_and_lease_losses: float | None = Field(
         description="Allowance for loan and lease losses.", default=None
     )
-    current_deferred_refundable_income_taxes: Optional[float] = Field(
+    current_deferred_refundable_income_taxes: float | None = Field(
         description="Current deferred refundable income taxes.", default=None
     )
-    other_current_assets: Optional[float] = Field(
+    other_current_assets: float | None = Field(
         description="Other current assets.", default=None
     )
-    loans_and_leases_net_of_allowance: Optional[float] = Field(
+    loans_and_leases_net_of_allowance: float | None = Field(
         description="Loans and leases net of allowance.", default=None
     )
-    accrued_investment_income: Optional[float] = Field(
+    accrued_investment_income: float | None = Field(
         description="Accrued investment income.", default=None
     )
-    other_current_non_operating_assets: Optional[float] = Field(
+    other_current_non_operating_assets: float | None = Field(
         description="Other current non-operating assets.", default=None
     )
-    loans_held_for_sale: Optional[float] = Field(
+    loans_held_for_sale: float | None = Field(
         description="Loans held for sale.", default=None
     )
-    prepaid_expenses: Optional[float] = Field(
+    prepaid_expenses: float | None = Field(
         description="Prepaid expenses.", default=None
     )
-    total_current_assets: Optional[float] = Field(
+    total_current_assets: float | None = Field(
         description="Total current assets.", default=None
     )
-    plant_property_equipment_gross: Optional[float] = Field(
+    plant_property_equipment_gross: float | None = Field(
         description="Plant property equipment gross.", default=None
     )
-    accumulated_depreciation: Optional[float] = Field(
+    accumulated_depreciation: float | None = Field(
         description="Accumulated depreciation.", default=None
     )
-    premises_and_equipment_net: Optional[float] = Field(
+    premises_and_equipment_net: float | None = Field(
         description="Net premises and equipment.", default=None
     )
-    plant_property_equipment_net: Optional[float] = Field(
+    plant_property_equipment_net: float | None = Field(
         description="Net plant property equipment.", default=None
     )
-    long_term_investments: Optional[float] = Field(
+    long_term_investments: float | None = Field(
         description="Long term investments.", default=None
     )
-    mortgage_servicing_rights: Optional[float] = Field(
+    mortgage_servicing_rights: float | None = Field(
         description="Mortgage servicing rights.", default=None
     )
-    unearned_premiums_asset: Optional[float] = Field(
+    unearned_premiums_asset: float | None = Field(
         description="Unearned premiums asset.", default=None
     )
-    non_current_note_lease_receivables: Optional[float] = Field(
+    non_current_note_lease_receivables: float | None = Field(
         description="Non-current note lease receivables.", default=None
     )
-    deferred_acquisition_cost: Optional[float] = Field(
+    deferred_acquisition_cost: float | None = Field(
         description="Deferred acquisition cost.", default=None
     )
-    goodwill: Optional[float] = Field(description="Goodwill.", default=None)
-    separate_account_business_assets: Optional[float] = Field(
+    goodwill: float | None = Field(description="Goodwill.", default=None)
+    separate_account_business_assets: float | None = Field(
         description="Separate account business assets.", default=None
     )
-    non_current_deferred_refundable_income_taxes: Optional[float] = Field(
+    non_current_deferred_refundable_income_taxes: float | None = Field(
         description="Noncurrent deferred refundable income taxes.", default=None
     )
-    intangible_assets: Optional[float] = Field(
+    intangible_assets: float | None = Field(
         description="Intangible assets.", default=None
     )
-    employee_benefit_assets: Optional[float] = Field(
+    employee_benefit_assets: float | None = Field(
         description="Employee benefit assets.", default=None
     )
-    other_assets: Optional[float] = Field(description="Other assets.", default=None)
-    other_non_current_operating_assets: Optional[float] = Field(
+    other_assets: float | None = Field(description="Other assets.", default=None)
+    other_non_current_operating_assets: float | None = Field(
         description="Other noncurrent operating assets.", default=None
     )
-    other_non_current_non_operating_assets: Optional[float] = Field(
+    other_non_current_non_operating_assets: float | None = Field(
         description="Other noncurrent non-operating assets.", default=None
     )
-    interest_bearing_deposits: Optional[float] = Field(
+    interest_bearing_deposits: float | None = Field(
         description="Interest bearing deposits.", default=None
     )
-    total_non_current_assets: Optional[float] = Field(
+    total_non_current_assets: float | None = Field(
         description="Total noncurrent assets.", default=None
     )
-    total_assets: Optional[float] = Field(description="Total assets.", default=None)
-    non_interest_bearing_deposits: Optional[float] = Field(
+    total_assets: float | None = Field(description="Total assets.", default=None)
+    non_interest_bearing_deposits: float | None = Field(
         description="Non interest bearing deposits.", default=None
     )
-    federal_funds_purchased_and_securities_sold: Optional[float] = Field(
+    federal_funds_purchased_and_securities_sold: float | None = Field(
         description="Federal funds purchased and securities sold.", default=None
     )
-    bankers_acceptance_outstanding: Optional[float] = Field(
+    bankers_acceptance_outstanding: float | None = Field(
         description="Bankers acceptance outstanding.", default=None
     )
-    short_term_debt: Optional[float] = Field(
-        description="Short term debt.", default=None
-    )
-    accounts_payable: Optional[float] = Field(
+    short_term_debt: float | None = Field(description="Short term debt.", default=None)
+    accounts_payable: float | None = Field(
         description="Accounts payable.", default=None
     )
-    current_deferred_revenue: Optional[float] = Field(
+    current_deferred_revenue: float | None = Field(
         description="Current deferred revenue.", default=None
     )
-    current_deferred_payable_income_tax_liabilities: Optional[float] = Field(
+    current_deferred_payable_income_tax_liabilities: float | None = Field(
         description="Current deferred payable income tax liabilities.", default=None
     )
-    accrued_interest_payable: Optional[float] = Field(
+    accrued_interest_payable: float | None = Field(
         description="Accrued interest payable.", default=None
     )
-    accrued_expenses: Optional[float] = Field(
+    accrued_expenses: float | None = Field(
         description="Accrued expenses.", default=None
     )
-    other_short_term_payables: Optional[float] = Field(
+    other_short_term_payables: float | None = Field(
         description="Other short term payables.", default=None
     )
-    customer_deposits: Optional[float] = Field(
+    customer_deposits: float | None = Field(
         description="Customer deposits.", default=None
     )
-    dividends_payable: Optional[float] = Field(
+    dividends_payable: float | None = Field(
         description="Dividends payable.", default=None
     )
-    claims_and_claim_expense: Optional[float] = Field(
+    claims_and_claim_expense: float | None = Field(
         description="Claims and claim expense.", default=None
     )
-    future_policy_benefits: Optional[float] = Field(
+    future_policy_benefits: float | None = Field(
         description="Future policy benefits.", default=None
     )
-    current_employee_benefit_liabilities: Optional[float] = Field(
+    current_employee_benefit_liabilities: float | None = Field(
         description="Current employee benefit liabilities.", default=None
     )
-    unearned_premiums_liability: Optional[float] = Field(
+    unearned_premiums_liability: float | None = Field(
         description="Unearned premiums liability.", default=None
     )
-    other_taxes_payable: Optional[float] = Field(
+    other_taxes_payable: float | None = Field(
         description="Other taxes payable.", default=None
     )
-    policy_holder_funds: Optional[float] = Field(
+    policy_holder_funds: float | None = Field(
         description="Policy holder funds.", default=None
     )
-    other_current_liabilities: Optional[float] = Field(
+    other_current_liabilities: float | None = Field(
         description="Other current liabilities.", default=None
     )
-    other_current_non_operating_liabilities: Optional[float] = Field(
+    other_current_non_operating_liabilities: float | None = Field(
         description="Other current non-operating liabilities.", default=None
     )
-    separate_account_business_liabilities: Optional[float] = Field(
+    separate_account_business_liabilities: float | None = Field(
         description="Separate account business liabilities.", default=None
     )
-    total_current_liabilities: Optional[float] = Field(
+    total_current_liabilities: float | None = Field(
         description="Total current liabilities.", default=None
     )
-    long_term_debt: Optional[float] = Field(description="Long term debt.", default=None)
-    other_long_term_liabilities: Optional[float] = Field(
+    long_term_debt: float | None = Field(description="Long term debt.", default=None)
+    other_long_term_liabilities: float | None = Field(
         description="Other long term liabilities.", default=None
     )
-    non_current_deferred_revenue: Optional[float] = Field(
+    non_current_deferred_revenue: float | None = Field(
         description="Non-current deferred revenue.", default=None
     )
-    non_current_deferred_payable_income_tax_liabilities: Optional[float] = Field(
+    non_current_deferred_payable_income_tax_liabilities: float | None = Field(
         description="Non-current deferred payable income tax liabilities.", default=None
     )
-    non_current_employee_benefit_liabilities: Optional[float] = Field(
+    non_current_employee_benefit_liabilities: float | None = Field(
         description="Non-current employee benefit liabilities.", default=None
     )
-    other_non_current_operating_liabilities: Optional[float] = Field(
+    other_non_current_operating_liabilities: float | None = Field(
         description="Other non-current operating liabilities.", default=None
     )
-    other_non_current_non_operating_liabilities: Optional[float] = Field(
+    other_non_current_non_operating_liabilities: float | None = Field(
         description="Other non-current, non-operating liabilities.", default=None
     )
-    total_non_current_liabilities: Optional[float] = Field(
+    total_non_current_liabilities: float | None = Field(
         description="Total non-current liabilities.", default=None
     )
-    capital_lease_obligations: Optional[float] = Field(
+    capital_lease_obligations: float | None = Field(
         description="Capital lease obligations.", default=None
     )
-    asset_retirement_reserve_litigation_obligation: Optional[float] = Field(
+    asset_retirement_reserve_litigation_obligation: float | None = Field(
         description="Asset retirement reserve litigation obligation.", default=None
     )
-    total_liabilities: Optional[float] = Field(
+    total_liabilities: float | None = Field(
         description="Total liabilities.", default=None
     )
-    commitments_contingencies: Optional[float] = Field(
+    commitments_contingencies: float | None = Field(
         description="Commitments contingencies.", default=None
     )
-    redeemable_non_controlling_interest: Optional[float] = Field(
+    redeemable_non_controlling_interest: float | None = Field(
         description="Redeemable non-controlling interest.", default=None
     )
-    preferred_stock: Optional[float] = Field(
-        description="Preferred stock.", default=None
-    )
-    common_stock: Optional[float] = Field(description="Common stock.", default=None)
-    retained_earnings: Optional[float] = Field(
+    preferred_stock: float | None = Field(description="Preferred stock.", default=None)
+    common_stock: float | None = Field(description="Common stock.", default=None)
+    retained_earnings: float | None = Field(
         description="Retained earnings.", default=None
     )
-    treasury_stock: Optional[float] = Field(description="Treasury stock.", default=None)
-    accumulated_other_comprehensive_income: Optional[float] = Field(
+    treasury_stock: float | None = Field(description="Treasury stock.", default=None)
+    accumulated_other_comprehensive_income: float | None = Field(
         description="Accumulated other comprehensive income.", default=None
     )
-    participating_policy_holder_equity: Optional[float] = Field(
+    participating_policy_holder_equity: float | None = Field(
         description="Participating policy holder equity.", default=None
     )
-    other_equity_adjustments: Optional[float] = Field(
+    other_equity_adjustments: float | None = Field(
         description="Other equity adjustments.", default=None
     )
-    total_common_equity: Optional[float] = Field(
+    total_common_equity: float | None = Field(
         description="Total common equity.", default=None
     )
-    total_preferred_common_equity: Optional[float] = Field(
+    total_preferred_common_equity: float | None = Field(
         description="Total preferred common equity.", default=None
     )
-    non_controlling_interest: Optional[float] = Field(
+    non_controlling_interest: float | None = Field(
         description="Non-controlling interest.", default=None
     )
-    total_equity_non_controlling_interests: Optional[float] = Field(
+    total_equity_non_controlling_interests: float | None = Field(
         description="Total equity non-controlling interests.", default=None
     )
-    total_liabilities_shareholders_equity: Optional[float] = Field(
+    total_liabilities_shareholders_equity: float | None = Field(
         description="Total liabilities and shareholders equity.", default=None
     )
 
@@ -412,31 +406,31 @@ class IntrinioBalanceSheetData(BalanceSheetData):
 class IntrinioBalanceSheetFetcher(
     Fetcher[
         IntrinioBalanceSheetQueryParams,
-        List[IntrinioBalanceSheetData],
+        list[IntrinioBalanceSheetData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioBalanceSheetQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioBalanceSheetQueryParams:
         """Transform the query params."""
         return IntrinioBalanceSheetQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioBalanceSheetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "balance_sheet_statement"
-        fundamentals_data: Dict = {}
+        fundamentals_data: dict = {}
         base_url = "https://api-v2.intrinio.com"
         period = "FY" if query.period == "annual" else "QTR"
         fundamentals_url = (
-            f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={period}"
+            f"{base_url}/companies/{query.symbol}"
+            f"/fundamentals?statement_code={statement_code}&type={period}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
@@ -453,7 +447,7 @@ class IntrinioBalanceSheetFetcher(
         ]
         fiscal_periods = fiscal_periods[: query.limit]
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             statement_data = await response.json()  # type: ignore
             return {
@@ -472,14 +466,14 @@ class IntrinioBalanceSheetFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioBalanceSheetData]:
+        query: IntrinioBalanceSheetQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioBalanceSheetData]:
         """Return the transformed data."""
-        transformed_data: List[IntrinioBalanceSheetData] = []
+        transformed_data: list[IntrinioBalanceSheetData] = []
         period = "FY" if query.period == "annual" else "QTR"
         units = []
         for item in data:
-            sub_dict: Dict[str, Any] = {}
+            sub_dict: dict[str, Any] = {}
 
             for sub_item in item["financials"]:
                 field_name = sub_item["data_tag"]["tag"]

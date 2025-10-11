@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -27,65 +27,65 @@ class PolygonCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
 class PolygonCurrencySnapshotsData(CurrencySnapshotsData):
     """Polygon Currency Snapshots Data."""
 
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         description="The volume-weighted average price.", default=None
     )
-    change: Optional[float] = Field(
+    change: float | None = Field(
         description="The change in price from the previous day.",
         default=None,
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         description="The percentage change in price from the previous day.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    prev_open: Optional[float] = Field(
+    prev_open: float | None = Field(
         description="The previous day's opening price.", default=None
     )
-    prev_high: Optional[float] = Field(
+    prev_high: float | None = Field(
         description="The previous day's high price.", default=None
     )
-    prev_low: Optional[float] = Field(
+    prev_low: float | None = Field(
         description="The previous day's low price.", default=None
     )
-    prev_volume: Optional[float] = Field(
+    prev_volume: float | None = Field(
         description="The previous day's volume.", default=None
     )
-    prev_vwap: Optional[float] = Field(
+    prev_vwap: float | None = Field(
         description="The previous day's VWAP.", default=None
     )
-    bid: Optional[float] = Field(description="The current bid price.", default=None)
-    ask: Optional[float] = Field(description="The current ask price.", default=None)
-    minute_open: Optional[float] = Field(
+    bid: float | None = Field(description="The current bid price.", default=None)
+    ask: float | None = Field(description="The current ask price.", default=None)
+    minute_open: float | None = Field(
         description="The open price from the most recent minute bar.", default=None
     )
-    minute_high: Optional[float] = Field(
+    minute_high: float | None = Field(
         description="The high price from the most recent minute bar.", default=None
     )
-    minute_low: Optional[float] = Field(
+    minute_low: float | None = Field(
         description="The low price from the most recent minute bar.", default=None
     )
-    minute_close: Optional[float] = Field(
+    minute_close: float | None = Field(
         description="The close price from the most recent minute bar.", default=None
     )
-    minute_volume: Optional[float] = Field(
+    minute_volume: float | None = Field(
         description="The volume from the most recent minute bar.", default=None
     )
-    minute_vwap: Optional[float] = Field(
+    minute_vwap: float | None = Field(
         description="The VWAP from the most recent minute bar.", default=None
     )
-    minute_transactions: Optional[float] = Field(
+    minute_transactions: float | None = Field(
         description="The number of transactions in the most recent minute bar.",
         default=None,
     )
-    quote_timestamp: Optional[datetime] = Field(
+    quote_timestamp: datetime | None = Field(
         description="The timestamp of the last quote.", default=None
     )
-    minute_timestamp: Optional[datetime] = Field(
+    minute_timestamp: datetime | None = Field(
         description="The timestamp for the start of the most recent minute bar.",
         default=None,
     )
-    last_updated: Optional[datetime] = Field(
+    last_updated: datetime | None = Field(
         description="The last time the data was updated."
     )
 
@@ -93,22 +93,22 @@ class PolygonCurrencySnapshotsData(CurrencySnapshotsData):
 class PolygonCurrencySnapshotsFetcher(
     Fetcher[
         PolygonCurrencySnapshotsQueryParams,
-        List[PolygonCurrencySnapshotsData],
+        list[PolygonCurrencySnapshotsData],
     ]
 ):
     """Polygon Currency Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCurrencySnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCurrencySnapshotsQueryParams:
         """Transform the query params."""
         return PolygonCurrencySnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonCurrencySnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -123,9 +123,9 @@ class PolygonCurrencySnapshotsFetcher(
     @staticmethod
     def transform_data(  # pylint: disable=too-many-locals, too-many-statements
         query: PolygonCurrencySnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonCurrencySnapshotsData]:
+    ) -> list[PolygonCurrencySnapshotsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from datetime import timezone  # noqa
@@ -135,9 +135,7 @@ class PolygonCurrencySnapshotsFetcher(
         if not data:
             raise EmptyDataError("No data returned.")
         counter_currencies = (
-            query.counter_currencies.upper().split(",")  # type: ignore[union-attr]
-            if query.counter_currencies
-            else []
+            query.counter_currencies.upper().split(",") if query.counter_currencies else []  # type: ignore[union-attr]
         )
 
         # Filter the data only for the symbols requested.
@@ -178,7 +176,7 @@ class PolygonCurrencySnapshotsFetcher(
         if len(filtered_data) == 0 or not filtered_data:
             raise EmptyDataError("No results were found with the parameters requested.")
 
-        results: List[PolygonCurrencySnapshotsData] = []
+        results: list[PolygonCurrencySnapshotsData] = []
         # Now unpack the nested object for the filtered results only.
         for item in filtered_data:
             new_item = {}

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_metrics import (
@@ -60,159 +60,159 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         "currency": "financialCurrency",
     }
 
-    pe_ratio: Optional[float] = Field(
+    pe_ratio: float | None = Field(
         default=None,
         description="Price-to-earnings ratio (TTM).",
     )
-    forward_pe: Optional[float] = Field(
+    forward_pe: float | None = Field(
         default=None,
         description="Forward price-to-earnings ratio.",
     )
-    peg_ratio: Optional[float] = Field(
+    peg_ratio: float | None = Field(
         default=None,
         description="PEG ratio (5-year expected).",
     )
-    peg_ratio_ttm: Optional[float] = Field(
+    peg_ratio_ttm: float | None = Field(
         default=None,
         description="PEG ratio (TTM).",
     )
-    eps_ttm: Optional[float] = Field(
+    eps_ttm: float | None = Field(
         default=None,
         description="Earnings per share (TTM).",
     )
-    eps_forward: Optional[float] = Field(
+    eps_forward: float | None = Field(
         default=None,
         description="Forward earnings per share.",
     )
-    enterprise_to_ebitda: Optional[float] = Field(
+    enterprise_to_ebitda: float | None = Field(
         default=None,
         description="Enterprise value to EBITDA ratio.",
     )
-    earnings_growth: Optional[float] = Field(
+    earnings_growth: float | None = Field(
         default=None,
         description="Earnings growth (Year Over Year), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    earnings_growth_quarterly: Optional[float] = Field(
+    earnings_growth_quarterly: float | None = Field(
         default=None,
         description="Quarterly earnings growth (Year Over Year), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    revenue_per_share: Optional[float] = Field(
+    revenue_per_share: float | None = Field(
         default=None,
         description="Revenue per share (TTM).",
     )
-    revenue_growth: Optional[float] = Field(
+    revenue_growth: float | None = Field(
         default=None,
         description="Revenue growth (Year Over Year), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    enterprise_to_revenue: Optional[float] = Field(
+    enterprise_to_revenue: float | None = Field(
         default=None,
         description="Enterprise value to revenue ratio.",
     )
-    cash_per_share: Optional[float] = Field(
+    cash_per_share: float | None = Field(
         default=None,
         description="Cash per share.",
     )
-    quick_ratio: Optional[float] = Field(
+    quick_ratio: float | None = Field(
         default=None,
         description="Quick ratio.",
     )
-    current_ratio: Optional[float] = Field(
+    current_ratio: float | None = Field(
         default=None,
         description="Current ratio.",
     )
-    debt_to_equity: Optional[float] = Field(
+    debt_to_equity: float | None = Field(
         default=None,
         description="Debt-to-equity ratio.",
     )
-    gross_margin: Optional[float] = Field(
+    gross_margin: float | None = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    operating_margin: Optional[float] = Field(
+    operating_margin: float | None = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ebitda_margin: Optional[float] = Field(
+    ebitda_margin: float | None = Field(
         default=None,
         description="EBITDA margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    profit_margin: Optional[float] = Field(
+    profit_margin: float | None = Field(
         default=None,
         description="Profit margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_assets: Optional[float] = Field(
+    return_on_assets: float | None = Field(
         default=None,
         description="Return on assets, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_equity: Optional[float] = Field(
+    return_on_equity: float | None = Field(
         default=None,
         description="Return on equity, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield_5y_avg: Optional[float] = Field(
+    dividend_yield_5y_avg: float | None = Field(
         default=None,
         description="5-year average dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    payout_ratio: Optional[float] = Field(
+    payout_ratio: float | None = Field(
         default=None,
         description="Payout ratio.",
     )
-    book_value: Optional[float] = Field(
+    book_value: float | None = Field(
         default=None,
         description="Book value per share.",
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None,
         description="Price-to-book ratio.",
     )
-    enterprise_value: Optional[int] = Field(
+    enterprise_value: int | None = Field(
         default=None,
         description="Enterprise value.",
     )
-    overall_risk: Optional[float] = Field(
+    overall_risk: float | None = Field(
         default=None,
         description="Overall risk score.",
     )
-    audit_risk: Optional[float] = Field(
+    audit_risk: float | None = Field(
         default=None,
         description="Audit risk score.",
     )
-    board_risk: Optional[float] = Field(
+    board_risk: float | None = Field(
         default=None,
         description="Board risk score.",
     )
-    compensation_risk: Optional[float] = Field(
+    compensation_risk: float | None = Field(
         default=None,
         description="Compensation risk score.",
     )
-    shareholder_rights_risk: Optional[float] = Field(
+    shareholder_rights_risk: float | None = Field(
         default=None,
         description="Shareholder rights risk score.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None,
         description="Beta relative to the broad market (5-year monthly).",
     )
-    price_return_1y: Optional[float] = Field(
+    price_return_1y: float | None = Field(
         default=None,
         description="One-year price return, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="Currency in which the data is presented.",
     )
@@ -225,21 +225,21 @@ class YFinanceKeyMetricsData(KeyMetricsData):
 
 
 class YFinanceKeyMetricsFetcher(
-    Fetcher[YFinanceKeyMetricsQueryParams, List[YFinanceKeyMetricsData]]
+    Fetcher[YFinanceKeyMetricsQueryParams, list[YFinanceKeyMetricsData]]
 ):
     """YFinance Key Metrics fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceKeyMetricsQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceKeyMetricsQueryParams:
         """Transform the query."""
         return YFinanceKeyMetricsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceKeyMetricsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -336,8 +336,8 @@ class YFinanceKeyMetricsFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceKeyMetricsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceKeyMetricsData]:
+    ) -> list[YFinanceKeyMetricsData]:
         """Transform the data."""
         return [YFinanceKeyMetricsData.model_validate(d) for d in data]

@@ -6,7 +6,7 @@ import logging
 from functools import wraps
 from pathlib import Path
 from sys import exc_info
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -47,7 +47,7 @@ class Account:  # noqa: D205, D400
         self._openbb_directory = (
             base_app._command_runner.system_settings.openbb_directory
         )
-        self._hub_service: Optional[HubService] = None
+        self._hub_service: HubService | None = None
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -86,9 +86,9 @@ class Account:  # noqa: D205, D400
 
     def _create_hub_service(
         self,
-        email: Optional[str] = None,
-        password: Optional[str] = None,
-        pat: Optional[str] = None,
+        email: str | None = None,
+        password: str | None = None,
+        pat: str | None = None,
     ) -> HubService:
         """Create hub service to handle connection."""
         if email is None and password is None and pat is None:
@@ -110,12 +110,12 @@ class Account:  # noqa: D205, D400
     @_log_account_command  # type: ignore
     def login(
         self,
-        email: Optional[str] = None,
-        password: Optional[str] = None,
-        pat: Optional[str] = None,
+        email: str | None = None,
+        password: str | None = None,
+        pat: str | None = None,
         remember_me: bool = False,
         return_settings: bool = False,
-    ) -> Optional[UserSettings]:
+    ) -> UserSettings | None:
         """Login to hub.
 
         Parameters
@@ -162,7 +162,7 @@ class Account:  # noqa: D205, D400
         return None
 
     @_log_account_command  # type: ignore
-    def save(self, return_settings: bool = False) -> Optional[UserSettings]:
+    def save(self, return_settings: bool = False) -> UserSettings | None:
         """Save user settings.
 
         Parameters
@@ -186,7 +186,7 @@ class Account:  # noqa: D205, D400
         return None
 
     @_log_account_command  # type: ignore
-    def refresh(self, return_settings: bool = False) -> Optional[UserSettings]:
+    def refresh(self, return_settings: bool = False) -> UserSettings | None:
         """Refresh user settings.
 
         Parameters
@@ -213,7 +213,7 @@ class Account:  # noqa: D205, D400
         return None
 
     @_log_account_command  # type: ignore
-    def logout(self, return_settings: bool = False) -> Optional[UserSettings]:
+    def logout(self, return_settings: bool = False) -> UserSettings | None:
         """Logout from hub.
 
         Parameters

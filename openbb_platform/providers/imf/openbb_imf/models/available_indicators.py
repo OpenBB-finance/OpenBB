@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -18,7 +18,7 @@ class ImfAvailableIndicatorsQueryParams(AvailableIndicesQueryParams):
 
     __json_schema_extra__ = {"query": {"multiple_items_allowed": True}}
 
-    query: Optional[str] = Field(
+    query: str | None = Field(
         default=None,
         description="The query string to search through the available indicators."
         + " Use semicolons to separate multiple terms.",
@@ -32,27 +32,27 @@ class ImfAvailableIndicatorsData(AvailableIndicatorsData):
         "symbol_root": "parent",
         "description": "title",
     }
-    dataset: Optional[str] = Field(
+    dataset: str | None = Field(
         default=None,
         description="The IMF dataset associated with the symbol.",
     )
-    table: Optional[str] = Field(
+    table: str | None = Field(
         default=None,
         description="The name of the table associated with the symbol.",
     )
-    level: Optional[int] = Field(
+    level: int | None = Field(
         default=None,
         description="The indentation level of the data, relative to the table and symbol_root",
     )
-    order: Optional[Union[int, float]] = Field(
+    order: int | float | None = Field(
         default=None,
         description="Order of the data, relative to the table.",
     )
-    children: Optional[str] = Field(
+    children: str | None = Field(
         default=None,
         description="The symbol of the child data, if any.",
     )
-    unit: Optional[str] = Field(
+    unit: str | None = Field(
         default=None,
         description="The unit of the data.",
     )
@@ -71,7 +71,7 @@ class ImfAvailableIndicatorsFetcher(
     @staticmethod
     def extract_data(
         query: ImfAvailableIndicatorsQueryParams,
-        credentials: Optional[dict[str, Any]] = None,
+        credentials: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> list[dict]:
         """Fetch the data."""

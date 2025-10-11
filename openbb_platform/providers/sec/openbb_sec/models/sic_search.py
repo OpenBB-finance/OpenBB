@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,7 +16,7 @@ class SecSicSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: Optional[bool] = Field(
+    use_cache: bool | None = Field(
         default=True,
         description="Whether or not to use cache.",
     )
@@ -41,14 +41,14 @@ class SecSicSearchData(Data):
 class SecSicSearchFetcher(
     Fetcher[
         SecSicSearchQueryParams,
-        List[SecSicSearchData],
+        list[SecSicSearchData],
     ]
 ):
     """SEC SIC Search Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any], **kwargs: Any
+        params: dict[str, Any], **kwargs: Any
     ) -> SecSicSearchQueryParams:
         """Transform the query."""
         return SecSicSearchQueryParams(**params)
@@ -56,9 +56,9 @@ class SecSicSearchFetcher(
     @staticmethod
     async def aextract_data(
         query: SecSicSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data from the SEC website table."""
         # pylint: disable=import-outside-toplevel
         from aiohttp_client_cache import SQLiteBackend
@@ -69,12 +69,9 @@ class SecSicSearchFetcher(
         from pandas import DataFrame, read_html
 
         data = DataFrame()
-        results: List[Dict] = []
-        url = (
-            "https://www.sec.gov/corpfin/"
-            "division-of-corporation-finance-standard-industrial-classification-sic-code-list"
-        )
-        response: Union[dict, List[dict], str] = {}
+        results: list[dict] = []
+        url = "https://www.sec.gov/corpfin/division-of-corporation-finance-standard-industrial-classification-sic-code-list"
+        response: dict | list[dict] | str = {}
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_sic"
             async with CachedSession(
@@ -82,7 +79,10 @@ class SecSicSearchFetcher(
             ) as session:
                 try:
                     response = await amake_request(
-                        url, headers=SEC_HEADERS, session=session, response_callback=sec_callback  # type: ignore
+                        url,
+                        headers=SEC_HEADERS,
+                        session=session,
+                        response_callback=sec_callback,  # type: ignore
                     )
                 finally:
                     await session.close()
@@ -105,7 +105,7 @@ class SecSicSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecSicSearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[SecSicSearchData]:
+        query: SecSicSearchQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[SecSicSearchData]:
         """Transform the data."""
         return [SecSicSearchData.model_validate(d) for d in data]

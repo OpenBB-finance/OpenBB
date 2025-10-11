@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -52,7 +52,7 @@ class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_RGDP:
@@ -76,12 +76,12 @@ class OECDSharePriceIndexData(SharePriceIndexData):
 
 
 class OECDSharePriceIndexFetcher(
-    Fetcher[OECDSharePriceIndexQueryParams, List[OECDSharePriceIndexData]]
+    Fetcher[OECDSharePriceIndexQueryParams, list[OECDSharePriceIndexData]]
 ):
     """OECD Share Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDSharePriceIndexQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDSharePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -100,9 +100,9 @@ class OECDSharePriceIndexFetcher(
     @staticmethod
     def extract_data(
         query: OECDSharePriceIndexQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -152,7 +152,7 @@ class OECDSharePriceIndexFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDSharePriceIndexQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDSharePriceIndexData]:
+        query: OECDSharePriceIndexQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[OECDSharePriceIndexData]:
         """Transform the data from the OECD endpoint."""
         return [OECDSharePriceIndexData.model_validate(d) for d in data]

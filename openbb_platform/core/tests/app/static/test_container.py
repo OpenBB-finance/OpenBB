@@ -1,7 +1,6 @@
 """Test the container.py file."""
 
 from re import escape
-from typing import Optional
 from unittest.mock import patch
 
 import pytest
@@ -20,8 +19,8 @@ def container():
     """Set up test container class."""
 
     class MockCredentials(BaseModel):
-        provider_1_api_key: Optional[SecretStr] = None
-        provider_2_api_key: Optional[SecretStr] = "test_key"
+        provider_1_api_key: SecretStr | None = None
+        provider_2_api_key: SecretStr | None = "test_key"
 
     MockCredentials.origins = {
         "provider_1": ["provider_1_api_key"],

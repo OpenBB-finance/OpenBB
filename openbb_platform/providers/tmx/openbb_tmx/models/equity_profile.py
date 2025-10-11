@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_info import (
@@ -36,30 +36,30 @@ class TmxEquityProfileData(EquityInfoData):
         "total_shares_outstanding": "totalSharesOutStanding",
     }
 
-    email: Optional[str] = Field(description="The email of the company.", default=None)
-    issue_type: Optional[str] = Field(
+    email: str | None = Field(description="The email of the company.", default=None)
+    issue_type: str | None = Field(
         description="The issuance type of the asset.",
         default=None,
     )
-    shares_outstanding: Optional[int] = Field(
+    shares_outstanding: int | None = Field(
         description="The number of listed shares outstanding.",
         default=None,
     )
-    shares_escrow: Optional[int] = Field(
+    shares_escrow: int | None = Field(
         description="The number of shares held in escrow.",
         default=None,
     )
-    shares_total: Optional[int] = Field(
+    shares_total: int | None = Field(
         description="The total number of shares outstanding from all classes.",
         default=None,
     )
-    dividend_frequency: Optional[str] = Field(
+    dividend_frequency: str | None = Field(
         description="The dividend frequency.", default=None
     )
 
     @model_validator(mode="before")
     @classmethod
-    def validate_empty_strings(cls, values) -> Dict:
+    def validate_empty_strings(cls, values) -> dict:
         """Validate the query parameters."""
         return {k: None if v == "" else v for k, v in values.items()}
 
@@ -67,22 +67,22 @@ class TmxEquityProfileData(EquityInfoData):
 class TmxEquityProfileFetcher(
     Fetcher[
         TmxEquityProfileQueryParams,
-        List[TmxEquityProfileData],
+        list[TmxEquityProfileData],
     ]
 ):
     """TMX Equity Profile Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEquityProfileQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEquityProfileQueryParams:
         """Transform the query."""
         return TmxEquityProfileQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxEquityProfileQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -93,7 +93,7 @@ class TmxEquityProfileFetcher(
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
-        results: List[Dict] = []
+        results: list[dict] = []
         user_agent = get_random_agent()
 
         url = "https://app-money.tmx.com/graphql"
@@ -133,9 +133,9 @@ class TmxEquityProfileFetcher(
     @staticmethod
     def transform_data(
         query: TmxEquityProfileQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxEquityProfileData]:
+    ) -> list[TmxEquityProfileData]:
         """Return the transformed data."""
         # Get only the items associated with `equity.profile()`.
         items_list = [

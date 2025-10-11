@@ -3,7 +3,6 @@
 from datetime import (
     date as dateType,
 )
-from typing import List, Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -13,47 +12,47 @@ from pydantic import Field, field_validator
 class BondReferenceQueryParams(QueryParams):
     """Bond Reference Query."""
 
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="The country to get data. Matches partial name.",
     )
-    issuer_name: Optional[str] = Field(
+    issuer_name: str | None = Field(
         default=None,
         description="Name of the issuer.  Returns partial matches and is case insensitive.",
     )
-    isin: Optional[Union[List, str]] = Field(
+    isin: list | str | None = Field(
         default=None,
         description="International Securities Identification Number(s) of the bond(s).",
     )
-    lei: Optional[str] = Field(
+    lei: str | None = Field(
         default=None,
         description="Legal Entity Identifier of the issuing entity.",
     )
-    currency: Optional[Union[List, str]] = Field(
+    currency: list | str | None = Field(
         default=None,
         description="Currency of the bond. Formatted as the 3-letter ISO 4217 code (e.g. GBP, EUR, USD).",
     )
-    coupon_min: Optional[float] = Field(
+    coupon_min: float | None = Field(
         default=None,
         description="Minimum coupon rate of the bond.",
     )
-    coupon_max: Optional[float] = Field(
+    coupon_max: float | None = Field(
         default=None,
         description="Maximum coupon rate of the bond.",
     )
-    issued_amount_min: Optional[int] = Field(
+    issued_amount_min: int | None = Field(
         default=None,
         description="Minimum issued amount of the bond.",
     )
-    issued_amount_max: Optional[str] = Field(
+    issued_amount_max: str | None = Field(
         default=None,
         description="Maximum issued amount of the bond.",
     )
-    maturity_date_min: Optional[dateType] = Field(
+    maturity_date_min: dateType | None = Field(
         default=None,
         description="Minimum maturity date of the bond.",
     )
-    maturity_date_max: Optional[dateType] = Field(
+    maturity_date_max: dateType | None = Field(
         default=None,
         description="Maximum maturity date of the bond.",
     )
@@ -70,20 +69,20 @@ class BondReferenceQueryParams(QueryParams):
 class BondReferenceData(Data):
     """Bond Reference Search Data."""
 
-    isin: Optional[str] = Field(
+    isin: str | None = Field(
         default=None,
         description="International Securities Identification Number of the bond.",
     )
-    lei: Optional[str] = Field(
+    lei: str | None = Field(
         default=None,
         description="Legal Entity Identifier of the issuing entity.",
     )
-    figi: Optional[str] = Field(default=None, description="FIGI of the bond.")
-    cusip: Optional[str] = Field(
+    figi: str | None = Field(default=None, description="FIGI of the bond.")
+    cusip: str | None = Field(
         default=None,
         description="CUSIP of the bond.",
     )
-    coupon_rate: Optional[float] = Field(
+    coupon_rate: float | None = Field(
         default=None,
         description="Coupon rate of the bond.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},

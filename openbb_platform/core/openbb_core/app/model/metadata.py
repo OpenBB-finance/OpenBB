@@ -1,7 +1,8 @@
 """Metadata model."""
 
+from collections.abc import Sequence
 from datetime import datetime
-from typing import Any, Dict, Optional, Sequence, Union
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import BaseModel, Field, field_validator
@@ -10,7 +11,7 @@ from pydantic import BaseModel, Field, field_validator
 class Metadata(BaseModel):
     """Metadata of a command execution."""
 
-    arguments: Dict[str, Any] = Field(
+    arguments: dict[str, Any] = Field(
         default_factory=dict,
         description="Arguments of the command.",
     )
@@ -42,7 +43,7 @@ class Metadata(BaseModel):
         from numpy import ndarray  # noqa
         from pandas import DataFrame, Series  # noqa
 
-        arguments: Dict[str, Any] = {}
+        arguments: dict[str, Any] = {}
         for item in ["provider_choices", "standard_params", "extra_params"]:
             arguments[item] = {}
             # The item could be class or it could a dictionary.
@@ -52,7 +53,7 @@ class Metadata(BaseModel):
             # The item might not be a dictionary yet.
             v_item = v_item if isinstance(v_item, dict) else v_item.__dict__
             for arg, arg_val in v_item.items():
-                new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
+                new_arg_val: str | dict[str, Sequence[Any]] | None = None
 
                 # Data
                 if isclass(type(arg_val)) and issubclass(type(arg_val), Data):

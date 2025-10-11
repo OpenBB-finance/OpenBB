@@ -2,7 +2,6 @@
 
 # pylint: disable=W0621
 
-
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -154,8 +153,11 @@ def test_parse_args_factory_no_name_error():
         "--name",
         "",
     ]
-    with patch.object(sys, "argv", test_args), pytest.raises(
-        ValueError,
-        match="The factory function name must be provided to the --name parameter",
+    with (
+        patch.object(sys, "argv", test_args),
+        pytest.raises(
+            ValueError,
+            match="The factory function name must be provided to the --name parameter",
+        ),
     ):
         parse_args()

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -29,7 +29,7 @@ class IntrinioEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 
     __alias_dict__ = {"date": "as_of_date"}
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
 
@@ -52,80 +52,80 @@ class IntrinioEtfHoldingsData(EtfHoldingsData):
         "maturity_date": "maturity",
     }
 
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The common name for the holding.",
     )
-    security_type: Optional[str] = Field(
+    security_type: str | None = Field(
         default=None,
         description="The type of instrument for this holding. Examples(Bond='BOND', Equity='EQUI')",
     )
-    isin: Optional[str] = Field(
+    isin: str | None = Field(
         default=None,
         description="The International Securities Identification Number.",
     )
-    ric: Optional[str] = Field(
+    ric: str | None = Field(
         default=None,
         description="The Reuters Instrument Code.",
     )
-    sedol: Optional[str] = Field(
+    sedol: str | None = Field(
         default=None,
         description="The Stock Exchange Daily Official List.",
     )
-    share_class_figi: Optional[str] = Field(
+    share_class_figi: str | None = Field(
         default=None,
         description="The OpenFIGI symbol for the holding.",
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="The country or region of the holding.",
     )
-    maturity_date: Optional[dateType] = Field(
+    maturity_date: dateType | None = Field(
         default=None,
         description="The maturity date for the debt security, if available.",
     )
-    contract_expiry_date: Optional[dateType] = Field(
+    contract_expiry_date: dateType | None = Field(
         default=None,
         description="Expiry date for the futures contract held, if available.",
     )
-    coupon: Optional[float] = Field(
+    coupon: float | None = Field(
         default=None,
         description="The coupon rate of the debt security, if available.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    balance: Optional[Union[int, float]] = Field(
+    balance: int | float | None = Field(
         default=None,
         description="The number of units of the security held, if available.",
     )
-    unit: Optional[str] = Field(
+    unit: str | None = Field(
         default=None,
         description="The units of the 'balance' field.",
     )
-    units_per_share: Optional[float] = Field(
+    units_per_share: float | None = Field(
         default=None,
         description="Number of units of the security held per share outstanding of the ETF, if available.",
     )
-    face_value: Optional[float] = Field(
+    face_value: float | None = Field(
         default=None,
         description="The face value of the debt security, if available.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    derivatives_value: Optional[float] = Field(
+    derivatives_value: float | None = Field(
         default=None,
         description="The notional value of derivatives contracts held.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    value: Optional[float] = Field(
+    value: float | None = Field(
         default=None,
         description="The market value of the holding, on the 'as_of' date.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    weight: Optional[float] = Field(
+    weight: float | None = Field(
         default=None,
         description="The weight of the holding, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    updated: Optional[dateType] = Field(
+    updated: dateType | None = Field(
         default=None,
         description="The 'as_of' date for the holding.",
     )
@@ -142,28 +142,28 @@ class IntrinioEtfHoldingsData(EtfHoldingsData):
 
 
 class IntrinioEtfHoldingsFetcher(
-    Fetcher[IntrinioEtfHoldingsQueryParams, List[IntrinioEtfHoldingsData]]
+    Fetcher[IntrinioEtfHoldingsQueryParams, list[IntrinioEtfHoldingsData]]
 ):
     """Intrinio ETF Holdings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEtfHoldingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEtfHoldingsQueryParams:
         """Transform query."""
         return IntrinioEtfHoldingsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioEtfHoldingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         symbol = query.symbol + ":US" if ":" not in query.symbol else query.symbol
         URL = f"https://api-v2.intrinio.com/etfs/{symbol}/holdings?page_size=10000&api_key={api_key}"
         if query.date:
             URL += f"&as_of_date={query.date}"
-        data: List = []
+        data: list = []
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Async response callback."""
@@ -178,10 +178,7 @@ class IntrinioEtfHoldingsFetcher(
                     next_page = results["next_page"]  # type: ignore
                     next_url = f"{URL}&next_page={next_page}"
                     results = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "holdings" in results
-                        and len(results.get("holdings")) > 0  # type: ignore
-                    ):
+                    if "holdings" in results and len(results.get("holdings")) > 0:  # type: ignore
                         data.extend(results.get("holdings"))  # type: ignore
             return data
 
@@ -190,9 +187,9 @@ class IntrinioEtfHoldingsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEtfHoldingsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioEtfHoldingsData]:
+    ) -> list[IntrinioEtfHoldingsData]:
         """Transform data."""
         if not data or isinstance(data, dict) and data.get("error"):
             if isinstance(data, list) and data == []:
@@ -203,7 +200,7 @@ class IntrinioEtfHoldingsFetcher(
                 )
             raise OpenBBError(str(f"{data.get('message')} {query.symbol}: {data['error']}"))  # type: ignore
 
-        results: List[IntrinioEtfHoldingsData] = []
+        results: list[IntrinioEtfHoldingsData] = []
         for d in sorted(data, key=lambda x: x["weighting"], reverse=True):
             # This field is deprecated and is dupilcated in the response.
             _ = d.pop("composite_figi", None)

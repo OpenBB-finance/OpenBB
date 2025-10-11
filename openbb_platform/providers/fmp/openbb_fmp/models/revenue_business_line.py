@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.revenue_business_line import (
@@ -45,7 +45,7 @@ class FMPRevenueBusinessLineFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPRevenueBusinessLineQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
@@ -56,11 +56,7 @@ class FMPRevenueBusinessLineFetcher(
         base_url = (
             "https://financialmodelingprep.com/stable/revenue-product-segmentation?"
         )
-        url = (
-            f"{base_url}symbol={query.symbol}"
-            f"&period={query.period}"
-            f"&structure=flat&apikey={api_key}"
-        )
+        url = f"{base_url}symbol={query.symbol}&period={query.period}&structure=flat&apikey={api_key}"
         return await get_data_many(url, **kwargs)
 
     @staticmethod

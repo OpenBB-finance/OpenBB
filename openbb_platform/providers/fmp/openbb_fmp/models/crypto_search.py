@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_search import (
@@ -30,19 +30,19 @@ class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
 class FMPCryptoSearchData(CryptoSearchData):
     """FMP Crypto Search Data."""
 
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         description="The exchange code the crypto trades on.",
         default=None,
     )
-    ico_date: Optional[dateType] = Field(
+    ico_date: dateType | None = Field(
         description="The ICO date of the token.",
         default=None,
     )
-    circulating_supply: Optional[float] = Field(
+    circulating_supply: float | None = Field(
         description="The circulating supply of the token.",
         default=None,
     )
-    total_supply: Optional[float] = Field(
+    total_supply: float | None = Field(
         description="The total supply of the token.",
         default=None,
     )
@@ -64,7 +64,7 @@ class FMPCryptoSearchFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

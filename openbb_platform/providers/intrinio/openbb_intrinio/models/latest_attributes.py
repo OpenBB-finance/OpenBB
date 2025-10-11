@@ -1,7 +1,7 @@
 """Intrinio Latest Attributes Model."""
 
 import warnings
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -35,22 +35,22 @@ class IntrinioLatestAttributesData(LatestAttributesData):
 class IntrinioLatestAttributesFetcher(
     Fetcher[
         IntrinioLatestAttributesQueryParams,
-        List[IntrinioLatestAttributesData],
+        list[IntrinioLatestAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioLatestAttributesQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioLatestAttributesQueryParams:
         """Transform the query params."""
         return IntrinioLatestAttributesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioLatestAttributesQueryParams,  # pylint: disable=unused-argument
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -60,11 +60,11 @@ class IntrinioLatestAttributesFetcher(
             """Return the url for the given symbol and tag."""
             return f"{base_url}/{symbol}/data_point/{tag}?api_key={api_key}"
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             response_data = await response.json()
 
-            if isinstance(response_data, Dict) and (
+            if isinstance(response_data, dict) and (
                 "error" in response_data or "message" in response_data
             ):
                 warnings.warn(
@@ -92,8 +92,8 @@ class IntrinioLatestAttributesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioLatestAttributesQueryParams,  # pylint: disable=unused-argument
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[IntrinioLatestAttributesData]:
+    ) -> list[IntrinioLatestAttributesData]:
         """Return the transformed data."""
         return [IntrinioLatestAttributesData.model_validate(d) for d in data]

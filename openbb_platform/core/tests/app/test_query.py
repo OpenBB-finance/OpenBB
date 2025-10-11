@@ -84,7 +84,9 @@ def query_instance():
 
     cc = CommandContext()
     setattr(
-        cc.user_settings.credentials, "fmp_api_key", "1234"  # pylint: disable=no-member
+        cc.user_settings.credentials,
+        "fmp_api_key",
+        "1234",  # pylint: disable=no-member
     )
 
     return Query(

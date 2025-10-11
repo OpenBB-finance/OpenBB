@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -48,24 +48,12 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
         },
     }
 
-    interval: Union[
-        Literal[
-            "1m",
-            "5m",
-            "15m",
-            "30m",
-            "90m",
-            "1h",
-            "2h",
-            "4h",
-            "1d",
-            "7d",
-            "30d",
-        ],
-        str,
-    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
+    interval: (
+        Literal["1m", "5m", "15m", "30m", "90m", "1h", "2h", "4h", "1d", "7d", "30d"]
+        | str
+    ) = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
 
-    exchanges: Optional[Union[list[str], str]] = Field(
+    exchanges: list[str] | str | None = Field(
         default=None,
         description=(
             "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']"
@@ -81,12 +69,12 @@ class TiingoCryptoHistoricalData(CryptoHistoricalData):
         "volume_notional": "volumeNotional",
     }
 
-    transactions: Optional[int] = Field(
+    transactions: int | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
 
-    volume_notional: Optional[float] = Field(
+    volume_notional: float | None = Field(
         default=None,
         description=(
             "The last size done for the asset on the specific date in the "
@@ -124,8 +112,8 @@ class TiingoCryptoHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: TiingoCryptoHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
-        **kwargs: Optional[Any],
+        credentials: dict[str, str] | None,
+        **kwargs: Any | None,
     ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""
         # pylint: disable=import-outside-toplevel

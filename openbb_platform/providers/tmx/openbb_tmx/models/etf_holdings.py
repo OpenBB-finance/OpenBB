@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
@@ -32,45 +32,41 @@ class TmxEtfHoldingsData(EtfHoldingsData):
         "shares": "number_of_shares",
     }
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         description="The ticker symbol of the asset.", default=None
     )
-    name: Optional[str] = Field(description="The name of the asset.", default=None)
-    weight: Optional[float] = Field(
+    name: str | None = Field(description="The name of the asset.", default=None)
+    weight: float | None = Field(
         description="The weight of the asset in the portfolio, as a normalized percentage.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    shares: Optional[Union[int, str]] = Field(
+    shares: int | str | None = Field(
         description="The value of the assets under management.",
         default=None,
     )
-    market_value: Optional[Union[float, str]] = Field(
+    market_value: float | str | None = Field(
         description="The market value of the holding.", default=None
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None, description="The currency of the holding."
     )
-    share_percentage: Optional[float] = Field(
+    share_percentage: float | None = Field(
         description="The share percentage of the holding, as a normalized percentage.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    share_change: Optional[Union[float, str]] = Field(
+    share_change: float | str | None = Field(
         description="The change in shares of the holding.", default=None
     )
-    country: Optional[str] = Field(
-        description="The country of the holding.", default=None
-    )
-    exchange: Optional[str] = Field(
+    country: str | None = Field(description="The country of the holding.", default=None)
+    exchange: str | None = Field(
         description="The exchange code of the holding.", default=None
     )
-    type_id: Optional[str] = Field(
+    type_id: str | None = Field(
         description="The holding type ID of the asset.", default=None
     )
-    fund_id: Optional[str] = Field(
-        description="The fund ID of the asset.", default=None
-    )
+    fund_id: str | None = Field(description="The fund ID of the asset.", default=None)
 
     @field_validator("share_percentage", "weight", mode="before", check_fields=False)
     @classmethod
@@ -82,13 +78,13 @@ class TmxEtfHoldingsData(EtfHoldingsData):
 class TmxEtfHoldingsFetcher(
     Fetcher[
         TmxEtfHoldingsQueryParams,
-        List[TmxEtfHoldingsData],
+        list[TmxEtfHoldingsData],
     ]
 ):
     """TMX ETF Holdings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEtfHoldingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEtfHoldingsQueryParams:
         """Transform the query."""
         params["symbol"] = (
             params["symbol"].replace(".TO", "").replace(".TSX", "").replace("-", ".")
@@ -98,9 +94,9 @@ class TmxEtfHoldingsFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxEtfHoldingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_all_etfs
@@ -143,8 +139,8 @@ class TmxEtfHoldingsFetcher(
     @staticmethod
     def transform_data(
         query: TmxEtfHoldingsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxEtfHoldingsData]:
+    ) -> list[TmxEtfHoldingsData]:
         """Transform the data to the standard format."""
         return [TmxEtfHoldingsData.model_validate(d) for d in data]

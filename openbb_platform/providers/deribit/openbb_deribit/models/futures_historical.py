@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -112,7 +112,7 @@ class DeribitFuturesHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: DeribitFuturesHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract the raw data."""

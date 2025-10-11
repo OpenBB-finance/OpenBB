@@ -1,7 +1,6 @@
 """Country Interest Rates Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -19,10 +18,10 @@ class CountryInterestRatesQueryParams(QueryParams):
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country"),
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
@@ -36,7 +35,7 @@ class CountryInterestRatesData(Data):
         description="The interest rate value.",
         json_schema_extra={"x-unit_measurment": "percent", "x-frontend_multiply": 100},
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="Country for which the interest rate is given.",
     )

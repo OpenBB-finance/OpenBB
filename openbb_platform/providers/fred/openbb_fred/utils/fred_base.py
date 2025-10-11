@@ -1,7 +1,7 @@
 """Base class for Fred API."""
 
 from datetime import date
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlencode
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -13,7 +13,7 @@ ROOT_URL = "https://api.stlouisfed.org/fred"
 class Fred:
     """Base class for Fred API."""
 
-    def __init__(self, api_key: Optional[str]):
+    def __init__(self, api_key: str | None):
         """Initialize Fred class.
 
         Parameters
@@ -31,8 +31,8 @@ class Fred:
     def get_series(
         self,
         series_id: str,
-        start_date: Optional[date] = None,
-        end_date: Optional[date] = None,
+        start_date: date | None = None,
+        end_date: date | None = None,
         **kwargs,
     ) -> dict:
         """Get data for a Fred series id.

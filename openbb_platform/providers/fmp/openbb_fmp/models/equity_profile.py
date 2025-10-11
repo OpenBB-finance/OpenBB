@@ -5,7 +5,7 @@
 from datetime import (
     date as dateType,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -54,33 +54,33 @@ class FMPEquityProfileData(EquityInfoData):
     is_actively_trading: bool = Field(description="If the company is actively trading.")
     is_adr: bool = Field(description="If the stock is an ADR.")
     is_fund: bool = Field(description="If the company is a fund.")
-    image: Optional[str] = Field(default=None, description="Image of the company.")
-    currency: Optional[str] = Field(
+    image: str | None = Field(default=None, description="Image of the company.")
+    currency: str | None = Field(
         default=None, description="Currency in which the stock is traded."
     )
-    market_cap: Optional[ForceInt] = Field(
+    market_cap: ForceInt | None = Field(
         default=None,
         description="Market capitalization of the company.",
     )
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None,
         description="The last traded price.",
     )
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None, description="The one-year high of the price."
     )
-    year_low: Optional[float] = Field(
+    year_low: float | None = Field(
         default=None, description="The one-year low of the price."
     )
-    volume_avg: Optional[ForceInt] = Field(
+    volume_avg: ForceInt | None = Field(
         default=None,
         description="Average daily trading volume.",
     )
-    annualized_dividend_amount: Optional[float] = Field(
+    annualized_dividend_amount: float | None = Field(
         default=None,
         description="The annualized dividend payment based on the most recent regular dividend payment.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None, description="Beta of the stock relative to the market."
     )
 
@@ -119,7 +119,7 @@ class FMPEquityProfileFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityProfileQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -32,18 +32,12 @@ class FredRegionalQueryParams(SeriesQueryParams):
         default=False,
         description="When True, the symbol provided is for a series_group, else it is for a series ID.",
     )
-    region_type: Optional[
+    region_type: (
         Literal[
-            "bea",
-            "msa",
-            "frb",
-            "necta",
-            "state",
-            "country",
-            "county",
-            "censusregion",
+            "bea", "msa", "frb", "necta", "state", "country", "county", "censusregion"
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="The type of regional data."
         + " Parameter is only valid when `is_series_group` is True.",
@@ -66,14 +60,14 @@ class FredRegionalQueryParams(SeriesQueryParams):
         + " Parameter is only valid when `is_series_group` is True.",
         json_schema_extra={"choices": ["sa", "nsa", "ssa"]},
     )
-    units: Optional[str] = Field(
+    units: str | None = Field(
         default=None,
         description="The units of the data."
         + " This should match the units returned from searching by series ID."
         + " An incorrect field will not necessarily return an error."
         + " Parameter is only valid when `is_series_group` is True.",
     )
-    frequency: Optional[
+    frequency: (
         Literal[
             "a",
             "q",
@@ -90,7 +84,8 @@ class FredRegionalQueryParams(SeriesQueryParams):
             "bwew",
             "bwem",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="""Frequency aggregation to convert high frequency data to lower frequency.
         \n    None = No change
@@ -128,7 +123,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
             ]
         },
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default="eop",
         description="""A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
@@ -138,9 +133,9 @@ class FredRegionalQueryParams(SeriesQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         \n    None = No transformation
@@ -191,10 +186,10 @@ class FredRegionalData(SeriesData):
     region: str = Field(
         description="The name of the region.",
     )
-    code: Union[str, int] = Field(
+    code: str | int = Field(
         description="The code of the region.",
     )
-    value: Optional[Union[int, float]] = Field(
+    value: int | float | None = Field(
         default=None,
         description="The obersvation value. The units are defined in the search results by series ID.",
     )
@@ -206,22 +201,22 @@ class FredRegionalData(SeriesData):
 class FredRegionalDataFetcher(
     Fetcher[
         FredRegionalQueryParams,
-        List[FredRegionalData],
+        list[FredRegionalData],
     ]
 ):
     """FRED Regional Data Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredRegionalQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredRegionalQueryParams:
         """Transform query."""
         return FredRegionalQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredRegionalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -264,11 +259,11 @@ class FredRegionalDataFetcher(
     @staticmethod
     def transform_data(
         query: FredRegionalQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs,
-    ) -> AnnotatedResult[List[FredRegionalData]]:
+    ) -> AnnotatedResult[list[FredRegionalData]]:
         """Flatten the response object and validate the model."""
-        results: List[FredRegionalData] = []
+        results: list[FredRegionalData] = []
         if data.get("meta") is None:
             raise EmptyDataError()
         meta = {k: v for k, v in data.get("meta").items() if k not in ["data"]}  # type: ignore

@@ -1,7 +1,7 @@
 """Nasdaq Data Link Standard Query Params."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
@@ -11,10 +11,10 @@ from pydantic import Field
 class DataLinkQueryParams(QueryParams):
     """Standard Nasdaq Data Link Query Params"""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
         default=None,
     )

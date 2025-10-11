@@ -1,7 +1,6 @@
 """Equity Ownership Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -28,11 +27,9 @@ class EquityOwnershipData(Data):
     """Equity Ownership Data."""
 
     investor_name: str = Field(description="Investing entity's name.")
-    cik: Optional[str] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
-    )
+    cik: str | None = Field(default=None, description=DATA_DESCRIPTIONS.get("cik", ""))
     date: dateType = Field(
         description=DATA_DESCRIPTIONS.get("date", "") + " For the period ending."
     )
-    filing_date: Optional[dateType] = Field(description="Date when reported.")
+    filing_date: dateType | None = Field(description="Date when reported.")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

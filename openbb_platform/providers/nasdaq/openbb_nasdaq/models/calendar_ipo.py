@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_ipo import (
@@ -51,31 +51,31 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         "deal_status": "dealStatus",
     }
 
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the company.",
     )
-    offer_amount: Optional[float] = Field(
+    offer_amount: float | None = Field(
         default=None,
         description="The dollar value of the shares offered.",
     )
-    share_count: Optional[int] = Field(
+    share_count: int | None = Field(
         default=None,
         description="The number of shares offered.",
     )
-    expected_price_date: Optional[dateType] = Field(
+    expected_price_date: dateType | None = Field(
         default=None,
         description="The date the pricing is expected.",
     )
-    filed_date: Optional[dateType] = Field(
+    filed_date: dateType | None = Field(
         default=None,
         description="The date the IPO was filed.",
     )
-    withdraw_date: Optional[dateType] = Field(
+    withdraw_date: dateType | None = Field(
         default=None,
         description="The date the IPO was withdrawn.",
     )
-    deal_status: Optional[str] = Field(
+    deal_status: str | None = Field(
         default=None,
         description="The status of the deal.",
     )
@@ -117,7 +117,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
 class NasdaqCalendarIpoFetcher(
     Fetcher[
         NasdaqCalendarIpoQueryParams,
-        List[NasdaqCalendarIpoData],
+        list[NasdaqCalendarIpoData],
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
@@ -125,7 +125,7 @@ class NasdaqCalendarIpoFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqCalendarIpoQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqCalendarIpoQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -145,9 +145,9 @@ class NasdaqCalendarIpoFetcher(
     @staticmethod
     async def aextract_data(
         query: NasdaqCalendarIpoQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -168,7 +168,7 @@ class NasdaqCalendarIpoFetcher(
 
         async def get_calendar_data(date: str):
             """Get the calendar data for the given date."""
-            response: List = []
+            response: list = []
             url = (
                 f"https://api.nasdaq.com/api/ipo/calendar?date={date}"
                 if query.is_spo is False
@@ -192,9 +192,9 @@ class NasdaqCalendarIpoFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqCalendarIpoQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqCalendarIpoData]:
+    ) -> list[NasdaqCalendarIpoData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

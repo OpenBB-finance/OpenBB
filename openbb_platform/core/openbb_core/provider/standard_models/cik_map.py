@@ -1,7 +1,5 @@
 """Cik Map Standard Model."""
 
-from typing import Optional, Union
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -26,6 +24,6 @@ class CikMapQueryParams(QueryParams):
 class CikMapData(Data):
     """CikMap Data."""
 
-    cik: Optional[Union[str, int]] = Field(
+    cik: str | int | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )

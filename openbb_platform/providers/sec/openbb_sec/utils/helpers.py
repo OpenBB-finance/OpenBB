@@ -2,8 +2,6 @@
 
 # pylint: disable =unused-argument
 
-from typing import Dict, List, Optional, Union
-
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -37,7 +35,7 @@ async def get_all_companies(use_cache: bool = True) -> DataFrame:
     >>> tickers = get_all_companies()
     """
     url = "https://www.sec.gov/files/company_tickers.json"
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_companies"
         async with CachedSession(
@@ -65,7 +63,7 @@ async def get_all_ciks(use_cache: bool = True) -> DataFrame:
         """Response callback for CIK lookup data."""
         return await response.text(encoding="latin-1")
 
-    response: Union[dict, List[dict], str] = {}
+    response: dict | list[dict] | str = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_ciks"
         async with CachedSession(
@@ -99,7 +97,7 @@ async def get_mf_and_etf_map(use_cache: bool = True) -> DataFrame:
     symbols = DataFrame()
 
     url = "https://www.sec.gov/files/company_tickers_mf.json"
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_mf_etf_map"
         async with CachedSession(
@@ -143,7 +141,7 @@ async def symbol_map(symbol: str, use_cache: bool = True) -> str:
     return str(cik_ + cik)
 
 
-async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
+async def cik_map(cik: str | int, use_cache: bool = True) -> str:
     """Convert a CIK number to a ticker symbol.  Enter CIK as an integer with no leading zeros.
 
     Function is not meant for funds.
@@ -168,11 +166,11 @@ async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
     return symbol
 
 
-def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> List:
+def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> list:
     """Get a list of schema files from the SEC website."""
     from pandas import read_html  # pylint: disable=import-outside-toplevel
 
-    results: List = []
+    results: list = []
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
     _url = url + "/" if query else _url
@@ -186,8 +184,8 @@ def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) 
 
 
 async def download_zip_file(
-    url, symbol: Optional[str] = None, use_cache: bool = True
-) -> List[Dict]:
+    url, symbol: str | None = None, use_cache: bool = True
+) -> list[dict]:
     """Download a list of files from URLs."""
     # pylint: disable=import-outside-toplevel
     from io import BytesIO
@@ -201,7 +199,7 @@ async def download_zip_file(
         """Response callback for ZIP file downloads."""
         return await response.read()
 
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_ftd"
         async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
@@ -252,7 +250,7 @@ async def download_zip_file(
     return results.reset_index(drop=True).to_dict("records")
 
 
-async def get_ftd_urls() -> Dict:
+async def get_ftd_urls() -> dict:
     """Get Fails-to-Deliver Data URLs."""
     from pandas import Series  # pylint: disable=import-outside-toplevel
 
@@ -281,7 +279,7 @@ async def get_ftd_urls() -> Dict:
 
 
 async def get_series_id(
-    symbol: Optional[str] = None, cik: Optional[str] = None, use_cache: bool = True
+    symbol: str | None = None, cik: str | None = None, use_cache: bool = True
 ):
     """Map the fund to the series and class IDs for validating the correct filing.
 
@@ -311,7 +309,7 @@ async def get_series_id(
         return results
 
 
-async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
+async def get_nport_candidates(symbol: str, use_cache: bool = True) -> list[dict]:
     """Get a list of all NPORT-P filings for a given fund's symbol."""
     results = []
     _series_id = await get_series_id(symbol, use_cache=use_cache)
@@ -327,7 +325,7 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
         raise OpenBBError("Fund not found for, the symbol: " + symbol)
 
     url = f"https://efts.sec.gov/LATEST/search-index?q={series_id}&dateRange=all&forms=NPORT-P"
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
         async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:

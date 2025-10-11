@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -31,19 +30,19 @@ class EsgScoreData(Data):
     """ESG Score Data."""
 
     period_ending: dateType = Field(description="Period ending date of the report.")
-    disclosure_date: Optional[Union[dateType, datetime]] = Field(
+    disclosure_date: dateType | datetime | None = Field(
         description="Date when the report was submitted."
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
         coerce_numbers_to_str=True,
     )
-    company_name: Optional[str] = Field(
+    company_name: str | None = Field(
         default=None, description="Company name of the company."
     )
-    form_type: Optional[str] = Field(
+    form_type: str | None = Field(
         default=None, description="Form type where the disclosure was made."
     )
     environmental_score: float = Field(
@@ -52,4 +51,4 @@ class EsgScoreData(Data):
     social_score: float = Field(description="Social score of the company.")
     governance_score: float = Field(description="Governance score of the company.")
     esg_score: float = Field(description="ESG score of the company.")
-    url: Optional[str] = Field(default=None, description="URL to the report or filing.")
+    url: str | None = Field(default=None, description="URL to the report or filing.")

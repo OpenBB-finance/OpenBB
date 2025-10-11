@@ -1,6 +1,6 @@
 """FINRA OTC Aggregate Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.otc_aggregate import (
@@ -34,12 +34,12 @@ class FinraOTCAggregateData(OTCAggregateData):
 
 
 class FinraOTCAggregateFetcher(
-    Fetcher[FinraOTCAggregateQueryParams, List[FinraOTCAggregateData]]
+    Fetcher[FinraOTCAggregateQueryParams, list[FinraOTCAggregateData]]
 ):
     """Transform the query, extract and transform the data from the FINRA endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinraOTCAggregateQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinraOTCAggregateQueryParams:
         """Transform query params."""
         return FinraOTCAggregateQueryParams(**params)
 
@@ -47,9 +47,9 @@ class FinraOTCAggregateFetcher(
     @staticmethod
     def extract_data(
         query: FinraOTCAggregateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the FINRA endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_finra.utils.helpers import get_full_data
@@ -58,7 +58,7 @@ class FinraOTCAggregateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FinraOTCAggregateQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FinraOTCAggregateData]:
+        query: FinraOTCAggregateQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FinraOTCAggregateData]:
         """Transform the data."""
         return [FinraOTCAggregateData.model_validate(d) for d in data if d]

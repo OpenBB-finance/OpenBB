@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -71,7 +71,7 @@ class MultplSP500MultiplesQueryParams(SP500MultiplesQueryParams):
     def validate_series_name(cls, v):
         """Validate series_name."""
         series = v.split(",")
-        new_values: List = []
+        new_values: list = []
         for s in series:
             if s not in URL_DICT:
                 raise OpenBBError(
@@ -97,22 +97,22 @@ class MultplSP500MultiplesData(SP500MultiplesData):
 class MultplSP500MultiplesFetcher(
     Fetcher[
         MultplSP500MultiplesQueryParams,
-        List[MultplSP500MultiplesData],
+        list[MultplSP500MultiplesData],
     ]
 ):
     """Multpl S&P 500 Multiples Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> MultplSP500MultiplesQueryParams:
+    def transform_query(params: dict[str, Any]) -> MultplSP500MultiplesQueryParams:
         """Transform the query params."""
         return MultplSP500MultiplesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: MultplSP500MultiplesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -123,7 +123,7 @@ class MultplSP500MultiplesFetcher(
 
         series = query.series_name.split(",")
         urls = {s: f"{BASE_URL}{URL_DICT[s]}" for s in series}
-        results: List = []
+        results: list = []
 
         async def response_callback(response, _):
             """Response callback."""
@@ -166,9 +166,9 @@ class MultplSP500MultiplesFetcher(
     @staticmethod
     def transform_data(
         query: MultplSP500MultiplesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[MultplSP500MultiplesData]:
+    ) -> list[MultplSP500MultiplesData]:
         """Transform and validate the data."""
         return [
             MultplSP500MultiplesData.model_validate(d)

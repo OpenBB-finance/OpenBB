@@ -1,6 +1,5 @@
 """Unit tests for mcp_config module."""
 
-import sys
 from unittest.mock import patch
 
 import pytest
@@ -13,10 +12,6 @@ from openbb_mcp_server.models.mcp_config import (
     validate_mcp_config,
 )
 from pydantic import ValidationError
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 def test_argument_definition_model():

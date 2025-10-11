@@ -1,16 +1,10 @@
 """Unit tests for prompts module."""
 
-import sys
-
 import pytest
 from fastmcp.exceptions import PromptError
 from fastmcp.prompts.prompt import PromptArgument
 from mcp.types import PromptMessage, TextContent
 from openbb_mcp_server.models.prompts import StaticPrompt
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 @pytest.mark.asyncio

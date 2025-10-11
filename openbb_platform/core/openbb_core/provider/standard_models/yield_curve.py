@@ -1,7 +1,6 @@
 """Yield Curve Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,7 +14,7 @@ from pydantic import Field, computed_field, field_validator
 class YieldCurveQueryParams(QueryParams):
     """Yield Curve Query."""
 
-    date: Optional[Union[dateType, str]] = Field(
+    date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
         + " By default is the current data.",
@@ -47,7 +46,7 @@ class YieldCurveQueryParams(QueryParams):
 class YieldCurveData(Data):
     """Yield Curve Data."""
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("date", ""),
     )
@@ -55,10 +54,10 @@ class YieldCurveData(Data):
 
     @computed_field(  # type: ignore
         description="Maturity length, in years, as a decimal.",
-        return_type=Optional[float],
+        return_type=float | None,
     )
     @property
-    def maturity_years(self) -> Optional[float]:
+    def maturity_years(self) -> float | None:
         """Get the maturity in years as a decimal."""
         if "_" not in self.maturity:  # pylint: disable=E1135
             return None

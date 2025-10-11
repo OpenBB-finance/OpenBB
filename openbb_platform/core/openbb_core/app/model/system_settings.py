@@ -3,7 +3,7 @@
 import json
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import Literal
 
 from openbb_core.app.constants import (
     HOME_DIRECTORY,
@@ -36,9 +36,9 @@ class SystemSettings(Tagged):
 
     # Logging section
     logging_app_name: Literal["platform"] = "platform"
-    logging_commit_hash: Optional[str] = None
+    logging_commit_hash: str | None = None
     logging_frequency: Literal["D", "H", "M", "S"] = "H"
-    logging_handlers: List[str] = Field(default_factory=lambda: ["file"])
+    logging_handlers: list[str] = Field(default_factory=lambda: ["file"])
     logging_rolling_clock: bool = False
     logging_verbosity: int = 20
     logging_sub_app: Literal["python", "api", "pro", "cli"] = "python"
@@ -64,7 +64,7 @@ class SystemSettings(Tagged):
         )
 
     @staticmethod
-    def create_json(path: Path, template: Optional[dict] = None) -> None:
+    def create_json(path: Path, template: dict | None = None) -> None:
         """Create an empty JSON file."""
         path.write_text(json.dumps(obj=template or {}, indent=4), encoding="utf-8")
 

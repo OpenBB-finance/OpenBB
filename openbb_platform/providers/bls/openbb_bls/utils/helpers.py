@@ -1,6 +1,6 @@
 """BLS Helpers."""
 
-from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -10,14 +10,14 @@ if TYPE_CHECKING:
 # greater than 20 years in length, or containing more than 50 symbols.
 async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-positional-arguments  # noqa: PLR0912
     api_key: str,
-    series_ids: Union[str, List[str]],
-    start_year: Optional[int] = None,
-    end_year: Optional[int] = None,
+    series_ids: str | list[str],
+    start_year: int | None = None,
+    end_year: int | None = None,
     calculations: bool = True,
     catalog: bool = True,
     annual_average: bool = True,
     aspects: bool = False,
-) -> Dict:
+) -> dict:
     """Get BLS timeseries data. Max 50 symbols per request, and a 20 year historical window.
 
     Parameters
@@ -92,8 +92,8 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
             if m
         ]
 
-    metadata: Dict = {}
-    data: List = []
+    metadata: dict = {}
+    data: list = []
     for result in results:
         seriesID = result.get("seriesID")
         if not seriesID:
@@ -103,7 +103,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
             metadata.update({seriesID: catalog})
         _data = result.get("data", [])
         for _d in _data:
-            new_d: Dict = {}
+            new_d: dict = {}
             year = _d.get("year", "")
             month = _d.get("period", "").replace("M", "")
             if month.startswith("A") or month in ("S01", "Q01"):
@@ -140,11 +140,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
             footnotes = _d.get("footnotes")
             if footnotes:
                 new_d["footnotes"] = "; ".join(
-                    [
-                        f.get("text") if isinstance(f, dict) else str(f)  # type: ignore
-                        for f in footnotes
-                        if f
-                    ]
+                    [f.get("text") if isinstance(f, dict) else str(f) for f in footnotes if f]  # type: ignore
                 )
                 if not new_d.get("footnotes"):
                     new_d.pop("footnotes")
@@ -198,9 +194,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
                             {
                                 "date": _date,
                                 "footnotes": " ".join(
-                                    [f.get("text", "") for f in footnotes]  # type: ignore
-                                    if footnotes
-                                    else None
+                                    [f.get("text", "") for f in footnotes] if footnotes else None  # type: ignore
                                 ).strip(),
                             }
                         )
@@ -223,7 +217,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
     return {"data": data, "metadata": metadata, "messages": messages}
 
 
-async def get_survey_asset(survey: str, asset: str) -> "DataFrame":
+async def get_survey_asset(survey: str, asset: str) -> "DataFrame | None":
     """Get an asset in the FTP download folder of the two-letter survey code."""
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
@@ -236,8 +230,10 @@ async def get_survey_asset(survey: str, asset: str) -> "DataFrame":
     }
     url = f"https://download.bls.gov/pub/time.series/{survey.lower()}/{survey.lower()}.{asset.lower()}"
     res = make_request(url=url, method="GET", headers=headers)
+
     if res.status_code != 200:
-        return
+        return None
+
     df = read_csv(StringIO(res.text), sep="\t", low_memory=False, dtype="object")
     df.columns = [d.strip() for d in df.columns]
     df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
@@ -245,7 +241,7 @@ async def get_survey_asset(survey: str, asset: str) -> "DataFrame":
     return df.replace({"''": None, '""': None, NA: None, "nan": None, nan: None})
 
 
-async def download_category_series_ids(category) -> Tuple[List, Dict]:
+async def download_category_series_ids(category) -> tuple[list, dict]:
     """Download all series ids for a category of survey, along with the code maps.
     This should only be required for updating static files.
     """
@@ -254,8 +250,8 @@ async def download_category_series_ids(category) -> Tuple[List, Dict]:
     from openbb_core.provider.utils.errors import EmptyDataError
     from openbb_bls.utils.constants import SURVEY_CATEGORY_MAP, SURVEY_NAMES
 
-    series_ids: List = []
-    series_codes: Dict = {}
+    series_ids: list = []
+    series_codes: dict = {}
 
     if category not in SURVEY_CATEGORY_MAP:
         raise EmptyDataError(
@@ -268,10 +264,10 @@ async def download_category_series_ids(category) -> Tuple[List, Dict]:
             return
         data = await get_survey_asset(survey, "series")
         for col in ["series_title", "survey_name"]:
-            if col not in data.columns:
-                data.loc[:, col] = None
-        codes = [d for d in data.columns if "code" in d and "periodicity" not in d]
-        ids = data.get(["series_id", "series_title"] + codes).copy()
+            if col not in data.columns:  # type: ignore
+                data.loc[:, col] = None  # type: ignore
+        codes = [d for d in data.columns if "code" in d and "periodicity" not in d]  # type: ignore
+        ids = data.get(["series_id", "series_title"] + codes).copy()  # type: ignore
 
         if ids is None or ids.empty:
             return
@@ -286,12 +282,12 @@ async def download_category_series_ids(category) -> Tuple[List, Dict]:
             return
 
         # Get the code maps for the survey and convert the codes in the series table.
-        code_map: Dict = {}
+        code_map: dict = {}
         new_codes = [d.split("_")[0] for d in codes]
 
         for code in new_codes:
             code = "datatype" if code == "data" else code  # noqa
-            code_dict: Dict = {}
+            code_dict: dict = {}
             code_data = await get_survey_asset(survey, code)
             if code_data is None or code_data.empty:
                 continue
@@ -308,12 +304,12 @@ async def download_category_series_ids(category) -> Tuple[List, Dict]:
             if f"{code}_code" in code_data.columns:
                 if (
                     code_data.index.dtype == "object"
-                    and code_data.get(f"{code}_name").isnull().all()
+                    and code_data.get(f"{code}_name").isnull().all()  # type: ignore
                 ):
                     code_data.loc[:, f"{code}_name"] = code_data.loc[
                         :, f"{code}_code"
                     ].copy()
-                    code_data.loc[:, f"{code}_code"] = code_data.index.copy()
+                    code_data.loc[:, f"{code}_code"] = code_data.index.copy()  # type: ignore
                     code_data = code_data.reset_index(drop=True)
                 code_dict = (
                     code_data.set_index(f"{code}_code")[[f"{code}_name"]]
@@ -363,7 +359,7 @@ async def download_category_series_ids(category) -> Tuple[List, Dict]:
     return series_ids, series_codes
 
 
-def open_asset(asset: str) -> Union["DataFrame", Dict]:
+def open_asset(asset: str) -> Union["DataFrame", dict]:
     """Open a static file asset for series IDs or code maps."""
     # pylint: disable=import-outside-toplevel
     import os  # noqa

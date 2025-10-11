@@ -1,6 +1,6 @@
 """Hub user settings model."""
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -8,8 +8,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 class HubUserSettings(BaseModel):
     """Hub user settings model."""
 
-    features_settings: Dict[str, Any] = Field(default_factory=dict)
-    features_keys: Dict[str, Optional[str]] = Field(default_factory=dict)
+    features_settings: dict[str, Any] = Field(default_factory=dict)
+    features_keys: dict[str, str | None] = Field(default_factory=dict)
     # features_sources: Dict[str, Any]
     # features_terminal_style: Dict[str, Union[str, Dict[str, str]]]
 

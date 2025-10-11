@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -42,28 +42,28 @@ class SAForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
 class SAForwardEpsEstimatesData(ForwardEpsEstimatesData):
     """Seeking Alpha Forward EPS Estimates Data."""
 
-    normalized_actual: Optional[float] = Field(
+    normalized_actual: float | None = Field(
         default=None,
         description="Actual normalized EPS.",
     )
-    period_growth: Optional[float] = Field(
+    period_growth: float | None = Field(
         default=None,
         description="Estimated (or actual if reported) EPS growth for the period.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    low_estimate_gaap: Optional[float] = Field(
+    low_estimate_gaap: float | None = Field(
         default=None,
         description="Estimated GAAP EPS low for the period.",
     )
-    high_estimate_gaap: Optional[float] = Field(
+    high_estimate_gaap: float | None = Field(
         default=None,
         description="Estimated GAAP EPS high for the period.",
     )
-    mean_gaap: Optional[float] = Field(
+    mean_gaap: float | None = Field(
         default=None,
         description="Estimated GAAP EPS mean for the period.",
     )
-    gaap_actual: Optional[float] = Field(
+    gaap_actual: float | None = Field(
         default=None,
         description="Actual GAAP EPS.",
     )
@@ -72,22 +72,22 @@ class SAForwardEpsEstimatesData(ForwardEpsEstimatesData):
 class SAForwardEpsEstimatesFetcher(
     Fetcher[
         SAForwardEpsEstimatesQueryParams,
-        List[SAForwardEpsEstimatesData],
+        list[SAForwardEpsEstimatesData],
     ]
 ):
     """Seeking Alpha Forward EPS Estimates Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SAForwardEpsEstimatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> SAForwardEpsEstimatesQueryParams:
         """Transform the query."""
         return SAForwardEpsEstimatesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SAForwardEpsEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Seeking Alpha endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.client import ClientSession
@@ -95,7 +95,7 @@ class SAForwardEpsEstimatesFetcher(
         tickers = query.symbol.split(",")  # type: ignore
         fp = query.period if query.period == "annual" else "quarterly"
         url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
-        querystring: Dict = {
+        querystring: dict = {
             "estimates_data_items": "eps_normalized_actual,eps_normalized_consensus_low,eps_normalized_consensus_mean,"
             "eps_normalized_consensus_high,eps_normalized_num_of_estimates,"
             "eps_gaap_actual,eps_gaap_consensus_low,eps_gaap_consensus_mean,eps_gaap_consensus_high,",
@@ -113,25 +113,25 @@ class SAForwardEpsEstimatesFetcher(
                 url, headers=HEADERS, params=querystring, session=session
             )
 
-        estimates: Dict = response.get("estimates", {})  # type: ignore
+        estimates: dict = response.get("estimates", {})  # type: ignore
         if not estimates:
             raise OpenBBError(f"No estimates data was returned for: {query.symbol}")
 
-        output: Dict = {"ids": ids, "estimates": estimates}
+        output: dict = {"ids": ids, "estimates": estimates}
 
         return output
 
     @staticmethod
     def transform_data(
         query: SAForwardEpsEstimatesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[SAForwardEpsEstimatesData]:
+    ) -> list[SAForwardEpsEstimatesData]:
         """Transform the data to the standard format."""
         tickers = query.symbol.split(",")  # type: ignore
         ids = data.get("ids", {})
         estimates = data.get("estimates", {})
-        results: List[SAForwardEpsEstimatesData] = []
+        results: list[SAForwardEpsEstimatesData] = []
         for ticker in tickers:
             sa_id = str(ids.get(ticker, ""))
             if sa_id == "" or sa_id not in estimates:
@@ -147,7 +147,7 @@ class SAForwardEpsEstimatesFetcher(
                 warn(f"No data found for {ticker}")
                 continue
             for i in range(0, items - 4):
-                eps_estimates: Dict = {}
+                eps_estimates: dict = {}
                 eps_estimates["symbol"] = ticker
                 num_estimates = seek_object["eps_normalized_num_of_estimates"].get(
                     str(i)

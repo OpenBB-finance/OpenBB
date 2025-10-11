@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_search import (
@@ -29,7 +29,7 @@ class FMPEtfSearchQueryParams(EtfSearchQueryParams):
         }
     }
 
-    exchange: Optional[Literal["amex", "nyse", "nasdaq", "tsx", "euronext"]] = Field(
+    exchange: Literal["amex", "nyse", "nasdaq", "tsx", "euronext"] | None = Field(
         description="Exchange where the ETF is listed. If not provided, all exchanges are searched.",
         default=None,
     )
@@ -47,29 +47,27 @@ class FMPEtfSearchData(EtfSearchData):
         "exchange": "exchangeShortName",
         "exchange_name": "exchange",
     }
-    country: Optional[str] = Field(
+    country: str | None = Field(
         description="Country where the ETF is domiciled.", default=None
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         description="Exchange where the ETF is listed.",
         default=None,
     )
-    exchange_name: Optional[str] = Field(
+    exchange_name: str | None = Field(
         description="The full name of the exchange.",
         default=None,
     )
-    market_cap: Optional[Union[int, float]] = Field(
+    market_cap: int | float | None = Field(
         description="Market capitalization of the ETF.", default=None
     )
-    beta: Optional[float] = Field(description="Beta of the ETF.", default=None)
-    price: Optional[float] = Field(
-        description="Current price of the ETF.", default=None
-    )
-    last_annual_dividend: Optional[float] = Field(
+    beta: float | None = Field(description="Beta of the ETF.", default=None)
+    price: float | None = Field(description="Current price of the ETF.", default=None)
+    last_annual_dividend: float | None = Field(
         description="Last annual dividend paid.",
         default=None,
     )
-    volume: Optional[Union[int, float]] = Field(
+    volume: int | float | None = Field(
         description="Current trading volume of the ETF.", default=None
     )
 
@@ -90,7 +88,7 @@ class FMPEtfSearchFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEtfSearchQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

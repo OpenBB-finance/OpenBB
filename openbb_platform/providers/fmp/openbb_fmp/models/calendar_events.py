@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_events import (
@@ -31,27 +31,27 @@ class FmpCalendarEventsData(CalendarEventsData):
         "description": "title",
     }
 
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="Exchange where the symbol is listed.",
     )
-    time: Optional[str] = Field(
+    time: str | None = Field(
         default=None,
         description="The estimated time of the event, local to the exchange.",
     )
-    timing: Optional[str] = Field(
+    timing: str | None = Field(
         default=None,
         description="The timing of the event - e.g. before, during, or after market hours.",
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None,
         description="The title of the event.",
     )
-    url: Optional[str] = Field(
+    url: str | None = Field(
         default=None,
         description="The URL to the press release for the announcement.",
     )
-    announcement_date: Optional[dateType] = Field(
+    announcement_date: dateType | None = Field(
         default=None,
         description="The date when the event was announced.",
     )
@@ -70,7 +70,7 @@ class FMPCalendarEventsFetcher(
     @staticmethod
     async def aextract_data(
         query: FmpCalendarEventsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract data from the API."""

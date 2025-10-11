@@ -5,7 +5,7 @@
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Annotated, Any
 from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
@@ -23,7 +23,6 @@ from openbb_core.app.static.package_builder import (
 )
 from openbb_core.env import Env
 from pydantic import Field
-from typing_extensions import Annotated
 
 
 @pytest.fixture(scope="module")
@@ -273,12 +272,12 @@ def test_build_func_params(method_definition):
         "param3": Parameter(
             "param3",
             kind=Parameter.POSITIONAL_OR_KEYWORD,
-            annotation=pandas.core.frame.DataFrame,
+            annotation=dict[str, Any] | pandas.DataFrame,
         ),
     }
 
     expected_output = (
-        "param1: None,\n        param2: int,\n        param3: pandas.DataFrame"
+        "param1: None,\nparam2: int,\nparam3: dict[str, Any] | pandas.DataFrame"
     )
     output = method_definition.build_func_params(param_map)
 
@@ -361,12 +360,15 @@ def test_build_command_method_body(method_definition):
         """Do some func doc."""
         return 42
 
-    with patch(
-        "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        return_value=False,
-    ), patch(
-        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
-        return_value=False,
+    with (
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+            return_value=False,
+        ),
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+            return_value=False,
+        ),
     ):
         output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
@@ -383,12 +385,15 @@ def test_build_command_method(method_definition):
         """Do some func doc."""
         return 42
 
-    with patch(
-        "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        return_value=False,
-    ), patch(
-        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
-        return_value=False,
+    with (
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+            return_value=False,
+        ),
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+            return_value=False,
+        ),
     ):
         output = method_definition.build_command_method(
             path="openbb_core.app.static.container.Container",
@@ -553,7 +558,7 @@ def test_generate_model_docstring(docstring_generator):
         explicit_params=explicit_dict,
         kwarg_params=kwarg_params,
         returns=returns,
-        results_type="List[WorldNews]",
+        results_type="list[WorldNews]",
         sections=sections,
     )
 
@@ -568,10 +573,10 @@ def test_generate_model_docstring(docstring_generator):
     "type_, expected",
     [
         (Any, []),
-        (List[str], ["List"]),
-        (Dict[str, str], ["Dict"]),
-        (Tuple[str], ["Tuple"]),
-        (Union[List[str], Dict[str, str], Tuple[str]], ["List", "Dict", "Tuple"]),
+        (list[str], ["list"]),
+        (dict[str, str], ["dict"]),
+        (tuple[str], ["tuple"]),
+        (list[str] | dict[str, str] | tuple[str], ["list", "dict", "tuple"]),
     ],
 )
 def test__get_generic_types(docstring_generator, type_, expected):
@@ -584,13 +589,13 @@ def test__get_generic_types(docstring_generator, type_, expected):
     "items, model, expected",
     [
         ([], "test_model", "test_model"),
-        (["List"], "test_model", "List[test_model]"),
-        (["Dict"], "test_model", "Dict[str, test_model]"),
-        (["Tuple"], "test_model", "Tuple[test_model]"),
+        (["list"], "test_model", "list[test_model]"),
+        (["dict"], "test_model", "dict[str, test_model]"),
+        (["tuple"], "test_model", "tuple[test_model]"),
         (
-            ["List", "Dict", "Tuple"],
+            ["list", "dict", "tuple"],
             "test_model",
-            "Union[List[test_model], Dict[str, test_model], Tuple[test_model]]",
+            "Union[list[test_model], dict[str, test_model], tuple[test_model]]",
         ),
     ],
 )
@@ -698,9 +703,10 @@ def test_package_diff(
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."
-    with patch(PATH + "entry_points", mock_entry_points), patch.object(
-        EntryPoint, "dist", new_callable=PropertyMock
-    ) as mock_obj:
+    with (
+        patch(PATH + "entry_points", mock_entry_points),
+        patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj,
+    ):
 
         class MockPathDistribution:
             version = ext_inst_version
@@ -728,9 +734,11 @@ def test_package_diff(
 def test_auto_build(package_builder, add, remove, openbb_auto_build):
     """Test auto build."""
 
-    with patch.object(PackageBuilder, "_diff") as mock_assets_diff, patch.object(
-        PackageBuilder, "build"
-    ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
+    with (
+        patch.object(PackageBuilder, "_diff") as mock_assets_diff,
+        patch.object(PackageBuilder, "build") as mock_build,
+        patch.object(Env, "AUTO_BUILD", openbb_auto_build),
+    ):
         mock_assets_diff.return_value = add, remove
 
         package_builder.auto_build()

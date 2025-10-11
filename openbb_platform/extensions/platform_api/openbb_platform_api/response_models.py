@@ -1,6 +1,6 @@
 """OpenBB Workspace Response Models."""
 
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import ConfigDict, Field, model_validator
@@ -43,11 +43,11 @@ class MetricResponseModel(Data):
         description="The label to display in the metric widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    value: Union[int, float, str] = Field(
+    value: int | float | str = Field(
         description="The value to display in the metric widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    delta: Optional[Union[int, float, str]] = Field(
+    delta: int | float | str | None = Field(
         default=None,
         description="The delta value to display in the metric widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
@@ -93,22 +93,22 @@ class PdfResponseModel(Data):
         },
     )
 
-    filename: Optional[str] = Field(
+    filename: str | None = Field(
         default="",
         description="The filename of the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    content: Optional[Union[str, bytes]] = Field(
+    content: str | bytes | None = Field(
         default=None,
         description="The PDF content to display in the PDF widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    url: Optional[str] = Field(
+    url: str | None = Field(
         default=None,
         description="The URL reference to the PDF content.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    data_format: Optional[dict] = Field(
+    data_format: dict | None = Field(
         default=None,
         description="Leave this field empty. This is populated by the model_validator.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
@@ -188,12 +188,12 @@ class OmniWidgetResponseModel(Data):
         description="The content to display in the Omni widget.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    parse_as: Optional[str] = Field(
+    parse_as: str | None = Field(
         default=None,
         description="The type of content to parse as. One of 'table', 'chart', or 'text'.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    data_format: Optional[dict] = Field(
+    data_format: dict | None = Field(
         default=None,
         description="Leave this field empty. This is populated by the model_validator.",
         json_schema_extra={"x-widget_config": {"exclude": True}},

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
@@ -43,8 +43,8 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -85,7 +85,7 @@ class PolygonIndexHistoricalData(IndexHistoricalData):
         "transactions": "n",
     }
 
-    transactions: Optional[PositiveInt] = Field(
+    transactions: PositiveInt | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
@@ -118,7 +118,7 @@ class PolygonIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: PolygonIndexHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract raw data from the Polygon endpoint."""
@@ -152,7 +152,7 @@ class PolygonIndexHistoricalFetcher(
             data = await response.json()
 
             if isinstance(data, dict) and data.get("status") == "NOT_AUTHORIZED":
-                raise UnauthorizedError(response.get("message", str(response)))
+                raise UnauthorizedError(response.get("message", str(response)))  # type: ignore
 
             symbol = response.url.parts[4]
             next_url = data.get("next_url", None)  # type: ignore[union-attr]

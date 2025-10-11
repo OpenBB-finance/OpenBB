@@ -2,17 +2,12 @@
 
 # pylint: disable=too-many-arguments,unused-argument,too-many-positional-arguments
 
+from collections.abc import Callable
 from typing import (
     TYPE_CHECKING,
     Any,
-    Callable,
     ClassVar,
-    Dict,
-    List,
     Literal,
-    Optional,
-    Tuple,
-    Type,
     Union,
 )
 from warnings import warn
@@ -30,11 +25,11 @@ from openbb_charting.charts.helpers import (
 
 if TYPE_CHECKING:
     from numpy import ndarray  # noqa
-    from pandas import DataFrame, Series  # noqa
-    from plotly.graph_objs import Figure  # noqa
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
-    from openbb_charting.query_params import ChartParams  # noqa
-    from openbb_charting.core.backend import Backend  # noqa
+    from pandas import DataFrame, Series
+    from plotly.graph_objs import Figure
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_charting.query_params import ChartParams
+    from openbb_charting.core.backend import Backend
 
 
 class Charting:
@@ -64,7 +59,7 @@ class Charting:
         Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
-    _extension_views: ClassVar[List[Type]] = [
+    _extension_views: ClassVar[list[type]] = [
         entry_point.load()
         for entry_point in entry_points(group="openbb_charting_extension")
     ]
@@ -86,7 +81,7 @@ class Charting:
             system_settings=self._obbject._system_settings,  # type: ignore
         )
         self._backend = self._handle_backend()
-        self._functions: Dict[str, Callable] = self._get_functions()
+        self._functions: dict[str, Callable] = self._get_functions()
 
     @classmethod
     def indicators(cls):
@@ -100,17 +95,17 @@ class Charting:
         return IndicatorsParams()
 
     @classmethod
-    def functions(cls) -> List[str]:
+    def functions(cls) -> list[str]:
         """Return a list of the available functions."""
-        functions: List[str] = []
+        functions: list[str] = []
         for view in cls._extension_views:
             functions.extend(get_charting_functions_list(view))
 
         return functions
 
-    def _get_functions(self) -> Dict[str, Callable]:
+    def _get_functions(self) -> dict[str, Callable]:
         """Return a dict with the available functions."""
-        functions: Dict[str, Callable] = {}
+        functions: dict[str, Callable] = {}
         for view in self._extension_views:
             functions.update(get_charting_functions(view))
 
@@ -156,23 +151,21 @@ class Charting:
 
         return help(  # type: ignore
             self._get_chart_function(  # pylint: disable=protected-access
-                self._obbject.extra[  # pylint: disable=protected-access
+                self._obbject.extra[
                     "metadata"
-                ].route
+                ].route  # pylint: disable=protected-access
             )
         )
 
     def _prepare_data_as_df(
-        self, data: Optional[Union["DataFrame", "Series"]]
-    ) -> Tuple["DataFrame", bool]:
+        self, data: Union["DataFrame", "Series"] | None
+    ) -> tuple["DataFrame", bool]:
         """Convert supplied data to a DataFrame."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
         from pandas import DataFrame, Series
 
-        has_data = (
-            isinstance(data, (Data, DataFrame, Series)) and not data.empty  # type: ignore
-        ) or (bool(data))
+        has_data = (isinstance(data, (Data, DataFrame, Series)) and not data.empty) or (bool(data))  # type: ignore
         index = (
             data.index.name
             if has_data and isinstance(data, (DataFrame, Series))
@@ -196,23 +189,23 @@ class Charting:
             list,
             dict,
             "DataFrame",
-            List["DataFrame"],
+            list["DataFrame"],
             "Series",
-            List["Series"],
+            list["Series"],
             "ndarray",
             Data,
         ],
-        index: Optional[str] = None,
-        target: Optional[str] = None,
-        title: Optional[str] = None,
-        x: Optional[str] = None,
-        xtitle: Optional[str] = None,
-        y: Optional[Union[str, List[str]]] = None,
-        ytitle: Optional[str] = None,
-        y2: Optional[Union[str, List[str]]] = None,
-        y2title: Optional[str] = None,
-        layout_kwargs: Optional[dict] = None,
-        scatter_kwargs: Optional[dict] = None,
+        index: str | None = None,
+        target: str | None = None,
+        title: str | None = None,
+        x: str | None = None,
+        xtitle: str | None = None,
+        y: str | list[str] | None = None,
+        ytitle: str | None = None,
+        y2: str | list[str] | None = None,
+        y2title: str | None = None,
+        layout_kwargs: dict | None = None,
+        scatter_kwargs: dict | None = None,
         normalize: bool = False,
         returns: bool = False,
         same_axis: bool = False,
@@ -294,25 +287,25 @@ class Charting:
             list,
             dict,
             "DataFrame",
-            List["DataFrame"],
+            list["DataFrame"],
             "Series",
-            List["Series"],
+            list["Series"],
             "ndarray",
             Data,
         ],
         x: str,
-        y: Union[str, List[str]],
+        y: str | list[str],
         barmode: Literal["group", "stack", "relative", "overlay"] = "group",
         xtype: Literal[
             "category", "multicategory", "date", "log", "linear"
         ] = "category",
-        title: Optional[str] = None,
-        xtitle: Optional[str] = None,
-        ytitle: Optional[str] = None,
+        title: str | None = None,
+        xtitle: str | None = None,
+        ytitle: str | None = None,
         orientation: Literal["h", "v"] = "v",
-        colors: Optional[List[str]] = None,
-        layout_kwargs: Optional[Dict[str, Any]] = None,
-        bar_kwargs: Optional[Dict[str, Any]] = None,
+        colors: list[str] | None = None,
+        layout_kwargs: dict[str, Any] | None = None,
+        bar_kwargs: dict[str, Any] | None = None,
         render: bool = True,
         **kwargs,
     ) -> Union["OpenBBFigure", "Figure", None]:
@@ -375,13 +368,13 @@ class Charting:
         X: "Series",
         Y: "Series",
         Z: "Series",
-        xtitle: Optional[str] = "DTE",
-        ytitle: Optional[str] = "Strike",
-        ztitle: Optional[str] = "IV",
-        colorscale: Optional[Union[str, list]] = None,
-        title: Optional[str] = None,
-        layout_kwargs: Optional[dict[str, Any]] = None,
-        theme: Optional[Literal["dark", "light"]] = None,
+        xtitle: str | None = "DTE",
+        ytitle: str | None = "Strike",
+        ztitle: str | None = "IV",
+        colorscale: str | list | None = None,
+        title: str | None = None,
+        layout_kwargs: dict[str, Any] | None = None,
+        theme: Literal["dark", "light"] | None = None,
     ) -> Union["OpenBBFigure", "Figure"]:
         """Create a 3D surface chart.
 
@@ -438,7 +431,7 @@ class Charting:
         method: Literal["pearson", "kendall", "spearman"] = "pearson",
         colorscale: str = "RdBu",
         title: str = "Asset Correlation Matrix",
-        layout_kwargs: Optional[Dict[str, Any]] = None,
+        layout_kwargs: dict[str, Any] | None = None,
     ):
         """Create a correlation matrix from external data.
 
@@ -520,21 +513,22 @@ class Charting:
     # pylint: disable=too-many-locals,inconsistent-return-statements
     def to_chart(
         self,
-        data: Optional[
+        data: (
             Union[
                 list,
                 dict,
                 "DataFrame",
-                List["DataFrame"],
+                list["DataFrame"],
                 "Series",
-                List["Series"],
+                list["Series"],
                 "ndarray",
                 Data,
             ]
-        ] = None,
-        target: Optional[str] = None,
-        index: Optional[str] = None,
-        indicators: Optional[Dict[str, Dict[str, Any]]] = None,
+            | None
+        ) = None,
+        target: str | None = None,
+        index: str | None = None,
+        indicators: dict[str, dict[str, Any]] | None = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
@@ -636,10 +630,8 @@ class Charting:
         font_color = "black" if style == "light" else "white"
         paper_bgcolor = "white" if style == "light" else "black"
         figure = figure.update_layout(
-            dict(  # pylint: disable=R1735
-                font_color=font_color, paper_bgcolor=paper_bgcolor
-            )
-        )
+            dict(font_color=font_color, paper_bgcolor=paper_bgcolor)
+        )  # pylint: disable=R1735
         return figure
 
     def toggle_chart_style(self):
@@ -686,7 +678,7 @@ class Charting:
 
     def table(
         self,
-        data: Optional[Union["DataFrame", "Series"]] = None,
+        data: Union["DataFrame", "Series"] | None = None,
         title: str = "",
     ):
         """Display an interactive table.
@@ -733,8 +725,8 @@ class Charting:
         self,
         url: str,
         title: str = "",
-        width: Optional[int] = None,
-        height: Optional[int] = None,
+        width: int | None = None,
+        height: int | None = None,
     ):
         """Return the URL of the chart."""
         try:

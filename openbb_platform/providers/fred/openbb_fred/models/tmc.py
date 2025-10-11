@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.tmc import (
@@ -39,14 +39,14 @@ class FREDTreasuryConstantMaturityData(TreasuryConstantMaturityData):
 class FREDTreasuryConstantMaturityFetcher(
     Fetcher[
         FREDTreasuryConstantMaturityQueryParams,
-        List[FREDTreasuryConstantMaturityData],
+        list[FREDTreasuryConstantMaturityData],
     ]
 ):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FREDTreasuryConstantMaturityQueryParams:
         """Transform query."""
         return FREDTreasuryConstantMaturityQueryParams(**params)
@@ -54,9 +54,9 @@ class FREDTreasuryConstantMaturityFetcher(
     @staticmethod
     def extract_data(
         query: FREDTreasuryConstantMaturityQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -75,7 +75,7 @@ class FREDTreasuryConstantMaturityFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDTreasuryConstantMaturityQueryParams, data: List, **kwargs: Any
-    ) -> List[FREDTreasuryConstantMaturityData]:
+        query: FREDTreasuryConstantMaturityQueryParams, data: list, **kwargs: Any
+    ) -> list[FREDTreasuryConstantMaturityData]:
         """Transform data."""
         return [FREDTreasuryConstantMaturityData.model_validate(d) for d in data]

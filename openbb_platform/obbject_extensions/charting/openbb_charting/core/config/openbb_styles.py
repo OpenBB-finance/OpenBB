@@ -1,6 +1,6 @@
 """OpenBB Charting Styles."""
 
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from pandas import DataFrame
@@ -58,7 +58,7 @@ PLT_COLORWAY = [
     "#af87ff",
 ]
 
-PLT_FIB_COLORWAY: List[Any] = [
+PLT_FIB_COLORWAY: list[Any] = [
     "rgb(195, 50, 69)",  # 0
     "rgb(130, 38, 96)",  # 0.235
     "rgb(120, 70, 200)",  # 0.382
@@ -151,11 +151,11 @@ PLT_TBL_ROW_COLORS = (
 
 def de_increasing_color_list(
     df_column: Optional["DataFrame"] = None,
-    text: Optional[str] = None,
+    text: str | None = None,
     contains_str: str = "-",
     increasing_color: str = PLT_STYLE_INCREASING,
     decreasing_color: str = PLT_STYLE_DECREASING,
-) -> List[str]:
+) -> list[str]:
     """Make a colorlist for decrease/increase if value in df_column.
 
     Contains "{contains_str}" default is "-"

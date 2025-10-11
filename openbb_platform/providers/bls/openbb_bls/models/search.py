@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_bls.utils.constants import SURVEY_CATEGORIES, SURVEY_CATEGORY_NAMES
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -68,22 +68,22 @@ class BlsSearchData(SearchData):
     }
 
 
-class BlsSearchFetcher(Fetcher[BlsSearchQueryParams, List[BlsSearchData]]):
+class BlsSearchFetcher(Fetcher[BlsSearchQueryParams, list[BlsSearchData]]):
     """BLS Search Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BlsSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> BlsSearchQueryParams:
         """Transform query parameters."""
         return BlsSearchQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: BlsSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_bls.utils.helpers import open_asset
@@ -132,11 +132,11 @@ class BlsSearchFetcher(Fetcher[BlsSearchQueryParams, List[BlsSearchData]]):
     @staticmethod
     def transform_data(
         query: BlsSearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> AnnotatedResult[List[BlsSearchData]]:
+    ) -> AnnotatedResult[list[BlsSearchData]]:
         """Transform the data."""
-        metadata: Dict = {}
+        metadata: dict = {}
         if query.include_code_map is True:
             # pylint: disable=import-outside-toplevel
             from openbb_bls.utils.helpers import open_asset

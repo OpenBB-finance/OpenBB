@@ -8,7 +8,7 @@ from datetime import (
     time,
     timedelta,
 )
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_tmx.utils import gql
@@ -368,7 +368,7 @@ def check_weekday(date) -> str:
     return date
 
 
-async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
+async def get_all_etfs(use_cache: bool = True) -> list[dict]:
     """Get a summary of the TMX ETF universe.
 
     Returns
@@ -429,7 +429,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 
 async def get_tmx_tickers(
     exchange: Literal["tsx", "tsxv"] = "tsx", use_cache: bool = True
-) -> Dict:
+) -> dict:
     """Get a dictionary of either TSX or TSX-V symbols and names."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
@@ -448,7 +448,7 @@ async def get_tmx_tickers(
     return results
 
 
-async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
+async def get_all_tmx_companies(use_cache: bool = True) -> dict:
     """Merge TSX and TSX-V listings into a single dictionary."""
     all_tmx = {}
     tsx_tickers = await get_tmx_tickers(use_cache=use_cache)
@@ -537,10 +537,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     expirations = expirations.str.strip("(Weekly)")
 
     strikes = (
-        data["Unnamed: 7_level_0"]
-        .dropna()
-        .sort_values("Strike")  # type: ignore
-        .rename(columns={"Strike": "strike"})
+        data["Unnamed: 7_level_0"].dropna().sort_values("Strike").rename(columns={"Strike": "strike"})  # type: ignore
     )
 
     calls = concat([expirations, strikes, data["Calls"]], axis=1)
@@ -595,7 +592,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
 
 
 async def download_eod_chains(
-    symbol: str, date: Optional[dateType] = None, use_cache: bool = False
+    symbol: str, date: dateType | None = None, use_cache: bool = False
 ) -> "DataFrame":
     """Download EOD chains data for a given symbol and date."""
     # pylint: disable=import-outside-toplevel
@@ -623,7 +620,7 @@ async def download_eod_chains(
     cal = xcals.get_calendar("XTSE")
 
     if date is None:
-        EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
+        EOD_URL = BASE_URL + f"{symbol}&dnld=1#quotes"
     else:
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date) is False:  # type: ignore
@@ -632,9 +629,7 @@ async def download_eod_chains(
         if cal.is_session(date=date) is False:  # type: ignore
             date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
-        EOD_URL = (
-            BASE_URL + f"{symbol}" "&from=" f"{date}" "&to=" f"{date}" "&dnld=1#quotes"
-        )
+        EOD_URL = BASE_URL + f"{symbol}&from={date}&to={date}&dnld=1#quotes"
 
     r = await get_data_from_url(EOD_URL, use_cache=use_cache)  # type: ignore
 
@@ -696,7 +691,7 @@ async def download_eod_chains(
     date_ = data["eod_date"]
     temp = DatetimeIndex(data.expiration)
     temp_ = temp - date_  # type: ignore
-    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
+    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]  # type: ignore
     data = data.set_index(["expiration", "strike", "optionType"]).sort_index()
     data["eod_date"] = data["eod_date"].astype(str)
     underlying_price = data.iloc[-1]["lastTradePrice"]
@@ -712,18 +707,16 @@ async def download_eod_chains(
 
 async def get_company_filings(
     symbol: str,
-    start_date: Optional[str] = (datetime.now() - timedelta(days=30)).strftime(
-        "%Y-%m-%d"
-    ),
-    end_date: Optional[str] = datetime.now().date().strftime("%Y-%m-%d"),
+    start_date: str | None = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
+    end_date: str | None = datetime.now().date().strftime("%Y-%m-%d"),
     limit: int = 50,
-) -> List[Dict]:
+) -> list[dict]:
     """Get company filings."""
     # pylint: disable=import-outside-toplevel
     import json
 
     user_agent = get_random_agent()
-    results: List[Dict] = []
+    results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
 
     payload = gql.get_company_filings_payload
@@ -764,8 +757,8 @@ async def get_company_filings(
 
 async def get_daily_price_history(
     symbol: str,
-    start_date: Optional[Union[str, dateType]] = None,
-    end_date: Optional[Union[str, dateType]] = None,
+    start_date: str | dateType | None = None,
+    end_date: str | dateType | None = None,
     adjustment: Literal[
         "splits_only", "unadjusted", "splits_and_dividends"
     ] = "splits_only",
@@ -787,7 +780,7 @@ async def get_daily_price_history(
         else end_date
     )
     user_agent = get_random_agent()
-    results: List[Dict] = []
+    results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
     start_date = (
         (datetime.now() - timedelta(weeks=52)).date()
@@ -816,18 +809,14 @@ async def get_daily_price_history(
     async def create_task(start, end, results):
         """Create a task from a start and end date chunk."""
         payload = gql.get_company_price_history_payload.copy()
-        payload["variables"]["adjusted"] = (
-            False if adjustment == "unadjusted" else True  # noqa: SIM211
-        )
+        payload["variables"]["adjusted"] = adjustment != "unadjusted"  # noqa: SIM211
         payload["variables"]["adjustmentType"] = (
             "SO" if adjustment == "splits_only" else None
         )
         payload["variables"]["end"] = end.strftime("%Y-%m-%d")
         payload["variables"]["start"] = start.strftime("%Y-%m-%d")
         payload["variables"]["symbol"] = symbol
-        payload["variables"]["unadjusted"] = (
-            True if adjustment == "unadjusted" else False  # noqa: SIM210
-        )
+        payload["variables"]["unadjusted"] = adjustment == "unadjusted"  # noqa: SIM210
         if payload["variables"]["adjustmentType"] is None:
             payload["variables"].pop("adjustmentType")
         url = "https://app-money.tmx.com/graphql"
@@ -886,8 +875,8 @@ async def get_daily_price_history(
 
 async def get_weekly_or_monthly_price_history(
     symbol: str,
-    start_date: Optional[Union[str, dateType]] = None,
-    end_date: Optional[Union[str, dateType]] = None,
+    start_date: str | dateType | None = None,
+    end_date: str | dateType | None = None,
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
@@ -907,7 +896,7 @@ async def get_weekly_or_monthly_price_history(
             else end_date
         )
     user_agent = get_random_agent()
-    results: List[Dict] = []
+    results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
     start_date = (
         (datetime.now() - timedelta(weeks=52 * 100)).date()
@@ -977,9 +966,9 @@ async def get_weekly_or_monthly_price_history(
 
 async def get_intraday_price_history(
     symbol: str,
-    start_date: Optional[Union[str, dateType]] = None,
-    end_date: Optional[Union[str, dateType]] = None,
-    interval: Optional[int] = 1,
+    start_date: str | dateType | None = None,
+    end_date: str | dateType | None = None,
+    interval: int | None = 1,
 ):
     """Get historical price data."""
     # pylint: disable=import-outside-toplevel
@@ -1001,7 +990,7 @@ async def get_intraday_price_history(
             else end_date
         )
     user_agent = get_random_agent()
-    results: List[Dict] = []
+    results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
     start_date = (
         (datetime.now() - timedelta(weeks=4)).date()
@@ -1015,9 +1004,7 @@ async def get_intraday_price_history(
     if end_date < date_check:  # type: ignore
         end_date = datetime.now().date()
     # Generate a list of dates from start_date to end_date with a frequency of 3 weeks
-    dates = list(
-        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)  # type: ignore
-    )
+    dates = list(rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date))  # type: ignore
 
     if dates[-1] != end_date:
         dates.append(end_date)  # type: ignore

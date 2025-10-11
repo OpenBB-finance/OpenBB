@@ -1,7 +1,6 @@
 """Institutional Ownership Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -28,7 +27,7 @@ class InstitutionalOwnershipData(Data):
     """Institutional Ownership Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )

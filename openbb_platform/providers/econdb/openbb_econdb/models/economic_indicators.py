@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -32,7 +32,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + " Use `available_indicators()` to get a list of available symbols.",
     )
 
-    transform: Union[None, Literal["toya", "tpop", "tusd", "tpgp"]] = Field(
+    transform: None | Literal["toya", "tpop", "tusd", "tpgp"] = Field(
         default=None,
         description="The transformation to apply to the data, default is None."
         + "\n"
@@ -108,7 +108,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         if not v:
             v = "main"
         symbols = v if isinstance(v, list) else v.split(",")
-        new_symbols: List[str] = []
+        new_symbols: list[str] = []
         for symbol in symbols:
             if "_" in symbol:
                 new_symbols.append(symbol)
@@ -143,14 +143,14 @@ class EconDbEconomicIndicatorsData(EconomicIndicatorsData):
 
 
 class EconDbEconomicIndicatorsFetcher(
-    Fetcher[EconDbEconomicIndicatorsQueryParams, List[EconDbEconomicIndicatorsData]]
+    Fetcher[EconDbEconomicIndicatorsQueryParams, list[EconDbEconomicIndicatorsData]]
 ):
     """EconDB Economic Indicators Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbEconomicIndicatorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbEconomicIndicatorsQueryParams:
         """Transform the query parameters."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -176,9 +176,9 @@ class EconDbEconomicIndicatorsFetcher(
     @staticmethod
     async def aextract_data(  # pylint: disable=R0914.R0912,R0915
         query: EconDbEconomicIndicatorsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_econdb.utils import helpers
@@ -202,10 +202,10 @@ class EconDbEconomicIndicatorsFetcher(
             token = await helpers.create_token(use_cache=query.use_cache)
             credentials.update({"econdb_api_key": token})  # type: ignore
         base_url = "https://www.econdb.com/api/series/?ticker="
-        data: List[Dict] = []
+        data: list[dict] = []
         symbols = query.symbol.split(",")
         countries = query.country.split(",") if query.country else []
-        new_symbols: List = []
+        new_symbols: list = []
         # We need to join country, symbol, and transformation
         # for every combination of country and symbol.
         for s in symbols:
@@ -350,9 +350,9 @@ class EconDbEconomicIndicatorsFetcher(
     @staticmethod
     def transform_data(  # pylint: disable=R0914,R0915
         query: EconDbEconomicIndicatorsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> AnnotatedResult[List[EconDbEconomicIndicatorsData]]:
+    ) -> AnnotatedResult[list[EconDbEconomicIndicatorsData]]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_econdb.utils import helpers
@@ -444,9 +444,13 @@ class EconDbEconomicIndicatorsFetcher(
             # Now we can get the data.
             _result = d.get("data", [])
             result = DataFrame(_result)
-            result = result.rename(  # pylint: disable=E1136  # type: ignore
+            result = result.rename(
                 columns={"dates": "date", "values": "value"}
-            )[["date", "value"]].sort_values(by="date")
+            )[  # pylint: disable=E1136  # type: ignore
+                ["date", "value"]
+            ].sort_values(
+                by="date"
+            )
             result["symbol_root"] = indicator
             result["symbol"] = _symbol
             result["country"] = country

@@ -1,7 +1,7 @@
 """Share Price Index Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -24,10 +24,10 @@ class SharePriceIndexQueryParams(QueryParams):
         default="monthly",
         json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
@@ -35,14 +35,14 @@ class SharePriceIndexQueryParams(QueryParams):
 class SharePriceIndexData(Data):
     """Share Price Index Data."""
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("country", ""),
     )
-    value: Optional[float] = Field(
+    value: float | None = Field(
         default=None,
         description="Share price index value.",
     )

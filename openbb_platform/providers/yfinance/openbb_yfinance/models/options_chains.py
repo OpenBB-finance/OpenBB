@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -34,11 +34,11 @@ class YFinanceOptionsChainsData(OptionsChainsData):
         "in_the_money": "inTheMoney",
     }
 
-    in_the_money: List[Union[bool, None]] = Field(
+    in_the_money: list[bool | None] = Field(
         default_factory=list,
         description="Whether the option is in the money.",
     )
-    currency: List[Union[str, None]] = Field(
+    currency: list[str | None] = Field(
         default_factory=list,
         description="Currency of the option.",
     )
@@ -50,16 +50,16 @@ class YFinanceOptionsChainsFetcher(
     """YFinance Options Chains Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceOptionsChainsQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceOptionsChainsQueryParams:
         """Transform the query."""
         return YFinanceOptionsChainsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceOptionsChainsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -83,9 +83,9 @@ class YFinanceOptionsChainsFetcher(
         if not expirations or len(expirations) == 0:
             raise OpenBBError(f"No options found for {symbol}")
 
-        chains_output: List = []
+        chains_output: list = []
         underlying = ticker.option_chain(expirations[0])[2]
-        underlying_output: Dict = {
+        underlying_output: dict = {
             "symbol": symbol,
             "name": underlying.get("longName"),
             "exchange": underlying.get("fullExchangeName"),
@@ -165,7 +165,7 @@ class YFinanceOptionsChainsFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceOptionsChainsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
     ) -> AnnotatedResult[YFinanceOptionsChainsData]:
         """Transform the data."""

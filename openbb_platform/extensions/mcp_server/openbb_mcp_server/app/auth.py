@@ -3,7 +3,6 @@
 import base64
 import binascii
 import secrets
-from typing import Optional
 
 from fastapi import HTTPException
 from fastmcp.server.auth.auth import AuthProvider
@@ -76,7 +75,7 @@ class TokenAuthProvider(AuthProvider):
 
         return True
 
-    async def verify_token(self, token: str) -> Optional[AccessToken]:
+    async def verify_token(self, token: str) -> AccessToken | None:
         """Verify the token."""
         if not self.server_auth:
             return None

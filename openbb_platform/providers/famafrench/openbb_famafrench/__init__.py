@@ -1,7 +1,6 @@
 """OpenBB Fama-French Provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
-
 from openbb_famafrench.models.breakpoints import FamaFrenchBreakpointFetcher
 from openbb_famafrench.models.country_portfolio_returns import (
     FamaFrenchCountryPortfolioReturnsFetcher,

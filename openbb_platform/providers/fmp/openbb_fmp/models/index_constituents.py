@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -45,43 +45,43 @@ class FMPIndexConstituentsData(IndexConstituentsData):
         "removed_name": "removedSecurity",
     }
 
-    sector: Optional[str] = Field(
+    sector: str | None = Field(
         default=None,
         description="Sector classification for the constituent company in the index.",
     )
-    industry: Optional[str] = Field(
+    industry: str | None = Field(
         default=None,
         description="Industry classification for the constituent company in the index.",
     )
-    headquarter: Optional[str] = Field(
+    headquarter: str | None = Field(
         default=None,
         description="Location of the company's headquarters.",
     )
-    date_added: Optional[Union[dateType, str]] = Field(
+    date_added: dateType | str | None = Field(
         default=None, description="Date the constituent company was added to the index."
     )
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         description=DATA_DESCRIPTIONS.get("cik", ""),
         default=None,
         coerce_numbers_to_str=True,
     )
-    founded: Optional[Union[dateType, str]] = Field(
+    founded: dateType | str | None = Field(
         default=None,
         description="When the company was founded.",
     )
-    removed_symbol: Optional[str] = Field(
+    removed_symbol: str | None = Field(
         default=None,
         description="Symbol of the company removed from the index.",
     )
-    removed_name: Optional[str] = Field(
+    removed_name: str | None = Field(
         default=None,
         description="Name of the company removed from the index.",
     )
-    reason: Optional[str] = Field(
+    reason: str | None = Field(
         default=None,
         description="Reason for the removal from the index.",
     )
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None,
         description="Date of the historical constituent data.",
     )
@@ -131,7 +131,7 @@ class FMPIndexConstituentsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPIndexConstituentsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

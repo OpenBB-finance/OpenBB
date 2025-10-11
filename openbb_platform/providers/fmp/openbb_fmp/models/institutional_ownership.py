@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.institutional_ownership import (
@@ -21,11 +21,11 @@ class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    year: Optional[int] = Field(
+    year: int | None = Field(
         default=None,
         description="Calendar year for the data. If not provided, the latest year is used.",
     )
-    quarter: Optional[int] = Field(
+    quarter: int | None = Field(
         default=None,
         description="Calendar quarter for the data. Valid values are 1, 2, 3, or 4."
         + " If not provided, the quarter previous to the current quarter is used.",
@@ -51,15 +51,15 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     investors_holding_change: int = Field(
         description="Change in the number of investors holding the stock."
     )
-    number_of_13f_shares: Optional[int] = Field(
+    number_of_13f_shares: int | None = Field(
         default=None,
         description="Number of 13F shares.",
     )
-    last_number_of_13f_shares: Optional[int] = Field(
+    last_number_of_13f_shares: int | None = Field(
         default=None,
         description="Number of 13F shares in the last quarter.",
     )
-    number_of_13f_shares_change: Optional[int] = Field(
+    number_of_13f_shares_change: int | None = Field(
         default=None,
         description="Change in the number of 13F shares.",
     )
@@ -170,7 +170,7 @@ class FMPInstitutionalOwnershipFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPInstitutionalOwnershipQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

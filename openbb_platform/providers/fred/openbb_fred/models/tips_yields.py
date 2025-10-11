@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-locals
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -18,13 +18,13 @@ from pydantic import Field
 class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
     """FRED TIPS Yields Query."""
 
-    maturity: Optional[Literal["5", "10", "20", "30"]] = Field(
+    maturity: Literal["5", "10", "20", "30"] | None = Field(
         default=None,
         description="The maturity of the security in years - 5, 10, 20, 30 - defaults to all."
         + " Note that the maturity is the tenor of the security, not the time to maturity.",
         json_schema_extra={"choices": ["5", "10", "20", "30"]},
     )
-    frequency: Optional[
+    frequency: (
         Literal[
             "a",
             "q",
@@ -41,7 +41,8 @@ class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
             "bwew",
             "bwem",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="""Frequency aggregation to convert high frequency data to lower frequency.
             None = No change
@@ -79,7 +80,7 @@ class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
             ]
         },
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default=None,
         description="""A key that indicates the aggregation method used for frequency aggregation.
             avg = Average
@@ -88,10 +89,9 @@ class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Optional[Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca"]] = (
-        Field(
-            default=None,
-            description="""Transformation type
+    transform: Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca"] | None = Field(
+        default=None,
+        description="""Transformation type
             None = No transformation
             chg = Change
             ch1 = Change from Year Ago
@@ -101,10 +101,9 @@ class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
             cch = Continuously Compounded Rate of Change
             cca = Continuously Compounded Annual Rate of Change
         """,
-            json_schema_extra={
-                "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca"]
-            },
-        )
+        json_schema_extra={
+            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca"]
+        },
     )
 
 
@@ -115,22 +114,22 @@ class FredTipsYieldsData(TipsYieldsData):
 class FredTipsYieldsFetcher(
     Fetcher[
         FredTipsYieldsQueryParams,
-        List[FredTipsYieldsData],
+        list[FredTipsYieldsData],
     ]
 ):
     """FRED TIPS Yields Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredTipsYieldsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredTipsYieldsQueryParams:
         """Transform the query."""
         return FredTipsYieldsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredTipsYieldsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.models.search import FredSearchFetcher
@@ -232,9 +231,9 @@ class FredTipsYieldsFetcher(
     @staticmethod
     def transform_data(
         query: FredTipsYieldsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredTipsYieldsData]]:
+    ) -> AnnotatedResult[list[FredTipsYieldsData]]:
         """Transform the data."""
         results = data.get("records", [])
         meta = data.get("meta", {})

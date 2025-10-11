@@ -1,4 +1,4 @@
-""" Test EconDB Fetchers. """
+"""Test EconDB Fetchers."""
 
 import datetime
 

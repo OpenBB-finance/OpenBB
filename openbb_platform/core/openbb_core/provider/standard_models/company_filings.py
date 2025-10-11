@@ -3,7 +3,6 @@
 from datetime import (
     date as dateType,
 )
-from typing import List, Optional, Set, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -17,13 +16,13 @@ from pydantic import Field, field_validator
 class CompanyFilingsQueryParams(QueryParams):
     """Company Filings Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+    def to_upper(cls, v: str | list[str] | set[str]):
         """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
@@ -34,7 +33,7 @@ class CompanyFilingsData(Data):
     """Company Filings Data."""
 
     filing_date: dateType = Field(description="The date of the filing.")
-    report_type: Optional[str] = Field(default=None, description="Type of filing.")
+    report_type: str | None = Field(default=None, description="Type of filing.")
     report_url: str = Field(description="URL to the actual report.")
 
     @field_validator("filing_date", "accepted_date", mode="before", check_fields=False)

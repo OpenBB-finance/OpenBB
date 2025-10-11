@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -41,66 +41,66 @@ class BlsSeriesQueryParams(SeriesQueryParams):
 class BlsSeriesData(SeriesData):
     """BLS Series Data."""
 
-    change_1M: Optional[float] = Field(
+    change_1M: float | None = Field(
         default=None,
         description="One month change in value.",
     )
-    change_3M: Optional[float] = Field(
+    change_3M: float | None = Field(
         default=None,
         description="Three month change in value.",
     )
-    change_6M: Optional[float] = Field(
+    change_6M: float | None = Field(
         default=None,
         description="Six month change in value.",
     )
-    change_12M: Optional[float] = Field(
+    change_12M: float | None = Field(
         default=None,
         description="One year change in value.",
     )
-    change_percent_1M: Optional[float] = Field(
+    change_percent_1M: float | None = Field(
         default=None,
         description="One month change in percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    change_percent_3M: Optional[float] = Field(
+    change_percent_3M: float | None = Field(
         default=None,
         description="Three month change in percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    change_percent_6M: Optional[float] = Field(
+    change_percent_6M: float | None = Field(
         default=None,
         description="Six month change in percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    change_percent_12M: Optional[float] = Field(
+    change_percent_12M: float | None = Field(
         default=None,
         description="One year change in percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    latest: Optional[bool] = Field(
+    latest: bool | None = Field(
         default=None,
         description="Latest value indicator.",
     )
-    footnotes: Optional[str] = Field(
+    footnotes: str | None = Field(
         default=None,
         description="Footnotes accompanying the value.",
     )
 
 
-class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
+class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, list[BlsSeriesData]]):
     """BLS Series Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BlsSeriesQueryParams:
+    def transform_query(params: dict[str, Any]) -> BlsSeriesQueryParams:
         """Transform query parameters."""
         return BlsSeriesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: BlsSeriesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the data from the BLS API."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -118,8 +118,8 @@ class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
             else (now - timedelta(weeks=52 * 3)).year
         )
         end_year = query.end_date.year if query.end_date else now.year
-        results: Dict = {"data": [], "messages": [], "metadata": {}}
-        messages: List = []
+        results: dict = {"data": [], "messages": [], "metadata": {}}
+        messages: list = []
 
         # The max number of symbols per request is 50.
         # The max year range is 20.
@@ -164,7 +164,7 @@ class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
                 messages.append(data.__dict__.get("message", ""))
 
         # Create a list of tasks to run based on the API query limitations.
-        tasks: List = []
+        tasks: list = []
 
         for symbol_chunk in chunk_list(symbols, 50):
             for year_range in chunk_years(start_year, end_year, 20):
@@ -190,9 +190,9 @@ class BlsSeriesFetcher(Fetcher[BlsSeriesQueryParams, List[BlsSeriesData]]):
     @staticmethod
     def transform_data(
         query: BlsSeriesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[BlsSeriesData]]:
+    ) -> AnnotatedResult[list[BlsSeriesData]]:
         """Transform the data."""
         series_data = data.get("data", [])
         messages = data.get("messages", [])

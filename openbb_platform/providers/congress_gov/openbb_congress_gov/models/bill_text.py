@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,7 +22,7 @@ class CongressBillTextQueryParams(QueryParams):
     # to easily accept the parameter.
     # In the API, the body can be a string, a list of URLs or a dictionary with a "urls" key.
     # Workspace will send the body as a dictionary with a "urls" key.
-    urls: Union[str, list[str], dict[str, list[str]]] = Field(
+    urls: str | list[str] | dict[str, list[str]] = Field(
         description="List of direct bill URLs to download.",
         kw_only=True,
     )
@@ -31,18 +31,18 @@ class CongressBillTextQueryParams(QueryParams):
 class CongressBillTextData(Data):
     """Congress Gov Bills Text Data."""
 
-    error_type: Optional[str] = Field(
+    error_type: str | None = Field(
         default=None,
         description="Error type if any error occurs during the download.",
     )
     content: str = Field(
         description="Base64-encoded PDF document.",
     )
-    filename: Optional[str] = Field(
+    filename: str | None = Field(
         default=None,
         description="The filename of the downloaded PDF.",
     )
-    data_format: Optional[dict[str, str]] = Field(
+    data_format: dict[str, str] | None = Field(
         default=None,
         description="Data format information, including data type and filename.",
     )
@@ -66,7 +66,7 @@ class CongressBillTextFetcher(
     @staticmethod
     async def aextract_data(
         query: CongressBillTextQueryParams,
-        credentials: Optional[dict[str, Any]] = None,
+        credentials: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> list:
         """Extract data from the query."""

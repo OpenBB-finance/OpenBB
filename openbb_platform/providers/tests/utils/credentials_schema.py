@@ -1,8 +1,6 @@
 """Provider credentials schema used for unit test."""
 
-from typing import Dict, Tuple
-
-test_credentials: Dict[str, Tuple[str, str]] = {
+test_credentials: dict[str, tuple[str, str]] = {
     "benzinga": ("token", "MOCK_TOKEN"),
     "alpha_vantage": ("apikey", "MOCK_API_KEY"),
     "fmp": ("apikey", "MOCK_API_KEY"),

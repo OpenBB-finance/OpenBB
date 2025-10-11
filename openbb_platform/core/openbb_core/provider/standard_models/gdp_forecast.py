@@ -1,7 +1,6 @@
 """Forecast GDP Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,10 +14,10 @@ from pydantic import Field
 class GdpForecastQueryParams(QueryParams):
     """Forecast GDP Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
@@ -28,6 +27,6 @@ class GdpForecastData(Data):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     country: str = Field(description=DATA_DESCRIPTIONS.get("country"))
-    value: Union[int, float] = Field(
+    value: int | float = Field(
         description="Forecasted GDP value for the country and date."
     )

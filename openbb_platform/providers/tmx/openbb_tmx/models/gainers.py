@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
@@ -70,22 +70,22 @@ class TmxGainersData(EquityPerformanceData):
         "avg_volume_10d": "10 Day Avg. Volume",
         "ninety_day_price_change": "90 Day Price Change",
     }
-    thirty_day_price_change: Optional[float] = Field(
+    thirty_day_price_change: float | None = Field(
         default=None,
         description="30 Day Price Change.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ninety_day_price_change: Optional[float] = Field(
+    ninety_day_price_change: float | None = Field(
         default=None,
         description="90 Day Price Change.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend Yield.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    avg_volume_10d: Optional[float] = Field(
+    avg_volume_10d: float | None = Field(
         default=None,
         description="10 Day Avg. Volume.",
     )
@@ -112,22 +112,22 @@ class TmxGainersData(EquityPerformanceData):
 class TmxGainersFetcher(
     Fetcher[
         TmxGainersQueryParams,
-        List[TmxGainersData],
+        list[TmxGainersData],
     ]
 ):
     """TMX Gainers Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxGainersQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxGainersQueryParams:
         """Transform the query."""
         return TmxGainersQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxGainersQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[TmxGainersData]:
+    ) -> list[TmxGainersData]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
@@ -167,8 +167,8 @@ class TmxGainersFetcher(
     @staticmethod
     def transform_data(
         query: TmxGainersQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxGainersData]:
+    ) -> list[TmxGainersData]:
         """Transform the data to the model."""
         return [TmxGainersData.model_validate(d) for d in data]

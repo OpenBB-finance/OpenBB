@@ -1,7 +1,5 @@
 """Equity Search Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
@@ -20,7 +18,7 @@ class EquitySearchQueryParams(QueryParams):
 class EquitySearchData(Data):
     """Equity Search Data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    name: Optional[str] = Field(default=None, description="Name of the company.")
+    name: str | None = Field(default=None, description="Name of the company.")

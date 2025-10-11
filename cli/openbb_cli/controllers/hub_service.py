@@ -1,7 +1,5 @@
 """Routines handler module."""
 
-from typing import Optional
-
 import requests
 from openbb_cli.config.constants import (
     CONNECTION_ERROR_MSG,
@@ -19,7 +17,7 @@ from openbb_cli.session import Session
 session = Session()
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments, too-many-positional-arguments
 def upload_routine(
     auth_header: str,
     name: str = "",
@@ -29,7 +27,7 @@ def upload_routine(
     tags: str = "",
     public: bool = False,
     timeout: int = TIMEOUT,
-) -> Optional[requests.Response]:
+) -> requests.Response | None:
     """Send a routine to the server.
 
     Parameters

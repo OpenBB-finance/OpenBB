@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -18,22 +17,21 @@ from pydantic import Field, NonNegativeInt
 class DiscoveryFilingsQueryParams(QueryParams):
     """Discovery Filings Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["start_date"],
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["end_date"],
     )
-    form_type: Optional[str] = Field(
+    form_type: str | None = Field(
         default=None,
         description=(
-            "Filter by form type. Visit https://www.sec.gov/forms "
-            "for a list of supported form types."
+            "Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
         ),
     )
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 

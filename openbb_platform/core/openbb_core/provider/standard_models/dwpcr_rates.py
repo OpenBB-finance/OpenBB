@@ -3,7 +3,6 @@
 from datetime import (
     date as dateType,
 )
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -17,11 +16,11 @@ from pydantic import Field
 class DiscountWindowPrimaryCreditRateParams(QueryParams):
     """Discount Window Primary Credit Rate Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -31,4 +30,4 @@ class DiscountWindowPrimaryCreditRateData(Data):
     """Discount Window Primary Credit Rate Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="Discount Window Primary Credit Rate.")
+    rate: float | None = Field(description="Discount Window Primary Credit Rate.")

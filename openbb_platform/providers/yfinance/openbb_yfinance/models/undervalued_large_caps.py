@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
@@ -18,7 +18,7 @@ class YFUndervaluedLargeCapsQueryParams(EquityPerformanceQueryParams):
     Source: https://finance.yahoo.com/screener/predefined/undervalued_large_caps
     """
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=200,
         description="Limit the number of results.",
     )
@@ -41,7 +41,7 @@ class YFUndervaluedLargeCapsFetcher(
     @staticmethod
     async def aextract_data(
         query: YFUndervaluedLargeCapsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Get data from YF."""

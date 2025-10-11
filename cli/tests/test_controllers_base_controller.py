@@ -8,7 +8,7 @@ from openbb_cli.controllers.base_controller import BaseController
 # pylint: disable=unused-argument, unused-variable
 
 
-class TestableBaseController(BaseController):
+class DummyBaseController(BaseController):
     """Testable Base Controller."""
 
     def __init__(self, queue=None):
@@ -22,14 +22,14 @@ class TestableBaseController(BaseController):
 
 def test_base_controller_initialization():
     """Test the initialization of the base controller."""
-    with patch.object(TestableBaseController, "check_path", return_value=None):
-        controller = TestableBaseController()
+    with patch.object(DummyBaseController, "check_path", return_value=None):
+        controller = DummyBaseController()
         assert controller.path == ["valid", "path"]  # Checking for correct path split
 
 
 def test_path_validation():
     """Test the path validation method."""
-    controller = TestableBaseController()
+    controller = DummyBaseController()
 
     with pytest.raises(ValueError):
         controller.PATH = "invalid/path"
@@ -48,7 +48,7 @@ def test_path_validation():
 
 def test_parse_input():
     """Test the parse input method."""
-    controller = TestableBaseController()
+    controller = DummyBaseController()
     input_str = "cmd1/cmd2/cmd3"
     expected = ["cmd1", "cmd2", "cmd3"]
     result = controller.parse_input(input_str)
@@ -57,7 +57,7 @@ def test_parse_input():
 
 def test_switch():
     """Test the switch method."""
-    controller = TestableBaseController()
+    controller = DummyBaseController()
     with patch.object(controller, "call_exit", MagicMock()) as mock_exit:
         controller.queue = ["exit"]
         controller.switch("exit")
@@ -66,14 +66,14 @@ def test_switch():
 
 def test_call_help():
     """Test the call help method."""
-    controller = TestableBaseController()
+    controller = DummyBaseController()
     with patch("openbb_cli.controllers.base_controller.session.console.print"):
         controller.call_help(None)
 
 
 def test_call_exit():
     """Test the call exit method."""
-    controller = TestableBaseController()
+    controller = DummyBaseController()
     with patch.object(controller, "save_class", MagicMock()):
         controller.queue = ["quit"]
         controller.call_exit(None)

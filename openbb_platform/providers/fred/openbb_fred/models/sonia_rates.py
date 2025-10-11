@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
@@ -48,20 +48,20 @@ class FREDSONIAData(SONIAData):
             return None
 
 
-class FREDSONIAFetcher(Fetcher[FREDSONIAQueryParams, List[FREDSONIAData]]):
+class FREDSONIAFetcher(Fetcher[FREDSONIAQueryParams, list[FREDSONIAData]]):
     """FRED SONIA Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSONIAQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDSONIAQueryParams:
         """Transform query."""
         return FREDSONIAQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDSONIAQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -74,8 +74,8 @@ class FREDSONIAFetcher(Fetcher[FREDSONIAQueryParams, List[FREDSONIAData]]):
 
     @staticmethod
     def transform_data(
-        query: FREDSONIAQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FREDSONIAData]:
+        query: FREDSONIAQueryParams, data: dict, **kwargs: Any
+    ) -> list[FREDSONIAData]:
         """Transform data."""
         keys = ["date", "value"]
         return [FREDSONIAData(**{k: x[k] for k in keys}) for x in data]

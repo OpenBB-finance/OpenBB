@@ -3,7 +3,7 @@
 # pylint: disable=expression-not-assigned, unused-argument
 
 from datetime import date as dateType
-from typing import TYPE_CHECKING, Any, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, Literal
 
 from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 
@@ -167,7 +167,7 @@ async def get_index_directory(use_cache: bool = True, **kwargs) -> "DataFrame":
     return results
 
 
-async def list_futures(**kwargs) -> List[dict]:
+async def list_futures(**kwargs) -> list[dict]:
     """List of CBOE futures and their underlying symbols.
 
     Returns
@@ -185,7 +185,7 @@ async def list_futures(**kwargs) -> List[dict]:
 
 
 async def get_settlement_prices(
-    settlement_date: Optional[dateType] = None,
+    settlement_date: dateType | None = None,
     options: bool = False,
     archives: bool = False,
     final_settlement: bool = False,

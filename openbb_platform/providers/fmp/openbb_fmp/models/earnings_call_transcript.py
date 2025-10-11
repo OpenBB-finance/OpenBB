@@ -1,7 +1,7 @@
 """FMP Earnings Call Transcript Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -76,7 +76,7 @@ class FMPEarningsCallTranscriptFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEarningsCallTranscriptQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the FMP endpoint."""
@@ -156,7 +156,7 @@ class FMPEarningsCallTranscriptFetcher(
 
         output_lines: list = []
         intro_lines = f"""
-## {data.get('symbol')} - {data.get('year')} {data.get('period')} Earnings Call Transcript - {data.get('date')}
+## {data.get("symbol")} - {data.get("year")} {data.get("period")} Earnings Call Transcript - {data.get("date")}
 \n\n
 """
         output_lines.append(intro_lines + "\n\n")

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple, Union
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
@@ -17,7 +17,7 @@ class EtfViews:
     @staticmethod
     def etf_historical(
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Etf Price Historical Chart."""
         # pylint: disable=import-outside-toplevel
 
@@ -28,7 +28,7 @@ class EtfViews:
     @staticmethod
     def etf_price_performance(
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Etf Price Performance Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
@@ -38,7 +38,7 @@ class EtfViews:
     @staticmethod
     def etf_holdings(
         **kwargs,
-    ) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:
+    ) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:
         """Equity Compare Groups Chart."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa

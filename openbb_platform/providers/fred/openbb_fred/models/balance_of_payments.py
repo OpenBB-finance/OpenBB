@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -40,11 +40,11 @@ class FredBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
         description=QUERY_DESCRIPTIONS.get("country", "")
         + " Enter as a 3-letter ISO country code, default is USA.",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -71,21 +71,21 @@ class FredBalanceOfPaymentsData(BP6BopUsdData):
 
 
 class FredBalanceOfPaymentsFetcher(
-    Fetcher[FredBalanceOfPaymentsQueryParams, List[FredBalanceOfPaymentsData]]
+    Fetcher[FredBalanceOfPaymentsQueryParams, list[FredBalanceOfPaymentsData]]
 ):
     """FRED Balance Of Payments Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredBalanceOfPaymentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredBalanceOfPaymentsQueryParams:
         """Transform query."""
         return FredBalanceOfPaymentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredBalanceOfPaymentsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         fred_fetcher = FredSeriesFetcher()
         country = BOP_COUNTRIES.get(query.country) if query.country else "USA"
@@ -98,9 +98,9 @@ class FredBalanceOfPaymentsFetcher(
     @staticmethod
     def transform_data(
         query: FredBalanceOfPaymentsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredBalanceOfPaymentsData]]:
+    ) -> AnnotatedResult[list[FredBalanceOfPaymentsData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_info import (
@@ -45,46 +45,46 @@ class YFinanceEquityProfileData(EquityInfoData):
         "dividend_yield": "yield",
     }
 
-    exchange_timezone: Optional[str] = Field(
+    exchange_timezone: str | None = Field(
         description="The timezone of the exchange.",
         default=None,
     )
-    issue_type: Optional[str] = Field(
+    issue_type: str | None = Field(
         description="The issuance type of the asset.",
         default=None,
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         description="The currency in which the asset is traded.", default=None
     )
-    market_cap: Optional[int] = Field(
+    market_cap: int | None = Field(
         description="The market capitalization of the asset.",
         default=None,
     )
-    shares_outstanding: Optional[int] = Field(
+    shares_outstanding: int | None = Field(
         description="The number of listed shares outstanding.",
         default=None,
     )
-    shares_float: Optional[int] = Field(
+    shares_float: int | None = Field(
         description="The number of shares in the public float.",
         default=None,
     )
-    shares_implied_outstanding: Optional[int] = Field(
+    shares_implied_outstanding: int | None = Field(
         description=(
             "Implied shares outstanding of common equity"
             "assuming the conversion of all convertible subsidiary equity into common."
         ),
         default=None,
     )
-    shares_short: Optional[int] = Field(
+    shares_short: int | None = Field(
         description="The reported number of shares short.",
         default=None,
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         description="The dividend yield of the asset, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         description="The beta of the asset relative to the broad market.",
         default=None,
     )
@@ -101,21 +101,21 @@ class YFinanceEquityProfileData(EquityInfoData):
 
 
 class YFinanceEquityProfileFetcher(
-    Fetcher[YFinanceEquityProfileQueryParams, List[YFinanceEquityProfileData]]
+    Fetcher[YFinanceEquityProfileQueryParams, list[YFinanceEquityProfileData]]
 ):
     """YFinance Equity Profile fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceEquityProfileQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceEquityProfileQueryParams:
         """Transform the query."""
         return YFinanceEquityProfileQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceEquityProfileQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -204,8 +204,8 @@ class YFinanceEquityProfileFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceEquityProfileQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceEquityProfileData]:
+    ) -> list[YFinanceEquityProfileData]:
         """Transform the data."""
         return [YFinanceEquityProfileData.model_validate(d) for d in data]

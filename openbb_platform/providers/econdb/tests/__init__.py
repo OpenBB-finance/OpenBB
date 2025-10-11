@@ -1,1 +1,1 @@
-""" Test the EconDB Provider."""
+"""Test the EconDB Provider."""

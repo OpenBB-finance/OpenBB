@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -71,7 +71,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_UNEMPLOYMENT:
@@ -95,12 +95,12 @@ class OECDUnemploymentData(UnemploymentData):
 
 
 class OECDUnemploymentFetcher(
-    Fetcher[OECDUnemploymentQueryParams, List[OECDUnemploymentData]]
+    Fetcher[OECDUnemploymentQueryParams, list[OECDUnemploymentData]]
 ):
     """Transform the query, extract and transform the data from the OECD endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDUnemploymentQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDUnemploymentQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params["start_date"] is None:
@@ -117,9 +117,9 @@ class OECDUnemploymentFetcher(
     @staticmethod
     def extract_data(
         query: OECDUnemploymentQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -183,7 +183,7 @@ class OECDUnemploymentFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDUnemploymentQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDUnemploymentData]:
+        query: OECDUnemploymentQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
         return [OECDUnemploymentData.model_validate(d) for d in data]

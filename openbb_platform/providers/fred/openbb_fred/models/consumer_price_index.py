@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -28,7 +28,7 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
         },
     }
 
-    country: Union[CpiCountries, str] = Field(
+    country: CpiCountries | str = Field(
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
     )
@@ -37,7 +37,7 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c: str):
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), CPI_COUNTRIES)
@@ -50,21 +50,21 @@ class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
 
 
 class FREDConsumerPriceIndexFetcher(
-    Fetcher[FREDConsumerPriceIndexQueryParams, List[FREDConsumerPriceIndexData]]
+    Fetcher[FREDConsumerPriceIndexQueryParams, list[FREDConsumerPriceIndexData]]
 ):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDConsumerPriceIndexQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDConsumerPriceIndexQueryParams:
         """Transform query."""
         return FREDConsumerPriceIndexQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FREDConsumerPriceIndexQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         frequency = "quarterly" if query.frequency == "quarter" else query.frequency
 
@@ -90,7 +90,7 @@ class FREDConsumerPriceIndexFetcher(
             start_date=query.start_date,
             end_date=query.end_date,
         )
-        results: Dict = {}
+        results: dict = {}
         temp = await FredSeriesFetcher.fetch_data(item_query, credentials)
         result = [d.model_dump() for d in temp.result]
         results["metadata"] = {country_map.get(k): v for k, v in temp.metadata.items()}
@@ -103,9 +103,9 @@ class FREDConsumerPriceIndexFetcher(
     @staticmethod
     def transform_data(
         query: FREDConsumerPriceIndexQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FREDConsumerPriceIndexData]]:
+    ) -> AnnotatedResult[list[FREDConsumerPriceIndexData]]:
         """Transform data and validate the model."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

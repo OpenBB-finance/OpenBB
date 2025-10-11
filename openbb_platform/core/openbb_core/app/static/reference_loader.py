@@ -2,7 +2,6 @@
 
 import json
 from pathlib import Path
-from typing import Dict, Optional
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -10,7 +9,7 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 class ReferenceLoader(metaclass=SingletonMeta):
     """ReferenceLoader class for loading the `reference.json` file."""
 
-    def __init__(self, directory: Optional[Path] = None):
+    def __init__(self, directory: Path | None = None):
         """
         Initialize the ReferenceLoader with a specific directory.
 
@@ -35,7 +34,7 @@ class ReferenceLoader(metaclass=SingletonMeta):
         self._reference = self._load(reference_path)
 
     @property
-    def reference(self) -> Dict[str, Dict]:
+    def reference(self) -> dict[str, dict]:
         """Get the reference data."""
         return self._reference
 

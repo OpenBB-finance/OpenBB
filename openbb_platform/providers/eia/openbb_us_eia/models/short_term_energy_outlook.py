@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-locals
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -42,7 +42,7 @@ class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
             "choices": ["month", "quarter", "annual"],
         },
     }
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " If provided, overrides the 'table' parameter to return only the specified symbol from the STEO API.",
@@ -51,32 +51,32 @@ class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
         default="01",
         description="The specific table within the STEO dataset. Default is '01'."
         + " When 'symbol' is provided, this parameter is ignored."
-        + "\n        01: US Energy Markets Summary"
-        + "\n        02: Nominal Energy Prices"
-        + "\n        03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories"
-        + "\n        03b: Non-OPEC Petroleum and Other Liquid Fuels Production"
-        + "\n        03c: World Petroleum and Other Liquid Fuels Production"
-        + "\n        03d: World Crude Oil Production"
-        + "\n        03e: World Petroleum and Other Liquid Fuels Consumption"
-        + "\n        04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories"
-        + "\n        04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances"
-        + "\n        04c: US Regional Motor Gasoline Prices and Inventories"
-        + "\n        04d: US Biofuel Supply, Consumption, and Inventories"
-        + "\n        05a: US Natural Gas Supply, Consumption, and Inventories"
-        + "\n        05b: US Regional Natural Gas Prices"
-        + "\n        06: US Coal Supply, Consumption, and Inventories"
-        + "\n        07a: US Electricity Industry Overview"
-        + "\n        07b: US Regional Electricity Retail Sales"
-        + "\n        07c: US Regional Electricity Prices"
-        + "\n        07d1: US Regional Electricity Generation, Electric Power Sector"
-        + "\n        07d2: US Regional Electricity Generation, Electric Power Sector, continued"
-        + "\n        07e: US Electricity Generating Capacity"
-        + "\n        08: US Renewable Energy Consumption"
-        + "\n        09a: US Macroeconomic Indicators and CO2 Emissions"
-        + "\n        09b: US Regional Macroeconomic Data"
-        + "\n        09c: US Regional Weather Data"
-        + "\n        10a: Drilling Productivity Metrics"
-        + "\n        10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
+        + "\n    01: US Energy Markets Summary"
+        + "\n    02: Nominal Energy Prices"
+        + "\n    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories"
+        + "\n    03b: Non-OPEC Petroleum and Other Liquid Fuels Production"
+        + "\n    03c: World Petroleum and Other Liquid Fuels Production"
+        + "\n    03d: World Crude Oil Production"
+        + "\n    03e: World Petroleum and Other Liquid Fuels Consumption"
+        + "\n    04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories"
+        + "\n    04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances"
+        + "\n    04c: US Regional Motor Gasoline Prices and Inventories"
+        + "\n    04d: US Biofuel Supply, Consumption, and Inventories"
+        + "\n    05a: US Natural Gas Supply, Consumption, and Inventories"
+        + "\n    05b: US Regional Natural Gas Prices"
+        + "\n    06: US Coal Supply, Consumption, and Inventories"
+        + "\n    07a: US Electricity Industry Overview"
+        + "\n    07b: US Regional Electricity Retail Sales"
+        + "\n    07c: US Regional Electricity Prices"
+        + "\n    07d1: US Regional Electricity Generation, Electric Power Sector"
+        + "\n    07d2: US Regional Electricity Generation, Electric Power Sector, continued"
+        + "\n    07e: US Electricity Generating Capacity"
+        + "\n    08: US Renewable Energy Consumption"
+        + "\n    09a: US Macroeconomic Indicators and CO2 Emissions"
+        + "\n    09b: US Regional Macroeconomic Data"
+        + "\n    09c: US Regional Weather Data"
+        + "\n    10a: Drilling Productivity Metrics"
+        + "\n    10b: Crude Oil and Natural Gas Production from Shale and Tight Formations",
     )
     frequency: Literal["month", "quarter", "annual"] = Field(
         default="month",
@@ -107,7 +107,7 @@ class EiaShortTermEnergyOutlookFetcher(
     @staticmethod
     async def aextract_data(
         query: EiaShortTermEnergyOutlookQueryParams,
-        credentials: Optional[dict[str, Any]],
+        credentials: dict[str, Any] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the EIA API."""
@@ -184,12 +184,7 @@ class EiaShortTermEnergyOutlookFetcher(
             res = await amake_request(url, response_callback=response_callback)
             data = res.get("response", {}).get("data", [])  # type: ignore
             if not data:
-                series_id = (
-                    res.get("request", {})  # type: ignore
-                    .get("params", {})
-                    .get("facets", {})
-                    .get("seriesId", [])
-                )
+                series_id = res.get("request", {}).get("params", {}).get("facets", {}).get("seriesId", [])  # type: ignore
                 masked_url = url.replace(api_key, "API_KEY")
                 messages.append(f"No data returned for {series_id or masked_url}")
             if data:
@@ -203,15 +198,10 @@ class EiaShortTermEnergyOutlookFetcher(
                 url = url.replace("&offset=0", f"&offset={offset}")
                 while n_results < response_total:
                     additional_response = await amake_request(url)
-                    additional_data = additional_response.get("response", {}).get(  # type: ignore
-                        "data", []
-                    )
+                    additional_data = additional_response.get("response", {}).get("data", [])  # type: ignore
                     if not additional_data:
                         series_id = (
-                            res.get("request", {})  # type: ignore
-                            .get("params", {})
-                            .get("facets", {})
-                            .get("seriesId", [])
+                            res.get("request", {}).get("params", {}).get("facets", {}).get("seriesId", [])  # type: ignore
                         )
                         masked_url = url.replace(api_key, "API_KEY")
                         messages.append(
@@ -220,7 +210,7 @@ class EiaShortTermEnergyOutlookFetcher(
                     if additional_data:
                         results.extend(additional_data)
                     n_results += len(additional_data)
-                    url = url.replace(f"&offset={offset}", f"&offset={offset+5000}")
+                    url = url.replace(f"&offset={offset}", f"&offset={offset + 5000}")
                     offset += 5000
 
         try:

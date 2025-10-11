@@ -2,7 +2,6 @@
 
 __docformat__ = "numpy"
 
-from typing import Dict, List
 
 from openbb import obb
 
@@ -38,10 +37,10 @@ class MenuText:
         """Initialize menu help."""
         self.menu_text = ""
         self.menu_path = path
-        self.warnings: List[Dict[str, str]] = []
+        self.warnings: list[dict[str, str]] = []
 
     @staticmethod
-    def _get_providers(command_path: str) -> List:
+    def _get_providers(command_path: str) -> list:
         """Return the preferred provider for the given command.
 
         Parameters
@@ -127,7 +126,7 @@ class MenuText:
         description_padding = (
             self.CMD_DESCRIPTION_LENGTH - len(formatted_description)
         ) * " "
-        cmd = f"{spacing}{formatted_name + name_padding}{spacing}{formatted_description+description_padding}"
+        cmd = f"{spacing}{formatted_name + name_padding}{spacing}{formatted_description + description_padding}"
         cmd = f"[unvl]{cmd}[/unvl]" if disable else f"[cmds]{cmd}[/cmds]"
 
         if providers:

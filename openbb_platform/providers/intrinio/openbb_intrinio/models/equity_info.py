@@ -1,6 +1,6 @@
 """Intrinio Equity Info Model."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_info import (
@@ -31,7 +31,7 @@ class IntrinioEquityInfoData(EquityInfoData):
     }
 
     id: str = Field(default=None, description="Intrinio ID for the company.")
-    thea_enabled: Optional[bool] = Field(
+    thea_enabled: bool | None = Field(
         default=None, description="Whether the company has been enabled for Thea."
     )
 
@@ -39,13 +39,13 @@ class IntrinioEquityInfoData(EquityInfoData):
 class IntrinioEquityInfoFetcher(
     Fetcher[
         IntrinioEquityInfoQueryParams,
-        List[IntrinioEquityInfoData],
+        list[IntrinioEquityInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEquityInfoQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEquityInfoQueryParams:
         """Transform the query."""
         return IntrinioEquityInfoQueryParams(**params)
 
@@ -53,9 +53,9 @@ class IntrinioEquityInfoFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioEquityInfoQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com"
@@ -71,8 +71,8 @@ class IntrinioEquityInfoFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEquityInfoQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioEquityInfoData]:
+    ) -> list[IntrinioEquityInfoData]:
         """Transform the data."""
         return [IntrinioEquityInfoData.model_validate(d) for d in data]

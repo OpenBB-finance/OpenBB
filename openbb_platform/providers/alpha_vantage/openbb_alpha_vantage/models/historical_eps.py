@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -28,7 +28,7 @@ class AlphaVantageHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     period: Literal["annual", "quarter"] = Field(
         default="quarter", description=QUERY_DESCRIPTIONS.get("period", "")
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
@@ -44,20 +44,20 @@ class AlphaVantageHistoricalEpsData(HistoricalEpsData):
         "reported_date": "reportedDate",
     }
 
-    surprise: Optional[float] = Field(
+    surprise: float | None = Field(
         default=None,
         description="Surprise in EPS (Actual - Estimated).",
     )
-    surprise_percent: Optional[Union[float, str]] = Field(
+    surprise_percent: float | str | None = Field(
         default=None,
         description="EPS surprise as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    reported_date: Optional[dateType] = Field(
+    reported_date: dateType | None = Field(
         default=None,
         description="Date of the earnings report.",
     )
-    report_time: Optional[str] = Field(
+    report_time: str | None = Field(
         default=None,
         description="Time of day when the earnings report was released, e.g., 'post-market'.",
     )
@@ -84,21 +84,21 @@ class AlphaVantageHistoricalEpsData(HistoricalEpsData):
 
 
 class AVHistoricalEpsFetcher(
-    Fetcher[AlphaVantageHistoricalEpsQueryParams, List[AlphaVantageHistoricalEpsData]]
+    Fetcher[AlphaVantageHistoricalEpsQueryParams, list[AlphaVantageHistoricalEpsData]]
 ):
     """AlphaVantage Historical EPS Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> AlphaVantageHistoricalEpsQueryParams:
+    def transform_query(params: dict[str, Any]) -> AlphaVantageHistoricalEpsQueryParams:
         """Transform the query params."""
         return AlphaVantageHistoricalEpsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: AlphaVantageHistoricalEpsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the AlphaVantage endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -112,8 +112,8 @@ class AVHistoricalEpsFetcher(
         # We are allowing multiple symbols to be passed in the query, so we need to handle that.
         symbols = query.symbol.split(",")
         urls = [f"{BASE_URL}symbol={symbol}&apikey={api_key}" for symbol in symbols]
-        results: List = []
-        messages: List = []
+        results: list = []
+        messages: list = []
 
         # We need to make a custom callback function for this async request.
         async def response_callback(response: ClientResponse, _: ClientSession):
@@ -127,7 +127,7 @@ class AVHistoricalEpsFetcher(
             if message:
                 messages.append(message)
                 warn(f"Symbol Error for {symbol}: {message}")
-            result: List = []
+            result: list = []
             # If data is returned, append it to the results list.
             if data:
                 result = [
@@ -155,9 +155,9 @@ class AVHistoricalEpsFetcher(
     @staticmethod
     def transform_data(
         query: AlphaVantageHistoricalEpsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[AlphaVantageHistoricalEpsData]:
+    ) -> list[AlphaVantageHistoricalEpsData]:
         """Transform the raw data into the standard model."""
         if not data:
             raise EmptyDataError("No data found.")

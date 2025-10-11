@@ -41,17 +41,20 @@ def test_remove_file_existing_file():
 
 def test_remove_file_directory():
     """Test removing a directory."""
-    with patch("os.path.isfile", return_value=False), patch(
-        "os.path.isdir", return_value=True
-    ), patch("shutil.rmtree") as mock_rmtree:
+    with (
+        patch("os.path.isfile", return_value=False),
+        patch("os.path.isdir", return_value=True),
+        patch("shutil.rmtree") as mock_rmtree,
+    ):
         assert remove_file(Path("/path/to/directory"))
         mock_rmtree.assert_called_once()
 
 
 def test_remove_file_failure(mock_session):
     """Test removing a file that fails."""
-    with patch("os.path.isfile", return_value=True), patch(
-        "os.remove", side_effect=Exception("Error")
+    with (
+        patch("os.path.isfile", return_value=True),
+        patch("os.remove", side_effect=Exception("Error")),
     ):
         assert not remove_file(Path("/path/to/file"))
         mock_session.console.print.assert_called()

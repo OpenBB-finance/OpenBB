@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -65,149 +65,149 @@ class FMPIncomeStatementData(IncomeStatementData):
         "weighted_average_diluted_shares_outstanding": "weightedAverageShsOutDil",
     }
 
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None,
         description="The date when the filing was made.",
     )
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: datetime | None = Field(
         default=None,
         description="The date and time when the filing was accepted.",
     )
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None,
         description="The Central Index Key (CIK) assigned by the SEC, if applicable.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="The stock ticker symbol.",
     )
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         default=None,
         description="The currency in which the balance sheet was reported.",
     )
-    revenue: Optional[int] = Field(
+    revenue: int | None = Field(
         default=None,
         description="Total revenue.",
     )
-    cost_of_revenue: Optional[int] = Field(
+    cost_of_revenue: int | None = Field(
         default=None,
         description="Cost of revenue.",
     )
-    gross_profit: Optional[int] = Field(
+    gross_profit: int | None = Field(
         default=None,
         description="Gross profit.",
     )
-    general_and_admin_expense: Optional[int] = Field(
+    general_and_admin_expense: int | None = Field(
         default=None,
         description="General and administrative expenses.",
     )
-    research_and_development_expense: Optional[int] = Field(
+    research_and_development_expense: int | None = Field(
         default=None,
         description="Research and development expenses.",
     )
-    selling_and_marketing_expense: Optional[int] = Field(
+    selling_and_marketing_expense: int | None = Field(
         default=None,
         description="Selling and marketing expenses.",
     )
-    selling_general_and_admin_expense: Optional[int] = Field(
+    selling_general_and_admin_expense: int | None = Field(
         default=None,
         description="Selling, general and administrative expenses.",
     )
-    other_expenses: Optional[int] = Field(
+    other_expenses: int | None = Field(
         default=None,
         description="Other expenses.",
     )
-    total_operating_expenses: Optional[int] = Field(
+    total_operating_expenses: int | None = Field(
         default=None,
         description="Total operating expenses.",
     )
-    cost_and_expenses: Optional[int] = Field(
+    cost_and_expenses: int | None = Field(
         default=None,
         description="Cost and expenses.",
     )
-    interest_income: Optional[int] = Field(
+    interest_income: int | None = Field(
         default=None,
         description="Interest income.",
     )
-    total_interest_expense: Optional[int] = Field(
+    total_interest_expense: int | None = Field(
         default=None,
         description="Total interest expenses.",
     )
-    net_interest_income: Optional[int] = Field(
+    net_interest_income: int | None = Field(
         default=None,
         description="Net interest income.",
     )
-    depreciation_and_amortization: Optional[int] = Field(
+    depreciation_and_amortization: int | None = Field(
         default=None,
         description="Depreciation and amortization.",
     )
-    ebit: Optional[int] = Field(
+    ebit: int | None = Field(
         default=None,
         description="Earnings before interest and taxes (EBIT).",
         title="EBIT",
     )
-    ebitda: Optional[int] = Field(
+    ebitda: int | None = Field(
         default=None,
         description="EBITDA.",
         title="EBITDA",
     )
-    total_operating_income: Optional[int] = Field(
+    total_operating_income: int | None = Field(
         default=None,
         description="Total operating income.",
     )
-    non_operating_income_excluding_interest: Optional[int] = Field(
+    non_operating_income_excluding_interest: int | None = Field(
         default=None,
         description="Non-operating income excluding interest.",
     )
-    net_income_from_continuing_operations: Optional[int] = Field(
+    net_income_from_continuing_operations: int | None = Field(
         default=None,
         description="Net income from continuing operations.",
     )
-    net_income_from_discontinued_operations: Optional[int] = Field(
+    net_income_from_discontinued_operations: int | None = Field(
         default=None,
         description="Net income from discontinued operations.",
     )
-    total_other_income_expenses: Optional[int] = Field(
+    total_other_income_expenses: int | None = Field(
         default=None,
         description="Total other income and expenses.",
     )
-    total_pre_tax_income: Optional[int] = Field(
+    total_pre_tax_income: int | None = Field(
         default=None,
         description="Total pre-tax income.",
     )
-    income_tax_expense: Optional[int] = Field(
+    income_tax_expense: int | None = Field(
         default=None,
         description="Income tax expense.",
     )
-    other_adjustments_to_net_income: Optional[int] = Field(
+    other_adjustments_to_net_income: int | None = Field(
         default=None,
         description="Other adjustments to net income.",
     )
-    net_income_deductions: Optional[int] = Field(
+    net_income_deductions: int | None = Field(
         default=None,
         description="Net income deductions.",
     )
-    consolidated_net_income: Optional[int] = Field(
+    consolidated_net_income: int | None = Field(
         default=None,
         description="Consolidated net income.",
     )
-    bottom_line_net_income: Optional[int] = Field(
+    bottom_line_net_income: int | None = Field(
         default=None,
         description="Bottom line net income.",
     )
-    basic_earnings_per_share: Optional[float] = Field(
+    basic_earnings_per_share: float | None = Field(
         default=None,
         description="Basic earnings per share.",
     )
-    diluted_earnings_per_share: Optional[float] = Field(
+    diluted_earnings_per_share: float | None = Field(
         default=None,
         description="Diluted earnings per share.",
     )
-    weighted_average_basic_shares_outstanding: Optional[int] = Field(
+    weighted_average_basic_shares_outstanding: int | None = Field(
         default=None,
         description="Weighted average basic shares outstanding.",
     )
-    weighted_average_diluted_shares_outstanding: Optional[int] = Field(
+    weighted_average_diluted_shares_outstanding: int | None = Field(
         default=None,
         description="Weighted average diluted shares outstanding.",
     )
@@ -229,7 +229,7 @@ class FMPIncomeStatementFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPIncomeStatementQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -1,7 +1,9 @@
 """Nasdaq Top Retail Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -29,21 +31,21 @@ class NasdaqTopRetailData(TopRetailData):
 
 
 class NasdaqTopRetailFetcher(
-    Fetcher[NasdaqTopRetailQueryParams, List[NasdaqTopRetailData]]
+    Fetcher[NasdaqTopRetailQueryParams, list[NasdaqTopRetailData]]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqTopRetailQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqTopRetailQueryParams:
         """Transform the params to the provider-specific query."""
         return NasdaqTopRetailQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: NasdaqTopRetailQueryParams,  # pylint: disable=unused-argument
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get data from Nasdaq."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
@@ -61,11 +63,11 @@ class NasdaqTopRetailFetcher(
     @staticmethod
     def transform_data(
         query: TopRetailQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqTopRetailData]:
+    ) -> list[NasdaqTopRetailData]:
         """Transform the data."""
-        transformed_data: List[NasdaqTopRetailData] = []
+        transformed_data: list[NasdaqTopRetailData] = []
         for row in data:
             transformed_data.append(
                 NasdaqTopRetailData.model_validate(

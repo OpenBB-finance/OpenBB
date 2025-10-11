@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -28,9 +28,9 @@ ALL_IDS = list(OBFR_ID_TO_FIELD)
 class FredOvernightBankFundingRateQueryParams(OvernightBankFundingRateQueryParams):
     """FRED Overnight Bank Funding Rate Query Params."""
 
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -44,8 +44,8 @@ class FredOvernightBankFundingRateQueryParams(OvernightBankFundingRateQueryParam
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -81,7 +81,7 @@ class FredOvernightBankFundingRateQueryParams(OvernightBankFundingRateQueryParam
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -91,9 +91,9 @@ class FredOvernightBankFundingRateQueryParams(OvernightBankFundingRateQueryParam
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -142,14 +142,14 @@ class FredOvernightBankFundingRateData(OvernightBankFundingRateData):
 
 class FredOvernightBankFundingRateFetcher(
     Fetcher[
-        FredOvernightBankFundingRateQueryParams, List[FredOvernightBankFundingRateData]
+        FredOvernightBankFundingRateQueryParams, list[FredOvernightBankFundingRateData]
     ]
 ):
     """Fred Overnight Bank Funding Rate Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredOvernightBankFundingRateQueryParams:
         """Transform query."""
         return FredOvernightBankFundingRateQueryParams(**params)
@@ -157,9 +157,9 @@ class FredOvernightBankFundingRateFetcher(
     @staticmethod
     async def aextract_data(
         query: FredOvernightBankFundingRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         try:
             response = await FredSeriesFetcher.fetch_data(
@@ -183,8 +183,8 @@ class FredOvernightBankFundingRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredOvernightBankFundingRateQueryParams, data: Dict, **kwargs: Any
-    ) -> AnnotatedResult[List[FredOvernightBankFundingRateData]]:
+        query: FredOvernightBankFundingRateQueryParams, data: dict, **kwargs: Any
+    ) -> AnnotatedResult[list[FredOvernightBankFundingRateData]]:
         """Transform data"""
         if not data:
             raise EmptyDataError("The request was returned empty.")

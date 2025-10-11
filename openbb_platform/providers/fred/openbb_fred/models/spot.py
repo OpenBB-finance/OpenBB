@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -43,22 +43,22 @@ class FREDSpotRateData(SpotRateData):
 class FREDSpotRateFetcher(
     Fetcher[
         FREDSpotRateQueryParams,
-        List[FREDSpotRateData],
+        list[FREDSpotRateData],
     ]
 ):
     """FRED Spot Rate Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSpotRateQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDSpotRateQueryParams:
         """Transform query."""
         return FREDSpotRateQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDSpotRateQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -102,7 +102,7 @@ class FREDSpotRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSpotRateQueryParams, data: List, **kwargs: Any
-    ) -> List[FREDSpotRateData]:
+        query: FREDSpotRateQueryParams, data: list, **kwargs: Any
+    ) -> list[FREDSpotRateData]:
         """Transform data."""
         return [FREDSpotRateData.model_validate(d) for d in data]

@@ -1,7 +1,6 @@
 """Dividend Calendar Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,10 +14,10 @@ from pydantic import Field
 class CalendarDividendQueryParams(QueryParams):
     """Dividend Calendar Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
@@ -30,19 +29,19 @@ class CalendarDividendData(Data):
         description="The ex-dividend date - the date on which the stock begins trading without rights to the dividend."
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    amount: Optional[float] = Field(
+    amount: float | None = Field(
         default=None, description="The dividend amount per share."
     )
-    name: Optional[str] = Field(default=None, description="Name of the entity.")
-    record_date: Optional[dateType] = Field(
+    name: str | None = Field(default=None, description="Name of the entity.")
+    record_date: dateType | None = Field(
         default=None,
         description="The record date of ownership for eligibility.",
     )
-    payment_date: Optional[dateType] = Field(
+    payment_date: dateType | None = Field(
         default=None,
         description="The payment date of the dividend.",
     )
-    declaration_date: Optional[dateType] = Field(
+    declaration_date: dateType | None = Field(
         default=None,
         description="Declaration date of the dividend.",
     )

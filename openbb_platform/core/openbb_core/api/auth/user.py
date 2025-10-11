@@ -1,20 +1,19 @@
 """User authentication."""
 
 import secrets
-from typing import Optional
+from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
-from typing_extensions import Annotated
 
 security = HTTPBasic() if Env().API_AUTH else lambda: None
 
 
 async def authenticate_user(
-    credentials: Annotated[Optional[HTTPBasicCredentials], Depends(security)],
+    credentials: Annotated[HTTPBasicCredentials | None, Depends(security)],
 ):
     """Authenticate the user."""
     if credentials:

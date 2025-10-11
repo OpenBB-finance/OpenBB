@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -28,17 +28,17 @@ class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
 
     __alias_dict__ = {"limit": "page_size"}
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
-    ownership_type: Optional[Literal["D", "I"]] = Field(
+    ownership_type: Literal["D", "I"] | None = Field(
         default=None,
         description="Type of ownership.",
     )
-    sort_by: Optional[Literal["filing_date", "updated_on"]] = Field(
+    sort_by: Literal["filing_date", "updated_on"] | None = Field(
         default="updated_on",
         description="Field to sort by.",
     )
@@ -57,54 +57,54 @@ class IntrinioInsiderTradingData(InsiderTradingData):
     }
 
     company_name: str = Field(description="Name of the company.")
-    conversion_exercise_price: Optional[float] = Field(
+    conversion_exercise_price: float | None = Field(
         default=None,
         description="Conversion/Exercise price of the shares.",
     )
-    deemed_execution_date: Optional[dateType] = Field(
+    deemed_execution_date: dateType | None = Field(
         default=None,
         description="Deemed execution date of the trade.",
     )
-    exercise_date: Optional[dateType] = Field(
+    exercise_date: dateType | None = Field(
         default=None,
         description="Exercise date of the trade.",
     )
-    expiration_date: Optional[dateType] = Field(
+    expiration_date: dateType | None = Field(
         default=None,
         description="Expiration date of the derivative.",
     )
-    underlying_security_title: Optional[str] = Field(
+    underlying_security_title: str | None = Field(
         default=None,
         description="Name of the underlying non-derivative security related to this derivative transaction.",
     )
-    underlying_shares: Optional[Union[int, float]] = Field(
+    underlying_shares: int | float | None = Field(
         default=None,
         description="Number of underlying shares related to this derivative transaction.",
     )
-    nature_of_ownership: Optional[str] = Field(
+    nature_of_ownership: str | None = Field(
         default=None,
         description="Nature of ownership of the insider trading.",
     )
-    director: Optional[bool] = Field(
+    director: bool | None = Field(
         default=None, description="Whether the owner is a director."
     )
-    officer: Optional[bool] = Field(
+    officer: bool | None = Field(
         default=None, description="Whether the owner is an officer."
     )
-    ten_percent_owner: Optional[bool] = Field(
+    ten_percent_owner: bool | None = Field(
         default=None, description="Whether the owner is a 10% owner."
     )
-    other_relation: Optional[bool] = Field(
+    other_relation: bool | None = Field(
         default=None, description="Whether the owner is having another relation."
     )
-    derivative_transaction: Optional[bool] = Field(
+    derivative_transaction: bool | None = Field(
         default=None,
         description="Whether the owner is having a derivative transaction.",
     )
-    report_line_number: Optional[int] = Field(
+    report_line_number: int | None = Field(
         default=None, description="Report line number of the insider trading."
     )
-    filing_url: Optional[str] = Field(default=None, description="URL of the filing.")
+    filing_url: str | None = Field(default=None, description="URL of the filing.")
 
     @model_validator(mode="before")
     @classmethod
@@ -120,13 +120,13 @@ class IntrinioInsiderTradingData(InsiderTradingData):
 class IntrinioInsiderTradingFetcher(
     Fetcher[
         IntrinioInsiderTradingQueryParams,
-        List[IntrinioInsiderTradingData],
+        list[IntrinioInsiderTradingData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioInsiderTradingQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioInsiderTradingQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -141,9 +141,9 @@ class IntrinioInsiderTradingFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioInsiderTradingQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -156,10 +156,10 @@ class IntrinioInsiderTradingFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioInsiderTradingData]:
+        query: IntrinioInsiderTradingQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioInsiderTradingData]:
         """Return the transformed data."""
-        transformed_data: List[Dict] = []
+        transformed_data: list[dict] = []
 
         for item in data:
             transformed_data.extend(

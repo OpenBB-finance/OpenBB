@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_performance import (
@@ -31,7 +31,7 @@ class WSJGainersData(ETFPerformanceData):
         "date": "timestamp",
     }
 
-    bluegrass_channel: Optional[str] = Field(
+    bluegrass_channel: str | None = Field(
         description="Bluegrass channel.", default=None
     )
     country: str = Field(
@@ -65,21 +65,21 @@ class WSJGainersData(ETFPerformanceData):
         return datetime.strptime(v[:10], "%Y-%m-%d").date()
 
 
-class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
+class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, list[WSJGainersData]]):
     """Transform the query, extract and transform the data from the WSJ endpoints."""
 
     # pylint: disable=unused-argument
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> WSJGainersQueryParams:
+    def transform_query(params: dict[str, Any]) -> WSJGainersQueryParams:
         """Transform query params."""
         return WSJGainersQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: WSJGainersQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get data from WSJ."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
@@ -96,9 +96,9 @@ class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
     @staticmethod
     def transform_data(
         query: ETFPerformanceQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[WSJGainersData]:
+    ) -> list[WSJGainersData]:
         """Transform data."""
         data = data[: query.limit]
         data = sorted(

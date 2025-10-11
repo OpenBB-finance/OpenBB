@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -78,99 +78,99 @@ class FinvizCompareGroupsData(CompareGroupsData):
 
     name: str = Field(description="Name or label of the group.")
 
-    stocks: Optional[int] = Field(
+    stocks: int | None = Field(
         default=None,
         description="The number of stocks in the group.",
     )
-    market_cap: Optional[ForceInt] = Field(
+    market_cap: ForceInt | None = Field(
         default=None,
         description="The market cap of the group.",
     )
-    performance_1d: Optional[float] = Field(
+    performance_1d: float | None = Field(
         default=None,
         description="The performance in the last day, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1w: Optional[float] = Field(
+    performance_1w: float | None = Field(
         default=None,
         description="The performance in the last week, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1m: Optional[float] = Field(
+    performance_1m: float | None = Field(
         default=None,
         description="The performance in the last month, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_3m: Optional[float] = Field(
+    performance_3m: float | None = Field(
         default=None,
         description="The performance in the last quarter, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_6m: Optional[float] = Field(
+    performance_6m: float | None = Field(
         default=None,
         description="The performance in the last half year, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_1y: Optional[float] = Field(
+    performance_1y: float | None = Field(
         default=None,
         description="The performance in the last year, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_ytd: Optional[float] = Field(
+    performance_ytd: float | None = Field(
         default=None,
         description="The performance in the year to date, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="The dividend yield of the group, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    pe: Optional[float] = Field(
+    pe: float | None = Field(
         default=None,
         description="The P/E ratio of the group.",
     )
-    forward_pe: Optional[float] = Field(
+    forward_pe: float | None = Field(
         default=None,
         description="The forward P/E ratio of the group.",
     )
-    peg: Optional[float] = Field(
+    peg: float | None = Field(
         default=None,
         description="The PEG ratio of the group.",
     )
-    eps_growth_past_5y: Optional[float] = Field(
+    eps_growth_past_5y: float | None = Field(
         default=None,
         description="The EPS growth of the group for the past 5 years, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_5y: Optional[float] = Field(
+    eps_growth_next_5y: float | None = Field(
         default=None,
         description="The estimated EPS growth of the groupo for the next 5 years,"
         + " as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sales_growth_past_5y: Optional[float] = Field(
+    sales_growth_past_5y: float | None = Field(
         default=None,
         description="The sales growth of the group for the past 5 years, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    float_short: Optional[float] = Field(
+    float_short: float | None = Field(
         default=None,
         description="The percent of the float shorted for the group, as a normalized value.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    analyst_recommendation: Optional[float] = Field(
+    analyst_recommendation: float | None = Field(
         default=None,
         description="The analyst consensus, on a scale of 1-5 where 1 is a buy and 5 is a sell.",
     )
-    volume: Optional[ForceInt] = Field(
+    volume: ForceInt | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    volume_average: Optional[ForceInt] = Field(
+    volume_average: ForceInt | None = Field(
         default=None,
         description="The 3-month average volume of the group.",
     )
-    volume_relative: Optional[float] = Field(
+    volume_relative: float | None = Field(
         default=None,
         description="The relative volume compared to the 3-month average volume.",
     )
@@ -213,12 +213,12 @@ class FinvizCompareGroupsData(CompareGroupsData):
 
 
 class FinvizCompareGroupsFetcher(
-    Fetcher[FinvizCompareGroupsQueryParams, List[FinvizCompareGroupsData]]
+    Fetcher[FinvizCompareGroupsQueryParams, list[FinvizCompareGroupsData]]
 ):
     """Finviz Compare Groups Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizCompareGroupsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizCompareGroupsQueryParams:
         """Transform the query params."""
         if params.get("group") is None:
             params["group"] = "sector"
@@ -229,9 +229,9 @@ class FinvizCompareGroupsFetcher(
     @staticmethod
     def extract_data(
         query: FinvizCompareGroupsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
         from finvizfinance import util
@@ -240,7 +240,7 @@ class FinvizCompareGroupsFetcher(
         from pandas import DataFrame
 
         util.session = get_requests_session()
-        results: List = []
+        results: list = []
         data = DataFrame()
         if query.metric == "performance":
             data = Performance().screener_view(
@@ -266,8 +266,8 @@ class FinvizCompareGroupsFetcher(
     @staticmethod
     def transform_data(
         query: FinvizCompareGroupsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizCompareGroupsData]:
+    ) -> list[FinvizCompareGroupsData]:
         """Transform the raw data."""
         return [FinvizCompareGroupsData.model_validate(d) for d in data]

@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -34,23 +34,23 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         }
     }
 
-    cik: Optional[Union[str, int]] = Field(
+    cik: str | int | None = Field(
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    form_type: Optional[str] = Field(
+    form_type: str | None = Field(
         description="SEC form type to filter by.",
         default=None,
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -111,59 +111,53 @@ class SecCompanyFilingsData(CompanyFilingsData):
         "filing_detail_url": "filingDetailUrl",
     }
 
-    report_date: Optional[dateType] = Field(
+    report_date: dateType | None = Field(
         description="The date of the filing.",
         default=None,
     )
-    act: Optional[Union[str, int]] = Field(
-        description="The SEC Act number.", default=None
-    )
-    items: Optional[Union[str, float]] = Field(
-        description="The SEC Item numbers.", default=None
-    )
-    primary_doc_description: Optional[str] = Field(
+    act: str | int | None = Field(description="The SEC Act number.", default=None)
+    items: str | float | None = Field(description="The SEC Item numbers.", default=None)
+    primary_doc_description: str | None = Field(
         description="The description of the primary document.",
         default=None,
     )
-    primary_doc: Optional[str] = Field(
+    primary_doc: str | None = Field(
         description="The filename of the primary document.",
         default=None,
     )
-    accession_number: Optional[Union[str, int]] = Field(
+    accession_number: str | int | None = Field(
         description="The accession number.",
         default=None,
     )
-    file_number: Optional[Union[str, int]] = Field(
+    file_number: str | int | None = Field(
         description="The file number.",
         default=None,
     )
-    film_number: Optional[Union[str, int]] = Field(
+    film_number: str | int | None = Field(
         description="The film number.",
         default=None,
     )
-    is_inline_xbrl: Optional[Union[str, int]] = Field(
+    is_inline_xbrl: str | int | None = Field(
         description="Whether the filing is an inline XBRL filing.",
         default=None,
     )
-    is_xbrl: Optional[Union[str, int]] = Field(
+    is_xbrl: str | int | None = Field(
         description="Whether the filing is an XBRL filing.",
         default=None,
     )
-    size: Optional[Union[str, int]] = Field(
-        description="The size of the filing.", default=None
-    )
-    complete_submission_url: Optional[str] = Field(
+    size: str | int | None = Field(description="The size of the filing.", default=None)
+    complete_submission_url: str | None = Field(
         description="The URL to the complete filing submission.",
         default=None,
     )
-    filing_detail_url: Optional[str] = Field(
+    filing_detail_url: str | None = Field(
         description="The URL to the filing details.",
         default=None,
     )
 
     @field_validator("report_date", mode="before", check_fields=False)
     @classmethod
-    def validate_report_date(cls, v: Optional[Union[str, dateType]]):
+    def validate_report_date(cls, v: str | dateType | None):
         """Validate report_date."""
         if isinstance(v, dateType):
             return v
@@ -176,21 +170,21 @@ class SecCompanyFilingsData(CompanyFilingsData):
 
 
 class SecCompanyFilingsFetcher(
-    Fetcher[SecCompanyFilingsQueryParams, List[SecCompanyFilingsData]]
+    Fetcher[SecCompanyFilingsQueryParams, list[SecCompanyFilingsData]]
 ):
     """SEC Company Filings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecCompanyFilingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecCompanyFilingsQueryParams:
         """Transform query params."""
         return SecCompanyFilingsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecCompanyFilingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from aiohttp_client_cache import SQLiteBackend
@@ -220,7 +214,7 @@ class SecCompanyFilingsFetcher(
             query.cik = cik_ + str(query.cik)  # type: ignore
 
         url = f"https://data.sec.gov/submissions/CIK{query.cik}.json"
-        data: Union[dict, List[dict]] = []
+        data: dict | list[dict] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_company_filings"
             async with CachedSession(
@@ -236,9 +230,7 @@ class SecCompanyFilingsFetcher(
 
         # This seems to work for the data structure.
         filings = (
-            DataFrame.from_records(data["filings"].get("recent"))  # type: ignore
-            if "filings" in data
-            else DataFrame()
+            DataFrame.from_records(data["filings"].get("recent")) if "filings" in data else DataFrame()  # type: ignore
         )
         results = filings.to_dict("records")
 
@@ -256,12 +248,8 @@ class SecCompanyFilingsFetcher(
                     new_data = DataFrame.from_records(result)
                     results.extend(new_data.to_dict("records"))
 
-            urls: List = []
-            new_urls = (
-                DataFrame(data["filings"].get("files"))  # type: ignore
-                if "filings" in data
-                else DataFrame()
-            )
+            urls: list = []
+            new_urls = DataFrame(data["filings"].get("files")) if "filings" in data else DataFrame()  # type: ignore
             for i in new_urls.index:
                 new_cik: str = data["filings"]["files"][i]["name"]  # type: ignore
                 new_url: str = "https://data.sec.gov/submissions/" + new_cik
@@ -282,8 +270,8 @@ class SecCompanyFilingsFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[SecCompanyFilingsData]:
+        query: SecCompanyFilingsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[SecCompanyFilingsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from numpy import nan

@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
@@ -38,26 +38,26 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         "cusip": "securityCusip",
     }
 
-    cusip: Optional[str] = Field(
+    cusip: str | None = Field(
         description="The CUSIP of the holding.", default=None, title="CUSIP"
     )
-    isin: Optional[str] = Field(
+    isin: str | None = Field(
         description="The ISIN of the holding.", default=None, title="ISIN"
     )
-    weight: Optional[float] = Field(
+    weight: float | None = Field(
         description="The weight of the holding, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    shares: Optional[Union[float, str]] = Field(
+    shares: float | str | None = Field(
         description="The number of shares held.", default=None
     )
-    value: Optional[float] = Field(
+    value: float | None = Field(
         description="The market value of the holding.",
         default=None,
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    updated: Optional[Union[dateType, datetime]] = Field(
+    updated: dateType | datetime | None = Field(
         description="The date the data was updated.", default=None
     )
 
@@ -94,7 +94,7 @@ class FMPEtfHoldingsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEtfHoldingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -1,7 +1,6 @@
 """Reported Financials."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -22,7 +21,7 @@ class ReportedFinancialsQueryParams(QueryParams):
         default="balance",
         description="The type of financial statement - i.e, balance, income, cash.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=100,
         description=(
             QUERY_DESCRIPTIONS.get("limit", "")
@@ -40,7 +39,7 @@ class ReportedFinancialsQueryParams(QueryParams):
 
     @field_validator("period", "statement_type", mode="before", check_fields=False)
     @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+    def to_lower(cls, v: str | None) -> str | None:
         """Convert field to lowercase."""
         return v.lower() if v else v
 
@@ -54,7 +53,7 @@ class ReportedFinancialsData(Data):
     fiscal_period: str = Field(
         description="The fiscal period of the report (e.g. FY, Q1, etc.)."
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         description="The fiscal year of the fiscal period.", default=None
     )
 

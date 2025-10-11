@@ -1,7 +1,6 @@
 """Registry for OBBjects."""
 
 import json
-from typing import Dict, List, Optional, Union
 
 from openbb_core.app.model.obbject import OBBject
 
@@ -11,10 +10,10 @@ class Registry:
 
     def __init__(self):
         """Initialize the registry."""
-        self._obbjects: List[OBBject] = []
+        self._obbjects: list[OBBject] = []
 
     @staticmethod
-    def _contains_obbject(uuid: str, obbjects: List[OBBject]) -> bool:
+    def _contains_obbject(uuid: str, obbjects: list[OBBject]) -> bool:
         """Check if obbject with uuid is in the registry."""
         return any(obbject.id == uuid for obbject in obbjects)
 
@@ -29,7 +28,7 @@ class Registry:
             return True
         return False
 
-    def get(self, arg: Union[int, str]) -> Optional[OBBject]:
+    def get(self, arg: int | str) -> OBBject | None:
         """Return the obbject with index or key."""
         if isinstance(arg, int):
             return self._get_by_index(arg)
@@ -38,14 +37,14 @@ class Registry:
 
         raise ValueError("Couldn't get the `OBBject` with the provided argument.")
 
-    def _get_by_key(self, key: str) -> Optional[OBBject]:
+    def _get_by_key(self, key: str) -> OBBject | None:
         """Return the obbject with key."""
         for obbject in self._obbjects:
             if obbject.extra.get("register_key", "") == key:
                 return obbject
         return None
 
-    def _get_by_index(self, idx: int) -> Optional[OBBject]:
+    def _get_by_index(self, idx: int) -> OBBject | None:
         """Return the obbject at index idx."""
         # the list should work as a stack
         # i.e., the last element needs to be accessed by idx=0 and so on
@@ -66,7 +65,7 @@ class Registry:
         self._obbjects = list(reversed(reversed_list))
 
     @property
-    def all(self) -> Dict[int, Dict]:
+    def all(self) -> dict[int, dict]:
         """Return all obbjects in the registry."""
 
         def _handle_standard_params(obbject: OBBject) -> str:
@@ -115,12 +114,12 @@ class Registry:
         return obbjects
 
     @property
-    def obbjects(self) -> List[OBBject]:
+    def obbjects(self) -> list[OBBject]:
         """Return all obbjects in the registry."""
         return self._obbjects
 
     @property
-    def obbject_keys(self) -> List[str]:
+    def obbject_keys(self) -> list[str]:
         """Return all obbject keys in the registry."""
         return [
             obbject.extra["register_key"]

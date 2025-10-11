@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_constituents import (
@@ -101,41 +101,41 @@ class CboeIndexConstituentsData(IndexConstituentsData):
         "asset_type": "type",
     }
 
-    security_type: Optional[str] = Field(
+    security_type: str | None = Field(
         default=None, description="The type of security represented."
     )
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None, description="Last price for the symbol."
     )
-    open: Optional[float] = Field(
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
-    close: Optional[float] = Field(
+    close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
-    volume: Optional[int] = Field(
+    volume: int | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    prev_close: Optional[float] = Field(
+    prev_close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("prev_close", "")
     )
-    change: Optional[float] = Field(default=None, description="Change in price.")
-    change_percent: Optional[float] = Field(
+    change: float | None = Field(default=None, description="Change in price.")
+    change_percent: float | None = Field(
         default=None, description="Change in price as a normalized percentage."
     )
-    tick: Optional[str] = Field(
+    tick: str | None = Field(
         default=None, description="Whether the last sale was an up or down tick."
     )
-    last_trade_time: Optional[datetime] = Field(
+    last_trade_time: datetime | None = Field(
         default=None, description="Last trade timestamp for the symbol."
     )
-    asset_type: Optional[str] = Field(
+    asset_type: str | None = Field(
         default=None,
         description="Type of asset.",
     )
@@ -150,37 +150,34 @@ class CboeIndexConstituentsData(IndexConstituentsData):
 class CboeIndexConstituentsFetcher(
     Fetcher[
         CboeIndexConstituentsQueryParams,
-        List[CboeIndexConstituentsData],
+        list[CboeIndexConstituentsData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeIndexConstituentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeIndexConstituentsQueryParams:
         """Transform the query."""
         return CboeIndexConstituentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeIndexConstituentsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Cboe endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
 
-        url = (
-            "https://cdn.cboe.com/api/global/european_indices"
-            f"/constituent_quotes/{query.symbol}.json"
-        )
+        url = f"https://cdn.cboe.com/api/global/european_indices/constituent_quotes/{query.symbol}.json"
         data = await amake_request(url)
         return data.get("data")  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: CboeIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeIndexConstituentsData]:
+        query: CboeIndexConstituentsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[CboeIndexConstituentsData]:
         """Transform the data to the standard format."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

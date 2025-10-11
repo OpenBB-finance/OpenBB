@@ -5,7 +5,6 @@ from datetime import (
     datetime,
     time,
 )
-from typing import Optional, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -21,7 +20,7 @@ class InsiderTradingQueryParams(QueryParams):
     """Insider Trading Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -36,53 +35,53 @@ class InsiderTradingQueryParams(QueryParams):
 class InsiderTradingData(Data):
     """Insider Trading Data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    company_cik: Optional[str] = Field(
+    company_cik: str | None = Field(
         default=None,
         description="CIK number of the company.",
         coerce_numbers_to_str=True,
     )
-    filing_date: Optional[Union[dateType, datetime]] = Field(
+    filing_date: dateType | datetime | None = Field(
         default=None, description="Filing date of the trade."
     )
-    transaction_date: Optional[dateType] = Field(
+    transaction_date: dateType | None = Field(
         default=None, description="Date of the transaction."
     )
-    owner_cik: Optional[Union[int, str]] = Field(
+    owner_cik: int | str | None = Field(
         default=None, description="Reporting individual's CIK."
     )
-    owner_name: Optional[str] = Field(
+    owner_name: str | None = Field(
         default=None, description="Name of the reporting individual."
     )
-    owner_title: Optional[str] = Field(
+    owner_title: str | None = Field(
         default=None, description="The title held by the reporting individual."
     )
-    ownership_type: Optional[str] = Field(
+    ownership_type: str | None = Field(
         default=None, description="Type of ownership, e.g., direct or indirect."
     )
-    transaction_type: Optional[str] = Field(
+    transaction_type: str | None = Field(
         default=None, description="Type of transaction being reported."
     )
-    acquisition_or_disposition: Optional[str] = Field(
+    acquisition_or_disposition: str | None = Field(
         default=None, description="Acquisition or disposition of the shares."
     )
-    security_type: Optional[str] = Field(
+    security_type: str | None = Field(
         default=None, description="The type of security transacted."
     )
-    securities_owned: Optional[float] = Field(
+    securities_owned: float | None = Field(
         default=None,
         description="Number of securities owned by the reporting individual.",
     )
-    securities_transacted: Optional[float] = Field(
+    securities_transacted: float | None = Field(
         default=None,
         description="Number of securities transacted by the reporting individual.",
     )
-    transaction_price: Optional[float] = Field(
+    transaction_price: float | None = Field(
         default=None, description="The price of the transaction."
     )
-    filing_url: Optional[str] = Field(default=None, description="Link to the filing.")
+    filing_url: str | None = Field(default=None, description="Link to the filing.")
 
     @field_validator(
         "filing_date", "transaction_date", mode="before", check_fields=False

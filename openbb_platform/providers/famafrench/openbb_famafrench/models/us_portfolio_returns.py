@@ -3,16 +3,15 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
-
 from openbb_famafrench.utils.constants import USPortfolios, portfolio_choices
+from pydantic import Field
 
 
 class FamaFrenchUSPortfolioReturnsQueryParams(QueryParams):
@@ -48,11 +47,11 @@ class FamaFrenchUSPortfolioReturnsQueryParams(QueryParams):
         description="The frequency of the data to fetch."
         + " Ignored if the portfolio ends with 'daily' or 'weekly'.",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description="The start date for the data. Defaults to the earliest available date.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description="The end date for the data. Defaults to the latest available date.",
     )
@@ -79,7 +78,7 @@ class FamaFrenchUSPortfolioReturnsData(Data):
     ] = Field(
         description="The measure of the portfolio.",
     )
-    value: Union[int, float] = Field(
+    value: int | float = Field(
         description="The value represented by the 'measure'."
         + " Missing data are indicated by -99.99 or -999",
     )
@@ -102,7 +101,7 @@ class FamaFrenchUSPortfolioReturnsFetcher(
     @staticmethod
     async def aextract_data(
         query: FamaFrenchUSPortfolioReturnsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> tuple:
         """Extract data from the Fama-French FTP."""

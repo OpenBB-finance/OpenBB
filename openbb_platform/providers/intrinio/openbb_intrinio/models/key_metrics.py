@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
@@ -68,163 +68,163 @@ class IntrinioKeyMetricsData(KeyMetricsData):
         "eps": "basiceps",
     }
 
-    pe_ratio: Optional[float] = Field(
+    pe_ratio: float | None = Field(
         default=None,
         description="Price-to-earnings ratio (TTM).",
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None,
         description="Price to book ratio.",
     )
-    price_to_tangible_book: Optional[float] = Field(
+    price_to_tangible_book: float | None = Field(
         default=None,
         description="Price to tangible book ratio.",
     )
-    price_to_revenue: Optional[float] = Field(
+    price_to_revenue: float | None = Field(
         default=None,
         description="Price to revenue ratio.",
     )
-    quick_ratio: Optional[float] = Field(
+    quick_ratio: float | None = Field(
         default=None,
         description="Quick ratio.",
     )
-    gross_margin: Optional[float] = Field(
+    gross_margin: float | None = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ebit_margin: Optional[float] = Field(
+    ebit_margin: float | None = Field(
         default=None,
         description="EBIT margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    profit_margin: Optional[float] = Field(
+    profit_margin: float | None = Field(
         default=None,
         description="Profit margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps: Optional[float] = Field(
+    eps: float | None = Field(
         default=None,
         description="Basic earnings per share.",
     )
-    eps_growth: Optional[float] = Field(
+    eps_growth: float | None = Field(
         default=None,
         description="EPS growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    revenue_growth: Optional[float] = Field(
+    revenue_growth: float | None = Field(
         default=None,
         description="Revenue growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ebitda_growth: Optional[float] = Field(
+    ebitda_growth: float | None = Field(
         default=None,
         description="EBITDA growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ebit_growth: Optional[float] = Field(
+    ebit_growth: float | None = Field(
         default=None,
         description="EBIT growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    net_income_growth: Optional[float] = Field(
+    net_income_growth: float | None = Field(
         default=None,
         description="Net income growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    free_cash_flow_to_firm_growth: Optional[float] = Field(
+    free_cash_flow_to_firm_growth: float | None = Field(
         default=None,
         description="Free cash flow to firm growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    invested_capital_growth: Optional[float] = Field(
+    invested_capital_growth: float | None = Field(
         default=None,
         description="Invested capital growth, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_assets: Optional[float] = Field(
+    return_on_assets: float | None = Field(
         default=None,
         description="Return on assets, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_equity: Optional[float] = Field(
+    return_on_equity: float | None = Field(
         default=None,
         description="Return on equity, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_invested_capital: Optional[float] = Field(
+    return_on_invested_capital: float | None = Field(
         default=None,
         description="Return on invested capital, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ebitda: Optional[ForceInt] = Field(
+    ebitda: ForceInt | None = Field(
         default=None,
         description="Earnings before interest, taxes, depreciation, and amortization.",
     )
-    ebit: Optional[ForceInt] = Field(
+    ebit: ForceInt | None = Field(
         default=None,
         description="Earnings before interest and taxes.",
     )
-    long_term_debt: Optional[ForceInt] = Field(
+    long_term_debt: ForceInt | None = Field(
         default=None,
         description="Long-term debt.",
     )
-    total_debt: Optional[ForceInt] = Field(
+    total_debt: ForceInt | None = Field(
         default=None,
         description="Total debt.",
     )
-    total_capital: Optional[ForceInt] = Field(
+    total_capital: ForceInt | None = Field(
         default=None,
         description="The sum of long-term debt and total shareholder equity.",
     )
-    enterprise_value: Optional[ForceInt] = Field(
+    enterprise_value: ForceInt | None = Field(
         default=None,
         description="Enterprise value.",
     )
-    free_cash_flow_to_firm: Optional[ForceInt] = Field(
+    free_cash_flow_to_firm: ForceInt | None = Field(
         default=None,
         description="Free cash flow to firm.",
     )
-    altman_z_score: Optional[float] = Field(
+    altman_z_score: float | None = Field(
         default=None,
         description="Altman Z-score.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None,
         description="Beta relative to the broad market (rolling three-year).",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    earnings_yield: Optional[float] = Field(
+    earnings_yield: float | None = Field(
         default=None,
         description="Earnings yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None,
         description="Last price of the stock.",
     )
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None,
         description="52 week high",
     )
-    year_low: Optional[float] = Field(default=None, description="52 week low")
-    volume_avg: Optional[ForceInt] = Field(
+    year_low: float | None = Field(default=None, description="52 week low")
+    volume_avg: ForceInt | None = Field(
         default=None,
         description="Average daily volume.",
     )
-    short_interest: Optional[ForceInt] = Field(
+    short_interest: ForceInt | None = Field(
         default=None,
         description="Number of shares reported as sold short.",
     )
-    shares_outstanding: Optional[ForceInt] = Field(
+    shares_outstanding: ForceInt | None = Field(
         default=None,
         description="Weighted average shares outstanding (TTM).",
     )
-    days_to_cover: Optional[float] = Field(
+    days_to_cover: float | None = Field(
         default=None,
         description="Days to cover short interest, based on average daily volume.",
     )
@@ -233,13 +233,13 @@ class IntrinioKeyMetricsData(KeyMetricsData):
 class IntrinioKeyMetricsFetcher(
     Fetcher[
         IntrinioKeyMetricsQueryParams,
-        List[IntrinioKeyMetricsData],
+        list[IntrinioKeyMetricsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioKeyMetricsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioKeyMetricsQueryParams:
         """Transform the query params."""
 
         if params.get("period") is not None and params.get("period") != "annual":
@@ -251,9 +251,9 @@ class IntrinioKeyMetricsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioKeyMetricsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         tags = [
@@ -310,7 +310,7 @@ class IntrinioKeyMetricsFetcher(
             ]
             urls.extend(_urls)
 
-            async def callback(response: ClientResponse, _: Any) -> Dict:
+            async def callback(response: ClientResponse, _: Any) -> dict:
                 """Return the response."""
                 return {response.url.parts[-1]: await response.json()}
 
@@ -333,9 +333,9 @@ class IntrinioKeyMetricsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioKeyMetricsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioKeyMetricsData]:
+    ) -> list[IntrinioKeyMetricsData]:
         """Validate and transform the data."""
 
         # Sort the results by the order of the symbols in the query.
@@ -351,9 +351,8 @@ class IntrinioKeyMetricsFetcher(
             ),
         )
 
-        results: List[IntrinioKeyMetricsData] = []
+        results: list[IntrinioKeyMetricsData] = []
         for item in data:
-
             if item.get("marketcap") is None or isinstance(item.get("marketcap"), dict):
                 warn(f"Symbol Error: No data found for {item.get('symbol')}")
                 continue

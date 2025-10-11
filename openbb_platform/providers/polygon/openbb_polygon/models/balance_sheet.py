@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
@@ -31,40 +31,40 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None, description="Filing date of the financial statement."
     )
-    filing_date_lt: Optional[dateType] = Field(
+    filing_date_lt: dateType | None = Field(
         default=None, description="Filing date less than the given date."
     )
-    filing_date_lte: Optional[dateType] = Field(
+    filing_date_lte: dateType | None = Field(
         default=None,
         description="Filing date less than or equal to the given date.",
     )
-    filing_date_gt: Optional[dateType] = Field(
+    filing_date_gt: dateType | None = Field(
         default=None,
         description="Filing date greater than the given date.",
     )
-    filing_date_gte: Optional[dateType] = Field(
+    filing_date_gte: dateType | None = Field(
         default=None,
         description="Filing date greater than or equal to the given date.",
     )
-    period_of_report_date: Optional[dateType] = Field(
+    period_of_report_date: dateType | None = Field(
         default=None, description="Period of report date of the financial statement."
     )
-    period_of_report_date_lt: Optional[dateType] = Field(
+    period_of_report_date_lt: dateType | None = Field(
         default=None,
         description="Period of report date less than the given date.",
     )
-    period_of_report_date_lte: Optional[dateType] = Field(
+    period_of_report_date_lte: dateType | None = Field(
         default=None,
         description="Period of report date less than or equal to the given date.",
     )
-    period_of_report_date_gt: Optional[dateType] = Field(
+    period_of_report_date_gt: dateType | None = Field(
         default=None,
         description="Period of report date greater than the given date.",
     )
-    period_of_report_date_gte: Optional[dateType] = Field(
+    period_of_report_date_gte: dateType | None = Field(
         default=None,
         description="Period of report date greater than or equal to the given date.",
     )
@@ -72,10 +72,10 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
         default=True,
         description="Whether to include the sources of the financial statement.",
     )
-    order: Optional[Literal["asc", "desc"]] = Field(
+    order: Literal["asc", "desc"] | None = Field(
         default=None, description="Order of the financial statement."
     )
-    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
+    sort: Literal["filing_date", "period_of_report_date"] | None = Field(
         default=None, description="Sort of the financial statement."
     )
 
@@ -104,81 +104,73 @@ class PolygonBalanceSheetData(BalanceSheetData):
         "redeemable_non_controlling_interest_other": "redeemable_noncontrolling_interest_other",
     }
 
-    accounts_receivable: Optional[float] = Field(
+    accounts_receivable: float | None = Field(
         description="Accounts receivable", default=None
     )
-    marketable_securities: Optional[float] = Field(
+    marketable_securities: float | None = Field(
         description="Marketable securities", default=None
     )
-    prepaid_expenses: Optional[float] = Field(
-        description="Prepaid expenses", default=None
-    )
-    other_current_assets: Optional[float] = Field(
+    prepaid_expenses: float | None = Field(description="Prepaid expenses", default=None)
+    other_current_assets: float | None = Field(
         description="Other current assets", default=None
     )
-    total_current_assets: Optional[float] = Field(
+    total_current_assets: float | None = Field(
         description="Total current assets", default=None
     )
-    property_plant_equipment_net: Optional[float] = Field(
+    property_plant_equipment_net: float | None = Field(
         description="Property plant and equipment net", default=None
     )
-    inventory: Optional[float] = Field(description="Inventory", default=None)
-    other_non_current_assets: Optional[float] = Field(
+    inventory: float | None = Field(description="Inventory", default=None)
+    other_non_current_assets: float | None = Field(
         description="Other non-current assets", default=None
     )
-    total_non_current_assets: Optional[float] = Field(
+    total_non_current_assets: float | None = Field(
         description="Total non-current assets", default=None
     )
-    intangible_assets: Optional[float] = Field(
+    intangible_assets: float | None = Field(
         description="Intangible assets", default=None
     )
-    total_assets: Optional[float] = Field(description="Total assets", default=None)
-    accounts_payable: Optional[float] = Field(
-        description="Accounts payable", default=None
-    )
-    employee_wages: Optional[float] = Field(description="Employee wages", default=None)
-    other_current_liabilities: Optional[float] = Field(
+    total_assets: float | None = Field(description="Total assets", default=None)
+    accounts_payable: float | None = Field(description="Accounts payable", default=None)
+    employee_wages: float | None = Field(description="Employee wages", default=None)
+    other_current_liabilities: float | None = Field(
         description="Other current liabilities", default=None
     )
-    total_current_liabilities: Optional[float] = Field(
+    total_current_liabilities: float | None = Field(
         description="Total current liabilities", default=None
     )
-    other_non_current_liabilities: Optional[float] = Field(
+    other_non_current_liabilities: float | None = Field(
         description="Other non-current liabilities", default=None
     )
-    total_non_current_liabilities: Optional[float] = Field(
+    total_non_current_liabilities: float | None = Field(
         description="Total non-current liabilities", default=None
     )
-    long_term_debt: Optional[float] = Field(description="Long term debt", default=None)
-    total_liabilities: Optional[float] = Field(
+    long_term_debt: float | None = Field(description="Long term debt", default=None)
+    total_liabilities: float | None = Field(
         description="Total liabilities", default=None
     )
-    minority_interest: Optional[float] = Field(
+    minority_interest: float | None = Field(
         description="Minority interest", default=None
     )
-    temporary_equity_attributable_to_parent: Optional[float] = Field(
+    temporary_equity_attributable_to_parent: float | None = Field(
         description="Temporary equity attributable to parent", default=None
     )
-    equity_attributable_to_parent: Optional[float] = Field(
+    equity_attributable_to_parent: float | None = Field(
         description="Equity attributable to parent", default=None
     )
-    temporary_equity: Optional[float] = Field(
-        description="Temporary equity", default=None
-    )
-    preferred_stock: Optional[float] = Field(
-        description="Preferred stock", default=None
-    )
-    redeemable_non_controlling_interest: Optional[float] = Field(
+    temporary_equity: float | None = Field(description="Temporary equity", default=None)
+    preferred_stock: float | None = Field(description="Preferred stock", default=None)
+    redeemable_non_controlling_interest: float | None = Field(
         description="Redeemable non-controlling interest", default=None
     )
-    redeemable_non_controlling_interest_other: Optional[float] = Field(
+    redeemable_non_controlling_interest_other: float | None = Field(
         description="Redeemable non-controlling interest other", default=None
     )
-    total_shareholders_equity: Optional[float] = Field(
+    total_shareholders_equity: float | None = Field(
         description="Total stock holders equity", default=None
     )
-    total_equity: Optional[float] = Field(description="Total equity", default=None)
-    total_liabilities_and_shareholders_equity: Optional[float] = Field(
+    total_equity: float | None = Field(description="Total equity", default=None)
+    total_liabilities_and_shareholders_equity: float | None = Field(
         description="Total liabilities and stockholders equity", default=None
     )
 
@@ -196,22 +188,22 @@ class PolygonBalanceSheetData(BalanceSheetData):
 class PolygonBalanceSheetFetcher(
     Fetcher[
         PolygonBalanceSheetQueryParams,
-        List[PolygonBalanceSheetData],
+        list[PolygonBalanceSheetData],
     ]
 ):
     """Polygon Balance Sheet Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonBalanceSheetQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonBalanceSheetQueryParams:
         """Transform the query params."""
         return PolygonBalanceSheetQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonBalanceSheetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_querystring
@@ -238,11 +230,11 @@ class PolygonBalanceSheetFetcher(
     @staticmethod
     def transform_data(
         query: PolygonBalanceSheetQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[PolygonBalanceSheetData]:
+    ) -> list[PolygonBalanceSheetData]:
         """Return the transformed data."""
-        transformed_data: List[PolygonBalanceSheetData] = []
+        transformed_data: list[PolygonBalanceSheetData] = []
 
         for item in data:
             if "balance_sheet" in item["financials"]:

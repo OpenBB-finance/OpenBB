@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
@@ -35,36 +35,32 @@ class FMPEtfInfoData(EtfInfoData):
         "updated": "updatedAt",
     }
 
-    cusip: Optional[str] = Field(default=None, description="CUSIP of the ETF.")
-    isin: Optional[str] = Field(default=None, description="ISIN of the ETF.")
-    asset_class: Optional[str] = Field(
-        default=None, description="Asset class of the ETF."
-    )
-    currency: Optional[str] = Field(
+    cusip: str | None = Field(default=None, description="CUSIP of the ETF.")
+    isin: str | None = Field(default=None, description="ISIN of the ETF.")
+    asset_class: str | None = Field(default=None, description="Asset class of the ETF.")
+    currency: str | None = Field(
         default=None, description="Currency of the ETF's net asset value."
     )
-    holdings_count: Optional[int] = Field(
-        default=None, description="Number of holdings."
-    )
-    aum: Optional[float] = Field(
+    holdings_count: int | None = Field(default=None, description="Number of holdings.")
+    aum: float | None = Field(
         default=None,
         description="Assets under management.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    expense_ratio: Optional[float] = Field(
+    expense_ratio: float | None = Field(
         default=None,
         description="The expense ratio, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    nav: Optional[float] = Field(
+    nav: float | None = Field(
         default=None,
         description="Net asset value of the ETF.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    volume_avg: Optional[Union[int, float]] = Field(
+    volume_avg: int | float | None = Field(
         default=None, description="Average daily trading volume."
     )
-    updated: Optional[datetime] = Field(
+    updated: datetime | None = Field(
         default=None, description="As of date for the latest data point."
     )
 
@@ -91,7 +87,7 @@ class FMPEtfInfoFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEtfInfoQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

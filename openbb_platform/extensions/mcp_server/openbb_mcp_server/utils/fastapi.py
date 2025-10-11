@@ -3,7 +3,7 @@
 import inspect
 import re
 import sys
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
@@ -26,7 +26,7 @@ class ProcessedRouteData:
         self.prompt_definitions: list[dict] = []
 
 
-def get_api_prefix(settings: Optional[MCPSettings]) -> str:
+def get_api_prefix(settings: MCPSettings | None) -> str:
     """Get normalized API prefix (leading slash, no trailing slash). Prefer settings.api_prefix if present."""
     override = getattr(settings, "api_prefix", None)
     if isinstance(override, str) and override.strip():
@@ -39,7 +39,7 @@ def get_api_prefix(settings: Optional[MCPSettings]) -> str:
     return prefix
 
 
-def _get_module_exclusion_targets(settings: Optional[MCPSettings]) -> dict[str, str]:
+def _get_module_exclusion_targets(settings: MCPSettings | None) -> dict[str, str]:
     """Map path segment -> module name. Prefer settings.module_exclusion_map if a dict is provided."""
     override = getattr(settings, "module_exclusion_map", None)
     if isinstance(override, dict) and override:
@@ -92,7 +92,7 @@ def _get_prompt_configs(route: APIRoute) -> list[dict]:
 
 
 def _create_prompt_definitions_for_route(
-    route: APIRoute, settings: Optional[MCPSettings] = None
+    route: APIRoute, settings: MCPSettings | None = None
 ) -> list[dict]:
     """Create prompt definitions for a route if prompt configs exist."""
     prompt_configs = _get_prompt_configs(route)
@@ -206,7 +206,7 @@ def _create_prompt_definitions_for_route(
     return definitions
 
 
-def _normalize_methods(methods: Optional[Sequence[str]]) -> list[str]:
+def _normalize_methods(methods: Sequence[str] | None) -> list[str]:
     """Uppercase and filter out HEAD/OPTIONS. Return [] if None/empty."""
     if not methods:
         return []
@@ -233,7 +233,7 @@ def _methods_from_config_or_route(cfg: MCPConfigModel, route: APIRoute) -> list:
     return _normalize_methods(methods)
 
 
-def _resolve_mcp_type(value: str | None) -> Optional[MCPType]:
+def _resolve_mcp_type(value: str | None) -> MCPType | None:
     if not value:
         return None
     v = value.lower().strip()
@@ -246,9 +246,7 @@ def _resolve_mcp_type(value: str | None) -> Optional[MCPType]:
     return None
 
 
-def _should_exclude_by_module_and_path(
-    path: str, settings: Optional[MCPSettings]
-) -> bool:
+def _should_exclude_by_module_and_path(path: str, settings: MCPSettings | None) -> bool:
     """Exclude only specific route trees if the corresponding module is loaded."""
     api_prefix = get_api_prefix(settings)
     targets = _get_module_exclusion_targets(settings)
@@ -265,7 +263,7 @@ def _should_exclude_by_module_and_path(
 
 
 def process_fastapi_routes_for_mcp(
-    app: FastAPI, settings: Optional[MCPSettings] = None
+    app: FastAPI, settings: MCPSettings | None = None
 ) -> ProcessedRouteData:
     """Single-pass processing of FastAPI routes that:
 

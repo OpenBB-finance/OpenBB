@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
@@ -48,7 +48,7 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
 class CboeFuturesCurveData(FuturesCurveData):
     """CBOE Futures Curve Data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
 
@@ -56,22 +56,22 @@ class CboeFuturesCurveData(FuturesCurveData):
 class CboeFuturesCurveFetcher(
     Fetcher[
         CboeFuturesCurveQueryParams,
-        List[CboeFuturesCurveData],
+        list[CboeFuturesCurveData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeFuturesCurveQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeFuturesCurveQueryParams:
         """Transform the query."""
         return CboeFuturesCurveQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeFuturesCurveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the CBOE endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_cboe.utils.vix import get_vx_by_date, get_vx_current
@@ -94,8 +94,8 @@ class CboeFuturesCurveFetcher(
     @staticmethod
     def transform_data(
         query: CboeFuturesCurveQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[CboeFuturesCurveData]:
+    ) -> list[CboeFuturesCurveData]:
         """Transform data."""
         return [CboeFuturesCurveData.model_validate(d) for d in data]

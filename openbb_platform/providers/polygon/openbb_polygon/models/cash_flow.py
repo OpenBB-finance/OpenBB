@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cash_flow import (
@@ -31,40 +31,40 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None, description="Filing date of the financial statement."
     )
-    filing_date_lt: Optional[dateType] = Field(
+    filing_date_lt: dateType | None = Field(
         default=None, description="Filing date less than the given date."
     )
-    filing_date_lte: Optional[dateType] = Field(
+    filing_date_lte: dateType | None = Field(
         default=None,
         description="Filing date less than or equal to the given date.",
     )
-    filing_date_gt: Optional[dateType] = Field(
+    filing_date_gt: dateType | None = Field(
         default=None,
         description="Filing date greater than the given date.",
     )
-    filing_date_gte: Optional[dateType] = Field(
+    filing_date_gte: dateType | None = Field(
         default=None,
         description="Filing date greater than or equal to the given date.",
     )
-    period_of_report_date: Optional[dateType] = Field(
+    period_of_report_date: dateType | None = Field(
         default=None, description="Period of report date of the financial statement."
     )
-    period_of_report_date_lt: Optional[dateType] = Field(
+    period_of_report_date_lt: dateType | None = Field(
         default=None,
         description="Period of report date less than the given date.",
     )
-    period_of_report_date_lte: Optional[dateType] = Field(
+    period_of_report_date_lte: dateType | None = Field(
         default=None,
         description="Period of report date less than or equal to the given date.",
     )
-    period_of_report_date_gt: Optional[dateType] = Field(
+    period_of_report_date_gt: dateType | None = Field(
         default=None,
         description="Period of report date greater than the given date.",
     )
-    period_of_report_date_gte: Optional[dateType] = Field(
+    period_of_report_date_gte: dateType | None = Field(
         default=None,
         description="Period of report date greater than or equal to the given date.",
     )
@@ -72,10 +72,10 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default=False,
         description="Whether to include the sources of the financial statement.",
     )
-    order: Optional[Literal["asc", "desc"]] = Field(
+    order: Literal["asc", "desc"] | None = Field(
         default=None, description="Order of the financial statement."
     )
-    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
+    sort: Literal["filing_date", "period_of_report_date"] | None = Field(
         default=None, description="Sort of the financial statement."
     )
 
@@ -83,46 +83,46 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 class PolygonCashFlowStatementData(CashFlowStatementData):
     """Polygon Cash Flow Statement Data."""
 
-    net_cash_flow_from_operating_activities_continuing: Optional[float] = Field(
+    net_cash_flow_from_operating_activities_continuing: float | None = Field(
         description="Net cash flow from operating activities continuing.", default=None
     )
-    net_cash_flow_from_operating_activities_discontinued: Optional[float] = Field(
+    net_cash_flow_from_operating_activities_discontinued: float | None = Field(
         description="Net cash flow from operating activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_operating_activities: Optional[float] = Field(
+    net_cash_flow_from_operating_activities: float | None = Field(
         description="Net cash flow from operating activities.", default=None
     )
-    net_cash_flow_from_investing_activities_continuing: Optional[float] = Field(
+    net_cash_flow_from_investing_activities_continuing: float | None = Field(
         description="Net cash flow from investing activities continuing.", default=None
     )
-    net_cash_flow_from_investing_activities_discontinued: Optional[float] = Field(
+    net_cash_flow_from_investing_activities_discontinued: float | None = Field(
         description="Net cash flow from investing activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_investing_activities: Optional[float] = Field(
+    net_cash_flow_from_investing_activities: float | None = Field(
         description="Net cash flow from investing activities.", default=None
     )
-    net_cash_flow_from_financing_activities_continuing: Optional[float] = Field(
+    net_cash_flow_from_financing_activities_continuing: float | None = Field(
         description="Net cash flow from financing activities continuing.", default=None
     )
-    net_cash_flow_from_financing_activities_discontinued: Optional[float] = Field(
+    net_cash_flow_from_financing_activities_discontinued: float | None = Field(
         description="Net cash flow from financing activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_financing_activities: Optional[float] = Field(
+    net_cash_flow_from_financing_activities: float | None = Field(
         description="Net cash flow from financing activities.", default=None
     )
-    net_cash_flow_continuing: Optional[float] = Field(
+    net_cash_flow_continuing: float | None = Field(
         description="Net cash flow continuing.", default=None
     )
-    net_cash_flow_discontinued: Optional[float] = Field(
+    net_cash_flow_discontinued: float | None = Field(
         description="Net cash flow discontinued.", default=None
     )
-    exchange_gains_losses: Optional[float] = Field(
+    exchange_gains_losses: float | None = Field(
         description="Exchange gains losses.", default=None
     )
-    net_cash_flow: Optional[float] = Field(description="Net cash flow.", default=None)
+    net_cash_flow: float | None = Field(description="Net cash flow.", default=None)
 
     @model_validator(mode="before")
     @classmethod
@@ -138,22 +138,22 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
 class PolygonCashFlowStatementFetcher(
     Fetcher[
         PolygonCashFlowStatementQueryParams,
-        List[PolygonCashFlowStatementData],
+        list[PolygonCashFlowStatementData],
     ]
 ):
     """Polygon Cash Flow Statement Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCashFlowStatementQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCashFlowStatementQueryParams:
         """Transform the query params."""
         return PolygonCashFlowStatementQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonCashFlowStatementQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_querystring
@@ -184,11 +184,11 @@ class PolygonCashFlowStatementFetcher(
     @staticmethod
     def transform_data(
         query: PolygonCashFlowStatementQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[PolygonCashFlowStatementData]:
+    ) -> list[PolygonCashFlowStatementData]:
         """Return the transformed data."""
-        transformed_data: List[PolygonCashFlowStatementData] = []
+        transformed_data: list[PolygonCashFlowStatementData] = []
 
         for item in data:
             sub_data = {

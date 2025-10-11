@@ -1,7 +1,8 @@
 """Coverage API router helper functions."""
 
+from collections.abc import Callable
 from inspect import _empty, signature
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.provider_interface import ProviderInterface
 from pydantic import BaseModel, Field, create_model
@@ -28,7 +29,7 @@ def get_route_callable(app: "BaseApp", route: str) -> Callable:
     return return_callable  # type: ignore
 
 
-def signature_to_fields(app: "BaseApp", route: str) -> Dict[str, Tuple[Any, Field]]:  # type: ignore
+def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, Field]]:  # type: ignore
     """Convert a command signature to pydantic fields."""
     return_callable = get_route_callable(app, route)
     sig = signature(return_callable)
@@ -52,7 +53,7 @@ def signature_to_fields(app: "BaseApp", route: str) -> Dict[str, Tuple[Any, Fiel
     return fields
 
 
-def dataclass_to_fields(model_name: str) -> Dict[str, Tuple[Any, Field]]:  # type: ignore
+def dataclass_to_fields(model_name: str) -> dict[str, tuple[Any, Field]]:  # type: ignore
     """Convert a dataclass to pydantic fields."""
     dataclass = provider_interface.params[model_name]["extra"]
     fields = {}
@@ -70,9 +71,9 @@ def dataclass_to_fields(model_name: str) -> Dict[str, Tuple[Any, Field]]:  # typ
 
 def create_combined_model(
     model_name: str,
-    *field_sets: Dict[str, Tuple[Any, Field]],  # type: ignore
-    filter_by_provider: Optional[str] = None,
-) -> Type[BaseModel]:
+    *field_sets: dict[str, tuple[Any, Field]],  # type: ignore
+    filter_by_provider: str | None = None,
+) -> type[BaseModel]:
     """Create a combined pydantic model."""
     combined_fields = {}
     for fields in field_sets:
@@ -96,9 +97,9 @@ def create_combined_model(
 
 def get_route_schema_map(
     app: "BaseApp",
-    command_model_map: Dict[str, str],
-    filter_by_provider: Optional[str] = None,
-) -> Dict[str, Dict[str, Any]]:
+    command_model_map: dict[str, str],
+    filter_by_provider: str | None = None,
+) -> dict[str, dict[str, Any]]:
     """Get the route schema map."""
     route_schema_map = {}
     for route, model in command_model_map.items():

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-return-statements
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.central_bank_holdings import (
@@ -72,7 +72,7 @@ class FederalReserveCentralBankHoldingsQueryParams(CentralBankHoldingsQueryParam
         description="If True, returns historical weekly summary by holding type."
         + " This parameter takes priority over other parameters.",
     )
-    cusip: Optional[str] = Field(
+    cusip: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("cusip", ""),
     )
@@ -104,35 +104,35 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
         "change_prior_year": "changeFromPriorYear",
     }
 
-    security_type: Optional[str] = Field(
+    security_type: str | None = Field(
         default=None,
         description="Type of security - i.e. TIPs, FRNs, etc.",
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None,
         description="Description of the security. Only returned for Agency securities.",
     )
-    is_aggreated: Optional[Literal["Y"]] = Field(
+    is_aggreated: Literal["Y"] | None = Field(
         default=None,
         description="Whether the security is aggregated. Only returned for Agency securities.",
     )
-    cusip: Optional[str] = Field(
+    cusip: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cusip", ""),
     )
-    issuer: Optional[str] = Field(
+    issuer: str | None = Field(
         default=None,
         description="Issuer of the security.",
     )
-    maturity_date: Optional[dateType] = Field(
+    maturity_date: dateType | None = Field(
         default=None,
         description="Maturity date of the security.",
     )
-    term: Optional[str] = Field(
+    term: str | None = Field(
         default=None,
         description="Term of the security. Only returned for Agency securities.",
     )
-    face_value: Optional[float] = Field(
+    face_value: float | None = Field(
         default=None,
         description="Current face value of the security (Thousands of $USD)."
         + " Current face value of the securities, which is the remaining principal balance of the securities.",
@@ -141,7 +141,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    par_value: Optional[float] = Field(
+    par_value: float | None = Field(
         default=None,
         description="Par value of the security (Thousands of $USD)."
         + " Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
@@ -150,22 +150,22 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    coupon: Optional[float] = Field(
+    coupon: float | None = Field(
         default=None,
         description="Coupon rate of the security.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    spread: Optional[float] = Field(
+    spread: float | None = Field(
         default=None,
         description="Spread to the current reference rate, as determined at each security's initial auction.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    percent_outstanding: Optional[float] = Field(
+    percent_outstanding: float | None = Field(
         default=None,
         description="Total percent of the outstanding CUSIP issuance.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    bills: Optional[float] = Field(
+    bills: float | None = Field(
         default=None,
         description="Treasury bills amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -174,7 +174,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    frn: Optional[float] = Field(
+    frn: float | None = Field(
         default=None,
         description="Floating rate Treasury notes amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -183,7 +183,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    notes_and_bonds: Optional[float] = Field(
+    notes_and_bonds: float | None = Field(
         default=None,
         description="Treasuy Notes and bonds amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -192,7 +192,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    tips: Optional[float] = Field(
+    tips: float | None = Field(
         default=None,
         description="Treasury inflation-protected securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -201,7 +201,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    mbs: Optional[float] = Field(
+    mbs: float | None = Field(
         default=None,
         description="Mortgage-backed securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -210,7 +210,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    cmbs: Optional[float] = Field(
+    cmbs: float | None = Field(
         default=None,
         description="Commercial mortgage-backed securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -219,7 +219,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    agencies: Optional[float] = Field(
+    agencies: float | None = Field(
         default=None,
         description="Agency securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -228,7 +228,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    total: Optional[float] = Field(
+    total: float | None = Field(
         default=None,
         description="Total SOMA holdings amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -237,7 +237,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    tips_inflation_compensation: Optional[float] = Field(
+    tips_inflation_compensation: float | None = Field(
         default=None,
         description="Treasury inflation-protected securities inflation compensation amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
@@ -247,7 +247,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
         },
         alias="inflationCompensation",
     )
-    change_prior_week: Optional[float] = Field(
+    change_prior_week: float | None = Field(
         default=None,
         description="Change in SOMA holdings from the prior week (Thousands of $USD).",
         json_schema_extra={
@@ -255,7 +255,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
             "x-frontend_multiply": 1000,
         },
     )
-    change_prior_year: Optional[float] = Field(
+    change_prior_year: float | None = Field(
         default=None,
         description="Change in SOMA holdings from the prior year (Thousands of $USD).",
         json_schema_extra={
@@ -294,14 +294,14 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
 class FederalReserveCentralBankHoldingsFetcher(
     Fetcher[
         FederalReserveCentralBankHoldingsQueryParams,
-        List[FederalReserveCentralBankHoldingsData],
+        list[FederalReserveCentralBankHoldingsData],
     ]
 ):
     """Federal Reserve Central Bank Holdings Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReserveCentralBankHoldingsQueryParams:
         """Transform the query params."""
         return FederalReserveCentralBankHoldingsQueryParams(**params)
@@ -309,9 +309,9 @@ class FederalReserveCentralBankHoldingsFetcher(
     @staticmethod
     async def aextract_data(
         query: FederalReserveCentralBankHoldingsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FederalReserve endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_federal_reserve.utils.ny_fed_api import SomaHoldings
@@ -361,8 +361,8 @@ class FederalReserveCentralBankHoldingsFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveCentralBankHoldingsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FederalReserveCentralBankHoldingsData]:
+    ) -> list[FederalReserveCentralBankHoldingsData]:
         """Transform data."""
         return [FederalReserveCentralBankHoldingsData.model_validate(d) for d in data]

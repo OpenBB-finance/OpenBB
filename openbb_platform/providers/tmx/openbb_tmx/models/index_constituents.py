@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -32,7 +32,7 @@ class TmxIndexConstituentsData(IndexConstituentsData):
         "market_value": "quotedmarketvalue",
     }
 
-    market_value: Optional[float] = Field(
+    market_value: float | None = Field(
         default=None,
         description="The quoted market value of the asset.",
     )
@@ -47,22 +47,22 @@ class TmxIndexConstituentsData(IndexConstituentsData):
 class TmxIndexConstituentsFetcher(
     Fetcher[
         TmxIndexConstituentsQueryParams,
-        List[TmxIndexConstituentsData],
+        list[TmxIndexConstituentsData],
     ]
 ):
     """TMX Index Constituents Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxIndexConstituentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxIndexConstituentsQueryParams:
         """Transform the query."""
         return TmxIndexConstituentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxIndexConstituentsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
@@ -79,8 +79,8 @@ class TmxIndexConstituentsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TmxIndexConstituentsQueryParams, data: Dict, **kwargs
-    ) -> List[TmxIndexConstituentsData]:
+        query: TmxIndexConstituentsQueryParams, data: dict, **kwargs
+    ) -> list[TmxIndexConstituentsData]:
         """Return the transformed data."""
         results = []
         data = data.copy()

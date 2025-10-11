@@ -1,6 +1,6 @@
 """Definitions and helpers for the BPS (Balance of Payments) ECB Series."""
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 BPS_FREQUENCIES = Literal["monthly", "quarterly"]
 BPS_FREQUENCIES_DICT = {"monthly": "M", "quarterly": "Q"}
@@ -49,7 +49,7 @@ BPS_COUNTRIES_DICT = {
 def generate_bps_series_ids(
     frequency: BPS_FREQUENCIES = "monthly",
     report_type: BPS_REPORT_TYPES = "main",
-    country: Optional[BPS_COUNTRIES] = None,
+    country: BPS_COUNTRIES | None = None,
 ) -> Any:
     """Generate series ids for EU area balance of payments reports."""
 

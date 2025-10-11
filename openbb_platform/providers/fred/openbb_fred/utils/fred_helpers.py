@@ -3,7 +3,7 @@
 import csv
 import os
 from pathlib import Path
-from typing import Dict, List, Literal
+from typing import Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -211,7 +211,7 @@ CpiCountries = Literal[
 ]
 
 
-def comma_to_float_list(v: str) -> List[float]:
+def comma_to_float_list(v: str) -> list[float]:
     """Convert comma-separated string to list of floats."""
     try:
         return [float(m) for m in v.split(",")]
@@ -221,7 +221,7 @@ def comma_to_float_list(v: str) -> List[float]:
         ) from e
 
 
-def all_cpi_options(harmonized: bool = False) -> List[dict]:
+def all_cpi_options(harmonized: bool = False) -> list[dict]:
     """Get all CPI options."""
     data = []
 
@@ -236,7 +236,7 @@ def all_cpi_options(harmonized: bool = False) -> List[dict]:
     return data
 
 
-def get_cpi_options(harmonized: bool = False) -> List[dict]:
+def get_cpi_options(harmonized: bool = False) -> list[dict]:
     """Get CPI options."""
     series = all_cpi_options(harmonized)
     for item in series:
@@ -244,7 +244,7 @@ def get_cpi_options(harmonized: bool = False) -> List[dict]:
     return series
 
 
-def process_projections(data: Dict) -> List[Dict]:
+def process_projections(data: dict) -> list[dict]:
     """Process projection data."""
     # Get dates first
     dates = []
@@ -287,7 +287,7 @@ def get_ice_bofa_series_id(
         "private_sector",
         "public_sector",
     ],
-) -> List[dict]:
+) -> list[dict]:
     """Get ICE BofA series id."""
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "ice_bofa_indices.csv"
@@ -320,7 +320,7 @@ def get_ice_bofa_series_id(
     return filtered_series
 
 
-def get_cp_series_id(maturity, category, grade) -> List[dict]:
+def get_cp_series_id(maturity, category, grade) -> list[dict]:
     """Get CP series id."""
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "commercial_paper.csv"
@@ -352,7 +352,7 @@ def get_cp_series_id(maturity, category, grade) -> List[dict]:
     return filtered_series
 
 
-def get_spot_series_id(maturity: List[float], category: List[str]) -> List[dict]:
+def get_spot_series_id(maturity: list[float], category: list[str]) -> list[dict]:
     """Get Spot series id."""
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "corporate_spot_rates.csv"

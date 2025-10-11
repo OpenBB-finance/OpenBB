@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -57,7 +57,7 @@ class OECDGdpRealQueryParams(GdpRealQueryParams):
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import check_item
 
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_GDP:
@@ -80,11 +80,11 @@ class OECDGdpRealData(GdpRealData):
     """OECD Real GDP Data."""
 
 
-class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]]):
+class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]]):
     """OECD GDP Real Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDGdpRealQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDGdpRealQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -103,9 +103,9 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
     @staticmethod
     async def aextract_data(
         query: OECDGdpRealQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -143,14 +143,10 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
             url, timeout=30, response_callback=response_callback
         )
 
-        df = read_csv(StringIO(response)).get(  # type: ignore
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
         if df.empty:  # type: ignore
             raise EmptyDataError()
-        df = df.rename(  # type: ignore
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
+        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
 
         def apply_map(x):
             """Apply the country map."""
@@ -170,8 +166,8 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
     @staticmethod
     def transform_data(
         query: OECDGdpRealQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[OECDGdpRealData]:
+    ) -> list[OECDGdpRealData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpRealData.model_validate(d) for d in data]

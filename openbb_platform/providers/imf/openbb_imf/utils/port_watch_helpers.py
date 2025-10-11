@@ -1,7 +1,5 @@
 """IMF Port Watch helpers."""
 
-from typing import Optional
-
 from async_lru import alru_cache
 from openbb_imf.utils.constants import (
     CHOKEPOINTS_BASE_URL,
@@ -105,7 +103,7 @@ def get_port_id_choices() -> list:
 
 @alru_cache(maxsize=25)
 async def get_daily_chokepoint_data(
-    chokepoint_id, start_date: Optional[str] = None, end_date: Optional[str] = None
+    chokepoint_id, start_date: str | None = None, end_date: str | None = None
 ) -> list:
     """Get the daily chokepoint data for a specific chokepoint and date range.
 
@@ -198,7 +196,7 @@ async def get_daily_chokepoint_data(
 
 @alru_cache(maxsize=1)
 async def get_all_daily_chokepoint_activity_data(
-    start_date: Optional[str] = None, end_date: Optional[str] = None
+    start_date: str | None = None, end_date: str | None = None
 ) -> list:
     """Get the complete historical volume dataset for all chokepoints."""
     # pylint: disable=import-outside-toplevel
@@ -290,7 +288,7 @@ async def get_all_daily_port_activity_data() -> list:
 
 @alru_cache(maxsize=125)
 async def get_daily_port_activity_data(
-    port_id, start_date: Optional[str] = None, end_date: Optional[str] = None
+    port_id, start_date: str | None = None, end_date: str | None = None
 ) -> list:
     """Get the daily port activity data for a specific port ID.
 

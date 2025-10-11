@@ -7,7 +7,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
@@ -41,19 +41,19 @@ class FMPCalendarEarningsData(CalendarEarningsData):
         "last_updated": "lastUpdated",
     }
 
-    eps_actual: Optional[float] = Field(
+    eps_actual: float | None = Field(
         default=None,
         description="The actual earnings per share announced.",
     )
-    revenue_consensus: Optional[float] = Field(
+    revenue_consensus: float | None = Field(
         default=None,
         description="The revenue forecast consensus.",
     )
-    revenue_actual: Optional[float] = Field(
+    revenue_actual: float | None = Field(
         default=None,
         description="The actual reported revenue.",
     )
-    last_updated: Optional[dateType] = Field(
+    last_updated: dateType | None = Field(
         default=None,
         description="The date the data was updated last.",
     )
@@ -64,7 +64,7 @@ class FMPCalendarEarningsData(CalendarEarningsData):
         mode="before",
         check_fields=False,
     )
-    def date_validate(cls, v: Union[datetime, str]):  # pylint: disable=E0213
+    def date_validate(cls, v: datetime | str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d")
@@ -96,7 +96,7 @@ class FMPCalendarEarningsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCalendarEarningsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -2,10 +2,7 @@
 
 from typing import (
     Any,
-    List,
     Literal,
-    Optional,
-    Tuple,
 )
 
 from pydantic import BaseModel, model_validator
@@ -22,9 +19,9 @@ class ArgparseArgumentModel(BaseModel):
     default: Any
     required: bool
     action: Literal["store_true", "store"]
-    help: Optional[str]
-    nargs: Optional[Literal["+"]]
-    choices: Optional[Tuple]
+    help: str | None
+    nargs: Literal["+"] | None
+    choices: tuple | None
 
     @model_validator(mode="after")  # type: ignore
     @classmethod
@@ -60,4 +57,4 @@ class ArgparseArgumentGroupModel(BaseModel):
     """Pydantic model for a custom argument group."""
 
     name: str
-    arguments: List[ArgparseArgumentModel]
+    arguments: list[ArgparseArgumentModel]

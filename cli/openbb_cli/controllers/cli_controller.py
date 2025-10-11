@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """Main CLI Module."""
 
+# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
+# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
+
 import argparse
 import contextlib
 import difflib
@@ -13,7 +16,7 @@ from datetime import datetime
 from functools import partial, update_wrapper
 from pathlib import Path
 from types import MethodType
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import pandas as pd
 import requests
@@ -54,10 +57,6 @@ PLATFORM_ROUTERS = {
 }
 NON_DATA_ROUTERS = ["coverage", "account", "reference", "system", "user"]
 DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
-
-# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
-# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
 
@@ -79,16 +78,16 @@ class CLIController(BaseController):
     PATH = "/"
     CHOICES_GENERATION = False
 
-    def __init__(self, jobs_cmds: Optional[List[str]] = None):
+    def __init__(self, jobs_cmds: list[str] | None = None):
         """Construct CLI controller."""
-        self.ROUTINE_FILES: Dict[str, str] = dict()
-        self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
-        self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
-        self.ROUTINE_CHOICES: Dict[str, Any] = dict()
+        self.ROUTINE_FILES: dict[str, Path] = dict()
+        self.ROUTINE_DEFAULT_FILES: dict[str, Path] = dict()
+        self.ROUTINE_PERSONAL_FILES: dict[str, Path] = dict()
+        self.ROUTINE_CHOICES: dict[str, Any] = dict()
 
         super().__init__(jobs_cmds)
 
-        self.queue: List[str] = list()
+        self.queue: list[str] = list()
 
         if jobs_cmds:
             self.queue = parse_and_split_input(
@@ -123,7 +122,8 @@ class CLIController(BaseController):
 
             if value == "menu":
                 pcf = PlatformControllerFactory(
-                    target, reference=obb.reference["paths"]  # type: ignore
+                    target,
+                    reference=obb.reference["paths"],  # type: ignore
                 )
                 DynamicController = pcf.create()
 
@@ -159,8 +159,7 @@ class CLIController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
 
             self.ROUTINE_FILES = {
-                filepath.name: filepath  # type: ignore
-                for filepath in routines_directory.rglob("*.openbb")
+                filepath.name: filepath for filepath in routines_directory.rglob("*.openbb")  # type: ignore
             }
             self.ROUTINE_DEFAULT_FILES = {
                 filepath.name: filepath  # type: ignore
@@ -224,9 +223,7 @@ class CLIController(BaseController):
                 continue
             if value == "menu":
                 menu_description = (
-                    obb.reference["routers"]  # type: ignore
-                    .get(f"{self.PATH}{router}", {})
-                    .get("description")
+                    obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
                 ) or ""
                 mt.add_menu(
                     name=router,
@@ -258,9 +255,7 @@ class CLIController(BaseController):
                 continue
             if value == "menu":
                 menu_description = (
-                    obb.reference["routers"]  # type: ignore
-                    .get(f"{self.PATH}{router}", {})
-                    .get("description")
+                    obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
                 ) or ""
                 mt.add_menu(
                     name=router,
@@ -277,9 +272,7 @@ class CLIController(BaseController):
                     continue
                 if value == "menu":
                     menu_description = (
-                        obb.reference["routers"]  # type: ignore
-                        .get(f"{self.PATH}{router}", {})
-                        .get("description")
+                        obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
                     ) or ""
                     mt.add_menu(
                         name=router,
@@ -303,18 +296,6 @@ class CLIController(BaseController):
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
-    def parse_input(self, an_input: str) -> List:
-        """Overwrite the BaseController parse_input for `askobb` and 'exe'.
-
-        This will allow us to search for something like "P/E" ratio.
-        """
-        # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
-        # Filter out urls
-        url = r"(exe (--url )?(https?://)?my\.openbb\.(dev|co)/u/.*/routine/.*)"
-        custom_filters = [sort_filter, url]
-        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
-
     def call_settings(self, _):
         """Process settings command."""
         from openbb_cli.controllers.settings_controller import (
@@ -323,7 +304,7 @@ class CLIController(BaseController):
 
         self.queue = self.load_class(SettingsController, self.queue)
 
-    def call_exe(self, other_args: List[str]):
+    def call_exe(self, other_args: list[str]):
         """Process exe command."""
         # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
@@ -338,8 +319,7 @@ class CLIController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
-            description="Execute automated routine script. For an example, please use "
-            "`exe --example`.",
+            description="Execute automated routine script. For an example, please use `exe --example`.",
         )
         parser.add_argument(
             "--file",
@@ -383,8 +363,7 @@ class CLIController(BaseController):
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
                 session.console.print(  # TODO: Point to docs when ready
-                    "[info]Executing an example, please visit our docs "
-                    "to learn how to create your own script.[/info]\n"
+                    "[info]Executing an example, please visit our docs to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
             elif ns_parser.url:
@@ -500,7 +479,7 @@ class CLIController(BaseController):
                 return
 
 
-def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
+def handle_job_cmds(jobs_cmds: list[str] | None) -> list[str] | None:
     """Handle job commands."""
     export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
@@ -532,7 +511,7 @@ def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
 
 
 # pylint: disable=unused-argument
-def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
+def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
     """Run the CLI menu."""
     ret_code = 1
     t_controller = CLIController(jobs_cmds)
@@ -645,7 +624,7 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 t_controller.queue.insert(0, an_input)
 
 
-def insert_start_slash(cmds: List[str]) -> List[str]:
+def insert_start_slash(cmds: list[str]) -> list[str]:
     """Insert a slash at the beginning of a command sequence."""
     if not cmds[0].startswith("/"):
         cmds[0] = f"/{cmds[0]}"
@@ -654,12 +633,12 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     return cmds
 
 
-def run_scripts(
+def run_scripts(  # pylint: disable=R0917
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
-    routines_args: Optional[List[str]] = None,
-    special_arguments: Optional[Dict[str, str]] = None,
+    routines_args: list[str] | None = None,
+    special_arguments: dict[str, str] | None = None,
     output: bool = True,
 ):
     """Run given .openbb scripts.
@@ -685,7 +664,6 @@ def run_scripts(
         if not test_mode:
             run_cli()
 
-    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [
@@ -742,15 +720,18 @@ def run_scripts(
                     whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
                     whole_path.mkdir(parents=True, exist_ok=True)
                     first_cmd = file_cmds[0].split("/")[1]
-                    with open(
-                        whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-                    ) as output_file, contextlib.redirect_stdout(output_file):
+                    with (
+                        open(
+                            whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
+                        ) as output_file,
+                        contextlib.redirect_stdout(output_file),
+                    ):
                         run_cli(file_cmds, test_mode=True)
                 else:
                     run_cli(file_cmds, test_mode=True)
 
 
-def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
+def replace_dynamic(match: re.Match, special_arguments: dict[str, str]) -> str:
     """Replace ${key=default} with value in special_arguments if it exists, else with default.
 
     Parameters
@@ -773,15 +754,21 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     return default
 
 
-def run_routine(file: str, routines_args=Optional[str]):
+def run_routine(file: str, routines_args: str | None = None):
     """Execute command routine from .openbb file."""
     user_routine_path = Path(session.user.preferences.export_directory, "routines")
     default_routine_path = ASSETS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():
-        run_scripts(path=user_routine_path, routines_args=routines_args)
+        run_scripts(
+            path=user_routine_path,
+            routines_args=[routines_args] if routines_args else None,
+        )
     elif default_routine_path.exists():
-        run_scripts(path=default_routine_path, routines_args=routines_args)
+        run_scripts(
+            path=default_routine_path,
+            routines_args=[routines_args] if routines_args else None,
+        )
     else:
         session.console.print(
             f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
@@ -792,8 +779,8 @@ def run_routine(file: str, routines_args=Optional[str]):
 def main(
     debug: bool,
     dev: bool,
-    path_list: List[str],
-    routines_args: Optional[List[str]] = None,
+    path_list: list[str],
+    routines_args: list[str] | None = None,
     **kwargs,
 ):
     """Run the CLI with various options.
@@ -825,7 +812,10 @@ def main(
         session.settings.HUB_URL = "https://my.openbb.dev"
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
-        run_routine(file=path_list[0], routines_args=routines_args)
+        run_routine(
+            file=path_list[0],
+            routines_args=",".join(routines_args) if routines_args else None,
+        )
     elif path_list:
         argv_cmds = list([" ".join(path_list).replace(" /", "/home/")])
         argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -868,8 +858,7 @@ def parse_args_and_run():
         "-i",
         "--input",
         help=(
-            "Select multiple inputs to be replaced in the routine and separated by commas."
-            "E.g. GME,AMC,BTC-USD"
+            "Select multiple inputs to be replaced in the routine and separated by commas.E.g. GME,AMC,BTC-USD"
         ),
         dest="routine_args",
         type=lambda s: [str(item) for item in s.split(",")],
@@ -880,8 +869,7 @@ def parse_args_and_run():
         "--test",
         action="store_true",
         help=(
-            "Run the CLI in testing mode. Also run this option and '-h'"
-            " to see testing argument options."
+            "Run the CLI in testing mode. Also run this option and '-h' to see testing argument options."
         ),
     )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
@@ -931,7 +919,7 @@ def parse_args_and_run():
 
 
 def launch(
-    debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
+    debug: bool = False, dev: bool = False, queue: list[str] | None = None
 ) -> None:
     """Launch CLI."""
     if queue:

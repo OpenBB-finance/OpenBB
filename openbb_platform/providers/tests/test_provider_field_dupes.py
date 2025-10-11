@@ -5,7 +5,6 @@ import importlib
 import inspect
 import os
 import unittest
-from typing import Dict, List, Type
 
 import pytest
 from openbb_core.provider import standard_models
@@ -34,7 +33,7 @@ def get_module(file_path: str, package_name: str):
     return importlib.import_module(f"{package_name}.{module_name}")
 
 
-def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
+def get_subclasses_w_keys(module: object, cls: type) -> dict[type, list[str]]:
     """Given a module and a class, return the subclasses of the class and their fields.
 
     Parameters
@@ -56,8 +55,8 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 
 
 def get_subclasses(
-    python_files: List[str], package_name: str, cls: Type
-) -> Dict[Type, List[str]]:
+    python_files: list[str], package_name: str, cls: type
+) -> dict[type, list[str]]:
     """Get the subclasses of a class defined in a list of python files.
 
     Given a list of python files, and a class, return a dictionary of
@@ -84,7 +83,7 @@ def get_subclasses(
     return subclasses
 
 
-def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
+def child_parent_map(map_: dict, parents: dict, module: object) -> None:
     """
     Generate a mapping of child classes to their parent classes and provider fields.
 
@@ -128,8 +127,8 @@ def get_path_components(path: str):
 
 
 def match_provider_and_fields(
-    providers_w_fields: List[Dict[str, List[str]]], duplicated_fields: List[str]
-) -> List[str]:
+    providers_w_fields: list[dict[str, list[str]]], duplicated_fields: list[str]
+) -> list[str]:
     """Get the provider and fields that match the duplicated fields.
 
     Given a list of providers with fields and duplicated fields,

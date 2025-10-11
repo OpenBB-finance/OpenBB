@@ -3,7 +3,7 @@
 # pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
 from datetime import date as dateType
-from typing import Any, Optional, Union
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -45,170 +45,166 @@ class SecNportDisclosureData(NportDisclosureData):
         "loan_value": "loanVal",
     }
 
-    maturity_date: Optional[dateType] = Field(
+    maturity_date: dateType | None = Field(
         description="The maturity date of the debt security.", default=None
     )
-    coupon_kind: Optional[str] = Field(
+    coupon_kind: str | None = Field(
         description="The type of coupon for the debt security.", default=None
     )
-    rate_type: Optional[str] = Field(
+    rate_type: str | None = Field(
         description="The type of rate for the debt security, floating or fixed.",
         default=None,
     )
-    annualized_return: Optional[float] = Field(
+    annualized_return: float | None = Field(
         description="The annualized return on the debt security.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    is_default: Optional[str] = Field(
+    is_default: str | None = Field(
         description="If the debt security is defaulted.", default=None
     )
-    in_arrears: Optional[str] = Field(
+    in_arrears: str | None = Field(
         description="If the debt security is in arrears.", default=None
     )
-    is_paid_kind: Optional[str] = Field(
+    is_paid_kind: str | None = Field(
         description="If the debt security payments are paid in kind.", default=None
     )
-    derivative_category: Optional[str] = Field(
+    derivative_category: str | None = Field(
         description="The derivative category of the holding.", default=None
     )
-    counterparty: Optional[str] = Field(
+    counterparty: str | None = Field(
         description="The counterparty of the derivative.", default=None
     )
-    underlying_name: Optional[str] = Field(
+    underlying_name: str | None = Field(
         description="The name of the underlying asset associated with the derivative.",
         default=None,
     )
-    option_type: Optional[str] = Field(description="The type of option.", default=None)
-    derivative_payoff: Optional[str] = Field(
+    option_type: str | None = Field(description="The type of option.", default=None)
+    derivative_payoff: str | None = Field(
         description="The payoff profile of the derivative.", default=None
     )
-    expiry_date: Optional[dateType] = Field(
+    expiry_date: dateType | None = Field(
         description="The expiry or termination date of the derivative.", default=None
     )
-    exercise_price: Optional[float] = Field(
+    exercise_price: float | None = Field(
         description="The exercise price of the option.", default=None
     )
-    exercise_currency: Optional[str] = Field(
+    exercise_currency: str | None = Field(
         description="The currency of the option exercise price.", default=None
     )
-    shares_per_contract: Optional[float] = Field(
+    shares_per_contract: float | None = Field(
         description="The number of shares per contract.", default=None
     )
-    delta: Optional[Union[str, float]] = Field(
+    delta: str | float | None = Field(
         description="The delta of the option.", default=None
     )
-    rate_type_rec: Optional[str] = Field(
+    rate_type_rec: str | None = Field(
         description="The type of rate for receivable portion of the swap.", default=None
     )
-    receive_currency: Optional[str] = Field(
+    receive_currency: str | None = Field(
         description="The receive currency of the swap.", default=None
     )
-    upfront_receive: Optional[float] = Field(
+    upfront_receive: float | None = Field(
         description="The upfront amount received of the swap.", default=None
     )
-    floating_rate_index_rec: Optional[str] = Field(
+    floating_rate_index_rec: str | None = Field(
         description="The floating rate index for receivable portion of the swap.",
         default=None,
     )
-    floating_rate_spread_rec: Optional[float] = Field(
+    floating_rate_spread_rec: float | None = Field(
         description="The floating rate spread for reveivable portion of the swap.",
         default=None,
     )
-    rate_tenor_rec: Optional[str] = Field(
+    rate_tenor_rec: str | None = Field(
         description="The rate tenor for receivable portion of the swap.", default=None
     )
-    rate_tenor_unit_rec: Optional[Union[str, int]] = Field(
+    rate_tenor_unit_rec: str | int | None = Field(
         description="The rate tenor unit for receivable portion of the swap.",
         default=None,
     )
-    reset_date_rec: Optional[str] = Field(
+    reset_date_rec: str | None = Field(
         description="The reset date for receivable portion of the swap.", default=None
     )
-    reset_date_unit_rec: Optional[Union[str, int]] = Field(
+    reset_date_unit_rec: str | int | None = Field(
         description="The reset date unit for receivable portion of the swap.",
         default=None,
     )
-    rate_type_pmnt: Optional[str] = Field(
+    rate_type_pmnt: str | None = Field(
         description="The type of rate for payment portion of the swap.", default=None
     )
-    payment_currency: Optional[str] = Field(
+    payment_currency: str | None = Field(
         description="The payment currency of the swap.", default=None
     )
-    upfront_payment: Optional[float] = Field(
+    upfront_payment: float | None = Field(
         description="The upfront amount received of the swap.", default=None
     )
-    floating_rate_index_pmnt: Optional[str] = Field(
+    floating_rate_index_pmnt: str | None = Field(
         description="The floating rate index for payment portion of the swap.",
         default=None,
     )
-    floating_rate_spread_pmnt: Optional[float] = Field(
+    floating_rate_spread_pmnt: float | None = Field(
         description="The floating rate spread for payment portion of the swap.",
         default=None,
     )
-    rate_tenor_pmnt: Optional[str] = Field(
+    rate_tenor_pmnt: str | None = Field(
         description="The rate tenor for payment portion of the swap.", default=None
     )
-    rate_tenor_unit_pmnt: Optional[Union[str, int]] = Field(
+    rate_tenor_unit_pmnt: str | int | None = Field(
         description="The rate tenor unit for payment portion of the swap.", default=None
     )
-    reset_date_pmnt: Optional[str] = Field(
+    reset_date_pmnt: str | None = Field(
         description="The reset date for payment portion of the swap.", default=None
     )
-    reset_date_unit_pmnt: Optional[Union[str, int]] = Field(
+    reset_date_unit_pmnt: str | int | None = Field(
         description="The reset date unit for payment portion of the swap.", default=None
     )
-    repo_type: Optional[str] = Field(description="The type of repo.", default=None)
-    is_cleared: Optional[str] = Field(
-        description="If the repo is cleared.", default=None
-    )
-    is_tri_party: Optional[str] = Field(
+    repo_type: str | None = Field(description="The type of repo.", default=None)
+    is_cleared: str | None = Field(description="If the repo is cleared.", default=None)
+    is_tri_party: str | None = Field(
         description="If the repo is tri party.", default=None
     )
-    principal_amount: Optional[float] = Field(
+    principal_amount: float | None = Field(
         description="The principal amount of the repo.", default=None
     )
-    principal_currency: Optional[str] = Field(
+    principal_currency: str | None = Field(
         description="The currency of the principal amount.", default=None
     )
-    collateral_type: Optional[str] = Field(
+    collateral_type: str | None = Field(
         description="The collateral type of the repo.", default=None
     )
-    collateral_amount: Optional[float] = Field(
+    collateral_amount: float | None = Field(
         description="The collateral amount of the repo.", default=None
     )
-    collateral_currency: Optional[str] = Field(
+    collateral_currency: str | None = Field(
         description="The currency of the collateral amount.", default=None
     )
-    exchange_currency: Optional[str] = Field(
+    exchange_currency: str | None = Field(
         description="The currency of the exchange rate.", default=None
     )
-    exchange_rate: Optional[float] = Field(
-        description="The exchange rate.", default=None
-    )
-    currency_sold: Optional[str] = Field(
+    exchange_rate: float | None = Field(description="The exchange rate.", default=None)
+    currency_sold: str | None = Field(
         description="The currency sold in a Forward Derivative.",
         default=None,
     )
-    currency_amount_sold: Optional[float] = Field(
+    currency_amount_sold: float | None = Field(
         description="The amount of currency sold in a Forward Derivative.",
         default=None,
     )
-    currency_bought: Optional[str] = Field(
+    currency_bought: str | None = Field(
         description="The currency bought in a Forward Derivative.",
         default=None,
     )
-    currency_amount_bought: Optional[float] = Field(
+    currency_amount_bought: float | None = Field(
         description="The amount of currency bought in a Forward Derivative.",
         default=None,
     )
-    notional_amount: Optional[float] = Field(
+    notional_amount: float | None = Field(
         description="The notional amount of the derivative.", default=None
     )
-    notional_currency: Optional[str] = Field(
+    notional_currency: str | None = Field(
         description="The currency of the derivative's notional amount.", default=None
     )
-    unrealized_gain: Optional[float] = Field(
+    unrealized_gain: float | None = Field(
         description="The unrealized gain or loss on the derivative.", default=None
     )
 
@@ -245,7 +241,7 @@ class SecNportDisclosureFetcher(
     @staticmethod
     async def aextract_data(
         query: SecNportDisclosureQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
@@ -308,19 +304,24 @@ class SecNportDisclosureFetcher(
             """Response callback for the request."""
             return await response.read()
 
-        response: Union[dict, list[dict]] = []
+        response: dict | list[dict] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
             async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
                 try:
                     response = await amake_request(
-                        filing_url, headers=HEADERS, session=session, response_callback=callback  # type: ignore
+                        filing_url,
+                        headers=HEADERS,
+                        session=session,
+                        response_callback=callback,  # type: ignore
                     )
                 finally:
                     await session.close()
         else:
             response = await amake_request(
-                filing_url, headers=HEADERS, response_callback=callback  # type: ignore
+                filing_url,
+                headers=HEADERS,
+                response_callback=callback,  # type: ignore
             )
         results = xmltodict.parse(response)  # type: ignore
 

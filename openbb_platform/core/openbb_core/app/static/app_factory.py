@@ -1,6 +1,6 @@
 """App factory."""
 
-from typing import Dict, Optional, Type, TypeVar
+from typing import TypeVar
 
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.system_settings import SystemSettings
@@ -11,7 +11,7 @@ from openbb_core.app.static.coverage import Coverage
 from openbb_core.app.static.reference_loader import ReferenceLoader
 from openbb_core.app.version import VERSION
 
-E = TypeVar("E", bound=Type[Container])
+E = TypeVar("E", bound=type[Container])
 BASE_DOC = f"""OpenBB Platform v{VERSION}
 
 Utilities:
@@ -54,12 +54,12 @@ class BaseApp:
         return self._coverage
 
     @property
-    def reference(self) -> Dict[str, Dict]:
+    def reference(self) -> dict[str, dict]:
         """Return reference data."""
         return self._reference
 
 
-def create_app(extensions: Optional[E] = None) -> Type[BaseApp]:
+def create_app(extensions: E | None = None) -> type[BaseApp]:
     """Create the app."""
 
     class App(BaseApp, extensions or object):  # type: ignore[misc]

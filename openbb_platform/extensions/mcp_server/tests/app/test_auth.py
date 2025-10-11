@@ -4,11 +4,10 @@ from unittest.mock import patch
 
 import pytest
 from fastapi import HTTPException
-from starlette.datastructures import Headers
-from starlette.requests import Request
-
 from openbb_mcp_server.app.auth import TokenAuthProvider, get_auth_provider
 from openbb_mcp_server.models.settings import MCPSettings
+from starlette.datastructures import Headers
+from starlette.requests import Request
 
 # pylint: disable=W0621
 

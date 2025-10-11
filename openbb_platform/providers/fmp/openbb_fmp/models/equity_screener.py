@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
@@ -71,79 +71,77 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         "all_share_classes": "includeAllShareClasses",
     }
 
-    mktcap_min: Optional[int] = Field(
+    mktcap_min: int | None = Field(
         default=None,
         description="Filter by market cap greater than this value.",
         title="Mkt Cap Min",
     )
-    mktcap_max: Optional[int] = Field(
+    mktcap_max: int | None = Field(
         default=None,
         description="Filter by market cap less than this value.",
         title="Mkt Cap Max",
     )
-    price_min: Optional[float] = Field(
+    price_min: float | None = Field(
         default=None,
         description="Filter by price greater than this value.",
     )
-    price_max: Optional[float] = Field(
+    price_max: float | None = Field(
         default=None,
         description="Filter by price less than this value.",
     )
-    beta_min: Optional[float] = Field(
+    beta_min: float | None = Field(
         default=None,
         description="Filter by a beta greater than this value.",
     )
-    beta_max: Optional[float] = Field(
+    beta_max: float | None = Field(
         default=None,
         description="Filter by a beta less than this value.",
     )
-    volume_min: Optional[int] = Field(
+    volume_min: int | None = Field(
         default=None,
         description="Filter by volume greater than this value.",
     )
-    volume_max: Optional[int] = Field(
+    volume_max: int | None = Field(
         default=None,
         description="Filter by volume less than this value.",
     )
-    dividend_min: Optional[float] = Field(
+    dividend_min: float | None = Field(
         default=None,
         description="Filter by dividend amount greater than this value.",
     )
-    dividend_max: Optional[float] = Field(
+    dividend_max: float | None = Field(
         default=None,
         description="Filter by dividend amount less than this value.",
     )
-    sector: Optional[Sectors] = Field(
+    sector: Sectors | None = Field(
         default=None,
         description="Filter by sector.",
     )
-    industry: Optional[str] = Field(
+    industry: str | None = Field(
         default=None,
         description="Filter by industry.",
     )
-    country: Optional[Countries] = Field(
+    country: Countries | None = Field(
         default=None, description="Filter by country, as a two-letter country code."
     )
-    exchange: Optional[Exchanges] = Field(
-        default=None, description="Filter by exchange."
-    )
-    is_etf: Optional[bool] = Field(
+    exchange: Exchanges | None = Field(default=None, description="Filter by exchange.")
+    is_etf: bool | None = Field(
         default=None,
         description="If true, includes ETFs.",
     )
-    is_active: Optional[bool] = Field(
+    is_active: bool | None = Field(
         default=None,
         description="If false, returns only inactive tickers.",
     )
-    is_fund: Optional[bool] = Field(
+    is_fund: bool | None = Field(
         default=None,
         description="If true, includes funds.",
     )
-    all_share_classes: Optional[bool] = Field(
+    all_share_classes: bool | None = Field(
         default=None,
         description="If true, includes all share classes of a equity.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=50000, description="Limit the number of results to return."
     )
 
@@ -170,44 +168,42 @@ class FMPEquityScreenerData(EquityScreenerData):
         "actively_trading": "isActivelyTrading",
     }
 
-    market_cap: Optional[int] = Field(
+    market_cap: int | None = Field(
         description="The market cap of ticker.", default=None
     )
-    sector: Optional[str] = Field(
+    sector: str | None = Field(
         description="The sector the ticker belongs to.",
         default=None,
     )
-    industry: Optional[str] = Field(
+    industry: str | None = Field(
         description="The industry ticker belongs to.", default=None
     )
-    beta: Optional[float] = Field(description="The beta of the ETF.", default=None)
-    price: Optional[float] = Field(description="The current price.", default=None)
-    last_annual_dividend: Optional[float] = Field(
+    beta: float | None = Field(description="The beta of the ETF.", default=None)
+    price: float | None = Field(description="The current price.", default=None)
+    last_annual_dividend: float | None = Field(
         description="The last annual amount dividend paid.",
         default=None,
     )
-    volume: Optional[int] = Field(
-        description="The current trading volume.", default=None
-    )
-    exchange: Optional[str] = Field(
+    volume: int | None = Field(description="The current trading volume.", default=None)
+    exchange: str | None = Field(
         description="The exchange code the asset trades on.",
         default=None,
     )
-    exchange_name: Optional[str] = Field(
+    exchange_name: str | None = Field(
         description="The full name of the primary exchange.",
         default=None,
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         description="The two-letter country abbreviation where the head office is located.",
         default=None,
     )
-    is_etf: Optional[bool] = Field(
+    is_etf: bool | None = Field(
         description="Whether the ticker is an ETF.", default=None
     )
-    is_fund: Optional[bool] = Field(
+    is_fund: bool | None = Field(
         description="Whether the ticker is a fund.", default=None
     )
-    actively_trading: Optional[bool] = Field(
+    actively_trading: bool | None = Field(
         description="Whether the ETF is actively trading.",
         default=None,
     )
@@ -229,7 +225,7 @@ class FMPEquityScreenerFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityScreenerQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

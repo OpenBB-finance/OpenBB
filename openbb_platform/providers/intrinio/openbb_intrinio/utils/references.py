@@ -1,6 +1,6 @@
 """Intrinio References Helpers."""
 
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import Field
@@ -101,15 +101,15 @@ class IntrinioCompany(Data):
     """Intrinio Company Data."""
 
     id: str = Field(description="The Intrinio ID of the Company.")
-    ticker: Optional[str] = Field(
+    ticker: str | None = Field(
         description="The stock market ticker symbol associated with the company's common stock securities",
         default=None,
     )
-    name: Optional[str] = Field(description="The company's common name.", default=None)
-    lei: Optional[str] = Field(
+    name: str | None = Field(description="The company's common name.", default=None)
+    lei: str | None = Field(
         description="The Legal Entity Identifier (LEI) of the company.", default=None
     )
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         description="The Central Index Key (CIK) of the company.",
     )
 
@@ -118,35 +118,35 @@ class IntrinioSecurity(Data):
     """Intrinio Security Data."""
 
     id: str = Field(description="The Intrinio ID for Security.")
-    company_id: Optional[str] = Field(
+    company_id: str | None = Field(
         description="The Intrinio ID for the company for which the Security is issued.",
         default=None,
     )
-    name: Optional[str] = Field(description="Name of the Security.", default=None)
-    code: Optional[str] = Field(
+    name: str | None = Field(description="Name of the Security.", default=None)
+    code: str | None = Field(
         description="""
             A 2-3 digit code classifying the Security.
             Reference: https://docs.intrinio.com/documentation/security_codes
         """,
         default=None,
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         description="The currency in which the Security is traded.", default=None
     )
-    ticker: Optional[str] = Field(
+    ticker: str | None = Field(
         description="The common/local ticker of the Security.", default=None
     )
-    composite_ticker: Optional[str] = Field(
+    composite_ticker: str | None = Field(
         description="The country-composite ticker of the Security.", default=None
     )
-    figi: Optional[str] = Field(description="The OpenFIGI identifier.", default=None)
-    composite_figi: Optional[str] = Field(
+    figi: str | None = Field(description="The OpenFIGI identifier.", default=None)
+    composite_figi: str | None = Field(
         description="The country-composite OpenFIGI identifier.", default=None
     )
-    share_class_figi: Optional[str] = Field(
+    share_class_figi: str | None = Field(
         description="The global-composite OpenFIGI identifier.", default=None
     )
-    primary_listing: Optional[bool] = Field(
+    primary_listing: bool | None = Field(
         description="""
             If true, the Security is the primary issue for the company,
             otherwise it is a secondary issue on a secondary stock exchange,

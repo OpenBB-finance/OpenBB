@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_employees import (
@@ -20,7 +20,7 @@ class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="Number of records to return. Default is all.",
     )
@@ -39,15 +39,15 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
         "url": "source",
     }
 
-    company_name: Optional[str] = Field(
+    company_name: str | None = Field(
         default=None,
         description="Company name associated with the data.",
     )
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None,
         description="Source reference for the data.",
     )
-    url: Optional[str] = Field(
+    url: str | None = Field(
         default=None,
         description="URL link to the source of the data.",
     )
@@ -69,7 +69,7 @@ class FMPHistoricalEmployeesFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPHistoricalEmployeesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

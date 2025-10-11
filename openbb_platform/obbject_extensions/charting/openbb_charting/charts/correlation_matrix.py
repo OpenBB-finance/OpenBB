@@ -25,7 +25,8 @@ def correlation_matrix(  # noqa: PLR0912
         corr = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
     else:
         corr = basemodel_to_df(
-            kwargs["obbject_item"], index=kwargs.get("index", "date")  # type: ignore
+            kwargs["obbject_item"],
+            index=kwargs.get("index", "date"),  # type: ignore
         )
     if (
         "symbol" in corr.columns

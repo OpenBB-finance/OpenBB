@@ -1,6 +1,8 @@
 """Intrinio Financial Ratios Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -31,7 +33,7 @@ class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
@@ -140,22 +142,22 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
 class IntrinioFinancialRatiosFetcher(
     Fetcher[
         IntrinioFinancialRatiosQueryParams,
-        List[IntrinioFinancialRatiosData],
+        list[IntrinioFinancialRatiosData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioFinancialRatiosQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioFinancialRatiosQueryParams:
         """Transform the query params."""
         return IntrinioFinancialRatiosQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioFinancialRatiosQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "calculations"
@@ -166,12 +168,12 @@ class IntrinioFinancialRatiosFetcher(
         else:
             raise OpenBBError(f"Period '{query.period}' not supported.")
 
-        fundamentals_data: Dict = {}
+        fundamentals_data: dict = {}
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (
-            f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={period_type}"
+            f"{base_url}/companies/{query.symbol}"
+            f"/fundamentals?statement_code={statement_code}&type={period_type}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
@@ -185,7 +187,7 @@ class IntrinioFinancialRatiosFetcher(
         ids = [item["id"] for item in fundamentals_data]
         ids = ids[: query.limit]
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             statement_data = await response.json()
             return {
@@ -204,10 +206,10 @@ class IntrinioFinancialRatiosFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioFinancialRatiosQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioFinancialRatiosData]:
+        query: IntrinioFinancialRatiosQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioFinancialRatiosData]:
         """Return the transformed data."""
-        transformed_data: List[IntrinioFinancialRatiosData] = []
+        transformed_data: list[IntrinioFinancialRatiosData] = []
 
         tags = [
             "nopatmargin",
@@ -300,7 +302,7 @@ class IntrinioFinancialRatiosFetcher(
         ]
 
         for item in data:
-            sub_dict: Dict[str, Any] = {}
+            sub_dict: dict[str, Any] = {}
 
             for sub_item in item["calculations"]:
                 field_name = sub_item["data_tag"]["tag"]

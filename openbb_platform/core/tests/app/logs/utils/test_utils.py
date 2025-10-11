@@ -82,16 +82,20 @@ def test_get_app_id_other_exception():
 
 def test_get_log_dir():
     """Test get_log_dir function."""
-    with patch(
-        "openbb_core.app.logs.utils.utils.create_log_dir_if_not_exists",
-        return_value="/test_dir",
-    ) as mock_create_log_dir, patch(
-        "openbb_core.app.logs.utils.utils.create_log_uuid_if_not_exists",
-        return_value="12345",
-    ) as mock_create_log_uuid, patch(
-        "openbb_core.app.logs.utils.utils.create_uuid_dir_if_not_exists",
-        return_value="/test_dir/12345",
-    ) as mock_create_uuid_dir:
+    with (
+        patch(
+            "openbb_core.app.logs.utils.utils.create_log_dir_if_not_exists",
+            return_value="/test_dir",
+        ) as mock_create_log_dir,
+        patch(
+            "openbb_core.app.logs.utils.utils.create_log_uuid_if_not_exists",
+            return_value="12345",
+        ) as mock_create_log_uuid,
+        patch(
+            "openbb_core.app.logs.utils.utils.create_uuid_dir_if_not_exists",
+            return_value="/test_dir/12345",
+        ) as mock_create_uuid_dir,
+    ):
         # Call the get_log_dir function
         result = get_log_dir("contextual_user_data_directory")
 

@@ -532,13 +532,9 @@ class Momentum(PltTA):
     @indicator()
     def plot_ichimoku(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Calculate Ichimoku indicator."""
-        conversion_period = (
-            self.params["ichimoku"].get_argument_values("conversion_period") or 9  # type: ignore
-        )
+        conversion_period = self.params["ichimoku"].get_argument_values("conversion_period") or 9  # type: ignore
         base_period = self.params["ichimoku"].get_argument_values("base_period") or 26  # type: ignore
-        lagging_line_period = (
-            self.params["ichimoku"].get_argument_values("lagging_line_period") or 52  # type: ignore
-        )
+        lagging_line_period = self.params["ichimoku"].get_argument_values("lagging_line_period") or 52  # type: ignore
         displacement = self.params["ichimoku"].get_argument_values("displacement") or 26  # type: ignore
 
         # Tenkan-sen (Conversion Line)
@@ -615,8 +611,7 @@ class Momentum(PltTA):
         fig.add_annotation(
             xref="paper",
             yref="paper",
-            text="<b><span style='color:#009600'>Ichi</span>"
-            "<span style='color:#c80000'>moku</span></b>",
+            text="<b><span style='color:#009600'>Ichi</span><span style='color:#c80000'>moku</span></b>",
             x=0,
             xanchor="right",
             xshift=-6,

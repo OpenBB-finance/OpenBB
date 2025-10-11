@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.tbffr import (
@@ -39,22 +39,22 @@ class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
 class FREDSelectedTreasuryBillFetcher(
     Fetcher[
         FREDSelectedTreasuryBillQueryParams,
-        List[FREDSelectedTreasuryBillData],
+        list[FREDSelectedTreasuryBillData],
     ]
 ):
     """FRED Selected Treasury Bill Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSelectedTreasuryBillQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDSelectedTreasuryBillQueryParams:
         """Transform query."""
         return FREDSelectedTreasuryBillQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDSelectedTreasuryBillQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -73,7 +73,7 @@ class FREDSelectedTreasuryBillFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSelectedTreasuryBillQueryParams, data: List, **kwargs: Any
-    ) -> List[FREDSelectedTreasuryBillData]:
+        query: FREDSelectedTreasuryBillQueryParams, data: list, **kwargs: Any
+    ) -> list[FREDSelectedTreasuryBillData]:
         """Transform data."""
         return [FREDSelectedTreasuryBillData.model_validate(d) for d in data]

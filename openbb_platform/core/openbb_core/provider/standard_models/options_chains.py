@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Union
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -127,216 +126,216 @@ class OptionsChainsData(OptionsChainsProperties):
         OpenBBError will raise when accessing properties and methods if required, specific, data was not found.
     """
 
-    underlying_symbol: List[Union[str, None]] = Field(
+    underlying_symbol: list[str | None] = Field(
         default_factory=list,
         description="Underlying symbol for the option.",
     )
-    underlying_price: List[Union[float, None]] = Field(
+    underlying_price: list[float | None] = Field(
         default_factory=list,
         description="Price of the underlying stock.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    contract_symbol: List[str] = Field(description="Contract symbol for the option.")
-    eod_date: List[Union[dateType, None]] = Field(
+    contract_symbol: list[str] = Field(description="Contract symbol for the option.")
+    eod_date: list[dateType | None] = Field(
         default_factory=list,
         description="Date for which the options chains are returned.",
     )
-    expiration: List[dateType] = Field(description="Expiration date of the contract.")
-    dte: List[Union[int, None]] = Field(
+    expiration: list[dateType] = Field(description="Expiration date of the contract.")
+    dte: list[int | None] = Field(
         default_factory=list, description="Days to expiration of the contract."
     )
-    strike: List[float] = Field(
+    strike: list[float] = Field(
         description="Strike price of the contract.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    option_type: List[str] = Field(description="Call or Put.")
-    contract_size: List[Union[int, float, None]] = Field(
+    option_type: list[str] = Field(description="Call or Put.")
+    contract_size: list[int | float | None] = Field(
         default_factory=list, description="Number of underlying units per contract."
     )
-    open_interest: List[Union[int, float, None]] = Field(
+    open_interest: list[int | float | None] = Field(
         default_factory=list, description="Open interest on the contract."
     )
-    volume: List[Union[int, float, None]] = Field(
+    volume: list[int | float | None] = Field(
         default_factory=list, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    theoretical_price: List[Union[float, None]] = Field(
+    theoretical_price: list[float | None] = Field(
         default_factory=list,
         description="Theoretical value of the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    last_trade_price: List[Union[float, None]] = Field(
+    last_trade_price: list[float | None] = Field(
         default_factory=list,
         description="Last trade price of the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    last_trade_size: List[Union[int, float, None]] = Field(
+    last_trade_size: list[int | float | None] = Field(
         default_factory=list, description="Last trade size of the option."
     )
-    last_trade_time: List[Union[datetime, None]] = Field(
+    last_trade_time: list[datetime | None] = Field(
         default_factory=list,
         description="The timestamp of the last trade.",
     )
-    tick: List[Union[str, None]] = Field(
+    tick: list[str | None] = Field(
         default_factory=list,
         description="Whether the last tick was up or down in price.",
     )
-    bid: List[Union[float, None]] = Field(
+    bid: list[float | None] = Field(
         default_factory=list,
         description="Current bid price for the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: List[Union[int, float, None]] = Field(
+    bid_size: list[int | float | None] = Field(
         default_factory=list, description="Bid size for the option."
     )
-    bid_time: List[Union[datetime, None]] = Field(
+    bid_time: list[datetime | None] = Field(
         default_factory=list,
         description="The timestamp of the bid price.",
     )
-    bid_exchange: List[Union[str, None]] = Field(
+    bid_exchange: list[str | None] = Field(
         default_factory=list, description="The exchange of the bid price."
     )
-    ask: List[Union[float, None]] = Field(
+    ask: list[float | None] = Field(
         default_factory=list,
         description="Current ask price for the option.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: List[Union[int, float, None]] = Field(
+    ask_size: list[int | float | None] = Field(
         default_factory=list, description="Ask size for the option."
     )
-    ask_time: List[Union[datetime, None]] = Field(
+    ask_time: list[datetime | None] = Field(
         default_factory=list,
         description="The timestamp of the ask price.",
     )
-    ask_exchange: List[Union[str, None]] = Field(
+    ask_exchange: list[str | None] = Field(
         default_factory=list, description="The exchange of the ask price."
     )
-    mark: List[Union[float, None]] = Field(
+    mark: list[float | None] = Field(
         default_factory=list,
         description="The mid-price between the latest bid and ask.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    open: List[Union[float, None]] = Field(
+    open: list[float | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("open", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    open_bid: List[Union[float, None]] = Field(
+    open_bid: list[float | None] = Field(
         default_factory=list,
         description="The opening bid price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    open_ask: List[Union[float, None]] = Field(
+    open_ask: list[float | None] = Field(
         default_factory=list,
         description="The opening ask price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    high: List[Union[float, None]] = Field(
+    high: list[float | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("high", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_high: List[Union[float, None]] = Field(
+    bid_high: list[float | None] = Field(
         default_factory=list,
         description="The highest bid price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_high: List[Union[float, None]] = Field(
+    ask_high: list[float | None] = Field(
         default_factory=list,
         description="The highest ask price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    low: List[Union[float, None]] = Field(
+    low: list[float | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("low", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_low: List[Union[float, None]] = Field(
+    bid_low: list[float | None] = Field(
         default_factory=list,
         description="The lowest bid price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_low: List[Union[float, None]] = Field(
+    ask_low: list[float | None] = Field(
         default_factory=list,
         description="The lowest ask price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close: List[Union[float, None]] = Field(
+    close: list[float | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("close", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close_size: List[Union[int, float, None]] = Field(
+    close_size: list[int | float | None] = Field(
         default_factory=list,
         description="The closing trade size for the option that day.",
     )
-    close_time: List[Union[datetime, None]] = Field(
+    close_time: list[datetime | None] = Field(
         default_factory=list,
         description="The time of the closing price for the option that day.",
     )
-    close_bid: List[Union[float, None]] = Field(
+    close_bid: list[float | None] = Field(
         default_factory=list,
         description="The closing bid price for the option that day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close_bid_size: List[Union[int, float, None]] = Field(
+    close_bid_size: list[int | float | None] = Field(
         default_factory=list,
         description="The closing bid size for the option that day.",
     )
-    close_bid_time: List[Union[datetime, None]] = Field(
+    close_bid_time: list[datetime | None] = Field(
         default_factory=list,
         description="The time of the bid closing price for the option that day.",
     )
-    close_ask: List[Union[float, None]] = Field(
+    close_ask: list[float | None] = Field(
         default_factory=list,
         description="The closing ask price for the option that day.",
     )
-    close_ask_size: List[Union[int, float, None]] = Field(
+    close_ask_size: list[int | float | None] = Field(
         default_factory=list,
         description="The closing ask size for the option that day.",
     )
-    close_ask_time: List[Union[datetime, None]] = Field(
+    close_ask_time: list[datetime | None] = Field(
         default_factory=list,
         description="The time of the ask closing price for the option that day.",
     )
-    prev_close: List[Union[float, None]] = Field(
+    prev_close: list[float | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("prev_close", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    change: List[Union[float, None]] = Field(
+    change: list[float | None] = Field(
         default_factory=list, description="The change in the price of the option."
     )
-    change_percent: List[Union[float, None]] = Field(
+    change_percent: list[float | None] = Field(
         default_factory=list,
         description="Change, in normalized percentage points, of the option.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    implied_volatility: List[Union[float, None]] = Field(
+    implied_volatility: list[float | None] = Field(
         default_factory=list,
         description="Implied volatility of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    delta: List[Union[float, None]] = Field(
+    delta: list[float | None] = Field(
         default_factory=list,
         description="Delta of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    gamma: List[Union[float, None]] = Field(
+    gamma: list[float | None] = Field(
         default_factory=list,
         description="Gamma of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    theta: List[Union[float, None]] = Field(
+    theta: list[float | None] = Field(
         default_factory=list,
         description="Theta of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    vega: List[Union[float, None]] = Field(
+    vega: list[float | None] = Field(
         default_factory=list,
         description="Vega of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    rho: List[Union[float, None]] = Field(
+    rho: list[float | None] = Field(
         default_factory=list,
         description="Rho of the option.",
         json_schema_extra={"x-unit_measurement": "decimal"},

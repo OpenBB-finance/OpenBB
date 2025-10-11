@@ -5,7 +5,7 @@ import os
 import traceback
 import warnings
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Annotated, Optional
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.extension_loader import ExtensionLoader
@@ -20,7 +20,6 @@ from pydantic import (
     create_model,
 )
 from pydantic.functional_serializers import PlainSerializer
-from typing_extensions import Annotated
 
 
 class LoadingError(Exception):
@@ -39,11 +38,11 @@ OBBSecretStr = Annotated[
 class CredentialsLoader:
     """Here we create the Credentials model."""
 
-    credentials: Dict[str, List[str]] = {}
+    credentials: dict[str, list[str]] = {}
 
-    def format_credentials(self, additional: dict) -> Dict[str, Tuple[object, None]]:
+    def format_credentials(self, additional: dict) -> dict[str, tuple[object, None]]:
         """Prepare credentials map to be used in the Credentials model."""
-        formatted: Dict[str, Tuple[object, None]] = {}
+        formatted: dict[str, tuple[object, None]] = {}
         for c_origin, c_list in self.credentials.items():
             for c_name in c_list:
                 if c_name in formatted:
@@ -53,7 +52,7 @@ class CredentialsLoader:
                     )
                     continue
                 formatted[c_name] = (
-                    Optional[OBBSecretStr],
+                    Optional[OBBSecretStr],  # noqa
                     Field(default=None, description=c_origin, alias=c_name.upper()),
                 )
 
@@ -62,7 +61,7 @@ class CredentialsLoader:
                 if key in formatted:
                     continue
                 formatted[key] = (
-                    Optional[OBBSecretStr],
+                    Optional[OBBSecretStr],  # noqa
                     Field(default=value, description=key, alias=key.upper()),
                 )
 
