@@ -65,7 +65,6 @@ Launcher specific arguments:
     --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
     --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
     --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
-    --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.

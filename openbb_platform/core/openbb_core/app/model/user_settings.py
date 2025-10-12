@@ -9,14 +9,12 @@ from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.model.preferences import Preferences
-from openbb_core.app.model.profile import Profile
 from pydantic import Field
 
 
 class UserSettings(Tagged):
     """User settings."""
 
-    profile: Profile = Field(default_factory=Profile)
     credentials: Credentials = Field(default_factory=Credentials)
     preferences: Preferences = Field(default_factory=Preferences)
     defaults: Defaults = Field(default_factory=Defaults)

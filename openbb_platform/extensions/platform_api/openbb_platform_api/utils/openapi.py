@@ -378,11 +378,11 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
     # Safe check for description
     if (
-        p.get("description")
-        and "Multiple comma separated items allowed" in p["description"]
+        p.get("description", "")
+        and "Multiple comma separated items allowed" in p["description"]  # type: ignore
     ):
         p["description"] = (
-            p["description"].split("Multiple comma separated items allowed")[0].strip()
+            p["description"].split("Multiple comma separated items allowed")[0].strip()  # type: ignore
         )
 
     if x_widget_config := param.get(
@@ -432,7 +432,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
         p["options"] = {} if providers else []
         if providers:
             for provider in providers:
-                p["options"][provider] = []
+                p["options"][provider] = []  # type: ignore
 
     # Handle widget config
     if _widget_config := p_schema.get("x-widget_config", {}):

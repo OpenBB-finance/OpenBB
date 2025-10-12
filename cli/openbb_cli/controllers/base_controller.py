@@ -14,16 +14,13 @@ import pandas as pd
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import SCRIPT_TAGS
 from openbb_cli.controllers.choices import build_controller_choice_map
-from openbb_cli.controllers.hub_service import upload_routine
 from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
     handle_obbject_display,
     parse_unknown_args_to_dict,
-    print_guest_block_msg,
     print_rich_table,
-    remove_file,
     system_clear,
     validate_register_key,
 )
@@ -40,7 +37,6 @@ session = Session()
 
 # TODO: We should try to avoid these global variables
 RECORD_SESSION = False
-RECORD_SESSION_LOCAL_ONLY = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
@@ -65,7 +61,6 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "stop",
-        "whoami",
         "results",
     ]
 
@@ -271,11 +266,6 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
-        if not session.is_local():
-            remove_file(
-                Path(session.user.preferences.export_directory, "routines", "hub")
-            )
-
     def call_reset(self, _) -> None:
         """Process reset command.
 
@@ -398,17 +388,6 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            if session.is_local():
-                session.console.print(
-                    "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
-                )
-                session.console.print(
-                    "\n[yellow]Visit the OpenBB Hub to register: http://my.openbb.co[/yellow]"
-                )
-                session.console.print(
-                    "\n[yellow]Your routine will be saved locally.[/yellow]\n"
-                )
-
             # Check if title has a valid format
             title = " ".join(ns_parser.name) if ns_parser.name else ""
             pattern = re.compile(r"^[a-zA-Z0-9\s]+$")
@@ -419,13 +398,11 @@ class BaseController(metaclass=ABCMeta):
                 return
 
             global RECORD_SESSION  # noqa: PLW0603
-            global RECORD_SESSION_LOCAL_ONLY  # noqa: PLW0603
             global SESSION_RECORDED_NAME  # noqa: PLW0603
             global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
             global SESSION_RECORDED_TAGS  # noqa: PLW0603
             global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
-            RECORD_SESSION_LOCAL_ONLY = session.is_local()
             RECORD_SESSION = True
             SESSION_RECORDED_NAME = title
             SESSION_RECORDED_DESCRIPTION = (
@@ -471,134 +448,63 @@ class BaseController(metaclass=ABCMeta):
                 )
             else:
                 current_user = session.user
+                title_for_local_storage = (
+                    SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
+                )
 
-                # Check if the user just wants to store routine locally
-                # This works regardless of whether they are logged in or not
-                if RECORD_SESSION_LOCAL_ONLY:
-                    # Whitespaces are replaced by underscores and an .openbb extension is added
-                    title_for_local_storage = (
-                        SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
+                routine_file = os.path.join(
+                    f"{current_user.preferences.export_directory}/routines",
+                    title_for_local_storage,
+                )
+
+                # If file already exists, add a timestamp to the name
+                if os.path.isfile(routine_file):
+                    i = session.console.input(
+                        "A local routine with the same name already exists, do you want to override it? (y/n): "
                     )
-
-                    routine_file = os.path.join(
-                        f"{current_user.preferences.export_directory}/routines",
-                        title_for_local_storage,
-                    )
-
-                    # If file already exists, add a timestamp to the name
-                    if os.path.isfile(routine_file):
-                        i = session.console.input(
-                            "A local routine with the same name already exists, do you want to override it? (y/n): "
-                        )
+                    session.console.print("")
+                    while i.lower() not in ["y", "yes", "n", "no"]:
+                        i = session.console.input("Select 'y' or 'n' to proceed: ")
                         session.console.print("")
-                        while i.lower() not in ["y", "yes", "n", "no"]:
-                            i = session.console.input("Select 'y' or 'n' to proceed: ")
-                            session.console.print("")
 
-                        if i.lower() in ["n", "no"]:
-                            new_name = (
-                                datetime.now().strftime("%Y%m%d_%H%M%S_")
-                                + title_for_local_storage
-                            )
-                            routine_file = os.path.join(
-                                current_user.preferences.export_directory,
-                                "routines",
-                                new_name,
-                            )
-                            session.console.print(
-                                f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
-                            )
-
-                    # Writing to file
-                    Path(os.path.dirname(routine_file)).mkdir(
-                        parents=True, exist_ok=True
-                    )
-
-                    with open(routine_file, "w") as file1:
-                        lines = ["# OpenBB Platform CLI - Routine", "\n"]
-
-                        username = getattr(
-                            session.user.profile.hub_session, "username", "local"
+                    if i.lower() in ["n", "no"]:
+                        new_name = (
+                            datetime.now().strftime("%Y%m%d_%H%M%S_")
+                            + title_for_local_storage
+                        )
+                        routine_file = os.path.join(
+                            current_user.preferences.export_directory,
+                            "routines",
+                            new_name,
+                        )
+                        session.console.print(
+                            f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
                         )
 
-                        lines += (
-                            [f"# Author: {username}", "\n\n"] if username else ["\n"]
-                        )
-                        lines += [
-                            f"# Title: {SESSION_RECORDED_NAME}",
-                            "\n",
-                            f"# Tags: {SESSION_RECORDED_TAGS}",
-                            "\n\n",
-                            f"# Description: {SESSION_RECORDED_DESCRIPTION}",
-                            "\n\n",
-                        ]
-                        lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
-                        # Writing data to a file
-                        file1.writelines(lines)
+                # Writing to file
+                Path(os.path.dirname(routine_file)).mkdir(parents=True, exist_ok=True)
 
-                    session.console.print(
-                        f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
-                    )
+                with open(routine_file, "w") as file1:
+                    lines = ["# OpenBB Platform CLI - Routine", "\n"]
+                    lines += [
+                        f"# Title: {SESSION_RECORDED_NAME}",
+                        "\n",
+                        f"# Tags: {SESSION_RECORDED_TAGS}",
+                        "\n\n",
+                        f"# Description: {SESSION_RECORDED_DESCRIPTION}",
+                        "\n\n",
+                    ]
+                    lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
+                    # Writing data to a file
+                    file1.writelines(lines)
 
-                # If user doesn't specify they want to store routine locally
-                # Confirm that the user is logged in
-                elif not session.is_local():
-                    routine = "\n".join(SESSION_RECORDED[:-1])
-                    hub_session = current_user.profile.hub_session
-
-                    if routine is not None:
-                        auth_header = (
-                            f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}"
-                            if hub_session
-                            else None
-                        )
-                        kwargs = {
-                            "auth_header": auth_header,
-                            "name": SESSION_RECORDED_NAME,
-                            "description": SESSION_RECORDED_DESCRIPTION,
-                            "routine": routine,
-                            "tags": SESSION_RECORDED_TAGS,
-                            "public": SESSION_RECORDED_PUBLIC,
-                        }
-                        response = upload_routine(**kwargs)  # type: ignore
-                        if response is not None and response.status_code == 409:
-                            i = session.console.input(
-                                "A routine with the same name already exists, do you want to replace it? (y/n): "
-                            )
-                            session.console.print("")
-                            if i.lower() in ["y", "yes"]:
-                                kwargs["override"] = True  # type: ignore
-                                response = upload_routine(**kwargs)  # type: ignore
-                            else:
-                                session.console.print("[info]Aborted.[/info]")
+                session.console.print(
+                    f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                )
 
                 # Clear session to be recorded again
                 RECORD_SESSION = False
                 SESSION_RECORDED = list()
-
-    def call_whoami(self, other_args: list[str]) -> None:
-        """Process whoami command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="whoami",
-            description="Show current user",
-        )
-        ns_parser, _ = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            current_user = session.user
-            local_user = session.is_local()
-            if not local_user:
-                hub_session = current_user.profile.hub_session
-                session.console.print(
-                    f"[info]email:[/info] {hub_session.email if hub_session else 'N/A'}"
-                )
-                session.console.print(
-                    f"[info]uuid:[/info] {hub_session.user_uuid if hub_session else 'N/A'}"
-                )
-            else:
-                print_guest_block_msg()
 
     def call_results(self, other_args: list[str]):
         """Process results command."""

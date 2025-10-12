@@ -55,7 +55,7 @@ PLATFORM_ROUTERS = {
     for d in dir(obb)
     if "_" not in d
 }
-NON_DATA_ROUTERS = ["coverage", "account", "reference", "system", "user"]
+NON_DATA_ROUTERS = ["coverage", "reference", "system", "user"]
 DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
@@ -216,23 +216,7 @@ class CLIController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-
-        mt.add_info("Configure the platform and manage your account")
-        for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
-                continue
-            if value == "menu":
-                menu_description = (
-                    obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
-                ) or ""
-                mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
-                )
-            else:
-                mt.add_cmd(router)
-
-        mt.add_info("\nConfigure your CLI")
+        mt.add_info("\nConfigure CLI")
         mt.add_menu(
             "settings",
             description="enable and disable feature flags, preferences and settings",

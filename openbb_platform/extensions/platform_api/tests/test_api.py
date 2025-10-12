@@ -39,9 +39,7 @@ def test_get_user_settings_no_login():
             read_data='{"credentials": {}, "preferences": {}, "defaults": {"commands": {}}}'
         ),
     ):
-        settings = get_user_settings(
-            _login=False, current_user_settings="", user_settings_copy=""
-        )
+        settings = get_user_settings(current_user_settings="")
         assert settings == {
             "credentials": {},
             "preferences": {},

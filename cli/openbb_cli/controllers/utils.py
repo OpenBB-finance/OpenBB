@@ -65,27 +65,15 @@ def print_goodbye():
     text = """
 [param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
 
-We hope you'll find the new OpenBB Platform CLI a valuable tool.
-
 To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
 
 Please feel free to check out our other products:
 
 [bold]OpenBB Workspace[/]:    [cmds]https://openbb.co[/cmds]
-[bold]OpenBB Platform:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
-    """
+[bold]ODP Desktop Application:[/]      [cmds]https://docs.openbb.co/odp/[/cmds]
+[bold]ODP Python Package:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
+"""
     session.console.print(text)
-
-
-def print_guest_block_msg():
-    """Block guest users from using the cli."""
-    if session.is_local():
-        session.console.print(
-            "[info]You are currently logged as a guest.[/info]\n"
-            "[info]Login to use this feature.[/info]\n\n"
-            "[info]If you don't have an account, you can create one here: [/info]"
-            f"[cmds]{session.settings.HUB_URL + '/register'}\n[/cmds]"
-        )
 
 
 def bootup():
@@ -124,15 +112,6 @@ def reset(queue: list[str] | None = None):
     dev = session.settings.DEV_BACKEND
 
     try:
-        # remove the hub routines
-        if not session.is_local():
-            remove_file(
-                Path(session.user.preferences.export_directory, "routines", "hub")
-            )
-
-            # if not get_current_user().profile.remember:
-            #     Local.remove(HIST_FILE_PROMPT)
-
         # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
@@ -140,16 +119,11 @@ def reset(queue: list[str] | None = None):
                 del sys.modules[module]
 
         queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
+
         # pylint: disable=import-outside-toplevel
-        # we run the cli again
-        if session.is_local():
-            from openbb_cli.controllers.cli_controller import main
+        from openbb_cli.controllers.cli_controller import main
 
-            main(debug, dev, queue_list, module="")  # type: ignore
-        else:
-            from openbb_cli.controllers.cli_controller import launch
-
-            launch(queue=queue_list)
+        main(debug, dev, queue_list, module="")  # type: ignore
 
     except Exception as e:
         session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
@@ -550,11 +524,7 @@ def get_flair_and_username() -> str:
     if dtime := get_dtime():
         dtime = f"{dtime} "
 
-    username = getattr(session.user.profile.hub_session, "username", "")
-    if username:
-        username = f"[{username}] "
-
-    return f"{dtime}{username}{flair}"
+    return f"{dtime}{flair}"
 
 
 def is_timezone_valid(user_tz: str) -> bool:

@@ -408,7 +408,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                             openapi, post_body_source.get("operationId"), route, _param
                         )
                         modified_post_params = modify_query_schema(
-                            post_params,
+                            post_params,  # type: ignore
                             provider,  # type: ignore
                         )
 
@@ -456,7 +456,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                         form_endpoint_path if has_form_endpoint else route,
                     )
                     modified_post_params = modify_query_schema(
-                        post_params,
+                        post_params,  # type: ignore
                         provider,  # type: ignore
                     )
 

@@ -36,32 +36,6 @@ Which should result in the following output:
 
 ![image](https://github.com/OpenBB-finance/OpenBB/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
 
-## API keys
+## Documentation
 
-To fully leverage the OpenBB Platform you need to get some API keys to connect with data providers. Here are the 3 options on where to set them:
-
-1. OpenBB Hub
-2. Local file
-
-### 1. OpenBB Hub
-
-Set your keys at [OpenBB Hub](https://my.openbb.co/app/platform/credentials) and get your personal access token from <https://my.openbb.co/app/platform/pat> to connect with your account.
-
-> Once you log in, on the Platform CLI (through the `/account` menu, all your credentials will be in sync with the OpenBB Hub.)
-
-### 2. Local file
-
-You can specify the keys directly in the `~/.openbb_platform/user_settings.json` file.
-
-Populate this file with the following template and replace the values with your keys:
-
-```json
-{
-  "credentials": {
-    "fmp_api_key": "REPLACE_ME",
-    "polygon_api_key": "REPLACE_ME",
-    "benzinga_api_key": "REPLACE_ME",
-    "fred_api_key": "REPLACE_ME"
-  }
-}
-```
+View the user documentation for this package [here](https://docs.openbb.co/cli)
