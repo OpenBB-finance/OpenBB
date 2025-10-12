@@ -40,16 +40,22 @@ obb.account.credentials.estat_api_key = "your_application_id_here"
 ## Quick Start
 
 ```python
-# Get Japanese population census data
-data = obb.economy.statistical_data(
+from openbb import obb
+
+# Search for datasets
+results = obb.economy.estat_search(query="population", provider="estat")
+dataset_id = results.results[0].dataset_id
+
+# Get Japanese population census data using the dataset ID
+data = obb.economy.estat_series(
     provider="estat",
-    symbol="0003433219",  # Population Census dataset ID
+    symbol=dataset_id,
 )
 
-# Get data with filters
-data = obb.economy.statistical_data(
+# Or use a known dataset ID directly
+data = obb.economy.estat_series(
     provider="estat",
-    symbol="0003433219",
+    symbol="0003433219",  # Population Census dataset ID
     area_code="13000",    # Tokyo Prefecture
     start_date="2020-01",
     end_date="2020-12"
@@ -87,23 +93,53 @@ Think of e-Stat as Japan's official government data library. To use it effective
 
 Use the search box on the e-Stat website with English terms like "population", "unemployment", "consumer price"
 
-#### Method 3: API Discovery
+#### Method 3: Programmatic Search (Recommended)
+
+Use the built-in search function to discover datasets directly within OpenBB:
 
 ```python
-import requests
+from openbb import obb
 
-# Search for datasets programmatically
-url = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList"
-params = {
-    "appId": "your_api_key_here",
-    "lang": "E",
-    "searchWord": "population census",
-    "limit": 20
-}
+# Search for datasets by keyword
+results = obb.economy.estat_search(query="population census", provider="estat")
 
-response = requests.get(url, params=params)
-data = response.json()
-# Dataset IDs will be in the response
+# View search results
+for dataset in results.results:
+    print(f"ID: {dataset.dataset_id}")
+    print(f"Title: {dataset.title}")
+    print(f"Stats Code: {dataset.stats_code}")
+    print(f"Organization: {dataset.gov_org}")
+    print("---")
+
+# Access metadata and attribution
+print(results.extra['results_metadata']['attribution'])
+
+# Use a dataset ID from search results to fetch data
+dataset_id = results.results[0].dataset_id
+data = obb.economy.estat_series(symbol=dataset_id, provider="estat")
+```
+
+**Search Options:**
+- Omit `query` to get all available datasets
+- Use `limit` parameter to control number of results (default: 100, e-Stat API default: 10,000)
+- Use `start_position` for pagination (starts at 1). Get next page position from `response.extra['results_metadata']['next_start_position']`
+- Use `updated_date` to filter by dataset update date (format: YYYY-MM-DD)
+
+**Pagination Example:**
+```python
+# Get first 100 results
+page1 = obb.economy.estat_search(query="population", limit=100, provider="estat")
+
+# Check if more results available
+if page1.extra['results_metadata'].get('has_more'):
+    next_position = page1.extra['results_metadata']['next_start_position']
+    # Get next 100 results
+    page2 = obb.economy.estat_search(
+        query="population",
+        limit=100,
+        start_position=next_position,
+        provider="estat"
+    )
 ```
 
 ### Common Datasets

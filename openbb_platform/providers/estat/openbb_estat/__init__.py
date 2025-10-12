@@ -6,6 +6,7 @@ however its contents are not guaranteed by government.
 
 from openbb_core.provider.abstract.provider import Provider
 
+from openbb_estat.models.search import EstatSearchFetcher
 from openbb_estat.models.statistical_data import EstatStatisticalDataFetcher
 
 estat_provider = Provider(
@@ -16,6 +17,7 @@ estat_provider = Provider(
     + " Attribution: This service uses API functions from e-Stat, however its contents are not guaranteed by government.",
     credentials=["api_key"],
     fetcher_dict={
+        "EstatSearch": EstatSearchFetcher,
         "EstatStatisticalData": EstatStatisticalDataFetcher,
     },
     repr_name="e-Stat Japan Statistical Data API",

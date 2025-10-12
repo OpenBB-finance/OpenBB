@@ -336,6 +336,31 @@ def test_economy_fred_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"provider": "estat"}),
+        ({"query": "population", "provider": "estat"}),
+        ({"query": "consumer price", "limit": 10, "provider": "estat"}),
+    ],
+)
+@pytest.mark.integration
+def test_economy_estat_search(params, obb):
+    """Test economy estat search."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.estat_search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    # Verify dataset_id is present
+    assert result.results[0].dataset_id
+    # Verify metadata contains attribution
+    if hasattr(result, "extra") and result.extra:
+        metadata = result.extra.get("results_metadata", {})
+        assert "attribution" in metadata or len(metadata) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "SP500",
