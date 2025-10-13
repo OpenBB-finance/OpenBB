@@ -117,12 +117,12 @@ openapi = app.openapi()
 
 # We don't need the current settings,
 # but we need to call the function to update, login, and/or identify the settings file.
-current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
+current_settings = get_user_settings(CURRENT_USER_SETTINGS)
 widgets_json = get_widgets_json(
     build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
 )
 
-# A template file will be served from the OpenBBUserDataDirectory, if it exists.
+# A file will be served from the OpenBBUserDataDirectory, if it exists.
 # If it doesn't exist, an empty list will be returned, and an empty file will be created.
 APPS_PATH = (
     APPS_PATH
