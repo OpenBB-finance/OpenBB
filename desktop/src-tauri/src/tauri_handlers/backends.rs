@@ -14,7 +14,6 @@ use std::process::Stdio;
 use tauri::{AppHandle, Emitter, Manager};
 use uuid::Uuid;
 
-
 #[derive(Clone, serde::Serialize)]
 pub struct Payload {
     message: String,
