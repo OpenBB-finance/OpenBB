@@ -227,8 +227,8 @@ describe('ApiKeysPage', () => {
     fireEvent.click(screen.getByTestId('documentation-button'));
 
     expect(vi.mocked(invoke)).toHaveBeenCalledWith('open_url_in_window', {
-      url: 'https://docs.openbb.co/python/settings/user_settings/api_keys',
-      title: 'ODP Python Package Documentation',
+      url: 'https://docs.openbb.co/desktop/api_keys',
+      title: 'Open Data Platform Documentation',
     });
   });
 
