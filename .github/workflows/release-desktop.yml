@@ -4,6 +4,15 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag for release"
+        required: false
+        default: ""
+      draft:
+        description: "Create as draft release"
+        required: false
+        default: "false"
 
 jobs:
   build-windows:
@@ -51,19 +60,28 @@ jobs:
       - name: Extract Version and Tag
         id: extract_version
         run: |
-          INSTALLER_FILE=$(find ./artifacts -name "*.exe" -o -name "*.dmg" | head -n 1)
-          if [ -z "$INSTALLER_FILE" ]; then
-            echo "::error::No installer file found in artifacts."
-            exit 1
+          # Use input tag if provided, otherwise extract from artifacts
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+            VERSION=$(echo "$TAG" | sed 's/^[^0-9]*//')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "release_name=Open Data Platform $TAG" >> $GITHUB_OUTPUT
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            INSTALLER_FILE=$(find ./artifacts -name "*.exe" -o -name "*.dmg" | head -n 1)
+            if [ -z "$INSTALLER_FILE" ]; then
+              echo "::error::No installer file found in artifacts."
+              exit 1
+            fi
+            VERSION=$(basename "$INSTALLER_FILE" | sed -n 's/.*_\([0-9]\+\.[0-9]\+\.[0-9]\+\)_.*/\1/p')
+            if [ -z "$VERSION" ]; then
+              echo "::error::Could not extract version from filename: $(basename "$INSTALLER_FILE")"
+              exit 1
+            fi
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "release_name=Open Data Platform v$VERSION" >> $GITHUB_OUTPUT
+            echo "tag=Open-Data-Platform-v$VERSION" >> $GITHUB_OUTPUT
           fi
-          VERSION=$(basename "$INSTALLER_FILE" | sed -n 's/.*_\([0-9]\+\.[0-9]\+\.[0-9]\+\)_.*/\1/p')
-          if [ -z "$VERSION" ]; then
-            echo "::error::Could not extract version from filename: $(basename "$INSTALLER_FILE")"
-            exit 1
-          fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "release_name=Open Data Platform v$VERSION" >> $GITHUB_OUTPUT
-          echo "tag=Open-Data-Platform-v$VERSION" >> $GITHUB_OUTPUT
 
       - name: Prepare assets and generate release.json
         id: prep_assets
@@ -136,6 +154,7 @@ jobs:
           tag_name: ${{ steps.extract_version.outputs.tag }}
           name: ${{ steps.extract_version.outputs.release_name }}
           files: ${{ steps.prep_assets.outputs.assets_path }}/*
+          draft: ${{ github.event.inputs.draft == 'true' }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload release.json as artifact for odp job
@@ -146,6 +165,8 @@ jobs:
 
   update-latest-tag:
     needs: publish
+    # Only run this job if not a draft release
+    if: github.event.inputs.draft != 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
