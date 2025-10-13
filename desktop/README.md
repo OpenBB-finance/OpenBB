@@ -24,7 +24,7 @@ ODP Desktop is built with a Tauri & React framework, the code is approximately 5
 This stack reduces the distribution size by relying on the operating system for window creation.
 Installed, it is approximately 35 MB; compressed, 12 MB.
 
-The application is tray icon - background service - where functions rely on developer tools that are installed seperately via ODP.
+The application is tray icon - background service - where functions rely on developer tools that are installed separately via ODP.
 In other words, the application itself is a GUI and wrapper for interacting with the operating system and command line.
 
 It is assumed that no developer tools are installed in the operating system, and the user does not have admin/root access to the machine.
@@ -89,7 +89,7 @@ npm run tauri dev
 
 This will start the development server and watch for changes to the codebase. Most changes will be picked up, but some events may require a full restart.
 
-If you use a browswer, instead of the window, to view the development server there will be stuff that just doesn't work. This is expected.
+If you use a browser, instead of the window, to view the development server there will be stuff that just doesn't work. This is expected.
 
 Ignore all of the warning messages for now, we'll clean those up later.
 
