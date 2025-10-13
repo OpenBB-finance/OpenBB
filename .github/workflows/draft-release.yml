@@ -11,6 +11,10 @@ on:
         description: "Tag for release (manual input)"
         required: true
         default: ""
+      ref:
+        description: "Branch to release from (e.g., main, develop)"
+        required: false
+        default: "main"
 
 jobs:
   update_release_draft:
@@ -21,6 +25,8 @@ jobs:
     steps:
       - name: 📟 Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
 
       - name: 📝 Release Drafter
         id: release-drafter
@@ -62,7 +68,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'release-desktop.yml',
-              ref: 'main',
+              ref: '${{ github.event.inputs.ref }}',
               inputs: {
                 tag: '${{ github.event.inputs.tag }}',
                 draft: 'true'
