@@ -11,6 +11,8 @@ on:
 jobs:
   build-and-sign:
     runs-on: "macos-latest"
+    permissions:
+      contents: write
     defaults:
       run:
         working-directory: desktop
