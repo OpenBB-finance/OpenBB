@@ -251,20 +251,14 @@ def launch_api(**_kwargs):  # noqa PRL0912
     if "use_colors" not in _kwargs:
         _kwargs["use_colors"] = "win" not in sys.platform or os.name != "nt"
 
-    try:
-        package_name = __package__
-        _msg = (
-            "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
-            "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
-            f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
-        )
-        logger.info(_msg)
-        uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
-    finally:
-        # If user_settings_copy.json exists, then restore the original settings.
-        if os.path.exists(USER_SETTINGS_COPY):
-            logger.info("Restoring the original settings.")
-            os.replace(USER_SETTINGS_COPY, CURRENT_USER_SETTINGS)
+    package_name = __package__
+    _msg = (
+        "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
+        "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
+        f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
+    )
+    logger.info(_msg)
+    uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
 
 
 def main():
