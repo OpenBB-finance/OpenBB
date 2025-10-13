@@ -118,7 +118,11 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
             Err(e) => {
                 log::error!("Failed to create User-Agent header: {}", e);
                 if always_prompt {
-                    show_error(&app, "Update Check Failed", format!("Failed to create User-Agent header: {}", e));
+                    show_error(
+                        &app,
+                        "Update Check Failed",
+                        format!("Failed to create User-Agent header: {}", e),
+                    );
                 }
                 return;
             }
@@ -126,15 +130,16 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
 
         match reqwest::header::HeaderValue::from_str(&ap_id) {
             Ok(app_id) => {
-                headers.insert(
-                    reqwest::header::HeaderName::from_static("x-app-id"),
-                    app_id,
-                );
+                headers.insert(reqwest::header::HeaderName::from_static("x-app-id"), app_id);
             }
             Err(e) => {
                 log::error!("Failed to create X-App-ID header: {}", e);
                 if always_prompt {
-                    show_error(&app, "Update Check Failed", format!("Failed to create X-App-ID header: {}", e));
+                    show_error(
+                        &app,
+                        "Update Check Failed",
+                        format!("Failed to create X-App-ID header: {}", e),
+                    );
                 }
                 return;
             }
