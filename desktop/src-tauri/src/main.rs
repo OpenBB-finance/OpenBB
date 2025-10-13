@@ -109,14 +109,37 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
 
     let headers = {
         let mut headers = reqwest::header::HeaderMap::new();
-        headers.insert(
-            reqwest::header::HeaderName::from_static("User-Agent"),
-            reqwest::header::HeaderValue::from_str("ODP-Updater").unwrap(),
-        );
-        headers.insert(
-            reqwest::header::HeaderName::from_static("X-App-ID"),
-            reqwest::header::HeaderValue::from_str(&ap_id).unwrap(),
-        );
+
+        // Use try_from or handle potential errors properly
+        match reqwest::header::HeaderValue::from_str("ODP-Updater") {
+            Ok(user_agent) => {
+                headers.insert(reqwest::header::USER_AGENT, user_agent);
+            }
+            Err(e) => {
+                log::error!("Failed to create User-Agent header: {}", e);
+                if always_prompt {
+                    show_error(&app, "Update Check Failed", format!("Failed to create User-Agent header: {}", e));
+                }
+                return;
+            }
+        }
+
+        match reqwest::header::HeaderValue::from_str(&ap_id) {
+            Ok(app_id) => {
+                headers.insert(
+                    reqwest::header::HeaderName::from_static("x-app-id"),
+                    app_id,
+                );
+            }
+            Err(e) => {
+                log::error!("Failed to create X-App-ID header: {}", e);
+                if always_prompt {
+                    show_error(&app, "Update Check Failed", format!("Failed to create X-App-ID header: {}", e));
+                }
+                return;
+            }
+        }
+
         headers
     };
 
