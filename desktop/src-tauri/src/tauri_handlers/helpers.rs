@@ -705,14 +705,14 @@ from pathlib import Path
 
 try:
     print("Starting OpenBB settings configuration...")
-    
+
     home = Path.home()
     platform_dir = home / '.openbb_platform'
     platform_dir.mkdir(exist_ok=True)
-    
+
     user_settings_path = platform_dir / 'user_settings.json'
     system_settings_path = platform_dir / 'system_settings.json'
-    
+
     existing_user_settings = {}
     if user_settings_path.exists():
         try:
@@ -721,28 +721,28 @@ try:
                 print(f"Loaded existing user settings file: {user_settings_path}")
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error reading existing user settings: {e}")
-    
+
     try:
         from openbb_core.app.service.user_service import UserService
-        
+
         user_service = UserService()
         user_settings = user_service.read_from_file()
-        
+
         if user_settings:
             if hasattr(user_settings, 'credentials') and user_settings.credentials:
                 credentials_json = json.loads(user_settings.credentials.model_dump_json())
-                
+
                 if 'credentials' not in existing_user_settings:
                     existing_user_settings['credentials'] = {}
-                    
+
                 for key, value in credentials_json.items():
                     if key not in existing_user_settings['credentials']:
                         existing_user_settings['credentials'][key] = value
                         print(f"Added missing credential key: {key}")
-            
+
             if 'preferences' not in existing_user_settings:
                 existing_user_settings['preferences'] = {}
-                
+
             if 'defaults' not in existing_user_settings:
                 existing_user_settings['defaults'] = {}
     except ImportError as e:
@@ -753,11 +753,11 @@ try:
             existing_user_settings['preferences'] = {}
         if 'defaults' not in existing_user_settings:
             existing_user_settings['defaults'] = {}
-    
+
     with open(user_settings_path, 'w') as f:
         json.dump(existing_user_settings, f, indent=4)
         print(f"Updated user settings file written to {user_settings_path}")
-        
+
     existing_system_settings = {}
     if system_settings_path.exists():
         try:
@@ -766,27 +766,27 @@ try:
                 print(f"Loaded existing system settings file: {system_settings_path}")
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error reading existing system settings: {e}")
-    
+
     try:
         from openbb_core.app.service.system_service import SystemService
-        
+
         system_service = SystemService()
-        
+
         if hasattr(system_service, 'system_settings'):
             system_dict = system_service.system_settings.model_dump()
-            
+
             if 'api_settings' not in existing_system_settings:
                 existing_system_settings['api_settings'] = system_dict.get('api_settings', {})
                 print("Added missing api_settings section")
-                
+
             if 'python_settings' not in existing_system_settings:
                 existing_system_settings['python_settings'] = system_dict.get('python_settings', {})
                 print("Added missing python_settings section")
-                
+
             if 'debug_mode' not in existing_system_settings:
                 existing_system_settings['debug_mode'] = system_dict.get('debug_mode', False)
                 print("Added missing debug_mode setting")
-                
+
             if 'install_settings' not in existing_system_settings:
                 existing_system_settings['install_settings'] = system_dict.get('install_settings', {})
                 print("Added missing install_settings section")
@@ -800,13 +800,13 @@ try:
             existing_system_settings['debug_mode'] = False
         if 'install_settings' not in existing_system_settings:
             existing_system_settings['install_settings'] = {}
-    
+
     with open(system_settings_path, 'w') as f:
         json.dump(existing_system_settings, f, indent=4)
         print(f"Updated system settings file written to {system_settings_path}")
-    
+
     print("OpenBB settings configuration completed successfully")
-    
+
 except Exception as e:
     print(f"Error updating OpenBB settings: {e}")
     sys.exit(1)
@@ -991,17 +991,16 @@ pub async fn open_url_in_window(
         #[cfg(target_os = "macos")]
         {
             use objc2_app_kit::{NSColor, NSWindow};
-            use objc2_foundation::NSNumber;
+
             let _ = window.set_title_bar_style(tauri::TitleBarStyle::Transparent);
             let ns_window_ptr = window.ns_window().unwrap();
             let ns_window = unsafe { &*(ns_window_ptr as *mut NSWindow) };
-
             let bg_color = {
                 NSColor::colorWithRed_green_blue_alpha(
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(1.0).as_cgfloat(),
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
                 )
             };
             ns_window.setBackgroundColor(Some(&bg_color));
@@ -1167,7 +1166,7 @@ pub async fn select_file_impl<E: EnvSystem>(
             if ($dialog.ShowDialog() -eq 'OK') {{
                 $dialog.FileName
             }} else {{
-                "" 
+                ""
             }}
             "#,
             home_dir.replace("\"", "`\""),

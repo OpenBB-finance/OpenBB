@@ -1590,17 +1590,16 @@ pub async fn open_backend_logs_window(
         #[cfg(target_os = "macos")]
         {
             use objc2_app_kit::{NSColor, NSWindow};
-            use objc2_foundation::NSNumber;
+
             let _ = window.set_title_bar_style(tauri::TitleBarStyle::Transparent);
             let ns_window_ptr = window.ns_window().unwrap();
             let ns_window = unsafe { &*(ns_window_ptr as *mut NSWindow) };
-
             let bg_color = {
                 NSColor::colorWithRed_green_blue_alpha(
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(0.0).as_cgfloat(),
-                    NSNumber::new_cgfloat(1.0).as_cgfloat(),
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
                 )
             };
             ns_window.setBackgroundColor(Some(&bg_color));
