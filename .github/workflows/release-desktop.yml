@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-windows:
-    uses: ./.github/workflows/build_windows_x64.yml
+    uses: ./.github/workflows/build-desktop-win64.yml
     with:
       release: true
     secrets: inherit
@@ -15,7 +15,7 @@ jobs:
       contents: write
 
   build-macos-arm:
-    uses: ./.github/workflows/build_macos_arm.yml
+    uses: ./.github/workflows/build-desktop-osxARM.yml
     with:
       release: true
     secrets: inherit
@@ -23,7 +23,7 @@ jobs:
       contents: write
 
   build-macos-x64:
-    uses: ./.github/workflows/build_macos_x64.yml
+    uses: ./.github/workflows/build-desktop-osx64.yml
     with:
       release: true
     secrets: inherit

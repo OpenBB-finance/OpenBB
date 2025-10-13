@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-sign:
-    runs-on: "macos-latest-large"
+    runs-on: "macos-15-intel"
     defaults:
       run:
         working-directory: desktop

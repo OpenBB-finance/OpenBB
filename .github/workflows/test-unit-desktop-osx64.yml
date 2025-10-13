@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   test-macos-x64:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     permissions:
       contents: read
     defaults:
