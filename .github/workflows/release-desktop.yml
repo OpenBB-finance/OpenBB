@@ -11,22 +11,30 @@ jobs:
     with:
       release: true
     secrets: inherit
+    permissions:
+      contents: write
 
   build-macos-arm:
     uses: ./.github/workflows/build_macos_arm.yml
     with:
       release: true
     secrets: inherit
+    permissions:
+      contents: write
 
   build-macos-x64:
     uses: ./.github/workflows/build_macos_x64.yml
     with:
       release: true
     secrets: inherit
+    permissions:
+      contents: write
 
   publish:
     needs: [build-windows, build-macos-arm, build-macos-x64]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
       tag: ${{ steps.extract_version.outputs.tag }}
