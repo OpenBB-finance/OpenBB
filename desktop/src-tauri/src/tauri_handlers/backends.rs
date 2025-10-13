@@ -14,8 +14,6 @@ use std::process::Stdio;
 use tauri::{AppHandle, Emitter, Manager};
 use uuid::Uuid;
 
-#[cfg(windows)]
-use std::os::windows::process::CommandExt;
 
 #[derive(Clone, serde::Serialize)]
 pub struct Payload {
