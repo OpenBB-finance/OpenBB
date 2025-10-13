@@ -5673,7 +5673,7 @@ dependencies = [
 
 [[package]]
 name = "openbb-platform"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cc",
  "chrono",
@@ -5688,9 +5688,9 @@ dependencies = [
  "log",
  "mockall",
  "objc",
- "objc2 0.6.3",
+ "objc2 0.5.2",
  "objc2-app-kit",
- "objc2-foundation 0.3.2",
+ "objc2-foundation 0.2.2",
  "objc_exception",
  "once_cell",
  "open",
