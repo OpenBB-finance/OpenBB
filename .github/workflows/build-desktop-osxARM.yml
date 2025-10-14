@@ -20,6 +20,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Debug - List files
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Files in current directory:"
+          ls -la
+          echo "Files in src-tauri:"
+          ls -la src-tauri/
+          echo "Files in src-tauri/scripts:"
+          ls -la src-tauri/scripts/ || echo "scripts directory does not exist"
+          echo "Looking for fix_dylibs.sh:"
+          find . -name "fix_dylibs.sh" -type f || echo "fix_dylibs.sh not found"
+
+
       - name: Import Code Signing Certificate
         uses: apple-actions/import-codesign-certs@v3
         env:
