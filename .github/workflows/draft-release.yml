@@ -59,18 +59,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🖥️ Trigger Desktop Release Draft
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'release-desktop.yml',
-              ref: '${{ github.event.inputs.ref }}',
-              inputs: {
-                tag: '${{ github.event.inputs.tag }}',
-                draft: 'true'
-              }
-            });
+  trigger_desktop_release:
+    needs: update_release_draft
+    uses: ./.github/workflows/release-desktop.yml
+    with:
+      tag: ${{ github.event.inputs.tag }}
+      draft: true
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: read
