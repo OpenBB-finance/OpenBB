@@ -11,10 +11,6 @@ on:
         description: "Tag for release (manual input)"
         required: true
         default: ""
-      ref:
-        description: "Branch to release from (e.g., main, develop)"
-        required: false
-        default: "main"
 
 jobs:
   update_release_draft:
@@ -25,8 +21,6 @@ jobs:
     steps:
       - name: 📟 Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.ref }}
 
       - name: 📝 Release Drafter
         id: release-drafter
@@ -58,14 +52,3 @@ jobs:
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  trigger_desktop_release:
-    needs: update_release_draft
-    uses: ./.github/workflows/release-desktop.yml
-    with:
-      tag: ${{ github.event.inputs.tag }}
-      draft: true
-    secrets: inherit
-    permissions:
-      contents: write
-      pull-requests: read
