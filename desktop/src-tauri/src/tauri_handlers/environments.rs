@@ -3667,9 +3667,9 @@ dependencies = ["numpy", "pandas"]
                 .with(eq(python_path.clone()))
                 .return_const(true);
             mock_env
-                .expect_new_command()
-                .with(eq(python_path.to_string_lossy().to_string()))
-                .returning(|_| mock_command_echo("hello"));
+                .expect_new_conda_command()
+                .with(eq(python_path.clone()), eq(conda_dir()))
+                .returning(|_, _| mock_command_echo("hello"));
         } else {
             mock_fs.expect_exists().return_const(true);
             mock_env
