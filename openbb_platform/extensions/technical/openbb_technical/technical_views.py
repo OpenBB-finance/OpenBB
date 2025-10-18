@@ -289,12 +289,6 @@ class TechnicalViews:
         fig.set_title(title)
 
         fig.update_layout(
-            paper_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
-            plot_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
             font=dict(color=text_color),
             legend=dict(
                 orientation="h",
@@ -381,9 +375,6 @@ class TechnicalViews:
         figure = OpenBBFigure(fig)  # pylint: disable=E0606
         font_color = "black" if ChartStyle().plt_style == "light" else "white"
         figure.update_layout(
-            paper_bgcolor=(
-                "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,255)"
-            ),
             plot_bgcolor="rgba(255,255,255,1)",
             font=dict(color=font_color),
             yaxis=dict(
@@ -527,12 +518,6 @@ def _ta_ma(**kwargs):
 
     fig.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=16)),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,255)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if font_color == "white" else "rgba(255,255,255,0)"
-        ),
         showlegend=True,
         legend=dict(
             orientation="h",

@@ -530,6 +530,10 @@ function Chart({
           ...(originalData.layout.font || {}),
           color: darkmode ? "#fff" : "#000",
         };
+        originalData.layout.plot_bgcolor = {
+          ...(originalData.layout.plot_bgcolor || {}),
+          color: darkmode ? "#000" : "#fff",
+        };
 
         const changeIcon = darkmode ? ICONS.sunIcon : ICONS.moonIcon;
 

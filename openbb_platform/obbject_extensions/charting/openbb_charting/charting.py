@@ -630,8 +630,13 @@ class Charting:
         style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
         paper_bgcolor = "white" if style == "light" else "black"
+        plot_bgcolor = "white" if style == "light" else "black"
         figure = figure.update_layout(
-            dict(font_color=font_color, paper_bgcolor=paper_bgcolor)
+            dict(
+                font_color=font_color,
+                paper_bgcolor=paper_bgcolor,
+                plot_bgcolor=plot_bgcolor,
+            )
         )  # pylint: disable=R1735
         return figure
 
