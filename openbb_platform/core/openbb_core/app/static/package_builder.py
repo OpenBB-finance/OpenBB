@@ -102,11 +102,11 @@ class FileLock:
         else:  # Windows via msvcrt
             import msvcrt as _msvcrt  # pylint: disable=import-outside-toplevel
 
-            mode = _msvcrt.LK_LOCK if blocking else _msvcrt.LK_NBLCK
+            mode = _msvcrt.LK_LOCK if blocking else _msvcrt.LK_NBLCK  # type: ignore
             try:
                 # lock 1 byte at file start; file.seek(0) to ensure position
                 self._file.seek(0)
-                _msvcrt.locking(self._file.fileno(), mode, 1)
+                _msvcrt.locking(self._file.fileno(), mode, 1)  # type: ignore
             except OSError as exc:  # pragma: no cover - platform specific
                 # Normalize to BlockingIOError for parity with fcntl non-blocking
                 raise BlockingIOError from exc
@@ -121,7 +121,7 @@ class FileLock:
 
                 try:
                     self._file.seek(0)
-                    _msvcrt.locking(self._file.fileno(), _msvcrt.LK_UNLCK, 1)
+                    _msvcrt.locking(self._file.fileno(), _msvcrt.LK_UNLCK, 1)  # type: ignore
                 except OSError:
                     # If unlocking fails on Windows, ignore - file will be closed soon
                     pass
