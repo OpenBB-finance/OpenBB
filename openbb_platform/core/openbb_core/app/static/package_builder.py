@@ -61,8 +61,9 @@ except ImportError:
 
 try:
     import fcntl  # type: ignore
+
     _HAS_FCNTL = True
-except Exception:  # pylint: disable=broad-except  # pragma: no cover
+except Exception:  # pylint: disable=broad-except  # noqa
     _HAS_FCNTL = False
     import msvcrt  # pylint: disable=unused-import  # noqa
 
@@ -117,6 +118,7 @@ class FileLock:
                 fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
             else:
                 import msvcrt as _msvcrt  # pylint: disable=import-outside-toplevel
+
                 try:
                     self._file.seek(0)
                     _msvcrt.locking(self._file.fileno(), _msvcrt.LK_UNLCK, 1)
@@ -125,6 +127,7 @@ class FileLock:
                     pass
         except Exception:  # pylint: disable=broad-except  # noqa
             pass
+
 
 class PackageBuilder:
     """Build the extension package for the Platform."""
