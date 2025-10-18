@@ -3070,14 +3070,14 @@ openbb-core = ">=1.5.1,<2.0.0"
 
 [[package]]
 name = "openbb-core"
-version = "1.5.1"
+version = "1.5.2"
 description = "OpenBB package with core functionality."
 optional = false
-python-versions = "<3.14,>=3.9.21"
+python-versions = "<3.14,>=3.10"
 groups = ["main"]
 files = [
-    {file = "openbb_core-1.5.1-py3-none-any.whl", hash = "sha256:5ebd221f82c57dd15a84bc3787965df335604b26bfe71338b5d099ebf5cdfcf2"},
-    {file = "openbb_core-1.5.1.tar.gz", hash = "sha256:57a424fdc0ae9eb10b855c77dc63e0bafdad4f981120b452e15cd973fedf25a2"},
+    {file = "openbb_core-1.5.2-py3-none-any.whl", hash = "sha256:a3f1be561a5f6c87b8160f44293fc05f9308e365b0d76a744b6c18154d7c7473"},
+    {file = "openbb_core-1.5.2.tar.gz", hash = "sha256:6017407025dd4f1ee326c0e99421267f6254efe83fc10099ba63241203d56153"},
 ]
 
 [package.dependencies]
@@ -6178,4 +6178,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "ef984b27041496f4caabe2c31ed3ef94a42afa9bb05531872377aedd0fc8333e"
+content-hash = "74aa34922fd5b5dde0b10df4e402878ea12dcb56bb549ea105768d47afff8309"
