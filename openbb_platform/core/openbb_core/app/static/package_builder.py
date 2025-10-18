@@ -100,13 +100,12 @@ class FileLock:
             flags = fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB)
             fcntl.flock(self._file.fileno(), flags)
         else:  # Windows via msvcrt
-            import msvcrt as _msvcrt  # pylint: disable=import-outside-toplevel
 
-            mode = _msvcrt.LK_LOCK if blocking else _msvcrt.LK_NBLCK  # type: ignore
+            mode = msvcrt.LK_LOCK if blocking else msvcrt.LK_NBLCK  # type: ignore # pylint: disable=E0601
             try:
                 # lock 1 byte at file start; file.seek(0) to ensure position
                 self._file.seek(0)
-                _msvcrt.locking(self._file.fileno(), mode, 1)  # type: ignore
+                msvcrt.locking(self._file.fileno(), mode, 1)  # type: ignore
             except OSError as exc:  # pragma: no cover - platform specific
                 # Normalize to BlockingIOError for parity with fcntl non-blocking
                 raise BlockingIOError from exc
@@ -117,11 +116,9 @@ class FileLock:
             if _HAS_FCNTL:
                 fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
             else:
-                import msvcrt as _msvcrt  # pylint: disable=import-outside-toplevel
-
                 try:
                     self._file.seek(0)
-                    _msvcrt.locking(self._file.fileno(), _msvcrt.LK_UNLCK, 1)  # type: ignore
+                    msvcrt.locking(self._file.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore
                 except OSError:
                     # If unlocking fails on Windows, ignore - file will be closed soon
                     pass
