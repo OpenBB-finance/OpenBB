@@ -67,8 +67,15 @@ class ChartStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.service.user_service import UserService
+
         if self.initialized:
             return
+
+        user_settings = UserService().read_from_file()
+        pref_style = getattr(user_settings.preferences, "chart_style", None)
+        plt_style = plt_style or pref_style
 
         self.initialized = True
         self.user_styles_directory = user_styles_directory or self.user_styles_directory

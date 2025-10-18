@@ -487,6 +487,7 @@ class Charting:
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
+            content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
             self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
             if render:
                 fig.show(**kwargs)
