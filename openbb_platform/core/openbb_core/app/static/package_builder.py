@@ -201,7 +201,6 @@ class PackageBuilder:
                 # Release the file lock, suppressing any exceptions during cleanup
                 with contextlib.suppress(Exception):
                     file_lock.release()
-                    pass
 
     def _clean(self, modules: str | list[str] | None = None) -> None:
         """Delete the assets and package folder or modules before building."""
