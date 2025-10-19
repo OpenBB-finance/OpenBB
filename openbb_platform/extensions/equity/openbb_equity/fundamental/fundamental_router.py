@@ -16,20 +16,6 @@ router = Router(prefix="/fundamental")
 
 
 @router.command(
-    model="EquityValuationMultiples",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
-)
-async def multiples(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get equity valuation multiples for a given company."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="BalanceSheet",
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
