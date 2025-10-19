@@ -38,28 +38,19 @@ if not HOME:
     raise ValueError("HOME or USERPROFILE environment variable not set.")
 
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
-USER_SETTINGS_COPY = os.path.join(HOME, ".openbb_platform", "user_settings_backup.json")
 
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
-# You can generate this filter on OpenBB Hub: https://my.openbb.co/app/platform/widgets
 # Alternatively, you can supply a JSON-encoded list of API paths to ignore.
 WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
 
 kwargs = parse_args()
-
 _app = kwargs.pop("app", None)
 
 if _app:
     app = _app
 
-
-# These are handled for backwards compatibility, and in ./utils/api::parse_args.
-# It should be handled by this point in the code execution, but in case the key
-# still exists for some reason, we will pop it so it doesn't get passed to uvicorn.run
-# It would be reasonable to remove special handling by V1.3
-WIDGETS_PATH = kwargs.pop("widgets-json", None) or kwargs.pop("widgets-path", None)
-APPS_PATH = kwargs.pop("apps-json", None) or kwargs.pop("templates-path", None)
-
+WIDGETS_PATH = kwargs.pop("widgets-json", None)
+APPS_PATH = kwargs.pop("apps-json", None)
 EDITABLE = kwargs.pop("editable", None) is True or WIDGETS_PATH is not None
 DEFAULT_APPS_PATH = (
     Path(__file__).absolute().parent.joinpath("assets").joinpath("default_apps.json")
@@ -70,11 +61,9 @@ build = False if kwargs.pop("no-build", None) else build
 login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
 widget_exclude_filter: list = kwargs.pop("exclude", [])
-
 uvicorn_settings = (
     SystemService().system_settings.python_settings.model_dump().get("uvicorn", {})
 )
-
 obb_headers = {"X-Backend-Type": "OpenBB Platform"}
 
 for key, value in uvicorn_settings.items():
@@ -114,16 +103,10 @@ def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
 
 widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter)
 openapi = app.openapi()
-
-# We don't need the current settings,
-# but we need to call the function to update, login, and/or identify the settings file.
-current_settings = get_user_settings(login, CURRENT_USER_SETTINGS, USER_SETTINGS_COPY)
+current_settings = get_user_settings(CURRENT_USER_SETTINGS)
 widgets_json = get_widgets_json(
     build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
 )
-
-# A template file will be served from the OpenBBUserDataDirectory, if it exists.
-# If it doesn't exist, an empty list will be returned, and an empty file will be created.
 APPS_PATH = (
     APPS_PATH
     if APPS_PATH
@@ -268,20 +251,14 @@ def launch_api(**_kwargs):  # noqa PRL0912
     if "use_colors" not in _kwargs:
         _kwargs["use_colors"] = "win" not in sys.platform or os.name != "nt"
 
-    try:
-        package_name = __package__
-        _msg = (
-            "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
-            "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
-            f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
-        )
-        logger.info(_msg)
-        uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
-    finally:
-        # If user_settings_copy.json exists, then restore the original settings.
-        if os.path.exists(USER_SETTINGS_COPY):
-            logger.info("Restoring the original settings.")
-            os.replace(USER_SETTINGS_COPY, CURRENT_USER_SETTINGS)
+    package_name = __package__
+    _msg = (
+        "\nTo access this data from OpenBB Workspace, use the link displayed after the application startup completes."
+        "\nChrome is the recommended browser. Other browsers may conflict or require additional configuration."
+        f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
+    )
+    logger.info(_msg)
+    uvicorn.run(f"{package_name}.main:app", host=host, port=port, **_kwargs)
 
 
 def main():

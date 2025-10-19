@@ -1,0 +1,219 @@
+name: Release ODP Desktop
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+      draft:
+        required: true
+        type: boolean
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag for release"
+        required: false
+        default: ""
+      draft:
+        description: "Create as draft release"
+        required: false
+        default: "false"
+
+jobs:
+  build-windows:
+    uses: ./.github/workflows/build-desktop-win64.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  build-macos-arm:
+    uses: ./.github/workflows/build-desktop-osxARM.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  build-macos-x64:
+    uses: ./.github/workflows/build-desktop-osx64.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  publish:
+    needs: [build-windows, build-macos-arm, build-macos-x64]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
+      tag: ${{ steps.extract_version.outputs.tag }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Sanitize artifact filenames
+        run: |
+          find ./artifacts -depth -name "* *" | while read -r file; do mv "$file" "$(echo "$file" | tr ' ' '-')"; done
+
+      - name: Extract Version and Tag
+        id: extract_version
+        run: |
+          # Use input tag if provided, otherwise extract from artifacts
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+            VERSION=$(echo "$TAG" | sed 's/^[^0-9]*//')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "release_name=Open Data Platform $TAG" >> $GITHUB_OUTPUT
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            INSTALLER_FILE=$(find ./artifacts -name "*.exe" -o -name "*.dmg" | head -n 1)
+            if [ -z "$INSTALLER_FILE" ]; then
+              echo "::error::No installer file found in artifacts."
+              exit 1
+            fi
+            VERSION=$(basename "$INSTALLER_FILE" | sed -n 's/.*_\([0-9]\+\.[0-9]\+\.[0-9]\+\)_.*/\1/p')
+            if [ -z "$VERSION" ]; then
+              echo "::error::Could not extract version from filename: $(basename "$INSTALLER_FILE")"
+              exit 1
+            fi
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "release_name=Open Data Platform v$VERSION" >> $GITHUB_OUTPUT
+            echo "tag=Open-Data-Platform-v$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare assets and generate release.json
+        id: prep_assets
+        run: |
+          mkdir ./release_assets
+          find ./artifacts -type f -print -exec cp {} ./release_assets/ \;
+          cd ./release_assets
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          RELEASE_NAME="${{ steps.extract_version.outputs.release_name }}"
+          TAG="${{ steps.extract_version.outputs.tag }}"
+          cat << EOF > release.json
+          {
+            "version": "$VERSION",
+            "notes": "Release for $RELEASE_NAME",
+            "pub_date": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+            "platforms": {
+          EOF
+          WIN_EXE=$(find . -name "*_x86_64.exe" | head -n 1)
+          if [ -n "$WIN_EXE" ]; then
+            WIN_SIG_FILE="${WIN_EXE}.sig"
+            WIN_SIG=$(cat "$WIN_SIG_FILE")
+            WIN_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/$(basename "$WIN_EXE")"
+            cat << EOF >> release.json
+              "windows-x86_64": {
+                "signature": "$WIN_SIG",
+                "url": "$WIN_URL"
+              }
+          EOF
+          fi
+          MAC_ARM_TAR=$(find . -name "*_aarch64.app.tar.gz" | head -n 1)
+          if [ -n "$MAC_ARM_TAR" ]; then
+            if [ -n "$WIN_EXE" ]; then
+              echo "," >> release.json
+            fi
+            MAC_ARM_SIG=$(cat "${MAC_ARM_TAR}.sig")
+            MAC_ARM_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/$(basename "$MAC_ARM_TAR")"
+            cat << EOF >> release.json
+              "darwin-aarch64": {
+                "signature": "$MAC_ARM_SIG",
+                "url": "$MAC_ARM_URL"
+              }
+          EOF
+          fi
+          MAC_X64_TAR=$(find . -name "*_x86_64.app.tar.gz" | head -n 1)
+          if [ -n "$MAC_X64_TAR" ]; then
+            if [ -n "$WIN_EXE" ] || [ -n "$MAC_ARM_TAR" ]; then
+              echo "," >> release.json
+            fi
+            MAC_X64_SIG=$(cat "${MAC_X64_TAR}.sig")
+            MAC_X64_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/$(basename "$MAC_X64_TAR")"
+            cat << EOF >> release.json
+              "darwin-x86_64": {
+                "signature": "$MAC_X64_SIG",
+                "url": "$MAC_X64_URL"
+              }
+          EOF
+          fi
+          cat << EOF >> release.json
+            }
+          }
+          EOF
+          echo "Generated release.json:"
+          cat release.json
+          cd ..
+          echo "assets_path=./release_assets" >> $GITHUB_OUTPUT
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.extract_version.outputs.tag }}
+          name: ${{ steps.extract_version.outputs.release_name }}
+          files: ${{ steps.prep_assets.outputs.assets_path }}/*
+          draft: ${{ github.event.inputs.draft == 'true' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release.json as artifact for odp job
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-json
+          path: ./release_assets/release.json
+
+  update-latest-tag:
+    needs: publish
+    # Only run this job if not a draft release
+    if: github.event.inputs.draft != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Delete existing odp tag and release
+        continue-on-error: true
+        run: |
+          gh release delete odp --yes || true
+          git push origin :refs/tags/odp || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare latest assets
+        run: |
+          mkdir ./odp_assets
+          find ./artifacts -name "*.exe" -exec cp {} ./odp_assets/ \;
+          find ./artifacts -name "*.dmg" -exec cp {} ./odp_assets/ \;
+          if [ -f ./artifacts/release-json/release.json ]; then
+            cp ./artifacts/release-json/release.json ./odp_assets/latest.json
+          fi
+
+      - name: Create latest release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: odp
+          name: Latest Release
+          body: |
+            This is the latest stable release.
+            For version-specific details, see the corresponding versioned release.
+          files: ./odp_assets/*
+          prerelease: false
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -13,6 +13,7 @@
 *.scss
 *.txt
 *.yaml
+*.cdx.xml
 ./build/pyinstaller
 ./**/node_modules
 ./frontend-components/**
@@ -21,3 +22,7 @@
 ./openbb_platform/providers/imf/openbb_imf/utils/constants.py
 ./openbb_platform/extensions/economy/openbb_economy/economy_views.py
 ./openbb_platform/providers/fmp/openbb_fmp/models/calendar_ipo.py
+./desktop/src-tauri/src/tauri_handlers/startup.rs
+./desktop/src/routes/environments.tsx
+./desktop/src/tests/routes/installation-progress.test.tsx
+./desktop/src/tests/routes/index.test.tsx

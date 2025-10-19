@@ -1,0 +1,34 @@
+{
+  "build": {
+    "beforeBundleCommand": "sh /Users/runner/work/OpenBB/OpenBB/desktop/src-tauri/scripts/fix_dylibs.sh"
+  },
+  "bundle": {
+    "targets": "all",
+    "resources": [
+      "open-data-platform-SBOM-cargo.cdx.xml",
+      "open-data-platform-SBOM-npm.cdx.xml"
+    ],
+    "macOS": {
+      "frameworks": [
+        "frameworks/libcrypto.3.dylib",
+        "frameworks/libssl.3.dylib"
+      ],
+      "dmg": {
+        "appPosition": {
+          "x": 180,
+          "y": 170
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 170
+        },
+        "windowSize": {
+          "height": 400,
+          "width": 660
+        }
+      },
+      "minimumSystemVersion": "10.15",
+      "entitlements": "./entitlements.plist"
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments
 import builtins
-import fcntl
+import contextlib
 import inspect
 import os
 import re
@@ -59,6 +59,14 @@ try:
 except ImportError:
     CHARTING_INSTALLED = False
 
+try:
+    import fcntl  # type: ignore
+
+    _HAS_FCNTL = True
+except Exception:  # pylint: disable=broad-except  # noqa
+    _HAS_FCNTL = False
+    import msvcrt  # pylint: disable=unused-import  # noqa
+
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
     list,
@@ -77,6 +85,45 @@ TAB = "    "
 def create_indent(n: int) -> str:
     """Create n indentation space."""
     return TAB * n
+
+
+class FileLock:
+    """Simple cross-platform file lock wrapper used only for this module."""
+
+    def __init__(self, file_obj):
+        """Initialize the file lock."""
+        self._file = file_obj
+
+    def acquire(self, blocking: bool = True) -> None:
+        """Acquire the file lock."""
+        if _HAS_FCNTL:
+            flags = fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB)
+            fcntl.flock(self._file.fileno(), flags)
+        else:  # Windows via msvcrt
+
+            mode = msvcrt.LK_LOCK if blocking else msvcrt.LK_NBLCK  # type: ignore # pylint: disable=E0601
+            try:
+                # lock 1 byte at file start; file.seek(0) to ensure position
+                self._file.seek(0)
+                msvcrt.locking(self._file.fileno(), mode, 1)  # type: ignore
+            except OSError as exc:  # pragma: no cover - platform specific
+                # Normalize to BlockingIOError for parity with fcntl non-blocking
+                raise BlockingIOError from exc
+
+    def release(self) -> None:
+        """Release the file lock."""
+        try:
+            if _HAS_FCNTL:
+                fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
+            else:
+                try:
+                    self._file.seek(0)
+                    msvcrt.locking(self._file.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore
+                except OSError:
+                    # If unlocking fails on Windows, ignore - file will be closed soon
+                    pass
+        except Exception:  # pylint: disable=broad-except  # noqa
+            pass
 
 
 class PackageBuilder:
@@ -123,12 +170,14 @@ class PackageBuilder:
 
         # Open lock file and acquire exclusive lock
         with open(self._lock_path, "w", encoding="utf-8") as lock_file:
+            file_lock = FileLock(lock_file)
             try:
                 # Get exclusive lock on file
-                fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                file_lock.acquire(blocking=False)
 
                 # Write PID to lock file for debugging
                 lock_file.seek(0)
+                lock_file.truncate()
                 lock_file.write(str(os.getpid()))
                 lock_file.flush()
 
@@ -141,14 +190,14 @@ class PackageBuilder:
                 self._save_reference_file(ext_map)
                 if self.lint:
                     self._run_linters()
-
             except BlockingIOError:
                 raise RuntimeError(  # noqa # pylint: disable=W0707
                     f"Another build process is running and has locked {self._lock_path}"
                 )
             finally:
-                # Release lock
-                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+                # Release the file lock, suppressing any exceptions during cleanup
+                with contextlib.suppress(Exception):
+                    file_lock.release()
 
     def _clean(self, modules: str | list[str] | None = None) -> None:
         """Delete the assets and package folder or modules before building."""
