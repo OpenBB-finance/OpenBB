@@ -1,7 +1,7 @@
 {
   "name": "openbb-platform",
   "private": true,
-  "version": "0.9.1",
+  "version": "0.9.2",
   "type": "module",
   "license": "AGPL-3.0",
   "scripts": {
