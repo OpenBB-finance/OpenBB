@@ -354,7 +354,7 @@ const ExtensionSelector = ({
 		const categoryExtensions = getExtensionsByCategory(categoryId);
 		const totalCount = categoryExtensions.length;
 		const selectedCount = countSelectedInCategory(categoryId);
-		
+
 		if (selectedCount === 0) return 'checked';
 		if (selectedCount === totalCount) return 'indeterminate';
 		return 'indeterminate';
@@ -1292,7 +1292,7 @@ export default function InstallationProgress() {
 				</div>
 			)}
           	<h1 className="body-xl-bold mb-5 text-theme-primary">Installation & Setup</h1>
-			
+
 			{(phase !== "extension_select" &&phase !== "cancelled") && (
 				<div>
 					<div className="justify-left flex items-left body-sm-regular text-theme-primary">
@@ -1335,7 +1335,7 @@ export default function InstallationProgress() {
 						/>
 					</div>
 				)}
-				{phase === "cancelled" && 
+				{phase === "cancelled" &&
 					!error &&
 					isComplete && (
 						<Button
@@ -1374,7 +1374,7 @@ export default function InstallationProgress() {
 								{(phase === "downloading" ||
 									phase === "installing" ||
 									phase === "configuring") &&
-									
+
 									!error &&
 									!isComplete && (
 										<Button
@@ -1447,9 +1447,7 @@ export default function InstallationProgress() {
                                     variant="primary"
                                     disabled={isContinuing}
                                 >
-                                    {isContinuing
-                                        ? "Continuing..."
-                                        : "Continue to Open Data Platform"}
+									Done
                                 </Button>
                             </div>
                         </div>

@@ -6,10 +6,13 @@ pub mod uninstall;
 pub mod utils;
 
 use std::path::Path;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
+
 use tauri::State;
 use tauri::menu::{CheckMenuItemBuilder, Menu, MenuItemBuilder};
 use tauri::tray::TrayIconBuilder;
-use tauri::{AppHandle, Manager, Runtime};
+use tauri::{AppHandle, Manager, RESTART_EXIT_CODE, Runtime};
 use tauri_plugin_dialog::DialogExt;
 
 #[cfg(target_os = "windows")]
@@ -50,7 +53,6 @@ use crate::tauri_handlers::helpers::{
     select_file, toggle_theme, update_openbb_settings,
 };
 
-// Import updater commands
 use tauri_plugin_updater::UpdaterExt;
 
 use crate::utils::process_monitor::{
@@ -60,30 +62,25 @@ use crate::utils::process_monitor::{
 
 use crate::uninstall::uninstall_application;
 
-// Store installation status in app state
 #[derive(Clone, serde::Serialize)]
 struct InstallationState {
     is_installed: bool,
     installation_directory: Option<String>,
 }
 
-// Define a state wrapper for process logs
 #[derive(Clone)]
 struct ProcessLogState(LogStorage);
 
-// Register a process for stdout monitoring
 #[tauri::command]
 fn register_process_monitoring(state: State<ProcessLogState>, process_id: String) -> bool {
     register_process(&state.0, &process_id)
 }
 
-// Unregister a process from monitoring
 #[tauri::command]
 fn unregister_process_monitoring(state: State<ProcessLogState>, process_id: String) -> bool {
     unregister_process(&state.0, &process_id)
 }
 
-// Get logs for a specific process
 #[tauri::command]
 fn get_process_logs_history(
     state: State<ProcessLogState>,
@@ -94,7 +91,6 @@ fn get_process_logs_history(
     get_process_logs(&state.0.clone(), request)
 }
 
-// Handle updater logic
 async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
     let show_error = |app: &AppHandle, title: &str, message: String| {
         app.dialog()
@@ -103,14 +99,13 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
             .kind(tauri_plugin_dialog::MessageDialogKind::Error)
             .show(|_| {});
     };
-    let update_url = "https://api.github.com/repos/OpenBB-finance/OpenBB/releases/odp/latest.json";
+    let update_url = "https://github.com/OpenBB-finance/OpenBB/releases/download/ODP/latest.json";
 
     let ap_id = get_or_create_app_id();
 
     let headers = {
         let mut headers = reqwest::header::HeaderMap::new();
 
-        // Use try_from or handle potential errors properly
         match reqwest::header::HeaderValue::from_str("ODP-Updater") {
             Ok(user_agent) => {
                 headers.insert(reqwest::header::USER_AGENT, user_agent);
@@ -167,12 +162,13 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
         .and_then(|builder| builder.build());
 
     match updater_res {
-        Ok(updater) => match updater.check().await {
-            Ok(Some(update)) => {
-                let app_clone = app.clone();
-                app.dialog()
+        Ok(updater) => {
+            match updater.check().await {
+                Ok(Some(update)) => {
+                    let app_clone = app.clone();
+                    app.dialog()
                     .message(format!(
-                        "A new version ({}) is available. Would you like to install it now?",
+                        "A new version ({}) is available. Would you like to install it now? The update will close the application and restart.",
                         update.version
                     ))
                     .title("Update Available")
@@ -182,6 +178,11 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
                         if install {
                             let app_clone_inner = app_clone.clone();
                             tauri::async_runtime::spawn(async move {
+                                if let Some(window) = app_clone_inner.get_webview_window("main") {
+                                    let _ = window.show();
+                                    let _ = window.set_focus();
+                                }
+
                                 if let Err(e) = update.download_and_install(|_, _| {}, || {}).await
                                 {
                                     log::error!("Failed to install update: {}", e);
@@ -192,30 +193,58 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
                                     );
                                 } else {
                                     log::info!("Update installed successfully, restarting...");
-                                    app_clone_inner.restart();
+
+                                    // SET THE FLAG TO SHOW WINDOW AFTER RESTART
+                                    if let Ok(home_dir) = std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+                                        let flag_path = std::path::Path::new(&home_dir).join(".openbb_platform").join(".show_on_restart");
+                                        let _ = std::fs::write(flag_path, "1");
+                                        log::info!("Set flag to show window on restart");
+                                    }
+
+                                    if let Some(window) = app_clone_inner.get_webview_window("main") {
+                                        let _ = window.show();
+                                    }
+
+                                    app_clone_inner.request_restart();
+
+                                    /* #[cfg(not(target_os = "macos"))]
+                                    {
+                                        use std::process::Command;
+
+                                        if let Ok(exe_path) = std::env::current_exe() {
+                                            log::debug!("Relaunching from: {}", exe_path.display());
+                                            let _ = Command::new(exe_path).spawn();
+                                            std::process::exit(0);
+                                        } else {
+                                            log::error!("Could not determine executable path for restart");
+                                            app_clone_inner.restart();
+                                        }
+                                    }
+                                    */
                                 }
                             });
                         }
                     });
-            }
-            Ok(None) => {
-                log::debug!("No updates available");
-                if always_prompt {
-                    app.dialog()
-                        .message("You are already running the latest version.")
-                        .title("No Updates Available")
-                        .kind(tauri_plugin_dialog::MessageDialogKind::Info)
-                        .show(|_| {});
+                }
+                Ok(None) => {
+                    log::debug!("No updates available");
+                    if always_prompt {
+                        app.dialog()
+                            .message("You are already running the latest version.")
+                            .title("No Updates Available")
+                            .kind(tauri_plugin_dialog::MessageDialogKind::Info)
+                            .show(|_| {});
+                    }
+                }
+                Err(e) => {
+                    let err_msg = format!("Failed to check for updates: {}", e);
+                    log::error!("{}", err_msg);
+                    if always_prompt {
+                        show_error(&app, "Update Check Failed", err_msg);
+                    }
                 }
             }
-            Err(e) => {
-                let err_msg = format!("Failed to check for updates: {}", e);
-                log::error!("{}", err_msg);
-                if always_prompt {
-                    show_error(&app, "Update Check Failed", err_msg);
-                }
-            }
-        },
+        }
         Err(e) => {
             let err_msg = format!("Failed to build updater: {}", e);
             log::error!("{}", err_msg);
@@ -226,12 +255,10 @@ async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
     }
 }
 
-// This function is triggered by the tray menu and always shows a dialog.
 async fn trigger_update_dialog(app: AppHandle) {
     check_and_apply_update(app, true).await;
 }
 
-// This function runs in the background on startup and only shows a dialog if an update is available.
 async fn background_update_check(app: AppHandle) {
     check_and_apply_update(app, false).await;
 }
@@ -239,7 +266,6 @@ async fn background_update_check(app: AppHandle) {
 fn check_installation_on_startup() -> InstallationState {
     log::debug!("STARTUP: Checking installation status");
 
-    // Get home directory
     let home_dir = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
         Ok(dir) => dir,
         Err(e) => {
@@ -251,7 +277,6 @@ fn check_installation_on_startup() -> InstallationState {
         }
     };
 
-    // Check for settings file
     let platform_dir = Path::new(&home_dir).join(".openbb_platform");
     let system_settings_path = platform_dir.join("system_settings.json");
 
@@ -270,7 +295,6 @@ fn check_installation_on_startup() -> InstallationState {
 
     log::debug!("STARTUP: System settings file found");
 
-    // Read and parse settings
     let settings_content = match std::fs::read_to_string(&system_settings_path) {
         Ok(content) => content,
         Err(e) => {
@@ -293,7 +317,6 @@ fn check_installation_on_startup() -> InstallationState {
         }
     };
 
-    // Check for installation directory in settings
     let mut install_dir = None;
 
     if let Some(install_settings) = settings.get("install_settings")
@@ -303,7 +326,6 @@ fn check_installation_on_startup() -> InstallationState {
         log::debug!("STARTUP: Found installation directory in install_settings: {dir_str}");
         let conda_dir = Path::new(dir_str).join("conda");
 
-        // Check for conda executable based on platform
         let conda_exe = if cfg!(target_os = "windows") {
             conda_dir.join("Scripts").join("conda.exe")
         } else {
@@ -321,7 +343,6 @@ fn check_installation_on_startup() -> InstallationState {
         }
     }
 
-    // Then check installation_directory at root (old format)
     if install_dir.is_none()
         && let Some(dir) = settings.get("installation_directory")
         && let Some(dir_str) = dir.as_str()
@@ -329,7 +350,6 @@ fn check_installation_on_startup() -> InstallationState {
         log::debug!("STARTUP: Found installation directory at root level: {dir_str}");
         let conda_dir = Path::new(dir_str).join("conda");
 
-        // Check for conda executable based on platform
         let conda_exe = if cfg!(target_os = "windows") {
             conda_dir.join("Scripts").join("conda.exe")
         } else {
@@ -353,14 +373,12 @@ fn check_installation_on_startup() -> InstallationState {
         if is_installed { "VALID" } else { "INVALID" }
     );
 
-    // Create a state that includes the installation status to be passed to frontend
     InstallationState {
         is_installed,
         installation_directory: install_dir,
     }
 }
 
-// Command to get installation state that was determined at startup
 #[tauri::command]
 fn get_installation_state(state: tauri::State<InstallationState>) -> InstallationState {
     state.inner().clone()
@@ -369,17 +387,14 @@ fn get_installation_state(state: tauri::State<InstallationState>) -> Installatio
 #[tauri::command]
 fn navigate_to_page<R: Runtime>(app_handle: AppHandle<R>, page: &str) {
     if let Some(window) = app_handle.get_webview_window("main") {
-        // First make sure the window is visible and focused
         let _ = window.show();
         let _ = window.set_focus();
 
-        // Navigate to the specified page using window.eval
         let js = format!(
             r#"
             if (localStorage.getItem('environments-first-load-done') === 'true') {{
                 window.location.href = '{page}';
             }} else {{
-                // Do nothing, just keep window focused
                 console.log('Navigation prevented: environments-first-load-done not set');
             }}
             "#
@@ -391,11 +406,7 @@ fn navigate_to_page<R: Runtime>(app_handle: AppHandle<R>, page: &str) {
 #[tauri::command]
 async fn quit_application(app_handle: AppHandle) {
     log::debug!("Quit application command received, running cleanup...");
-
-    // Run cleanup processes
     cleanup_all_processes(app_handle.clone()).await;
-
-    // Exit the application
     app_handle.exit(0);
 }
 
@@ -403,11 +414,9 @@ async fn cleanup_all_processes(app_handle: AppHandle) {
     use crate::tauri_handlers::helpers::{RealEnvSystem, RealFileExtTrait, RealFileSystem};
     log::debug!("Running complete application cleanup");
 
-    // Add a timeout for the entire cleanup process
     let cleanup_timeout = std::time::Duration::from_secs(10);
 
     let cleanup_result = tokio::time::timeout(cleanup_timeout, async {
-        // Stop all Jupyter servers
         match tokio::time::timeout(
             std::time::Duration::from_secs(3),
             tauri_handlers::jupyter::stop_all_jupyter_servers(app_handle.clone()),
@@ -419,7 +428,6 @@ async fn cleanup_all_processes(app_handle: AppHandle) {
             Err(_) => log::warn!("Jupyter servers shutdown timed out"),
         }
 
-        // Stop all backend services
         match tokio::time::timeout(
             std::time::Duration::from_secs(3),
             tauri_handlers::backends::stop_all_backend_services(
@@ -443,7 +451,6 @@ async fn cleanup_all_processes(app_handle: AppHandle) {
         Err(_) => log::warn!("Cleanup process timed out after 10 seconds"),
     }
 
-    // Give Windows more time to clean up UI resources
     #[cfg(target_os = "windows")]
     {
         log::debug!("Waiting for Windows to clean up UI resources...");
@@ -535,10 +542,25 @@ fn main() {
         ])
         .setup(|app_handle| {
             let install_state = check_installation_on_startup();
+
+            let show_after_update = {
+                if let Ok(home_dir) = std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+                    let flag_path = std::path::Path::new(&home_dir).join(".openbb_platform").join(".show_on_restart");
+                    if flag_path.exists() {
+                        log::info!("Found update restart flag - will show window");
+                        let _ = std::fs::remove_file(&flag_path);
+                        true
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            };
+
             if install_state.is_installed {
                 let backend_handle = app_handle.handle().clone();
                 tauri::async_runtime::spawn(async move {
-                    // Add a small delay to ensure all state management is complete
                     use crate::tauri_handlers::helpers::{RealFileExtTrait, RealFileSystem, RealEnvSystem};
                     tokio::time::sleep(std::time::Duration::from_millis(100)).await;
                     log::debug!("Initializing backends after state setup delay");
@@ -548,12 +570,10 @@ fn main() {
                 });
             }
 
-            // Completely disable native window menus
             if let Some(window) = app_handle.get_webview_window("main") {
                 window.set_menu(Menu::new(app_handle.handle())?)?;
             }
 
-            // Check current autostart state
             let autostart_enabled = {
                 #[cfg(target_os = "macos")]
                 {
@@ -571,7 +591,6 @@ fn main() {
             log::debug!("Autostart is currently: {}", if autostart_enabled { "enabled" } else { "disabled" });
 
             let handle = app_handle.handle().clone();
-            // Create custom tray menu items
             let open_item = MenuItemBuilder::new("Open Window").id("open").build(&handle)?;
             let open_workspace = MenuItemBuilder::new("Go to Workspace").id("open_workspace").build(&handle)?;
             let separator1 = tauri::menu::PredefinedMenuItem::separator(&handle)?;
@@ -588,7 +607,6 @@ fn main() {
             let uninstall_item = MenuItemBuilder::new("Uninstall").id("uninstall").build(&handle)?;
             let quit_item = MenuItemBuilder::new("Quit").id("quit").build(&handle)?;
 
-            // Build custom tray menu
             let menu = Menu::with_items(&handle, &[
                 &open_item,
                 &open_workspace,
@@ -604,7 +622,6 @@ fn main() {
                 &quit_item
             ])?;
 
-            // Create tray with our custom menu
             let icon = handle.default_window_icon().unwrap().clone();
             let tray_handle = handle.clone();
             let tray = TrayIconBuilder::new()
@@ -654,7 +671,6 @@ fn main() {
                         },
                         "start_at_login" => {
                             let app_handle = tray_handle.clone();
-                            // Get current state
                             let is_enabled = {
                                 #[cfg(target_os = "macos")]
                                 {
@@ -670,7 +686,6 @@ fn main() {
                                 }
                             };
                             log::debug!("Current autostart status: {}", if is_enabled { "enabled" } else { "disabled" });
-                            // Toggle the autostart setting
                             let target_state = !is_enabled;
                             log::debug!("Attempting to {} autostart", if target_state { "enable" } else { "disable" });
                             let result = {
@@ -699,12 +714,10 @@ fn main() {
                                     }
                                 }
                             };
-                            // Handle potential errors
                             if let Err(e) = result {
                                 log::error!("Failed to {} autostart: {}", if target_state { "enable" } else { "disable" }, e);
                                 return;
                             }
-                            // Update the menu item state
                             if let Err(e) = start_at_login_item.set_checked(target_state) {
                                 log::error!("Failed to update menu item state: {e}");
                             } else {
@@ -718,10 +731,8 @@ fn main() {
                 .build(&handle)
                 .unwrap();
 
-            // Keep the tray icon alive
             app_handle.manage(tray);
 
-            // Set window close behavior to hide instead of quit
             if let Some(window) = app_handle.get_webview_window("main") {
                 let window_clone = window.clone();
                 window.on_window_event(move |event| {
@@ -730,27 +741,16 @@ fn main() {
                         api.prevent_close();
                     }
                 });
-                // This sets the titlebar color as black in macOS
                 #[cfg(target_os = "macos")]
                 {
                     use objc2_app_kit::{NSColor, NSWindow};
-
                     let ns_window_ptr = window.ns_window().unwrap();
                     let ns_window = unsafe { &*(ns_window_ptr as *mut NSWindow) };
-
-                    let bg_color = {
-                        NSColor::colorWithRed_green_blue_alpha(
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0,
-                        )
-                    };
+                    let bg_color = NSColor::colorWithRed_green_blue_alpha(0.0, 0.0, 0.0, 1.0);
                     ns_window.setBackgroundColor(Some(&bg_color));
                 };
-
             }
-            // Register signal handlers for SIGINT, SIGTERM (cross-platform)
+
             let exit_handle = app_handle.handle().clone();
             ctrlc::set_handler(move || {
                 println!("Received termination signal, running cleanup...");
@@ -761,35 +761,40 @@ fn main() {
                 });
                 exit_handle.exit(0);
             }).unwrap_or_else(|e| log::error!("Error setting Ctrl-C handler: {e}"));
-            // Register applicationWillTerminate handler on macOS
+
             #[cfg(target_os = "macos")]
             {
                 let termination_handle = app_handle.handle().clone();
                 utils::app_termination::setup_termination_handler(termination_handle);
             }
 
-            // After tray and window setup, check installation status
-            let install_state = check_installation_on_startup();
             if !install_state.is_installed {
-                // Installation is INVALID, show and focus the main window and navigate to setup
+                log::info!("Installation is INVALID - showing window and navigating to setup");
                 if let Some(window) = handle.get_webview_window("main") {
                     let _ = window.show();
                     let _ = window.set_focus();
-                    // Clear localStorage before redirecting to setup
                     let _ = window.eval("localStorage.clear(); console.log('localStorage cleared due to INVALID installation');");
                     let _ = window.eval("window.location.href = '/setup'");
                 }
             } else {
-                // Installation is valid, start update check in background
+                // VALID INSTALLATION
+                log::info!("Installation is VALID");
+
                 let update_handle = handle.clone();
                 tauri::async_runtime::spawn(async move {
                     log::debug!("Starting background update check...");
-                    tokio::time::sleep(std::time::Duration::from_secs(3)).await; // Wait for app to fully initialize
+                    tokio::time::sleep(std::time::Duration::from_secs(3)).await;
                     background_update_check(update_handle).await;
                 });
 
                 if let Some(window) = handle.get_webview_window("main") {
                     let _ = window.eval("localStorage.setItem('environments-first-load-done', 'true');");
+
+                    if show_after_update {
+                        log::info!("SHOWING WINDOW AFTER UPDATE RESTART");
+                        let _ = window.show();
+                    }
+
                     let _ = window.set_focus();
                 }
             }
@@ -801,27 +806,45 @@ fn main() {
             std::process::exit(1);
         })
         .run(|app_handle, event| {
-            if let tauri::RunEvent::ExitRequested { api, .. } = event {
-                // This handler catches the applicationWillTerminate event from macOS
-                log::debug!("Caught applicationWillTerminate event, running cleanup...");
+            let is_restart_requested = Arc::new(AtomicBool::new(false));
+            let is_restart_requested_clone = is_restart_requested.clone();
 
-                // Prevent the immediate exit
+            if let tauri::RunEvent::ExitRequested { code, ..} = event
+                && code.unwrap() == RESTART_EXIT_CODE {
+                    is_restart_requested.store(true, Ordering::SeqCst);
+                }
+
+            if let tauri::RunEvent::ExitRequested { ref api, .. } = event {
+                log::debug!("Caught applicationWillTerminate event, running cleanup...");
                 api.prevent_exit();
-                // Run the same cleanup as the tray's quit option
                 let rt = tokio::runtime::Runtime::new().unwrap();
                 let cleanup_handle = app_handle.clone();
                 rt.block_on(async {
                     cleanup_all_processes(cleanup_handle).await;
                 });
-                // Now exit cleanly
-                std::process::exit(0);
+                if is_restart_requested_clone.load(Ordering::SeqCst) {
+                    log::debug!("Restart requested, exiting with restart code");
+                    tauri::process::restart(&app_handle.env());
+                } else {
+                    log::debug!("Exiting application normally");
+                    std::process::exit(0);
+                }
             }
 
             #[cfg(target_os = "macos")]
+            {
             if let tauri::RunEvent::Reopen { .. } = event
                 && let Some(window) = app_handle.get_webview_window("main") {
                     let _ = window.show();
                     let _ = window.set_focus();
+                }
+            }
+
+            if let tauri::RunEvent::Exit = event
+                && is_restart_requested_clone.load(Ordering::SeqCst) {
+                    app_handle.cleanup_before_exit();
+                    let env = app_handle.env();
+                    tauri::process::restart(&env);
                 }
         });
 }

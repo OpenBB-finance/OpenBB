@@ -962,43 +962,60 @@ pub async fn open_url_in_window(
 ) -> Result<(), String> {
     log::debug!("Opening URL in a new window: {url}");
 
+    let parsed_url = url
+        .parse::<url::Url>()
+        .map_err(|e| format!("Invalid URL: {e}"))?;
+
     let app_handle = window.app_handle();
     let label = format!("url_{}", chrono::Utc::now().timestamp_millis());
 
-    let _ = tauri::WebviewWindowBuilder::new(
+    #[allow(unused_mut)]
+    let mut builder = tauri::WebviewWindowBuilder::new(
         app_handle,
         &label,
-        tauri::WebviewUrl::External(url.parse().map_err(|e| format!("Invalid URL: {e}"))?),
+        tauri::WebviewUrl::External(parsed_url),
     )
     .title(title.unwrap_or_else(|| "Open Data Platform".to_string()))
     .inner_size(1200.0, 800.0)
     .center()
     .focused(true)
     .visible(true)
-    .resizable(true)
-    .build()
-    .map_err(|e| format!("Failed to create window: {e}"))?;
+    .resizable(true);
 
-    if let Some(window) = app_handle.get_webview_window(&label) {
-        let window_clone = window.clone();
-        window.on_window_event(move |event| {
-            if let tauri::WindowEvent::CloseRequested { api, .. } = event {
-                window_clone.destroy().unwrap();
-                api.prevent_close();
-            }
-        });
-        // This sets the titlebar color as black in macOS
-        #[cfg(target_os = "macos")]
-        {
-            use objc2_app_kit::{NSColor, NSWindow};
-
-            let _ = window.set_title_bar_style(tauri::TitleBarStyle::Transparent);
-            let ns_window_ptr = window.ns_window().unwrap();
-            let ns_window = unsafe { &*(ns_window_ptr as *mut NSWindow) };
-            let bg_color = { NSColor::colorWithRed_green_blue_alpha(0.0, 0.0, 0.0, 1.0) };
-            ns_window.setBackgroundColor(Some(&bg_color));
-        };
+    #[cfg(target_os = "macos")]
+    {
+        builder = builder.title_bar_style(tauri::TitleBarStyle::Transparent);
     }
+
+    let webview_window = builder.build().map_err(|e| {
+        log::error!("Failed to create window: {e}");
+        format!("Failed to create window: {e}")
+    })?;
+
+    // Clone the window handle for use in the closure
+    let window_clone = webview_window.clone();
+
+    // Set up window event handler
+    webview_window.on_window_event(move |event| {
+        if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+            if let Err(e) = window_clone.destroy() {
+                log::error!("Failed to destroy window: {e}");
+            }
+            api.prevent_close();
+        }
+    });
+
+    #[cfg(target_os = "macos")]
+    {
+        use objc2_app_kit::{NSColor, NSWindow};
+
+        let ns_window_ptr = webview_window.ns_window().unwrap();
+        let ns_window = unsafe { &*(ns_window_ptr as *mut NSWindow) };
+        let bg_color = NSColor::colorWithRed_green_blue_alpha(0.0, 0.0, 0.0, 1.0);
+        ns_window.setBackgroundColor(Some(&bg_color));
+    }
+
+    log::info!("Successfully opened URL in new window: {label}");
     Ok(())
 }
 

@@ -1,7 +1,7 @@
 [package]
 name = "openbb-platform"
-version = "0.4.0"
-description = "Open Data Platform - by OpenBB - Desktop Application for managing virtual environments, application backend servers."
+version = "1.0.0"
+description = "Open Data Platform by OpenBB. A desktop application for managing virtual environments, application backend servers."
 authors = ["OpenBB, Inc."]
 license = "AGPL-3.0"
 repository = "https://github.com/OpenBB-finance/OpenBB/"
@@ -49,9 +49,6 @@ tauri-plugin-opener = "2"
 which = "8.0.0"
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
-[target.'cfg(linux)'.dependencies]
-glib = "^0.21.1"
-
 [target.'cfg(target_os= "macos")'.dependencies]
 objc_exception = "0.1"
 objc = { version = "0.2.7", features = ["exception"] }
@@ -65,6 +62,9 @@ winapi = { version = "0.3", features = ["winuser", "objbase", "shobjidl_core", "
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2"
 tauri-plugin-updater = "2"
+
+[target.'cfg(linux)'.dependencies]
+glib = "^0.21.1"
 
 [features]
 # This feature depends on the Tauri CLI & CLI plugin for updater

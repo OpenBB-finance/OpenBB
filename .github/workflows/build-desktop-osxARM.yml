@@ -7,6 +7,13 @@ on:
         required: false
         type: boolean
         default: false
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Set to true to create a release build'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build-and-sign:
@@ -20,20 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Debug - List files
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Files in current directory:"
-          ls -la
-          echo "Files in src-tauri:"
-          ls -la src-tauri/
-          echo "Files in src-tauri/scripts:"
-          ls -la src-tauri/scripts/ || echo "scripts directory does not exist"
-          echo "Looking for fix_dylibs.sh:"
-          find . -name "fix_dylibs.sh" -type f || echo "fix_dylibs.sh not found"
-
-
       - name: Import Code Signing Certificate
         uses: apple-actions/import-codesign-certs@v3
         env:
@@ -43,9 +36,6 @@ jobs:
         with:
           p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
           p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-
-      - name: Install OpenSSL
-        run: brew install openssl
 
       - name: Setup Cargo Cache
         uses: actions/cache@v4
@@ -122,6 +112,10 @@ jobs:
             desktop/target/release/bundle/macos/*.app.tar.gz
             desktop/target/release/bundle/macos/*.app.tar.gz.sig
 
-      - name: Cleanup Artifacts
+      - name: Clean old bundle artifacts
         if: always()
-        run: cargo clean
+        run: |
+          bundlePath="${{ github.workspace }}/desktop/target/release/bundle"
+          if [ -d "$bundlePath" ]; then
+            rm -rf "$bundlePath"
+          fi

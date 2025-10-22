@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bom xmlns="http://cyclonedx.org/schema/bom/1.3" serialNumber="urn:uuid:58737ca1-f82f-40cb-8f6b-20c596a4773d" version="1">
+<bom xmlns="http://cyclonedx.org/schema/bom/1.3" serialNumber="urn:uuid:073f9bc5-842d-47c7-8fd8-1877e64b52f3" version="1">
   <metadata>
-    <timestamp>2025-10-13T19:39:16.565038000Z</timestamp>
+    <timestamp>2025-10-22T15:34:16.482852000Z</timestamp>
     <tools>
       <tool>
         <vendor>CycloneDX</vendor>
@@ -14,26 +14,26 @@
         <name>OpenBB, Inc.</name>
       </author>
     </authors>
-    <component type="application" bom-ref="path+file:///Users/darrenlee/github/platform-installer/src-tauri#openbb-platform@0.3.0">
+    <component type="application" bom-ref="path+file:///Users/darrenlee/github/OpenBB/desktop/src-tauri#openbb-platform@1.0.0">
       <author>OpenBB, Inc.</author>
       <name>openbb-platform</name>
-      <version>0.3.0</version>
-      <description>Tray icon application for managing virtual environments, application backend servers, and the OpenBB Platform.</description>
+      <version>1.0.0</version>
+      <description>Open Data Platform by OpenBB. A desktop application for managing virtual environments, application backend servers.</description>
       <scope>required</scope>
       <licenses>
         <expression>AGPL-3.0</expression>
       </licenses>
-      <purl>pkg:cargo/openbb-platform@0.3.0?download_url=file://.</purl>
+      <purl>pkg:cargo/openbb-platform@1.0.0?download_url=file://.</purl>
       <externalReferences>
         <reference type="vcs">
           <url>https://github.com/OpenBB-finance/OpenBB/</url>
         </reference>
       </externalReferences>
       <components>
-        <component type="application" bom-ref="path+file:///Users/darrenlee/github/platform-installer/src-tauri#openbb-platform@0.3.0 bin-target-0">
+        <component type="application" bom-ref="path+file:///Users/darrenlee/github/OpenBB/desktop/src-tauri#openbb-platform@1.0.0 bin-target-0">
           <name>openbb-platform</name>
-          <version>0.3.0</version>
-          <purl>pkg:cargo/openbb-platform@0.3.0?download_url=file://.#src/main.rs</purl>
+          <version>1.0.0</version>
+          <purl>pkg:cargo/openbb-platform@1.0.0?download_url=file://.#src/main.rs</purl>
         </component>
       </components>
     </component>
@@ -1240,6 +1240,28 @@
         </reference>
         <reference type="vcs">
           <url>https://github.com/RustCrypto/utils</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.5.1">
+      <author>Steven Sheldon, Mads Marquart &lt;mads@marquart.dk&gt;</author>
+      <name>block2</name>
+      <version>0.5.1</version>
+      <description>Apple's C language extension of blocks</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="SHA-256">2c132eebf10f5cad5289222520a4a058514204aed6d791f1cf4fe8088b82d15f</hash>
+      </hashes>
+      <licenses>
+        <expression>MIT</expression>
+      </licenses>
+      <purl>pkg:cargo/block2@0.5.1</purl>
+      <externalReferences>
+        <reference type="documentation">
+          <url>https://docs.rs/block2/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/madsmtm/objc2</url>
         </reference>
       </externalReferences>
     </component>
@@ -8206,6 +8228,31 @@
         </reference>
       </externalReferences>
     </component>
+    <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#objc-sys@0.3.5">
+      <author>Mads Marquart &lt;mads@marquart.dk&gt;</author>
+      <name>objc-sys</name>
+      <version>0.3.5</version>
+      <description>Raw bindings to the Objective-C runtime and ABI</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="SHA-256">cdb91bdd390c7ce1a8607f35f3ca7151b65afc0ff5ff3b34fa350f7d7c7e4310</hash>
+      </hashes>
+      <licenses>
+        <expression>MIT</expression>
+      </licenses>
+      <purl>pkg:cargo/objc-sys@0.3.5</purl>
+      <externalReferences>
+        <reference type="documentation">
+          <url>https://docs.rs/objc-sys/</url>
+        </reference>
+        <reference type="other">
+          <url>objc_0_3</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/madsmtm/objc2</url>
+        </reference>
+      </externalReferences>
+    </component>
     <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#objc2-app-kit@0.3.2">
       <name>objc2-app-kit</name>
       <version>0.3.2</version>
@@ -8391,6 +8438,24 @@
         </reference>
       </externalReferences>
     </component>
+    <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.2.2">
+      <name>objc2-foundation</name>
+      <version>0.2.2</version>
+      <description>Bindings to the Foundation framework</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="SHA-256">0ee638a5da3799329310ad4cfa62fbf045d5f56e3ef5ba4149e7452dcf89d5a8</hash>
+      </hashes>
+      <licenses>
+        <expression>MIT</expression>
+      </licenses>
+      <purl>pkg:cargo/objc2-foundation@0.2.2</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>https://github.com/madsmtm/objc2</url>
+        </reference>
+      </externalReferences>
+    </component>
     <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.3.2">
       <name>objc2-foundation</name>
       <version>0.3.2</version>
@@ -8512,6 +8577,28 @@
       </licenses>
       <purl>pkg:cargo/objc2-web-kit@0.3.2</purl>
       <externalReferences>
+        <reference type="vcs">
+          <url>https://github.com/madsmtm/objc2</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.5.2">
+      <author>Steven Sheldon, Mads Marquart &lt;mads@marquart.dk&gt;</author>
+      <name>objc2</name>
+      <version>0.5.2</version>
+      <description>Objective-C interface and runtime bindings</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="SHA-256">46a785d4eeff09c14c487497c162e92766fbb3e4059a71840cecc03d9a50b804</hash>
+      </hashes>
+      <licenses>
+        <expression>MIT</expression>
+      </licenses>
+      <purl>pkg:cargo/objc2@0.5.2</purl>
+      <externalReferences>
+        <reference type="documentation">
+          <url>https://docs.rs/objc2/</url>
+        </reference>
         <reference type="vcs">
           <url>https://github.com/madsmtm/objc2</url>
         </reference>
@@ -17752,7 +17839,7 @@
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#strip-ansi-escapes@0.2.1" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#thiserror@1.0.69" />
     </dependency>
-    <dependency ref="path+file:///Users/darrenlee/github/platform-installer/src-tauri#openbb-platform@0.3.0">
+    <dependency ref="path+file:///Users/darrenlee/github/OpenBB/desktop/src-tauri#openbb-platform@1.0.0">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#cc@1.2.40" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#chrono@0.4.42" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#ctrlc@3.5.0" />
@@ -17765,9 +17852,9 @@
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#log@0.4.28" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#mockall@0.13.1" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc@0.2.7" />
-      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.6.3" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.5.2" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-app-kit@0.3.2" />
-      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.3.2" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.2.2" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc_exception@0.1.2" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#once_cell@1.21.3" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#open@5.3.2" />
@@ -18100,6 +18187,9 @@
     </dependency>
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block-padding@0.3.3">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#generic-array@0.14.7" />
+    </dependency>
+    <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.5.1">
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.5.2" />
     </dependency>
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.6.2">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.6.3" />
@@ -19480,6 +19570,7 @@
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#num_threads@0.1.7">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#libc@0.2.176" />
     </dependency>
+    <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc-sys@0.3.5" />
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-app-kit@0.3.2">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#bitflags@2.9.4" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.6.2" />
@@ -19538,6 +19629,12 @@
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-exception-helper@0.1.1">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#cc@1.2.40" />
     </dependency>
+    <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.2.2">
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#bitflags@2.9.4" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.5.1" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#libc@0.2.176" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.5.2" />
+    </dependency>
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.3.2">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#bitflags@2.9.4" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#block2@0.6.2" />
@@ -19579,6 +19676,10 @@
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-foundation@0.3.2" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-javascript-core@0.3.2" />
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-security@0.3.2" />
+    </dependency>
+    <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.5.2">
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc-sys@0.3.5" />
+      <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-encode@4.1.0" />
     </dependency>
     <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2@0.6.3">
       <dependency ref="registry+https://github.com/rust-lang/crates.io-index#objc2-encode@4.1.0" />

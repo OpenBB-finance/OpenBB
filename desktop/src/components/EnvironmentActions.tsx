@@ -167,10 +167,10 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
                       disabled={app.disabled}
                       variant="secondary"
                       size="xs"
-                      className="button-startstop stopped shadow-sm px-2 py-1 mr-1"
+                      className={`shadow-sm px-2 py-1 mr-1 ${app.name === 'Jupyter' && app.status === 'starting' ? 'button-outline' : 'button-startstop stopped'}`}
                     >
                       {app.name === 'Jupyter' && (app.status === 'starting' || app.status === 'stopping') ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-theme-accent" />
                       ) : app.name === 'Jupyter' && app.status === 'running' ? (
                         'Open'
                       ) : app.name === 'System Shell' ? (

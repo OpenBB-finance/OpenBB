@@ -99,14 +99,14 @@ export const PythonVersionSelector = ({
 const hasMatchingExtensions = (extensions: Extension[], categoryId: string, query: string, installedPackages: Set<string>): boolean => {
   if (!query.trim()) return true; // Always show all tabs when no search
   let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-  
+
   // Filter out already installed packages for provider, router, and other-openbb categories
   if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
     categoryExtensions = categoryExtensions.filter(
       (ext) => !installedPackages.has(ext.id.toLowerCase())
     );
   }
-  
+
   const queryLower = query.toLowerCase();
   return categoryExtensions.some(
     (ext) =>
@@ -330,14 +330,14 @@ export const AddExtensionSelector = ({
   // Select all in a category
   const selectCategory = (categoryId: string) => {
     let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-    
+
     // Filter out already installed packages for provider, router, and other-openbb categories
     if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
       categoryExtensions = categoryExtensions.filter(
         (ext) => !installedPackages.has(ext.id.toLowerCase())
       );
     }
-    
+
     const categoryExtensionIds = categoryExtensions.map((ext) => ext.id);
 
     setSelectedExtensions((prev) => {
@@ -351,14 +351,14 @@ export const AddExtensionSelector = ({
   // Clear all in a category
   const clearCategory = (categoryId: string) => {
     let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-    
+
     // Filter out already installed packages for provider, router, and other-openbb categories
     if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
       categoryExtensions = categoryExtensions.filter(
         (ext) => !installedPackages.has(ext.id.toLowerCase())
       );
     }
-    
+
     const categoryExtensionIds = categoryExtensions.map((ext) => ext.id);
 
     setSelectedExtensions((prev) =>
@@ -369,14 +369,14 @@ export const AddExtensionSelector = ({
   // Get extensions for a specific category
   const getExtensionsByCategory = (categoryId: string) => {
     let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-    
+
     // Filter out already installed packages for provider, router, and other-openbb categories
     if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
       categoryExtensions = categoryExtensions.filter(
         (ext) => !installedPackages.has(ext.id.toLowerCase())
       );
     }
-    
+
     return categoryExtensions;
   };
 
@@ -405,10 +405,10 @@ export const AddExtensionSelector = ({
       ];
 
       console.log("Installing extensions:", extensionsToInstall);
-      
+
       // Call installation and wait for completion
       onInstallExtensions(extensionsToInstall);
-      
+
       console.log("Extension installation completed successfully");
     } catch (error) {
       console.error("Installation failed:", error);
@@ -419,13 +419,21 @@ export const AddExtensionSelector = ({
     }
   };
 
+	const getCheckboxState = (categoryId: string) => {
+		const categoryExtensions = getExtensionsByCategory(categoryId);
+		const totalCount = categoryExtensions.length;
+		const selectedCount = countSelectedInCategory(categoryId);
 
+		if (selectedCount === 0) return 'checked';
+		if (selectedCount === totalCount) return 'indeterminate';
+		return 'indeterminate';
+	};
 
   // Update the useEffect to use the new hasMatchingExtensions
   useEffect(() => {
     // If current active tab has no matches, switch to first available tab
     if (!hasMatchingExtensions(extensions, activeCategoryTab, localSearchQuery, installedPackages)) {
-      const firstMatchingCategory = categories.find(category => 
+      const firstMatchingCategory = categories.find(category =>
         hasMatchingExtensions(extensions, category.id, localSearchQuery, installedPackages)
       );
       if (firstMatchingCategory) {
@@ -530,50 +538,25 @@ export const AddExtensionSelector = ({
                       {/* Select all row for applicable categories */}
                       {(category.id === "provider" || category.id === "router" || category.id === "other-openbb") && (
                         <div className="mt-2 divide-y">
-                          <Tooltip 
+                          <Tooltip
                             content="Deselect all extensions in this category"
                             className="tooltip tooltip-theme"
                           >
                             <input
                               type="checkbox"
-                              checked={countSelectedInCategory(activeCategoryTab) > 0}
+                              checked={(getCheckboxState(activeCategoryTab) === 'checked')}
                               onChange={() => {
-                                if (countSelectedInCategory(activeCategoryTab) > 0) {
+                                if (
+                                  countSelectedInCategory(activeCategoryTab) > 0
+                                ) {
                                   clearCategory(activeCategoryTab);
                                 } else {
                                   selectCategory(activeCategoryTab);
                                 }
                               }}
-                              className="h-4 w-4 accent-theme-accent border-accent cursor-pointer"
-                              style={{
-                                appearance: "none",
-                                border: "1.5px solid var(--border-accent)",
-                                borderRadius: "3px",
-                                position: "relative",
-                                background: countSelectedInCategory(activeCategoryTab) > 0
-                                  ? "var(--button-neutral-bg)"
-                                  : "transparent",
-                                transition: "background 0.15s",
-                              }}
+                              className={`checkbox ${getCheckboxState(activeCategoryTab) === 'indeterminate' ? 'indeterminate' : ''}`}
                             />
                           </Tooltip>
-                          {/* Horizontal line inside the checkbox when checked */}
-                          <style>
-                          {`
-                            input[type="checkbox"].accent-theme-accent:checked::after {
-                              content: '';
-                              display: block;
-                              position: absolute;
-                              top: 50%;
-                              left: 3px;
-                              right: 3px;
-                              height: 2px;
-                              background: var(--text-primary);
-                              transform: translateY(-50%);
-                              border-radius: 1px;
-                            }
-                          `}
-                          </style>
                           {/* Select All Button */}
                           <Tooltip
                             content="Select all extensions in this category."
@@ -775,7 +758,7 @@ export const AddExtensionSelector = ({
                               {extension.credentials &&
                               extension.credentials.length > 0 && (
                                 <div className="relative inline-block group">
-                                <span 
+                                <span
                                   className="px-2 py-0.5 bg-theme-accent text-theme-accent body-xs-medium rounded-full"
                                   title="API key required"
                                 >
@@ -855,7 +838,7 @@ export const AddExtensionSelector = ({
                   );
                   })}
                 </div>
-            
+
             {/* Global Summary and Install button */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 ml-5">
