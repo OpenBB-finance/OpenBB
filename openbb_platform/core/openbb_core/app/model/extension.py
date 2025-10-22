@@ -28,13 +28,13 @@ class Extension:
         ----------
         name : str
             Name of the extension.
-        credentials : Optional[List[str]], optional
+        credentials : list[str], optional
             List of required credentials, by default None
         description: Optional[str]
             Extension description.
         on_command_output : bool, optional
             Whether the extension acts on command output, by default False
-        command_output_paths : Optional[List[str]], optional
+        command_output_paths : list[str], optional
             List of endpoint paths the extension acts on, where None means all, by default None.
         immutable : bool, optional
             Whether the function output is immutable, by default True.
@@ -60,7 +60,22 @@ class Extension:
         ):
             raise ValueError(
                 "OBBject Extension Error -> 'on_command_output' must be set as True when"
-                + "'command_output_paths', 'results_only' or 'immutable' is set.",
+                + " 'command_output_paths', 'results_only' or 'immutable' is set.",
+            )
+
+        # The user must explicitly enable OBBject extensions that act on command output.
+        if (
+            self.on_command_output
+            and not SystemService().system_settings.allow_on_command_output
+        ):
+            raise RuntimeError(
+                "OBBject Extension Error -> \n\n"
+                + "An OBBject extension that acts on command output is installed "
+                + "but has not been enabled in `system_settings.json`.\n\n"
+                + "Set `allow_on_command_output` to True to enable it.\n"
+                + "Or, set the environment variable `OPENBB_ALLOW_ON_COMMAND_OUTPUT` to True."
+                + "\n\nProceed with caution as this may have security implications.\n\n"
+                + "Ensure the extension is installed from a trusted source.\n\n",
             )
 
         # The user must explicitly enable OBBject extensions that modify output.

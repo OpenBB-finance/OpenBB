@@ -60,6 +60,11 @@ class Env(metaclass=SingletonMeta):
             self._environ.get("OPENBB_ALLOW_MUTABLE_EXTENSIONS", False)
         )
 
+    @property
+    def ALLOW_ON_COMMAND_OUTPUT(self) -> bool:
+        """Allow on command output: enables extensions that act on command output."""
+        return self.str2bool(self._environ.get("OPENBB_ALLOW_ON_COMMAND_OUTPUT", False))
+
     @staticmethod
     def str2bool(value) -> bool:
         """Match a value to its boolean correspondent."""

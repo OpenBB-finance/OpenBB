@@ -56,6 +56,7 @@ class SystemSettings(Tagged):
     test_mode: bool = False
     headless: bool = False
     allow_mutable_extensions: bool = getattr(Env(), "ALLOW_MUTABLE_EXTENSIONS", False)
+    allow_on_command_output: bool = getattr(Env(), "ALLOW_ON_COMMAND_OUTPUT", False)
 
     model_config = ConfigDict(validate_assignment=True, frozen=True)
 

@@ -443,6 +443,14 @@ def test_extension_immutable_preserves_original_and_does_not_set_extension_modif
     monkeypatch,
 ):
     """Immutable extensions must run against a copy and must not mutate the original OBBject."""
+    monkeypatch.setattr(
+        "openbb_core.app.service.system_service.SystemService",
+        lambda: SimpleNamespace(
+            system_settings=SimpleNamespace(
+                allow_on_command_output=True, allow_mutable_extensions=False
+            )
+        ),
+    )
     ext = Extension(name="imm_ext_test", on_command_output=True, immutable=True)
 
     def imm_accessor(self):
@@ -476,7 +484,9 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
     monkeypatch.setattr(
         "openbb_core.app.service.system_service.SystemService",
         lambda: SimpleNamespace(
-            system_settings=SimpleNamespace(allow_mutable_extensions=True)
+            system_settings=SimpleNamespace(
+                allow_mutable_extensions=True, allow_on_command_output=True
+            )
         ),
     )
     ext = Extension(name="mut_ext_test", on_command_output=True, immutable=False)
@@ -508,6 +518,14 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
 def test_results_only_flag_sets_attribute_and_accessor_runs(monkeypatch):
     """Extensions that declare results_only should toggle the _results_only attribute
     and still run their accessor."""
+    monkeypatch.setattr(
+        "openbb_core.app.service.system_service.SystemService",
+        lambda: SimpleNamespace(
+            system_settings=SimpleNamespace(
+                allow_on_command_output=True, allow_mutable_extensions=False
+            )
+        ),
+    )
     ext = Extension(
         name="ro_ext_test", on_command_output=True, results_only=True, immutable=True
     )
