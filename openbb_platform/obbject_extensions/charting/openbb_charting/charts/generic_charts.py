@@ -246,12 +246,6 @@ def line_chart(  # noqa: PLR0912
     fig.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
         font=dict(color=text_color),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -456,12 +450,6 @@ def bar_chart(  # noqa: PLR0912
 
     figure.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -637,12 +625,6 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
             categoryorder="array" if orientation == "v" else None,
             categoryarray=keys if orientation == "v" else None,
         ),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         font=dict(color="white" if text_color == "white" else "black"),
         margin=dict(pad=5),
     )
@@ -802,14 +784,7 @@ def surface3d(
             center=dict(x=-0.01, y=0, z=-0.3),
             eye=dict(x=1.75, y=1.75, z=0.69),
         ),
-        paper_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
-        plot_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
         font=dict(color=text_color),
-        # margin=dict(t=100, b=10, r=10, l=10),
     )
 
     fig.update_scenes(

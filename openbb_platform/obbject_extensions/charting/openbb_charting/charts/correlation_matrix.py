@@ -101,15 +101,6 @@ def correlation_matrix(  # noqa: PLR0912
     )
     fig = Figure(data=[heatmap], layout=layout)
     figure = OpenBBFigure(fig=fig)
-    figure.update_layout(
-        font=dict(color=text_color),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-    )
     layout_kwargs = kwargs.get("layout_kwargs", {})
 
     if layout_kwargs:

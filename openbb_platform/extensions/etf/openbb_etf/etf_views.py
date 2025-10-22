@@ -33,7 +33,7 @@ class EtfViews:
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
 
-        return price_performance(**kwargs)
+        return price_performance(**kwargs)  # type: ignore
 
     @staticmethod
     def etf_holdings(

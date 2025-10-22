@@ -120,12 +120,6 @@ def price_historical(  # noqa: PLR0912
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.update_layout(
-            paper_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
-            plot_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
             font=dict(color=text_color),
             showlegend=True,
             legend=dict(
@@ -254,12 +248,6 @@ def price_historical(  # noqa: PLR0912
         y2title = None  # type: ignore
 
     fig.update_layout(
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=(
             dict(
                 orientation="v",

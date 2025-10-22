@@ -224,12 +224,6 @@ class EconomyViews:
         # Now update the layout of the complete figure.
         fig.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=16)),
-            paper_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
-            plot_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
@@ -519,7 +513,7 @@ class EconomyViews:
         )
         content = fig.to_plotly_json()
 
-        return fig, content
+        return fig, content  # type: ignore
 
     @staticmethod
     def economy_shipping_chokepoint_info(

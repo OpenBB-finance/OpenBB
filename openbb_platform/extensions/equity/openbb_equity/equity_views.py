@@ -29,7 +29,7 @@ class EquityViews:
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
 
-        return price_performance(**kwargs)
+        return price_performance(**kwargs)  # type: ignore
 
     @staticmethod
     def equity_historical_market_cap(  # noqa: PLR0912
@@ -80,6 +80,6 @@ class EquityViews:
             scatter_kwargs=scatter_kwargs,
             **kwargs,
         )
-        content = fig.show(external=True).to_plotly_json()
+        content = fig.show(external=True).to_plotly_json()  # type: ignore
 
-        return fig, content
+        return fig, content  # type: ignore
