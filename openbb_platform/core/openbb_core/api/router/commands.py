@@ -7,8 +7,11 @@ from inspect import Parameter, Signature, signature
 from typing import Annotated, Any, TypeVar
 
 from fastapi import APIRouter, Depends, Header
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from openbb_core.app.command_runner import CommandRunner
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
@@ -140,7 +143,7 @@ def validate_output(c_out: OBBject) -> OBBject:
 
     def exclude_fields_from_api(key: str, value: Any):
         type_ = type(value)
-        field = c_out.model_fields.get(key, None)
+        field = getattr(type(c_out), "model_fields", {}).get(key, None)
         json_schema_extra = field.json_schema_extra if field else None
 
         # case where 1st layer field needs to be excluded
@@ -198,7 +201,9 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(*args: tuple[Any], **kwargs: dict[str, Any]) -> OBBject:
+    async def wrapper(
+        *args: tuple[Any], **kwargs: dict[str, Any]
+    ) -> OBBject | JSONResponse:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -213,7 +218,7 @@ def build_api_wrapper(
         )
 
         if defaults:
-            _provider = defaults.pop("provider", None)
+            _ = defaults.pop("provider", None)
             standard_params = getattr(
                 kwargs.pop("standard_params", None), "__dict__", {}
             )
@@ -242,6 +247,23 @@ def build_api_wrapper(
 
         execute = partial(command_runner.run, path, user_settings)
         output = await execute(*args, **kwargs)
+
+        # This is where we check for `on_command_output` extensions
+        mutated_output = getattr(output, "_extension_modified", False)
+        results_only = getattr(output, "_results_only", False)
+        try:
+            if results_only is True:
+                content = output.model_dump(exclude_unset=True).get("results", [])
+                return JSONResponse(content=jsonable_encoder(content), status_code=200)
+
+            if (mutated_output and isinstance(output, OBBject)) or (
+                isinstance(output, OBBject) and no_validate
+            ):
+                return JSONResponse(content=jsonable_encoder(output), status_code=200)
+        except Exception as exc:  # pylint: disable=W0703
+            raise OpenBBError(
+                f"Error serializing output for an extension-modified endpoint {path}: {exc}",
+            ) from exc
 
         if isinstance(output, OBBject) and not no_validate:
             return validate_output(output)

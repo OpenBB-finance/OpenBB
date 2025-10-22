@@ -6,12 +6,13 @@ from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
-from inspect import Parameter, signature
+from inspect import Parameter, iscoroutinefunction, signature
 from sys import exc_info
 from time import perf_counter_ns
 from typing import TYPE_CHECKING, Any, Optional
 from warnings import catch_warnings, showwarning, warn
 
+from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.metadata import Metadata
@@ -429,7 +430,78 @@ class StaticCommandRunner:
                     raise OpenBBError(e) from e
                 warn(str(e), OpenBBWarning)
 
+        try:
+            cls._trigger_command_output_callbacks(route, obbject)
+
+        except Exception as e:
+            if Env().DEBUG_MODE:
+                raise OpenBBError(e) from e
+            warn(str(e), OpenBBWarning)
+
         return obbject
+
+    @classmethod
+    def _trigger_command_output_callbacks(cls, route: str, obbject: OBBject) -> None:
+        """Trigger command output callbacks for extensions."""
+        loader = ExtensionLoader()
+        callbacks = loader.on_command_output_callbacks
+        results_only = False
+
+        # For each extension registered for all routes or the specific route,
+        # we call its accessor on the OBBject.
+        # We check if the accessor is immutable or not to decide whether to pass
+        # a copy of the OBBject or the original one.
+        # We set the _extension_modified attribute to True if any extension
+        # mutates the OBBject so we can pass this information to the interface.
+        # We also set the _results_only attribute to True if any extension
+        # indicates that only results should be returned.
+        if "*" in callbacks:
+            for ext in callbacks["*"]:
+                if ext.results_only is True:
+                    results_only = True
+                if ext.immutable is True:
+                    if hasattr(obbject, ext.name):
+                        obbject_copy = deepcopy(obbject)
+                        accessor = getattr(obbject_copy, ext.name)
+                        if iscoroutinefunction(accessor):
+                            run_async(accessor)
+                        elif callable(accessor):
+                            accessor()
+                elif ext.immutable is False:
+                    if ext.results_only is True:
+                        results_only = True
+                    if hasattr(obbject, ext.name):
+                        accessor = getattr(obbject, ext.name)
+                        if iscoroutinefunction(accessor):
+                            run_async(accessor)
+                        elif callable(accessor):
+                            accessor()
+                        setattr(obbject, "_extension_modified", True)
+
+        if route in callbacks:
+            for ext in callbacks[route]:
+                if ext.results_only is True:
+                    results_only = True
+
+                if ext.immutable is True:
+                    if hasattr(obbject, ext.name):
+                        obbject_copy = deepcopy(obbject)
+                        accessor = getattr(obbject_copy, ext.name)
+                        if iscoroutinefunction(accessor):
+                            run_async(accessor)
+                        elif callable(accessor):
+                            accessor()
+                elif ext.immutable is False and hasattr(obbject, ext.name):
+                    accessor = getattr(obbject, ext.name)
+                    if iscoroutinefunction(accessor):
+                        run_async(accessor)
+                    elif callable(accessor):
+                        accessor()
+                    setattr(obbject, "_extension_modified", True)
+
+        if results_only is True:
+            setattr(obbject, "_results_only", True)
+            setattr(obbject, "_extension_modified", True)
 
 
 class CommandRunner:

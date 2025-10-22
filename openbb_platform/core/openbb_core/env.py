@@ -54,9 +54,11 @@ class Env(metaclass=SingletonMeta):
         return self.str2bool(self._environ.get("OPENBB_DEV_MODE", False))
 
     @property
-    def HUB_BACKEND(self) -> str:
-        """Hub backend: sets the backend for the OpenBB Hub."""
-        return self._environ.get("OPENBB_HUB_BACKEND", "https://payments.openbb.co")
+    def ALLOW_MUTABLE_EXTENSIONS(self) -> bool:
+        """Allow mutable extensions: enables extensions that modify OBBject output."""
+        return self.str2bool(
+            self._environ.get("OPENBB_ALLOW_MUTABLE_EXTENSIONS", False)
+        )
 
     @staticmethod
     def str2bool(value) -> bool:
