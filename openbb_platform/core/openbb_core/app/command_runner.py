@@ -273,6 +273,7 @@ class StaticCommandRunner:
 
             if chart_params:
                 kwargs.update(chart_params)
+
             obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]
         except Exception as e:  # pylint: disable=broad-exception-caught
             if Env().DEBUG_MODE:
@@ -312,6 +313,9 @@ class StaticCommandRunner:
                 # in the charting extension then we add it there. This way we can remove
                 # the chart parameter from the commands.py and package_builder, it will be
                 # added to the function signature in the router decorator
+                # If the ProviderInterface is not in use, we need to pass a copy of the
+                # kwargs dictionary before it is validated, otherwise we lose those items.
+                kwargs_copy = deepcopy(kwargs)
                 chart = kwargs.pop("chart", False)
 
                 kwargs = ParametersBuilder.build(
@@ -349,7 +353,21 @@ class StaticCommandRunner:
                         extra_params
                     )
                     if chart and obbject.results:
-                        cls._chart(obbject, **kwargs)
+                        if "extra_params" not in kwargs_copy:
+                            kwargs_copy["extra_params"] = {}
+                        # Restore any kwargs passed that were removed by the ParametersBuilder
+                        for k in kwargs_copy.copy():
+                            if k == "chart":
+                                kwargs_copy.pop("chart", None)
+                                continue
+                            if (
+                                not extra_params or k not in extra_params
+                            ) and k != "extra_params":
+                                kwargs_copy["extra_params"][k] = kwargs_copy.pop(
+                                    k, None
+                                )
+
+                        cls._chart(obbject, **kwargs_copy)
 
                 raised_warnings = warning_list if warning_list else []
         finally:

@@ -484,9 +484,15 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params  # pylint: disable=protected-access
             )
-            kwargs["extra_params"] = (
-                self._obbject._extra_params  # pylint: disable=protected-access
+            # If the provider interface isn't used, endpoint kwargs are already here.
+            # Don't overwrite them.
+            obb_kwargs = (
+                self._obbject._extra_params or {}  # pylint: disable=protected-access
             )
+            if obb_kwargs:
+                for k, v in obb_kwargs.items():
+                    kwargs["extra_params"].update({k: v})
+
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
 
