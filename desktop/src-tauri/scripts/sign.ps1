@@ -7,7 +7,7 @@ Expand-Archive -Path $zipPath -DestinationPath $toolDir -Force
 $codeSignToolPath = Join-Path $toolDir "CodeSignTool.bat"
 
 # Find all binaries in the root of the release directory
-$targetDir = Join-Path $env:GITHUB_WORKSPACE "target/x86_64-pc-windows-msvc/release"
+$targetDir = Join-Path $env:GITHUB_WORKSPACE "desktop/target/x86_64-pc-windows-msvc/release"
 $filesToSign = Get-ChildItem -Path $targetDir -Include *.exe, *.dll
 
 # Sign each file individually

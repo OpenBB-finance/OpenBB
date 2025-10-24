@@ -4,49 +4,12 @@
 @tailwind utilities;
 
 
-html {
-  overflow-y: auto;
-}
-
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-/* Only show scrollbars when needed */
 * {
-  scrollbar-width: thin; /* For Firefox */
+  scrollbar-width: auto;
 }
 
 ::-webkit-scrollbar {
-  width: 4px; /* for vertical scrollbars */
-  height: 4px; /* for horizontal scrollbars */
-  display: none; /* Hide by default */
-}
-
-/* Only show scrollbar when hovering over scrollable element that needs scrolling */
-:hover::-webkit-scrollbar {
-  display: block;
-}
-
-/* Hide scrollbar when nothing to scroll */
-::-webkit-scrollbar:vertical {
-  display: none;
-}
-
-::-webkit-scrollbar:horizontal {
-  display: none;
-}
-
-/* Only show when content exceeds container size */
-.overflow-auto::-webkit-scrollbar:vertical,
-.overflow-y-auto::-webkit-scrollbar:vertical {
-  display: block;
-}
-
-.overflow-auto::-webkit-scrollbar:horizontal,
-.overflow-x-auto::-webkit-scrollbar:horizontal {
-  display: block;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -62,11 +25,11 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #a2a2a2;
   border-radius: 6px;
+  height: 2rem;
 }
 
 .dark ::-webkit-scrollbar-thumb {
   background: #6d6e74;
-  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -82,8 +45,10 @@ body {
   --bg-secondary: #f7f7f9;
   --bg-tertiary: #efeff2;
   --bg-accent: rgb(0, 136, 204, 0.3);
+  --bg-toast: rgba(212, 229, 252, 1);
 
   --text-primary: #151518;
+  --text-primary-inverse: #ffffff;
   --text-secondary: #2c2c32;
   --text-tertiary: #6f6d80;
   --text-muted: rgba(21, 21, 24, 0.35);
@@ -110,6 +75,7 @@ body {
   --info-icon: rgba(138, 138, 144, 1);
   --tab-border-active: #007acc;
   --tag-bg: rgba(90, 89, 97, 0.3);
+  --info-icon: rgba(138, 138, 144, 1);
 }
 
 .dark {
@@ -119,6 +85,7 @@ body {
   --bg-quartary: rgba(36, 36, 42, 1);
   --bg-accent:  rgb(0, 136, 204, 0.3);
   --text-primary: #ffffff;
+  --text-primary-inverse: #151518;
   --text-secondary: #EBEBED;
   --text-tertiary: #9793b0;
   --text-muted: rgba(138, 138, 144, 1);
@@ -144,6 +111,7 @@ body {
   --tag-bg: rgba(90, 89, 97, 0.3);
   --dropdown-bg: rgba(36, 36, 42, 1);
   --info-icon: rgba(138, 138, 144, 1);
+  --bg-toast: rgba(212, 229, 252, 1);
 }
 
 .info-icon {
@@ -154,6 +122,48 @@ body {
 
 .bg-theme-tag {
   background-color: var(--tag-bg);
+}
+
+.bg-theme-toast {
+  background-color: var(--bg-toast);
+}
+
+.button-toast,
+.button-toast:focus,
+.button-toast:focus-visible,
+.dark .button-toast,
+.dark .button-toast:focus,
+.dark .button-toast:focus-visible {
+  background-color: rgb(0, 136, 204, 1);
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 0.375rem;
+
+}
+
+.button-toast:hover,
+.dark .button-toast:hover {
+  background-color: rgb(0, 136, 204, 0.85);
+  color: #ffffff;
+}
+
+.toast-container, .dark .toast-container {
+  background-color: var(--bg-toast);
+  border-radius: 0.5rem;
+  color: var(--text-primary-inverse);
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 0;
+  font-weight: medium;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toast-info-icon {
+  color: var(--button-neutral-bg);
+  width: 25px;
+  height: 25px;
+  font-weight: bold;
 }
 
 /*   UTILITY CLASSES */
@@ -190,6 +200,16 @@ body {
 
 .button-outline {
   @apply border border-theme-outline rounded-sm;
+  transition: background-color 0.15s ease;
+}
+
+.button-outline:hover,
+.button-outline:focus,
+.button-outline:focus-visible,
+.button-outline:active {
+  background-color: var(--button-secondary-hover);
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .dark .button-outline:hover,
@@ -202,8 +222,6 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
-
-
 
 /* Theme utility classes */
 .bg-theme-primary { background-color: var(--bg-primary); }
@@ -274,37 +292,11 @@ body:not(.dark) .button-stop:focus-visible {
   outline: none;
 }
 
-/* Primary button style */
-.button-primary {
-  background-color: var(--button-primary-bg);
-  color: var(--text-primary);
-  transition: all 0.2s ease;
-  border: 1px solid var(--border-theme-outline);
-}
-
-.button-primary:hover {
-  outline: none;
-  box-shadow: none !important;
-}
-
-.dark .button-primary:hover, .dark .button-primary:focus, .dark .button-primary:focus-visible {
-  outline: none;
-  box-shadow: none !important;
-}
-
-
-.button-primary:focus, .button-primary:focus-visible {
-  background-color: #1cab21;
-  outline: none;
-  box-shadow: none !important;
-}
-
 /* Primary button - theme */
 .button-primary,
 .dark .button-primary {
   color: var(--button-primary-text);
   background-color: var(--button-primary-bg);
-  border: 1px solid var(--button-primary-border);
   box-shadow: none !important;
 }
 
@@ -315,31 +307,21 @@ body:not(.dark) .button-stop:focus-visible {
 }
 
 /* Secondary button */
-.button-secondary:focus, .button-secondary:focus-visible {
-  box-shadow: none !important;
-}
 
-.button-secondary {
-  background-color: var(--button-secondary-bg);
-  color: var(--text-secondary);
-  border: 1px solid var(--button-secondary-border);
-  box-shadow: none !important;
-}
-
-.dark .button-secondary {
+.button-secondary, .dark .button-secondary {
   border: none;
   background-color: var(--button-secondary-bg);
   color: var(--text-secondary);
   box-shadow: none !important;
 }
 
-.button-secondary:hover, .button-secondary:focus, .button-secondary:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-  background-color: var(--button-secondary-hover);
-}
 
-.dark .button-secondary:hover, .dark .button-secondary:focus, .dark .button-secondary:focus-visible {
+.button-secondary:hover,
+.button-secondary:focus,
+.button-secondary:focus-visible,
+.dark .button-secondary:hover,
+.dark .button-secondary:focus,
+.dark .button-secondary:focus-visible {
   outline: none !important;
   box-shadow: none !important;
   background-color: var(--button-secondary-hover);
@@ -353,24 +335,19 @@ body:not(.dark) .button-stop:focus-visible {
 }
 
 /* Neutral button */
-.dark .button-neutral {
+.button-neutral, .dark .button-neutral {
   background-color: var(--button-neutral-bg);
   color: var(--text-primary);
   outline: none !important;
   box-shadow: none !important;
 }
 
-.dark .button-neutral:hover, .dark .button-neutral:focus, .dark .button-neutral:focus-visible {
-  background-color: var(--button-neutral-bg-hover);
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.button-neutral {
-  background-color: var(--button-neutral-bg);
-}
-
-.button-neutral:hover, .button-neutral:focus, .button-neutral:focus-visible {
+.button-neutral:hover,
+.button-neutral:focus,
+.button-neutral:focus-visible,
+.dark .button-neutral:hover,
+.dark .button-neutral:focus,
+.dark .button-neutral:focus-visible {
   background-color: var(--button-neutral-bg-hover);
   outline: none !important;
   box-shadow: none !important;
@@ -590,4 +567,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.ext-actions {
+    opacity: 0;
+    transition: opacity 0ms;
+    pointer-events: none;
+}
+
+.ext-row:hover .ext-actions {
+    opacity: 1;
+    pointer-events: auto;
 }

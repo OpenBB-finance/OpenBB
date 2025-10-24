@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Open Data Platform",
-  "version": "0.4.0",
+  "productName": "Open Data Platform by OpenBB",
+  "version": "1.0.0",
   "identifier": "co.openbb.platform",
   "build": {
     "frontendDist": "../dist",
@@ -49,7 +49,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "category": "Finance",
+    "category": "DeveloperTool",
     "publisher": "OpenBB, Inc.",
     "copyright": "Copyright © 2025 OpenBB, Inc.",
     "license": "AGPLv3",
@@ -57,11 +57,9 @@
   },
   "plugins": {
     "updater": {
-      "active": true,
       "endpoints": [
-        "https://github.com/OpenBB-finance/OpenBB/releases/odp/download/latest.json"
+        "https://github.com/OpenBB-finance/OpenBB/releases/download/ODP/latest.json"
       ],
-      "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEzNEQ2NzFCNjVENDhEMgpSV1RTU0YyMmNkWTBBY0IrOHRRWlVYVkZ3S1p4cmpER2RSYXZldjVEOWxFTnVueExBTXZTeUl3Ywo="
     }
   }

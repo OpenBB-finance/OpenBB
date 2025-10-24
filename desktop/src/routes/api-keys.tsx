@@ -514,8 +514,10 @@ export default function ApiKeysPage() {
 			if (hasScrollbar) {
 				const scrollbarWidth = scrollContainer.offsetWidth - scrollContainer.clientWidth;
 				header.style.paddingRight = `${scrollbarWidth}px`;
+				content.style.paddingRight = `${scrollbarWidth}px`;
 			} else {
 				header.style.paddingRight = "0px";
+				content.style.paddingRight = "0px";
 			}
 		});
 
@@ -657,12 +659,12 @@ export default function ApiKeysPage() {
 									</div>
 								)}
 								<div
-									ref={scrollContainerRef}
 									className="overflow-y-auto max-h-[calc(100vh-16rem)]"
+									ref={scrollContainerRef}
 								>
 									{/* API Keys List */}
 									{filteredApiKeys.length > 0 ? (
-										<div ref={contentRef} className="flex-1 space-y-3">
+										<div className="flex-1 space-y-3" ref={contentRef}>
 											{filteredApiKeys.map((apiKey) => {
 												const originalIndex = apiKeys.findIndex(
 													(k) => k.key === apiKey.key,
@@ -670,7 +672,7 @@ export default function ApiKeysPage() {
 												return (
 													<div
 														key={`row-${originalIndex}`}
-														className="group flex items-start rounded-lg bg-theme-tertiary py-2 shadow-md pl-2"
+														className="flex items-start rounded-lg bg-theme-tertiary py-2 shadow-md pl-2 group"
 													>
 														{/* Key Name */}
 														<div className="w-2/5 body-xs-medium truncate pr-2">{apiKey.key}</div>
@@ -686,51 +688,50 @@ export default function ApiKeysPage() {
 																: "Undefined"}
 														</div>
 														{/* Action Buttons */}
-														{/* Action Buttons */}
-														<div className="flex flex-1 items-center justify-end gap-2 pl-2 mr-2">
-															<Tooltip content="Edit API key" className="tooltip tooltip-theme">
-																<Button
-																	onClick={() => handleEditKey(originalIndex)}
-																	variant="ghost"
-																	size="icon"
-																	className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity"
-																>
-																	<CustomIcon id="edit" className="h-4 w-4" />
-																</Button>
-															</Tooltip>
-															<Tooltip content={visibleKeys.has(apiKey.key) ? "Hide API key" : "Show API key"} className="tooltip tooltip-theme">
-																<Button
-																	variant="ghost"
-																	onClick={() => toggleKeyVisibility(apiKey.key)}
-																	disabled={!apiKey.value.trim()}
-																	className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity"
-																	size="icon"
-																>
-																	<CustomIcon
-																		id={visibleKeys.has(apiKey.key) ? "eye-off" : "eye"}
-																		className="h-4 w-4"
-																	/>
-																</Button>
-															</Tooltip>
-															<Tooltip content={apiKey.value.trim() ? "Copy to clipboard" : "No value to copy"} className="tooltip tooltip-theme">
-																<Button
-																	variant="ghost"
-																	onClick={() => copyToClipboard(apiKey.value, apiKey.key)}
-																	disabled={!apiKey.value.trim()}
-																	className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity "
-																	size="icon"
-																>
-																	{copiedKey === apiKey.key ? (
+															<div className="flex flex-1 items-center justify-end gap-2 pl-2 mr-2 opacity-0 group group-hover:opacity-100">
+																<Tooltip content="Edit API key" className="tooltip tooltip-theme">
+																	<Button
+																		onClick={() => handleEditKey(originalIndex)}
+																		variant="ghost"
+																		size="icon"
+																		className="button-ghost"
+																	>
+																		<CustomIcon id="edit" className="h-4 w-4" />
+																	</Button>
+																</Tooltip>
+																<Tooltip content={visibleKeys.has(apiKey.key) ? "Hide API key" : "Show API key"} className="tooltip tooltip-theme">
+																	<Button
+																		variant="ghost"
+																		onClick={() => toggleKeyVisibility(apiKey.key)}
+																		disabled={!apiKey.value.trim()}
+																		className="button-ghost"
+																		size="icon"
+																	>
 																		<CustomIcon
-																			id="success"
-																			className="h-4 w-4 text-green-500"
+																			id={visibleKeys.has(apiKey.key) ? "eye-off" : "eye"}
+																			className="h-4 w-4"
 																		/>
-																	) : (
-																		<CopyIcon className="h-4 w-4" />
-																	)}
-																</Button>
-															</Tooltip>
-														</div>
+																	</Button>
+																</Tooltip>
+																<Tooltip content={apiKey.value.trim() ? "Copy to clipboard" : "No value to copy"} className="tooltip tooltip-theme">
+																	<Button
+																		variant="ghost"
+																		onClick={() => copyToClipboard(apiKey.value, apiKey.key)}
+																		disabled={!apiKey.value.trim()}
+																		className="button-ghost"
+																		size="icon"
+																	>
+																		{copiedKey === apiKey.key ? (
+																			<CustomIcon
+																				id="success"
+																				className="h-4 w-4 text-green-500"
+																			/>
+																		) : (
+																			<CopyIcon className="h-4 w-4" />
+																		)}
+																	</Button>
+																</Tooltip>
+															</div>
 													</div>
 												);
 											})}
@@ -903,16 +904,36 @@ export default function ApiKeysPage() {
 
 				{/* Add API Key Button */}
 				{filteredApiKeys.length === 0 && !loading && (
-									// Empty state
-					<div className="flex-1 w-full justify-center bg-theme-primary mb-4 rounded-sm flex flex-col items-center">
+					<>
 						{searchQuery ? (
-							<p className="text-theme-secondary body-md-regular">
-								No matching API keys
-							</p>
+							<div className="flex flex-col items-center justify-center mt-2">
+								<div className="text-center">
+									<CustomIcon
+										id="search"
+										className="h-12 w-12 text-theme-muted mb-2 mx-auto"
+									/>
+									<h3 className="body-md-bold text-theme-secondary mb-2">
+										No API keys found
+									</h3>
+									<p className="body-sm-regular text-theme-muted mb-4">
+										No API keys match your search for "{searchQuery}"
+									</p>
+									<Button
+										onClick={() => setSearchQuery("")}
+										variant="outline"
+										size="sm"
+										className="button-outline"
+									>
+										<span className="body-xs-medium">Clear Search</span>
+									</Button>
+								</div>
+							</div>
 						) : (
-							<p className="text-theme-muted body-sm-regular">No API keys added</p>
+							<div className="flex-1 w-full justify-center bg-theme-primary mb-4 rounded-sm flex flex-col items-center">
+								<p className="text-theme-muted body-sm-regular">No API keys added</p>
+							</div>
 						)}
-					</div>
+					</>
 				)}
 			</div>
 

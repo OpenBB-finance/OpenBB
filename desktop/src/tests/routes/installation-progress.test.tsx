@@ -227,7 +227,7 @@ describe('InstallationProgressPage', () => {
     await waitFor(() => expect(screen.getByText(/Installation completed successfully!/i)).toBeInTheDocument());
 
     act(() => {
-      fireEvent.click(screen.getByText('Continue to Open Data Platform'));
+      fireEvent.click(screen.getByText('Done'));
     });
 
     await waitFor(() => expect(window.location.href).toBe('/environments?directory=%2Fmock%2Finstall%2Fdir&userDataDir=%2Fmock%2Fuser%2Fdata%2Fdir'));
@@ -260,7 +260,7 @@ describe('InstallationProgressPage', () => {
     await waitFor(() => expect(screen.getByText(/Installation completed successfully!/i)).toBeInTheDocument());
 
     act(() => {
-      fireEvent.click(screen.getByText('Continue to Open Data Platform'));
+      fireEvent.click(screen.getByText('Done'));
     });
 
     await waitFor(() => expect(window.location.href).toBe('/environments?directory=%2Fmock%2Finstall%2Fdir&userDataDir=%2Fmock%2Fuser%2Fdata%2Fdir'));

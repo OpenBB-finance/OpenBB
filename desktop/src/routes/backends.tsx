@@ -15,6 +15,7 @@ import Select, { components } from 'react-select';
 import { CopyIcon, DocumentationIcon, FileIcon, FolderIcon, HelpIcon, SettingsIcon } from "../components/Icon";
 
 import CustomIcon from "~/components/Icon";
+import Toast from "../components/Toast";
 
 // ============== TYPES ==============
 
@@ -574,7 +575,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
     }) => {
         const isRunning = backend.status === "running";
         const canDelete = !isRunning && !isProcessing;
-        
+
         // Form data state
         const [formData, setFormData] = useState<BackendFormData>({
             id: backend.id,
@@ -656,7 +657,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
             if (backend.status === "running" && backend.id && !urlConfirmed) {
                 console.log(`Setting up log listener for backend ${backend.id}`);
                 const processId = `backend-${backend.id}`;
-                
+
                 const logListenerPromise = listen<{
                     processId: string;
                     output: string;
@@ -795,7 +796,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 						tracebackTimeout.current = null;
 					}
 					logListenerPromise.then((unlisten) => unlisten()).catch(console.error);
-				};                
+				};
             }
         }, [backend.status, backend.id, urlConfirmed, onStatusUpdate]);
 
@@ -816,12 +817,12 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 				setFormError("Backend Name is required");
 				return;
 			}
-			
+
 			if (!formData.command || !formData.command.trim()) {
 				setFormError("Executable is required");
 				return;
 			}
-			
+
 			if (!formData.environment) {
 				setFormError("Environment selection is required");
 				return;
@@ -856,9 +857,9 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 		useEffect(() => {
             console.log(`Backend ${backend.id} status updated to: ${backend.status}`);
         }, [backend.status]);
-	
+
         return (
-            <li className="bg-theme-tertiary border border-theme-modal rounded-md px-3 pt-3 pb-3 mb-5 shadow-md group hover:bg-theme-hover transition-colors">
+            <li className="bg-theme-tertiary border border-theme-modal rounded-md px-3 pt-3 pb-3 mb-5 shadow-md group">
                 <div className="w-full">
                     <div className="flex justify-between items-center">
 						{/* Backend name and status indicator */}
@@ -892,7 +893,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 										}}
 										variant="ghost"
 										size="icon"
-										className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+										className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-0"
 										aria-label="delete backend"
 									>
 										<CustomIcon id="bin" className="h-4 w-4" />
@@ -900,7 +901,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 								</Tooltip>
 							)}
 
-							<Tooltip 
+							<Tooltip
 								content={isSelected ? "Hide Configuration" : "Show backend configuration panel."}
 								className="tooltip-theme"
 							>
@@ -911,9 +912,9 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 										e.stopPropagation();
 										onSelect(isSelected ? null : backend.id);
 									}}
-									className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+									className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-0"
 								>
-									<SettingsIcon className="w-7 h-7" />	
+									<SettingsIcon className="w-7 h-7" />
 								</Button>
 							</Tooltip>
 
@@ -1027,7 +1028,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 								</Button>
 							</Tooltip>
 						) : (
-							<Tooltip 
+							<Tooltip
 								content={`Click to copy ${isUrlDisplay ? 'URL' : 'command'}`}
 								className="tooltip-theme"
 							>
@@ -1069,7 +1070,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 									{/* Header */}
 									<div className="flex justify-between items-center mb-2">
 										<p className="body-lg-medium text-theme-primary">Backend Configuration</p>
-										<Tooltip 
+										<Tooltip
 											content="Cancel and go back."
 											className="tooltip-theme"
 										>
@@ -1357,18 +1358,18 @@ const validateCommandInput = (command: string): { isValid: boolean; error?: stri
 
     for (const pattern of dangerousPatterns) {
         if (pattern.test(command)) {
-            return { 
-                isValid: false, 
-                error: "Command contains potentially dangerous characters or patterns." 
+            return {
+                isValid: false,
+                error: "Command contains potentially dangerous characters or patterns."
             };
         }
     }
 
     const allowedCharsPattern = /^[a-zA-Z0-9\s.\-_/:'",[\]{}]+$/;
     if (!allowedCharsPattern.test(command)) {
-        return { 
-            isValid: false, 
-            error: "Command containls invalid characters." 
+        return {
+            isValid: false,
+            error: "Command containls invalid characters."
         };
     }
 
@@ -1686,8 +1687,8 @@ const AutoStartToggle: React.FC<AutoStartToggleProps> = React.memo(
     ({ autoStart, onChange, onCancel, onSubmit, isUpdate, formData }) => {
         // Check if command is valid (same validation as FormActions)
         const commandValidation = formData?.command ? validateCommandInput(formData.command) : { isValid: false };
-        const isFormValid = formData?.name?.trim() && 
-                           formData?.command?.trim() && 
+        const isFormValid = formData?.name?.trim() &&
+                           formData?.command?.trim() &&
                            formData?.environment?.trim() &&
                            commandValidation.isValid;
 
@@ -1698,7 +1699,7 @@ const AutoStartToggle: React.FC<AutoStartToggleProps> = React.memo(
                         htmlFor="auto-start-toggle"
                         className="flex items-center cursor-pointer w-full relative top-3"
                     >
-                        <Tooltip 
+                        <Tooltip
                             content="Automatically start this backend service on application launch. To start on system boot, select 'Start at Login' from the Tray Icon menu."
                             className="tooltip-theme"
                         >
@@ -1733,7 +1734,7 @@ const AutoStartToggle: React.FC<AutoStartToggleProps> = React.memo(
                                 <span className="text-xs-bold">Cancel</span>
                             </Button>
                         </Tooltip>
-                        <Tooltip 
+                        <Tooltip
                             content={isUpdate ? "Save changes" : "Create new backend"}
                             className="tooltip-theme"
                         >
@@ -1764,8 +1765,8 @@ const FormActions: React.FC<FormActionsProps> = React.memo(
     ({ onCancel, onSubmit, isUpdate, formData }) => {
         // Check if required fields are filled
 		const commandValidation = formData?.command ? validateCommandInput(formData.command) : { isValid: false };
-        const isFormValid = formData?.name?.trim() && 
-                           formData?.command?.trim() && 
+        const isFormValid = formData?.name?.trim() &&
+                           formData?.command?.trim() &&
                            formData?.environment?.trim() &&
 						   commandValidation.isValid;
 
@@ -1922,7 +1923,7 @@ const BackendListPanel = memo(
         // Filter backends based on search query
         const filteredBackends = backends.filter(backend => {
             if (!searchQuery.trim()) return true;
-            
+
             const query = searchQuery.toLowerCase();
             return (
                 backend.name.toLowerCase().includes(query) ||
@@ -1947,13 +1948,13 @@ const BackendListPanel = memo(
             };
 
             checkScrollbar();
-            
+
             // Use ResizeObserver to detect changes in content size
             const container = scrollContainerRef.current;
             if (container) {
                 const resizeObserver = new ResizeObserver(checkScrollbar);
                 resizeObserver.observe(container);
-                
+
                 return () => resizeObserver.disconnect();
             }
         }, [filteredBackends]);
@@ -2050,11 +2051,11 @@ const BackendListPanel = memo(
 
                                 {/* Show filtered results or "no results found" message */}
                                 {filteredBackends.length === 0 && searchQuery.trim() ? (
-                                    <div className="flex flex-col items-center justify-center p-8">
+                                    <div className="flex flex-col items-center justify-center mt-4">
                                         <div className="text-center">
-                                            <CustomIcon 
-                                                id="search" 
-                                                className="h-12 w-12 text-theme-muted mb-4 mx-auto" 
+                                            <CustomIcon
+                                                id="search"
+                                                className="h-12 w-12 text-theme-muted mb-2 mx-auto"
                                             />
                                             <h3 className="body-md-bold text-theme-secondary mb-2">
                                                 No backends found
@@ -2074,7 +2075,7 @@ const BackendListPanel = memo(
                                     </div>
                                 ) : (
                                     <div className="flex flex-col justify-between">
-                                        <div 
+                                        <div
                                             ref={scrollContainerRef}
                                             className={`overflow-y-auto max-h-[calc(100vh-13rem)] ${hasScrollbar ? 'pr-2' : ''}`}
                                         >
@@ -2106,9 +2107,9 @@ const BackendListPanel = memo(
                             // Empty state - no header section - ONLY show when definitely done loading
                             <div className="flex flex-col items-center justify-center p-8 mt-8">
                                 <div className="text-center">
-                                    <CustomIcon 
-                                        id="server" 
-                                        className="h-16 w-16 text-theme-primary mb-4 mx-auto" 
+                                    <CustomIcon
+                                        id="server"
+                                        className="h-16 w-16 text-theme-primary mb-4 mx-auto"
                                     />
                                     <h3 className="body-lg-bold text-theme-secondary mb-2">
                                         No backend services found
@@ -2117,7 +2118,7 @@ const BackendListPanel = memo(
                                         Create your first backend service to get started with running server applications.
                                     </p>
                                     <Tooltip content="Create your first backend service">
-                                        <Button 
+                                        <Button
                                             onClick={onCreate}
                                             variant="neutral"
                                             className="button-neutral shadow-sm"
@@ -2171,6 +2172,13 @@ function loadEnvironmentsFromCache(): Environment[] {
 export default function BackendsPage() {
 	const isMounted = useRef(true);
 
+	const [showToast, setShowToast] = useState(false);
+	const [toastContent, setToastContent] = useState<{
+		title: string;
+		content: React.ReactNode;
+		buttonText: string;
+	}>({ title: "", content: <></>, buttonText: "" });
+
 	// Core state
 	const [backends, setBackends] = useState<BackendService[]>([]);
 	const [selectedBackend, setSelectedBackend] = useState<string | null>(null);
@@ -2221,7 +2229,56 @@ export default function BackendsPage() {
 							!localStorage.getItem("platform-api-run-once")
 						) {
 							localStorage.setItem("platform-api-run-once", "true");
-							openUrl(finalUrl).catch(console.error);
+							setToastContent({
+								title: "Connect Backend with OpenBB Workspace",
+								content: (
+									<ol className="list-decimal list-inside">
+										<li>Sign in to your OpenBB Workspace account.</li>
+										<li>Go to the "Apps" tab in the top menu.</li>
+										<li>Click on "Connect backend".</li>
+										<li>
+											Fill in the connection form with the following details:
+											<ul className="list-disc list-inside ml-4">
+												<li>Name: OpenBB Platform</li>
+												<li>URL: {finalUrl}</li>
+											</ul>
+										</li>
+										<li>Click "Test".</li>
+										<li>Click "Add" to finalize the integration.</li>
+									</ol>
+								),
+								buttonText: "Check Documentation",
+							});
+							setShowToast(true);
+						}
+						if (
+							backend.name === "OpenBB MCP" &&
+							!localStorage.getItem("platform-mcp-run-once")
+						) {
+							localStorage.setItem("platform-mcp-run-once", "true");
+							setToastContent({
+								title: "Connect MCP with OpenBB Workspace",
+								content: (
+									<ol className="list-decimal list-inside">
+										<li>Sign in to your OpenBB Workspace account.</li>
+										<li>Go to the Chat on the right side.</li>
+										<li>Click on "MCP Tools" button above the chat input.</li>
+										<li>Click on "+" in the top-right to open the configuration panel.</li>
+										<li>Click on "Add Server".</li>
+										<li>
+											Fill in the connection form with the following details:
+											<ul className="list-disc list-inside ml-4">
+												<li>Name: OpenBB MCP</li>
+												<li>URL: {finalUrl}</li>
+											</ul>
+										</li>
+										<li>Check the box "Local Server".</li>
+										<li>Click "Add" to finalize the integration.</li>
+									</ol>
+								),
+								buttonText: "Check Documentation",
+							});
+							setShowToast(true);
 						}
 					}
 					return prevBackends.map((b) =>
@@ -2293,15 +2350,15 @@ export default function BackendsPage() {
 
 	useEffect(() => {
 		isMounted.current = true;
-	
+
 		const initialFetch = async () => {
 			try {
 				setLoading(true);
-	
+
 				// 1. Load environments from localStorage cache
 				const cachedEnvs = loadEnvironmentsFromCache();
 				setEnvironments(cachedEnvs);
-	
+
 				// 2. Always fetch backends from backend
 				const backendServices = await invoke<BackendService[]>("list_backend_services");
 				if (!isMounted.current) return;
@@ -2314,7 +2371,7 @@ export default function BackendsPage() {
 						apiUrl: b.url ?? b.apiUrl,
 					}))
 				);
-	
+
 				// 3. If no environments in cache, fallback to backend (optional)
 				if (cachedEnvs.length === 0) {
 					const envs = await invoke<Environment[]>("list_conda_environments");
@@ -2336,9 +2393,9 @@ export default function BackendsPage() {
 				}
 			}
 		};
-	
+
 		initialFetch();
-	
+
 		return () => {
 			isMounted.current = false;
 		};
@@ -2493,6 +2550,24 @@ export default function BackendsPage() {
 
 	return (
 		<div className="w-full h-full">
+			{showToast && (
+				<div className="fixed top-3 right-3 z-50">
+					<Toast
+						title={toastContent.title}
+						onClose={() => setShowToast(false)}
+						buttonText={toastContent.buttonText}
+						onButtonClick={() => {
+							const url = toastContent.title.includes("MCP")
+								? "https://docs.openbb.co/python/quickstart/mcp"
+								: "https://docs.openbb.co/python/quickstart/workspace";
+							openUrl(url).catch(console.error);
+							setShowToast(false);
+						}}
+					>
+						{toastContent.content}
+					</Toast>
+				</div>
+			)}
 			{isCreating || isEditing ? (
 				// Form View
 				<div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center overflow-auto" role="dialog">
@@ -2503,7 +2578,7 @@ export default function BackendsPage() {
 								Create New Backend
 							</p>
 							<Tooltip
-								content="Cancel and go back." 
+								content="Cancel and go back."
 								className="tooltip-theme"
 							>
 								<Button

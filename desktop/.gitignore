@@ -32,3 +32,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+src-tauri/*.dll
+
+src-tauri/frameworks/*.dylib

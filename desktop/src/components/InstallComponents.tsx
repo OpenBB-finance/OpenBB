@@ -317,14 +317,14 @@ export const ExtensionSelector = ({
   // Select all in a category
   const selectCategory = (categoryId: string) => {
 	let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-	
+
 	// Filter out already installed packages for provider, router, and other-openbb categories
 	if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
 	  categoryExtensions = categoryExtensions.filter(
 		(ext) => !installedPackages.has(ext.id.toLowerCase())
 	  );
 	}
-	
+
 	const categoryExtensionIds = categoryExtensions.map((ext) => ext.id);
 
 	setSelectedExtensions((prev) => {
@@ -338,14 +338,14 @@ export const ExtensionSelector = ({
   // Clear all in a category
   const clearCategory = (categoryId: string) => {
 	let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-	
+
 	// Filter out already installed packages for provider, router, and other-openbb categories
 	if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
 	  categoryExtensions = categoryExtensions.filter(
 		(ext) => !installedPackages.has(ext.id.toLowerCase())
 	  );
 	}
-	
+
 	const categoryExtensionIds = categoryExtensions.map((ext) => ext.id);
 
 	setSelectedExtensions((prev) =>
@@ -356,14 +356,14 @@ export const ExtensionSelector = ({
   // Get extensions for a specific category
   const getExtensionsByCategory = (categoryId: string) => {
 	let categoryExtensions = extensions.filter((ext) => ext.category === categoryId);
-	
+
 	// Filter out already installed packages for provider, router, and other-openbb categories
 	if (categoryId === "provider" || categoryId === "router" || categoryId === "other-openbb") {
 	  categoryExtensions = categoryExtensions.filter(
 		(ext) => !installedPackages.has(ext.id.toLowerCase())
 	  );
 	}
-	
+
 	return categoryExtensions;
   };
 
@@ -392,10 +392,10 @@ export const ExtensionSelector = ({
 	  ];
 
 	  console.log("Installing extensions:", extensionsToInstall);
-	  
+
 	  // Call installation and wait for completion
 	  onInstallExtensions(extensionsToInstall);
-	  
+
 	  console.log("Extension installation completed successfully");
 	} catch (error) {
 	  console.error("Installation failed:", error);
@@ -428,11 +428,21 @@ export const ExtensionSelector = ({
 	};
 
 
+	const getCheckboxState = (categoryId: string) => {
+		const categoryExtensions = getExtensionsByCategory(categoryId);
+		const totalCount = categoryExtensions.length;
+		const selectedCount = countSelectedInCategory(categoryId);
+
+		if (selectedCount === 0) return 'checked';
+		if (selectedCount === totalCount) return 'indeterminate';
+		return 'indeterminate';
+	};
+
   // Update the useEffect to use the new hasMatchingExtensions
   useEffect(() => {
 	// If current active tab has no matches, switch to first available tab
 	if (!hasMatchingExtensions(extensions, activeCategoryTab, localSearchQuery, installedPackages)) {
-	  const firstMatchingCategory = categories.find(category => 
+	  const firstMatchingCategory = categories.find(category =>
 		hasMatchingExtensions(extensions, category.id, localSearchQuery, installedPackages)
 	  );
 	  if (firstMatchingCategory) {
@@ -443,7 +453,7 @@ export const ExtensionSelector = ({
 
   return (
 	<div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-5">
-	  <div className="flex flex-col pt-3 px-3 pb-6 bg-theme-secondary rounded-lg border border-theme-modal shadow-md w-full">
+	  <div className="pt-3 px-3 pb-6 bg-theme-secondary rounded-lg border border-theme-modal shadow-md w-full">
 		{loading ? (
 		  <div className="flex justify-center items-center p-8 text-theme-primary">
 			<div className="animate-spin rounded-full h-8 w-8 border-theme-color" />
@@ -547,50 +557,25 @@ export const ExtensionSelector = ({
 					  {/* Select all row for applicable categories */}
 					  {(category.id === "provider" || category.id === "router" || category.id === "other-openbb") && (
 						<div className="mt-2 divide-y">
-						  <Tooltip 
-							content="Deselect all extensions in this category"
-							className="tooltip tooltip-theme"
-						  >
-							<input
-							  type="checkbox"
-							  checked={countSelectedInCategory(activeCategoryTab) > 0}
-							  onChange={() => {
-								if (countSelectedInCategory(activeCategoryTab) > 0) {
-								  clearCategory(activeCategoryTab);
-								} else {
-								  selectCategory(activeCategoryTab);
-								}
-							  }}
-							  className="h-4 w-4 accent-theme-accent border-accent cursor-pointer"
-							  style={{
-								appearance: "none",
-								border: "1.5px solid var(--border-accent)",
-								borderRadius: "3px",
-								position: "relative",
-								background: countSelectedInCategory(activeCategoryTab) > 0
-								  ? "var(--button-neutral-bg)"
-								  : "transparent",
-								transition: "background 0.15s",
-							  }}
-							/>
-						  </Tooltip>
-						  {/* Horizontal line inside the checkbox when checked */}
-						  <style>
-						  {`
-							input[type="checkbox"].accent-theme-accent:checked::after {
-							  content: '';
-							  display: block;
-							  position: absolute;
-							  top: 50%;
-							  left: 3px;
-							  right: 3px;
-							  height: 2px;
-							  background: var(--text-primary);
-							  transform: translateY(-50%);
-							  border-radius: 1px;
-							}
-						  `}
-						  </style>
+							<Tooltip
+								content="Deselect all extensions in this category"
+								className="tooltip tooltip-theme"
+							>
+								<input
+									type="checkbox"
+									checked={(getCheckboxState(activeCategoryTab) === 'checked')}
+									onChange={() => {
+										if (
+											countSelectedInCategory(activeCategoryTab) > 0
+										) {
+											clearCategory(activeCategoryTab);
+										} else {
+											selectCategory(activeCategoryTab);
+										}
+									}}
+									className={`checkbox ${getCheckboxState(activeCategoryTab) === 'indeterminate' ? 'indeterminate' : ''}`}
+								/>
+							</Tooltip>
 						  {/* Select All Button */}
 						  <Tooltip
 							content="Select all extensions in this category."
@@ -658,13 +643,13 @@ export const ExtensionSelector = ({
 							</Button>
 						  </div>
                           {condaPackages.length === 0 && (
-							<div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
+							<div className="w-full min-h-72 bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
                             <div className="body-sm-regular text-theme-muted">No Conda packages added.</div>
 							</div>
                           )}
 						  {condaPackages.length > 0 && (
 							<div className="pt-4">
-							  <div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
+							  <div className="flex flex-col space-y-2 max-h-72 overflow-y-auto pr-1">
 								{condaPackages.map((pkg) => (
 								  <div
 									key={pkg}
@@ -725,13 +710,13 @@ export const ExtensionSelector = ({
 								</Button>
 							</div>
 							{customPackages.length === 0 && (
-							<div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
+							<div className="w-full min-h-72 bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
 							<div className="body-sm-regular text-theme-muted">No PyPI packages added.</div>
 							</div>
 							)}
 							{customPackages.length > 0 && (
 								<div className="pt-4">
-									<div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
+									<div className="flex flex-col space-y-2 max-h-72 overflow-y-auto pr-1">
 										{customPackages.map((pkg) => (
 											<div
 												key={pkg}
@@ -759,7 +744,7 @@ export const ExtensionSelector = ({
 					  {/* Regular extensions for this category */}
 					  {categoryExtensions.length === 0 ? (
 						category.id !== "conda" && category.id !== "extras" && (
-						  <div className="p-3 body-xs-regular text-theme-muted bg-theme-quartary rounded-sm shadow-sm border border-theme-modal w-full min-h-[65px] flex items-center justify-center">
+						  <div className="p-3 body-xs-regular text-theme-muted bg-theme-quartary rounded-sm shadow-sm border border-theme-modal w-full min-h-64 flex items-center justify-center">
 							{localSearchQuery.trim()
 							  ? "No extensions in this category match the search."
 							  : "No extensions available in this category. If they have already been installed, they will not appear here."}
@@ -767,7 +752,7 @@ export const ExtensionSelector = ({
 						)
 					  ) : (
 						<div>
-						  <div className="overflow-y-auto">
+						  <div className="overflow-y-auto min-h-64">
 							  <div className="flex flex-col space-y-2 max-h-[calc(100vh-32rem)] min-h-[100px] mr-2">
 							  {categoryExtensions.map((extension) => (
 								<div
@@ -794,7 +779,7 @@ export const ExtensionSelector = ({
 									  {extension.credentials &&
 										extension.credentials.length > 0 && (
 										  <div className="relative inline-block group">
-											<span 
+											<span
 											  className="px-2 py-0.5 bg-theme-accent text-theme-accent body-xs-medium rounded-full"
 											  title="API key required"
 											>

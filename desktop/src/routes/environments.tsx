@@ -121,7 +121,7 @@ function EnvironmentActionButtons({
 						<span className="body-xs-medium text-theme-primary whitespace-nowrap justify-center">New Environment</span>
 					</Button>
 				</Tooltip>
-				<Tooltip 
+				<Tooltip
 					content="Create an environment from a YAML, pyproject.toml, or requirements.txt file."
 					className="tooltip-theme"
 				>
@@ -166,88 +166,65 @@ function EnvironmentActionButtons({
 }
 
 function ExtensionRow({
-	ext,
-	updatingExtension,
-	installExtensionsLoading,
-	handleUpdateExtension,
-	setExtensionToRemove,
-	setShowRemoveConfirmation,
+    ext,
+    updatingExtension,
+    installExtensionsLoading,
+    handleUpdateExtension,
+    setExtensionToRemove,
+    setShowRemoveConfirmation,
 }: {
-	ext: Extension;
-	updatingExtension: string | null;
-	installExtensionsLoading: boolean;
-	handleUpdateExtension: (packageName: string) => void;
-	setExtensionToRemove: (extension: Extension | null) => void;
-	setShowRemoveConfirmation: (show: boolean) => void;
+    ext: Extension;
+    updatingExtension: string | null;
+    installExtensionsLoading: boolean;
+    handleUpdateExtension: (packageName: string) => void;
+    setExtensionToRemove: (extension: Extension | null) => void;
+    setShowRemoveConfirmation: (show: boolean) => void;
 }) {
-	const [isHovered, setIsHovered] = useState(false);
-
-	return (
-		<div
-			key={ext.package}
-			className="flex justify-between items-center p-2 pl-2 border border-theme-modal rounded-sm relative mb-2 bg-theme-quartary shadow-sm"
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
-		>
-			<div className="flex items-center gap-2">
-				<div className="flex items-baseline whitespace-nowrap gap-2">
-					<h5 className="body-sm text-theme leading-none">
-						{ext.package}
-					</h5>
-					<p className="body-xs-regular text-theme-secondary leading-none">
-						{ext.version || "unknown"}
-					</p>
-				</div>
-			</div>
-			<div className="flex gap-2">
-				<Tooltip
-					content="Update the extension to the latest version."
-					className="tooltip-theme"
-				>
-					<Button
-						onClick={() =>
-							handleUpdateExtension(ext.package)
-						}
-						disabled={
-							!!updatingExtension ||
-							installExtensionsLoading
-						}
-						variant="ghost"
-						size="icon"
-						className={`button-ghost transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
-					>
-						{updatingExtension === ext.package ? (
-							<div className="flex items-center justify-center w-4 h-4">
-								<div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-blue-500 rounded-full" />
-							</div>
-						) : (
-							<span className="flex items-center body-xs-medium">
-								<RefreshIcon className="h-4 w-4" />
-							</span>
-						)}
-					</Button>
-				</Tooltip>
-				<Tooltip
-					content="Remove extension from the environment."
-					className="tooltip-theme"
-				>
-					<Button
-						onClick={() => {
-							setExtensionToRemove(ext);
-							setShowRemoveConfirmation(true);
-						}}
-						disabled={installExtensionsLoading}
-						variant="ghost"
-						size="icon"
-						className={`button-ghost transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
-						aria-label="delete backend"
-					>
-						<CustomIcon id="bin" className="h-4 w-4" />
-					</Button>
-				</Tooltip>
-			</div>
-		</div>
-	);
+    return (
+        <div className="ext-row flex justify-between items-center p-2 pl-2 border border-theme-modal rounded-sm relative mb-2 bg-theme-quartary shadow-sm">
+            <div className="flex items-baseline whitespace-nowrap gap-2">
+                <h5 className="body-sm text-theme leading-none">
+                    {ext.package}
+                </h5>
+                <p className="body-xs-regular text-theme-secondary leading-none">
+                    {ext.version || "unknown"}
+                </p>
+            </div>
+            <div className="ext-actions flex gap-2 items-center">
+                <Tooltip content="Update the extension to the latest version." className="tooltip-theme">
+                    <Button
+                        onClick={() => handleUpdateExtension(ext.package)}
+                        disabled={!!updatingExtension || installExtensionsLoading}
+                        variant="ghost"
+                        size="icon"
+                        className="button-ghost"
+                    >
+                        {updatingExtension === ext.package ? (
+                            <div className="flex items-center justify-center w-4 h-4">
+                                <div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-blue-500 rounded-full" />
+                            </div>
+                        ) : (
+                            <RefreshIcon className="h-4 w-4" />
+                        )}
+                    </Button>
+                </Tooltip>
+                <Tooltip content="Remove extension from the environment." className="tooltip-theme">
+                    <Button
+                        onClick={() => {
+                            setExtensionToRemove(ext);
+                            setShowRemoveConfirmation(true);
+                        }}
+                        disabled={installExtensionsLoading}
+                        variant="ghost"
+                        size="icon"
+                        className="button-ghost"
+                    >
+                        <CustomIcon id="bin" className="h-4 w-4" />
+                    </Button>
+                </Tooltip>
+            </div>
+        </div>
+    );
 }
 
 export default function EnvironmentsPage() {
@@ -348,9 +325,9 @@ export default function EnvironmentsPage() {
 	const [hasScrollbar, setHasScrollbar] = useState(false);
 	const filteredEnvironments = useMemo(() => {
         if (!searchQuery.trim()) return environments;
-        
+
         const query = searchQuery.toLowerCase();
-        return environments.filter(env => 
+        return environments.filter(env =>
             env.name.toLowerCase().includes(query) ||
             env.pythonVersion.toLowerCase().includes(query) ||
             env.path.toLowerCase().includes(query)
@@ -374,17 +351,17 @@ export default function EnvironmentsPage() {
 				setWorkingDirValid(false);
 			}
 		};
-	
+
 		const timeoutId = setTimeout(validateDirectory, 500); // Debounce validation
 		return () => clearTimeout(timeoutId);
 	}, [workingDirInput]);
-	
+
 	const handleDirectoryInputSubmit = () => {
 		if (workingDirValid) {
 			setCurrentWorkingDir(workingDirInput.trim() || null);
 		}
 	};
-	
+
 	// Handle Enter key press in input
 	const handleDirectoryInputKeyPress = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter") {
@@ -439,8 +416,8 @@ export default function EnvironmentsPage() {
 
 			// Filter out the "base" environment and any marked for deletion
 			const filteredEnvs = envs.filter(
-				(env) => 
-					env.name.toLowerCase() !== "base" && 
+				(env) =>
+					env.name.toLowerCase() !== "base" &&
 					!deletedEnvironments.current.has(env.name)
 			);
 
@@ -479,17 +456,17 @@ export default function EnvironmentsPage() {
 			if (cachedData) {
 				const cache = JSON.parse(cachedData);
 				const envNames = Object.keys(cache);
-				
+
 				if (envNames.length > 0) {
 					console.log("Found cached environments:", envNames);
-					
+
 					// Create mock Environment objects from cache
 					const cachedEnvs: Environment[] = envNames.map(name => ({
 						name,
 						pythonVersion: cache[name]?.pythonVersion || "N/A",
 						path: `${installDir}/conda/envs/${name}`
 					}));
-					
+
 					setEnvironments(cachedEnvs);
 					hasLoadedEnvironments.current = true;
 					console.log("Loaded environments from cache:", cachedEnvs);
@@ -514,11 +491,11 @@ export default function EnvironmentsPage() {
 			const envs: Environment[] = await invoke("list_conda_environments", {
 				directory: installDir,
 			});
-			
+
 			// Filter environments
 			const filteredEnvs = envs.filter(
-				(env) => 
-					env.name.toLowerCase() !== "base" && 
+				(env) =>
+					env.name.toLowerCase() !== "base" &&
 					!deletedEnvironments.current.has(env.name)
 			);
 
@@ -804,7 +781,7 @@ export default function EnvironmentsPage() {
 		environments.forEach(env => {
 			if (sessionStorage.getItem(`updating-env-${env.name}`)) {
 				updating.add(env.name);
-				
+
 				// Set a timeout to clear stale updating states
 				setTimeout(() => {
 					sessionStorage.removeItem(`updating-env-${env.name}`);
@@ -1150,7 +1127,7 @@ end tell
 									"get_environment_extensions",
 									{ name: env.name }
 								);
-								
+
 								newCache[env.name] = {
 									extensions: result?.extensions || [],
 									pythonVersion: env.pythonVersion,
@@ -1493,10 +1470,10 @@ end tell
 					"get_environment_extensions",
 					{ name: activeEnv }
 				);
-				
+
 				if (result?.extensions) {
 					setExtensions(result.extensions);
-					
+
 					// Update cache
 					const cachedData = localStorage.getItem(ENV_EXTENSIONS_CACHE_KEY);
 					const cache = cachedData ? JSON.parse(cachedData) : {};
@@ -1884,7 +1861,7 @@ end tell
 	// Log servers that remain active when navigating away
 	useEffect(() => {
 		return () => {
-				
+
 				const activeServerNames = Array.from(activeServers.current);
 				if (activeServerNames.length > 0) {
 					console.log("Keeping Jupyter servers running while navigating away:", activeServerNames);
@@ -2184,7 +2161,7 @@ end tell
 			const filteredEnvs = environments.filter(
 				env => !deletedEnvironments.current.has(env.name)
 			);
-			
+
 			// Only update if there's actually a change
 			if (filteredEnvs.length !== environments.length) {
 				setEnvironments(filteredEnvs);
@@ -2233,13 +2210,13 @@ end tell
 		};
 
 		checkScrollbar();
-		
+
 		// Use ResizeObserver to detect changes in content size
 		const container = scrollContainerRef.current;
 		if (container) {
 			const resizeObserver = new ResizeObserver(checkScrollbar);
 			resizeObserver.observe(container);
-			
+
 			return () => resizeObserver.disconnect();
 		}
 	}, [filteredEnvironments]);
@@ -2348,7 +2325,7 @@ end tell
 								</div>
 							</div>
 						)}
-						
+
 						{/* RIGHT SIDE: Action Buttons */}
 						{environments.length > 0 && (
 							<EnvironmentActionButtons
@@ -2391,8 +2368,8 @@ end tell
 										invoke<Environment[]>("list_conda_environments", { directory: installDir })
 											.then((envs) => {
 												const filteredEnvs = envs.filter(
-													(env) => 
-														env.name.toLowerCase() !== "base" && 
+													(env) =>
+														env.name.toLowerCase() !== "base" &&
 														!deletedEnvironments.current.has(env.name)
 												);
 												setEnvironments(filteredEnvs);
@@ -2421,13 +2398,14 @@ end tell
 							</div>
 						</div>
 					) : (
-						<div className="flex-1 flex flex-col min-h-0">
-							<div 
+						<div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
+							<div
 								ref={scrollContainerRef}
-								className={`flex-1 overflow-y-auto ${hasScrollbar ? 'pr-3' : ''}`}
+								className={`flex-1 ${hasScrollbar ? 'pr-3' : ''}`}
 								style={{ maxHeight: 'calc(100vh - 18rem)' }}
 							>
 								<div>
+
 
 									<ul className="space-y-3">
 										{filteredEnvironments.map((env) => (
@@ -2436,12 +2414,12 @@ end tell
 												className="w-full"
 											>
 
-												<div className={`bg-theme-tertiary border border-theme-modal rounded-md group relative w-full pl-2 pt-3 pb-3 mb-5 shadow-md ${
+												<div className={`bg-theme-tertiary border border-theme-modal rounded-md relative w-full pl-2 pt-3 pb-3 mb-5 shadow-md group ${
 													isUpdatingEnvironment.has(env.name) ? 'pointer-events-none' : ''
 												}`}>
 													<div className="flex justify-between items-center">
 														{/* LEFT: Clickable area for extensions modal */}
-														<div 
+														<div
 															className="flex items-center"
 														>
 															<span className="body-lg-bold text-theme whitespace-nowrap mr-3 ml-2">{env.name}</span>
@@ -2462,7 +2440,7 @@ end tell
 																		disabled={isUpdatingEnvironment.has(env.name)}
 																		variant="ghost"
 																		size="icon"
-																		className={`button-ghost transition-opacity duration-200 ${isUpdatingEnvironment.has(env.name) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+																		className={`button-ghost transition-opacity duration-0 ${isUpdatingEnvironment.has(env.name) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
 																		aria-label="Update Environment"
 																	>
 																		{isUpdatingEnvironment.has(env.name) ? (
@@ -2481,7 +2459,7 @@ end tell
 																		}}
 																		variant="ghost"
 																		size="icon"
-																		className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+																		className="button-ghost opacity-0 group-hover:opacity-100 transition-opacity duration-0"
 																		disabled={isUpdatingEnvironment.has(env.name)}
 																		aria-label="Remove Environment"
 																	>
@@ -2613,7 +2591,7 @@ end tell
 																					<Button
 																						onClick={() => setActiveTab("add")}
 																						variant="primary"
-																						size="sm"
+																						size="xs"
 																						className="button-primary shadow-s px-2 py-1"
 																					>
 																						Add Extension
@@ -2734,6 +2712,30 @@ end tell
 												</div>
 											</li>
 										))}
+									{filteredEnvironments.length === 0 && !environmentsError && !environmentsLoading && (
+										<div className="flex flex-col items-center justify-center">
+											<div className="text-center">
+												<CustomIcon
+													id="search"
+													className="h-12 w-12 text-theme-muted mb-2 mx-auto"
+												/>
+												<h3 className="body-md-bold text-theme-secondary mb-2">
+													No environments found
+												</h3>
+												<p className="body-sm-regular text-theme-muted mb-4">
+													No environments match your search for "{searchQuery}"
+												</p>
+												<Button
+													onClick={() => setSearchQuery("")}
+													variant="outline"
+													size="sm"
+													className="button-outline"
+												>
+													<span className="body-xs-medium">Clear Search</span>
+												</Button>
+											</div>
+										</div>
+									)}
 									</ul>
 								</div>
 							</div>
@@ -2852,7 +2854,7 @@ end tell
 									className="button-ghost"
 								>
 									<CustomIcon id="close" className="h-6 w-6" />
-								</Button>	
+								</Button>
 							</div>
 							<p className="mb-2 body-md-medium text-theme-primary flex justify-start">
 								Are you sure you want to remove, {environmentToRemove}?
@@ -3056,13 +3058,13 @@ end tell
 											spellCheck="false"
 											className={`w-full p-2 border rounded-md bg-theme-secondary text-theme-primary mt-2 ${
 												requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
-													? "border-red-500 focus:border-red-500" 
+													? "border-red-500 focus:border-red-500"
 													: "border-theme"
 											}`}
 										/>
 										<p className={`text-xs mt-1 ml-1 ${
 											requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
-												? "text-red-500" 
+												? "text-red-500"
 												: "text-theme-muted"
 											}`}>
 											Use lowercase letters, numbers, and hyphens. No spaces.
