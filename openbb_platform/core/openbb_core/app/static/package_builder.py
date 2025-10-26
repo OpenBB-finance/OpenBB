@@ -360,6 +360,7 @@ class ModuleBuilder:
 
     @staticmethod
     def build(path: str, ext_map: dict[str, list[str]] | None = None) -> str:
+        """Build the module."""
         docstring = (
             '"""Auto-generated extensions root module."""\n'
             if not path
