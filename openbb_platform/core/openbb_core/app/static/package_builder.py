@@ -244,6 +244,9 @@ class PackageBuilder:
 
         for path in _path_list:
             route = PathHandler.get_route(path, self.route_map)
+            # Only create a module if this path doesn't have a direct route
+            # This prevents creating sub-router modules for paths like /empty/also_empty
+            # when the actual route is /empty/also_empty/{param}
             if route is None:
                 code = ModuleBuilder.build(path, ext_map)
                 name = PathHandler.build_module_name(path)
@@ -357,8 +360,22 @@ class ModuleBuilder:
 
     @staticmethod
     def build(path: str, ext_map: dict[str, list[str]] | None = None) -> str:
-        """Build the module."""
-        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n#  pylint: disable=R0917\n\n"
+        docstring = (
+            '"""Auto-generated extensions root module."""\n'
+            if not path
+            else f'"""Auto-generated module for {path or "/"}."""\n'
+        )
+        header = (
+            "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n"
+            "#  pylint: disable=R0917,C0415\n#  flake8: noqa=PLC0415\n\n"
+        )
+        if not path:
+            code = docstring + header
+            code += "from openbb_core.app.static.container import Container\n\n"
+            code += ClassDefinition.build(path, ext_map)
+            return code
+
+        code = docstring + header
         code += ImportDefinition.build(path)
         code += ClassDefinition.build(path, ext_map)
 
@@ -392,7 +409,7 @@ class ImportDefinition:
     def get_function_hint_type_list(cls, route) -> list[type]:
         """Get the hint type list from the function."""
 
-        no_validate = getattr(route, "openapi_extra", {}).get("no_validate")
+        no_validate = (getattr(route, "openapi_extra", None) or {}).get("no_validate")
 
         func = route.endpoint
         sig = signature(func)
@@ -475,10 +492,9 @@ class ImportDefinition:
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import TYPE_CHECKING, ForwardRef, Union, Optional, Literal, Any"
+        code += "\nfrom typing import TYPE_CHECKING, Annotated, ForwardRef, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
-        code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
@@ -595,16 +611,29 @@ class ClassDefinition:
         path_list = PathHandler.build_path_list(route_map)
         child_path_list = sorted(
             PathHandler.get_child_path_list(
-                path=path,
-                path_list=path_list,
+                path,
+                path_list,
             )
         )
 
         doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
+
         for c in child_path_list:
             route = PathHandler.get_route(c, route_map)
-            if route:
+            route_methods = getattr(route, "methods", None)
+            is_command_route = (
+                route
+                and hasattr(route, "endpoint")
+                and callable(route.endpoint)  # type: ignore
+                and isinstance(route_methods, set)
+                and route_methods
+            )
+
+            if path == "" and is_command_route:
+                continue
+
+            if is_command_route:
                 doc += f"    {route.name}\n"  # type: ignore
                 methods += MethodDefinition.build_command_method(
                     path=route.path,  # type: ignore
@@ -620,7 +649,12 @@ class ClassDefinition:
                         else []
                     ),
                 )
-            else:
+                continue
+
+            has_subroutes = any(r.startswith(c + "/") and r != c for r in route_map)
+
+            if has_subroutes:
+                # This is a sub-router path - create a property
                 doc += "    /" if path else "    /"
                 doc += c.split("/")[-1] + "\n"
                 methods += MethodDefinition.build_class_loader_method(path=c)
@@ -673,10 +707,13 @@ class MethodDefinition:
         module_name = PathHandler.build_module_name(path=path)
         class_name = PathHandler.build_module_class(path=path)
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
+        description = PathHandler.get_router_description(path)
 
         code = "\n    @property\n"
         code += f"    def {function_name}(self):\n"
-        code += "        # pylint: disable=import-outside-toplevel\n"
+        if description:
+            escaped = description.replace('"""', '\\"\\"\\"')
+            code += f'        """{escaped}"""\n'
         code += f"        from . import {module_name}\n\n"
         code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
@@ -737,8 +774,12 @@ class MethodDefinition:
     @staticmethod
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
-        methods = PathHandler.build_route_map()[path].methods  # type: ignore
-        return "POST" in methods or "PUT" in methods or "PATCH" in methods
+        route = PathHandler.build_route_map().get(path)
+        if not route:
+            return False
+        methods = getattr(route, "methods", set())
+        # Consider POST, PUT, PATCH as data processing, but not GET
+        return bool(methods & {"POST", "PUT", "PATCH"})
 
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
@@ -787,6 +828,10 @@ class MethodDefinition:
         """Format the params."""
 
         parameter_map.pop("cc", None)
+
+        # Extract path parameters from the route path
+        path_params = PathHandler.extract_path_parameters(path)
+
         # we need to add the chart parameter here bc of the docstring generation
         if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
@@ -803,7 +848,28 @@ class MethodDefinition:
 
         formatted: dict[str, Parameter] = {}
         var_kw = []
+
+        # First, handle path parameters - they must come first
+        for name in path_params:
+            if name in parameter_map:
+                formatted[name] = Parameter(
+                    name=name,
+                    kind=Parameter.POSITIONAL_OR_KEYWORD,
+                    annotation=Annotated[
+                        str,
+                        OpenBBField(
+                            description=f"Path parameter: {name}",
+                        ),
+                    ],
+                    default=Parameter.empty,  # Path params are always required
+                )
+
+        # Then process all other parameters
         for name, param in parameter_map.items():
+            # Skip path parameters - they should be required string parameters
+            if name in path_params:
+                continue  # Already handled above
+
             # Case 1: Handle Query objects inside Annotated
             if isinstance(param.annotation, _AnnotatedAlias):
                 query_obj = None
@@ -959,6 +1025,12 @@ class MethodDefinition:
                 metadata = getattr(param.annotation, "__metadata__", [])
                 description = (
                     getattr(metadata[0], "description", "") if metadata else ""
+                )
+                # Untyped positional arguments are typed as Any
+                updated_type = (
+                    Any
+                    if updated_type is inspect._empty  # pylint: disable=W0212
+                    else updated_type
                 )
 
                 formatted[name] = Parameter(
@@ -1137,18 +1209,17 @@ class MethodDefinition:
 
             type_hint = param.annotation.__args__[0]
             type_repr = get_type_repr(type_hint)
-
             meta = next(
                 m for m in param.annotation.__metadata__ if isinstance(m, OpenBBField)
             )
             desc = meta.description
-
             desc_repr = repr(desc)
 
             if desc is None:
                 desc = ""
             # For function signatures, use shorter max width to prevent line overflow
             max_width = 50
+
             if len(desc) <= max_width:
                 desc_repr = repr(desc)
             else:
@@ -1159,6 +1230,7 @@ class MethodDefinition:
                 desc_repr = f"(\n{joined}\n)"
 
             default_part = ""
+
             if param.default is not Parameter.empty:
                 default_repr = repr(param.default)
                 if default_repr == "Ellipsis":
@@ -1169,7 +1241,6 @@ class MethodDefinition:
 
         params_list = [stringify_param(p) for p in formatted_params.values()]
         func_params = ",\n".join(params_list)
-
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
@@ -1183,6 +1254,7 @@ class MethodDefinition:
         func_params = func_params.replace("ForwardRef('ndarray')", "ndarray")
         func_params = func_params.replace("Dict", "dict").replace("List", "list")
         func_params = func_params.replace("typing.", "")
+
         return func_params
 
     @staticmethod
@@ -1239,7 +1311,11 @@ class MethodDefinition:
         code += f"\n    @validate{args}"
         code += deprecated
         code += f"\n    def {func_name}("
-        code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
+        # Add indentation (8 spaces) before each line when splitting by newline
+        indented_params = func_params.replace("\n", "\n        ")
+        code += (
+            f"\n        self,\n        {indented_params}\n    ) -> {func_returns}:\n"
+        )
 
         return code
 
@@ -1549,7 +1625,6 @@ class DocstringGenerator:
         target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the implicit data type of a defined Pydantic field.
-
         Parameters
         ----------
         field_type : Any
@@ -1558,7 +1633,6 @@ class DocstringGenerator:
             Flag to indicate if the field is required.
         target : Literal["docstring", "website"]
             Target to return type for. Defaults to "docstring".
-
         Returns
         -------
         str
@@ -1572,17 +1646,47 @@ class DocstringGenerator:
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
 
-            _type = (
-                str(_type)
-                .replace("<class '", "")
-                .replace("'>", "")
-                .replace("typing.", "")
-                .replace("pydantic.types.", "")
-                .replace("datetime.datetime", "datetime")
-                .replace("datetime.date", "date")
-                .replace("NoneType", "None")
-                .replace(", None", "")
-            )
+            origin = get_origin(_type)
+            if origin is Union:
+                args = get_args(_type)
+                type_names = []
+                has_none = False
+                for arg in args:
+                    if arg is type(None):
+                        has_none = True
+                        continue
+                    if get_origin(arg) is Literal:
+                        continue
+                    type_name = str(arg)
+                    if hasattr(arg, "__name__"):
+                        type_name = arg.__name__
+                    type_name = (
+                        type_name.replace("typing.", "")
+                        .replace("pydantic.types.", "")
+                        .replace("datetime.datetime", "datetime")
+                        .replace("datetime.date", "date")
+                    )
+                    if "openbb_" in type_name:
+                        type_name = type_name.rsplit(".", 1)[-1]
+                    if type_name != "NoneType":
+                        type_names.append(type_name)
+
+                unique_types = sorted(list(set(type_names)))
+                if has_none:
+                    unique_types.append("None")
+                _type = " | ".join(unique_types)
+            else:
+                _type = (
+                    str(_type)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pydantic.types.", "")
+                    .replace("datetime.datetime", "datetime")
+                    .replace("datetime.date", "date")
+                    .replace("NoneType", "None")
+                    .replace(", None", "")
+                )
 
             if "openbb_" in str(_type):
                 _type = (
@@ -1590,11 +1694,12 @@ class DocstringGenerator:
                     + str(_type).rsplit(".", maxsplit=1)[-1]
                 )
 
-            _type = (
-                f"Optional[{_type}]"
-                if is_optional and "Optional" not in str(_type)
-                else _type
-            )
+            if (
+                is_optional
+                and "Optional" not in str(_type)
+                and "None" not in str(_type)
+            ):
+                _type = f"Optional[{_type}]"
 
             if target == "website":
                 _type = re.sub(r"Optional\[(.*)\]", r"\1", _type)
@@ -1602,8 +1707,7 @@ class DocstringGenerator:
             return _type
 
         except TypeError:
-            # Fallback to the annotation if the repr fails
-            return field_type  # type: ignore
+            return str(field_type)
 
     @staticmethod
     def get_OBBject_description(
@@ -1714,10 +1818,11 @@ class DocstringGenerator:
 
                 # Use the base types instead of the complex Union[Literal[...]]
                 if base_types:
-                    if len(base_types) == 1:
-                        type_str = next(iter(base_types))
-                    else:
-                        type_str = f"Union[{', '.join(sorted(base_types))}]"
+                    type_str = (
+                        next(iter(base_types))
+                        if len(base_types) == 1
+                        else f"{' | '.join(sorted(base_types))}]"
+                    )
 
             # Apply the standard formatting
             type_str = (
@@ -1725,15 +1830,17 @@ class DocstringGenerator:
                 .replace("'>", "")
                 .replace("typing.", "")
                 .replace("pydantic.types.", "")
-                .replace("NoneType", "None")
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
+                .replace("NoneType", "None")
+                .replace(", NoneType", "")
             )
 
             if char_limit:
                 type_str = type_str[:char_limit] + (
                     "..." if len(str(type_str)) > char_limit else ""
                 )
+
             return type_str
 
         def format_schema_description(description: str) -> str:
@@ -1743,6 +1850,7 @@ class DocstringGenerator:
                 if "\n        " not in description
                 else description
             )
+
             return description
 
         def format_description(description: str) -> str:
@@ -1782,6 +1890,7 @@ class DocstringGenerator:
 
                 # Join all parts with semicolons
                 description = ";\n".join(formatted_parts)
+
                 if "Choices" not in description:
                     return description
 
@@ -1820,7 +1929,7 @@ class DocstringGenerator:
                     return "\n".join(formatted_lines)
 
             # Standard behavior for other descriptions - add proper indentation to each line
-            return description.replace("\n", f"\n{create_indent(3)}")
+            return description
 
         def get_param_info(parameter: Parameter | None) -> tuple[str, str]:
             """Get the parameter info."""
@@ -1837,6 +1946,7 @@ class DocstringGenerator:
             )
             metadata = getattr(annotation, "__metadata__", [])
             description = getattr(metadata[0], "description", "") if metadata else ""
+
             return type_, description  # type: ignore
 
         provider_param: Parameter | dict = {}
@@ -1995,7 +2105,6 @@ class DocstringGenerator:
                                 line_length += len(choice_str)
 
                             choices_str = "".join(formatted_choices)
-
                             description += f"\nChoices for {provider}: {choices_str}"
 
                 docstring += f"{create_indent(2)}{param_name} : {type_}\n"
@@ -2012,9 +2121,7 @@ class DocstringGenerator:
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
             _providers, _ = get_param_info(explicit_params.get("provider"))
-
             docstring += cls.get_OBBject_description(results_type, _providers)
-
             # Schema
             underline = "-" * len(model_name)
             docstring += f"\n{create_indent(2)}{model_name}\n"
@@ -2028,6 +2135,7 @@ class DocstringGenerator:
 
         return docstring
 
+    # flake8: noqa:PLR0912
     @classmethod
     def generate(  # pylint: disable=too-many-positional-arguments
         cls,
@@ -2040,12 +2148,10 @@ class DocstringGenerator:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
         param_types = {}
-
         sections = SystemService().system_settings.python_settings.docstring_sections
         max_length = (
             SystemService().system_settings.python_settings.docstring_max_length
         )
-
         # Parameters explicit in the function signature
         explicit_params = dict(formatted_params)
         explicit_params.pop("extra_params", None)
@@ -2118,6 +2224,7 @@ class DocstringGenerator:
                     current_indent = len(line) - len(stripped)
 
                     # Don't indent section headers and underlines
+
                     section_headers = ["Parameters", "Returns", "Examples"]
                     section_underlines = ["----------", "--------", "-------", "------"]
 
@@ -2127,7 +2234,9 @@ class DocstringGenerator:
                         or stripped.endswith("]")
                         and stripped.count("[") >= 2
                     ):  # Model names like "CommodityPrice"
+
                         # Section headers and underlines should not be indented
+
                         fixed_lines.append(stripped)
                     # If line has consistent indentation, replace with target
                     elif current_indent > 0:
@@ -2163,7 +2272,7 @@ class DocstringGenerator:
                 and [p for p_name, p in formatted_params.items() if p_name != "kwargs"]
             ):
                 param_section = (
-                    f"\n\n{create_indent(2)}Parameters\n{create_indent(2)}----------\n"
+                    f"\n\n{create_indent(2)}Parameters\n{create_indent(2)}----------"
                 )
 
                 # Process each parameter
@@ -2189,9 +2298,10 @@ class DocstringGenerator:
                         p_type, param.default is Parameter.empty
                     )
 
-                    # Add parameter to docstring
-                    param_section += f"{create_indent(2)}{param_name} : {type_str}\n"
-                    param_section += f"{create_indent(3)}{description}\n"
+                    # Build parameter entry with proper NumPy docstring format
+                    param_section += f"\n{create_indent(2)}{param_name} : {type_str}"
+                    if description:
+                        param_section += f"\n{create_indent(3)}{description}"
 
                 result_doc += param_section
 
@@ -2258,7 +2368,9 @@ class DocstringGenerator:
 
                                     # Get field description
                                     description = (
-                                        getattr(field, "description", "") or ""
+                                        field.description.replace('"', "'")
+                                        if field.description
+                                        else ""
                                     )
 
                                     # Add field to docstring with proper indentation
@@ -2342,13 +2454,13 @@ class DocstringGenerator:
 
         Examples
         --------
-        [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
+        [List, Dict, Tuple[str]] -> "Union[List[str], Dict[str, str], Tuple[str]]"
         """
         if s := [
             f"{i}[str, {model}]" if i.lower() == "dict" else f"{i}[{model}]"
             for i in items
         ]:
-            return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
+            return f"{' | '.join(s)}" if len(s) > 1 else s[0]
         return model
 
 
@@ -2360,6 +2472,26 @@ class PathHandler:
         """Build the route map."""
         router = RouterLoader.from_extensions()
         route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
+
+        # Also include routes directly registered on _api_router instances
+        # We need to traverse the router tree to find all _api_router instances
+        def collect_api_router_routes(router_obj, collected_routes):
+            """Recursively collect routes from _api_router instances."""
+            if hasattr(router_obj, "_api_router"):
+                for inner_route in router_obj._api_router.routes:  # type: ignore  # pylint: disable=W0212
+                    if inner_route.path not in collected_routes:
+                        collected_routes[inner_route.path] = inner_route
+
+            # Check if this router has sub-routers
+            if hasattr(router_obj, "api_router") and hasattr(
+                router_obj.api_router, "routes"
+            ):
+                for route in router_obj.api_router.routes:  # type: ignore
+                    endpoint = getattr(route, "endpoint", None)
+                    if endpoint and hasattr(endpoint, "__self__"):
+                        collect_api_router_routes(endpoint.__self__, collected_routes)
+
+        collect_api_router_routes(router, route_map)
 
         return route_map
 
@@ -2376,7 +2508,22 @@ class PathHandler:
                 for length in range(len(sub_path_list)):
                     sub_path = "/".join(sub_path_list[:length])
                     if sub_path not in path_list:
-                        path_list.append(sub_path)
+                        # Don't add paths that only exist as part of parameterized routes
+                        has_direct_route = sub_path in route_map
+                        # A child route is non-parameterized if the next segment doesn't start with {
+                        has_real_children = False
+                        for r in route_map:
+                            if r.startswith(sub_path + "/"):
+                                remainder = r[len(sub_path) + 1 :]
+                                next_segment = (
+                                    remainder.split("/")[0] if remainder else ""
+                                )
+                                if next_segment and not next_segment.startswith("{"):
+                                    has_real_children = True
+                                    break
+
+                        if has_direct_route or has_real_children:
+                            path_list.append(sub_path)
 
         return path_list
 
@@ -2387,13 +2534,54 @@ class PathHandler:
 
     @staticmethod
     def get_child_path_list(path: str, path_list: list[str]) -> list[str]:
-        """Get the child path list."""
+        """Get the child path list.
+
+        This returns both sub-router paths AND direct route paths that are children of the given path.
+        For example, for path="/empty", it returns both:
+        - "/empty/sub_router" (a sub-router in path_list)
+        - "/empty/also_empty/{param}" (a direct route from route_map)
+        """
         direct_children = []
+        base_depth = path.count("/") if path else 0
+
+        # Get route_map to check for routes that aren't in path_list
+        route_map = PathHandler.build_route_map()
+
+        # First, add children from path_list (these are sub-routers)
         for p in path_list:
-            if p.startswith(path):
-                path_reminder = p[len(path) :]  # noqa: E203
-                if path_reminder.count("/") == 1:
+            if p.startswith(path + "/") if path else p.startswith("/"):
+                p_depth = p.count("/")
+                if p_depth == base_depth + 1:
                     direct_children.append(p)
+
+        # Second, add routes from route_map that are direct children but not in path_list
+        # (these are endpoints with path parameters)
+        for route_path in route_map:
+            if route_path not in direct_children and (
+                route_path.startswith(path + "/")
+                if path
+                else route_path.startswith("/")
+            ):
+                # Remove the parent path prefix
+                remainder = route_path[len(path) + 1 :] if path else route_path[1:]
+
+                # Split by "/" and count non-empty segments
+                segments = [s for s in remainder.split("/") if s]
+                if segments:
+                    first_non_param_idx = next(
+                        (
+                            i
+                            for i, seg in enumerate(segments)
+                            if not seg.startswith("{")
+                        ),
+                        None,
+                    )
+                    is_direct_child = first_non_param_idx is None or (
+                        first_non_param_idx == 0
+                        and all(seg.startswith("{") for seg in segments[1:])
+                    )
+                    if is_direct_child and route_path not in direct_children:
+                        direct_children.append(route_path)
 
         return direct_children
 
@@ -2417,6 +2605,34 @@ class PathHandler:
         if not path:
             return "Extensions"
         return f"ROUTER_{cls.clean_path(path=path)}"
+
+    @staticmethod
+    def extract_path_parameters(path: str) -> list[str]:
+        """Extract path parameters from a route path.
+
+        Parameters
+        ----------
+        path : str
+            The route path (e.g., "/users/{user_id}/posts/{post_id}")
+
+        Returns
+        -------
+        list[str]
+            List of path parameter names (e.g., ["user_id", "post_id"])
+        """
+        # Match parameters in curly braces
+        pattern = r"\{(\w+)\}"
+        return re.findall(pattern, path)
+
+    @staticmethod
+    def get_router_description(path: str) -> str:
+        """Return the description for a router path."""
+        router = RouterLoader.from_extensions()
+        description = router.get_attr(path or "/", "description")
+        if description:
+            return description
+        clean_path = path or "/"
+        return f"Router for {clean_path}."
 
 
 class ReferenceGenerator:
@@ -2497,7 +2713,7 @@ class ReferenceGenerator:
 
         name = provider_params_field.name
         field_type = DocstringGenerator.get_field_type(
-            provider_params_field.type, False, "website"
+            provider_params_field.type, False
         )
         default_priority = (
             provider_params_field.type.__args__
@@ -2554,14 +2770,55 @@ class ReferenceGenerator:
             field_extra = field_info.json_schema_extra or {}
             extra.update(field_extra)
             if "choices" in field_extra:
-                choices = field_extra["choices"]
+                choices = field_extra.pop("choices", [])
+
+            if provider != "openbb" and provider in extra:
+                extra = extra[provider]
 
             # Determine the field type, expanding it if necessary
             field_type = field_info.annotation
             is_required = field_info.is_required()
+
+            origin = get_origin(field_type)
+            if origin is Union:
+                args = get_args(field_type)
+                non_none_types = [arg for arg in args if arg is not type(None)]
+                if non_none_types:
+                    field_type = non_none_types[0]
+                if type(None) in args:
+                    is_required = False
+
+            # Then unwrap Annotated
+            while get_origin(field_type) is Annotated:
+                args = get_args(field_type)
+                if args:
+                    field_type = args[0]
+                else:
+                    break
+
             field_type_str = DocstringGenerator.get_field_type(
                 field_type, is_required, "website"
             )
+
+            if field_type_str == "Annotated | None" or field_type_str.startswith(
+                "Annotated"
+            ):
+                # If we still have "Annotated" in the string, extract the actual type
+                if hasattr(field_type, "__name__") or isinstance(field_type, type):
+                    field_type_str = field_type.__name__
+                else:
+                    # Last resort: try to parse from string representation
+                    type_repr = str(field_type).replace("typing.", "")
+                    if "Annotated[" in type_repr:
+                        # Extract the first type argument
+                        match = re.search(r"Annotated\[([^,\]]+)", type_repr)
+                        if match:
+                            field_type_str = match.group(1)
+                    else:
+                        field_type_str = type_repr
+
+            if is_required is False and "| None" not in field_type_str:
+                field_type_str = f"{field_type_str} | None"
 
             # Handle case where field_type_str contains ", optional" suffix
             if ", optional" in field_type_str:
@@ -2583,32 +2840,45 @@ class ReferenceGenerator:
                     elif isinstance(v, dict) and "choices" in v:
                         choices = v.get("choices")
 
-                if providers:
-                    multiple_items = ", ".join(providers)
-                    cleaned_description += (
-                        f" Multiple items allowed for provider(s): {multiple_items}."
-                    )
-                    field_type_str = f"Union[{field_type_str}, List[{field_type_str}]]"
+                if providers or extra.get("multiple_items_allowed"):
+                    cleaned_description += " Multiple items allowed"
+                    if providers:
+                        multiple_items = ", ".join(providers)
+                        cleaned_description += f" for provider(s): {multiple_items}"
+                    cleaned_description += "."
+                    field_type_str = f"{field_type_str} | list[{field_type_str}]"
             elif field in expanded_types:
                 expanded_type = DocstringGenerator.get_field_type(
                     expanded_types[field], is_required, "website"
                 )
-                field_type_str = f"Union[{field_type_str}, {expanded_type}]"
+                field_type_str = f"{field_type_str} | {expanded_type}"
 
             default_value = (
-                "" if field_info.default is PydanticUndefined else field_info.default
+                None if field_info.default is PydanticUndefined else field_info.default
             )
+            if default_value == "":
+                default_value = None
 
-            provider_field_params.append(
-                {
-                    "name": field,
-                    "type": field_type_str,
-                    "description": cleaned_description,
-                    "default": default_value,
-                    "optional": not is_required,
-                    "choices": choices,
-                }
-            )
+            to_append = {
+                "name": field,
+                "type": field_type_str,
+                "description": cleaned_description,
+                "default": default_value,
+                "optional": not is_required,
+            }
+            if params_type != "Data":
+                to_append.update(
+                    {
+                        "choices": choices or extra.pop("choices", []),
+                        "multiple_items_allowed": extra.pop(
+                            "multiple_items_allowed", False
+                        ),
+                        "json_schema_extra": extra or {},
+                    }
+                )
+            else:
+                to_append.update({"json_schema_extra": extra or {}})
+            provider_field_params.append(to_append)
 
         return provider_field_params
 
@@ -2635,12 +2905,12 @@ class ReferenceGenerator:
         obbject_list = [
             {
                 "name": "results",
-                "type": f"list[{model}]",
+                "type": model,
                 "description": "Serializable results.",
             },
             {
                 "name": "provider",
-                "type": f"Optional[{providers}]",
+                "type": providers if providers else "str",
                 "description": "Provider name.",
             },
             {
@@ -2757,13 +3027,27 @@ class ReferenceGenerator:
         if isinstance(value, str):
             # Fix fully qualified Data type references
             value = re.sub(
-                r"List\[openbb_core\.provider\.abstract\.data\.Data\]",
+                r"list\[openbb_core\.provider\.abstract\.data\.Data\]",
                 "list[Data]",
                 value,
             )
             value = re.sub(
                 r"openbb_core\.provider\.abstract\.data\.Data", "Data", value
             )
+
+            # Clean up Union types
+            if "Union[" in value:
+                try:
+                    # Extract types from Union
+                    types_str = value[value.find("[") + 1 : value.rfind("]")]
+                    # Split types and clean them up
+                    types = [t.strip() for t in types_str.split(",")]
+                    # Use a set to handle unique types and maintain order for display
+                    unique_types = sorted(list(set(types)))
+                    # Rebuild the string with " | " separator
+                    value = " | ".join(unique_types)
+                except Exception:  # pylint: disable=broad-except  # noqa
+                    pass
 
             # Handle Literal types specifically
             if (
@@ -2782,18 +3066,16 @@ class ReferenceGenerator:
                     # Reconstruct the Literal type
                     return f"Literal[{', '.join(values)}]"
 
-            # Replace capitalized Dict with lowercase dict
             value = re.sub(r"\bDict\b", "dict", value)
-
-            # Replace capitalized List with lowercase list
             value = re.sub(r"\bList\b", "list", value)
 
-            # Replace double quotes with single quotes for other strings
             return value.replace('"', "'")
+
         if isinstance(value, dict):
             return {
                 k: ReferenceGenerator._clean_string_values(v) for k, v in value.items()
             }
+
         if isinstance(value, list):
             return [ReferenceGenerator._clean_string_values(item) for item in value]
 
@@ -2829,7 +3111,7 @@ class ReferenceGenerator:
             description = ""
             choices = None
             default = param.default if param.default is not Parameter.empty else None
-            json_extra = None
+            json_extra: dict = {}
 
             # Check if type is optional
             if (
@@ -2848,7 +3130,6 @@ class ReferenceGenerator:
                 if len(non_none_args) == 1:
                     param_type = non_none_args[0]
 
-            # In ReferenceGenerator._get_function_signature_info, modify the Annotated handling:
             if isinstance(param_type, _AnnotatedAlias):
                 base_type = param_type.__args__[0]
                 for meta in param_type.__metadata__:
@@ -2860,23 +3141,6 @@ class ReferenceGenerator:
                         default = meta.default
                     if hasattr(meta, "json_schema_extra"):
                         json_extra = meta.json_schema_extra
-
-                    # Add handling for Query objects inside Annotated metadata
-                    if (
-                        hasattr(meta, "__class__")
-                        and "Query" in meta.__class__.__name__
-                    ):
-                        description = getattr(meta, "description", "") or description
-                        json_extra = (
-                            getattr(meta, "json_schema_extra", {}) or json_extra
-                        )
-                        default_value = getattr(meta, "default", None)
-                        if default_value not in [
-                            Parameter.empty,
-                            PydanticUndefined,
-                            Ellipsis,
-                        ]:
-                            default = default_value
 
                 # Set the actual type to the base type
                 param_type = base_type
@@ -2892,9 +3156,6 @@ class ReferenceGenerator:
                 )
                 description = default.description  # type: ignore
                 json_extra = default.json_schema_extra  # type: ignore
-
-                # Fix: A parameter is optional if it has a default value OR if is_required=False
-                # Currently we're only checking is_required, which is incorrect
                 has_default = hasattr(default, "default") and default.default not in [  # type: ignore
                     Parameter.empty,
                     PydanticUndefined,
@@ -2903,7 +3164,6 @@ class ReferenceGenerator:
                 is_optional = has_default or (
                     hasattr(default, "is_required") and default.is_required is False  # type: ignore
                 )
-
                 default = (
                     default.default  # type: ignore
                     if default.default not in [Parameter.empty, PydanticUndefined, Ellipsis]  # type: ignore
@@ -2918,8 +3178,8 @@ class ReferenceGenerator:
                 .replace("'>", "")
                 .replace("typing.", "")
                 .replace("NoneType", "None")
+                .replace("inspect._empty", "Any")
             )
-
             params_info.append(
                 {
                     "name": name,
@@ -2931,8 +3191,11 @@ class ReferenceGenerator:
                         else ReferenceGenerator._clean_string_values(default)
                     ),
                     "optional": is_optional,
-                    "choices": choices,
-                    "json_schema_extra": json_extra if json_extra else None,
+                    "choices": choices or json_extra.pop("choices", []),
+                    "multiple_items_allowed": json_extra.pop(
+                        "multiple_items_allowed", False
+                    ),
+                    "json_schema_extra": json_extra or {},
                 }
             )
 
@@ -2954,8 +3217,6 @@ class ReferenceGenerator:
             description of the return value
         """
         returns_dict: dict = {}
-
-        # Define a regex pattern to match the Returns section
         # This pattern captures the model name inside "OBBject[]" and its description
         match = re.search(r"Returns\n\s*-------\n\s*([^\n]+)\n\s*([^\n]+)", docstring)
 
@@ -3009,7 +3270,7 @@ class ReferenceGenerator:
             # Route endpoint is the callable function
             route_func = getattr(route, "endpoint", lambda: None)
             # Attribute contains the model and examples info for the endpoint
-            openapi_extra = getattr(route, "openapi_extra", {})
+            openapi_extra = getattr(route, "openapi_extra", {}) or {}
             # Standard model is used as the key for the ProviderInterface Map dictionary
             standard_model = openapi_extra.get("model", "")
             # Add endpoint model for GET methods
@@ -3028,12 +3289,13 @@ class ReferenceGenerator:
             )
             validate_output = not openapi_extra.pop("no_validate", None)
             model_map = cls.pi.map.get(standard_model, {})
-            reference[path]["openapi_extra"] = {
-                k: v for k, v in openapi_extra.items() if v
-            }
+            reference[path]["openapi_extra"] = openapi_extra
+
+            # Extract return type information for all endpoints
+            return_info = cls._extract_return_type(route_func)
 
             # Add data for the endpoints having a standard model
-            if route_method == {"GET"} and model_map:
+            if route_method and model_map:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
@@ -3093,303 +3355,162 @@ class ReferenceGenerator:
                     }
                 else:
                     providers = provider_parameter_fields["type"]
-                    reference[path]["returns"]["OBBject"] = (
-                        cls._get_obbject_returns_fields(standard_model, providers)
-                    )
+                    if isinstance(return_info, dict) and "OBBject" in return_info:
+                        results_field = next(
+                            (
+                                f
+                                for f in return_info["OBBject"]
+                                if f["name"] == "results"
+                            ),
+                            None,
+                        )
+                        if results_field:
+                            results_type = results_field["type"]
+                            if results_type == "Any":
+                                results_type = f"list[{standard_model}]"
+                            reference[path]["returns"]["OBBject"] = (
+                                cls._get_obbject_returns_fields(results_type, providers)
+                            )
             # Add data for the endpoints without a standard model (data processing endpoints)
             else:
-                # Get function signature information
-                sig_params = cls._get_function_signature_info(route_func)
+                openapi_extra = (
+                    getattr(
+                        route_func, "openapi_extra", getattr(route, "openapi_extra", {})
+                    )
+                    or {}
+                )
 
-                # Non-model method's router `description` attribute is unreliable as it may or
-                # may not contain the "Parameters" and "Returns" sections. Hence, the
-                # endpoint function docstring is used instead.
-                docstring = getattr(route_func, "__doc__", "")
+                model_name = openapi_extra.get("model", "") or ""
+                if isinstance(return_info, dict) and "OBBject" in return_info:
+                    results_field = next(
+                        (f for f in return_info["OBBject"] if f["name"] == "results"),
+                        None,
+                    )
+                    if results_field:
+                        results_type = results_field["type"]
+                        # Extract model name from types like list[Model] or Model
+                        if "[" in results_type and "]" in results_type:
+                            inner_type = results_type.split("[")[1].split("]")[0]
+                            extracted_model = (
+                                inner_type.split(".")[-1]
+                                if "." in inner_type
+                                else inner_type
+                            )
+                            model_name = model_name or extracted_model
+                        else:
+                            extracted_model = (
+                                results_type.split(".")[-1]
+                                if "." in results_type
+                                else results_type
+                            )
+                            model_name = model_name or extracted_model
 
+                formatted_params = MethodDefinition.format_params(
+                    path=path, parameter_map=dict(signature(route_func).parameters)
+                )
+
+                docstring = DocstringGenerator.generate(
+                    path=path,
+                    func=route_func,
+                    formatted_params=formatted_params,
+                    model_name=model_name,
+                    examples=examples,
+                )
                 if not docstring:
                     continue
 
                 description = docstring.split("Parameters")[0].strip()
-                # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
 
-                # Combine signature parameters with docstring parameters
-                docstring_params = cls._get_post_method_parameters_info(docstring)
-
-                # Create a merged parameter list with signature info taking precedence
-                merged_params: dict = {}
-                for param in docstring_params:
-                    merged_params[param["name"]] = param
-
-                for param in sig_params:
-                    name = param["name"]
-                    if name in merged_params:
-                        # Update existing param with signature info
-                        for key, value in param.items():
-                            if value and not (key == "description" and not value):
-                                merged_params[name][key] = value
-                    else:
-                        merged_params[name] = param
-
-                # Add endpoint parameters fields from the merged info
-                reference[path]["parameters"]["standard"] = list(merged_params.values())
-
-                # Add endpoint returns data
-                # If the endpoint is not validated, the return type is set to Any
-                if validate_output is False:
-                    reference[path]["returns"]["Any"] = {
-                        "description": "Unvalidated results object.",
-                    }
-                else:
-                    model_fields: list = []
-                    # First try to get from function signature
-                    returns_info = cls._extract_return_type(route_func)
-
-                    if not returns_info:
-                        # Then try to get return info from docstring
-                        returns_info = cls._get_post_method_returns_info(docstring)
-
-                    return_annotation = inspect.signature(route_func).return_annotation
-
-                    is_generic_obbject = (
-                        isinstance(returns_info, dict)
-                        and "OBBject" in returns_info
-                        and any(
-                            item.get("name") == "results" and "Data" in item.get("type")
-                            for item in returns_info.get("OBBject", [])
+                # Extract parameters directly from formatted_params
+                reference[path]["parameters"]["standard"] = []
+                for param in formatted_params.values():
+                    if param.name == "kwargs":
+                        continue
+                    annotation = param.annotation
+                    if isinstance(annotation, _AnnotatedAlias):
+                        type_str = DocstringGenerator.get_field_type(
+                            annotation.__args__[0], False, "website"
                         )
+                        description = (
+                            annotation.__metadata__[0].description
+                            if annotation.__metadata__
+                            and hasattr(annotation.__metadata__, "description")
+                            else ""
+                        )
+                    else:
+                        type_str = DocstringGenerator.get_field_type(
+                            annotation, False, "website"
+                        )
+                        description = ""
+                    reference[path]["parameters"]["standard"].append(
+                        {
+                            "name": param.name,
+                            "type": type_str,
+                            "description": description,
+                            "default": (
+                                param.default
+                                if param.default != Parameter.empty
+                                else None
+                            ),
+                            "optional": param.default != Parameter.empty,
+                        }
                     )
+                # Set returns based on return_info
+                if isinstance(return_info, dict) and "OBBject" in return_info:
+                    results_field = next(
+                        (f for f in return_info["OBBject"] if f["name"] == "results"),
+                        None,
+                    )
+                    if results_field:
+                        results_type = results_field["type"]
+                        reference[path]["returns"]["OBBject"] = (
+                            cls._get_obbject_returns_fields(results_type, "str")
+                        )
 
-                    # Set returns field directly
-                    reference[path]["returns"] = returns_info
-                    reference[path]["model"] = None
-                    reference[path]["data"] = {}
-
-                    if isinstance(returns_info, str) and "[" in returns_info:
-                        # Extract inner type from container type (e.g., "list[ModelName]")
-                        match = re.search(r"\[(.*?)\]", returns_info)
-                        if match:
-                            inner_type_name = match.group(1)
-                            # Try to find the actual model class
-                            for module in sys.modules.values():
-                                if hasattr(module, inner_type_name):
-                                    model_class = getattr(module, inner_type_name)
-                                    if hasattr(model_class, "model_fields"):
-                                        # Found the model class, extract its fields
-                                        model_fields = []
-                                        for (
-                                            field_name,
-                                            field,
-                                        ) in model_class.model_fields.items():
-                                            if field_name.startswith("_"):
-                                                continue
-
-                                            field_type = (
-                                                DocstringGenerator.get_field_type(
-                                                    field.annotation,
-                                                    not field.is_required(),
-                                                    "website",
-                                                )
-                                            )
-
-                                            model_fields.append(
-                                                {
-                                                    "name": field_name,
-                                                    "type": ReferenceGenerator._clean_string_values(
-                                                        field_type
-                                                    ),
-                                                    "description": (
-                                                        ReferenceGenerator._clean_string_values(
-                                                            field.description
-                                                        )
-                                                        if field.description
-                                                        else ""
-                                                    ),
-                                                    "default": (
-                                                        field.default
-                                                        if field.default
-                                                        and field.default
-                                                        != PydanticUndefined
-                                                        else ""
-                                                    ),
-                                                    "optional": not field.is_required(),
-                                                }
-                                            )
-
-                                        if model_fields:
-                                            list_match = re.search(
-                                                r"list\[(.*?)\]", returns_info
-                                            )
-                                            model_name = (
-                                                list_match.group(1)
-                                                if list_match
-                                                else returns_info
-                                            )
-
-                                            reference[path]["data"][
-                                                model_name
-                                            ] = model_fields
-                                        break
-                    # For Pydantic models, extract the fields
-                    elif (
-                        hasattr(return_annotation, "model_fields")
-                        and not is_generic_obbject
-                    ):
-                        for field_name, field in return_annotation.model_fields.items():
-                            # Skip private fields
-                            if field_name.startswith("_"):
-                                continue
-
-                            field_type = DocstringGenerator.get_field_type(
-                                field.annotation, not field.is_required(), "website"
-                            )
-
-                            model_fields.append(
-                                {
-                                    "name": field_name,
-                                    "type": field_type,
-                                    "description": (
-                                        field.description.replace('"', "'")
-                                        if field.description
-                                        else ""
-                                    ),
-                                    "default": (
-                                        field.default
-                                        if field.default
-                                        and field.default != PydanticUndefined
-                                        else ""
-                                    ),
-                                    "optional": field.is_required(),
-                                }
-                            )
-                    # For results field in OBBject returns, check for actual model type
-
-                    if isinstance(returns_info, dict) and "OBBject" in returns_info:
-                        # For OBBject returns, extract model name from results field type
-                        model_name = None
-                        for item in returns_info["OBBject"]:
-                            if item["name"] == "results":
-                                result_type = item["type"]
-                                # Extract model name from result type (e.g., "list[ModelName]" -> "ModelName")
-                                list_match = re.search(r"list\[(.*?)\]", result_type)
-                                model_name = (
-                                    list_match.group(1) if list_match else result_type
-                                )
-
-                                # Don't add data fields for generic types like "Data" or if already in parameters
-                                if model_name and model_name != "Data":
-                                    # Try to find the actual model class
-                                    for (
-                                        module_name,  # pylint: disable=unused-variable
-                                        module,
-                                    ) in sys.modules.items():  # noqa: W0612
-                                        if hasattr(module, model_name):
-                                            model_class = getattr(module, model_name)
-                                            if hasattr(model_class, "model_fields"):
-                                                # Found the model class, extract its fields
-                                                model_fields = []
-                                                for (
-                                                    field_name,
-                                                    field,
-                                                ) in model_class.model_fields.items():
-                                                    if field_name.startswith("_"):
-                                                        continue
-
-                                                    field_type = DocstringGenerator.get_field_type(
-                                                        field.annotation,
-                                                        not field.is_required(),
-                                                        "website",
-                                                    )
-
-                                                    model_fields.append(
-                                                        {
-                                                            "name": field_name,
-                                                            "type": field_type,
-                                                            "description": field.description
-                                                            or "",
-                                                            "default": (
-                                                                field.default
-                                                                if field.default
-                                                                != PydanticUndefined
-                                                                else ""
-                                                            ),
-                                                            "optional": not field.is_required(),
-                                                        }
-                                                    )
-
-                                                if model_fields:
-                                                    reference[path]["data"][
-                                                        model_name
-                                                    ] = model_fields
-                                                break
-                                break
-                    elif isinstance(returns_info, str):
-                        # For string return types like "list[YFinanceUdfSearchResult]"
-                        list_match = re.search(r"list\[(.*?)\]", returns_info)
-                        model_name = list_match.group(1) if list_match else returns_info
-
-                        # Skip basic types
-                        if model_name not in (
-                            "str",
-                            "int",
-                            "float",
-                            "bool",
-                            "Any",
-                            "dict",
-                        ):
-                            # Try to find the model class
-                            for module_name, module in sys.modules.items():
-                                if hasattr(module, model_name):
-                                    model_class = getattr(module, model_name)
-                                    if hasattr(model_class, "model_fields"):
-                                        # Found the model class, extract its fields
-                                        model_fields = []
-                                        for (
-                                            field_name,
-                                            field,
-                                        ) in model_class.model_fields.items():
-                                            if field_name.startswith("_"):
-                                                continue
-
-                                            field_type = (
-                                                DocstringGenerator.get_field_type(
-                                                    field.annotation,
-                                                    not field.is_required(),
-                                                    "website",
-                                                )
-                                            )
-
-                                            model_fields.append(
-                                                {
-                                                    "name": field_name,
-                                                    "type": field_type,
-                                                    "description": field.description
-                                                    or "",
-                                                    "default": (
-                                                        field.default
-                                                        if field.default
-                                                        != PydanticUndefined
-                                                        else ""
-                                                    ),
-                                                    "optional": not field.is_required(),
-                                                }
-                                            )
-
-                                        if model_fields:
-                                            reference[path]["data"][
-                                                model_name
-                                            ] = model_fields
-                                        break
+                # Extract data fields from the model class if results_type is not "Any"
+                if results_type != "Any":
+                    # Try to extract model name
+                    if "[" in results_type:
+                        if results_type.startswith("list["):
+                            extracted_model_name = results_type[5:-1]
+                        else:
+                            extracted_model_name = results_type.split("[")[1].split(
+                                "]"
+                            )[0]
                     else:
-                        # For direct returns that aren't OBBject
-                        model_name = (
-                            return_annotation.__name__
-                            if hasattr(return_annotation, "__name__")
-                            else "Model"
-                        )
-                        reference[path]["data"] = (
-                            {model_name: model_fields} if model_fields else {}
-                        )
+                        extracted_model_name = results_type
+
+                    # Try to get the model class from the function's module
+                    try:
+                        module = sys.modules[route_func.__module__]
+                        model_class = getattr(module, extracted_model_name, None)
+                        if model_class and hasattr(model_class, "model_fields"):
+                            # Set data to the fields
+                            reference[path]["data"]["standard"] = []
+                            for field_name, field in model_class.model_fields.items():
+                                field_type = DocstringGenerator.get_field_type(
+                                    field.annotation, field.is_required(), "website"
+                                )
+                                json_extra = getattr(field, "json_schema_extra", {})
+                                reference[path]["data"]["standard"].append(
+                                    {
+                                        "name": field_name,
+                                        "type": field_type,
+                                        "description": getattr(
+                                            field, "description", ""
+                                        ),
+                                        "default": (
+                                            None
+                                            if field.default is PydanticUndefined
+                                            else field.default
+                                        ),
+                                        "optional": not field.is_required(),
+                                        "json_schema_extra": json_extra or {},
+                                    }
+                                )
+                    except (KeyError, AttributeError):
+                        pass
 
         return reference
 
@@ -3402,26 +3523,58 @@ class ReferenceGenerator:
         if return_annotation is inspect.Signature.empty:
             return {"type": "Any"}
 
+        # Use get_type_hints to resolve TypeVars
+        hints = get_type_hints(func)
+        return_annotation = hints.get("return", return_annotation)
+
         # Check if the return type is an OBBject
         type_str = str(return_annotation)
-
         if "OBBject" in type_str or (
             hasattr(return_annotation, "__name__")
             and "OBBject" in return_annotation.__name__
         ):
             # Extract the model name from docstring or type annotation
-            result_type = "list[Data]"  # Default fallback
+            result_type = "Any"  # Default fallback
 
             # Try to extract from type annotation first (more reliable)
-            if hasattr(return_annotation, "__origin__") and hasattr(
-                return_annotation, "__args__"
-            ):
-                # For OBBject[SomeType]
-                inner_type = return_annotation.__args__[0]
-                if hasattr(inner_type, "__name__"):
-                    result_type = inner_type.__name__
-                elif hasattr(inner_type, "_name") and inner_type._name:
-                    result_type = inner_type._name
+            origin = get_origin(return_annotation)
+            if origin is not None:
+                args = get_args(return_annotation)
+                if len(args) > 1:
+                    # For OBBject[T, SomeType], results type is SomeType
+                    result_type = args[1].__name__
+                else:
+                    # For OBBject[SomeType]
+                    inner_type = args[0] if args else None
+                    if inner_type is not None:
+                        # Handle container types like list[Model]
+                        inner_origin = get_origin(inner_type)
+                        if inner_origin is not None:
+                            inner_args = get_args(inner_type)
+                            if inner_args:
+                                container_type = inner_origin
+                                model_type = inner_args[0]
+                                result_type = (
+                                    f"{container_type.__name__}[{model_type.__name__}]"
+                                )
+                        elif hasattr(inner_type, "__name__"):
+                            result_type = inner_type.__name__
+                            # Resolve TypeVar bound if available
+                            if (
+                                hasattr(inner_type, "__bound__")
+                                and inner_type.__bound__
+                            ):
+                                result_type = inner_type.__bound__.__name__
+                        elif hasattr(inner_type, "_name") and inner_type._name:
+                            result_type = inner_type._name
+            else:
+                # Fallback: parse from type_str if get_origin fails
+                match = re.search(r"OBBject\[.*?\]\[(.*?)\]", type_str)
+                if match:
+                    result_type = match.group(1)
+                # Check for OBBject_ModelName pattern
+                elif "OBBject_" in type_str:
+                    result_type = type_str.split("OBBject_")[1].split("'")[0]
 
             # If not found, try to extract from docstring
             if result_type == "list[Data]":
@@ -3444,21 +3597,20 @@ class ReferenceGenerator:
             # Ensure result_type doesn't already have a container type
             if "[" in result_type and "]" not in result_type:
                 result_type += "]"  # Add missing closing bracket
-
             result_type = ReferenceGenerator._clean_string_values(result_type)
             # Return the standard OBBject structure with correct result type
             return {
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": (
-                            result_type
-                            if "[" in result_type
-                            else f"list[{result_type}]"
-                        ),
+                        "type": result_type,
                         "description": "Serializable results.",
                     },
-                    {"name": "provider", "type": None, "description": "Provider name."},
+                    {
+                        "name": "provider",
+                        "type": "Optional[str]",
+                        "description": "Provider name.",
+                    },
                     {
                         "name": "warnings",
                         "type": "Optional[list[Warning_]]",
@@ -3483,6 +3635,7 @@ class ReferenceGenerator:
             .replace("'>", "")
             .replace("typing.", "")
             .replace("NoneType", "None")
+            .replace("inspect._empty", "Any")
         )
 
         # Basic types handling
@@ -3522,7 +3675,7 @@ class ReferenceGenerator:
         Dict[str, Dict[str, Any]]
             Dictionary containing the description for each router.
         """
-        main_router = RouterLoader.from_extensions()
+        main_router = RouterLoader().from_extensions()
         routers: dict = {}
         for path in route_map:
             path_parts = path.split("/")

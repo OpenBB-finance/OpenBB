@@ -1,6 +1,6 @@
 """Test the package_builder.py file."""
 
-# pylint: disable=redefined-outer-name, protected-access
+# pylint: disable=redefined-outer-name,protected-access,unused-argument
 
 from dataclasses import dataclass
 from inspect import _empty
@@ -10,6 +10,7 @@ from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
 import pytest
+from fastapi import Depends
 from importlib_metadata import EntryPoint, EntryPoints
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
@@ -22,7 +23,7 @@ from openbb_core.app.static.package_builder import (
     PathHandler,
 )
 from openbb_core.env import Env
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 
 @pytest.fixture(scope="module")
@@ -405,6 +406,122 @@ def test_build_command_method(method_definition):
     assert isinstance(output, str)
 
 
+class MyPostBody(BaseModel):
+    """My post body model."""
+
+    field1: str = Field(description="A string field.")
+    field2: int = Field(default=10, description="An integer field.")
+
+
+def mock_get_endpoint(
+    param1: str,
+    param2: int | None = None,
+):
+    """This is a mock GET endpoint."""
+
+
+def mock_post_endpoint(
+    body: MyPostBody,
+):
+    """This is a mock POST endpoint."""
+
+
+class MockDep:
+    """Mock dependency class."""
+
+    def __init__(self):
+        self.value = "real_dependency_value"
+
+
+def get_mock_dep():
+    """This is a real mock dependency."""
+    return MockDep()
+
+
+def mock_endpoint_with_real_dependency(
+    dep: MockDep = Depends(get_mock_dep),
+):
+    """This is a mock endpoint with a real dependency."""
+
+
+def test_build_command_method_get_endpoint(method_definition):
+    """Test build_command_method with a GET endpoint."""
+    with (
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+            return_value=False,
+        ),
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+            return_value=False,
+        ),
+    ):
+        output = method_definition.build_command_method(
+            path="/test/get",
+            func=mock_get_endpoint,
+            model_name=None,
+        )
+
+    assert "def mock_get_endpoint(" in output
+    assert "param1: Annotated[str," in output
+    assert "param2: Annotated[int | None," in output
+    assert "This is a mock GET endpoint." in output
+    assert "return self._run(" in output
+    assert '"/test/get",' in output
+    assert "param1=param1," in output
+    assert "param2=param2," in output
+
+
+def test_build_command_method_post_endpoint(method_definition):
+    """Test build_command_method with a POST endpoint."""
+    with (
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+            return_value=False,
+        ),
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+            return_value=False,
+        ),
+    ):
+        output = method_definition.build_command_method(
+            path="/test/post",
+            func=mock_post_endpoint,
+            model_name=None,
+        )
+
+    assert "def mock_post_endpoint(" in output
+    assert "body: Annotated[MyPostBody," in output
+    assert "This is a mock POST endpoint." in output
+    assert "return self._run(" in output
+    assert '"/test/post",' in output
+    assert "body=body," in output
+
+
+def test_build_command_method_with_dependency(method_definition):
+    """Test build_command_method with a dependency."""
+    with (
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+            return_value=False,
+        ),
+        patch(
+            "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+            return_value=False,
+        ),
+    ):
+        output = method_definition.build_command_method(
+            path="/test/dependency",
+            func=mock_endpoint_with_real_dependency,
+            model_name=None,
+        )
+
+    assert "def mock_endpoint_with_real_dependency(" in output
+    assert "dep: Annotated[MockDep," in output
+    assert "Depends(get_mock_dep)" in output
+    assert "dep=dep," in output
+
+
 @pytest.fixture(scope="module")
 def import_definition():
     """Return import definition."""
@@ -595,7 +712,7 @@ def test__get_generic_types(docstring_generator, type_, expected):
         (
             ["list", "dict", "tuple"],
             "test_model",
-            "Union[list[test_model], dict[str, test_model], tuple[test_model]]",
+            "list[test_model] | dict[str, test_model] | tuple[test_model]",
         ),
     ],
 )
