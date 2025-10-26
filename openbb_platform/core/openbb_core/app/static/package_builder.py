@@ -777,7 +777,7 @@ class MethodDefinition:
         route = PathHandler.build_route_map().get(path)
         if not route:
             return False
-        methods = getattr(route, "methods", set())
+        methods: set = getattr(route, "methods", set())
         # Consider POST, PUT, PATCH as data processing, but not GET
         return bool(methods & {"POST", "PUT", "PATCH"})
 
