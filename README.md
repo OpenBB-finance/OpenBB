@@ -39,7 +39,7 @@ You can find OpenBB Workspace at <https://pro.openbb.co>.
 
 <a href="https://pro.openbb.co">
   <div align="center">
-  <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">
+  <img src="https://github.com/user-attachments/assets/0a12b9e3-72b1-4ade-a18d-ef8227c0d530" alt="Logo" width="1000">
   </div>
 </a>
 
