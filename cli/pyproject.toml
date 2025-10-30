@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-cli"
-version = "1.2.0"
+version = "1.2.1"
 description = "Investment Research for Everyone, Anywhere."
 authors = ["OpenBB <hello@openbb.co>"]
 packages = [{ include = "openbb_cli" }]
