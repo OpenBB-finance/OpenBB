@@ -1,9 +1,9 @@
 {
-    "openbb": "1.5.2core",
+    "openbb": "1.5.3core",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.5.2",
+        "core": "1.5.3",
         "extensions": {
             "openbb_core_extension": [],
             "openbb_provider_extension": [],
