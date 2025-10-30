@@ -331,6 +331,7 @@ optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 markers = "python_version == \"3.10\""
+markers = "python_version == \"3.10\""
 files = [
     {file = "async_timeout-5.0.1-py3-none-any.whl", hash = "sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c"},
     {file = "async_timeout-5.0.1.tar.gz", hash = "sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3"},
@@ -3936,6 +3937,7 @@ files = [
 
 [package.dependencies]
 numba = {version = ">=0.61.0", markers = "python_version >= \"3.10\""}
+numba = {version = ">=0.61.0", markers = "python_version >= \"3.10\""}
 numpy = ">=1.26.4"
 pandas = ">=2.2.0"
 scipy = "<=1.15.3"
@@ -4680,6 +4682,7 @@ description = "Python for Window Extensions"
 optional = false
 python-versions = "*"
 groups = ["main"]
+markers = "sys_platform == \"win32\""
 markers = "sys_platform == \"win32\""
 files = [
     {file = "pywin32-311-cp310-cp310-win32.whl", hash = "sha256:d03ff496d2a0cd4a5893504789d4a15399133fe82517455e78bad62efbb7f0a3"},
@@ -5669,6 +5672,7 @@ optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 markers = "python_version == \"3.10\""
+markers = "python_version == \"3.10\""
 files = [
     {file = "tomli-2.3.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:88bd15eb972f3664f5ed4b57c1634a97153b4bac4479dcb6a495f41921eb7f45"},
     {file = "tomli-2.3.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:883b1c0d6398a6a9d29b508c331fa56adbcdff647f6ace4dfca0f50e90dfd0ba"},
@@ -6336,5 +6340,7 @@ type = ["pytest-mypy"]
 
 [metadata]
 lock-version = "2.1"
+python-versions = "^3.10,<3.14"
+content-hash = "5682dcc6dd227aeee333850434b0e6c2da6be9070245718d45d8f02524b53309"
 python-versions = "^3.10,<3.14"
 content-hash = "5682dcc6dd227aeee333850434b0e6c2da6be9070245718d45d8f02524b53309"
