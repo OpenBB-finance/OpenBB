@@ -19,6 +19,12 @@ Open Data Platform by OpenBB (ODP) is the open-source toolset that helps data en
 
 ODP operates as the "connect once, consume everywhere" infrastructure layer that consolidates and exposes data to multiple surfaces at once: Python environments for quants, OpenBB Workspace and Excel for analysts, MCP servers for AI agents, and REST APIs for other applications.
 
+<a href="https://pro.openbb.co">
+  <div align="center">
+  <img src="https://openbb-cms.directus.app/assets/70b971ef-7a7e-486e-b5ae-1cc602f2162c.png" alt="Logo" width="1000">
+  </div>
+</a>
+
 Get started with: `pip install openbb`
 
 ```python
@@ -36,7 +42,6 @@ Data integrations available can be found here: <https://docs.openbb.co/python/re
 While the Open Data Platform provides the open-source data integration foundation, **OpenBB Workspace** offers the enterprise UI for analysts to visualize datasets and leverage AI agents. The platform's "connect once, consume everywhere" architecture enables seamless integration between the two.
 
 You can find OpenBB Workspace at <https://pro.openbb.co>.
-
 <a href="https://pro.openbb.co">
   <div align="center">
   <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">

@@ -1,7 +1,6 @@
 """Test the package_builder.py file."""
 
 # pylint: disable=redefined-outer-name, protected-access
-
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
@@ -42,9 +41,13 @@ def test_package_builder_init(package_builder):
     assert package_builder
 
 
-def test_package_builder_build(package_builder):
+def test_package_builder_build(tmp_openbb_dir):
     """Test package builder build."""
-    package_builder.build()
+    builder = PackageBuilder(tmp_openbb_dir)
+
+    # Mock the _save_reference_file method to avoid sys.modules iteration
+    with patch.object(builder, "_save_reference_file"):
+        builder.build()
 
 
 def test_save_modules(package_builder):
