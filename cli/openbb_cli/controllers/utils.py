@@ -379,7 +379,7 @@ def print_rich_table(  # noqa: PLR0912
                     )
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
-            df = df.applymap(lambda x: return_colored_value(str(x)))
+            df = df.applymap(lambda x: return_colored_value(str(x)))  # type: ignore
 
     exceeds_allowed_columns = len(df.columns) > MAX_COLS
     exceeds_allowed_rows = len(df) > MAX_ROWS
@@ -631,7 +631,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     if (
         df.index.dtype.kind == "M"
         and hasattr(df.index.dtype, "tz")
-        and df.index.dtype.tz is not None
+        and df.index.dtype.tz is not None  # type: ignore
     ):
         index_is_date = True
 
@@ -645,7 +645,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     if index_is_date:
         index_name = df.index.name
-        df.index = df.index.date
+        df.index = df.index.date  # type: ignore
         df.index.name = index_name
 
     return df
@@ -745,7 +745,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
             with pd.ExcelWriter(
                 saved_path,
                 mode="a",
-                if_sheet_exists=overwrite_options[overwrite_option],
+                if_sheet_exists=overwrite_options[overwrite_option],  # type: ignore
                 engine="openpyxl",
             ) as writer:
                 df.to_excel(

@@ -152,15 +152,93 @@ class ArgparseTranslator:
     @staticmethod
     def _build_description(func_doc: str) -> str:
         """Build the description of the argparse program from the function docstring."""
-        patterns = ["openbb\n        ======", "Parameters\n        ----------"]
+        # Remove only the Examples section and the openbb header if present
+        patterns_to_remove = [
+            (r"openbb\n\s+={3,}\n", ""),  # Remove openbb header
+            (r"\n\s*Examples\n\s*-{3,}\n.*", ""),  # Remove Examples section to end
+        ]
 
-        if func_doc:
-            for pattern in patterns:
-                if pattern in func_doc:
-                    func_doc = func_doc[: func_doc.index(pattern)].strip()
-                    break
+        for pattern, replacement in patterns_to_remove:
+            func_doc = re.sub(pattern, replacement, func_doc, flags=re.DOTALL)
 
-        return func_doc
+        # Clean up type annotations in docstrings
+        def clean_type_annotation(type_str: str) -> str:
+            """Clean up a single type annotation."""
+            # First, handle the pipe union syntax: type1 | type2 -> type1 or type2
+            # Do this FIRST before other transformations
+            type_str = re.sub(r"\s*\|\s*", " or ", type_str)
+
+            # Handle Annotated[type, ...] -> type
+            type_str = re.sub(r"Annotated\[([^,\]]+)(?:,\s*[^\]]+)?\]", r"\1", type_str)
+
+            # Handle Union[type1, type2, ...] -> type1 or type2 or ...
+            type_str = re.sub(
+                r"Union\[([^\]]+)\]",
+                lambda m: " or ".join(m.group(1).split(", ")),
+                type_str,
+            )
+
+            # Handle Optional[type] -> type or None
+            type_str = re.sub(r"Optional\[([^\]]+)\]", r"\1 or None", type_str)
+
+            # Deduplicate "or" separated types
+            parts = [p.strip() for p in type_str.split(" or ")]
+
+            # Remove duplicates while preserving order (case-insensitive)
+            seen = set()
+            unique_parts = []
+            for part in parts:
+                part_lower = part.lower()
+                if part_lower not in seen:
+                    seen.add(part_lower)
+                    unique_parts.append(part)
+
+            # If None is present, move it to the end
+            if "None" in unique_parts:
+                unique_parts.remove("None")
+                unique_parts.append("None")
+
+            type_str = " or ".join(unique_parts)
+
+            return type_str
+
+        # Process each line that contains a type annotation (format: "name : type")
+        lines = func_doc.split("\n")
+        cleaned_lines = []
+
+        for line in lines:
+            # Match lines with type annotations (parameter_name : type_annotation)
+            if ":" in line and not line.strip().startswith("#"):
+                # Split only on the first colon to preserve any colons in the description
+                parts = line.split(":", 1)
+                if len(parts) == 2:
+                    param_name = parts[0]
+                    rest = parts[1].strip()
+
+                    # Extract the type part (everything before the first real description line)
+                    # Type annotations typically don't contain spaces at the start of continuation lines
+                    type_match = re.match(r"^([^\n]+?)(?:\n\s{4,}|\s{2,}|$)", rest)
+                    if type_match:
+                        type_part = type_match.group(1).strip()
+                        description_part = rest[len(type_match.group(1)) :]
+
+                        # Clean the type annotation
+                        cleaned_type = clean_type_annotation(type_part)
+
+                        # Reconstruct the line
+                        if description_part:
+                            cleaned_lines.append(
+                                f"{param_name}: {cleaned_type}{description_part}"
+                            )
+                        else:
+                            cleaned_lines.append(f"{param_name}: {cleaned_type}")
+                        continue
+
+            cleaned_lines.append(line)
+
+        func_doc = "\n".join(cleaned_lines)
+
+        return func_doc.strip()
 
     @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
@@ -192,7 +270,9 @@ class ArgparseTranslator:
     ) -> tuple[type[Any], tuple[Any, ...]]:
         """Return the type and choices for the given parameter."""
 
-        def get_base_type(t: Any) -> type:
+        def get_base_type(  # pylint: disable=R0911 #  noqa:PLR0911
+            t: Any,
+        ) -> type:
             """Recursively find the base type for argparse."""
             origin = get_origin(t)
             args = get_args(t)
@@ -201,9 +281,16 @@ class ArgparseTranslator:
                 non_none_args = [a for a in args if a is not type(None)]
                 if len(non_none_args) == 1:
                     return get_base_type(non_none_args[0])
-                # For Union[A, B], default to str, as argparse can't handle multiple types
+                # For Union[A, B, C], check for bool first, then default to str
                 if bool in non_none_args:
                     return bool
+                # If we have multiple types including str, prefer str as it's most flexible
+                if str in non_none_args:
+                    return str
+                # Otherwise, try to get the first concrete type
+                for arg in non_none_args:
+                    if arg not in (type(None), Any):
+                        return get_base_type(arg)
                 return str
             if origin is Literal:
                 return type(args[0]) if args else str
@@ -211,7 +298,10 @@ class ArgparseTranslator:
                 return get_base_type(args[0]) if args else Any  # type: ignore
             if t is Any:
                 return str
-            return t
+            # Handle actual type objects (like datetime.date)
+            if isinstance(t, type):
+                return t
+            return str
 
         def get_choices(t: Any) -> tuple:
             """Recursively find the choices for argparse."""
