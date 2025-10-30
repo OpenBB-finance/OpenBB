@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_sectors import (
@@ -36,22 +36,22 @@ class TmxIndexSectorsData(IndexSectorsData):
 class TmxIndexSectorsFetcher(
     Fetcher[
         TmxIndexSectorsQueryParams,
-        List[TmxIndexSectorsData],
+        list[TmxIndexSectorsData],
     ]
 ):
     """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxIndexSectorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxIndexSectorsQueryParams:
         """Transform the query."""
         return TmxIndexSectorsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxIndexSectorsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
@@ -68,8 +68,8 @@ class TmxIndexSectorsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TmxIndexSectorsQueryParams, data: Dict, **kwargs: Any
-    ) -> List[TmxIndexSectorsData]:
+        query: TmxIndexSectorsQueryParams, data: dict, **kwargs: Any
+    ) -> list[TmxIndexSectorsData]:
         """Return the transformed data."""
         results = []
         data = data.copy()

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -30,7 +30,7 @@ class YFinanceIncomeStatementQueryParams(IncomeStatementQueryParams):
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=5,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
         le=5,
@@ -76,7 +76,7 @@ class YFinanceIncomeStatementFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceIncomeStatementQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[YFinanceIncomeStatementData]:
         """Extract the data from the Yahoo Finance endpoints."""

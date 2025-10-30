@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -115,12 +115,12 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         "country": {"multiple_items_allowed": True},
     }
 
-    exchange: Union[Literal["all", "nasdaq", "nyse", "amex"], str] = Field(
+    exchange: Literal["all", "nasdaq", "nyse", "amex"] | str = Field(
         default="all",
         description="Filter by exchange.",
         json_schema_extra={"choices": EXCHANGE_CHOICES},
     )
-    exsubcategory: Union[Literal["all", "ngs", "ngm", "ncm", "adr"], str] = Field(
+    exsubcategory: Literal["all", "ngs", "ngm", "ncm", "adr"] | str = Field(
         default="all",
         description="Filter by exchange subcategory."
         "\n    NGS - Nasdaq Global Select Market"
@@ -129,26 +129,24 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         "\n    ADR - American Depository Receipt\n",
         json_schema_extra={"choices": EXSUBCATEGORY_CHOICES},
     )
-    mktcap: Union[Literal["all", "mega", "large", "mid", "small", "micro"], str] = (
-        Field(
-            default="all",
-            description="Filter by market cap."
-            "\n    Mega - > 200B"
-            "\n    Large - 10B - 200B"
-            "\n    Mid - 2B - 10B"
-            "\n    Small - 300M - 2B"
-            "\n    Micro - 50M - 300M\n",
-            json_schema_extra={"choices": MKT_CAP_CHOICES},
-        )
+    mktcap: Literal["all", "mega", "large", "mid", "small", "micro"] | str = Field(
+        default="all",
+        description="Filter by market cap."
+        "\n    Mega - > 200B"
+        "\n    Large - 10B - 200B"
+        "\n    Mid - 2B - 10B"
+        "\n    Small - 300M - 2B"
+        "\n    Micro - 50M - 300M\n",
+        json_schema_extra={"choices": MKT_CAP_CHOICES},
     )
-    recommendation: Union[
-        Literal["all", "strong_buy", "buy", "hold", "sell", "strong_sell"], str
-    ] = Field(
+    recommendation: (
+        Literal["all", "strong_buy", "buy", "hold", "sell", "strong_sell"] | str
+    ) = Field(
         default="all",
         description="Filter by consensus analyst action.",
         json_schema_extra={"choices": RECOMMENDATION_CHOICES},
     )
-    sector: Union[
+    sector: (
         Literal[
             "all",
             "energy",
@@ -162,14 +160,14 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
             "communication_services",
             "utilities",
             "real_estate",
-        ],
-        str,
-    ] = Field(
+        ]
+        | str
+    ) = Field(
         default="all",
         description="Filter by sector.",
         json_schema_extra={"choices": SECTOR_CHOICES},
     )
-    region: Union[
+    region: (
         Literal[
             "all",
             "africa",
@@ -180,14 +178,14 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
             "middle_east",
             "north_america",
             "south_america",
-        ],
-        str,
-    ] = Field(
+        ]
+        | str
+    ) = Field(
         default="all",
         description="Filter by region.",
         json_schema_extra={"choices": REGION_CHOICES},
     )
-    country: Union[
+    country: (
         Literal[
             "all",
             "argentina",
@@ -241,14 +239,14 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
             "united_kingdom",
             "united_states",
             "usa",
-        ],
-        str,
-    ] = Field(
+        ]
+        | str
+    ) = Field(
         default="all",
         description="Filter by country.",
         json_schema_extra={"choices": COUNTRY_CHOICES},
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="Limit the number of results to return.",
     )
@@ -373,17 +371,17 @@ class NasdaqEquityScreenerData(EquityScreenerData):
         description="Last sale price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    change: Optional[float] = Field(
+    change: float | None = Field(
         default=None,
         description="1-day change in price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         default=None,
         description="1-day percent change in price.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    market_cap: Optional[int] = Field(
+    market_cap: int | None = Field(
         default=None,
         description="Market cap.",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -416,7 +414,7 @@ class NasdaqEquityScreenerData(EquityScreenerData):
 class NasdaqEquityScreenerFetcher(
     Fetcher[
         NasdaqEquityScreenerQueryParams,
-        List[NasdaqEquityScreenerData],
+        list[NasdaqEquityScreenerData],
     ]
 ):
     """Nasdaq Equity Screener Fetcher."""
@@ -424,16 +422,16 @@ class NasdaqEquityScreenerFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqEquityScreenerQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqEquityScreenerQueryParams:
         """Transform query."""
         return NasdaqEquityScreenerQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: NasdaqEquityScreenerQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data from the Nasdaq Equity Screener."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_querystring, make_request
@@ -480,16 +478,16 @@ class NasdaqEquityScreenerFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqEquityScreenerQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[NasdaqEquityScreenerData]:
+    ) -> list[NasdaqEquityScreenerData]:
         """Transform data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")
         rows = data.get("data", {}).get("table", {}).get("rows")
         if not rows:
             raise EmptyDataError("No results were found.")
-        results: List[NasdaqEquityScreenerData] = []
+        results: list[NasdaqEquityScreenerData] = []
         for row in sorted(rows, key=lambda x: x["pctchange"], reverse=True):
             row.pop("url", None)
             results.append(NasdaqEquityScreenerData.model_validate(row))

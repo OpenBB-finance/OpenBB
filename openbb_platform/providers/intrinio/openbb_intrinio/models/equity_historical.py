@@ -3,7 +3,7 @@
 # pylint: disable = unused-argument
 
 from datetime import datetime, time
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -57,15 +57,15 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     interval: Literal[
         "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"
     ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
-    start_time: Optional[time] = Field(
+    start_time: time | None = Field(
         default=None,
         description="Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.",
     )
-    end_time: Optional[time] = Field(
+    end_time: time | None = Field(
         default=None,
         description="Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.",
     )
-    timezone: Optional[str] = Field(
+    timezone: str | None = Field(
         default="America/New_York",
         description="Timezone of the data, in the IANA format (Continent/City).",
     )
@@ -110,69 +110,69 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
         "intra_period": "intraperiod",
     }
 
-    average: Optional[float] = Field(
+    average: float | None = Field(
         default=None,
         description="Average trade price of an individual equity during the interval.",
     )
-    change: Optional[float] = Field(
+    change: float | None = Field(
         default=None,
         description="Change in the price of the symbol from the previous day.",
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         default=None,
         description="Percent change in the price of the symbol from the previous day.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    adj_open: Optional[float] = Field(
+    adj_open: float | None = Field(
         default=None,
         description="The adjusted open price.",
     )
-    adj_high: Optional[float] = Field(
+    adj_high: float | None = Field(
         default=None,
         description="The adjusted high price.",
     )
-    adj_low: Optional[float] = Field(
+    adj_low: float | None = Field(
         default=None,
         description="The adjusted low price.",
     )
-    adj_close: Optional[float] = Field(
+    adj_close: float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("adj_close", ""),
     )
-    adj_volume: Optional[float] = Field(
+    adj_volume: float | None = Field(
         default=None,
         description="The adjusted volume.",
     )
-    fifty_two_week_high: Optional[float] = Field(
+    fifty_two_week_high: float | None = Field(
         default=None,
         description="52 week high price for the symbol.",
     )
-    fifty_two_week_low: Optional[float] = Field(
+    fifty_two_week_low: float | None = Field(
         default=None,
         description="52 week low price for the symbol.",
     )
-    factor: Optional[float] = Field(
+    factor: float | None = Field(
         default=None,
         description="factor by which to multiply equity prices before this "
         "date, in order to calculate historically-adjusted equity prices.",
     )
-    split_ratio: Optional[float] = Field(
+    split_ratio: float | None = Field(
         default=None,
         description="Ratio of the equity split, if a split occurred.",
     )
-    dividend: Optional[float] = Field(
+    dividend: float | None = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
     )
-    close_time: Optional[datetime] = Field(
+    close_time: datetime | None = Field(
         default=None,
         description="The timestamp that represents the end of the interval span.",
     )
-    interval: Optional[str] = Field(
+    interval: str | None = Field(
         default=None,
         description="The data time frequency.",
     )
-    intra_period: Optional[bool] = Field(
+    intra_period: bool | None = Field(
         default=None,
         description="If true, the equity price represents an unfinished period "
         "(be it day, week, quarter, month, or year), meaning that the close "
@@ -184,13 +184,13 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
 class IntrinioEquityHistoricalFetcher(
     Fetcher[
         IntrinioEquityHistoricalQueryParams,
-        List[IntrinioEquityHistoricalData],
+        list[IntrinioEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEquityHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -213,9 +213,9 @@ class IntrinioEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = f"https://api-v2.intrinio.com/securities/{query.symbol}/prices"
@@ -257,9 +257,9 @@ class IntrinioEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEquityHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioEquityHistoricalData]:
+    ) -> list[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

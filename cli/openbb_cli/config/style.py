@@ -3,7 +3,7 @@
 # pylint: disable=C0302,R0902,W3301
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from rich.console import Console
 
@@ -22,14 +22,14 @@ class Style:
 
     STYLES_REPO = STYLES_DIRECTORY
 
-    console_styles_available: Dict[str, Path] = {}
-    console_style: Dict[str, Any] = {}
+    console_styles_available: dict[str, Path] = {}
+    console_style: dict[str, Any] = {}
 
     line_color: str = ""
     up_color: str = ""
     down_color: str = ""
-    up_colorway: List[str] = []
-    down_colorway: List[str] = []
+    up_colorway: list[str] = []
+    down_colorway: list[str] = []
     up_color_transparent: str = ""
     down_color_transparent: str = ""
 
@@ -37,20 +37,18 @@ class Style:
 
     def __init__(
         self,
-        style: Optional[str] = "",
-        directory: Optional[Path] = None,
+        style: str | None = "",
+        directory: Path | None = None,
     ):
         """Initialize the class."""
         self._load(directory)
         self.apply(style, directory)
 
-    def apply(
-        self, style: Optional[str] = None, directory: Optional[Path] = None
-    ) -> None:
+    def apply(self, style: str | None = None, directory: Path | None = None) -> None:
         """Apply the style to the console."""
         if style:
             if style in self.console_styles_available:
-                json_path: Optional[Path] = self.console_styles_available[style]
+                json_path: Path | None = self.console_styles_available[style]
             else:
                 self._load(directory)
                 if style in self.console_styles_available:
@@ -64,7 +62,7 @@ class Style:
             else:
                 console.print("Error loading default.")
 
-    def _from_directory(self, folder: Optional[Path]) -> None:
+    def _from_directory(self, folder: Path | None) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -87,12 +85,12 @@ class Style:
             for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
-    def _load(self, directory: Optional[Path] = None) -> None:
+    def _load(self, directory: Path | None = None) -> None:
         """Load custom styles from default and user folders."""
         self._from_directory(self.STYLES_REPO)
         self._from_directory(directory)
 
-    def _from_json(self, file: Path) -> Dict[str, Any]:
+    def _from_json(self, file: Path) -> dict[str, Any]:
         """Load style from json file."""
         with open(file) as f:
             json_style: dict = json.load(f)
@@ -103,6 +101,6 @@ class Style:
             return json_style
 
     @property
-    def available_styles(self) -> List[str]:
+    def available_styles(self) -> list[str]:
         """Return available styles."""
         return list(self.console_styles_available.keys())

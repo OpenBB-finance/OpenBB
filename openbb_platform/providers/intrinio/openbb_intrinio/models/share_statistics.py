@@ -1,7 +1,9 @@
 """Intrinio Share Statistics Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.share_statistics import (
@@ -32,11 +34,11 @@ class IntrinioShareStatisticsData(ShareStatisticsData):
         "adjusted_outstanding_shares": "adjweightedavebasicdilutedsharesos",
     }
 
-    adjusted_outstanding_shares: Optional[float] = Field(
+    adjusted_outstanding_shares: float | None = Field(
         default=None,
         description="Total number of shares of a publicly-traded company, adjusted for splits.",
     )
-    public_float: Optional[float] = Field(
+    public_float: float | None = Field(
         default=None,
         description="Aggregate market value of the shares of a publicly-traded company.",
     )
@@ -45,22 +47,22 @@ class IntrinioShareStatisticsData(ShareStatisticsData):
 class IntrinioShareStatisticsFetcher(
     Fetcher[
         IntrinioShareStatisticsQueryParams,
-        List[IntrinioShareStatisticsData],
+        list[IntrinioShareStatisticsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioShareStatisticsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioShareStatisticsQueryParams:
         """Transform the query params."""
         return IntrinioShareStatisticsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioShareStatisticsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         data = {"symbol": query.symbol, "date": datetime.now().date()}
@@ -76,7 +78,7 @@ class IntrinioShareStatisticsFetcher(
             for tag in tags
         ]
 
-        async def callback(response: ClientResponse, _: Any) -> Dict:
+        async def callback(response: ClientResponse, _: Any) -> dict:
             """Return the response."""
             return {response.url.parts[-2]: await response.json()}
 
@@ -87,7 +89,7 @@ class IntrinioShareStatisticsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioShareStatisticsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioShareStatisticsData]:
+        query: IntrinioShareStatisticsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioShareStatisticsData]:
         """Return the transformed data."""
         return [IntrinioShareStatisticsData.model_validate(d) for d in data]

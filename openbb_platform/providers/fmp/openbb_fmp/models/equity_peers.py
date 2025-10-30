@@ -2,30 +2,45 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_peers import (
     EquityPeersData,
     EquityPeersQueryParams,
 )
+from pydantic import Field
 
 
 class FMPEquityPeersQueryParams(EquityPeersQueryParams):
     """FMP Equity Peers Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
+    Source: https://site.financialmodelingprep.com/developer/docs#peers
     """
 
 
 class FMPEquityPeersData(EquityPeersData):
     """FMP Equity Peers Data."""
 
+    __alias_dict__ = {"name": "companyName", "market_cap": "mktCap"}
+
+    name: str = Field(
+        description="The name of the company.",
+    )
+    price: float | None = Field(
+        default=None,
+        description="The current stock price of the company.",
+    )
+    market_cap: int | None = Field(
+        default=None,
+        description="The market capitalization of the company.",
+    )
+
 
 class FMPEquityPeersFetcher(
     Fetcher[
         FMPEquityPeersQueryParams,
-        FMPEquityPeersData,
+        list[FMPEquityPeersData],
     ]
 ):
     """FMP Equity Peers Fetcher."""
@@ -38,25 +53,24 @@ class FMPEquityPeersFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityPeersQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> dict:
+    ) -> list:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_fmp.utils.helpers import create_url, get_data_one
+        from openbb_fmp.utils.helpers import get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        url = create_url(4, "stock_peers", api_key, query)
+        url = f"https://financialmodelingprep.com/stable/stock-peers?symbol={query.symbol}&apikey={api_key}"
 
-        return await get_data_one(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        query: FMPEquityPeersQueryParams, data: dict, **kwargs: Any
-    ) -> FMPEquityPeersData:
+        query: FMPEquityPeersQueryParams, data: list, **kwargs: Any
+    ) -> list[FMPEquityPeersData]:
         """Return the transformed data."""
-        _ = data.pop("symbol", None)
-        peers: list = [d for d in data.get("peersList", []) if d]
-        data["peersList"] = peers
-
-        return FMPEquityPeersData.model_validate(data)
+        return [
+            FMPEquityPeersData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["mktCap"], reverse=True)
+        ]

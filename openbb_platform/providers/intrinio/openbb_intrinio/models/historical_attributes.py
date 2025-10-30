@@ -4,7 +4,7 @@
 
 import warnings
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -41,14 +41,14 @@ class IntrinioHistoricalAttributesData(HistoricalAttributesData):
 class IntrinioHistoricalAttributesFetcher(
     Fetcher[
         IntrinioHistoricalAttributesQueryParams,
-        List[IntrinioHistoricalAttributesData],
+        list[IntrinioHistoricalAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioHistoricalAttributesQueryParams:
         """Transform the query params."""
         transformed_params = params
@@ -65,9 +65,9 @@ class IntrinioHistoricalAttributesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioHistoricalAttributesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -82,7 +82,7 @@ class IntrinioHistoricalAttributesFetcher(
 
         async def callback(
             response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
+        ) -> list[dict]:
             """Return the response."""
             init_response = await response.json()
 
@@ -97,19 +97,15 @@ class IntrinioHistoricalAttributesFetcher(
             symbol = response.url.parts[-2]  # type: ignore
             tag = response.url.parts[-1]  # type: ignore
 
-            all_data: List = init_response.get("historical_data", [])  # type: ignore
+            all_data: list = init_response.get("historical_data", [])  # type: ignore
             all_data = [{**item, "symbol": symbol, "tag": tag} for item in all_data]
 
             next_page = init_response.get("next_page", None)  # type: ignore
             while next_page:
-                url = response.url.update_query(  # type: ignore
-                    next_page=next_page
-                ).human_repr()
+                url = response.url.update_query(next_page=next_page).human_repr()  # type: ignore
                 response_data = await session.get_json(url)
 
-                if message := response_data.get("error") or response_data.get(  # type: ignore
-                    "message"
-                ):
+                if message := response_data.get("error") or response_data.get("message"):  # type: ignore
                     warnings.warn(message=message, category=OpenBBWarning)
                     return []
 
@@ -137,8 +133,8 @@ class IntrinioHistoricalAttributesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioHistoricalAttributesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioHistoricalAttributesData]:
+    ) -> list[IntrinioHistoricalAttributesData]:
         """Return the transformed data."""
         return [IntrinioHistoricalAttributesData.model_validate(d) for d in data]

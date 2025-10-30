@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -77,7 +77,7 @@ class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryPar
         },
     }
 
-    country: Union[Countries, str] = Field(
+    country: Countries | str = Field(
         description="Country to get the CLI for, default is G20.",
         default="g20",
     )
@@ -97,7 +97,7 @@ class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryPar
         """Validate countries."""
         if v is None:
             return "g20"
-        new_countries: List = []
+        new_countries: list = []
         if isinstance(v, str):
             countries = v.split(",")
         elif isinstance(v, list):
@@ -121,14 +121,14 @@ class OECDCompositeLeadingIndicatorData(CompositeLeadingIndicatorData):
 class OECDCompositeLeadingIndicatorFetcher(
     Fetcher[
         OECDCompositeLeadingIndicatorQueryParams,
-        List[OECDCompositeLeadingIndicatorData],
+        list[OECDCompositeLeadingIndicatorData],
     ]
 ):
     """OECD Composite Leading Indicator Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> OECDCompositeLeadingIndicatorQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
@@ -151,9 +151,9 @@ class OECDCompositeLeadingIndicatorFetcher(
     @staticmethod
     async def aextract_data(
         query: OECDCompositeLeadingIndicatorQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -194,16 +194,12 @@ class OECDCompositeLeadingIndicatorFetcher(
             url, timeout=30, headers=headers, response_callback=response_callback
         )
 
-        df = read_csv(StringIO(response)).get(  # type: ignore
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
 
         if df.empty:  # type: ignore
             raise EmptyDataError("No data was found.")
 
-        df = df.rename(  # type: ignore
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
+        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
         df.country = [
             (
                 COUNTRY_MAP.get(d, d)
@@ -229,8 +225,8 @@ class OECDCompositeLeadingIndicatorFetcher(
     @staticmethod
     def transform_data(
         query: OECDCompositeLeadingIndicatorQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[OECDCompositeLeadingIndicatorData]:
+    ) -> list[OECDCompositeLeadingIndicatorData]:
         """Transform the data from the OECD endpoint."""
         return [OECDCompositeLeadingIndicatorData.model_validate(d) for d in data]

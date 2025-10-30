@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     timezone,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -37,26 +37,26 @@ class BenzingaAnalystSearchQueryParams(AnalystSearchQueryParams):
         "fields": {"multiple_items_allowed": True},
     }
 
-    analyst_ids: Optional[str] = Field(
+    analyst_ids: str | None = Field(
         default=None,
         description="List of analyst IDs to return.",
     )
-    firm_ids: Optional[str] = Field(
+    firm_ids: str | None = Field(
         default=None,
         description="Firm IDs to return.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=100,
         description="Number of results returned. Limit 1000.",
     )
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=0,
         description="Page offset. For optimization,"
         + " performance and technical reasons, page offsets"
         + " are limited from 0 - 100000."
         + " Limit the query results by other parameters such as date.",
     )
-    fields: Optional[str] = Field(
+    fields: str | None = Field(
         default=None,
         description="Fields to include in the response."
         " See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
@@ -112,248 +112,248 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         "success_rate_3y": "3y_success_rate",
     }
 
-    analyst_id: Optional[str] = Field(
+    analyst_id: str | None = Field(
         default=None,
         description="ID of the analyst.",
     )
-    firm_id: Optional[str] = Field(
+    firm_id: str | None = Field(
         default=None,
         description="ID of the analyst firm.",
     )
-    smart_score: Optional[float] = Field(
+    smart_score: float | None = Field(
         default=None,
         description="A weighted average of the total_ratings_percentile,"
         + " overall_avg_return_percentile, and overall_success_rate",
     )
-    overall_success_rate: Optional[float] = Field(
+    overall_success_rate: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain overall.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    overall_avg_return_percentile: Optional[float] = Field(
+    overall_avg_return_percentile: float | None = Field(
         default=None,
         description="The percentile (normalized) of this analyst's overall average"
         + " return per rating in comparison to other analysts' overall average returns per rating.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    total_ratings_percentile: Optional[float] = Field(
+    total_ratings_percentile: float | None = Field(
         default=None,
         description="The percentile (normalized) of this analyst's total number of ratings"
         + " in comparison to the total number of ratings published by all other analysts",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    total_ratings: Optional[int] = Field(
+    total_ratings: int | None = Field(
         default=None,
         description="Number of recommendations made by this analyst.",
     )
-    overall_gain_count: Optional[int] = Field(
+    overall_gain_count: int | None = Field(
         default=None,
         description="The number of ratings that have gained value since the date of recommendation",
     )
-    overall_loss_count: Optional[int] = Field(
+    overall_loss_count: int | None = Field(
         default=None,
         description="The number of ratings that have lost value since the date of recommendation",
     )
-    overall_average_return: Optional[float] = Field(
+    overall_average_return: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating since the date of recommendation",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    overall_std_dev: Optional[float] = Field(
+    overall_std_dev: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings since the date of recommendation",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_1m: Optional[int] = Field(
+    gain_count_1m: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last month",
     )
-    loss_count_1m: Optional[int] = Field(
+    loss_count_1m: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last month",
     )
-    average_return_1m: Optional[float] = Field(
+    average_return_1m: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_1m: Optional[float] = Field(
+    std_dev_1m: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_1m: Optional[float] = Field(
+    smart_score_1m: float | None = Field(
         default=None,
         description="A weighted average smart score over the last month.",
     )
-    success_rate_1m: Optional[float] = Field(
+    success_rate_1m: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_3m: Optional[int] = Field(
+    gain_count_3m: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 months",
     )
-    loss_count_3m: Optional[int] = Field(
+    loss_count_3m: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 3 months",
     )
-    average_return_3m: Optional[float] = Field(
+    average_return_3m: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_3m: Optional[float] = Field(
+    std_dev_3m: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_3m: Optional[float] = Field(
+    smart_score_3m: float | None = Field(
         default=None,
         description="A weighted average smart score over the last 3 months.",
     )
-    success_rate_3m: Optional[float] = Field(
+    success_rate_3m: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_6m: Optional[int] = Field(
+    gain_count_6m: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 6 months",
     )
-    loss_count_6m: Optional[int] = Field(
+    loss_count_6m: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 6 months",
     )
-    average_return_6m: Optional[float] = Field(
+    average_return_6m: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 6 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_6m: Optional[float] = Field(
+    std_dev_6m: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 6 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_9m: Optional[int] = Field(
+    gain_count_9m: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 9 months",
     )
-    loss_count_9m: Optional[int] = Field(
+    loss_count_9m: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 9 months",
     )
-    average_return_9m: Optional[float] = Field(
+    average_return_9m: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_9m: Optional[float] = Field(
+    std_dev_9m: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_9m: Optional[float] = Field(
+    smart_score_9m: float | None = Field(
         default=None,
         description="A weighted average smart score over the last 9 months.",
     )
-    success_rate_9m: Optional[float] = Field(
+    success_rate_9m: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_1y: Optional[int] = Field(
+    gain_count_1y: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 1 year",
     )
-    loss_count_1y: Optional[int] = Field(
+    loss_count_1y: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 1 year",
     )
-    average_return_1y: Optional[float] = Field(
+    average_return_1y: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_1y: Optional[float] = Field(
+    std_dev_1y: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_1y: Optional[float] = Field(
+    smart_score_1y: float | None = Field(
         default=None,
         description="A weighted average smart score over the last 1 year.",
     )
-    success_rate_1y: Optional[float] = Field(
+    success_rate_1y: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_2y: Optional[int] = Field(
+    gain_count_2y: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 2 years",
     )
-    loss_count_2y: Optional[int] = Field(
+    loss_count_2y: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 2 years",
     )
-    average_return_2y: Optional[float] = Field(
+    average_return_2y: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_2y: Optional[float] = Field(
+    std_dev_2y: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_2y: Optional[float] = Field(
+    smart_score_2y: float | None = Field(
         default=None,
         description="A weighted average smart score over the last 3 years.",
     )
-    success_rate_2y: Optional[float] = Field(
+    success_rate_2y: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gain_count_3y: Optional[int] = Field(
+    gain_count_3y: int | None = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 years",
     )
-    loss_count_3y: Optional[int] = Field(
+    loss_count_3y: int | None = Field(
         default=None,
         description="The number of ratings that have lost value over the last 3 years",
     )
-    average_return_3y: Optional[float] = Field(
+    average_return_3y: float | None = Field(
         default=None,
         description="The average percent (normalized) price difference per rating over"
         + " the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    std_dev_3y: Optional[float] = Field(
+    std_dev_3y: float | None = Field(
         default=None,
         description="The standard deviation in percent (normalized) price difference in the"
         + " analyst's ratings over the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    smart_score_3y: Optional[float] = Field(
+    smart_score_3y: float | None = Field(
         default=None,
         description="A weighted average smart score over the last 3 years.",
     )
-    success_rate_3y: Optional[float] = Field(
+    success_rate_3y: float | None = Field(
         default=None,
         description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -361,7 +361,7 @@ class BenzingaAnalystSearchData(AnalystSearchData):
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v: float) -> Optional[dateType]:
+    def validate_date(cls, v: float) -> dateType | None:
         """Validate last_updated."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import safe_fromtimestamp
@@ -397,21 +397,21 @@ class BenzingaAnalystSearchData(AnalystSearchData):
 
 
 class BenzingaAnalystSearchFetcher(
-    Fetcher[BenzingaAnalystSearchQueryParams, List[BenzingaAnalystSearchData]]
+    Fetcher[BenzingaAnalystSearchQueryParams, list[BenzingaAnalystSearchData]]
 ):
     """Benzinga Analyst Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaAnalystSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> BenzingaAnalystSearchQueryParams:
         """Transform query params."""
         return BenzingaAnalystSearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: BenzingaAnalystSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_benzinga.utils.helpers import response_callback
@@ -442,11 +442,11 @@ class BenzingaAnalystSearchFetcher(
     @staticmethod
     def transform_data(
         query: BenzingaAnalystSearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[BenzingaAnalystSearchData]:
+    ) -> list[BenzingaAnalystSearchData]:
         """Transform the data."""
-        results: List[BenzingaAnalystSearchData] = []
+        results: list[BenzingaAnalystSearchData] = []
         for item in data:
             if item.get("firm_id"):
                 result = {

@@ -7,7 +7,7 @@ from datetime import (
     timedelta,
 )
 from io import StringIO
-from typing import Any, Dict, List, Optional, TypeVar, Union
+from typing import Any, TypeVar
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
@@ -59,7 +59,7 @@ def request(url: str) -> BasicResponse:
 
 async def response_callback(
     response: ClientResponse, _: ClientSession
-) -> Union[dict, List[dict]]:
+) -> dict | list[dict]:
     """Use callback for async_request."""
     data = await response.json()
 
@@ -84,14 +84,14 @@ async def response_callback(
     return data
 
 
-async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
+async def get_data(url: str, **kwargs: Any) -> list | dict:
     """Get data from Intrinio endpoint."""
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
 async def get_data_many(
-    url: str, sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[dict]:
+    url: str, sub_dict: str | None = None, **kwargs: Any
+) -> list[dict]:
     """Get data from Intrinio endpoint and convert to list of schemas.
 
     Parameters
@@ -114,7 +114,7 @@ async def get_data_many(
     return data
 
 
-async def get_data_one(url: str, **kwargs: Any) -> Dict[str, Any]:
+async def get_data_one(url: str, **kwargs: Any) -> dict[str, Any]:
     """Get data from Intrinio endpoint and convert to schema."""
     data = await get_data(url, **kwargs)
     if isinstance(data, list):
@@ -138,7 +138,7 @@ def get_weekday(date: dateType) -> dateType:
 
 async def async_get_data_one(
     url: str, limit: int = 1, sleep: float = 1, **kwargs: Any
-) -> Union[list, dict]:
+) -> list | dict:
     """Get data from Intrinio endpoint and convert to schema."""
     if limit > 100:
         await asyncio.sleep(sleep)

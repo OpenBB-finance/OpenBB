@@ -1,6 +1,4 @@
-""" ECB helpers"""
-
-from typing import List
+"""ECB helpers"""
 
 
 async def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
@@ -23,7 +21,7 @@ async def get_series_data(series_id: str, start_date: str = "", end_date: str = 
     start_date = start_date.replace("-", "")
     end_date = end_date.replace("-", "")
     url = f"https://data.ecb.europa.eu/data-detail-api/{series_id}"
-    data: List = []  # type: ignore
+    data: list = []  # type: ignore
     try:
         data = await amake_request(  # type: ignore
             url=url,

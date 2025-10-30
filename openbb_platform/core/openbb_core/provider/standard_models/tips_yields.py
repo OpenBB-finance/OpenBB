@@ -1,7 +1,6 @@
 """TIPS (Treasury Inflation-Protected Securities) Yields Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,11 +14,11 @@ from pydantic import Field
 class TipsYieldsQueryParams(QueryParams):
     """TIPS Yields Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -29,15 +28,15 @@ class TipsYieldsData(Data):
     """TIPS Yields Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    due: Optional[dateType] = Field(
+    due: dateType | None = Field(
         default=None,
         description="The due date (maturation date) of the security.",
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the security.",
     )

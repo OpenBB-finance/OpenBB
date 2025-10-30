@@ -1,7 +1,7 @@
 """Benzinga Helpers."""
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from openbb_core.provider.utils.errors import UnauthorizedError
 
 
 async def response_callback(response, _):
@@ -17,8 +17,5 @@ async def response_callback(response, _):
         if "access denied" in results[0].lower():
             raise UnauthorizedError(f"Unauthorized Benzinga request -> {results[0]}")
         raise OpenBBError(results[0])
-
-    if isinstance(results, list) and not results:
-        raise EmptyDataError("The request was returned empty.")
 
     return results

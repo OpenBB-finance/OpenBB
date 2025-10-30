@@ -7,10 +7,11 @@ from unittest.mock import patch
 # pylint: disable=import-outside-toplevel
 def test_credentials():
     """Test the Credentials model."""
-    with patch(
-        "openbb_core.app.model.credentials.ProviderInterface"
-    ) as mock_provider_interface, patch.dict(
-        "os.environ", {"MOCK_ENV_API_KEY": "mock_env_key_value"}
+    with (
+        patch(
+            "openbb_core.app.model.credentials.ProviderInterface"
+        ) as mock_provider_interface,
+        patch.dict("os.environ", {"MOCK_ENV_API_KEY": "mock_env_key_value"}),
     ):
         mock_provider_interface.return_value.credentials = {
             "benzinga": ["benzinga_api_key"],

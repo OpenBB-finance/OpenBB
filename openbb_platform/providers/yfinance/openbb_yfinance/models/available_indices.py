@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.available_indices import (
@@ -36,22 +36,22 @@ class YFinanceAvailableIndicesData(AvailableIndicesData):
 class YFinanceAvailableIndicesFetcher(
     Fetcher[
         YFinanceAvailableIndicesQueryParams,
-        List[YFinanceAvailableIndicesData],
+        list[YFinanceAvailableIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceAvailableIndicesQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceAvailableIndicesQueryParams:
         """Transform the query params."""
         return YFinanceAvailableIndicesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: YFinanceAvailableIndicesQueryParams,  # pylint disable=unused-argument
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         from pandas import DataFrame  # pylint: disable=import-outside-toplevel
 
@@ -62,7 +62,7 @@ class YFinanceAvailableIndicesFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceAvailableIndicesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[YFinanceAvailableIndicesData]:
+        query: YFinanceAvailableIndicesQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[YFinanceAvailableIndicesData]:
         """Return the transformed data."""
         return [YFinanceAvailableIndicesData.model_validate(d) for d in data]

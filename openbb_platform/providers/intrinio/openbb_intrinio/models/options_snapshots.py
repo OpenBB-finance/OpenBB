@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -26,7 +26,7 @@ class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_options_snapshots_v2
     """
 
-    date: Optional[Union[dateType, datetime, str]] = Field(
+    date: dateType | datetime | str | None = Field(
         default=None,
         description="The date of the data. Can be a datetime or an ISO datetime string."
         + " Data appears to go back to around 2022-06-01"
@@ -42,56 +42,56 @@ class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
 class IntrinioOptionsSnapshotsData(OptionsSnapshotsData):
     """Intrinio Options Snapshots Data. Warning: This is a large file."""
 
-    bid: List[Union[float, None]] = Field(
+    bid: list[float | None] = Field(
         default_factory=list,
         description="The last bid price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_size: List[Union[int, None]] = Field(
+    bid_size: list[int | None] = Field(
         default_factory=list,
         description="The size of the last bid price.",
     )
-    bid_timestamp: List[Union[datetime, None]] = Field(
+    bid_timestamp: list[datetime | None] = Field(
         default_factory=list,
         description="The timestamp of the last bid price.",
     )
-    ask: List[Union[float, None]] = Field(
+    ask: list[float | None] = Field(
         default_factory=list,
         description="The last ask price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_size: List[Union[int, None]] = Field(
+    ask_size: list[int | None] = Field(
         default_factory=list,
         description="The size of the last ask price.",
     )
-    ask_timestamp: List[Union[datetime, None]] = Field(
+    ask_timestamp: list[datetime | None] = Field(
         default_factory=list,
         description="The timestamp of the last ask price.",
     )
-    total_bid_volume: List[Union[int, None]] = Field(
+    total_bid_volume: list[int | None] = Field(
         default_factory=list,
         description="Total volume of bids.",
     )
-    bid_high: List[Union[float, None]] = Field(
+    bid_high: list[float | None] = Field(
         default_factory=list,
         description="The highest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    bid_low: List[Union[float, None]] = Field(
+    bid_low: list[float | None] = Field(
         default_factory=list,
         description="The lowest bid price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    total_ask_volume: List[Union[int, None]] = Field(
+    total_ask_volume: list[int | None] = Field(
         default_factory=list,
         description="Total volume of asks.",
     )
-    ask_high: List[Union[float, None]] = Field(
+    ask_high: list[float | None] = Field(
         default_factory=list,
         description="The highest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ask_low: List[Union[float, None]] = Field(
+    ask_low: list[float | None] = Field(
         default_factory=list,
         description="The lowest ask price.",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -101,13 +101,13 @@ class IntrinioOptionsSnapshotsData(OptionsSnapshotsData):
 class IntrinioOptionsSnapshotsFetcher(
     Fetcher[
         IntrinioOptionsSnapshotsQueryParams,
-        List[IntrinioOptionsSnapshotsData],
+        list[IntrinioOptionsSnapshotsData],
     ]
 ):
     """Intrinio Options Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioOptionsSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioOptionsSnapshotsQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from pytz import timezone
@@ -152,7 +152,7 @@ class IntrinioOptionsSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioOptionsSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Return the raw data from the Intrinio endpoint."""
@@ -221,7 +221,7 @@ class IntrinioOptionsSnapshotsFetcher(
         query: IntrinioOptionsSnapshotsQueryParams,
         data: "DataFrame",
         **kwargs: Any,
-    ) -> List[IntrinioOptionsSnapshotsData]:
+    ) -> list[IntrinioOptionsSnapshotsData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         import numpy as np

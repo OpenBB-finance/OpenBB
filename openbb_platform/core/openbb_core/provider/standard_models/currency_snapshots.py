@@ -1,6 +1,6 @@
 """Currency Snapshots Standard Model."""
 
-from typing import List, Literal, Optional, Union
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -22,7 +22,7 @@ class CurrencySnapshotsQueryParams(QueryParams):
         + " of the domestic currency.",
         default="indirect",
     )
-    counter_currencies: Optional[Union[str, List[str]]] = Field(
+    counter_currencies: str | list[str] | None = Field(
         description="An optional list of counter currency symbols to filter for."
         + " None returns all.",
         default=None,
@@ -56,26 +56,26 @@ class CurrencySnapshotsData(Data):
         + " one unit of the domestic currency."
         + " To inverse the perspective, set the 'quote_type' parameter as 'direct'.",
     )
-    open: Optional[float] = Field(
+    open: float | None = Field(
         description=DATA_DESCRIPTIONS.get("open", ""),
         default=None,
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         description=DATA_DESCRIPTIONS.get("high", ""),
         default=None,
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         description=DATA_DESCRIPTIONS.get("low", ""),
         default=None,
     )
-    close: Optional[float] = Field(
+    close: float | None = Field(
         description=DATA_DESCRIPTIONS.get("close", ""),
         default=None,
     )
-    volume: Optional[int] = Field(
+    volume: int | None = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""), default=None
     )
-    prev_close: Optional[float] = Field(
+    prev_close: float | None = Field(
         description=DATA_DESCRIPTIONS.get("prev_close", ""),
         default=None,
     )

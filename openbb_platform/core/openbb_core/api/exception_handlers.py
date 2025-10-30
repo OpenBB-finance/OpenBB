@@ -4,7 +4,7 @@
 
 import logging
 from collections.abc import Iterable
-from typing import Any, Union
+from typing import Any
 
 from fastapi import Request
 from fastapi.exceptions import ResponseValidationError
@@ -62,7 +62,7 @@ class ExceptionHandlers:
 
     @staticmethod
     async def validation(
-        request: Request, error: Union[ValidationError, ResponseValidationError]
+        request: Request, error: ValidationError | ResponseValidationError
     ):
         """Exception handler for ValidationError."""
         # Some validation is performed at Fetcher level.

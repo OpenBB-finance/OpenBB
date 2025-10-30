@@ -2,19 +2,15 @@
 
 import asyncio
 import os
+from collections.abc import Awaitable, Callable
 from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import (
     TYPE_CHECKING,
-    Awaitable,
-    Callable,
-    List,
     Literal,
-    Optional,
     TypeVar,
-    Union,
     cast,
 )
 
@@ -25,6 +21,7 @@ from openbb_core.provider.utils.client import (
     ClientSession,
     get_user_agent,
 )
+from openbb_core.provider.utils.errors import UnauthorizedError
 from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
@@ -35,14 +32,14 @@ P = ParamSpec("P")
 D = TypeVar("D", bound="Data")
 
 
-def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
+def check_item(item: str, allowed: list[str], threshold: float = 0.75) -> None:
     """Check if an item is in a list of allowed items and raise an error if not.
 
     Parameters
     ----------
     item : str
         The item to check.
-    allowed : List[str]
+    allowed : list[str]
         The list of allowed items.
     threshold : float, optional
         The similarity threshold for the error message, by default 0.75
@@ -62,7 +59,7 @@ def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
         raise ValueError(f"'{item}' is not available.")
 
 
-def get_querystring(items: dict, exclude: List[str]) -> str:
+def get_querystring(items: dict, exclude: list[str]) -> str:
     """Turn a dictionary into a querystring, excluding the keys in the exclude list.
 
     Parameters
@@ -70,7 +67,7 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     items: dict
         The dictionary to be turned into a querystring.
 
-    exclude: List[str]
+    exclude: list[str]
         The keys to be excluded from the querystring.
 
     Returns
@@ -202,14 +199,12 @@ def get_requests_session(**kwargs) -> "Session":
     if cookies := python_settings.get("cookies"):
         _session.cookies = (
             cookies
-            if isinstance(cookies, requests.cookies.RequestsCookieJar)
-            else requests.cookies.cookiejar_from_dict(cookies)
+            if isinstance(cookies, requests.cookies.RequestsCookieJar)  # type: ignore
+            else requests.cookies.cookiejar_from_dict(cookies)  # type: ignore
         )
 
     if auth := python_settings.get("auth"):
-        _session.auth = (
-            auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)
-        )
+        _session.auth = auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)  # type: ignore
 
     if kwargs:
         for key, value in kwargs.items():
@@ -348,11 +343,11 @@ async def amake_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
-    ] = None,
+    response_callback: (
+        Callable[[ClientResponse, ClientSession], Awaitable[dict | list[dict]]] | None
+    ) = None,
     **kwargs,
-) -> Union[dict, List[dict]]:
+) -> dict | list[dict]:
     """
     Abstract helper to make requests from a url with potential headers and params.
 
@@ -364,7 +359,7 @@ async def amake_request(
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
-    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, list[dict]]]], optional
         Async callback with response and session as arguments that returns the json, by default None
     session : ClientSession, optional
         Custom session to use for requests, by default None
@@ -372,7 +367,7 @@ async def amake_request(
 
     Returns
     -------
-    Union[dict, List[dict]]
+    Union[dict, list[dict]]
         Response json
     """
     if method.upper() not in ["GET", "POST"]:
@@ -396,38 +391,40 @@ async def amake_request(
 
 
 async def amake_requests(
-    urls: Union[str, List[str]],
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
-    ] = None,
+    urls: str | list[str],
+    response_callback: (
+        Callable[[ClientResponse, ClientSession], Awaitable[dict | list[dict]]] | None
+    ) = None,
     **kwargs,
 ):
     """Make multiple requests asynchronously.
 
     Parameters
     ----------
-    urls : Union[str, List[str]]
-        List of urls to make requests to
+    urls : Union[str, list[str]]
+        list of urls to make requests to
     method : Literal["GET", "POST"], optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
-    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, list[dict]]]], optional
         Async callback with response and session as arguments that returns the json, by default None
     session : ClientSession, optional
         Custom session to use for requests, by default None
 
     Returns
     -------
-    Union[dict, List[dict]]
+    Union[dict, list[dict]]
         Response json
     """
     session = kwargs.pop("session", await get_async_requests_session(**kwargs))
+    ret_exceptions = kwargs.pop("return_exceptions", False)
     kwargs["response_callback"] = response_callback
     urls = urls if isinstance(urls, list) else [urls]
 
     try:
         results: list = []
+        exceptions: list = []
 
         for result in await asyncio.gather(
             *[amake_request(url, session=session, **kwargs) for url in urls],
@@ -435,15 +432,28 @@ async def amake_requests(
         ):
             is_exception = isinstance(result, Exception)
 
-            if is_exception and kwargs.get("raise_for_status", False):
+            if is_exception and (
+                isinstance(result, UnauthorizedError)
+                or kwargs.get("raise_for_status", False)
+            ):
                 raise result  # type: ignore[misc]
 
-            if is_exception or not result:
+            if is_exception and ret_exceptions:
+                results.append(result)  # type: ignore[arg-type]
                 continue
 
-            results.extend(
-                result if isinstance(result, list) else [result]  # type: ignore[list-item]
-            )
+            if is_exception:
+                exceptions.append(result)  # type: ignore[arg-type]
+                continue
+
+            if not result:
+                continue
+
+            if not isinstance(result, Exception):
+                results.extend(result if isinstance(result, list) else [result])  # type: ignore[list-item]
+
+        if exceptions and not results and not ret_exceptions:
+            raise exceptions[0]  # type: ignore
 
         return results
 
@@ -451,7 +461,7 @@ async def amake_requests(
         await session.close()
 
 
-def combine_certificates(cert: str, bundle: Optional[str] = None) -> str:
+def combine_certificates(cert: str, bundle: str | None = None) -> str:
     """Combine a certificate and a bundle into a single certificate file. Use the default bundle if none is provided."""
     # pylint: disable=import-outside-toplevel
     import atexit  # noqa
@@ -569,7 +579,7 @@ def to_snake_case(string: str) -> str:
 
 
 async def maybe_coroutine(
-    func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
+    func: Callable[P, T | Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
     if not iscoroutinefunction(func):
@@ -593,8 +603,8 @@ def run_async(
 
 
 def filter_by_dates(
-    data: List[D], start_date: Optional[date] = None, end_date: Optional[date] = None
-) -> List[D]:
+    data: list[D], start_date: date | None = None, end_date: date | None = None
+) -> list[D]:
     """Filter data by dates."""
     if start_date is None and end_date is None:
         return data
@@ -615,9 +625,7 @@ def filter_by_dates(
     return list(filter(_filter, data))
 
 
-def safe_fromtimestamp(
-    timestamp: Union[float, int], tz: Optional[timezone] = None
-) -> datetime:
+def safe_fromtimestamp(timestamp: float | int, tz: timezone | None = None) -> datetime:
     """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
     if os.name == "nt" and timestamp < 0:
         return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)

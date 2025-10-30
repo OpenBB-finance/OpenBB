@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -89,7 +89,7 @@ class EconDbGdpNominalData(GdpNominalData):
         description="Nominal GDP growth rate year over year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    value: Union[int, float] = Field(
+    value: int | float = Field(
         description="Nominal GDP value for the country and date.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
@@ -98,7 +98,7 @@ class EconDbGdpNominalData(GdpNominalData):
 class EconDbGdpNominalFetcher(
     Fetcher[
         EconDbGdpNominalQueryParams,
-        List[EconDbGdpNominalData],
+        list[EconDbGdpNominalData],
     ]
 ):
     """EconDB GDP Nominal Fetcher."""
@@ -106,16 +106,16 @@ class EconDbGdpNominalFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbGdpNominalQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbGdpNominalQueryParams:
         """Transform the query parameters."""
         return EconDbGdpNominalQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: EconDbGdpNominalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -123,7 +123,7 @@ class EconDbGdpNominalFetcher(
         from openbb_econdb.utils.helpers import get_context, parse_context, COUNTRY_MAP
 
         country = query.country.split(",")
-        results: List = []
+        results: list = []
 
         async def get_one_country(_country):
             """Get the GDP data for one country."""
@@ -186,9 +186,9 @@ class EconDbGdpNominalFetcher(
     @staticmethod
     def transform_data(
         query: EconDbGdpNominalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs,
-    ) -> List[EconDbGdpNominalData]:
+    ) -> list[EconDbGdpNominalData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime

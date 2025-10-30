@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -27,22 +27,22 @@ class IntrinioCompanyFilingsQueryParams(CompanyFilingsQueryParams):
 
     __alias_dict__ = {"form_type": "report_type", "limit": "page_size"}
 
-    form_type: Optional[str] = Field(
+    form_type: str | None = Field(
         default=None, description="SEC form type to filter by."
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["start_date"],
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["end_date"],
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["limit"],
     )
-    thea_enabled: Optional[bool] = Field(
+    thea_enabled: bool | None = Field(
         default=None,
         description="Return filings that have been read by Intrinio's Thea NLP.",
     )
@@ -60,24 +60,22 @@ class IntrinioCompanyFilingsData(CompanyFilingsData):
     """Intrinio Company Filings Data."""
 
     id: str = Field(description="Intrinio ID of the filing.")
-    period_end_date: Optional[dateType] = Field(
+    period_end_date: dateType | None = Field(
         default=None,
         description="Ending date of the fiscal period for the filing.",
     )
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: datetime | None = Field(
         default=None, description="Accepted date of the filing."
     )
     sec_unique_id: str = Field(description="SEC unique ID of the filing.")
-    filing_url: Optional[str] = Field(
-        default=None, description="URL to the filing page."
-    )
-    instance_url: Optional[str] = Field(
+    filing_url: str | None = Field(default=None, description="URL to the filing page.")
+    instance_url: str | None = Field(
         default=None,
         description="URL for the XBRL filing for the report.",
     )
     industry_group: str = Field(description="Industry group of the company.")
     industry_category: str = Field(description="Industry category of the company.")
-    word_count: Optional[int] = Field(
+    word_count: int | None = Field(
         default=None, description="Number of words in the filing, if available."
     )
 
@@ -106,7 +104,7 @@ class IntrinioCompanyFilingsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioCompanyFilingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the Intrinio endpoint."""

@@ -1,7 +1,7 @@
 """Main Indicators."""
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Literal, Union
+from typing import Literal
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -73,7 +73,7 @@ main_indicators_order = [
 
 async def fetch_data(url, use_cache: bool = True):
     """Fetch the data with or without the cached session object."""
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_main_indicators"
         async with CachedSession(
@@ -89,23 +89,23 @@ async def fetch_data(url, use_cache: bool = True):
     return response
 
 
-async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
+async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915,R0917
     country: str = "US",
     start_date: str = (datetime.now() - timedelta(weeks=52 * 3)).strftime("%Y-%m-%d"),
     end_date: str = datetime.now().strftime("%Y-%m-%d"),
     frequency: Literal["annual", "quarter", "month"] = "quarter",
     transform: Literal["tpop", "toya", "level", "tusd", None] = "toya",
     use_cache: bool = True,
-) -> List[Dict]:
+) -> list[dict]:
     """Get the main indicators for a given country."""
     freq = trends_freq_dict.get(frequency)
     transform = trends_transform_dict.get(transform)  # type: ignore
     if len(country) == 3:
-        country = THREE_LETTER_ISO_MAP.get(country.upper())
+        country = THREE_LETTER_ISO_MAP.get(country.upper())  # type: ignore
         if not country:
             raise OpenBBError(f"Error: Invalid country code -> {country}")
     if country in COUNTRY_MAP:
-        country = COUNTRY_MAP.get(country)
+        country = COUNTRY_MAP.get(country)  # type: ignore
     if len(country) != 2:
         raise OpenBBError(
             f"Error: Please supply a 2-Letter ISO Country Code -> {country}"
@@ -118,20 +118,20 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
         + f"&dateStart={start_date}&dateEnd={end_date}"
     )
     r = await fetch_data(parents_url, use_cache)
-    row_names = r.get("row_names")
+    row_names = r.get("row_names")  # type: ignore
     row_symbols = []
     row_is_parent = []
-    row_symbols = [d["code"] for d in row_names]
-    row_is_parent = [d["is_parent"] for d in row_names]
-    parent_map = {d["code"]: d["is_parent"] for d in row_names}
-    units_col = r.get("units_col")
-    metadata = r.get("footnote")
-    row_names = r.get("row_names")
-    row_name_map = {d["code"]: d["verbose"].title() for d in row_names}
-    row_units_dict = dict(zip(row_symbols, units_col))
+    row_symbols = [d["code"] for d in row_names]  # type: ignore
+    row_is_parent = [d["is_parent"] for d in row_names]  # type: ignore
+    parent_map = {d["code"]: d["is_parent"] for d in row_names}  # type: ignore
+    units_col = r.get("units_col")  # type: ignore
+    metadata = r.get("footnote")  # type: ignore
+    row_names = r.get("row_names")  # type: ignore
+    row_name_map = {d["code"]: d["verbose"].title() for d in row_names}  # type: ignore
+    row_units_dict = dict(zip(row_symbols, units_col))  # type: ignore
     units_df = concat([Series(units_col), Series(row_is_parent)], axis=1)
     units_df.columns = ["units", "is_parent"]
-    df = DataFrame(r["data"]).set_index("indicator")
+    df = DataFrame(r["data"]).set_index("indicator")  # type: ignore
     df = df.pivot(columns="obs_time", values="obs_value").filter(
         items=row_symbols, axis=0
     )
@@ -139,7 +139,7 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
     df["is_parent"] = df.index.map(parent_map.get)
     df = df.set_index("is_parent", append=True)
 
-    async def get_children(  # pylint: disable=R0913
+    async def get_children(
         parent, country, freq, transform, start_date, end_date, use_cache
     ) -> DataFrame:
         """Get the child elements for the main indicator symbols."""
@@ -149,15 +149,15 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
             + f"&parent_id={parent}&dateStart={start_date}&dateEnd={end_date}"
         )
         child_r = await fetch_data(children_url, use_cache)
-        row_names = child_r.get("row_names")
+        row_names = child_r.get("row_names")  # type: ignore
         row_symbols = []
-        row_symbols = [d["code"] for d in row_names]
-        units_col = child_r.get("units_col")
-        metadata.extend(child_r.get("footnote"))
-        row_names = child_r.get("row_names")
-        row_name_map.update({d["code"]: d["verbose"].title() for d in row_names})
-        row_units_dict = dict(zip(row_symbols, units_col))
-        child_df = DataFrame(child_r["data"]).set_index("indicator")
+        row_symbols = [d["code"] for d in row_names]  # type: ignore
+        units_col = child_r.get("units_col")  # type: ignore
+        metadata.extend(child_r.get("footnote"))  # type: ignore
+        row_names = child_r.get("row_names")  # type: ignore
+        row_name_map.update({d["code"]: d["verbose"].title() for d in row_names})  # type: ignore
+        row_units_dict = dict(zip(row_symbols, units_col))  # type: ignore
+        child_df = DataFrame(child_r["data"]).set_index("indicator")  # type: ignore
         child_df = child_df.pivot(columns="obs_time", values="obs_value").filter(
             items=row_symbols, axis=0
         )
@@ -174,10 +174,10 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
     new_df = new_df.reset_index().rename(columns={"level_0": "indicator"})
 
     has_children = new_df[
-        new_df["is_parent"] == True  # noqa pylint: disable=C0121
+        new_df["is_parent"] == True  # noqa  # pylint: disable=C0121
     ].indicator.tolist()
 
-    async def append_children(  # pylint: disable=R0913
+    async def append_children(  # pylint: disable=R0913,R0917
         parent_df, parent, country, freq, transform, start_date, end_date, use_cache
     ):
         """Get the child element and insert it below the parent row."""
@@ -209,7 +209,7 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
     for col in new_df.columns:
         new_df[col] = new_df[col].astype(str).str.replace(" ", "").astype(float)
     new_df = new_df.apply(lambda row: row / 100 if "%" in row.name[3] else row, axis=1)
-    new_df = new_df.iloc[:, ::-1]
+    new_df = new_df.iloc[:, ::-1]  # type: ignore
     new_df = new_df.fillna("N/A").replace("N/A", None)
     output = new_df.copy()
     output.columns.name = "date"

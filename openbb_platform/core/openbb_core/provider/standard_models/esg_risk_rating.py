@@ -1,6 +1,6 @@
 """ESG Risk Rating Standard Model."""
 
-from typing import List, Literal, Set, Union
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -38,7 +38,7 @@ class ESGRiskRatingData(Data):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+    def to_upper(cls, v: str | list[str] | set[str]):
         """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()

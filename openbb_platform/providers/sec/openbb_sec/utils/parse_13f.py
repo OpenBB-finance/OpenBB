@@ -1,6 +1,6 @@
 """Utility functions for parsing SEC Form 13F-HR."""
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -18,7 +18,7 @@ def date_to_quarter_end(date: str) -> str:
     )
 
 
-async def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
+async def get_13f_candidates(symbol: str | None = None, cik: str | None = None):
     """Get the 13F-HR filings for a given symbol or CIK."""
     # pylint: disable=import-outside-toplevel
     from openbb_sec.models.company_filings import SecCompanyFilingsFetcher

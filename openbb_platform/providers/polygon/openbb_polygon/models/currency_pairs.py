@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -34,21 +34,21 @@ class PolygonCurrencyPairsData(CurrencyPairsData):
         "name": "currency_name",
         "symbol": "ticker",
     }
-    currency_symbol: Optional[str] = Field(
+    currency_symbol: str | None = Field(
         default=None, description="The symbol of the quote currency."
     )
-    base_currency_symbol: Optional[str] = Field(
+    base_currency_symbol: str | None = Field(
         default=None, description="The symbol of the base currency."
     )
-    base_currency_name: Optional[str] = Field(
+    base_currency_name: str | None = Field(
         default=None, description="Name of the base currency."
     )
     market: str = Field(description="Name of the trading market. Always 'fx'.")
     locale: str = Field(description="Locale of the currency pair.")
-    last_updated: Optional[dateType] = Field(
+    last_updated: dateType | None = Field(
         default=None, description="The date the reference data was last updated."
     )
-    delisted: Optional[dateType] = Field(
+    delisted: dateType | None = Field(
         default=None, description="The date the item was delisted."
     )
 
@@ -62,34 +62,30 @@ class PolygonCurrencyPairsData(CurrencyPairsData):
 class PolygonCurrencyPairsFetcher(
     Fetcher[
         PolygonCurrencyPairsQueryParams,
-        List[PolygonCurrencyPairsData],
+        list[PolygonCurrencyPairsData],
     ]
 ):
     """Polygon Currency Pairs Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCurrencyPairsQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCurrencyPairsQueryParams:
         """Transform the query parameters."""
         return PolygonCurrencyPairsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonCurrencyPairsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the Polygon API."""
         # pylint: disable=import-outside-toplevel
         from openbb_polygon.utils.helpers import get_data
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
-        request_url = (
-            f"https://api.polygon.io/v3/reference/"
-            f"tickers?&market=fx&limit=1000"
-            f"&apiKey={api_key}"
-        )
+        request_url = f"https://api.polygon.io/v3/reference/tickers?&market=fx&limit=1000&apiKey={api_key}"
         data = {"next_url": request_url}
-        all_data: List[Dict] = []
+        all_data: list[dict] = []
         while "next_url" in data:
             data = await get_data(request_url, **kwargs)
             if isinstance(data, list):
@@ -114,9 +110,9 @@ class PolygonCurrencyPairsFetcher(
     @staticmethod
     def transform_data(
         query: PolygonCurrencyPairsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonCurrencyPairsData]:
+    ) -> list[PolygonCurrencyPairsData]:
         """Filter data by search query and validate the model."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

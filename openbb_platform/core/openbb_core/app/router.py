@@ -2,15 +2,12 @@
 
 import traceback
 import warnings
+from collections.abc import Callable
 from functools import lru_cache
 from inspect import isclass
 from typing import (
+    Annotated,
     Any,
-    Callable,
-    Dict,
-    List,
-    Optional,
-    Type,
     get_args,
     get_origin,
     get_type_hints,
@@ -31,7 +28,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.env import Env
 from pydantic import BaseModel
-from typing_extensions import Annotated, ParamSpec
+from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
 
@@ -57,19 +54,19 @@ class Router:
         return self._api_router.prefix
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> str | None:
         """Description."""
         return self._description
 
     @property
-    def routers(self) -> Dict[str, "Router"]:
+    def routers(self) -> dict[str, "Router"]:
         """Routers nested within the Router, i.e. sub-routers."""
         return self._routers
 
     def __init__(
         self,
         prefix: str = "",
-        description: Optional[str] = None,
+        description: str | None = None,
     ) -> None:
         """Initialize Router."""
         self._api_router = APIRouter(
@@ -77,10 +74,10 @@ class Router:
             responses={404: {"description": "Not found"}},
         )
         self._description = description
-        self._routers: Dict[str, Router] = {}
+        self._routers: dict[str, Router] = {}
 
     @overload
-    def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
+    def command(self, func: Callable[P, OBBject] | None) -> Callable[P, OBBject]:
         pass
 
     @overload
@@ -89,9 +86,9 @@ class Router:
 
     def command(
         self,
-        func: Optional[Callable[P, OBBject]] = None,
+        func: Callable[P, OBBject] | None = None,
         **kwargs,
-    ) -> Optional[Callable]:
+    ) -> Callable | None:
         """Command decorator for routes."""
         if func is None:
             return lambda f: self.command(f, **kwargs)
@@ -103,7 +100,6 @@ class Router:
         if no_validate is True:
             func.__annotations__["return"] = None
         if func := SignatureInspector.complete(func, model):
-
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
@@ -172,7 +168,9 @@ class Router:
         """Include router."""
         tags = [prefix.strip("/")] if prefix else None
         self._api_router.include_router(
-            router=router.api_router, prefix=prefix, tags=tags  # type: ignore
+            router=router.api_router,
+            prefix=prefix,
+            tags=tags,  # type: ignore
         )
         name = prefix if prefix else router.prefix
         self._routers[name.strip("/")] = router
@@ -213,7 +211,7 @@ class SignatureInspector:
     @classmethod
     def complete(
         cls, func: Callable[P, OBBject], model: str
-    ) -> Optional[Callable[P, OBBject]]:
+    ) -> Callable[P, OBBject] | None:
         """Complete function signature."""
         if isclass(return_type := func.__annotations__["return"]) and not issubclass(
             return_type, OBBject
@@ -303,7 +301,7 @@ class SignatureInspector:
 
     @staticmethod
     def validate_signature(
-        func: Callable[P, OBBject], expected: Dict[str, type]
+        func: Callable[P, OBBject], expected: dict[str, type]
     ) -> None:
         """Validate function signature before binding to model."""
         for k, v in expected.items():
@@ -327,7 +325,7 @@ class SignatureInspector:
 
     @staticmethod
     def inject_return_annotation(
-        func: Callable[P, OBBject], annotation: Type[OBBject]
+        func: Callable[P, OBBject], annotation: type[OBBject]
     ) -> Callable[P, OBBject]:
         """Annotate function with return annotation."""
         func.__annotations__["return"] = annotation
@@ -361,23 +359,23 @@ class CommandMap:
     """Matching Routes with Commands."""
 
     def __init__(
-        self, router: Optional[Router] = None, coverage_sep: Optional[str] = None
+        self, router: Router | None = None, coverage_sep: str | None = None
     ) -> None:
         """Initialize CommandMap."""
         self._router = router or RouterLoader.from_extensions()
         self._map = self.get_command_map(router=self._router)
-        self._provider_coverage: Dict[str, List[str]] = {}
-        self._command_coverage: Dict[str, List[str]] = {}
-        self._commands_model: Dict[str, str] = {}
+        self._provider_coverage: dict[str, list[str]] = {}
+        self._command_coverage: dict[str, list[str]] = {}
+        self._commands_model: dict[str, str] = {}
         self._coverage_sep = coverage_sep
 
     @property
-    def map(self) -> Dict[str, Callable]:
+    def map(self) -> dict[str, Callable]:
         """Get command map."""
         return self._map
 
     @property
-    def provider_coverage(self) -> Dict[str, List[str]]:
+    def provider_coverage(self) -> dict[str, list[str]]:
         """Get provider coverage."""
         if not self._provider_coverage:
             self._provider_coverage = self.get_provider_coverage(
@@ -386,7 +384,7 @@ class CommandMap:
         return self._provider_coverage
 
     @property
-    def command_coverage(self) -> Dict[str, List[str]]:
+    def command_coverage(self) -> dict[str, list[str]]:
         """Get command coverage."""
         if not self._command_coverage:
             self._command_coverage = self.get_command_coverage(
@@ -395,7 +393,7 @@ class CommandMap:
         return self._command_coverage
 
     @property
-    def commands_model(self) -> Dict[str, str]:
+    def commands_model(self) -> dict[str, str]:
         """Get commands model."""
         if not self._commands_model:
             self._commands_model = self.get_commands_model(
@@ -406,7 +404,7 @@ class CommandMap:
     @staticmethod
     def get_command_map(
         router: Router,
-    ) -> Dict[str, Callable]:
+    ) -> dict[str, Callable]:
         """Get command map."""
         api_router = router.api_router
         command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
@@ -414,14 +412,14 @@ class CommandMap:
 
     @staticmethod
     def get_provider_coverage(
-        router: Router, sep: Optional[str] = None
-    ) -> Dict[str, List[str]]:
+        router: Router, sep: str | None = None
+    ) -> dict[str, list[str]]:
         """Get provider coverage."""
         api_router = router.api_router
 
         mapping = ProviderInterface().map
 
-        coverage_map: Dict[Any, Any] = {}
+        coverage_map: dict[Any, Any] = {}
         for route in api_router.routes:
             openapi_extra = getattr(route, "openapi_extra", None)
             if openapi_extra:
@@ -445,14 +443,14 @@ class CommandMap:
 
     @staticmethod
     def get_command_coverage(
-        router: Router, sep: Optional[str] = None
-    ) -> Dict[str, List[str]]:
+        router: Router, sep: str | None = None
+    ) -> dict[str, list[str]]:
         """Get command coverage."""
         api_router = router.api_router
 
         mapping = ProviderInterface().map
 
-        coverage_map: Dict[Any, Any] = {}
+        coverage_map: dict[Any, Any] = {}
         for route in api_router.routes:
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
@@ -463,34 +461,30 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = (
-                            route.path if sep is None else route.path.replace("/", sep)  # type: ignore
-                        )
+                        rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
                         if route.path not in coverage_map:  # type: ignore
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
         return coverage_map
 
     @staticmethod
-    def get_commands_model(router: Router, sep: Optional[str] = None) -> Dict[str, str]:
+    def get_commands_model(router: Router, sep: str | None = None) -> dict[str, str]:
         """Get commands model."""
         api_router = router.api_router
 
-        coverage_map: Dict[Any, Any] = {}
+        coverage_map: dict[Any, Any] = {}
         for route in api_router.routes:
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
                 if model and hasattr(route, "path"):
-                    rp = (
-                        route.path if sep is None else route.path.replace("/", sep)  # type: ignore
-                    )
+                    rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
                     if route.path not in coverage_map:  # type: ignore
                         coverage_map[rp] = []
                     coverage_map[rp] = model
         return coverage_map
 
-    def get_command(self, route: str) -> Optional[Callable]:
+    def get_command(self, route: str) -> Callable | None:
         """Get command from route."""
         return self._map.get(route, None)
 

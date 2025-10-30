@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,7 +19,7 @@ from pydantic import Field
 class FredUofMichiganQueryParams(UofMichiganQueryParams):
     """FRED University of Michigan Survey Query. Data from FRED is delayed by 1 month."""
 
-    frequency: Optional[Literal["annual", "quarter"]] = Field(
+    frequency: Literal["annual", "quarter"] | None = Field(
         default=None,
         description="Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
         json_schema_extra={
@@ -29,7 +29,7 @@ class FredUofMichiganQueryParams(UofMichiganQueryParams):
             ]
         },
     )
-    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] | None = Field(
         default=None,
         description="""A key that indicates the aggregation method used for frequency aggregation.
         \n    avg = Average
@@ -38,9 +38,9 @@ class FredUofMichiganQueryParams(UofMichiganQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         \n    None = No transformation
@@ -64,21 +64,21 @@ class FredUofMichiganData(UofMichiganData):
 
 
 class FredUofMichiganFetcher(
-    Fetcher[FredUofMichiganQueryParams, List[FredUofMichiganData]]
+    Fetcher[FredUofMichiganQueryParams, list[FredUofMichiganData]]
 ):
     """FRED University of Michigan Survey Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredUofMichiganQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredUofMichiganQueryParams:
         """Transform query."""
         return FredUofMichiganQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredUofMichiganQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         ids = ["UMCSENT", "MICH"]
         frequency = query.frequency[:1].lower() if query.frequency else None
@@ -108,8 +108,8 @@ class FredUofMichiganFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredUofMichiganQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FredUofMichiganData]:
+        query: FredUofMichiganQueryParams, data: dict, **kwargs: Any
+    ) -> list[FredUofMichiganData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

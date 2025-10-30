@@ -91,6 +91,7 @@ def test_etf_search(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "adjustment": "splits_only",
             }
         ),
         (
@@ -269,15 +270,24 @@ def test_etf_sectors(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "QQQ", "cik": None, "provider": "fmp"}),
+        ({"symbol": "QQQ", "year": 2025, "quarter": 1, "provider": "fmp"}),
+        (
+            {
+                "symbol": "DIA",
+                "year": 2025,
+                "quarter": 1,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
-def test_etf_holdings_date(params, obb):
-    """Test the ETF holdings date endpoint."""
+def test_etf_nport_disclosure(params, obb):
+    """Test the ETF nport disclosure endpoint."""
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.etf.holdings_date(**params)
+    result = obb.etf.nport_disclosure(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -288,17 +298,7 @@ def test_etf_holdings_date(params, obb):
     [
         (
             {
-                "symbol": "IOO",
-                "date": "2023-03-31",
-                "cik": None,
-                "provider": "fmp",
-            }
-        ),
-        (
-            {
                 "symbol": "SILJ",
-                "date": "2019-12-31",
-                "cik": None,
                 "provider": "fmp",
             }
         ),

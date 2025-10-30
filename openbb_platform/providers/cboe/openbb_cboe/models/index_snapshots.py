@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_snapshots import (
@@ -41,34 +41,34 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
         "change_percent": "price_change_percent",
         "price": "current_price",
     }
-    bid: Optional[float] = Field(default=None, description="Current bid price.")
-    ask: Optional[float] = Field(default=None, description="Current ask price.")
-    open: Optional[float] = Field(
+    bid: float | None = Field(default=None, description="Current bid price.")
+    ask: float | None = Field(default=None, description="Current ask price.")
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
-    close: Optional[float] = Field(
+    close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
-    volume: Optional[int] = Field(
+    volume: int | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    prev_close: Optional[float] = Field(
+    prev_close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("prev_close", "")
     )
-    change: Optional[float] = Field(default=None, description="Change in price.")
-    change_percent: Optional[float] = Field(
+    change: float | None = Field(default=None, description="Change in price.")
+    change_percent: float | None = Field(
         default=None, description="Change in price as a normalized percentage."
     )
-    last_trade_time: Optional[datetime] = Field(
+    last_trade_time: datetime | None = Field(
         default=None, description="Last trade timestamp for the symbol."
     )
-    status: Optional[str] = Field(
+    status: str | None = Field(
         default=None, description="Status of the market, open or closed."
     )
 
@@ -76,22 +76,22 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
 class CboeIndexSnapshotsFetcher(
     Fetcher[
         CboeIndexSnapshotsQueryParams,
-        List[CboeIndexSnapshotsData],
+        list[CboeIndexSnapshotsData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeIndexSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeIndexSnapshotsQueryParams:
         """Transform the query."""
         return CboeIndexSnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        credentials: dict[str, str] | None,  # pylint: disable=unused-argument
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Cboe endpoint"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -108,9 +108,9 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: CboeIndexSnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[CboeIndexSnapshotsData]:
+    ) -> list[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

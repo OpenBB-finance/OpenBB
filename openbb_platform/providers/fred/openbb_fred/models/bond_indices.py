@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-statements,too-many-branches
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -316,9 +316,9 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
             {index_choices_str}\n
         """,
     )
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -333,8 +333,8 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -384,9 +384,9 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -404,13 +404,13 @@ class FredBondIndicesQueryParams(BondIndicesQueryParams):
             "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
         },
     )
-    _symbols: Optional[str] = PrivateAttr(default=None)
+    _symbols: str | None = PrivateAttr(default=None)
 
 
 class FredBondIndicesData(BondIndicesData):
     """FRED Bond Indices Data."""
 
-    maturity: Optional[str] = Field(
+    maturity: str | None = Field(
         default=None,
         description="The maturity range of the bond index."
         + " Only applicable when 'index' is 'yield_curve'.",
@@ -423,13 +423,13 @@ class FredBondIndicesData(BondIndicesData):
 class FredBondIndicesFetcher(
     Fetcher[
         FredBondIndicesQueryParams,
-        List[FredBondIndicesData],
+        list[FredBondIndicesData],
     ]
 ):
     """FRED Bond Indices Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredBondIndicesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredBondIndicesQueryParams:
         """Transform query."""
         values = params.copy()
         new_index = []
@@ -502,7 +502,7 @@ class FredBondIndicesFetcher(
         if messages:
             warn(",".join(messages))
 
-        symbols: List = []
+        symbols: list = []
         if "yield_curve" in values["index"]:
             maturities_dict = BAML_CATEGORIES[values["category"]][values["index"]]  # type: ignore
             maturities = list(maturities_dict)
@@ -516,9 +516,7 @@ class FredBondIndicesFetcher(
                 else values["index"].split(",")
             )
             symbols = [
-                BAML_CATEGORIES[values["category"]]  # type: ignore
-                .get(item, {})
-                .get(values["index_type"])
+                BAML_CATEGORIES[values["category"]].get(item, {}).get(values["index_type"])  # type: ignore
                 for item in items
             ]
             symbols = [symbol for symbol in symbols if symbol]
@@ -536,9 +534,9 @@ class FredBondIndicesFetcher(
     @staticmethod
     async def aextract_data(
         query: FredBondIndicesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
         series_ids = query._symbols  # pylint: disable=protected-access
@@ -550,7 +548,7 @@ class FredBondIndicesFetcher(
             frequency=query.frequency,
             aggregation_method=query.aggregation_method,
         )
-        results: Dict = {}
+        results: dict = {}
         temp = await FredSeriesFetcher.fetch_data(item_query, credentials)
         result = [d.model_dump() for d in temp.result]
         results["metadata"] = temp.metadata
@@ -561,9 +559,9 @@ class FredBondIndicesFetcher(
     @staticmethod
     def transform_data(
         query: FredBondIndicesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredBondIndicesData]]:
+    ) -> AnnotatedResult[list[FredBondIndicesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame
@@ -589,9 +587,7 @@ class FredBondIndicesFetcher(
 
         titles_dict = {
             symbol: data["metadata"][symbol].get("title")
-            for symbol in query._symbols.split(  # type: ignore  # pylint: disable=protected-access
-                ","
-            )
+            for symbol in query._symbols.split(",")  # type: ignore  # pylint: disable=protected-access
         }
         df["title"] = df.symbol.map(titles_dict)
 

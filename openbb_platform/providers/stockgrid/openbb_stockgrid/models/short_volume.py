@@ -1,7 +1,7 @@
 """Stockgrid Short Volume Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.short_volume import (
@@ -23,11 +23,11 @@ class StockgridShortVolumeData(ShortVolumeData):
 
     __alias_dict__ = {"short_volume_percent": "short_volume%", "symbol": "ticker"}
 
-    close: Optional[float] = Field(
+    close: float | None = Field(
         default=None, description="Closing price of the stock on the date."
     )
 
-    short_volume_percent: Optional[float] = Field(
+    short_volume_percent: float | None = Field(
         default=None,
         description="Percentage of the total volume that was short volume.",
     )
@@ -39,12 +39,12 @@ class StockgridShortVolumeData(ShortVolumeData):
 
 
 class StockgridShortVolumeFetcher(
-    Fetcher[StockgridShortVolumeQueryParams, List[StockgridShortVolumeData]]
+    Fetcher[StockgridShortVolumeQueryParams, list[StockgridShortVolumeData]]
 ):
     """Transform the query, extract and transform the data from the Stockgrid endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> StockgridShortVolumeQueryParams:
+    def transform_query(params: dict[str, Any]) -> StockgridShortVolumeQueryParams:
         """Transform query params."""
         return StockgridShortVolumeQueryParams(**params)
 
@@ -52,9 +52,9 @@ class StockgridShortVolumeFetcher(
     @staticmethod
     def extract_data(
         query: StockgridShortVolumeQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get data from Stockgrid."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
@@ -66,8 +66,8 @@ class StockgridShortVolumeFetcher(
     @staticmethod
     def transform_data(
         query: ShortVolumeQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[StockgridShortVolumeData]:
+    ) -> list[StockgridShortVolumeData]:
         """Transform data."""
         return [StockgridShortVolumeData.model_validate(d) for d in data]

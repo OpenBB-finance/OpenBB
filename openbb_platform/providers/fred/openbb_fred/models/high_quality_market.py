@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.high_quality_market import (
@@ -34,7 +34,7 @@ class FredHighQualityMarketCorporateBondQueryParams(
             return None
         if isinstance(v, (list, dateType)):
             return v
-        new_dates: List = []
+        new_dates: list = []
         date_param = v
         if isinstance(date_param, str):
             new_dates = date_param.split(",")
@@ -54,14 +54,14 @@ class FredHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData)
 class FredHighQualityMarketCorporateBondFetcher(
     Fetcher[
         FredHighQualityMarketCorporateBondQueryParams,
-        List[FredHighQualityMarketCorporateBondData],
+        list[FredHighQualityMarketCorporateBondData],
     ]
 ):
     """FRED High Quality Market Corporate Bond Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredHighQualityMarketCorporateBondQueryParams:
         """Transform query."""
         return FredHighQualityMarketCorporateBondQueryParams(**params)
@@ -69,9 +69,9 @@ class FredHighQualityMarketCorporateBondFetcher(
     @staticmethod
     async def aextract_data(
         query: FredHighQualityMarketCorporateBondQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -81,16 +81,14 @@ class FredHighQualityMarketCorporateBondFetcher(
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         element_id = "219299" if query.yield_curve == "spot" else "219294"
-        dates: List = [""]
+        dates: list = [""]
         if query.date:
             if query.date and isinstance(query.date, dateType):
                 query.date = query.date.strftime("%Y-%m-%d")
             dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
-            dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-            )
+            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=402&element_id={element_id}"
             + f"{date}&include_observation_values=true&api_key={api_key}"
@@ -128,9 +126,9 @@ class FredHighQualityMarketCorporateBondFetcher(
     @staticmethod
     def transform_data(
         query: FredHighQualityMarketCorporateBondQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FredHighQualityMarketCorporateBondData]:
+    ) -> list[FredHighQualityMarketCorporateBondData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame

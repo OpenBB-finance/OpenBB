@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -49,15 +49,15 @@ class CboeIndexHistoricalData(IndexHistoricalData):
         "volume": "stock_volume",
     }
 
-    calls_volume: Optional[float] = Field(
+    calls_volume: float | None = Field(
         default=None,
         description="Number of calls traded during the most recent trading period. Only valid if interval is 1m.",
     )
-    puts_volume: Optional[float] = Field(
+    puts_volume: float | None = Field(
         default=None,
         description="Number of puts traded during the most recent trading period. Only valid if interval is 1m.",
     )
-    total_options_volume: Optional[float] = Field(
+    total_options_volume: float | None = Field(
         default=None,
         description="Total number of options traded during the most recent trading period. Only valid if interval is 1m.",
     )
@@ -66,13 +66,13 @@ class CboeIndexHistoricalData(IndexHistoricalData):
 class CboeIndexHistoricalFetcher(
     Fetcher[
         CboeIndexHistoricalQueryParams,
-        List[CboeIndexHistoricalData],
+        list[CboeIndexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeIndexHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeIndexHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -107,9 +107,9 @@ class CboeIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Cboe endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_cboe.utils.helpers import (
@@ -165,8 +165,8 @@ class CboeIndexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeIndexHistoricalData]:
+        query: CboeIndexHistoricalQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[CboeIndexHistoricalData]:
         """Transform the data to the standard format."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta  # noqa
@@ -211,10 +211,7 @@ class CboeIndexHistoricalFetcher(
         # Finally, we apply the user-specified date range because it is not filtered at the source.
         output = output[
             (to_datetime(output["date"]) >= to_datetime(query.start_date))
-            & (
-                to_datetime(output["date"])
-                <= to_datetime(query.end_date + timedelta(days=1))  # type: ignore[operator]
-            )
+            & (to_datetime(output["date"]) <= to_datetime(query.end_date + timedelta(days=1)))  # type: ignore[operator]
         ]
         return [
             CboeIndexHistoricalData.model_validate(d) for d in output.to_dict("records")

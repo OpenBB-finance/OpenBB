@@ -1,16 +1,9 @@
 """Nested completer for completion of OpenBB hierarchical data structures."""
 
+from collections.abc import Callable, Iterable, Mapping
+from re import Pattern
 from typing import (
     Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Pattern,
-    Set,
-    Union,
 )
 
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
@@ -18,7 +11,7 @@ from prompt_toolkit.document import Document
 from prompt_toolkit.formatted_text import AnyFormattedText
 from prompt_toolkit.history import FileHistory
 
-NestedDict = Mapping[str, Union[Any, Set[str], None, Completer]]
+NestedDict = Mapping[str, Any | set[str] | None | Completer]
 
 # pylint: disable=too-many-arguments,global-statement,too-many-branches,global-variable-not-assigned
 
@@ -42,16 +35,16 @@ class WordCompleter(Completer):
         default one (see document._FIND_WORD_RE)
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=R0917
         self,
-        words: Union[List[str], Callable[[], List[str]]],
+        words: list[str] | Callable[[], list[str]],
         ignore_case: bool = False,
-        display_dict: Optional[Mapping[str, AnyFormattedText]] = None,
-        meta_dict: Optional[Mapping[str, AnyFormattedText]] = None,
+        display_dict: Mapping[str, AnyFormattedText] | None = None,
+        meta_dict: Mapping[str, AnyFormattedText] | None = None,
         WORD: bool = True,
         sentence: bool = False,
         match_middle: bool = False,
-        pattern: Optional[Pattern[str]] = None,
+        pattern: Pattern[str] | None = None,
     ) -> None:
         """Initialize the WordCompleter."""
         assert not (WORD and sentence)  # noqa: S101
@@ -88,7 +81,7 @@ class WordCompleter(Completer):
                 and document.text_before_cursor.rfind(" --")
                 >= document.text_before_cursor.rfind(" -")
             ):
-                word_before_cursor = f'--{document.text_before_cursor.split("--")[-1]}'
+                word_before_cursor = f"--{document.text_before_cursor.split('--')[-1]}"
             elif f"--{word_before_cursor}" == document.text_before_cursor:
                 word_before_cursor = document.text_before_cursor
 
@@ -127,13 +120,13 @@ class NestedCompleter(Completer):
     If you need multiple levels, check out the `from_nested_dict` classmethod.
     """
 
-    complementary: List = list()
+    complementary: list = list()
 
     def __init__(
-        self, options: Dict[str, Optional[Completer]], ignore_case: bool = True
+        self, options: dict[str, Completer | None], ignore_case: bool = True
     ) -> None:
         """Initialize the NestedCompleter."""
-        self.flags_processed: List = list()
+        self.flags_processed: list = list()
         self.original_options = options
         self.options = options
         self.ignore_case = ignore_case
@@ -168,7 +161,7 @@ class NestedCompleter(Completer):
 
         Values in this data structure can be a completers as well.
         """
-        options: Dict[str, Any] = {}
+        options: dict[str, Any] = {}
         for key, value in data.items():
             if isinstance(value, Completer):
                 options[key] = value

@@ -1,3 +1,8 @@
+"""Test OpenAPI Utils."""
+
+# pylint: disable=redefined-outer-name,line-too-long
+# flake8: noqa: E501
+
 import json
 from pathlib import Path
 
@@ -8,8 +13,6 @@ from openbb_platform_api.utils.openapi import (
     get_query_schema_for_widget,
     post_query_schema_for_widget,
 )
-
-# pylint: disable=redefined-outer-name
 
 
 # Load the mock OpenAPI JSON
@@ -100,7 +103,6 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "start_date",
@@ -114,7 +116,6 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "end_date",
@@ -128,7 +129,6 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
             ],
             False,
@@ -170,7 +170,6 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "end_date",
@@ -183,7 +182,6 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "limit",
@@ -196,7 +194,6 @@ def mock_openapi_json():
                     "options": {"fred": []},
                     "x-widget_config": {},
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "frequency",
@@ -227,12 +224,13 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "aggregation_method",
                     "label": "Aggregation Method",
-                    "description": "A key that indicates the aggregation method used for frequency aggregation.\n        This parameter has no affect if the frequency parameter is not set.\n        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
+                    "description": "A key that indicates the aggregation method used for frequency aggregation.\n"
+                    + "        This parameter has no affect if the frequency parameter is not set.\n"
+                    + "        \n    avg = Average\n        \n    sum = Sum\n        \n    eop = End of Period",
                     "optional": True,
                     "type": "text",
                     "value": "eop",
@@ -247,7 +245,6 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "transform",
@@ -272,7 +269,6 @@ def mock_openapi_json():
                     "x-widget_config": {},
                     "available_providers": ["fred"],
                     "show": True,
-                    "x-widget_config": {},
                 },
             ],
             True,
@@ -302,7 +298,6 @@ def mock_openapi_json():
                     "options": {"sec": []},
                     "x-widget_config": {},
                     "show": True,
-                    "x-widget_config": {},
                 },
                 {
                     "parameter_name": "use_cache",
@@ -327,7 +322,6 @@ def mock_openapi_json():
                     "options": {"sec": []},
                     "x-widget_config": {},
                     "available_providers": ["sec"],
-                    "x-widget_config": {},
                     "show": True,
                 },
             ],

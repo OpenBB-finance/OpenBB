@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -38,7 +38,7 @@ expenditure_dict_rev = {
     "CP045_0722": "energy",
     "GD": "goods",
     "CP041T043": "housing",
-    "CP041T043X042": "housing_excluding_rentals" "",
+    "CP041T043X042": "housing_excluding_rentals",
     "_TXCP01_NRG": "all_non_food_non_energy",
     "SERVXCP041_042_0432": "services_less_housing",
     "SERVXCP041_0432": "services_less_house_excl_rentals",
@@ -114,7 +114,7 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     @field_validator("country", mode="before", check_fields=False)
     def validate_country(cls, c: str):  # pylint: disable=E0213
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), CountriesList)
@@ -128,11 +128,11 @@ class OECDCPIData(ConsumerPriceIndexData):
     expenditure: str = Field(description="Expenditure component of CPI.")
 
 
-class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
+class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
     """OECD CPI Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDCPIQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDCPIQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -147,9 +147,9 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
     @staticmethod
     def extract_data(
         query: OECDCPIQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from requests.exceptions import HTTPError  # noqa
@@ -239,8 +239,8 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
 
     @staticmethod
     def transform_data(
-        query: OECDCPIQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDCPIData]:
+        query: OECDCPIQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[OECDCPIData]:
         """Transform the data from the OECD endpoint."""
         return [
             OECDCPIData.model_validate(d) for d in sorted(data, key=lambda x: x["date"])

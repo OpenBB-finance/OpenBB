@@ -1,6 +1,6 @@
 """Polygon Helpers Module."""
 
-from typing import Any, Optional, Tuple, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
@@ -11,9 +11,7 @@ from openbb_core.provider.utils.helpers import (
 )
 
 
-async def response_callback(
-    response: ClientResponse, _: ClientSession
-) -> Union[dict, list]:
+async def response_callback(response: ClientResponse, _: ClientSession) -> dict | list:
     """Use callback for make_request."""
     data = await response.json()  # type: ignore
 
@@ -30,13 +28,13 @@ async def response_callback(
     return data
 
 
-async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
+async def get_data(url: str, **kwargs: Any) -> list | dict:
     """Get data from Polygon endpoint."""
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
 async def get_data_many(
-    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+    url: str, sub_dict: str | None = None, **kwargs: Any
 ) -> list[dict]:
     """Get data from Polygon endpoint and convert to list of schemas.
 
@@ -75,7 +73,7 @@ async def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def get_date_condition(date: str) -> Tuple:
+def get_date_condition(date: str) -> tuple:
     """Get the date condition for the querystring."""
     date_conditions = {
         "<": "lt",

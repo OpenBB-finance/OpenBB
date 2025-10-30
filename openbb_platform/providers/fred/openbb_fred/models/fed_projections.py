@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fed_projections import (
@@ -35,21 +35,21 @@ class FREDPROJECTIONData(PROJECTIONData):
 
 
 class FREDPROJECTIONFetcher(
-    Fetcher[FREDPROJECTIONQueryParams, List[FREDPROJECTIONData]]
+    Fetcher[FREDPROJECTIONQueryParams, list[FREDPROJECTIONData]]
 ):
     """FRED Federal Funds Rate Projections Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDPROJECTIONQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDPROJECTIONQueryParams:
         """Transform query."""
         return FREDPROJECTIONQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDPROJECTIONQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -57,7 +57,7 @@ class FREDPROJECTIONFetcher(
 
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
-        data_dict: Dict = {}
+        data_dict: dict = {}
         for key, value in NAME_TO_ID_PROJECTION.items():
             data = fred.get_series(value[query.long_run], **kwargs)
             data_dict[key] = data
@@ -68,8 +68,8 @@ class FREDPROJECTIONFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDPROJECTIONQueryParams, data: List, **kwargs: Any
-    ) -> List[FREDPROJECTIONData]:
+        query: FREDPROJECTIONQueryParams, data: list, **kwargs: Any
+    ) -> list[FREDPROJECTIONData]:
         """Transform data"""
         keys = ["date"] + list(NAME_TO_ID_PROJECTION.keys())
         return [FREDPROJECTIONData(**{k: x[k] for k in keys}) for x in data]

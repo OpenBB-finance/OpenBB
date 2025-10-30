@@ -1,6 +1,6 @@
 """ETF Info Standard Model."""
 
-from typing import Optional
+from datetime import date as dateType
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -27,8 +27,13 @@ class EtfInfoData(Data):
     """ETF Info Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)")
-    name: Optional[str] = Field(description="Name of the ETF.")
-    description: Optional[str] = Field(
+    name: str | None = Field(description="Name of the ETF.")
+    issuer: str | None = Field(default=None, description="Issuer of the ETF.")
+    domicile: str | None = Field(default=None, description="Domicile of the ETF.")
+    website: str | None = Field(default=None, description="Website of the ETF.")
+    description: str | None = Field(
         default=None, description="Description of the fund."
     )
-    inception_date: Optional[str] = Field(description="Inception date of the ETF.")
+    inception_date: dateType | None = Field(
+        default=None, description="Inception date of the ETF."
+    )

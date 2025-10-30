@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -19,42 +18,41 @@ from pydantic import Field, field_validator
 class CryptoHistoricalQueryParams(QueryParams):
     """Crypto Historical Price Query."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " Can use CURR1-CURR2 or CURR1CURR2 format."
-    )
-    start_date: Optional[dateType] = Field(
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def _to_upper(cls, v):
         """Convert field to uppercase and remove '-'."""
-        if isinstance(v, str):
-            return v.upper().replace("-", "")
-        return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
+        return str(v).upper()
 
 
 class CryptoHistoricalData(Data):
     """Crypto Historical Price Data."""
 
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    high: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
 

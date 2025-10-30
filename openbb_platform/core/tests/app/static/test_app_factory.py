@@ -5,7 +5,6 @@
 import pytest
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.static.account import Account
 from openbb_core.app.static.app_factory import create_app
 from openbb_core.app.static.coverage import Coverage
 
@@ -33,13 +32,6 @@ def test_app_user_settings(app_factory):
     user_settings = app_factory.user
     assert user_settings
     assert isinstance(user_settings, UserSettings)
-
-
-def test_app_account(app_factory):
-    """Test app account."""
-    account = app_factory.account
-    assert account
-    assert isinstance(account, Account)
 
 
 def test_app_coverage(app_factory):

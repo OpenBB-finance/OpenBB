@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -31,10 +31,10 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
         "source": {"multiple_items_allowed": True},
     }
 
-    offset: Optional[int] = Field(
+    offset: int | None = Field(
         default=0, description="Page offset, used in conjunction with limit."
     )
-    source: Optional[str] = Field(
+    source: str | None = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
 
@@ -49,7 +49,7 @@ class TiingoCompanyNewsData(CompanyNewsData):
         "article_id": "id",
     }
 
-    tags: Optional[str] = Field(
+    tags: str | None = Field(
         default=None, description="Tags associated with the news article."
     )
     article_id: int = Field(description="Unique ID of the news article.")
@@ -72,22 +72,22 @@ class TiingoCompanyNewsData(CompanyNewsData):
 class TiingoCompanyNewsFetcher(
     Fetcher[
         TiingoCompanyNewsQueryParams,
-        List[TiingoCompanyNewsData],
+        list[TiingoCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TiingoCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TiingoCompanyNewsQueryParams:
         """Transform the query params."""
         return TiingoCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TiingoCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the tiingo endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -133,7 +133,7 @@ class TiingoCompanyNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TiingoCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TiingoCompanyNewsData]:
+        query: TiingoCompanyNewsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[TiingoCompanyNewsData]:
         """Return the transformed data."""
         return [TiingoCompanyNewsData.model_validate(d) for d in data[: query.limit]]

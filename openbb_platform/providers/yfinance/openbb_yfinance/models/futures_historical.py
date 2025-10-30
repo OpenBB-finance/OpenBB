@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_historical import (
@@ -62,13 +62,13 @@ class YFinanceFuturesHistoricalData(FuturesHistoricalData):
 class YFinanceFuturesHistoricalFetcher(
     Fetcher[
         YFinanceFuturesHistoricalQueryParams,
-        List[YFinanceFuturesHistoricalData],
+        list[YFinanceFuturesHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceFuturesHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceFuturesHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -119,9 +119,9 @@ class YFinanceFuturesHistoricalFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceFuturesHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_yfinance.utils.helpers import yf_download
@@ -144,8 +144,8 @@ class YFinanceFuturesHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceFuturesHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceFuturesHistoricalData]:
+    ) -> list[YFinanceFuturesHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceFuturesHistoricalData.model_validate(d) for d in data]

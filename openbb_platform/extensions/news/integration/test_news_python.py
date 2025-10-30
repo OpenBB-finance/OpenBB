@@ -46,6 +46,8 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
+                "page": 0,
+                "topic": "general",
             }
         ),
         (
@@ -136,6 +138,7 @@ def test_news_world(params, obb):
                 "page": 1,
                 "start_date": None,
                 "end_date": None,
+                "press_release": False,
             }
         ),
         (

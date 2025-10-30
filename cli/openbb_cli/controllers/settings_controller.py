@@ -3,7 +3,7 @@
 import argparse
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import List, Literal, Optional, get_origin
+from typing import Literal, get_origin
 
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
@@ -30,11 +30,11 @@ class SettingsController(BaseController):
         )
         if v.json_schema_extra
     }
-    CHOICES_COMMANDS: List[str] = list(_COMMANDS.keys())
+    CHOICES_COMMANDS: list[str] = list(_COMMANDS.keys())
     PATH = "/settings/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: Optional[List[str]] = None):
+    def __init__(self, queue: list[str] | None = None):
         """Initialize the Constructor."""
         super().__init__(queue)
         for cmd, field in self._COMMANDS.items():
@@ -71,7 +71,7 @@ class SettingsController(BaseController):
     ):
         """Generate command call."""
 
-        def _toggle(self, other_args: List[str], field=field) -> None:
+        def _toggle(self, other_args: list[str], field=field) -> None:
             """Toggle setting value."""
             field_name = field["field_name"]
             parser = argparse.ArgumentParser(
@@ -86,7 +86,7 @@ class SettingsController(BaseController):
                     field_name, not getattr(session.settings, field_name)
                 )
 
-        def _set(self, other_args: List[str], field=field) -> None:
+        def _set(self, other_args: list[str], field=field) -> None:
             """Set preference value."""
             field_name = field["field_name"]
             annotation = field["annotation"]

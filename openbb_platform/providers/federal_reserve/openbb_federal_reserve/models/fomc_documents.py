@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -58,11 +58,11 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
         },
     }
 
-    year: Optional[int] = Field(
+    year: int | None = Field(
         default=None,
         description="The year of FOMC documents to retrieve. If None, all years since 1959 are returned.",
     )
-    document_type: Optional[str] = Field(
+    document_type: str | None = Field(
         default=None,
         description=f"Filter by document type. Default is all. Choose from: {', '.join(choice_types)}",
     )
@@ -117,7 +117,7 @@ class FederalReserveFomcDocumentsFetcher(
     @staticmethod
     def extract_data(
         query: FederalReserveFomcDocumentsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract the raw data."""

@@ -3,7 +3,7 @@
 # pylint: disable=R0917
 
 from datetime import date as dateType
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal
 from warnings import warn
 
 if TYPE_CHECKING:
@@ -133,7 +133,6 @@ def create_rrg_with_tails(
     x_data = ratios_data
     y_data = momentum_data
     for i, date in enumerate(ratios_data.index):  # pylint: disable=unused-variable
-
         frame_data: list = []
 
         for j, symbol in enumerate(symbols):
@@ -436,7 +435,7 @@ def create_rrg_without_tails(
     momentum_data: "DataFrame",
     benchmark_symbol: str,
     study: str,
-    date: Optional[dateType] = None,
+    date: dateType | None = None,
 ) -> "Figure":
     """Create the Plotly Figure Object without Tails.
 

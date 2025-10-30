@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -31,11 +31,11 @@ class CboeEquitySearchData(EquitySearchData):
         "dpm_name": "DPM Name",
     }
 
-    dpm_name: Optional[str] = Field(
+    dpm_name: str | None = Field(
         default=None,
         description="Name of the primary market maker.",
     )
-    post_station: Optional[str] = Field(
+    post_station: str | None = Field(
         default=None, description="Post and station location on the CBOE trading floor."
     )
 
@@ -43,22 +43,22 @@ class CboeEquitySearchData(EquitySearchData):
 class CboeEquitySearchFetcher(
     Fetcher[
         CboeEquitySearchQueryParams,
-        List[CboeEquitySearchData],
+        list[CboeEquitySearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeEquitySearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeEquitySearchQueryParams:
         """Transform the query."""
         return CboeEquitySearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeEquitySearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the CBOE endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_cboe.utils.helpers import get_company_directory
@@ -75,7 +75,7 @@ class CboeEquitySearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeEquitySearchQueryParams, data: Dict, **kwargs: Any
-    ) -> List[CboeEquitySearchData]:
+        query: CboeEquitySearchQueryParams, data: dict, **kwargs: Any
+    ) -> list[CboeEquitySearchData]:
         """Transform the data to the standard format."""
         return [CboeEquitySearchData.model_validate(d) for d in data["results"]]

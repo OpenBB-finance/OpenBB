@@ -2,14 +2,14 @@
 
 # pylint: disable=too-many-arguments,too-many-locals,too-many-positional-arguments
 
-from typing import TYPE_CHECKING, Any, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Literal
 from warnings import warn
 
 if TYPE_CHECKING:
     from pandas import DataFrame, Series, Timestamp
 
 
-def validate_data(data: list, length: Union[int, List[int]]) -> None:
+def validate_data(data: list, length: int | list[int]) -> None:
     """Validate data."""
     if isinstance(length, int):
         length = [length]
@@ -23,7 +23,7 @@ def validate_data(data: list, length: Union[int, List[int]]) -> None:
 def parkinson(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean=True,
 ) -> "DataFrame":
@@ -79,7 +79,7 @@ def parkinson(
 def standard_deviation(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean: bool = True,
 ) -> "DataFrame":
@@ -134,7 +134,7 @@ def standard_deviation(
 def garman_klass(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean=True,
 ) -> "DataFrame":
@@ -194,7 +194,7 @@ def garman_klass(
 def hodges_tompkins(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean=True,
 ) -> "DataFrame":
@@ -259,7 +259,7 @@ def hodges_tompkins(
 def rogers_satchell(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean=True,
 ) -> "Series":
@@ -320,7 +320,7 @@ def rogers_satchell(
 def yang_zhang(
     data: "DataFrame",
     window: int = 30,
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
     is_crypto: bool = False,
     clean=True,
 ) -> "DataFrame":
@@ -404,7 +404,7 @@ def calculate_cones(
         "rogers_satchell",
         "yang_zhang",
     ],
-    trading_periods: Optional[int] = None,
+    trading_periods: int | None = None,
 ) -> "DataFrame":
     """Calculate Cones."""
     # pylint: disable=import-outside-toplevel
@@ -479,7 +479,7 @@ def calculate_cones(
 
 def clenow_momentum(
     values: "Series", window: int = 90
-) -> Tuple[float, float, "Series"]:
+) -> tuple[float, float, "Series"]:
     """Clenow Volatility Adjusted Momentum.
 
     This is defined as the regression coefficient on log prices multiplied by the R^2
@@ -528,9 +528,9 @@ def calculate_fib_levels(
     data: "DataFrame",
     close_col: str,
     limit: int = 120,
-    start_date: Optional[Any] = None,
-    end_date: Optional[Any] = None,
-) -> Tuple["DataFrame", "Timestamp", "Timestamp", float, float, str]:
+    start_date: Any | None = None,
+    end_date: Any | None = None,
+) -> tuple["DataFrame", "Timestamp", "Timestamp", float, float, str]:
     """Calculate Fibonacci levels.
 
     Parameters

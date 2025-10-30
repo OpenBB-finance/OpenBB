@@ -1,7 +1,6 @@
 """Short Volume Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -21,16 +20,16 @@ class ShortVolumeQueryParams(QueryParams):
 class ShortVolumeData(Data):
     """Short Volume Data."""
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
 
-    market: Optional[str] = Field(
+    market: str | None = Field(
         default=None,
         description="Reporting Facility ID. N=NYSE TRF, Q=NASDAQ TRF Carteret, B=NASDAQ TRY Chicago, D=FINRA ADF",
     )
 
-    short_volume: Optional[int] = Field(
+    short_volume: int | None = Field(
         default=None,
         description=(
             "Aggregate reported share volume of executed short sale "
@@ -38,12 +37,12 @@ class ShortVolumeData(Data):
         ),
     )
 
-    short_exempt_volume: Optional[int] = Field(
+    short_exempt_volume: int | None = Field(
         default=None,
         description="Aggregate reported share volume of executed short sale exempt trades during regular trading hours",
     )
 
-    total_volume: Optional[int] = Field(
+    total_volume: int | None = Field(
         default=None,
         description="Aggregate reported share volume of executed trades during regular trading hours",
     )

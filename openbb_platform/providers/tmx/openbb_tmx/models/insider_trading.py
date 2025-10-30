@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.insider_trading import (
@@ -28,34 +28,32 @@ class TmxInsiderTradingData(InsiderTradingData):
     period: str = Field(
         description="The period of the activity. Bucketed by three, six, and twelve months."
     )
-    owner_name: Optional[str] = Field(
-        default=None, description="The name of the insider."
-    )
-    acquisition_or_deposition: Optional[str] = Field(
+    owner_name: str | None = Field(default=None, description="The name of the insider.")
+    acquisition_or_deposition: str | None = Field(
         default=None, description="Whether the insider bought or sold the shares."
     )
-    number_of_trades: Optional[int] = Field(
+    number_of_trades: int | None = Field(
         default=None, description="The number of shares traded over the period."
     )
-    securities_owned: Optional[int] = Field(
+    securities_owned: int | None = Field(
         default=None, description="The number of shares held by the insider."
     )
-    trade_value: Optional[float] = Field(
+    trade_value: float | None = Field(
         default=None, description="The value of the shares traded by the insider."
     )
-    securities_transacted: Optional[int] = Field(
+    securities_transacted: int | None = Field(
         default=None,
         description="The total number of shares traded by the insider over the period.",
     )
-    securities_bought: Optional[int] = Field(
+    securities_bought: int | None = Field(
         default=None,
         description="The total number of shares bought by all insiders over the period.",
     )
-    securities_sold: Optional[int] = Field(
+    securities_sold: int | None = Field(
         default=None,
         description="The total number of shares sold by all insiders over the period.",
     )
-    net_activity: Optional[int] = Field(
+    net_activity: int | None = Field(
         default=None,
         description="The total net activity by all insiders over the period.",
     )
@@ -73,29 +71,29 @@ class TmxInsiderTradingData(InsiderTradingData):
 class TmxInsiderTradingFetcher(
     Fetcher[
         TmxInsiderTradingQueryParams,
-        List[TmxInsiderTradingData],
+        list[TmxInsiderTradingData],
     ]
 ):
     """TMX Insider Trading Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxInsiderTradingQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxInsiderTradingQueryParams:
         """Transform the query."""
         return TmxInsiderTradingQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxInsiderTradingQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         from openbb_tmx.utils import gql  # noqa
         from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
 
-        results: List = []
+        results: list = []
         user_agent = get_random_agent()
         symbol = (
             query.symbol.upper()
@@ -122,9 +120,7 @@ class TmxInsiderTradingFetcher(
             timeout=5,
         )
 
-        if response.get("data") and response["data"].get(  # type: ignore
-            "getCompanyInsidersActivities"
-        ):
+        if response.get("data") and response["data"].get("getCompanyInsidersActivities"):  # type: ignore
             results = response["data"]["getCompanyInsidersActivities"]  # type: ignore
 
         if not results:
@@ -135,9 +131,9 @@ class TmxInsiderTradingFetcher(
     @staticmethod
     def transform_data(
         query: TmxInsiderTradingQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxInsiderTradingData]:
+    ) -> list[TmxInsiderTradingData]:
         """Transform the data."""
         data = data.copy()
         results = []

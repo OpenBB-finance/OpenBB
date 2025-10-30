@@ -4,26 +4,25 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
 
 from dateutil import parser
-from openbb_core.provider.abstract.data import Data, ForceInt
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, StrictFloat, field_validator
+from pydantic import Field, field_validator
 
 
 class IndexHistoricalQueryParams(QueryParams):
     """Index Historical Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
@@ -37,22 +36,23 @@ class IndexHistoricalQueryParams(QueryParams):
 class IndexHistoricalData(Data):
     """Index Historical Data."""
 
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
+    symbol: str | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    open: Optional[StrictFloat] = Field(
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[StrictFloat] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[StrictFloat] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
-    close: Optional[StrictFloat] = Field(
+    close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
-    volume: Optional[ForceInt] = Field(
+    volume: int | float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 

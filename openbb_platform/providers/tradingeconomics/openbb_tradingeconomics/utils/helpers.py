@@ -1,12 +1,10 @@
 """TradingEconomics Helpers."""
 
-from typing import Union
-
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 
 
-async def response_callback(response, _) -> Union[dict, list[dict]]:
+async def response_callback(response, _) -> dict | list[dict]:
     """Return the response."""
     if response.status != 200:
         message = await response.text()

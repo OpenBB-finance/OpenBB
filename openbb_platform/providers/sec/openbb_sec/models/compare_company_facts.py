@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -49,12 +49,12 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
         + " AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'."
         + " In previous years, they have reported as 'Revenues'.",
     )
-    year: Optional[int] = Field(
+    year: int | None = Field(
         default=None,
         description="The year to retrieve the data for. If not provided, the current year is used."
         + " When symbol(s) are provided, excluding the year will return all reported values for the concept.",
     )
-    fiscal_period: Optional[FISCAL_PERIODS] = Field(
+    fiscal_period: FISCAL_PERIODS | None = Field(
         default=None,
         description="The fiscal period to retrieve the data for."
         + " If not provided, the most recent quarter is used."
@@ -97,18 +97,18 @@ class SecCompareCompanyFactsData(CompareCompanyFactsData):
         "location": "loc",
     }
 
-    cik: Union[str, int] = Field(
+    cik: str | int = Field(
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )
-    location: Optional[str] = Field(
+    location: str | None = Field(
         default=None,
         description="Geographic location of the reporting entity.",
     )
-    form: Optional[str] = Field(
+    form: str | None = Field(
         default=None,
         description="The SEC form associated with the fact or concept.",
     )
-    frame: Optional[str] = Field(
+    frame: str | None = Field(
         default=None,
         description="The frame ID associated with the fact or concept, if applicable.",
     )
@@ -125,26 +125,26 @@ class SecCompareCompanyFactsData(CompareCompanyFactsData):
 
 
 class SecCompareCompanyFactsFetcher(
-    Fetcher[SecCompareCompanyFactsQueryParams, List[SecCompareCompanyFactsData]]
+    Fetcher[SecCompareCompanyFactsQueryParams, list[SecCompareCompanyFactsData]]
 ):
     """SEC Compare Company Facts Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecCompareCompanyFactsQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecCompareCompanyFactsQueryParams:
         """Transform the query."""
         return SecCompareCompanyFactsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecCompareCompanyFactsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.frames import get_concept, get_frame
 
-        results: Dict = {}
+        results: dict = {}
         if not query.symbol:
             results = await get_frame(
                 fact=query.fact,
@@ -176,9 +176,9 @@ class SecCompareCompanyFactsFetcher(
     @staticmethod
     def transform_data(
         query: SecCompareCompanyFactsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[SecCompareCompanyFactsData]]:
+    ) -> AnnotatedResult[list[SecCompareCompanyFactsData]]:
         """Transform the data and validate the model."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

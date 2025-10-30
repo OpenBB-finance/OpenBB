@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_ftd import (
@@ -19,20 +19,20 @@ class SecEquityFtdQueryParams(EquityFtdQueryParams):
     Source: https://sec.gov/
     """
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         description="""
         Limit the number of reports to parse, from most recent.
         Approximately 24 reports per year, going back to 2009.
         """,
         default=24,
     )
-    skip_reports: Optional[int] = Field(
+    skip_reports: int | None = Field(
         description="""
         Skip N number of reports from current. A value of 1 will skip the most recent report.
         """,
         default=0,
     )
-    use_cache: Optional[bool] = Field(
+    use_cache: bool | None = Field(
         default=True,
         description="Whether or not to use cache for the request, default is True."
         + " Each reporting period is a separate URL, new reports will be added to the cache.",
@@ -48,22 +48,22 @@ class SecEquityFtdData(EquityFtdData):
 class SecEquityFtdFetcher(
     Fetcher[
         SecEquityFtdQueryParams,
-        List[SecEquityFtdData],
+        list[SecEquityFtdData],
     ]
 ):
     """SEC Equity FTD Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecEquityFtdQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecEquityFtdQueryParams:
         """Transform query params."""
         return SecEquityFtdQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecEquityFtdQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the SEC website."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -98,7 +98,7 @@ class SecEquityFtdFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecEquityFtdQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[SecEquityFtdData]:
+        query: SecEquityFtdQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[SecEquityFtdData]:
         """Transform the data to the standard format."""
         return [SecEquityFtdData.model_validate(d) for d in data]

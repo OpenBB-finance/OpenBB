@@ -4,15 +4,15 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
 
+from dateutil import parser
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, PositiveFloat, field_validator
+from pydantic import Field, field_validator
 
 
 class CurrencyHistoricalQueryParams(QueryParams):
@@ -22,19 +22,17 @@ class CurrencyHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " Can use CURR1-CURR2 or CURR1CURR2 format."
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def validate_symbol(
-        cls, v: Union[str, List[str], Set[str]]
-    ):  # pylint: disable=E0213
+    def validate_symbol(cls, v: str | list[str] | set[str]):  # pylint: disable=E0213
         """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
@@ -44,16 +42,28 @@ class CurrencyHistoricalQueryParams(QueryParams):
 class CurrencyHistoricalData(Data):
     """Currency Historical Price Data."""
 
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[float] = Field(
+    high: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
+    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: float | None = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""), default=None
     )
-    vwap: Optional[PositiveFloat] = Field(
+    vwap: float | None = Field(
         description=DATA_DESCRIPTIONS.get("vwap", ""), default=None
     )
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

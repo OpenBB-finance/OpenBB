@@ -4,9 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from typing import (
-    List,
     Literal,
-    Optional,
 )
 
 from openbb_core.app.static.utils.console import Console
@@ -22,14 +20,14 @@ class Linters:
         self.verbose = verbose
         self.console = Console(verbose)
 
-    def print_separator(self, symbol: str, length: int = 160):
+    def print_separator(self, symbol: str, length: int = 122):
         """Print a separator."""
         self.console.log(symbol * length)
 
     def run(
         self,
         linter: Literal["black", "ruff"],
-        flags: Optional[List[str]] = None,
+        flags: list[str] | None = None,
     ):
         """Run linter with flags."""
         if shutil.which(linter):
@@ -49,13 +47,14 @@ class Linters:
 
     def black(self):
         """Run black."""
-        flags = []
+        flags = ["--line-length", "122"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--quiet")
         self.run(linter="black", flags=flags)
 
     def ruff(self):
         """Run ruff."""
+        self.black()
         flags = ["check", "--fix"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")

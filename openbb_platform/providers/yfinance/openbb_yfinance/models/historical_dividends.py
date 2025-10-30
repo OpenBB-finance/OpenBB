@@ -1,7 +1,7 @@
 """YFinance Historical Dividends Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -21,14 +21,14 @@ class YFinanceHistoricalDividendsData(HistoricalDividendsData):
 
 class YFinanceHistoricalDividendsFetcher(
     Fetcher[
-        YFinanceHistoricalDividendsQueryParams, List[YFinanceHistoricalDividendsData]
+        YFinanceHistoricalDividendsQueryParams, list[YFinanceHistoricalDividendsData]
     ]
 ):
     """YFinance Historical Dividends Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any],
+        params: dict[str, Any],
     ) -> YFinanceHistoricalDividendsQueryParams:
         """Transform the query."""
         return YFinanceHistoricalDividendsQueryParams(**params)
@@ -36,9 +36,9 @@ class YFinanceHistoricalDividendsFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceHistoricalDividendsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         from curl_adapter import CurlCffiAdapter
@@ -54,7 +54,7 @@ class YFinanceHistoricalDividendsFetcher(
                 query.symbol,
                 session=session,
             ).get_dividends()
-            if isinstance(ticker, List) and not ticker or ticker.empty:  # type: ignore
+            if isinstance(ticker, list) and not ticker or ticker.empty:  # type: ignore
                 raise OpenBBError(f"No dividend data found for {query.symbol}")
         except Exception as e:
             raise OpenBBError(f"Error getting data for {query.symbol}: {e}") from e
@@ -71,8 +71,8 @@ class YFinanceHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceHistoricalDividendsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceHistoricalDividendsData]:
+    ) -> list[YFinanceHistoricalDividendsData]:
         """Transform the data."""
         return [YFinanceHistoricalDividendsData.model_validate(d) for d in data]

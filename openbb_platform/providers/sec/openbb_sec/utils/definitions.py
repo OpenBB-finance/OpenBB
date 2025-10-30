@@ -2,11 +2,11 @@
 
 # pylint: disable=too-many-lines
 
-from typing import Dict, Literal
+from typing import Literal
 
 QUARTERS = Literal[1, 2, 3, 4]
 
-SEC_HEADERS: Dict[str, str] = {
+SEC_HEADERS: dict[str, str] = {
     "User-Agent": "my real company name definitelynot@fakecompany.com",
     "Accept-Encoding": "gzip, deflate",
     "Host": "www.sec.gov",
@@ -14,7 +14,7 @@ SEC_HEADERS: Dict[str, str] = {
 
 # Some endpoints don't like the Host header.
 
-HEADERS: Dict[str, str] = {
+HEADERS: dict[str, str] = {
     "User-Agent": "my real company name definitelynot@fakecompany.com",
     "Accept-Encoding": "gzip, deflate",
 }

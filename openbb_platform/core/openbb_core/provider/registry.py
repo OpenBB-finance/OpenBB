@@ -3,7 +3,6 @@
 import traceback
 import warnings
 from functools import lru_cache
-from typing import Dict
 
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -16,7 +15,7 @@ class Registry:
 
     def __init__(self) -> None:
         """Initialize the registry."""
-        self._providers: Dict[str, Provider] = {}
+        self._providers: dict[str, Provider] = {}
 
     @property
     def providers(self):

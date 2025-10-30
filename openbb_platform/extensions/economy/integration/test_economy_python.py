@@ -454,58 +454,6 @@ def test_economy_composite_leading_indicator(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
-        (
-            {
-                "country": "united_states",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_short_term_interest_rate(params, obb):
-    """Test economy short term interest rate."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.economy.short_term_interest_rate(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
-        (
-            {
-                "country": "united_states",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_long_term_interest_rate(params, obb):
-    """Test economy long term interest rate."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.economy.long_term_interest_rate(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "provider": "fred",
@@ -737,31 +685,6 @@ def test_economy_house_price_index(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.house_price_index(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "country": "united_states,united_kingdom",
-                "frequency": "monthly",
-                "provider": "oecd",
-                "start_date": "2022-01-01",
-                "end_date": "2024-04-01",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_immediate_interest_rate(params, obb):
-    """Test economy immediate interest rate."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.economy.immediate_interest_rate(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -1147,38 +1070,6 @@ def test_economy_primary_dealer_fails(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.primary_dealer_fails(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "econdb",
-                "start_date": None,
-                "end_date": None,
-            }
-        ),
-        (
-            {
-                "provider": "imf",
-                "port_code": "port1201",
-                "start_date": "2020-01-01",
-                "end_date": "2020-01-31",
-                "country": None,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_port_volume(params, obb):
-    """Test the economy port volume endpoint"""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.economy.port_volume(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

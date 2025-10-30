@@ -1,7 +1,7 @@
 """Finviz Price Performance Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -44,58 +44,58 @@ class FinvizPricePerformanceData(RecentPerformanceData):
         "analyst_score": "Recom",
     }
 
-    volatility_week: Optional[float] = Field(
+    volatility_week: float | None = Field(
         default=None,
         description="One-week realized volatility, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_month: Optional[float] = Field(
+    volatility_month: float | None = Field(
         default=None,
         description="One-month realized volatility, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price: Optional[float] = Field(
+    price: float | None = Field(
         default=None,
         description="Last Price.",
     )
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         default=None,
         description="Current volume.",
     )
-    average_volume: Optional[float] = Field(
+    average_volume: float | None = Field(
         default=None,
         description="Average daily volume.",
     )
-    relative_volume: Optional[float] = Field(
+    relative_volume: float | None = Field(
         default=None,
         description="Relative volume as a ratio of current volume to average volume.",
     )
-    analyst_recommendation: Optional[float] = Field(
+    analyst_recommendation: float | None = Field(
         default=None,
         description="The analyst consensus, on a scale of 1-5 where 1 is a buy and 5 is a sell.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="The ticker symbol.",
     )
 
 
 class FinvizPricePerformanceFetcher(
-    Fetcher[FinvizPricePerformanceQueryParams, List[FinvizPricePerformanceData]]
+    Fetcher[FinvizPricePerformanceQueryParams, list[FinvizPricePerformanceData]]
 ):
     """Finviz Price Performance Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizPricePerformanceQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizPricePerformanceQueryParams:
         """Transform the query params."""
         return FinvizPricePerformanceQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FinvizPricePerformanceQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
         from finvizfinance import util
@@ -129,8 +129,8 @@ class FinvizPricePerformanceFetcher(
     @staticmethod
     def transform_data(
         query: FinvizPricePerformanceQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizPricePerformanceData]:
+    ) -> list[FinvizPricePerformanceData]:
         """Transform the raw data."""
         return [FinvizPricePerformanceData.model_validate(d) for d in data]

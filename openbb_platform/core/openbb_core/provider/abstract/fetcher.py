@@ -5,11 +5,8 @@
 
 from typing import (
     Any,
-    Dict,
     Generic,
-    Optional,
     TypeVar,
-    Union,
     get_args,
     get_origin,
 )
@@ -43,20 +40,20 @@ class Fetcher(Generic[Q, R]):
     require_credentials = True
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> Q:
+    def transform_query(params: dict[str, Any]) -> Q:
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
 
     @staticmethod
-    async def aextract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
+    async def aextract_data(query: Q, credentials: dict[str, str] | None) -> Any:
         """Asynchronously extract the data from the provider."""
 
     @staticmethod
-    def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
+    def extract_data(query: Q, credentials: dict[str, str] | None) -> Any:
         """Extract the data from the provider."""
 
     @staticmethod
-    def transform_data(query: Q, data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
+    def transform_data(query: Q, data: Any, **kwargs) -> R | AnnotatedResult[R]:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -76,10 +73,10 @@ class Fetcher(Generic[Q, R]):
     @classmethod
     async def fetch_data(
         cls,
-        params: Dict[str, Any],
-        credentials: Optional[Dict[str, str]] = None,
+        params: dict[str, Any],
+        credentials: dict[str, str] | None = None,
         **kwargs,
-    ) -> Union[R, AnnotatedResult[R]]:
+    ) -> R | AnnotatedResult[R]:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = await maybe_coroutine(
@@ -97,7 +94,10 @@ class Fetcher(Generic[Q, R]):
     def return_type(self) -> R:
         """Get the type of return."""
         # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[1]  # type: ignore
+        return_type = self.__orig_bases__[0].__args__[1]  # type: ignore
+        if get_origin(return_type) is AnnotatedResult:
+            return_type = get_args(return_type)[0]
+        return return_type
 
     @classproperty
     def data_type(self) -> D:  # type: ignore
@@ -115,8 +115,8 @@ class Fetcher(Generic[Q, R]):
     @classmethod
     def test(
         cls,
-        params: Dict[str, Any],
-        credentials: Optional[Dict[str, str]] = None,
+        params: dict[str, Any],
+        credentials: dict[str, str] | None = None,
         **kwargs,
     ) -> None:
         """Test the fetcher.
@@ -213,7 +213,8 @@ class Fetcher(Generic[Q, R]):
                 field in transformed_data[0].__dict__ for field in return_type_fields  # type: ignore
             ), f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"  # type: ignore
             assert issubclass(
-                type(transformed_data[0]), cls.data_type  # type: ignore
+                type(transformed_data[0]),
+                cls.data_type,  # type: ignore
             ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"  # type: ignore
             assert issubclass(  # type: ignore
                 type(transformed_data[0]),  # type: ignore

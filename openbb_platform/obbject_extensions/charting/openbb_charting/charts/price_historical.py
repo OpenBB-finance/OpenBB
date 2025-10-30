@@ -2,8 +2,7 @@
 
 # pylint: disable=too-many-branches, too-many-locals, unused-argument
 
-
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any
 
 from openbb_charting.styles.colors import LARGE_CYCLER
 
@@ -13,7 +12,7 @@ if TYPE_CHECKING:
 
 def price_historical(  # noqa: PLR0912
     **kwargs,
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+) -> tuple["OpenBBFigure", dict[str, Any]]:
     """Equity Price Historical Chart."""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame  # noqa
@@ -34,7 +33,8 @@ def price_historical(  # noqa: PLR0912
         data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
     else:
         data = basemodel_to_df(
-            kwargs["obbject_item"], index=kwargs.get("index", "date")  # type: ignore
+            kwargs["obbject_item"],
+            index=kwargs.get("index", "date"),  # type: ignore
         )
 
     if "date" in data.columns:
@@ -63,7 +63,7 @@ def price_historical(  # noqa: PLR0912
             and bool(data.columns.isin(["open", "high", "low", "close"]).all())
         )
     )
-    target = "close" if target is None or target == "None" or target == "" else target
+    target = "close" if target is None or target in {"None", ""} else target
 
     if multi_symbol is True:
         if "symbol" not in data.columns and target in data.columns:
@@ -120,12 +120,6 @@ def price_historical(  # noqa: PLR0912
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.update_layout(
-            paper_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
-            plot_bgcolor=(
-                "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-            ),
             font=dict(color=text_color),
             showlegend=True,
             legend=dict(
@@ -186,7 +180,6 @@ def price_historical(  # noqa: PLR0912
         return fig, content
 
     if multi_symbol is True or candles is False:
-
         if "symbol" not in data.columns and target in data.columns:
             data = data[[target]]
 
@@ -217,7 +210,6 @@ def price_historical(  # noqa: PLR0912
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         for i, col in enumerate(data.columns):
-
             hovertemplate = f"{data[col].name}: %{{y}}<extra></extra>"
             yaxis = "y1"
             if y1title and y1title != "Percent":
@@ -256,12 +248,6 @@ def price_historical(  # noqa: PLR0912
         y2title = None  # type: ignore
 
     fig.update_layout(
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=(
             dict(
                 orientation="v",

@@ -4,7 +4,6 @@ import asyncio
 import json
 from importlib.resources import files
 from io import StringIO
-from typing import Dict, List, Optional, Tuple, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -339,8 +338,8 @@ GDP_ADJUST = [
 
 def parse_symbols(
     symbol,
-    transform: Optional[str] = None,
-    countries: Optional[Union[str, List[str]]] = None,
+    transform: str | None = None,
+    countries: str | list[str] | None = None,
 ):
     """Parse the indicator symbol with the optional transformation for a list of countries. Returns a string list."""
     symbols = []
@@ -387,7 +386,7 @@ def unit_multiplier(unit: str) -> int:  # pylint: disable=R0911
     return 1
 
 
-def get_indicator_countries(indicator: str) -> List[str]:
+def get_indicator_countries(indicator: str) -> list[str]:
     """Get the list of countries for a given indicator."""
     return INDICATOR_COUNTRIES.get(indicator, [])
 
@@ -407,7 +406,7 @@ async def create_token(use_cache: bool = True) -> str:
                 + " Your IP address may have been flagged by Cloudflare."
             ) from e
 
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     url = "https://www.econdb.com/user/create_token/?reset=0"
     if use_cache:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators_temp_token"
@@ -416,7 +415,9 @@ async def create_token(use_cache: bool = True) -> str:
         ) as session:
             try:
                 response = await amake_request(
-                    url, response_callback=_callback, session=session  # type: ignore
+                    url,
+                    response_callback=_callback,
+                    session=session,  # type: ignore
                 )
             finally:
                 await session.close()
@@ -433,7 +434,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
         """Response callback to read the CSV response."""
         return await response.text()
 
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators"
         async with CachedSession(
@@ -483,12 +484,12 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
 
 async def get_context(
     symbol: str,
-    countries: Union[str, List[str]],
-    transform: Optional[str] = None,
+    countries: str | list[str],
+    transform: str | None = None,
     use_cache: bool = True,
-) -> Union[dict, List[dict]]:
+) -> dict | list[dict]:
     """Get the data for a symbol and a list of countries."""
-    response: Union[dict, List[dict]] = {}
+    response: dict | list[dict] = {}
     urls = []
     countries = countries if isinstance(countries, list) else countries.split(",")
     # Multiple countries could be passed in a single request, but the request is prone
@@ -516,14 +517,14 @@ async def get_context(
 
 
 def parse_context(  # pylint: disable=R0912, R0914, R0915
-    response: List[Dict], latest: bool = False, with_metadata: bool = False
-) -> Union[DataFrame, Tuple[DataFrame, Dict]]:
+    response: list[dict], latest: bool = False, with_metadata: bool = False
+) -> DataFrame | tuple[DataFrame, dict]:
     """Parse the output from `get_context()`, and optionally return the metadata."""
     metadata = {}
     results = DataFrame()
     if response is None:
         raise OpenBBError("No data was in the response")
-    if not isinstance(response, List):
+    if not isinstance(response, list):
         raise OpenBBError("Expecting a list of dictionaries and received a dictionary.")
     for item in response:
         symbol = item.get("id", "")
@@ -618,54 +619,52 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
 
 def update_json_files() -> None:
     """Update the static JSON files with fresh values from EconDB."""
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     indicators = loop.run_until_complete(download_indicators(use_cache=False))
 
     def update_symbol_to_indicator() -> None:
         """Update the symbol to indicator mapping."""
         with open(
-            files("openbb_econdb.utils") / "symbol_to_indicator.json",
-            "w",  # type: ignore
+            files("openbb_econdb.utils") / "symbol_to_indicator.json",  # type: ignore
+            "w",
             encoding="utf-8",
-        ) as f:
+        ) as file:
             json_data = json.dumps(
                 indicators.set_index("short_ticker")
                 .sort_index()["symbol_root"]
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_multipliers() -> None:
         """Update the unit multipliers."""
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8"
-        ) as f:
+        with open(files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
                 indicators.set_index("short_ticker")
                 .sort_index()["multiplier"]
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_scales() -> None:
         """Update the scales."""
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8"
-        ) as f:
+        with open(files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
-                indicators.set_index("short_ticker").sort_index()["scale"].to_dict()
+                indicators.set_index("short_ticker").sort_index()["scale"].to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_units() -> None:
         """Update the units."""
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8"
-        ) as f:
+        with open(files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8") as file:  # type: ignore
             json_data = json.dumps(
-                indicators.set_index("short_ticker").sort_index()["currency"].to_dict()
+                indicators.set_index("short_ticker").sort_index()["currency"].to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     def update_descriptions() -> None:
         """Update the indicator descriptions."""
@@ -673,28 +672,29 @@ def update_json_files() -> None:
             zip(indicators["symbol_root"], indicators["description"])
         )
         descriptions_dict = {k: descriptions_dict[k] for k in sorted(descriptions_dict)}
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "indicators_descriptions.json",
+        with open(
+            files("openbb_econdb.utils") / "indicators_descriptions.json",  # type: ignore
             "w",
             encoding="utf-8",
-        ) as f:
-            json_data = json.dumps(descriptions_dict)
-            f.write(json_data)
+        ) as file:
+            json_data = json.dumps(descriptions_dict, indent=4)
+            file.write(json_data)
 
     def update_indicator_countries() -> None:
         """Update the indicator countries."""
-        with open(  # type: ignore
-            files("openbb_econdb.utils") / "indicator_countries.json",
+        with open(
+            files("openbb_econdb.utils") / "indicator_countries.json",  # type: ignore
             "w",
             encoding="utf-8",
-        ) as f:
+        ) as file:
             json_data = json.dumps(
                 indicators[indicators["symbol_root"] != "[W00]"]
                 .groupby("symbol_root")["iso"]
                 .apply(lambda x: x.sort_values().unique().tolist())
-                .to_dict()
+                .to_dict(),
+                indent=4,
             )
-            f.write(json_data)
+            file.write(json_data)
 
     update_symbol_to_indicator()
     update_multipliers()

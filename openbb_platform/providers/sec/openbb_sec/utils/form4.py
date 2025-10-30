@@ -2,7 +2,6 @@
 
 import logging
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -200,8 +199,8 @@ def close_db(conn, db_path):
 
 async def get_form_4_urls(
     symbol,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: dateType | None = None,
+    end_date: dateType | None = None,
     use_cache: bool = True,
 ):
     """Get the form 4 URLs for a symbol."""
@@ -222,20 +221,12 @@ async def get_form_4_urls(
     start_date = (
         start_date
         if isinstance(start_date, dateType)
-        else (
-            dateType.fromisoformat(start_date)  # type: ignore
-            if start_date and isinstance(start_date, str)
-            else None
-        )
+        else (dateType.fromisoformat(start_date) if start_date and isinstance(start_date, str) else None)  # type: ignore
     )
     end_date = (
         end_date
         if isinstance(end_date, dateType)
-        else (
-            dateType.fromisoformat(end_date)  # type: ignore
-            if end_date and isinstance(end_date, str)
-            else None
-        )
+        else (dateType.fromisoformat(end_date) if end_date and isinstance(end_date, str) else None)  # type: ignore
     )
     urls: list = []
     for item in form_4:
@@ -580,8 +571,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
 
         time_estimate = (len(non_cached_urls) / 7) * 1.8
         logger.info(
-            "Found %d total filings and %d"
-            " uncached entries to download, estimated download time: %d seconds.",
+            "Found %d total filings and %d uncached entries to download, estimated download time: %d seconds.",
             len(urls),
             len(non_cached_urls),
             round(time_estimate),
@@ -632,9 +622,9 @@ def get_cached_data(urls, conn):
 
 async def get_form_4(
     symbol,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
-    limit: Optional[int] = None,
+    start_date: dateType | None = None,
+    end_date: dateType | None = None,
+    limit: int | None = None,
     use_cache: bool = True,
 ) -> list[dict]:
     """Get the Form 4 data by ticker symbol or CIK number."""

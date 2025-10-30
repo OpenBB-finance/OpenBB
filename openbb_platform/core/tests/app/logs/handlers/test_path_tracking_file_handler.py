@@ -69,11 +69,14 @@ def test_build_log_file_path(handler, mocked_path):
 
 def test_clean_expired_files(handler):
     """Test clean_expired_files method."""
-    with patch(
-        "openbb_core.app.logs.handlers.path_tracking_file_handler.get_expired_file_list"
-    ) as mock_get_expired_file_list, patch(
-        "openbb_core.app.logs.handlers.path_tracking_file_handler.remove_file_list"
-    ) as mock_remove_file_list:
+    with (
+        patch(
+            "openbb_core.app.logs.handlers.path_tracking_file_handler.get_expired_file_list"
+        ) as mock_get_expired_file_list,
+        patch(
+            "openbb_core.app.logs.handlers.path_tracking_file_handler.remove_file_list"
+        ) as mock_remove_file_list,
+    ):
         handler.clean_expired_files(123)
 
         assert mock_get_expired_file_list.call_count == 3

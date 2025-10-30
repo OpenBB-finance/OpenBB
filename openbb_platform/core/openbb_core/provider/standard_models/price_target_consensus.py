@@ -1,7 +1,5 @@
 """Price Target Consensus Standard Model."""
 
-from typing import List, Optional, Set, Union
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -14,7 +12,7 @@ from pydantic import Field, field_validator
 class PriceTargetConsensusQueryParams(QueryParams):
     """Price Target Consensus Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
 
@@ -29,24 +27,16 @@ class PriceTargetConsensusData(Data):
     """Price Target Consensus Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(default=None, description="The company name")
-    target_high: Optional[float] = Field(
+    name: str | None = Field(default=None, description="The company name")
+    target_high: float | None = Field(
         default=None, description="High target of the price target consensus."
     )
-    target_low: Optional[float] = Field(
+    target_low: float | None = Field(
         default=None, description="Low target of the price target consensus."
     )
-    target_consensus: Optional[float] = Field(
+    target_consensus: float | None = Field(
         default=None, description="Consensus target of the price target consensus."
     )
-    target_median: Optional[float] = Field(
+    target_median: float | None = Field(
         default=None, description="Median target of the price target consensus."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert field to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

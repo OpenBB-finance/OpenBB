@@ -3,16 +3,15 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
-
 from openbb_famafrench.utils.constants import BreakpointChoices
+from pydantic import Field
 
 
 class FamaFrenchBreakpointQueryParams(QueryParams):
@@ -125,11 +124,11 @@ In addition, any missing returns from t-11 to t-2 must be -99.0, CRSP's code for
 """,
     )
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description="Start date for the data.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description="End date for the data.",
     )
@@ -141,16 +140,16 @@ class FamaFrenchBreakpointData(Data):
     date: dateType = Field(
         description="Date of the data.",
     )
-    num_firms: Optional[int] = Field(
+    num_firms: int | None = Field(
         default=None,
         description="Number of firms in the sample. Not returned for BE/ME breakpoints.",
     )
-    num_firms_less_than_0: Optional[int] = Field(
+    num_firms_less_than_0: int | None = Field(
         default=None,
         description="Number of firms with ratio less than or equal to 0."
         + " This is only applicable for ratio breakpoints.",
     )
-    num_firms_greater_than_0: Optional[int] = Field(
+    num_firms_greater_than_0: int | None = Field(
         default=None,
         description="Number of firms with ratio greater than 0."
         + " This is only applicable for ratio breakpoints.",
@@ -252,7 +251,7 @@ class FamaFrenchBreakpointFetcher(
     @staticmethod
     async def aextract_data(
         query: FamaFrenchBreakpointQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> tuple:
         """Extract data from the Fama-French FTP."""

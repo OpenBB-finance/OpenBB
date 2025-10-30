@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-arguments,too-many-locals,unused-argument
 
-from typing import Dict, List, Literal, Optional, Union
+from typing import Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -78,40 +78,40 @@ HOLDING_TYPE_CHOICES = [
 ]
 
 
-def _get_endpoints(
-    category: Union[CategoryChoices, None] = None,
-    start_date: Optional[str] = "",
-    end_date: Optional[str] = "",
-    date: Optional[str] = "2022-02-22",
-    details: Optional[str] = "details",
-    n_operations: Optional[int] = 90,
-    operation_status: Optional[str] = "results",
-    ambs_operation: Optional[str] = "all",
-    ambs_security: Optional[str] = "",
-    fxs_operation_type: Optional[str] = "all",
-    fxs_date_type: Optional[str] = "",
-    fxs_counterparties: Optional[str] = "",
-    guide_sheet_types: Optional[str] = "si",
-    is_previous: Optional[bool] = False,
-    pd_seriesbreak: Optional[str] = "SBN2022",
-    pd_timeseries: Optional[str] = "PDSOOS-ABSTOT",
-    pd_asof_date: Optional[str] = "2023-03-01",
-    rate_type: Optional[str] = "",
-    secured_type: Optional[str] = "sofr",
-    unsecured_type: Optional[str] = "effr",
-    repo_security_type: Optional[str] = "all",
-    repo_operation_type: Optional[str] = "all",
-    repo_operation_method: Optional[str] = "all",
-    repo_term: Optional[str] = "",
-    lending_operation: Optional[str] = "all",
-    cusips: Optional[str] = "",
-    description: Optional[str] = "",
-    agency_holding_type: Optional[str] = "all",
-    treasury_holding_type: Optional[str] = "all",
-    treasury_operation: Optional[str] = "all",
-    treasury_status: Optional[str] = "results",
-    treasury_security_type: Optional[str] = "",
-) -> Dict:
+def _get_endpoints(  # pylint: disable=R0917
+    category: CategoryChoices | None = None,
+    start_date: str | None = "",
+    end_date: str | None = "",
+    date: str | None = "2022-02-22",
+    details: str | None = "details",
+    n_operations: int | None = 90,
+    operation_status: str | None = "results",
+    ambs_operation: str | None = "all",
+    ambs_security: str | None = "",
+    fxs_operation_type: str | None = "all",
+    fxs_date_type: str | None = "",
+    fxs_counterparties: str | None = "",
+    guide_sheet_types: str | None = "si",
+    is_previous: bool | None = False,
+    pd_seriesbreak: str | None = "SBN2022",
+    pd_timeseries: str | None = "PDSOOS-ABSTOT",
+    pd_asof_date: str | None = "2023-03-01",
+    rate_type: str | None = "",
+    secured_type: str | None = "sofr",
+    unsecured_type: str | None = "effr",
+    repo_security_type: str | None = "all",
+    repo_operation_type: str | None = "all",
+    repo_operation_method: str | None = "all",
+    repo_term: str | None = "",
+    lending_operation: str | None = "all",
+    cusips: str | None = "",
+    description: str | None = "",
+    agency_holding_type: str | None = "all",
+    treasury_holding_type: str | None = "all",
+    treasury_operation: str | None = "all",
+    treasury_status: str | None = "results",
+    treasury_security_type: str | None = "",
+) -> dict:
     """Generate URLs to the all, or a category of, endpoints.
 
     This function is not intended to be used directly.
@@ -125,36 +125,14 @@ def _get_endpoints(
 
     end_points = {
         "agency_mbs_operations": {
-            "latest": BASE_URL + "/ambs/"
-            f"{ambs_operation}"
-            "/"
-            f"{operation_status}"
-            "/"
-            f"{details}"
-            "/latest.json",
-            "previous": BASE_URL + "/ambs/"
-            f"{ambs_operation}"
-            "/"
-            f"{operation_status}"
-            "/"
-            f"{details}"
-            "/previous.json",
-            "last_two_weeks": BASE_URL + "/ambs/"
-            f"{ambs_operation}"
-            "/"
-            f"{operation_status}"
-            "/"
-            f"{details}"
-            "/lastTwoWeeks.json",
-            "last": BASE_URL + "/ambs/"
-            f"{ambs_operation}"
-            "/"
-            f"{operation_status}"
-            "/"
-            f"{details}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
+            "latest": BASE_URL
+            + f"/ambs/{ambs_operation}/{operation_status}/{details}/latest.json",
+            "previous": BASE_URL
+            + f"/ambs/{ambs_operation}/{operation_status}/{details}/previous.json",
+            "last_two_weeks": BASE_URL
+            + f"/ambs/{ambs_operation}/{operation_status}/{details}/lastTwoWeeks.json",
+            "last": BASE_URL
+            + f"/ambs/{ambs_operation}/{operation_status}/{details}/last/{n_operations}.json",
             "search": BASE_URL + "/ambs/"
             f"{ambs_operation}"
             "/"
@@ -174,12 +152,8 @@ def _get_endpoints(
             f"{end_date}",
         },
         "central_bank_liquidty_swaps_operations": {
-            "latest": BASE_URL + "/fxs/" f"{fxs_operation_type}" "/latest.json",
-            "last": BASE_URL + "/fxs/"
-            f"{fxs_operation_type}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
+            "latest": BASE_URL + f"/fxs/{fxs_operation_type}/latest.json",
+            "last": BASE_URL + f"/fxs/{fxs_operation_type}/last/{n_operations}.json",
             "search": BASE_URL + "/fxs/"
             f"{fxs_operation_type}"
             "/search.json"
@@ -193,24 +167,17 @@ def _get_endpoints(
             f"{fxs_counterparties}",
             "counterparties": BASE_URL + "/fxs/list/counterparties.json",
         },
-        "guide_sheets": BASE_URL + "/guidesheets/"
-        f"{guide_sheet_types}"
-        "/"
-        f"{is_latest}"
-        ".json",
+        "guide_sheets": BASE_URL + f"/guidesheets/{guide_sheet_types}/{is_latest}.json",
         "primary_dealer_statistics": {
-            "latest": BASE_URL + "/pd/latest/" f"{pd_seriesbreak}" ".json",
+            "latest": BASE_URL + f"/pd/latest/{pd_seriesbreak}.json",
             "all_timeseries": BASE_URL + "/pd/get/all/timeseries.csv",
             "list_descriptions": BASE_URL + "/pd/list/timeseries.json",
             "list_asof": BASE_URL + "/pd/list/asof.json",
             "list_seriesbreaks": BASE_URL + "/pd/list/seriesbreaks.json",
-            "get_asof": BASE_URL + "/pd/get/asof/" f"{pd_asof_date}" ".json",
-            "get_timeseries": BASE_URL + "/pd/get/" f"{pd_timeseries}" ".json",
-            "get_timeseries_seriesbreak": BASE_URL + "/pd/get/"
-            f"{pd_seriesbreak}"
-            "/timeseries/"
-            f"{pd_timeseries}"
-            ".json",
+            "get_asof": BASE_URL + f"/pd/get/asof/{pd_asof_date}.json",
+            "get_timeseries": BASE_URL + f"/pd/get/{pd_timeseries}.json",
+            "get_timeseries_seriesbreak": BASE_URL
+            + f"/pd/get/{pd_seriesbreak}/timeseries/{pd_timeseries}.json",
         },
         "primary_dealer_market_share": {
             "quarterly": BASE_URL + "/marketshare/qtrly/latest.xlsx",
@@ -218,34 +185,18 @@ def _get_endpoints(
         },
         "reference_rates": {
             "latest": BASE_URL + "/rates/all/latest.json",
-            "search": BASE_URL + "/rates/all/search.json?"
-            "startDate="
-            f"{start_date}"
-            "&endDate="
-            f"{end_date}"
-            "&type="
-            f"{rate_type}",
+            "search": BASE_URL
+            + f"/rates/all/search.json?startDate={start_date}&endDate={end_date}&type={rate_type}",
             "latest_secured": BASE_URL + "/rates/secured/all/latest.json",
             "latest_unsecured": BASE_URL + "/rates/unsecured/all/latest.json",
-            "last_secured": BASE_URL + "/rates/secured/"
-            f"{secured_type}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
-            "last_unsecured": BASE_URL + "/rates/unsecured/"
-            f"{unsecured_type}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
+            "last_secured": BASE_URL
+            + f"/rates/secured/{secured_type}/last/{n_operations}.json",
+            "last_unsecured": BASE_URL
+            + f"/rates/unsecured/{unsecured_type}/last/{n_operations}.json",
         },
         "repo_and_reverse_repo_operations": {
-            "latest": BASE_URL + "/rp/"
-            f"{repo_operation_type}"
-            "/"
-            f"{repo_operation_method}"
-            "/"
-            f"{operation_status}"
-            "/latest.json",
+            "latest": BASE_URL
+            + f"/rp/{repo_operation_type}/{repo_operation_method}/{operation_status}/latest.json",
             "last_two_weeks": BASE_URL + "/rp/"
             f"{repo_operation_type}"
             "/"
@@ -282,23 +233,12 @@ def _get_endpoints(
             f"{end_date}",
         },
         "securities_lending_operations": {
-            "latest": BASE_URL + "/seclending/"
-            f"{lending_operation}"
-            "/results/"
-            f"{details}"
-            "/latest.json",
-            "last_two_weeks": BASE_URL + "/seclending/"
-            f"{lending_operation}"
-            "/results/"
-            f"{details}"
-            "/lastTwoWeeks.json",
-            "last": BASE_URL + "/seclending/"
-            f"{lending_operation}"
-            "/results/"
-            f"{details}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
+            "latest": BASE_URL
+            + f"/seclending/{lending_operation}/results/{details}/latest.json",
+            "last_two_weeks": BASE_URL
+            + f"/seclending/{lending_operation}/results/{details}/lastTwoWeeks.json",
+            "last": BASE_URL
+            + f"/seclending/{lending_operation}/results/{details}/last/{n_operations}.json",
             "search": BASE_URL + "/seclending/"
             f"{lending_operation}"
             "/results/"
@@ -317,51 +257,28 @@ def _get_endpoints(
             "summary": BASE_URL + "/soma/summary.json",
             "release_log": BASE_URL + "/soma/agency/get/release_log.json",
             "list_as_of": BASE_URL + "/soma/asofdates/list.json",
-            "get_as_of": BASE_URL + "/soma/agency/get/asof/" f"{date}" ".json",
-            "get_cusip": BASE_URL + "/soma/agency/get/cusip/" f"{cusips}" ".json",
-            "get_holding_type": BASE_URL + "/soma/agency/get/"
-            f"{agency_holding_type}"
-            "/asof/"
-            f"{date}"
-            ".json",
-            "agency_debts": BASE_URL + "/soma/agency/wam/agency%20debts/asof/"
-            f"{date}"
-            ".json",
+            "get_as_of": BASE_URL + f"/soma/agency/get/asof/{date}.json",
+            "get_cusip": BASE_URL + f"/soma/agency/get/cusip/{cusips}.json",
+            "get_holding_type": BASE_URL
+            + f"/soma/agency/get/{agency_holding_type}/asof/{date}.json",
+            "agency_debts": BASE_URL
+            + f"/soma/agency/wam/agency%20debts/asof/{date}.json",
             "list_release_dates": BASE_URL + "/soma/tsy/get/release_log.json",
-            "get_treasury_as_of": BASE_URL + "/soma/tsy/get/asof/" f"{date}" ".json",
-            "get_treasury_cusip": BASE_URL + "/soma/tsy/get/cusip/" f"{cusips}" ".json",
-            "get_treasury_holding_type": BASE_URL + "/soma/tsy/get/"
-            f"{treasury_holding_type}"
-            "/asof/"
-            f"{date}"
-            ".json",
-            "get_treasury_debts": BASE_URL + "/soma/tsy/wam/"
-            f"{treasury_holding_type}"
-            "/asof/"
-            f"{date}"
-            ".json",
+            "get_treasury_as_of": BASE_URL + f"/soma/tsy/get/asof/{date}.json",
+            "get_treasury_cusip": BASE_URL + f"/soma/tsy/get/cusip/{cusips}.json",
+            "get_treasury_holding_type": BASE_URL
+            + f"/soma/tsy/get/{treasury_holding_type}/asof/{date}.json",
+            "get_treasury_debts": BASE_URL
+            + f"/soma/tsy/wam/{treasury_holding_type}/asof/{date}.json",
             "get_treasury_monthly": BASE_URL + "/soma/tsy/get/monthly.json",
         },
         "treasury_securities_operations": {
-            "current": BASE_URL + "/tsy/"
-            f"{treasury_operation}"
-            "/"
-            f"{treasury_status}"
-            "/"
-            f"{details}"
-            "/latest.json",
-            "last_two_weeks": BASE_URL + "/tsy/"
-            f"{treasury_operation}"
-            "/results/"
-            f"{details}"
-            "/lastTwoWeeks.json",
-            "last": BASE_URL + "/tsy/"
-            f"{treasury_operation}"
-            "/results/"
-            f"{details}"
-            "/last/"
-            f"{n_operations}"
-            ".json",
+            "current": BASE_URL
+            + f"/tsy/{treasury_operation}/{treasury_status}/{details}/latest.json",
+            "last_two_weeks": BASE_URL
+            + f"/tsy/{treasury_operation}/results/{details}/lastTwoWeeks.json",
+            "last": BASE_URL
+            + f"/tsy/{treasury_operation}/results/{details}/last/{n_operations}.json",
             "search": BASE_URL + "/tsy/"
             f"{treasury_operation}"
             "/results/"
@@ -382,7 +299,7 @@ def _get_endpoints(
     return end_points if category is None else end_points[category]  # type: ignore
 
 
-async def fetch_data(url: str) -> Dict:
+async def fetch_data(url: str) -> dict:
     """Fetch the JSON response from the API."""
     try:
         response = await amake_request(url)
@@ -391,12 +308,12 @@ async def fetch_data(url: str) -> Dict:
     return response  # type: ignore
 
 
-def get_nearest_date(dates: List[str], target_date: str) -> str:
+def get_nearest_date(dates: list[str], target_date: str) -> str:
     """Get the nearest date in the list of dates to the target date."""
     df = DataFrame(dates, columns=["dates"])
     df["dates"] = DatetimeIndex(df["dates"])
-    target_date = to_datetime(target_date)
-    differences = (df.dates - target_date).abs()
+    target_date = to_datetime(target_date)  # type: ignore
+    differences = (df.dates - target_date).abs()  # type: ignore
     nearest_date_index = differences.argmin()
     nearest_date = df.index[nearest_date_index]
     return df.iloc[nearest_date]["dates"].strftime("%Y-%m-%d")
@@ -438,7 +355,7 @@ class SomaHoldings:
         """Replace original repr with docstring."""
         return str(self.__doc__)
 
-    async def get_as_of_dates(self) -> List:
+    async def get_as_of_dates(self) -> list:
         """Get all valid as-of dates for SOMA operations."""
         dates_url = _get_endpoints()["soma_holdings"]["list_as_of"]
         dates_response = await fetch_data(dates_url)
@@ -450,7 +367,7 @@ class SomaHoldings:
     async def get_release_log(
         self,
         treasury: bool = False,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the last three months Agency Release and as-of dates.
 
         Parameters
@@ -478,7 +395,7 @@ class SomaHoldings:
 
         return release_log
 
-    async def get_summary(self) -> List[Dict]:
+    async def get_summary(self) -> list[dict]:
         """Return historical weekly summary by holding type.
 
         Returns
@@ -501,11 +418,11 @@ class SomaHoldings:
 
     async def get_agency_holdings(
         self,
-        as_of: Optional[str] = None,
-        cusip: Optional[str] = None,
-        holding_type: Optional[str] = None,
+        as_of: str | None = None,
+        cusip: str | None = None,
+        holding_type: str | None = None,
         wam: bool = False,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get the latest agency holdings, or as of a single date. Data is updated weekly.
 
         Parameters
@@ -532,7 +449,7 @@ class SomaHoldings:
 
         >>> wam = await SomaHoldings().get_agency_holdings(wam = True)
         """
-        response: Dict = {}
+        response: dict = {}
         url: str = ""
         dates = await self.get_as_of_dates()
         if as_of is not None:
@@ -565,14 +482,14 @@ class SomaHoldings:
 
         return holdings
 
-    async def get_treasury_holdings(
+    async def get_treasury_holdings(  # pylint: disable=R0917
         self,
-        as_of: Optional[str] = None,
-        cusip: Optional[str] = None,
-        holding_type: Optional[str] = None,
-        wam: Optional[bool] = False,
-        monthly: Optional[bool] = False,
-    ) -> List[Dict]:
+        as_of: str | None = None,
+        cusip: str | None = None,
+        holding_type: str | None = None,
+        wam: bool | None = False,
+        monthly: bool | None = False,
+    ) -> list[dict]:
         """Get the latest Treasury holdings, or as of a single date.
 
         Parameters
@@ -604,7 +521,7 @@ class SomaHoldings:
 
         >>> monthly = await SomaHoldings().get_treasury_holdings(monthly = True, holding_type = "bills")
         """
-        response: Dict = {}
+        response: dict = {}
         url: str = ""
         dates = await self.get_as_of_dates()
         if as_of is not None:

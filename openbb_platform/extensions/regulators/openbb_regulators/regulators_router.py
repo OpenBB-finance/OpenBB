@@ -3,7 +3,6 @@
 # ruff: noqa: F401
 """Regulators Router."""
 
-
 from openbb_core.app.router import Router
 
 from .cftc.cftc_router import (

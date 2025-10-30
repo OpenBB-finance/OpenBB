@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -80,19 +80,19 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
             "choices": GROUPS_CHOICES,
         },
     }
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="Country of the event.",
     )
-    importance: Optional[IMPORTANCE] = Field(
+    importance: IMPORTANCE | None = Field(
         default=None,
         description="Importance of the event.",
     )
-    group: Optional[GROUPS] = Field(
+    group: GROUPS | None = Field(
         default=None,
         description="Grouping of events.",
     )
-    calendar_id: Union[None, int, str] = Field(
+    calendar_id: None | int | str = Field(
         default=None, description="Get events by TradingEconomics Calendar ID."
     )
     _number_of_countries: int = 0
@@ -153,31 +153,27 @@ class TEEconomicCalendarData(EconomicCalendarData):
         "calendar_id": "CalendarId",
         "date_span": "DateSpan",
     }
-    forecast: Optional[Union[str, float]] = Field(
+    forecast: str | float | None = Field(
         default=None, description="TradingEconomics projections."
     )
-    reference: Optional[str] = Field(
+    reference: str | None = Field(
         default=None,
         description="Abbreviated period for which released data refers to.",
     )
-    reference_date: Optional[dateType] = Field(
+    reference_date: dateType | None = Field(
         default=None, description="Date for the reference period."
     )
-    calendar_id: Optional[int] = Field(
+    calendar_id: int | None = Field(
         default=None, description="TradingEconomics Calendar ID."
     )
-    date_span: Optional[int] = Field(
-        default=None, description="Date span of the event."
-    )
-    symbol: Optional[str] = Field(default=None, description="TradingEconomics Symbol.")
-    ticker: Optional[str] = Field(
+    date_span: int | None = Field(default=None, description="Date span of the event.")
+    symbol: str | None = Field(default=None, description="TradingEconomics Symbol.")
+    ticker: str | None = Field(
         default=None, description="TradingEconomics Ticker symbol."
     )
-    te_url: Optional[str] = Field(
-        default=None, description="TradingEconomics URL path."
-    )
-    source_url: Optional[str] = Field(default=None, description="Source URL.")
-    last_updated: Optional[datetime] = Field(
+    te_url: str | None = Field(default=None, description="TradingEconomics URL path.")
+    source_url: str | None = Field(default=None, description="Source URL.")
+    last_updated: datetime | None = Field(
         default=None, description="Last update of the data."
     )
 
@@ -237,9 +233,9 @@ class TEEconomicCalendarFetcher(
     @staticmethod
     async def aextract_data(
         query: TEEconomicCalendarQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Union[dict, list[dict]]:
+    ) -> dict | list[dict]:
         """Return the raw data from the TE endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request

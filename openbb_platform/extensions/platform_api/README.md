@@ -65,7 +65,6 @@ Launcher specific arguments:
     --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
     --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
     --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
-    --login                         Login to the OpenBB Platform.
     --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
     --no-filter                     Do not filter out widgets in widget_settings.json file.
     --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
@@ -433,9 +432,11 @@ For example, the response to submitting a form can be a Markdown widget with a c
 
 The entry in `widgets.json` will be automatically created if the conditions below are met:
 
-- GET and POST methods must share the same API route.
+- GET request defines in top-level `widget_config`:
+  - `{"form_endpoint": /path_to/form_post_endpoint}`
 - POST method takes 1 positional argument, a sub-class of Pydantic BaseModel.
   - Create a model, like annotated table fields, defining all inputs to the form.
+
 
 #### Example
 
@@ -447,15 +448,14 @@ from datetime import date as dateType
 from typing import Literal, Union
 
 # from fastapi import FastAPI
-from openbb_platform_api.query_models import FormData
 from openbb_platform_api.response_models import Data
-from pydantic import ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # app = FastAPI()
 
 AccountTypes = Literal["General Fund", "Separately Managed", "Private Equity", "Family Office"]
 
-class GeneralIntake(FormData):
+class GeneralIntake(BaseModel):
     """Submit a form via POST request."""
 
     date_created: dateType = Field(
@@ -476,7 +476,11 @@ class GeneralIntake(FormData):
     submit: bool = Field(
         default=True,
         title="Submit",
-        type="button",  # This creates a button, when pressed the parameter is sent as True
+        json_schema_extra={
+            "x-widget_config": {
+                "type": "button",
+            },
+        }
     )
 
 
@@ -510,7 +514,7 @@ class IntakeForm(Data):
 INTAKE_FORMS: list[IntakeForm] = []
 
 
-@app.post("/general_intake")
+@app.post("/general_intake_submit")
 async def general_intake_post(data: GeneralIntake) -> bool:
     global INTAKE_FORMS
     try:
@@ -520,7 +524,14 @@ async def general_intake_post(data: GeneralIntake) -> bool:
         raise e from e
 
 
-@app.get("/general_intake")
+@app.get(
+    "/general_intake",
+    openapi_extra= {
+        "widget_config": {
+            "form_endpoint": "/general_intake_submit",
+        },
+    },
+)
 async def general_intake() -> list[IntakeForm]:
     return INTAKE_FORMS
 ```
@@ -529,6 +540,12 @@ async def general_intake() -> list[IntakeForm]:
 
 ### Omni Widget Example
 
+An Omni Widget is a POST request where all parameters are sent to the request body, along with the text input box (keyed as "prompt").
+
+The returned type can be a list of records (table), a Plotly Figure, or formatted Markdwon.
+The model will attempt to assign the correct return type dynamically.
+
+Set the response model as `OmniWidgetResponseModel`, then return `{"content": your_content}` from the endpoint.
 
 ```python
 from typing import Literal, Optional
@@ -565,7 +582,7 @@ async def create_omni_widget(item: TestOmniWidgetQueryModel):
     if item.parse_as == "chart":
         some_test_data = {
             "data": [{"type": "bar", "x": ["A", "B", "C"], "y": [1, 2, 3]}],
-            "layout": {"template": "...", "title": {"text": "Hello Chart!"}}
+            "layout": {"template": "plotly_dark", "title": {"text": "Hello Chart!"}}
         }
     elif item.parse_as == "text":
         some_test_data = f"""

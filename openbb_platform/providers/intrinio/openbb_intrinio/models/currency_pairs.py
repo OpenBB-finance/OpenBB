@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_pairs import (
@@ -36,22 +36,22 @@ class IntrinioCurrencyPairsData(CurrencyPairsData):
 class IntrinioCurrencyPairsFetcher(
     Fetcher[
         IntrinioCurrencyPairsQueryParams,
-        List[IntrinioCurrencyPairsData],
+        list[IntrinioCurrencyPairsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioCurrencyPairsQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioCurrencyPairsQueryParams:
         """Transform the query params."""
         return IntrinioCurrencyPairsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioCurrencyPairsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_intrinio.utils.helpers import get_data_many
@@ -64,8 +64,8 @@ class IntrinioCurrencyPairsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioCurrencyPairsData]:
+        query: IntrinioCurrencyPairsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioCurrencyPairsData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

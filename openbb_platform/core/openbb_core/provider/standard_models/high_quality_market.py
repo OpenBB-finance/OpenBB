@@ -3,7 +3,6 @@
 from datetime import (
     date as dateType,
 )
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -17,7 +16,7 @@ from pydantic import Field
 class HighQualityMarketCorporateBondQueryParams(QueryParams):
     """High Quality Market Corporate Bond Query."""
 
-    date: Optional[Union[dateType, str]] = Field(
+    date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", ""),
     )

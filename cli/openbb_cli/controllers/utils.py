@@ -11,7 +11,7 @@ from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 import pandas as pd
@@ -55,50 +55,25 @@ def remove_file(path: Path) -> bool:
         return True
     except Exception:
         session.console.print(
-            f"\n[bold red]Failed to remove {path}"
-            "\nPlease delete this manually![/bold red]"
+            f"\n[bold red]Failed to remove {path}\nPlease delete this manually![/bold red]"
         )
         return False
 
 
 def print_goodbye():
     """Print a goodbye message when quitting the terminal."""
-    # LEGACY GOODBYE MESSAGES - You'll live in our hearts forever.
-    # "An informed ape, is a strong ape."
-    # "Remember that stonks only go up."
-    # "Diamond hands."
-    # "Apes together strong."
-    # "This is our way."
-    # "Keep the spacesuit ape, we haven't reached the moon yet."
-    # "I am not a cat. I'm an ape."
-    # "We like the terminal."
-    # "...when offered a flight to the moon, nobody asks about what seat."
-
     text = """
 [param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
-
-We hope you'll find the new OpenBB Platform CLI a valuable tool.
 
 To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
 
 Please feel free to check out our other products:
 
 [bold]OpenBB Workspace[/]:    [cmds]https://openbb.co[/cmds]
-[bold]OpenBB Platform:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
-[bold]OpenBB Bot[/]:          [cmds]https://docs.openbb.co/bot[/cmds]
-    """
+[bold]ODP Desktop Application:[/]      [cmds]https://docs.openbb.co/odp/[/cmds]
+[bold]ODP Python Package:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
+"""
     session.console.print(text)
-
-
-def print_guest_block_msg():
-    """Block guest users from using the cli."""
-    if session.is_local():
-        session.console.print(
-            "[info]You are currently logged as a guest.[/info]\n"
-            "[info]Login to use this feature.[/info]\n\n"
-            "[info]If you don't have an account, you can create one here: [/info]"
-            f"[cmds]{session.settings.HUB_URL + '/register'}\n[/cmds]"
-        )
 
 
 def bootup():
@@ -127,7 +102,7 @@ def welcome_message():
     )
 
 
-def reset(queue: Optional[List[str]] = None):
+def reset(queue: list[str] | None = None):
     """Reset the CLI.
 
     Allows for checking code without quitting.
@@ -137,15 +112,6 @@ def reset(queue: Optional[List[str]] = None):
     dev = session.settings.DEV_BACKEND
 
     try:
-        # remove the hub routines
-        if not session.is_local():
-            remove_file(
-                Path(session.user.preferences.export_directory, "routines", "hub")
-            )
-
-            # if not get_current_user().profile.remember:
-            #     Local.remove(HIST_FILE_PROMPT)
-
         # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
@@ -153,16 +119,11 @@ def reset(queue: Optional[List[str]] = None):
                 del sys.modules[module]
 
         queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
+
         # pylint: disable=import-outside-toplevel
-        # we run the cli again
-        if session.is_local():
-            from openbb_cli.controllers.cli_controller import main
+        from openbb_cli.controllers.cli_controller import main
 
-            main(debug, dev, queue_list, module="")  # type: ignore
-        else:
-            from openbb_cli.controllers.cli_controller import launch
-
-            launch(queue=queue_list)
+        main(debug, dev, queue_list, module="")  # type: ignore
 
     except Exception as e:
         session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
@@ -201,7 +162,7 @@ def first_time_user() -> bool:
     return False
 
 
-def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
+def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
     """Filter and split the input queue.
 
     Uses regex to filters command arguments that have forward slashes so that it doesn't
@@ -240,19 +201,17 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     slash_filter_exp = f"({unix_path_arg_exp}){custom_filter}"
 
     filter_input = True
-    placeholders: Dict[str, str] = {}
+    placeholders: dict[str, str] = {}
     while filter_input:
         match = re.search(pattern=slash_filter_exp, string=an_input)
         if match is not None:
-            placeholder = f"{{placeholder{len(placeholders)+1}}}"
+            placeholder = f"{{placeholder{len(placeholders) + 1}}}"
             placeholders[placeholder] = an_input[
-                match.span()[0] : match.span()[1]  # noqa:E203
-            ]
+                match.span()[0] : match.span()[1]
+            ]  # noqa:E203
             an_input = (
-                an_input[: match.span()[0]]
-                + placeholder
-                + an_input[match.span()[1] :]  # noqa:E203
-            )
+                an_input[: match.span()[0]] + placeholder + an_input[match.span()[1] :]
+            )  # noqa:E203
         else:
             filter_input = False
 
@@ -306,15 +265,15 @@ def print_rich_table(  # noqa: PLR0912
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: Optional[Union[List[str], pd.Index]] = None,
-    floatfmt: Union[str, List[str]] = ".2f",
+    headers: list[str] | pd.Index | None = None,
+    floatfmt: str | list[str] = ".2f",
     show_header: bool = True,
     automatic_coloring: bool = False,
-    columns_to_auto_color: Optional[List[str]] = None,
-    rows_to_auto_color: Optional[List[str]] = None,
+    columns_to_auto_color: list[str] | None = None,
+    rows_to_auto_color: list[str] | None = None,
     export: bool = False,
-    limit: Optional[int] = 1000,
-    columns_keep_types: Optional[List[str]] = None,
+    limit: int | None = 1000,
+    columns_keep_types: list[str] | None = None,
     use_tabulate_df: bool = True,
 ):
     """Prepare a table from df in rich.
@@ -372,7 +331,7 @@ def print_rich_table(  # noqa: PLR0912
         except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
-    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
+    def _get_headers(_headers: list[str] | pd.Index) -> list[str]:
         """Check if headers are valid and return them."""
         output = _headers
         if isinstance(_headers, pd.Index):
@@ -420,7 +379,7 @@ def print_rich_table(  # noqa: PLR0912
                     )
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
-            df = df.applymap(lambda x: return_colored_value(str(x)))
+            df = df.applymap(lambda x: return_colored_value(str(x)))  # type: ignore
 
     exceeds_allowed_columns = len(df.columns) > MAX_COLS
     exceeds_allowed_rows = len(df) > MAX_ROWS
@@ -565,11 +524,7 @@ def get_flair_and_username() -> str:
     if dtime := get_dtime():
         dtime = f"{dtime} "
 
-    username = getattr(session.user.profile.hub_session, "username", "")
-    if username:
-        username = f"[{username}] "
-
-    return f"{dtime}{username}{flair}"
+    return f"{dtime}{flair}"
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -613,7 +568,7 @@ def get_user_timezone_or_invalid() -> str:
     return "INVALID"
 
 
-def check_file_type_saved(valid_types: Optional[List[str]] = None):
+def check_file_type_saved(valid_types: list[str] | None = None):
     """Provide valid types for the user to be able to select.
 
     Parameters
@@ -676,7 +631,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     if (
         df.index.dtype.kind == "M"
         and hasattr(df.index.dtype, "tz")
-        and df.index.dtype.tz is not None
+        and df.index.dtype.tz is not None  # type: ignore
     ):
         index_is_date = True
 
@@ -690,7 +645,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     if index_is_date:
         index_name = df.index.name
-        df.index = df.index.date
+        df.index = df.index.date  # type: ignore
         df.index.name = index_name
 
     return df
@@ -730,7 +685,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
-def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
+def ask_file_overwrite(file_path: Path) -> tuple[bool, bool]:
     """Provide a prompt for overwriting existing files.
 
     Returns two values, the first is a boolean indicating if the file exists and the
@@ -790,7 +745,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
             with pd.ExcelWriter(
                 saved_path,
                 mode="a",
-                if_sheet_exists=overwrite_options[overwrite_option],
+                if_sheet_exists=overwrite_options[overwrite_option],  # type: ignore
                 engine="openpyxl",
             ) as writer:
                 df.to_excel(
@@ -809,7 +764,7 @@ def export_data(
     dir_path: str,
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
-    sheet_name: Optional[str] = None,
+    sheet_name: str | None = None,
     figure: Optional["OpenBBFigure"] = None,
     margin: bool = True,
 ) -> None:
@@ -957,7 +912,7 @@ def request(
     )
 
 
-def parse_unknown_args_to_dict(unknown_args: Optional[List[str]]) -> Dict[str, str]:
+def parse_unknown_args_to_dict(unknown_args: list[str] | None) -> dict[str, str]:
     """Parse unknown arguments to a dictionary."""
     unknown_args_dict = {}
     if unknown_args:
@@ -988,7 +943,7 @@ def handle_obbject_display(
 ):
     """Handle the display of an OBBject."""
     df: pd.DataFrame = pd.DataFrame()
-    fig: Optional[OpenBBFigure] = None
+    fig: OpenBBFigure | None = None
     if chart:
         try:
             if obbject.chart:

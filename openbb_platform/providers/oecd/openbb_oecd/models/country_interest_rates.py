@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -59,7 +59,7 @@ class OecdCountryInterestRatesQueryParams(CountryInterestRatesQueryParams):
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import check_item
 
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_IR:
@@ -83,12 +83,12 @@ class OecdCountryInterestRatesData(CountryInterestRatesData):
 
 
 class OecdCountryInterestRatesFetcher(
-    Fetcher[OecdCountryInterestRatesQueryParams, List[OecdCountryInterestRatesData]]
+    Fetcher[OecdCountryInterestRatesQueryParams, list[OecdCountryInterestRatesData]]
 ):
     """OECD Country Interest Rates Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OecdCountryInterestRatesQueryParams:
+    def transform_query(params: dict[str, Any]) -> OecdCountryInterestRatesQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -107,9 +107,9 @@ class OecdCountryInterestRatesFetcher(
     @staticmethod
     def extract_data(
         query: OecdCountryInterestRatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -162,8 +162,8 @@ class OecdCountryInterestRatesFetcher(
     @staticmethod
     def transform_data(
         query: OecdCountryInterestRatesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[OecdCountryInterestRatesData]:
+    ) -> list[OecdCountryInterestRatesData]:
         """Transform the data from the OECD endpoint."""
         return [OecdCountryInterestRatesData.model_validate(d) for d in data]

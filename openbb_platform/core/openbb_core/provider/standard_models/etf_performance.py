@@ -1,7 +1,7 @@
 """ETF Performance Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -26,7 +26,7 @@ class ETFPerformanceQueryParams(QueryParams):
 
     @field_validator("sort", mode="before", check_fields=False)
     @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+    def to_lower(cls, v: str | None) -> str | None:
         """Convert field to lowercase."""
         return v.lower() if v else v
 

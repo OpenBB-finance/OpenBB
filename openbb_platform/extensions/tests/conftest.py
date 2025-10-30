@@ -1,7 +1,5 @@
 """Custom pytest configuration for the extensions."""
 
-from typing import Dict, List
-
 import pytest
 from openbb_core.app.router import CommandMap
 
@@ -13,14 +11,14 @@ commands = list(cm.map.keys())
 # ruff: noqa: SIM114
 
 
-def parametrize(argnames: str, argvalues: List, **kwargs):
+def parametrize(argnames: str, argvalues: list, **kwargs):
     """Apply a custom parametrize decorator that filters test cases based on the environment."""
 
     routers, providers, obbject_ext = list_openbb_extensions()
 
     def decorator(function):
         """Patch the pytest.mark.parametrize decorator."""
-        filtered_argvalues: List[Dict] = []
+        filtered_argvalues: list[dict] = []
         name = function.__name__.split("_")[1]
         # This is a patch to handle the charting extension name
         extension_name = "openbb_" + name if name == "charting" else name

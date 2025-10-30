@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -41,11 +41,11 @@ class SecLatestFinancialReportsQueryParams(LatestFinancialReportsQueryParams):
         "report_type": {"multiple_items_allowed": True, "choices": report_type_choices}
     }
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "") + " Defaults to today.",
     )
-    report_type: Optional[str] = Field(
+    report_type: str | None = Field(
         default=None,
         description="Return only a specific form type. Default is all quarterly, annual, and current reports."
         + f" Choices: {', '.join(report_type_choices)}.",
@@ -69,17 +69,17 @@ class SecLatestFinancialReportsQueryParams(LatestFinancialReportsQueryParams):
 class SecLatestFinancialReportsData(LatestFinancialReportsData):
     """SEC Latest Financial Reports Data."""
 
-    items: Optional[str] = Field(
+    items: str | None = Field(
         default=None, description="Item codes associated with the filing."
     )
     index_headers: str = Field(description="URL to the index headers file.")
     complete_submission: str = Field(
         description="URL to the complete submission text file."
     )
-    metadata: Optional[str] = Field(
+    metadata: str | None = Field(
         default=None, description="URL to the MetaLinks.json file, if available."
     )
-    financial_report: Optional[str] = Field(
+    financial_report: str | None = Field(
         default=None, description="URL to the Financial_Report.xlsx file, if available."
     )
 
@@ -97,7 +97,7 @@ class SecLatestFinancialReportsFetcher(
     @staticmethod
     async def aextract_data(
         query: SecLatestFinancialReportsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data from the SEC."""

@@ -9,20 +9,17 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/stock-price-change/AAPL,SPY,QQQ,MSFT,AMZN,GOOG?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/stock-price-change?apikey=MOCK_API_KEY&symbol=AAPL%2CSPY%2CBTCUSD
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WUu26UMRCF+zzFautgzd0eukiINIQkCg0gChAlEQUURIh3Z3wlXrHF3xz5H883
-        53g+XhwOv+M7HI4/nh6/fP92fHk4Xl3dvTledhVfhYLJ3Xko2hVW5zIP3VSJEgllHRpXjTiBqODQ
-        rJ2DJGBCQ3v6+bWKkkqmkmfB91XjxC5ms2DVtCQimPdqlZhyAqR1CUJVS6iY2af6+PlXLWkGkhMp
-        W8h/Lv9H/3D3foOHFMXXjV0h4OILoeFTcmOeQ2r0kihHZxu8JClAs9yA1ySotABq/6QJrCytwQeS
-        IdsyonEGZu1lg8dckuZMc3QDHgXj9sJ+lv3+/v6EncCmo439RYwjgyCUWRw7qgL4sqpKOXlxnY52
-        eks5+p8Ag94To/tzeKYEjDKhGjxrKjBPNXTUHJQIs7/OLpHDGpt5cWcvAim7opxFv3l4/e6U3cpJ
-        6MOS1VXjDpey0mxrcJNjmacaN0GkOwzZuCleFZY8b8ABiZH4zXWLyJvwnG1DJ47Mq+r6uaF7rn4h
-        znR1dDHxHHXZ9Dz91c2Htxs9JwfcnI+n7Jy3zFtF1SkNejPKcyCdPo4ZTmnAezS0mBq7eAzJcDM9
-        vBT2tVO67RB7QUFWYnrkweMF4r85jcx7NirJStFyFv769vZ6g68hR55cg76o6EnmMTbWvu8iuEC4
-        7TuO2KgvrfNHwguJbqlXTdni9+cDEEtoedt3JPHYlHd8DTHsWcum02eue7VyX3z6C5mgg7/qBQAA
+        H4sIAAAAAAAAA3WSPU/DMBCG9/6KKHN7uk/bx1boCFKlwlAhBhAjFQMMVIj/zsWJo0aCIcuj15d7
+        Xvtx1XXf8XVd/3E+vby/9Vddv93ub/v1SGkXREHQLU/IBpSBzIu31F0gYlBR0onJwDiDInvLpZrL
+        IMxWJnb+fA1ogGTSGB2HnABmnXMysJQhWdbUVqk5dkAhmZfBgRYU4ILKEz09fw1Zd6UEHmMt+M/6
+        L//D/rjQR9AsRJf6FH/UIpf6AiJpNpCpEUbPLTbaF2Ap3Foa7UkBzX2edxxrQstzsOrnAuSaGhv1
+        kaAUp6U+q0BAW9prDE2kLv+6X9/fPBx2C/0NgpfY5NJ/o6CcuXVSCxhYcV3cPyGYFWxnawMiQEmk
+        nZ0aKPHGNM0Dq61B4uzNoTagAU0wNVgr8IRx10nn07UCLRy95ninbaXWQqKUhTH+aVFmfQirp1/j
+        CHm0CwMAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -42,9 +39,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:59 GMT
+      - Tue, 23 Sep 2025 03:08:44 GMT
       Etag:
-      - W/"5ea-Q3uo7ZyaRBCRfWLAMSz6/k0frvw"
+      - W/"30b-ITJ/yRUuZHc/0BzZS9ayy5q9zFk"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -95,43 +95,43 @@ class ImfEconomicIndicatorsData(EconomicIndicatorsData):
         "symbol_root": "parent",
     }
 
-    unit: Optional[str] = Field(
+    unit: str | None = Field(
         default=None,
         description="The unit of the value.",
     )
-    scale: Optional[str] = Field(
+    scale: str | None = Field(
         default=None,
         description="The scale of the value.",
     )
-    table: Optional[str] = Field(
+    table: str | None = Field(
         default=None,
         description="The name of the table associated with the symbol.",
     )
-    level: Optional[int] = Field(
+    level: int | None = Field(
         default=None,
         description="The indentation level of the data, relative to the table and symbol_root",
     )
-    order: Optional[Union[int, float]] = Field(
+    order: int | float | None = Field(
         default=None,
         description="Order of the data, relative to the table.",
     )
-    reference_sector: Optional[str] = Field(
+    reference_sector: str | None = Field(
         default=None,
         description="The reference sector for the data.",
     )
-    title: Optional[str] = Field(
+    title: str | None = Field(
         default=None,
         description="The title of the series associated with the symbol.",
     )
 
 
 class ImfEconomicIndicatorsFetcher(
-    Fetcher[ImfEconomicIndicatorsQueryParams, List[ImfEconomicIndicatorsData]]
+    Fetcher[ImfEconomicIndicatorsQueryParams, list[ImfEconomicIndicatorsData]]
 ):
     """IMF Economic Indicators Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> ImfEconomicIndicatorsQueryParams:
+    def transform_query(params: dict[str, Any]) -> ImfEconomicIndicatorsQueryParams:
         """Transform the query."""
         symbols = params.get("symbol", "")
         countries = params.get("country")
@@ -184,9 +184,9 @@ class ImfEconomicIndicatorsFetcher(
     @staticmethod
     async def aextract_data(
         query: ImfEconomicIndicatorsQueryParams,
-        credentials: Optional[Dict[str, Any]] = None,
+        credentials: dict[str, Any] | None = None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data."""
         # pylint: disable = import-outside-toplevel
         from openbb_imf.utils.fsi_helpers import _get_fsi_data  # noqa
@@ -196,8 +196,8 @@ class ImfEconomicIndicatorsFetcher(
         fsi_symbols = load_symbols("FSI")
         irfcl_symbols = load_symbols("IRFCL")
         symbols = query.symbol.split(",")
-        new_symbols_irfcl: Union[list, str] = []
-        new_symbols_fsi: Union[list, str] = []
+        new_symbols_irfcl: list | str = []
+        new_symbols_fsi: list | str = []
         for symbol in symbols:
             if symbol in list(IRFCL_PRESET) + ["all", "IRFCL"]:
                 new_symbols_irfcl = symbol
@@ -256,9 +256,9 @@ class ImfEconomicIndicatorsFetcher(
     @staticmethod
     def transform_data(
         query: ImfEconomicIndicatorsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[ImfEconomicIndicatorsData]:
+    ) -> list[ImfEconomicIndicatorsData]:
         """Transform the data."""
         # pylint: disable = import-outside-toplevel
         from numpy import nan

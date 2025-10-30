@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -36,18 +36,18 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     }
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     display: Literal["headline", "abstract", "full"] = Field(
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
     )
-    updated_since: Optional[int] = Field(
+    updated_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    published_since: Optional[int] = Field(
+    published_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
@@ -58,18 +58,18 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(default=None, description="The company's ISIN.")
-    cusip: Optional[str] = Field(default=None, description="The company's CUSIP.")
-    channels: Optional[str] = Field(
+    isin: str | None = Field(default=None, description="The company's ISIN.")
+    cusip: str | None = Field(default=None, description="The company's CUSIP.")
+    channels: str | None = Field(
         default=None, description="Channels of the news to retrieve."
     )
-    topics: Optional[str] = Field(
+    topics: str | None = Field(
         default=None, description="Topics of the news to retrieve."
     )
-    authors: Optional[str] = Field(
+    authors: str | None = Field(
         default=None, description="Authors of the news to retrieve."
     )
-    content_types: Optional[str] = Field(
+    content_types: str | None = Field(
         default=None, description="Content types of the news to retrieve."
     )
 
@@ -80,75 +80,61 @@ class BenzingaCompanyNewsData(CompanyNewsData):
     __alias_dict__ = {
         "symbols": "stocks",
         "date": "created",
-        "text": "body",
+        "excerpt": "teaser",
         "images": "image",
     }
 
-    id: str = Field(description="Article ID.")
-    author: Optional[str] = Field(default=None, description="Author of the article.")
-    teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
-    images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="URL to the images of the news."
-    )
-    channels: Optional[str] = Field(
+    channels: str | None = Field(
         default=None,
         description="Channels associated with the news.",
     )
-    stocks: Optional[str] = Field(
-        description="Stocks associated with the news.",
-        default=None,
-    )
-    tags: Optional[str] = Field(
+    tags: str | None = Field(
         description="Tags associated with the news.",
         default=None,
     )
-    updated: Optional[datetime] = Field(
+    updated: datetime | None = Field(
         default=None, description="Updated date of the news."
     )
-
-    @field_validator("symbols", mode="before", check_fields=False)
-    @classmethod
-    def symbols_string(cls, v):
-        """Symbols string validator."""
-        return ",".join([item["name"] for item in v])
+    id: str = Field(description="Article ID.")
+    original_id: str | None = Field(
+        default=None, description="Original ID of the news article."
+    )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
-    @field_validator("stocks", "channels", "tags", mode="before", check_fields=False)
+    @field_validator("symbols", "channels", "tags", mode="before", check_fields=False)
     def list_validate(cls, v):  # pylint: disable=E0213
         """Return the list as a string."""
-        return ",".join(
-            [item.get("name", None) for item in v if item.get("name", None)]
-        )
+        return ",".join([item.get("name") for item in v if item.get("name")])
 
-    @field_validator("id", mode="before", check_fields=False)
+    @field_validator("id", "original_id", mode="before", check_fields=False)
     def id_validate(cls, v):  # pylint: disable=E0213
         """Return the id as a string."""
-        return str(v)
+        return str(v) if v else None
 
 
 class BenzingaCompanyNewsFetcher(
     Fetcher[
         BenzingaCompanyNewsQueryParams,
-        List[BenzingaCompanyNewsData],
+        list[BenzingaCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> BenzingaCompanyNewsQueryParams:
         """Transform query params."""
         return BenzingaCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: BenzingaCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -157,29 +143,28 @@ class BenzingaCompanyNewsFetcher(
         from openbb_benzinga.utils.helpers import response_callback
 
         token = credentials.get("benzinga_api_key") if credentials else ""
-
         base_url = "https://api.benzinga.com/api/v2/news"
-
+        query.limit = query.limit if query.limit else 2500
         model = query.model_dump(by_alias=True)
         model["sort"] = (
             f"{query.sort}:{query.order}" if query.sort and query.order else ""
         )
         querystring = get_querystring(model, ["order", "pageSize"])
-
-        pages = math.ceil(query.limit / 100) if query.limit else 1
         page_size = 100 if query.limit and query.limit > 100 else query.limit
+        pages = math.ceil(query.limit / page_size) if query.limit else 1
         urls = [
             f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
             for page in range(pages)
         ]
-
         results: list = []
 
         async def get_one(url):
             """Get data for one url."""
             try:
                 response = await amake_request(
-                    url, response_callback=response_callback, **kwargs
+                    url,
+                    response_callback=response_callback,
+                    **kwargs,
                 )
                 if response:
                     results.extend(response)
@@ -198,8 +183,8 @@ class BenzingaCompanyNewsFetcher(
     @staticmethod
     def transform_data(
         query: BenzingaCompanyNewsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[BenzingaCompanyNewsData]:
+    ) -> list[BenzingaCompanyNewsData]:
         """Transform data."""
         return [BenzingaCompanyNewsData.model_validate(item) for item in data]

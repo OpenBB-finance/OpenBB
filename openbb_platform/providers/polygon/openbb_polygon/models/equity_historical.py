@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument,protected-access
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from dateutil.relativedelta import relativedelta
@@ -53,8 +53,8 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -91,7 +91,7 @@ class PolygonEquityHistoricalData(EquityHistoricalData):
         "transactions": "n",
     }
 
-    transactions: Optional[PositiveInt] = Field(
+    transactions: PositiveInt | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
@@ -100,13 +100,13 @@ class PolygonEquityHistoricalData(EquityHistoricalData):
 class PolygonEquityHistoricalFetcher(
     Fetcher[
         PolygonEquityHistoricalQueryParams,
-        List[PolygonEquityHistoricalData],
+        list[PolygonEquityHistoricalData],
     ]
 ):
     """Polygon Equity Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonEquityHistoricalQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
         now = datetime.now().date()
         transformed_params = params
@@ -121,9 +121,9 @@ class PolygonEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(  # pylint: disable=protected-access
         query: PolygonEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (  # noqa
@@ -148,7 +148,7 @@ class PolygonEquityHistoricalFetcher(
 
         async def callback(
             response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
+        ) -> list[dict]:
             data = await response.json()
 
             symbol = response.url.parts[4]
@@ -181,9 +181,9 @@ class PolygonEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: PolygonEquityHistoricalQueryParams,
-        data: List[dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonEquityHistoricalData]:
+    ) -> list[PolygonEquityHistoricalData]:
         """Transform the data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime

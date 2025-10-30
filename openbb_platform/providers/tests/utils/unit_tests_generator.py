@@ -2,7 +2,7 @@
 
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,10 +16,10 @@ from .credentials_schema import test_credentials
 PROVIDERS_PATH = Path(__file__).parent.parent.parent.resolve()
 
 
-def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
+def get_provider_fetchers() -> dict[str, dict[str, Fetcher]]:
     """Get the fetchers from the provider registry."""
     registry = RegistryLoader.from_extensions()
-    provider_fetcher_map: Dict[str, Dict[str, Fetcher]] = {}
+    provider_fetcher_map: dict[str, dict[str, Fetcher]] = {}
     for provider_name, provider_cls in registry.providers.items():
         provider_fetcher_map[provider_name] = {}
         for fetcher_name, fetcher_cls in provider_cls.fetcher_dict.items():
@@ -37,9 +37,9 @@ def generate_fetcher_unit_tests(path: Path) -> None:
             )
 
 
-def get_test_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
+def get_test_params(param_fields: dict[str, FieldInfo]) -> dict[str, Any]:
     """Get the test params for the fetcher based on the requires standard params."""
-    test_params: Dict[str, Any] = {}
+    test_params: dict[str, Any] = {}
     for field_name, field in param_fields.items():
         if field.is_required() and field.default is not PydanticUndefined:
             test_params[field_name] = field.default
@@ -55,13 +55,13 @@ def get_test_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
-            elif field.annotation == str:
+            elif field.annotation is str:
                 test_params[field_name] = "test"
-            elif field.annotation == int:
+            elif field.annotation is int:
                 test_params[field_name] = 1
-            elif field.annotation == float:
+            elif field.annotation is float:
                 test_params[field_name] = 1.0
-            elif field.annotation == bool:
+            elif field.annotation is bool:
                 test_params[field_name] = True
 
         # This makes sure that the unit test are reproducible by fixing the date
@@ -81,7 +81,7 @@ def get_test_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
 
 def write_test_credentials(path: str, provider: str) -> None:
     """Write the mocked credentials to the provider test folders."""
-    credentials: Tuple[str, str] = test_credentials.get(
+    credentials: tuple[str, str] = test_credentials.get(
         provider, ("token", "MOCK_TOKEN")
     )
 
@@ -118,7 +118,7 @@ def write_fetcher_unit_tests() -> None:
     provider_interface_map = provider_interface.map
 
     fetchers = get_provider_fetchers()
-    provider_fetchers: Dict[str, Dict[str, str]] = {}
+    provider_fetchers: dict[str, dict[str, str]] = {}
 
     for provider, fetcher_dict in fetchers.items():
         path = PROVIDERS_PATH / provider / "tests" / f"test_{provider}_fetchers.py"

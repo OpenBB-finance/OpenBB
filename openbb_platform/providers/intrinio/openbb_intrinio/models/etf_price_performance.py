@@ -4,7 +4,7 @@
 
 import asyncio
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -52,68 +52,68 @@ class IntrinioEtfPricePerformanceData(RecentPerformanceData):
         "volume_avg_180": "average_daily_volume_six_month",
     }
 
-    max_annualized: Optional[float] = Field(
+    max_annualized: float | None = Field(
         default=None,
         description="Annualized rate of return from inception.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_one_year: Optional[float] = Field(
+    volatility_one_year: float | None = Field(
         default=None,
         description="Trailing one-year annualized volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_three_year: Optional[float] = Field(
+    volatility_three_year: float | None = Field(
         default=None,
         description="Trailing three-year annualized volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_five_year: Optional[float] = Field(
+    volatility_five_year: float | None = Field(
         default=None,
         description="Trailing five-year annualized volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Optional[int] = Field(
+    volume: int | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )
-    volume_avg_30: Optional[float] = Field(
+    volume_avg_30: float | None = Field(
         default=None,
         description="The one-month average daily volume.",
     )
-    volume_avg_90: Optional[float] = Field(
+    volume_avg_90: float | None = Field(
         default=None,
         description="The three-month average daily volume.",
     )
-    volume_avg_180: Optional[float] = Field(
+    volume_avg_180: float | None = Field(
         default=None,
         description="The six-month average daily volume.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None,
         description="Beta compared to the S&P 500.",
     )
-    nav: Optional[float] = Field(
+    nav: float | None = Field(
         default=None,
         description="Net asset value per share.",
     )
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None,
         description="The 52-week high price.",
     )
-    year_low: Optional[float] = Field(
+    year_low: float | None = Field(
         default=None,
         description="The 52-week low price.",
     )
 
-    market_cap: Optional[float] = Field(
+    market_cap: float | None = Field(
         default=None,
         description="The market capitalization.",
     )
-    shares_outstanding: Optional[int] = Field(
+    shares_outstanding: int | None = Field(
         default=None,
         description="The number of shares outstanding.",
     )
-    updated: Optional[dateType] = Field(
+    updated: dateType | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("date", ""),
     )
@@ -121,14 +121,14 @@ class IntrinioEtfPricePerformanceData(RecentPerformanceData):
 
 class IntrinioEtfPricePerformanceFetcher(
     Fetcher[
-        IntrinioEtfPricePerformanceQueryParams, List[IntrinioEtfPricePerformanceData]
+        IntrinioEtfPricePerformanceQueryParams, list[IntrinioEtfPricePerformanceData]
     ]
 ):
     """Intrinio ETF Performance Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioEtfPricePerformanceQueryParams:
         """Transform query."""
         return IntrinioEtfPricePerformanceQueryParams(**params)
@@ -136,9 +136,9 @@ class IntrinioEtfPricePerformanceFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioEtfPricePerformanceQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
@@ -220,8 +220,8 @@ class IntrinioEtfPricePerformanceFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEtfPricePerformanceQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioEtfPricePerformanceData]:
+    ) -> list[IntrinioEtfPricePerformanceData]:
         """Transform data."""
         return [IntrinioEtfPricePerformanceData.model_validate(d) for d in data]

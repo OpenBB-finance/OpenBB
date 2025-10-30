@@ -1,6 +1,6 @@
 """Test the Fetcher."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import pytest
 from openbb_core.provider.abstract.fetcher import Data, Fetcher, QueryParams
@@ -16,23 +16,21 @@ class MockQueryParams(QueryParams):
     """Mock query params class."""
 
 
-class MockFetcher(Fetcher[MockQueryParams, List[MockData]]):
+class MockFetcher(Fetcher[MockQueryParams, list[MockData]]):
     """Mock fetcher class."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> MockQueryParams:
+    def transform_query(params: dict[str, Any]) -> MockQueryParams:
         """Transform the params to the provider-specific query."""
         return MockQueryParams()
 
     @staticmethod
-    def extract_data(
-        query: MockQueryParams, credentials: Optional[Dict[str, str]]
-    ) -> Any:
+    def extract_data(query: MockQueryParams, credentials: dict[str, str] | None) -> Any:
         """Extract the data from the provider."""
         return [{"mock_key": "mock_value"}]  # Mocking a data response
 
     @staticmethod
-    def transform_data(query: MockQueryParams, data: Any, **kwargs) -> List[MockData]:
+    def transform_data(query: MockQueryParams, data: Any, **kwargs) -> list[MockData]:
         """Transform the provider-specific data."""
         return [MockData(**item) for item in data]
 
@@ -56,7 +54,7 @@ def test_fetcher_query_params_type():
 
 def test_fetcher_return_type():
     """Test the return_type classproperty."""
-    assert MockFetcher.return_type == List[MockData]
+    assert MockFetcher.return_type == list[MockData]
 
 
 def test_fetcher_data_type():

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.ecb_interest_rates import (
@@ -38,14 +38,14 @@ class FREDEuropeanCentralBankInterestRatesData(EuropeanCentralBankInterestRatesD
 class FREDEuropeanCentralBankInterestRatesFetcher(
     Fetcher[
         FREDEuropeanCentralBankInterestRatesParams,
-        List[FREDEuropeanCentralBankInterestRatesData],
+        list[FREDEuropeanCentralBankInterestRatesData],
     ]
 ):
     """FRED ECB Interest Rates Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FREDEuropeanCentralBankInterestRatesParams:
         """Transform query."""
         return FREDEuropeanCentralBankInterestRatesParams(**params)
@@ -53,9 +53,9 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
     @staticmethod
     def extract_data(
         query: FREDEuropeanCentralBankInterestRatesParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -74,8 +74,8 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDEuropeanCentralBankInterestRatesParams, data: List, **kwargs: Any
-    ) -> List[FREDEuropeanCentralBankInterestRatesData]:
+        query: FREDEuropeanCentralBankInterestRatesParams, data: list, **kwargs: Any
+    ) -> list[FREDEuropeanCentralBankInterestRatesData]:
         """Transform data."""
         return [
             FREDEuropeanCentralBankInterestRatesData.model_validate(d) for d in data

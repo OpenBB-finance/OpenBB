@@ -1,9 +1,10 @@
 """User service."""
 
 import json
+from collections.abc import MutableMapping
 from functools import reduce
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, Optional
+from typing import Any
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
@@ -18,13 +19,13 @@ class UserService(metaclass=SingletonMeta):
 
     def __init__(
         self,
-        default_user_settings: Optional[UserSettings] = None,
+        default_user_settings: UserSettings | None = None,
     ):
         """Initialize user service."""
         self._default_user_settings = default_user_settings or self.read_from_file()
 
     @classmethod
-    def read_from_file(cls, path: Optional[Path] = None) -> UserSettings:
+    def read_from_file(cls, path: Path | None = None) -> UserSettings:
         """Read user settings from json into UserSettings."""
         path = path or cls.USER_SETTINGS_PATH
 
@@ -38,7 +39,7 @@ class UserService(metaclass=SingletonMeta):
     def write_to_file(
         cls,
         user_settings: UserSettings,
-        path: Optional[Path] = None,
+        path: Path | None = None,
     ) -> None:
         """Write user settings to json."""
         path = path or cls.USER_SETTINGS_PATH
@@ -48,10 +49,10 @@ class UserService(metaclass=SingletonMeta):
         path.write_text(user_settings_json, encoding="utf-8")
 
     @staticmethod
-    def _merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _merge_dicts(list_of_dicts: list[dict[str, Any]]) -> dict[str, Any]:
         """Merge a list of dictionaries."""
 
-        def recursive_merge(d1: Dict, d2: Dict) -> Dict:
+        def recursive_merge(d1: dict, d2: dict) -> dict:
             """Recursively merge dict d2 into dict d1 if d2 is value is not None."""
             for k, v in d1.items():
                 if k in d2 and all(isinstance(e, MutableMapping) for e in (v, d2[k])):
@@ -61,7 +62,7 @@ class UserService(metaclass=SingletonMeta):
             d3.update((k, v) for k, v in d2.items() if v is not None)
             return d3
 
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
         for d in list_of_dicts:
             result = reduce(recursive_merge, (result, d))
         return result

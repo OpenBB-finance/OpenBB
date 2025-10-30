@@ -1,6 +1,6 @@
 """Views for the Equity Extension."""
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
@@ -14,7 +14,7 @@ class EquityViews:
     @staticmethod
     def equity_price_historical(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Price Historical Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
@@ -24,17 +24,17 @@ class EquityViews:
     @staticmethod
     def equity_price_performance(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Price Performance Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
 
-        return price_performance(**kwargs)
+        return price_performance(**kwargs)  # type: ignore
 
     @staticmethod
     def equity_historical_market_cap(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Historical Market Cap Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import line_chart
@@ -80,6 +80,6 @@ class EquityViews:
             scatter_kwargs=scatter_kwargs,
             **kwargs,
         )
-        content = fig.show(external=True).to_plotly_json()
+        content = fig.show(external=True).to_plotly_json()  # type: ignore
 
-        return fig, content
+        return fig, content  # type: ignore

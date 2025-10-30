@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -41,10 +41,6 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """Nasdaq Company Filings Query Parameters."""
 
     __json_schema_extra__ = {
-        "form_group": {
-            "multiple_items_allowed": False,
-            "choices": list(form_groups),
-        },
         "year": {
             "x-widget_config": {
                 "options": sorted(
@@ -68,13 +64,13 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         },
     }
 
-    year: Optional[int] = Field(
+    year: int | None = Field(
         description=(
             "Calendar year of the data, default is current year."
-            " The earliest year available is 1994, for all companies and form types."
+            + " The earliest year available is 1994, for all companies and form types."
         ),
         default=None,
-        gte=1994,
+        ge=1994,
     )
     form_group: FormGroups = Field(
         default="8k",
@@ -97,28 +93,28 @@ class NasdaqCompanyFilingsData(CompanyFilingsData):
         "xbr_url": "xbrLink",
         "doc_link": "docLink",
     }
-    period_ending: Optional[dateType] = Field(
+    period_ending: dateType | None = Field(
         default=None,
         description="The ending date for the reporting period, if available.",
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the company, if available.",
     )
-    reporting_owner: Optional[str] = Field(
+    reporting_owner: str | None = Field(
         default=None,
         description="The name of the reporting owner, if applicable.",
     )
-    pdf_url: Optional[str] = Field(
+    pdf_url: str | None = Field(
         default=None, description="The URL to the PDF document, if available."
     )
-    xls_url: Optional[str] = Field(
+    xls_url: str | None = Field(
         default=None, description="The URL to the XLS document, if available."
     )
-    xbr_url: Optional[str] = Field(
+    xbr_url: str | None = Field(
         default=None, description="The URL to the XBR document, if available."
     )
-    doc_link: Optional[str] = Field(
+    doc_link: str | None = Field(
         default=None, description="The URL to the DOC document, if available."
     )
 
@@ -150,7 +146,7 @@ class NasdaqCompanyFilingsFetcher(
     @staticmethod
     def extract_data(
         query: NasdaqCompanyFilingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract data from the query."""
@@ -186,7 +182,7 @@ class NasdaqCompanyFilingsFetcher(
 
             if response.status_code != 200:
                 raise OpenBBError(
-                    f"Error fetching data from Nasdaq: {response.status} - {response.reason}"
+                    f"Error fetching data from Nasdaq: {response.status_code} - {response.reason}"
                 )
             data = response.json().get("data", {})
             rows = data.get("rows", [])
@@ -204,7 +200,7 @@ class NasdaqCompanyFilingsFetcher(
                 response = session.get(url=next_url, headers=headers, timeout=10)
                 if response.status_code != 200:
                     raise OpenBBError(
-                        f"Error fetching data from Nasdaq: {response.status} - {response.reason}"
+                        f"Error fetching data from Nasdaq: {response.status_code} - {response.reason}"
                     )
                 next_data = response.json().get("data", {})
                 new_rows = next_data.get("rows", [])

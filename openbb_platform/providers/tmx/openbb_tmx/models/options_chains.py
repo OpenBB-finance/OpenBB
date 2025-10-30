@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
@@ -24,7 +24,7 @@ class TmxOptionsChainsQueryParams(OptionsChainsQueryParams):
     Source: https://www.Tmx.com/
     """
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("date", ""),
         default=None,
     )
@@ -40,14 +40,14 @@ class TmxOptionsChainsData(OptionsChainsData):
 
     __doc__ = OptionsChainsData.__doc__
 
-    transactions: List[Union[int, None]] = Field(
+    transactions: list[int | None] = Field(
         default_factory=list, description="Number of transactions for the contract."
     )
-    total_value: List[Union[float, None]] = Field(
+    total_value: list[float | None] = Field(
         default_factory=list,
         description="Total value of the transactions.",
     )
-    settlement_price: List[Union[float, None]] = Field(
+    settlement_price: list[float | None] = Field(
         default_factory=list,
         description="Settlement price on that date.",
     )
@@ -68,23 +68,23 @@ class TmxOptionsChainsFetcher(
     """TMX Options Chains Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxOptionsChainsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxOptionsChainsQueryParams:
         """Transform the query."""
         return TmxOptionsChainsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxOptionsChainsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the data."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.models.equity_quote import TmxEquityQuoteFetcher
         from openbb_tmx.utils.helpers import download_eod_chains, get_current_options
         from pandas import DataFrame
 
-        results: Dict = {}
+        results: dict = {}
         chains = DataFrame()
         if query.date is not None:
             chains = await download_eod_chains(
@@ -108,7 +108,7 @@ class TmxOptionsChainsFetcher(
     @staticmethod
     def transform_data(
         query: TmxOptionsChainsQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
     ) -> TmxOptionsChainsData:
         """Transform the data and validate the model."""

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from dateutil import parser
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -53,15 +53,15 @@ class FredSearchQueryParams(SearchQueryParams):
         default="full_text",
         description="The type of search to perform. Automatically set to 'release' when a 'release_id' is provided.",
     )
-    release_id: Optional[NonNegativeInt] = Field(
+    release_id: NonNegativeInt | None = Field(
         default=None,
         description="A specific release ID to target.",
     )
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "") + " (1-1000)",
     )
-    offset: Optional[NonNegativeInt] = Field(
+    offset: NonNegativeInt | None = Field(
         default=0,
         description="Offset the results in conjunction with limit."
         + " This parameter is ignored When search_type is 'release'.",
@@ -88,26 +88,26 @@ class FredSearchQueryParams(SearchQueryParams):
         default="desc",
         description="Sort the 'order_by' item in ascending or descending order. The default is 'desc'.",
     )
-    filter_variable: Optional[Literal["frequency", "units", "seasonal_adjustment"]] = (
+    filter_variable: Literal["frequency", "units", "seasonal_adjustment"] | None = (
         Field(default=None, description="Filter by an attribute.")
     )
-    filter_value: Optional[str] = Field(
+    filter_value: str | None = Field(
         default=None,
         description="String value to filter the variable by.  Used in conjunction with filter_variable."
         + " This parameter is ignored when search_type is 'release'.",
     )
-    tag_names: Optional[str] = Field(
+    tag_names: str | None = Field(
         default=None,
         description="A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports'"
         + " This parameter is ignored when search_type is 'release'.",
     )
-    exclude_tag_names: Optional[str] = Field(
+    exclude_tag_names: str | None = Field(
         default=None,
         description="A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'."
         + " Requires that variable tag_names also be set to limit the number of matching series."
         + " This parameter is ignored when search_type is 'release'.",
     )
-    series_id: Optional[str] = Field(
+    series_id: str | None = Field(
         default=None,
         description="A FRED Series ID to return series group information for."
         + " This returns the required information to query for regional data."
@@ -138,13 +138,13 @@ class FredSearchData(SearchData):
 class FredSearchFetcher(
     Fetcher[
         FredSearchQueryParams,
-        List[FredSearchData],
+        list[FredSearchData],
     ]
 ):
     """FRED Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredSearchQueryParams:
         """Transform query."""
         transformed_params = params.copy()
 
@@ -181,9 +181,9 @@ class FredSearchFetcher(
     @staticmethod
     async def aextract_data(
         query: FredSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -195,11 +195,11 @@ class FredSearchFetcher(
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.series_id is not None:
-            results: List = []
+            results: list = []
 
             async def get_one(_id: str):
                 """Get data for one series."""
-                data: Dict = {}
+                data: dict = {}
                 url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
                 response = await amake_request(url)
                 data = response.get("series_group")  # type: ignore
@@ -242,8 +242,7 @@ class FredSearchFetcher(
 
         if isinstance(response, dict) and "error_code" in response:
             raise OpenBBError(
-                f"FRED API Error -> Status Code: {response['error_code']}"
-                f" -> {response.get('error_message', '')}"
+                f"FRED API Error -> Status Code: {response['error_code']} -> {response.get('error_message', '')}"
             )
 
         if isinstance(response, dict) and "count" in response:
@@ -255,8 +254,8 @@ class FredSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FredSearchData]:
+        query: FredSearchQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FredSearchData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from numpy import nan

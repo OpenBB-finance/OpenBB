@@ -4,7 +4,7 @@
 
 from datetime import datetime
 from functools import cached_property
-from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -89,9 +89,9 @@ class OptionsChainsProperties(Data):
         try:
             _calls = DataFrame(chains_data[chains_data.option_type == "call"])
             _puts = DataFrame(chains_data[chains_data.option_type == "put"])
-            _ask = self._identify_price_col(  # pylint: disable=W0212
+            _ask = self._identify_price_col(
                 chains_data, "call", "ask"
-            )
+            )  # pylint: disable=W0212
             _calls.loc[:, ("Breakeven")] = _calls.strike + _calls.loc[:, (_ask)]
             _puts.loc[:, ("Breakeven")] = _puts.strike - _puts.loc[:, (_ask)]
             if "delta" in _calls.columns:
@@ -168,12 +168,12 @@ class OptionsChainsProperties(Data):
             return chains_data
 
     @property
-    def expirations(self) -> List[str]:
+    def expirations(self) -> list[str]:
         """Return a list of unique expiration dates, as strings."""
         return sorted([d.strftime("%Y-%m-%d") for d in list(set(self.expiration))])  # type: ignore
 
     @property
-    def strikes(self) -> List[float]:
+    def strikes(self) -> list[float]:
         """Return a list of unique strike prices."""
         return sorted(list(set(self.strike)))  # type: ignore
 
@@ -188,7 +188,7 @@ class OptionsChainsProperties(Data):
         return any([self.delta, self.gamma, self.theta, self.vega, self.rho])  # type: ignore
 
     @property
-    def total_oi(self) -> Dict:
+    def total_oi(self) -> dict:
         """Return open interest stats as a nested dictionary with keys: total, expiration, strike.
 
         Both, "expiration" and "strike", contain a list of records with fields:
@@ -197,7 +197,7 @@ class OptionsChainsProperties(Data):
         return self._get_stat("open_interest")
 
     @property
-    def total_volume(self) -> Dict:
+    def total_volume(self) -> dict:
         """Return volume stats as a nested dictionary with keys: total, expiration, strike.
 
         Both, "expiration" and "strike", contain a list of records with fields:
@@ -206,7 +206,7 @@ class OptionsChainsProperties(Data):
         return self._get_stat("volume")
 
     @property
-    def total_dex(self) -> Dict:
+    def total_dex(self) -> dict:
         """Return Delta Dollars (DEX) as a nested dictionary with keys: total, expiration, strike.
 
         Both, "expiration" and "strike", contain a list of records with fields:
@@ -217,7 +217,7 @@ class OptionsChainsProperties(Data):
         return self._get_stat("DEX")
 
     @property
-    def total_gex(self) -> Dict:
+    def total_gex(self) -> dict:
         """Return Gamma Exposure stats as a nested dictionary with keys: total, expiration, strike.
 
         Both, "expiration" and "strike", contain a list of records with fields:
@@ -282,13 +282,13 @@ class OptionsChainsProperties(Data):
 
     def filter_data(
         self,
-        date: Optional[Union[str, int]] = None,
-        option_type: Optional[Literal["call", "put"]] = None,
-        moneyness: Optional[Literal["otm", "itm"]] = None,
-        column: Optional[str] = None,
-        value_min: Optional[float] = None,
-        value_max: Optional[float] = None,
-        stat: Optional[Literal["open_interest", "volume", "dex", "gex"]] = None,
+        date: str | int | None = None,
+        option_type: Literal["call", "put"] | None = None,
+        moneyness: Literal["otm", "itm"] | None = None,
+        column: str | None = None,
+        value_min: float | None = None,
+        value_max: float | None = None,
+        stat: Literal["open_interest", "volume", "dex", "gex"] | None = None,
         by: Literal["expiration", "strike"] = "expiration",
     ) -> "DataFrame":
         """Return statistics by strike or expiration; or, the filtered chains data.
@@ -386,9 +386,9 @@ class OptionsChainsProperties(Data):
     def _get_stat(
         self,
         metric: Literal["open_interest", "volume", "DEX", "GEX"],
-        moneyness: Optional[Literal["otm", "itm"]] = None,
-        date: Optional[str] = None,
-    ) -> Dict:
+        moneyness: Literal["otm", "itm"] | None = None,
+        date: str | None = None,
+    ) -> dict:
         """Return the metric with keys: "total", "expiration", "strike".
         This method is not intended to be called directly.
         """
@@ -469,7 +469,7 @@ class OptionsChainsProperties(Data):
         }
 
     def _get_nearest_expiration(
-        self, date: Optional[Union[str, int]] = None, df: Optional["DataFrame"] = None
+        self, date: str | int | None = None, df: Optional["DataFrame"] = None
     ) -> str:
         """Return the nearest expiration date to the given date or number of days until expiry.
         This method is not intended to be called directly.
@@ -499,11 +499,7 @@ class OptionsChainsProperties(Data):
                 nearest = (dataframe.dte - days).abs().idxmin()  # type: ignore
                 return dataframe.loc[nearest, "expiration"].strftime("%Y-%m-%d")
         elif date is None:
-            date = to_datetime(
-                df.eod_date.iloc[0]
-                if hasattr(df, "eod_date")
-                else datetime.today().strftime("%Y-%m-%d")
-            )  # type: ignore
+            date = to_datetime(df.eod_date.iloc[0] if hasattr(df, "eod_date") else datetime.today().strftime("%Y-%m-%d"))  # type: ignore
         else:
             date = to_datetime(date)  # type: ignore
 
@@ -515,10 +511,10 @@ class OptionsChainsProperties(Data):
 
     def _get_nearest_otm_strikes(
         self,
-        date: Optional[Union[str, int]] = None,
-        underlying_price: Optional[float] = None,
-        moneyness: Optional[float] = None,
-    ) -> Dict:
+        date: str | int | None = None,
+        underlying_price: float | None = None,
+        moneyness: float | None = None,
+    ) -> dict:
         """Get the nearest put and call strikes at a given percent OTM from the underlying price.
         This method is not intended to be called directly.
 
@@ -582,11 +578,11 @@ class OptionsChainsProperties(Data):
     def _get_nearest_strike(
         self,
         option_type: Literal["call", "put"],
-        days: Optional[Union[int, str]] = None,
-        strike: Optional[float] = None,
-        price_col: Optional[str] = None,
+        days: int | str | None = None,
+        strike: float | None = None,
+        price_col: str | None = None,
         force_otm: bool = True,
-    ) -> Union[float, None]:
+    ) -> float | None:
         """
         Get the strike to the target option type, price, and number of days until expiry.
         This method is not intended to be called directly.
@@ -658,9 +654,9 @@ class OptionsChainsProperties(Data):
 
     def straddle(
         self,
-        days: Optional[int] = None,
-        strike: Optional[float] = None,
-        underlying_price: Optional[float] = None,
+        days: int | None = None,
+        strike: float | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the cost of a straddle by DTE. Use a negative strike price for short options.
@@ -734,17 +730,11 @@ class OptionsChainsProperties(Data):
         # If a strike price is supplied, the put strike is the same as the call strike.
         # Otherwise, the put strike is the nearest OTM put strike to the last price.
 
-        put_strike_estimate = self._get_nearest_strike(
-            "put", days, strike_price, put_price_col, force_otm
-        )  # type: ignore
-        call_premium = chains[chains.strike == call_strike_estimate].query(  # type: ignore
-            "`option_type` == 'call'"
-        )[
+        put_strike_estimate = self._get_nearest_strike("put", days, strike_price, put_price_col, force_otm)  # type: ignore
+        call_premium = chains[chains.strike == call_strike_estimate].query("`option_type` == 'call'")[  # type: ignore
             call_price_col
         ]
-        put_premium = chains[chains.strike == put_strike_estimate].query(  # type: ignore
-            "`option_type` == 'put'"
-        )[
+        put_premium = chains[chains.strike == put_strike_estimate].query("`option_type` == 'put'")[  # type: ignore
             put_price_col
         ]
         if call_premium.empty or put_premium.empty:
@@ -756,7 +746,7 @@ class OptionsChainsProperties(Data):
         call_premium = call_premium.values[0]
         dte = chains[chains.expiration.astype(str) == dte_estimate]["dte"].unique()[0]  # type: ignore
         straddle_cost = call_premium + put_premium  # type: ignore
-        straddle_dict: Dict = {}
+        straddle_dict: dict = {}
 
         # Includes the as-of date if it is historical EOD data.
         if hasattr(chains, "eod_date"):
@@ -793,7 +783,8 @@ class OptionsChainsProperties(Data):
             }
         )
         straddle = Series(
-            data=straddle_dict.values(), index=list(straddle_dict)  # type: ignore
+            data=straddle_dict.values(),
+            index=list(straddle_dict),  # type: ignore
         )
         straddle.name = "Short Straddle" if short else "Long Straddle"
         straddle.loc["Payoff Ratio"] = round(
@@ -804,9 +795,9 @@ class OptionsChainsProperties(Data):
 
     def strangle(
         self,
-        days: Optional[int] = None,
-        moneyness: Optional[float] = None,
-        underlying_price: Optional[float] = None,
+        days: int | None = None,
+        moneyness: float | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the cost of a strangle by DTE and % moneyness. Use a negative value for moneyness for short options.
@@ -872,14 +863,10 @@ class OptionsChainsProperties(Data):
         put_strike_estimate = self._get_nearest_strike(
             "put", days, strikes.get("put"), put_price_col, force_otm=False
         )
-        call_premium = chains[chains.strike == call_strike_estimate].query(  # type: ignore
-            "`option_type` == 'call'"
-        )[
+        call_premium = chains[chains.strike == call_strike_estimate].query("`option_type` == 'call'")[  # type: ignore
             call_price_col
         ]
-        put_premium = chains[chains.strike == put_strike_estimate].query(  # type: ignore
-            "`option_type` == 'put'"
-        )[
+        put_premium = chains[chains.strike == put_strike_estimate].query("`option_type` == 'put'")[  # type: ignore
             put_price_col
         ]
 
@@ -898,7 +885,7 @@ class OptionsChainsProperties(Data):
             if underlying_price is not None
             else chains.underlying_price.iloc[0]
         )
-        strangle_dict: Dict = {}
+        strangle_dict: dict = {}
         # Includes the as-of date if it is historical EOD data.
         if hasattr(chains, "eod_date"):
             strangle_dict.update({"Date": chains.eod_date.iloc[0]})
@@ -948,10 +935,10 @@ class OptionsChainsProperties(Data):
 
     def vertical_call_spread(
         self,
-        days: Optional[int] = None,
-        sold: Optional[float] = None,
-        bought: Optional[float] = None,
-        underlying_price: Optional[float] = None,
+        days: int | None = None,
+        sold: float | None = None,
+        bought: float | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the vertical call spread for the target DTE.
@@ -1024,7 +1011,7 @@ class OptionsChainsProperties(Data):
         spread_cost = bought_premium + sold_premium
         breakeven_price = bought + spread_cost
         max_profit = sold - bought - spread_cost  # type: ignore
-        call_spread_: Dict = {}
+        call_spread_: dict = {}
         if sold != bought and spread_cost != 0:
             # Includes the as-of date if it is historical EOD data.
             if hasattr(chains, "eod_date"):
@@ -1053,15 +1040,14 @@ class OptionsChainsProperties(Data):
                 }
             )
             call_spread = Series(
-                data=call_spread_.values(), index=list(call_spread_)  # type: ignore
+                data=call_spread_.values(),
+                index=list(call_spread_),  # type: ignore
             )
             call_spread.name = "Bull Call Spread"
 
             if call_spread.loc["Cost"] < 0:
                 call_spread.loc["Max Profit"] = call_spread.loc["Cost"] * -1
-                call_spread.loc["Max Loss"] = -1 * (
-                    bought - sold + call_spread.loc["Cost"]  # type: ignore
-                )
+                call_spread.loc["Max Loss"] = -1 * (bought - sold + call_spread.loc["Cost"])  # type: ignore
                 lower = bought if sold > bought else sold  # type: ignore
                 call_spread.loc["Breakeven Upper"] = (
                     lower + call_spread.loc["Max Profit"]
@@ -1084,10 +1070,10 @@ class OptionsChainsProperties(Data):
 
     def vertical_put_spread(
         self,
-        days: Optional[int] = None,
-        sold: Optional[float] = None,
-        bought: Optional[float] = None,
-        underlying_price: Optional[float] = None,
+        days: int | None = None,
+        sold: float | None = None,
+        bought: float | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the vertical put spread for the target DTE.
@@ -1161,7 +1147,7 @@ class OptionsChainsProperties(Data):
         max_profit = abs(spread_cost)
         breakeven_price = sold - max_profit
         max_loss = (sold - bought - max_profit) * -1  # type: ignore
-        put_spread_: Dict = {}
+        put_spread_: dict = {}
         if sold != bought and max_loss != 0:
             # Includes the as-of date if it is historical EOD data.
             if hasattr(chains, "eod_date"):
@@ -1214,9 +1200,9 @@ class OptionsChainsProperties(Data):
 
     def synthetic_long(
         self,
-        days: Optional[int] = 30,
+        days: int | None = 30,
         strike: float = 0,
-        underlying_price: Optional[float] = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the cost of a synthetic long position at a given strike.
@@ -1272,8 +1258,7 @@ class OptionsChainsProperties(Data):
 
         if call_premium.empty or put_premium.empty:
             raise OpenBBError(
-                "Error: No premium data found for the selected strikes."
-                f" Call: {bought}, Put: {sold}"
+                f"Error: No premium data found for the selected strikes. Call: {bought}, Put: {sold}"
             )
 
         put_premium = put_premium.values[0] * (-1)
@@ -1281,7 +1266,7 @@ class OptionsChainsProperties(Data):
         dte = chains[chains.expiration.astype(str) == dte_estimate]["dte"].unique()[0]  # type: ignore
         position_cost = call_premium + put_premium
         breakeven = ((sold + bought) / 2) + position_cost  # type: ignore
-        synthetic_long_dict: Dict = {}
+        synthetic_long_dict: dict = {}
         # Includes the as-of date if it is historical EOD data.
         if hasattr(chains, "eod_date"):
             synthetic_long_dict.update({"Date": chains.eod_date.iloc[0]})
@@ -1310,16 +1295,17 @@ class OptionsChainsProperties(Data):
         )
 
         synthetic_long = DataFrame(
-            data=synthetic_long_dict.values(), index=list(synthetic_long_dict)  # type: ignore
+            data=synthetic_long_dict.values(),
+            index=list(synthetic_long_dict),  # type: ignore
         ).rename(columns={0: "Synthetic Long"})
 
         return synthetic_long
 
     def synthetic_short(
         self,
-        days: Optional[int] = None,
+        days: int | None = None,
         strike: float = 0,
-        underlying_price: Optional[float] = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Calculate the cost of a synthetic short position at a given strike.
@@ -1375,8 +1361,7 @@ class OptionsChainsProperties(Data):
 
         if call_premium.empty or put_premium.empty:
             raise OpenBBError(
-                "Error: No premium data found for the selected strikes."
-                f" Call: {bought}, Put: {sold}"
+                f"Error: No premium data found for the selected strikes. Call: {bought}, Put: {sold}"
             )
 
         put_premium = put_premium.values[0]
@@ -1384,7 +1369,7 @@ class OptionsChainsProperties(Data):
         dte = chains[chains.expiration.astype(str) == dte_estimate]["dte"].unique()[0]  # type: ignore
         position_cost = call_premium + put_premium
         breakeven = ((sold + bought) / 2) + position_cost  # type: ignore
-        synthetic_short_dict: Dict = {}
+        synthetic_short_dict: dict = {}
         # Includes the as-of date if it is historical EOD data.
         if hasattr(chains, "eod_date"):
             synthetic_short_dict.update({"Date": chains.eod_date.iloc[0]})
@@ -1413,7 +1398,8 @@ class OptionsChainsProperties(Data):
         )
 
         synthetic_short = DataFrame(
-            data=synthetic_short_dict.values(), index=list(synthetic_short_dict)  # type: ignore
+            data=synthetic_short_dict.values(),
+            index=list(synthetic_short_dict),  # type: ignore
         ).rename(columns={0: "Synthetic Short"})
 
         return synthetic_short
@@ -1421,14 +1407,14 @@ class OptionsChainsProperties(Data):
     # pylint: disable=too-many-branches
     def strategies(  # noqa: PLR0912
         self,
-        days: Optional[List] = None,
-        straddle_strike: Optional[float] = None,
-        strangle_moneyness: Optional[List[float]] = None,
-        synthetic_longs: Optional[List[float]] = None,
-        synthetic_shorts: Optional[List[float]] = None,
-        vertical_calls: Optional[List[tuple]] = None,
-        vertical_puts: Optional[List[tuple]] = None,
-        underlying_price: Optional[float] = None,
+        days: list | None = None,
+        straddle_strike: float | None = None,
+        strangle_moneyness: list[float] | None = None,
+        synthetic_longs: list[float] | None = None,
+        synthetic_shorts: list[float] | None = None,
+        vertical_calls: list[tuple] | None = None,
+        vertical_puts: list[tuple] | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """
         Get options strategies for all, or a list of, DTE(s).
@@ -1491,7 +1477,7 @@ class OptionsChainsProperties(Data):
                 return [x]
             if isinstance(x, list) and isinstance(x[0], tuple):
                 return x
-            paired_tuples: List = []
+            paired_tuples: list = []
             for i in range(0, len(x), 2):
                 paired_tuples.append((x[i], x[i + 1]))
             return paired_tuples
@@ -1525,7 +1511,7 @@ class OptionsChainsProperties(Data):
         vertical_calls = split_into_tuples(vertical_calls)  # type: ignore
         vertical_puts = split_into_tuples(vertical_puts)  # type: ignore
 
-        days_list: List = []
+        days_list: list = []
         strategies: DataFrame = DataFrame()
         straddles: DataFrame = DataFrame()
         strangles: DataFrame = DataFrame()
@@ -1644,9 +1630,9 @@ class OptionsChainsProperties(Data):
 
     def skew(
         self,
-        date: Optional[Union[str, int]] = None,
-        moneyness: Optional[float] = None,
-        underlying_price: Optional[float] = None,
+        date: str | int | None = None,
+        moneyness: float | None = None,
+        underlying_price: float | None = None,
     ) -> "DataFrame":
         """Return skewness of the options, either vertical or horizontal.
 
@@ -1727,14 +1713,10 @@ class OptionsChainsProperties(Data):
                 atm_call_strike = self._get_nearest_strike(  # noqa:F841
                     "call", day, underlying_price, call_price_col, False
                 )
-                call_strike = self._get_nearest_strike(  # noqa:F841
+                call_strike = self._get_nearest_strike(
                     "call", day, strikes["call"], call_price_col, False
-                )
-                _calls = (
-                    data[data.dte == day]
-                    .query("`option_type` == 'call'")  # type: ignore
-                    .copy()
-                )
+                )  # noqa:F841
+                _calls = data[data.dte == day].query("`option_type` == 'call'").copy()  # type: ignore
                 last_price = (
                     underlying_price
                     if underlying_price is not None
@@ -1751,17 +1733,13 @@ class OptionsChainsProperties(Data):
                         calls = concat([calls, call_iv])  # type: ignore
                         atm_call_iv = concat([atm_call_iv, atm_call])  # type: ignore
 
-                atm_put_strike = self._get_nearest_strike(  # noqa:F841
+                atm_put_strike = self._get_nearest_strike(
                     "put", day, last_price, put_price_col, False
-                )
-                put_strike = self._get_nearest_strike(  # noqa:F841
+                )  # noqa:F841
+                put_strike = self._get_nearest_strike(
                     "put", day, strikes["put"], put_price_col, False
-                )
-                _puts = (
-                    data[data.dte == day]
-                    .query("`option_type` == 'put'")  # type: ignore
-                    .copy()
-                )
+                )  # noqa:F841
+                _puts = data[data.dte == day].query("`option_type` == 'put'").copy()  # type: ignore
                 if len(_puts) > 0:
                     put_iv = _puts[_puts.strike == put_strike][
                         ["expiration", "strike", "implied_volatility"]
@@ -1780,13 +1758,9 @@ class OptionsChainsProperties(Data):
                 )
 
             calls = calls.drop_duplicates(subset=["expiration"]).set_index("expiration")  # type: ignore
-            atm_call_iv = atm_call_iv.drop_duplicates(subset=["expiration"]).set_index(  # type: ignore
-                "expiration"
-            )
+            atm_call_iv = atm_call_iv.drop_duplicates(subset=["expiration"]).set_index("expiration")  # type: ignore
             puts = puts.drop_duplicates(subset=["expiration"]).set_index("expiration")  # type: ignore
-            atm_put_iv = atm_put_iv.drop_duplicates(subset=["expiration"]).set_index(  # type: ignore
-                "expiration"
-            )
+            atm_put_iv = atm_put_iv.drop_duplicates(subset=["expiration"]).set_index("expiration")  # type: ignore
             skew_df["Call Strike"] = calls["strike"]
             skew_df["Call IV"] = calls["implied_volatility"]
             skew_df["Call ATM IV"] = atm_call_iv["implied_volatility"]

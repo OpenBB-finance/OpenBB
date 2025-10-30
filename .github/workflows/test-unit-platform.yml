@@ -14,12 +14,14 @@ concurrency:
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
         fail-fast: false
 
         matrix:
           python_version:
-            ["3.9", "3.10", "3.11", "3.12"]
+            ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,7 +38,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
+          key: ${{ runner.os }}-pip-${{ matrix.python_version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 

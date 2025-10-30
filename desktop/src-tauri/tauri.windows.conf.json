@@ -1,0 +1,33 @@
+{
+  "build": {
+    "beforeBundleCommand": "pwsh -File src-tauri/scripts/sign.ps1"
+  },
+  "plugins": {
+    "updater": {
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
+  "bundle": {
+    "targets": ["nsis"],
+    "resources": [
+      "./libcrypto-3-x64.dll",
+      "./libssl-3-x64.dll",
+      "./open-data-platform-SBOM-cargo.cdx.xml",
+      "./open-data-platform-SBOM-npm.cdx.xml"
+    ],
+    "category": "Finance",
+    "windows": {
+      "webviewInstallMode": {
+        "silent": true,
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico",
+        "sidebarImage": "icons/windows_vertical.bmp"
+      }
+    }
+  }
+}

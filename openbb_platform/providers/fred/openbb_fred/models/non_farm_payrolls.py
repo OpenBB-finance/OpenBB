@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.non_farm_payrolls import (
@@ -219,7 +219,7 @@ class FredNonFarmPayrollsQueryParams(NonFarmPayrollsQueryParams):
             return None
         if isinstance(v, (list, dateType)):
             return v
-        new_dates: List = []
+        new_dates: list = []
         date_param = v
         if isinstance(date_param, str):
             new_dates = date_param.split(",")
@@ -250,7 +250,7 @@ class FredNonFarmPayrollsData(NonFarmPayrollsData):
     parent_id: str = Field(
         description="The parent id in the parent/child relationship.",
     )
-    children: Optional[str] = Field(
+    children: str | None = Field(
         default=None,
         description="The element_id of each child, as a comma-separated string.",
     )
@@ -260,21 +260,21 @@ class FredNonFarmPayrollsData(NonFarmPayrollsData):
 
 
 class FredNonFarmPayrollsFetcher(
-    Fetcher[FredNonFarmPayrollsQueryParams, List[FredNonFarmPayrollsData]]
+    Fetcher[FredNonFarmPayrollsQueryParams, list[FredNonFarmPayrollsData]]
 ):
     """FRED NonFarm Payrolls Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredNonFarmPayrollsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredNonFarmPayrollsQueryParams:
         """Transform query."""
         return FredNonFarmPayrollsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredNonFarmPayrollsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -284,7 +284,7 @@ class FredNonFarmPayrollsFetcher(
 
         api_key = credentials.get("fred_api_key") if credentials else ""
         element_id = EstablishmentData[query.category]
-        dates: List = [""]
+        dates: list = [""]
 
         if query.date:
             if query.date and isinstance(query.date, dateType):
@@ -292,9 +292,7 @@ class FredNonFarmPayrollsFetcher(
             dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
-            dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-            )
+            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
 
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=50&element_id={element_id}"
@@ -302,16 +300,12 @@ class FredNonFarmPayrollsFetcher(
             + "&file_type=json"
             for date in dates
         ]
-        results: List = []
+        results: list = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
             response = await amake_request(URL)
-            data = [
-                v
-                for v in response.get("elements", {}).values()  # type: ignore
-                if v.get("observation_value") != "."
-            ]
+            data = [v for v in response.get("elements", {}).values() if v.get("observation_value") != "."]  # type: ignore
             if data:
                 df = (
                     DataFrame(data)
@@ -364,9 +358,9 @@ class FredNonFarmPayrollsFetcher(
     @staticmethod
     def transform_data(
         query: FredNonFarmPayrollsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FredNonFarmPayrollsData]:
+    ) -> list[FredNonFarmPayrollsData]:
         """Transform data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

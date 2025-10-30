@@ -9,13 +9,15 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v4/stock_peers?apikey=MOCK_API_KEY&symbol=AAPL
+    uri: https://financialmodelingprep.com/stable/stock-peers?apikey=MOCK_API_KEY&symbol=AAPL
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"peersList\": [\n      \"LPL\",\n
-        \     \"SNEJF\",\n      \"PCRFY\",\n      \"SONO\",\n      \"VZIO\",\n      \"MICS\",\n
-        \     \"WLDSW\",\n      \"KOSS\",\n      \"GPRO\",\n      \"SONY\",\n      \"UEIC\",\n
-        \     \"HEAR\",\n      \"VUZI\",\n      \"WLDS\"\n    ]\n  }\n]"
+      string: !!binary |
+        H4sIAAAAAAAAA33RQUvDMBQH8Ps+xaPnEpI0SROvG4zB2IbFDRUPWe2huPaFtBOr+N2NUy+22SGX
+        /wv8eP/3OAP4CA8g6YbmiKfkBpLl7nabpD9piY2z7bCxTXUZ4c5jCqu2JH8/nK/L7xknWv9GzUs/
+        ty5kQkpDBaU05J/plFVsNzGrwBa7aYtJItV/jGlNtckZu6rdx7UBlh7PDuboHXrb19iOljQkz0Zw
+        bjgzQgvOVZTe3z2sIvT+/F6/XVMzko2q5YpRoUTGouJhvSgi4qGy3h5PFSyq10B0sO6fRyWriY7D
+        Obk0ly1nT1/kRcP/PQIAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -30,16 +32,20 @@ interactions:
       - '3600'
       Connection:
       - keep-alive
-      Content-Length:
-      - '255'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:45 GMT
+      - Tue, 23 Sep 2025 03:08:35 GMT
       Etag:
-      - W/"ff-HJTrlTghkVRaOX8gByhhLvxuWfA"
+      - W/"23d-YEAJEs+QJhYRxkodIT+3w+pF/Kk"
       Server:
       - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
       X-Frame-Options:
       - SAMEORIGIN
       X-Powered-By:

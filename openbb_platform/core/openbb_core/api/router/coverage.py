@@ -1,12 +1,12 @@
 """Coverage API router."""
 
 import json
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from openbb_core.api.dependency.coverage import get_command_map, get_provider_interface
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
-from typing_extensions import Annotated
 
 router = APIRouter(prefix="/coverage", tags=["Coverage"])
 
@@ -91,7 +91,7 @@ async def get_commands_model_map(
 
 @router.get("/providers", openapi_extra={"widget_config": {"exclude": True}})
 async def get_provider_coverage(
-    command_map: Annotated[CommandMap, Depends(get_command_map)]
+    command_map: Annotated[CommandMap, Depends(get_command_map)],
 ):
     """Get command coverage by provider."""
     return command_map.provider_coverage
@@ -99,7 +99,7 @@ async def get_provider_coverage(
 
 @router.get("/commands", openapi_extra={"widget_config": {"exclude": True}})
 async def get_command_coverage(
-    command_map: Annotated[CommandMap, Depends(get_command_map)]
+    command_map: Annotated[CommandMap, Depends(get_command_map)],
 ):
     """Get provider coverage by command."""
     return command_map.command_coverage

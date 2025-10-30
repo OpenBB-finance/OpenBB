@@ -3,14 +3,14 @@
 import base64
 import json
 import random
-from typing import Dict, Literal
+from typing import Literal
 
 import pytest
 import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
-data: Dict = {}
+data: dict = {}
 
 
 def get_headers():

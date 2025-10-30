@@ -9,20 +9,20 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/key-executives/AAPL?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/stable/key-executives?apikey=MOCK_API_KEY&symbol=AAPL
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA83VTU/bQBAG4Du/YpRDe4mi5pv0Bgml5UOJMC2HqofVehyPWM9GYzvUQv3vHYek
-        QOKghqCqB0vr9Wq9j97d2e8HAPf6ANQyyhzWPkItQCYv8I0swkQwpRA5q8MpMopxMPQ5p+jgHQRo
-        BTMjRa3+MAWbZDHDZdqAc5PFKMQIFw04Ck2SrkbNTKGDOr3m4YdeZ9lncxFkW0wW32pfg9Fq9BQ5
-        RCk7I0yMrnDZX6CRYy+sX5qDP/MsEAGxLdfBuXPa/ategfyMJgQfqUZmXkyGMMI5Oj9LFLvhkZIg
-        ZBhgoihrnlvKH+0A2cro78wYkaDNNC2lfOE5pmX7Cp3JyHO67gjy2KTEBDCMDYdiEp872stS4Xgy
-        w187lnvuKecxmSNrdc9lxNOqYIaxUApw7jn0e1G2xLIH5/kRKlE3Xlx4p69waeQWt5lOBacAZz69
-        I3P7v6CGMWEEJz/R5hnNEcZRpD7RQrCKrYpyTYnP4gJGmpT3a5hmr9UedHut/UFaA5qvA30iNmxJ
-        K9sjqDK/Kt1Fbg1olnrwZO0gaYFrtTpvQ2u/jjaeacUu99iKVkU4wygSLOCkATfkHFVU6na/e9h9
-        E8jOBW7rSbrSm4fcBkhvnhGShIIA4/fHQsgbsbTbvcEOmpfunf6unodgrtHG7J2fFi8mo22tbJpK
-        6tcU/6YKHPz4DZ5EYcEgCAAA
+        H4sIAAAAAAAAA72W32/aMBDH3/tXnHjoXhBa+BHK3lroupVVsLKtD9MeLOdCTjg2uth00bT/fQ6U
+        UdqkGlvYQyTnbEf++Hv3vXw9AfjhH4CGJauw8QYaM9RkGL6QRJgyZhShtmBiuDOsonv/CjeCF2hJ
+        zxvNzWYt0vXeG27BFeMc4Npk9yQW2wVLkft57ZR6CEjHjFrm0/VE4/NstF06Rx0hF8FU+BM9RHMU
+        fGFY739lfegZaYn7cSEtrYqYZYc+9LNZAjpMCGOYolkqhEkce2CGU6jkv0UrSD1DzlowQuKIEWDy
+        6oIJ9T51Nww6nXBwAHiMFejBIOzXgV7OeAqbK3lLWmhJQm1vpUzmMa6EBpgKxkVyDJmDQb9dI+uI
+        GKX1A6/k0PDSsLAI51Iap6tSeZgwZQBjoyNzDMS6Mvl5ru4IR7hCZZapnyhDPI+Y1joikxTHgPQ6
+        duuAfCzge73CrBjfohKWjM6ess1cIjLSBF5EoSMWqXGK/onvvwq4M9uhSVOnvTilnIX9jH2W+hSG
+        d27u0MJHJ/KdEn+FWmlAdQFvjGayRJ+jvvheMpprjGPGHC5bcEdKkUizfbZu2On3znoH4FW7ay2Z
+        WuquTbhC7XGVF9TpDNW61Uj2TYXzUlWFTXxRaoQPRZmWYAdnr38f+E+wX2ortYBvVL38jtIVqx81
+        1W3xlgn8iVJjkxxG3nCNefLLEITtzqAXtg/ArIYMDoU8+fYLDfRoWiIJAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -42,9 +42,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 27 Jun 2024 10:12:23 GMT
+      - Tue, 23 Sep 2025 03:08:21 GMT
       Etag:
-      - W/"820-xvK8qoPnTLHnpMXqvnkPD6OvsJI"
+      - W/"922-nfaK9C8pWUf7lA9Re8An07lGMy0"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

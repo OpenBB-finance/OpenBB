@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
@@ -15,7 +15,7 @@ class SecCikMapQueryParams(CikMapQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: Optional[bool] = Field(
+    use_cache: bool | None = Field(
         default=True,
         description="Whether or not to use cache for the request, default is True.",
     )
@@ -34,16 +34,16 @@ class SecCikMapFetcher(
     """SEC CIK Map Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecCikMapQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecCikMapQueryParams:
         """Transform the query."""
         return SecCikMapQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecCikMapQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import symbol_map
@@ -55,7 +55,7 @@ class SecCikMapFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecCikMapQueryParams, data: Dict, **kwargs: Any
+        query: SecCikMapQueryParams, data: dict, **kwargs: Any
     ) -> SecCikMapData:
         """Transform the data to the standard format."""
         return SecCikMapData.model_validate(data)

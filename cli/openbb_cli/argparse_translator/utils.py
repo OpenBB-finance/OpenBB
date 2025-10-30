@@ -1,7 +1,6 @@
 """Utilities for argparse_translator module."""
 
 from argparse import Action, ArgumentParser
-from typing import List, Optional, Tuple
 
 
 def in_group(parser: ArgumentParser, argument_name: str, group_title: str) -> bool:
@@ -17,7 +16,7 @@ def in_group(parser: ArgumentParser, argument_name: str, group_title: str) -> bo
     return False
 
 
-def remove_argument(parser: ArgumentParser, argument_name: str) -> List[Optional[str]]:
+def remove_argument(parser: ArgumentParser, argument_name: str) -> list[str | None]:
     """Remove an argument from an ArgumentParser."""
     groups_w_arg = []
 
@@ -46,7 +45,7 @@ def remove_argument(parser: ArgumentParser, argument_name: str) -> List[Optional
     return groups_w_arg
 
 
-def get_argument_choices(parser: ArgumentParser, argument_name: str) -> Tuple:
+def get_argument_choices(parser: ArgumentParser, argument_name: str) -> tuple:
     """Get the choices of an argument from an ArgumentParser."""
     for action in parser._actions:  # pylint: disable=protected-access
         opts = action.option_strings
@@ -64,9 +63,7 @@ def get_argument_optional_choices(parser: ArgumentParser, argument_name: str) ->
             or action.dest == argument_name
             and hasattr(action, "optional_choices")
         ):
-            return (
-                action.optional_choices  # type: ignore[attr-defined] # this is a custom attribute
-            )
+            return action.optional_choices  # type: ignore[attr-defined] # this is a custom attribute
     return False
 
 

@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 from inspect import Parameter
-from typing import Dict, List
 from unittest.mock import Mock, patch
 
 import pytest
@@ -67,7 +66,7 @@ def mock_func():
     """Set up mock function."""
 
     def mock_func(
-        a: int, b: int, c: float = 10.0, d: int = 5, provider_choices: Dict = {}
+        a: int, b: int, c: float = 10.0, d: int = 5, provider_choices: dict = {}
     ) -> None:
         """Mock function."""
 
@@ -246,12 +245,12 @@ def test_parameters_builder__warn_kwargs(extra_params, base, expect):
         model_config = ConfigDict(arbitrary_types_allowed=True)
         extra_params: SomeModel
 
-    with pytest.warns(expect) as warning_info:
-        # pylint: disable=protected-access
+    if expect is not None:
+        with pytest.warns(expect) as warning_info:
+            ParametersBuilder._warn_kwargs(extra_params, Model)
+        assert len(warning_info) > 0
+    else:
         ParametersBuilder._warn_kwargs(extra_params, Model)
-
-        if not expect:
-            assert len(warning_info) == 0
 
 
 def test_parameters_builder_build(mock_func, execution_context):
@@ -319,7 +318,7 @@ async def test_static_command_runner_run(
 ):
     """Test static command runner run."""
 
-    def other_mock_func(a: int, b: int, c: int, d: int) -> List[int]:
+    def other_mock_func(a: int, b: int, c: int, d: int) -> list[int]:
         """Mock function."""
         return [a, b, c, d]
 

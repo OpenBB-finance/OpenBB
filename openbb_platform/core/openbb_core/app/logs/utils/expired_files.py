@@ -3,7 +3,6 @@
 import contextlib
 from datetime import datetime
 from pathlib import Path
-from typing import List
 
 
 def get_timestamp_from_x_days(x: int) -> float:
@@ -12,7 +11,7 @@ def get_timestamp_from_x_days(x: int) -> float:
     return timestamp_from_x_days
 
 
-def get_expired_file_list(directory: Path, before_timestamp: float) -> List[Path]:
+def get_expired_file_list(directory: Path, before_timestamp: float) -> list[Path]:
     """Get the list of expired files from a directory."""
     expired_files = []
     if directory.is_dir():  # Check if the directory exists and is a directory
@@ -23,7 +22,7 @@ def get_expired_file_list(directory: Path, before_timestamp: float) -> List[Path
     return expired_files
 
 
-def remove_file_list(file_list: List[Path]):
+def remove_file_list(file_list: list[Path]):
     """Remove a list of files."""
     for file in file_list:
         with contextlib.suppress(PermissionError):

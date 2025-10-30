@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
@@ -31,12 +31,12 @@ class FinvizPriceTargetData(PriceTargetData):
         "rating_change": "Rating",
     }
 
-    status: Optional[str] = Field(
+    status: str | None = Field(
         default=None,
         description="The action taken by the firm."
         + " This could be 'Upgrade', 'Downgrade', 'Reiterated', etc.",
     )
-    rating_change: Optional[str] = Field(
+    rating_change: str | None = Field(
         default=None,
         description="The rating given by the analyst."
         + " This could be 'Buy', 'Sell', 'Underweight', etc."
@@ -45,21 +45,21 @@ class FinvizPriceTargetData(PriceTargetData):
 
 
 class FinvizPriceTargetFetcher(
-    Fetcher[FinvizPriceTargetQueryParams, List[FinvizPriceTargetData]]
+    Fetcher[FinvizPriceTargetQueryParams, list[FinvizPriceTargetData]]
 ):
     """Finviz Price Target Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizPriceTargetQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizPriceTargetQueryParams:
         """Transform the query params."""
         return FinvizPriceTargetQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FinvizPriceTargetQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Finviz endpoint."""
         # pylint: disable=import-outside-toplevel
         from finvizfinance import util  # noqa
@@ -70,14 +70,14 @@ class FinvizPriceTargetFetcher(
         from pandas import DataFrame
         from warnings import warn
 
-        results: List[Dict] = []
+        results: list[dict] = []
         util.session = get_requests_session()
-        messages: List = []
+        messages: list = []
 
-        def get_one(symbol) -> List[Dict]:
+        def get_one(symbol) -> list[dict]:
             """Get the data for one symbol."""
             price_targets = DataFrame()
-            result: List[Dict] = []
+            result: list[dict] = []
             try:
                 data = finvizfinance(symbol)
                 price_targets = data.ticker_outer_ratings()
@@ -127,8 +127,8 @@ class FinvizPriceTargetFetcher(
     @staticmethod
     def transform_data(
         query: FinvizPriceTargetQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizPriceTargetData]:
+    ) -> list[FinvizPriceTargetData]:
         """Transform and validate the raw data."""
         return [FinvizPriceTargetData.model_validate(d) for d in data]

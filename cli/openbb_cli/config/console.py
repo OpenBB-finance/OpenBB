@@ -1,11 +1,11 @@
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
+"""OpenBB CLI Console Module."""
+
+from typing import TYPE_CHECKING, Any
 
 from rich import panel
-from rich.console import (
-    Console as RichConsole,
-    Theme,
-)
+from rich.console import Console as RichConsole
 from rich.text import Text
+from rich.theme import Theme
 
 from openbb_cli.config.menu_text import RICH_TAGS
 
@@ -19,7 +19,7 @@ class Console:
     def __init__(
         self,
         settings: "Settings",
-        style: Optional[Dict[str, Any]] = None,
+        style: dict[str, Any] | None = None,
     ):
         """Initialize the ConsoleAndPanel class."""
         self._console = RichConsole(
@@ -41,7 +41,7 @@ class Console:
 
     @staticmethod
     def _blend_text(
-        message: str, color1: Tuple[int, int, int], color2: Tuple[int, int, int]
+        message: str, color1: tuple[int, int, int], color2: tuple[int, int, int]
     ) -> Text:
         """Blend text from one color to another."""
         text = Text(message)

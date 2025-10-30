@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks, too-many-positional-arguments
 
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
@@ -27,23 +27,23 @@ def line_chart(  # noqa: PLR0912
         list,
         dict,
         "DataFrame",
-        List["DataFrame"],
+        list["DataFrame"],
         "Series",
-        List["Series"],
+        list["Series"],
         "ndarray",
         Data,
     ],
-    index: Optional[str] = None,
-    target: Optional[str] = None,
-    title: Optional[str] = None,
-    x: Optional[str] = None,
-    xtitle: Optional[str] = None,
-    y: Optional[Union[str, List[str]]] = None,
-    ytitle: Optional[str] = None,
-    y2: Optional[Union[str, List[str]]] = None,
-    y2title: Optional[str] = None,
-    layout_kwargs: Optional[dict] = None,
-    scatter_kwargs: Optional[dict] = None,
+    index: str | None = None,
+    target: str | None = None,
+    title: str | None = None,
+    x: str | None = None,
+    xtitle: str | None = None,
+    y: str | list[str] | None = None,
+    ytitle: str | None = None,
+    y2: str | list[str] | None = None,
+    y2title: str | None = None,
+    layout_kwargs: dict | None = None,
+    scatter_kwargs: dict | None = None,
     normalize: bool = False,
     returns: bool = False,
     same_axis: bool = False,
@@ -152,7 +152,6 @@ def line_chart(  # noqa: PLR0912
         df = df[sorted_columns]  # type: ignore
 
         for i, col in enumerate(df.columns):
-
             if col in y:  # type: ignore[operator]
                 hovertemplate = (
                     hovertemplate
@@ -247,12 +246,6 @@ def line_chart(  # noqa: PLR0912
     fig.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
         font=dict(color=text_color),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -346,23 +339,23 @@ def bar_chart(  # noqa: PLR0912
         list,
         dict,
         "DataFrame",
-        List["DataFrame"],
+        list["DataFrame"],
         "Series",
-        List["Series"],
+        list["Series"],
         "ndarray",
         Data,
     ],
     x: str,
-    y: Union[str, List[str]],
+    y: str | list[str],
     barmode: Literal["group", "stack", "relative", "overlay"] = "group",
     xtype: Literal["category", "multicategory", "date", "log", "linear"] = "category",
-    title: Optional[str] = None,
-    xtitle: Optional[str] = None,
-    ytitle: Optional[str] = None,
+    title: str | None = None,
+    xtitle: str | None = None,
+    ytitle: str | None = None,
     orientation: Literal["h", "v"] = "v",
-    colors: Optional[List[str]] = None,
-    bar_kwargs: Optional[Dict[str, Any]] = None,
-    layout_kwargs: Optional[Dict[str, Any]] = None,
+    colors: list[str] | None = None,
+    bar_kwargs: dict[str, Any] | None = None,
+    layout_kwargs: dict[str, Any] | None = None,
     **kwargs,
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a vertical bar chart on a single x-axis with one or more values for the y-axis.
@@ -457,12 +450,6 @@ def bar_chart(  # noqa: PLR0912
 
     figure.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -524,15 +511,15 @@ def bar_chart(  # noqa: PLR0912
 
 
 def bar_increasing_decreasing(  # pylint: disable=W0102
-    keys: List[str],
-    values: List[Union[int, float]],
-    title: Optional[str] = None,
-    xtitle: Optional[str] = None,
-    ytitle: Optional[str] = None,
-    colors: List[str] = ["blue", "red"],
+    keys: list[str],
+    values: list[int | float],
+    title: str | None = None,
+    xtitle: str | None = None,
+    ytitle: str | None = None,
+    colors: list[str] = ["blue", "red"],
     orientation: Literal["h", "v"] = "h",
     barmode: Literal["group", "stack", "relative", "overlay"] = "relative",
-    layout_kwargs: Optional[Dict[str, Any]] = None,
+    layout_kwargs: dict[str, Any] | None = None,
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a bar chart with increasing and decreasing values represented by two colors.
 
@@ -638,12 +625,6 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
             categoryorder="array" if orientation == "v" else None,
             categoryarray=keys if orientation == "v" else None,
         ),
-        paper_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
-        plot_bgcolor=(
-            "rgba(0,0,0,0)" if text_color == "white" else "rgba(255,255,255,0)"
-        ),
         font=dict(color="white" if text_color == "white" else "black"),
         margin=dict(pad=5),
     )
@@ -660,13 +641,13 @@ def surface3d(
     X: "Series",
     Y: "Series",
     Z: "Series",
-    xtitle: Optional[str] = "DTE",
-    ytitle: Optional[str] = "Strike",
-    ztitle: Optional[str] = "IV",
-    colorscale: Optional[Union[str, list]] = None,
-    title: Optional[str] = None,
-    layout_kwargs: Optional[dict[str, Any]] = None,
-    theme: Optional[Literal["dark", "light"]] = None,
+    xtitle: str | None = "DTE",
+    ytitle: str | None = "Strike",
+    ztitle: str | None = "IV",
+    colorscale: str | list | None = None,
+    title: str | None = None,
+    layout_kwargs: dict[str, Any] | None = None,
+    theme: Literal["dark", "light"] | None = None,
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a 3D surface chart.
 
@@ -803,14 +784,7 @@ def surface3d(
             center=dict(x=-0.01, y=0, z=-0.3),
             eye=dict(x=1.75, y=1.75, z=0.69),
         ),
-        paper_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
-        plot_bgcolor=(
-            "rgba(21,21,21,1)" if text_color == "white" else "rgba(255,255,255,1)"
-        ),
         font=dict(color=text_color),
-        # margin=dict(t=100, b=10, r=10, l=10),
     )
 
     fig.update_scenes(

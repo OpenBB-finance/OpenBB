@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.trailing_dividend_yield import (
@@ -27,13 +27,13 @@ class TiingoTrailingDivYieldData(TrailingDivYieldData):
 class TiingoTrailingDivYieldFetcher(
     Fetcher[
         TiingoTrailingDivYieldQueryParams,
-        List[TiingoTrailingDivYieldData],
+        list[TiingoTrailingDivYieldData],
     ]
 ):
     """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TiingoTrailingDivYieldQueryParams:
+    def transform_query(params: dict[str, Any]) -> TiingoTrailingDivYieldQueryParams:
         """Transform the query params."""
         transformed_params = params
         return TiingoTrailingDivYieldQueryParams(**transformed_params)
@@ -41,27 +41,24 @@ class TiingoTrailingDivYieldFetcher(
     @staticmethod
     async def aextract_data(
         query: TiingoTrailingDivYieldQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tiingo.utils.helpers import get_data
 
         api_key = credentials.get("tiingo_token") if credentials else ""
-        url = (
-            f"https://api.tiingo.com/tiingo/corporate-actions/{query.symbol}/distribution-yield?"
-            f"token={api_key}"
-        )
+        url = f"https://api.tiingo.com/tiingo/corporate-actions/{query.symbol}/distribution-yield?token={api_key}"
 
         return await get_data(url)  # type: ignore
 
     @staticmethod
     def transform_data(
         query: TiingoTrailingDivYieldQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TiingoTrailingDivYieldData]:
+    ) -> list[TiingoTrailingDivYieldData]:
         """Return the transformed data."""
         data = data[-query.limit :] if query.limit else data
         return [TiingoTrailingDivYieldData.model_validate(d) for d in data]

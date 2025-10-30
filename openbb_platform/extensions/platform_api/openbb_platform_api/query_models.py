@@ -1,20 +1,10 @@
 """OpenBB Workspace Query Models."""
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import AliasGenerator, ConfigDict, Field, field_validator
 from pydantic.alias_generators import to_snake
-
-
-class FormData(Data):
-    """Submit a form via POST request."""
-
-    model_config = ConfigDict(
-        extra="allow",
-        alias_generator=AliasGenerator(to_snake),
-        title="Submit Form",
-    )
 
 
 class OmniWidgetInput(Data):
@@ -31,7 +21,7 @@ class OmniWidgetInput(Data):
         },
     )
 
-    prompt: Optional[Any] = Field(
+    prompt: Any | None = Field(
         default=None,
         description="The prompt text or JSON object sent from Workspace.",
         json_schema_extra={

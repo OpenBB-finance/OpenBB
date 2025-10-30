@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -64,12 +64,10 @@ class PolygonCompanyNewsData(CompanyNewsData):
         "tags": "keywords",
     }
 
-    source: Optional[str] = Field(default=None, description="Source of the article.")
-    tags: Optional[str] = Field(
-        default=None, description="Keywords/tags in the article"
-    )
+    source: str | None = Field(default=None, description="Source of the article.")
+    tags: str | None = Field(default=None, description="Keywords/tags in the article")
     id: str = Field(description="Article ID.")
-    amp_url: Optional[str] = Field(default=None, description="AMP URL.")
+    amp_url: str | None = Field(default=None, description="AMP URL.")
     publisher: PolygonPublisher = Field(description="Publisher of the article.")
 
     @field_validator("symbols", "tags", mode="before", check_fields=False)
@@ -88,22 +86,22 @@ class PolygonCompanyNewsData(CompanyNewsData):
 class PolygonCompanyNewsFetcher(
     Fetcher[
         PolygonCompanyNewsQueryParams,
-        List[PolygonCompanyNewsData],
+        list[PolygonCompanyNewsData],
     ]
 ):
     """Polygon Company News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCompanyNewsQueryParams:
         """Transform query params."""
         return PolygonCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -119,27 +117,32 @@ class PolygonCompanyNewsFetcher(
             query.model_dump(by_alias=True), ["limit", "ticker"]
         )
         results = []
+        limit = query.limit if query.limit and query.limit <= 1000 else 1000
 
         async def get_one(symbol):
             """Get one symbol."""
             url = (
                 f"{base_url}?ticker={symbol}&{query_str}&limit="
-                + f"{query.limit if query.limit and query.limit <= 1000 else 1000}"
+                + f"{limit}"
                 + f"&apiKey={api_key}"
             )
             response = await amake_request(url)
             data = response.get("results", [])  # type: ignore
-            next_url = response.get("next_url", None)  # type: ignore
+            next_url = response.get("next_url")  # type: ignore
             records = len(data)
-            while next_url and records < query.limit:  # type: ignore
+
+            while next_url and records < query.limit if query.limit else limit:  # type: ignore
+                if not next_url:
+                    break
+
                 url = f"{next_url}&apiKey={api_key}"
                 response = await amake_request(url)
                 data.extend(response.get("results", []))  # type: ignore
                 records = len(data)
-                next_url = response.get("next_url", None)  # type: ignore
+                next_url = response.get("next_url")  # type: ignore
 
             if data:
-                results.extend(data[: query.limit])
+                results.extend(data[: query.limit if query.limit else limit])  # type: ignore
 
         await asyncio.gather(*[get_one(symbol) for symbol in query.symbol.split(",")])  # type: ignore
 
@@ -148,8 +151,8 @@ class PolygonCompanyNewsFetcher(
     @staticmethod
     def transform_data(
         query: PolygonCompanyNewsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonCompanyNewsData]:
+    ) -> list[PolygonCompanyNewsData]:
         """Transform data."""
         return [PolygonCompanyNewsData.model_validate(d) for d in data]

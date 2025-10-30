@@ -2,7 +2,7 @@
 
 # pylint: disable =unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.form_13FHR import (
@@ -46,7 +46,7 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
     @staticmethod
     async def aextract_data(
         query: SecForm13FHRQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""

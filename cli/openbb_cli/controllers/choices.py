@@ -1,10 +1,11 @@
 """This module contains functions to build the choice map for the controllers."""
 
 from argparse import SUPPRESS, ArgumentParser
+from collections.abc import Callable
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
-from typing import Callable, List, Literal, Tuple
+from typing import Literal
 from unittest.mock import patch
 
 from openbb_cli.controllers.utils import (
@@ -17,10 +18,10 @@ from openbb_cli.session import Session
 session = Session()
 
 
-def __mock_parse_known_args_and_warn(
+def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
     controller,  # pylint: disable=unused-argument
     parser: ArgumentParser,
-    other_args: List[str],
+    other_args: list[str],
     export_allowed: Literal[
         "no_export", "raw_data_only", "figures_only", "raw_data_and_figures"
     ] = "no_export",
@@ -110,7 +111,7 @@ def __mock_parse_known_args_and_warn(
     )
 
 
-def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> Tuple:
+def __mock_parse_simple_args(parser: ArgumentParser, other_args: list[str]) -> tuple:
     """Add arguments.
 
     Add the arguments that would have normally added by:

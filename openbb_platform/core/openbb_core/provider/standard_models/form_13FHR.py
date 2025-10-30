@@ -1,7 +1,7 @@
 """From 13F-HR Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -18,7 +18,7 @@ class Form13FHRQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " A CIK or Symbol can be used."
     )
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
         + " The date represents the end of the reporting period."
@@ -27,7 +27,7 @@ class Form13FHRQueryParams(QueryParams):
         + " If a date is not supplied, the most recent filing is returned."
         + " Submissions beginning 2013-06-30 are supported.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=1,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " The number of previous filings to return."
@@ -57,34 +57,34 @@ class Form13FHRData(Data):
     asset_class: str = Field(
         description="The title of the asset class for the security."
     )
-    security_type: Optional[Literal["SH", "PRN"]] = Field(
+    security_type: Literal["SH", "PRN"] | None = Field(
         default=None,
         description="Whether the principal amount represents the number of shares"
         + " or the principal amount of such class."
         + " 'SH' for shares. 'PRN' for principal amount."
         + " Convertible debt securities are reported as 'PRN'.",
     )
-    option_type: Optional[Literal["call", "put"]] = Field(
+    option_type: Literal["call", "put"] | None = Field(
         default=None,
         description="Defined when the holdings being reported are put or call options."
         + " Only long positions are reported.",
     )
-    investment_discretion: Optional[str] = Field(
+    investment_discretion: str | None = Field(
         default=None,
         description="The investment discretion held by the Manager."
         + " Sole, shared-defined (DFN), or shared-other (OTR).",
     )
-    voting_authority_sole: Optional[int] = Field(
+    voting_authority_sole: int | None = Field(
         default=None,
         description="The number of shares for which the Manager"
         + " exercises sole voting authority.",
     )
-    voting_authority_shared: Optional[int] = Field(
+    voting_authority_shared: int | None = Field(
         default=None,
         description="The number of shares for which the Manager"
         + " exercises a defined shared voting authority.",
     )
-    voting_authority_none: Optional[int] = Field(
+    voting_authority_none: int | None = Field(
         default=None,
         description="The number of shares for which the Manager"
         + " exercises no voting authority.",

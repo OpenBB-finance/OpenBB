@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -60,7 +60,7 @@ class SecHtmFileFetcher(Fetcher[SecHtmFileQueryParams, SecHtmFileData]):
     @staticmethod
     async def aextract_data(
         query: SecHtmFileQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""

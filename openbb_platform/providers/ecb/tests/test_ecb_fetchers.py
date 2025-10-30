@@ -1,4 +1,4 @@
-""" Test ECB Fetchers. """
+"""Test ECB Fetchers."""
 
 import datetime
 

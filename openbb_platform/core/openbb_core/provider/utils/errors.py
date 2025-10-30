@@ -1,7 +1,5 @@
 """Custom exceptions for the provider."""
 
-from typing import Union
-
 from openbb_core.app.model.abstract.error import OpenBBError
 
 
@@ -21,7 +19,7 @@ class UnauthorizedError(OpenBBError):
 
     def __init__(
         self,
-        message: Union[str, tuple[str]] = (
+        message: str | tuple[str] = (
             "Unauthorized <provider name> API request."
             " Please check your <provider name> credentials and subscription access.",
         ),

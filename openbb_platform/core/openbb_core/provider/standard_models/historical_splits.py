@@ -1,7 +1,6 @@
 """Historical Splits Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -28,15 +27,15 @@ class HistoricalSplitsData(Data):
     """Historical Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    numerator: Optional[float] = Field(
+    numerator: float | None = Field(
         default=None,
         description="Numerator of the split.",
     )
-    denominator: Optional[float] = Field(
+    denominator: float | None = Field(
         default=None,
         description="Denominator of the split.",
     )
-    split_ratio: Optional[str] = Field(
+    split_ratio: str | None = Field(
         default=None,
         description="Split ratio.",
     )

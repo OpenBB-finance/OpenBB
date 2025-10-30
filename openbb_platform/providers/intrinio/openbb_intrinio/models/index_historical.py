@@ -1,7 +1,7 @@
 """Intrinio Index Historical Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -25,7 +25,7 @@ class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     __alias_dict__ = {"limit": "page_size", "sort": "sort_order"}
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=10000,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -40,13 +40,13 @@ class IntrinioIndexHistoricalData(IndexHistoricalData):
 class IntrinioIndexHistoricalFetcher(
     Fetcher[
         IntrinioIndexHistoricalQueryParams,
-        List[IntrinioIndexHistoricalData],
+        list[IntrinioIndexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioIndexHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioIndexHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -62,9 +62,9 @@ class IntrinioIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioIndexHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         results = []
         api_key = credentials.get("intrinio_api_key") if credentials else ""
@@ -76,7 +76,7 @@ class IntrinioIndexHistoricalFetcher(
             for symbol in symbols
         ]
 
-        async def callback(response, _) -> List[Dict]:
+        async def callback(response, _) -> list[dict]:
             """Response callback."""
             _response = await response.json()
             data = _response.get("historical_data")
@@ -94,8 +94,8 @@ class IntrinioIndexHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioIndexHistoricalQueryParams,  # pylint: disable=unused-argument
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioIndexHistoricalData]:
+    ) -> list[IntrinioIndexHistoricalData]:
         """Return the transformed data."""
         return [IntrinioIndexHistoricalData.model_validate(d) for d in data]

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -43,7 +43,7 @@ class DeribitFuturesCurveQueryParams(FuturesCurveQueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " Default is 'btc' Supported symbols are: ['btc', 'eth', 'paxg']",
     )
-    hours_ago: Optional[Union[int, list[int], str]] = Field(
+    hours_ago: int | list[int] | str | None = Field(
         default=None,
         description="Compare the current curve with the specified number of hours ago. Default is None.",
     )
@@ -85,7 +85,7 @@ class DeribitFuturesCurveQueryParams(FuturesCurveQueryParams):
 class DeribitFuturesCurveData(FuturesCurveData):
     """Deribit Futures Curve Data."""
 
-    hours_ago: Optional[int] = Field(
+    hours_ago: int | None = Field(
         default=None,
         description="The number of hours ago represented by the price."
         + " Only available when hours_ago is set in the query.",
@@ -105,7 +105,7 @@ class DeribitFuturesCurveFetcher(
     @staticmethod
     async def aextract_data(
         query: DeribitFuturesCurveQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract the raw data."""
@@ -158,7 +158,6 @@ class DeribitFuturesCurveFetcher(
         futures_curve: list[DeribitFuturesCurveData] = []
 
         for d in data:
-
             if not d:
                 continue
 

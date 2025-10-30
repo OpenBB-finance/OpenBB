@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -37,26 +37,22 @@ class TmxPriceTargetConsensusData(PriceTargetConsensusData):
         "target_upside": "price_target_upside",
     }
 
-    target_upside: Optional[float] = Field(
+    target_upside: float | None = Field(
         default=None,
         description="Percent of upside, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    total_analysts: Optional[int] = Field(
+    total_analysts: int | None = Field(
         default=None, description="Total number of analyst."
     )
-    buy_ratings: Optional[int] = Field(
-        default=None, description="Number of buy ratings."
-    )
-    sell_ratings: Optional[int] = Field(
+    buy_ratings: int | None = Field(default=None, description="Number of buy ratings.")
+    sell_ratings: int | None = Field(
         default=None, description="Number of sell ratings."
     )
-    hold_ratings: Optional[int] = Field(
+    hold_ratings: int | None = Field(
         default=None, description="Number of hold ratings."
     )
-    consensus_action: Optional[str] = Field(
-        default=None, description="Consensus action."
-    )
+    consensus_action: str | None = Field(default=None, description="Consensus action.")
 
     @field_validator("target_upside", mode="before", check_fields=False)
     @classmethod
@@ -78,21 +74,21 @@ class TmxPriceTargetConsensusData(PriceTargetConsensusData):
 
 
 class TmxPriceTargetConsensusFetcher(
-    Fetcher[TmxPriceTargetConsensusQueryParams, List[TmxPriceTargetConsensusData]]
+    Fetcher[TmxPriceTargetConsensusQueryParams, list[TmxPriceTargetConsensusData]]
 ):
     """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxPriceTargetConsensusQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxPriceTargetConsensusQueryParams:
         """Transform the query."""
         return TmxPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxPriceTargetConsensusQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -101,7 +97,7 @@ class TmxPriceTargetConsensusFetcher(
         from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
 
         symbols = query.symbol.split(",")  # type: ignore
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def create_task(symbol, results):
             """Create a task for each symbol provided."""
@@ -165,8 +161,8 @@ class TmxPriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         query: TmxPriceTargetConsensusQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxPriceTargetConsensusData]:
+    ) -> list[TmxPriceTargetConsensusData]:
         """Return the transformed data."""
         return [TmxPriceTargetConsensusData.model_validate(d) for d in data]

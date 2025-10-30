@@ -2,7 +2,6 @@
 
 import json
 from pathlib import Path
-from typing import Dict, Optional
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -10,7 +9,7 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 class ReferenceLoader(metaclass=SingletonMeta):
     """ReferenceLoader class for loading the `reference.json` file."""
 
-    def __init__(self, directory: Optional[Path] = None):
+    def __init__(self, directory: Path | None = None):
         """
         Initialize the ReferenceLoader with a specific directory.
 
@@ -21,22 +20,34 @@ class ReferenceLoader(metaclass=SingletonMeta):
         directory : Optional[Path]
             The directory from which to load the assets where the reference file lives.
         """
-        self.directory = directory or directory or self._get_default_directory()
-        self._reference = self._load(self.directory / "assets" / "reference.json")
+
+        reference_path = (
+            directory.joinpath(
+                "reference.json"
+                if str(directory).endswith("/assets")
+                else "assets/reference.json"
+            )
+            if directory
+            else self._get_default_directory().joinpath("reference.json")
+        )
+        self.directory = Path(reference_path).parent.resolve()
+        self._reference = self._load(reference_path)
 
     @property
-    def reference(self) -> Dict[str, Dict]:
+    def reference(self) -> dict[str, dict]:
         """Get the reference data."""
         return self._reference
 
     def _get_default_directory(self) -> Path:
         """Get the default directory for loading references."""
-        return Path(__file__).parents[4].resolve() / "openbb"
+        default_path = Path(__file__).parents[3].resolve() / "openbb" / "assets"
+
+        return default_path
 
     def _load(self, file_path: Path):
         """Load the reference data from a file."""
         try:
-            with open(file_path) as f:
+            with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)
         except FileNotFoundError:
             data = {}

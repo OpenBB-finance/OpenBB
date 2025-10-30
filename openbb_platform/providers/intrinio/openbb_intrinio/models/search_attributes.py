@@ -1,6 +1,8 @@
 """Intrinio Search Attributes Model."""
 
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.search_attributes import (
@@ -32,22 +34,22 @@ class IntrinioSearchAttributesData(SearchAttributesData):
 class IntrinioSearchAttributesFetcher(
     Fetcher[
         IntrinioSearchAttributesQueryParams,
-        List[IntrinioSearchAttributesData],
+        list[IntrinioSearchAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioSearchAttributesQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioSearchAttributesQueryParams:
         """Transform the query params."""
         return IntrinioSearchAttributesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioSearchAttributesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -66,8 +68,8 @@ class IntrinioSearchAttributesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioSearchAttributesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioSearchAttributesData]:
+    ) -> list[IntrinioSearchAttributesData]:
         """Return the transformed data."""
         return [IntrinioSearchAttributesData.model_validate(item) for item in data]

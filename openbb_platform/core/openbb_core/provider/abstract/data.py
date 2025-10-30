@@ -1,6 +1,6 @@
 """The OpenBB Standardized Data Model."""
 
-from typing import Dict
+from typing import Annotated
 
 from pydantic import (
     AliasGenerator,
@@ -10,7 +10,6 @@ from pydantic import (
     alias_generators,
     model_validator,
 )
-from typing_extensions import Annotated
 
 
 def check_int(v: int) -> int:
@@ -69,7 +68,7 @@ class Data(BaseModel):
             generation.
     """
 
-    __alias_dict__: Dict[str, str] = {}
+    __alias_dict__: dict[str, str] = {}
 
     def __repr__(self):
         """Return a string representation of the object."""

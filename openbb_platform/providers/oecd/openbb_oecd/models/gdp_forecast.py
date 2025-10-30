@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -102,16 +102,16 @@ class OECDGdpForecastData(GdpForecastData):
 
 
 class OECDGdpForecastFetcher(
-    Fetcher[OECDGdpForecastQueryParams, List[OECDGdpForecastData]]
+    Fetcher[OECDGdpForecastQueryParams, list[OECDGdpForecastData]]
 ):
     """OECD GDP Forecast Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDGdpForecastQueryParams:
+    def transform_query(params: dict[str, Any]) -> OECDGdpForecastQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         countries = transformed_params.get("country")
-        new_countries: List = []
+        new_countries: list = []
         freq = transformed_params.get("frequency")
         if not countries:
             new_countries.append("all")
@@ -156,9 +156,9 @@ class OECDGdpForecastFetcher(
     @staticmethod
     async def aextract_data(
         query: OECDGdpForecastQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
@@ -215,15 +215,11 @@ class OECDGdpForecastFetcher(
         response = await amake_request(
             url, timeout=30, headers=headers, response_callback=response_callback
         )
-        df = read_csv(StringIO(response)).get(  # type: ignore
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
         if df.empty:  # type: ignore
             raise EmptyDataError("No data was found.")
 
-        df = df.rename(  # type: ignore
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
+        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
         df.country = [
             (
                 CODE_TO_COUNTRY_GDP_FORECAST.get(d, d)
@@ -250,7 +246,7 @@ class OECDGdpForecastFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDGdpForecastQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDGdpForecastData]:
+        query: OECDGdpForecastQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[OECDGdpForecastData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpForecastData.model_validate(d) for d in data]

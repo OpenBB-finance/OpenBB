@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -119,13 +119,13 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
         }
     }
 
-    index: Union[MortgageChoices, str] = Field(
+    index: MortgageChoices | str = Field(
         default="primary",
         description="The specific index, or index group, to query. Default is the 'primary' group.",
     )
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -140,8 +140,8 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -191,9 +191,9 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -217,7 +217,7 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
     def validate_index(cls, v):
         """Validate index."""
         indices = v.split(",")
-        new_indices: List = []
+        new_indices: list = []
         for index in indices:
             if index in MORTGAGE_CHOICES_TO_ID:
                 new_indices.append(index)
@@ -237,22 +237,22 @@ class FredMortgageIndicesData(MortgageIndicesData):
 class FredMortgageIndicesFetcher(
     Fetcher[
         FredMortgageIndicesQueryParams,
-        List[FredMortgageIndicesData],
+        list[FredMortgageIndicesData],
     ]
 ):
     """FRED Mortgage Indices Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredMortgageIndicesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredMortgageIndicesQueryParams:
         """Transform query."""
         return FredMortgageIndicesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredMortgageIndicesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         indices = query.index.split(",")
         ids = [MORTGAGE_CHOICES_TO_ID[index] for index in indices]
@@ -279,9 +279,9 @@ class FredMortgageIndicesFetcher(
     @staticmethod
     def transform_data(
         query: FredMortgageIndicesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredMortgageIndicesData]]:
+    ) -> AnnotatedResult[list[FredMortgageIndicesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame

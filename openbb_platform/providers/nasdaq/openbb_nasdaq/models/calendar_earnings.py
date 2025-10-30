@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
@@ -40,31 +40,31 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "market_cap": "marketCap",
     }
 
-    eps_actual: Optional[float] = Field(
+    eps_actual: float | None = Field(
         default=None,
         description="The actual earnings per share (USD) announced.",
     )
-    surprise_percent: Optional[float] = Field(
+    surprise_percent: float | None = Field(
         default=None,
         description="The earnings surprise as normalized percentage points.",
     )
-    num_estimates: Optional[int] = Field(
+    num_estimates: int | None = Field(
         default=None,
         description="The number of analysts providing estimates for the consensus.",
     )
-    period_ending: Optional[str] = Field(
+    period_ending: str | None = Field(
         default=None,
         description="The fiscal period end date.",
     )
-    previous_report_date: Optional[dateType] = Field(
+    previous_report_date: dateType | None = Field(
         default=None,
         description="The previous report date for the same period last year.",
     )
-    reporting_time: Optional[str] = Field(
+    reporting_time: str | None = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
     )
-    market_cap: Optional[int] = Field(
+    market_cap: int | None = Field(
         default=None,
         description="The market cap (USD) of the reporting entity.",
     )
@@ -133,7 +133,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
 class NasdaqCalendarEarningsFetcher(
     Fetcher[
         NasdaqCalendarEarningsQueryParams,
-        List[NasdaqCalendarEarningsData],
+        list[NasdaqCalendarEarningsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
@@ -141,7 +141,7 @@ class NasdaqCalendarEarningsFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqCalendarEarningsQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqCalendarEarningsQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -160,9 +160,9 @@ class NasdaqCalendarEarningsFetcher(
     @staticmethod
     async def aextract_data(
         query: NasdaqCalendarEarningsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -170,7 +170,7 @@ class NasdaqCalendarEarningsFetcher(
         from openbb_core.provider.utils.helpers import amake_request  # noqa
 
         IPO_HEADERS = get_headers(accept_type="json")
-        data: List[Dict] = []
+        data: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
@@ -178,13 +178,14 @@ class NasdaqCalendarEarningsFetcher(
 
         async def get_calendar_data(date: str) -> None:
             """Get the calendar data for the given date."""
-            response: List = []
+            response: list = []
             url = f"https://api.nasdaq.com/api/calendar/earnings?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
             if r_json.get("data", {}).get("rows", []):  # type: ignore
                 response = r_json["data"]["rows"]  # type: ignore
                 _as_of_date = datetime.strptime(
-                    r_json["data"]["asOf"], "%a, %b %d, %Y"  # type: ignore
+                    r_json["data"]["asOf"],
+                    "%a, %b %d, %Y",  # type: ignore
                 ).date()
                 if response:
                     data.extend([{**d, "date": _as_of_date} for d in response])
@@ -196,9 +197,9 @@ class NasdaqCalendarEarningsFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqCalendarEarningsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqCalendarEarningsData]:
+    ) -> list[NasdaqCalendarEarningsData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

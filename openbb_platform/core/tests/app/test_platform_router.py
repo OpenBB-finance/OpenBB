@@ -3,9 +3,6 @@
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-argument
 
-
-from typing import List, Optional
-
 import pytest
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -44,7 +41,7 @@ def test_command(router):
     """Test command."""
 
     @router.command
-    async def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[list[int] | None]:
         return OBBject(results=[1, 2, 3])
 
     assert valid_function
@@ -102,7 +99,7 @@ def test_complete_signature(signature_inspector):
 def test_complete_signature_error(signature_inspector):
     """Test complete_signature."""
 
-    async def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[list[int] | None]:
         return OBBject(results=[1, 2, 3])
 
     assert signature_inspector.complete(valid_function, "invalid_model") is None

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -44,7 +44,7 @@ class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
         default="balance_sheet",
         description="The group of data to be returned. The default is the balance sheet.",
     )
-    table: Optional[str] = Field(
+    table: str | None = Field(
         default=None,
         description="The specific table element within the category to be returned,"
         + " default is 'stocks', if the category is 'weekly_estimates', else 'all'."
@@ -113,7 +113,7 @@ class EiaPetroleumStatusReportFetcher(
     @staticmethod
     async def aextract_data(
         query: EiaPetroleumStatusReportQueryParams,
-        credentials: Optional[dict[str, Any]],
+        credentials: dict[str, Any] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract the data from the EIA website."""

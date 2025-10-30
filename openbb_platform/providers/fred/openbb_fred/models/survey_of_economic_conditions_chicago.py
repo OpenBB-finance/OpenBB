@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -32,13 +32,7 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
 ):
     """FRED Survey Of Economic Conditions - Chicago - Query Params."""
 
-    frequency: Union[
-        None,
-        Literal[
-            "annual",
-            "quarter",
-        ],
-    ] = Field(
+    frequency: None | Literal["annual", "quarter"] = Field(
         default=None,
         description="Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
         json_schema_extra={
@@ -48,7 +42,7 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""A key that indicates the aggregation method used for frequency aggregation.
         \n    avg = Average
@@ -57,9 +51,9 @@ class FredSurveyOfEconomicConditionsChicagoQueryParams(
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""Transformation type
         \n    None = No transformation
@@ -85,14 +79,14 @@ class FredSurveyOfEconomicConditionsChicagoData(SurveyOfEconomicConditionsChicag
 class FredSurveyOfEconomicConditionsChicagoFetcher(
     Fetcher[
         FredSurveyOfEconomicConditionsChicagoQueryParams,
-        List[FredSurveyOfEconomicConditionsChicagoData],
+        list[FredSurveyOfEconomicConditionsChicagoData],
     ]
 ):
     """FRED Survey Of Economic Conditions - Chicago - Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredSurveyOfEconomicConditionsChicagoQueryParams:
         """Transform query."""
         return FredSurveyOfEconomicConditionsChicagoQueryParams(**params)
@@ -100,9 +94,9 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
     @staticmethod
     async def aextract_data(
         query: FredSurveyOfEconomicConditionsChicagoQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         ids = list(ID_TO_FIELD.keys())
         frequency = query.frequency[:1].lower() if query.frequency else None
@@ -129,9 +123,9 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
     @staticmethod
     def transform_data(
         query: FredSurveyOfEconomicConditionsChicagoQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any
-    ) -> AnnotatedResult[List[FredSurveyOfEconomicConditionsChicagoData]]:
+    ) -> AnnotatedResult[list[FredSurveyOfEconomicConditionsChicagoData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame

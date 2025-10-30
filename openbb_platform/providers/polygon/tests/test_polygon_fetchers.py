@@ -24,6 +24,16 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def scrub_string(key):
+    """Scrub a string from the response."""
+
+    def before_record_response(response):
+        response["headers"][key] = response["headers"].update({key: "MOCK_VALUE"})
+        return response
+
+    return before_record_response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
@@ -31,6 +41,10 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
             ("apiKey", "MOCK_API_KEY"),
+            ("cursor", "MOCK_CURSOR"),
+        ],
+        "before_record_response": [
+            scrub_string("Link"),
         ],
     }
 
@@ -67,7 +81,7 @@ def test_polygon_index_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_polygon_company_news_fetcher(credentials=test_credentials):
     """Test the Polygon Company News fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 2}
 
     fetcher = PolygonCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
