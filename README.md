@@ -36,12 +36,16 @@ df = output.to_dataframe()
 Data integrations available can be found here: <https://docs.openbb.co/python/reference>
 
 ---
-
 ## OpenBB Workspace
 
 While the Open Data Platform provides the open-source data integration foundation, **OpenBB Workspace** offers the enterprise UI for analysts to visualize datasets and leverage AI agents. The platform's "connect once, consume everywhere" architecture enables seamless integration between the two.
 
 You can find OpenBB Workspace at <https://pro.openbb.co>.
+<a href="https://pro.openbb.co">
+  <div align="center">
+  <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">
+  </div>
+</a>
 
 Data integration:
 
