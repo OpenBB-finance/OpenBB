@@ -416,7 +416,7 @@ class ImportDefinition:
                 new_hint_type_list.append(hint_type)
 
         # Deduplicate without using set() to handle unhashable types
-        deduplicated = []
+        deduplicated: list = []
         for hint_type in new_hint_type_list:
             is_duplicate = False
             for existing in deduplicated:
