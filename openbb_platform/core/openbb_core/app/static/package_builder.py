@@ -1202,8 +1202,8 @@ class MethodDefinition:
                 parts = textwrap.wrap(desc, width=max_width)
                 # For function signature context, don't add extra indentation
                 # The parameter will be properly indented by the calling context
-                joined = "\n".join(f"{repr(p)}" for p in parts)
-                desc_repr = f"(\n{joined}\n)"
+                joined = "\n                    ".join(f"{repr(p)}" for p in parts)
+                desc_repr = f"(\n                    {joined}" + "\n                )"
 
             default_part = ""
             if param.default is not Parameter.empty:
@@ -1212,10 +1212,17 @@ class MethodDefinition:
                     default_repr = "None"
                 default_part = f" = {default_repr}"
 
-            return f"{param.name}: Annotated[{type_repr}, OpenBBField(description={desc_repr})]{default_part}"
+            final_param = f"""{param.name.strip()}: Annotated[
+            {type_repr},
+            OpenBBField(
+                description={desc_repr}
+            )
+        ]{default_part}"""
+
+            return final_param
 
         params_list = [stringify_param(p) for p in formatted_params.values()]
-        func_params = ",\n".join(params_list)
+        func_params = ",\n        ".join(params_list)
 
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
@@ -1639,7 +1646,9 @@ class DocstringGenerator:
 
             _type = (
                 f"Optional[{_type}]"
-                if is_optional and "Optional" not in str(_type)
+                if is_optional
+                and "Optional" not in str(_type)
+                and " | " not in str(_type)
                 else _type
             )
 
@@ -1667,11 +1676,11 @@ class DocstringGenerator:
             f"{create_indent(indent + 2)}Serializable results.\n"
             f"{create_indent(indent + 1)}provider : {available_providers}\n"
             f"{create_indent(indent + 2)}Provider name.\n"
-            f"{create_indent(indent + 1)}warnings : Optional[List[Warning_]]\n"
+            f"{create_indent(indent + 1)}warnings : Optional[list[Warning_]]\n"
             f"{create_indent(indent + 2)}List of warnings.\n"
             f"{create_indent(indent + 1)}chart : Optional[Chart]\n"
             f"{create_indent(indent + 2)}Chart object.\n"
-            f"{create_indent(indent + 1)}extra : Dict[str, Any]\n"
+            f"{create_indent(indent + 1)}extra : dict[str, Any]\n"
             f"{create_indent(indent + 2)}Extra info.\n"
         )
 
@@ -1695,7 +1704,7 @@ class DocstringGenerator:
                 prompt = "\n```python\n"
                 indent = create_indent(0)
 
-            doc = f"\n{indent}Examples\n"
+            doc = f"{indent}Examples\n"
             doc += f"{indent}--------\n"
             doc += f"{indent}{prompt}from openbb import obb\n"
 
@@ -1761,10 +1770,11 @@ class DocstringGenerator:
 
                 # Use the base types instead of the complex Union[Literal[...]]
                 if base_types:
-                    if len(base_types) == 1:
-                        type_str = next(iter(base_types))
-                    else:
-                        type_str = f"Union[{', '.join(sorted(base_types))}]"
+                    type_str = (
+                        next(iter(base_types))
+                        if len(base_types) == 1
+                        else f"{' | '.join(sorted(base_types))}"
+                    )
 
             # Apply the standard formatting
             type_str = (
@@ -1775,6 +1785,7 @@ class DocstringGenerator:
                 .replace("NoneType", "None")
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
+                .replace("Union[date, None, str]", "date | str | None")
             )
 
             if char_limit:
@@ -1926,7 +1937,7 @@ class DocstringGenerator:
                 )
                 type_ = format_type(type_)
                 if "NoneType" in str(type_):
-                    type_ = f"Optional[{type_}]".replace(", NoneType", "")
+                    type_ = type_.replace(", NoneType", "")
 
                 default = getattr(param, "default", "")
                 description = getattr(default, "description", "")
@@ -2019,7 +2030,7 @@ class DocstringGenerator:
                             # Format choices with word wrapping for readability
                             formatted_choices = []
                             line_length = 0
-                            line_limit = 100  # Max line length
+                            line_limit = 80  # Max line length
 
                             for i, choice in enumerate(choices):
                                 choice_str = f"'{choice}'"
@@ -2076,7 +2087,7 @@ class DocstringGenerator:
         return docstring
 
     @classmethod
-    def generate(  # pylint: disable=too-many-positional-arguments
+    def generate(  # pylint: disable=too-many-positional-arguments  # noqa: PLR0912
         cls,
         path: str,
         func: Callable,
@@ -2135,6 +2146,7 @@ class DocstringGenerator:
                         param_types,
                         examples,
                     )
+                    doc += "\n"
         else:
             doc_parts = []
             if doc:
@@ -2150,7 +2162,7 @@ class DocstringGenerator:
                 summary = ""
 
             # Format the summary with proper indentation detection and replacement
-            def fix_indentation(text: str, target_indent: int = 2) -> str:
+            def fix_indentation(text: str) -> str:
                 """Fix indentation in docstring text by detecting current level and standardizing."""
                 lines = text.split("\n")
                 fixed_lines = []
@@ -2158,7 +2170,6 @@ class DocstringGenerator:
                 for line in lines:
                     stripped = line.lstrip()
                     if not stripped:  # Empty line
-                        fixed_lines.append("")
                         continue
 
                     # Count current indentation (spaces or tabs)
@@ -2180,17 +2191,13 @@ class DocstringGenerator:
                     elif current_indent > 0:
                         # Detect if it's using spaces or tabs
                         if "\t" in line[:current_indent]:
-                            fixed_lines.append(
-                                f"{create_indent(target_indent)}{stripped}"
-                            )
+                            fixed_lines.append(f"{stripped}")
                         else:
                             # Space-based indentation - normalize to target
-                            fixed_lines.append(
-                                f"{create_indent(target_indent)}{stripped}"
-                            )
+                            fixed_lines.append(f"{stripped}")
                     # No indentation - add target indentation for non-empty lines
                     elif stripped:
-                        fixed_lines.append(f"{create_indent(target_indent)}{stripped}")
+                        fixed_lines.append(f"{stripped}")
                     else:
                         fixed_lines.append("")
 
@@ -2209,9 +2216,7 @@ class DocstringGenerator:
                 and "Parameters" not in doc
                 and [p for p_name, p in formatted_params.items() if p_name != "kwargs"]
             ):
-                param_section = (
-                    f"\n\n{create_indent(2)}Parameters\n{create_indent(2)}----------\n"
-                )
+                param_section = "\n\nParameters\n----------\n"
 
                 # Process each parameter
                 for param_name, param in formatted_params.items():
@@ -2237,17 +2242,16 @@ class DocstringGenerator:
                     )
 
                     # Add parameter to docstring
-                    param_section += f"{create_indent(2)}{param_name} : {type_str}\n"
-                    param_section += f"{create_indent(3)}{description}\n"
+                    param_section += f"{create_indent(0)}{param_name} : {type_str}\n"
+                    if description.strip() and description.strip() != '""':
+                        param_section += f"{create_indent(1)}{description}\n"
 
-                result_doc += param_section
+                result_doc += param_section + "\n"
 
             # Add returns section if needed and not already in docstring
             if "returns" in sections and "Returns" not in doc:
                 # Returns
-                returns_section = (
-                    f"\n\n{create_indent(2)}Returns\n{create_indent(2)}-------\n"
-                )
+                returns_section = "Returns\n-------\n"
 
                 # Extract return annotation directly from function signature
                 sig = inspect.signature(func)
@@ -2274,7 +2278,7 @@ class DocstringGenerator:
                     )
 
                     # Add return type to docstring
-                    returns_section += f"{create_indent(2)}{type_name}\n"
+                    returns_section += f"{type_name}\n"
 
                     # Check if this is a custom class (not a primitive type)
                     primitive_types = {
@@ -2302,25 +2306,32 @@ class DocstringGenerator:
                                     field_type = cls.get_field_type(
                                         field.annotation, field.is_required
                                     )
-
                                     # Get field description
                                     description = (
                                         getattr(field, "description", "") or ""
                                     )
 
                                     # Add field to docstring with proper indentation
-                                    returns_section += f"{create_indent(3)}{field_name} : {field_type}\n"
+                                    if type_name.startswith("OBBject"):
+                                        if field_name != "id":
+                                            returns_section += "\n"
+
+                                        returns_section += f"{create_indent(2)}{field_name.strip()} : {field_type}"
+                                    else:
+                                        returns_section += (
+                                            f"{field_name} : {field_type}\n"
+                                        )
                                     if description:
                                         returns_section += (
-                                            f"{create_indent(4)}{description}\n"
+                                            f"\n{create_indent(3)}{description}"
                                         )
                         except (AttributeError, TypeError):
                             pass
                 else:
                     # Default case when no return annotation is available
-                    returns_section += f"{create_indent(2)}Any\n"
+                    returns_section += "Any\n"
 
-                result_doc += returns_section
+                result_doc += returns_section + "\n"
                 result_doc = result_doc.replace("\n    ", f"\n{create_indent(2)}")
 
             doc = result_doc + "\n"
@@ -2331,6 +2342,7 @@ class DocstringGenerator:
                     param_types,
                     examples,
                 )
+                doc += "\n"
 
         if (  # pylint: disable=chained-comparison
             max_length and len(doc) > max_length and max_length > 3
