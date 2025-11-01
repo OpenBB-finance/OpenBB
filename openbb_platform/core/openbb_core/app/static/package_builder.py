@@ -2141,6 +2141,7 @@ class DocstringGenerator:
                     results_type=results_type,
                     sections=sections,
                 )
+                doc += "\n"
 
                 if "examples" in sections:
                     doc += cls.build_examples(
