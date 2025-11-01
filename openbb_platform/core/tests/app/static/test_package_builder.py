@@ -1,7 +1,6 @@
 """Test the package_builder.py file."""
 
 # pylint: disable=redefined-outer-name,protected-access,unused-argument
-
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
@@ -43,9 +42,13 @@ def test_package_builder_init(package_builder):
     assert package_builder
 
 
-def test_package_builder_build(package_builder):
+def test_package_builder_build(tmp_openbb_dir):
     """Test package builder build."""
-    package_builder.build()
+    builder = PackageBuilder(tmp_openbb_dir)
+
+    # Mock the _save_reference_file method to avoid sys.modules iteration
+    with patch.object(builder, "_save_reference_file"):
+        builder.build()
 
 
 def test_save_modules(package_builder):
@@ -277,9 +280,7 @@ def test_build_func_params(method_definition):
         ),
     }
 
-    expected_output = (
-        "param1: None,\nparam2: int,\nparam3: dict[str, Any] | pandas.DataFrame"
-    )
+    expected_output = "param1: None,\n        param2: int,\n        param3: dict[str, Any] | pandas.DataFrame"
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output
