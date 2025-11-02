@@ -463,7 +463,7 @@ def test_build_command_method_get_endpoint(method_definition):
             model_name=None,
         )
 
-    assert "def mock_get_endpoint(" in output
+    assert "def get(" in output
     assert "param1: Annotated[\n            str" in output
     assert "Annotated[\n            int | None,\n" in output
     assert "This is a mock GET endpoint." in output
@@ -486,7 +486,7 @@ def test_build_command_method_post_endpoint(method_definition):
         ),
     ):
         output = method_definition.build_command_method(
-            path="/test/post",
+            path="/test/mock_post_endpoint",
             func=mock_post_endpoint,
             model_name=None,
         )
@@ -495,7 +495,7 @@ def test_build_command_method_post_endpoint(method_definition):
     assert "body: Annotated[\n            MyPostBody," in output
     assert "This is a mock POST endpoint." in output
     assert "return self._run(" in output
-    assert '"/test/post",' in output
+    assert '"/test/mock_post_endpoint",' in output
     assert "body=body," in output
 
 
@@ -517,7 +517,7 @@ def test_build_command_method_with_dependency(method_definition):
             model_name=None,
         )
 
-    assert "def mock_endpoint_with_real_dependency(" in output
+    assert "def dependency(" in output
     assert "dep: Annotated[\n            MockDep," in output
     assert "get_mock_dep" in output
     assert "dep=dep," in output
