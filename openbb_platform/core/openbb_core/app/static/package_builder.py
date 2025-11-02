@@ -1864,9 +1864,6 @@ class DocstringGenerator:
                         else f"{' | '.join(sorted(base_types))}"
                     )
 
-            if model_name == "EquityHistorical":
-                print(type_str)
-
             # Apply the standard formatting
             type_str = (
                 type_str.replace("<class '", "")
