@@ -279,9 +279,7 @@ def test_build_func_params(method_definition):
         ),
     }
 
-    expected_output = (
-        "param1: None,\nparam2: int,\nparam3: dict[str, Any] | pandas.DataFrame"
-    )
+    expected_output = "param1: None,\n        param2: int,\n        param3: dict[str, Any] | pandas.DataFrame"
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output

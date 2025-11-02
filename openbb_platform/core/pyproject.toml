@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.5.3"
+version = "1.5.5"
 description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -16,7 +16,7 @@ uvicorn = "^0.35.0"
 websockets = "^15.0"
 pandas = ">=1.5.3"
 html5lib = "^1.1"
-fastapi = "^0.120.1"
+fastapi = "^0.120.3"
 uuid7 = "^0.1.0"
 python-multipart = "^0.0.20"
 pydantic = "^2.12.3"
