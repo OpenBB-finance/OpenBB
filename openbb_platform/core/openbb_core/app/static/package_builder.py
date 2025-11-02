@@ -9,6 +9,7 @@ import re
 import shutil
 import sys
 import textwrap
+import typing as typing_module
 from collections import OrderedDict
 from collections.abc import Callable
 from functools import partial
@@ -374,6 +375,15 @@ class ImportDefinition:
     """Build the import definition for the Platform."""
 
     @staticmethod
+    def _sanitize_type_name(type_name: str) -> str:
+        """Normalize a raw type name extracted from annotations."""
+        sanitized = type_name.strip().replace('"', "").replace("'", "")
+        sanitized = sanitized.replace("typing.", "").replace("typing_extensions.", "")
+        sanitized = sanitized.split("[", 1)[0]
+        sanitized = sanitized.split("(", 1)[0]
+        return sanitized
+
+    @staticmethod
     def filter_hint_type_list(hint_type_list: list[type]) -> list[type]:
         """Filter the hint type list."""
         new_hint_type_list = []
@@ -553,16 +563,13 @@ class ImportDefinition:
             if hasattr(hint_type, "__module__") and hint_type.__module__ != "builtins":
                 module = hint_type.__module__
 
-                # Extract only the base type name without generic parameters
                 if hasattr(hint_type, "__origin__"):
-                    # This is a generic type like List[...] or Dict[...]
                     type_name = (
                         hint_type.__origin__.__name__
                         if hasattr(hint_type.__origin__, "__name__")
                         else str(hint_type.__origin__)
                     )
                 else:
-                    # Extract the base name before any square brackets
                     raw_type_name = getattr(
                         hint_type,
                         "__name__",
@@ -574,36 +581,49 @@ class ImportDefinition:
                         else raw_type_name
                     )
 
-                # Skip built-in types when adding to typing module
+                type_name_str = str(type_name)
+                if type_name_str.startswith("typing.Optional"):
+                    continue
+                if "|" in type_name_str:
+                    continue
+
+                sanitized_name = cls._sanitize_type_name(type_name_str)
+                if not sanitized_name:
+                    continue
                 if (
-                    module == "typing" and type_name in dir(__builtins__)
-                ) or type_name in [
+                    module == "typing" and sanitized_name in dir(__builtins__)
+                ) or sanitized_name in {
                     "Dict",
                     "List",
                     "int",
-                    int,
                     "float",
-                    float,
-                    str,
                     "str",
+                    "dict",
+                    "list",
+                    "set",
                     "bool",
-                    bool,
-                ]:
+                    "tuple",
+                }:
                     continue
+                if not (
+                    sanitized_name == "TYPE_CHECKING" or sanitized_name.isidentifier()
+                ):
+                    continue
+
                 if module not in module_types:
                     module_types[module] = set()
 
-                if str(type_name).startswith("typing.Optional"):
-                    continue
-                if "|" in str(type_name):
-                    continue
-
-                module_types[module].add(type_name)
+                module_types[module].add(sanitized_name)
 
         # Generate from-import statements for modules with specific types
         for module, types in sorted(module_types.items()):
             if module == "types":
                 continue
+            if module == "typing":
+                filtered = {t for t in types if hasattr(typing_module, t)}
+                if not filtered:
+                    continue
+
             if len(types) == 1:
                 type_name = next(iter(types))
                 code += f"\nfrom {module} import {type_name}"
@@ -907,6 +927,53 @@ class MethodDefinition:
 
             # Case 1: Handle Query objects inside Annotated
             if isinstance(param.annotation, _AnnotatedAlias):
+                has_depends = any(
+                    hasattr(meta, "dependency")
+                    for meta in param.annotation.__metadata__
+                )
+                model = param.annotation.__args__[0]
+                is_pydantic_model = hasattr(model, "model_fields") or hasattr(
+                    model, "__pydantic_fields__"
+                )
+                is_get_request = not MethodDefinition.is_data_processing_function(path)
+
+                if is_pydantic_model and is_get_request and not has_depends:
+                    # Unpack the model fields as query parameters
+                    fields = getattr(
+                        model,
+                        "model_fields",
+                        getattr(model, "__pydantic_fields__", {}),
+                    )
+                    for field_name, field in fields.items():
+                        type_ = field.annotation
+                        default = (
+                            field.default
+                            if field.default is not PydanticUndefined
+                            else Parameter.empty
+                        )
+                        description = getattr(field, "description", "")
+
+                        extra = getattr(field, "json_schema_extra", {}) or {}
+                        new_type = MethodDefinition.get_expanded_type(
+                            field_name, extra, type_
+                        )
+                        updated_type = (
+                            type_ if new_type is ... else Union[type_, new_type]  # noqa
+                        )
+
+                        formatted[field_name] = Parameter(
+                            name=field_name,
+                            kind=Parameter.POSITIONAL_OR_KEYWORD,
+                            annotation=Annotated[
+                                updated_type,
+                                OpenBBField(
+                                    description=description,
+                                ),
+                            ],
+                            default=default,
+                        )
+                    continue
+
                 query_obj = None
                 # Look for Query object in the metadata
                 for meta in param.annotation.__metadata__:
@@ -1485,6 +1552,32 @@ class MethodDefinition:
                     if extra := MethodDefinition.get_extra(fields[k]):
                         info[k] = extra
                 code += "                },\n"
+            elif (
+                isinstance(param.annotation, _AnnotatedAlias)
+                and (
+                    hasattr(param.annotation.__args__[0], "model_fields")
+                    or hasattr(param.annotation.__args__[0], "__pydantic_fields__")
+                )
+                and not MethodDefinition.is_data_processing_function(path)
+            ):
+                has_depends = any(
+                    hasattr(meta, "dependency")
+                    for meta in param.annotation.__metadata__
+                )
+                if not has_depends:
+                    model = param.annotation.__args__[0]
+                    fields = getattr(
+                        model,
+                        "model_fields",
+                        getattr(model, "__pydantic_fields__", {}),
+                    )
+                    values = {k: k for k in fields}
+                    code += f"                {name}={{\n"
+                    for k, v in values.items():
+                        code += f'                    "{k}": {v},\n'
+                    code += "                },\n"
+                else:
+                    code += f"                {name}={name},\n"
             else:
                 code += f"                {name}={name},\n"
 
@@ -1536,13 +1629,13 @@ class MethodDefinition:
         examples: list[Example] | None = None,
     ) -> str:
         """Build the command method."""
-        func_name = func.__name__
-
+        path_parts = [p for p in path.split("/") if p and not p.startswith("{")]
+        func_name = path_parts[-1] if path_parts else func.__name__
         sig = signature(func)
         parameter_map = dict(sig.parameters)
-
         # Get the function source code and extract filter_inputs parameters
         additional_params = {}
+
         if hasattr(func, "__code__"):
             try:
                 func_source = inspect.getsource(func)
@@ -2262,6 +2355,8 @@ class DocstringGenerator:
             ):
                 if result_doc and not result_doc.endswith("\n\n"):
                     result_doc = result_doc.rstrip("\n") + "\n\n"
+                elif not result_doc:
+                    result_doc = "\n\n"
 
                 param_section = "Parameters\n----------\n"
 
@@ -2351,9 +2446,7 @@ class DocstringGenerator:
 
                                         returns_section += f"{create_indent(2)}{field_name.strip()} : {field_type}"
                                     else:
-                                        returns_section += (
-                                            f"{field_name} : {field_type}\n"
-                                        )
+                                        returns_section += f"{create_indent(2)}{field_name} : {field_type}\n"
                                     if description:
                                         returns_section += (
                                             f"\n{create_indent(3)}{description}"
