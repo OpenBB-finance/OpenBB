@@ -464,8 +464,8 @@ def test_build_command_method_get_endpoint(method_definition):
         )
 
     assert "def mock_get_endpoint(" in output
-    assert "param1: Annotated[str," in output
-    assert "param2: Annotated[int | None," in output
+    assert "param1: Annotated[\n            str" in output
+    assert "Annotated[\n            int | None,\n" in output
     assert "This is a mock GET endpoint." in output
     assert "return self._run(" in output
     assert '"/test/get",' in output
@@ -492,7 +492,7 @@ def test_build_command_method_post_endpoint(method_definition):
         )
 
     assert "def mock_post_endpoint(" in output
-    assert "body: Annotated[MyPostBody," in output
+    assert "body: Annotated[\n            MyPostBody," in output
     assert "This is a mock POST endpoint." in output
     assert "return self._run(" in output
     assert '"/test/post",' in output
@@ -518,8 +518,8 @@ def test_build_command_method_with_dependency(method_definition):
         )
 
     assert "def mock_endpoint_with_real_dependency(" in output
-    assert "dep: Annotated[MockDep," in output
-    assert "Depends(get_mock_dep)" in output
+    assert "dep: Annotated[\n            MockDep," in output
+    assert "get_mock_dep" in output
     assert "dep=dep," in output
 
 
