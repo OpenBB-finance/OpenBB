@@ -1864,6 +1864,9 @@ class DocstringGenerator:
                         else f"{' | '.join(sorted(base_types))}"
                     )
 
+            if model_name == "EquityHistorical":
+                print(type_str)
+
             # Apply the standard formatting
             type_str = (
                 type_str.replace("<class '", "")
@@ -1872,10 +1875,9 @@ class DocstringGenerator:
                 .replace("pydantic.types.", "")
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
-                .replace("Union[date, None, str]", "date | str | None")
                 .replace("NoneType", "None")
                 .replace(", NoneType", "")
-            )
+            ).replace("Union[date, None, str]", "date | str | None")
 
             if char_limit:
                 type_str = type_str[:char_limit] + (
@@ -2238,8 +2240,6 @@ class DocstringGenerator:
                     )
                     doc += "\n"
         else:
-            doc_parts = []
-
             sections = (
                 SystemService().system_settings.python_settings.docstring_sections
             )
