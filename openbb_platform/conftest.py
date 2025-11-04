@@ -27,6 +27,7 @@ def pytest_collection_modifyitems(config, items):
         if (
             "repository_state" in item.name.lower()
             or "extension_map" in item.name.lower()
+            or "test_logging_service" in item.name.lower()
             or item.get_closest_marker("order")
         ):
             early_tests.append(item)

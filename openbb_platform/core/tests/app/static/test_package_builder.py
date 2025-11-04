@@ -289,7 +289,7 @@ def test_build_func_params(method_definition):
 @pytest.mark.parametrize(
     "return_type, expected_output",
     [
-        (_empty, "None"),
+        (_empty, "Any"),
         (int, "int"),
     ],
 )

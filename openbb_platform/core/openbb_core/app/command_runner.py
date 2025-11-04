@@ -19,7 +19,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.env import Env
-from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
+from openbb_core.provider.utils.helpers import maybe_coroutine, run_async, to_snake_case
 from pydantic import BaseModel, ConfigDict, create_model
 
 if TYPE_CHECKING:
@@ -92,7 +92,7 @@ class ParametersBuilder:
     ) -> dict[str, Any]:
         """Merge args and kwargs into a single dict."""
         args = deepcopy(args)
-        kwargs = deepcopy(kwargs)
+        kwargs_copy = deepcopy(kwargs)
         parameter_list = cls.get_polished_parameter_list(func=func)
         parameter_map = {}
 
@@ -105,6 +105,19 @@ class ParametersBuilder:
                 parameter_map[parameter.name] = parameter.default
             else:
                 parameter_map[parameter.name] = None
+
+        if "kwargs" in parameter_map:
+            merged_kwargs = parameter_map.get("kwargs") or {}
+            if not isinstance(merged_kwargs, dict):
+                merged_kwargs = dict(merged_kwargs)
+
+            for key, value in kwargs_copy.items():
+                if key in {"filter_query", "kwargs"} or key in parameter_map:
+                    continue
+                merged_kwargs[key] = value
+
+            parameter_map.update(merged_kwargs)
+            parameter_map.pop("kwargs", None)
 
         return parameter_map
 
@@ -169,13 +182,15 @@ class ParametersBuilder:
     ) -> dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type."""
         sig = signature(func)
-        fields = {
-            n: (
-                Any if p.annotation is Parameter.empty else p.annotation,
-                ... if p.default is Parameter.empty else p.default,
+        fields: dict[str, tuple[Any, Any]] = {}
+        for name, param in sig.parameters.items():
+            if param.kind is Parameter.VAR_KEYWORD:
+                continue
+            annotation = (
+                Any if param.annotation is Parameter.empty else param.annotation
             )
-            for n, p in sig.parameters.items()
-        }
+            default = ... if param.default is Parameter.empty else param.default
+            fields[name] = (annotation, default)
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
         # pylint: disable=C0103
@@ -201,7 +216,6 @@ class ParametersBuilder:
         func = cls.get_polished_func(func=func)
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
-
         kwargs = cls.merge_args_and_kwargs(
             func=func,
             args=args,
@@ -312,7 +326,7 @@ class StaticCommandRunner:
                 # the chart parameter from the commands.py and package_builder, it will be
                 # added to the function signature in the router decorator
                 chart = kwargs.pop("chart", False)
-
+                kwargs_copy = deepcopy(kwargs)
                 kwargs = ParametersBuilder.build(
                     args=args,
                     execution_context=execution_context,
@@ -320,6 +334,13 @@ class StaticCommandRunner:
                     kwargs=kwargs,
                 )
                 kwargs = kwargs if kwargs is not None else {}
+                # If **kwargs is in the function signature, we need to make sure to pass
+                # All kwargs to the function so dependency injection happens
+                # and kwargs are actually made available as locals within the function.
+                if "kwargs" in kwargs_copy:
+                    for k, v in kwargs_copy["kwargs"].items():
+                        if k not in kwargs:
+                            kwargs[k] = v
                 # If we're on the api we need to remove "chart" here because the parameter is added on
                 # commands.py and the function signature does not expect "chart"
                 kwargs.pop("chart", None)
@@ -340,7 +361,7 @@ class StaticCommandRunner:
                     std_params = cls._extract_params(kwargs, "standard_params") or (
                         kwargs if "data" in kwargs else {}
                     )
-                    extra_params = cls._extract_params(kwargs, "extra_params")
+                    extra_params = cls._extract_params(kwargs, "extra_params") or kwargs
                     obbject._standard_params = (  # pylint: disable=protected-access
                         std_params
                     )
@@ -428,6 +449,40 @@ class StaticCommandRunner:
                 if Env().DEBUG_MODE:
                     raise OpenBBError(e) from e
                 warn(str(e), OpenBBWarning)
+
+            # Remove the dependency injection objects embedded in the kwargs
+            deps = execution_context.api_route.dependencies
+
+            if deps:
+                dependency_param_names: set[str] = set()
+
+                for dep in deps:
+                    dep_name = getattr(dep.dependency, "__name__", "")
+                    dep_name = to_snake_case(dep_name).replace("get_", "")
+                    dependency_param_names.add(dep_name)
+
+                for dep_key in dependency_param_names:
+                    _ = obbject._extra_params.pop(  # type:ignore  # pylint: disable=W0212
+                        dep_key, None
+                    )
+
+            meta = getattr(obbject.extra.get("metadata"), "arguments", {})
+            # Non-provider endpoints need to have execution info added because it might have been discarded.
+            if meta and (
+                not meta.get("provider_choices", {})
+                and not meta.get("standard_params", {})
+                and not meta.get("extra_params", {})
+            ):
+                for k, v in kwargs.items():
+                    if k == "kwargs":
+                        for key, value in kwargs["kwargs"].items():
+                            if key not in dependency_param_names:
+                                obbject.extra["metadata"].arguments["extra_params"][
+                                    key
+                                ] = value
+                        continue
+                    if k not in dependency_param_names:
+                        obbject.extra["metadata"].arguments["standard_params"][k] = v
 
         return obbject
 

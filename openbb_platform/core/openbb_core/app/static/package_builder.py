@@ -1,6 +1,6 @@
 """Package Builder Class."""
 
-# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments
+# pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments,protected-access
 import builtins
 import contextlib
 import inspect
@@ -30,6 +30,7 @@ from typing import (
 )
 
 from fastapi import Query
+from fastapi.routing import APIRoute
 from importlib_metadata import entry_points
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.example import Example
@@ -293,10 +294,9 @@ class PackageBuilder:
         """Write the module to the package."""
         package_folder = self.directory / folder
         package_path = package_folder / f"{name}.{extension}"
-
         package_folder.mkdir(exist_ok=True)
-
         self.console.log(str(package_path))
+
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
             file.write(code.replace("typing.", "").replace("List", "list"))
 
@@ -462,7 +462,9 @@ class ImportDefinition:
             route.response_model = None
 
         parameter_map = sig.parameters
-        return_type = sig.return_annotation if not no_validate else route.response_model
+        return_type = (
+            sig.return_annotation if not no_validate else route.response_model or Any
+        )
 
         hint_type_list: list = []
 
@@ -482,7 +484,7 @@ class ImportDefinition:
                 get_args(get_type_hints(return_type)["results"])[0]
                 if hasattr(return_type, "__class__")
                 and hasattr(return_type.__class__, "__name__")
-                and "OBBject" in return_type.__class__.__name__
+                and "OBBject" in getattr(return_type.__class__, "__name__", "")
                 else return_type
             )
             hint_type_list.append(hint_type)
@@ -503,10 +505,15 @@ class ImportDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
-                if route.deprecated:  # type: ignore
+                if getattr(route, "deprecated", None):
                     hint_type_list.append(type(route.summary.metadata))  # type: ignore
                 function_hint_type_list = cls.get_function_hint_type_list(route=route)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
+
+        for dependency in PathHandler.get_router_dependencies(path):
+            dependency_func = getattr(dependency, "dependency", None)
+            if callable(dependency_func):
+                hint_type_list.append(dependency_func)
 
         hint_type_list = [
             d
@@ -619,18 +626,19 @@ class ImportDefinition:
         for module, types in sorted(module_types.items()):
             if module == "types":
                 continue
+            _types = types
             if module == "typing":
-                filtered = {t for t in types if hasattr(typing_module, t)}
-                if not filtered:
+                _types = {t for t in types if hasattr(typing_module, t)}
+                if not _types:
                     continue
 
-            if len(types) == 1:
-                type_name = next(iter(types))
+            if len(_types) == 1:
+                type_name = next(iter(_types))
                 code += f"\nfrom {module} import {type_name}"
             else:
                 import_types = [
                     d
-                    for d in sorted(types)
+                    for d in sorted(_types)
                     if d
                     not in [
                         "Dict",
@@ -661,7 +669,6 @@ class ClassDefinition:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"class {class_name}(Container):\n"
-
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map)
         child_path_list = sorted(
@@ -670,12 +677,20 @@ class ClassDefinition:
                 path_list,
             )
         )
-
         doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
 
         for c in child_path_list:
             route = PathHandler.get_route(c, route_map)
+            has_subroutes = any(r.startswith(c + "/") and r != c for r in route_map)
+
+            if route is None:
+                if has_subroutes:
+                    doc += "    /" if path else "    /"
+                    doc += c.split("/")[-1] + "\n"
+                    methods += MethodDefinition.build_class_loader_method(path=c)
+                continue
+
             route_methods = getattr(route, "methods", None)
             is_command_route = (
                 route
@@ -695,18 +710,18 @@ class ClassDefinition:
                     func=route.endpoint,  # type: ignore
                     model_name=(
                         route.openapi_extra.get("model", None)  # type: ignore
-                        if route.openapi_extra  # type: ignore
+                        if hasattr(route, "openapi_extra")  # type: ignore
+                        and getattr(route, "openapi_extra", None) is not None
                         else None
                     ),
                     examples=(
                         route.openapi_extra.get("examples", [])  # type: ignore
-                        if route.openapi_extra  # type: ignore
+                        if hasattr(route, "openapi_extra")  # type: ignore
+                        and getattr(route, "openapi_extra", None) is not None
                         else []
                     ),
                 )
                 continue
-
-            has_subroutes = any(r.startswith(c + "/") and r != c for r in route_map)
 
             if has_subroutes:
                 # This is a sub-router path - create a property
@@ -755,6 +770,42 @@ class MethodDefinition:
         "date": str,
         "provider": None,
     }
+
+    @staticmethod
+    def _snake_case(name: str) -> str:
+        if not name:
+            return ""
+        name = name.replace(".", "_")
+        s1 = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
+        return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
+
+    @staticmethod
+    def _dependency_identifier(dependency_func: Callable) -> str:
+        try:
+            return_annotation = signature(dependency_func).return_annotation
+        except (ValueError, TypeError):
+            return_annotation = inspect._empty
+
+        class_name = ""
+        if return_annotation not in (inspect._empty, None):
+            if isinstance(return_annotation, str):
+                class_name = return_annotation.rsplit(".", maxsplit=1)[-1]
+            elif isclass(return_annotation):
+                class_name = return_annotation.__name__
+
+        if not class_name and isclass(dependency_func):
+            class_name = dependency_func.__name__
+
+        if not class_name:
+            func_name = dependency_func.__name__
+            class_name = (
+                func_name[4:]
+                if func_name.startswith("get_") and len(func_name) > 4
+                else func_name
+            )
+
+        identifier = MethodDefinition._snake_case(class_name)
+        return identifier or MethodDefinition._snake_case(dependency_func.__name__)
 
     @staticmethod
     def build_class_loader_method(path: str) -> str:
@@ -922,7 +973,7 @@ class MethodDefinition:
         # Then process all other parameters
         for name, param in parameter_map.items():
             # Skip path parameters - they should be required string parameters
-            if name in path_params:
+            if name in path_params or name in ("kwargs", "**kwargs"):
                 continue  # Already handled above
 
             # Case 1: Handle Query objects inside Annotated
@@ -1371,7 +1422,7 @@ class MethodDefinition:
     def build_func_returns(return_type: type) -> str:
         """Build the function returns."""
         if return_type == _empty:
-            func_returns = "None"
+            func_returns = "Any"
         elif isinstance(return_type, str):
             func_returns = f"ForwardRef('{return_type}')"
         elif isclass(return_type) and issubclass(return_type, OBBject):
@@ -1479,6 +1530,24 @@ class MethodDefinition:
         dependency_calls: list = []
         dependency_names = set()
 
+        seen_router_dependency_funcs: set = set()
+        for dependency in PathHandler.get_router_dependencies(path):
+            dependency_func = getattr(dependency, "dependency", None)
+            if (
+                callable(dependency_func)
+                and dependency_func not in seen_router_dependency_funcs
+            ):
+                dependency_identifier = MethodDefinition._dependency_identifier(
+                    dependency_func
+                )
+                dependency_calls.append(
+                    f"        {dependency_identifier} = {dependency_func.__name__}()"
+                )
+                dependency_calls.append(
+                    f"        kwargs['{dependency_identifier}'] = {dependency_identifier}"
+                )
+                seen_router_dependency_funcs.add(dependency_func)
+
         # Process dependencies
         for name, param in parameter_map.items():
             if isinstance(param.annotation, _AnnotatedAlias):
@@ -1578,7 +1647,7 @@ class MethodDefinition:
                     code += "                },\n"
                 else:
                     code += f"                {name}={name},\n"
-            else:
+            elif name != "kwargs":
                 code += f"                {name}={name},\n"
 
         if info:
@@ -2542,10 +2611,46 @@ class PathHandler:
     """Handle the paths for the Platform."""
 
     @staticmethod
+    def get_router_dependencies(path: str) -> list:
+        """Collect APIRouter dependencies for the path and its parents."""
+        router = RouterLoader.from_extensions()
+        segments = [
+            segment
+            for segment in path.split("/")
+            if segment and not segment.startswith("{")
+        ]
+        candidate_paths = ["/"]
+        current = ""
+        for segment in segments:
+            current = f"{current}/{segment}" if current else f"/{segment}"
+            candidate_paths.append(current)
+
+        dependencies: list = []
+        seen: set = set()
+
+        for candidate in candidate_paths:
+            try:
+                api_router = router.get_attr(candidate, "api_router")
+            except Exception:  # pragma: no cover
+                api_router = None
+            if not api_router:
+                continue
+            for dependency in getattr(api_router, "dependencies", []) or []:
+                dependency_func = getattr(dependency, "dependency", None)
+                if callable(dependency_func) and dependency_func not in seen:
+                    dependencies.append(dependency)
+                    seen.add(dependency_func)
+        return dependencies
+
+    @staticmethod
     def build_route_map() -> dict[str, BaseRoute]:
         """Build the route map."""
         router = RouterLoader.from_extensions()
-        route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
+        route_map = {
+            route.path: route
+            for route in router.api_router.routes  # type: ignore
+            if isinstance(route, APIRoute) and getattr(route, "include_in_schema", True)
+        }
 
         # Also include routes directly registered on _api_router instances
         # We need to traverse the router tree to find all _api_router instances
@@ -2553,7 +2658,11 @@ class PathHandler:
             """Recursively collect routes from _api_router instances."""
             if hasattr(router_obj, "_api_router"):
                 for inner_route in router_obj._api_router.routes:  # type: ignore  # pylint: disable=W0212
-                    if inner_route.path not in collected_routes:
+                    if (
+                        isinstance(inner_route, APIRoute)
+                        and getattr(inner_route, "include_in_schema", True)
+                        and (inner_route.path not in collected_routes)
+                    ):
                         collected_routes[inner_route.path] = inner_route
 
             # Check if this router has sub-routers
@@ -2561,6 +2670,8 @@ class PathHandler:
                 router_obj.api_router, "routes"
             ):
                 for route in router_obj.api_router.routes:  # type: ignore
+                    if not isinstance(route, APIRoute):
+                        continue
                     endpoint = getattr(route, "endpoint", None)
                     if endpoint and hasattr(endpoint, "__self__"):
                         collect_api_router_routes(endpoint.__self__, collected_routes)
@@ -3447,6 +3558,7 @@ class ReferenceGenerator:
                             )
             # Add data for the endpoints without a standard model (data processing endpoints)
             else:
+                results_type = "Any"
                 openapi_extra = (
                     getattr(
                         route_func, "openapi_extra", getattr(route, "openapi_extra", {})
