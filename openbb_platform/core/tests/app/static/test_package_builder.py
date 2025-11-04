@@ -9,7 +9,7 @@ from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
 import pytest
-from fastapi import Depends
+from fastapi import Depends, Request
 from importlib_metadata import EntryPoint, EntryPoints
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
@@ -867,3 +867,31 @@ def test_auto_build(package_builder, add, remove, openbb_auto_build):
     else:
         mock_assets_diff.assert_not_called()
         mock_build.assert_not_called()
+
+
+def test_is_safe_dependency(method_definition):
+    """Test dependency safety detection."""
+
+    class MockDep:
+        """Mock dependency."""
+
+    def safe_dependency(optional: str = "value") -> int:
+        return 1
+
+    def unsafe_dependency(request: Request):
+        return request
+
+    def optional_request_dependency(optional: Request | None = None) -> MockDep:
+        return MockDep()
+
+    def none_return_dependency(optional: str = "value") -> None:
+        return None
+
+    def optional_return_dependency(optional: str = "value") -> MockDep | None:
+        return MockDep()
+
+    assert method_definition._is_safe_dependency(safe_dependency)
+    assert not method_definition._is_safe_dependency(unsafe_dependency)
+    assert not method_definition._is_safe_dependency(optional_request_dependency)
+    assert not method_definition._is_safe_dependency(none_return_dependency)
+    assert method_definition._is_safe_dependency(optional_return_dependency)

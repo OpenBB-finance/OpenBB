@@ -16,6 +16,7 @@ from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
+from types import UnionType
 from typing import (
     TYPE_CHECKING,
     Annotated,
@@ -29,7 +30,7 @@ from typing import (
     get_type_hints,
 )
 
-from fastapi import Query
+from fastapi import Query, Request, Response, WebSocket
 from fastapi.routing import APIRoute
 from importlib_metadata import entry_points
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
@@ -45,7 +46,10 @@ from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
+from starlette.requests import Request as StarletteRequest
+from starlette.responses import Response as StarletteResponse
 from starlette.routing import BaseRoute
+from starlette.websockets import WebSocket as StarletteWebSocket
 from typing_extensions import _AnnotatedAlias
 
 if TYPE_CHECKING:
@@ -771,6 +775,35 @@ class MethodDefinition:
         "provider": None,
     }
 
+    REQUEST_BOUND_PARAM_TYPES = tuple(
+        t
+        for t in (
+            Request,
+            StarletteRequest,
+            Response,
+            StarletteResponse,
+            WebSocket,
+            StarletteWebSocket,
+        )
+        if t is not None
+    )
+    REQUEST_BOUND_ANNOTATION_NAMES = {
+        "header",
+        "request",
+        "fastapi.request",
+        "fastapi.requests.request",
+        "starlette.request",
+        "starlette.requests.request",
+        "response",
+        "fastapi.response",
+        "fastapi.responses.response",
+        "starlette.response",
+        "starlette.responses.response",
+        "websocket",
+        "starlette.websockets.websocket",
+        "fastapi.websockets.websocket",
+    }
+
     @staticmethod
     def _snake_case(name: str) -> str:
         if not name:
@@ -806,6 +839,86 @@ class MethodDefinition:
 
         identifier = MethodDefinition._snake_case(class_name)
         return identifier or MethodDefinition._snake_case(dependency_func.__name__)
+
+    @staticmethod
+    def _is_none_like_return(annotation: Any) -> bool:
+        if annotation in (None, type(None)):
+            return True
+        if annotation is inspect._empty:
+            return False
+        if isinstance(annotation, str):
+            normalized = annotation.lower().strip()
+            normalized = normalized.replace("typing.", "")
+            normalized = normalized.replace("builtins.", "")
+            normalized = normalized.split("[", 1)[0]
+            return normalized in {"none", "nonetype"}
+
+        origin = get_origin(annotation)
+        if origin is Union or (UnionType is not None and origin is UnionType):
+            args = get_args(annotation) or getattr(annotation, "__args__", ())
+            if not args:
+                return True
+            return all(MethodDefinition._is_none_like_return(arg) for arg in args)
+
+        return False
+
+    @staticmethod
+    def _has_request_bound_annotation(annotation: Any) -> bool:
+        if annotation is Parameter.empty:
+            return False
+
+        origin = get_origin(annotation)
+        if origin is Annotated:
+            args = get_args(annotation)
+            if not args:
+                return False
+            return MethodDefinition._has_request_bound_annotation(args[0])
+
+        origin = get_origin(annotation)
+        if origin is Union or (UnionType is not None and origin is UnionType):
+            args = get_args(annotation) or getattr(annotation, "__args__", ())
+            return any(
+                MethodDefinition._has_request_bound_annotation(arg) for arg in args
+            )
+
+        if isinstance(annotation, str):
+            normalized = annotation.lower().strip()
+            normalized = normalized.replace("typing.", "")
+            normalized = normalized.replace("builtins.", "")
+            normalized = normalized.split("[", 1)[0]
+            return normalized in MethodDefinition.REQUEST_BOUND_ANNOTATION_NAMES
+
+        if isinstance(annotation, type):
+            return annotation in MethodDefinition.REQUEST_BOUND_PARAM_TYPES
+
+        return annotation in MethodDefinition.REQUEST_BOUND_PARAM_TYPES
+
+    @staticmethod
+    def _is_safe_dependency(dependency_func: Callable) -> bool:
+        try:
+            sig = signature(dependency_func)
+        except (TypeError, ValueError):
+            return False
+
+        if MethodDefinition._is_none_like_return(sig.return_annotation):
+            return False
+
+        for param in sig.parameters.values():
+            annotation = param.annotation
+            if MethodDefinition._has_request_bound_annotation(annotation):
+                return False
+
+            if (
+                param.kind
+                in (
+                    Parameter.POSITIONAL_ONLY,
+                    Parameter.POSITIONAL_OR_KEYWORD,
+                    Parameter.KEYWORD_ONLY,
+                )
+                and param.default is Parameter.empty
+            ):
+                return False
+        return True
 
     @staticmethod
     def build_class_loader_method(path: str) -> str:
@@ -1536,6 +1649,7 @@ class MethodDefinition:
             if (
                 callable(dependency_func)
                 and dependency_func not in seen_router_dependency_funcs
+                and MethodDefinition._is_safe_dependency(dependency_func)
             ):
                 dependency_identifier = MethodDefinition._dependency_identifier(
                     dependency_func
@@ -1554,6 +1668,10 @@ class MethodDefinition:
                 for meta in param.annotation.__metadata__:
                     if hasattr(meta, "dependency") and meta.dependency is not None:
                         dependency_func = meta.dependency
+
+                        if not MethodDefinition._is_safe_dependency(dependency_func):
+                            continue
+
                         func_name = dependency_func.__name__
                         dependency_calls.append(f"        {name} = {func_name}()")
                         dependency_names.add(name)
@@ -2678,7 +2796,7 @@ class PathHandler:
 
         collect_api_router_routes(router, route_map)
 
-        return route_map
+        return route_map  # type: ignore
 
     @staticmethod
     def build_path_list(route_map: dict[str, BaseRoute]) -> list[str]:
