@@ -63,7 +63,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
         ):
             # We do not add kwargs into the finished API signature.
             # Kwargs will be passed to every function that accepts them,
-            # but we won't forcee the endpoint to take them.
+            # but we won't force the endpoint to take them.
             # We read the original signature in the wrapper to
             # determine if kwargs can be passed to the locals.
             continue
