@@ -6,11 +6,9 @@ import os
 import socket
 import sys
 from pathlib import Path
-from typing import Any
 
 from deepdiff import DeepDiff
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 
 logger = logging.getLogger("openbb_platform_api")
 PATH_WIDGETS: dict = {}
