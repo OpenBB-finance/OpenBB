@@ -2,7 +2,7 @@
 
 [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/) is a command-line utility that creates projects from templates.
 
-This extension is a simple Cookiecutter template for setting up a new OpenBB Python Package extensions and projects.
+This extension is a simple template for setting up new OpenBB Python Package extensions and projects.
 
 ## Template Structure
 
