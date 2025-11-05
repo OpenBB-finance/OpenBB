@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_snapshots import (
@@ -16,7 +16,7 @@ from pydantic import Field, field_validator
 class TmxIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     """TMX Index Snapshots Query Params."""
 
-    region: Optional[Literal["ca", "us"]] = Field(default="ca")  # type: ignore
+    region: Literal["ca", "us"] | None = Field(default="ca")  # type: ignore
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request."
@@ -47,61 +47,61 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
         "constituent_smallest_market_value": "smallest",
         "constituent_smallest_weight": "smallestweight",
     }
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None, description="The 52-week high of the index."
     )
-    year_low: Optional[float] = Field(
+    year_low: float | None = Field(
         default=None, description="The 52-week low of the index."
     )
-    return_mtd: Optional[float] = Field(
+    return_mtd: float | None = Field(
         default=None,
         description="The month-to-date return of the index, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_qtd: Optional[float] = Field(
+    return_qtd: float | None = Field(
         default=None,
         description="The quarter-to-date return of the index, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_ytd: Optional[float] = Field(
+    return_ytd: float | None = Field(
         default=None,
         description="The year-to-date return of the index, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    total_market_value: Optional[float] = Field(
+    total_market_value: float | None = Field(
         default=None,
         description="The total quoted market value of the index.",
     )
-    number_of_constituents: Optional[int] = Field(
+    number_of_constituents: int | None = Field(
         default=None,
         description="The number of constituents in the index.",
     )
-    constituent_average_market_value: Optional[float] = Field(
+    constituent_average_market_value: float | None = Field(
         default=None,
         description="The average quoted market value of the index constituents.",
     )
-    constituent_median_market_value: Optional[float] = Field(
+    constituent_median_market_value: float | None = Field(
         default=None,
         description="The median quoted market value of the index constituents.",
     )
-    constituent_top10_market_value: Optional[float] = Field(
+    constituent_top10_market_value: float | None = Field(
         default=None,
         description="The sum of the top 10 quoted market values of the index constituents.",
     )
-    constituent_largest_market_value: Optional[float] = Field(
+    constituent_largest_market_value: float | None = Field(
         default=None,
         description="The largest quoted market value of the index constituents.",
     )
-    constituent_largest_weight: Optional[float] = Field(
+    constituent_largest_weight: float | None = Field(
         default=None,
         description="The largest weight of the index constituents, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    constituent_smallest_market_value: Optional[float] = Field(
+    constituent_smallest_market_value: float | None = Field(
         default=None,
         description="The smallest quoted market value of the index constituents.",
     )
-    constituent_smallest_weight: Optional[float] = Field(
+    constituent_smallest_weight: float | None = Field(
         default=None,
         description="The smallest weight of the index constituents, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -140,22 +140,22 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
 class TmxIndexSnapshotsFetcher(
     Fetcher[
         TmxIndexSnapshotsQueryParams,
-        List[TmxIndexSnapshotsData],
+        list[TmxIndexSnapshotsData],
     ]
 ):
     """TMX Index Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxIndexSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxIndexSnapshotsQueryParams:
         """Transform the query."""
         return TmxIndexSnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
@@ -270,9 +270,9 @@ class TmxIndexSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: TmxIndexSnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxIndexSnapshotsData]:
+    ) -> list[TmxIndexSnapshotsData]:
         """Return the transformed data."""
         return [
             TmxIndexSnapshotsData.model_validate(

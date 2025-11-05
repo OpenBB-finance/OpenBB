@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_eps import (
@@ -22,7 +22,7 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "") + " Default is all.",
     )
@@ -39,15 +39,15 @@ class FMPHistoricalEpsData(HistoricalEpsData):
         "updated": "lastUpdated",
     }
 
-    revenue_estimated: Optional[Union[int, float]] = Field(
+    revenue_estimated: int | float | None = Field(
         default=None,
         description="Estimated consensus revenue for the reporting period.",
     )
-    revenue_actual: Optional[Union[int, float]] = Field(
+    revenue_actual: int | float | None = Field(
         default=None,
         description="The actual reported revenue.",
     )
-    updated: Optional[dateType] = Field(
+    updated: dateType | None = Field(
         default=None,
         description="The date when the data was last updated.",
     )
@@ -69,7 +69,7 @@ class FMPHistoricalEpsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPHistoricalEpsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

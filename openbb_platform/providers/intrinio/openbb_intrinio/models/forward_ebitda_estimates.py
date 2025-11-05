@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 import asyncio
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -30,18 +30,15 @@ class IntrinioForwardEbitdaEstimatesQueryParams(ForwardEbitdaEstimatesQueryParam
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
     __alias_dict__ = {"estimate_type": "type"}
 
-    fiscal_period: Optional[Literal["annual", "quarter"]] = Field(
+    fiscal_period: Literal["annual", "quarter"] | None = Field(
         default=None, description="Filter for only full-year or quarterly estimates."
     )
-    estimate_type: Optional[
+    estimate_type: (
         Literal[
-            "ebitda",
-            "ebit",
-            "enterprise_value",
-            "cash_flow_per_share",
-            "pretax_income",
+            "ebitda", "ebit", "enterprise_value", "cash_flow_per_share", "pretax_income"
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="Limit the EBITDA estimates to this type.",
     )
@@ -63,7 +60,7 @@ class IntrinioForwardEbitdaEstimatesData(ForwardEbitdaEstimatesData):
         "standard_deviation": "std_dev",
     }
 
-    conensus_type: Optional[
+    conensus_type: (
         Literal[
             "ebitda",
             "ebitda",
@@ -72,7 +69,8 @@ class IntrinioForwardEbitdaEstimatesData(ForwardEbitdaEstimatesData):
             "cash_flow_per_share",
             "pretax_income",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="The type of estimate.",
     )
@@ -81,14 +79,14 @@ class IntrinioForwardEbitdaEstimatesData(ForwardEbitdaEstimatesData):
 class IntrinioForwardEbitdaEstimatesFetcher(
     Fetcher[
         IntrinioForwardEbitdaEstimatesQueryParams,
-        List[IntrinioForwardEbitdaEstimatesData],
+        list[IntrinioForwardEbitdaEstimatesData],
     ]
 ):
     """Intrinio Forward EBITDA Estimates Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioForwardEbitdaEstimatesQueryParams:
         """Transform the query params."""
         return IntrinioForwardEbitdaEstimatesQueryParams(**params)
@@ -96,9 +94,9 @@ class IntrinioForwardEbitdaEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioForwardEbitdaEstimatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         BASE_URL = (
@@ -107,7 +105,7 @@ class IntrinioForwardEbitdaEstimatesFetcher(
         )
         symbols = query.symbol.split(",") if query.symbol else None
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
-        results: List[Dict] = []
+        results: list[dict] = []
 
         async def get_one(symbol):
             """Get the data for one symbol."""
@@ -172,13 +170,13 @@ class IntrinioForwardEbitdaEstimatesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioForwardEbitdaEstimatesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioForwardEbitdaEstimatesData]:
+    ) -> list[IntrinioForwardEbitdaEstimatesData]:
         """Transform the raw data into the standard format."""
         if not data:
             raise EmptyDataError()
-        results: List[IntrinioForwardEbitdaEstimatesData] = []
+        results: list[IntrinioForwardEbitdaEstimatesData] = []
         fiscal_period = None
         if query.fiscal_period is not None:
             fiscal_period = "fy" if query.fiscal_period == "annual" else "fq"

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -26,75 +26,75 @@ class FinvizKeyMetricsQueryParams(KeyMetricsQueryParams):
 class FinvizKeyMetricsData(KeyMetricsData):
     """Finviz Key Metrics Data."""
 
-    pe_ratio: Optional[float] = Field(
+    pe_ratio: float | None = Field(
         default=None, description="Price-to-earnings ratio (TTM)."
     )
-    foward_pe: Optional[float] = Field(
+    foward_pe: float | None = Field(
         default=None, description="Forward price-to-earnings ratio (forward P/E)"
     )
-    eps: Optional[float] = Field(default=None, description="Earnings per share (EPS)")
-    price_to_sales: Optional[float] = Field(
+    eps: float | None = Field(default=None, description="Earnings per share (EPS)")
+    price_to_sales: float | None = Field(
         default=None, description="Price-to-sales ratio (P/S)"
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None, description="Price-to-book ratio (P/B)"
     )
-    book_value_per_share: Optional[float] = Field(
+    book_value_per_share: float | None = Field(
         default=None, description="Book value per share (Book/sh)"
     )
-    price_to_cash: Optional[float] = Field(
+    price_to_cash: float | None = Field(
         default=None, description="Price-to-cash ratio (P/C)"
     )
-    cash_per_share: Optional[float] = Field(
+    cash_per_share: float | None = Field(
         default=None, description="Cash per share (Cash/sh)"
     )
-    price_to_free_cash_flow: Optional[float] = Field(
+    price_to_free_cash_flow: float | None = Field(
         default=None, description="Price-to-free cash flow ratio (P/FCF)"
     )
-    debt_to_equity: Optional[float] = Field(
+    debt_to_equity: float | None = Field(
         default=None, description="Debt-to-equity ratio (Debt/Eq)"
     )
-    long_term_debt_to_equity: Optional[float] = Field(
+    long_term_debt_to_equity: float | None = Field(
         default=None, description="Long-term debt-to-equity ratio (LT Debt/Eq)"
     )
-    quick_ratio: Optional[float] = Field(default=None, description="Quick ratio")
-    current_ratio: Optional[float] = Field(default=None, description="Current ratio")
-    gross_margin: Optional[float] = Field(
+    quick_ratio: float | None = Field(default=None, description="Quick ratio")
+    current_ratio: float | None = Field(default=None, description="Current ratio")
+    gross_margin: float | None = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    profit_margin: Optional[float] = Field(
+    profit_margin: float | None = Field(
         default=None,
         description="Profit margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    operating_margin: Optional[float] = Field(
+    operating_margin: float | None = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_assets: Optional[float] = Field(
+    return_on_assets: float | None = Field(
         default=None,
         description="Return on assets (ROA), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_investment: Optional[float] = Field(
+    return_on_investment: float | None = Field(
         default=None,
         description="Return on investment (ROI), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_equity: Optional[float] = Field(
+    return_on_equity: float | None = Field(
         default=None,
         description="Return on equity (ROE), as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    payout_ratio: Optional[float] = Field(
+    payout_ratio: float | None = Field(
         default=None,
         description="Payout ratio, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -102,21 +102,21 @@ class FinvizKeyMetricsData(KeyMetricsData):
 
 
 class FinvizKeyMetricsFetcher(
-    Fetcher[FinvizKeyMetricsQueryParams, List[FinvizKeyMetricsData]]
+    Fetcher[FinvizKeyMetricsQueryParams, list[FinvizKeyMetricsData]]
 ):
     """Finviz Key Metrics Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizKeyMetricsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizKeyMetricsQueryParams:
         """Transform the query params."""
         return FinvizKeyMetricsQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FinvizKeyMetricsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
         from finvizfinance import util
@@ -125,13 +125,13 @@ class FinvizKeyMetricsFetcher(
         from openbb_core.provider.utils.errors import EmptyDataError
         from openbb_core.provider.utils.helpers import get_requests_session
 
-        results: List = []
-        messages: List = []
+        results: list = []
+        messages: list = []
         util.session = get_requests_session()
 
-        def get_one(symbol) -> Dict:
+        def get_one(symbol) -> dict:
             """Get the data for one symbol."""
-            result: Dict = {}
+            result: dict = {}
             try:
                 data = finvizfinance(symbol)
                 fundament = data.ticker_fundament()
@@ -292,8 +292,8 @@ class FinvizKeyMetricsFetcher(
     @staticmethod
     def transform_data(
         query: FinvizKeyMetricsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizKeyMetricsData]:
+    ) -> list[FinvizKeyMetricsData]:
         """Transform and validate the raw data."""
         return [FinvizKeyMetricsData.model_validate(d) for d in data]

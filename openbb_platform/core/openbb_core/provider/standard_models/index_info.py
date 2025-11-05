@@ -1,7 +1,5 @@
 """Index Info Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -28,15 +26,15 @@ class IndexInfoData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="The name of the index.")
-    description: Optional[str] = Field(
+    description: str | None = Field(
         description="The short description of the index.", default=None
     )
-    methodology: Optional[str] = Field(
+    methodology: str | None = Field(
         description="URL to the methodology document.", default=None
     )
-    factsheet: Optional[str] = Field(
+    factsheet: str | None = Field(
         description="URL to the factsheet document.", default=None
     )
-    num_constituents: Optional[int] = Field(
+    num_constituents: int | None = Field(
         description="The number of constituents in the index.", default=None
     )

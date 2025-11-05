@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -45,8 +45,8 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: PositiveInt = PrivateAttr(default=None)
-    _timespan: str = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -87,7 +87,7 @@ class PolygonCryptoHistoricalData(CryptoHistoricalData):
         "transactions": "n",
     }
 
-    transactions: Optional[PositiveInt] = Field(
+    transactions: PositiveInt | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
@@ -96,13 +96,13 @@ class PolygonCryptoHistoricalData(CryptoHistoricalData):
 class PolygonCryptoHistoricalFetcher(
     Fetcher[
         PolygonCryptoHistoricalQueryParams,
-        List[PolygonCryptoHistoricalData],
+        list[PolygonCryptoHistoricalData],
     ]
 ):
     """Polygon Crypto Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -123,9 +123,9 @@ class PolygonCryptoHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: PolygonCryptoHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract raw data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from datetime import timezone  # noqa
@@ -150,7 +150,7 @@ class PolygonCryptoHistoricalFetcher(
 
         async def callback(
             response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
+        ) -> list[dict]:
             data = await response.json()
 
             symbol = response.url.parts[4]
@@ -186,8 +186,8 @@ class PolygonCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[PolygonCryptoHistoricalData]:
+        query: PolygonCryptoHistoricalQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[PolygonCryptoHistoricalData]:
         """Transform the data."""
         if not data:
             raise EmptyDataError()

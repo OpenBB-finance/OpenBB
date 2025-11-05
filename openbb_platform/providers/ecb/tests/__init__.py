@@ -1,1 +1,1 @@
-""" Test the ECB provider."""
+"""Test the ECB provider."""

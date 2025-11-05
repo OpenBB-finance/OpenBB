@@ -1,7 +1,7 @@
 """YFinance Key Executives Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_executives import (
@@ -26,36 +26,36 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         "unexercised_value": "unexercisedValue",
     }
 
-    exercised_value: Optional[int] = Field(
+    exercised_value: int | None = Field(
         default=None,
         description="Value of shares exercised.",
     )
-    unexercised_value: Optional[int] = Field(
+    unexercised_value: int | None = Field(
         default=None,
         description="Value of shares not exercised.",
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="Fiscal year of the pay.",
     )
 
 
 class YFinanceKeyExecutivesFetcher(
-    Fetcher[YFinanceKeyExecutivesQueryParams, List[YFinanceKeyExecutivesData]]
+    Fetcher[YFinanceKeyExecutivesQueryParams, list[YFinanceKeyExecutivesData]]
 ):
     """YFinance Key Executives Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceKeyExecutivesQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceKeyExecutivesQueryParams:
         """Transform the query."""
         return YFinanceKeyExecutivesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: YFinanceKeyExecutivesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         from curl_adapter import CurlCffiAdapter  # noqa
@@ -88,8 +88,8 @@ class YFinanceKeyExecutivesFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceKeyExecutivesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceKeyExecutivesData]:
+    ) -> list[YFinanceKeyExecutivesData]:
         """Transform the data."""
         return [YFinanceKeyExecutivesData.model_validate(d) for d in data]

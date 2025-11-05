@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_performance import (
@@ -62,20 +62,20 @@ class WSJActiveData(ETFPerformanceData):
         return datetime.strptime(v[:10], "%Y-%m-%d").date()
 
 
-class WSJActiveFetcher(Fetcher[WSJActiveQueryParams, List[WSJActiveData]]):
+class WSJActiveFetcher(Fetcher[WSJActiveQueryParams, list[WSJActiveData]]):
     """Transform the query, extract and transform the data from the WSJ endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> WSJActiveQueryParams:
+    def transform_query(params: dict[str, Any]) -> WSJActiveQueryParams:
         """Transform query params."""
         return WSJActiveQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: WSJActiveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get data from WSJ."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
@@ -92,9 +92,9 @@ class WSJActiveFetcher(Fetcher[WSJActiveQueryParams, List[WSJActiveData]]):
     @staticmethod
     def transform_data(
         query: ETFPerformanceQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[WSJActiveData]:
+    ) -> list[WSJActiveData]:
         """Transform data."""
         data = data[: query.limit]
         data = sorted(

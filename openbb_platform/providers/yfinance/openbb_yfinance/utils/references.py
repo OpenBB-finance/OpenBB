@@ -3,7 +3,7 @@
 # pylint: disable=too-many-lines
 
 from datetime import datetime
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
@@ -1276,96 +1276,96 @@ class YFPredefinedScreenerData(EquityPerformanceData):
         "exchange_timezone": "exchangeTimezoneName",
     }
 
-    open: Optional[float] = Field(
+    open: float | None = Field(
         default=None,
         description="Open price for the day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None,
         description="High price for the day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None,
         description="Low price for the day.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    previous_close: Optional[float] = Field(
+    previous_close: float | None = Field(
         default=None,
         description="Previous close price.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ma50: Optional[float] = Field(
+    ma50: float | None = Field(
         default=None,
         description="50-day moving average.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    ma200: Optional[float] = Field(
+    ma200: float | None = Field(
         default=None,
         description="200-day moving average.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    year_high: Optional[float] = Field(
+    year_high: float | None = Field(
         default=None,
         description="52-week high.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    year_low: Optional[float] = Field(
+    year_low: float | None = Field(
         default=None,
         description="52-week low.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    market_cap: Optional[float] = Field(
+    market_cap: float | None = Field(
         default=None,
         description="Market Cap.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    shares_outstanding: Optional[float] = Field(
+    shares_outstanding: float | None = Field(
         default=None,
         description="Shares outstanding.",
     )
-    book_value: Optional[float] = Field(
+    book_value: float | None = Field(
         default=None,
         description="Book value per share.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None,
         description="Price to book ratio.",
     )
-    eps_ttm: Optional[float] = Field(
+    eps_ttm: float | None = Field(
         default=None,
         description="Earnings per share over the trailing twelve months.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    eps_forward: Optional[float] = Field(
+    eps_forward: float | None = Field(
         default=None,
         description="Forward earnings per share.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    pe_forward: Optional[float] = Field(
+    pe_forward: float | None = Field(
         default=None,
         description="Forward price-to-earnings ratio.",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Trailing twelve month dividend yield.",
         json_schema_extra={"x-unit_measurement": "percent", "frontend_multiply": 100},
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="Exchange where the stock is listed.",
     )
-    exchange_timezone: Optional[str] = Field(
+    exchange_timezone: str | None = Field(
         default=None,
         description="Timezone of the exchange.",
     )
-    earnings_date: Optional[datetime] = Field(
+    earnings_date: datetime | None = Field(
         default=None,
         description="Most recent earnings date.",
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="Currency of the price data.",
     )

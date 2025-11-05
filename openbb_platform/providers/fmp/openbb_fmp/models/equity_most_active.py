@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
@@ -50,7 +50,7 @@ class FMPEquityActiveFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityActiveQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Get the raw data from the FMP API."""

@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -23,7 +23,7 @@ class IntrinioMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_snapshots_v2
     """
 
-    date: Optional[Union[dateType, datetime, str]] = Field(
+    date: dateType | datetime | str | None = Field(
         default=None,
         description="The date of the data. Can be a datetime or an ISO datetime string."
         + " Historical data appears to go back to mid-June 2022."
@@ -40,43 +40,43 @@ class IntrinioMarketSnapshotsData(MarketSnapshotsData):
         "last_volume": "total_trade_volume",
     }
 
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None,
         description="The last trade price.",
     )
-    last_size: Optional[int] = Field(
+    last_size: int | None = Field(
         default=None,
         description="The last trade size.",
     )
-    last_volume: Optional[int] = Field(
+    last_volume: int | None = Field(
         default=None,
         description="The last trade volume.",
     )
-    last_trade_timestamp: Optional[datetime] = Field(
+    last_trade_timestamp: datetime | None = Field(
         default=None,
         description="The timestamp of the last trade.",
     )
-    bid_size: Optional[int] = Field(
+    bid_size: int | None = Field(
         default=None,
         description="The size of the last bid price. Bid price and size is not always available.",
     )
-    bid_price: Optional[float] = Field(
+    bid_price: float | None = Field(
         default=None,
         description="The last bid price. Bid price and size is not always available.",
     )
-    ask_price: Optional[float] = Field(
+    ask_price: float | None = Field(
         default=None,
         description="The last ask price. Ask price and size is not always available.",
     )
-    ask_size: Optional[int] = Field(
+    ask_size: int | None = Field(
         default=None,
         description="The size of the last ask price. Ask price and size is not always available.",
     )
-    last_bid_timestamp: Optional[datetime] = Field(
+    last_bid_timestamp: datetime | None = Field(
         default=None,
         description="The timestamp of the last bid price. Bid price and size is not always available.",
     )
-    last_ask_timestamp: Optional[datetime] = Field(
+    last_ask_timestamp: datetime | None = Field(
         default=None,
         description="The timestamp of the last ask price. Ask price and size is not always available.",
     )
@@ -137,7 +137,7 @@ class IntrinioMarketSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioMarketSnapshotsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""

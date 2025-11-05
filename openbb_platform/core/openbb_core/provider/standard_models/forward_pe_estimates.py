@@ -1,7 +1,5 @@
 """Forward PE Estimates Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -14,7 +12,7 @@ from pydantic import Field, field_validator
 class ForwardPeEstimatesQueryParams(QueryParams):
     """Forward PE Estimates Query Parameters."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS["symbol"],
     )
@@ -30,24 +28,24 @@ class ForwardPeEstimatesData(Data):
     """Forward PE Estimates Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(default=None, description="Name of the entity.")
-    year1: Optional[float] = Field(
+    name: str | None = Field(default=None, description="Name of the entity.")
+    year1: float | None = Field(
         default=None,
         description="Estimated PE ratio for the next fiscal year.",
     )
-    year2: Optional[float] = Field(
+    year2: float | None = Field(
         default=None,
         description="Estimated PE ratio two fiscal years from now.",
     )
-    year3: Optional[float] = Field(
+    year3: float | None = Field(
         default=None,
         description="Estimated PE ratio three fiscal years from now.",
     )
-    year4: Optional[float] = Field(
+    year4: float | None = Field(
         default=None,
         description="Estimated PE ratio four fiscal years from now.",
     )
-    year5: Optional[float] = Field(
+    year5: float | None = Field(
         default=None,
         description="Estimated PE ratio five fiscal years from now.",
     )

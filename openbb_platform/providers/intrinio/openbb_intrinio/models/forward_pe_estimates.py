@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -39,15 +39,15 @@ class IntrinioForwardPeEstimatesData(ForwardPeEstimatesData):
         "last_updated": "updated_date",
     }
 
-    peg_ratio_year1: Optional[float] = Field(
+    peg_ratio_year1: float | None = Field(
         default=None,
         description="Estimated Forward PEG ratio for the next fiscal year.",
     )
-    eps_ttm: Optional[float] = Field(
+    eps_ttm: float | None = Field(
         default=None,
         description="The latest trailing twelve months earnings per share.",
     )
-    last_updated: Optional[dateType] = Field(
+    last_updated: dateType | None = Field(
         default=None,
         description="The date the data was last updated.",
     )
@@ -68,7 +68,7 @@ class IntrinioForwardPeEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioForwardPeEstimatesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
@@ -157,9 +157,7 @@ class IntrinioForwardPeEstimatesFetcher(
         if symbols:
             data.sort(
                 key=lambda item: (
-                    symbols.index(item.get("ticker"))  # type: ignore
-                    if item.get("ticker") in symbols
-                    else len(symbols)
+                    symbols.index(item.get("ticker")) if item.get("ticker") in symbols else len(symbols)  # type: ignore
                 )
             )
         return [IntrinioForwardPeEstimatesData.model_validate(d) for d in data]

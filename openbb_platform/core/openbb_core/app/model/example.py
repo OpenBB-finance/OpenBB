@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias  # type: ignore
+from typing import Any, Literal, _GenericAlias  # type: ignore
 
 from pydantic import (
     BaseModel,
@@ -31,14 +31,14 @@ class APIEx(Example):
     """API Example model."""
 
     scope: Literal["api"] = "api"
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None, description="Optional description unless more than 3 parameters"
     )
-    parameters: Dict[str, Union[str, int, float, bool, List[str], List[Dict[str, Any]]]]
+    parameters: dict[str, str | int | float | bool | list[str] | list[dict[str, Any]]]
 
     @computed_field  # type: ignore[misc]
     @property
-    def provider(self) -> Optional[str]:
+    def provider(self) -> str | None:
         """Return the provider from the parameters."""
         return self.parameters.get("provider")  # type: ignore
 
@@ -61,8 +61,7 @@ class APIEx(Example):
         """Unpack types from types, example Union[List[str], int] -> {typing._GenericAlias, int}."""
         if (
             hasattr(type_, "__args__")
-            and type(type_)  # pylint: disable=unidiomatic-typecheck
-            is not _GenericAlias
+            and type(type_) is not _GenericAlias  # pylint: disable=C0123
         ):
             return set().union(*map(APIEx._unpack_type, type_.__args__))  # type: ignore
         return {type_} if isinstance(type_, type) else {type(type_)}
@@ -76,9 +75,9 @@ class APIEx(Example):
     def mock_data(
         dataset: Literal["timeseries", "panel"],
         size: int = 5,
-        sample: Optional[Dict[str, Any]] = None,
-        multiindex: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict]:
+        sample: dict[str, Any] | None = None,
+        multiindex: dict[str, Any] | None = None,
+    ) -> list[dict]:
         """Generate mock data from a sample.
 
         Parameters
@@ -149,7 +148,7 @@ class APIEx(Example):
             idx_1 = multiindex_names[0]
             idx_2 = multiindex_names[1]
             items_per_idx = 2
-            item: Dict[str, Any] = {
+            item: dict[str, Any] = {
                 "is_multiindex": True,
                 "multiindex_names": str(multiindex_names),
             }
@@ -172,7 +171,7 @@ class APIEx(Example):
         """Return a Python code representation of the example."""
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
-        param_types: Dict[str, type] = kwargs.get("param_types", {})
+        param_types: dict[str, type] = kwargs.get("param_types", {})
         prompt = kwargs.get("prompt", "")
 
         eg = ""
@@ -199,7 +198,7 @@ class PythonEx(Example):
 
     scope: Literal["python"] = "python"
     description: str
-    code: List[str]
+    code: list[str]
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
@@ -217,9 +216,9 @@ class PythonEx(Example):
 
 
 def filter_list(
-    examples: List[Example],
-    providers: List[str],
-) -> List[Example]:
+    examples: list[Example],
+    providers: list[str],
+) -> list[Example]:
     """Filter list of examples."""
     return [
         e

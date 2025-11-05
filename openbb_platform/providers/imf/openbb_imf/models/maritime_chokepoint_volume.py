@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -37,7 +37,7 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
         },
     }
 
-    chokepoint: Optional[str] = Field(
+    chokepoint: str | None = Field(
         default=None,
         description="Name of the chokepoint. Use `None` for all chokepoints."
         + f" Choices are: {CHOKEPOINT_DOCSTRING}",
@@ -276,7 +276,7 @@ class ImfMaritimeChokePointVolumeFetcher(
     @staticmethod
     async def aextract_data(
         query: ImfMaritimeChokePointVolumeQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract the raw data from the IMF Port Watch API."""
@@ -322,8 +322,7 @@ class ImfMaritimeChokePointVolumeFetcher(
                 chokepoint_ids.append(chokepoint)
             else:
                 raise OpenBBError(
-                    f"Invalid chokepoint name: {chokepoint}. "
-                    f"Expected one of {list(CHOKEPOINTS_NAME_TO_ID.keys())}."
+                    f"Invalid chokepoint name: {chokepoint}. Expected one of {list(CHOKEPOINTS_NAME_TO_ID.keys())}."
                 )
 
         tasks = [

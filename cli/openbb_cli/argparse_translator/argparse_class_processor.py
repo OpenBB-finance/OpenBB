@@ -1,7 +1,7 @@
 """Module for the ArgparseClassProcessor class."""
 
 import inspect
-from typing import Any, Dict, Optional, Type
+from typing import Any
 
 # TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
@@ -16,13 +16,13 @@ class ArgparseClassProcessor:
     """Process a target class to create ArgparseTranslators for its methods."""
 
     # reference variable used to create custom groups for the ArgpaseTranslators
-    _reference: Dict[str, Any] = {}
+    _reference: dict[str, Any] = {}
 
     def __init__(
         self,
-        target_class: Type,
+        target_class: type,
         add_help: bool = False,
-        reference: Optional[Dict[str, Any]] = None,
+        reference: dict[str, Any] | None = None,
     ):
         """
         Initialize the ArgparseClassProcessor.
@@ -34,10 +34,10 @@ class ArgparseClassProcessor:
         add_help : Optional[bool]
             Whether to add help to the ArgparseTranslators.
         """
-        self._target_class: Type = target_class
+        self._target_class: type = target_class
         self._add_help: bool = add_help
-        self._translators: Dict[str, ArgparseTranslator] = {}
-        self._paths: Dict[str, str] = {}
+        self._translators: dict[str, ArgparseTranslator] = {}
+        self._paths: dict[str, str] = {}
 
         ArgparseClassProcessor._reference = reference or {}
 
@@ -48,7 +48,7 @@ class ArgparseClassProcessor:
         self._build_paths(target=self._target_class)
 
     @property
-    def translators(self) -> Dict[str, ArgparseTranslator]:
+    def translators(self) -> dict[str, ArgparseTranslator]:
         """
         Get the ArgparseTranslators associated with the target class.
 
@@ -60,7 +60,7 @@ class ArgparseClassProcessor:
         return self._translators
 
     @property
-    def paths(self) -> Dict[str, str]:
+    def paths(self) -> dict[str, str]:
         """
         Get the paths associated with the target class.
 
@@ -72,7 +72,7 @@ class ArgparseClassProcessor:
         return self._paths
 
     @classmethod
-    def _custom_groups_from_reference(cls, class_name: str, function_name: str) -> Dict:
+    def _custom_groups_from_reference(cls, class_name: str, function_name: str) -> dict:
         route = f"/{class_name.replace('_', '/')}/{function_name}"
         reference = {route: cls._reference[route]} if route in cls._reference else {}
         if not reference:
@@ -85,7 +85,7 @@ class ArgparseClassProcessor:
         cls,
         target: type,
         add_help: bool = False,
-    ) -> Dict[str, ArgparseTranslator]:
+    ) -> dict[str, ArgparseTranslator]:
         methods = {}
 
         for name, member in inspect.getmembers(target):

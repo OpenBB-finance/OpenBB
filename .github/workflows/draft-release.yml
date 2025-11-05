@@ -1,54 +1,76 @@
-name: 📝 Draft release changelog
+name: Build Desktop Draft Release
 
 on:
   workflow_dispatch:
     inputs:
-      release_pr_number:
-        description: "Previous Release PR Number"
-        required: true
-        default: ""
-      tag:
-        description: "Tag for release (manual input)"
-        required: true
-        default: ""
+      draft:
+        description: "Create as draft release"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
-  update_release_draft:
+  build-windows:
+    uses: ./.github/workflows/build-desktop-win64.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  build-macos-arm:
+    uses: ./.github/workflows/build-desktop-osxARM.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  build-macos-x64:
+    uses: ./.github/workflows/build-desktop-osx64.yml
+    with:
+      release: true
+    secrets: inherit
+    permissions:
+      contents: write
+
+  publish:
+    needs: [build-windows, build-macos-arm, build-macos-x64]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: read
     steps:
-      - name: 📟 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📝 Release Drafter
-        id: release-drafter
-        uses: release-drafter/release-drafter@v6.0.0
-        # with:
-        #   config-name: platform-drafter.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 💾 Save Changelog
-        run: |
-          cat << 'EOF' > CHANGELOG.md
-          ${{ steps.release-drafter.outputs.body }}
-          EOF
-
-      - name: 🧬 Process Changelog
-        run: |
-          pip install requests openai
-          python .github/scripts/process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
-          python .github/scripts/summarize_changelog.py ${{ secrets.GITHUB_TOKEN }} ${{ secrets.OPENAI_API_KEY }}
-          cat CHANGELOG.md
-
-      - name: 🛫 Create Release
-        uses: mikepenz/action-gh-release@v1
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
         with:
-          body_path: "CHANGELOG.md"
-          tag_name: ${{ github.event.inputs.tag }}
-          prerelease: false
+          path: artifacts
+
+      - name: Sanitize artifact filenames
+        run: |
+          find ./artifacts -depth -name "* *" | while read -r file; do mv "$file" "$(echo "$file" | tr ' ' '-')"; done
+
+      - name: Extract Version and Tag
+        id: extract_version
+        run: |
+          INSTALLER_FILE=$(find ./artifacts -name "*.exe" -o -name "*.dmg" | head -n 1)
+          VERSION=$(basename "$INSTALLER_FILE" | sed -n 's/.*_\([0-9]\+\.[0-9]\+\.[0-9]\+\)_.*/\1/p')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "release_name=ODP Desktop v$VERSION" >> $GITHUB_OUTPUT
+          echo "versioned_tag=Open-Data-Platform-v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Prepare assets
+        id: prep_assets
+        run: |
+          mkdir ./release_assets
+          find ./artifacts -type f -print -exec cp {} ./release_assets/ \;
+          echo "assets_path=./release_assets" >> $GITHUB_OUTPUT
+
+      - name: Create VERSIONED release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.extract_version.outputs.versioned_tag }}
+          name: ${{ steps.extract_version.outputs.release_name }}
+          files: ${{ steps.prep_assets.outputs.assets_path }}/*
           draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}

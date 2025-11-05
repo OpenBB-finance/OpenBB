@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import time
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_search import (
@@ -36,33 +36,33 @@ class CboeIndexSearchData(IndexSearchData):
         "close_time": "calc_end_time",
     }
 
-    description: Optional[str] = Field(
+    description: str | None = Field(
         description="Description for the index.", default=None
     )
-    data_delay: Optional[int] = Field(
+    data_delay: int | None = Field(
         description="Data delay for the index. Valid only for US indices.", default=None
     )
-    currency: Optional[str] = Field(description="Currency for the index.", default=None)
-    time_zone: Optional[str] = Field(
+    currency: str | None = Field(description="Currency for the index.", default=None)
+    time_zone: str | None = Field(
         description="Time zone for the index. Valid only for US indices.", default=None
     )
-    open_time: Optional[time] = Field(
+    open_time: time | None = Field(
         description="Opening time for the index. Valid only for US indices.",
         default=None,
     )
-    close_time: Optional[time] = Field(
+    close_time: time | None = Field(
         description="Closing time for the index. Valid only for US indices.",
         default=None,
     )
-    tick_days: Optional[str] = Field(
+    tick_days: str | None = Field(
         description="The trading days for the index. Valid only for US indices.",
         default=None,
     )
-    tick_frequency: Optional[str] = Field(
+    tick_frequency: str | None = Field(
         description="Tick frequency for the index. Valid only for US indices.",
         default=None,
     )
-    tick_period: Optional[str] = Field(
+    tick_period: str | None = Field(
         description="Tick period for the index. Valid only for US indices.",
         default=None,
     )
@@ -71,22 +71,22 @@ class CboeIndexSearchData(IndexSearchData):
 class CboeIndexSearchFetcher(
     Fetcher[
         CboeIndexSearchQueryParams,
-        List[CboeIndexSearchData],
+        list[CboeIndexSearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeIndexSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> CboeIndexSearchQueryParams:
         """Transform the query."""
         return CboeIndexSearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: CboeIndexSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the CBOE endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_cboe.utils.helpers import get_index_directory
@@ -108,7 +108,7 @@ class CboeIndexSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeIndexSearchData]:
+        query: CboeIndexSearchQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[CboeIndexSearchData]:
         """Transform the data to the standard format."""
         return [CboeIndexSearchData.model_validate(d) for d in data]

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_snapshots import (
@@ -39,23 +39,19 @@ class FMPCurrencySnapshotsData(CurrencySnapshotsData):
         "last_rate_timestamp": "timestamp",
     }
 
-    change: Optional[float] = Field(
+    change: float | None = Field(
         description="The change in the price from the previous close.", default=None
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         description="The change in the price from the previous close, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ma50: Optional[float] = Field(
-        description="The 50-day moving average.", default=None
-    )
-    ma200: Optional[float] = Field(
-        description="The 200-day moving average.", default=None
-    )
-    year_high: Optional[float] = Field(description="The 52-week high.", default=None)
-    year_low: Optional[float] = Field(description="The 52-week low.", default=None)
-    last_rate_timestamp: Optional[datetime] = Field(
+    ma50: float | None = Field(description="The 50-day moving average.", default=None)
+    ma200: float | None = Field(description="The 200-day moving average.", default=None)
+    year_high: float | None = Field(description="The 52-week high.", default=None)
+    year_low: float | None = Field(description="The 52-week low.", default=None)
+    last_rate_timestamp: datetime | None = Field(
         description="The timestamp of the last rate.", default=None
     )
 
@@ -79,7 +75,7 @@ class FMPCurrencySnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCurrencySnapshotsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the FMP endpoint."""

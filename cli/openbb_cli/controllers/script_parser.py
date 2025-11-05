@@ -2,7 +2,7 @@
 
 import re
 from datetime import datetime, timedelta
-from typing import Dict, List, Match, Optional, Tuple, Union
+from re import Match
 
 from dateutil.relativedelta import relativedelta
 from openbb_cli.session import Session
@@ -54,11 +54,7 @@ def is_reset(command: str) -> bool:
     """
     if "reset" in command:
         return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
+    return command in ("r", "r\n")
 
 
 def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
@@ -148,9 +144,9 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
 
 
 def parse_openbb_script(  # noqa: PLR0911,PLR0912
-    raw_lines: List[str],
-    script_inputs: Optional[List[str]] = None,
-) -> Tuple[str, str]:
+    raw_lines: list[str],
+    script_inputs: list[str] | None = None,
+) -> tuple[str, str]:
     """Parse .openbb script.
 
     Parameters
@@ -167,7 +163,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     str
         Processed string from .openbb script that can be run by the OpenBB Platform CLI
     """
-    ROUTINE_VARS: Dict[str, Union[str, List[str]]] = dict()
+    ROUTINE_VARS: dict[str, str | list[str]] = dict()
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
 
@@ -237,7 +233,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
             pattern = r"(?<!\$)(\$(\w+)(\[[^\]]*\])?)(?=(?:[^\]]*\]*))"
 
             # Find all matches of the pattern in the line
-            matches: Optional[List[Match[str]]] = re.findall(pattern, line)
+            matches: list[Match[str]] | None = re.findall(pattern, line)
 
             if matches:
                 for match in matches:
@@ -264,8 +260,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                         templine = templine.replace(match[0], values)
                                 else:
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given "
-                                        "for current routine script.[/red]",
+                                        f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
                                         "",
                                     )
 
@@ -383,8 +378,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                     )
                                 else:
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given for "
-                                        "current routine script.[/red]",
+                                        f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
                                         "",
                                     )
 
@@ -404,7 +398,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     # to be confident that the script has no clear issues.
 
     within_foreach = False
-    foreach_lines_loop: List[str] = list()
+    foreach_lines_loop: list[str] = list()
 
     parsed_script = ""
     final_lines = list()
@@ -448,8 +442,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
 
                 if not varused_inside:
                     session.console.print(
-                        f"The variable {varname} was used in foreach header "
-                        "but it wasn't used inside the loop."
+                        f"The variable {varname} was used in foreach header but it wasn't used inside the loop."
                     )
                     varused_inside = False
 

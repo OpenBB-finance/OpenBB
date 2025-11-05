@@ -1,7 +1,6 @@
 """Retail Prices Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,7 +14,7 @@ from pydantic import Field
 class RetailPricesQueryParams(QueryParams):
     """Retail Prices Query."""
 
-    item: Optional[str] = Field(
+    item: str | None = Field(
         default=None,
         description="The item or basket of items to query.",
     )
@@ -23,10 +22,10 @@ class RetailPricesQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
@@ -34,14 +33,14 @@ class RetailPricesQueryParams(QueryParams):
 class RetailPricesData(Data):
     """Retail Prices Data."""
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("country", ""),
     )
@@ -49,7 +48,7 @@ class RetailPricesData(Data):
         default=None,
         description="Description of the item.",
     )
-    value: Optional[float] = Field(
+    value: float | None = Field(
         default=None,
         description="Price, or change in price, per unit.",
     )

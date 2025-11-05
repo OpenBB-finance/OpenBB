@@ -4,7 +4,6 @@
 
 import asyncio
 from datetime import datetime
-from typing import Dict, List, Optional, Union
 from warnings import warn
 
 from aiohttp_client_cache import SQLiteBackend
@@ -25,9 +24,9 @@ from openbb_sec.utils.helpers import get_all_companies, symbol_map
 from pandas import DataFrame
 
 
-async def fetch_data(url, use_cache, persist) -> Union[Dict, List[Dict]]:
+async def fetch_data(url, use_cache, persist) -> dict | list[dict]:
     """Fetch the data from the constructed URL."""
-    response: Union[Dict, List[Dict]] = {}
+    response: dict | list[dict] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_frames"
         async with CachedSession(
@@ -46,15 +45,15 @@ async def fetch_data(url, use_cache, persist) -> Union[Dict, List[Dict]]:
     return response
 
 
-async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too-many-statements
+async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
     fact: str = "Revenues",
-    year: Optional[int] = None,
-    fiscal_period: Optional[FISCAL_PERIODS] = None,
-    taxonomy: Optional[TAXONOMIES] = "us-gaap",
-    units: Optional[str] = "USD",
+    year: int | None = None,
+    fiscal_period: FISCAL_PERIODS | None = None,
+    taxonomy: TAXONOMIES | None = "us-gaap",
+    units: str | None = "USD",
     instantaneous: bool = False,
     use_cache: bool = True,
-) -> Dict:
+) -> dict:
     """Get a frame of data for a given fact.
 
     Source: https://www.sec.gov/edgar/sec-api-documentation
@@ -106,6 +105,9 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         Nested dictionary with keys, "metadata" and "data".
         The "metadata" key contains information about the frame.
     """
+    # pylint: disable=import-outside-toplevel
+    from numpy import nan
+
     current_date = datetime.now().date()
     quarter = FISCAL_PERIODS_DICT.get(fiscal_period) if fiscal_period else None
     if year is None and quarter is None:
@@ -132,7 +134,7 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         url = url + "I"
 
     url = url + ".json"
-    response: Union[Dict, List[Dict]] = {}
+    response: dict | list[dict] = {}
     try:
         response = await fetch_data(url, use_cache, persist)
     except Exception as e:  # pylint: disable=W0718
@@ -177,7 +179,7 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
     df["unit"] = metadata.get("unit")
     df["fact"] = metadata.get("label")
     df["frame"] = metadata.get("frame")
-    df = df.fillna("N/A").replace("N/A", None)
+    df = df.replace({nan: None})
     results = {"metadata": metadata, "data": df.to_dict("records")}
 
     return results
@@ -186,10 +188,10 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
 async def get_concept(
     symbol: str,
     fact: str = "Revenues",
-    year: Optional[int] = None,
-    taxonomy: Optional[TAXONOMIES] = "us-gaap",
+    year: int | None = None,
+    taxonomy: TAXONOMIES | None = "us-gaap",
     use_cache: bool = True,
-) -> Dict:
+) -> dict:
     """Return all the XBRL disclosures from a single company (CIK) Concept (a taxonomy and tag) into a single JSON file.
 
     Each entry contains a separate array of facts for each units of measure that the company has chosen to disclose
@@ -218,9 +220,9 @@ async def get_concept(
         The "metadata" key contains information about the company concept.
     """
     symbols = symbol.split(",")
-    results: List[Dict] = []
-    messages: List = []
-    metadata: Dict = {}
+    results: list[dict] = []
+    messages: list = []
+    metadata: dict = {}
 
     async def get_one(ticker):
         """Get data for one symbol."""
@@ -233,7 +235,7 @@ async def get_concept(
             messages.append(message)
         else:
             url = f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{fact}.json"
-            response: Union[Dict, List[Dict]] = {}
+            response: dict | list[dict] = {}
             try:
                 response = await fetch_data(url, use_cache, False)
             except Exception as _:  # pylint: disable=W0718

@@ -3,7 +3,7 @@
 from copy import deepcopy
 from inspect import getfile, isclass
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
+from typing import Any, Literal, get_origin
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,7 +11,7 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.registry import Registry, RegistryLoader
 from pydantic import BaseModel
 
-MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
+MapType = dict[str, dict[str, dict[str, dict[str, Any]]]]
 
 STANDARD_MODELS_FOLDER = Path(__file__).parent / "standard_models"
 SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
@@ -20,7 +20,7 @@ SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
 class RegistryMap:
     """Class to store information about providers in the registry."""
 
-    def __init__(self, registry: Optional[Registry] = None) -> None:
+    def __init__(self, registry: Registry | None = None) -> None:
         """Initialize Registry Map."""
         self._registry = registry or RegistryLoader.from_extensions()
         self._credentials = self._get_credentials(self._registry)
@@ -34,12 +34,12 @@ class RegistryMap:
         return self._registry
 
     @property
-    def available_providers(self) -> List[str]:
+    def available_providers(self) -> list[str]:
         """Get list of available providers."""
         return self._available_providers
 
     @property
-    def credentials(self) -> Dict[str, List[str]]:
+    def credentials(self) -> dict[str, list[str]]:
         """Get map of providers to credentials."""
         return self._credentials
 
@@ -54,24 +54,24 @@ class RegistryMap:
         return self._original_models
 
     @property
-    def models(self) -> List[str]:
+    def models(self) -> list[str]:
         """Get available models."""
         return self._models
 
-    def _get_credentials(self, registry: Registry) -> Dict[str, List[str]]:
+    def _get_credentials(self, registry: Registry) -> dict[str, list[str]]:
         """Get map of providers to credentials."""
         return {
             name: provider.credentials for name, provider in registry.providers.items()
         }
 
-    def _get_available_providers(self, registry: Registry) -> List[str]:
+    def _get_available_providers(self, registry: Registry) -> list[str]:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_maps(self, registry: Registry) -> Tuple[MapType, Dict[str, Dict]]:
+    def _get_maps(self, registry: Registry) -> tuple[MapType, dict[str, dict]]:
         """Generate map for the provider package."""
         standard_extra: MapType = {}
-        original_models: Dict[str, Dict] = {}
+        original_models: dict[str, dict] = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
@@ -130,7 +130,7 @@ class RegistryMap:
 
                 model_field.json_schema_extra[provider] = properties
 
-    def _get_models(self, map_: MapType) -> List[str]:
+    def _get_models(self, map_: MapType) -> list[str]:
         """Get available models."""
         return list(map_.keys())
 
@@ -145,8 +145,8 @@ class RegistryMap:
     ) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, type_)
-        standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
-        extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
+        standard_info: dict[str, Any] = {"fields": {}, "docstring": None}
+        extra_info: dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
         found_first_standard = False
 
         family = RegistryMap._get_class_family(model)

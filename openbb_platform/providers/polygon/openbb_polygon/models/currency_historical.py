@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -44,8 +44,8 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    _multiplier: Optional[PositiveInt] = PrivateAttr(default=None)
-    _timespan: Optional[str] = PrivateAttr(default=None)
+    _multiplier: PositiveInt | None = PrivateAttr(default=None)
+    _timespan: str | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -86,7 +86,7 @@ class PolygonCurrencyHistoricalData(CurrencyHistoricalData):
         "transactions": "n",
     }
 
-    transactions: Optional[PositiveInt] = Field(
+    transactions: PositiveInt | None = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
     )
@@ -95,13 +95,13 @@ class PolygonCurrencyHistoricalData(CurrencyHistoricalData):
 class PolygonCurrencyHistoricalFetcher(
     Fetcher[
         PolygonCurrencyHistoricalQueryParams,
-        List[PolygonCurrencyHistoricalData],
+        list[PolygonCurrencyHistoricalData],
     ]
 ):
     """Polygon Currency Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCurrencyHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonCurrencyHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -119,9 +119,9 @@ class PolygonCurrencyHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: PolygonCurrencyHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -141,7 +141,7 @@ class PolygonCurrencyHistoricalFetcher(
             )
             for symbol in query.symbol.split(",")
         ]
-        results: List = []
+        results: list = []
 
         async def callback(response, session):
             """Return the data from the response."""
@@ -179,8 +179,8 @@ class PolygonCurrencyHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[PolygonCurrencyHistoricalData]:
+        query: PolygonCurrencyHistoricalQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[PolygonCurrencyHistoricalData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()

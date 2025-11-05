@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_search import (
@@ -18,11 +18,11 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
     Source: https://www.tmx.com/
     """
 
-    div_freq: Optional[Literal["monthly", "annually", "quarterly"]] = Field(
+    div_freq: Literal["monthly", "annually", "quarterly"] | None = Field(
         description="The dividend payment frequency.", default=None
     )
 
-    sort_by: Optional[
+    sort_by: (
         Literal[
             "aum",
             "return_1m",
@@ -38,7 +38,8 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
             "pb_ratio",
             "pe_ratio",
         ]
-    ] = Field(description="The column to sort by.", default=None)
+        | None
+    ) = Field(description="The column to sort by.", default=None)
 
     use_cache: bool = Field(
         default=True,
@@ -56,124 +57,124 @@ class TmxEtfSearchData(EtfSearchData):
         "avg_volume_30d": "volume_avg_30d",
     }
 
-    short_name: Optional[str] = Field(
+    short_name: str | None = Field(
         description="The short name of the ETF.", default=None
     )
-    inception_date: Optional[str] = Field(
+    inception_date: str | None = Field(
         description="The inception date of the ETF.", default=None
     )
-    issuer: Optional[str] = Field(description="The issuer of the ETF.", default=None)
-    investment_style: Optional[str] = Field(
+    issuer: str | None = Field(description="The issuer of the ETF.", default=None)
+    investment_style: str | None = Field(
         description="The investment style of the ETF.", default=None
     )
-    esg: Optional[bool] = Field(
+    esg: bool | None = Field(
         description="Whether the ETF qualifies as an ESG fund.", default=None
     )
-    currency: Optional[str] = Field(description="The currency of the ETF.")
-    unit_price: Optional[float] = Field(
+    currency: str | None = Field(description="The currency of the ETF.")
+    unit_price: float | None = Field(
         description="The unit price of the ETF.", default=None
     )
-    close: Optional[float] = Field(description="The closing price of the ETF.")
-    prev_close: Optional[float] = Field(
+    close: float | None = Field(description="The closing price of the ETF.")
+    prev_close: float | None = Field(
         description="The previous closing price of the ETF.", default=None
     )
-    return_1m: Optional[float] = Field(
+    return_1m: float | None = Field(
         description="The one-month return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_3m: Optional[float] = Field(
+    return_3m: float | None = Field(
         description="The three-month return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_6m: Optional[float] = Field(
+    return_6m: float | None = Field(
         description="The six-month return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_ytd: Optional[float] = Field(
+    return_ytd: float | None = Field(
         description="The year-to-date return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_1y: Optional[float] = Field(
+    return_1y: float | None = Field(
         description="The one-year return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta_1y: Optional[float] = Field(
+    beta_1y: float | None = Field(
         description="The one-year beta of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_3y: Optional[float] = Field(
+    return_3y: float | None = Field(
         description="The three-year return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta_3y: Optional[float] = Field(
+    beta_3y: float | None = Field(
         description="The three-year beta of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_5y: Optional[float] = Field(
+    return_5y: float | None = Field(
         description="The five-year return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta_5y: Optional[float] = Field(
+    beta_5y: float | None = Field(
         description="The five-year beta of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_10y: Optional[float] = Field(
+    return_10y: float | None = Field(
         description="The ten-year return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    beta_10y: Optional[float] = Field(
+    beta_10y: float | None = Field(
         description="The ten-year beta of the ETF.", default=None
     )
-    beta_15y: Optional[float] = Field(
+    beta_15y: float | None = Field(
         description="The fifteen-year beta of the ETF.", default=None
     )
-    return_from_inception: Optional[float] = Field(
+    return_from_inception: float | None = Field(
         description="The return from inception of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    avg_volume: Optional[int] = Field(
+    avg_volume: int | None = Field(
         description="The average daily volume of the ETF.",
         default=None,
     )
-    avg_volume_30d: Optional[int] = Field(
+    avg_volume_30d: int | None = Field(
         description="The 30-day average volume of the ETF.",
         default=None,
     )
-    aum: Optional[float] = Field(description="The AUM of the ETF.", default=None)
-    pe_ratio: Optional[float] = Field(
+    aum: float | None = Field(description="The AUM of the ETF.", default=None)
+    pe_ratio: float | None = Field(
         description="The price-to-earnings ratio of the ETF.", default=None
     )
-    pb_ratio: Optional[float] = Field(
+    pb_ratio: float | None = Field(
         description="The price-to-book ratio of the ETF.", default=None
     )
-    management_fee: Optional[float] = Field(
+    management_fee: float | None = Field(
         description="The management fee of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    mer: Optional[float] = Field(
+    mer: float | None = Field(
         description="The management expense ratio of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    distribution_yield: Optional[float] = Field(
+    distribution_yield: float | None = Field(
         description="The distribution yield of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_frequency: Optional[str] = Field(
+    dividend_frequency: str | None = Field(
         description="The dividend payment frequency of the ETF.", default=None
     )
 
@@ -204,22 +205,22 @@ class TmxEtfSearchData(EtfSearchData):
 class TmxEtfSearchFetcher(
     Fetcher[
         TmxEtfSearchQueryParams,
-        List[TmxEtfSearchData],
+        list[TmxEtfSearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEtfSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEtfSearchQueryParams:
         """Transform the query."""
         return TmxEtfSearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxEtfSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_all_etfs
@@ -263,8 +264,8 @@ class TmxEtfSearchFetcher(
     @staticmethod
     def transform_data(
         query: TmxEtfSearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxEtfSearchData]:
+    ) -> list[TmxEtfSearchData]:
         """Transform the data to the standard format."""
         return [TmxEtfSearchData.model_validate(d) for d in data]

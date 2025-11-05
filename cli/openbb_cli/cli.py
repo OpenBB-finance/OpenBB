@@ -1,5 +1,6 @@
 """OpenBB Platform CLI entry point."""
 
+import logging
 import sys
 
 from openbb_cli.utils.utils import change_logging_sub_app, reset_logging_sub_app
@@ -26,6 +27,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception:
-        pass
+        logging.exception("An unexpected error occurred")
     finally:
         reset_logging_sub_app(initial_logging_sub_app)

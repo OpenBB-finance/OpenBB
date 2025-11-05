@@ -1,0 +1,581 @@
+@import "@openbb/ui-pro/dist/style.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  scrollbar-width: auto;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 6px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #46464f;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a2a2a2;
+  border-radius: 6px;
+  height: 2rem;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6d6e74;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #7f7e7e;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #8d8e94;
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f7f9;
+  --bg-tertiary: #efeff2;
+  --bg-accent: rgb(0, 136, 204, 0.3);
+  --bg-toast: rgba(212, 229, 252, 1);
+
+  --text-primary: #151518;
+  --text-primary-inverse: #ffffff;
+  --text-secondary: #2c2c32;
+  --text-tertiary: #6f6d80;
+  --text-muted: rgba(21, 21, 24, 0.35);
+
+  --ghost-icon: rgba(0, 0, 0, 1);
+  --ghost-icon-hover: rgba(0, 0, 0, 0.75);
+  --text-accent: #007acc;
+
+  --border-color: rgba(215, 215, 222, 1);
+  --border-outline: #c6c6cc;
+  --accent-color: #f0f0f3;
+  --border-accent: #c6c6cc;
+  --border-modal: rgba(70, 70, 79, 0);
+  --button-primary-bg: rgba(0, 136, 204, 1);
+  --button-primary-text: #ffffff;
+  --button-primary-border: rgba(0, 0, 0, 0.75);
+  --button-secondary-border: rgba(215, 215, 222, 1);
+  --button-secondary-bg: #f3f3f6;
+  --button-neutral-bg: #e3e5e9;
+  --button-neutral-bg-hover: rgb(187, 194, 238, 0.25);
+
+  --tooltip-border: rgba(0, 0, 0, 0.2);
+  --tooltip-background: rgba(255, 255, 255, 0.97);
+  --info-icon: rgba(138, 138, 144, 1);
+  --tab-border-active: #007acc;
+  --tag-bg: rgba(90, 89, 97, 0.3);
+  --info-icon: rgba(138, 138, 144, 1);
+}
+
+.dark {
+  --bg-primary: #212124;
+  --bg-secondary: rgba(21, 21, 24, 1);
+  --bg-tertiary: rgba(31, 30, 35, 1);
+  --bg-quartary: rgba(36, 36, 42, 1);
+  --bg-accent:  rgb(0, 136, 204, 0.3);
+  --text-primary: #ffffff;
+  --text-primary-inverse: #151518;
+  --text-secondary: #EBEBED;
+  --text-tertiary: #9793b0;
+  --text-muted: rgba(138, 138, 144, 1);
+  --ghost-icon: rgba(255, 255, 255, 1);
+  --ghost-icon-hover: rgba(255, 255, 255, 0.75);
+  --text-accent: rgb(51, 187, 255);
+  --border-color: rgba(70, 70, 79, 1);
+  --border-outline: rgba(70, 70, 79, 0.5);
+  --border-accent: rgba(70, 70, 79, 0.799);
+  --border-modal: rgba(70, 70, 79, 0);
+  --accent-color: #46464F;
+  --button-primary-bg: #e2e2e2;
+  --button-primary-text: rgb(21, 21, 21, 1);
+  --button-primary-border: rgba(22, 22, 22, 0.799);
+  --button-secondary-border: rgba(70, 70, 79, 0.5);
+  --button-secondary-bg: rgba(54, 54, 63, 1);
+  --button-secondary-hover: rgba(42, 42, 48, 1);
+  --button-neutral-bg: rgb(0, 136, 204, 1);
+  --button-neutral-bg-hover: rgb(36, 68, 100, 1);
+  --tooltip-border: rgba(255, 255, 255, 0.2);
+  --tooltip-background: rgba(42, 42, 49, 1);
+  --tab-border-active: rgb(51, 187, 255);
+  --tag-bg: rgba(90, 89, 97, 0.3);
+  --dropdown-bg: rgba(36, 36, 42, 1);
+  --info-icon: rgba(138, 138, 144, 1);
+  --bg-toast: rgba(212, 229, 252, 1);
+}
+
+.info-icon {
+  background-color: none;
+  color: var(--info-icon);
+  border: 1.2px solid var(--info-icon);
+}
+
+.bg-theme-tag {
+  background-color: var(--tag-bg);
+}
+
+.bg-theme-toast {
+  background-color: var(--bg-toast);
+}
+
+.button-toast,
+.button-toast:focus,
+.button-toast:focus-visible,
+.dark .button-toast,
+.dark .button-toast:focus,
+.dark .button-toast:focus-visible {
+  background-color: rgb(0, 136, 204, 1);
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 0.375rem;
+
+}
+
+.button-toast:hover,
+.dark .button-toast:hover {
+  background-color: rgb(0, 136, 204, 0.85);
+  color: #ffffff;
+}
+
+.toast-container, .dark .toast-container {
+  background-color: var(--bg-toast);
+  border-radius: 0.5rem;
+  color: var(--text-primary-inverse);
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 0;
+  font-weight: medium;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toast-info-icon {
+  color: var(--button-neutral-bg);
+  width: 25px;
+  height: 25px;
+  font-weight: bold;
+}
+
+/*   UTILITY CLASSES */
+.text-theme-accent {
+  color: var(--text-accent);
+}
+
+.tab-border-active {
+  border-bottom: 2px solid var(--tab-border-active);
+}
+
+.tab-border-active:focus, .tab-border-active:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.bg-theme-accent {
+  background-color: var(--bg-accent);
+}
+
+.bg-theme-quartary {
+  background-color: var(--bg-quartary);
+}
+
+.bg-theme-neutral {
+  background-color: var(--button-neutral-bg);
+}
+
+.dark .button-bg-accent, .button-bg-accent {
+  background-color: var(--text-accent);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.button-outline {
+  @apply border border-theme-outline rounded-sm;
+  transition: background-color 0.15s ease;
+}
+
+.button-outline:hover,
+.button-outline:focus,
+.button-outline:focus-visible,
+.button-outline:active {
+  background-color: var(--button-secondary-hover);
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dark .button-outline:hover,
+.dark .button-outline:focus,
+.dark .button-outline:focus-visible,
+.dark .button-outline:active,
+.button-outline:focus,
+.button-outline:focus-visible {
+  background-color: var(--button-secondary-hover);
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Theme utility classes */
+.bg-theme-primary { background-color: var(--bg-primary); }
+.bg-theme-secondary { background-color: var(--bg-secondary); }
+.bg-theme-tertiary { background-color: var(--bg-tertiary); }
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-tertiary { color: var(--text-tertiary); }
+.text-theme-muted { color: var(--text-muted); }
+.text-theme-accent { color: var(--text-accent); }
+.border-theme { border-color: var(--border-color); }
+.border-theme-outline { border-color: var(--border-outline); }
+.border-theme-accent { border-color: var(--border-accent); }
+.border-theme-modal { border-color: var(--border-modal); }
+.border-theme-radio { border-color: var(--text-accent); }
+/* Tooltip */
+.tooltip-theme, .dark .tooltip-theme{
+  @apply shadow-lg;
+  background-color: var(--tooltip-background);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.125rem;
+  border: 0.25px solid var(--tooltip-border);
+  line-height: 1.25; /* 20px */
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1.5rem;
+  margin-bottom: 0.5rem;
+  z-index: 1000;
+}
+
+/* Base button styles */
+.button-base {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Stop button */
+.button-stop {
+  background-color: #ff0000c6;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.dark .button-stop {
+  background-color: #ff0000c6;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.dark .button-stop:hover, .dark .button-stop:focus, .dark .button-stop:focus-visible {
+  background-color: #ff0000a1;
+  box-shadow: none !important
+}
+
+body:not(.dark) .button-stop:hover,
+body:not(.dark) .button-stop:focus,
+body:not(.dark) .button-stop:focus-visible {
+  background-color: #ff0000 !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+/* Primary button - theme */
+.button-primary,
+.dark .button-primary {
+  color: var(--button-primary-text);
+  background-color: var(--button-primary-bg);
+  box-shadow: none !important;
+}
+
+.button-primary:disabled, .dark .button-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  outline: none;
+}
+
+/* Secondary button */
+
+.button-secondary, .dark .button-secondary {
+  border: none;
+  background-color: var(--button-secondary-bg);
+  color: var(--text-secondary);
+  box-shadow: none !important;
+}
+
+
+.button-secondary:hover,
+.button-secondary:focus,
+.button-secondary:focus-visible,
+.dark .button-secondary:hover,
+.dark .button-secondary:focus,
+.dark .button-secondary:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: var(--button-secondary-hover);
+}
+
+.button-secondary:disabled {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Neutral button */
+.button-neutral, .dark .button-neutral {
+  background-color: var(--button-neutral-bg);
+  color: var(--text-primary);
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.button-neutral:hover,
+.button-neutral:focus,
+.button-neutral:focus-visible,
+.dark .button-neutral:hover,
+.dark .button-neutral:focus,
+.dark .button-neutral:focus-visible {
+  background-color: var(--button-neutral-bg-hover);
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Danger button style */
+.button-danger {
+  background-color: #ef4444;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+
+.button-danger:hover {
+  background-color: #dc2626;
+  outline: none;
+}
+
+.button-danger:active, .button-danger:focus, .button-danger:focus-visible {
+  background-color: #b91c1c;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.button-danger:disabled {
+  background-color: #fca5a5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Ghost button style */
+.button-ghost, .dark .button-ghost {
+  background-color: transparent;
+  color: var(--ghost-icon);
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.button-ghost:focus, .button-ghost:focus-visible {
+  color: var(--ghost-icon-hover);
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.button-ghost:hover, .dark .button-ghost:hover, .text-hover{
+  color: var(--ghost-icon-hover);
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Small size buttons */
+.button-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Alert styles */
+.alert-success {
+  @apply mt-4 p-4 rounded-md;
+  background-color: rgba(209, 250, 229, 1);
+  border: 1px solid #10b981;
+  color: #065f46;
+}
+
+.dark .alert-success {
+  background-color: rgba(6, 95, 70, 0.3);
+  border-color: #059669;
+  color: #6ee7b7;
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+input[type="text"], input[type="password"], .dark input[type="text"], .dark input[type="password"], .dark textarea {
+  @apply border border-theme rounded-md;
+  background-color: var(--bg-theme-primary);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  font-size: 0.875rem; /* 14px */
+  line-height: 0.25; /* 20px */
+  outline: var(--border-color);
+}
+
+/* Focus state for text form entry */
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+/* Disabled state for text form entry */
+input[type="text"]:disabled, textarea:disabled {
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+input[type="number"] + div button:focus,
+input[type="number"] + div button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Directory input styles */
+.directory-input {
+  @apply border border-theme rounded-md;
+  background-color: var(--bg-theme-primary);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  font-size: 0.875rem; /* 14px */
+  line-height: 0.25; /* 20px */
+  outline: var(--border-color);
+}
+
+/* Focus state for input fields */
+.directory-input:focus {
+  border-color: var(--border-accent); /* Highlight border on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Disabled state for input fields */
+.directory-input:disabled {
+  background-color: var(--bg-tertiary, #e5e7eb); /* Muted background for disabled state */
+  color: var(--text-muted, #9ca3af); /* Muted text color */
+  cursor: not-allowed; /* Show not-allowed cursor */
+}
+
+.checkbox, .checkbox-theme {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--border-accent);
+  border-radius: 0.15rem;
+  background-color: transparent; /* transparent when not checked */
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.checkbox:checked, .checkbox-theme:checked {
+  background-color: var(--button-neutral-bg);
+  border-color: var(--button-neutral-bg)
+}
+
+.checkbox-theme:focus, .checkbox:focus {
+  outline: none;
+  border: 1px solid var(--text-primary);
+}
+
+.checkbox:checked::after,
+.checkbox-theme:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.35rem;
+  height: 0.65rem;
+  border-right: 2px solid var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+.checkbox.indeterminate, .checkbox-theme.indeterminate {
+  background-color: var(--button-neutral-bg);
+  border-color: var(--button-neutral-bg);
+}
+
+.checkbox.indeterminate::after,
+.checkbox-theme.indeterminate::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.5rem;
+  height: 2px;
+  background-color: var(--text-primary);
+  transform: translate(-50%, -50%);
+  border: none;
+}
+/* ============================================
+   START/STOP BUTTON
+   ============================================ */
+.button-startstop {
+  @apply flex items-center justify-center px-2 py-1 rounded text-theme-primary button-secondary;
+}
+
+.button-startstop.running {
+   background-color:  #ff4444;
+}
+
+.button-startstop.stopped, .dark .button-startstop.stopped {
+  background-color: var(--button-secondary-bg);
+}
+
+.button-startstop.stopped:hover, .dark .button-startstop.stopped:hover {
+  background-color: #1dc523;
+  outline: none;
+}
+
+.dark .button-startstop.running {
+  @apply bg-red-600 hover:bg-red-700 text-theme-primary;
+}
+
+.dark .button-startstop.processing {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.button-startstop:focus.focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hide spinner buttons on number inputs */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.ext-actions {
+    opacity: 0;
+    transition: opacity 0ms;
+    pointer-events: none;
+}
+
+.ext-row:hover .ext-actions {
+    opacity: 1;
+    pointer-events: auto;
+}

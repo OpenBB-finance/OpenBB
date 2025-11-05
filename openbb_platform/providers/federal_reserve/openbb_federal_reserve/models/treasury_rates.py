@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_rates import (
@@ -47,14 +47,14 @@ class FederalReserveTreasuryRatesData(TreasuryRatesData):
 class FederalReserveTreasuryRatesFetcher(
     Fetcher[
         FederalReserveTreasuryRatesQueryParams,
-        List[FederalReserveTreasuryRatesData],
+        list[FederalReserveTreasuryRatesData],
     ]
 ):
     """Transform the query, extract and transform the data from the FederalReserve endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FederalReserveTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
         # pylint: disable=import-outside-toplevel
@@ -74,7 +74,7 @@ class FederalReserveTreasuryRatesFetcher(
     @staticmethod
     def extract_data(
         query: FederalReserveTreasuryRatesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Return the raw data from the FederalReserve endpoint."""
@@ -101,7 +101,7 @@ class FederalReserveTreasuryRatesFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveTreasuryRatesQueryParams, data: "DataFrame", **kwargs: Any
-    ) -> List[FederalReserveTreasuryRatesData]:
+    ) -> list[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime

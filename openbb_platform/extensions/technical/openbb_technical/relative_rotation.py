@@ -3,7 +3,7 @@
 # pylint: disable=too-many-arguments, too-many-instance-attributes, protected-access
 # pylint: disable=too-many-locals, too-few-public-methods, unused-argument
 
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -170,9 +170,7 @@ def get_momentum(
     df = data.copy()
     rs_momentum = DataFrame()
     for ticker in df.columns.to_list():
-        rs_momentum.loc[:, ticker] = calculate_momentum(
-            df.loc[:, ticker], long_period, short_period
-        )  # type: ignore
+        rs_momentum.loc[:, ticker] = calculate_momentum(df.loc[:, ticker], long_period, short_period)  # type: ignore
 
     return rs_momentum
 
@@ -213,7 +211,7 @@ def process_data(
     long_period: int = 252,
     short_period: int = 21,
     normalize_method: Literal["z", "m", "a"] = "z",
-) -> Tuple["DataFrame", "DataFrame"]:
+) -> tuple["DataFrame", "DataFrame"]:
     """Process the raw data into normalized indicator values.
 
     Parameters
@@ -244,15 +242,15 @@ def process_data(
 class RelativeRotation:
     """Relative Rotation Class."""
 
-    def __init__(
+    def __init__(  # pylint: disable=R0917
         self,
-        data: Union[List[Data], "DataFrame"],
+        data: Union[list[Data], "DataFrame"],
         benchmark: str,
-        study: Optional[Literal["price", "volume", "volatility"]] = "price",
-        long_period: Optional[int] = 252,
-        short_period: Optional[int] = 21,
-        window: Optional[int] = 21,
-        trading_periods: Optional[int] = 252,
+        study: Literal["price", "volume", "volatility"] | None = "price",
+        long_period: int | None = 252,
+        short_period: int | None = 21,
+        window: int | None = 21,
+        trading_periods: int | None = 252,
     ):
         """Initialize the class."""
         # pylint: disable=import-outside-toplevel
@@ -273,7 +271,7 @@ class RelativeRotation:
         if isinstance(data, OBBject):
             data = data.results  # type: ignore
 
-        if isinstance(data, List) and (
+        if isinstance(data, list) and (
             all(isinstance(d, Data) for d in data)
             or all(isinstance(d, dict) for d in data)
         ):
@@ -375,7 +373,7 @@ def _get_type_name(t):
 class RelativeRotationQueryParams(QueryParams):
     """Relative Rotation Query Parameters."""
 
-    data: List[Data] = Field(
+    data: list[Data] = Field(
         description="The data to be used for the relative rotation calculations."
         + " This should be the multi-symbol output from the"
         + " 'equity.price.historical' endpoint, or similar, at a daily interval."
@@ -393,28 +391,28 @@ class RelativeRotationQueryParams(QueryParams):
         + " If 'data' is supplied as a pivot table,"
         + " the 'study' will assume the values are the closing price and 'volume' will be ignored.",
     )
-    long_period: Optional[int] = Field(
+    long_period: int | None = Field(
         default=252,
         description="The length of the long period for momentum calculation, by default is 252."
         + " Adjust this value, to 365, when supplying assets such as crypto.",
     )
-    short_period: Optional[int] = Field(
+    short_period: int | None = Field(
         default=21,
         description="The length of the short period for momentum calculation, by default is 21."
         + " Adjust this value, to 30, when supplying assets such as crypto.",
     )
-    window: Optional[int] = Field(
+    window: int | None = Field(
         default=21,
         description="The length of window for the standard deviation calculation, by default is 21."
         + " Adjust this value, to 30, when supplying assets such as crypto.",
     )
-    trading_periods: Optional[int] = Field(
+    trading_periods: int | None = Field(
         default=252,
         description="The number of trading periods per year,"
         + " for the standard deviation calculation, by default is 252."
         + " Adjust this value, to 365, when supplying assets such as crypto.",
     )
-    chart_params: Optional[Dict[str, Any]] = Field(
+    chart_params: dict[str, Any] | None = Field(
         default=None,
         description="Additional parameters to pass when `chart=True` and the `openbb-charting` extension is installed."
         + " Parameters can be passed again to redraw the chart using the charting.to_chart() method of the response."
@@ -482,7 +480,7 @@ class RelativeRotationQueryParams(QueryParams):
 class RelativeRotationData(Data):
     """Relative Rotation Data Model."""
 
-    symbols: List[str] = Field(
+    symbols: list[str] = Field(
         description="The symbols that are being compared against the benchmark."
     )
     benchmark: str = Field(description="The benchmark symbol, as entered by the user.")
@@ -510,16 +508,16 @@ class RelativeRotationData(Data):
         + " the length of the data for the calculations."
     )
     end_date: str = Field(description="The end date of the data.")
-    symbols_data: List[Data] = Field(
+    symbols_data: list[Data] = Field(
         description="The data representing the selected 'study' for each symbol."
     )
-    benchmark_data: List[Data] = Field(
+    benchmark_data: list[Data] = Field(
         description="The data representing the selected 'study' for the benchmark."
     )
-    rs_ratios: List[Data] = Field(
+    rs_ratios: list[Data] = Field(
         description="The normalized relative strength ratios data."
     )
-    rs_momentum: List[Data] = Field(
+    rs_momentum: list[Data] = Field(
         description="The normalized relative strength momentum data."
     )
 
@@ -550,16 +548,16 @@ class RelativeRotationFetcher(
     """Relative Rotation Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> RelativeRotationQueryParams:
+    def transform_query(params: dict[str, Any]) -> RelativeRotationQueryParams:
         """Transform the query parameters."""
         return RelativeRotationQueryParams.model_validate(**params)
 
     @staticmethod
     def extract_data(
         query: RelativeRotationQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract the data."""
         return RelativeRotation(
             query.data,
@@ -574,7 +572,7 @@ class RelativeRotationFetcher(
     @staticmethod
     def transform_data(
         query: RelativeRotationQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
     ) -> RelativeRotationData:
         """Transform the data."""

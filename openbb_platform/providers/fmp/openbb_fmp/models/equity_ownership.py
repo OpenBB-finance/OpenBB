@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_ownership import (
@@ -19,22 +19,22 @@ class FMPEquityOwnershipQueryParams(EquityOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#filings-extract-with-analytics-by-holder
     """
 
-    year: Optional[int] = Field(
+    year: int | None = Field(
         default=None,
         description="Calendar year for the data. If not provided, the latest year is used.",
     )
-    quarter: Optional[int] = Field(
+    quarter: int | None = Field(
         default=None,
         description="Calendar quarter for the data. Valid values are 1, 2, 3, or 4."
         + " If not provided, the quarter previous to the current quarter is used.",
         ge=1,
         le=4,
     )
-    page: Optional[int] = Field(
+    page: int | None = Field(
         default=None,
         description="Page number, used in conjunction with the limit. The default is 0.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="Number of items to return per page. The default is 100, which is the maximum.",
     )
@@ -130,22 +130,22 @@ class FMPEquityOwnershipData(EquityOwnershipData):
     )
     is_new: bool = Field(description="If the security was newly added this quarter.")
     is_sold_out: bool = Field(description="If the security was sold out this quarter.")
-    ownership: Optional[float] = Field(
+    ownership: float | None = Field(
         default=None,
         description="Ownership stake in the security, as a percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ownership_previous: Optional[float] = Field(
+    ownership_previous: float | None = Field(
         default=None,
         description="Ownership stake in the security from the previous quarter, as a percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ownership_change: Optional[float] = Field(
+    ownership_change: float | None = Field(
         default=None,
         description="Change in ownership stake from the previous quarter.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    ownership_change_percent: Optional[float] = Field(
+    ownership_change_percent: float | None = Field(
         default=None,
         description="Change in ownership stake from the previous quarter, as a percent.",
     )
@@ -155,19 +155,19 @@ class FMPEquityOwnershipData(EquityOwnershipData):
     first_added: dateType = Field(
         description="When the security was first reported as held.",
     )
-    performance: Optional[float] = Field(
+    performance: float | None = Field(
         default=None, description="Performance value of the security holding."
     )
-    performance_percent: Optional[float] = Field(
+    performance_percent: float | None = Field(
         default=None,
         description="Performance of the security holding, as a percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    performance_previous: Optional[float] = Field(
+    performance_previous: float | None = Field(
         default=None,
         description="Performance value of the security holding from the previous quarter.",
     )
-    performance_change: Optional[float] = Field(
+    performance_change: float | None = Field(
         default=None,
         description="Change in value of the security holding's performance.",
     )
@@ -212,7 +212,7 @@ class FMPEquityOwnershipFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPEquityOwnershipQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

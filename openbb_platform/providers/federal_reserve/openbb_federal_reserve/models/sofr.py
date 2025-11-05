@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sofr import (
@@ -53,13 +53,13 @@ class FederalReserveSOFRData(SOFRData):
 class FederalReserveSOFRFetcher(
     Fetcher[
         FederalReserveSOFRQueryParams,
-        List[FederalReserveSOFRData],
+        list[FederalReserveSOFRData],
     ]
 ):
     """Federal Reserve Federal Funds Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FederalReserveSOFRQueryParams:
+    def transform_query(params: dict[str, Any]) -> FederalReserveSOFRQueryParams:
         """Transform query."""
         transformed_params = params.copy()
         now = datetime.now().date()
@@ -73,9 +73,9 @@ class FederalReserveSOFRFetcher(
     @staticmethod
     async def aextract_data(
         query: FederalReserveSOFRQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -84,7 +84,7 @@ class FederalReserveSOFRFetcher(
             "https://markets.newyorkfed.org/api/rates/secured/sofr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"
         )
-        results: List[Dict] = []
+        results: list[dict] = []
         response = await amake_request(url, **kwargs)
         results = response.get("refRates")  # type: ignore
         if not results:
@@ -94,11 +94,11 @@ class FederalReserveSOFRFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveSOFRQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FederalReserveSOFRData]:
+    ) -> list[FederalReserveSOFRData]:
         """Transform data."""
-        results: List[FederalReserveSOFRData] = []
+        results: list[FederalReserveSOFRData] = []
         for d in data.copy():
             _ = d.pop("type", None)
             _ = d.pop("footnoteId", None)

@@ -2,13 +2,14 @@
 
 # pylint: disable=R0903
 
+from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Optional
 from warnings import catch_warnings, showwarning, warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -50,14 +51,14 @@ class ExecutionContext:
     @property
     def api_route(self) -> "APIRoute":
         """API route."""
-        return self._route_map[self.route]
+        return self._route_map[self.route]  # type: ignore
 
 
 class ParametersBuilder:
     """Build parameters for a function."""
 
     @staticmethod
-    def get_polished_parameter_list(func: Callable) -> List[Parameter]:
+    def get_polished_parameter_list(func: Callable) -> list[Parameter]:
         """Get the signature parameters values as a list."""
         sig = signature(func)
         parameter_list = list(sig.parameters.values())
@@ -86,9 +87,9 @@ class ParametersBuilder:
     def merge_args_and_kwargs(
         cls,
         func: Callable,
-        args: Tuple[Any, ...],
-        kwargs: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        args: tuple[Any, ...],
+        kwargs: dict[str, Any],
+    ) -> dict[str, Any]:
         """Merge args and kwargs into a single dict."""
         args = deepcopy(args)
         kwargs = deepcopy(kwargs)
@@ -110,10 +111,10 @@ class ParametersBuilder:
     @staticmethod
     def update_command_context(
         func: Callable,
-        kwargs: Dict[str, Any],
+        kwargs: dict[str, Any],
         system_settings: "SystemSettings",
         user_settings: "UserSettings",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Update the command context with the available user and system settings."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.command_context import CommandContext
@@ -129,8 +130,8 @@ class ParametersBuilder:
 
     @staticmethod
     def _warn_kwargs(
-        extra_params: Dict[str, Any],
-        model: Type[BaseModel],
+        extra_params: dict[str, Any],
+        model: type[BaseModel],
     ) -> None:
         """Warn if kwargs received and ignored by the validation model."""
         # We only check the extra_params annotation because ignored fields
@@ -152,7 +153,7 @@ class ParametersBuilder:
                     )
 
     @staticmethod
-    def _as_dict(obj: Any) -> Dict[str, Any]:
+    def _as_dict(obj: Any) -> dict[str, Any]:
         """Safely convert an object to a dict."""
         try:
             if isinstance(obj, dict):
@@ -164,8 +165,8 @@ class ParametersBuilder:
     @staticmethod
     def validate_kwargs(
         func: Callable,
-        kwargs: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        kwargs: dict[str, Any],
+    ) -> dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type."""
         sig = signature(func)
         fields = {
@@ -191,11 +192,11 @@ class ParametersBuilder:
     @classmethod
     def build(
         cls,
-        args: Tuple[Any, ...],
+        args: tuple[Any, ...],
         execution_context: ExecutionContext,
         func: Callable,
-        kwargs: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        kwargs: dict[str, Any],
+    ) -> dict[str, Any]:
         """Build the parameters for a function."""
         func = cls.get_polished_func(func=func)
         system_settings = execution_context.system_settings
@@ -227,7 +228,7 @@ class StaticCommandRunner:
     async def _command(
         cls,
         func: Callable,
-        kwargs: Dict[str, Any],
+        kwargs: dict[str, Any],
         show_warnings: bool = True,  # pylint: disable=unused-argument   # type: ignore
     ) -> OBBject:
         """Run a command and return the output."""
@@ -278,7 +279,7 @@ class StaticCommandRunner:
             warn(str(e), OpenBBWarning)
 
     @classmethod
-    def _extract_params(cls, kwargs, key) -> Dict:
+    def _extract_params(cls, kwargs, key) -> dict:
         """Extract params models from kwargs and convert to a dictionary."""
         params = kwargs.get(key, {})
         if hasattr(params, "__dict__"):
@@ -290,16 +291,16 @@ class StaticCommandRunner:
     async def _execute_func(  # pylint: disable=too-many-positional-arguments
         cls,
         route: str,
-        args: Tuple[Any, ...],
+        args: tuple[Any, ...],
         execution_context: ExecutionContext,
         func: Callable,
-        kwargs: Dict[str, Any],
+        kwargs: dict[str, Any],
     ) -> OBBject:
         """Execute a function and return the output."""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
         raised_warnings: list = []
-        custom_headers: Optional[dict[str, Any]] = None
+        custom_headers: dict[str, Any] | None = None
 
         try:
             with catch_warnings(record=True) as warning_list:
@@ -356,7 +357,7 @@ class StaticCommandRunner:
                     obbject.warnings = []
                 for w in raised_warnings:
                     if isinstance(obbject, OBBject):
-                        obbject.warnings.append(cast_warning(w))
+                        obbject.warnings.append(cast_warning(w))  # type: ignore
                     if user_settings.preferences.show_warnings:
                         showwarning(
                             message=w.message,

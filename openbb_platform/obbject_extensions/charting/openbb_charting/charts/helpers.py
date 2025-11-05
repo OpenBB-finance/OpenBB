@@ -2,18 +2,19 @@
 
 # pylint: disable=R0917
 
-from typing import TYPE_CHECKING, Callable, Dict, List, Type
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
 
-def get_charting_functions(view: Type) -> Dict[str, Callable]:
+def get_charting_functions(view: type) -> dict[str, Callable]:
     """Discover charting functions."""
     # pylint: disable=import-outside-toplevel
     from inspect import getmembers, getsource, isfunction
 
-    implemented_functions: Dict[str, Callable] = {}
+    implemented_functions: dict[str, Callable] = {}
 
     for name, obj in getmembers(view, isfunction):
         if (
@@ -26,7 +27,7 @@ def get_charting_functions(view: Type) -> Dict[str, Callable]:
     return implemented_functions
 
 
-def get_charting_functions_list(view: Type) -> List[str]:
+def get_charting_functions_list(view: type) -> list[str]:
     """Get a list of all the charting functions."""
     return list(get_charting_functions(view).keys())
 
@@ -86,9 +87,7 @@ def heikin_ashi(data: "DataFrame") -> "DataFrame":
     for item in check_columns:
         if item not in df.columns:
             raise ValueError(
-                "The expected column labels, "
-                f"{check_columns}"
-                ", were not found in DataFrame."
+                f"The expected column labels, {check_columns}, were not found in DataFrame."
             )
 
     ha = candles.ha(

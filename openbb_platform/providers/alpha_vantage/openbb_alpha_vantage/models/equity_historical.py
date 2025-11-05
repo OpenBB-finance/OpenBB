@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -56,14 +56,14 @@ class AVEquityHistoricalData(EquityHistoricalData):
         "split_ratio": "split_factor",
     }
 
-    adj_close: Optional[PositiveFloat] = Field(
+    adj_close: PositiveFloat | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
-    dividend: Optional[NonNegativeFloat] = Field(
+    dividend: NonNegativeFloat | None = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
     )
-    split_ratio: Optional[NonNegativeFloat] = Field(
+    split_ratio: NonNegativeFloat | None = Field(
         default=None,
         description="Split coefficient, if a split occurred.",
     )
@@ -72,13 +72,13 @@ class AVEquityHistoricalData(EquityHistoricalData):
 class AVEquityHistoricalFetcher(
     Fetcher[
         AVEquityHistoricalQueryParams,
-        List[AVEquityHistoricalData],
+        list[AVEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the AlphaVantage endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> AVEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> AVEquityHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -97,9 +97,9 @@ class AVEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: AVEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Alpha Vantage endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -285,8 +285,8 @@ class AVEquityHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[AVEquityHistoricalData]:
+        query: AVEquityHistoricalQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime

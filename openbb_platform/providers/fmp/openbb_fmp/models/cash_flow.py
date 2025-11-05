@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cash_flow import (
@@ -75,186 +75,186 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         "free_cash_flow": "freeCashFlow",
     }
 
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None,
         description="The fiscal year of the fiscal period.",
     )
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None,
         description="The date of the filing.",
     )
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: datetime | None = Field(
         default=None, description="The date the filing was accepted."
     )
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None,
         description="The Central Index Key (CIK) assigned by the SEC, if applicable.",
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description="The stock ticker symbol.",
     )
-    reported_currency: Optional[str] = Field(
+    reported_currency: str | None = Field(
         default=None,
         description="The currency in which the cash flow statement was reported.",
     )
-    net_income: Optional[int] = Field(
+    net_income: int | None = Field(
         default=None,
         description="Net income.",
     )
-    depreciation_and_amortization: Optional[int] = Field(
+    depreciation_and_amortization: int | None = Field(
         default=None,
         description="Depreciation and amortization.",
     )
-    deferred_income_tax: Optional[int] = Field(
+    deferred_income_tax: int | None = Field(
         default=None,
         description="Deferred income tax.",
     )
-    stock_based_compensation: Optional[int] = Field(
+    stock_based_compensation: int | None = Field(
         default=None,
         description="Stock-based compensation.",
     )
-    change_in_working_capital: Optional[int] = Field(
+    change_in_working_capital: int | None = Field(
         default=None,
         description="Change in working capital.",
     )
-    change_in_account_receivables: Optional[int] = Field(
+    change_in_account_receivables: int | None = Field(
         default=None,
         description="Change in account receivables.",
     )
-    change_in_inventory: Optional[int] = Field(
+    change_in_inventory: int | None = Field(
         default=None,
         description="Change in inventory.",
     )
-    change_in_account_payable: Optional[int] = Field(
+    change_in_account_payable: int | None = Field(
         default=None,
         description="Change in account payable.",
     )
-    change_in_other_working_capital: Optional[int] = Field(
+    change_in_other_working_capital: int | None = Field(
         default=None,
         description="Change in other working capital.",
     )
-    change_in_other_non_cash_items: Optional[int] = Field(
+    change_in_other_non_cash_items: int | None = Field(
         default=None,
         description="Change in other non-cash items.",
     )
-    net_cash_from_operating_activities: Optional[int] = Field(
+    net_cash_from_operating_activities: int | None = Field(
         default=None,
         description="Net cash from operating activities.",
     )
-    purchase_of_property_plant_and_equipment: Optional[int] = Field(
+    purchase_of_property_plant_and_equipment: int | None = Field(
         default=None,
         description="Purchase of property, plant and equipment.",
     )
-    acquisitions: Optional[int] = Field(
+    acquisitions: int | None = Field(
         default=None,
         description="Acquisitions.",
     )
-    purchase_of_investment_securities: Optional[int] = Field(
+    purchase_of_investment_securities: int | None = Field(
         default=None,
         description="Purchase of investment securities.",
     )
-    sale_and_maturity_of_investments: Optional[int] = Field(
+    sale_and_maturity_of_investments: int | None = Field(
         default=None,
         description="Sale and maturity of investments.",
     )
-    other_investing_activities: Optional[int] = Field(
+    other_investing_activities: int | None = Field(
         default=None,
         description="Other investing activities.",
     )
-    net_cash_from_investing_activities: Optional[int] = Field(
+    net_cash_from_investing_activities: int | None = Field(
         default=None,
         description="Net cash from investing activities.",
     )
-    repayment_of_debt: Optional[int] = Field(
+    repayment_of_debt: int | None = Field(
         default=None,
         description="Repayment of debt.",
     )
-    issuance_of_common_equity: Optional[int] = Field(
+    issuance_of_common_equity: int | None = Field(
         default=None,
         description="Issuance of common equity.",
     )
-    repurchase_of_common_equity: Optional[int] = Field(
+    repurchase_of_common_equity: int | None = Field(
         default=None,
         description="Repurchase of common equity.",
     )
-    net_common_equity_issuance: Optional[int] = Field(
+    net_common_equity_issuance: int | None = Field(
         default=None,
         description="Net common equity issuance.",
     )
-    net_preferred_equity_issuance: Optional[int] = Field(
+    net_preferred_equity_issuance: int | None = Field(
         default=None,
         description="Net preferred equity issuance.",
     )
-    net_equity_issuance: Optional[int] = Field(
+    net_equity_issuance: int | None = Field(
         default=None,
         description="Net equity issuance.",
     )
-    short_term_net_debt_issuance: Optional[int] = Field(
+    short_term_net_debt_issuance: int | None = Field(
         default=None,
         description="Short term net debt issuance.",
     )
-    long_term_net_debt_issuance: Optional[int] = Field(
+    long_term_net_debt_issuance: int | None = Field(
         default=None,
         description="Long term net debt issuance.",
     )
-    net_debt_issuance: Optional[int] = Field(
+    net_debt_issuance: int | None = Field(
         default=None,
         description="Net debt issuance.",
     )
-    common_dividends_paid: Optional[int] = Field(
+    common_dividends_paid: int | None = Field(
         default=None,
         description="Payment of common dividends.",
     )
-    preferred_dividends_paid: Optional[int] = Field(
+    preferred_dividends_paid: int | None = Field(
         default=None,
         description="Payment of preferred dividends.",
     )
-    net_dividends_paid: Optional[int] = Field(
+    net_dividends_paid: int | None = Field(
         default=None,
         description="Net dividends paid.",
     )
-    other_financing_activities: Optional[int] = Field(
+    other_financing_activities: int | None = Field(
         default=None,
         description="Other financing activities.",
     )
-    net_cash_from_financing_activities: Optional[int] = Field(
+    net_cash_from_financing_activities: int | None = Field(
         default=None,
         description="Net cash from financing activities.",
     )
-    effect_of_exchange_rate_changes_on_cash: Optional[int] = Field(
+    effect_of_exchange_rate_changes_on_cash: int | None = Field(
         default=None,
         description="Effect of exchange rate changes on cash.",
     )
-    net_change_in_cash_and_equivalents: Optional[int] = Field(
+    net_change_in_cash_and_equivalents: int | None = Field(
         default=None,
         description="Net change in cash and equivalents.",
     )
-    cash_at_beginning_of_period: Optional[int] = Field(
+    cash_at_beginning_of_period: int | None = Field(
         default=None,
         description="Cash at beginning of period.",
     )
-    cash_at_end_of_period: Optional[int] = Field(
+    cash_at_end_of_period: int | None = Field(
         default=None,
         description="Cash at end of period.",
     )
-    operating_cash_flow: Optional[int] = Field(
+    operating_cash_flow: int | None = Field(
         default=None,
         description="Operating cash flow.",
     )
-    capital_expenditure: Optional[int] = Field(
+    capital_expenditure: int | None = Field(
         default=None,
         description="Capital expenditure.",
     )
-    income_taxes_paid: Optional[int] = Field(
+    income_taxes_paid: int | None = Field(
         default=None,
         description="Income taxes paid.",
     )
-    interest_paid: Optional[int] = Field(
+    interest_paid: int | None = Field(
         default=None,
         description="Interest paid.",
     )
-    free_cash_flow: Optional[int] = Field(
+    free_cash_flow: int | None = Field(
         default=None,
     )
 
@@ -275,7 +275,7 @@ class FMPCashFlowStatementFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCashFlowStatementQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

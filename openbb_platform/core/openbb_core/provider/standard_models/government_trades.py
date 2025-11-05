@@ -1,7 +1,7 @@
 """Government Trades Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,13 +15,13 @@ from pydantic import Field, field_validator
 class GovernmentTradesQueryParams(QueryParams):
     """Government Trades Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
     chamber: Literal["house", "senate", "all"] = Field(
         default="all", description="Government Chamber."
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
@@ -35,13 +35,13 @@ class GovernmentTradesQueryParams(QueryParams):
 class GovernmentTradesData(Data):
     """Government Trades data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    transaction_date: Optional[dateType] = Field(
+    transaction_date: dateType | None = Field(
         default=None, description="Date of Transaction."
     )
-    representative: Optional[str] = Field(
+    representative: str | None = Field(
         default=None, description="Name of Representative."
     )

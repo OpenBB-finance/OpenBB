@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -64,7 +64,7 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         },
     }
 
-    year: Optional[int] = Field(
+    year: int | None = Field(
         description=(
             "Calendar year of the data, default is current year."
             + " The earliest year available is 1994, for all companies and form types."
@@ -93,28 +93,28 @@ class NasdaqCompanyFilingsData(CompanyFilingsData):
         "xbr_url": "xbrLink",
         "doc_link": "docLink",
     }
-    period_ending: Optional[dateType] = Field(
+    period_ending: dateType | None = Field(
         default=None,
         description="The ending date for the reporting period, if available.",
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="The name of the company, if available.",
     )
-    reporting_owner: Optional[str] = Field(
+    reporting_owner: str | None = Field(
         default=None,
         description="The name of the reporting owner, if applicable.",
     )
-    pdf_url: Optional[str] = Field(
+    pdf_url: str | None = Field(
         default=None, description="The URL to the PDF document, if available."
     )
-    xls_url: Optional[str] = Field(
+    xls_url: str | None = Field(
         default=None, description="The URL to the XLS document, if available."
     )
-    xbr_url: Optional[str] = Field(
+    xbr_url: str | None = Field(
         default=None, description="The URL to the XBR document, if available."
     )
-    doc_link: Optional[str] = Field(
+    doc_link: str | None = Field(
         default=None, description="The URL to the DOC document, if available."
     )
 
@@ -146,7 +146,7 @@ class NasdaqCompanyFilingsFetcher(
     @staticmethod
     def extract_data(
         query: NasdaqCompanyFilingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract data from the query."""

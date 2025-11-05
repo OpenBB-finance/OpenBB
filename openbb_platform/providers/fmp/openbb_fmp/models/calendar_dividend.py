@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_dividend import (
@@ -37,16 +37,16 @@ class FMPCalendarDividendData(CalendarDividendData):
         "dividend_yield": "yield",
     }
 
-    adjusted_amount: Optional[float] = Field(
+    adjusted_amount: float | None = Field(
         default=None,
         description="The adjusted-dividend amount.",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Annualized dividend yield.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    frequency: Optional[str] = Field(
+    frequency: str | None = Field(
         default=None,
         description="Frequency of the regular dividend payment.",
     )
@@ -87,7 +87,7 @@ class FMPCalendarDividendFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCalendarDividendQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

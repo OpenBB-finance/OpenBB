@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -34,16 +34,16 @@ class SecSymbolMapFetcher(
     """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecSymbolMapQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecSymbolMapQueryParams:
         """Transform the query."""
         return SecSymbolMapQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: SecSymbolMapQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the SEC endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import cik_map
@@ -56,7 +56,7 @@ class SecSymbolMapFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecSymbolMapQueryParams, data: Dict, **kwargs: Any
+        query: SecSymbolMapQueryParams, data: dict, **kwargs: Any
     ) -> SecSymbolMapData:
         """Transform the data to the standard format."""
         return SecSymbolMapData.model_validate(data)

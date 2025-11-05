@@ -1,6 +1,6 @@
 """Options Router."""
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
@@ -56,19 +56,19 @@ async def chains(
     ],
 )
 async def surface(  # pylint: disable=R0913, R0917
-    data: Union[list[Data], Data],
+    data: list[Data] | Data,
     target: str = "implied_volatility",
-    underlying_price: Optional[float] = None,
-    option_type: Optional[Literal["otm", "itm", "calls", "puts"]] = "otm",
-    dte_min: Optional[int] = None,
-    dte_max: Optional[int] = None,
-    moneyness: Optional[float] = None,
-    strike_min: Optional[float] = None,
-    strike_max: Optional[float] = None,
+    underlying_price: float | None = None,
+    option_type: Literal["otm", "itm", "calls", "puts"] | None = "otm",
+    dte_min: int | None = None,
+    dte_max: int | None = None,
+    moneyness: float | None = None,
+    strike_min: float | None = None,
+    strike_max: float | None = None,
     oi: bool = False,
     volume: bool = False,
     theme: Literal["dark", "light"] = "dark",
-    chart_params: Optional[dict] = None,
+    chart_params: dict | None = None,
 ) -> OBBject:
     """Filter and process the options chains data for volatility.
 
@@ -156,9 +156,7 @@ async def surface(  # pylint: disable=R0913, R0917
         if all(isinstance(d, dict) for d in data):
             df = DataFrame(data)
         elif all(isinstance(d, Data) for d in data):
-            df = DataFrame(
-                [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]  # type: ignore
-            )
+            df = DataFrame([d.model_dump(exclude_none=True, exclude_unset=True) for d in data])  # type: ignore
 
     options = DataFrame(df.copy())
 
@@ -216,25 +214,16 @@ async def surface(  # pylint: disable=R0913, R0917
 
     if option_type in ["otm", "itm"] and last_price is None:
         raise RuntimeError(
-            "Last price must be provided for OTM/ITM options filtering,"
-            " and was not found in the data."
+            "Last price must be provided for OTM/ITM options filtering, and was not found in the data."
         )
 
     if option_type is not None and option_type == "otm":
-        otm_calls = calls.query("strike > @last_price").set_index(  # type: ignore
-            ["expiration", "strike", "option_type"]
-        )
-        otm_puts = puts.query("strike < @last_price").set_index(  # type: ignore
-            ["expiration", "strike", "option_type"]
-        )
+        otm_calls = calls.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        otm_puts = puts.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
         df = concat([otm_calls, otm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "itm":
-        itm_calls = calls.query("strike < @last_price").set_index(  # type: ignore
-            ["expiration", "strike", "option_type"]
-        )
-        itm_puts = puts.query("strike > @last_price").set_index(  # type: ignore
-            ["expiration", "strike", "option_type"]
-        )
+        itm_calls = calls.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        itm_puts = puts.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
         df = concat([itm_calls, itm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "calls":
         df = calls

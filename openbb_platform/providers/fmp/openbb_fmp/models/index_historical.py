@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -38,14 +38,14 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
 class FMPIndexHistoricalData(IndexHistoricalData):
     """FMP Index Historical Data."""
 
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
-    change: Optional[float] = Field(
+    change: float | None = Field(
         default=None,
         description="Change in the price from the previous close.",
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         default=None,
         description="Change in the price from the previous close, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -83,7 +83,7 @@ class FMPIndexHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPIndexHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

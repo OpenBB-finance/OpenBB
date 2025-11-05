@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -93,7 +93,7 @@ class ImfDirectionOfTradeFetcher(
     @staticmethod
     async def aextract_data(
         query: ImfDirectionOfTradeQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the IMF API."""
@@ -203,7 +203,7 @@ class ImfDirectionOfTradeFetcher(
 
             for d in _data:
                 _date = d.pop("@TIME_PERIOD", None)
-                val: Union[float, None] = d.pop("@OBS_VALUE", None)
+                val: float | None = d.pop("@OBS_VALUE", None)
                 _ = d.pop("@OBS_STATUS", None)
                 val = float(val) if val else None
                 if not val:

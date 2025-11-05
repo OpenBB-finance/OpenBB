@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -35,11 +35,11 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
     quote_currency: str = Field(
         description="The currency in which the instrument prices are quoted."
     )
-    settlement_currency: Optional[str] = Field(
+    settlement_currency: str | None = Field(
         default=None, description="Settlement currency for the instrument."
     )
     future_type: str = Field(description="Type of the instrument. linear or reversed")
-    settlement_period: Optional[str] = Field(
+    settlement_period: str | None = Field(
         default=None, description="The settlement period."
     )
     price_index: str = Field(
@@ -52,7 +52,7 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
     creation_timestamp: datetime = Field(
         description="The time when the instrument was first created (milliseconds since the UNIX epoch)."
     )
-    expiration_timestamp: Optional[datetime] = Field(
+    expiration_timestamp: datetime | None = Field(
         default=None,
         description="The time when the instrument will expire (milliseconds since the UNIX epoch).",
     )
@@ -76,10 +76,10 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
         description="Specifies minimal price change for block trading."
     )
 
-    maker_commission: Optional[float] = Field(
+    maker_commission: float | None = Field(
         default=None, description="Maker commission for instrument."
     )
-    taker_commission: Optional[float] = Field(
+    taker_commission: float | None = Field(
         default=None, description="Taker commission for instrument."
     )
 
@@ -105,7 +105,7 @@ class DeribitFuturesInstrumentsFetcher(
     @staticmethod
     async def aextract_data(
         query: DeribitFuturesInstrumentsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract data from Deribit API."""

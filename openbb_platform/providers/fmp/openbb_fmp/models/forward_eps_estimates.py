@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,7 +30,7 @@ class FMPForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
         default="annual",
         description="The future fiscal period to retrieve estimates for.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " Number of historical periods.",
@@ -76,7 +76,7 @@ class FMPForwardEpsEstimatesFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPForwardEpsEstimatesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

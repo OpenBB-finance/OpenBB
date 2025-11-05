@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument, too-many-statements, too-many-branches
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -48,52 +48,52 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
         },
     }
 
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default="us",
         description="Filter by country, as a two-letter country code. Default is, 'us'. Use, 'all', for all countries.",
     )
-    exchange: Optional[Exchanges] = Field(
+    exchange: Exchanges | None = Field(
         default=None,
         description="Filter by exchange.",
     )
-    sector: Optional[SECTORS] = Field(default=None, description="Filter by sector.")
-    industry: Optional[str] = Field(
+    sector: SECTORS | None = Field(default=None, description="Filter by sector.")
+    industry: str | None = Field(
         default=None,
         description="Filter by industry.",
     )
-    mktcap_min: Optional[int] = Field(
+    mktcap_min: int | None = Field(
         default=500000000,
         description="Filter by market cap greater than this value. Default is 500M.",
     )
-    mktcap_max: Optional[int] = Field(
+    mktcap_max: int | None = Field(
         default=None,
         description="Filter by market cap less than this value.",
     )
-    price_min: Optional[float] = Field(
+    price_min: float | None = Field(
         default=5,
         description="Filter by price greater than this value. Default is, 5",
     )
-    price_max: Optional[float] = Field(
+    price_max: float | None = Field(
         default=None,
         description="Filter by price less than this value.",
     )
-    volume_min: Optional[int] = Field(
+    volume_min: int | None = Field(
         default=10000,
         description="Filter by volume greater than this value. Default is, 10K",
     )
-    volume_max: Optional[int] = Field(
+    volume_max: int | None = Field(
         default=None,
         description="Filter by volume less than this value.",
     )
-    beta_min: Optional[float] = Field(
+    beta_min: float | None = Field(
         default=None,
         description="Filter by a beta greater than this value.",
     )
-    beta_max: Optional[float] = Field(
+    beta_max: float | None = Field(
         default=None,
         description="Filter by a beta less than this value.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=200,
         description="Limit the number of results returned. Default is, 200. Set to, 0, for all results.",
     )
@@ -130,8 +130,8 @@ class YFinanceEquityScreenerFetcher(
             if not sector:
                 raise OpenBBError(
                     ValueError(
-                        f"Industry {industry} not found. Valid choices are:"
-                        "\n" + f"{choices}"
+                        f"Industry {industry} not found. Valid choices are:\n"
+                        + f"{choices}"
                     )
                 )
             _industry = INDUSTRY_MAP[sector][industry]
@@ -144,7 +144,7 @@ class YFinanceEquityScreenerFetcher(
     @staticmethod
     async def aextract_data(
         query: YFinanceEquityScreenerQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""

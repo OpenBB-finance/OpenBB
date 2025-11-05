@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -33,18 +33,18 @@ class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
         "updated_since": "updatedSince",
         "published_since": "publishedSince",
     }
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     display: Literal["headline", "abstract", "full"] = Field(
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
     )
-    updated_since: Optional[int] = Field(
+    updated_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    published_since: Optional[int] = Field(
+    published_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
@@ -54,22 +54,22 @@ class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(
+    isin: str | None = Field(
         default=None, description="The ISIN of the news to retrieve."
     )
-    cusip: Optional[str] = Field(
+    cusip: str | None = Field(
         default=None, description="The CUSIP of the news to retrieve."
     )
-    channels: Optional[str] = Field(
+    channels: str | None = Field(
         default=None, description="Channels of the news to retrieve."
     )
-    topics: Optional[str] = Field(
+    topics: str | None = Field(
         default=None, description="Topics of the news to retrieve."
     )
-    authors: Optional[str] = Field(
+    authors: str | None = Field(
         default=None, description="Authors of the news to retrieve."
     )
-    content_types: Optional[str] = Field(
+    content_types: str | None = Field(
         default=None, description="Content types of the news to retrieve."
     )
 
@@ -79,23 +79,23 @@ class BenzingaWorldNewsData(WorldNewsData):
 
     __alias_dict__ = {"date": "created", "excerpt": "teaser", "images": "image"}
 
-    channels: Optional[str] = Field(
+    channels: str | None = Field(
         default=None,
         description="Channels associated with the news.",
     )
-    stocks: Optional[str] = Field(
+    stocks: str | None = Field(
         description="Stocks associated with the news.",
         default=None,
     )
-    tags: Optional[str] = Field(
+    tags: str | None = Field(
         description="Tags associated with the news.",
         default=None,
     )
-    updated: Optional[datetime] = Field(
+    updated: datetime | None = Field(
         default=None, description="Updated date of the news."
     )
     id: str = Field(description="Article ID.")
-    updated_id: Optional[str] = Field(
+    updated_id: str | None = Field(
         default=None, description="Updated article ID if the article was updated."
     )
 
@@ -141,7 +141,7 @@ class BenzingaWorldNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: BenzingaWorldNewsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data."""

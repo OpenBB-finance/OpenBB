@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.insider_trading import (
@@ -32,7 +32,7 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
         }
     }
 
-    transaction_type: Optional[TRANSACTION_TYPES] = Field(
+    transaction_type: TRANSACTION_TYPES | None = Field(
         default=None,
         description="Type of the transaction.",
     )
@@ -68,42 +68,42 @@ class FMPInsiderTradingData(InsiderTradingData):
         "company_cik": "cik",
     }
 
-    form_type: Optional[str] = Field(default=None, description="The SEC form type.")
-    year: Optional[int] = Field(
+    form_type: str | None = Field(default=None, description="The SEC form type.")
+    year: int | None = Field(
         default=None, description="The calendar year for the statistics."
     )
-    quarter: Optional[int] = Field(
+    quarter: int | None = Field(
         default=None, description="The calendar quarter for the statistics."
     )
-    acquired_transactions: Optional[int] = Field(
+    acquired_transactions: int | None = Field(
         default=None, description="Number of acquired transactions (statistics only)."
     )
-    disposed_transactions: Optional[int] = Field(
+    disposed_transactions: int | None = Field(
         default=None, description="Number of disposed transactions (statistics only)."
     )
-    transactions_ratio: Optional[float] = Field(
+    transactions_ratio: float | None = Field(
         default=None,
         description="Ratio of acquired to disposed transactions (statistics only).",
     )
-    total_acquired: Optional[Union[int, float]] = Field(
+    total_acquired: int | float | None = Field(
         default=None, description="Total number of shares acquired (statistics only)."
     )
-    total_disposed: Optional[Union[int, float]] = Field(
+    total_disposed: int | float | None = Field(
         default=None, description="Total number of shares disposed (statistics only)."
     )
-    average_acquired: Optional[float] = Field(
+    average_acquired: float | None = Field(
         default=None,
         description="Average number of shares acquired per transaction (statistics only).",
     )
-    average_disposed: Optional[float] = Field(
+    average_disposed: float | None = Field(
         default=None,
         description="Average number of shares disposed per transaction (statistics only).",
     )
-    total_purchases: Optional[int] = Field(
+    total_purchases: int | None = Field(
         default=None,
         description="Total number of purchase transactions (statistics only).",
     )
-    total_sales: Optional[int] = Field(
+    total_sales: int | None = Field(
         default=None, description="Total number of sale transactions (statistics only)."
     )
 
@@ -124,7 +124,7 @@ class FMPInsiderTradingFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPInsiderTradingQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

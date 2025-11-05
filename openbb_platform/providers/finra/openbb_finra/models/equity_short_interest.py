@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_short_interest import (
@@ -33,21 +33,21 @@ class FinraShortInterestData(ShortInterestData):
 
 
 class FinraShortInterestFetcher(
-    Fetcher[FinraShortInterestQueryParams, List[FinraShortInterestData]]
+    Fetcher[FinraShortInterestQueryParams, list[FinraShortInterestData]]
 ):
     """Transform the query, extract and transform the data from the FINRA endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinraShortInterestQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinraShortInterestQueryParams:
         """Transform query params."""
         return FinraShortInterestQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FinraShortInterestQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from the Finra endpoint."""
         # pylint: disable=import-outside-toplevel
         import sqlite3  # noqa
@@ -82,7 +82,7 @@ class FinraShortInterestFetcher(
 
     @staticmethod
     def transform_data(
-        query: FinraShortInterestQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FinraShortInterestData]:
+        query: FinraShortInterestQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FinraShortInterestData]:
         """Transform the data."""
         return [FinraShortInterestData.model_validate(d) for d in data]

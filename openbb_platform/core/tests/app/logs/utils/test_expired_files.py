@@ -4,7 +4,6 @@ import os
 import tempfile
 from pathlib import Path
 from time import time
-from typing import List
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -106,7 +105,7 @@ def test_remove_file_list_no_files(mock_path):
     """Test remove_file_list when there are no files to remove."""
     # Arrange
     # Let's assume the file list is empty, meaning there are no files to remove
-    file_list: List[Path] = []
+    file_list: list[Path] = []
 
     # Act
     remove_file_list(file_list)

@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -147,7 +147,7 @@ class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
 
     @model_validator(mode="before")
     @classmethod
-    def _normalize_percent(cls, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _normalize_percent(cls, data: dict[str, Any]) -> dict[str, Any]:
         """Normalize percent values."""
         for k, v in data.items():
             if (
@@ -167,14 +167,14 @@ class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
 class GovernmentUSTreasuryAuctionsFetcher(
     Fetcher[
         GovernmentUSTreasuryAuctionsQueryParams,
-        List[GovernementUSTreasuryAuctionsData],
+        list[GovernementUSTreasuryAuctionsData],
     ]
 ):
     """Transform the query, extract and transform the data from the us treasury endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> GovernmentUSTreasuryAuctionsQueryParams:
         """Transform query params."""
         return GovernmentUSTreasuryAuctionsQueryParams(**params)
@@ -182,9 +182,9 @@ class GovernmentUSTreasuryAuctionsFetcher(
     @staticmethod
     def extract_data(
         query: GovernmentUSTreasuryAuctionsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from Treasury Direct API."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
@@ -228,8 +228,8 @@ class GovernmentUSTreasuryAuctionsFetcher(
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryAuctionsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[GovernementUSTreasuryAuctionsData]:
+    ) -> list[GovernementUSTreasuryAuctionsData]:
         """Transform the data."""
         return [GovernementUSTreasuryAuctionsData.model_validate(d) for d in data]

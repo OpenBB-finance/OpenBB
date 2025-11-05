@@ -1,7 +1,5 @@
 """Index Constituents Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -27,6 +25,6 @@ class IndexConstituentsData(Data):
     """Index Constituents Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None, description="Name of the constituent company in the index."
     )

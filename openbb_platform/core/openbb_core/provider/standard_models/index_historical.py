@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -20,10 +19,10 @@ class IndexHistoricalQueryParams(QueryParams):
     """Index Historical Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
@@ -37,25 +36,23 @@ class IndexHistoricalQueryParams(QueryParams):
 class IndexHistoricalData(Data):
     """Index Historical Data."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-    )
-    open: Optional[float] = Field(
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
-    close: Optional[float] = Field(
+    close: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
-    volume: Optional[Union[int, float]] = Field(
+    volume: int | float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 

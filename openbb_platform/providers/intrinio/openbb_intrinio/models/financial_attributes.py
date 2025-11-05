@@ -1,7 +1,9 @@
 """Intrinio Financial Attributes Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -26,14 +28,14 @@ class IntrinioFinancialAttributesData(FinancialAttributesData):
 class IntrinioFinancialAttributesFetcher(
     Fetcher[
         IntrinioFinancialAttributesQueryParams,
-        List[IntrinioFinancialAttributesData],
+        list[IntrinioFinancialAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioFinancialAttributesQueryParams:
         """Transform the query params."""
         transformed_params = params
@@ -49,14 +51,14 @@ class IntrinioFinancialAttributesFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
-        credentials: Optional[Dict[str, str]],
+        query: IntrinioFinancialAttributesQueryParams,
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         frequency = "yearly" if query.period == "annual" else "quarterly"
-        data: List[Dict] = []
+        data: list[dict] = []
 
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.model_dump(by_alias=True), ["frequency"])
@@ -71,8 +73,8 @@ class IntrinioFinancialAttributesFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioFinancialAttributesQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioFinancialAttributesData]:
+    ) -> list[IntrinioFinancialAttributesData]:
         """Return the transformed data."""
         return [IntrinioFinancialAttributesData.model_validate(item) for item in data]

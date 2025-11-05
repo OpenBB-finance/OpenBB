@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -31,18 +30,18 @@ class ShareStatisticsData(Data):
     """Share Statistics Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    date: Optional[Union[dateType, datetime]] = Field(
+    date: dateType | datetime | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    free_float: Optional[float] = Field(
+    free_float: float | None = Field(
         default=None,
         description="Percentage of unrestricted shares of a publicly-traded company.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    float_shares: Optional[Union[int, float]] = Field(
+    float_shares: int | float | None = Field(
         default=None,
         description="Number of shares available for trading by the general public.",
     )
-    outstanding_shares: Optional[Union[int, float]] = Field(
+    outstanding_shares: int | float | None = Field(
         default=None, description="Total number of shares of a publicly-traded company."
     )

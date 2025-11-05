@@ -1,7 +1,5 @@
 """BLS Search Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
@@ -21,7 +19,5 @@ class SearchData(Data):
     """BLS Search Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    title: Optional[str] = Field(default=None, description="The title of the series.")
-    survey_name: Optional[str] = Field(
-        default=None, description="The name of the survey."
-    )
+    title: str | None = Field(default=None, description="The title of the series.")
+    survey_name: str | None = Field(default=None, description="The name of the survey.")

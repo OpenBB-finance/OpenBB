@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -41,22 +41,22 @@ class YFinancePriceTargetConsensusData(PriceTargetConsensusData):
         "current_price": "currentPrice",
     }
 
-    recommendation: Optional[str] = Field(
+    recommendation: str | None = Field(
         default=None,
         description="Recommendation - buy, sell, etc.",
     )
-    recommendation_mean: Optional[float] = Field(
+    recommendation_mean: float | None = Field(
         default=None,
         description="Mean recommendation score where 1 is strong buy and 5 is strong sell.",
     )
-    number_of_analysts: Optional[int] = Field(
+    number_of_analysts: int | None = Field(
         default=None, description="Number of analysts providing opinions."
     )
-    current_price: Optional[float] = Field(
+    current_price: float | None = Field(
         default=None,
         description="Current price of the stock.",
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="Currency the stock is priced in.",
     )
@@ -64,14 +64,14 @@ class YFinancePriceTargetConsensusData(PriceTargetConsensusData):
 
 class YFinancePriceTargetConsensusFetcher(
     Fetcher[
-        YFinancePriceTargetConsensusQueryParams, List[YFinancePriceTargetConsensusData]
+        YFinancePriceTargetConsensusQueryParams, list[YFinancePriceTargetConsensusData]
     ]
 ):
     """YFinance Price Target Consensus Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any],
+        params: dict[str, Any],
     ) -> YFinancePriceTargetConsensusQueryParams:
         """Transform the query."""
         return YFinancePriceTargetConsensusQueryParams(**params)
@@ -79,9 +79,9 @@ class YFinancePriceTargetConsensusFetcher(
     @staticmethod
     async def aextract_data(
         query: YFinancePriceTargetConsensusQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -149,8 +149,8 @@ class YFinancePriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         query: YFinancePriceTargetConsensusQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinancePriceTargetConsensusData]:
+    ) -> list[YFinancePriceTargetConsensusData]:
         """Transform the data."""
         return [YFinancePriceTargetConsensusData.model_validate(d) for d in data]

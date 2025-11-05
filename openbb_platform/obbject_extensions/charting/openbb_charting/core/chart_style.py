@@ -6,10 +6,6 @@ import sys
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    List,
-    Optional,
-    Union,
 )
 from warnings import warn
 
@@ -34,16 +30,16 @@ class ChartStyle:
     STYLES_REPO = Path(__file__).parent.parent / "styles"
     user_styles_directory: Path = STYLES_REPO
 
-    plt_styles_available: Dict[str, Path] = {}
+    plt_styles_available: dict[str, Path] = {}
     plt_style: str = "dark"
-    plotly_template: Dict[str, Any] = {}
+    plotly_template: dict[str, Any] = {}
     mapbox_style: str = "dark"
 
     line_color: str = ""
     up_color: str = ""
     down_color: str = ""
-    up_colorway: List[str] = []
-    down_colorway: List[str] = []
+    up_colorway: list[str] = []
+    down_colorway: list[str] = []
     up_color_transparent: str = ""
     down_color_transparent: str = ""
 
@@ -59,8 +55,8 @@ class ChartStyle:
 
     def __init__(
         self,
-        plt_style: Optional[str] = "",
-        user_styles_directory: Optional[Path] = None,
+        plt_style: str | None = "",
+        user_styles_directory: Path | None = None,
     ):
         """Initialize the class.
 
@@ -71,8 +67,15 @@ class ChartStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.service.user_service import UserService
+
         if self.initialized:
             return
+
+        user_settings = UserService().read_from_file()
+        pref_style = getattr(user_settings.preferences, "chart_style", None)
+        plt_style = plt_style or pref_style
 
         self.initialized = True
         self.user_styles_directory = user_styles_directory or self.user_styles_directory
@@ -81,7 +84,7 @@ class ChartStyle:
         self.load_style(plt_style)
         self.apply_style()
 
-    def apply_style(self, style: Optional[str] = "") -> None:
+    def apply_style(self, style: str | None = "") -> None:
         """Apply the style to the libraries."""
         style = style or self.plt_style
 
@@ -120,7 +123,7 @@ class ChartStyle:
                 .setdefault("style", "dark")
             )
 
-    def load_available_styles_from_folder(self, folder: Union[Path, str]) -> None:
+    def load_available_styles_from_folder(self, folder: Path | str) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -149,7 +152,7 @@ class ChartStyle:
         self.load_available_styles_from_folder(self.STYLES_REPO)
         self.load_available_styles_from_folder(self.user_styles_directory)
 
-    def load_json_style(self, file: Path) -> Dict[str, Any]:
+    def load_json_style(self, file: Path) -> dict[str, Any]:
         """Load style from json file.
 
         Parameters
@@ -165,7 +168,7 @@ class ChartStyle:
         with open(file) as f:
             return json.load(f)
 
-    def load_style(self, style: Optional[str] = "") -> None:
+    def load_style(self, style: str | None = "") -> None:
         """Load style from file.
 
         Parameters

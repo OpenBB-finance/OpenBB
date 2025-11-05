@@ -3,7 +3,7 @@
 from datetime import (
     date as dateType,
 )
-from typing import Literal, Optional
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -17,11 +17,11 @@ from pydantic import Field, field_validator
 class BondIndicesQueryParams(QueryParams):
     """Bond Indices Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -35,7 +35,7 @@ class BondIndicesQueryParams(QueryParams):
 
     @field_validator("index_type", mode="before", check_fields=False)
     @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+    def to_lower(cls, v: str | None) -> str | None:
         """Convert field to lowercase."""
         return v.lower() if v else v
 
@@ -44,7 +44,7 @@ class BondIndicesData(Data):
     """Bond Indices Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )

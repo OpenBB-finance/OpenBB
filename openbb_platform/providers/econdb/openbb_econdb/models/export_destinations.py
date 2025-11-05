@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from aiohttp.client_exceptions import ContentTypeError
@@ -31,37 +31,37 @@ class EconDbExportDestinationsData(ExportDestinationsData):
     title: str = Field(
         description="The title of the data.",
     )
-    footnote: Optional[str] = Field(
+    footnote: str | None = Field(
         description="The footnote for the data.",
     )
 
 
 class EconDbExportDestinationsFetcher(
-    Fetcher[EconDbExportDestinationsQueryParams, List[EconDbExportDestinationsData]]
+    Fetcher[EconDbExportDestinationsQueryParams, list[EconDbExportDestinationsData]]
 ):
     """EconDB Export Destinations Fetcher."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> EconDbExportDestinationsQueryParams:
+    def transform_query(params: dict[str, Any]) -> EconDbExportDestinationsQueryParams:
         """Transform query parameters."""
         return EconDbExportDestinationsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: EconDbExportDestinationsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from EconDB."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_core.provider.utils.helpers import amake_request
         from openbb_econdb.utils.helpers import COUNTRY_MAP
 
-        results: List = []
-        messages: List = []
+        results: list = []
+        messages: list = []
         countries = query.country.split(",")
         MAP_COUNTRY = {v: k for k, v in COUNTRY_MAP.items()}
 
@@ -75,8 +75,8 @@ class EconDbExportDestinationsFetcher(
                     return
 
             URL = f"https://www.econdb.com/widgets/top-trade-items/data/?country={c.upper()}&split_by=country"
-            result: List = []
-            row: Dict = {}
+            result: list = []
+            row: dict = {}
             try:
                 res = await amake_request(URL)
             except ContentTypeError as e:
@@ -148,8 +148,8 @@ class EconDbExportDestinationsFetcher(
     @staticmethod
     def transform_data(
         query: EconDbExportDestinationsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[EconDbExportDestinationsData]:
+    ) -> list[EconDbExportDestinationsData]:
         """Transform the data."""
         return [EconDbExportDestinationsData.model_validate(d) for d in data]

@@ -1,7 +1,5 @@
 """Unusual Options Standard Model."""
 
-from typing import Optional
-
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -14,7 +12,7 @@ from pydantic import Field, field_validator
 class OptionsUnusualQueryParams(QueryParams):
     """Unusual Options Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("symbol", "") + " (the underlying symbol)",
     )
@@ -29,7 +27,7 @@ class OptionsUnusualQueryParams(QueryParams):
 class OptionsUnusualData(Data):
     """Unusual Options Data."""
 
-    underlying_symbol: Optional[str] = Field(
+    underlying_symbol: str | None = Field(
         description=DATA_DESCRIPTIONS.get("symbol", "") + " (the underlying symbol)",
         default=None,
     )

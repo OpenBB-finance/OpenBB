@@ -4,7 +4,7 @@
 import asyncio
 import random
 import warnings
-from typing import Any, Dict, Type, Union
+from typing import Any
 
 import aiohttp
 from multidict import CIMultiDict, CIMultiDictProxy, MultiDict
@@ -12,7 +12,7 @@ from multidict import CIMultiDict, CIMultiDictProxy, MultiDict
 FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
 
 
-def obfuscate(params: Union[CIMultiDict[str], MultiDict[str]]) -> Dict[str, Any]:
+def obfuscate(params: CIMultiDict[str] | MultiDict[str]) -> dict[str, Any]:
     """Obfuscate sensitive information."""
     # pylint: disable=import-outside-toplevel
     import re
@@ -57,7 +57,7 @@ class ClientResponse(aiohttp.ClientResponse):
 
         return aiohttp.RequestInfo(url, request_info.method, headers, url)
 
-    async def json(self, **kwargs) -> Union[dict, list]:
+    async def json(self, **kwargs) -> dict | list:
         """Return the json response."""
         return await super().json(**kwargs)
 
@@ -65,7 +65,7 @@ class ClientResponse(aiohttp.ClientResponse):
 class ClientSession(aiohttp.ClientSession):
     """Client session."""
 
-    _response_class: Type[ClientResponse]
+    _response_class: type[ClientResponse]
     _session: "ClientSession"
 
     def __init__(self, *args, **kwargs):
@@ -92,12 +92,12 @@ class ClientSession(aiohttp.ClientSession):
         """Send POST request."""
         return await self.request("POST", url, **kwargs)
 
-    async def get_json(self, url: str, **kwargs) -> Union[dict, list]:
+    async def get_json(self, url: str, **kwargs) -> dict | list:
         """Send GET request and return json."""
         response = await self.request("GET", url, **kwargs)
         return await response.json()
 
-    async def get_one(self, url: str, **kwargs) -> Dict[str, Any]:
+    async def get_one(self, url: str, **kwargs) -> dict[str, Any]:
         """Send GET request and return first item in json if list."""
         response = await self.request("GET", url, **kwargs)
         data = await response.json()
@@ -107,9 +107,7 @@ class ClientSession(aiohttp.ClientSession):
 
         return data
 
-    async def request(  # type: ignore
-        self, *args, raise_for_status: bool = False, **kwargs
-    ) -> ClientResponse:
+    async def request(self, *args, raise_for_status: bool = False, **kwargs) -> ClientResponse:  # type: ignore
         """Send request."""
         # pylint: disable=import-outside-toplevel
         import zlib

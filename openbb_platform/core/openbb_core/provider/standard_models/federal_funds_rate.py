@@ -1,7 +1,6 @@
 """Federal Funds Rate Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,11 +14,11 @@ from pydantic import Field
 class FederalFundsRateQueryParams(QueryParams):
     """Federal Funds Rate Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -33,37 +32,37 @@ class FederalFundsRateData(Data):
         description="Effective federal funds rate.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    target_range_upper: Optional[float] = Field(
+    target_range_upper: float | None = Field(
         default=None,
         description="Upper bound of the target range.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    target_range_lower: Optional[float] = Field(
+    target_range_lower: float | None = Field(
         default=None,
         description="Lower bound of the target range.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    percentile_1: Optional[float] = Field(
+    percentile_1: float | None = Field(
         default=None,
         description="1st percentile of the distribution.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    percentile_25: Optional[float] = Field(
+    percentile_25: float | None = Field(
         default=None,
         description="25th percentile of the distribution.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    percentile_75: Optional[float] = Field(
+    percentile_75: float | None = Field(
         default=None,
         description="75th percentile of the distribution.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    percentile_99: Optional[float] = Field(
+    percentile_99: float | None = Field(
         default=None,
         description="99th percentile of the distribution.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", "")
         + "The notional volume of transactions (Billions of $).",

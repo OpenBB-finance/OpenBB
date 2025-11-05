@@ -6,7 +6,7 @@ openapi_extra.mcp_config field of FastAPI route definitions.
 
 import re
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
 
 from fastmcp.utilities.logging import get_logger
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -40,10 +40,10 @@ class ArgumentDefinitionModel(BaseModel):
 
     name: str = Field(..., description="Name of the argument")
     type: str = Field(default="str", description="Type of the argument")
-    default: Optional[Any] = Field(
+    default: Any | None = Field(
         default=None, description="Default value for the argument"
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None, description="Description of the argument"
     )
 
@@ -84,10 +84,10 @@ class ArgumentDefinitionModel(BaseModel):
 class PromptConfigModel(BaseModel):
     """Model for validating individual prompt configurations."""
 
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None, description="Name of the prompt (auto-generated if not provided)"
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None, description="Description of the prompt"
     )
     content: str = Field(description="Template content with {variable} placeholders")
@@ -117,7 +117,7 @@ class PromptConfigModel(BaseModel):
 
     @field_validator("name")
     @classmethod
-    def validate_name(cls, v: Optional[str]) -> Optional[str]:
+    def validate_name(cls, v: str | None) -> str | None:
         """Validate prompt name if provided."""
         if v is not None:
             if not v.strip():
@@ -144,27 +144,25 @@ class PromptConfigModel(BaseModel):
 class MCPConfigModel(BaseModel):
     """Model for validating the main MCP configuration structure."""
 
-    expose: Optional[bool] = Field(
+    expose: bool | None = Field(
         default=None, description="Whether to expose this route (False = exclude)."
     )
-    mcp_type: Optional[MCPType] = Field(
+    mcp_type: MCPType | None = Field(
         default=None, description="MCP type classification for the route."
     )
-    methods: Optional[list[HTTPMethod]] = Field(
+    methods: list[HTTPMethod] | None = Field(
         default=None, description="HTTP methods to include for this route."
     )
     prompts: list[PromptConfigModel] = Field(
         default_factory=list, description="Prompt configurations for this route."
     )
-    exclude_args: Optional[list[str]] = Field(
+    exclude_args: list[str] | None = Field(
         default=None, description="List of argument names to exclude from this route."
     )
 
     @field_validator("methods", mode="before")
     @classmethod
-    def validate_methods(
-        cls, v: Union[str, list[str], None]
-    ) -> Optional[list[HTTPMethod]]:
+    def validate_methods(cls, v: str | list[str] | None) -> list[HTTPMethod] | None:
         """Normalize and validate HTTP methods."""
         if v is None:
             return None

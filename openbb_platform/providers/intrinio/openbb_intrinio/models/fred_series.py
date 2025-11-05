@@ -1,8 +1,10 @@
 """Intrinio FRED Series Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -27,11 +29,11 @@ class IntrinioFredSeriesQueryParams(SeriesQueryParams):
 
     __alias_dict__ = {"limit": "page_size"}
 
-    all_pages: Optional[bool] = Field(
+    all_pages: bool | None = Field(
         default=False,
         description="Returns all pages of data from the API call at once.",
     )
-    sleep: Optional[float] = Field(
+    sleep: float | None = Field(
         default=1.0,
         description="Time to sleep between requests to avoid rate limiting.",
     )
@@ -40,19 +42,19 @@ class IntrinioFredSeriesQueryParams(SeriesQueryParams):
 class IntrinioFredSeriesData(SeriesData):
     """Intrinio FRED Series Data."""
 
-    value: Optional[float] = Field(default=None, description="Value of the index.")
+    value: float | None = Field(default=None, description="Value of the index.")
 
 
 class IntrinioFredSeriesFetcher(
     Fetcher[
         IntrinioFredSeriesQueryParams,
-        List[IntrinioFredSeriesData],
+        list[IntrinioFredSeriesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioFredSeriesQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioFredSeriesQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -68,9 +70,9 @@ class IntrinioFredSeriesFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioFredSeriesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -84,23 +86,26 @@ class IntrinioFredSeriesFetcher(
             f"?{query_str}&api_key={api_key}"
         )
 
-        async def callback(response: ClientResponse, session: ClientSession) -> dict:
+        async def callback(response: ClientResponse, session: ClientSession) -> list:
             """Return the response."""
-            init_response = await response.json()
+            init_response: Any = await response.json()
+            all_data: list = []
+            init_data = init_response.get("historical_data", [])
 
-            all_data: list = init_response.get("historical_data", [])
+            if init_data and isinstance(init_data, list):
+                all_data.extend(init_data)
 
             if query.all_pages:
                 next_page = init_response.get("next_page", None)
                 while next_page:
-                    if query.limit > 100:
-                        await asyncio.sleep(query.sleep)
+                    if query.limit and query.limit > 100:
+                        await asyncio.sleep(query.sleep or 1.0)
 
                     url = response.url.update_query(next_page=next_page).human_repr()
                     response_data = await session.get_json(url)
 
-                    all_data.extend(response_data.get("historical_data", []))
-                    next_page = response_data.get("next_page", None)
+                    all_data.extend(response_data.get("historical_data", []))  # type: ignore
+                    next_page = response_data.get("next_page", None)  # type: ignore
 
             return all_data
 
@@ -108,7 +113,7 @@ class IntrinioFredSeriesFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioFredSeriesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioFredSeriesData]:
+        query: IntrinioFredSeriesQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioFredSeriesData]:
         """Return the transformed data."""
         return [IntrinioFredSeriesData.model_validate(d) for d in data]

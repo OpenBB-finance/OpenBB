@@ -5,7 +5,7 @@
 import asyncio
 import json
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -34,19 +34,19 @@ class SACalendarEarningsQueryParams(CalendarEarningsQueryParams):
 class SACalendarEarningsData(CalendarEarningsData):
     """Seeking Alpha Calendar Earnings Data."""
 
-    market_cap: Optional[float] = Field(
+    market_cap: float | None = Field(
         default=None,
         description="Market cap of the entity.",
     )
-    reporting_time: Optional[str] = Field(
+    reporting_time: str | None = Field(
         default=None,
         description="The reporting time - e.g. after market close.",
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="The primary trading exchange.",
     )
-    sector_id: Optional[int] = Field(
+    sector_id: int | None = Field(
         default=None,
         description="The Seeking Alpha Sector ID.",
     )
@@ -62,13 +62,13 @@ class SACalendarEarningsData(CalendarEarningsData):
 class SACalendarEarningsFetcher(
     Fetcher[
         SACalendarEarningsQueryParams,
-        List[SACalendarEarningsData],
+        list[SACalendarEarningsData],
     ]
 ):
     """Seeking Alpha Calendar Earnings Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SACalendarEarningsQueryParams:
+    def transform_query(params: dict[str, Any]) -> SACalendarEarningsQueryParams:
         """Transform the query."""
         now = datetime.today().date()
         transformed_params = params
@@ -81,21 +81,21 @@ class SACalendarEarningsFetcher(
     @staticmethod
     async def aextract_data(
         query: SACalendarEarningsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Seeking Alpha endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.client import ClientSession
         from openbb_core.provider.utils.helpers import amake_request
 
-        results: List[Dict] = []
+        results: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
         ]
         currency = "USD" if query.country == "us" else "CAD"
-        messages: List = []
+        messages: list = []
 
         async with ClientSession() as session:
 
@@ -131,11 +131,11 @@ class SACalendarEarningsFetcher(
     @staticmethod
     def transform_data(
         query: SACalendarEarningsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[SACalendarEarningsData]:
+    ) -> list[SACalendarEarningsData]:
         """Transform the data to the standard format."""
-        transformed_data: List[SACalendarEarningsData] = []
+        transformed_data: list[SACalendarEarningsData] = []
         for row in sorted(data, key=lambda x: x["attributes"]["release_date"]):
             attributes = row.get("attributes", {})
             transformed_data.append(

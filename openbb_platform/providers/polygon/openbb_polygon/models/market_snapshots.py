@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_snapshots import (
@@ -23,48 +23,48 @@ class PolygonMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
 class PolygonMarketSnapshotsData(MarketSnapshotsData):
     """Polygon Market Snapshots Data."""
 
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         description="The volume weighted average price of the stock on the current trading day.",
         default=None,
     )
-    prev_open: Optional[float] = Field(
+    prev_open: float | None = Field(
         description="The previous trading session opening price.", default=None
     )
-    prev_high: Optional[float] = Field(
+    prev_high: float | None = Field(
         description="The previous trading session high price.", default=None
     )
-    prev_low: Optional[float] = Field(
+    prev_low: float | None = Field(
         description="The previous trading session low price.", default=None
     )
-    prev_volume: Optional[float] = Field(
+    prev_volume: float | None = Field(
         description="The previous trading session volume.", default=None
     )
-    prev_vwap: Optional[float] = Field(
+    prev_vwap: float | None = Field(
         description="The previous trading session VWAP.", default=None
     )
-    last_updated: Optional[datetime] = Field(
+    last_updated: datetime | None = Field(
         description="The last time the data was updated."
     )
-    bid: Optional[float] = Field(description="The current bid price.", default=None)
-    bid_size: Optional[int] = Field(description="The current bid size.", default=None)
-    ask_size: Optional[int] = Field(description="The current ask size.", default=None)
-    ask: Optional[float] = Field(description="The current ask price.", default=None)
-    quote_timestamp: Optional[datetime] = Field(
+    bid: float | None = Field(description="The current bid price.", default=None)
+    bid_size: int | None = Field(description="The current bid size.", default=None)
+    ask_size: int | None = Field(description="The current ask size.", default=None)
+    ask: float | None = Field(description="The current ask price.", default=None)
+    quote_timestamp: datetime | None = Field(
         description="The timestamp of the last quote.", default=None
     )
-    last_trade_price: Optional[float] = Field(
+    last_trade_price: float | None = Field(
         description="The last trade price.", default=None
     )
-    last_trade_size: Optional[int] = Field(
+    last_trade_size: int | None = Field(
         description="The last trade size.", default=None
     )
-    last_trade_conditions: Optional[List[int]] = Field(
+    last_trade_conditions: list[int] | None = Field(
         description="The last trade condition codes.", default=None
     )
-    last_trade_exchange: Optional[int] = Field(
+    last_trade_exchange: int | None = Field(
         description="The last trade exchange ID code.", default=None
     )
-    last_trade_timestamp: Optional[datetime] = Field(
+    last_trade_timestamp: datetime | None = Field(
         description="The last trade timestamp.", default=None
     )
 
@@ -91,22 +91,22 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
 class PolygonMarketSnapshotsFetcher(
     Fetcher[
         PolygonMarketSnapshotsQueryParams,
-        List[PolygonMarketSnapshotsData],
+        list[PolygonMarketSnapshotsData],
     ]
 ):
     """Polygon Market Snapshots Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonMarketSnapshotsQueryParams:
+    def transform_query(params: dict[str, Any]) -> PolygonMarketSnapshotsQueryParams:
         """Transform the query params."""
         return PolygonMarketSnapshotsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonMarketSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_polygon.utils.helpers import get_data_many
@@ -120,11 +120,11 @@ class PolygonMarketSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: PolygonMarketSnapshotsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[PolygonMarketSnapshotsData]:
+    ) -> list[PolygonMarketSnapshotsData]:
         """Return the transformed data."""
-        processed_data: List[PolygonMarketSnapshotsData] = []
+        processed_data: list[PolygonMarketSnapshotsData] = []
 
         # Process and flatten the response from a nested dictionary
         for item in data:
@@ -133,7 +133,7 @@ class PolygonMarketSnapshotsFetcher(
             day_data = item.get("day", {})
             prev_day = item.get("prevDay", {})
 
-            market_data: Dict = {
+            market_data: dict = {
                 "symbol": item["ticker"],
                 "bid": last_quote.get("p"),
                 "ask": last_quote.get("P"),

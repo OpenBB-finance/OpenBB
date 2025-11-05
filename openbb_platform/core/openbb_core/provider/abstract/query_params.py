@@ -1,6 +1,6 @@
 """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
 
-from typing import Any, Dict
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
@@ -51,8 +51,8 @@ class QueryParams(BaseModel):
         generation.
     """
 
-    __alias_dict__: Dict[str, str] = {}
-    __json_schema_extra__: Dict[str, Any] = {}
+    __alias_dict__: dict[str, str] = {}
+    __json_schema_extra__: dict[str, Any] = {}
 
     def __repr__(self):
         """Return the string representation of the QueryParams object."""

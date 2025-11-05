@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -28,9 +28,9 @@ SOFR_ID_TO_FIELD = {
 class FREDSOFRQueryParams(SOFRQueryParams):
     """FRED SOFR Query."""
 
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -44,8 +44,8 @@ class FREDSOFRQueryParams(SOFRQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -81,7 +81,7 @@ class FREDSOFRQueryParams(SOFRQueryParams):
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -91,9 +91,9 @@ class FREDSOFRQueryParams(SOFRQueryParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -129,22 +129,22 @@ class FREDSOFRData(SOFRData):
         "index": "SOFRINDEX",
     }
 
-    average_30d: Optional[float] = Field(
+    average_30d: float | None = Field(
         default=None,
         description="30-Day Average SOFR",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    average_90d: Optional[float] = Field(
+    average_90d: float | None = Field(
         default=None,
         description="90-Day Average SOFR",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    average_180d: Optional[float] = Field(
+    average_180d: float | None = Field(
         default=None,
         description="180-Day Average SOFR",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    index: Optional[float] = Field(
+    index: float | None = Field(
         default=None,
         description="SOFR index as 2018-04-02 = 1",
     )
@@ -167,18 +167,18 @@ class FREDSOFRData(SOFRData):
         return float(v) / 100 if v else None
 
 
-class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, List[FREDSOFRData]]):
+class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, list[FREDSOFRData]]):
     """FRED SOFR Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSOFRQueryParams:
+    def transform_query(params: dict[str, Any]) -> FREDSOFRQueryParams:
         """Transform query."""
         return FREDSOFRQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: FREDSOFRQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> Dict:
+        query: FREDSOFRQueryParams, credentials: dict[str, str] | None, **kwargs: Any
+    ) -> dict:
         """Extract data."""
         ids = list(SOFR_ID_TO_FIELD)
         try:
@@ -203,8 +203,8 @@ class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, List[FREDSOFRData]]):
 
     @staticmethod
     def transform_data(
-        query: FREDSOFRQueryParams, data: Dict, **kwargs: Any
-    ) -> AnnotatedResult[List[FREDSOFRData]]:
+        query: FREDSOFRQueryParams, data: dict, **kwargs: Any
+    ) -> AnnotatedResult[list[FREDSOFRData]]:
         """Transform data"""
         if not data:
             raise EmptyDataError("The request was returned empty.")

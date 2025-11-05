@@ -19,10 +19,6 @@ from openbb_mcp_server.utils.fastapi import (
     process_fastapi_routes_for_mcp,
 )
 
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
-
 
 @pytest.fixture
 def mock_system_service():
@@ -149,7 +145,8 @@ def test_process_routes_exclusion(sample_app, mock_system_service):
         app_instance = MagicMock()
         app_instance.router.routes = list(sample_app.router.routes)
         settings = MCPSettings(
-            api_prefix="/api/v1", module_exclusion_map={"fake": "openbb_fake"}  # type: ignore
+            api_prefix="/api/v1",
+            module_exclusion_map={"fake": "openbb_fake"},  # type: ignore
         )
         processed = process_fastapi_routes_for_mcp(app_instance, settings)
         removed_paths = {r.path for r in processed.removed_routes}

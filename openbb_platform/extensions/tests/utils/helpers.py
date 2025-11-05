@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from importlib.metadata import EntryPoint, entry_points
 from inspect import getmembers, isfunction
 from sys import version_info
-from typing import Any, Optional, Set, Tuple, Union
+from typing import Any
 
 from importlib_metadata import EntryPoints
 from openbb_core.app.provider_interface import ProviderInterface
@@ -48,9 +48,7 @@ def execute_docstring_examples(module_name: str, path: str) -> list[str]:
             print(f"* Executing example from {path}")  # noqa: T201
             exec(code)  # pylint: disable=exec-used  # noqa: S102
         except Exception as e:
-            error = (
-                f"{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}\n{'_'*136}"
-            )
+            error = f"{'_' * 136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}\n{'_' * 136}"
             print(error)  # noqa: T201
             errors.append(error)
 
@@ -70,13 +68,13 @@ def check_docstring_examples() -> list[str]:
     return errors
 
 
-def filter_eps(eps: Union[EntryPoints, dict], group: str) -> Tuple[EntryPoint, ...]:
+def filter_eps(eps: EntryPoints | dict, group: str) -> tuple[EntryPoint, ...]:
     if version_info[:2] == (3, 12):
         return eps.select(group=group) or ()  # type: ignore[union-attr]
     return eps.get(group, ())  # type: ignore[union-attr]
 
 
-def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
+def list_openbb_extensions() -> tuple[set[str], set[str], set[str]]:
     """list installed openbb extensions and providers.
 
     Returns
@@ -206,11 +204,11 @@ class Decorator:
     """Decorator."""
 
     name: str
-    args: Optional[dict] = None
-    kwargs: Optional[dict] = None
+    args: dict | None = None
+    kwargs: dict | None = None
 
 
-def get_decorator_details(function) -> Optional[Decorator]:
+def get_decorator_details(function) -> Decorator | None:
     """Extract decorators and their arguments from a function."""
     source = inspect.getsource(function)
     parsed_source = parse(source)

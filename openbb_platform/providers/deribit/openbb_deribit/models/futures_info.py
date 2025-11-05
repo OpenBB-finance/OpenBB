@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_info import (
@@ -81,50 +81,50 @@ class DeribitFuturesInfoData(FuturesInfoData):
         description="Current index (reference) price",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    best_ask_amount: Optional[float] = Field(
+    best_ask_amount: float | None = Field(
         default=None,
         description="It represents the requested order size of all best asks",
     )
-    best_ask_price: Optional[float] = Field(
+    best_ask_price: float | None = Field(
         default=None,
         description="The current best ask price, null if there aren't any asks",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    best_bid_price: Optional[float] = Field(
+    best_bid_price: float | None = Field(
         default=None,
         description="The current best bid price, null if there aren't any bids",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    best_bid_amount: Optional[float] = Field(
+    best_bid_amount: float | None = Field(
         default=None,
         description="It represents the requested order size of all best bids",
     )
-    last_price: Optional[float] = Field(
+    last_price: float | None = Field(
         default=None,
         description="The price for the last trade",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None,
         description="Highest price during 24h",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None,
         description="Lowest price during 24h",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         default=None,
         description="24-hour price change expressed as a percentage, null if there weren't any trades",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         default=None,
         description="Volume during last 24h in base currency",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    volume_usd: Optional[float] = Field(
+    volume_usd: float | None = Field(
         default=None,
         description="Volume in USD",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -133,12 +133,12 @@ class DeribitFuturesInfoData(FuturesInfoData):
         description="The mark price for the instrument",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    settlement_price: Optional[float] = Field(
+    settlement_price: float | None = Field(
         default=None,
         description="The settlement price for the instrument. Only when state = open",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    delivery_price: Optional[float] = Field(
+    delivery_price: float | None = Field(
         default=None,
         description="The settlement price for the instrument. Only when state = closed.",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -147,15 +147,15 @@ class DeribitFuturesInfoData(FuturesInfoData):
         description="Estimated delivery price for the market.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    current_funding: Optional[float] = Field(
+    current_funding: float | None = Field(
         default=None,
         description="Current funding (perpetual only)",
     )
-    funding_8h: Optional[float] = Field(
+    funding_8h: float | None = Field(
         default=None,
         description="Funding 8h (perpetual only)",
     )
-    interest_value: Optional[float] = Field(
+    interest_value: float | None = Field(
         default=None,
         description="Value used to calculate realized_funding in positions (perpetual only)",
     )
@@ -191,7 +191,7 @@ class DeribitFuturesInfoFetcher(
     @staticmethod
     async def aextract_data(
         query: DeribitFuturesInfoQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Extract data from the response."""

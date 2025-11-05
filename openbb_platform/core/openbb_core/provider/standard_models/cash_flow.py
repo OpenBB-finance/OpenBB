@@ -1,7 +1,6 @@
 """Cash Flow Statement Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -13,7 +12,7 @@ class CashFlowStatementQueryParams(QueryParams):
     """Cash Flow Statement Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt | None = Field(
         default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
@@ -28,9 +27,9 @@ class CashFlowStatementData(Data):
     """Cash Flow Statement Data."""
 
     period_ending: dateType = Field(description="The end date of the reporting period.")
-    fiscal_period: Optional[str] = Field(
+    fiscal_period: str | None = Field(
         description="The fiscal period of the report.", default=None
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         description="The fiscal year of the fiscal period.", default=None
     )

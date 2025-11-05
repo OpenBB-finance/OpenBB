@@ -3,17 +3,12 @@
 # pylint: disable=protected-access,unused-argument
 
 import json
-import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import FastAPI
 from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.models.settings import MCPSettings
-
-# Skip all tests if Python version < 3.10
-if sys.version_info < (3, 10):
-    pytest.skip("MCP server requires Python 3.10+", allow_module_level=True)
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")

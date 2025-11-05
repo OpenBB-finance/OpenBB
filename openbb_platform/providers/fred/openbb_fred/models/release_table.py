@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -31,7 +31,7 @@ class FredReleaseTableQueryParams(ReleaseTableQueryParams):
             return None
         if isinstance(v, (list, dateType)):
             return v
-        new_dates: List = []
+        new_dates: list = []
         date_param = v
         if isinstance(date_param, str):
             new_dates = date_param.split(",")
@@ -58,22 +58,22 @@ class FredReleaseTableData(ReleaseTableData):
 class FredReleaseTableFetcher(
     Fetcher[
         FredReleaseTableQueryParams,
-        List[FredReleaseTableData],
+        list[FredReleaseTableData],
     ]
 ):
     """FRED Release Table Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredReleaseTableQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredReleaseTableQueryParams:
         """Transform query."""
         return FredReleaseTableQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredReleaseTableQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -83,7 +83,7 @@ class FredReleaseTableFetcher(
         from pandas import DataFrame, to_datetime
 
         api_key = credentials.get("fred_api_key") if credentials else ""
-        dates: List = [""]
+        dates: list = [""]
 
         # We'll verify that the release_id is valid and check the frequency for monthly/quarterly data.
         release_info = await FredSearchFetcher.fetch_data(
@@ -116,9 +116,7 @@ class FredReleaseTableFetcher(
                 dates = [to_quarter_start(d) for d in dates if len(d) == 10]
 
             dates = list(set(dates))
-            dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-            )
+            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
 
         element_id = (
             f"&element_id={query.element_id}" if query.element_id is not None else ""
@@ -130,7 +128,7 @@ class FredReleaseTableFetcher(
             + "&file_type=json"
             for date in dates
         ]
-        results: List = []
+        results: list = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
@@ -141,8 +139,8 @@ class FredReleaseTableFetcher(
             if "elements" not in response:
                 return
 
-            res: List = []
-            data: List = []
+            res: list = []
+            data: list = []
             # We use `res` to store the table and section elements
             # and to identify if observation values are returned.
             # We use `data` to store the observation values.
@@ -249,9 +247,9 @@ class FredReleaseTableFetcher(
     @staticmethod
     def transform_data(
         query: FredReleaseTableQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FredReleaseTableData]:
+    ) -> list[FredReleaseTableData]:
         """Transform data."""
         if not data:
             raise EmptyDataError(

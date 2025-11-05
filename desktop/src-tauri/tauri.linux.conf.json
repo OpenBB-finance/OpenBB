@@ -1,0 +1,29 @@
+{
+  "bundle": {
+    "targets": "all",
+    "resources": [],
+    "category": "Finance",
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1-0",
+          "libgtk-3-0",
+          "libssl3",
+          "libcairo-gobject2",
+          "libgdk-pixbuf-2.0-0",
+          "libpango-1.0-0",
+          "libatk1.0-0",
+          "libglib2.0-0",
+          "libssl-dev"
+        ]
+      },
+      "rpm": {
+        "depends": [
+          "webkit2gtk4.1",
+          "gtk3",
+          "openssl"
+        ]
+      }
+    }
+  }
+}

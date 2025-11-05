@@ -9,7 +9,7 @@ from openbb_cli.session import Session
 # pylint: disable=unused-variable, redefined-outer-name
 
 
-class TestController(BaseController):
+class DummyController(BaseController):
     """Test controller for the BaseController."""
 
     PATH = "/test/"
@@ -22,7 +22,7 @@ class TestController(BaseController):
 def base_controller():
     """Set up the environment for each test function."""
     session = Session()  # noqa: F841
-    controller = TestController()
+    controller = DummyController()
     return controller
 
 
@@ -52,7 +52,7 @@ def test_check_path_invalid(base_controller):
 def test_parse_input(base_controller):
     """Test the parse_input method."""
     input_str = "/equity/price/help"
-    expected_output = ["", "equity", "price", "help"]
+    expected_output = ["equity", "price", "help"]
     assert (
         base_controller.parse_input(input_str) == expected_output
     ), "Input parsing failed"

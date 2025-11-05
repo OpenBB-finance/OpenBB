@@ -1,7 +1,6 @@
 """NonFarm Payrolls Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -15,7 +14,7 @@ from pydantic import Field
 class NonFarmPayrollsQueryParams(QueryParams):
     """NonFarm Payrolls Query."""
 
-    date: Optional[Union[dateType, str]] = Field(
+    date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
         + " Default is the latest report.",

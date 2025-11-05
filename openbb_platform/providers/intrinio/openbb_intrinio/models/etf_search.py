@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,7 +22,7 @@ class IntrinioEtfSearchQueryParams(EtfSearchQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/search_etfs_v2
     """
 
-    exchange: Union[None, ETF_EXCHANGES] = Field(
+    exchange: None | ETF_EXCHANGES = Field(
         default=None,
         description="Target a specific exchange by providing the MIC code.",
     )
@@ -37,48 +37,48 @@ class IntrinioEtfSearchData(EtfSearchData):
         "exchange": "exchange_mic",
     }
 
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="The exchange MIC code.",
     )
-    figi_ticker: Optional[str] = Field(
+    figi_ticker: str | None = Field(
         None,
         description="The OpenFIGI ticker.",
     )
-    ric: Optional[str] = Field(
+    ric: str | None = Field(
         None,
         description="The Reuters Instrument Code.",
     )
-    isin: Optional[str] = Field(
+    isin: str | None = Field(
         None,
         description="The International Securities Identification Number.",
     )
-    sedol: Optional[str] = Field(
+    sedol: str | None = Field(
         None,
         description="The Stock Exchange Daily Official List.",
     )
-    intrinio_id: Optional[str] = Field(
+    intrinio_id: str | None = Field(
         None,
         description="The unique Intrinio ID for the security.",
     )
 
 
 class IntrinioEtfSearchFetcher(
-    Fetcher[IntrinioEtfSearchQueryParams, List[IntrinioEtfSearchData]]
+    Fetcher[IntrinioEtfSearchQueryParams, list[IntrinioEtfSearchData]]
 ):
     """Intrinio ETF Search Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioEtfSearchQueryParams:
+    def transform_query(params: dict[str, Any]) -> IntrinioEtfSearchQueryParams:
         """Transform query."""
         return IntrinioEtfSearchQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioEtfSearchQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
@@ -96,7 +96,7 @@ class IntrinioEtfSearchFetcher(
         else:
             url = f"{BASE}?page_size=10000&api_key={api_key}"
 
-        data: List = []
+        data: list = []
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Async response callback."""
@@ -112,10 +112,7 @@ class IntrinioEtfSearchFetcher(
                     next_page = results["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     results = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "etfs" in results
-                        and len(results.get("etfs")) > 0  # type: ignore
-                    ):
+                    if "etfs" in results and len(results.get("etfs")) > 0:  # type: ignore
                         data.extend(results.get("etfs"))  # type: ignore
             return data
 
@@ -124,9 +121,9 @@ class IntrinioEtfSearchFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEtfSearchQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioEtfSearchData]:
+    ) -> list[IntrinioEtfSearchData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         import re  # noqa

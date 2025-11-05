@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -24,7 +24,7 @@ class IntrinioHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
     __alias_dict__ = {"limit": "page_size"}
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -39,18 +39,18 @@ class IntrinioHistoricalDividendsData(HistoricalDividendsData):
         "currency": "dividend_currency",
     }
 
-    factor: Optional[float] = Field(
+    factor: float | None = Field(
         default=None,
         description=(
             "factor by which to multiply stock prices before this date, "
             "in order to calculate historically-adjusted stock prices."
         ),
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="The currency in which the dividend is paid.",
     )
-    split_ratio: Optional[float] = Field(
+    split_ratio: float | None = Field(
         default=None,
         description="The ratio of the stock split, if a stock split occurred.",
     )
@@ -59,14 +59,14 @@ class IntrinioHistoricalDividendsData(HistoricalDividendsData):
 class IntrinioHistoricalDividendsFetcher(
     Fetcher[
         IntrinioHistoricalDividendsQueryParams,
-        List[IntrinioHistoricalDividendsData],
+        list[IntrinioHistoricalDividendsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioHistoricalDividendsQueryParams:
         """Transform the query params."""
         transformed_params = params
@@ -82,9 +82,9 @@ class IntrinioHistoricalDividendsFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioHistoricalDividendsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
@@ -96,10 +96,10 @@ class IntrinioHistoricalDividendsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioHistoricalDividendsData]:
+        query: IntrinioHistoricalDividendsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[IntrinioHistoricalDividendsData]:
         """Return the transformed data."""
-        transformed_data: List[Dict] = [
+        transformed_data: list[dict] = [
             {"symbol": query.symbol, **item} for item in data
         ]
         return [

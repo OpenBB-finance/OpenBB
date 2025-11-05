@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.executive_compensation import (
@@ -39,10 +39,10 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
         "executive": "nameAndPosition",
         "report_date": "filingDate",
     }
-    accepted_date: Optional[datetime] = Field(
+    accepted_date: datetime | None = Field(
         default=None, description="Date the filing was accepted."
     )
-    url: Optional[str] = Field(default=None, description="URL to the filing data.")
+    url: str | None = Field(default=None, description="URL to the filing data.")
 
 
 class FMPExecutiveCompensationFetcher(
@@ -61,7 +61,7 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPExecutiveCompensationQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

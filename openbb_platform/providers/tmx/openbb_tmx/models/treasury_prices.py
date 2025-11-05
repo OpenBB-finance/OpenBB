@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
@@ -28,23 +28,23 @@ class TmxTreasuryPricesQueryParams(TreasuryPricesQueryParams):
         default="federal",
         description="The level of government issuer.",
     )
-    issue_date_min: Optional[dateType] = Field(
+    issue_date_min: dateType | None = Field(
         default=None,
         description="Filter by the minimum original issue date.",
     )
-    issue_date_max: Optional[dateType] = Field(
+    issue_date_max: dateType | None = Field(
         default=None,
         description="Filter by the maximum original issue date.",
     )
-    last_traded_min: Optional[dateType] = Field(
+    last_traded_min: dateType | None = Field(
         default=None,
         description="Filter by the minimum last trade date.",
     )
-    maturity_date_min: Optional[dateType] = Field(
+    maturity_date_min: dateType | None = Field(
         default=None,
         description="Filter by the minimum maturity date.",
     )
-    maturity_date_max: Optional[dateType] = Field(
+    maturity_date_max: dateType | None = Field(
         default=None,
         description="Filter by the maximum maturity date.",
     )
@@ -87,13 +87,13 @@ class TmxTreasuryPricesData(TreasuryPricesData):
 class TmxTreasuryPricesFetcher(
     Fetcher[
         TmxTreasuryPricesQueryParams,
-        List[TmxTreasuryPricesData],
+        list[TmxTreasuryPricesData],
     ]
 ):
     """Tmx Bond Reference Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxTreasuryPricesQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxTreasuryPricesQueryParams:
         """Transform query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -112,7 +112,7 @@ class TmxTreasuryPricesFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxTreasuryPricesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Get the raw data containing all bond data."""
@@ -128,7 +128,7 @@ class TmxTreasuryPricesFetcher(
         query: TmxTreasuryPricesQueryParams,
         data: "DataFrame",
         **kwargs: Any,
-    ) -> List[TmxTreasuryPricesData]:
+    ) -> list[TmxTreasuryPricesData]:
         """Transform data."""
         bonds = data.copy()
         results = []

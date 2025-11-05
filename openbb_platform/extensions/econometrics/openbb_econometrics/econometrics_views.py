@@ -36,4 +36,4 @@ class EconometricsViews:
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.correlation_matrix import correlation_matrix
 
-        return correlation_matrix(**kwargs)
+        return correlation_matrix(**kwargs)  # type: ignore

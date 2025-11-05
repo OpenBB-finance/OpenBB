@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -18,18 +18,18 @@ from pydantic import Field, NonNegativeInt, field_validator
 class CompanyNewsQueryParams(QueryParams):
     """Company news Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
@@ -47,15 +47,15 @@ class CompanyNewsData(Data):
         description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
     )
     title: str = Field(description="Title of the article.")
-    author: Optional[str] = Field(default=None, description="Author of the article.")
-    excerpt: Optional[str] = Field(
+    author: str | None = Field(default=None, description="Author of the article.")
+    excerpt: str | None = Field(
         default=None, description="Excerpt of the article text."
     )
-    body: Optional[str] = Field(default=None, description="Body of the article text.")
-    images: Optional[Any] = Field(
+    body: str | None = Field(default=None, description="Body of the article text.")
+    images: Any | None = Field(
         default=None, description="Images associated with the article."
     )
     url: str = Field(description="URL to the article.")
-    symbols: Optional[str] = Field(
+    symbols: str | None = Field(
         default=None, description="Symbols associated with the article."
     )

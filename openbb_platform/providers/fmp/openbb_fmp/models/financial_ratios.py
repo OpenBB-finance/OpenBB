@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_ratios import (
@@ -32,7 +32,7 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
         default="annual",
         description="Specify the fiscal period for the data.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="Only applicable when TTM is not set to 'only'."
         + " Defines the number of most recent reporting periods to return."
@@ -110,295 +110,295 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         "dividend_per_share": "dividendPerShare",
     }
 
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="Currency in which the company reports financials.",
     )
-    gross_profit_margin: Optional[float] = Field(
+    gross_profit_margin: float | None = Field(
         default=None,
         description="Gross profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="grossProfitMarginTTM",
     )
-    ebit_margin: Optional[float] = Field(
+    ebit_margin: float | None = Field(
         default=None,
         description="Earnings before interest and taxes (EBIT) margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         title="EBIT Margin",
         alias="ebitMarginTTM",
     )
-    ebitda_margin: Optional[float] = Field(
+    ebitda_margin: float | None = Field(
         default=None,
         description="Earnings before interest, taxes, depreciation, and amortization (EBITDA) margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         title="EBITDA Margin",
         alias="ebitdaMarginTTM",
     )
-    operating_profit_margin: Optional[float] = Field(
+    operating_profit_margin: float | None = Field(
         default=None,
         description="Operating profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="operatingProfitMarginTTM",
     )
-    pretax_profit_margin: Optional[float] = Field(
+    pretax_profit_margin: float | None = Field(
         default=None,
         description="Pretax profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="pretaxProfitMarginTTM",
     )
-    continuous_operations_profit_margin: Optional[float] = Field(
+    continuous_operations_profit_margin: float | None = Field(
         default=None,
         description="Continuous operations profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="continuousOperationsProfitMarginTTM",
     )
-    net_profit_margin: Optional[float] = Field(
+    net_profit_margin: float | None = Field(
         default=None,
         description="Net profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="netProfitMarginTTM",
     )
-    bottom_line_profit_margin: Optional[float] = Field(
+    bottom_line_profit_margin: float | None = Field(
         default=None,
         description="Bottom line profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="bottomLineProfitMarginTTM",
     )
-    receivables_turnover: Optional[float] = Field(
+    receivables_turnover: float | None = Field(
         default=None,
         description="Receivables turnover ratio.",
         alias="receivablesTurnoverTTM",
     )
-    payables_turnover: Optional[float] = Field(
+    payables_turnover: float | None = Field(
         default=None,
         description="Payables turnover ratio.",
         alias="payablesTurnoverTTM",
     )
-    inventory_turnover: Optional[float] = Field(
+    inventory_turnover: float | None = Field(
         default=None,
         description="Inventory turnover ratio.",
         alias="inventoryTurnoverTTM",
     )
-    fixed_asset_turnover: Optional[float] = Field(
+    fixed_asset_turnover: float | None = Field(
         default=None,
         description="Fixed asset turnover ratio.",
         alias="fixedAssetTurnoverTTM",
     )
-    asset_turnover: Optional[float] = Field(
+    asset_turnover: float | None = Field(
         default=None, description="Asset turnover ratio.", alias="assetTurnoverTTM"
     )
-    current_ratio: Optional[float] = Field(
+    current_ratio: float | None = Field(
         default=None, description="Current ratio.", alias="currentRatioTTM"
     )
-    quick_ratio: Optional[float] = Field(
+    quick_ratio: float | None = Field(
         default=None, description="Quick ratio.", alias="quickRatioTTM"
     )
-    solvency_ratio: Optional[float] = Field(
+    solvency_ratio: float | None = Field(
         default=None, description="Solvency ratio.", alias="solvencyRatioTTM"
     )
-    cash_ratio: Optional[float] = Field(
+    cash_ratio: float | None = Field(
         default=None, description="Cash ratio.", alias="cashRatioTTM"
     )
-    price_to_earnings: Optional[float] = Field(
+    price_to_earnings: float | None = Field(
         default=None,
         description="Price to earnings (P/E) ratio.",
         title="P/E",
         alias="priceToEarningsRatioTTM",
     )
-    price_to_earnings_growth: Optional[float] = Field(
+    price_to_earnings_growth: float | None = Field(
         default=None,
         description="Price to earnings growth (PEG) ratio.",
         title="PEG",
         alias="priceToEarningsGrowthRatioTTM",
     )
-    forward_price_to_earnings_growth: Optional[float] = Field(
+    forward_price_to_earnings_growth: float | None = Field(
         default=None,
         description="Forward price to earnings growth (PEG) ratio.",
         title="Forward PEG",
         alias="forwardPriceToEarningsGrowthRatioTTM",
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None,
         description="Price to book (P/B) ratio.",
         title="P/B",
         alias="priceToBookRatioTTM",
     )
-    price_to_sales: Optional[float] = Field(
+    price_to_sales: float | None = Field(
         default=None,
         description="Price to sales (P/S) ratio.",
         title="P/S",
         alias="priceToSalesRatioTTM",
     )
-    price_to_free_cash_flow: Optional[float] = Field(
+    price_to_free_cash_flow: float | None = Field(
         default=None,
         description="Price to free cash flow (P/FCF) ratio.",
         title="P/FCF",
         alias="priceToFreeCashFlowRatioTTM",
     )
-    price_to_operating_cash_flow: Optional[float] = Field(
+    price_to_operating_cash_flow: float | None = Field(
         default=None,
         description="Price to operating cash flow (P/OCF) ratio.",
         title="P/OCF",
         alias="priceToOperatingCashFlowRatioTTM",
     )
-    debt_to_assets: Optional[float] = Field(
+    debt_to_assets: float | None = Field(
         default=None, description="Debt to assets ratio.", alias="debtToAssetsRatioTTM"
     )
-    debt_to_equity: Optional[float] = Field(
+    debt_to_equity: float | None = Field(
         default=None, description="Debt to equity ratio.", alias="debtToEquityRatioTTM"
     )
-    debt_to_capital: Optional[float] = Field(
+    debt_to_capital: float | None = Field(
         default=None,
         description="Debt to capital ratio.",
         alias="debtToCapitalRatioTTM",
     )
-    long_term_debt_to_capital: Optional[float] = Field(
+    long_term_debt_to_capital: float | None = Field(
         default=None,
         description="Long-term debt to capital ratio.",
         alias="longTermDebtToCapitalRatioTTM",
     )
-    financial_leverage_ratio: Optional[float] = Field(
+    financial_leverage_ratio: float | None = Field(
         default=None,
         description="Financial leverage ratio.",
         alias="financialLeverageRatioTTM",
     )
-    working_capital_turnover_ratio: Optional[float] = Field(
+    working_capital_turnover_ratio: float | None = Field(
         default=None,
         description="Working capital turnover ratio.",
         alias="workingCapitalTurnoverRatioTTM",
     )
-    operating_cash_flow_ratio: Optional[float] = Field(
+    operating_cash_flow_ratio: float | None = Field(
         default=None,
         description="Operating cash flow ratio.",
         alias="operatingCashFlowRatioTTM",
     )
-    operating_cash_flow_sales_ratio: Optional[float] = Field(
+    operating_cash_flow_sales_ratio: float | None = Field(
         default=None,
         description="Operating cash flow to sales ratio.",
         alias="operatingCashFlowSalesRatioTTM",
     )
-    free_cash_flow_operating_cash_flow_ratio: Optional[float] = Field(
+    free_cash_flow_operating_cash_flow_ratio: float | None = Field(
         default=None,
         description="Free cash flow to operating cash flow ratio.",
         title="FCF/OCF",
         alias="freeCashFlowOperatingCashFlowRatioTTM",
     )
-    debt_service_coverage_ratio: Optional[float] = Field(
+    debt_service_coverage_ratio: float | None = Field(
         default=None,
         description="Debt service coverage ratio.",
         alias="debtServiceCoverageRatioTTM",
     )
-    interest_coverage_ratio: Optional[float] = Field(
+    interest_coverage_ratio: float | None = Field(
         default=None,
         description="Interest coverage ratio.",
         alias="interestCoverageRatioTTM",
     )
-    short_term_operating_cash_flow_coverage_ratio: Optional[float] = Field(
+    short_term_operating_cash_flow_coverage_ratio: float | None = Field(
         default=None,
         description="Short-term operating cash flow coverage ratio.",
         alias="shortTermOperatingCashFlowCoverageRatioTTM",
     )
-    operating_cash_flow_coverage_ratio: Optional[float] = Field(
+    operating_cash_flow_coverage_ratio: float | None = Field(
         default=None,
         description="Operating cash flow coverage ratio.",
         alias="operatingCashFlowCoverageRatioTTM",
     )
-    capital_expenditure_coverage_ratio: Optional[float] = Field(
+    capital_expenditure_coverage_ratio: float | None = Field(
         default=None,
         description="Capital expenditure coverage ratio.",
         alias="capitalExpenditureCoverageRatioTTM",
     )
-    dividend_paid_and_capex_coverage_ratio: Optional[float] = Field(
+    dividend_paid_and_capex_coverage_ratio: float | None = Field(
         default=None,
         description="Dividend paid and capital expenditure coverage ratio.",
         alias="dividendPaidAndCapexCoverageRatioTTM",
     )
-    dividend_payout_ratio: Optional[float] = Field(
+    dividend_payout_ratio: float | None = Field(
         default=None,
         description="Dividend payout ratio.",
         alias="dividendPayoutRatioTTM",
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Dividend yield.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="dividendYieldTTM",
     )
-    dividend_per_share: Optional[float] = Field(
+    dividend_per_share: float | None = Field(
         default=None, description="Dividend per share.", alias="dividendPerShareTTM"
     )
-    revenue_per_share: Optional[float] = Field(
+    revenue_per_share: float | None = Field(
         default=None, description="Revenue per share.", alias="revenuePerShareTTM"
     )
-    net_income_per_share: Optional[float] = Field(
+    net_income_per_share: float | None = Field(
         default=None, description="Net income per share.", alias="netIncomePerShareTTM"
     )
-    interest_debt_per_share: Optional[float] = Field(
+    interest_debt_per_share: float | None = Field(
         default=None,
         description="Interest-bearing debt per share.",
         alias="interestDebtPerShareTTM",
     )
-    cash_per_share: Optional[float] = Field(
+    cash_per_share: float | None = Field(
         default=None, description="Cash per share.", alias="cashPerShareTTM"
     )
-    book_value_per_share: Optional[float] = Field(
+    book_value_per_share: float | None = Field(
         default=None, description="Book value per share.", alias="bookValuePerShareTTM"
     )
-    tangible_book_value_per_share: Optional[float] = Field(
+    tangible_book_value_per_share: float | None = Field(
         default=None,
         description="Tangible book value per share.",
         alias="tangibleBookValuePerShareTTM",
     )
-    shareholders_equity_per_share: Optional[float] = Field(
+    shareholders_equity_per_share: float | None = Field(
         default=None,
         description="Shareholders' equity per share.",
         alias="shareholdersEquityPerShareTTM",
     )
-    operating_cash_flow_per_share: Optional[float] = Field(
+    operating_cash_flow_per_share: float | None = Field(
         default=None,
         description="Operating cash flow per share.",
         alias="operatingCashFlowPerShareTTM",
     )
-    capex_per_share: Optional[float] = Field(
+    capex_per_share: float | None = Field(
         default=None,
         description="Capital expenditure per share.",
         alias="capexPerShareTTM",
     )
-    free_cash_flow_per_share: Optional[float] = Field(
+    free_cash_flow_per_share: float | None = Field(
         default=None,
         description="Free cash flow per share.",
         title="FCF/Share",
         alias="freeCashFlowPerShareTTM",
     )
-    net_income_per_ebt: Optional[float] = Field(
+    net_income_per_ebt: float | None = Field(
         default=None,
         description="Net income per earnings before tax (EBT).",
         title="Net Income/EBT",
         alias="netIncomePerEBTTTM",
     )
-    ebt_per_ebit: Optional[float] = Field(
+    ebt_per_ebit: float | None = Field(
         default=None,
         description="Earnings before tax (EBT) per earnings before interest and tax (EBIT).",
         title="EBT/EBIT",
         alias="ebtPerEbitTTM",
     )
-    price_to_fair_value: Optional[float] = Field(
+    price_to_fair_value: float | None = Field(
         default=None,
         description="Price to fair value ratio.",
         alias="priceToFairValueTTM",
     )
-    debt_to_market_cap: Optional[float] = Field(
+    debt_to_market_cap: float | None = Field(
         default=None,
         description="Debt to market capitalization ratio.",
         alias="debtToMarketCapTTM",
     )
-    effective_tax_rate: Optional[float] = Field(
+    effective_tax_rate: float | None = Field(
         default=None,
         description="Effective tax rate.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="effectiveTaxRateTTM",
     )
-    enterprise_value_multiple: Optional[float] = Field(
+    enterprise_value_multiple: float | None = Field(
         default=None,
         description="Enterprise value multiple (EV/EBITDA).",
         alias="enterpriseValueMultipleTTM",
@@ -421,7 +421,7 @@ class FMPFinancialRatiosFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPFinancialRatiosQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
         """Return the raw data from the FMP endpoint."""

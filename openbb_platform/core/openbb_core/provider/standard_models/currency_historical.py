@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -23,19 +22,17 @@ class CurrencyHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " Can use CURR1-CURR2 or CURR1CURR2 format."
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def validate_symbol(
-        cls, v: Union[str, List[str], Set[str]]
-    ):  # pylint: disable=E0213
+    def validate_symbol(cls, v: str | list[str] | set[str]):  # pylint: disable=E0213
         """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
@@ -45,23 +42,21 @@ class CurrencyHistoricalQueryParams(QueryParams):
 class CurrencyHistoricalData(Data):
     """Currency Historical Price Data."""
 
-    date: Union[dateType, datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", "")
-    )
-    open: Optional[float] = Field(
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
-    high: Optional[float] = Field(
+    high: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("high", "")
     )
-    low: Optional[float] = Field(
+    low: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[float] = Field(
+    volume: float | None = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""), default=None
     )
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         description=DATA_DESCRIPTIONS.get("vwap", ""), default=None
     )
 

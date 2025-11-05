@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -40,9 +40,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    interval: Union[
-        Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
-    ] = Field(  # type: ignore
+    interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"] | str | int = Field(  # type: ignore
         description=QUERY_DESCRIPTIONS.get("interval", "")
         + " Or, any integer (entered as a string) representing the number of minutes."
         + " Default is daily data."
@@ -87,19 +85,19 @@ class TmxEquityHistoricalData(EquityHistoricalData):
         "change_percent": "changePercent",
     }
 
-    vwap: Optional[float] = Field(
+    vwap: float | None = Field(
         description="Volume weighted average price for the day.", default=None
     )
-    change: Optional[float] = Field(description="Change in price.", default=None)
-    change_percent: Optional[float] = Field(
+    change: float | None = Field(description="Change in price.", default=None)
+    change_percent: float | None = Field(
         description="Change in price, as a normalized percentage.",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    transactions: Optional[int] = Field(
+    transactions: int | None = Field(
         description="Total number of transactions recorded.", default=None
     )
-    transactions_value: Optional[float] = Field(
+    transactions_value: float | None = Field(
         description="Nominal value of recorded transactions.", default=None
     )
 
@@ -120,12 +118,12 @@ class TmxEquityHistoricalData(EquityHistoricalData):
 
 
 class TmxEquityHistoricalFetcher(
-    Fetcher[TmxEquityHistoricalQueryParams, List[TmxEquityHistoricalData]]
+    Fetcher[TmxEquityHistoricalQueryParams, list[TmxEquityHistoricalData]]
 ):
     """TMX Equity Historical Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxEquityHistoricalQueryParams:
         """Transform the query."""
         adjustment = params.get("adjustment")
         if (
@@ -139,9 +137,9 @@ class TmxEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -151,12 +149,12 @@ class TmxEquityHistoricalFetcher(
             get_weekly_or_monthly_price_history,
         )
 
-        results: List[Dict] = []
+        results: list[dict] = []
         symbols = query.symbol.split(",")
 
         async def create_task(symbol, results):
             """Make a POST request to the TMX GraphQL endpoint for a single ticker."""
-            data: List[Dict] = []
+            data: list[dict] = []
             # A different request is used for each type of interval.
             if query.interval == "day":
                 data = await get_daily_price_history(
@@ -199,9 +197,9 @@ class TmxEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: TmxEquityHistoricalQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxEquityHistoricalData]:
+    ) -> list[TmxEquityHistoricalData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime

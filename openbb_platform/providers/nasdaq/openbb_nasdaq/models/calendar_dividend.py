@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_dividend import (
@@ -34,7 +34,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
         "annualized_amount": "indicated_Annual_Dividend",
     }
 
-    annualized_amount: Optional[float] = Field(
+    annualized_amount: float | None = Field(
         default=None,
         description="The indicated annualized dividend amount.",
     )
@@ -57,7 +57,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
 class NasdaqCalendarDividendFetcher(
     Fetcher[
         NasdaqCalendarDividendQueryParams,
-        List[NasdaqCalendarDividendData],
+        list[NasdaqCalendarDividendData],
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
@@ -65,7 +65,7 @@ class NasdaqCalendarDividendFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqCalendarDividendQueryParams:
+    def transform_query(params: dict[str, Any]) -> NasdaqCalendarDividendQueryParams:
         """Transform the query params."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -84,9 +84,9 @@ class NasdaqCalendarDividendFetcher(
     @staticmethod
     async def aextract_data(
         query: NasdaqCalendarDividendQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        credentials: dict[str, str] | None,  # pylint: disable=unused-argument
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -94,7 +94,7 @@ class NasdaqCalendarDividendFetcher(
         from openbb_core.provider.utils.helpers import amake_request  # noqa
 
         IPO_HEADERS = get_headers(accept_type="json")
-        data: List[Dict] = []
+        data: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
             for date in date_range(query.start_date, query.end_date)
@@ -102,7 +102,7 @@ class NasdaqCalendarDividendFetcher(
 
         async def get_calendar_data(date: str) -> None:
             """Get the calendar data."""
-            response: List = []
+            response: list = []
             url = f"https://api.nasdaq.com/api/calendar/dividends?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
             if (
@@ -121,9 +121,9 @@ class NasdaqCalendarDividendFetcher(
     @staticmethod
     def transform_data(
         query: NasdaqCalendarDividendQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[NasdaqCalendarDividendData]:
+    ) -> list[NasdaqCalendarDividendData]:
         """Return the transformed data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

@@ -1,7 +1,8 @@
 """Decorators for the OpenBB Platform static assets."""
 
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, Optional, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
@@ -24,7 +25,7 @@ def validate(**dec_kwargs) -> Callable[[Callable[P, R]], Callable[P, R]]:
 
 
 def validate(
-    func: Optional[Callable[P, R]] = None,
+    func: Callable[P, R] | None = None,
     **dec_kwargs,
 ) -> Any:
     """Validate function calls."""

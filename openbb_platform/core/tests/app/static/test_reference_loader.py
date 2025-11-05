@@ -26,7 +26,7 @@ def mock_reference_data(tmp_path):
     mock_data = {"key": "value"}
     with open(reference_file, "w", encoding="utf-8") as f:
         json.dump(mock_data, f)
-    return directory
+    return tmp_path
 
 
 def test_load_reference_data(mock_reference_data, reference_loader):

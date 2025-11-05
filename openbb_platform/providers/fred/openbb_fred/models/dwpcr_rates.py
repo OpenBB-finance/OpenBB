@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.dwpcr_rates import (
@@ -46,14 +46,14 @@ class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateDat
 class FREDDiscountWindowPrimaryCreditRateFetcher(
     Fetcher[
         FREDDiscountWindowPrimaryCreditRateParams,
-        List[FREDDiscountWindowPrimaryCreditRateData],
+        list[FREDDiscountWindowPrimaryCreditRateData],
     ]
 ):
     """FRED Discount Window Primary Credit Rate Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FREDDiscountWindowPrimaryCreditRateParams:
         """Transform query."""
         return FREDDiscountWindowPrimaryCreditRateParams(**params)
@@ -61,9 +61,9 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
     @staticmethod
     def extract_data(
         query: FREDDiscountWindowPrimaryCreditRateParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any
-    ) -> List:
+    ) -> list:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         from openbb_fred.utils.fred_base import Fred
@@ -82,7 +82,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDDiscountWindowPrimaryCreditRateParams, data: List, **kwargs: Any
-    ) -> List[FREDDiscountWindowPrimaryCreditRateData]:
+        query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
+    ) -> list[FREDDiscountWindowPrimaryCreditRateData]:
         """Transform data."""
         return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]

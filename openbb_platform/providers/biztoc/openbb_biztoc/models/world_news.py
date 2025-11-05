@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional, Union
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -18,11 +18,11 @@ from pydantic import Field, field_validator
 class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
     """Biztoc World News Query."""
 
-    term: Optional[str] = Field(
+    term: str | None = Field(
         description="Search term to filter articles by. This overrides all other filters.",
         default=None,
     )
-    source: Optional[str] = Field(
+    source: str | None = Field(
         description="Filter by a specific publisher. Only valid when filter is set to source.",
         default=None,
     )
@@ -37,11 +37,11 @@ class BiztocWorldNewsData(WorldNewsData):
         "images": "img",
     }
 
-    images: Optional[list[dict[str, str]]] = Field(
+    images: list[dict[str, str]] | None = Field(
         description="Images for the article.", default=None
     )
-    tags: Optional[list[str]] = Field(description="Tags for the article.", default=None)
-    score: Optional[float] = Field(
+    tags: list[str] | None = Field(description="Tags for the article.", default=None)
+    score: float | None = Field(
         description="Search relevance score for the article.", default=None
     )
 
@@ -83,7 +83,7 @@ class BiztocWorldNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: BiztocWorldNewsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the Biztoc endpoint."""
@@ -110,7 +110,7 @@ class BiztocWorldNewsFetcher(
         }
         base_url = "https://biztoc.p.rapidapi.com/"
         url = ""
-        response: Union[list, dict] = []
+        response: list | dict = []
         if query.term:
             query.term = query.term.replace(" ", "%20")
             url = base_url + f"search?q={query.term}"

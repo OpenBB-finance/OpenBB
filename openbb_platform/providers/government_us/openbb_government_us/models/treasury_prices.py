@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -17,8 +17,8 @@ from pydantic import Field
 class GovernmentUSTreasuryPricesQueryParams(TreasuryPricesQueryParams):
     """US Government Treasury Prices Query."""
 
-    cusip: Optional[str] = Field(description="Filter by CUSIP.", default=None)
-    security_type: Optional[Literal["bill", "note", "bond", "tips", "frn"]] = Field(
+    cusip: str | None = Field(description="Filter by CUSIP.", default=None)
+    security_type: Literal["bill", "note", "bond", "tips", "frn"] | None = Field(
         description="Filter by security type.",
         default=None,
     )
@@ -31,14 +31,14 @@ class GovernmentUSTreasuryPricesData(TreasuryPricesData):
 class GovernmentUSTreasuryPricesFetcher(
     Fetcher[
         GovernmentUSTreasuryPricesQueryParams,
-        List[GovernmentUSTreasuryPricesData],
+        list[GovernmentUSTreasuryPricesData],
     ]
 ):
     """US Government Treasury Prices Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
         # pylint: disable=import-outside-toplevel
@@ -55,7 +55,7 @@ class GovernmentUSTreasuryPricesFetcher(
     @staticmethod
     def extract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> str:
         """Extract the raw data from US Treasury website."""
@@ -98,7 +98,7 @@ class GovernmentUSTreasuryPricesFetcher(
         query: GovernmentUSTreasuryPricesQueryParams,
         data: str,
         **kwargs: Any,
-    ) -> List[GovernmentUSTreasuryPricesData]:
+    ) -> list[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa

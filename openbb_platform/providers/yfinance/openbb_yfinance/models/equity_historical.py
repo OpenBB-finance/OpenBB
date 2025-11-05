@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, Literal
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -95,11 +95,11 @@ class YFinanceEquityHistoricalData(EquityHistoricalData):
         "dividend": "dividends",
     }
 
-    split_ratio: Optional[float] = Field(
+    split_ratio: float | None = Field(
         default=None,
         description="Ratio of the equity split, if a split occurred.",
     )
-    dividend: Optional[float] = Field(
+    dividend: float | None = Field(
         default=None,
         description="Dividend amount (split-adjusted), if a dividend was paid.",
     )
@@ -108,13 +108,13 @@ class YFinanceEquityHistoricalData(EquityHistoricalData):
 class YFinanceEquityHistoricalFetcher(
     Fetcher[
         YFinanceEquityHistoricalQueryParams,
-        List[YFinanceEquityHistoricalData],
+        list[YFinanceEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from dateutil.relativedelta import relativedelta
@@ -133,7 +133,7 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceEquityHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> "DataFrame":
         """Return the raw data from the Yahoo Finance endpoint."""
@@ -171,7 +171,7 @@ class YFinanceEquityHistoricalFetcher(
         query: YFinanceEquityHistoricalQueryParams,
         data: "DataFrame",
         **kwargs: Any,
-    ) -> List[YFinanceEquityHistoricalData]:
+    ) -> list[YFinanceEquityHistoricalData]:
         """Transform the data to the standard format."""
         if "capital_gains" in data.columns:
             data = (

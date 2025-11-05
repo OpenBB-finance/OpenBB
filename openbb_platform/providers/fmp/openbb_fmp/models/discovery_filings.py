@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.discovery_filings import (
@@ -26,7 +26,7 @@ class FMPDiscoveryFilingsQueryParams(DiscoveryFilingsQueryParams):
         "form_type": "formType",
     }
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description="The maximum number of results to return. Default is 10000.",
     )
@@ -69,7 +69,7 @@ class FMPDiscoveryFilingsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPDiscoveryFilingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -3,7 +3,7 @@
 # pylint: disable = unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -52,35 +52,35 @@ class TradierOptionsChainsData(OptionsChainsData):
         "bid_time": "bid_date",
     }
 
-    phi: List[Union[float, None]] = Field(
+    phi: list[float | None] = Field(
         default_factory=list,
         description="Phi of the option. The sensitivity of the option relative to dividend yield.",
     )
-    bid_iv: List[Union[float, None]] = Field(
+    bid_iv: list[float | None] = Field(
         default_factory=list,
         description="Implied volatility of the bid price.",
     )
-    ask_iv: List[Union[float, None]] = Field(
+    ask_iv: list[float | None] = Field(
         default_factory=list,
         description="Implied volatility of the ask price.",
     )
-    orats_final_iv: List[Union[float, None]] = Field(
+    orats_final_iv: list[float | None] = Field(
         default_factory=list,
         description="ORATS final implied volatility of the option, updated once per hour.",
     )
-    year_high: List[Union[float, None]] = Field(
+    year_high: list[float | None] = Field(
         default_factory=list,
         description="52-week high price of the option.",
     )
-    year_low: List[Union[float, None]] = Field(
+    year_low: list[float | None] = Field(
         default_factory=list,
         description="52-week low price of the option.",
     )
-    contract_size: List[Union[int, None]] = Field(
+    contract_size: list[int | None] = Field(
         default_factory=list,
         description="Size of the contract.",
     )
-    greeks_time: List[Union[datetime, None]] = Field(
+    greeks_time: list[datetime | None] = Field(
         default_factory=list,
         description="Timestamp of the last greeks update."
         + " Greeks/IV data is updated once per hour.",
@@ -93,16 +93,16 @@ class TradierOptionsChainsFetcher(
     """Tradier Options Chains Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TradierOptionsChainsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TradierOptionsChainsQueryParams:
         """Transform the query parameters."""
         return TradierOptionsChainsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TradierOptionsChainsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tradier endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -151,7 +151,7 @@ class TradierOptionsChainsFetcher(
         if expirations == []:
             raise OpenBBError(f"No expiration dates found for {query.symbol}")
 
-        results: List = []
+        results: list = []
 
         underlying_quote = await TradierEquityQuoteFetcher.fetch_data(
             {"symbol": query.symbol}, credentials
@@ -209,7 +209,7 @@ class TradierOptionsChainsFetcher(
     @staticmethod
     def transform_data(
         query: TradierOptionsChainsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
     ) -> TradierOptionsChainsData:
         """Transform and validate the data."""

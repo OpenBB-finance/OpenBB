@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_performance import (
@@ -31,7 +31,7 @@ class WSJLosersData(ETFPerformanceData):
         "date": "timestamp",
     }
 
-    bluegrass_channel: Optional[str] = Field(
+    bluegrass_channel: str | None = Field(
         description="Bluegrass channel.", default=None
     )
     country: str = Field(
@@ -65,20 +65,20 @@ class WSJLosersData(ETFPerformanceData):
         return datetime.strptime(v[:10], "%Y-%m-%d").date()
 
 
-class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
+class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, list[WSJLosersData]]):
     """Transform the query, extract and transform the data from the WSJ endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> WSJLosersQueryParams:
+    def transform_query(params: dict[str, Any]) -> WSJLosersQueryParams:
         """Transform query params."""
         return WSJLosersQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: WSJLosersQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Get data from WSJ."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
@@ -95,9 +95,9 @@ class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
     @staticmethod
     def transform_data(
         query: ETFPerformanceQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[WSJLosersData]:
+    ) -> list[WSJLosersData]:
         """Transform data."""
         data = data[: query.limit]
         data = sorted(

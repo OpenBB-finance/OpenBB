@@ -1,6 +1,6 @@
 """Deribit Helpers Module."""
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from async_lru import alru_cache
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -51,7 +51,7 @@ INTERVAL_MAP = {
 @alru_cache(maxsize=64)
 async def get_instruments(
     currency: Currencies = "BTC",
-    derivative_type: Optional[DerivativeTypes] = None,
+    derivative_type: DerivativeTypes | None = None,
     expired: bool = False,
 ) -> list[dict]:
     """
@@ -327,7 +327,7 @@ async def get_ohlc_data(
     raise EmptyDataError("No data found for the given symbol and dates.")
 
 
-async def check_ohlc_symbol(symbol: str) -> Union[bool, str]:
+async def check_ohlc_symbol(symbol: str) -> bool | str:
     """
     Check if the symbol has OHLC data.
 

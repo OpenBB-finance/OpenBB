@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -36,18 +36,18 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     }
     __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    date: Optional[dateType] = Field(
+    date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     display: Literal["headline", "abstract", "full"] = Field(
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
     )
-    updated_since: Optional[int] = Field(
+    updated_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    published_since: Optional[int] = Field(
+    published_since: int | None = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
@@ -58,18 +58,18 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(default=None, description="The company's ISIN.")
-    cusip: Optional[str] = Field(default=None, description="The company's CUSIP.")
-    channels: Optional[str] = Field(
+    isin: str | None = Field(default=None, description="The company's ISIN.")
+    cusip: str | None = Field(default=None, description="The company's CUSIP.")
+    channels: str | None = Field(
         default=None, description="Channels of the news to retrieve."
     )
-    topics: Optional[str] = Field(
+    topics: str | None = Field(
         default=None, description="Topics of the news to retrieve."
     )
-    authors: Optional[str] = Field(
+    authors: str | None = Field(
         default=None, description="Authors of the news to retrieve."
     )
-    content_types: Optional[str] = Field(
+    content_types: str | None = Field(
         default=None, description="Content types of the news to retrieve."
     )
 
@@ -84,19 +84,19 @@ class BenzingaCompanyNewsData(CompanyNewsData):
         "images": "image",
     }
 
-    channels: Optional[str] = Field(
+    channels: str | None = Field(
         default=None,
         description="Channels associated with the news.",
     )
-    tags: Optional[str] = Field(
+    tags: str | None = Field(
         description="Tags associated with the news.",
         default=None,
     )
-    updated: Optional[datetime] = Field(
+    updated: datetime | None = Field(
         default=None, description="Updated date of the news."
     )
     id: str = Field(description="Article ID.")
-    original_id: Optional[str] = Field(
+    original_id: str | None = Field(
         default=None, description="Original ID of the news article."
     )
 
@@ -119,22 +119,22 @@ class BenzingaCompanyNewsData(CompanyNewsData):
 class BenzingaCompanyNewsFetcher(
     Fetcher[
         BenzingaCompanyNewsQueryParams,
-        List[BenzingaCompanyNewsData],
+        list[BenzingaCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaCompanyNewsQueryParams:
+    def transform_query(params: dict[str, Any]) -> BenzingaCompanyNewsQueryParams:
         """Transform query params."""
         return BenzingaCompanyNewsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: BenzingaCompanyNewsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -183,8 +183,8 @@ class BenzingaCompanyNewsFetcher(
     @staticmethod
     def transform_data(
         query: BenzingaCompanyNewsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[BenzingaCompanyNewsData]:
+    ) -> list[BenzingaCompanyNewsData]:
         """Transform data."""
         return [BenzingaCompanyNewsData.model_validate(item) for item in data]

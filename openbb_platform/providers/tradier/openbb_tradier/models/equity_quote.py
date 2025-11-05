@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -50,95 +50,95 @@ class TradierEquityQuoteData(EquityQuoteData):
         "ask_timestamp": "ask_date",
     }
 
-    last_volume: Optional[int] = Field(
+    last_volume: int | None = Field(
         default=None,
         description="The last trade volume.",
     )
-    volume_avg: Optional[int] = Field(
+    volume_avg: int | None = Field(
         default=None,
         description="The average daily trading volume.",
     )
-    bid_timestamp: Optional[datetime] = Field(
+    bid_timestamp: datetime | None = Field(
         default=None,
         description="Timestamp of the bid price.",
     )
-    ask_timestamp: Optional[datetime] = Field(
+    ask_timestamp: datetime | None = Field(
         default=None,
         description="Timestamp of the ask price.",
     )
-    greeks_timestamp: Optional[datetime] = Field(
+    greeks_timestamp: datetime | None = Field(
         default=None,
         description="Timestamp of the greeks data.",
     )
-    underlying: Optional[str] = Field(
+    underlying: str | None = Field(
         default=None,
         description="The underlying symbol for the option.",
     )
-    root_symbol: Optional[str] = Field(
+    root_symbol: str | None = Field(
         default=None,
         description="The root symbol for the option.",
     )
-    option_type: Optional[Literal["call", "put"]] = Field(
+    option_type: Literal["call", "put"] | None = Field(
         default=None,
         description="Type of option - call or put.",
     )
-    contract_size: Optional[int] = Field(
+    contract_size: int | None = Field(
         default=None,
         description="The number of shares in a standard contract.",
     )
-    expiration_type: Optional[str] = Field(
+    expiration_type: str | None = Field(
         default=None,
         description="The expiration type of the option - i.e, standard, weekly, etc.",
     )
-    expiration_date: Optional[dateType] = Field(
+    expiration_date: dateType | None = Field(
         default=None,
         description="The expiration date of the option.",
     )
-    strike: Optional[float] = Field(
+    strike: float | None = Field(
         default=None,
         description="The strike price of the option.",
     )
-    open_interest: Optional[int] = Field(
+    open_interest: int | None = Field(
         default=None,
         description="The number of open contracts for the option.",
     )
-    bid_iv: Optional[float] = Field(
+    bid_iv: float | None = Field(
         default=None,
         description="Implied volatility of the bid price.",
     )
-    ask_iv: Optional[float] = Field(
+    ask_iv: float | None = Field(
         default=None,
         description="Implied volatility of the ask price.",
     )
-    mid_iv: Optional[float] = Field(
+    mid_iv: float | None = Field(
         default=None,
         description="Mid-point implied volatility of the option.",
     )
-    orats_final_iv: Optional[float] = Field(
+    orats_final_iv: float | None = Field(
         default=None,
         description="ORATS final implied volatility of the option.",
     )
-    delta: Optional[float] = Field(
+    delta: float | None = Field(
         default=None,
         description="Delta of the option.",
     )
-    gamma: Optional[float] = Field(
+    gamma: float | None = Field(
         default=None,
         description="Gamma of the option.",
     )
-    theta: Optional[float] = Field(
+    theta: float | None = Field(
         default=None,
         description="Theta of the option.",
     )
-    vega: Optional[float] = Field(
+    vega: float | None = Field(
         default=None,
         description="Vega of the option.",
     )
-    rho: Optional[float] = Field(
+    rho: float | None = Field(
         default=None,
         description="Rho of the option.",
     )
-    phi: Optional[float] = Field(
+    phi: float | None = Field(
         default=None,
         description="Phi of the option.",
     )
@@ -190,21 +190,21 @@ class TradierEquityQuoteData(EquityQuoteData):
 
 
 class TradierEquityQuoteFetcher(
-    Fetcher[TradierEquityQuoteQueryParams, List[TradierEquityQuoteData]]
+    Fetcher[TradierEquityQuoteQueryParams, list[TradierEquityQuoteData]]
 ):
     """Tradier Equity Quote Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TradierEquityQuoteQueryParams:
+    def transform_query(params: dict[str, Any]) -> TradierEquityQuoteQueryParams:
         """Transform the query."""
         return TradierEquityQuoteQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TradierEquityQuoteQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Tradier endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
@@ -247,14 +247,13 @@ class TradierEquityQuoteFetcher(
     @staticmethod
     def transform_data(
         query: TradierEquityQuoteQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TradierEquityQuoteData]:
+    ) -> list[TradierEquityQuoteData]:
         """Transform and validate the data."""
-        results: List[TradierEquityQuoteData] = []
+        results: list[TradierEquityQuoteData] = []
 
         for d in data:
-
             d["exch"] = (
                 OPTIONS_EXCHANGES.get(d["exch"])
                 if d.get("type") in ["option", "index"]

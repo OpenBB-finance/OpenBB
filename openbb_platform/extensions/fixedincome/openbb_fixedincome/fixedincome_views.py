@@ -1,6 +1,6 @@
 """Views for the Fixed Income Extension."""
 
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Any
 
 from openbb_core.provider.abstract.data import Data
 
@@ -16,7 +16,7 @@ class FixedIncomeViews:
     @staticmethod
     def fixedincome_government_yield_curve(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Government Yield Curve Chart."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.helpers import (
@@ -70,7 +70,7 @@ class FixedIncomeViews:
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         def create_fig(
-            figure, dataframe, dates, color_count, country: Optional[str] = None
+            figure, dataframe, dates, color_count, country: str | None = None
         ):
             """Create a scatter for each date in the data."""
             for date in dates:
@@ -170,12 +170,6 @@ class FixedIncomeViews:
         # Update the layout of the figure.
         figure.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=20)),
-            plot_bgcolor=(
-                "rgba(21,21,21,0)" if text_color == "white" else "rgba(230,230,230,0)"
-            ),
-            paper_bgcolor=(
-                "rgba(21,21,21,1)" if text_color == "white" else "rgba(230,230,230,1)"
-            ),
             xaxis=dict(
                 title="Maturity",
                 ticklen=10,

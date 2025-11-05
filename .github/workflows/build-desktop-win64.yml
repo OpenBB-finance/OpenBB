@@ -1,0 +1,256 @@
+name: build-windows-x64
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        required: false
+        type: boolean
+        default: false
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Set to true to create a release build'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: desktop
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.VCPKG_ROOT }}
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('desktop/**/vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-
+
+      - name: Bootstrap vcpkg
+        working-directory: ${{ github.workspace }}
+        run: |
+          if (-not (Test-Path ${{ env.VCPKG_ROOT }})) {
+            git clone https://github.com/microsoft/vcpkg.git ${{ env.VCPKG_ROOT }}
+          }
+          ${{ env.VCPKG_ROOT }}/bootstrap-vcpkg.bat
+        shell: pwsh
+
+      - name: Install OpenSSL using vcpkg
+        working-directory: ${{ github.workspace }}
+        run: ${{ env.VCPKG_ROOT }}/vcpkg install openssl:x64-windows --vcpkg-root ${{ env.VCPKG_ROOT }}
+        env:
+          VCPKG_DEFAULT_TRIPLET: x64-windows
+
+      - name: Set OpenSSL env
+        shell: bash
+        run: |
+          echo "OPENSSL_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows/include" >> $GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows/lib" >> $GITHUB_ENV
+
+      - name: Copy SSL DLLs
+        shell: pwsh
+        run: |
+          # Verify OpenSSL DLLs exist
+          $opensslBinDir = "${{ env.VCPKG_ROOT }}/installed/x64-windows/bin"
+          $libcryptoPath = Join-Path $opensslBinDir "libcrypto-3-x64.dll"
+          $libsslPath = Join-Path $opensslBinDir "libssl-3-x64.dll"
+
+          if (-not (Test-Path $libcryptoPath)) {
+            Write-Error "Error: libcrypto-3-x64.dll not found at $libcryptoPath"
+            exit 1
+          }
+          if (-not (Test-Path $libsslPath)) {
+            Write-Error "Error: libssl-3-x64.dll not found at $libsslPath"
+            exit 1
+          }
+
+          # Copy DLLs to src-tauri folder
+          Copy-Item -Path $libcryptoPath -Destination "src-tauri/" -Force
+          Copy-Item -Path $libsslPath -Destination "src-tauri/" -Force
+          Write-Host "Successfully copied OpenSSL DLLs to src-tauri/"
+          Get-ChildItem -Path "src-tauri/"
+
+      - name: Create temp directory for signing DLLs
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/temp-sign-dlls"
+
+      - name: Sign libcrypto DLL
+        uses: sslcom/esigner-codesign@develop
+        with:
+          command: sign
+          username: ${{ secrets.ESIGNER_USERNAME }}
+          password: ${{ secrets.ESIGNER_PASSWORD }}
+          credential_id: ${{ secrets.ESIGNER_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
+          file_path: ${{ github.workspace }}/desktop/src-tauri/libcrypto-3-x64.dll
+          output_path: ${{ github.workspace }}/desktop/temp-sign-dlls
+          malware_block: false
+
+      - name: Sign libssl DLL
+        uses: sslcom/esigner-codesign@develop
+        with:
+          command: sign
+          username: ${{ secrets.ESIGNER_USERNAME }}
+          password: ${{ secrets.ESIGNER_PASSWORD }}
+          credential_id: ${{ secrets.ESIGNER_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
+          file_path: ${{ github.workspace }}/desktop/src-tauri/libssl-3-x64.dll
+          output_path: ${{ github.workspace }}/desktop/temp-sign-dlls
+          malware_block: false
+
+      - name: Replace unsigned DLLs with signed ones
+        shell: pwsh
+        run: |
+          Copy-Item -Path "${{ github.workspace }}/desktop/temp-sign-dlls/libcrypto-3-x64.dll" -Destination "${{ github.workspace }}/desktop/src-tauri/libcrypto-3-x64.dll" -Force
+          Copy-Item -Path "${{ github.workspace }}/desktop/temp-sign-dlls/libssl-3-x64.dll" -Destination "${{ github.workspace }}/desktop/src-tauri/libssl-3-x64.dll" -Force
+          Write-Host "Successfully replaced unsigned DLLs with signed versions"
+          Get-ChildItem -Path "${{ github.workspace }}/desktop/src-tauri/*.dll"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install cyclonedx-npm
+        run: npm install -g @cyclonedx/cyclonedx-npm
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: windows-x64-cargo-registry-${{ hashFiles('desktop/**/Cargo.lock') }}
+          restore-keys: |
+            windows-x64-cargo-registry-
+
+      - name: Cache cargo build
+        uses: actions/cache@v4
+        with:
+          path: desktop/target
+          key: windows-x64-cargo-build-${{ hashFiles('desktop/**/Cargo.lock') }}
+          restore-keys: |
+            windows-x64-cargo-build-
+
+      - name: Install Modules
+        run: |
+          npm install
+          cyclonedx-npm --output-format XML --gather-license-texts --output-file src-tauri/open-data-platform-SBOM-npm.cdx.xml
+
+      - name: Install cargo-cyclonedx
+        shell: pwsh
+        run: |
+          cargo install cargo-cyclonedx
+          cargo cyclonedx
+          if (Test-Path "src-tauri/openbb-platform.cdx.xml") {
+            Move-Item "src-tauri/openbb-platform.cdx.xml" "src-tauri/open-data-platform-SBOM-cargo.cdx.xml" -Force
+          }
+
+      - name: Clean old bundle artifacts
+        shell: pwsh
+        run: |
+          $bundlePath = "${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/bundle"
+          if (Test-Path $bundlePath) {
+            Remove-Item -Path $bundlePath -Recurse -Force
+          }
+
+      - name: Build Tauri App (without bundling)
+        run: npm run tauri build -- --target x86_64-pc-windows-msvc --no-bundle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create backup of unsigned executable
+        shell: pwsh
+        run: |
+          Copy-Item -Path "${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/openbb-platform.exe" -Destination "${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/openbb-platform-unsigned.exe"
+
+      - name: Create temp directory for signing
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/temp-sign"
+
+      - name: Sign the executable
+        uses: sslcom/esigner-codesign@develop
+        with:
+          command: sign
+          username: ${{ secrets.ESIGNER_USERNAME }}
+          password: ${{ secrets.ESIGNER_PASSWORD }}
+          credential_id: ${{ secrets.ESIGNER_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
+          file_path: ${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/openbb-platform.exe
+          output_path: ${{ github.workspace }}/desktop/temp-sign
+          malware_block: false
+
+      - name: Replace unsigned executable with signed one
+        shell: pwsh
+        run: |
+          Copy-Item -Path "${{ github.workspace }}/desktop/temp-sign/openbb-platform.exe" -Destination "${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/openbb-platform.exe" -Force
+
+      - name: Bundle the signed executable into installer
+        run: npm run tauri bundle -- --target x86_64-pc-windows-msvc --bundles nsis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+      - name: Get Installer Path
+        id: get_installer_path
+        shell: pwsh
+        run: |
+          $installerPath = (Get-ChildItem -Path "${{ github.workspace }}/desktop/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe").FullName
+          echo "installer_path=$installerPath" >> $env:GITHUB_OUTPUT
+
+      - name: Create directory for signed installer
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/signed-installer"
+
+      - name: Sign Installer
+        uses: sslcom/esigner-codesign@v1.3.1
+        with:
+          command: sign
+          username: ${{ secrets.ESIGNER_USERNAME }}
+          password: ${{ secrets.ESIGNER_PASSWORD }}
+          credential_id: ${{ secrets.ESIGNER_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
+          file_path: ${{ steps.get_installer_path.outputs.installer_path }}
+          output_path: ${{ github.workspace }}/desktop/signed-installer
+          malware_block: true
+
+      - name: Organize artifacts
+        shell: pwsh
+        run: |
+          $version = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $signedInstaller = Get-ChildItem -Path "${{ github.workspace }}/desktop/signed-installer/*.exe" | Select-Object -First 1
+          Rename-Item -Path $signedInstaller.FullName -NewName "Open-Data-Platform_${version}_x86_64.exe"
+
+      - name: Regenerate updater signature
+        shell: pwsh
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          $version = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $installerPath = Join-Path "${{ github.workspace }}/desktop/signed-installer" "Open-Data-Platform_${version}_x86_64.exe"
+          npm exec -- tauri signer sign `
+            $installerPath `
+            --private-key $env:TAURI_SIGNING_PRIVATE_KEY `
+            --password $env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-artifacts
+          path: ${{ github.workspace }}/desktop/signed-installer/

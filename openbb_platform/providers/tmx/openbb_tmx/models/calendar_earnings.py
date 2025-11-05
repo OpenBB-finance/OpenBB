@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
@@ -30,21 +30,21 @@ class TmxCalendarEarningsData(CalendarEarningsData):
     }
 
     name: str = Field(description="The company's name.")
-    eps_consensus: Optional[float] = Field(
+    eps_consensus: float | None = Field(
         default=None, description="The consensus estimated EPS in dollars."
     )
-    eps_actual: Optional[float] = Field(
+    eps_actual: float | None = Field(
         default=None, description="The actual EPS in dollars."
     )
-    eps_surprise: Optional[float] = Field(
+    eps_surprise: float | None = Field(
         default=None, description="The EPS surprise in dollars."
     )
-    surprise_percent: Optional[float] = Field(
+    surprise_percent: float | None = Field(
         default=None,
         description="The EPS surprise as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    reporting_time: Optional[str] = Field(
+    reporting_time: str | None = Field(
         default=None,
         description="The time of the report - i.e., before or after market.",
     )
@@ -57,12 +57,12 @@ class TmxCalendarEarningsData(CalendarEarningsData):
 
 
 class TmxCalendarEarningsFetcher(
-    Fetcher[TmxCalendarEarningsQueryParams, List[TmxCalendarEarningsData]]
+    Fetcher[TmxCalendarEarningsQueryParams, list[TmxCalendarEarningsData]]
 ):
     """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxCalendarEarningsQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxCalendarEarningsQueryParams:
         """Transform the query."""
         # pylint: disable=import-outside-toplevel
         from datetime import timedelta
@@ -81,9 +81,9 @@ class TmxCalendarEarningsFetcher(
     @staticmethod
     async def aextract_data(
         query: TmxCalendarEarningsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -92,7 +92,7 @@ class TmxCalendarEarningsFetcher(
         from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
         from pandas import date_range  # noqa
 
-        results: List[Dict] = []
+        results: list[dict] = []
         user_agent = get_random_agent()
         dates = date_range(query.start_date, end=query.end_date)
 
@@ -139,9 +139,9 @@ class TmxCalendarEarningsFetcher(
     @staticmethod
     def transform_data(
         query: TmxCalendarEarningsQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[TmxCalendarEarningsData]:
+    ) -> list[TmxCalendarEarningsData]:
         """Return the transformed data."""
         results = [{k: (None if v == "N/A" else v) for k, v in d.items()} for d in data]
         return [TmxCalendarEarningsData.model_validate(d) for d in results]

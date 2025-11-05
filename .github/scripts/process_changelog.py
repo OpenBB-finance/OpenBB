@@ -29,19 +29,9 @@ def process_changelog(file_path, release_pr_number):
             pr_occurrences[pr_number].append(i)
 
     # Set of indices to remove: includes all but last occurrence of each PR number
-    to_remove = {
-        i
-        for pr, indices in pr_occurrences.items()
-        if len(indices) > 1
-        for i in indices[:-1]
-    }
+    to_remove = {i for pr, indices in pr_occurrences.items() if len(indices) > 1 for i in indices[:-1]}
     # Also remove any PR entries less than or equal to the specified release PR number
-    to_remove.update(
-        i
-        for pr, indices in pr_occurrences.items()
-        for i in indices
-        if pr <= release_pr_number
-    )
+    to_remove.update(i for pr, indices in pr_occurrences.items() for i in indices if pr <= release_pr_number)
 
     # Filter out lines marked for removal
     processed_lines = [line for i, line in enumerate(lines) if i not in to_remove]
@@ -49,9 +39,7 @@ def process_changelog(file_path, release_pr_number):
     # Final sweep: Ensure no missed duplicates, keeping only the last occurrence
     final_lines = []
     seen_pr_numbers = set()  # Track seen PR numbers to identify duplicates
-    for line in reversed(
-        processed_lines
-    ):  # Start from the end to keep the last occurrence
+    for line in reversed(processed_lines):  # Start from the end to keep the last occurrence
         match = re.search(r"\(#(\d+)\)", line)
         if match:
             pr_number = int(match.group(1))
@@ -72,9 +60,7 @@ def process_changelog(file_path, release_pr_number):
 if __name__ == "__main__":
     # Ensure correct command line arguments
     if len(sys.argv) < 3:
-        logging.error(
-            "Usage: python process_changelog.py <changelog_file> <release_pr_number>"
-        )
+        logging.error("Usage: python process_changelog.py <changelog_file> <release_pr_number>")
         sys.exit(1)
 
     file_path = sys.argv[1]

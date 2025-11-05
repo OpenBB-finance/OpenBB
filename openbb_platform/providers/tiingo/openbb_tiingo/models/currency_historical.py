@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -46,22 +46,10 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
         },
     }
 
-    interval: Union[
-        Literal[
-            "1m",
-            "5m",
-            "15m",
-            "30m",
-            "90m",
-            "1h",
-            "2h",
-            "4h",
-            "1d",
-            "5d",
-            "21d",
-        ],
-        str,
-    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
+    interval: (
+        Literal["1m", "5m", "15m", "30m", "90m", "1h", "2h", "4h", "1d", "5d", "21d"]
+        | str
+    ) = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
 
 
 class TiingoCurrencyHistoricalData(CurrencyHistoricalData):
@@ -98,7 +86,7 @@ class TiingoCurrencyHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: TiingoCurrencyHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""

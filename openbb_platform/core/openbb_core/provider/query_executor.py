@@ -1,6 +1,6 @@
 """Query executor module."""
 
-from typing import Any, Dict, Optional, Type
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,7 +12,7 @@ from pydantic import SecretStr
 class QueryExecutor:
     """Class to execute queries from providers."""
 
-    def __init__(self, registry: Optional[Registry] = None) -> None:
+    def __init__(self, registry: Registry | None = None) -> None:
         """Initialize the query executor."""
         self.registry = registry or RegistryLoader.from_extensions()
 
@@ -21,12 +21,11 @@ class QueryExecutor:
         name = provider_name.lower()
         if name not in self.registry.providers:
             raise OpenBBError(
-                f"Provider '{name}' not found in the registry."
-                f"Available providers: {list(self.registry.providers.keys())}"
+                f"Provider '{name}' not found in the registry.Available providers: {list(self.registry.providers.keys())}"
             )
         return self.registry.providers[name]
 
-    def get_fetcher(self, provider: Provider, model_name: str) -> Type[Fetcher]:
+    def get_fetcher(self, provider: Provider, model_name: str) -> type[Fetcher]:
         """Get a fetcher from a provider."""
         if model_name not in provider.fetcher_dict:
             raise OpenBBError(
@@ -36,10 +35,10 @@ class QueryExecutor:
 
     @staticmethod
     def filter_credentials(
-        credentials: Optional[Dict[str, SecretStr]],
+        credentials: dict[str, SecretStr] | None,
         provider: Provider,
         require_credentials: bool,
-    ) -> Dict[str, str]:
+    ) -> dict[str, str]:
         """Filter credentials and check if they match provider requirements."""
         filtered_credentials = {}
 
@@ -67,8 +66,8 @@ class QueryExecutor:
         self,
         provider_name: str,
         model_name: str,
-        params: Dict[str, Any],
-        credentials: Optional[Dict[str, SecretStr]] = None,
+        params: dict[str, Any],
+        credentials: dict[str, SecretStr] | None = None,
         **kwargs: Any,
     ) -> Any:
         """Execute query.

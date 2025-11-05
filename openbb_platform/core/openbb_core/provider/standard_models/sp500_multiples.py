@@ -1,7 +1,7 @@
 """SP500 Multiples Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -54,14 +54,14 @@ SERIES_NAME = Literal[
 class SP500MultiplesQueryParams(QueryParams):
     """SP500 Multiples Query."""
 
-    series_name: Union[SERIES_NAME, str] = Field(
+    series_name: SERIES_NAME | str = Field(
         description="The name of the series. Defaults to 'pe_month'.",
         default="pe_month",
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
@@ -73,6 +73,6 @@ class SP500MultiplesData(Data):
     name: str = Field(
         description="Name of the series.",
     )
-    value: Union[int, float] = Field(
+    value: int | float = Field(
         description="Value of the series.",
     )

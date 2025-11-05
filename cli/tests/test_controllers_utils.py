@@ -12,7 +12,6 @@ from openbb_cli.controllers.utils import (
     get_user_agent,
     parse_and_split_input,
     print_goodbye,
-    print_guest_block_msg,
     remove_file,
     welcome_message,
 )
@@ -25,9 +24,7 @@ def mock_session():
     """Mock the session and its dependencies."""
     with patch("openbb_cli.controllers.utils.session") as mock_session:
         mock_session.console.print = MagicMock()
-        mock_session.is_local = MagicMock(return_value=True)
         mock_session.settings.VERSION = "1.0"
-        mock_session.user.profile.hub_session.username = "testuser"
         mock_session.settings.FLAIR = "rocket"
         yield mock_session
 
@@ -41,17 +38,20 @@ def test_remove_file_existing_file():
 
 def test_remove_file_directory():
     """Test removing a directory."""
-    with patch("os.path.isfile", return_value=False), patch(
-        "os.path.isdir", return_value=True
-    ), patch("shutil.rmtree") as mock_rmtree:
+    with (
+        patch("os.path.isfile", return_value=False),
+        patch("os.path.isdir", return_value=True),
+        patch("shutil.rmtree") as mock_rmtree,
+    ):
         assert remove_file(Path("/path/to/directory"))
         mock_rmtree.assert_called_once()
 
 
 def test_remove_file_failure(mock_session):
     """Test removing a file that fails."""
-    with patch("os.path.isfile", return_value=True), patch(
-        "os.remove", side_effect=Exception("Error")
+    with (
+        patch("os.path.isfile", return_value=True),
+        patch("os.remove", side_effect=Exception("Error")),
     ):
         assert not remove_file(Path("/path/to/file"))
         mock_session.console.print.assert_called()
@@ -84,12 +84,6 @@ def test_parse_and_split_input_special_cases(input_command, expected_output):
     assert result == expected_output
 
 
-def test_print_guest_block_msg(mock_session):
-    """Test printing the guest block message."""
-    print_guest_block_msg()
-    mock_session.console.print.assert_called()
-
-
 def test_welcome_message(mock_session):
     """Test printing the welcome message."""
     welcome_message()
@@ -101,7 +95,6 @@ def test_welcome_message(mock_session):
 def test_get_flair_and_username(mock_session):
     """Test getting the flair and username."""
     result = get_flair_and_username()
-    assert "testuser" in result
     assert "rocket" in result
 
 

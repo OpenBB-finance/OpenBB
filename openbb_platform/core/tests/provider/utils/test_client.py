@@ -79,9 +79,7 @@ class MockClientSession(client.ClientSession):
     def __del__(self):  # type: ignore
         """Delete the session."""
 
-    async def request(  # type: ignore
-        self, *args, raise_for_status: bool = False, **kwargs
-    ) -> client.ClientResponse:
+    async def request(self, *args, raise_for_status: bool = False, **kwargs) -> client.ClientResponse:  # type: ignore
         """Mock the request method."""
         response = MockResponse(*args, **kwargs)
 

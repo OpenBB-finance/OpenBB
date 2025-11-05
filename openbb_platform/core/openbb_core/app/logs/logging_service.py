@@ -2,9 +2,10 @@
 
 import json
 import logging
+from collections.abc import Callable
 from enum import Enum
 from types import TracebackType
-from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
+from typing import Any
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -103,7 +104,7 @@ class LoggingService(metaclass=SingletonMeta):
         return self._logging_settings
 
     @logging_settings.setter
-    def logging_settings(self, value: Tuple[SystemSettings, UserSettings]) -> None:
+    def logging_settings(self, value: tuple[SystemSettings, UserSettings]) -> None:
         """Define the Setter for updating the logging settings.
 
         Parameters
@@ -146,8 +147,8 @@ class LoggingService(metaclass=SingletonMeta):
 
     def _log_startup(
         self,
-        route: Optional[str] = None,
-        custom_headers: Optional[Dict[str, Any]] = None,
+        route: str | None = None,
+        custom_headers: dict[str, Any] | None = None,
     ) -> None:
         """
         Log startup information.
@@ -162,7 +163,7 @@ class LoggingService(metaclass=SingletonMeta):
         None
         """
 
-        def check_credentials_defined(credentials: Dict[str, Any]):
+        def check_credentials_defined(credentials: dict[str, Any]):
             class CredentialsDefinition(Enum):
                 defined = "defined"
                 undefined = "undefined"
@@ -201,12 +202,12 @@ class LoggingService(metaclass=SingletonMeta):
         system_settings: SystemSettings,
         route: str,
         func: Callable,
-        kwargs: Dict[str, Any],
-        exec_info: Union[
-            Tuple[Type[BaseException], BaseException, TracebackType],
-            Tuple[None, None, None],
-        ],
-        custom_headers: Optional[Dict[str, Any]] = None,
+        kwargs: dict[str, Any],
+        exec_info: (
+            tuple[type[BaseException], BaseException, TracebackType]
+            | tuple[None, None, None]
+        ),
+        custom_headers: dict[str, Any] | None = None,
     ) -> None:
         """Log command output and relevant information.
 
@@ -242,11 +243,9 @@ class LoggingService(metaclass=SingletonMeta):
         self._handlers_manager.update_handlers(self._logging_settings)
 
         if not self._logging_settings.logging_suppress:
-
             if "login" in route:
                 self._log_startup(route, custom_headers)
             else:
-
                 # Remove CommandContext if any
                 kwargs.pop("cc", None)
 

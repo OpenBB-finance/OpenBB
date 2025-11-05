@@ -1,6 +1,6 @@
 """Equity Performance Standard Model."""
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -18,7 +18,7 @@ class EquityPerformanceQueryParams(QueryParams):
 
     @field_validator("sort", mode="before", check_fields=False)
     @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+    def to_lower(cls, v: str | None) -> str | None:
         """Convert field to lowercase."""
         return v.lower() if v else v
 
@@ -29,7 +29,7 @@ class EquityPerformanceData(Data):
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    name: Optional[str] = Field(
+    name: str | None = Field(
         default=None,
         description="Name of the entity.",
     )
@@ -45,7 +45,7 @@ class EquityPerformanceData(Data):
         description="Percent change.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Optional[Union[int, float]] = Field(
+    volume: int | float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )

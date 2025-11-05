@@ -1,7 +1,9 @@
 """Intrinio Institutional Ownership Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.institutional_ownership import (
@@ -25,7 +27,7 @@ class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParam
         "limit": "page_size",
     }
 
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -68,14 +70,14 @@ class IntrinioInstitutionalOwnershipData(InstitutionalOwnershipData):
 class IntrinioInstitutionalOwnershipFetcher(
     Fetcher[
         IntrinioInstitutionalOwnershipQueryParams,
-        List[IntrinioInstitutionalOwnershipData],
+        list[IntrinioInstitutionalOwnershipData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> IntrinioInstitutionalOwnershipQueryParams:
         """Transform the query params."""
         return IntrinioInstitutionalOwnershipQueryParams(**params)
@@ -83,21 +85,18 @@ class IntrinioInstitutionalOwnershipFetcher(
     @staticmethod
     async def aextract_data(
         query: IntrinioInstitutionalOwnershipQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        data: List[Dict] = []
+        data: list[dict] = []
 
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
-        url = (
-            f"{base_url}/securities/{query.symbol}/institutional_ownership?"
-            f"{query_str}&api_key={api_key}"
-        )
+        url = f"{base_url}/securities/{query.symbol}/institutional_ownership?{query_str}&api_key={api_key}"
 
-        async def get_owner_name(item: Dict) -> Dict:
+        async def get_owner_name(item: dict) -> dict:
             cik = item["owner_cik"]
             cik_url = f"{base_url}/owners/{cik}?api_key={api_key}"
             cik_data = await get_data_one(cik_url, **kwargs)
@@ -124,8 +123,8 @@ class IntrinioInstitutionalOwnershipFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioInstitutionalOwnershipQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[IntrinioInstitutionalOwnershipData]:
+    ) -> list[IntrinioInstitutionalOwnershipData]:
         """Return the transformed data."""
         return [IntrinioInstitutionalOwnershipData.model_validate(d) for d in data]

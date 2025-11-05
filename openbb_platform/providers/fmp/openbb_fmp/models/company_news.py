@@ -1,6 +1,6 @@
 """FMP Company News Model."""
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
@@ -25,7 +25,7 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
         ge=0,
         description="Page number of the results. Use in combination with limit.",
     )
-    press_release: Optional[bool] = Field(
+    press_release: bool | None = Field(
         default=None,
         description="When true, will return only press releases for the given symbol(s).",
     )
@@ -70,7 +70,7 @@ class FMPCompanyNewsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCompanyNewsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

@@ -1,14 +1,10 @@
 """Base class for charting plugins."""
 
+from collections.abc import Callable, Iterator
 from typing import (
     TYPE_CHECKING,
     Any,
-    Callable,
-    Dict,
-    Iterator,
-    List,
     Optional,
-    Type,
     Union,
 )
 
@@ -18,7 +14,7 @@ if TYPE_CHECKING:
     import pandas as pd
 
 
-def columns_regex(df_ta: "pd.DataFrame", name: str) -> List[str]:
+def columns_regex(df_ta: "pd.DataFrame", name: str) -> list[str]:
     """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
@@ -47,17 +43,17 @@ class Indicator:
 class PluginMeta(type):
     """Metaclass for all Plotly plugins."""
 
-    __indicators__: List[Indicator] = []
+    __indicators__: list[Indicator] = []
     __static_methods__: list = []
-    __ma_mode__: List[str] = []
-    __inchart__: List[str] = []
-    __subplots__: List[str] = []
+    __ma_mode__: list[str] = []
+    __inchart__: list[str] = []
+    __subplots__: list[str] = []
 
-    def __new__(mcs: Type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
+    def __new__(mcs: type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
         """Create a new instance of the class."""
         name, bases, attrs = args
-        indicators: Dict[str, Indicator] = {}
-        cls_attrs: Dict[str, list] = {
+        indicators: dict[str, Indicator] = {}
+        cls_attrs: dict[str, list] = {
             "__ma_mode__": [],
             "__inchart__": [],
             "__subplots__": [],
@@ -91,7 +87,7 @@ class PluginMeta(type):
 
         return new_cls
 
-    def __iter__(cls: Type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
+    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
         """Iterate over the indicators."""
         return iter(cls.__indicators__)
 
@@ -109,16 +105,16 @@ class PltTA(metaclass=PluginMeta):
     df_stock: Union["pd.DataFrame", "pd.Series"]
     df_ta: Optional["pd.DataFrame"] = None
     df_fib: "pd.DataFrame"
-    close_column: Optional[str] = "close"
-    params: Optional[Dict[str, TAIndicator]] = {}
-    inchart_colors: List[str] = []
+    close_column: str | None = "close"
+    params: dict[str, TAIndicator] | None = {}
+    inchart_colors: list[str] = []
     show_volume: bool = True
 
     __static_methods__: list = []
-    __indicators__: List[Indicator] = []
-    __ma_mode__: List[str] = []
-    __inchart__: List[str] = []
-    __subplots__: List[str] = []
+    __indicators__: list[Indicator] = []
+    __ma_mode__: list[str] = []
+    __inchart__: list[str] = []
+    __subplots__: list[str] = []
 
     # pylint: disable=unused-argument
     def __new__(cls, *args: Any, **kwargs: Any) -> "PltTA":
@@ -150,15 +146,15 @@ class PltTA(metaclass=PluginMeta):
         return self
 
     @property
-    def ma_mode(self) -> List[str]:
+    def ma_mode(self) -> list[str]:
         """Moving average mode."""
         return list(set(self.__ma_mode__))
 
     @ma_mode.setter
-    def ma_mode(self, value: List[str]):
+    def ma_mode(self, value: list[str]):
         self.__ma_mode__ = value
 
-    def add_plugins(self, plugins: List["PltTA"]) -> None:
+    def add_plugins(self, plugins: list["PltTA"]) -> None:
         """Add plugins to current instance."""
         for plugin in plugins:
             for item in plugin.__indicators__:
@@ -180,7 +176,7 @@ class PltTA(metaclass=PluginMeta):
                 ] and value not in getattr(self, attr):
                     getattr(self, attr).extend(value)
 
-    def remove_plugins(self, plugins: List["PltTA"]) -> None:
+    def remove_plugins(self, plugins: list["PltTA"]) -> None:
         """Remove plugins from current instance."""
         for plugin in plugins:
             for item in plugin.__indicators__:

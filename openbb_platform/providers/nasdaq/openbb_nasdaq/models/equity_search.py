@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -42,43 +42,43 @@ class NasdaqEquitySearchData(EquitySearchData):
         "next_shares": "NextShares",
     }
 
-    nasdaq_traded: Optional[str] = Field(
+    nasdaq_traded: str | None = Field(
         default=None,
         description="Is Nasdaq traded?",
     )
-    exchange: Optional[str] = Field(
+    exchange: str | None = Field(
         default=None,
         description="Primary Exchange",
     )
-    market_category: Optional[str] = Field(
+    market_category: str | None = Field(
         default=None,
         description="Market Category",
     )
-    etf: Optional[str] = Field(
+    etf: str | None = Field(
         default=None,
         description="Is ETF?",
     )
-    round_lot_size: Optional[float] = Field(
+    round_lot_size: float | None = Field(
         default=None,
         description="Round Lot Size",
     )
-    test_issue: Optional[str] = Field(
+    test_issue: str | None = Field(
         default=None,
         description="Is test Issue?",
     )
-    financial_status: Optional[str] = Field(
+    financial_status: str | None = Field(
         default=None,
         description="Financial Status",
     )
-    cqs_symbol: Optional[str] = Field(
+    cqs_symbol: str | None = Field(
         default=None,
         description="CQS Symbol",
     )
-    nasdaq_symbol: Optional[str] = Field(
+    nasdaq_symbol: str | None = Field(
         default=None,
         description="NASDAQ Symbol",
     )
-    next_shares: Optional[str] = Field(
+    next_shares: str | None = Field(
         default=None,
         description="Is NextShares?",
     )
@@ -99,7 +99,7 @@ class NasdaqEquitySearchFetcher(
     @staticmethod
     def extract_data(
         query: NasdaqEquitySearchQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""

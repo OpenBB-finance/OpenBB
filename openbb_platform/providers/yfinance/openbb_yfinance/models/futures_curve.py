@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
@@ -30,22 +30,22 @@ class YFinanceFuturesCurveData(FuturesCurveData):
 class YFinanceFuturesCurveFetcher(
     Fetcher[
         YFinanceFuturesCurveQueryParams,
-        List[YFinanceFuturesCurveData],
+        list[YFinanceFuturesCurveData],
     ]
 ):
     """YFiannce Futures Curve Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
         """Transform the query."""
         return YFinanceFuturesCurveQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceFuturesCurveQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the data from Yahoo."""
         # pylint: disable=import-outside-toplevel
         from openbb_yfinance.utils.helpers import get_futures_curve
@@ -62,8 +62,8 @@ class YFinanceFuturesCurveFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceFuturesCurveQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceFuturesCurveData]:
+    ) -> list[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""
         return [YFinanceFuturesCurveData.model_validate(d) for d in data]

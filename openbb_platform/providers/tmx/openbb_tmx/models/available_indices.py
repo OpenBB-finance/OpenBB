@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.available_indices import (
@@ -33,22 +33,22 @@ class TmxAvailableIndicesData(AvailableIndicesData):
 class TmxAvailableIndicesFetcher(
     Fetcher[
         TmxAvailableIndicesQueryParams,
-        List[TmxAvailableIndicesData],
+        list[TmxAvailableIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxAvailableIndicesQueryParams:
+    def transform_query(params: dict[str, Any]) -> TmxAvailableIndicesQueryParams:
         """Transform the query params."""
         return TmxAvailableIndicesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: TmxAvailableIndicesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
@@ -66,9 +66,9 @@ class TmxAvailableIndicesFetcher(
     @staticmethod
     def transform_data(
         query: TmxAvailableIndicesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[TmxAvailableIndicesData]:
+    ) -> list[TmxAvailableIndicesData]:
         """Transform the data to the standard format."""
         # pylint: disable=import-outside-toplevel
         import re

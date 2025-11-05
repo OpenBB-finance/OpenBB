@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -153,21 +153,21 @@ class FREDCommercialPaperParams(CommercialPaperParams):
         },
     }
 
-    maturity: Union[
-        str, Literal["all", "overnight", "7d", "15d", "30d", "60d", "90d"]
-    ] = Field(
-        default="all",
-        description="A target maturity.",
+    maturity: str | Literal["all", "overnight", "7d", "15d", "30d", "60d", "90d"] = (
+        Field(
+            default="all",
+            description="A target maturity.",
+        )
     )
-    category: Union[
-        str, Literal["all", "asset_backed", "financial", "nonfinancial", "a2p2"]
-    ] = Field(
+    category: (
+        str | Literal["all", "asset_backed", "financial", "nonfinancial", "a2p2"]
+    ) = Field(
         default="all",
         description="The category of asset.",
     )
-    frequency: Union[
-        None,
-        Literal[
+    frequency: (
+        None
+        | Literal[
             "a",
             "q",
             "m",
@@ -181,8 +181,8 @@ class FREDCommercialPaperParams(CommercialPaperParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
-    ] = Field(
+        ]
+    ) = Field(
         default=None,
         description="""
         Frequency aggregation to convert daily data to lower frequency.
@@ -218,7 +218,7 @@ class FREDCommercialPaperParams(CommercialPaperParams):
             ]
         },
     )
-    aggregation_method: Union[None, Literal["avg", "sum", "eop"]] = Field(
+    aggregation_method: None | Literal["avg", "sum", "eop"] = Field(
         default=None,
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -228,9 +228,9 @@ class FREDCommercialPaperParams(CommercialPaperParams):
         """,
         json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
         description="""
         Transformation type
@@ -261,24 +261,24 @@ class FREDCommercialPaperData(CommercialPaperData):
 class FREDCommercialPaperFetcher(
     Fetcher[
         FREDCommercialPaperParams,
-        List[FREDCommercialPaperData],
+        list[FREDCommercialPaperData],
     ]
 ):
     """FRED Commercial Paper Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDCommercialPaperParams:
+    def transform_query(params: dict[str, Any]) -> FREDCommercialPaperParams:
         """Transform query."""
         return FREDCommercialPaperParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FREDCommercialPaperParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
-        ids: List[str] = []
+        ids: list[str] = []
         if query.maturity == "all" and query.category == "all":
             ids = ALL_IDS
         else:
@@ -328,9 +328,9 @@ class FREDCommercialPaperFetcher(
     @staticmethod
     def transform_data(
         query: FREDCommercialPaperParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> List[FREDCommercialPaperData]:
+    ) -> list[FREDCommercialPaperData]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame

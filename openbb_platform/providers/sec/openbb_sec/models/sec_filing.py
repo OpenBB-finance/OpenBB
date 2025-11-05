@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -111,7 +111,7 @@ class SecFilingData(Data):
         description="Central Index Key.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    trading_symbols: Optional[list] = Field(
+    trading_symbols: list | None = Field(
         default=None,
         title="Trading Symbols",
         description="Trading symbols, if available.",
@@ -132,13 +132,13 @@ class SecFilingData(Data):
         description="Filing date.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    period_ending: Optional[dateType] = Field(
+    period_ending: dateType | None = Field(
         default=None,
         title="Period Ending",
         description="Date of the ending period for the filing, if available.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    fiscal_year_end: Optional[str] = Field(
+    fiscal_year_end: str | None = Field(
         default=None,
         title="Fiscal Year End",
         description="Fiscal year end of the entity, if available. Format: MM-DD",
@@ -154,13 +154,13 @@ class SecFilingData(Data):
         description="True if the filing has a cover page.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None,
         title="Content Description",
         description="Description of attached content, mostly applicable to 8-K filings.",
         json_schema_extra={"x-widget_config": {"exclude": True}},
     )
-    cover_page: Optional[dict] = Field(
+    cover_page: dict | None = Field(
         default=None,
         title="Cover Page",
         description="Cover page information, if available.",
@@ -186,9 +186,9 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
     _name: str = PrivateAttr(default="")
     _cik: str = PrivateAttr(default="")
     _sic: str = PrivateAttr(default="")
-    _sic_organization_name: Optional[str] = PrivateAttr(default="")
-    _description: Optional[str] = PrivateAttr(default=None)
-    _cover_page_url: Optional[str] = PrivateAttr(default=None)
+    _sic_organization_name: str | None = PrivateAttr(default="")
+    _description: str | None = PrivateAttr(default=None)
+    _cover_page_url: str | None = PrivateAttr(default=None)
     _fiscal_year_end: str = PrivateAttr(default="")
     _fiscal_period: str = PrivateAttr(default="")
     _cover_page: dict = PrivateAttr(default=None)
@@ -213,11 +213,9 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         """Central Index Key."""
         return self._cik
 
-    @computed_field(  # type: ignore
-        title="Trading Symbols", description="Trading symbols, if available."
-    )
+    @computed_field(title="Trading Symbols", description="Trading symbols, if available.")  # type: ignore
     @property
-    def trading_symbols(self) -> Optional[list]:
+    def trading_symbols(self) -> list | None:
         """Trading symbols, if available."""
         return self._trading_symbols
 
@@ -229,7 +227,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
 
     @computed_field(title="SIC Organization", description="SIC Organization Name.")  # type: ignore
     @property
-    def sic_organization_name(self) -> Optional[str]:
+    def sic_organization_name(self) -> str | None:
         """Standard Industrial Classification Organization Name."""
         return self._sic_organization_name
 
@@ -244,7 +242,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         description="Date of the ending period for the filing, if available.",
     )
     @property
-    def period_ending(self) -> Optional[dateType]:
+    def period_ending(self) -> dateType | None:
         """Date of the ending period for the filing."""
         if self._period_ending:
             return dateType.fromisoformat(self._period_ending)
@@ -255,7 +253,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         description="Fiscal year end of the entity, if available. Format: MM-DD",
     )
     @property
-    def fiscal_year_end(self) -> Optional[str]:
+    def fiscal_year_end(self) -> str | None:
         """Fiscal year end date of the entity."""
         return self._fiscal_year_end
 
@@ -265,19 +263,15 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         """Document type."""
         return self._document_type
 
-    @computed_field(  # type: ignore
-        title="Has Cover Page", description="True if the filing has a cover page."
-    )
+    @computed_field(title="Has Cover Page", description="True if the filing has a cover page.")  # type: ignore
     @property
     def has_cover_page(self) -> bool:
         """True if the filing has a cover page."""
         return bool(self._cover_page_url)
 
-    @computed_field(  # type: ignore
-        title="Cover Page", description="Cover page information, if available."
-    )
+    @computed_field(title="Cover Page", description="Cover page information, if available.")  # type: ignore
     @property
-    def cover_page(self) -> Optional[dict]:
+    def cover_page(self) -> dict | None:
         """Cover page information, if available."""
         return self._cover_page
 
@@ -286,13 +280,11 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         description="Description of attached content, mostly applicable to 8-K filings.",
     )
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> str | None:
         """Document description, if available."""
         return self._description
 
-    @computed_field(  # type: ignore
-        title="Document URLs", description="List of files associated with the filing."
-    )
+    @computed_field(title="Document URLs", description="List of files associated with the filing.")  # type: ignore
     @property
     def document_urls(self) -> list:
         """List of document URLs."""
@@ -359,7 +351,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
         from openbb_sec.utils.definitions import SEC_HEADERS
         from openbb_sec.utils.helpers import sec_callback
 
-        response: Union[dict, list, str, None] = None
+        response: dict | list | str | None = None
         if use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_filings"
             async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
@@ -442,12 +434,8 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
                 """Convert the document section to a dictionary."""
                 doc_dict: dict = {}
                 doc_dict["type"] = re.search(r"<TYPE>(.*?)\n", doc).group(1).strip()  # type: ignore
-                doc_dict["sequence"] = (
-                    re.search(r"<SEQUENCE>(.*?)\n", doc).group(1).strip()  # type: ignore
-                )
-                doc_dict["filename"] = (
-                    re.search(r"<FILENAME>(.*?)\n", doc).group(1).strip()  # type: ignore
-                )
+                doc_dict["sequence"] = re.search(r"<SEQUENCE>(.*?)\n", doc).group(1).strip()  # type: ignore
+                doc_dict["filename"] = re.search(r"<FILENAME>(.*?)\n", doc).group(1).strip()  # type: ignore
                 description_match = re.search(r"<DESCRIPTION>(.*?)\n", doc)
 
                 if description_match:
@@ -470,7 +458,6 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
             n_items = 0
 
             for line in lines:
-
                 if ":" not in line:
                     continue
 
@@ -709,7 +696,7 @@ class SecFilingFetcher(Fetcher[SecFilingQueryParams, SecFilingData]):
     @staticmethod
     async def aextract_data(
         query: SecFilingQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract the raw data from the SEC site."""

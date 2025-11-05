@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -37,44 +37,44 @@ class YFinanceEquityQuoteData(EquityQuoteData):
         "volume_average_10d": "averageDailyVolume10Day",
     }
 
-    ma_50d: Optional[float] = Field(
+    ma_50d: float | None = Field(
         default=None,
         description="50-day moving average price.",
     )
-    ma_200d: Optional[float] = Field(
+    ma_200d: float | None = Field(
         default=None,
         description="200-day moving average price.",
     )
-    volume_average: Optional[float] = Field(
+    volume_average: float | None = Field(
         default=None,
         description="Average daily trading volume.",
     )
-    volume_average_10d: Optional[float] = Field(
+    volume_average_10d: float | None = Field(
         default=None,
         description="Average daily trading volume in the last 10 days.",
     )
-    currency: Optional[str] = Field(
+    currency: str | None = Field(
         default=None,
         description="Currency of the price.",
     )
 
 
 class YFinanceEquityQuoteFetcher(
-    Fetcher[YFinanceEquityQuoteQueryParams, List[YFinanceEquityQuoteData]]
+    Fetcher[YFinanceEquityQuoteQueryParams, list[YFinanceEquityQuoteData]]
 ):
     """YFinance Equity Quote Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceEquityQuoteQueryParams:
+    def transform_query(params: dict[str, Any]) -> YFinanceEquityQuoteQueryParams:
         """Transform the query."""
         return YFinanceEquityQuoteQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: YFinanceEquityQuoteQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -139,8 +139,8 @@ class YFinanceEquityQuoteFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceEquityQuoteQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[YFinanceEquityQuoteData]:
+    ) -> list[YFinanceEquityQuoteData]:
         """Transform the data."""
         return [YFinanceEquityQuoteData.model_validate(d) for d in data]

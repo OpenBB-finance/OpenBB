@@ -6,7 +6,7 @@ from datetime import (
     date as dateType,
     timedelta,
 )
-from typing import Any, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -26,14 +26,14 @@ class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/sec-filings-api/
     """
 
-    cik: Optional[str] = Field(
+    cik: str | None = Field(
         default=None, description="CIK number to look up. Overrides symbol."
     )
-    start_date: Optional[dateType] = Field(
+    start_date: dateType | None = Field(
         default=None,
         description="Start date for filtering filings. Default is one year ago.",
     )
-    end_date: Optional[dateType] = Field(
+    end_date: dateType | None = Field(
         default=None, description="End date for filtering filings."
     )
     limit: int = Field(
@@ -59,16 +59,12 @@ class FMPCompanyFilingsData(CompanyFilingsData):
         "filing_url": "link",
         "report_url": "finalLink",
     }
-    filing_url: Optional[str] = Field(
-        default=None, description="URL to the filing page."
-    )
-    symbol: Optional[str] = Field(
+    filing_url: str | None = Field(default=None, description="URL to the filing page.")
+    symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    cik: Optional[str] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
-    )
-    accepted_date: Optional[dateType] = Field(
+    cik: str | None = Field(default=None, description=DATA_DESCRIPTIONS.get("cik", ""))
+    accepted_date: dateType | None = Field(
         default=None, description="Accepted date of the filing."
     )
 
@@ -89,7 +85,7 @@ class FMPCompanyFilingsFetcher(
     @staticmethod
     async def aextract_data(
         query: FMPCompanyFilingsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""

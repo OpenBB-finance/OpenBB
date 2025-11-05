@@ -1,7 +1,6 @@
 """Futures Historical Price Standard Model."""
 
 from datetime import date, datetime
-from typing import Optional
 
 from dateutil import parser
 from openbb_core.provider.abstract.data import Data
@@ -17,15 +16,15 @@ class FuturesHistoricalQueryParams(QueryParams):
     """Futures Historical Price Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    start_date: Optional[date] = Field(
+    start_date: date | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[date] = Field(
+    end_date: date | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    expiration: Optional[str] = Field(
+    expiration: str | None = Field(
         default=None,
         description="Future expiry date with format YYYY-MM",
     )

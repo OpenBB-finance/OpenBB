@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date as dateType
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.personal_consumption_expenditures import (
@@ -55,7 +55,7 @@ class FredPersonalConsumptionExpendituresQueryParams(
             return None
         if isinstance(v, (list, dateType)):
             return v
-        new_dates: List = []
+        new_dates: list = []
         date_param = v
         if isinstance(date_param, str):
             new_dates = date_param.split(",")
@@ -86,7 +86,7 @@ class FredPersonalConsumptionExpendituresData(PersonalConsumptionExpendituresDat
     parent_id: str = Field(
         description="The parent id in the parent/child relationship.",
     )
-    children: Optional[str] = Field(
+    children: str | None = Field(
         default=None,
         description="The element_id of each child, as a comma-separated string.",
     )
@@ -101,14 +101,14 @@ class FredPersonalConsumptionExpendituresData(PersonalConsumptionExpendituresDat
 class FredPersonalConsumptionExpendituresFetcher(
     Fetcher[
         FredPersonalConsumptionExpendituresQueryParams,
-        List[FredPersonalConsumptionExpendituresData],
+        list[FredPersonalConsumptionExpendituresData],
     ]
 ):
     """FRED Personal Consumption Expenditures Fetcher."""
 
     @staticmethod
     def transform_query(
-        params: Dict[str, Any]
+        params: dict[str, Any],
     ) -> FredPersonalConsumptionExpendituresQueryParams:
         """Transform query."""
         return FredPersonalConsumptionExpendituresQueryParams(**params)
@@ -116,9 +116,9 @@ class FredPersonalConsumptionExpendituresFetcher(
     @staticmethod
     async def aextract_data(
         query: FredPersonalConsumptionExpendituresQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
@@ -128,7 +128,7 @@ class FredPersonalConsumptionExpendituresFetcher(
 
         api_key = credentials.get("fred_api_key") if credentials else ""
         element_id = PCE_CATEGORY_TO_EID[query.category]
-        dates: List = [""]
+        dates: list = [""]
 
         if query.date:
             if isinstance(query.date, dateType):
@@ -136,9 +136,7 @@ class FredPersonalConsumptionExpendituresFetcher(
             dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
-            dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-            )
+            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
 
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=54&element_id={element_id}"
@@ -146,7 +144,7 @@ class FredPersonalConsumptionExpendituresFetcher(
             + "&file_type=json"
             for date in dates
         ]
-        results: List = []
+        results: list = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
@@ -227,9 +225,9 @@ class FredPersonalConsumptionExpendituresFetcher(
     @staticmethod
     def transform_data(
         query: FredPersonalConsumptionExpendituresQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FredPersonalConsumptionExpendituresData]:
+    ) -> list[FredPersonalConsumptionExpendituresData]:
         """Transform data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")

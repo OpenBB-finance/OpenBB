@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -95,7 +95,7 @@ class FredCommoditySpotPricesQueryParams(CommoditySpotPricesQueryParams):
         description="Commodity name associated with the EIA spot price commodity data, default is 'all'.",
     )
 
-    frequency: Optional[
+    frequency: (
         Literal[
             "a",
             "q",
@@ -112,7 +112,8 @@ class FredCommoditySpotPricesQueryParams(CommoditySpotPricesQueryParams):
             "bwew",
             "bwem",
         ]
-    ] = Field(
+        | None
+    ) = Field(
         default=None,
         description="""Frequency aggregation to convert high frequency data to lower frequency.
         None = No change
@@ -141,9 +142,9 @@ class FredCommoditySpotPricesQueryParams(CommoditySpotPricesQueryParams):
         eop = End of Period
         """,
     )
-    transform: Optional[
-        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
         None = No transformation
@@ -176,7 +177,7 @@ class FredCommoditySpotPricesFetcher(
     @staticmethod
     async def aextract_data(
         query: FredCommoditySpotPricesQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
         """Extract the data from the FRED API."""

@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -50,12 +50,12 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         },
     }
 
-    interval: Union[
+    interval: (
         Literal[
             "1m", "5m", "15m", "30m", "90m", "1h", "2h", "4h", "1d", "1W", "1M", "1Y"
-        ],
-        str,
-    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
+        ]
+        | str
+    ) = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
 
 
 class TiingoEquityHistoricalData(EquityHistoricalData):
@@ -71,31 +71,31 @@ class TiingoEquityHistoricalData(EquityHistoricalData):
         "dividend": "divCash",
     }
 
-    adj_open: Optional[float] = Field(
+    adj_open: float | None = Field(
         default=None,
         description="The adjusted open price.",
     )
-    adj_high: Optional[float] = Field(
+    adj_high: float | None = Field(
         default=None,
         description="The adjusted high price.",
     )
-    adj_low: Optional[float] = Field(
+    adj_low: float | None = Field(
         default=None,
         description="The adjusted low price.",
     )
-    adj_close: Optional[float] = Field(
+    adj_close: float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("adj_close", ""),
     )
-    adj_volume: Optional[float] = Field(
+    adj_volume: float | None = Field(
         default=None,
         description="The adjusted volume.",
     )
-    split_ratio: Optional[float] = Field(
+    split_ratio: float | None = Field(
         default=None,
         description="Ratio of the equity split, if a split occurred.",
     )
-    dividend: Optional[float] = Field(
+    dividend: float | None = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
     )
@@ -130,7 +130,7 @@ class TiingoEquityHistoricalFetcher(
     @staticmethod
     async def aextract_data(
         query: TiingoEquityHistoricalQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Tiingo endpoint."""

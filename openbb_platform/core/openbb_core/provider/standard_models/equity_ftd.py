@@ -4,7 +4,6 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -30,26 +29,26 @@ class EquityFtdQueryParams(QueryParams):
 class EquityFtdData(Data):
     """Equity FTD Data."""
 
-    settlement_date: Optional[dateType] = Field(
+    settlement_date: dateType | None = Field(
         description="The settlement date of the fail.", default=None
     )
-    symbol: Optional[str] = Field(
+    symbol: str | None = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
         default=None,
     )
-    cusip: Optional[str] = Field(
+    cusip: str | None = Field(
         description="CUSIP of the Security.",
         default=None,
     )
-    quantity: Optional[int] = Field(
+    quantity: int | None = Field(
         description="The number of fails on that settlement date.",
         default=None,
     )
-    price: Optional[float] = Field(
+    price: float | None = Field(
         description="The price at the previous closing price from the settlement date.",
         default=None,
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         description="The description of the Security.",
         default=None,
     )

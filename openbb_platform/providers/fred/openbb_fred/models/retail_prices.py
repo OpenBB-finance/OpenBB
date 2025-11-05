@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -228,22 +228,21 @@ class FredRetailPricesQueryParams(RetailPricesQueryParams):
         default="monthly",
         description=QUERY_DESCRIPTIONS.get("frequency"),
     )
-    transform: Union[
-        None, Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
-    ] = Field(
+    transform: (
+        None | Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ) = Field(
         default=None,
-        description="""
-        Transformation type
-            None = No transformation
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
-        """,
+        description="""Transformation type
+    None = No transformation
+    chg = Change
+    ch1 = Change from Year Ago
+    pch = Percent Change
+    pc1 = Percent Change from Year Ago
+    pca = Compounded Annual Rate of Change
+    cch = Continuously Compounded Rate of Change
+    cca = Continuously Compounded Annual Rate of Change
+    log = Natural Log
+""",
     )
 
     @field_validator("item", mode="before", check_fields=False)
@@ -260,21 +259,21 @@ class FredRetailPricesData(RetailPricesData):
 
 
 class FredRetailPricesFetcher(
-    Fetcher[FredRetailPricesQueryParams, List[FredRetailPricesData]]
+    Fetcher[FredRetailPricesQueryParams, list[FredRetailPricesData]]
 ):
     """FRED Retail Prices Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FredRetailPricesQueryParams:
+    def transform_query(params: dict[str, Any]) -> FredRetailPricesQueryParams:
         """Transform query."""
         return FredRetailPricesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FredRetailPricesQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> Dict:
+    ) -> dict:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import json
@@ -299,7 +298,7 @@ class FredRetailPricesFetcher(
             "all_items": ALL_ITEMS,
         }
         # Get the series IDs for each item in the group.
-        series: List = []
+        series: list = []
         items_list = items_dict.get(query.item, [query.item])
         for k, v in all_symbols.items():
             for price in list(set(items_list)):
@@ -316,23 +315,23 @@ class FredRetailPricesFetcher(
             ),
             credentials,
         )
-        if not response.result:
+        if not response.result:  # type: ignore
             raise EmptyDataError(
                 "No data found for the item and region combination."
                 + " You may also be experiencing rate limiting."
                 + " Please adjust the parameters or try again in a few minutes."
             )
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": response.metadata,  # type: ignore
+            "data": [d.model_dump() for d in response.result],  # type: ignore
         }
 
     @staticmethod
     def transform_data(
         query: FredRetailPricesQueryParams,
-        data: Dict,
+        data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[FredRetailPricesData]]:
+    ) -> AnnotatedResult[list[FredRetailPricesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa

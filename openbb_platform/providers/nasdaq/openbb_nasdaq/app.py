@@ -21,7 +21,7 @@ def main():
     """Return a FastAPI app instance."""
     # pylint: disable=import-outside-toplevel
     from datetime import datetime
-    from typing import Annotated, Any, Literal, Optional
+    from typing import Annotated, Any, Literal
 
     from async_lru import alru_cache
     from fastapi import Depends, FastAPI
@@ -77,9 +77,9 @@ def main():
     @app.get("/get_symbol_choices", include_in_schema=False)
     async def get_symbol_choices(
         directory: Nasdaqlistings,  # type: ignore
-        symbol: Optional[str] = None,
-        year: Optional[int] = None,
-        form_group: Optional[str] = None,
+        symbol: str | None = None,
+        year: int | None = None,
+        form_group: str | None = None,
     ) -> list:
         """Get symbol choices for the Nasdaq listings."""
 
@@ -95,8 +95,8 @@ def main():
 
     @alru_cache
     async def get_document_choices(
-        symbol: Optional[str] = None,
-        year: Optional[int] = None,
+        symbol: str | None = None,
+        year: int | None = None,
         form_group: Literal[
             "annual",
             "quarterly",
@@ -332,8 +332,8 @@ def main():
         },
     )
     async def earnings_calendar(
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
     ) -> list[NasdaqCalendarEarningsFetcher.data_type]:
         """Get the earnings calendar."""
         fetcher = NasdaqCalendarEarningsFetcher()
@@ -402,8 +402,8 @@ def main():
         },
     )
     async def dividend_calendar(
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
     ) -> list[NasdaqCalendarDividendFetcher.data_type]:
         """Get the dividend calendar."""
         fetcher = NasdaqCalendarDividendFetcher()
@@ -442,8 +442,7 @@ def main():
                     {
                         "label": "Start Date",
                         "description": (
-                            "Start date of the data, in YYYY-MM-DD format."
-                            "(Default: 5 years ago)"
+                            "Start date of the data, in YYYY-MM-DD format.(Default: 5 years ago)"
                         ),
                         "optional": True,
                         "type": "date",
@@ -454,8 +453,7 @@ def main():
                     {
                         "label": "End Date",
                         "description": (
-                            "End date of the data, in YYYY-MM-DD format."
-                            "(Default: today)"
+                            "End date of the data, in YYYY-MM-DD format.(Default: today)"
                         ),
                         "optional": True,
                         "type": "date",
@@ -470,8 +468,8 @@ def main():
     )
     async def historical_dividends(
         symbol2: str,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
     ):
         """Get historical dividends for a given symbol."""
         fetcher = NasdaqHistoricalDividendsFetcher()
@@ -569,8 +567,8 @@ def main():
         },
     )
     async def ipo_calendar(
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
     ) -> list[NasdaqCalendarIpoFetcher.data_type]:
         """Get the IPO calendar."""
         fetcher = NasdaqCalendarIpoFetcher()
@@ -694,9 +692,9 @@ def main():
         },
     )
     async def economic_calendar(
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
-        country: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
+        country: str | None = None,
     ):
         """Get the dividend calendar."""
         fetcher = NasdaqEconomicCalendarFetcher()

@@ -1,7 +1,7 @@
 """Extension class for OBBject extensions."""
 
 import warnings
-from typing import Callable, List, Optional
+from collections.abc import Callable
 
 
 class Extension:
@@ -14,8 +14,8 @@ class Extension:
     def __init__(
         self,
         name: str,
-        credentials: Optional[List[str]] = None,
-        description: Optional[str] = None,
+        credentials: list[str] | None = None,
+        description: str | None = None,
     ) -> None:
         """Initialize the extension.
 

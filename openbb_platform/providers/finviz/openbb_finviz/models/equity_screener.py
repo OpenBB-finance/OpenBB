@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-statements,too-many-branches,too-many-locals
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -77,7 +77,7 @@ class FinvizEquityScreenerQueryParams(EquityScreenerQueryParams):
         default="all",
         description="Filter by sector.",
     )
-    industry: Optional[str] = Field(
+    industry: str | None = Field(
         default="all",
         description="Filter by industry.",
     )
@@ -94,13 +94,13 @@ class FinvizEquityScreenerQueryParams(EquityScreenerQueryParams):
     recommendation: Recommendation = Field(
         default="all", description="Filter by analyst recommendation."
     )
-    signal: Optional[str] = Field(
+    signal: str | None = Field(
         default=None,
         description="The Finviz screener signal to use."
         + " When no parameters are provided, the screener defaults to 'top_gainers'."
         + f" Available signals are:{SIGNALS_DESC_STR}",
     )
-    preset: Optional[str] = Field(
+    preset: str | None = Field(
         default=None,
         description="A configured preset file to use for the query."
         + " This overrides all other query parameters except 'metric', and 'limit'."
@@ -110,14 +110,14 @@ class FinvizEquityScreenerQueryParams(EquityScreenerQueryParams):
         + "\n\nNote: Syntax of parameters in preset files must follow the template file exactly "
         + " - i.e, Analyst Recom. = Strong Buy (1)",
     )
-    filters_dict: Optional[Union[Dict, str]] = Field(
+    filters_dict: dict | str | None = Field(
         default=None,
         kw_only=True,
         description="A formatted dictionary, or serialized JSON string, of additional filters to apply to the query."
         + " This parameter can be used as an alternative to preset files, and is ignored when a preset is supplied."
         + " Invalid entries will raise an error. Syntax should follow the 'screener_template.ini' file.",
     )
-    limit: Optional[int] = Field(
+    limit: int | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -240,278 +240,278 @@ class FinvizEquityScreenerData(EquityScreenerData):
         "profit_margin": "Profit M",
     }
 
-    earnings_date: Optional[str] = Field(
+    earnings_date: str | None = Field(
         default=None,
         description="Earnings date, where 'a' and 'b' mean after and before market close, respectively.",
     )
-    country: Optional[str] = Field(
+    country: str | None = Field(
         default=None,
         description="Country of the company.",
     )
-    sector: Optional[str] = Field(
+    sector: str | None = Field(
         default=None,
         description="Sector of the company.",
     )
-    industry: Optional[str] = Field(
+    industry: str | None = Field(
         default=None,
         description="Industry of the company.",
     )
-    beta: Optional[float] = Field(
+    beta: float | None = Field(
         default=None,
         description="Beta of the stock.",
     )
-    analyst_recommendation: Optional[float] = Field(
+    analyst_recommendation: float | None = Field(
         default=None,
         description="Analyst's mean recommendation. (1=Buy 5=Sell).",
     )
-    market_cap: Optional[float] = Field(
+    market_cap: float | None = Field(
         default=None,
         description="Market capitalization of the company.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    price: Optional[float] = Field(
+    price: float | None = Field(
         default=None,
         description="Price of a share.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    change_percent: Optional[float] = Field(
+    change_percent: float | None = Field(
         default=None,
         description="Price change percentage.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    change_from_open: Optional[float] = Field(
+    change_from_open: float | None = Field(
         default=None,
         description="Price change percentage, from the opening price.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    gap: Optional[float] = Field(
+    gap: float | None = Field(
         default=None,
         description="Price gap percentage, from the previous close.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volume: Optional[Union[int, float]] = Field(
+    volume: int | float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )
-    volume_avg: Optional[Union[int, float]] = Field(
+    volume_avg: int | float | None = Field(
         default=None,
         description="3-month average daily volume.",
     )
-    volume_relative: Optional[float] = Field(
+    volume_relative: float | None = Field(
         default=None,
         description="Current volume relative to the average.",
     )
-    average_true_range: Optional[float] = Field(
+    average_true_range: float | None = Field(
         default=None,
         description="Average true range (14).",
         json_schema_extra={"x-unit_measurement:": "currency"},
     )
-    price_change_1w: Optional[float] = Field(
+    price_change_1w: float | None = Field(
         default=None,
         description="One-week price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_1m: Optional[float] = Field(
+    price_change_1m: float | None = Field(
         default=None,
         description="One-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_3m: Optional[float] = Field(
+    price_change_3m: float | None = Field(
         default=None,
         description="Three-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_6m: Optional[float] = Field(
+    price_change_6m: float | None = Field(
         default=None,
         description="Six-month price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_1y: Optional[float] = Field(
+    price_change_1y: float | None = Field(
         default=None,
         description="One-year price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_change_ytd: Optional[float] = Field(
+    price_change_ytd: float | None = Field(
         default=None,
         description="Year-to-date price return.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_1w: Optional[float] = Field(
+    volatility_1w: float | None = Field(
         default=None,
         description="One-week volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    volatility_1m: Optional[float] = Field(
+    volatility_1m: float | None = Field(
         default=None,
         description="One-month volatility.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    year_high_percent: Optional[float] = Field(
+    year_high_percent: float | None = Field(
         default=None,
         description="Percent difference from current price to the 52-week high.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    year_low_percent: Optional[float] = Field(
+    year_low_percent: float | None = Field(
         default=None,
         description="Percent difference from current price to the 52-week low.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sma20_percent: Optional[float] = Field(
+    sma20_percent: float | None = Field(
         default=None,
         description="Percent difference from current price to the 20-day simple moving average.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sma50_percent: Optional[float] = Field(
+    sma50_percent: float | None = Field(
         default=None,
         description="Percent difference from current price to the 50-day simple moving average.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sma200_percent: Optional[float] = Field(
+    sma200_percent: float | None = Field(
         default=None,
         description="Percent difference from current price to the 200-day simple moving average.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    rsi: Optional[float] = Field(
+    rsi: float | None = Field(
         default=None,
         description="Relative strength index (14).",
     )
-    shares_outstanding: Optional[Union[int, float]] = Field(
+    shares_outstanding: int | float | None = Field(
         default=None,
         description="Number of shares outstanding.",
     )
-    shares_float: Optional[Union[int, float]] = Field(
+    shares_float: int | float | None = Field(
         default=None,
         description="Number of shares available to trade.",
     )
-    short_interest: Optional[float] = Field(
+    short_interest: float | None = Field(
         default=None,
         description="Percent of float reported as short.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    short_ratio: Optional[float] = Field(
+    short_ratio: float | None = Field(
         default=None,
         description="Short interest ratio",
     )
-    insider_ownership: Optional[float] = Field(
+    insider_ownership: float | None = Field(
         default=None,
         description="Insider ownership as a percentage.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    insider_ownership_change: Optional[float] = Field(
+    insider_ownership_change: float | None = Field(
         default=None,
         description="6-month change in insider ownership percentage.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    institutional_ownership: Optional[float] = Field(
+    institutional_ownership: float | None = Field(
         default=None,
         description="Institutional ownership as a percentage.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    institutional_ownership_change: Optional[float] = Field(
+    institutional_ownership_change: float | None = Field(
         default=None,
         description="3-month change in institutional ownership percentage.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    price_to_earnings: Optional[float] = Field(
+    price_to_earnings: float | None = Field(
         default=None,
         description="Price to earnings ratio.",
     )
-    forward_pe: Optional[float] = Field(
+    forward_pe: float | None = Field(
         default=None,
         description="Forward price to earnings ratio.",
     )
-    peg_ratio: Optional[float] = Field(
+    peg_ratio: float | None = Field(
         default=None,
         description="Price/Earnings-To-Growth (PEG) ratio.",
     )
-    price_to_sales: Optional[float] = Field(
+    price_to_sales: float | None = Field(
         default=None,
         description="Price to sales ratio.",
     )
-    price_to_book: Optional[float] = Field(
+    price_to_book: float | None = Field(
         default=None,
         description="Price to book ratio.",
     )
-    price_to_cash: Optional[float] = Field(
+    price_to_cash: float | None = Field(
         default=None,
         description="Price to cash ratio.",
     )
-    price_to_fcf: Optional[float] = Field(
+    price_to_fcf: float | None = Field(
         default=None,
         description="Price to free cash flow ratio.",
     )
-    eps_growth_past_1y: Optional[float] = Field(
+    eps_growth_past_1y: float | None = Field(
         default=None,
         description="EPS growth for this year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_1y: Optional[float] = Field(
+    eps_growth_next_1y: float | None = Field(
         default=None,
         description="EPS growth next year.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_past_5y: Optional[float] = Field(
+    eps_growth_past_5y: float | None = Field(
         default=None,
         description="EPS growth for the previous 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    eps_growth_next_5y: Optional[float] = Field(
+    eps_growth_next_5y: float | None = Field(
         default=None,
         description="EPS growth for the next 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    sales_growth_past_5y: Optional[float] = Field(
+    sales_growth_past_5y: float | None = Field(
         default=None,
         description="Sales growth for the previous 5 years.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    dividend_yield: Optional[float] = Field(
+    dividend_yield: float | None = Field(
         default=None,
         description="Annualized dividend yield.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_assets: Optional[float] = Field(
+    return_on_assets: float | None = Field(
         default=None,
         description="Return on assets.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_equity: Optional[float] = Field(
+    return_on_equity: float | None = Field(
         default=None,
         description="Return on equity.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    return_on_investment: Optional[float] = Field(
+    return_on_investment: float | None = Field(
         default=None,
         description="Return on investment.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    current_ratio: Optional[float] = Field(
+    current_ratio: float | None = Field(
         default=None,
         description="Current ratio.",
     )
-    quick_ratio: Optional[float] = Field(
+    quick_ratio: float | None = Field(
         default=None,
         description="Quick ratio.",
     )
-    long_term_debt_to_equity: Optional[float] = Field(
+    long_term_debt_to_equity: float | None = Field(
         default=None,
         description="Long term debt to equity ratio.",
     )
-    debt_to_equity: Optional[float] = Field(
+    debt_to_equity: float | None = Field(
         default=None,
         description="Total debt to equity ratio.",
     )
-    gross_margin: Optional[float] = Field(
+    gross_margin: float | None = Field(
         default=None,
         description="Gross margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    operating_margin: Optional[float] = Field(
+    operating_margin: float | None = Field(
         default=None,
         description="Operating margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    profit_margin: Optional[float] = Field(
+    profit_margin: float | None = Field(
         default=None,
         description="Profit margin.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -528,12 +528,12 @@ class FinvizEquityScreenerData(EquityScreenerData):
 
 
 class FinvizEquityScreenerFetcher(
-    Fetcher[FinvizEquityScreenerQueryParams, List[FinvizEquityScreenerData]]
+    Fetcher[FinvizEquityScreenerQueryParams, list[FinvizEquityScreenerData]]
 ):
     """Finviz Equity Screener Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FinvizEquityScreenerQueryParams:
+    def transform_query(params: dict[str, Any]) -> FinvizEquityScreenerQueryParams:
         """Transform query parameters."""
         transformed_params = params.copy()
         if not transformed_params.get("filters_dict"):
@@ -543,9 +543,9 @@ class FinvizEquityScreenerFetcher(
     @staticmethod
     def extract_data(  # noqa = PRL0912
         query: FinvizEquityScreenerQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Extract data from Finviz."""
         # pylint: disable=import-outside-toplevel
         import configparser  # noqa
@@ -664,7 +664,7 @@ class FinvizEquityScreenerFetcher(
                 else:
                     pass
 
-            filters_dict: Dict = {}
+            filters_dict: dict = {}
 
             if query.sector != "all":
                 filters_dict["Sector"] = SECTOR_MAP[query.sector]
@@ -730,8 +730,8 @@ class FinvizEquityScreenerFetcher(
     @staticmethod
     def transform_data(
         query: FinvizEquityScreenerQueryParams,
-        data: List[Dict],
+        data: list[dict],
         **kwargs: Any,
-    ) -> List[FinvizEquityScreenerData]:
+    ) -> list[FinvizEquityScreenerData]:
         """Transform data."""
         return [FinvizEquityScreenerData.model_validate(d) for d in data]

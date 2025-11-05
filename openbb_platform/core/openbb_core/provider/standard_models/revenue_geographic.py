@@ -1,7 +1,6 @@
 """Revenue by Geographic Segments Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -25,20 +24,20 @@ class RevenueGeographicData(Data):
     """Revenue by Geographic Segments Data."""
 
     period_ending: dateType = Field(description="The end date of the reporting period.")
-    fiscal_period: Optional[str] = Field(
+    fiscal_period: str | None = Field(
         default=None, description="The fiscal period of the reporting period."
     )
-    fiscal_year: Optional[int] = Field(
+    fiscal_year: int | None = Field(
         default=None, description="The fiscal year of the reporting period."
     )
-    filing_date: Optional[dateType] = Field(
+    filing_date: dateType | None = Field(
         default=None, description="The filing date of the report."
     )
-    region: Optional[str] = Field(
+    region: str | None = Field(
         default=None,
         description="The region represented by the revenue data.",
     )
-    revenue: Union[int, float] = Field(
+    revenue: int | float = Field(
         description="The total revenue attributed to the region.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )

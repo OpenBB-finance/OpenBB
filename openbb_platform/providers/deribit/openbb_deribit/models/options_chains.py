@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -57,17 +57,17 @@ class DeribitOptionsChainsData(OptionsChainsData):
 
     __doc__ = OptionsChainsData.__doc__
 
-    bid_iv: list[Union[float, None]] = Field(
+    bid_iv: list[float | None] = Field(
         default_factory=list,
         description="The implied volatility of the bid price.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    ask_iv: list[Union[float, None]] = Field(
+    ask_iv: list[float | None] = Field(
         default_factory=list,
         description="The implied volatility of the ask price.",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
-    interest_rate: list[Union[float, None]] = Field(
+    interest_rate: list[float | None] = Field(
         default_factory=list,
         description="The interest rate used by Deribit to calculate greeks.",
     )
@@ -76,22 +76,22 @@ class DeribitOptionsChainsData(OptionsChainsData):
         " The underlying asset is the specific future or index that the option is based on.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    settlement_price: list[Union[float, None]] = Field(
+    settlement_price: list[float | None] = Field(
         default_factory=list,
         description="The settlement price of the contract.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    min_price: list[Union[float, None]] = Field(
+    min_price: list[float | None] = Field(
         default_factory=list,
         description="The minimum price allowed.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    max_price: list[Union[float, None]] = Field(
+    max_price: list[float | None] = Field(
         default_factory=list,
         description="The maximum price allowed.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    volume_notional: list[Union[float, None]] = Field(
+    volume_notional: list[float | None] = Field(
         default_factory=list,
         description="The notional trading volume of the contract, as USD or USDC.",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -116,7 +116,7 @@ class DeribitOptionsChainsFetcher(
     @staticmethod
     async def aextract_data(
         query: DeribitOptionsChainsQueryParams,
-        credentials: Optional[dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data."""

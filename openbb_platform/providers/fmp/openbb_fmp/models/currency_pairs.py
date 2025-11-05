@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_pairs import (
@@ -33,22 +33,22 @@ class FMPCurrencyPairsData(CurrencyPairsData):
 class FMPCurrencyPairsFetcher(
     Fetcher[
         FMPCurrencyPairsQueryParams,
-        List[FMPCurrencyPairsData],
+        list[FMPCurrencyPairsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCurrencyPairsQueryParams:
+    def transform_query(params: dict[str, Any]) -> FMPCurrencyPairsQueryParams:
         """Transform the query params."""
         return FMPCurrencyPairsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: FMPCurrencyPairsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_fmp.utils.helpers import get_data_many
@@ -60,8 +60,8 @@ class FMPCurrencyPairsFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPCurrencyPairsData]:
+        query: FMPCurrencyPairsQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[FMPCurrencyPairsData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
