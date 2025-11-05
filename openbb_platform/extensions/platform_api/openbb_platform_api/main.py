@@ -15,7 +15,13 @@ from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
 
-from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
+from .utils.api import (
+    FIRST_RUN,
+    check_port,
+    get_user_settings,
+    get_widgets_json,
+    parse_args,
+)
 from .utils.merge_agents import get_additional_agents, has_additional_agents
 from .utils.merge_apps import get_additional_apps, has_additional_apps
 
@@ -29,7 +35,6 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 
-FIRST_RUN = True
 # Adds the OpenBB Environment variables to the script process.
 Env()
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
@@ -68,7 +73,7 @@ for key, value in uvicorn_settings.items():
         kwargs[key] = value
 
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
-    with open(WIDGET_SETTINGS) as widget_settings_file:
+    with open(WIDGET_SETTINGS, encoding="utf-8") as widget_settings_file:
         try:
             widget_exclude_filter_json = json.load(widget_settings_file).get(
                 "exclude", []
@@ -120,7 +125,7 @@ APPS_PATH = (
 async def root():
     """Serve the landing page HTML content."""
     html_path = Path(__file__).parent / "assets" / "landing_page.html"
-    with open(html_path) as f:
+    with open(html_path, encoding="utf-8") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
@@ -184,7 +189,7 @@ if not has_root_apps:
                 templates_file.write(json.dumps([]))
 
         if os.path.exists(DEFAULT_APPS_PATH):
-            with open(DEFAULT_APPS_PATH) as f:
+            with open(DEFAULT_APPS_PATH, encoding="utf-8") as f:
                 default_templates = json.load(f)
 
         if has_additional_apps(app):
@@ -203,7 +208,7 @@ if not has_root_apps:
                         )
 
         if os.path.exists(APPS_PATH):
-            with open(APPS_PATH) as templates_file:
+            with open(APPS_PATH, encoding="utf-8") as templates_file:
                 templates = json.load(templates_file)
 
             if isinstance(templates, dict):
@@ -246,7 +251,7 @@ if AGENTS_PATH:
     async def get_agents():
         """Get the agents.json file."""
         if os.path.exists(AGENTS_PATH):
-            with open(AGENTS_PATH) as f:
+            with open(AGENTS_PATH, encoding="utf-8") as f:
                 agents = json.load(f)
             return JSONResponse(content=agents, headers=obb_headers)
         return JSONResponse(content={}, headers=obb_headers)

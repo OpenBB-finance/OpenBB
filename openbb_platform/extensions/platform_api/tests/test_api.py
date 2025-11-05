@@ -1,9 +1,12 @@
+"""Test the API utilities module."""
+
 import importlib
 import json
 import sys
 import types
 from unittest.mock import AsyncMock, MagicMock, mock_open, patch
 
+import openbb_platform_api.utils.api as api_utils
 import pytest
 from openbb_platform_api.utils.api import (
     check_port,
@@ -12,7 +15,6 @@ from openbb_platform_api.utils.api import (
     import_app,
     parse_args,
 )
-import openbb_platform_api.utils.api as api_utils
 
 
 # Mock environment variables
@@ -33,7 +35,7 @@ def _load_main_with_mocks():
     api_module = types.ModuleType("openbb_core.api")
     api_module.__path__ = []
     rest_api_module = types.ModuleType("openbb_core.api.rest_api")
-    rest_api_module.app = stub_app
+    rest_api_module.app = stub_app  # type: ignore
     app_module = types.ModuleType("openbb_core.app")
     app_module.__path__ = []
     app_service_module = types.ModuleType("openbb_core.app.service")
@@ -54,7 +56,7 @@ def _load_main_with_mocks():
 
     system_service_module.SystemService = DummySystemService  # type:ignore
     env_module = types.ModuleType("openbb_core.env")
-    env_module.Env = lambda: None
+    env_module.Env = lambda: None  # type: ignore
 
     provider_module = types.ModuleType("openbb_core.provider")
     provider_module.__path__ = []
@@ -67,10 +69,11 @@ def _load_main_with_mocks():
     def _run_async_stub(callable_or_coroutine, *args, **kwargs):
         import asyncio
 
-        if callable(callable_or_coroutine):
-            result = callable_or_coroutine(*args, **kwargs)
-        else:
-            result = callable_or_coroutine
+        result = (
+            callable_or_coroutine(*args, **kwargs)
+            if callable(callable_or_coroutine)
+            else callable_or_coroutine
+        )
 
         if hasattr(result, "__await__"):
             try:
@@ -79,8 +82,8 @@ def _load_main_with_mocks():
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
             if loop.is_running():
-                return asyncio.ensure_future(result)
-            return loop.run_until_complete(result)
+                return asyncio.ensure_future(result)  # type: ignore
+            return loop.run_until_complete(result)  # type: ignore
         return result
 
     def _to_snake_case_stub(value: str) -> str:
@@ -92,8 +95,8 @@ def _load_main_with_mocks():
         value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
         return re.sub(r"[\s\-]+", "_", value).lower()
 
-    provider_utils_helpers_module.run_async = _run_async_stub
-    provider_utils_helpers_module.to_snake_case = _to_snake_case_stub
+    provider_utils_helpers_module.run_async = _run_async_stub  # type: ignore
+    provider_utils_helpers_module.to_snake_case = _to_snake_case_stub  # type: ignore
 
     modules = {
         "openbb_core": core_module,
@@ -153,6 +156,9 @@ def test_get_widgets_json_no_build():
     with (
         patch("builtins.open", mock_open(read_data="{}")),
         patch("os.path.exists", return_value=True),
+        patch(
+            "openbb_platform_api.utils.widgets.build_json", MagicMock(return_value={})
+        ),
         patch.dict(
             sys.modules,
             {"uvicorn": MagicMock(), "openbb_platform_api.main": dummy_main},
@@ -429,30 +435,22 @@ async def test_get_apps_json_merges_templates_with_additional_sources(tmp_path):
 def test_get_widgets_json_merges_with_additional_sources(monkeypatch):
     base_widgets = {"default": {"name": "Default Widget"}}
     additional_widgets = {"extra": {"name": "Extra Widget"}}
-    invalid_widgets = {"invalid": {"name": "Invalid Widget"}}
 
+    monkeypatch.setattr(api_utils, "FIRST_RUN", False, raising=False)
     monkeypatch.setattr(
-        api_utils,
-        "build_json",
+        "openbb_platform_api.utils.widgets.build_json",
         MagicMock(return_value=base_widgets.copy()),
-    )
-    monkeypatch.setattr(
-        api_utils,
-        "has_additional_widgets",
-        MagicMock(return_value=True),
         raising=False,
     )
     monkeypatch.setattr(
         api_utils,
-        "get_additional_widgets",
-        AsyncMock(return_value={"good": additional_widgets, "bad": invalid_widgets}),
+        "PATH_WIDGETS",
+        {"custom": {"extra": additional_widgets["extra"]}},
         raising=False,
     )
-    mock_logger = MagicMock()
-    monkeypatch.setattr(api_utils, "logger", mock_logger, raising=False)
 
     widgets = api_utils.get_widgets_json(
-        _build=True,
+        _build=False,
         _openapi={},
         widget_exclude_filter=[],
         editable=False,
@@ -461,45 +459,7 @@ def test_get_widgets_json_merges_with_additional_sources(monkeypatch):
     )
 
     assert widgets["default"] == base_widgets["default"]
-    if "extra" in widgets:
-        assert widgets["extra"] == additional_widgets["extra"]
-    if mock_logger.error.called:
-        mock_logger.error.assert_called_once()
-
-
-@pytest.mark.asyncio
-async def test_get_agents_json_merges_with_additional_sources(monkeypatch):
-    get_agents_json = getattr(api_utils, "get_agents_json", None)
-    if get_agents_json is None:
-        pytest.skip("get_agents_json helper not available")
-
-    base_agents = [{"id": "agent-base"}]
-    additional_agents = [{"id": "agent-extra"}]
-    invalid_agents = {"id": "agent-invalid"}
-
-    monkeypatch.setattr(
-        api_utils,
-        "has_additional_agents",
-        MagicMock(return_value=True),
-        raising=False,
-    )
-    monkeypatch.setattr(
-        api_utils,
-        "get_additional_agents",
-        AsyncMock(return_value={"good": additional_agents, "bad": invalid_agents}),
-        raising=False,
-    )
-    mock_logger = MagicMock()
-    monkeypatch.setattr(api_utils, "logger", mock_logger, raising=False)
-    monkeypatch.setattr(api_utils, "agents_json", list(base_agents), raising=False)
-
-    stub_app = MagicMock()
-    response = await get_agents_json(stub_app)
-    agents = json.loads(response.body.decode())
-
-    for agent in base_agents + additional_agents:
-        assert agent in agents
-    mock_logger.error.assert_called_once()
+    assert widgets["extra"] == additional_widgets["extra"]
 
 
 if __name__ == "__main__":

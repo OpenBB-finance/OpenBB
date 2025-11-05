@@ -2,7 +2,6 @@
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
-from starlette.routing import BaseRoute
 
 
 def has_additional_agents(app: FastAPI) -> bool:
@@ -20,6 +19,9 @@ def has_additional_agents(app: FastAPI) -> bool:
 
 async def get_additional_agents(app: FastAPI) -> dict:
     """Collect agents.json from non-root endpoints."""
+    # pylint: disable=import-outside-toplevel
+    from starlette.routing import BaseRoute
+
     if not has_additional_agents(app):
         return {}
 
@@ -40,7 +42,14 @@ async def get_additional_agents(app: FastAPI) -> dict:
         if not isinstance(agents, dict):
             continue
 
-        path = getattr(r, "path", "")
-        path_agents[path.replace("agents.json", "")] = agents
+        path = getattr(r, "path", "").replace("agents.json", "")
+        for k, v in agents.copy().items():
+            endpoints = v.get("endpoints", {})
+            for name, endpoint in endpoints.items():
+                if endpoint.startswith("/") and not endpoints.startwith(path):
+                    new_endpoint = path + endpoint[1:]
+                    agents[k][v]["endpoints"][name] = new_endpoint
+
+        path_agents[path] = agents
 
     return path_agents

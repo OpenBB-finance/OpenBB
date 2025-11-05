@@ -44,9 +44,7 @@ async def get_additional_widgets(app: FastAPI) -> dict:
             continue
 
         path = getattr(r, "path", "")
-        path_widgets[path.replace("widgets.json", "")] = {
-            k: v for k, v in widgets.items()
-        }
+        path_widgets[path.replace("widgets.json", "")] = dict(widgets.items())
 
     return path_widgets
 
