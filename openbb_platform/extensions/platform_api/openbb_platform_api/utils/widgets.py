@@ -263,7 +263,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
     ]
     for route in routes:
         # Skip routes that are only used as form endpoints for other routes
-        if route in form_endpoint_paths.values():
+        if route in form_endpoint_paths.values() or route.endswith("widgets.json"):
             continue
 
         route_api = openapi["paths"][route]
