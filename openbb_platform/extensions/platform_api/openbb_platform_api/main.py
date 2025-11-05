@@ -157,8 +157,9 @@ else:
     if root_route and getattr(root_route, "endpoint", None):
         get_widgets = root_route.endpoint  # type: ignore
     else:
-        # Fallback: provide a simple async implementation returning the generated widgets_json
+        # Fallback mechanism
         async def get_widgets():
+            """Return the generated widgets.json"""
             return JSONResponse(content=widgets_json, headers=obb_headers)
 
 
@@ -271,7 +272,7 @@ else:
 
     @app.get("/agents.json")
     async def get_agents_json():
-        """Placeholder to avoid 404."""
+        """Get an empty agents.json file."""
         return {}
 
 
