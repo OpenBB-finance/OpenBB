@@ -190,6 +190,7 @@ class Credentials(_Credentials):  # type: ignore
         return False
 
     def model_post_init(self, __context) -> None:
+        """Set unset credentials from environment variables."""
         super().model_post_init(__context)
         for key, secret in self._env_defaults.items():
             if key not in self.model_fields:
