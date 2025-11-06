@@ -5,7 +5,7 @@ import os
 import traceback
 import warnings
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated, ClassVar, Optional
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.extension_loader import ExtensionLoader
@@ -39,10 +39,29 @@ class CredentialsLoader:
     """Here we create the Credentials model."""
 
     credentials: dict[str, list[str]] = {}
+    env = Env()
+
+    @staticmethod
+    def _normalize_credential_map(raw: dict | None) -> dict[str, object]:
+        """Lower-case keys and drop empty overrides so env values can win."""
+        if not raw:
+            return {}
+        normalized: dict[str, object] = {}
+        for key, value in raw.items():
+            if not isinstance(key, str):
+                normalized[key] = value
+                continue
+            normalized_key = key.strip().lower()
+            if normalized_key in normalized and value in (None, ""):
+                continue
+            normalized[normalized_key] = value
+        return normalized
 
     def format_credentials(self, additional: dict) -> dict[str, tuple[object, None]]:
         """Prepare credentials map to be used in the Credentials model."""
         formatted: dict[str, tuple[object, None]] = {}
+        additional_data = dict(additional)
+
         for c_origin, c_list in self.credentials.items():
             for c_name in c_list:
                 if c_name in formatted:
@@ -51,13 +70,18 @@ class CredentialsLoader:
                         category=OpenBBWarning,
                     )
                     continue
+                default_value = additional_data.pop(c_name, None)
                 formatted[c_name] = (
                     Optional[OBBSecretStr],  # noqa
-                    Field(default=None, description=c_origin, alias=c_name.upper()),
+                    Field(
+                        default=default_value,
+                        description=c_origin,
+                        alias=c_name.upper(),
+                    ),
                 )
 
-        if additional:
-            for key, value in additional.items():
+        if additional_data:
+            for key, value in additional_data.items():
                 if key in formatted:
                     continue
                 formatted[key] = (
@@ -94,8 +118,6 @@ class CredentialsLoader:
 
     def load(self) -> BaseModel:
         """Load credentials from providers."""
-        # We load providers first to give them priority choosing credential names
-        _ = Env()
         self.from_providers()
         self.from_obbject()
         path = Path(USER_SETTINGS_PATH)
@@ -107,7 +129,8 @@ class CredentialsLoader:
                 if "credentials" in data:
                     additional = data["credentials"]
 
-        # Collect all keys from providers to match with environment variables
+        additional = self._normalize_credential_map(additional)
+
         all_keys = [
             key
             for keys in ProviderInterface().credentials.values()
@@ -115,26 +138,33 @@ class CredentialsLoader:
             for key in keys
         ]
 
-        for key in all_keys:
-            if key.upper() in os.environ:
-                value = os.environ[key.upper()]
-                if value:
-                    additional[key] = SecretStr(value)
+        env_credentials: dict[str, SecretStr] = {}
+        for env_key, value in os.environ.items():
+            if not value:
+                continue
+            lower_key = env_key.lower()
+            if lower_key in all_keys or env_key.endswith("API_KEY"):
+                canonical_key = lower_key if lower_key in all_keys else lower_key
+                env_credentials[canonical_key] = SecretStr(value)
 
-        # Collect all environment variables ending with API_KEY
-        environ_keys = [d for d in os.environ if d.endswith("API_KEY")]
+        if env_credentials:
+            additional.update(env_credentials)
 
-        for key in environ_keys:
-            value = os.environ[key]
-            if value:
-                additional[key.lower()] = SecretStr(value)
+        additional = self._normalize_credential_map(additional)
+
+        env_overrides = {
+            key: additional[key]
+            for key in env_credentials
+            if key in additional and additional[key] not in (None, "")
+        }
 
         model = create_model(
             "Credentials",
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
             **self.format_credentials(additional),  # type: ignore
         )
-        model.origins = self.credentials
+        model._env_defaults = env_overrides  # type: ignore # pylint: disable=W0212
+
         return model
 
 
@@ -145,6 +175,29 @@ class Credentials(_Credentials):  # type: ignore
     """Credentials model used to store provider credentials."""
 
     model_config = ConfigDict(extra="allow")
+    _env_defaults: ClassVar[dict[str, object]] = getattr(
+        _Credentials, "_env_defaults", {}
+    )
+
+    @staticmethod
+    def _is_unset(value: object) -> bool:
+        if value is None:
+            return True
+        if isinstance(value, SecretStr):
+            return not value.get_secret_value()
+        if isinstance(value, str):
+            return value == ""
+        return False
+
+    def model_post_init(self, __context) -> None:
+        """Set unset credentials from environment variables."""
+        super().model_post_init(__context)
+        for key, secret in self._env_defaults.items():
+            if key not in self.model_fields:
+                continue
+            current = getattr(self, key, None)
+            if self._is_unset(current):
+                setattr(self, key, secret)
 
     def __repr__(self) -> str:
         """Define the string representation of the credentials."""
