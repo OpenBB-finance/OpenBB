@@ -1,4 +1,4 @@
-# OpenBB Platform Extensions Cookiecutter Template
+# OpenBB ODP Extensions Cookiecutter Template
 
 ## Introduction
 

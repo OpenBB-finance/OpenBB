@@ -1,4 +1,4 @@
-# OpenBB Platform Extensions Cookiecutter
+# OpenBB ODP Extensions Cookiecutter
 
 [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/) is a command-line utility that creates projects from templates.
 
@@ -27,6 +27,12 @@ You likely won't always use all in tandem, just delete the unwanted folders and 
 
 ```
 pip install openbb-cookiecutter
+```
+
+Alternatively, with `uvx`:
+
+```
+uvx openbb-cookiecutter
 ```
 
 2. Navigate the current working directory to the desired output location and run:
