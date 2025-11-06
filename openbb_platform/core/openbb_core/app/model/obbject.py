@@ -60,7 +60,7 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _route: str = PrivateAttr(
+    _route: str | None = PrivateAttr(
         default=None,
     )
     _standard_params: dict[str, Any] | None = PrivateAttr(
@@ -178,9 +178,9 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                res_dict = res.model_dump(
+                res_dict = res.model_dump(  # pylint: disable=no-member
                     exclude_unset=True, exclude_none=True
-                )  # pylint: disable=no-member
+                )
                 # Model is serialized as a dict[str, list] or list[dict]
                 if (
                     (
@@ -322,13 +322,16 @@ class OBBject(Tagged, Generic[T]):
             orient == "list"
             and isinstance(self.results, dict)
             and all(
-                isinstance(value, dict) for value in self.results.values()
-            )  # pylint: disable=no-member
+                isinstance(value, dict)
+                for value in self.results.values()  # pylint: disable=no-member
+            )
         ):
             df = df.T
-        results = df.to_dict(orient=orient)
+        results: dict | list = df.to_dict(orient=orient)
+
         if isinstance(results, dict) and orient == "list" and "index" in results:
             del results["index"]
+
         return results
 
     def to_llm(self) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:

@@ -43,9 +43,18 @@ class Container:
                     kwargs["extra_params"][k] = v
 
         obbject = self._command_runner.sync_run(*args, **kwargs)
+
+        results_only = getattr(obbject, "_results_only", False)
+
+        if results_only is True:
+            content = obbject.model_dump(exclude_unset=True).get("results", [])
+            return content
+
         output_type = self._command_runner.user_settings.preferences.output_type
+
         if output_type == "OBBject":
             return obbject
+
         return getattr(obbject, "to_" + output_type)()
 
     def _check_credentials(self, provider: str) -> bool | None:
