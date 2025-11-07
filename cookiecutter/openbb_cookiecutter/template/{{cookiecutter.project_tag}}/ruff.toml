@@ -1,13 +1,3 @@
-# This is an introductory addition of ruff. We should look to adding:
-# PD: pandas-vet
-# All options here: https://github.com/charliermarsh/ruff#supported-rules
-
-exclude = [
-    "^openbb_platform/platform/core/openbb_core/app/static/package/.*",
-    "^openbb_platform/core/openbb/package/.*",
-    "^cookiecutter/*",
-]
-
 line-length = 122
 target-version = "py310"
 fix = true

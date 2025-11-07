@@ -1,0 +1,11 @@
+{
+  "full_name": "Hello World",
+  "email": "hello@world.com",
+  "project_name": "OpenBB Python Extension Template",
+  "project_tag": "extension-template",
+  "package_name": "extension_template",
+  "provider_name": "template",
+  "router_name": "template",
+  "obbject_name": "template",
+  "_template": "{% now 'utc', '%Y%m%d%H%M%S' %}"
+}
