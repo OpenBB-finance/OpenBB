@@ -522,7 +522,7 @@ class StaticCommandRunner:
                 if ext.command_output_paths and route not in ext.command_output_paths:
                     continue
 
-                accessors = getattr(type(obbject), "accessors", set())
+                accessors: set = getattr(type(obbject), "accessors", set())
                 if ext.name not in accessors:
                     continue
 
