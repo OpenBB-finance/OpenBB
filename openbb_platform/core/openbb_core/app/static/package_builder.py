@@ -704,7 +704,7 @@ class ClassDefinition:
                 and route_methods
             )
 
-            if path == "" and is_command_route:
+            if (path == "" and is_command_route) or "." in path:
                 continue
 
             if is_command_route:
@@ -1502,7 +1502,12 @@ class MethodDefinition:
                 if default_repr == "Ellipsis":
                     default_repr = "None"
                 default_part = f" = {default_repr}"
-
+            if (
+                "None" in default_part
+                and "| None" not in type_repr
+                and "Optional" not in type_repr
+            ):
+                type_repr += " | None"
             final_param = f"""{param.name.strip()}: Annotated[
             {type_repr},
             OpenBBField(
@@ -2767,7 +2772,9 @@ class PathHandler:
         route_map = {
             route.path: route
             for route in router.api_router.routes  # type: ignore
-            if isinstance(route, APIRoute) and getattr(route, "include_in_schema", True)
+            if isinstance(route, APIRoute)
+            and "." not in str(route.path)
+            and getattr(route, "include_in_schema", True)
         }
 
         # Also include routes directly registered on _api_router instances
