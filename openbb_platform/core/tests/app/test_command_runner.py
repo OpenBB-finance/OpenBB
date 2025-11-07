@@ -16,7 +16,7 @@ from openbb_core.app.command_runner import (
 )
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.extension import Extension
+from openbb_core.app.model.extension import CachedAccessor, Extension
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -495,7 +495,13 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
         if isinstance(getattr(self, "results", None), list):
             self.results.append("modified_by_mut")
 
-    monkeypatch.setattr(OBBject, ext.name, mut_accessor, raising=False)
+    monkeypatch.setattr(
+        "openbb_core.app.model.obbject.OBBject.accessors",
+        OBBject.accessors | {ext.name},
+    )
+    monkeypatch.setattr(
+        OBBject, ext.name, CachedAccessor(ext.name, mut_accessor), raising=False
+    )
 
     # register the extension only for "mock/route"
     fake_loader = SimpleNamespace(on_command_output_callbacks={"mock/route": [ext]})
@@ -535,7 +541,13 @@ def test_results_only_flag_sets_attribute_and_accessor_runs(monkeypatch):
     def ro_accessor(self):
         called["hit"] = True
 
-    monkeypatch.setattr(OBBject, ext.name, ro_accessor, raising=False)
+    monkeypatch.setattr(
+        "openbb_core.app.model.obbject.OBBject.accessors",
+        OBBject.accessors | {ext.name},
+    )
+    monkeypatch.setattr(
+        OBBject, ext.name, CachedAccessor(ext.name, ro_accessor), raising=False
+    )
 
     fake_loader = SimpleNamespace(on_command_output_callbacks={"*": [ext]})
     monkeypatch.setattr(

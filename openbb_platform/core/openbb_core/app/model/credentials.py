@@ -164,6 +164,7 @@ class CredentialsLoader:
             **self.format_credentials(additional),  # type: ignore
         )
         model._env_defaults = env_overrides  # type: ignore # pylint: disable=W0212
+        model.origins = self.credentials
 
         return model
 

@@ -87,7 +87,9 @@ class OpenBBFigure(go.Figure):
 
         super().__init__()
         if fig:
-            self.__dict__ = fig.__dict__
+            self.__dict__ = (
+                go.Figure(fig).__dict__ if isinstance(fig, dict) else fig.__dict__
+            )
 
         self._charting_settings: ChartingSettings | None = kwargs.pop(
             "charting_settings", None
