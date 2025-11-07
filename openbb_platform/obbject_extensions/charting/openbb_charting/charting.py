@@ -472,24 +472,63 @@ class Charting:
 
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.openbb_figure import OpenBBFigure
+
         try:
             charting_function = self._get_chart_function(
-                self._obbject._route  # pylint: disable=protected-access
+                self._obbject._route  # pylint: disable=protected-access   # type: ignore
             )
             kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings
             kwargs["standard_params"] = (
                 self._obbject._standard_params  # pylint: disable=protected-access
             )
-            kwargs["extra_params"] = (
-                self._obbject._extra_params  # pylint: disable=protected-access
+            # If the provider interface isn't used, endpoint kwargs are already here.
+            # Don't overwrite them.
+            obb_kwargs = (
+                self._obbject._extra_params or {}  # pylint: disable=protected-access
             )
+            if obb_kwargs:
+                for k, v in obb_kwargs.items():
+                    kwargs["extra_params"].update({k: v})
+
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
-            fig, content = charting_function(**kwargs)
-            content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-            self._obbject.chart = Chart(fig=fig, content=content, format=self._format)
-            if render:
+
+            # Handle different types of output from the charting endpoint.
+            chart_response: Any = charting_function(**kwargs)
+
+            # If returned a Chart object, set as-is.
+            if isinstance(chart_response, Chart):
+                self._obbject.chart = chart_response
+            # If just an OpenBBFigure gets returned, create the serialized version for the API.
+            elif isinstance(chart_response, OpenBBFigure):
+                fig = chart_response
+                content = fig.show(external=True, **kwargs).to_plotly_json()
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=self._format
+                )
+            # Current functions return this.
+            elif isinstance(chart_response, tuple) and len(chart_response) == 2:
+                fig, content = chart_response
+
+                if isinstance(fig, OpenBBFigure):
+                    content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
+                    self._obbject.chart = Chart(
+                        fig=fig, content=content, format=self._format
+                    )
+                else:
+                    self._obbject.chart = Chart(
+                        fig=fig, content=content, format=type(fig).__name__
+                    )
+
+            else:
+                self._obbject.chart = Chart(
+                    fig=chart_response, content=None, format="unknown"
+                )
+
+            if render and hasattr(fig, "show"):
                 fig.show(**kwargs)
 
         except (RuntimeError, OpenBBError) as e:
@@ -712,8 +751,9 @@ class Charting:
                 self._backend.send_table(
                     df_table=data_as_df,
                     title=title
-                    or self._obbject._route,  # pylint: disable=protected-access
-                    theme=self._charting_settings.table_style,
+                    or ""
+                    or self._obbject._route,  # pylint: disable=protected-access  # type: ignore
+                    theme=self._charting_settings.table_style,  # pylint: disable=protected-access
                 )
             except Exception as e:  # pylint: disable=W0718
                 warn(f"Failed to show figure with backend. {e}")

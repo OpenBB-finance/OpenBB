@@ -21,6 +21,8 @@ class SystemService(metaclass=SingletonMeta):
         "python_settings",
         "debug_mode",
         "logging_suppress",
+        "allow_mutable_extensions",
+        "allow_on_command_output",
     }
 
     PRO_VALIDATION_HASH = "300ac59fdcc8f899e0bc5c18cda8652220735da1a00e2af365efe9d8e5fe8306"  # pragma: allowlist secret
