@@ -530,7 +530,7 @@ class StaticCommandRunner:
                 if not isinstance(descriptor, CachedAccessor):
                     continue
 
-                factory = descriptor._accessor  # type: ignore[attr-defined]
+                factory = descriptor._accessor  # type: ignore  # pylint: disable=W0212
 
                 target = _clone_for_immutable(obbject) if ext.immutable else obbject
 
