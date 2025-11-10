@@ -15,6 +15,7 @@ from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.api_settings import APISettings
 from openbb_core.app.model.python_settings import PythonSettings
 from openbb_core.app.version import CORE_VERSION, VERSION
+from openbb_core.env import Env
 from pydantic import ConfigDict, Field, field_validator, model_validator
 
 
@@ -54,6 +55,8 @@ class SystemSettings(Tagged):
     debug_mode: bool = False
     test_mode: bool = False
     headless: bool = False
+    allow_mutable_extensions: bool = getattr(Env(), "ALLOW_MUTABLE_EXTENSIONS", False)
+    allow_on_command_output: bool = getattr(Env(), "ALLOW_ON_COMMAND_OUTPUT", False)
 
     model_config = ConfigDict(validate_assignment=True, frozen=True)
 

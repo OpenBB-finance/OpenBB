@@ -1,13 +1,11 @@
 [MASTER]
-
+# Add files or directories to the blacklist. They should be base names, not
+# paths.
+ignore=CVS,cookiecutter
 # A comma-separated list of package or module names from where C extensions may
 # be loaded. Extensions are loading into the active Python interpreter and may
 # run arbitrary code
 extension-pkg-allow-list=math,binascii
-
-# Add files or directories to the blacklist. They should be base names, not
-# paths.
-ignore=CVS
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.

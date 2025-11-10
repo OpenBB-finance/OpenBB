@@ -49,6 +49,23 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self._obbject_objects: dict[str, Extension] = {}
         self._core_objects: dict[str, Router] = {}
         self._provider_objects: dict[str, Provider] = {}
+        self._on_command_output_callbacks: dict[str, list[Extension]] = {}
+        self._register_command_output_callbacks()
+
+    @property
+    def on_command_output_callbacks(self) -> dict[str, list[Extension]]:
+        """Return the on command output callbacks."""
+        return self._on_command_output_callbacks
+
+    def _register_command_output_callbacks(self) -> None:
+        """Register extensions that act on command output."""
+        for ext in self.obbject_objects.values():
+            if ext.on_command_output:
+                paths = ext.command_output_paths or ["*"]
+                for path in paths:
+                    if path not in self._on_command_output_callbacks:
+                        self._on_command_output_callbacks[path] = []
+                    self._on_command_output_callbacks[path].append(ext)
 
     @property
     def obbject_entry_points(self) -> EntryPoints:

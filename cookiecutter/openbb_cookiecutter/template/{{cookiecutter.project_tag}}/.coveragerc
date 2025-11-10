@@ -4,5 +4,4 @@ omit =
     tests/*
     **/tests/**
     **/package/**
-    cookiecutter/**
 source = .
