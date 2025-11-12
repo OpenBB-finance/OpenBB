@@ -4,10 +4,11 @@ import inspect
 from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Annotated, Any, TypeVar
+from typing import Annotated, Any, TypeVar, get_args, get_origin
 
 from fastapi import APIRouter, Depends, Header
 from fastapi.encoders import jsonable_encoder
+from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from openbb_core.app.command_runner import CommandRunner
@@ -75,6 +76,24 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             # We track VAR_KEYWORD parameter to insert the any additional
             # parameters we need to add before it and avoid a SyntaxError
             var_kw_pos = pos
+
+        if get_origin(parameter.annotation) is Annotated:
+            # Get the metadata from Annotated
+            metadata = get_args(parameter.annotation)[1:]
+            # Check if any metadata item is a Depends instance
+            if any(isinstance(m, DependsParam) for m in metadata):
+                # Insert at var_kw_pos with include_in_schema=False
+                new_parameter_list.insert(
+                    var_kw_pos,
+                    Parameter(
+                        parameter.name,
+                        kind=Parameter.POSITIONAL_OR_KEYWORD,
+                        default=parameter.default,
+                        annotation=parameter.annotation,
+                    ),
+                )
+                var_kw_pos += 1
+                continue
 
         new_parameter_list.append(
             Parameter(
@@ -216,7 +235,7 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(  # pylint: disable=R0914
+    async def wrapper(  # pylint: disable=R0914,R0912  # noqa: PLR0912
         *args: tuple[Any], **kwargs: dict[str, Any]
     ) -> OBBject | JSONResponse:
         user_settings: UserSettings = UserSettings.model_validate(
@@ -288,25 +307,37 @@ def build_api_wrapper(
 
         output = await execute(*args, **kwargs)
 
-        # This is where we check for `on_command_output` extensions
-        mutated_output = getattr(output, "_extension_modified", False)
-        results_only = getattr(output, "_results_only", False)
-        try:
-            if results_only is True:
-                content = output.model_dump(exclude_unset=True).get("results", [])
-                return JSONResponse(content=jsonable_encoder(content), status_code=200)
+        if isinstance(output, OBBject):
+            # This is where we check for `on_command_output` extensions
+            mutated_output = getattr(output, "_extension_modified", False)
+            results_only = getattr(output, "_results_only", False)
+            try:
+                if results_only is True:
+                    content = output.model_dump(
+                        exclude_unset=True, exclude_none=True
+                    ).get("results", [])
 
-            if (mutated_output and isinstance(output, OBBject)) or (
-                isinstance(output, OBBject) and no_validate
-            ):
-                return JSONResponse(content=jsonable_encoder(output), status_code=200)
-        except Exception as exc:  # pylint: disable=W0703
-            raise OpenBBError(
-                f"Error serializing output for an extension-modified endpoint {path}: {exc}",
-            ) from exc
+                    return JSONResponse(
+                        content=jsonable_encoder(content), status_code=200
+                    )
 
-        if isinstance(output, OBBject) and not no_validate:
-            return validate_output(output)
+                if (mutated_output and isinstance(output, OBBject)) or (
+                    isinstance(output, OBBject) and no_validate
+                ):
+                    output.results = output.model_dump(
+                        exclude_unset=True, exclude_none=True
+                    ).get("results")
+
+                    return JSONResponse(
+                        content=jsonable_encoder(output), status_code=200
+                    )
+            except Exception as exc:  # pylint: disable=W0703
+                raise OpenBBError(
+                    f"Error serializing output for an extension-modified endpoint {path}: {exc}",
+                ) from exc
+
+            if not no_validate:
+                return validate_output(output)
 
         return output
 
