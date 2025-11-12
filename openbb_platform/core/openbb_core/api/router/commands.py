@@ -55,7 +55,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     sig = signature(func)
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
-    new_parameter_list = []
+    new_parameter_list: list = []
     var_kw_pos = len(parameter_list)
 
     for pos, parameter in enumerate(parameter_list):

@@ -532,8 +532,6 @@ class StaticCommandRunner:
                             del obbject.extra["metadata"].arguments[section][key]
                             continue
 
-            print(obbject.extra)
-
         return obbject
 
     @classmethod
