@@ -1,0 +1,4 @@
+name: desktop-only
+paths:
+  include:
+    - desktop/**
