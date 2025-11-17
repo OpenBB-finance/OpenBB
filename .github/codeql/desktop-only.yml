@@ -1,3 +1,2 @@
 name: desktop-only
-paths:
-  - desktop/**
+paths: "desktop/"
