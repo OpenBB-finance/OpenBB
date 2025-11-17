@@ -113,8 +113,8 @@ def get_all_dev_dependencies():
 
 def install_platform_local(_extras: bool = False):
     """Install the Platform locally for development purposes."""
-    original_lock = LOCK.read_text()
-    original_pyproject = PYPROJECT.read_text()
+    original_lock = LOCK.read_text(encoding="utf-8")
+    original_pyproject = PYPROJECT.read_text(encoding="utf-8")
 
     local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     with open(PYPROJECT) as f:
@@ -167,8 +167,8 @@ def install_platform_local(_extras: bool = False):
 
 def install_platform_cli():
     """Install the CLI locally for development purposes."""
-    original_lock = CLI_LOCK.read_text()
-    original_pyproject = CLI_PYPROJECT.read_text()
+    original_lock = CLI_LOCK.read_text(encoding="utf-8")
+    original_pyproject = CLI_PYPROJECT.read_text(encoding="utf-8")
 
     with open(CLI_PYPROJECT) as f:
         pyproject_toml = load(f)
