@@ -47,7 +47,7 @@ class APIEx(Example):
     def validate_model(cls, values: dict) -> dict:
         """Validate model."""
         parameters = values.get("parameters", {})
-        provider = parameters.get("provider")
+        provider = parameters.pop("provider", None)
 
         if provider and not isinstance(provider, str):
             raise ValueError("Provider must be a string.")
