@@ -192,8 +192,8 @@ class PackageBuilder:
                 self._clean(modules)
                 ext_map = self._get_extension_map()
                 self._save_modules(modules, ext_map)
-                self._save_package()
                 self._save_reference_file(ext_map)
+                self._save_package()
                 if self.lint:
                     self._run_linters()
             except BlockingIOError:
@@ -2522,6 +2522,17 @@ class DocstringGenerator:
                     )
                     doc += "\n"
         else:
+            primitive_types = {
+                "int",
+                "float",
+                "str",
+                "bool",
+                "list",
+                "dict",
+                "tuple",
+                "set",
+            }
+            type_name: str = ""
             sections = (
                 SystemService().system_settings.python_settings.docstring_sections
             )
@@ -2534,8 +2545,8 @@ class DocstringGenerator:
             doc_has_examples = bool(
                 re.search(r"^\s*Examples\s*\n[-=~`]{3,}", doc, re.MULTILINE)
             )
-
             result_doc = doc.strip("\n")
+
             if result_doc:
                 result_doc += "\n\n"
 
@@ -2557,6 +2568,7 @@ class DocstringGenerator:
                         continue
 
                     annotation = getattr(param, "_annotation", None)
+
                     if isinstance(annotation, _AnnotatedAlias):
                         p_type = annotation.__args__[0]  # type: ignore
                         metadata = getattr(annotation, "__metadata__", [])
@@ -2570,8 +2582,8 @@ class DocstringGenerator:
                     type_str = cls.get_field_type(
                         p_type, param.default is Parameter.empty
                     )
-
                     param_section += f"{create_indent(1)}{param_name} : {type_str}\n"
+
                     if description and description.strip() != '""':
                         param_section += f"{create_indent(2)}{description}\n"
 
@@ -2604,17 +2616,6 @@ class DocstringGenerator:
                     )
 
                     returns_section += f"{type_name}\n"
-
-                    primitive_types = {
-                        "int",
-                        "float",
-                        "str",
-                        "bool",
-                        "list",
-                        "dict",
-                        "tuple",
-                        "set",
-                    }
                     is_primitive = type_name.lower() in primitive_types
 
                     if not is_primitive:
@@ -2643,6 +2644,7 @@ class DocstringGenerator:
                                         returns_section += (
                                             f"\n{create_indent(3)}{description}"
                                         )
+
                         except (AttributeError, TypeError):
                             pass
                 else:
@@ -2652,6 +2654,37 @@ class DocstringGenerator:
                 result_doc = result_doc.replace("\n    ", f"\n{create_indent(2)}")
 
             doc = result_doc.rstrip()
+
+            # Check response type for OBBject types to extract inner type
+            # Expand the docstring with the schema fields like in model-based commands
+            if type_name and "OBBject" in type_name:
+                type_str = str(return_annotation).replace("[T]", "")
+                match = re.search(r"OBBject\[(.*)\]", type_str)
+                inner = match.group(1) if match else ""
+                # Extract from list[Type] or dict[str, Type]
+                type_match = re.search(r"\[([^\[\]]+)\]$", inner)
+                extracted_type = type_match.group(1) if type_match else inner
+
+                if extracted_type and extracted_type.lower() not in primitive_types:
+                    route_map = PathHandler.build_route_map()
+                    paths = ReferenceGenerator.get_paths(route_map)
+                    route_path = paths.get(path, {}).get("data", {}).get("standard", [])
+
+                    if route_path:
+                        if doc and not doc.endswith("\n\n"):
+                            doc += "\n\n"
+                        doc += f"{extracted_type}\n"
+                        doc += f"{'-' * len(extracted_type)}\n"
+
+                        for field in route_path:
+                            field_name = field.get("name", "")
+                            field_type = field.get("type", "Any")
+                            field_description = field.get("description", "")
+                            doc += f"{create_indent(2)}{field_name} : {field_type}\n"
+                            if field_description:
+                                doc += f"{create_indent(3)}{field_description}\n"
+
+                        doc += "\n"
 
             if "examples" in sections and not doc_has_examples:
                 if doc and not doc.endswith("\n\n"):
@@ -2980,8 +3013,7 @@ class ReferenceGenerator:
         func : Callable
             Router endpoint function.
         examples : Optional[List[Example]]
-            List of Examples (APIEx or PythonEx type)
-        for the endpoint.
+            List of Examples (APIEx or PythonEx type) for the endpoint.
 
         Returns
         -------
