@@ -14,8 +14,12 @@ name: "CodeQL Advanced"
 on:
   push:
     branches: [ "develop", "PR-review", "gh-pages", "main" ]
+    paths-ignore:
+      - 'cookiecutter/**'
   pull_request:
     branches: [ "develop", "PR-review", "gh-pages", "main" ]
+    paths-ignore:
+      - 'cookiecutter/**'
   schedule:
     - cron: '37 0 * * 6'
 
@@ -45,16 +49,16 @@ jobs:
         include:
         - language: actions
           build-mode: none
+          config-file: ''
         - language: python
           build-mode: none
-        # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
-        # Use `c-cpp` to analyze code written in C, C++ or both
-        # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
-        # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
-        # To learn more about changing the languages that are analyzed or customizing the build mode for your analysis,
-        # see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning.
-        # If you are analyzing a compiled language, you can modify the 'build-mode' for that language to customize how
-        # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
+          config-file: ''
+        - language: rust
+          build-mode: none
+          config-file: .github/codeql/desktop-only.yml
+        - language: javascript-typescript
+          build-mode: none
+          config-file: .github/codeql/desktop-only.yml
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -67,10 +71,11 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
+        config-file: ${{ matrix.config-file }}
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
@@ -95,6 +100,6 @@ jobs:
         exit 1
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
