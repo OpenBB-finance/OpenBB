@@ -138,7 +138,14 @@ class FMPGovernmentTradesFetcher(
             "firstName",
             "lastName",
         }
-        keys_to_rename = {"dateRecieved": "date", "disclosureDate": "date"}
+        # Normalize provider date keys to the common "date" field.
+        # Some payloads have a historical misspelling (dateRecieved), while others use
+        # the correct spelling (dateReceived). Handle both for robustness.
+        keys_to_rename = {
+            "dateRecieved": "date",  # legacy/misspelled variant
+            "dateReceived": "date",  # correct variant
+            "disclosureDate": "date",
+        }
 
         async def get_one(url):
             """Get data for one URL."""

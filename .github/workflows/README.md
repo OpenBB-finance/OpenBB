@@ -42,7 +42,7 @@ Finally, it uses the PyPA specific action `gh-action-pypi-publish` to publish th
 
 ## Deploy the OpenBB Platform to Test PyPI
 
-The Github Action code `Deploy to PyPI` is used to deploy a Python project to PyPI (Python Package Index) and TestPyPI, which is a separate package index for testing purposes. The code is triggered on two events:
+The GitHub Action code `Deploy to PyPI` is used to deploy a Python project to PyPI (Python Package Index) and TestPyPI, which is a separate package index for testing purposes. The code is triggered on two events:
 
 1. Push event: The code is triggered whenever there is a push to the `release/*` and `main` branches.
 
@@ -52,11 +52,11 @@ The code sets the concurrency to the `group` and the option `cancel-in-progress`
 
 The code contains two jobs, `deploy-test-pypi` and `deploy-pypi`, both of which have the same steps with slight variations.
 
-The `deploy-test-pypi` job is triggered only if the pushed branch starts with `refs/heads/release/`. This job sets up the Python environment, installs the `build` package using `pip`, builds binary wheel and source tarball using `build`, and finally, publishes the distributions to TestPyPI using the `pypa/gh-action-pypi-publish@release/v1` Github Action. The `password` to access TestPyPI is stored as a secret named `TEST_PYPI_API_TOKEN`.
+The `deploy-test-pypi` job is triggered only if the pushed branch starts with `refs/heads/release/`. This job sets up the Python environment, installs the `build` package using `pip`, builds binary wheel and source tarball using `build`, and finally, publishes the distributions to TestPyPI using the `pypa/gh-action-pypi-publish@release/v1` GitHub Action. The `password` to access TestPyPI is stored as a secret named `TEST_PYPI_API_TOKEN`.
 
 Similarly, the `deploy-pypi` job is triggered only if the pushed branch starts with `refs/heads/main`. This job follows the same steps as `deploy-test-pypi`, but the distributions are published to PyPI instead of TestPyPI. The `password` to access PyPI is stored as a secret named `PYPI_API_TOKEN`.
 
-Note: The code uses the `pypa/build` package for building the binary wheel and source tarball, and the `pypa/gh-action-pypi-publish@release/v1` Github Action for publishing the distributions to PyPI and TestPyPI.
+Note: The code uses the `pypa/build` package for building the binary wheel and source tarball, and the `pypa/gh-action-pypi-publish@release/v1` GitHub Action for publishing the distributions to PyPI and TestPyPI.
 
 ## Draft release
 
@@ -64,7 +64,7 @@ This GitHub Actions workflow is designed to automatically generate and update dr
 
 ## 🧹 General Linting
 
-This GitHub Actions workflow is responsible for running linting checks on the codebase. This workflow is triggered on pull request events such as `opened`, `synchronize`, and `edited`, and push events on branches with names that start with `feature/`, `hotfix/`, or `release/`. The workflow also sets a number of environment variables and uses Github Actions caching to improve performance.
+This GitHub Actions workflow is responsible for running linting checks on the codebase. This workflow is triggered on pull request events such as `opened`, `synchronize`, and `edited`, and push events on branches with names that start with `feature/`, `hotfix/`, or `release/`. The workflow also sets a number of environment variables and uses GitHub Actions caching to improve performance.
 
 It consists of two jobs: `code-linting` and `markdown-link-check`.
 
