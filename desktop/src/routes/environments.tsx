@@ -93,6 +93,9 @@ const isPipSubprocessError = (errorMsg: string): boolean => {
 	return errorMsg.includes("Pip subprocess error:");
 }
 
+const escapeAppleScriptString = (script: string) =>
+	script.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
 function EnvironmentActionButtons({
 	showCreateEnvironment,
 	handleRequirementsFileSelect,
@@ -819,32 +822,34 @@ export default function EnvironmentsPage() {
 						directory: installDir,
 					});
 				} else if (isMac) {
-						const hasIterm = await exists("/Applications/iTerm.app", {
-							baseDir: BaseDirectory.Home,
-						});
-						const appleScript = hasIterm
-  							? `
+					const hasIterm = await exists("/Applications/iTerm.app", {
+						baseDir: BaseDirectory.Home,
+					});
+					const appleScript = escapeAppleScriptString(
+						hasIterm
+							? `
 tell application "iTerm"
-    activate
-    delay 0.2
+	activate
+	delay 0.2
 	set newWindow to (create window with default profile)
 	tell current session of newWindow
 		write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName}"
 	end tell
 end tell
-`.replace(/"/g, '\\"')
-  : `
+`
+							: `
 tell application "Terminal"
-    do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName}"
-    activate
+	do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName}"
+	activate
 end tell
-`.replace(/"/g, '\\"');
-						console.log("Using AppleScript:", appleScript);
-						await invoke("execute_in_environment", {
-							command: `osascript -e "${appleScript}"`,
-							environment: "base",
-							directory: installDir,
-						});
+`
+					);
+					console.log("Using AppleScript:", appleScript);
+					await invoke("execute_in_environment", {
+						command: `osascript -e "${appleScript}"`,
+						environment: "base",
+						directory: installDir,
+					});
 				} else {
 					await invoke("execute_in_environment", {
 						command: `x-terminal-emulator -e "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && exec bash"`,
@@ -879,30 +884,32 @@ end tell
 					const hasIterm = await exists("/Applications/iTerm.app", {
 						baseDir: BaseDirectory.Home,
 					});
-					const appleScript = hasIterm
-						? `
+					const appleScript = escapeAppleScriptString(
+						hasIterm
+							? `
 tell application "iTerm"
-    activate
+	activate
 	delay 0.2
-    set newWindow to (create window with default profile)
-    tell current session of newWindow
-        write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && openbb && exit"
-    end tell
+	set newWindow to (create window with default profile)
+	tell current session of newWindow
+		write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && openbb && exit"
+	end tell
 end tell
-`.replace(/"/g, '\\"')
-  : `
+`
+							: `
 tell application "Terminal"
-    do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && openbb && exit"
-    activate
+	do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && openbb && exit"
+	activate
 end tell
-`.replace(/"/g, '\\"');
+`
+					);
 					console.log("Using AppleScript:", appleScript);
 					await invoke("execute_in_environment", {
 						command: `osascript -e "${appleScript}"`,
 						environment: "base",
 						directory: installDir,
 					});
-					} else {
+				} else {
 					await invoke("execute_in_environment", {
 						command: `x-terminal-emulator -e "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && exec openbb && exit"`,
 						environment: "base",
@@ -934,23 +941,25 @@ end tell
 				const hasIterm = await exists("/Applications/iTerm.app", {
 					baseDir: BaseDirectory.Home,
 				});
-				const appleScript = hasIterm
-					? `
+				const appleScript = escapeAppleScriptString(
+					hasIterm
+						? `
 tell application "iTerm"
-    activate
+	activate
 	delay 0.2
-    set newWindow to (create window with default profile)
-    tell current session of newWindow
-        write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${pythonPart} && exit"
-    end tell
+	set newWindow to (create window with default profile)
+	tell current session of newWindow
+		write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${pythonPart} && exit"
+	end tell
 end tell
-`.replace(/"/g, '\\"')
-  : `
+`
+						: `
 tell application "Terminal"
-    do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${pythonPart} && exit"
-    activate
+	do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${pythonPart} && exit"
+	activate
 end tell
-`.replace(/"/g, '\\"');
+`
+				);
 				console.log("Using AppleScript:", appleScript);
 				await invoke("execute_in_environment", {
 					command: `osascript -e "${appleScript}"`,
@@ -990,29 +999,31 @@ end tell
 				const hasIterm = await exists("/Applications/iTerm.app", {
 					baseDir: BaseDirectory.Home,
 				});
-				const appleScript = hasIterm
-					? `
+				const appleScript = escapeAppleScriptString(
+					hasIterm
+						? `
 tell application "iTerm"
-    activate
+	activate
 	delay 0.2
-    set newWindow to (create window with default profile)
-    tell current session of newWindow
-        write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${ipythonPart} && exit"
-    end tell
+	set newWindow to (create window with default profile)
+	tell current session of newWindow
+		write text "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${ipythonPart} && exit"
+	end tell
 end tell
-`.replace(/"/g, '\\"')
-  : `
+`
+						: `
 tell application "Terminal"
-    do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${ipythonPart} && exit"
-    activate
+	do script "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${ipythonPart} && exit"
+	activate
 end tell
-`.replace(/"/g, '\\"');
-						console.log("Using AppleScript:", appleScript);
-						await invoke("execute_in_environment", {
-							command: `osascript -e "${appleScript}"`,
-							environment: "base",
-							directory: installDir,
-						});
+`
+				);
+				console.log("Using AppleScript:", appleScript);
+				await invoke("execute_in_environment", {
+					command: `osascript -e "${appleScript}"`,
+					environment: "base",
+					directory: installDir,
+				});
 			} else {
 				const ipythonPart = `ipython -i${envName === "openbb" ? ` -c 'from openbb import obb; obb'` : ""}`;
 				command = `x-terminal-emulator -e "cd ${workDir} && source ${condaDir}/bin/activate ${envName} && ${ipythonPart} && exit"`;
@@ -3001,7 +3012,7 @@ end tell
 										size="sm"
 									>
 										{isCancellingCreation ? (
-											<span className="flex items-center body-xs-medium">
+											<span className="flex items-center">
 												<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-contrast mr-2" />
 												Cleanup will continue in the background...
 											</span>

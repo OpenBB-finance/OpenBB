@@ -1,15 +1,18 @@
 """API Utils."""
 
 import json
+import logging
 import os
 import socket
 import sys
 from pathlib import Path
 
 from deepdiff import DeepDiff
+from fastapi import FastAPI
 
-from .widgets import build_json
-
+logger = logging.getLogger("openbb_platform_api")
+PATH_WIDGETS: dict = {}
+FIRST_RUN: bool = True
 LAUNCH_SCRIPT_DESCRIPTION = """
 Serve the OpenBB Platform API.
 
@@ -110,8 +113,32 @@ def get_widgets_json(
     widget_exclude_filter: list,
     editable: bool = False,
     widgets_path: str | None = None,
+    app: FastAPI | None = None,
 ):
     """Generate and serve the widgets.json for the OpenBB Platform API."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import run_async  # noqa
+    from .merge_widgets import get_and_fix_widget_paths, has_additional_widgets
+    from .widgets import build_json
+
+    global PATH_WIDGETS  # noqa  pylint: disable=W0603
+
+    if (
+        FIRST_RUN is True
+        and app
+        and isinstance(app, FastAPI)
+        and has_additional_widgets(app)
+    ):
+        PATH_WIDGETS = run_async(get_and_fix_widget_paths, app)
+
+    if PATH_WIDGETS and (
+        to_exclude := [p + "*" for p in PATH_WIDGETS if p.endswith("/")]
+    ):
+        # Exclude explicit router paths from the automated generation.
+        # These widgets have been added by a router, so we assume they don't want
+        # the factory for those paths.
+        widget_exclude_filter.extend(to_exclude)
+
     if editable is True:
         if widgets_path is None:
             python_path = Path(sys.executable)
@@ -171,14 +198,22 @@ def get_widgets_json(
     else:
         _widgets_json = build_json(_openapi, widget_exclude_filter)
 
+        if PATH_WIDGETS:
+            for k in PATH_WIDGETS:
+                if k in widget_exclude_filter or k + "*" in widget_exclude_filter:
+                    continue
+
+                for widget_id, widget in PATH_WIDGETS[k].items():
+                    if widget_id not in widget_exclude_filter:
+                        _widgets_json[widget_id] = widget
+
     return _widgets_json
 
 
 def import_app(app_path: str, name: str = "app", factory: bool = False):
     """Import the FastAPI app instance from a local file or module."""
     # pylint: disable=import-outside-toplevel
-    from fastapi import FastAPI  # noqa
-    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.middleware.cors import CORSMiddleware  # noqa
     from importlib import import_module, util
     from openbb_core.api.app_loader import AppLoader
     from openbb_core.api.rest_api import system

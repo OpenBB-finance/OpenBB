@@ -15,7 +15,15 @@ from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
 
-from .utils.api import check_port, get_user_settings, get_widgets_json, parse_args
+from .utils.api import (
+    FIRST_RUN,
+    check_port,
+    get_user_settings,
+    get_widgets_json,
+    parse_args,
+)
+from .utils.merge_agents import get_additional_agents, has_additional_agents
+from .utils.merge_apps import get_additional_apps, has_additional_apps
 
 logger = logging.getLogger("openbb_platform_api")
 logger.setLevel(logging.INFO)
@@ -27,22 +35,17 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 
-FIRST_RUN = True
-
 # Adds the OpenBB Environment variables to the script process.
 Env()
-
 HOME = os.environ.get("HOME") or os.environ.get("USERPROFILE")
 
 if not HOME:
     raise ValueError("HOME or USERPROFILE environment variable not set.")
 
 CURRENT_USER_SETTINGS = os.path.join(HOME, ".openbb_platform", "user_settings.json")
-
 # Widget filtering is optional and can be used to exclude widgets from the widgets.json file
 # Alternatively, you can supply a JSON-encoded list of API paths to ignore.
 WIDGET_SETTINGS = os.path.join(HOME, ".openbb_platform", "widget_settings.json")
-
 kwargs = parse_args()
 _app = kwargs.pop("app", None)
 
@@ -58,7 +61,6 @@ DEFAULT_APPS_PATH = (
 AGENTS_PATH = kwargs.pop("agents-json", None)
 build = kwargs.pop("build", True)
 build = False if kwargs.pop("no-build", None) else build
-login = kwargs.pop("login", False)
 dont_filter = kwargs.pop("no-filter", False)
 widget_exclude_filter: list = kwargs.pop("exclude", [])
 uvicorn_settings = (
@@ -71,7 +73,7 @@ for key, value in uvicorn_settings.items():
         kwargs[key] = value
 
 if not dont_filter and os.path.exists(WIDGET_SETTINGS):
-    with open(WIDGET_SETTINGS) as widget_settings_file:
+    with open(WIDGET_SETTINGS, encoding="utf-8") as widget_settings_file:
         try:
             widget_exclude_filter_json = json.load(widget_settings_file).get(
                 "exclude", []
@@ -105,7 +107,7 @@ widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter
 openapi = app.openapi()
 current_settings = get_user_settings(CURRENT_USER_SETTINGS)
 widgets_json = get_widgets_json(
-    build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
+    build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH, app
 )
 APPS_PATH = (
     APPS_PATH
@@ -123,84 +125,124 @@ APPS_PATH = (
 async def root():
     """Serve the landing page HTML content."""
     html_path = Path(__file__).parent / "assets" / "landing_page.html"
-    with open(html_path) as f:
+    with open(html_path, encoding="utf-8") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
 
-@app.get("/widgets.json")
-async def get_widgets():
-    """Widgets configuration file for the OpenBB Workspace."""
-    # This allows us to serve an edited widgets.json file without reloading the server.
-    global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
-    if FIRST_RUN is True:
-        FIRST_RUN = False
+# Check if the app has already defined widgets.json at the root.
+has_root_widgets = any(getattr(d, "path", "") == "/widgets.json" for d in app.routes)
+
+if not has_root_widgets:
+    # We assume that if an app already has /widgets.json at the app root,
+    # we can leave it alone. Otherwise, use our endpoint to serve and/or generate.
+    @app.get("/widgets.json")
+    async def get_widgets():
+        """Widgets configuration file for the OpenBB Workspace."""
+        # This allows us to serve an edited widgets.json file without reloading the server.
+        global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
+        if FIRST_RUN is True:
+            FIRST_RUN = False
+            return JSONResponse(content=widgets_json, headers=obb_headers)
+        if EDITABLE:
+            return JSONResponse(
+                content=get_widgets_json(
+                    False, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH, app
+                ),
+                headers=obb_headers,
+            )
         return JSONResponse(content=widgets_json, headers=obb_headers)
-    if EDITABLE:
-        return JSONResponse(
-            content=get_widgets_json(
-                False, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH
-            ),
-            headers=obb_headers,
-        )
-    return JSONResponse(content=widgets_json, headers=obb_headers)
+
+else:
+    # Populate the local name `get_widgets` with the endpoint function of the existing
+    # root /widgets.json route so callers (e.g. get_apps_json) can await it.
+    root_route = next(
+        (r for r in app.routes if getattr(r, "path", "") == "/widgets.json"), None
+    )
+    if root_route and getattr(root_route, "endpoint", None):
+        get_widgets = root_route.endpoint  # type: ignore
+    else:
+        # Fallback mechanism
+        async def get_widgets():
+            """Return the generated widgets.json"""
+            return JSONResponse(content=widgets_json, headers=obb_headers)
 
 
-# If a custom implementation, you might want to override.
-@app.get("/apps.json")
-async def get_apps_json():
-    """Get the apps.json file."""
-    new_templates: list = []
-    default_templates: list = []
-    widgets = await get_widgets()
+# Check if the app has already defined apps.json at the root.
+has_root_apps = any(getattr(d, "path", "") == "/apps.json" for d in app.routes)
 
-    if not os.path.exists(APPS_PATH):
-        apps_dir = os.path.dirname(APPS_PATH)
-        if not os.path.exists(apps_dir):
-            os.makedirs(apps_dir, exist_ok=True)
-        # Write an empty file for the user to add exported apps from Workspace to.
-        with open(APPS_PATH, "w", encoding="utf-8") as templates_file:
-            templates_file.write(json.dumps([]))
+if not has_root_apps:
 
-    if os.path.exists(DEFAULT_APPS_PATH):
-        with open(DEFAULT_APPS_PATH) as f:
-            default_templates = json.load(f)
+    @app.get("/apps.json")
+    async def get_apps_json():
+        """Get the apps.json file."""
+        new_templates: list = []
+        default_templates: list = []
+        widgets = await get_widgets()
 
-    if os.path.exists(APPS_PATH):
-        with open(APPS_PATH) as templates_file:
-            templates = json.load(templates_file)
+        if not os.path.exists(APPS_PATH):
+            apps_dir = os.path.dirname(APPS_PATH)
+            if not os.path.exists(apps_dir):
+                os.makedirs(apps_dir, exist_ok=True)
+            # Write an empty file for the user to add exported apps from Workspace to.
+            with open(APPS_PATH, "w", encoding="utf-8") as templates_file:
+                templates_file.write(json.dumps([]))
 
-        if isinstance(templates, dict):
-            templates = [templates]
+        if os.path.exists(DEFAULT_APPS_PATH):
+            with open(DEFAULT_APPS_PATH, encoding="utf-8") as f:
+                default_templates = json.load(f)
 
-        templates.extend(default_templates)
+        if has_additional_apps(app):
+            additional_apps = await get_additional_apps(app)
+            if additional_apps:
+                for apps in additional_apps.values():
+                    if not apps:
+                        continue
+                    if apps and isinstance(apps, list):
+                        default_templates.extend(apps)
+                    elif apps and not isinstance(apps, list):
+                        logger.error(
+                            "TypeError: Invalid apps.json format. Expected a list[dict] got %s instead -> %s",
+                            type(apps),
+                            str(apps),
+                        )
 
-        for template in templates:
-            if _id := template.get("id"):
-                if _id in widgets and template not in new_templates:
-                    new_templates.append(template)
-                    continue
-            elif template.get("layout") or template.get("tabs"):
-                if _tabs := template.get("tabs"):
-                    for v in _tabs.values():
-                        if v.get("layout", []) and all(
-                            item.get("i") in widgets_json for item in v.get("layout")
-                        ):
-                            new_templates.append(template)
-                            break
-                elif (
-                    template.get("layout")
-                    and all(
-                        item.get("i") in widgets_json for item in template["layout"]
-                    )
-                    and template not in new_templates
-                ):
-                    new_templates.append(template)
+        if os.path.exists(APPS_PATH):
+            with open(APPS_PATH, encoding="utf-8") as templates_file:
+                templates = json.load(templates_file)
 
-        if new_templates:
-            return JSONResponse(content=new_templates, headers=obb_headers)
+            if isinstance(templates, dict):
+                templates = [templates]
 
-    return JSONResponse(content=[], headers=obb_headers)
+            templates.extend(default_templates)
+
+            for template in templates:
+                if _id := template.get("id"):
+                    if _id in widgets and template not in new_templates:
+                        new_templates.append(template)
+                        continue
+                elif template.get("layout") or template.get("tabs"):
+                    if _tabs := template.get("tabs"):
+                        for v in _tabs.values():
+                            if v.get("layout", []) and all(
+                                item.get("i") in widgets_json
+                                for item in v.get("layout")
+                            ):
+                                new_templates.append(template)
+                                break
+                    elif (
+                        template.get("layout")
+                        and all(
+                            item.get("i") in widgets_json for item in template["layout"]
+                        )
+                        and template not in new_templates
+                    ):
+                        new_templates.append(template)
+
+            if new_templates:
+                return JSONResponse(content=new_templates, headers=obb_headers)
+
+        return JSONResponse(content=[], headers=obb_headers)
 
 
 if AGENTS_PATH:
@@ -209,10 +251,34 @@ if AGENTS_PATH:
     async def get_agents():
         """Get the agents.json file."""
         if os.path.exists(AGENTS_PATH):
-            with open(AGENTS_PATH) as f:
+            with open(AGENTS_PATH, encoding="utf-8") as f:
                 agents = json.load(f)
             return JSONResponse(content=agents, headers=obb_headers)
-        return JSONResponse(content=[], headers=obb_headers)
+        return JSONResponse(content={}, headers=obb_headers)
+
+
+# Check if the app has already defined agents.json at the root.
+has_root_agents = any(getattr(d, "path", "") == "/agents.json" for d in app.routes)
+
+if not has_root_agents and has_additional_agents(app):
+
+    @app.get("/agents.json")
+    async def get_agents_json():  # type: ignore
+        """Get the agents.json file."""
+        new_agents: dict = {}
+        additional_agents = await get_additional_agents(app)
+        if additional_agents:
+            for path_agents in additional_agents.values():
+                for k, v in path_agents.items():
+                    new_agents[k] = v
+        return JSONResponse(content=new_agents, headers=obb_headers)
+
+else:
+
+    @app.get("/agents.json")
+    async def get_agents_json():
+        """Get an empty agents.json file."""
+        return {}
 
 
 def launch_api(**_kwargs):  # noqa PRL0912

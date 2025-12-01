@@ -235,6 +235,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
 ):
     """Build the widgets.json file."""
     # pylint: disable=import-outside-toplevel
+    from openbb_core.app.service.system_service import SystemService  # noqa
     from .openapi import (
         TO_CAPS_STRINGS,
         data_schema_to_columns_defs,
@@ -246,6 +247,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         return {}
 
     starred_list: list = []
+    api_prefix = SystemService().system_settings.api_settings.prefix or ""
 
     for item in widget_exclude_filter.copy():
         if "*" in item:
@@ -263,7 +265,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
     ]
     for route in routes:
         # Skip routes that are only used as form endpoints for other routes
-        if route in form_endpoint_paths.values():
+        if route in form_endpoint_paths.values() or route.endswith("widgets.json"):
             continue
 
         route_api = openapi["paths"][route]
@@ -292,14 +294,11 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         if skip is True:
             continue
 
+        route_copy = route.replace(api_prefix, "")
         widget_id = (
-            (
-                route[1:].replace("/", "_")
-                if route[0] == "/"
-                else route.replace("/", "_")
-            )
-            .replace("api_", "")
-            .replace("v1_", "")
+            route_copy[1:].replace("/", "_")
+            if route_copy[0] == "/"
+            else route_copy.replace("/", "_")
         )
 
         if widget_id in widget_exclude_filter:
