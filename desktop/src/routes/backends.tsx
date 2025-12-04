@@ -246,7 +246,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> =
 						Are you sure you want to remove this backend?
 					</p>
 					<p className="mb-5 body-md-medium text-theme-primary flex justify-start">
-						This action cannot be undone.
+					Deleting this backend will permanently break any associated widgets. They cannot be reconnected even if you re-add the backend.
 					</p>
 					<div className="flex justify-end gap-2">
 						<Button
