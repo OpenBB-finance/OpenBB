@@ -1,9 +1,11 @@
 """Tests for the ExtensionLoader class."""
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
+from fastapi import APIRouter, FastAPI
 from openbb_core.app.extension_loader import EntryPoint, ExtensionLoader, OpenBBGroups
+from openbb_core.app.router import Router
 
 
 @pytest.fixture(autouse=True)
@@ -17,7 +19,7 @@ def setup_and_teardown():
     yield  # This is where the test function runs
     # Code to run after each test function
     # pylint: disable=protected-access
-    ExtensionLoader._instances = {}
+    ExtensionLoader._instances = {}  # type: ignore
 
 
 def test_extension_loader():
@@ -180,3 +182,37 @@ def test_provider_objects():
     for key, value in el.provider_objects.items():
         assert isinstance(key, str)
         assert isinstance(value, Provider)
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_with_fastapi_instance(mock_entry_points):
+    """Test the core_objects property with a FastAPI instance."""
+    # pylint: disable=import-outside-toplevel
+    mock_ep = MagicMock(spec=EntryPoint)
+    mock_ep.name = "fastapi_extension"
+    mock_ep.load.return_value = FastAPI()
+    mock_entry_points.return_value = [mock_ep]
+
+    el = ExtensionLoader()
+    core_objects = el.core_objects
+
+    assert "fastapi_extension" in core_objects
+    assert isinstance(core_objects["fastapi_extension"], Router)
+    mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_with_apirouter_instance(mock_entry_points):
+    """Test the core_objects property with an APIRouter instance."""
+    # pylint: disable=import-outside-toplevel
+    mock_ep = MagicMock(spec=EntryPoint)
+    mock_ep.name = "apirouter_extension"
+    mock_ep.load.return_value = APIRouter()
+    mock_entry_points.return_value = [mock_ep]
+
+    el = ExtensionLoader()
+    core_objects = el.core_objects
+
+    assert "apirouter_extension" in core_objects
+    assert isinstance(core_objects["apirouter_extension"], Router)
+    mock_entry_points.assert_any_call(group="openbb_core_extension")

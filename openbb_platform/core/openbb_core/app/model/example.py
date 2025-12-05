@@ -47,12 +47,15 @@ class APIEx(Example):
     def validate_model(cls, values: dict) -> dict:
         """Validate model."""
         parameters = values.get("parameters", {})
-        if "provider" not in parameters and "data" not in parameters:
-            raise ValueError("API example must specify a provider.")
+        provider = parameters.pop("provider", None)
 
-        provider = parameters.get("provider")
         if provider and not isinstance(provider, str):
             raise ValueError("Provider must be a string.")
+
+        if len(parameters) > 3 and not values.get("description"):
+            raise ValueError(
+                "Description is required when there are more than 3 parameters."
+            )
 
         return values
 

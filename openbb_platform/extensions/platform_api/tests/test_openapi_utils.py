@@ -19,7 +19,7 @@ from openbb_platform_api.utils.openapi import (
 @pytest.fixture(scope="module")
 def mock_openapi_json():
     mock_openapi_path = Path(__file__).parent / "mock_openapi.json"
-    with open(mock_openapi_path) as file:
+    with open(mock_openapi_path, encoding="utf-8") as file:
         return json.load(file)
 
 

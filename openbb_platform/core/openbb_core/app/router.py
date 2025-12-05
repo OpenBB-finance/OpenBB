@@ -94,20 +94,28 @@ class Router:
             return lambda f: self.command(f, **kwargs)
 
         api_router = self._api_router
-
         model = kwargs.pop("model", "")
         no_validate = kwargs.pop("no_validate", None)
+        openapi_extra = kwargs.get("openapi_extra") or {}
+        kwargs["openapi_extra"] = openapi_extra
+
+        if widget_config := kwargs.pop("widget_config", None):
+            openapi_extra["widget_config"] = widget_config
+
+        if mcp_config := kwargs.pop("mcp_config", None):
+            openapi_extra["mcp_config"] = mcp_config
+
         if no_validate is True:
             func.__annotations__["return"] = None
+
         if func := SignatureInspector.complete(func, model):
             kwargs["response_model_exclude_unset"] = True
-            kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
-            kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["examples"] = filter_list(
+            openapi_extra["model"] = model
+            openapi_extra["examples"] = filter_list(
                 examples=kwargs.pop("examples", []),
                 providers=ProviderInterface().available_providers,
             )
-            kwargs["openapi_extra"]["no_validate"] = no_validate
+            openapi_extra["no_validate"] = no_validate
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -156,6 +164,8 @@ class Router:
                     deprecation.long_message, deprecation
                 )
 
+            kwargs["openapi_extra"] = openapi_extra
+
             api_router.add_api_route(**kwargs)
 
         return func
@@ -203,6 +213,15 @@ class Router:
                 router.routers[first], "/".join(path.split("/")[1:]), attr
             )
         return getattr(router, attr, None)
+
+    @classmethod
+    def from_fastapi(cls, api_router: APIRouter) -> "Router":
+        """Create an OpenBB Router from a FastAPI APIRouter."""
+        description = getattr(api_router, "description", None)
+        instance = cls(prefix=api_router.prefix, description=description)
+        instance._api_router = api_router  # type: ignore[attr-defined]
+
+        return instance
 
 
 class SignatureInspector:

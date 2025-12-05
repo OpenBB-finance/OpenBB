@@ -4,6 +4,7 @@ from enum import Enum
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
+from fastapi import APIRouter, FastAPI
 from importlib_metadata import EntryPoint, EntryPoints, entry_points
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
@@ -164,9 +165,17 @@ class ExtensionLoader(metaclass=SingletonMeta):
             # pylint: disable=import-outside-toplevel
             from openbb_core.app.router import Router
 
-            return {
-                ep.name: entry for ep in eps if isinstance((entry := ep.load()), Router)
-            }
+            entries: dict[str, Router] = {}
+            for ep in eps:
+                entry = ep.load()
+                if isinstance(entry, Router):
+                    entries[ep.name] = entry
+                    continue
+                if isinstance(entry, FastAPI):
+                    entry = entry.router
+                if isinstance(entry, APIRouter):
+                    entries[ep.name] = Router.from_fastapi(entry)
+            return entries
 
         def load_provider(eps: EntryPoints) -> dict[str, "Provider"]:
             """

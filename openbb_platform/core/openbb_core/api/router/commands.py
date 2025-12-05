@@ -4,10 +4,11 @@ import inspect
 from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Annotated, Any, TypeVar
+from typing import Annotated, Any, TypeVar, get_args, get_origin
 
 from fastapi import APIRouter, Depends, Header
 from fastapi.encoders import jsonable_encoder
+from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from openbb_core.app.command_runner import CommandRunner
@@ -20,6 +21,7 @@ from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import BaseModel
 from typing_extensions import ParamSpec
 
@@ -32,7 +34,6 @@ except ImportError:
 
 T = TypeVar("T")
 P = ParamSpec("P")
-
 router = APIRouter(prefix="")
 
 
@@ -54,16 +55,45 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     sig = signature(func)
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
-    new_parameter_list = []
+    new_parameter_list: list = []
     var_kw_pos = len(parameter_list)
+
     for pos, parameter in enumerate(parameter_list):
-        if parameter.name == "cc" and parameter.annotation == CommandContext:
+        if (
+            parameter.name == "cc"
+            and parameter.annotation == CommandContext
+            or parameter.name in ["kwargs", "args", "*", "**", "**kwargs", "*args"]
+        ):
+            # We do not add kwargs into the finished API signature.
+            # Kwargs will be passed to every function that accepts them,
+            # but we won't force the endpoint to take them.
+            # We read the original signature in the wrapper to
+            # determine if kwargs can be passed to the locals.
             continue
 
+        # These are path parameters or dependency injections.
         if parameter.kind == Parameter.VAR_KEYWORD:
             # We track VAR_KEYWORD parameter to insert the any additional
             # parameters we need to add before it and avoid a SyntaxError
             var_kw_pos = pos
+
+        if get_origin(parameter.annotation) is Annotated:
+            # Get the metadata from Annotated
+            metadata = get_args(parameter.annotation)[1:]
+            # Check if any metadata item is a Depends instance
+            if any(isinstance(m, DependsParam) for m in metadata):
+                # Insert at var_kw_pos with include_in_schema=False
+                new_parameter_list.insert(
+                    var_kw_pos,
+                    Parameter(
+                        parameter.name,
+                        kind=Parameter.POSITIONAL_OR_KEYWORD,
+                        default=parameter.default,
+                        annotation=parameter.annotation,
+                    ),
+                )
+                var_kw_pos += 1
+                continue
 
         new_parameter_list.append(
             Parameter(
@@ -186,7 +216,11 @@ def build_api_wrapper(
     """Build API wrapper for a command."""
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
-
+    original_signature = signature(func)
+    has_var_kwargs = any(
+        param.kind == Parameter.VAR_KEYWORD
+        for param in original_signature.parameters.values()
+    )
     no_validate = (
         openapi_extra.get("no_validate")
         if (openapi_extra := getattr(route, "openapi_extra", None))
@@ -201,7 +235,7 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(
+    async def wrapper(  # pylint: disable=R0914,R0912  # noqa: PLR0912
         *args: tuple[Any], **kwargs: dict[str, Any]
     ) -> OBBject | JSONResponse:
         user_settings: UserSettings = UserSettings.model_validate(
@@ -245,28 +279,65 @@ def build_api_wrapper(
             kwargs["standard_params"] = standard_params
             kwargs["extra_params"] = extra_params
 
+        # We need to insert dependency objects that are
+        # Added at the Router level and may not be part
+        # of the function signature.
+        dependencies = route.dependencies or []
+        dep_names: list = []
+        # Only inject the dependency if the endpoint
+        # accepts undefined arguments.
+        if has_var_kwargs and "kwargs" not in kwargs:
+            kwargs["kwargs"] = {}
+
+        for dep in dependencies:
+            dep_callable = dep.dependency
+
+            if not dep_callable:
+                continue
+
+            dep_name = getattr(dep_callable, "__name__", "") or ""
+            dep_name = to_snake_case(dep_name).replace("get_", "")
+
+            if has_var_kwargs and dep_name not in kwargs:
+                kwargs["kwargs"][dep_name] = dep_callable()
+
+            dep_names.append(dep_name)
+
         execute = partial(command_runner.run, path, user_settings)
+
         output = await execute(*args, **kwargs)
 
-        # This is where we check for `on_command_output` extensions
-        mutated_output = getattr(output, "_extension_modified", False)
-        results_only = getattr(output, "_results_only", False)
-        try:
-            if results_only is True:
-                content = output.model_dump(exclude_unset=True).get("results", [])
-                return JSONResponse(content=jsonable_encoder(content), status_code=200)
+        if isinstance(output, OBBject):
+            # This is where we check for `on_command_output` extensions
+            mutated_output = getattr(output, "_extension_modified", False)
+            results_only = getattr(output, "_results_only", False)
+            try:
+                if results_only is True:
+                    content = output.model_dump(
+                        exclude_unset=True, exclude_none=True
+                    ).get("results", [])
 
-            if (mutated_output and isinstance(output, OBBject)) or (
-                isinstance(output, OBBject) and no_validate
-            ):
-                return JSONResponse(content=jsonable_encoder(output), status_code=200)
-        except Exception as exc:  # pylint: disable=W0703
-            raise OpenBBError(
-                f"Error serializing output for an extension-modified endpoint {path}: {exc}",
-            ) from exc
+                    return JSONResponse(
+                        content=jsonable_encoder(content), status_code=200
+                    )
 
-        if isinstance(output, OBBject) and not no_validate:
-            return validate_output(output)
+                if (mutated_output and isinstance(output, OBBject)) or (
+                    isinstance(output, OBBject) and no_validate
+                ):
+                    output.results = output.model_dump(
+                        exclude_unset=True, exclude_none=True
+                    ).get("results")
+
+                    return JSONResponse(
+                        content=jsonable_encoder(output), status_code=200
+                    )
+            except Exception as exc:  # pylint: disable=W0703
+                raise OpenBBError(
+                    f"Error serializing output for an extension-modified endpoint {path}: {exc}",
+                ) from exc
+
+            if not no_validate:
+                return validate_output(output)
 
         return output
 
