@@ -3,13 +3,13 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Dict, List, Optional
+from typing import Any
 from warnings import warn
 
 from openbb_bis.utils.constants import (
-    CODE_FREQ_TO_KEY,
     CODE_TO_COUNTRY_HOUSE_PRICE_INDEX,
     COUNTRY_TO_CODE_HOUSE_PRICE_INDEX,
+    FREQUENCY_TO_FREQ,
 )
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,17 +22,11 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_HOUSE_PRICE_INDEX.values())
-CountriesList = list(countries)  # type: ignore
-FREQUENCY_TO_FREQ = {
-    "monthly": "M",
-    "quarter": "Q",
-    "annual": "A",
-}
-FREQ_TO_FREQUENCY = {v: k for k, v in FREQUENCY_TO_FREQ.items()}
-freqTuple = tuple(FREQUENCY_TO_FREQ.values())
 # To do: The following feature from the Standard Model is not implemented
 # transformDict = {"yoy": "PA", "period": "PC", "index": "IX"}
+
+countries = tuple(CODE_TO_COUNTRY_HOUSE_PRICE_INDEX.values())
+CountriesList = list(countries)  # type: ignore
 
 
 class BISHousePriceIndexQueryParams(HousePriceIndexQueryParams):
@@ -57,7 +51,7 @@ class BISHousePriceIndexQueryParams(HousePriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: List = []
+        result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             if v.upper() in CODE_TO_COUNTRY_HOUSE_PRICE_INDEX:
@@ -81,12 +75,12 @@ class BISHousePriceIndexData(HousePriceIndexData):
 
 
 class BISHousePriceIndexFetcher(
-    Fetcher[BISHousePriceIndexQueryParams, List[BISHousePriceIndexData]]
+    Fetcher[BISHousePriceIndexQueryParams, list[BISHousePriceIndexData]]
 ):
     """BIS House Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BISHousePriceIndexQueryParams:
+    def transform_query(params: dict[str, Any]) -> BISHousePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
@@ -101,13 +95,16 @@ class BISHousePriceIndexFetcher(
     @staticmethod
     def extract_data(
         query: BISHousePriceIndexQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Return the raw data from the BIS endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO  # noqa
-        from openbb_bis.utils.helpers import bis_date_to_python_date  # noqa
+        from openbb_bis.utils.helpers import (
+            fnCodeFreqKeyStr,
+            bis_date_to_python_date,
+        )  # noqa
         from openbb_core.provider.utils.helpers import make_request  # noqa
         from pandas import read_csv  # noqa
 
@@ -119,33 +116,7 @@ class BISHousePriceIndexFetcher(
             for country in query.country.split(",")
         ]
 
-        def fnCodeFreqKeyStr(countriesCodeList: List) -> str:
-            """Convert country code with frequency to item(s) download key(s), as merged string"""
-            _keysList: List = []
-            for code in countriesCodeList:
-                # Find the closest data frequency available
-                # Scenario 1: user wants DE.M but only DE.Q is there
-                # Scenario 2: user wants TH.Q but only TH.M is there
-                iLastFound = -1
-                for i, f in enumerate(freqTuple):
-                    if code + "." + f in CODE_FREQ_TO_KEY:
-                        iLastFound += 1  # For Scenario 2
-                        freq = f
-                        if freq == queryFreq:
-                            break  # For Scenario 1
-                if freq != queryFreq:
-                    warn(
-                        f"({code}) {CODE_TO_COUNTRY_HOUSE_PRICE_INDEX[code]}: "
-                        + FREQ_TO_FREQUENCY[queryFreq]
-                        + " data not found. Switching to "
-                        + FREQ_TO_FREQUENCY[freq]
-                        + "."
-                    )
-                codeFreq = code + "." + freq
-                _keysList.append(CODE_FREQ_TO_KEY[codeFreq])
-            return ",".join(_keysList)
-
-        keysStr = fnCodeFreqKeyStr(countriesCodeList)
+        keysStr = fnCodeFreqKeyStr(countriesCodeList, queryFreq)
         start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
         end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
 
@@ -197,7 +168,7 @@ class BISHousePriceIndexFetcher(
 
     @staticmethod
     def transform_data(
-        query: BISHousePriceIndexQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[BISHousePriceIndexData]:
+        query: BISHousePriceIndexQueryParams, data: list[dict], **kwargs: Any
+    ) -> list[BISHousePriceIndexData]:
         """Transform the data from the BIS endpoint."""
         return [BISHousePriceIndexData.model_validate(d) for d in data]
