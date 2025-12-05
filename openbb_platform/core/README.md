@@ -6,9 +6,10 @@ ODP operates as the "connect once, consume everywhere" infrastructure layer that
 
 ## Overview
 
-The Core extension is used as the basis for building and integrating
-Open Data Platform Python packages.
-It provides the necessary classes and structures for standardizing and handling data. It is also responsible for generating a REST API and Python package static assets, which operate independently and interface with various consumption vehicles.
+The Core extension is used as the basis for building and integrating Open Data Platform Python packages.
+It provides the necessary classes and structures for standardizing and handling data.
+It is also responsible for generating a REST API and Python package static assets,
+which operate independently and interface with various consumption vehicles.
 
 Typically, this library will be used as a project dependency, and extended.
 
