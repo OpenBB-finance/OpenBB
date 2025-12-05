@@ -2109,47 +2109,7 @@ class DocstringGenerator:
             """Format type in docstrings."""
             type_str = str(type_)
 
-            # Check if this is a complex union of literals (provider-specific choices)
-            if (
-                "Union[" in type_str
-                and "Literal[" in type_str
-                and type_str.count("Literal[") > 1
-            ):
-                # For complex Union with multiple Literals, simplify to the base type
-                base_types = set()
-
-                # Extract the base types from literals first
-                literal_pattern = r"Literal\['([^']+)'(?:,\s*'[^']+')*\]"
-                for match in re.finditer(literal_pattern, type_str):
-                    if match.group(1):
-                        try:
-                            val = match.group(1)
-                            if val.isdigit():
-                                base_types.add("int")
-                            elif val.isdecimal():
-                                base_types.add("float")
-                            else:
-                                base_types.add("str")
-                        except (IndexError, AttributeError):
-                            pass
-
-                # Also check for explicit types in the Union
-                if "str" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("str")
-                if "int" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("int")
-                if "float" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("float")
-
-                # Use the base types instead of the complex Union[Literal[...]]
-                if base_types:
-                    type_str = (
-                        next(iter(base_types))
-                        if len(base_types) == 1
-                        else f"{' | '.join(sorted(base_types))}"
-                    )
-
-            # Apply the standard formatting
+            # Apply the standard formatting first
             type_str = (
                 type_str.replace("<class '", "")
                 .replace("'>", "")
@@ -2158,13 +2118,76 @@ class DocstringGenerator:
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
                 .replace("NoneType", "None")
-                .replace(", NoneType", "")
-            ).replace("Union[date, None, str]", "date | str | None")
+            )
 
-            if char_limit:
-                type_str = type_str[:char_limit] + (
-                    "..." if len(str(type_str)) > char_limit else ""
-                )
+            # Convert Optional[X] to X | None
+            optional_pattern = r"Optional\[(.+?)\]"
+            optional_match = re.search(optional_pattern, type_str)
+            if optional_match:
+                inner = optional_match.group(1)
+                type_str = type_str.replace(f"Optional[{inner}]", f"{inner} | None")
+
+            # Convert Union[X, Y, ...] to X | Y | ... format
+            union_pattern = r"Union\[(.+)\]"
+            union_match = re.search(union_pattern, type_str)
+            if union_match:
+                inner = union_match.group(1)
+                # Split by comma, but be careful with nested types like list[str]
+                parts = []
+                depth = 0
+                current = ""
+                for char in inner:
+                    if char == "[":
+                        depth += 1
+                    elif char == "]":
+                        depth -= 1
+                    elif char == "," and depth == 0:
+                        parts.append(current.strip())
+                        current = ""
+                        continue
+                    current += char
+                if current.strip():
+                    parts.append(current.strip())
+                # Remove None and NoneType from parts, we'll add | None at the end if needed
+                has_none = any(p in ("None", "NoneType") for p in parts)
+                parts = [p for p in parts if p not in ("None", "NoneType")]
+                type_str = " | ".join(parts)
+                if has_none:
+                    type_str += " | None"
+
+            # Simplify Literal[...] to str (choices shown in description)
+            # Handle Literal[...] | None -> str | None
+            if "Literal[" in type_str:
+                # Check if there's | None at the end
+                has_none = type_str.endswith(" | None")
+                # Replace any Literal[...] with str
+                type_str = re.sub(r"Literal\[[^\]]+\]", "str", type_str)
+                # Clean up any duplicate str
+                if " | str | str" in type_str:
+                    type_str = type_str.replace(" | str | str", " | str")
+                # Ensure | None is preserved
+                if has_none and not type_str.endswith(" | None"):
+                    type_str += " | None"
+
+            # Clean up ", None" that might be left over
+            type_str = type_str.replace(", None", "")
+
+            # Ensure None is always at the far right of pipe unions
+            if " | " in type_str and "None" in type_str:
+                parts = [p.strip() for p in type_str.split(" | ")]
+                has_none = "None" in parts
+                parts = [p for p in parts if p != "None"]
+                type_str = " | ".join(parts)
+                if has_none:
+                    type_str += " | None"
+
+            # Apply char_limit if specified (simple truncation with bracket balancing)
+            if char_limit and len(type_str) > char_limit:
+                truncated = type_str[:char_limit]
+                open_brackets = truncated.count("[") - truncated.count("]")
+                if open_brackets > 0:
+                    truncated += "]" * open_brackets
+                type_str = truncated
 
             return type_str
 
@@ -2177,6 +2200,30 @@ class DocstringGenerator:
             )
 
             return description
+
+        def wrap_choice_line(line: str, limit: int) -> list[str]:
+            """Wrap a choice line at comma boundaries to fit within limit."""
+            if len(line) <= limit:
+                return [line]
+
+            # Find comma positions to split on
+            result = []
+            current_line = ""
+
+            # Split by ', ' to get individual choices
+            parts = line.split(", ")
+            for i, part in enumerate(parts):
+                test_add = part if i == 0 else f", {part}"
+                if current_line and len(current_line) + len(test_add) > limit:
+                    result.append(current_line.rstrip(", "))
+                    current_line = part
+                else:
+                    current_line += test_add
+
+            if current_line:
+                result.append(current_line)
+
+            return result
 
         def format_description(description: str) -> str:
             """Format description in docstrings with proper indentation for provider choices."""
@@ -2226,6 +2273,14 @@ class DocstringGenerator:
                 main_desc = parts[0].rstrip()
 
                 if len(parts) > 1:
+                    # Extract "Multiple comma separated items..." from main_desc if present
+                    multi_items_text = ""
+                    multi_pattern = r"\s*Multiple comma separated items allowed for provider\(s\): [^.]+\."
+                    multi_match = re.search(multi_pattern, main_desc)
+                    if multi_match:
+                        multi_items_text = multi_match.group().strip()
+                        main_desc = re.sub(multi_pattern, "", main_desc).rstrip()
+
                     formatted_lines = [main_desc]
 
                     # Add each provider choice line with proper indentation
@@ -2239,17 +2294,42 @@ class DocstringGenerator:
                                 f"{create_indent(3)}Choices for {choice_parts[0]}"
                             )
 
-                            # Add remaining parts with proper indentation
+                            # Add remaining parts - check if it's "Multiple comma separated" or a choice continuation
                             for part in choice_parts[1:]:
-                                if part.strip():  # Skip empty lines
+                                stripped = part.strip()
+                                if not stripped:  # Skip empty lines
+                                    continue
+                                if stripped.startswith("Multiple comma separated"):
+                                    # Skip here - we'll add it at the end from multi_items_text
+                                    # or this is it for kwarg_params
+                                    if not multi_items_text:
+                                        multi_items_text = stripped
+                                else:
+                                    # This IS a continuation of choices - extra indent
                                     formatted_lines.append(
-                                        f"{create_indent(4)}{part.strip()}"
+                                        f"{create_indent(4)}{stripped}"
                                     )
                         else:
-                            # No line breaks in this choice
-                            formatted_lines.append(
-                                f"{create_indent(3)}Choices for {choice_line}"
-                            )
+                            # No line breaks in this choice - check if we need to wrap it
+                            choice_line_full = f"Choices for {choice_line}"
+                            if len(choice_line_full) > 80:
+                                # Wrap the long choice line
+                                wrapped_lines = wrap_choice_line(choice_line_full, 80)
+                                formatted_lines.append(
+                                    f"{create_indent(3)}{wrapped_lines[0]}"
+                                )
+                                for wrapped in wrapped_lines[1:]:
+                                    formatted_lines.append(
+                                        f"{create_indent(4)}{wrapped}"
+                                    )
+                            else:
+                                formatted_lines.append(
+                                    f"{create_indent(3)}{choice_line_full}"
+                                )
+
+                    # Add "Multiple comma separated items..." at the end if extracted
+                    if multi_items_text:
+                        formatted_lines.append(f"{create_indent(3)}{multi_items_text}")
 
                     return "\n".join(formatted_lines)
 
@@ -2312,6 +2392,18 @@ class DocstringGenerator:
                     if inspect.isclass(p_type)
                     else p_type
                 )
+
+                # Extract Literal values before formatting the type
+                literal_choices: list = []
+                type_str = str(type_)
+                if "Literal[" in type_str:
+                    # Extract values from Literal[...]
+                    literal_match = re.search(r"Literal\[([^\]]+)\]", type_str)
+                    if literal_match:
+                        literal_content = literal_match.group(1)
+                        # Parse the literal values (they're quoted strings)
+                        literal_choices = re.findall(r"'([^']+)'", literal_content)
+
                 type_ = format_type(type_)
                 if "NoneType" in str(type_):
                     type_ = type_.replace(", NoneType", "")
@@ -2343,13 +2435,45 @@ class DocstringGenerator:
                     ):
                         description = getattr(param_default, "description", "") or ""
 
+                # Initialize provider_choices and multi_item_providers for this parameter
+                provider_choices: dict = {}
+                multi_item_providers: list = []
+
+                # Extract choices and multiple_items_allowed from json_schema_extra
+                # For kwarg_params (dataclass fields), json_schema_extra is on param.default (Query object)
+                # For other params (Pydantic FieldInfo), it may be on param itself
+                param_default = getattr(param, "default", None)
+                json_extra = getattr(param_default, "json_schema_extra", None)
+                if not json_extra:
+                    json_extra = getattr(param, "json_schema_extra", None)
+                if json_extra and isinstance(json_extra, dict):
+                    for prov, prov_info in json_extra.items():
+                        if isinstance(prov_info, dict):
+                            if "choices" in prov_info:
+                                provider_choices[prov] = prov_info["choices"]
+                            if prov_info.get("multiple_items_allowed"):
+                                multi_item_providers.append(prov)
+
+                # If we have Literal choices from the type and no choices from json_schema_extra,
+                # extract providers from the description and add choices for them
+                if literal_choices and not provider_choices:
+                    # Look for (provider: xxx) or (provider: xxx, yyy) in description
+                    provider_match = re.search(r"\(provider:\s*([^)]+)\)", description)
+                    if provider_match:
+                        providers_text = provider_match.group(1)
+                        providers_from_desc = [
+                            p.strip() for p in providers_text.split(",")
+                        ]
+                        for prov in providers_from_desc:
+                            if prov and prov not in provider_choices:
+                                provider_choices[prov] = literal_choices
+
                 # Extract provider-specific choices directly from the provider interface
                 if (
                     not isinstance(p_type, str)
                     and hasattr(p_type, "__origin__")
                     and p_type.__origin__ is Union
                 ):
-                    provider_choices = {}
 
                     # Get the list of providers for this model directly from provider_interface.model_providers
                     try:
@@ -2401,36 +2525,45 @@ class DocstringGenerator:
                     except (AttributeError, KeyError):
                         pass
 
-                    # Add provider-specific choices to description
-                    for provider, choices in provider_choices.items():
-                        if choices:
-                            # Format choices with word wrapping for readability
-                            formatted_choices = []
-                            line_length = 0
-                            line_limit = 80  # Max line length
+                # Add provider-specific choices to description
+                for provider, choices in provider_choices.items():
+                    if choices:
+                        # Format choices with word wrapping for readability
+                        formatted_choices = []
+                        line_length = 0
+                        line_limit = 80  # Max line length
 
-                            for i, choice in enumerate(choices):
-                                choice_str = f"'{choice}'"
+                        for i, choice in enumerate(choices):
+                            choice_str = f"'{choice}'"
 
-                                # If adding this choice would exceed line limit, start a new line
-                                if (
-                                    line_length > 0
-                                    and line_length + len(choice_str) + 2 > line_limit
-                                ):
-                                    # End the current line
-                                    formatted_choices.append("\n")
-                                    line_length = 0
+                            # If adding this choice would exceed line limit, start a new line
+                            if (
+                                line_length > 0
+                                and line_length + len(choice_str) + 2 > line_limit
+                            ):
+                                # End the current line
+                                formatted_choices.append("\n")
+                                line_length = 0
 
-                                # Add comma and space if not the first choice in the line
-                                if i > 0 and line_length > 0:
-                                    formatted_choices.append(", ")
-                                    line_length += 2
+                            # Add comma and space if not the first choice in the line
+                            if i > 0 and line_length > 0:
+                                formatted_choices.append(", ")
+                                line_length += 2
 
-                                formatted_choices.append(choice_str)
-                                line_length += len(choice_str)
+                            formatted_choices.append(choice_str)
+                            line_length += len(choice_str)
 
-                            choices_str = "".join(formatted_choices)
-                            description += f"\nChoices for {provider}: {choices_str}"
+                        choices_str = "".join(formatted_choices)
+                        description += f"\nChoices for {provider}: {choices_str}"
+
+                # Add multiple items allowed text at the end if applicable
+                # But only if it's not already in the description
+                if (
+                    multi_item_providers
+                    and "Multiple comma separated items allowed" not in description
+                ):
+                    providers_str = ", ".join(sorted(multi_item_providers))
+                    description += f"\nMultiple comma separated items allowed for provider(s): {providers_str}."
 
                 docstring += f"{create_indent(2)}{param_name} : {type_}\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"

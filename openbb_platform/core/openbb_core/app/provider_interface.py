@@ -186,10 +186,13 @@ class ProviderInterface(metaclass=SingletonMeta):
         inc_json_schema_extra = getattr(incoming.default, "json_schema_extra", {})
 
         def split_desc(desc: str) -> str:
-            """Split field description."""
+            """Split field description, removing provider tags and multiple items text."""
             item = desc.split(" (provider: ")
             detail = item[0] if item else ""
-            return detail
+            # Also remove "Multiple comma separated items allowed." for comparison
+            detail = detail.replace(" Multiple comma separated items allowed.", "")
+            detail = detail.replace("Multiple comma separated items allowed.", "")
+            return detail.strip()
 
         def merge_json_schema_extra(curr: dict, inc: dict) -> dict:
             """Merge json schema extra."""
