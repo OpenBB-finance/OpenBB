@@ -11,7 +11,7 @@ packages = [{ include = "openbb", from = "core" }]
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
 openbb-core = "^1.5.6"
-openbb-platform-api = "^1.2.1"
+openbb-platform-api = "^1.2.2"
 
 openbb-benzinga = "^1.5.0"
 openbb-bls = "^1.2.0"
