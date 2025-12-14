@@ -326,7 +326,7 @@ def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
 
 
 def _extract_provider_description(full_description: str, provider: str) -> str:
-    """Extract description for a specific provider from merged description.
+    r"""Extract description for a specific provider from merged description.
 
     Description format: "desc1 (provider: prov1);\n    desc2 (provider: prov2)"
     """
