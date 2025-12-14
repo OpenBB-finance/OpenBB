@@ -360,6 +360,7 @@ def test_get_data_schema_for_widget(mock_openapi_json, openapi_operation_id):
     ],
 )
 def test_post_query_schema_for_widget(mock_openapi_json, openapi_operation_id):
+    """Test post_query_schema_for_widget function."""
     schema = post_query_schema_for_widget(mock_openapi_json, openapi_operation_id)
     assert schema
 
@@ -373,6 +374,7 @@ def test_post_query_schema_for_widget(mock_openapi_json, openapi_operation_id):
     ],
 )
 def test_data_schema_to_columns_defs(mock_openapi_json, openapi_operation_id):
+    """Test data_schema_to_columns_defs function."""
     column_defs = data_schema_to_columns_defs(
         mock_openapi_json, openapi_operation_id, provider="fred"
     )
@@ -499,11 +501,6 @@ class TestProcessParameterWithSingleProvider:
         assert result["description"] == "General symbol description"
 
 
-# =============================================================================
-# Tests for get_query_schema_for_widget with single_provider
-# =============================================================================
-
-
 class TestGetQuerySchemaWithSingleProvider:
     """Tests for get_query_schema_for_widget with single_provider parameter."""
 
@@ -511,11 +508,9 @@ class TestGetQuerySchemaWithSingleProvider:
         """Test that single_provider is passed through to process_parameter."""
         # Use a route that has provider-specific params
         route = "/api/v1/economy/cpi"
-        query_schema, has_chart = get_query_schema_for_widget(
+        query_schema, _ = get_query_schema_for_widget(
             mock_openapi_json, route, single_provider="fred"
         )
-
-        # Find the country param
         country_param = next(
             (p for p in query_schema if p["parameter_name"] == "country"), None
         )
