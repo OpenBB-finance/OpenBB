@@ -2206,136 +2206,6 @@ class DocstringGenerator:
 
             return description
 
-        def wrap_choice_line(line: str, limit: int) -> list[str]:
-            """Wrap a choice line at comma boundaries to fit within limit."""
-            if len(line) <= limit:
-                return [line]
-
-            # Find comma positions to split on
-            result = []
-            current_line = ""
-
-            # Split by ', ' to get individual choices
-            parts = line.split(", ")
-            for i, part in enumerate(parts):
-                test_add = part if i == 0 else f", {part}"
-                if current_line and len(current_line) + len(test_add) > limit:
-                    result.append(current_line.rstrip(", "))
-                    current_line = part
-                else:
-                    current_line += test_add
-
-            if current_line:
-                result.append(current_line)
-
-            return result
-
-        def format_provider_sections(text: str, base_indent: str) -> str:
-            """Format semicolon-separated provider descriptions into clean sections."""
-            if ";" not in text or "(provider:" not in text:
-                return text
-
-            parts = text.split(";")
-            provider_sections = []
-
-            # Extract provider tag pattern
-            provider_pattern = re.compile(r"\s*\(provider:\s*([^)]+)\)\s*$")
-
-            # Process all parts to extract provider-specific content
-            for part in parts:
-                part = part.strip()
-                match = provider_pattern.search(part)
-                if match:
-                    provider_name = match.group(1).strip()
-                    content = provider_pattern.sub("", part).strip()
-                    provider_sections.append((provider_name, content))
-                else:
-                    if part:
-                        provider_sections.append((None, part))
-
-            if not provider_sections:
-                return text
-
-            # Find common base description (first sentence shared across providers)
-            provider_contents = [
-                (name, content)
-                for name, content in provider_sections
-                if name is not None
-            ]
-            base_description = ""
-
-            # Check if provider contents start with a common phrase
-            if len(provider_contents) >= 2:
-                first_sentences = []
-                for _, content in provider_contents:
-                    if "." in content:
-                        first_sent = content.split(".", 1)[0].strip()
-                        first_sentences.append(first_sent)
-                    else:
-                        first_sentences.append(content)
-
-                # If first sentences match, use as base
-                if first_sentences and all(
-                    s == first_sentences[0] for s in first_sentences
-                ):
-                    base_description = first_sentences[0] + "."
-
-            # Check for base description without provider tag
-            base_parts = [
-                content
-                for name, content in provider_sections
-                if name is None and "Choices" not in content
-            ]
-            if base_parts and not base_description:
-                base_description = base_parts[0]
-
-            # Build formatted output lines
-            formatted_lines = []
-
-            if base_description:
-                formatted_lines.append(base_description)
-                formatted_lines.append("")  # Blank line after base
-
-            # Add each provider section
-            for provider_name, content in provider_sections:
-                if provider_name and content:
-                    # Remove base description from content if present
-                    if base_description:
-                        base_clean = base_description.rstrip(".")
-                        if content.startswith(base_clean):
-                            content = content[len(base_clean) :].strip()
-                            if content.startswith("."):
-                                content = content[1:].strip()
-
-                    # Skip if no content left after removing base
-                    if not content:
-                        continue
-
-                    # Provider header
-                    formatted_lines.append(f"(provider: {provider_name})")
-                    # Content with extra indent (4 spaces more)
-                    for line in content.split("\n"):
-                        line = line.strip()
-                        if line:
-                            formatted_lines.append(f"    {line}")
-                    formatted_lines.append("")  # Blank line between providers
-
-            # Remove trailing blank lines
-            while formatted_lines and formatted_lines[-1] == "":
-                formatted_lines.pop()
-
-            # Join lines: first line as-is, rest with base indent
-            if formatted_lines:
-                result = formatted_lines[0]
-                for line in formatted_lines[1:]:
-                    if line:
-                        result += f"\n{base_indent}{line}"
-                    else:
-                        result += "\n"
-                return result
-
-            return text
-
         def format_description(description: str) -> str:
             """Format description in docstrings with proper indentation for provider choices."""
             # Base indent for description content (called with create_indent(3) prefix)
@@ -2356,8 +2226,8 @@ class DocstringGenerator:
                 current_provider = None
                 current_choices = []
 
-                for line in choices_text.strip().split("\n"):
-                    line = line.strip()
+                for ln in choices_text.strip().split("\n"):
+                    line = ln.strip()
 
                     # Check if this is the "Multiple comma separated" line
                     if line.startswith("Multiple comma separated items allowed"):
@@ -2411,15 +2281,14 @@ class DocstringGenerator:
                 provider_pattern = re.compile(r"\s*\(provider:\s*([^)]+)\)")
 
                 for part in parts:
-                    part = part.strip()
-                    match = provider_pattern.search(part)
+                    p = part.strip()
+                    match = provider_pattern.search(p)
                     if match:
                         provider_name = match.group(1).strip()
-                        content = provider_pattern.sub("", part).strip()
+                        content = provider_pattern.sub("", p).strip()
                         provider_sections.append((provider_name, content))
-                    else:
-                        if part:
-                            provider_sections.append((None, part))
+                    elif p:
+                        provider_sections.append((None, p))
 
                 if provider_sections:
                     # Find common base description
@@ -2465,18 +2334,18 @@ class DocstringGenerator:
                             if base_description:
                                 base_clean = base_description.rstrip(".")
                                 if content.startswith(base_clean):
-                                    content = content[len(base_clean) :].strip()
+                                    content = content[len(base_clean) :].strip()  # noqa
                                     if content.startswith("."):
-                                        content = content[1:].strip()
+                                        content = content[1:].strip()  # noqa
 
                             if not content:
                                 continue
 
                             formatted_lines.append(f"(provider: {provider_name})")
                             for line in content.split("\n"):
-                                line = line.strip()
-                                if line:
-                                    formatted_lines.append(f"    {line}")
+                                new_line = line.strip()
+                                if new_line:
+                                    formatted_lines.append(f"    {new_line}")
 
                             # Add choices for this provider inside its section
                             if provider_name in provider_choices:
