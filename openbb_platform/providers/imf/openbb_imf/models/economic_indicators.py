@@ -1,6 +1,6 @@
 """IMF Economic Indicators Model."""
 
-# pylint: disable=unused-argument,protected-access,too-many-branches,too-many-statements
+# pylint: disable=unused-argument,protected-access,too-many-branches,too-many-statements,too-many-locals,too-many-lines
 # flake8: noqa: PLR0912
 
 from typing import Any

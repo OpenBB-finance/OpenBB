@@ -18,7 +18,7 @@ from openbb_imf.utils.constants import (
 )
 from openbb_imf.utils.metadata import ImfMetadata
 
-# pylint: disable=unused-argument,protected-access,too-many-positional-arguments,too-many-lines
+# pylint: disable=unused-argument,protected-access,too-many-positional-arguments,too-many-lines,too-many-locals,too-many-branches
 
 router = Router(prefix="", description="Utilities for IMF provider.")
 api_prefix = SystemService().system_settings.api_settings.prefix
@@ -881,7 +881,7 @@ async def presentation_table(
         ),
     ],
 )
-async def indicator_choices(
+async def indicator_choices(  # noqa: PLR0912
     symbol: str | None = None,
     country: str | None = None,
     frequency: str | None = None,
