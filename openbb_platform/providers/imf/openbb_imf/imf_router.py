@@ -633,6 +633,7 @@ async def presentation_table_choices(
                 "optionsParams": {
                     "dataflow_group": "$dataflow_group",
                     "table": "$table",
+                    "dimension_values": "$dimension_values",
                 },
             },
             {
@@ -644,6 +645,7 @@ async def presentation_table_choices(
                     "dataflow_group": "$dataflow_group",
                     "table": "$table",
                     "country": "$country",
+                    "dimension_values": "$dimension_values",
                 },
                 "description": "The data frequency.",
             },
@@ -884,7 +886,7 @@ async def indicator_choices(
     country: str | None = None,
     frequency: str | None = None,
     transform: str | None = None,
-    sector: str | None = None,
+    dimension_values: list[str] | None = None,
 ) -> list[dict[str, str]]:
     """Get progressive indicator choices for IMF data retrieval.
 
@@ -907,8 +909,8 @@ async def indicator_choices(
         Enter a symbol and country to see frequency choices.
     transform : str | None
         Enter a symbol, country, and frequency to see transform choices.
-    sector : str | None
-        Enter a symbol, country, frequency, and transform to see sector choices - if available.
+    dimension_values : list[str] | None
+        Additional dimension filters in 'DIM_ID:VALUE' format to constrain choices.
 
     Returns
     -------
@@ -982,8 +984,34 @@ async def indicator_choices(
     transform_dim, unit_dim, _, _ = detect_transform_dimension(dataflow_id)
     # Use UNIT dimension as fallback for transform if no transform dimension exists
     effective_transform_dim = transform_dim or unit_dim
-    # Check for SECTOR dimension (GFS dataflows)
-    sector_dim = "SECTOR" if "SECTOR" in dim_order else None
+
+    # Parse dimension_values into a dict of DIM_ID -> VALUE
+    # Input format: list of "DIM_ID:VALUE" strings
+    extra_dimensions: dict[str, str] = {}
+    if dimension_values:
+        for dv in dimension_values:
+            if not dv or not isinstance(dv, str):
+                continue
+            if ":" in dv:
+                dim_id, dim_value = dv.split(":", 1)
+                extra_dimensions[dim_id.strip().upper()] = dim_value.strip().upper()
+
+    # dimension_values OVERRIDES parameter values for country/frequency/transform
+    # Check if any country dimension is in extra_dimensions
+    for cdim in ("COUNTRY", "REF_AREA", "JURISDICTION", "AREA"):
+        if cdim in extra_dimensions:
+            country = extra_dimensions.pop(cdim)
+            break
+    # Check if frequency dimension is in extra_dimensions
+    for fdim in ("FREQUENCY", "FREQ"):
+        if fdim in extra_dimensions:
+            frequency = extra_dimensions.pop(fdim)
+            break
+    # Check if transform dimension is in extra_dimensions
+    for tdim in ("UNIT_MEASURE", "UNIT", "TRANSFORMATION"):
+        if tdim in extra_dimensions:
+            transform = extra_dimensions.pop(tdim)
+            break
 
     # Find indicator dimension - check which dimension contains the indicator_code
     # This list should include all possible indicator-type dimensions across dataflows
@@ -1053,8 +1081,9 @@ async def indicator_choices(
                 key_parts.append(
                     str(transform) if transform and transform != "true" else "*"
                 )
-            elif dim_id == sector_dim:
-                key_parts.append(str(sector) if sector and sector != "true" else "*")
+            elif dim_id in extra_dimensions:
+                # Use value from dimension_values if provided
+                key_parts.append(extra_dimensions[dim_id])
             else:
                 key_parts.append("*")
 
@@ -1094,38 +1123,22 @@ async def indicator_choices(
         return choices
 
     # Step 1: No country selected - return country choices filtered by indicator
-    if country is None:
+    if country == "true" and country_dim:
         choices = get_choices_for_dim(country_dim)
-        return sorted(choices, key=lambda x: x["label"])
+        choices = sorted(choices, key=lambda x: x["label"])
+        choices.insert(0, {"label": "All Countries", "value": "*"})
+        return choices
 
     # Step 2: Country selected, no frequency - return frequency choices
     if frequency == "true" and freq_dim:
         return get_choices_for_dim(freq_dim)
 
     # Step 3: Frequency selected, no transform - return transform choices
-    if (
-        transform == "true"
-        and frequency is not None
-        and frequency != "true"
-        and effective_transform_dim
-    ):
+    if transform == "true" and effective_transform_dim:
         choices = get_choices_for_dim(effective_transform_dim)
         # Add "all" option at the beginning if there are choices
         if choices:
             choices.insert(0, {"label": "All", "value": "all"})
-        return choices
-
-    # Step 4: Transform selected, sector needed (for GFS dataflows) - return sector choices
-    if (
-        sector == "true"
-        and transform is not None
-        and transform != "true"
-        and sector_dim
-    ):
-        choices = get_choices_for_dim(sector_dim)
-        # Add "all" option at the beginning if there are choices
-        if choices:
-            choices.insert(0, {"label": "All Sectors", "value": "all"})
         return choices
 
     # All parameters set - no more choices needed

@@ -67,6 +67,8 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 "optionsEndpoint": f"{api_prefix}/imf_utils/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
+                    "country": "true",
+                    "dimension_values": "$dimension_values",
                 },
                 "style": {"popupWidth": 600},
             },
@@ -80,6 +82,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     "symbol": "$symbol",
                     "country": "$country",
                     "frequency": "true",
+                    "dimension_values": "$dimension_values",
                 },
                 "description": "The data frequency.",
             },
@@ -94,6 +97,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     "country": "$country",
                     "frequency": "$frequency",
                     "transform": "true",
+                    "dimension_values": "$dimension_values",
                 },
                 "description": "Transformation to apply to the data.",
                 "style": {"popupWidth": 600},
@@ -138,11 +142,13 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     )
 
     country: str | None = Field(
+        default=None,
         description="ISO3 country code(s). Use comma-separated values for multiple countries. "
         + "Validated against the dataflow's available countries via constraint API.",
     )
 
     frequency: str | None = Field(
+        default=None,
         description="Frequency of the data. Choices vary by indicator and country."
         + " Common options: 'annual', 'quarter', 'month'."
         + " Use 'all' or '*' to return all available frequencies."
@@ -173,14 +179,11 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + " 'indicator' and 'country' as the index, date as values.",
     )
 
-    # Internal fields set by validators (using PrivateAttr for Pydantic v2)
     _is_table: bool = PrivateAttr(default=False)
     _dataflow: str | None = PrivateAttr(default=None)
     _table_id: str | None = PrivateAttr(default=None)
     _indicator_codes: list[str] = PrivateAttr(default_factory=list)
-    _indicators_by_dataflow: dict = PrivateAttr(
-        default_factory=dict
-    )  # {dataflow: [codes]}
+    _indicators_by_dataflow: dict = PrivateAttr(default_factory=dict)
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
@@ -192,12 +195,25 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         - ISO3 codes: "USA", "JPN", "GBR"
         - Country names: "United States", "Japan", "United Kingdom"
         - Snake_case names: "united_states", "japan", "united_kingdom"
+        - Wildcards: "*" or "all" to include all countries
+        - None: Allowed if dimension_values contains a country dimension (validated in model_validator)
         """
         # pylint: disable=import-outside-toplevel
         from openbb_imf.utils.metadata import ImfMetadata
 
+        # Allow None - will be validated in model_validator with dimension_values check
         if not v:
-            raise ValueError("Country is required.")
+            return None
+
+        # Split by comma, handling potential spaces and filtering empty strings
+        items = [c.strip() for c in v.split(",") if c.strip()]
+
+        if not items:
+            return None
+
+        # Check for wildcards - return early without metadata lookup
+        if len(items) == 1 and items[0].lower() in ("*", "all"):
+            return "*"
 
         metadata = ImfMetadata()
         country_codes = metadata._codelist_cache.get("CL_COUNTRY", {})
@@ -219,12 +235,14 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             name_to_code[snake_name] = code
 
         result: list[str] = []
-        # Split by comma, handling potential spaces and filtering empty strings
-        items = [c.strip() for c in v.split(",") if c.strip()]
 
         for item in items:
             item_upper = item.upper().strip()
             item_lower = item.lower().strip().replace(" ", "_")
+
+            # Handle wildcards in mixed input
+            if item_lower in ("*", "all"):
+                return "*"  # Wildcard overrides everything
 
             # Check if it's already an ISO3 code
             if item_upper in code_set:
@@ -249,6 +267,53 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
 
         if not self.symbol:
             raise ValueError("symbol is required.")
+
+        country_dimensions = {"COUNTRY", "REF_AREA", "JURISDICTION", "AREA"}
+        frequency_dimensions = {"FREQUENCY", "FREQ"}
+        transform_dimensions = {
+            "UNIT_MEASURE",
+            "UNIT",
+            "TRANSFORMATION",
+            "TYPE_OF_TRANSFORMATION",
+        }
+
+        remaining_dimension_values: list[str] = []
+
+        if self.dimension_values:
+            for dv in self.dimension_values:
+                if ":" not in dv:
+                    remaining_dimension_values.append(dv)
+                    continue
+                dim_id, dim_value = dv.split(":", 1)
+                dim_id_upper = dim_id.strip().upper()
+                dim_value = dim_value.strip()
+
+                # dimension_values OVERRIDES the country parameter
+                if dim_id_upper in country_dimensions:
+                    object.__setattr__(self, "country", dim_value)
+                # dimension_values OVERRIDES the frequency parameter
+                elif dim_id_upper in frequency_dimensions:
+                    object.__setattr__(self, "frequency", dim_value)
+                # dimension_values OVERRIDES the transform parameter
+                elif dim_id_upper in transform_dimensions:
+                    object.__setattr__(self, "transform", dim_value)
+                # Keep dimension_values that are not consumed by country/frequency/transform
+                else:
+                    remaining_dimension_values.append(dv)
+
+            # Update dimension_values to only contain non-consumed dimensions
+            object.__setattr__(
+                self,
+                "dimension_values",
+                remaining_dimension_values if remaining_dimension_values else None,
+            )
+
+        # Validate country requirement - must have country by now
+        if not self.country:
+            raise ValueError(
+                "Country is required. Provide via 'country' parameter or include a country "
+                "dimension (COUNTRY, REF_AREA, JURISDICTION, AREA) in 'dimension_values'."
+            )
 
         symbols = [
             s.strip()
@@ -421,6 +486,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 "SERIES",
                 "ITEM",
                 "BOP_ACCOUNTING_ENTRY",
+                "ACTIVITY",
             ]
             indicator_dim = next(
                 (d for d in indicator_dim_candidates if d in dim_order), None
@@ -434,7 +500,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     invalid = [
                         c
                         for c in countries
-                        if c not in available_countries and c not in ("*", "ALL")
+                        if c not in available_countries and c not in ("*", "all")
                     ]
                     if invalid:
                         raise ValueError(
@@ -496,9 +562,9 @@ class ImfEconomicIndicatorsData(EconomicIndicatorsData):
         "symbol_root": "parent_code",
     }
 
-    @field_validator("scale", "unit", "title", "description", mode="before")
+    @field_validator("scale", "unit", "title", "description", "value", mode="before")
     @classmethod
-    def convert_nan_to_none(cls, v):
+    def _convert_nan_to_none(cls, v):
         """Convert NaN float values to None for string fields."""
         if v is None or str(v).lower() == "nan":
             return None
@@ -526,8 +592,15 @@ class ImfEconomicIndicatorsData(EconomicIndicatorsData):
                             },
                             {
                                 "field": "description",
-                                "headerName": "Description",
                                 "hide": True,
+                            },
+                            {
+                                "field": "symbol",
+                                "pinned": False,
+                            },
+                            {
+                                "field": "value",
+                                "pinned": "left",
                             },
                         ]
                     }

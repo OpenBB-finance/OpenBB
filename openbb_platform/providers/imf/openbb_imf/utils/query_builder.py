@@ -630,6 +630,7 @@ class ImfQueryBuilder:
                     "OVERLAP",
                     "OBS_STATUS",
                     "DECIMALS_DISPLAYED",
+                    "COUNTRY_UPDATE_DATE",
                 ]:
                     # Dimension not in translation maps - store raw value
                     # Also store with _code suffix for consistency
@@ -923,7 +924,7 @@ class ImfQueryBuilder:
                     f"No data rows found for dataflow '{dataflow}' with parameters: "
                     + f"{param_info}. "
                     + "The IMF constraints API reports this combination as valid, "
-                    + "but no actual observations were returned data. "
+                    + "but no actual observations were returned in the data. "
                     + f"URL -> {url}"
                 )
             )
@@ -969,8 +970,6 @@ class ImfQueryBuilder:
         for indicator_code in all_unique_indicators:
             # Use dataflow::indicator format for user-facing metadata keys
             full_key = f"{dataflow}::{indicator_code}"
-
-            # Start with basic metadata
             ind_meta = {
                 "description": indicator_descriptions_map.get(indicator_code, ""),
                 "indicator": indicator_code,

@@ -1289,12 +1289,22 @@ def pivot_indicator_mode(
 
                 if scale_val is not None:
                     row["scale"] = scale_val
+
+                # Track if row has any non-zero values
+                has_nonzero_value = False
                 for d in dates:
                     val = group_df[group_df["date"] == d]["value"].values
                     if len(val) > 0 and pd.notna(val[0]):
                         row[str(d)] = val[0]
+                        if val[0] != 0:
+                            has_nonzero_value = True
                     else:
                         row[str(d)] = None
+
+                # Skip rows where all date values are 0 or None
+                if not has_nonzero_value:
+                    continue
+
                 rows.append(row)
 
     result_df = pd.DataFrame(rows)

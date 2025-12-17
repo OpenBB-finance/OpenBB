@@ -3,7 +3,7 @@
   "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/IMF-Seal_ENG_RGB.svg/500px-IMF-Seal_ENG_RGB.svg.png",
   "img_dark": "",
   "img_light": "",
-  "description": "An unofficial tool for exploring economic indicators and presentation tables published by the IMF (https://data.imf.org/).",
+  "description": "Explore economic indicators and presentation tables published by the IMF (https://data.imf.org/). Disclaimer: This application is neither affiliated with nor endorsed by the IMF.",
   "allowCustomization": true,
   "tabs": {
     "dataflows": {
@@ -18,7 +18,7 @@
           "h": 29,
           "state": {
             "params": {
-              "dataflow_id": "BOP_AGG"
+              "dataflow_id": "PI"
             }
           },
           "groups": []
@@ -45,8 +45,8 @@
           "h": 15,
           "state": {
             "params": {
-              "dataflows": "BOP",
-              "symbol": "DIP::H_DIP_INDICATOR"
+              "dataflows": "WEO",
+              "symbol": "WEO::TMG_RPCH"
             },
             "chartView": {
               "enabled": false,
@@ -89,10 +89,11 @@
           "h": 21,
           "state": {
             "params": {
-              "symbol": "DIP::H_DIP_INDICATOR",
-              "country": "AUS",
-              "frequency": "A",
-              "limit": "1",
+              "symbol": "WEO::TMG_RPCH",
+              "country": [
+                "G163",
+                "G119"
+              ],
               "pivot": "false"
             },
             "chartView": {
@@ -101,23 +102,12 @@
             },
             "columnState": {
               "default": {
-                "sort": {
-                  "sortModel": [
-                    {
-                      "colId": "value",
-                      "sort": "desc"
-                    }
-                  ]
-                },
-                "pivot": {
-                  "pivotMode": false,
-                  "pivotColIds": [
-                    "date"
-                  ]
-                },
                 "columnPinning": {
                   "leftColIds": [
-                    "title"
+                    "title",
+                    "country",
+                    "date",
+                    "value"
                   ],
                   "rightColIds": []
                 },
@@ -130,29 +120,22 @@
                   "orderedColIds": [
                     "title",
                     "country",
+                    "unit",
+                    "scale",
                     "date",
                     "symbol_root",
                     "symbol",
                     "value",
-                    "unit",
                     "unit_multiplier",
-                    "scale",
                     "order",
                     "level",
                     "indicator",
                     "description",
                     "country_code",
-                    "dv_type",
-                    "dv_type_code",
-                    "counterpart_country",
-                    "counterpart_country_code",
                     "frequency",
                     "frequency_code"
                   ]
-                },
-                "rowSelection": [
-                  "0"
-                ]
+                }
               }
             }
           },
@@ -174,12 +157,12 @@
           "h": 31,
           "state": {
             "params": {
-              "dataflow_group": "bop",
-              "table": "bop_international_transactions",
+              "dataflow_group": "gdp",
+              "table": "gdp_quarterly_expenditure",
               "country": [
-                "AUS"
+                "BRA"
               ],
-              "frequency": "A",
+              "frequency": "Q",
               "limit": "3"
             }
           },
@@ -193,7 +176,7 @@
       "name": "Group 1",
       "type": "param",
       "paramName": "symbol",
-      "defaultValue": "DIP::H_DIP_INDICATOR"
+      "defaultValue": "WEO::TMG_RPCH"
     }
   ]
 }]
