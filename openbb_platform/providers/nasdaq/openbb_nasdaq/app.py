@@ -980,6 +980,3 @@ def main():
         }
 
     return app
-
-
-app = main()
