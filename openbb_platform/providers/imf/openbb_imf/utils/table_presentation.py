@@ -1092,6 +1092,10 @@ class HierarchyContext:
                 # Restore the original title (before any stripping)
                 title = original_title
 
+        # SAFEGUARD: Never return an empty title - restore original if stripped to nothing
+        if not title or not title.strip():
+            title = original_title
+
         return title
 
 
@@ -1213,10 +1217,9 @@ def pivot_indicator_mode(
     dates: list[Any],
     countries: list[str],
 ) -> "pd.DataFrame":
-    """Simple pivot for indicator mode (no hierarchy).
+    """Pivot table for indicator mode.
 
-    Creates DataFrame with ["title", "country", "unit", "scale"] as index
-    and dates as columns.
+    Creates DataFrame with ["title", "country", "unit", "scale"] as index and dates as columns.
 
     Parameters
     ----------
@@ -1307,7 +1310,7 @@ def pivot_table_mode(
     countries: list[str],
     metadata: dict[str, Any],
 ) -> "pd.DataFrame":
-    """Full hierarchical pivot for table mode.
+    """Get a hierarchical pivot for table mode.
 
     Handles:
     - Parent/child hierarchy detection
@@ -2215,7 +2218,7 @@ def pivot_table_data(
     limit: int | None,
     metadata: dict[str, Any],
 ) -> "pd.DataFrame":
-    """Main entry point for pivoting IMF table data.
+    """Pivot table data based on whether hierarchy exists.
 
     This function determines whether to use indicator mode (simple pivot)
     or table mode (hierarchical pivot) based on the data.

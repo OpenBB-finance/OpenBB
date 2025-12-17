@@ -132,7 +132,7 @@ def imts_query(
     end_date: str | None = None,
     **kwargs,
 ) -> dict:
-    """Wrapper function for the Direction of Trade (IMTS) dataset.
+    """Query the Direction of Trade (IMTS) dataset.
     This function handles input validation for countries and counterparts.
 
     Parameters

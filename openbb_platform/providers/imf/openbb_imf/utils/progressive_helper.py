@@ -6,13 +6,12 @@ from openbb_imf.utils.query_builder import ImfQueryBuilder
 
 
 class ImfParamsBuilder:
-    """
-    A helper class to build IMF queries progressively by making sequential dimension selections,
+    """A helper class to build IMF queries progressively by making sequential dimension selections,
     for each dimension of a dataflow, filtering the available options at each step based on previous selections.
     """
 
     def __init__(self, dataflow_id: str):
-        """Initializes the ImfParamsBuilder object.
+        """Initialize the ImfParamsBuilder object.
 
         Parameters
         ----------
@@ -34,13 +33,13 @@ class ImfParamsBuilder:
         self._last_constraints_response: dict = {}
 
     def _get_dsd(self):
-        """Gets the Data Structure Definition (DSD) for the current dataflow."""
+        """Get the Data Structure Definition (DSD) for the current dataflow."""
         df_obj = self._builder.metadata.dataflows[self.dataflow_id]
         dsd_id = df_obj.get("structureRef", {}).get("id")
         return self._builder.metadata.datastructures.get(dsd_id, {})
 
     def _get_dimensions_in_order(self) -> list[str]:
-        """Gets the list of dimension IDs in their specified order."""
+        """Get the list of dimension IDs in their specified order."""
         dimensions_metadata = self.dsd.get("dimensions", [])
 
         # Sort by position if available, otherwise keep original order
@@ -59,7 +58,7 @@ class ImfParamsBuilder:
 
     def get_next_dimension_to_select(self) -> str | None:
         """
-        Returns the ID of the next dimension that needs a selection.
+        Get the ID of the next dimension that needs a selection.
 
         Returns
         -------
@@ -74,8 +73,7 @@ class ImfParamsBuilder:
     def get_options_for_dimension(
         self, dimension_id: str | None = None
     ) -> list[dict[str, str]]:
-        """
-        Gets the available options for a given dimension, based on the current selections.
+        """Get the available options for a given dimension, based on the current selections.
 
         Parameters
         ----------
@@ -129,9 +127,7 @@ class ImfParamsBuilder:
         return options
 
     def _get_codelist_for_dim(self, dimension_id: str) -> dict:
-        """
-        Retrieves the codelist map for a given dimension.
-        """
+        """Get the codelist map for a given dimension."""
         df_obj = self._builder.metadata.dataflows[self.dataflow_id]
         agency_id = df_obj.get("agencyID")
         if not agency_id:
@@ -156,8 +152,7 @@ class ImfParamsBuilder:
         return {}
 
     def set_dimension(self, dimension: tuple[str, str]) -> dict:
-        """
-        Sets a value for a dimension. Clears downstream selections.
+        """Set a value for a dimension and clear downstream selections.
 
         Parameters
         ----------
@@ -189,7 +184,7 @@ class ImfParamsBuilder:
         return self._selections.copy()
 
     def get_dimensions(self) -> dict[str, str | None]:
-        """Returns the current selections for the dimension_id.
+        """Get the current selections for the dimension_id.
 
         Returns
         -------
@@ -202,7 +197,7 @@ class ImfParamsBuilder:
         self, start_date: str | None = None, end_date: str | None = None
     ) -> str:
         """
-        Builds the final API URL based on the current selections.
+        Build the final API URL based on the current selections.
 
         Parameters
         ----------

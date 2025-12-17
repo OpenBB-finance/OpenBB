@@ -1,9 +1,9 @@
 [{
-  "name": "IMF Explorer",
-  "img": "",
+  "name": "IMF Explorer (Unofficial)",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/IMF-Seal_ENG_RGB.svg/500px-IMF-Seal_ENG_RGB.svg.png",
   "img_dark": "",
   "img_light": "",
-  "description": "Explore economic indicators and presentation tables from the IMF.",
+  "description": "An unofficial tool for exploring economic indicators and presentation tables published by the IMF (https://data.imf.org/).",
   "allowCustomization": true,
   "tabs": {
     "dataflows": {

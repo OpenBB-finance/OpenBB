@@ -31,7 +31,7 @@ class ImfMetadata:
     _initialized = None
 
     def __new__(cls):
-        """Implements singleton pattern."""
+        """Initialize the singleton instance."""
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:
@@ -40,7 +40,7 @@ class ImfMetadata:
         return cls._instance
 
     def __init__(self):
-        """Initializes the IMF metadata singleton."""
+        """Initialize the IMF metadata singleton."""
         if self._initialized:
             return
 
@@ -59,7 +59,7 @@ class ImfMetadata:
             self._initialized = True
 
     def _load_from_cache(self) -> bool:
-        """Loads metadata from the local cache file."""
+        """Load metadata from the local cache file."""
         # pylint: disable=import-outside-toplevel
         import gzip
         import pickle
@@ -111,7 +111,7 @@ class ImfMetadata:
         return dfs
 
     def search_dataflows(self, query: str) -> list[dict]:
-        """Searches dataflows based on a query string.
+        """Search dataflows based on a query string.
 
         Parameters
         ----------
@@ -180,7 +180,7 @@ class ImfMetadata:
         dataflows: list[str] | str | None = None,
         keywords: list[str] | None = None,
     ) -> list[dict]:
-        """Searches indicators based on a query string and optional keyword filters.
+        """Search indicators based on a query string and optional keyword filters.
 
         Parameters
         ----------
@@ -582,9 +582,7 @@ class ImfMetadata:
         return codelist_id in self._codelist_cache
 
     def _bulk_fetch_and_cache_codelists(self, agency_id: str, dataflow_id: str):
-        """
-        Fetches all codelists for a given agency and dataflow and caches them.
-        """
+        """Fetch all codelists for a given agency and dataflow and caches them."""
         # pylint: disable=import-outside-toplevel
         import json
 
@@ -686,7 +684,7 @@ class ImfMetadata:
         references: str | None = None,
         **kwargs,
     ) -> dict:
-        """Fetches available constraints for a given dataflow and parameters."""
+        """Fetch available constraints for a given dataflow and parameters."""
         # pylint: disable=import-outside-toplevel
         import json
 
