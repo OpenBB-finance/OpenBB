@@ -216,7 +216,7 @@ def imts_query(
     if isinstance(indicator, str) and "," in indicator:
         validated_indicator = [item.strip() for item in indicator.split(",")]
     else:
-        validated_indicator = indicator if indicator != "*" else "*"
+        validated_indicator = indicator if indicator != "*" else "*"  # type: ignore
 
     return query_builder.fetch_data(
         dataflow=dataflow_id,

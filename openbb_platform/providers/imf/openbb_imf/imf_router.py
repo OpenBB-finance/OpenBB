@@ -561,7 +561,7 @@ async def presentation_table_choices(
         table_structure = metadata.get_dataflow_table_structure(
             dataflow_id, hierarchy_id
         )
-        dimension_codes: dict[str, list[str]] = {}
+        dimension_codes = {}
         for entry in table_structure.get("indicators", []):
             indicator_code = entry.get("indicator_code")
             dimension_id = entry.get("dimension_id")
@@ -1072,7 +1072,7 @@ async def indicator_choices(
         labels = {opt["value"]: opt["label"] for opt in params.get(dim_id, [])}
         # Also try to get labels from codelist
         codelist_labels: dict = {}
-        dim_meta = next((d for d in sorted_dims if d.get("id") == dim_id), {})
+        dim_meta: dict = next((d for d in sorted_dims if d.get("id") == dim_id), {})
 
         if dim_meta:
             codelist_id = metadata._resolve_codelist_id(

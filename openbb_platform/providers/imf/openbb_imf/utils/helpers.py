@@ -3,6 +3,8 @@
 # pylint: disable=R0912,W0212,R0914,R0915,R0916,R1702,W0718
 # flake8: noqa: PLR0912
 
+from typing import Any
+
 from openbb_core.app.model.abstract.error import OpenBBError
 
 
@@ -270,8 +272,8 @@ def detect_indicator_dimensions(
                     )
 
                     # Find the first matched dimension to anchor our position
-                    first_matched_idx = None
-                    first_matched_dim_pos = None
+                    first_matched_idx: Any = None
+                    first_matched_dim_pos: Any = None
                     for idx, (seg, dim_id) in enumerate(segments):
                         if dim_id and dim_id in effective_dim_order:
                             first_matched_idx = idx
@@ -279,7 +281,7 @@ def detect_indicator_dimensions(
                             break
 
                     # Build error messages
-                    segment_errors: list[str] = []
+                    segment_errors: list = []
                     for idx, (seg, dim_id) in enumerate(segments):
                         if dim_id is None:
                             # Calculate expected dimension based on position relative to first match
@@ -316,7 +318,7 @@ def detect_indicator_dimensions(
 
     except OpenBBError:
         raise
-    except Exception:  # noqa: BLE001
+    except Exception:
         # Fallback: put all codes in INDICATOR dimension (can't validate)
         dimension_codes["INDICATOR"] = indicator_codes
 

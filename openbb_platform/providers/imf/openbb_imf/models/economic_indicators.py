@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument,protected-access,too-many-branches,too-many-statements
 # flake8: noqa: PLR0912
 
-from datetime import date as dateType
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -597,10 +596,10 @@ class ImfEconomicIndicatorsFetcher(
         from openbb_imf.utils.query_builder import ImfQueryBuilder
         from openbb_imf.utils.table_builder import ImfTableBuilder
 
-        countries = query.country.split(",")
+        countries = query.country.split(",")  # type: ignore
         countries_str = "+".join([c.upper() for c in countries])
         frequency_map = {"annual": "A", "quarter": "Q", "month": "M", "day": "D"}
-        frequency = frequency_map.get(query.frequency) or query.frequency
+        frequency = frequency_map.get(query.frequency) or query.frequency  # type: ignore
         start_date = query.start_date.strftime("%Y-%m-%d") if query.start_date else None
         end_date = query.end_date.strftime("%Y-%m-%d") if query.end_date else None
 
@@ -1044,7 +1043,7 @@ class ImfEconomicIndicatorsFetcher(
 
         result_df = pivot_table_data(
             result=result,
-            country=query.country,
+            country=query.country,  # type: ignore
             limit=query.limit,
             metadata=metadata,
         )

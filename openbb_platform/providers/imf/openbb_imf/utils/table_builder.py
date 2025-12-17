@@ -242,10 +242,9 @@ class ImfTableBuilder:
                 f"Total entries in hierarchy: {len(table_structure['indicators'])}"
             )
 
-        # Now map each code to its dimension using code_urn parsing
-        dimension_codes = defaultdict(list)
-        dimension_codes_with_depth = defaultdict(list)  # Track (code, depth) pairs
-        codelist_to_dimension_cache = {}  # Cache to avoid repeated lookups
+        dimension_codes: dict = defaultdict(list)
+        dimension_codes_with_depth = defaultdict(list)
+        codelist_to_dimension_cache = {}
 
         for entry in entries_with_codes:
             indicator_code = entry.get("indicator_code")
@@ -564,10 +563,7 @@ class ImfTableBuilder:
                             ]
                             filtered_codes.extend(matching_codes)
                         # Remove duplicates while preserving order
-                        seen = set()
-                        filtered_codes = [
-                            c for c in filtered_codes if not (c in seen or seen.add(c))
-                        ]
+                        filtered_codes = list(dict.fromkeys(filtered_codes))
 
                     if filtered_codes:
                         # Build the joined codes string
@@ -714,10 +710,7 @@ class ImfTableBuilder:
                             ]
                             filtered_codes.extend(matching_codes)
                         # Deduplicate
-                        seen = set()
-                        filtered_codes = [
-                            c for c in filtered_codes if not (c in seen or seen.add(c))
-                        ]
+                        filtered_codes = list(dict.fromkeys(filtered_codes))
 
                     if filtered_codes:
                         # Check if URL would be too long
@@ -1058,7 +1051,7 @@ class ImfTableBuilder:
 
                 # Remove duplicate consecutive parts
                 # e.g., "Loans to X, Loans to X" -> "Loans to X"
-                deduped_parts = []
+                deduped_parts: list = []
                 for p in name_parts:
                     if not deduped_parts or deduped_parts[-1] != p:
                         deduped_parts.append(p)
@@ -1289,7 +1282,7 @@ class ImfTableBuilder:
                             # Strip FSI classification tags
                             name_parts = [p for p in name_parts if p not in fsi_tags]
                             # Deduplicate consecutive parts
-                            deduped = []
+                            deduped: list = []
                             for p in name_parts:
                                 if not deduped or deduped[-1] != p:
                                     deduped.append(p)
@@ -1432,7 +1425,7 @@ class ImfTableBuilder:
         data_rows.sort(key=lambda x: x.get("order", float("inf")))
 
         # Remove duplicate/unnecessary fields and reorder columns
-        cleaned_rows = []
+        cleaned_rows: list = []
         for row in data_rows:
             # Remove indicator_codes (internal), label (duplicate of dimension labels), title (redundant)
             cleaned_row = {
@@ -1440,7 +1433,7 @@ class ImfTableBuilder:
             }
 
             # Reorder: priority columns first, then rest alphabetically
-            ordered_row = {}
+            ordered_row: dict = {}
             for col in priority_columns:
                 if col in cleaned_row:
                     ordered_row[col] = cleaned_row.pop(col)

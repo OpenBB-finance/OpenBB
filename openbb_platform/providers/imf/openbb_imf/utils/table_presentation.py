@@ -1756,7 +1756,7 @@ def pivot_table_mode(
         header_title = hierarchy_name.upper()
         if uniform_suffix:
             header_title += uniform_suffix
-        row: dict[str, Any] = {
+        row = {
             "title": f"▸ {header_title}",
             "country": "",
         }

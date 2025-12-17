@@ -1279,13 +1279,13 @@ class ImfQueryBuilder:
         self, dimension_group_attrs: dict, structure: dict
     ) -> dict:
         """Extract indicator metadata from dimensionGroupAttributes."""
-        indicator_metadata = {}
+        indicator_metadata: dict = {}
 
         # Get the dimensionGroup attribute definitions from structure
         dim_group_defs = structure.get("attributes", {}).get("dimensionGroup", [])
 
         # Create index maps for each attribute type
-        attr_index_map = {}
+        attr_index_map: dict = {}
         for i, attr_def in enumerate(dim_group_defs):
             attr_index_map[attr_def.get("id")] = i
 
