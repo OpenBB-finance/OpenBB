@@ -15,7 +15,9 @@ class EconomicIndicatorsQueryParams(QueryParams):
     """Economic Indicators Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    country: str = Field(description=QUERY_DESCRIPTIONS.get("country", ""))
+    country: str | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("country", "")
+    )
     frequency: str | None = Field(default=None, description="Frequency of the data.")
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
