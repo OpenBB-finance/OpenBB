@@ -657,7 +657,7 @@ class ImfEconomicIndicatorsFetcher(
                     detect_transform_dimension(dataflow)
                 )
                 applied = False
-                resolved_code: str | None = None
+                resolved_code = None
 
                 # Try transform dimension first
                 if transform_dim:

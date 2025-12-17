@@ -676,7 +676,7 @@ class ImfTableBuilder:
                     invalid_values = dimension_codes.get(dim_id, [])
                     # Get available values for this dimension
                     available_options = builder.get_options_for_dimension(dim_id)
-                    available_values = sorted(
+                    available_values = sorted(  # type: ignore
                         {opt["value"] for opt in available_options}
                     )
                     # Build prior selections dict
@@ -1412,7 +1412,7 @@ class ImfTableBuilder:
             series_id = row.get("series_id", "")
             if order is not None and len(order_series_counts[order]) > 1:
                 # Multiple series have this order - assign sub-order by series_id
-                key = (order, series_id)
+                key = (order, series_id)  # type: ignore
                 if key not in order_series_idx:
                     order_series_idx[key] = len(
                         [k for k in order_series_idx if k[0] == order]

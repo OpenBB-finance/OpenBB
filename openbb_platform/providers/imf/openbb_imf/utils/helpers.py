@@ -274,7 +274,7 @@ def detect_indicator_dimensions(
                     # Find the first matched dimension to anchor our position
                     first_matched_idx: Any = None
                     first_matched_dim_pos: Any = None
-                    for idx, (seg, dim_id) in enumerate(segments):
+                    for idx, (seg, dim_id) in enumerate(segments):  # type: ignore
                         if dim_id and dim_id in effective_dim_order:
                             first_matched_idx = idx
                             first_matched_dim_pos = effective_dim_order.index(dim_id)
@@ -282,7 +282,7 @@ def detect_indicator_dimensions(
 
                     # Build error messages
                     segment_errors: list = []
-                    for idx, (seg, dim_id) in enumerate(segments):
+                    for idx, (seg, dim_id) in enumerate(segments):  # type: ignore
                         if dim_id is None:
                             # Calculate expected dimension based on position relative to first match
                             if (
