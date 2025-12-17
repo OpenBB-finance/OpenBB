@@ -149,7 +149,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
 
     frequency: str | None = Field(
         default=None,
-        description="Frequency of the data. Choices vary by indicator and country."
+        description="The frequency of the data. Choices vary by indicator and country."
         + " Common options: 'annual', 'quarter', 'month'."
         + " Use 'all' or '*' to return all available frequencies."
         + " Direct IMF codes (e.g., 'A', 'Q', 'M') are also accepted.",

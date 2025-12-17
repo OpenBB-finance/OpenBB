@@ -18,7 +18,9 @@ class EconomicIndicatorsQueryParams(QueryParams):
     country: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("country", "")
     )
-    frequency: str | None = Field(default=None, description="Frequency of the data.")
+    frequency: str | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("frequency", "")
+    )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
