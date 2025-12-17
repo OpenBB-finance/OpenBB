@@ -96,6 +96,19 @@ def test_economy_calendar(params, obb):
                 "expenditure": "transport",
             }
         ),
+        (
+            {
+                "country": "portugal,spain",
+                "transform": "yoy",
+                "frequency": "quarter",
+                "harmonized": False,
+                "start_date": "2020-01-01",
+                "end_date": "2023-06-06",
+                "provider": "imf",
+                "expenditure": "transport",
+                "limit": None,
+            },
+        ),
     ],
 )
 @pytest.mark.integration
@@ -527,7 +540,15 @@ def test_economy_country_profile(params, obb):
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
-        ({"provider": "imf", "query": "balance sheet;households;debt"}),
+        (
+            {
+                "provider": "imf",
+                "query": "gold+volume",
+                "dataflows": None,
+                "keywords": None,
+                "symbol": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -581,11 +602,15 @@ def test_economy_available_indicators(params, obb):
         (
             {
                 "provider": "imf",
-                "country": "all",
-                "symbol": "derivative_assets",
-                "start_date": "2022-01-01",
-                "end_date": "2023-12-31",
-                "frequency": "annual",
+                "country": "*",
+                "symbol": "IL::RGV_REVS",
+                "start_date": "2025-09-30",
+                "end_date": None,
+                "frequency": "month",
+                "transform": None,
+                "dimension_values": None,
+                "limit": 1,
+                "pivot": False,
             }
         ),
     ],

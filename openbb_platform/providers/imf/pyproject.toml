@@ -18,3 +18,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
 imf = "openbb_imf:imf_provider"
+
+[tool.poetry.plugins."openbb_core_extension"]
+imf_utils = "openbb_imf.imf_router:router"

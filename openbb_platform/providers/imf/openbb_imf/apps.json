@@ -1,0 +1,199 @@
+[{
+  "name": "IMF Explorer",
+  "img": "",
+  "img_dark": "",
+  "img_light": "",
+  "description": "Explore economic indicators and presentation tables from the IMF.",
+  "allowCustomization": true,
+  "tabs": {
+    "dataflows": {
+      "id": "dataflows",
+      "name": "Dataflows",
+      "layout": [
+        {
+          "i": "imf_utils_get_dataflow_dimensions_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 16,
+          "h": 29,
+          "state": {
+            "params": {
+              "dataflow_id": "BOP_AGG"
+            }
+          },
+          "groups": []
+        },
+        {
+          "i": "imf_utils_list_dataflows_custom_obb",
+          "x": 16,
+          "y": 2,
+          "w": 24,
+          "h": 29,
+          "groups": []
+        }
+      ]
+    },
+    "indicators": {
+      "id": "indicators",
+      "name": "Indicators",
+      "layout": [
+        {
+          "i": "economy_available_indicators_imf_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 15,
+          "state": {
+            "params": {
+              "dataflows": "BOP",
+              "symbol": "DIP::H_DIP_INDICATOR"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "symbol"
+                  ],
+                  "rightColIds": []
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "symbol_root",
+                    "symbol",
+                    "description",
+                    "agency_id",
+                    "dataflow_id",
+                    "dataflow_name",
+                    "structure_id",
+                    "dimension_id",
+                    "long_description",
+                    "member_of"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "economy_indicators_imf_obb",
+          "x": 0,
+          "y": 17,
+          "w": 40,
+          "h": 21,
+          "state": {
+            "params": {
+              "symbol": "DIP::H_DIP_INDICATOR",
+              "country": "AUS",
+              "frequency": "A",
+              "limit": "1",
+              "pivot": "false"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "sort": {
+                  "sortModel": [
+                    {
+                      "colId": "value",
+                      "sort": "desc"
+                    }
+                  ]
+                },
+                "pivot": {
+                  "pivotMode": false,
+                  "pivotColIds": [
+                    "date"
+                  ]
+                },
+                "columnPinning": {
+                  "leftColIds": [
+                    "title"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "description"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "title",
+                    "country",
+                    "date",
+                    "symbol_root",
+                    "symbol",
+                    "value",
+                    "unit",
+                    "unit_multiplier",
+                    "scale",
+                    "order",
+                    "level",
+                    "indicator",
+                    "description",
+                    "country_code",
+                    "dv_type",
+                    "dv_type_code",
+                    "counterpart_country",
+                    "counterpart_country_code",
+                    "frequency",
+                    "frequency_code"
+                  ]
+                },
+                "rowSelection": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        }
+      ]
+    },
+    "presentation-tables": {
+      "id": "presentation-tables",
+      "name": "Presentation Tables",
+      "layout": [
+        {
+          "i": "imf_utils_presentation_table_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 31,
+          "state": {
+            "params": {
+              "dataflow_group": "bop",
+              "table": "bop_international_transactions",
+              "country": [
+                "AUS"
+              ],
+              "frequency": "A",
+              "limit": "3"
+            }
+          },
+          "groups": []
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "Group 1",
+      "type": "param",
+      "paramName": "symbol",
+      "defaultValue": "DIP::H_DIP_INDICATOR"
+    }
+  ]
+}]
