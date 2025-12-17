@@ -12,7 +12,7 @@ class ImfQueryBuilder:
     """IMF Query Builder for constructing and executing SDMX REST queries."""
 
     def __init__(self):
-        """Initializes the query builder with metadata singleton."""
+        """Initialize the query builder with metadata singleton."""
         self.metadata = ImfMetadata()
 
     def build_url(

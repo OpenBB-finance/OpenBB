@@ -220,7 +220,7 @@ class ImfParamsBuilder:
 
     def fetch(self, start_date: str | None = None, end_date: str | None = None) -> dict:
         """
-        Builds the URL and fetches the data based on the current selections.
+        Build the URL and fetch the data based on the current selections.
 
         Parameters
         ----------

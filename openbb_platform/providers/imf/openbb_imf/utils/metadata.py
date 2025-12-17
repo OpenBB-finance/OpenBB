@@ -639,7 +639,7 @@ class ImfMetadata:
         dataflow_id: str,
         include_descriptions: bool = False,
     ) -> dict:
-        """Downloads and caches the codelist map for a given codelist ID."""
+        """Download and cache the codelist map for a given codelist ID."""
         with self._codelist_lock:
             if codelist_id in self._codelist_cache:
                 if include_descriptions and codelist_id in self._codelist_descriptions:
