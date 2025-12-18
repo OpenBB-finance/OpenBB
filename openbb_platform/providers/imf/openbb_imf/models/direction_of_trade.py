@@ -34,16 +34,12 @@ class ImfDirectionOfTradeQueryParams(DirectionOfTradeQueryParams):
         "country": {
             "multiple_items_allowed": True,
             "choices": list(get_label_to_code_map()),
-            "x-widget_config": {
-                "value": "united_states",
-            },
+            "x-widget_config": {"value": "united_states", "style": {"popupWidth": 600}},
         },
         "counterpart": {
             "multiple_items_allowed": True,
-            "choices": list(get_label_to_code_map()),
-            "x-widget_config": {
-                "value": "world",
-            },
+            "choices": ["all"] + list(get_label_to_code_map()),
+            "x-widget_config": {"value": "world", "style": {"popupWidth": 600}},
         },
     }
 

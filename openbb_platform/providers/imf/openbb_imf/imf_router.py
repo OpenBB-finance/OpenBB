@@ -247,13 +247,17 @@ async def get_dataflow_dimensions(
         "subCategory": "Metadata",
     },
     examples=[
+        APIEx(
+            description="List indicators for the 'IRFCL' dataflow.",
+            parameters={"dataflow_id": "IRFCL"},
+        ),
         PythonEx(
             description="List indicators for the 'IMTS' dataflow.",
             code=[
                 "imf_indicators = obb.imf.utils.list_indicators_by_dataflow(dataflow_id='IMTS')",
                 "print(imf_indicators)",
             ],
-        )
+        ),
     ],
 )
 async def list_indicators_by_dataflow(
@@ -288,6 +292,12 @@ async def list_indicators_by_dataflow(
 @router.command(
     methods=["GET"],
     widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get port ID choices for IMF Port Watch.",
+            parameters={},
+        )
+    ],
 )
 async def list_port_id_choices() -> list[dict[str, str]]:
     """
@@ -295,7 +305,7 @@ async def list_port_id_choices() -> list[dict[str, str]]:
 
     Returns
     -------
-    list of dict
+    list[dict[str, str]]
         A list of dictionaries with 'label' and 'value' for each port ID.
     """
     # pylint: disable=import-outside-toplevel
@@ -307,6 +317,12 @@ async def list_port_id_choices() -> list[dict[str, str]]:
 
 @router.command(
     methods=["GET"],
+    examples=[
+        APIEx(
+            description="Get the list of available presentation tables.",
+            parameters={},
+        )
+    ],
     widget_config={
         "name": "IMF Presentation Tables List",
         "description": "Presentation tables from the IMF database.",
@@ -352,6 +368,12 @@ async def list_tables() -> OBBject[list[ImfTableMetadata]]:
 @router.command(
     methods=["GET"],
     widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get presentation table choices for IMF data retrieval.",
+            parameters={},
+        ),
+    ],
 )
 async def list_table_choices() -> list[dict[str, str]]:
     """Get presentation table choices for IMF data retrieval.
@@ -381,6 +403,12 @@ async def list_table_choices() -> list[dict[str, str]]:
 @router.command(
     methods=["GET"],
     widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get dataflow choices for IMF data retrieval.",
+            parameters={},
+        )
+    ],
 )
 async def list_dataflow_choices() -> list[dict[str, str]]:
     """Get dataflow choices for IMF data retrieval.
@@ -665,7 +693,12 @@ async def presentation_table_choices(
                 "description": "Most recent N records to retrieve per series.",
                 "type": "number",
             },
+            {
+                "paramName": "raw",
+                "show": False,
+            },
         ],
+        "raw": True,
         "refetchInterval": False,
         "name": "IMF Presentation Table",
         "description": "Presentation tables from the IMF database.",
@@ -743,7 +776,7 @@ async def presentation_table(
         ),
     ] = False,
 ) -> Any:
-    """Get a formatted presentation table from the IMF database."""
+    """Get a formatted presentation table from the IMF database. Returns as HTML or JSON list."""
     # pylint: disable=import-outside-toplevel
     import html as html_module
 
