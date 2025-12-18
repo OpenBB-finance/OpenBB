@@ -164,8 +164,6 @@ async def get_vx_current(
         how="any"
     )
 
-    print(df)
-
     return df
 
 
