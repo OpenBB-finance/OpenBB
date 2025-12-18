@@ -40,6 +40,7 @@ def test_imf_utils_list_dataflows(params, obb):
     [
         {
             "dataflow_id": "CPI",
+            "output_format": "json",
         },
     ],
 )

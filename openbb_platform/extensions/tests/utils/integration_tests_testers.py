@@ -34,6 +34,8 @@ def get_integration_tests(
 
     for extension in find_extensions(filter_charting_ext):
         integration_folder = os.path.join(extension, "integration")
+        if not os.path.exists(integration_folder):
+            continue
         for file in os.listdir(integration_folder):
             if file.endswith(file_end):
                 file_path = os.path.join(integration_folder, file)

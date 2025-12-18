@@ -45,6 +45,7 @@ def test_imf_utils_list_dataflows(params, headers):
     [
         {
             "dataflow_id": "CPI",
+            "output_format": "json",
         },
     ],
 )
@@ -185,6 +186,7 @@ def test_imf_utils_presentation_table_choices(params, headers):
             "frequency": None,
             "transform": None,
             "sector": None,
+            "dimension_values": None,
         },
         {
             "symbol": "CPI::CPI__T",
@@ -192,6 +194,7 @@ def test_imf_utils_presentation_table_choices(params, headers):
             "frequency": None,
             "transform": None,
             "sector": None,
+            "dimension_values": None,
         },
     ],
 )

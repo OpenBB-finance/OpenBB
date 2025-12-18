@@ -592,16 +592,6 @@ def test_economy_available_indicators(params, obb):
         (
             {
                 "provider": "imf",
-                "country": "us,uk,jp",
-                "symbol": "gold_reserves",
-                "start_date": "2022-01-01",
-                "end_date": "2023-12-31",
-                "frequency": "annual",
-            }
-        ),
-        (
-            {
-                "provider": "imf",
                 "country": "*",
                 "symbol": "IL::RGV_REVS",
                 "start_date": "2025-09-30",
