@@ -250,13 +250,11 @@ def build_api_wrapper(
             .get("commands", {})
             .get(p, {})
         )
+        standard_params = getattr(kwargs.pop("standard_params", None), "__dict__", {})
+        extra_params = getattr(kwargs.pop("extra_params", None), "__dict__", {})
 
         if defaults:
             _ = defaults.pop("provider", None)
-            standard_params = getattr(
-                kwargs.pop("standard_params", None), "__dict__", {}
-            )
-            extra_params = getattr(kwargs.pop("extra_params", None), "__dict__", {})
 
             if "chart" in defaults:
                 kwargs["chart"] = defaults.pop("chart", False)
@@ -276,8 +274,8 @@ def build_api_wrapper(
                 ):
                     extra_params[k] = v
 
-            kwargs["standard_params"] = standard_params
-            kwargs["extra_params"] = extra_params
+        kwargs["standard_params"] = standard_params
+        kwargs["extra_params"] = extra_params
 
         # We need to insert dependency objects that are
         # Added at the Router level and may not be part
