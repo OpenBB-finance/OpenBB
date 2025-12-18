@@ -2,7 +2,8 @@
 
 This package adds the `openbb-imf` provider extension to the Open Data Platform by OpenBB.
 
-It provides everything you need - endpoints, tools, and metadata - to access and explore the entirety of https://data.imf.org
+It provides everything you need - endpoints, tools, and metadata - to access and explore the entirety of
+https://data.imf.org, without any previous experience working with it.
 
 ## Installation
 
@@ -53,7 +54,7 @@ User input is validated by calling the constraints API for each dimension.
 The cached metadata contains all the potential values for parameters,
 but the availability of each is determined by other choices - country, frequency, etc.
 When making the actual request for data, parameters are tested for compatibility in the sequence defined by the data structure definition.
-Invalid parameter combinations are returned as helpful error messages descriptions of what went wrong, and what the valid choices are.
+Invalid parameter combinations are returned as helpful error messages with descriptions of what went wrong and what the valid choices are.
 
 The output converts ID codes into human-readable labels, and includes dataset and series metadata in a separate object.
 
@@ -76,7 +77,7 @@ The symbology allows entering references to tables, or indicators.
 
 ### Symbology
 
-The Open Data Platform generally refers all time series IDs as a `symbol`.
+The Open Data Platform generally refers to all time series IDs as a `symbol`.
 Requesting time series data or presentation tables requires a symbol constructed from
 the dataflow ID and the indicator-like dimensions, split with `::`.
 
@@ -126,7 +127,7 @@ All data available from https://data.imf.org/en/Data-Explorer can be retrieved, 
 
 Additionally, there are endpoints for some Port Watch items (not part of the Data Explorer).
 
-A extension creates a router path, `imf_utils`, that exposes utility functions for UI integrations and metadata lookup.
+The extension creates a router path, `imf_utils`, that exposes utility functions for UI integrations and metadata lookup.
 
 ### Endpoints
 
