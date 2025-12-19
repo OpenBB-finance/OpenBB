@@ -56,7 +56,7 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         CoInitializeEx(ptr::null_mut(), COINIT_APARTMENTTHREADED);
 
         // Create shell link object
-        let mut shell_link = ptr::null_mut();
+        let mut shell_link: *mut IShellLinkW = ptr::null_mut();
         let hr = CoCreateInstance(
             &CLSID_SHELL_LINK,
             ptr::null_mut(),
@@ -65,8 +65,7 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             &mut shell_link as *mut _ as *mut _,
         );
 
-        if SUCCEEDED(hr) {
-            let shell_link: *mut IShellLinkW = shell_link as *mut _;
+        if SUCCEEDED(hr) && !shell_link.is_null() {
 
             // Set the path to the executable
             let wide_path: Vec<u16> = executable_path
@@ -80,10 +79,16 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
 
             // Get the IPersistFile interface
             let mut persist_file: *mut IPersistFile = ptr::null_mut();
-            (*shell_link).QueryInterface(
+            let hr_query = (*shell_link).QueryInterface(
                 &IPersistFile::uuidof(),
                 &mut persist_file as *mut _ as *mut _,
             );
+
+            if !SUCCEEDED(hr_query) {
+                (*shell_link).Release();
+                CoUninitialize();
+                return Err(format!("Failed to get IPersistFile interface: {hr_query:#x}"));
+            }
 
             if !persist_file.is_null() {
                 // Convert shortcut path to wide string
