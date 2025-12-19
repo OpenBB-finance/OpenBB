@@ -1361,11 +1361,14 @@ class ImfTableBuilder:
                                     break
 
                 # Format header title with scale and unit if available
-                if scale and unit:
+                valid_scale = scale and str(scale) != "nan"
+                valid_unit = unit and str(unit) != "nan"
+
+                if valid_scale and valid_unit:
                     header_title = f"{base_label} ({scale}, {unit})"
-                elif scale:
+                elif valid_scale:
                     header_title = f"{base_label} ({scale})"
-                elif unit:
+                elif valid_unit:
                     header_title = f"{base_label} ({unit})"
                 else:
                     header_title = base_label

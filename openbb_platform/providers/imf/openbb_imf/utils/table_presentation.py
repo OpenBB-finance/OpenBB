@@ -1396,11 +1396,11 @@ def pivot_table_mode(
         for _, row in order_df.iterrows():
             if unit_val is None:
                 candidate_unit = row.get("unit")
-                if candidate_unit:
+                if candidate_unit and str(candidate_unit) != "nan":
                     unit_val = str(candidate_unit)
             if scale_val is None:
                 candidate_scale = row.get("scale")
-                if candidate_scale:
+                if candidate_scale and str(candidate_scale) != "nan":
                     scale_val = str(candidate_scale)
 
             if unit_val is None or scale_val is None:
