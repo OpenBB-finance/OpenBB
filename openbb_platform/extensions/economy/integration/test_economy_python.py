@@ -1155,13 +1155,13 @@ def test_economy_fomc_documents(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "provider": "imf",
-                "country": "CRI",
-                "continent": None,
-            }
-        ),
+        {
+            "provider": "imf",
+            "port_code": None,
+            "country": None,
+            "continent": None,
+            "limit": None,
+        }
     ],
 )
 @pytest.mark.integration

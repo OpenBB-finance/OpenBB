@@ -75,7 +75,7 @@ def get_port_ids_by_country(country_code: str) -> str:
     ports = get_ports()
     ports_ids: list = []
     for port in ports:
-        if port["countrycode"] == country_code.upper():
+        if port["ISO3"] == country_code.upper():
             ports_ids.append(port["portid"])
 
     return ",".join(ports_ids)

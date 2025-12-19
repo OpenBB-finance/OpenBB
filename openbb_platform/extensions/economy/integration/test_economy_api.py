@@ -1302,11 +1302,13 @@ def test_economy_shipping_chokepoint_info(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "provider": "imf",
-            }
-        ),
+        {
+            "provider": "imf",
+            "port_code": None,
+            "country": None,
+            "continent": None,
+            "limit": None,
+        }
     ],
 )
 @pytest.mark.integration
