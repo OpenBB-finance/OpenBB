@@ -51,6 +51,32 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         Data4: [0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46],
     };
 
+    // RAII wrapper for IShellLinkW
+    struct ShellLinkGuard(*mut IShellLinkW);
+
+    impl Drop for ShellLinkGuard {
+        fn drop(&mut self) {
+            unsafe {
+                if !self.0.is_null() {
+                    (*self.0).Release();
+                }
+            }
+        }
+    }
+
+    // RAII wrapper for IPersistFile
+    struct PersistFileGuard(*mut IPersistFile);
+
+    impl Drop for PersistFileGuard {
+        fn drop(&mut self) {
+            unsafe {
+                if !self.0.is_null() {
+                    (*self.0).Release();
+                }
+            }
+        }
+    }
+
     unsafe {
         // Initialize COM
         CoInitializeEx(ptr::null_mut(), COINIT_APARTMENTTHREADED);
@@ -66,38 +92,36 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         );
 
         if SUCCEEDED(hr) && !shell_link.is_null() {
+            let shell_link = ShellLinkGuard(shell_link);
+
             // Set the path to the executable
             let wide_path: Vec<u16> = match executable_path.to_str() {
                 Some(path) => path.encode_utf16().chain(std::iter::once(0)).collect(),
                 None => {
-                    (*shell_link).Release();
                     CoUninitialize();
                     return Err("Failed to convert path to string".to_string());
                 }
             };
-            let hr_set_path = (*shell_link).SetPath(wide_path.as_ptr());
+            let hr_set_path = (*shell_link.0).SetPath(wide_path.as_ptr());
             if !SUCCEEDED(hr_set_path) {
-                (*shell_link).Release();
                 CoUninitialize();
                 return Err(format!("Failed to set shortcut path: {hr_set_path:#x}"));
             }
 
-            let hr_set_show = (*shell_link).SetShowCmd(SW_SHOW);
+            let hr_set_show = (*shell_link.0).SetShowCmd(SW_SHOW);
             if !SUCCEEDED(hr_set_show) {
-                (*shell_link).Release();
                 CoUninitialize();
                 return Err(format!("Failed to set show command: {hr_set_show:#x}"));
             }
 
             // Get the IPersistFile interface
             let mut persist_file: *mut IPersistFile = ptr::null_mut();
-            let hr_query = (*shell_link).QueryInterface(
+            let hr_query = (*shell_link.0).QueryInterface(
                 &IPersistFile::uuidof(),
                 &mut persist_file as *mut _ as *mut _,
             );
 
             if !SUCCEEDED(hr_query) {
-                (*shell_link).Release();
                 CoUninitialize();
                 return Err(format!(
                     "Failed to get IPersistFile interface: {hr_query:#x}"
@@ -105,29 +129,24 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             }
 
             if !persist_file.is_null() {
+                let persist_file = PersistFileGuard(persist_file);
+
                 // Convert shortcut path to wide string
                 let wide_shortcut_path: Vec<u16> = match shortcut_path.to_str() {
                     Some(path) => path.encode_utf16().chain(std::iter::once(0)).collect(),
                     None => {
-                        (*persist_file).Release();
-                        (*shell_link).Release();
                         CoUninitialize();
                         return Err("Failed to convert shortcut path to string".to_string());
                     }
                 };
 
                 // Save the shortcut
-                let hr_save = (*persist_file).Save(wide_shortcut_path.as_ptr(), 1);
+                let hr_save = (*persist_file.0).Save(wide_shortcut_path.as_ptr(), 1);
                 if !SUCCEEDED(hr_save) {
-                    (*persist_file).Release();
-                    (*shell_link).Release();
                     CoUninitialize();
                     return Err(format!("Failed to save shortcut: {hr_save:#x}"));
                 }
-                (*persist_file).Release();
             }
-
-            (*shell_link).Release();
         } else {
             CoUninitialize();
             return Err(format!("Failed to create shell link: {hr:#x}"));
