@@ -79,12 +79,20 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
     struct PersistFileGuard(*mut IPersistFile);
 
     impl PersistFileGuard {
-        unsafe fn as_ref(&self) -> Option<&IPersistFile> {
+        /// Execute a closure with the raw IPersistFile pointer if it is non-null.
+        ///
+        /// Returns an error if the pointer is null.
+        unsafe fn with<F, R>(&self, f: F) -> Result<R, String>
+        where
+            F: FnOnce(*mut IPersistFile) -> R,
+        {
             if self.0.is_null() {
-                None
+                Err("Persist file pointer is null".to_string())
             } else {
-                // SAFETY: We've checked that the pointer is not null
-                unsafe { Some(&*self.0) }
+                // SAFETY: We've checked that the pointer is not null, and we
+                // only pass the pointer into the provided closure without
+                // extending its lifetime beyond this call.
+                Ok(f(self.0))
             }
         }
     }
@@ -165,12 +173,12 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
 
             if !persist_file.is_null() {
                 let persist_file_guard = PersistFileGuard(persist_file);
-                let persist_file_ref = persist_file_guard
-                    .as_ref()
-                    .ok_or("Persist file pointer is null".to_string())?;
 
                 // Save the shortcut
-                let hr_save = persist_file_ref.Save(wide_shortcut_path.as_ptr(), 1);
+                let hr_save = unsafe {
+                    persist_file_guard.with(|pf| (*pf).Save(wide_shortcut_path.as_ptr(), 1))?
+                };
+
                 if !SUCCEEDED(hr_save) {
                     CoUninitialize();
                     return Err(format!("Failed to save shortcut: {hr_save:#x}"));
