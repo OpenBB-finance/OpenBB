@@ -175,7 +175,7 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
                 let persist_file_guard = PersistFileGuard(persist_file);
 
                 // Save the shortcut
-                let hr_save = unsafe {
+                let hr_save = {
                     persist_file_guard.with(|pf| (*pf).Save(wide_shortcut_path.as_ptr(), 1))?
                 };
 
