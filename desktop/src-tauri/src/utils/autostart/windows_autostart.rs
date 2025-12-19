@@ -59,7 +59,7 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             if self.0.is_null() {
                 None
             } else {
-                Some(&*self.0)
+                unsafe { Some(&*self.0) }
             }
         }
     }
@@ -82,7 +82,8 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             if self.0.is_null() {
                 None
             } else {
-                Some(&*self.0)
+                // SAFETY: We've checked that the pointer is not null
+                unsafe { Some(&*self.0) }
             }
         }
     }
