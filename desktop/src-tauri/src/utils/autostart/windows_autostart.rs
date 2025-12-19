@@ -114,7 +114,10 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         );
 
         if SUCCEEDED(hr) && !shell_link.is_null() {
-            let shell_link = ShellLinkGuard(shell_link);
+            let shell_link_guard = ShellLinkGuard(shell_link);
+            let shell_link_ref = shell_link_guard
+                .as_ref()
+                .ok_or("Shell link pointer is null".to_string())?;
 
             // Set the path to the executable
             let wide_path: Vec<u16> = match executable_path.to_str() {
@@ -124,19 +127,14 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
                     return Err("Failed to convert path to string".to_string());
                 }
             };
-            let shell_ref = shell_link
-                .as_ref()
-                .ok_or("Shell link pointer is null".to_string())?;
-            let hr_set_path = shell_ref.SetPath(wide_path.as_ptr());
+
+            let hr_set_path = shell_link_ref.SetPath(wide_path.as_ptr());
             if !SUCCEEDED(hr_set_path) {
                 CoUninitialize();
                 return Err(format!("Failed to set shortcut path: {hr_set_path:#x}"));
             }
 
-            let shell_ref = shell_link
-                .as_ref()
-                .ok_or("Shell link pointer is null".to_string())?;
-            let hr_set_show = shell_ref.SetShowCmd(SW_SHOW);
+            let hr_set_show = shell_link_ref.SetShowCmd(SW_SHOW);
             if !SUCCEEDED(hr_set_show) {
                 CoUninitialize();
                 return Err(format!("Failed to set show command: {hr_set_show:#x}"));
@@ -144,10 +142,7 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
 
             // Get the IPersistFile interface
             let mut persist_file: *mut IPersistFile = ptr::null_mut();
-            let shell_ref = shell_link
-                .as_ref()
-                .ok_or("Shell link pointer is null".to_string())?;
-            let hr_query = shell_ref.QueryInterface(
+            let hr_query = shell_link_ref.QueryInterface(
                 &IPersistFile::uuidof(),
                 &mut persist_file as *mut _ as *mut _,
             );
@@ -159,23 +154,23 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
                 ));
             }
 
+            // Convert shortcut path to wide string before using persist_file
+            let wide_shortcut_path: Vec<u16> = match shortcut_path.to_str() {
+                Some(path) => path.encode_utf16().chain(std::iter::once(0)).collect(),
+                None => {
+                    CoUninitialize();
+                    return Err("Failed to convert shortcut path to string".to_string());
+                }
+            };
+
             if !persist_file.is_null() {
-                let persist_file = PersistFileGuard(persist_file);
-
-                // Convert shortcut path to wide string
-                let wide_shortcut_path: Vec<u16> = match shortcut_path.to_str() {
-                    Some(path) => path.encode_utf16().chain(std::iter::once(0)).collect(),
-                    None => {
-                        CoUninitialize();
-                        return Err("Failed to convert shortcut path to string".to_string());
-                    }
-                };
-
-                // Save the shortcut
-                let persist_ref = persist_file
+                let persist_file_guard = PersistFileGuard(persist_file);
+                let persist_file_ref = persist_file_guard
                     .as_ref()
                     .ok_or("Persist file pointer is null".to_string())?;
-                let hr_save = persist_ref.Save(wide_shortcut_path.as_ptr(), 1);
+
+                // Save the shortcut
+                let hr_save = persist_file_ref.Save(wide_shortcut_path.as_ptr(), 1);
                 if !SUCCEEDED(hr_save) {
                     CoUninitialize();
                     return Err(format!("Failed to save shortcut: {hr_save:#x}"));
