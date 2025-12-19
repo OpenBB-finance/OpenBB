@@ -9,7 +9,7 @@ from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
-from openbb_imf.models.indicator_metadata import ImfIndicatorMetadata, ImfTableMetadata
+from openbb_imf.models.indicator_metadata import ImfTableMetadata
 from openbb_imf.utils.constants import (
     PRESENTATION_TABLES,
     table_dataflow_choices,
