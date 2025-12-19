@@ -66,7 +66,6 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         );
 
         if SUCCEEDED(hr) && !shell_link.is_null() {
-
             // Set the path to the executable
             let wide_path: Vec<u16> = executable_path
                 .to_str()
@@ -87,7 +86,9 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             if !SUCCEEDED(hr_query) {
                 (*shell_link).Release();
                 CoUninitialize();
-                return Err(format!("Failed to get IPersistFile interface: {hr_query:#x}"));
+                return Err(format!(
+                    "Failed to get IPersistFile interface: {hr_query:#x}"
+                ));
             }
 
             if !persist_file.is_null() {
