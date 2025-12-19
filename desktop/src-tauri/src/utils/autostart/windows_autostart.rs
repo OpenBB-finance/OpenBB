@@ -54,6 +54,17 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
     // RAII wrapper for IShellLinkW
     struct ShellLinkGuard(*mut IShellLinkW);
 
+    impl ShellLinkGuard {
+        unsafe fn as_ref(&self) -> Option<&IShellLinkW> {
+            if self.0.is_null() {
+                None
+            } else {
+                // SAFETY: We've checked that the pointer is not null
+                unsafe { Some(&*self.0) }
+            }
+        }
+    }
+
     impl Drop for ShellLinkGuard {
         fn drop(&mut self) {
             unsafe {
