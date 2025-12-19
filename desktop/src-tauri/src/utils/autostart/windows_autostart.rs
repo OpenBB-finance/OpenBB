@@ -54,21 +54,11 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
     // RAII wrapper for IShellLinkW
     struct ShellLinkGuard(*mut IShellLinkW);
 
-    impl ShellLinkGuard {
-        unsafe fn as_ref(&self) -> Option<&IShellLinkW> {
-            if self.0.is_null() {
-                None
-            } else {
-                unsafe { Some(&*self.0) }
-            }
-        }
-    }
-
     impl Drop for ShellLinkGuard {
         fn drop(&mut self) {
             unsafe {
-                if let Some(ptr) = self.as_ref() {
-                    ptr.Release();
+                if !self.0.is_null() {
+                    (*self.0).Release();
                 }
             }
         }
@@ -91,8 +81,8 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
     impl Drop for PersistFileGuard {
         fn drop(&mut self) {
             unsafe {
-                if let Some(ptr) = self.as_ref() {
-                    ptr.Release();
+                if !self.0.is_null() {
+                    (*self.0).Release();
                 }
             }
         }
