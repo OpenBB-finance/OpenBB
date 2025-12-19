@@ -62,53 +62,45 @@ def test_economy_calendar(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "country": "spain",
-                "transform": "yoy",
-                "frequency": "annual",
-                "harmonized": False,
-                "start_date": "2020-01-01",
-                "end_date": "2023-06-06",
-                "provider": "fred",
-            }
-        ),
-        (
-            {
-                "country": "portugal,spain",
-                "transform": "period",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "fred",
-            }
-        ),
-        (
-            {
-                "country": "portugal,spain",
-                "transform": "yoy",
-                "frequency": "quarter",
-                "harmonized": False,
-                "start_date": "2020-01-01",
-                "end_date": "2023-06-06",
-                "provider": "oecd",
-                "expenditure": "transport",
-            }
-        ),
-        (
-            {
-                "country": "portugal,spain",
-                "transform": "yoy",
-                "frequency": "quarter",
-                "harmonized": False,
-                "start_date": "2020-01-01",
-                "end_date": "2023-06-06",
-                "provider": "imf",
-                "expenditure": "transport",
-                "limit": None,
-            },
-        ),
+        {
+            "country": "spain",
+            "transform": "yoy",
+            "frequency": "annual",
+            "harmonized": False,
+            "start_date": "2020-01-01",
+            "end_date": "2023-06-06",
+            "provider": "fred",
+        },
+        {
+            "country": "portugal,spain",
+            "transform": "period",
+            "frequency": "monthly",
+            "harmonized": True,
+            "start_date": "2023-01-01",
+            "end_date": "2023-06-06",
+            "provider": "fred",
+        },
+        {
+            "country": "portugal,spain",
+            "transform": "yoy",
+            "frequency": "quarter",
+            "harmonized": False,
+            "start_date": "2020-01-01",
+            "end_date": "2023-06-06",
+            "provider": "oecd",
+            "expenditure": "transport",
+        },
+        {
+            "country": "portugal,spain",
+            "transform": "yoy",
+            "frequency": "quarter",
+            "harmonized": False,
+            "start_date": "2020-01-01",
+            "end_date": "2023-06-06",
+            "provider": "imf",
+            "expenditure": "transport",
+            "limit": None,
+        },
     ],
 )
 @pytest.mark.integration

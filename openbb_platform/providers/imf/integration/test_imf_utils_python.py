@@ -156,8 +156,6 @@ def test_imf_utils_presentation_table_choices(params, obb):
             "dimension_values": None,
             "limit": 1,
             "raw": True,
-            "start_date": None,
-            "end_date": None,
         }
     ],
 )
@@ -169,3 +167,33 @@ def test_imf_utils_presentation_table(params, obb):
     assert result
     assert isinstance(result, list)
     assert len(result) > 1  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "symbol": "CPI::CPI__T",
+            "country": None,
+            "frequency": None,
+            "transform": None,
+            "dimension_values": None,
+        },
+        {
+            "symbol": "CPI::CPI__T",
+            "country": "JPN",
+            "frequency": None,
+            "transform": None,
+            "dimension_values": None,
+        },
+    ],
+)
+@pytest.mark.integration
+@pytest.mark.skip(reason="Not included in Python interface")
+def test_imf_utils_indicator_choices(params, obb):
+    """Test imf_utils_indicator_choices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+    result = obb.imf_utils.indicator_choices(**params)
+    assert result
+    assert isinstance(result, list)
+    assert len(result) > 0

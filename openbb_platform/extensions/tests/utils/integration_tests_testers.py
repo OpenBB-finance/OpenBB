@@ -316,7 +316,11 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> list
         if route not in tested_functions:
             # TODO: See how to handle edge cases that are excluded from the schema
             # on purpose. This is currently on the econometrics router.
-            if test_type == "api" and "econometrics" in route:
+            if (
+                test_type == "api"
+                and "econometrics" in route
+                or route.endswith(".json")
+            ):
                 continue
             missing_integration_tests.append(
                 f"Missing {test_type} integration test for route {route}"

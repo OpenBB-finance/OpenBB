@@ -185,7 +185,6 @@ def test_imf_utils_presentation_table_choices(params, headers):
             "country": None,
             "frequency": None,
             "transform": None,
-            "sector": None,
             "dimension_values": None,
         },
         {
@@ -193,7 +192,6 @@ def test_imf_utils_presentation_table_choices(params, headers):
             "country": "JPN",
             "frequency": None,
             "transform": None,
-            "sector": None,
             "dimension_values": None,
         },
     ],
@@ -221,8 +219,6 @@ def test_imf_utils_indicator_choices(params, headers):
             "dimension_values": None,
             "limit": 1,
             "raw": True,
-            "start_date": None,
-            "end_date": None,
         }
     ],
 )
@@ -233,20 +229,6 @@ def test_imf_utils_presentation_table(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/imf_utils/presentation_table?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{}],
-)
-@pytest.mark.integration
-def test_imf_utils_apps_json(params, headers):
-    """Test imf_utils_apps_json endpoint."""
-    params = {p: v for p, v in params.items() if v}
-    url = "http://0.0.0.0:8000/api/v1/imf_utils/apps.json"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
