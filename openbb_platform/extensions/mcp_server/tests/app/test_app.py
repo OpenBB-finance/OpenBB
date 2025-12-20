@@ -93,6 +93,7 @@ def test_create_mcp_server_customization(
         name="original_name",
         description="desc",
         parameters={},
+        director=MagicMock(),
     )
 
     customize_components_func(mock_http_route, mock_openapi_tool)
@@ -159,7 +160,12 @@ def test_create_mcp_server_tool_enable_disable(
     # Test enabled tool
     enabled_http_route = HTTPRoute(path="/enabled_category/tool1", method="GET")
     enabled_tool = OpenAPITool(
-        MagicMock(), enabled_http_route, name="tool1", description="desc", parameters={}
+        MagicMock(),
+        enabled_http_route,
+        name="tool1",
+        description="desc",
+        parameters={},
+        director=MagicMock(),
     )
     customize_components_func(enabled_http_route, enabled_tool)
     assert enabled_tool.enabled
@@ -172,6 +178,7 @@ def test_create_mcp_server_tool_enable_disable(
         name="tool2",
         description="desc",
         parameters={},
+        director=MagicMock(),
     )
     customize_components_func(disabled_http_route, disabled_tool)
     assert not disabled_tool.enabled
