@@ -835,6 +835,17 @@ class HierarchyContext:
         # Start with immediate parent, go up the hierarchy
         levels_seen: set = set()
         ancestor_parts: set = set()
+        # Never strip accounting-entry qualifiers like Net/Credit/Debit.
+        # In BOP tables these are meaningful and required to preserve hierarchy.
+        protected_suffixes = {
+            "Assets",
+            "Liabilities",
+            "Net",
+            "Credit",
+            "Debit",
+            "Credit/Revenue",
+            "Debit/Expenditure",
+        }
 
         for i in range(target_idx - 1, -1, -1):
             order, title, level, _ = self.order_title_level[i]
@@ -874,8 +885,6 @@ class HierarchyContext:
         # Try to find the rightmost comma-separated part that matches
         if not ancestor_parts:
             return None
-
-        protected_suffixes = {"Assets", "Liabilities"}
 
         # Check if the title ends with ", <ancestor_part>"
         for part in ancestor_parts:
@@ -1416,8 +1425,6 @@ def pivot_table_mode(
                 break
 
         unit_scale_by_order[order_val] = (unit_val, scale_val)
-
-    # Inherit missing unit/scale parts from ancestors if available
     for order_val in list(unit_scale_by_order.keys()):
         unit_val, scale_val = unit_scale_by_order[order_val]
         if unit_val is not None and scale_val is not None:
@@ -1811,15 +1818,21 @@ def pivot_table_mode(
         }
 
         labels = []
+        filtered_labels = []
         for dim_id, _, label in grouping_key:
+            labels.append(label)
             if (
                 dim_id == "TYPE_OF_TRANSFORMATION"
                 and label in unit_like_transformations
             ):
                 continue
-            labels.append(label)
+            filtered_labels.append(label)
 
-        return " - ".join(labels) if labels else ""
+        # If filtering removed everything, fall back to the unfiltered labels so we
+        # never render a blank title row for unit-only dimensions.
+        effective_labels = filtered_labels if filtered_labels else labels
+
+        return " - ".join(effective_labels) if effective_labels else ""
 
     # Build a map of order -> list of (grouping_key, data_rows_for_order)
     # Preserve original data order by iterating data_rows directly
@@ -1865,6 +1878,88 @@ def pivot_table_mode(
                 global_parent_orders.add(parent_order)
             parent_id = parent_df.iloc[0].get("parent_id")
 
+    # Track BOP-only header nodes we intentionally skip so we can promote descendants.
+    bop_skipped_parent_ids: set[str] = set()
+
+    def _track_skipped_parent_ids(row_like: dict[str, Any]) -> None:
+        node_id = row_like.get("hierarchy_node_id")
+        ind_code = row_like.get("indicator_code")
+        for v in (node_id, ind_code):
+            if not v:
+                continue
+            sv = str(v)
+            bop_skipped_parent_ids.add(sv)
+            if "___" in sv:
+                bop_skipped_parent_ids.add(sv.rsplit("___", 1)[-1])
+
+    def _lookup_parent_row(parent_id: str):
+        parent_df = df[df["hierarchy_node_id"] == parent_id]
+        if len(parent_df) == 0:
+            suffix_pattern = f"___{parent_id}"
+            parent_df = df[
+                df["hierarchy_node_id"].fillna("").str.endswith(suffix_pattern)
+            ]
+        if len(parent_df) == 0 and "indicator_code" in df.columns:
+            parent_df = df[df["indicator_code"] == parent_id]
+        return parent_df
+
+    def _promote_level_if_parent_skipped(level: int, parent_id: Any) -> int:
+        adjusted = level
+        pid = str(parent_id) if parent_id else ""
+        while pid and pid in bop_skipped_parent_ids and adjusted > 0:
+            adjusted -= 1
+            parent_df = _lookup_parent_row(pid)
+            if len(parent_df) == 0:
+                break
+            pid = str(parent_df.iloc[0].get("parent_id") or "")
+        return adjusted
+
+    # Track the last meaningful (non-BOP-only) header title at each level.
+    # This is used to preserve qualifiers like "excluding exceptional financing"
+    # for BOP suffix rows even when intermediate accounting-entry headers are skipped.
+    last_meaningful_header_by_level: dict[int, str] = {}
+
+    def _normalize_title(raw_title: str | None) -> str:
+        title = (raw_title or "").lstrip()
+
+        # Remove header marker (used for promoted headers in the rendered output)
+        if title.startswith("▸"):
+            title = title[1:].lstrip()
+
+        # Strip parenthetical unit suffix
+        if " (" in title and title.endswith(")"):
+            paren_idx = title.rfind(" (")
+            if paren_idx > 0:
+                title = title[:paren_idx]
+
+        # Strip common unit qualifiers that can trail titles
+        unit_suffixes = [", Transactions", ", Stocks", ", Flows"]
+        for suffix in unit_suffixes:
+            if title.endswith(suffix):
+                title = title[: -len(suffix)]
+                break
+
+        return title
+
+    def _nearest_non_bop_ancestor_title(parent_id: Any) -> str | None:
+        pid = str(parent_id) if parent_id else ""
+        safety = 0
+        while pid and safety < 50:
+            safety += 1
+            parent_df = _lookup_parent_row(pid)
+            if len(parent_df) == 0:
+                return None
+            parent_first = parent_df.iloc[0]
+            parent_title = _normalize_title(str(parent_first.get("title") or ""))
+            if (
+                parent_title
+                and not is_bop_suffix_only(parent_title)
+                and not parent_title.endswith((", Net", ", Credit", ", Debit"))
+            ):
+                return parent_title
+            pid = str(parent_first.get("parent_id") or "")
+        return None
+
     # OUTER LOOP: Iterate by sorted_orders (ITEM first)
     for order in sorted_orders:
         order_df = df[df["order"] == order]
@@ -1872,6 +1967,11 @@ def pivot_table_mode(
             continue
         first = order_df.iloc[0]
         level = first["level"] or 0
+
+        # Clear deeper header context when we move up the tree.
+        for k in [k for k in last_meaningful_header_by_level if k > level]:
+            del last_meaningful_header_by_level[k]
+
         is_header = first["is_category_header"]
         title = first["title"] or ""
         original_unit_suffix = ""
@@ -1902,13 +2002,22 @@ def pivot_table_mode(
 
         # Skip headers that don't lead to any data
         if should_render_as_header and order not in global_parent_orders:
+            # If this is a BOP-only accounting-entry header (Net/Credit/Debit/etc.),
+            # track it even when skipped for "no data" so descendants can be promoted.
+            if is_bop_suffix_only(title):
+                _track_skipped_parent_ids(first.to_dict())
             continue
 
         # Skip phantom BOP headers that are just "Net", "Credit", "Debit", etc.
-        # These are hierarchy nodes that shouldn't be rendered - the actual data
-        # rows with full names like "Goods, Net" serve as the real structure
+        # Record them so descendants can be promoted (prevents Debit nesting under Credit
+        # when an intermediate accounting-entry node is hidden).
         if should_render_as_header and is_bop_suffix_only(title):
+            _track_skipped_parent_ids(first.to_dict())
             continue
+
+        # If a row's parent (or higher ancestor) was skipped as a BOP-only header,
+        # promote it so it doesn't appear as a child of the wrong visible node.
+        level = _promote_level_if_parent_skipped(level, first.get("parent_id"))
 
         # ISORA: Only show topic headers
         if is_isora and should_render_as_header:
@@ -1959,6 +2068,34 @@ def pivot_table_mode(
                 if part_prefix and title.startswith(part_prefix):
                     title = title[len(part_prefix) :]
                 else:
+                    break
+
+        # Update header context for this level, or (for BOP suffix rows) inherit
+        # the nearest meaningful header when the row's base is a strict prefix.
+        if should_render_as_header:
+            header_base = title.strip()
+            if header_base and not is_bop_suffix_only(header_base):
+                last_meaningful_header_by_level[level] = header_base
+        else:
+            for bop_suffix in (", Net", ", Credit", ", Debit"):
+                if title.endswith(bop_suffix):
+                    base = title[: -len(bop_suffix)].strip()
+                    ancestor_title: str | None = None
+                    for ancestor_level in range(level - 1, -1, -1):
+                        cand = last_meaningful_header_by_level.get(ancestor_level)
+                        if not cand:
+                            continue
+                        if cand.endswith((", Net", ", Credit", ", Debit")):
+                            continue
+                        ancestor_title = cand
+                        break
+
+                    if (
+                        ancestor_title
+                        and ancestor_title != base
+                        and ancestor_title.startswith(base)
+                    ):
+                        title = f"{ancestor_title}{bop_suffix}"
                     break
 
         # Calculate indent

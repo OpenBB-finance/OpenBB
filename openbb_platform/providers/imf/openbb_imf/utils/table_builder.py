@@ -339,13 +339,17 @@ class ImfTableBuilder:
                 f"Filtered entries: {len(entries_with_codes)}"
             )
 
-        # Build comprehensive hierarchy lookup from the structure
         hierarchy_order_map = {}
         hierarchy_by_series_id = {}
-        hierarchy_by_sorted_codes = {}  # Order-agnostic lookup
-        # Composite lookup for indicators with same code but different parent dimensions
+        hierarchy_by_sorted_codes = {}
+        # Some hierarchies can legitimately contain multiple nodes with the same
+        # (indicator_code, parent_code) (e.g., BOP Credit vs Debit variants under a Net parent),
+        # so store a list and disambiguate later.
         # Key: (indicator_code, parent_code) e.g., ("O", "A_P") vs ("O", "L_P")
-        hierarchy_by_composite_key: dict[tuple[str, str], dict] = {}
+        hierarchy_by_composite_key: dict[tuple[str, str], list[dict]] = defaultdict(
+            list
+        )
+        parents_by_indicator_code: dict[str, set[str]] = defaultdict(set)
 
         # Build indicator_by_code lookup for depth calculation
         indicator_by_code = {}
@@ -435,6 +439,7 @@ class ImfTableBuilder:
                 "hierarchy_node_id": ind.get(
                     "id"
                 ),  # Hierarchy node ID for parent matching
+                "hierarchy_series_id": ind.get("series_id", ""),
             }
             hierarchy_order_map[indicator_code] = hierarchy_info
 
@@ -442,7 +447,8 @@ class ImfTableBuilder:
             # This handles cases like "Other investment" under both Assets (A_P) and Liabilities (L_P)
             if parent_indicator_code:
                 composite_key = (indicator_code, parent_indicator_code)
-                hierarchy_by_composite_key[composite_key] = hierarchy_info
+                hierarchy_by_composite_key[composite_key].append(hierarchy_info)
+                parents_by_indicator_code[indicator_code].add(parent_indicator_code)
 
             # Both groups and leaves can have data and should be matched
             if series_id := ind.get("series_id"):
@@ -910,16 +916,84 @@ class ImfTableBuilder:
                     sorted_codes = "_".join(sorted(codes_part.split("_")))
                     hier_info = hierarchy_by_sorted_codes.get(sorted_codes)
 
-            # Stage 2.5: Composite key lookup for same indicator with different parents
-            # This handles cases like "Other investment" appearing under both Assets (A_P)
-            # and Liabilities (L_P) in BOP/IIP data
+            # Stage 2.25: Constructed sorted-codes match when series_id is missing.
+            # Some IMF responses omit or vary series_id formats, but the hierarchy encodes
+            # series IDs like "..._BOP_DB_T_D74XEF". For BOP-style tables, we can reconstruct
+            # a comparable key from the row's indicator + accounting entry codes.
             bop_entry_code = row.get("BOP_ACCOUNTING_ENTRY_code", "") or row.get(
                 "bop_accounting_entry_code", ""
             )
+            if (
+                not hier_info
+                and not row_series_id
+                and bop_entry_code
+                and indicator_code
+            ):
+                constructed_sorted = "_".join(sorted([indicator_code, bop_entry_code]))
+                hier_info = hierarchy_by_sorted_codes.get(constructed_sorted)
+
+            # Stage 2.5: Composite key lookup for same indicator with different parents
+            # This handles cases like "Other investment" appearing under both Assets (A_P)
+            # and Liabilities (L_P) in BOP/IIP data
+            # Stage 2.5: Composite key lookup for same indicator with different parents
             if not hier_info and bop_entry_code and indicator_code:
-                # Check for BOP_ACCOUNTING_ENTRY dimension which distinguishes Assets vs Liabilities
+
+                def _choose_from_candidates(
+                    candidates: list[dict], entry_code: str
+                ) -> dict | None:
+                    if not candidates:
+                        return None
+                    if len(candidates) == 1:
+                        return candidates[0]
+
+                    entry_code_upper = entry_code.upper()
+                    markers: set[str] = {entry_code_upper}
+                    if entry_code_upper in {"CD_T", "NEGCD_T"}:
+                        markers |= {"CD", "CREDIT"}
+                    elif entry_code_upper == "DB_T":
+                        markers |= {"DB", "DEBIT"}
+                    elif entry_code_upper == "A_P":
+                        markers |= {"ASSET", "ASSETS"}
+                    elif entry_code_upper == "L_P":
+                        markers |= {"LIAB", "LIABILITIES", "LIABILITY"}
+
+                    for cand in candidates:
+                        haystack = f"{cand.get('hierarchy_node_id','')} {cand.get('hierarchy_series_id','')}".upper()
+                        if any(m in haystack for m in markers):
+                            return cand
+
+                    return candidates[0]
+
+                # Check for BOP_ACCOUNTING_ENTRY dimension which distinguishes Assets vs Liabilities.
                 composite_key = (indicator_code, bop_entry_code)
-                hier_info = hierarchy_by_composite_key.get(composite_key)
+                hier_info = _choose_from_candidates(
+                    hierarchy_by_composite_key.get(composite_key, []), bop_entry_code
+                )
+
+                # BOP Credit/Debit rows are typically grouped under a Net parent in the IMF hierarchy.
+                # The hierarchy's discriminator for these rows is the Net node (e.g., NETCD_T), not
+                # the row's accounting entry code (CD_T/DB_T). Prefer the hierarchy's Net parent.
+                if not hier_info and bop_entry_code in {"CD_T", "DB_T"}:
+                    candidate_parents = parents_by_indicator_code.get(
+                        indicator_code, set()
+                    )
+                    net_parent: str | None = None
+                    if "NETCD_T" in candidate_parents:
+                        net_parent = "NETCD_T"
+                    else:
+                        net_like = sorted(
+                            p for p in candidate_parents if p.startswith("NET")
+                        )
+                        if len(net_like) == 1 or net_like:
+                            net_parent = net_like[0]
+
+                    if net_parent:
+                        hier_info = _choose_from_candidates(
+                            hierarchy_by_composite_key.get(
+                                (indicator_code, net_parent), []
+                            ),
+                            bop_entry_code,
+                        )
 
             # Stage 3: Indicator code lookup (single dimension)
             # BUT: if we have a bop_entry_code, don't use generic indicator match
@@ -1105,19 +1179,17 @@ class ImfTableBuilder:
                 else:
                     row["title"] = ind_name
 
-            # Fallback: if no title was set, use the indicator code itself
-            # This ensures every row has some identifying label
-            if not row.get("title") and ind_code:
-                # Try to make the code more readable by replacing underscores with spaces
-                # and capitalizing words
-                readable_code = ind_code.replace("_", " ")
-                row["title"] = readable_code
-
-            # Final fallback: use hierarchy label if still no title
-            # This handles cases where INDICATOR_code is missing or not in codelist
-            # but the hierarchy structure has a meaningful label
+            # Fallback: prefer hierarchy label if no title was set.
+            # This keeps output consistent with the IMF hierarchy (source of truth)
+            # when codelist lookups are unavailable or incomplete.
             if not row.get("title") and row.get("label"):
                 row["title"] = row["label"]
+
+            # Final fallback: if still no title, use the indicator code itself.
+            # This ensures every row has some identifying label.
+            if not row.get("title") and ind_code:
+                readable_code = ind_code.replace("_", " ")
+                row["title"] = readable_code
 
             # For BOP data, append the accounting entry type (Credit/Debit/Net) to title
             # This differentiates rows like "Goods, Credit" vs "Goods, Debit" vs "Goods"
@@ -1161,13 +1233,11 @@ class ImfTableBuilder:
 
             # For IIPCC currency composition data, append currency to title
             # This differentiates rows by currency (Euro, US dollar, Other currencies, etc.)
-            # Only append if CURRENCY_code exists and is not just the reporting unit
             currency_code = row.get("CURRENCY_code")
             currency_label = row.get("CURRENCY")
             unit_code = row.get("unit_code") or row.get("UNIT_MEASURE_code")
             if currency_code and currency_label and row.get("title"):
                 # Don't append if currency is the same as the unit (e.g., both USD)
-                # or if it's a total/aggregate code
                 skip_currencies = {"_T", "W0", "W1", "W2", "ALL"}
                 if currency_code not in skip_currencies and currency_code != unit_code:
                     row["title"] = f"{row['title']} ({currency_label})"
