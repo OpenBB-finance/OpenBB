@@ -316,15 +316,76 @@ def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
         p["x-widget_config"] = widget_configs
 
     else:
+        # Wrap single provider config under provider key for consistent handling
+        single_config = widget_configs.get(provider, {}) if provider else widget_configs
         p["x-widget_config"] = (
-            widget_configs.get(provider, {}) if provider else widget_configs
+            {provider: single_config} if provider and single_config else single_config
         )
 
     return p
 
 
-def process_parameter(param: dict, providers: list[str]) -> dict:
-    """Process a single parameter and return the processed dictionary."""
+def _extract_provider_description(full_description: str, provider: str) -> str:
+    r"""Extract description for a specific provider from merged description.
+
+    Description format: "desc1 (provider: prov1);\n    desc2 (provider: prov2)"
+    """
+    # pylint: disable=import-outside-toplevel
+    import re
+
+    if not full_description:
+        return ""
+
+    # Check if this is a multi-provider description
+    if "(provider:" not in full_description:
+        return full_description.split("Multiple comma separated items allowed")[
+            0
+        ].strip()
+
+    # Handle semicolons embedded in the description text
+    parts = re.split(r"(\(provider:\s*[^)]+\))", full_description)
+
+    # Find the text that comes before the provider marker we want
+    for i, part in enumerate(parts):
+        is_matching_provider = (
+            f"provider: {provider})" in part
+            or f"provider: {provider}," in part
+            or f", {provider})" in part
+        )
+        if is_matching_provider and i > 0:
+            # The description is the part before this marker
+            desc = parts[i - 1].strip()
+            # Remove leading semicolons and whitespace from continuation sections
+            desc = re.sub(r"^;\s*", "", desc).strip()
+            # Remove "Multiple comma separated items allowed" suffix
+            desc = desc.split("Multiple comma separated items allowed")[0].strip()
+            return desc
+
+    # If no specific provider section found, return first section (general description)
+    first_desc = full_description.split("(provider:")[0].strip()
+    first_desc = first_desc.split("Multiple comma separated items allowed")[0].strip()
+    return first_desc
+
+
+def process_parameter(
+    param: dict, providers: list[str], single_provider: str | None = None
+) -> dict:
+    """Process a single parameter and return the processed dictionary.
+
+    Parameters
+    ----------
+    param : dict
+        The parameter definition from OpenAPI spec.
+    providers : list[str]
+        List of all available providers.
+    single_provider : str | None
+        If set, extract description/default only for this provider.
+
+    Returns
+    -------
+    dict
+        Processed parameter dictionary.
+    """
     p: dict = {}
     schema = param.get("schema", {})
 
@@ -337,23 +398,51 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
     if not p.get("label") or p.get("label") == "":
         p["label"] = schema.get("title") or param.get("title")
 
-    p["description"] = (
-        (param.get("description", param_name).split(" (provider:")[0].strip())
-        .split("Multiple comma separated items allowed")[0]
-        .strip()
-        if param.get("description")
-        else (schema.get("description") or p.get("label"))
-    )
+    # Extract provider-specific description if single_provider is specified
+    if single_provider and param.get("description"):
+        p["description"] = _extract_provider_description(
+            param.get("description", param_name), single_provider
+        )
+    else:
+        p["description"] = (
+            (param.get("description", param_name).split(" (provider:")[0].strip())
+            .split("Multiple comma separated items allowed")[0]
+            .strip()
+            if param.get("description")
+            else (schema.get("description") or p.get("label"))
+        )
     p["optional"] = param.get("required", False) is False
 
     # Set type first so we can use it for value determination
     p["type"] = param.get("type", "text")
 
     # Get default value from schema if present
-    default_value = param.get("default")
+    # When single_provider is set, only use default if it belongs to that provider
+    default_value = None
 
-    if default_value is None:
-        default_value = schema.get("default")
+    if single_provider:
+        # Check if this provider has a specific default in the schema
+        provider_schema = schema.get(single_provider, {})
+        if isinstance(provider_schema, dict) and "default" in provider_schema:
+            default_value = provider_schema["default"]
+        else:
+            # Check if any other provider has a specific default that differs
+            # If so, don't use the global default for this provider
+            other_provider_defaults = [
+                schema.get(prov, {}).get("default")
+                for prov in providers
+                if prov != single_provider
+                and isinstance(schema.get(prov), dict)
+                and "default" in schema.get(prov, {})
+            ]
+            # If other providers have specific defaults, don't use global default
+            # Otherwise, fall back to global default
+            if not other_provider_defaults:
+                default_value = param.get("default") or schema.get("default")
+    else:
+        default_value = param.get("default")
+        if default_value is None:
+            default_value = schema.get("default")
 
     p["value"] = default_value if default_value is not None else param.get("value")
 
@@ -453,7 +542,6 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
         if valid_provider_list:
             p["available_providers"] = valid_provider_list
-
             # Check if any of our current providers match the validated available providers list
             valid_for_current_providers = any(
                 current_provider.lower()
@@ -469,7 +557,7 @@ def process_parameter(param: dict, providers: list[str]) -> dict:
 
 
 def get_query_schema_for_widget(
-    openapi_json: dict, command_route: str
+    openapi_json: dict, command_route: str, single_provider: str | None = None
 ) -> tuple[list[dict], bool]:
     """
     Extract the query schema for a widget.
@@ -480,6 +568,8 @@ def get_query_schema_for_widget(
         The OpenAPI specification as a dictionary.
     command_route : str
         The route of the command in the OpenAPI specification.
+    single_provider : str | None
+        If set, extract provider-specific descriptions/defaults only for this provider.
 
     Returns
     -------
@@ -503,7 +593,7 @@ def get_query_schema_for_widget(
             has_chart = True
             continue
 
-        p = process_parameter(param, providers)
+        p = process_parameter(param, providers, single_provider)
         if "show" not in p:
             p["show"] = True
 
@@ -580,9 +670,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
     get_widget_config: bool = False,
 ):
     """Convert data schema to column definitions for the widget."""
-    # Initialize an empty list to hold the schema references
     schema_refs: list = []
-
     result_schema_ref = get_data_schema_for_widget(openapi_json, operation_id, route)
 
     # Check if 'anyOf' is in the result_schema_ref and handle the nested structure
@@ -645,12 +733,13 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         return target_schema.get("x-widget_config", {})
 
     keys = list(target_schema.get("properties", {}))
-
     column_defs: list = []
+
     for key in keys:
         cell_data_type = None
         formatterFn = None
         prop = target_schema.get("properties", {}).get(key)
+
         # Handle prop types for both when there's a single prop type or multiple
         if "items" in prop:
             items = prop.get("items", {})
@@ -698,12 +787,10 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         # OpenAPI changes some of the field names.
         k = to_snake_case(key)
         column_def["field"] = k
+
         if k in [
             "date",
             "symbol",
-            "name",
-            "symbol_root",
-            "series_id",
         ]:
             column_def["pinned"] = "left"
 
@@ -744,6 +831,7 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
             column_def["cellDataType"] = "text"
             column_def["formatterFn"] = "none"
             column_def["renderFn"] = None
+
             if k not in ["symbol", "children", "element_id", "parent_id"]:
                 column_def["headerName"] = column_def["headerName"].upper()
 
@@ -827,13 +915,26 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         if column_def.get("field") == "change":
             column_def["renderFn"] = "greenRed"
 
+        # Check for x-widget_config in property definition
         if _widget_config := prop.get("x-widget_config", {}):
             if _widget_config.get("exclude"):
                 continue
 
             column_def.update(_widget_config)
 
+        # Also check for x-widget_config at schema root level (from model_config.json_schema_extra)
+        schema_level_field = target_schema.get(key, {})
+
+        if isinstance(schema_level_field, dict) and (
+            schema_level_config := schema_level_field.get("x-widget_config", {})
+        ):
+            if schema_level_config.get("exclude"):
+                continue
+
+            column_def.update(schema_level_config)
+
         column_defs.append(column_def)
+
     return column_defs
 
 

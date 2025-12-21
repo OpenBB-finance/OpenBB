@@ -2109,47 +2109,7 @@ class DocstringGenerator:
             """Format type in docstrings."""
             type_str = str(type_)
 
-            # Check if this is a complex union of literals (provider-specific choices)
-            if (
-                "Union[" in type_str
-                and "Literal[" in type_str
-                and type_str.count("Literal[") > 1
-            ):
-                # For complex Union with multiple Literals, simplify to the base type
-                base_types = set()
-
-                # Extract the base types from literals first
-                literal_pattern = r"Literal\['([^']+)'(?:,\s*'[^']+')*\]"
-                for match in re.finditer(literal_pattern, type_str):
-                    if match.group(1):
-                        try:
-                            val = match.group(1)
-                            if val.isdigit():
-                                base_types.add("int")
-                            elif val.isdecimal():
-                                base_types.add("float")
-                            else:
-                                base_types.add("str")
-                        except (IndexError, AttributeError):
-                            pass
-
-                # Also check for explicit types in the Union
-                if "str" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("str")
-                if "int" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("int")
-                if "float" in type_str.split("[", maxsplit=1)[0].split(", "):
-                    base_types.add("float")
-
-                # Use the base types instead of the complex Union[Literal[...]]
-                if base_types:
-                    type_str = (
-                        next(iter(base_types))
-                        if len(base_types) == 1
-                        else f"{' | '.join(sorted(base_types))}"
-                    )
-
-            # Apply the standard formatting
+            # Apply the standard formatting first
             type_str = (
                 type_str.replace("<class '", "")
                 .replace("'>", "")
@@ -2158,13 +2118,81 @@ class DocstringGenerator:
                 .replace("datetime.date", "date")
                 .replace("datetime.datetime", "datetime")
                 .replace("NoneType", "None")
-                .replace(", NoneType", "")
-            ).replace("Union[date, None, str]", "date | str | None")
+            )
 
-            if char_limit:
-                type_str = type_str[:char_limit] + (
-                    "..." if len(str(type_str)) > char_limit else ""
-                )
+            # Convert Optional[X] to X | None
+            optional_pattern = r"Optional\[(.+?)\]"
+            optional_match = re.search(optional_pattern, type_str)
+            if optional_match:
+                inner = optional_match.group(1)
+                type_str = type_str.replace(f"Optional[{inner}]", f"{inner} | None")
+
+            # Convert Union[X, Y, ...] to X | Y | ... format
+            union_pattern = r"Union\[(.+)\]"
+            union_match = re.search(union_pattern, type_str)
+            if union_match:
+                inner = union_match.group(1)
+                # Split by comma, but be careful with nested types like list[str]
+                parts = []
+                depth = 0
+                current = ""
+                for char in inner:
+                    if char == "[":
+                        depth += 1
+                    elif char == "]":
+                        depth -= 1
+                    elif char == "," and depth == 0:
+                        parts.append(current.strip())
+                        current = ""
+                        continue
+                    current += char
+                if current.strip():
+                    parts.append(current.strip())
+                # Remove None and NoneType from parts, we'll add | None at the end if needed
+                has_none = any(p in ("None", "NoneType") for p in parts)
+                parts = [p for p in parts if p not in ("None", "NoneType")]
+                type_str = " | ".join(parts)
+                if has_none:
+                    type_str += " | None"
+
+            # Simplify Literal[...] to str (choices shown in description)
+            # Handle Literal[...] | None -> str | None
+            if "Literal[" in type_str:
+                # Check if there's | None at the end
+                has_none = type_str.endswith(" | None")
+                # Replace any Literal[...] with str
+                type_str = re.sub(r"Literal\[[^\]]+\]", "str", type_str)
+                # Ensure | None is preserved
+                if has_none and not type_str.endswith(" | None"):
+                    type_str += " | None"
+
+            # Clean up ", None" that might be left over
+            type_str = type_str.replace(", None", "")
+
+            # Deduplicate types while preserving order (e.g. str | str | str -> str)
+            if " | " in type_str:
+                parts = [p.strip() for p in type_str.split(" | ")]
+                has_none = "None" in parts
+                # Remove None for now, deduplicate, then add back
+                parts = [p for p in parts if p != "None"]
+                # Deduplicate while preserving order
+                seen: set[str] = set()
+                unique_parts = []
+                for p in parts:
+                    if p not in seen:
+                        seen.add(p)
+                        unique_parts.append(p)
+                type_str = " | ".join(unique_parts)
+                if has_none:
+                    type_str += " | None"
+
+            # Apply char_limit if specified (simple truncation with bracket balancing)
+            if char_limit and len(type_str) > char_limit:
+                truncated = type_str[:char_limit]
+                open_brackets = truncated.count("[") - truncated.count("]")
+                if open_brackets > 0:
+                    truncated += "]" * open_brackets
+                type_str = truncated
 
             return type_str
 
@@ -2180,81 +2208,176 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings with proper indentation for provider choices."""
-            # Handle semicolon-separated provider descriptions
-            if ";" in description and "(provider:" in description:
-                parts = description.split(";")
-                formatted_parts = []
+            # Base indent for description content (called with create_indent(3) prefix)
+            base_indent = create_indent(3)  # 12 spaces
 
-                # Process the first part (main description)
-                first_part = parts[0].strip()
+            # Extract "Choices for provider: ..." into a dict keyed by provider
+            provider_choices: dict[str, str] = {}
+            main_description = description
+            multi_items_text = ""
 
-                # Extract the first sentence from the first part
-                first_sentence = ""
-                remainder = ""
-                if "." in first_part:
-                    first_sentence, remainder = first_part.split(".", 1)
-                    first_sentence = first_sentence.strip()
-                    remainder = remainder.strip()
-
-                formatted_parts.append(first_part)
-                parts.pop(1)
-                # Process subsequent parts (provider-specific descriptions)
-                for part in parts[1:]:
-                    part = part.strip()  # noqa: PLW2901
-
-                    # Check if this part starts with the same first sentence
-                    if first_sentence and part.startswith(first_sentence.rstrip(".")):
-                        # Skip the repeated sentence and add only what follows
-                        part_remainder = part[len(first_sentence.rstrip(".")) :].strip()
-                        if part_remainder.startswith("."):
-                            part_remainder = part_remainder[1:].strip()
-                        formatted_parts.append(f"{create_indent(3)}{part_remainder}")
-                    else:
-                        # No repetition, add the entire part with indentation
-                        formatted_parts.append(f"{create_indent(3)}{part.strip()}")
-
-                # Join all parts with semicolons
-                description = ";\n".join(formatted_parts)
-
-                if "Choices" not in description:
-                    return description
-
-            # Handle provider-specific choices
             if "\nChoices for " in description:
-                # Split into main description and provider choices part
-                parts = description.split("\nChoices for ")
-                main_desc = parts[0].rstrip()
+                choices_idx = description.index("\nChoices for ")
+                main_description = description[:choices_idx]
+                choices_text = description[choices_idx:]
 
-                if len(parts) > 1:
-                    formatted_lines = [main_desc]
+                # Parse each "Choices for provider: values" line
+                # Handle multi-line choices where continuation lines don't have "Choices for" prefix
+                current_provider = None
+                current_choices = []
 
-                    # Add each provider choice line with proper indentation
-                    for choice_line in parts[1:]:
-                        # Check if the line contains a newline character (due to word wrapping)
-                        if "\n" in choice_line:
-                            # Split the choice line at newlines
-                            choice_parts = choice_line.split("\n")
-                            # Add first part with "Choices for" prefix
-                            formatted_lines.append(
-                                f"{create_indent(3)}Choices for {choice_parts[0]}"
+                for ln in choices_text.strip().split("\n"):
+                    line = ln.strip()
+
+                    # Check if this is the "Multiple comma separated" line
+                    if line.startswith("Multiple comma separated items allowed"):
+                        # Save current provider's choices first
+                        if current_provider and current_choices:
+                            provider_choices[current_provider] = " ".join(
+                                current_choices
+                            )
+                            current_provider = None
+                            current_choices = []
+                        multi_items_text = line
+                        continue
+
+                    if line.startswith("Choices for "):
+                        # Save previous provider's choices if any
+                        if current_provider and current_choices:
+                            provider_choices[current_provider] = " ".join(
+                                current_choices
                             )
 
-                            # Add remaining parts with proper indentation
-                            for part in choice_parts[1:]:
-                                if part.strip():  # Skip empty lines
-                                    formatted_lines.append(
-                                        f"{create_indent(4)}{part.strip()}"
-                                    )
-                        else:
-                            # No line breaks in this choice
-                            formatted_lines.append(
-                                f"{create_indent(3)}Choices for {choice_line}"
-                            )
+                        # Extract provider name and choices
+                        rest = line[len("Choices for ") :]
+                        if ": " in rest:
+                            prov, choices = rest.split(": ", 1)
+                            current_provider = prov.strip()
+                            current_choices = [choices.strip()]
+                    elif current_provider and line:
+                        # This is a continuation line for the current provider's choices
+                        current_choices.append(line)
 
-                    return "\n".join(formatted_lines)
+                # Save the last provider's choices
+                if current_provider and current_choices:
+                    provider_choices[current_provider] = " ".join(current_choices)
 
-            # Standard behavior for other descriptions - add proper indentation to each line
-            return description.replace("\n", f"\n{create_indent(2)}")
+            # Extract multiple items text from main_description if not already found
+            if not multi_items_text:
+                multi_pattern = (
+                    r"\nMultiple comma separated items allowed for provider\(s\): [^.]+"
+                )
+                multi_match = re.search(multi_pattern, main_description)
+                if multi_match:
+                    multi_items_text = multi_match.group().strip()
+                    main_description = re.sub(multi_pattern, "", main_description)
+
+            # Handle semicolon-separated provider descriptions
+            if ";" in main_description and "(provider:" in main_description:
+                parts = main_description.split(";")
+                provider_sections = []
+
+                # Extract provider tag pattern
+                provider_pattern = re.compile(r"\s*\(provider:\s*([^)]+)\)")
+
+                for part in parts:
+                    p = part.strip()
+                    match = provider_pattern.search(p)
+                    if match:
+                        provider_name = match.group(1).strip()
+                        content = provider_pattern.sub("", p).strip()
+                        provider_sections.append((provider_name, content))
+                    elif p:
+                        provider_sections.append((None, p))
+
+                if provider_sections:
+                    # Find common base description
+                    provider_contents = [
+                        (name, content)
+                        for name, content in provider_sections
+                        if name is not None
+                    ]
+                    base_description = ""
+
+                    if len(provider_contents) >= 2:
+                        first_sentences = []
+                        for _, content in provider_contents:
+                            if "." in content:
+                                first_sent = content.split(".", 1)[0].strip()
+                                first_sentences.append(first_sent)
+                            else:
+                                first_sentences.append(content)
+
+                        if first_sentences and all(
+                            s == first_sentences[0] for s in first_sentences
+                        ):
+                            base_description = first_sentences[0] + "."
+
+                    # Check for base description without provider tag
+                    base_parts = [
+                        content
+                        for name, content in provider_sections
+                        if name is None and "Choices" not in content
+                    ]
+                    if base_parts and not base_description:
+                        base_description = base_parts[0]
+
+                    # Build formatted output
+                    formatted_lines = []
+
+                    if base_description:
+                        formatted_lines.append(base_description)
+                        formatted_lines.append("")
+
+                    for provider_name, content in provider_sections:
+                        if provider_name and content:
+                            if base_description:
+                                base_clean = base_description.rstrip(".")
+                                if content.startswith(base_clean):
+                                    content = content[len(base_clean) :].strip()  # noqa
+                                    if content.startswith("."):
+                                        content = content[1:].strip()  # noqa
+
+                            if not content:
+                                continue
+
+                            formatted_lines.append(f"(provider: {provider_name})")
+                            for line in content.split("\n"):
+                                new_line = line.strip()
+                                if new_line:
+                                    formatted_lines.append(f"    {new_line}")
+
+                            # Add choices for this provider inside its section
+                            if provider_name in provider_choices:
+                                formatted_lines.append(
+                                    f"    Choices: {provider_choices[provider_name]}"
+                                )
+
+                            formatted_lines.append("")
+
+                    while formatted_lines and formatted_lines[-1] == "":
+                        formatted_lines.pop()
+
+                    # Join lines
+                    if formatted_lines:
+                        result = formatted_lines[0]
+                        for line in formatted_lines[1:]:
+                            if line:
+                                result += f"\n{base_indent}{line}"
+                            else:
+                                result += "\n"
+                        main_description = result
+
+            # If no provider sections but we have choices, add them at the end
+            elif provider_choices:
+                for prov, choices in provider_choices.items():
+                    main_description += f"\n{base_indent}Choices for {prov}: {choices}"
+
+            # Add multiple items text at the end
+            if multi_items_text:
+                main_description += f"\n{base_indent}{multi_items_text}"
+
+            return main_description
 
         def get_param_info(parameter: Parameter | None) -> tuple[str, str]:
             """Get the parameter info."""
@@ -2312,6 +2435,18 @@ class DocstringGenerator:
                     if inspect.isclass(p_type)
                     else p_type
                 )
+
+                # Extract Literal values before formatting the type
+                literal_choices: list = []
+                type_str = str(type_)
+                if "Literal[" in type_str:
+                    # Extract values from Literal[...]
+                    literal_match = re.search(r"Literal\[([^\]]+)\]", type_str)
+                    if literal_match:
+                        literal_content = literal_match.group(1)
+                        # Parse the literal values (they're quoted strings)
+                        literal_choices = re.findall(r"'([^']+)'", literal_content)
+
                 type_ = format_type(type_)
                 if "NoneType" in str(type_):
                     type_ = type_.replace(", NoneType", "")
@@ -2343,13 +2478,45 @@ class DocstringGenerator:
                     ):
                         description = getattr(param_default, "description", "") or ""
 
+                # Initialize provider_choices and multi_item_providers for this parameter
+                provider_choices: dict = {}
+                multi_item_providers: list = []
+
+                # Extract choices and multiple_items_allowed from json_schema_extra
+                # For kwarg_params (dataclass fields), json_schema_extra is on param.default (Query object)
+                # For other params (Pydantic FieldInfo), it may be on param itself
+                param_default = getattr(param, "default", None)
+                json_extra = getattr(param_default, "json_schema_extra", None)
+                if not json_extra:
+                    json_extra = getattr(param, "json_schema_extra", None)
+                if json_extra and isinstance(json_extra, dict):
+                    for prov, prov_info in json_extra.items():
+                        if isinstance(prov_info, dict):
+                            if "choices" in prov_info:
+                                provider_choices[prov] = prov_info["choices"]
+                            if prov_info.get("multiple_items_allowed"):
+                                multi_item_providers.append(prov)
+
+                # If we have Literal choices from the type and no choices from json_schema_extra,
+                # extract providers from the description and add choices for them
+                if literal_choices and not provider_choices:
+                    # Look for (provider: xxx) or (provider: xxx, yyy) in description
+                    provider_match = re.search(r"\(provider:\s*([^)]+)\)", description)
+                    if provider_match:
+                        providers_text = provider_match.group(1)
+                        providers_from_desc = [
+                            p.strip() for p in providers_text.split(",")
+                        ]
+                        for prov in providers_from_desc:
+                            if prov and prov not in provider_choices:
+                                provider_choices[prov] = literal_choices
+
                 # Extract provider-specific choices directly from the provider interface
                 if (
                     not isinstance(p_type, str)
                     and hasattr(p_type, "__origin__")
                     and p_type.__origin__ is Union
                 ):
-                    provider_choices = {}
 
                     # Get the list of providers for this model directly from provider_interface.model_providers
                     try:
@@ -2401,36 +2568,45 @@ class DocstringGenerator:
                     except (AttributeError, KeyError):
                         pass
 
-                    # Add provider-specific choices to description
-                    for provider, choices in provider_choices.items():
-                        if choices:
-                            # Format choices with word wrapping for readability
-                            formatted_choices = []
-                            line_length = 0
-                            line_limit = 80  # Max line length
+                # Add provider-specific choices to description
+                for provider, choices in provider_choices.items():
+                    if choices:
+                        # Format choices with word wrapping for readability
+                        formatted_choices = []
+                        line_length = 0
+                        line_limit = 80  # Max line length
 
-                            for i, choice in enumerate(choices):
-                                choice_str = f"'{choice}'"
+                        for i, choice in enumerate(choices):
+                            choice_str = f"'{choice}'"
 
-                                # If adding this choice would exceed line limit, start a new line
-                                if (
-                                    line_length > 0
-                                    and line_length + len(choice_str) + 2 > line_limit
-                                ):
-                                    # End the current line
-                                    formatted_choices.append("\n")
-                                    line_length = 0
+                            # If adding this choice would exceed line limit, start a new line
+                            if (
+                                line_length > 0
+                                and line_length + len(choice_str) + 2 > line_limit
+                            ):
+                                # End the current line
+                                formatted_choices.append("\n")
+                                line_length = 0
 
-                                # Add comma and space if not the first choice in the line
-                                if i > 0 and line_length > 0:
-                                    formatted_choices.append(", ")
-                                    line_length += 2
+                            # Add comma and space if not the first choice in the line
+                            if i > 0 and line_length > 0:
+                                formatted_choices.append(", ")
+                                line_length += 2
 
-                                formatted_choices.append(choice_str)
-                                line_length += len(choice_str)
+                            formatted_choices.append(choice_str)
+                            line_length += len(choice_str)
 
-                            choices_str = "".join(formatted_choices)
-                            description += f"\nChoices for {provider}: {choices_str}"
+                        choices_str = "".join(formatted_choices)
+                        description += f"\nChoices for {provider}: {choices_str}"
+
+                # Add multiple items allowed text at the end if applicable
+                # But only if it's not already in the description
+                if (
+                    multi_item_providers
+                    and "Multiple comma separated items allowed" not in description
+                ):
+                    providers_str = ", ".join(sorted(multi_item_providers))
+                    description += f"\nMultiple comma separated items allowed for provider(s): {providers_str}."
 
                 docstring += f"{create_indent(2)}{param_name} : {type_}\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"

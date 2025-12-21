@@ -51,12 +51,30 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
         Data4: [0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46],
     };
 
+    // Precompute wide strings outside unsafe to avoid early returns inside COM section
+    let wide_exe_path: Vec<u16> = executable_path
+        .to_str()
+        .ok_or("Failed to convert path to string")?
+        .encode_utf16()
+        .chain(std::iter::once(0))
+        .collect();
+
+    let wide_shortcut_path: Vec<u16> = shortcut_path
+        .to_str()
+        .ok_or("Failed to convert shortcut path to string")?
+        .encode_utf16()
+        .chain(std::iter::once(0))
+        .collect();
+
     unsafe {
         // Initialize COM
-        CoInitializeEx(ptr::null_mut(), COINIT_APARTMENTTHREADED);
+        let hr_init = CoInitializeEx(ptr::null_mut(), COINIT_APARTMENTTHREADED);
+        if !SUCCEEDED(hr_init) {
+            return Err(format!("Failed to initialize COM: {hr_init:#x}"));
+        }
 
         // Create shell link object
-        let mut shell_link = ptr::null_mut();
+        let mut shell_link: *mut IShellLinkW = ptr::null_mut();
         let hr = CoCreateInstance(
             &CLSID_SHELL_LINK,
             ptr::null_mut(),
@@ -65,47 +83,49 @@ pub fn enable_autostart(app_handle: &AppHandle) -> Result<(), String> {
             &mut shell_link as *mut _ as *mut _,
         );
 
-        if SUCCEEDED(hr) {
-            let shell_link: *mut IShellLinkW = shell_link as *mut _;
-
-            // Set the path to the executable
-            let wide_path: Vec<u16> = executable_path
-                .to_str()
-                .ok_or("Failed to convert path to string")?
-                .encode_utf16()
-                .chain(std::iter::once(0))
-                .collect();
-            (*shell_link).SetPath(wide_path.as_ptr());
-            (*shell_link).SetShowCmd(SW_SHOW);
-
-            // Get the IPersistFile interface
-            let mut persist_file: *mut IPersistFile = ptr::null_mut();
-            (*shell_link).QueryInterface(
-                &IPersistFile::uuidof(),
-                &mut persist_file as *mut _ as *mut _,
-            );
-
-            if !persist_file.is_null() {
-                // Convert shortcut path to wide string
-                let wide_shortcut_path: Vec<u16> = shortcut_path
-                    .to_str()
-                    .ok_or("Failed to convert shortcut path to string")?
-                    .encode_utf16()
-                    .chain(std::iter::once(0))
-                    .collect();
-
-                // Save the shortcut
-                (*persist_file).Save(wide_shortcut_path.as_ptr(), 1);
-                (*persist_file).Release();
-            }
-
-            (*shell_link).Release();
-        } else {
+        if !SUCCEEDED(hr) || shell_link.is_null() {
             CoUninitialize();
             return Err(format!("Failed to create shell link: {hr:#x}"));
         }
 
-        // Uninitialize COM
+        let hr_set_path = (*shell_link).SetPath(wide_exe_path.as_ptr());
+        if !SUCCEEDED(hr_set_path) {
+            (*shell_link).Release();
+            CoUninitialize();
+            return Err(format!("Failed to set shortcut path: {hr_set_path:#x}"));
+        }
+
+        let hr_set_show = (*shell_link).SetShowCmd(SW_SHOW);
+        if !SUCCEEDED(hr_set_show) {
+            (*shell_link).Release();
+            CoUninitialize();
+            return Err(format!("Failed to set show command: {hr_set_show:#x}"));
+        }
+
+        let mut persist_file: *mut IPersistFile = ptr::null_mut();
+        let hr_query = (*shell_link).QueryInterface(
+            &IPersistFile::uuidof(),
+            &mut persist_file as *mut _ as *mut _,
+        );
+
+        if !SUCCEEDED(hr_query) || persist_file.is_null() {
+            (*shell_link).Release();
+            CoUninitialize();
+            return Err(format!(
+                "Failed to get IPersistFile interface: {hr_query:#x}"
+            ));
+        }
+
+        let hr_save = (*persist_file).Save(wide_shortcut_path.as_ptr(), 1);
+        if !SUCCEEDED(hr_save) {
+            (*persist_file).Release();
+            (*shell_link).Release();
+            CoUninitialize();
+            return Err(format!("Failed to save shortcut: {hr_save:#x}"));
+        }
+
+        (*persist_file).Release();
+        (*shell_link).Release();
         CoUninitialize();
     }
 

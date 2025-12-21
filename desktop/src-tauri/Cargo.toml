@@ -21,7 +21,7 @@ chrono = "^0.4"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
 tauri = { version = "2.8.2", features = ["tray-icon", "devtools"] }
-tauri-cli = "^2.8.0"
+tauri-cli = "^2.9.6"
 tauri-plugin-log = "2.6.0"
 regex = "^1.11.1"
 reqwest = { version = "^0.12.23", features = ["json"] }
@@ -50,11 +50,9 @@ which = "8.0.0"
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
 [target.'cfg(target_os= "macos")'.dependencies]
-objc_exception = "0.1"
-objc = { version = "0.2.7", features = ["exception"] }
-objc2 = "*"
-objc2-app-kit = "*"
-objc2-foundation = { version = "*", features = ["NSGeometry"] }
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", features = ["NSApplication", "NSResponder", "NSColor", "NSWindow"] }
+objc2-foundation = { version = "0.3", features = ["NSGeometry", "NSNotification", "NSString", "NSObject"] }
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winuser", "objbase", "shobjidl_core", "shlobj", "combaseapi", "unknwnbase", "objidl", "wtypesbase", "winerror", "minwindef", "wtypes", "oleauto"] }

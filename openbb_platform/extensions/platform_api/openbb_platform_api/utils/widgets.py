@@ -239,6 +239,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
     from .openapi import (
         TO_CAPS_STRINGS,
         data_schema_to_columns_defs,
+        extract_providers,
         get_query_schema_for_widget,
         post_query_schema_for_widget,
     )
@@ -310,18 +311,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
         if widget_config_dict.get("exclude") is True:
             continue
 
-        # Prepare the query schema of the widget
-        if route_method == "get":
-            query_schema, has_chart = get_query_schema_for_widget(openapi, route)
-        else:  # post
-            query_schema = (
-                post_query_schema_for_widget(
-                    openapi, route_api.get("post", {}).get("operationId", ""), route
-                )
-                or []
-            )
-            has_chart = False
-
         response_schema = (
             route_api.get(route_method, {})
             .get("responses", {})
@@ -330,16 +319,32 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
             .get("application/json", {})
             .get("schema", {})
         )
-        # Extract providers from the query schema
-        providers: list = []
-        for item in query_schema:
-            if item["parameter_name"] == "provider":
-                providers = item["available_providers"]
+
+        # Extract providers from raw params BEFORE building query_schema
+        # This allows us to build provider-specific schemas
+        if route_method == "get":
+            raw_params = route_api.get("get", {}).get("parameters", [])
+            providers = extract_providers(raw_params)
+            has_chart = any(p["name"] == "chart" for p in raw_params)
+        else:  # post
+            providers = []
+            has_chart = False
 
         if not providers:
             providers = ["custom"]
 
         for provider in providers:
+            # Build query schema PER PROVIDER to get provider-specific descriptions/defaults
+            if route_method == "get":
+                query_schema, _ = get_query_schema_for_widget(openapi, route, provider)
+            else:  # post
+                query_schema = (
+                    post_query_schema_for_widget(
+                        openapi, route_api.get("post", {}).get("operationId", ""), route
+                    )
+                    or []
+                )
+
             columns_defs = (
                 data_schema_to_columns_defs(openapi, widget_id, provider, route)
                 if widget_config_dict.get("type")
@@ -529,9 +534,7 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                                     )
                                 else:
                                     widget_config_dict[key.replace("$.", "")] = value
-                    # For POST-only routes, extend with the modified params directly
-                    # elif route_method == "post":
-                    #    modified_query_schema.extend(modified_post_params)
+
                     elif route_method == "post":
                         var_key = {}
                         # Widget Config at the model level goes first.

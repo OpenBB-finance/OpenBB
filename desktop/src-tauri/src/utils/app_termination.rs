@@ -1,105 +1,93 @@
-use objc;
+use std::ffi::c_void;
 use std::sync::Once;
+
+use objc2::rc::Retained;
+use objc2::runtime::AnyObject;
+use objc2::{ClassType, define_class, msg_send, sel};
+use objc2_app_kit::NSApplication;
+use objc2_foundation::{MainThreadMarker, NSNotificationCenter, NSNotificationName, NSObject};
 use tauri::AppHandle;
 use tokio::runtime::Runtime;
 
 // Ensure this is initialized only once
 static INIT: Once = Once::new();
 // Store our observer to prevent it from being dropped
+static mut OBSERVER: Option<Retained<AnyObject>> = None;
+// Store the app handle pointer globally (set before observer is created)
+static mut APP_HANDLE_PTR: *mut c_void = std::ptr::null_mut();
 
-static mut OBSERVER: Option<*mut std::ffi::c_void> = None;
+// Define the Objective-C class using objc2's define_class! macro
+define_class!(
+    #[unsafe(super(NSObject))]
+    #[name = "OBBAppTerminationObserver"]
+    struct AppTerminationObserver;
+
+    impl AppTerminationObserver {
+        #[unsafe(method(applicationWillTerminate:))]
+        fn will_terminate(&self, _notification: *mut AnyObject) {
+            log::debug!("applicationWillTerminate received, running cleanup...");
+            let app_ptr = unsafe { APP_HANDLE_PTR };
+            if !app_ptr.is_null() {
+                let app_handle = unsafe { &*(app_ptr as *const AppHandle) };
+                // Create a runtime and run the cleanup handler
+                if let Ok(rt) = Runtime::new() {
+                    rt.block_on(async {
+                        crate::cleanup_all_processes(app_handle.clone()).await;
+                    });
+                }
+            }
+            // Don't call exit() as it may interfere with macOS shutdown
+        }
+    }
+);
+
+// NSApplicationWillTerminateNotification is an extern static in AppKit
+unsafe extern "C" {
+    static NSApplicationWillTerminateNotification: &'static NSNotificationName;
+}
 
 // Set up applicationWillTerminate listener
 pub fn setup_termination_handler(app_handle: AppHandle) {
     INIT.call_once(|| {
+        // Get the main thread marker - we should be on the main thread during app setup
+        let Some(mtm) = MainThreadMarker::new() else {
+            log::error!("setup_termination_handler must be called from the main thread");
+            return;
+        };
+
+        // Store the app handle pointer globally before creating the observer
+        let app_ptr = Box::into_raw(Box::new(app_handle)) as *mut c_void;
         unsafe {
-            // Import objc macros
-            use objc::runtime::{Class, Object, Sel};
-            use objc::{msg_send, sel, sel_impl};
-            use std::ffi::c_void;
+            APP_HANDLE_PTR = app_ptr;
+        }
 
-            // Create a static reference to the app handle for use in the callback
-            let app_ptr = Box::into_raw(Box::new(app_handle)) as *mut c_void;
+        // Create our observer using NSObject's default allocator
+        let observer: Retained<AppTerminationObserver> =
+            unsafe { msg_send![AppTerminationObserver::class(), new] };
 
-            // Define our Objective-C class
-            let superclass = Class::get("NSObject").unwrap();
-            let mut decl =
-                objc::declare::ClassDecl::new("OBBAppTerminationObserver", superclass).unwrap();
+        // Get the notification center
+        let notification_center = NSNotificationCenter::defaultCenter();
 
-            // Add instance variable to store AppHandle
-            decl.add_ivar::<*mut c_void>("appHandlePtr");
+        // Get NSApplication shared instance
+        let app = NSApplication::sharedApplication(mtm);
 
-            // Implement the handler for applicationWillTerminate
-            extern "C" fn will_terminate(this: &Object, _cmd: Sel, _notification: *mut Object) {
-                log::debug!("applicationWillTerminate received, running cleanup...");
+        // Get the selector for our handler method
+        let selector = sel!(applicationWillTerminate:);
 
-                unsafe {
-                    // Retrieve the app handle pointer
-                    let app_ptr: *mut c_void = *this.get_ivar("appHandlePtr");
-                    let app_handle = &*(app_ptr as *const AppHandle);
-
-                    // Create a runtime and run the cleanup handler
-                    if let Ok(rt) = Runtime::new() {
-                        rt.block_on(async {
-                            crate::cleanup_all_processes(app_handle.clone()).await;
-                        });
-                    }
-                }
-
-                // Don't call exit() as it may interfere with macOS shutdown
-            }
-
-            // Add the method to our class
-            #[allow(unexpected_cfgs)]
-            let sel_app_will_terminate = sel!(applicationWillTerminate:);
-            decl.add_method(
-                sel_app_will_terminate,
-                will_terminate as extern "C" fn(&Object, Sel, *mut Object),
+        // Register for the applicationWillTerminate notification
+        unsafe {
+            notification_center.addObserver_selector_name_object(
+                &observer,
+                selector,
+                Some(NSApplicationWillTerminateNotification),
+                Some(&app),
             );
 
-            // Register the class
-            let termination_observer_class = decl.register();
-
-            // Create an instance
-            #[allow(unexpected_cfgs)]
-            let observer: *mut Object = msg_send![termination_observer_class, new];
-
-            // Store the app handle pointer in the instance variable
-            (*observer).set_ivar("appHandlePtr", app_ptr);
-
             // Store the observer in our static to prevent it from being dropped
-            OBSERVER = Some(observer as *mut c_void);
-
-            // Get the notification center
-            let notification_center_class = Class::get("NSNotificationCenter").unwrap();
-            #[allow(unexpected_cfgs)]
-            let notification_center: *mut Object =
-                msg_send![notification_center_class, defaultCenter];
-
-            // Get NSApplication shared instance
-            #[allow(unexpected_cfgs)]
-            let app_class = Class::get("NSApplication").unwrap();
-            #[allow(unexpected_cfgs)]
-            let app: *mut Object = msg_send![app_class, sharedApplication];
-
-            // Create NSString for notification name
-            #[allow(unexpected_cfgs)]
-            let notification_name: *mut Object = {
-                let nsstring_class = Class::get("NSString").unwrap();
-                let cstr =
-                    std::ffi::CString::new("NSApplicationWillTerminateNotification").unwrap();
-                msg_send![nsstring_class, stringWithUTF8String: cstr.as_ptr()]
-            };
-            // Register for the applicationWillTerminate notification
-            #[allow(unexpected_cfgs)]
-            let _: () = msg_send![
-                notification_center,
-                addObserver:observer
-                selector:sel_app_will_terminate
-                name:notification_name
-                object:app
-            ];
-            log::debug!("applicationWillTerminate observer registered successfully");
+            let observer_any: Retained<AnyObject> = Retained::cast_unchecked(observer);
+            OBSERVER = Some(observer_any);
         }
+
+        log::debug!("applicationWillTerminate observer registered successfully");
     });
 }

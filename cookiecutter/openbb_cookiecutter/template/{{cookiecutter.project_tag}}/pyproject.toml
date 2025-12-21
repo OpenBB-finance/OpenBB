@@ -31,4 +31,5 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.plugins."openbb_obbject_extension"]
 to_string = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:ext"
 {{ cookiecutter.obbject_name }} = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:class_ext"
-nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:nonblocking_plugin"
+# Uncomment to use
+# nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:nonblocking_plugin"

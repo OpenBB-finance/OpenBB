@@ -186,10 +186,13 @@ class ProviderInterface(metaclass=SingletonMeta):
         inc_json_schema_extra = getattr(incoming.default, "json_schema_extra", {})
 
         def split_desc(desc: str) -> str:
-            """Split field description."""
+            """Split field description, removing provider tags and multiple items text."""
             item = desc.split(" (provider: ")
             detail = item[0] if item else ""
-            return detail
+            # Also remove "Multiple comma separated items allowed." for comparison
+            detail = detail.replace(" Multiple comma separated items allowed.", "")
+            detail = detail.replace("Multiple comma separated items allowed.", "")
+            return detail.strip()
 
         def merge_json_schema_extra(curr: dict, inc: dict) -> dict:
             """Merge json schema extra."""
@@ -212,10 +215,12 @@ class ProviderInterface(metaclass=SingletonMeta):
         curr_detail = split_desc(curr_desc)
         inc_detail = split_desc(inc_desc)
 
-        curr_title = getattr(current.default, "title", "")
-        inc_title = getattr(incoming.default, "title", "")
-        providers = ",".join([curr_title, inc_title])
-        formatted_prov = providers.replace(",", ", ")
+        curr_title = getattr(current.default, "title", "") or ""
+        inc_title = getattr(incoming.default, "title", "") or ""
+        # Filter out empty titles and join
+        provider_list = [t for t in [curr_title, inc_title] if t]
+        providers = ",".join(provider_list)
+        formatted_prov = ", ".join(provider_list)
 
         if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
             new_desc = f"{curr_detail} (provider: {formatted_prov})"
@@ -351,6 +356,9 @@ class ProviderInterface(metaclass=SingletonMeta):
         """Extract parameters from map."""
         standard: dict[str, TupleFieldType] = {}
         extra: dict[str, TupleFieldType] = {}
+        standard_fields = (
+            providers.get("openbb", {}).get("QueryParams", {}).get("fields", {})
+        )
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -364,8 +372,36 @@ class ProviderInterface(metaclass=SingletonMeta):
                     )
             else:
                 for name, field in model_details["QueryParams"]["fields"].items():
-                    if name not in providers["openbb"]["QueryParams"]["fields"]:
-                        s_name = to_snake_case(name)
+                    s_name = to_snake_case(name)
+
+                    if name in standard_fields:
+                        # Provider redefines a standard field - merge descriptions
+                        # Check if descriptions differ before merging
+                        standard_desc = standard_fields[name].description or ""
+                        provider_desc = field.description or ""
+
+                        if provider_desc and provider_desc != standard_desc:
+                            # Create a field with provider-specific description
+                            incoming = cls._create_field(
+                                s_name,
+                                field,
+                                provider_name,
+                                query=True,
+                                force_optional=False,
+                            )
+                            # Merge into the standard field
+                            if s_name in standard:
+                                current = DataclassField(*standard[s_name])
+                                updated = cls._merge_fields(
+                                    current, incoming, query=True
+                                )
+                                standard[s_name] = (
+                                    updated.name,
+                                    updated.annotation,
+                                    updated.default,
+                                )
+                    else:
+                        # Extra field not in standard - add to extra params
                         incoming = cls._create_field(
                             s_name,
                             field,
