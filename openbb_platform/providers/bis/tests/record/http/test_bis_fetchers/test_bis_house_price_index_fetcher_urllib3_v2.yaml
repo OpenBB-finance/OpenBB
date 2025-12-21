@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+      accept:
+      - application/vnd.sdmx.data+csv;version=1.0.0
+    method: GET
+    uri: https://stats.bis.org/api/v2/data/dataflow/BIS/WS_DPP/%2B/Q.GB.0.1.0.1.0.0?c%5BTIME_PERIOD%5D=ge%3A2023-11%2Ble%3A2024-05
+  response:
+    body:
+      string: "DATAFLOW,FREQ,REF_AREA,COVERED_AREA,RE_TYPE,RE_VINTAGE,COMPILING_ORG,PRICED_UNIT,ADJUST_CODED,TIME_PERIOD,OBS_VALUE,COLLECTION,TIME_FORMAT,AVAILABILITY,BREAKS,COLLECTION_DETAIL,COVERAGE,DATA_COMP,DECIMALS,DOC_METHOD,MEASURE_DETAIL,META_UPDATE,PUBLICATIONS,TITLE_GRP,TITLE_GRP_COMPL,TITLE_GRP_NAT,UNIT_MEASURE,UNIT_MULT,OBS_CONF,OBS_PRE_BREAK,OBS_STATUS\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q1,97.8,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\nBIS:WS_DPP(1.0),Q,GB,0,1,0,1,0,0,2024-Q2,99,V,,A,AS
+        FROM SEP 2005: DATA ARE COLLECTED VIA THE REGULATED MORTGAGE SURVEY (RMS)
+        OF THE COUNCIL OF MORTGAGE LENDERS (CML)/BANKSEARCH.,Over the whole period.,Covers
+        new and existing dwellings on mortgage lending by all lenders.,\"Mixed adjusted
+        index, i.e. Data are weighted according to type of dwelling but excludes sitting
+        tenants (tenants without rent review); data are collected on a sample by the
+        Department of the Environment (in its 5% survey of mortgage lenders) at completion
+        stage.\",4,,Price per dwelling,01/07/2025,\"Office for National Statistics
+        (ONS), http://www.statistics.gov.uk/hub/index.html, < Themes < People and
+        Places < Housing Market < House Price Index (mix-adjusted house prices, a
+        chain linked index and measures of annual inflation), choose last release,
+        Table A1, mix-adjusted house price index and annual house price change by
+        region, all dwellings; used the data with the credit \xA9Crown Copyright 2008
+        Land Registry included\",\"United Kingdom - Residential property price index,
+        all dwellings, whole country\",,\"MIX-ADJUSTED HOUSE PRICE INDEX AND ANNUAL
+        HOUSE PRICE CHANGE BY REGION, ALL DWELLINGS\",955,0,F,,A\n"
+    headers:
+      cache-control:
+      - private
+      content-disposition:
+      - inline; filename="data.csv"
+      content-encoding:
+      - gzip
+      content-length:
+      - '972'
+      content-type:
+      - text/csv;charset=UTF-8
+      date:
+      - Fri, 05 Dec 2025 06:07:48 GMT
+      etag:
+      - 1d283da5-3b70-417e-a23b-f2f46e019811
+      set-cookie:
+      - JSESSIONID=8CC795564B67AD703AFC97DC986DBD7A; Path=/FusionEdgeServer; Secure;
+        HttpOnly
+      - f6b4bfbfef5805a1561a29548fc3e36c=670c52fc2b4da486c1e4dce88f65536f; path=/;
+        HttpOnly; Secure; SameSite=None
+    status:
+      code: 200
+      message: ''
+version: 1
