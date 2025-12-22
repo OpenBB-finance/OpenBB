@@ -90,7 +90,9 @@ class YFinanceBalanceSheetFetcher(
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
-        data = Ticker(query.symbol).get_balance_sheet(as_dict=False, pretty=False, freq=period)
+        data = Ticker(query.symbol).get_balance_sheet(
+            as_dict=False, pretty=False, freq=period
+        )
 
         if data is None:
             raise EmptyDataError()

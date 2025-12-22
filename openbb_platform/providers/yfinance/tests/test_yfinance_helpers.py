@@ -48,14 +48,18 @@ async def test_get_custom_screener_no_session():
         mock_response = MagicMock()
         mock_response.json.return_value = {
             "finance": {
-                "result": [{
-                    "quotes": [{
-                        "symbol": "AAPL",
-                        "exchangeTimezoneName": "America/New_York",
-                        "regularMarketTime": 1700000000
-                    }],
-                    "total": 1
-                }]
+                "result": [
+                    {
+                        "quotes": [
+                            {
+                                "symbol": "AAPL",
+                                "exchangeTimezoneName": "America/New_York",
+                                "regularMarketTime": 1700000000,
+                            }
+                        ],
+                        "total": 1,
+                    }
+                ]
             }
         }
         mock_response.raise_for_status = MagicMock()
@@ -67,7 +71,9 @@ async def test_get_custom_screener_no_session():
         # Verify YfData was called without session parameter
         mock_yfdata.assert_called_once()
         call_kwargs = mock_yfdata.call_args[1] if mock_yfdata.call_args[1] else {}
-        assert "session" not in call_kwargs, "YfData should not be called with session parameter"
+        assert (
+            "session" not in call_kwargs
+        ), "YfData should not be called with session parameter"
 
 
 @pytest.mark.asyncio
@@ -75,14 +81,16 @@ async def test_get_defined_screener_no_session():
     """Test that get_defined_screener does not pass session to yf.screen."""
     with patch("yfinance.screen") as mock_screen:
         mock_screen.return_value = {
-            "quotes": [{
-                "symbol": "AAPL",
-                "exchangeTimezoneName": "America/New_York",
-                "regularMarketTime": 1700000000,
-                "regularMarketChange": 1.23,
-                "regularMarketVolume": 1000
-            }],
-            "total": 1
+            "quotes": [
+                {
+                    "symbol": "AAPL",
+                    "exchangeTimezoneName": "America/New_York",
+                    "regularMarketTime": 1700000000,
+                    "regularMarketChange": 1.23,
+                    "regularMarketVolume": 1000,
+                }
+            ],
+            "total": 1,
         }
 
         await get_defined_screener("day_gainers", limit=1)
@@ -91,7 +99,9 @@ async def test_get_defined_screener_no_session():
         assert mock_screen.called
         for call in mock_screen.call_args_list:
             call_kwargs = call[1] if len(call) > 1 and call[1] else {}
-            assert "session" not in call_kwargs, "yf.screen should not be called with session parameter"
+            assert (
+                "session" not in call_kwargs
+            ), "yf.screen should not be called with session parameter"
 
 
 def test_get_futures_symbols_no_session():
@@ -110,27 +120,27 @@ def test_get_futures_symbols_no_session():
         # Verify YfData was called without session parameter
         mock_yfdata.assert_called_once()
         call_kwargs = mock_yfdata.call_args[1] if mock_yfdata.call_args[1] else {}
-        assert "session" not in call_kwargs, "YfData should not be called with session parameter"
+        assert (
+            "session" not in call_kwargs
+        ), "YfData should not be called with session parameter"
 
 
 def test_yf_download_no_session():
     """Test that yf_download does not pass session to yf.download."""
     with patch("yfinance.download") as mock_download:
         # Mock DataFrame with MultiIndex columns as returned by yfinance.download with group_by="ticker"
-        columns = pd.MultiIndex.from_tuples([
-            ("AAPL", "Open"),
-            ("AAPL", "High"),
-            ("AAPL", "Low"),
-            ("AAPL", "Close"),
-            ("AAPL", "Adj Close")
-        ])
+        columns = pd.MultiIndex.from_tuples(
+            [
+                ("AAPL", "Open"),
+                ("AAPL", "High"),
+                ("AAPL", "Low"),
+                ("AAPL", "Close"),
+                ("AAPL", "Adj Close"),
+            ]
+        )
         idx = pd.to_datetime(["2023-01-03"])
         idx.name = "Date"
-        mock_data = pd.DataFrame(
-            [[100, 110, 90, 105, 105]],
-            columns=columns,
-            index=idx
-        )
+        mock_data = pd.DataFrame([[100, 110, 90, 105, 105]], columns=columns, index=idx)
         mock_download.return_value = mock_data
 
         yf_download("AAPL", start_date="2023-01-01", end_date="2023-01-10")
@@ -139,4 +149,6 @@ def test_yf_download_no_session():
         assert mock_download.called
         for call in mock_download.call_args_list:
             call_kwargs = call[1] if len(call) > 1 and call[1] else {}
-            assert "session" not in call_kwargs, "yf.download should not be called with session parameter"
+            assert (
+                "session" not in call_kwargs
+            ), "yf.download should not be called with session parameter"
