@@ -85,7 +85,6 @@ class YFinancePriceTargetConsensusFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
         from warnings import warn
         from yfinance import Ticker
