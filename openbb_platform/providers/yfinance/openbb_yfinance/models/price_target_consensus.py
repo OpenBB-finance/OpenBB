@@ -111,9 +111,7 @@ class YFinancePriceTargetConsensusFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = await asyncio.to_thread(
-                    lambda: Ticker(symbol).get_info()
-                )
+                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol}: {e.__class__.__name__}: {e}"

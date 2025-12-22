@@ -87,7 +87,9 @@ class YFinanceCashFlowStatementFetcher(
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
-        data = Ticker(query.symbol).get_cash_flow(as_dict=False, pretty=False, freq=period)
+        data = Ticker(query.symbol).get_cash_flow(
+            as_dict=False, pretty=False, freq=period
+        )
 
         if data is None:
             raise EmptyDataError()

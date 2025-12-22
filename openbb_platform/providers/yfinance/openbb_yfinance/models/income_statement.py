@@ -90,7 +90,9 @@ class YFinanceIncomeStatementFetcher(
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"
-        data = Ticker(query.symbol).get_income_stmt(as_dict=False, pretty=False, freq=period)
+        data = Ticker(query.symbol).get_income_stmt(
+            as_dict=False, pretty=False, freq=period
+        )
 
         if data is None:
             raise EmptyDataError()
