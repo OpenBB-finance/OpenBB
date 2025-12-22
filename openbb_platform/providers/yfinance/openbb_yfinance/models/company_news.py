@@ -66,11 +66,7 @@ class YFinanceCompanyNewsFetcher(
         results: list[dict] = []
 
         def _normalize_news_item(item: dict, sym: str) -> dict | None:
-            """
-            yfinance get_news() returns items shaped like:
-              {"id": ..., "content": {...}, ...}
-            We must flatten into CompanyNewsData-compatible dict.
-            """
+            """Flatten the response."""
             if not isinstance(item, dict):
                 return None
 
@@ -125,7 +121,7 @@ class YFinanceCompanyNewsFetcher(
             return normalized
 
         def _fetch_news(sym: str) -> list[dict]:
-            """Runs in a worker thread."""
+            """Fetch the data in a worker thread."""
             raw = Ticker(sym).get_news() or []
             out: list[dict] = []
             for item in raw:
@@ -135,6 +131,7 @@ class YFinanceCompanyNewsFetcher(
             return out
 
         async def get_one(sym: str) -> None:
+            """Get the data for one ticker symbol."""
             try:
                 items = await asyncio.to_thread(_fetch_news, sym)
             except Exception as e:
