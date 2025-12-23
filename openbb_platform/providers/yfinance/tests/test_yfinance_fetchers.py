@@ -83,15 +83,17 @@ def vcr_config():
             ("corsDomain", "MOCK_CORS"),
         ],
         "before_record_response": [
-            scrub_string("Set-Cookie", "MOCK_COOKIE"),
-            scrub_string("X-Envoy-Decorator-Operation", "MOCK_OPERATION"),
-            scrub_string("Y-Rid", "MOCK_RID"),
-            scrub_string("Content-Security-Policy", "MOCK_CSP"),
+            scrub_string("set-cookie", "MOCK_COOKIE"),
+            scrub_string("x-envoy-decorator-operation", "MOCK_OPERATION"),
+            scrub_string("y-rid", "MOCK_RID"),
+            scrub_string("content-security-policy", "MOCK_CSP"),
             scrub_string("<!doctype html>", "MOCK_RESPONSE"),
-            scrub_string("Link", "MOCK_LINK"),
-            scrub_string("Report-To", "MOCK_REPORT"),
-            scrub_string("Expect-Ct", "MOCK_EXPECT_CT"),
+            scrub_string("link", "MOCK_LINK"),
+            scrub_string("report-to", "MOCK_REPORT"),
+            scrub_string("expect-ct", "MOCK_EXPECT_CT"),
         ],
+        "match_on": ["uri", "method"],
+        "decode_compressed_response": True,
     }
 
 
