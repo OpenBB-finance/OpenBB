@@ -29,7 +29,7 @@ openbb-sec = "^1.5.0"
 openbb-tiingo = "^1.5.0"
 openbb-tradingeconomics = "^1.5.0"
 openbb-us-eia = "^1.2.0"
-openbb-yfinance = "^1.5.0"
+openbb-yfinance = "^1.5.1"
 
 openbb-commodity = "^1.4.0"
 openbb-crypto = "^1.5.0"

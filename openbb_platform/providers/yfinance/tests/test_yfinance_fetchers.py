@@ -70,10 +70,23 @@ def scrub_string(key, value):
 def vcr_config():
     """VCR configuration."""
     return {
+        "allow_playback_repeats": True,
+        "match_on": ["method", "uri"],
         "filter_headers": [
             ("User-Agent", None),
             ("Cookie", "MOCK_COOKIE"),
             ("crumb", "MOCK_CRUMB"),
+            ("Accept", None),
+            ("Accept-Encoding", None),
+            ("Accept-Language", None),
+            ("Cache-Control", None),
+            ("Connection", None),
+            ("DNT", None),
+            ("Upgrade-Insecure-Requests", None),
+            ("Sec-Fetch-Dest", None),
+            ("Sec-Fetch-Mode", None),
+            ("Sec-Fetch-Site", None),
+            ("Sec-Fetch-User", None),
         ],
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
@@ -81,17 +94,25 @@ def vcr_config():
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
             ("corsDomain", "MOCK_CORS"),
+            ("lang", "MOCK_LANG"),
+            ("region", "MOCK_REGION"),
+        ],
+        "filter_post_data_parameters": [
+            ("query", "MOCK_QUERY"),
+            ("size", "MOCK_SIZE"),
+            ("offset", "MOCK_OFFSET"),
         ],
         "before_record_response": [
-            scrub_string("Set-Cookie", "MOCK_COOKIE"),
-            scrub_string("X-Envoy-Decorator-Operation", "MOCK_OPERATION"),
-            scrub_string("Y-Rid", "MOCK_RID"),
-            scrub_string("Content-Security-Policy", "MOCK_CSP"),
+            scrub_string("set-cookie", "MOCK_COOKIE"),
+            scrub_string("x-envoy-decorator-operation", "MOCK_OPERATION"),
+            scrub_string("y-rid", "MOCK_RID"),
+            scrub_string("content-security-policy", "MOCK_CSP"),
             scrub_string("<!doctype html>", "MOCK_RESPONSE"),
-            scrub_string("Link", "MOCK_LINK"),
-            scrub_string("Report-To", "MOCK_REPORT"),
-            scrub_string("Expect-Ct", "MOCK_EXPECT_CT"),
+            scrub_string("link", "MOCK_LINK"),
+            scrub_string("report-to", "MOCK_REPORT"),
+            scrub_string("expect-ct", "MOCK_EXPECT_CT"),
         ],
+        "decode_compressed_response": True,
     }
 
 

@@ -58,20 +58,11 @@ class YFinanceKeyExecutivesFetcher(
     ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
-        from curl_adapter import CurlCffiAdapter  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
-        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
-
         try:
-            ticker = Ticker(
-                query.symbol,
-                session=session,
-            ).get_info()
+            ticker = Ticker(query.symbol).get_info()
         except Exception as e:
             raise OpenBBError(
                 f"Error getting data for {query.symbol} -> {e.__class__.__name__}: {e}"
