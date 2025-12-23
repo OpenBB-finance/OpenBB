@@ -70,10 +70,23 @@ def scrub_string(key, value):
 def vcr_config():
     """VCR configuration."""
     return {
+        "allow_playback_repeats": True,
+        "match_on": ["method", "uri"],
         "filter_headers": [
             ("User-Agent", None),
             ("Cookie", "MOCK_COOKIE"),
             ("crumb", "MOCK_CRUMB"),
+            ("Accept", None),
+            ("Accept-Encoding", None),
+            ("Accept-Language", None),
+            ("Cache-Control", None),
+            ("Connection", None),
+            ("DNT", None),
+            ("Upgrade-Insecure-Requests", None),
+            ("Sec-Fetch-Dest", None),
+            ("Sec-Fetch-Mode", None),
+            ("Sec-Fetch-Site", None),
+            ("Sec-Fetch-User", None),
         ],
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
@@ -81,6 +94,13 @@ def vcr_config():
             ("crumb", "MOCK_CRUMB"),
             ("date", "MOCK_DATE"),
             ("corsDomain", "MOCK_CORS"),
+            ("lang", "MOCK_LANG"),
+            ("region", "MOCK_REGION"),
+        ],
+        "filter_post_data_parameters": [
+            ("query", "MOCK_QUERY"),
+            ("size", "MOCK_SIZE"),
+            ("offset", "MOCK_OFFSET"),
         ],
         "before_record_response": [
             scrub_string("set-cookie", "MOCK_COOKIE"),
@@ -92,7 +112,6 @@ def vcr_config():
             scrub_string("report-to", "MOCK_REPORT"),
             scrub_string("expect-ct", "MOCK_EXPECT_CT"),
         ],
-        "match_on": ["uri", "method"],
         "decode_compressed_response": True,
     }
 
