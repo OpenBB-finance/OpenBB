@@ -78,16 +78,11 @@ class YFinanceEquityQuoteFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from curl_adapter import CurlCffiAdapter
-        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
+        results: list[dict] = []
 
-        symbols = query.symbol.split(",")
-        results = []
         fields = [
             "symbol",
             "longName",
@@ -112,28 +107,18 @@ class YFinanceEquityQuoteFetcher(
             "currency",
         ]
 
-        async def get_one(symbol):
-            """Get the data for one ticker symbol."""
-            result: dict = {}
-            ticker: dict = {}
+        async def get_one(symbol: str) -> None:
             try:
-                ticker = Ticker(
-                    symbol,
-                    session=session,
-                ).get_info()
+                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
             except Exception as e:
                 warn(f"Error getting data for {symbol}: {e}")
-            if ticker:
-                for field in fields:
-                    if field in ticker:
-                        result[field] = ticker.get(field, None)
-                if result:
-                    results.append(result)
+                return
 
-        tasks = [get_one(symbol) for symbol in symbols]
+            result = {f: ticker.get(f) for f in fields if f in ticker}
+            if result:
+                results.append(result)
 
-        await asyncio.gather(*tasks)
-
+        await asyncio.gather(*(get_one(symbol) for symbol in symbols))
         return results
 
     @staticmethod

@@ -117,10 +117,8 @@ class YFinanceShareStatisticsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from curl_adapter import CurlCffiAdapter
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
         symbols = query.symbol.split(",")
@@ -141,9 +139,6 @@ class YFinanceShareStatisticsFetcher(
             "institutionsFloatPercentHeld",
             "institutionsCount",
         ]
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
         messages: list = []
 
         async def get_one(symbol):
@@ -151,12 +146,11 @@ class YFinanceShareStatisticsFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                _ticker = Ticker(
-                    symbol,
-                    session=session,
+                _ticker = await asyncio.to_thread(lambda: Ticker(symbol))
+                ticker = await asyncio.to_thread(lambda: _ticker.get_info())
+                major_holders = await asyncio.to_thread(
+                    lambda: _ticker.get_major_holders(as_dict=True).get("Value")
                 )
-                ticker = _ticker.get_info()
-                major_holders = _ticker.get_major_holders(as_dict=True).get("Value")
                 if major_holders:
                     ticker.update(major_holders)  # type: ignore
             except Exception as e:
