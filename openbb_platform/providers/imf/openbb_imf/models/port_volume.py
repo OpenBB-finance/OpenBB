@@ -6,6 +6,7 @@ from datetime import date as dateType
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.port_volume import (
     PortVolumeData,
@@ -22,6 +23,8 @@ from openbb_imf.utils.port_watch_helpers import (
 )
 from pydantic import ConfigDict, Field, field_validator, model_validator
 
+api_prefix = SystemService().system_settings.api_settings.prefix
+
 
 class ImfPortVolumeQueryParams(PortVolumeQueryParams):
     """IMF Port Volume Query Parameters.
@@ -37,7 +40,7 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
         "port_code": {
             "multiple_items_allowed": True,
             "x-widget_config": {
-                "options": get_port_id_choices(),
+                "optionsEndpoint": f"{api_prefix}/imf_utils/list_port_id_choices",
                 "style": {"popupWidth": 350},
             },
         },

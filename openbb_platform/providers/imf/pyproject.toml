@@ -9,8 +9,15 @@ packages = [{ include = "openbb_imf" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-openbb-core = "^1.5.1"
+openbb-core = "^1.5.6"
+openbb-platform-api = "^1.2.2"
+openbb-economy = "^1.5.0"
+openbb-charting = { version = "^2.4.0", optional = true }
 async-lru = "^2"
+defusedxml = ">=0.7.1"
+
+[tool.poetry.extras]
+charting = ["openbb-charting"]
 
 [build-system]
 requires = ["poetry-core"]
@@ -18,3 +25,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
 imf = "openbb_imf:imf_provider"
+
+[tool.poetry.plugins."openbb_core_extension"]
+imf_utils = "openbb_imf.imf_router:router"

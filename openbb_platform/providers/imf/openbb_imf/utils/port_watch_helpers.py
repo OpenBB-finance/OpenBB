@@ -1,11 +1,40 @@
 """IMF Port Watch helpers."""
 
+# pylint: disable=R0914
+
+from typing import Any
+
 from async_lru import alru_cache
 from openbb_imf.utils.constants import (
     CHOKEPOINTS_BASE_URL,
     DAILY_TRADE_BASE_URL,
-    PORT_COUNTRIES,
 )
+
+
+def list_countries() -> list[dict[str, str]]:
+    """List available countries for IMF Port Watch.
+
+    Returns
+    -------
+    list of dict
+        A list of dictionaries with 'label' and 'value' for each country.
+    """
+    choices: list = []
+    ports = get_ports()
+    seen: set = set()
+
+    for port in ports:
+        if port["ISO3"] in seen:
+            continue
+
+        seen.add(port["ISO3"])
+        choices.append(
+            {
+                "label": port["countrynoaccents"],
+                "value": port["ISO3"],
+            }
+        )
+    return choices
 
 
 def map_port_country_code(country_code: str) -> str:
@@ -21,11 +50,13 @@ def map_port_country_code(country_code: str) -> str:
     str
         The full country name, without accents, corresponding to the provided country code.
     """
-    COUNTRY_CODE_TO_PORT = {v: k for k, v in PORT_COUNTRIES.items()}
-    if country_code not in COUNTRY_CODE_TO_PORT:
+    cc = country_code.upper()
+    countries = list_countries()
+    code_to_country = {country["value"]: country["label"] for country in countries}
+    if cc not in code_to_country:
         raise ValueError("Country code is not supported by IMF Port Watch.")
 
-    return COUNTRY_CODE_TO_PORT.get(country_code.upper(), country_code.upper())
+    return code_to_country.get(cc, cc)
 
 
 def get_port_ids_by_country(country_code: str) -> str:
@@ -41,28 +72,13 @@ def get_port_ids_by_country(country_code: str) -> str:
     str
         A list of port IDs as a comma-separated string.
     """
-    # pylint: disable=import-outside-toplevel
-    import importlib.resources
-    import json
+    ports = get_ports()
+    ports_ids: list = []
+    for port in ports:
+        if port["ISO3"] == country_code.upper():
+            ports_ids.append(port["portid"])
 
-    json_path = (
-        importlib.resources.files("openbb_imf") / "assets" / "imf_ports_by_country.json"
-    )
-
-    if not json_path.exists():  # type: ignore
-        raise FileNotFoundError(f"Port IDs JSON file not found at {json_path}")
-
-    port_ids_by_country: dict = {}
-
-    with open(str(json_path), encoding="utf-8") as file:
-        port_ids_by_country = json.load(file)
-
-    if country_code.upper() not in port_ids_by_country:
-        raise ValueError(
-            f"Country code '{country_code}' is not supported by IMF Port Watch."
-        )
-
-    return port_ids_by_country.get(country_code.upper(), "")
+    return ",".join(ports_ids)
 
 
 def get_port_id_choices() -> list:
@@ -73,31 +89,16 @@ def get_port_id_choices() -> list:
     list
         A list of dictionaries, with labels and values for each port ID.
     """
-    # pylint: disable=import-outside-toplevel
-    import json  # noqa
-    import importlib.resources
-
-    json_path = (
-        importlib.resources.files("openbb_imf") / "assets" / "imf_portid_map.json"
-    )
-
-    if not json_path.exists():  # type: ignore
-        raise FileNotFoundError(f"imf_portid_map.json not found at: {json_path}")
-
     choices: list = []
-    portids: dict = {}
+    ports = get_ports()
 
-    with open(str(json_path), encoding="utf-8") as file:
-        portids = json.load(file)
-
-    for portid, portname in portids.items():
+    for port in ports:
         choices.append(
             {
-                "label": portname,
-                "value": portid,
+                "label": port["portname"],
+                "value": port["portid"],
             }
         )
-
     return choices
 
 
@@ -387,3 +388,65 @@ async def get_daily_port_activity_data(
             )
 
     return final_output
+
+
+@alru_cache(maxsize=1)
+async def list_ports() -> list[dict[str, Any]]:
+    """List all available ports from the IMF Port Watch dataset.
+
+    Returns
+    -------
+    list[dict]
+        A list of dictionaries, each representing a port with its details.
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_core.provider.utils.helpers import get_async_requests_session
+
+    url = (
+        "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_ports_database/"
+        + "FeatureServer/0/query?where=1%3D1&outFields=countrynoaccents,portid,lon,lat,portname,ISO3,continent,fullname"
+        + "+&returnGeometry=false&orderByFields=vessel_count_total%20DESC&outSR=&f=json"
+    )
+    ports: list[dict] = []
+
+    try:
+        async with await get_async_requests_session() as session, await session.get(
+            url
+        ) as response:
+            if response.status != 200:
+                raise OpenBBError(
+                    f"Failed to fetch ports data: {response.status} - {response.reason}"
+                )
+            data = await response.json()
+
+            for feature in data.get("features", []):
+                ports.append(feature.get("attributes", {}))
+
+        return ports
+
+    except Exception as e:
+        raise OpenBBError(f"Error fetching ports data: {e} -> {e.args}") from e
+
+
+def get_ports() -> list[dict[str, Any]]:
+    """Get the list of all ports synchronously."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio
+
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+
+    if loop is not None:
+        # Already in an async context
+        import concurrent.futures
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(asyncio.run, list_ports())
+            ports = future.result()
+    else:
+        ports = asyncio.run(list_ports())
+
+    return ports

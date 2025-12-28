@@ -2,10 +2,11 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
+from datetime import date as dateType
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.direction_of_trade import (
     DirectionOfTradeData,
@@ -13,22 +14,16 @@ from openbb_core.provider.standard_models.direction_of_trade import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_imf.utils.dot_helpers import (
-    load_country_map,
-    load_country_to_code_map,
-    validate_countries,
+    get_label_to_code_map,
+    resolve_country_input,
 )
+from pydantic import ConfigDict, Field, field_validator
 
 dot_indicators_dict = {
-    "exports": "TXG_FOB_USD",
-    "imports": "TMG_CIF_USD",
+    "exports": "XG_FOB_USD",
+    "imports": "MG_CIF_USD",
     "balance": "TBG_USD",
-    "all": "TXG_FOB_USD+TMG_CIF_USD+TBG_USD",
-}
-
-dot_titles_map = {
-    "TXG_FOB_USD": "Goods, Value of Exports, Free on board (FOB), US Dollars",
-    "TMG_CIF_USD": "Goods, Value of Imports, Cost, Insurance, Freight (CIF), US Dollars",
-    "TBG_USD": "Goods, Value of Trade Balance, US Dollars",
+    "all": "*",
 }
 
 
@@ -38,17 +33,98 @@ class ImfDirectionOfTradeQueryParams(DirectionOfTradeQueryParams):
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": ["all"] + sorted(list(load_country_to_code_map())),
+            "choices": list(get_label_to_code_map()),
+            "x-widget_config": {"value": "united_states", "style": {"popupWidth": 600}},
         },
         "counterpart": {
             "multiple_items_allowed": True,
-            "choices": ["all"] + sorted(list(load_country_to_code_map())),
+            "choices": ["all"] + list(get_label_to_code_map()),
+            "x-widget_config": {"value": "world", "style": {"popupWidth": 600}},
         },
     }
+
+    limit: int | None = Field(
+        default=None,
+        description="Limit the number of results returned, the most recent data points first.",
+    )
+
+    @field_validator("country", "counterpart", mode="before")
+    @classmethod
+    def _validate_country_fields(cls, v):
+        """Validate country and counterpart fields.
+
+        Accepts both ISO3 codes (e.g., 'USA') and snake_case country names
+        (e.g., 'united_states'). Converts names to ISO3 codes.
+        """
+        if not v:
+            raise ValueError("Required parameter for IMF provider not supplied.")
+
+        if isinstance(v, str) and v.lower() in ["all", "*"]:
+            return "*"
+
+        # Split by comma if string
+        values = (
+            v.split(",")
+            if isinstance(v, str) and "," in v
+            else [v] if isinstance(v, str) else v
+        )
+
+        result: list[str] = []
+        for item in values:
+            item_stripped = item.strip()
+            if item_stripped.lower() in ["all", "*"]:
+                if len(values) > 1:
+                    raise ValueError(
+                        "'all' cannot be used with other country codes in a list."
+                    )
+                return "*"
+            # Resolve the country input (handles both codes and names)
+            resolved = resolve_country_input(item_stripped)
+            result.append(resolved)
+
+        return ",".join(result)
 
 
 class ImfDirectionOfTradeData(DirectionOfTradeData):
     """IMF Direction Of Trade Data."""
+
+    model_config = ConfigDict(extra="ignore")
+    __alias_dict__ = {
+        "date": "TIME_PERIOD",
+        "symbol": "series_id",
+        "country": "COUNTRY",
+        "counterpart": "COUNTERPART_COUNTRY",
+        "counterpart_code": "counterpart_country_code",
+        "value": "OBS_VALUE",
+        "scale": "SCALE",
+        "frequency": "FREQUENCY",
+    }
+
+    date: dateType | int = Field(description="The date of the data.")
+    country: str = Field(description="The country or region to the trade.")
+    unit: str | None = Field(default=None, description="Unit of the value.")
+    country_code: str = Field(description="IMF country code.")
+    counterpart: str = Field(description="Counterpart country or region to the trade.")
+    counterpart_code: str = Field(description="IMF counterpart country code.")
+    symbol: str | None = Field(
+        default=None,
+        description="Symbol representing the entity requested in the data. Concatenated series identifier.",
+    )
+    title: str | None = Field(
+        default=None, description="Title corresponding to the symbol."
+    )
+    value: float = Field(description="Trade value.")
+    scale: str | None = Field(default=None, description="Scale of the value.")
+    unit_multiplier: int | None = Field(
+        default=None, description="Unit multiplier of the value."
+    )
+
+    @field_validator("symbol", mode="before")
+    @classmethod
+    def _validate_symbol(cls, v):
+        """Format symbol to indicators format."""
+        symbol = v.split("IMTS_")[-1]
+        return f"IMTS::{symbol}"
 
 
 class ImfDirectionOfTradeFetcher(
@@ -59,35 +135,6 @@ class ImfDirectionOfTradeFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> ImfDirectionOfTradeQueryParams:
         """Transform query parameters."""
-        countries = params.get("country", "")
-        countries = countries.split(",") if countries else "all"
-        if countries != "all":
-            countries = validate_countries(countries)
-        counterparts = params.get("counterpart", "")
-        counterparts = counterparts.split(",") if params.get("counterpart") else "all"
-        if counterparts != "all":
-            counterparts = validate_countries(counterparts)
-        now = datetime.now().date()
-
-        if countries == "all" and counterparts == "all":
-            raise OpenBBError(
-                "Both 'country' and 'counterpart' cannot be None, or 'all'."
-                + " Please supply lowercase country names or two-letter ISO codes."
-            )
-        if countries == counterparts:
-            raise OpenBBError("The 'country' and 'counterpart' cannot be the same.")
-
-        params["country"] = countries
-        params["counterpart"] = counterparts
-
-        if not params.get("end_date"):
-            params["end_date"] = now.replace(month=12, day=31).strftime("%Y-%m-%d")
-
-        if (countries == "all" or counterparts == "all") and not params.get(
-            "start_date"
-        ):
-            params["start_date"] = now.replace(year=now.year - 1).strftime("%Y-%m-%d")
-
         return ImfDirectionOfTradeQueryParams(**params)
 
     @staticmethod
@@ -95,180 +142,47 @@ class ImfDirectionOfTradeFetcher(
         query: ImfDirectionOfTradeQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> list[dict]:
+    ) -> dict:
         """Extract the data from the IMF API."""
         # pylint: disable=import-outside-toplevel
-        from aiohttp.client_exceptions import ContentTypeError  # noqa
-        from json import JSONDecodeError
-        from openbb_core.provider.utils.helpers import amake_request
-        from pandas import to_datetime
-        from pandas.tseries import offsets
+        from openbb_imf.utils.dot_helpers import imts_query
 
-        start_date = query.start_date
-        end_date = query.end_date
-        frequency = query.frequency[0].upper()
-        country = query.country if query.country != "all" else ""
-        counterpart = query.counterpart if query.counterpart != "all" else ""
-        indicator = dot_indicators_dict[query.direction]
-        # Adjust the dates to the date relative to frequency.
-        # The API does not accept arbitrary dates, so we need to adjust them.
-        if start_date:
-            start_date = to_datetime(start_date)
-            if frequency == "Q":
-                start_date = offsets.QuarterBegin(startingMonth=1).rollback(start_date)
-            elif frequency == "A":
-                start_date = offsets.YearBegin().rollback(start_date)
-            else:
-                start_date = offsets.MonthBegin().rollback(start_date)
-            start_date = start_date.strftime("%Y-%m-%d")  # type: ignore
-
-        if end_date:
-            end_date = to_datetime(end_date)
-            if frequency == "Q":
-                end_date = offsets.QuarterEnd().rollforward(end_date)
-            elif frequency == "A":
-                end_date = offsets.YearEnd().rollforward(end_date)
-            else:
-                end_date = offsets.MonthEnd().rollforward(end_date)
-            end_date = end_date.strftime("%Y-%m-%d")  # type: ignore
-
-        date_range = (  # type: ignore
-            f"?startPeriod={start_date}&endPeriod={end_date}"
-            if start_date and end_date
-            else ""
-        )
-        base_url = "http://dataservices.imf.org/REST/SDMX_JSON.svc/"
-        key = f"CompactData/DOT/{frequency}.{country}.{indicator}.{counterpart}"
-        url = f"{base_url}{key}{date_range}"
+        if query.limit:
+            kwargs = {"lastNObservations": query.limit}
 
         try:
-            response = await amake_request(url, timeout=20)
-        except (JSONDecodeError, ContentTypeError) as e:
-            raise OpenBBError(
-                "Error fetching data; This might be rate-limiting. Try again later."
-            ) from e
-
-        if "ErrorDetails" in response:
-            raise OpenBBError(
-                f"{response['ErrorDetails'].get('Code')} -> {response['ErrorDetails'].get('Message')}"  # type: ignore
+            return imts_query(
+                country=query.country or "",
+                counterpart=query.counterpart or "",
+                indicator=dot_indicators_dict.get(query.direction, "*"),
+                freq=query.frequency[0].upper(),
+                start_date=(
+                    query.start_date.strftime("%Y-%m-%d") if query.start_date else None
+                ),
+                end_date=(
+                    query.end_date.strftime("%Y-%m-%d") if query.end_date else None
+                ),
+                **kwargs,
             )
-
-        series = response.get("CompactData", {}).get("DataSet", {}).pop("Series", {})  # type: ignore
-
-        if not series:
-            raise OpenBBError(f"No time series data found -> {url} -> {response}")
-
-        # If there is only one series, they ruturn a dict instead of a list.
-        if series and isinstance(series, dict):
-            series = [series]
-
-        return series
+        except (ValueError, OpenBBError) as e:
+            raise OpenBBError(e) from e
 
     @staticmethod
     def transform_data(
         query: ImfDirectionOfTradeQueryParams,
-        data: list[dict],
+        data: dict,
         **kwargs: Any,
-    ) -> list[ImfDirectionOfTradeData]:
+    ) -> AnnotatedResult[list[ImfDirectionOfTradeData]]:
         """Transform the data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_imf.utils.constants import UNIT_MULTIPLIERS_MAP  # noqa
-        from pandas import Categorical, DataFrame, to_datetime
-        from pandas.tseries import offsets
+        meta = data.get("metadata", {})
+        records = data.get("data", [])
 
-        if not data:
-            raise EmptyDataError()
+        if not records:
+            raise EmptyDataError("No data found for the given query parameters.")
 
-        dot_code_to_country = load_country_map()
-        series = data
-        results: list = []
-
-        for s in series:
-            if "Obs" not in s:
-                continue
-            meta = {
-                k.replace("@", "").lower(): (
-                    UNIT_MULTIPLIERS_MAP.get(str(v), v) if k == "@UNIT_MULT" else v
-                )
-                for k, v in s.items()
-                if k != "Obs"
-            }
-            _symbol = meta.get("indicator", "")
-            _title = None
-
-            _data = s.pop("Obs", [])
-
-            if isinstance(_data, dict):
-                _data = [_data]
-
-            for d in _data:
-                _date = d.pop("@TIME_PERIOD", None)
-                val: float | None = d.pop("@OBS_VALUE", None)
-                _ = d.pop("@OBS_STATUS", None)
-                val = float(val) if val else None
-                if not val:
-                    continue
-
-                if _date:
-                    offset = (
-                        offsets.QuarterEnd
-                        if "Q" in _date
-                        else (
-                            offsets.YearEnd
-                            if len(str(_date)) == 4
-                            else offsets.MonthEnd
-                        )
-                    )
-                    _date = to_datetime(_date)
-                    _date = _date + offset(0)
-                    _date = _date.strftime("%Y-%m-%d")
-                vals = {
-                    k: v
-                    for k, v in {
-                        "date": _date,
-                        "symbol": _symbol,
-                        "country": dot_code_to_country.get(
-                            meta.get("ref_area"), meta.get("ref_area")
-                        ),
-                        "counterpart": dot_code_to_country.get(
-                            meta.get("counterpart_area"), meta.get("counterpart_area")
-                        ),
-                        "title": dot_titles_map.get(_symbol),
-                        "scale": meta.get("unit_mult"),
-                        "value": val,
-                    }.items()
-                    if v
-                }
-
-                if (
-                    vals.get("value")
-                    and vals.get("date")
-                    and vals.get("country") != vals.get("counterpart")
-                ):
-                    d.update(vals)
-
-            if _data:
-                results.extend([d for d in _data if d])
-
-        df = DataFrame(results)
-        df["symbol"] = Categorical(
-            df["symbol"],
-            categories=list(dot_titles_map),
-            ordered=True,
+        return AnnotatedResult(
+            result=[
+                ImfDirectionOfTradeData.model_validate(record) for record in records
+            ],
+            metadata=meta,
         )
-        df["country"] = Categorical(
-            df["country"],
-            categories=sorted(df.country.unique().tolist()),
-            ordered=True,
-        )
-        df["counterpart"] = Categorical(
-            df["counterpart"],
-            categories=sorted(df.counterpart.unique().tolist()),
-            ordered=True,
-        )
-        df = df.sort_values(by=["date", "country", "counterpart"])
-
-        return [
-            ImfDirectionOfTradeData.model_validate(r)
-            for r in df.to_dict(orient="records")
-        ]

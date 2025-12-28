@@ -103,6 +103,19 @@ def test_economy_calendar(params, headers):
                 "expenditure": "transport",
             }
         ),
+        (
+            {
+                "country": "portugal,spain",
+                "transform": "yoy",
+                "frequency": "quarter",
+                "harmonized": False,
+                "start_date": "2020-01-01",
+                "end_date": "2023-06-06",
+                "provider": "imf",
+                "expenditure": "transport",
+                "limit": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -550,21 +563,15 @@ def test_economy_fred_regional(params, headers):
         (
             {
                 "provider": "imf",
-                "country": "us,uk,jp",
-                "symbol": "gold_reserves",
-                "start_date": "2022-01-01",
-                "end_date": "2023-12-31",
-                "frequency": "annual",
-            }
-        ),
-        (
-            {
-                "provider": "imf",
-                "country": "all",
-                "symbol": "derivative_assets",
-                "start_date": "2022-01-01",
-                "end_date": "2023-12-31",
-                "frequency": "annual",
+                "country": "*",
+                "symbol": "IL::RGV_REVS",
+                "start_date": "2025-09-30",
+                "end_date": None,
+                "frequency": "month",
+                "transform": None,
+                "dimension_values": None,
+                "limit": 1,
+                "pivot": False,
             }
         ),
     ],
@@ -585,7 +592,15 @@ def test_economy_indicators(params, headers):
     "params",
     [
         ({"provider": "econdb", "use_cache": False}),
-        ({"provider": "imf", "query": "balance sheet;households;debt"}),
+        (
+            {
+                "provider": "imf",
+                "query": "gold+volume",
+                "dataflows": None,
+                "keywords": None,
+                "symbol": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1287,11 +1302,13 @@ def test_economy_shipping_chokepoint_info(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "provider": "imf",
-            }
-        ),
+        {
+            "provider": "imf",
+            "port_code": None,
+            "country": None,
+            "continent": None,
+            "limit": None,
+        }
     ],
 )
 @pytest.mark.integration

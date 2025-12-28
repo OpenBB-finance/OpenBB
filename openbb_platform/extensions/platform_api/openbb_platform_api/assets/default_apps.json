@@ -466,179 +466,101 @@
     "groups": []
   },
   {
-      "name": "Example IMF App",
-      "img": "https://www.imf.org/-/media/Images/IMF/About/Factsheets/2022/Hero/imf-logo.ashx",
-      "description": "Global economic and financial data, including GDP, inflation, trade, and fiscal balances (WEO), financial stability risks (GFSR), and public debt (GFS, QPSD). It tracks exchange rates, interest rates, and money supply (IFS), balance of payments and trade flows (BOPS, DOTS), and banking sector health (FSIs).",
-      "allowCustomization": true,
-      "tabs": {
-        "DirectionOfTrade": {
-          "id": "DirectionOfTrade",
-          "name": "Direction Of Trade",
-          "layout": [
-            {
-              "i": "economy_direction_of_trade_imf_obb",
-              "x": 0,
-              "y": 2,
-              "w": 40,
-              "h": 25,
-              "state": {
-                "params": {
-                  "country": "us",
-                  "counterpart": "canada,mexico",
-                  "direction": "all",
-                  "start_date": "2010-01-01"
-                },
-                "chartView": {
-                  "enabled": false,
-                  "chartType": "line"
-                },
-                "columnState": {
-                  "default_": {
-                    "columnPinning": {
-                      "leftColIds": [
-                        "date",
-                        "symbol",
-                        "title"
-                      ],
-                      "rightColIds": []
-                    }
+    "name": "The United States Congress",
+    "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "description": "Find and view US federal legislative information and complete bill text.",
+    "allowCustomization": true,
+    "tabs": {
+      "": {
+        "id": "",
+        "name": "",
+        "layout": [
+          {
+            "i": "uscongress_bills_congress_gov_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 11,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "origin_chamber_code"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "update_date",
+                      "latest_action_date",
+                      "bill_url",
+                      "congress",
+                      "bill_number",
+                      "origin_chamber",
+                      "origin_chamber_code",
+                      "bill_type",
+                      "title",
+                      "latest_action",
+                      "update_date_including_text"
+                    ]
+                  },
+                  "focusedCell": {
+                    "colId": "bill_url",
+                    "rowIndex": 2,
+                    "rowPinned": null
                   }
                 }
               }
             }
-          ]
-        },
-        "Indicators": {
-          "id": "Indicators",
-          "name": "Indicators",
-          "layout": [
-            {
-              "i": "economy_available_indicators_imf_obb",
-              "x": 0,
-              "y": 2,
-              "w": 40,
-              "h": 10,
-              "state": {
-                "chartView": {
-                  "enabled": false,
-                  "chartType": "line"
-                }
-              }
-            },
-            {
-              "i": "economy_indicators_imf_obb",
-              "x": 0,
-              "y": 12,
-              "w": 40,
-              "h": 15,
-              "state": {
-                "chartView": {
-                  "enabled": false,
-                  "chartType": "line"
-                }
+          },
+          {
+            "i": "uscongress_bill_text_congress_gov_obb",
+            "x": 16,
+            "y": 11,
+            "w": 24,
+            "h": 41,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
               }
             }
-          ]
-        }
-      },
-      "groups": []
+          },
+          {
+            "i": "uscongress_bill_info_congress_gov_obb",
+            "x": 0,
+            "y": 11,
+            "w": 16,
+            "h": 41,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
+              }
+            }
+          }
+        ]
+      }
     },
-    {
-      "name": "The United States Congress",
-      "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
-      "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
-      "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
-      "description": "Find and view US federal legislative information and complete bill text.",
-      "allowCustomization": true,
-      "tabs": {
-        "": {
-          "id": "",
-          "name": "",
-          "layout": [
-            {
-              "i": "uscongress_bills_congress_gov_obb",
-              "x": 0,
-              "y": 0,
-              "w": 40,
-              "h": 11,
-              "state": {
-                "params": {
-                  "bill_url": "119/hr/1"
-                },
-                "chartView": {
-                  "enabled": false,
-                  "chartType": "line"
-                },
-                "columnState": {
-                  "default": {
-                    "columnVisibility": {
-                      "hiddenColIds": [
-                        "origin_chamber_code"
-                      ]
-                    },
-                    "columnOrder": {
-                      "orderedColIds": [
-                        "update_date",
-                        "latest_action_date",
-                        "bill_url",
-                        "congress",
-                        "bill_number",
-                        "origin_chamber",
-                        "origin_chamber_code",
-                        "bill_type",
-                        "title",
-                        "latest_action",
-                        "update_date_including_text"
-                      ]
-                    },
-                    "focusedCell": {
-                      "colId": "bill_url",
-                      "rowIndex": 2,
-                      "rowPinned": null
-                    }
-                  }
-                }
-              }
-            },
-            {
-              "i": "uscongress_bill_text_congress_gov_obb",
-              "x": 16,
-              "y": 11,
-              "w": 24,
-              "h": 41,
-              "state": {
-                "params": {
-                  "bill_url": "119/hr/1"
-                }
-              }
-            },
-            {
-              "i": "uscongress_bill_info_congress_gov_obb",
-              "x": 0,
-              "y": 11,
-              "w": 16,
-              "h": 41,
-              "state": {
-                "params": {
-                  "bill_url": "119/hr/1"
-                }
-              }
-            }
-          ]
-        }
-      },
-      "groups": [
-        {
-          "name": "Group 1",
-          "type": "param",
-          "paramName": "bill_url",
-          "defaultValue": "119/hr/1",
-          "widgetIds": [
-            "uscongress_bills_congress_gov_obb",
-            "uscongress_bill_text_congress_gov_obb",
-            "uscongress_bill_info_congress_gov_obb"
-          ]
-        }
-      ]
-    }
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "param",
+        "paramName": "bill_url",
+        "defaultValue": "119/hr/1",
+        "widgetIds": [
+          "uscongress_bills_congress_gov_obb",
+          "uscongress_bill_text_congress_gov_obb",
+          "uscongress_bill_info_congress_gov_obb"
+        ]
+      }
+    ]
+  }
 ]

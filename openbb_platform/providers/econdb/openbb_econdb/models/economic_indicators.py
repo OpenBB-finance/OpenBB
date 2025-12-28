@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Literal
+from typing import Any
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -24,6 +24,8 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True},
         "country": {"multiple_items_allowed": True},
+        "transform": {"choices": ["toya", "tpop", "tusd", "tpgp"]},
+        "frequency": {"choices": ["annual", "quarter", "month"]},
     }
 
     symbol: str = Field(
@@ -32,7 +34,12 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + " Use `available_indicators()` to get a list of available symbols.",
     )
 
-    transform: None | Literal["toya", "tpop", "tusd", "tpgp"] = Field(
+    country: str | None = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("country", "")
+        + " ISO country codes or country names.",
+    )
+    transform: None | str = Field(
         default=None,
         description="The transformation to apply to the data, default is None."
         + "\n"
@@ -49,7 +56,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + " and the original units and scale differ between entities."
         + "\n    `tusd` should only be used where values are currencies.",
     )
-    frequency: Literal["annual", "quarter", "month"] = Field(
+    frequency: str = Field(
         default="quarter",
         description="The frequency of the data, default is 'quarter'."
         + " Only valid when 'symbol' is 'main'.",

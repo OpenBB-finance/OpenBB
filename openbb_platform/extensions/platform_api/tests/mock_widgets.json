@@ -959,7 +959,6 @@
                     },
                     {
                         "field": "name",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",
@@ -1901,7 +1900,6 @@
                     },
                     {
                         "field": "series_id",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Series ID",
                         "headerTooltip": "The series ID for the item in the release.",
@@ -1909,7 +1907,6 @@
                     },
                     {
                         "field": "name",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the release.",
@@ -2618,7 +2615,6 @@
                     },
                     {
                         "field": "name",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",
@@ -2953,7 +2949,6 @@
                     },
                     {
                         "field": "series_id",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Series ID",
                         "headerTooltip": "The individual series ID for the region.",
@@ -3289,7 +3284,6 @@
                     },
                     {
                         "field": "name",
-                        "pinned": "left",
                         "formatterFn": null,
                         "headerName": "Name",
                         "headerTooltip": "The name of the series.",

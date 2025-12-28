@@ -5,6 +5,7 @@ from datetime import date
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
+from openbb_imf.models.consumer_price_index import ImfConsumerPriceIndexFetcher
 from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
 from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoFetcher
@@ -19,36 +20,45 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
-def scrub_string(key):
-    """Scrub a string from the response."""
-
-    def before_record_response(response):
-        response["headers"][key] = response["headers"].update({key: None})
-        return response
-
-    return before_record_response
-
-
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
-        "before_record_response": [
-            scrub_string("Set-Cookie"),
-        ],
     }
+
+
+@pytest.mark.record_http
+def test_imf_consumer_price_index_fetcher(credentials=test_credentials):
+    """Test the IMF ConsumerPriceIndex fetcher."""
+    params = {
+        "country": "JPN",
+        "frequency": "quarter",
+        "transform": "yoy",
+        "expenditure": "total",
+        "start_date": date(2024, 1, 1),
+        "end_date": date(2025, 1, 1),
+        "harmonized": False,
+        "limit": None,
+    }
+
+    fetcher = ImfConsumerPriceIndexFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
 def test_imf_economic_indicators_fetcher(credentials=test_credentials):
     """Test the IMF EconomicIndicators fetcher."""
     params = {
-        "country": "JP",
-        "frequency": "month",
-        "symbol": "RAMFDA_USD",
+        "country": "JPN",
+        "frequency": "quarter",
+        "symbol": "IL::RGV_REVS",
         "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 12, 31),
+        "end_date": date(2024, 1, 1),
+        "limit": None,
+        "transform": None,
+        "dimension_values": None,
     }
 
     fetcher = ImfEconomicIndicatorsFetcher()
@@ -59,7 +69,7 @@ def test_imf_economic_indicators_fetcher(credentials=test_credentials):
 # The data for this request are local files, so we can't record them.
 def test_imf_available_indicators_fetcher(credentials=test_credentials):
     """Test the IMF Available Indicators fetcher."""
-    params = {}
+    params = {"query": "gold+volume"}
 
     fetcher = ImfAvailableIndicatorsFetcher()
     result = fetcher.test(params, credentials)
@@ -70,12 +80,13 @@ def test_imf_available_indicators_fetcher(credentials=test_credentials):
 def test_imf_direction_of_trade_fetcher(credentials=test_credentials):
     """Test the ImfDirectionOfTrade fetcher."""
     params = {
-        "country": "us",
-        "counterpart": "world,eu",
+        "country": "USA",
+        "counterpart": "G001,G998",
         "frequency": "annual",
         "direction": "exports",
-        "start_date": date(2020, 1, 1),
-        "end_date": date(2023, 1, 1),
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2025, 1, 1),
+        "limit": None,
     }
 
     fetcher = ImfDirectionOfTradeFetcher()

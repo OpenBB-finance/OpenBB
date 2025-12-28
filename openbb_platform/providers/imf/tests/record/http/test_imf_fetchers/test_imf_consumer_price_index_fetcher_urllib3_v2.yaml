@@ -1,0 +1,351 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/*.*.*.*.*/COUNTRY
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"31587","type":"sdmx_metrics"},{"id":"time_period_start","title":"1900-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-01-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BDI"},{"value":"BEL"},{"value":"BEN"},{"value":"BFA"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BLR"},{"value":"BLZ"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CIV"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CUW"},{"value":"CYM"},{"value":"CYP"},{"value":"CZE"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECU"},{"value":"EGY"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"FIN"},{"value":"FJI"},{"value":"FRA"},{"value":"FSM"},{"value":"G163"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIN"},{"value":"GLP"},{"value":"GMB"},{"value":"GNB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GRL"},{"value":"GTM"},{"value":"GUY"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KIR"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MKD"},{"value":"MLI"},{"value":"MLT"},{"value":"MMR"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MTQ"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NCL"},{"value":"NER"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NRU"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PLW"},{"value":"PNG"},{"value":"POL"},{"value":"PRT"},{"value":"PRY"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SDN"},{"value":"SEN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SXM"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"TGO"},{"value":"THA"},{"value":"TJK"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TUV"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VCT"},{"value":"VEN"},{"value":"VGB"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YEM"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF5550","test":false,"prepared":"2025-12-16T05:14:38.550091525Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:14:38 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-encoding:
+      - gzip
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - b2dfcb0d3595626dc6220e68ec7f1319
+      x-envoy-upstream-service-time:
+      - '61'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/JPN.*.*.*.*/INDEX_TYPE
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"78","type":"sdmx_metrics"},{"id":"time_period_start","title":"1900-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-11-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"INDEX_TYPE","include":false,"removePrefix":false,"values":[{"value":"CPI"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF9874","test":false,"prepared":"2025-12-16T05:14:39.238805530Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1156'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:14:39 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 64e5e0c667fa9ccfb403fc4fe406c32f
+      x-envoy-upstream-service-time:
+      - '62'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/JPN.CPI.*.*.*/COICOP_1999
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"78","type":"sdmx_metrics"},{"id":"time_period_start","title":"1900-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-11-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COICOP_1999","include":false,"removePrefix":false,"values":[{"value":"CP01"},{"value":"CP02"},{"value":"CP03"},{"value":"CP04"},{"value":"CP05"},{"value":"CP06"},{"value":"CP07"},{"value":"CP08"},{"value":"CP09"},{"value":"CP10"},{"value":"CP11"},{"value":"CP12"},{"value":"_T"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF9866","test":false,"prepared":"2025-12-16T05:14:39.759048387Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1360'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:14:39 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - d22e42f0627ff27d2637c530ef4ef1f6
+      x-envoy-upstream-service-time:
+      - '83'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/JPN.CPI._T.*.*/TYPE_OF_TRANSFORMATION
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"18","type":"sdmx_metrics"},{"id":"time_period_start","title":"1900-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-11-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"TYPE_OF_TRANSFORMATION","include":false,"removePrefix":false,"values":[{"value":"IX"},{"value":"POP_PCH_PA_PT"},{"value":"SRP_IX"},{"value":"SRP_POP_PCH_PA_PT"},{"value":"SRP_YOY_PCH_PA_PT"},{"value":"YOY_PCH_PA_PT"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF1106","test":false,"prepared":"2025-12-16T05:14:40.523815481Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1298'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:14:40 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 39c11ff5d858fb19896cd96f2f650a2f
+      x-envoy-upstream-service-time:
+      - '59'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/CPI/%2B/JPN.CPI._T.YOY_PCH_PA_PT.*/FREQUENCY
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:CPI(5.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"3","type":"sdmx_metrics"},{"id":"time_period_start","title":"1956-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-11-01","type":"sdmx_metrics"}],"id":"CPI","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"5.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"FREQUENCY","include":false,"removePrefix":false,"values":[{"value":"A"},{"value":"M"},{"value":"Q"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF1244","test":false,"prepared":"2025-12-16T05:14:41.017267863Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1180'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:14:41 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 2789ca0ce9b0dad905aa5782956faccf
+      x-envoy-upstream-service-time:
+      - '68'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/xml
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/CPI/+/JPN.CPI._T.YOY_PCH_PA_PT.Q?c%5BTIME_PERIOD%5D=ge:2024-01-01+le:2025-02-01&dimensionAtObservation=TIME_PERIOD&detail=full&includeHistory=false
+  response:
+    body:
+      string: <?xml version='1.0' encoding='UTF-8'?><message:StructureSpecificData
+        xmlns:metadata="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/metadata/generic"
+        xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:ss="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data/structurespecific"
+        xmlns:ns1="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0):ObsLevelDim:TIME_PERIOD"
+        xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
+        ../../schemas/SDMXMessage.xsd"><message:Header><message:ID>IDREF8133</message:ID><message:Test>false</message:Test><message:Prepared>2025-12-16T05:14:41.552208978Z</message:Prepared><message:Sender
+        id="unknown"/><message:Structure structureID="IMF.STA.DSD_CPI.5.0.0" namespace="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)"
+        dimensionAtObservation="TIME_PERIOD"><common:Structure>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_CPI(5.0.0)</common:Structure></message:Structure></message:Header><message:DataSet
+        ss:structureRef="IMF.STA.DSD_CPI.5.0.0" action="Replace"><Series COUNTRY="JPN"
+        INDEX_TYPE="CPI" COICOP_1999="_T" TYPE_OF_TRANSFORMATION="YOY_PCH_PA_PT" FREQUENCY="Q"
+        IFS_FLAG="true" OVERLAP="OL" SCALE="0"><Obs OBS_VALUE="2.523155541360555"
+        DERIVATION_TYPE="O" TIME_PERIOD="2024-Q1"/><Obs OBS_VALUE="2.726696258719119"
+        DERIVATION_TYPE="O" TIME_PERIOD="2024-Q2"/><Obs OBS_VALUE="2.769037130270674"
+        DERIVATION_TYPE="O" TIME_PERIOD="2024-Q3"/><Obs OBS_VALUE="2.930174563591086"
+        DERIVATION_TYPE="O" TIME_PERIOD="2024-Q4"/></Series></message:DataSet></message:StructureSpecificData>
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 16 Dec 2025 05:14:41 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-encoding:
+      - gzip
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 48c608bdcd7dd5c8f2f7617595341f19
+      x-envoy-upstream-service-time:
+      - '90'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
