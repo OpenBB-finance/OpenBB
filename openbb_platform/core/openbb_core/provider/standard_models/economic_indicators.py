@@ -14,23 +14,27 @@ from pydantic import Field
 class EconomicIndicatorsQueryParams(QueryParams):
     """Economic Indicators Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     country: str | None = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("country", "")
-        + " The country represented by the indicator, if available.",
+        default=None, description=QUERY_DESCRIPTIONS.get("country", "")
+    )
+    frequency: str | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("frequency", "")
     )
     start_date: dateType | None = Field(
-        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: dateType | None = Field(
-        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
 
 class EconomicIndicatorsData(Data):
     """Economic Indicators Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: dateType | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
+    )
     symbol_root: str | None = Field(
         default=None, description="The root symbol for the indicator (e.g. GDP)."
     )

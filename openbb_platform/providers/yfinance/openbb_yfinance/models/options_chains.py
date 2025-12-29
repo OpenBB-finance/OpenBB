@@ -63,28 +63,69 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from curl_adapter import CurlCffiAdapter
-        from openbb_core.provider.utils.helpers import get_requests_session
         from pandas import concat
         from yfinance import Ticker
         from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
-        ticker = Ticker(
-            symbol,
-            session=session,
+
+        def _get_all_data(symbol: str):
+            """Get all options data in a single thread-safe operation."""
+            t = Ticker(symbol)
+            expirations = list(t.options)
+
+            if not expirations or len(expirations) == 0:
+                return None, None, []
+
+            underlying = t.option_chain(expirations[0])[2]
+            chains_output: list = []
+            tz = timezone(underlying.get("exchangeTimezoneName", "UTC"))
+
+            for expiration in expirations:
+                exp = datetime.strptime(expiration, "%Y-%m-%d").date()
+                now = datetime.now().date()
+                dte = (exp - now).days
+                chain_data = t.option_chain(expiration, tz=tz)
+                calls = chain_data[0]
+                calls["option_type"] = "call"
+                calls["expiration"] = expiration
+                puts = chain_data[1]
+                puts["option_type"] = "put"
+                puts["expiration"] = expiration
+                chain = concat([calls, puts])
+                chain = (
+                    chain.set_index(["strike", "option_type", "contractSymbol"])
+                    .sort_index()
+                    .reset_index()
+                )
+                chain = chain.drop(columns=["contractSize"])
+                chain["dte"] = dte
+                underlying_price = underlying.get(
+                    "postMarketPrice", underlying.get("regularMarketPrice")
+                )
+                if underlying_price is not None:
+                    chain["underlying_price"] = underlying_price
+                    chain["underlying_symbol"] = symbol
+                chain["percentChange"] = chain["percentChange"] / 100
+
+                if len(chain) > 0:
+                    chains_output.extend(
+                        chain.fillna("N/A").replace("N/A", None).to_dict("records")
+                    )
+
+            return underlying, chains_output, expirations
+
+        underlying, chains_output, expirations = await asyncio.to_thread(
+            _get_all_data, symbol
         )
-        expirations = list(ticker.options)
 
         if not expirations or len(expirations) == 0:
             raise OpenBBError(f"No options found for {symbol}")
 
-        chains_output: list = []
-        underlying = ticker.option_chain(expirations[0])[2]
+        if not chains_output:
+            raise EmptyDataError(f"No data was returned for {symbol}")
+
         underlying_output: dict = {
             "symbol": symbol,
             "name": underlying.get("longName"),
@@ -117,48 +158,6 @@ class YFinanceOptionsChainsFetcher(
             "market_cap": underlying.get("marketCap"),
             "shares_outstanding": underlying.get("sharesOutstanding"),
         }
-        tz = timezone(underlying_output.get("exchange_tz", "UTC"))
-
-        underlying_price = underlying_output.get("last_price")
-
-        async def get_chain(ticker, expiration, tz, underlying_price):
-            """Get the data for one expiration."""
-            exp = datetime.strptime(expiration, "%Y-%m-%d").date()
-            now = datetime.now().date()
-            dte = (exp - now).days
-            calls = ticker.option_chain(expiration, tz=tz)[0]
-            calls["option_type"] = "call"
-            calls["expiration"] = expiration
-            puts = ticker.option_chain(expiration, tz=tz)[1]
-            puts["option_type"] = "put"
-            puts["expiration"] = expiration
-            chain = concat([calls, puts])
-            chain = (
-                chain.set_index(["strike", "option_type", "contractSymbol"])
-                .sort_index()
-                .reset_index()
-            )
-            chain = chain.drop(columns=["contractSize"])
-            chain["dte"] = dte
-            if underlying_price is not None:
-                chain["underlying_price"] = underlying_price
-                chain["underlying_symbol"] = symbol
-            chain["percentChange"] = chain["percentChange"] / 100
-
-            if len(chain) > 0:
-                chains_output.extend(
-                    chain.fillna("N/A").replace("N/A", None).to_dict("records")
-                )
-
-        await asyncio.gather(
-            *[
-                get_chain(ticker, expiration, tz, underlying_price)
-                for expiration in expirations
-            ]
-        )
-
-        if not chains_output:
-            raise EmptyDataError(f"No data was returned for {symbol}")
 
         return {"underlying": underlying_output, "chains": chains_output}
 

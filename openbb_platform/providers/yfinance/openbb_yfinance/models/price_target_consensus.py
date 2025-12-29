@@ -85,9 +85,7 @@ class YFinancePriceTargetConsensusFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from curl_adapter import CurlCffiAdapter
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_requests_session
         from warnings import warn
         from yfinance import Ticker
 
@@ -105,9 +103,6 @@ class YFinancePriceTargetConsensusFetcher(
             "recommendationKey",
             "numberOfAnalystOpinions",
         ]
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
         messages: list = []
 
         async def get_one(symbol):
@@ -115,10 +110,7 @@ class YFinancePriceTargetConsensusFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = Ticker(
-                    symbol,
-                    session=session,
-                ).get_info()
+                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol}: {e.__class__.__name__}: {e}"

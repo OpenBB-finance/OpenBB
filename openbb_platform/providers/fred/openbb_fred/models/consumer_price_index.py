@@ -10,12 +10,10 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item
 from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, CpiCountries, all_cpi_options
-from pydantic import Field, field_validator
+from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
+from pydantic import field_validator
 
 
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
@@ -26,12 +24,10 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
             "multiple_items_allowed": True,
             "choices": CPI_COUNTRIES,
         },
+        "transform": {
+            "choices": ["index", "yoy", "period"],
+        },
     }
-
-    country: CpiCountries | str = Field(
-        description=QUERY_DESCRIPTIONS.get("country"),
-        default="united_states",
-    )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
@@ -40,9 +36,23 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
         result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
-            check_item(v.lower(), CPI_COUNTRIES)
+            if v.lower() not in CPI_COUNTRIES:
+                raise ValueError(
+                    f"Invalid country: {v}. Available countries are: {', '.join(CPI_COUNTRIES)}"
+                )
             result.append(v.lower())
         return ",".join(result)
+
+    @field_validator("transform", mode="before", check_fields=False)
+    @classmethod
+    def validate_transform(cls, t: str):
+        """Validate transform."""
+        valid_transforms = ["index", "yoy", "period"]
+        if t.lower() not in valid_transforms:
+            raise ValueError(
+                f"Invalid transform: {t}. Available transforms are: {', '.join(valid_transforms)}"
+            )
+        return t.lower()
 
 
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
@@ -92,8 +102,8 @@ class FREDConsumerPriceIndexFetcher(
         )
         results: dict = {}
         temp = await FredSeriesFetcher.fetch_data(item_query, credentials)
-        result = [d.model_dump() for d in temp.result]
-        results["metadata"] = {country_map.get(k): v for k, v in temp.metadata.items()}
+        result = [d.model_dump() for d in temp.result]  # type: ignore
+        results["metadata"] = {country_map.get(k): v for k, v in temp.metadata.items()}  # type: ignore
         results["data"] = [
             {country_map.get(k, k): v for k, v in d.items()} for d in result
         ]

@@ -325,6 +325,10 @@ def main():
                                     "groupByParamName": "symbol",
                                 },
                             },
+                            {
+                                "field": "name",
+                                "pinned": "left",
+                            },
                         ],
                     }
                 },
@@ -394,6 +398,10 @@ def main():
                                     "actionType": "groupBy",
                                     "groupByParamName": "symbol2",
                                 },
+                            },
+                            {
+                                "field": "name",
+                                "pinned": "left",
                             },
                         ],
                     }
@@ -559,6 +567,10 @@ def main():
                                     "actionType": "groupBy",
                                     "groupByParamName": "symbol3",
                                 },
+                            },
+                            {
+                                "field": "name",
+                                "pinned": "left",
                             },
                         ],
                     }

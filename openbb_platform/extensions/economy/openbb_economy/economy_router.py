@@ -6,7 +6,7 @@ from typing import Annotated
 
 from fastapi import Body
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -79,6 +79,14 @@ async def calendar(
                 "provider": "oecd",
             },
         ),
+        PythonEx(
+            description="Get the latest reported weightings of a country's CPI basket, from IMF.",
+            code=[
+                "res = obb.economy.cpi("
+                + "provider='imf', country='CAN', transform='weight_percent', expenditure='all', limit=1)",
+                "print(res.model_dump(include='results')['results'])",
+            ],
+        ),
     ],
 )
 async def cpi(
@@ -87,10 +95,7 @@ async def cpi(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Consumer Price Index (CPI).
-
-    Returns either the rescaled index value, or a rate of change (inflation).
-    """
+    """Get Consumer Price Index (CPI) data by country."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -346,7 +351,7 @@ async def available_indicators(
         APIEx(parameters={"provider": "econdb", "symbol": "PCOCO"}),
         APIEx(
             description="Enter the country as the full name, or iso code."
-            + " Use `available_indicators()` to get a list of supported indicators from EconDB.",
+            + " Use `/economy/available_indicators` to get a list of supported indicators from EconDB.",
             parameters={
                 "symbol": "CPI",
                 "country": "united_states,jp",
@@ -358,44 +363,29 @@ async def available_indicators(
             parameters={"provider": "econdb", "symbol": "main", "country": "eu"},
         ),
         APIEx(
-            description="When the provider is 'imf', the absence of a symbol will default to 'irfcl_top_lines'."
-            + " Use 'IRFCL' to get all the data from the set of indicators.",
-            parameters={"provider": "imf"},
-        ),
-        APIEx(
-            description="When the provider is 'imf', complete tables are returned by using a 'preset'."
-            + " Refer to the function's docstring for descriptions of each preset."
-            + " When no country is supplied, the data is returned for all countries.",
-            parameters={"provider": "imf", "symbol": "gold_reserves"},
-        ),
-        APIEx(
-            description="When the provider is 'imf', multiple countries and symbols can be supplied."
-            + " Enter countries as a two-letter ISO country code, or the country name in lower_snake_case.",
+            description="IMF indicators are identified by their dataflow and indicator code."
+            + " Use `/economy/available_indicators` to get and search a list of supported indicators symbols."
+            + " This example gets gold reserves held by countries, measured in Fine Troy Ounces.",
             parameters={
                 "provider": "imf",
-                "symbol": "RAFA_USD,RAPFA_USD,RAFA_RAPFA_RO",
-                "country": "us,china,jp,4f,gb",
-                "start_date": "2010-01-01",
-                "end_date": "2020-12-31",
-                "frequency": "annual",
+                "symbol": "IL::RGV_REVS",
+                "country": "*",
+                "frequency": "month",
+                "limit": 1,
+                "start_date": "2025-09-30",
             },
         ),
         APIEx(
-            description=(
-                "When the provider is 'imf', additional presets return the core Financial Soundness Indicators."
-                "\n    'fsi_core' -  Core FSIs"
-                "\n    'fsi_encouraged_set' - Encouraged Set of FSIs,"
-                "\n    'fsi_core_underlying' - Underlying data for the Core FSIs."
-                "\n    'fsi_other' - Additional/Other FSIs that are not in the Core or Encouraged Set."
-                "\n    'fsi_all' - all FSI data for a single country."
-            ),
+            description="IMF symbols can also be used for retrieving entire presentation tables."
+            + " This example gets the Direct Investment Position (DIP) table."
+            + " Use `/imf_utils/list_tables` to get a list of supported presentation table symbols.",
             parameters={
                 "provider": "imf",
-                "symbol": "fsi_encouraged_set",
-                "country": "us,fr,gb",
-                "start_date": "2022-01-01",
-                "end_date": "2023-12-31",
+                "symbol": "DIP::H_DIP_INDICATOR",
+                "country": "BRA",
                 "frequency": "annual",
+                "limit": 2,
+                "pivot": True,
             },
         ),
     ],

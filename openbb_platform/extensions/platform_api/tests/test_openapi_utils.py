@@ -8,10 +8,12 @@ from pathlib import Path
 
 import pytest
 from openbb_platform_api.utils.openapi import (
+    _extract_provider_description,
     data_schema_to_columns_defs,
     get_data_schema_for_widget,
     get_query_schema_for_widget,
     post_query_schema_for_widget,
+    process_parameter,
 )
 
 
@@ -358,6 +360,7 @@ def test_get_data_schema_for_widget(mock_openapi_json, openapi_operation_id):
     ],
 )
 def test_post_query_schema_for_widget(mock_openapi_json, openapi_operation_id):
+    """Test post_query_schema_for_widget function."""
     schema = post_query_schema_for_widget(mock_openapi_json, openapi_operation_id)
     assert schema
 
@@ -371,10 +374,151 @@ def test_post_query_schema_for_widget(mock_openapi_json, openapi_operation_id):
     ],
 )
 def test_data_schema_to_columns_defs(mock_openapi_json, openapi_operation_id):
+    """Test data_schema_to_columns_defs function."""
     column_defs = data_schema_to_columns_defs(
         mock_openapi_json, openapi_operation_id, provider="fred"
     )
     assert len(column_defs) > 1  # There should be at least two columns
+
+
+class TestExtractProviderDescription:
+    """Tests for _extract_provider_description function."""
+
+    def test_simple_description_no_provider(self):
+        """Test extraction from simple description without provider markers."""
+        desc = "This is a simple description."
+        result = _extract_provider_description(desc, "fred")
+        assert result == "This is a simple description."
+
+    def test_description_with_multiple_items_suffix(self):
+        """Test that 'Multiple comma separated items allowed' is stripped."""
+        desc = "Description text. Multiple comma separated items allowed."
+        result = _extract_provider_description(desc, "fred")
+        assert result == "Description text."
+
+    def test_provider_specific_description_extraction(self):
+        """Test extraction of provider-specific description."""
+        desc = "Fred specific description (provider: fred);\n    Other description (provider: other)"
+        result = _extract_provider_description(desc, "fred")
+        assert result == "Fred specific description"
+
+    def test_embedded_semicolon_preserved(self):
+        """Test that semicolons in description text are preserved."""
+        desc = "A semicolon delimited list of tags; Example: 'japan;imports' (provider: fred)"
+        result = _extract_provider_description(desc, "fred")
+        assert "Example: 'japan;imports'" in result
+
+    def test_multiple_providers_in_marker(self):
+        """Test handling of multiple providers in one marker."""
+        desc = "Shared description (provider: fred, yfinance)"
+        result = _extract_provider_description(desc, "fred")
+        assert result == "Shared description"
+
+    def test_provider_at_end_of_marker(self):
+        """Test provider listed last in comma-separated list."""
+        desc = "Description text (provider: other, fred)"
+        result = _extract_provider_description(desc, "fred")
+        assert result == "Description text"
+
+    def test_empty_description(self):
+        """Test handling of empty description."""
+        result = _extract_provider_description("", "fred")
+        assert result == ""
+
+    def test_fallback_to_general_description(self):
+        """Test fallback when provider not found in markers."""
+        desc = "General description (provider: other_provider)"
+        result = _extract_provider_description(desc, "fred")
+        assert result == "General description"
+
+
+class TestProcessParameterWithSingleProvider:
+    """Tests for process_parameter function with single_provider parameter."""
+
+    def test_provider_specific_default_extracted(self):
+        """Test that provider-specific default is extracted when single_provider is set."""
+        param = {
+            "name": "country",
+            "description": "Country for fred (provider: fred); Country for other (provider: other)",
+            "schema": {
+                "fred": {"default": "united_states"},
+                "other": {"default": "germany"},
+            },
+        }
+        result = process_parameter(param, ["fred", "other"], single_provider="fred")
+        assert result["value"] == "united_states"
+        assert (
+            "fred" in result["description"].lower()
+            or "country" in result["description"].lower()
+        )
+
+    def test_global_default_used_when_no_provider_specific(self):
+        """Test that global default is used when provider has no specific default."""
+        param = {
+            "name": "limit",
+            "description": "Limit results",
+            "default": 100,
+            "schema": {},
+        }
+        result = process_parameter(param, ["fred", "other"], single_provider="fred")
+        assert result["value"] == 100
+
+    def test_global_default_skipped_when_other_providers_have_defaults(self):
+        """Test that global default is skipped when other providers have specific defaults."""
+        param = {
+            "name": "topic",
+            "description": "Topic param",
+            "default": "general_default",
+            "schema": {
+                "other_provider": {"default": "specific_default"},
+            },
+        }
+        result = process_parameter(
+            param, ["fred", "other_provider"], single_provider="fred"
+        )
+        # fred should not inherit global default because other_provider has a specific one
+        assert result["value"] is None
+
+    def test_provider_specific_description_extracted(self):
+        """Test that provider-specific description is extracted."""
+        param = {
+            "name": "indicator",
+            "description": "Fred indicator description (provider: fred); Other indicator (provider: other)",
+            "schema": {},
+        }
+        result = process_parameter(param, ["fred", "other"], single_provider="fred")
+        assert "Fred indicator" in result["description"]
+        assert "Other" not in result["description"]
+
+    def test_no_single_provider_uses_general_description(self):
+        """Test that without single_provider, general description is used."""
+        param = {
+            "name": "symbol",
+            "description": "General symbol description (provider: fred); Other desc (provider: other)",
+            "schema": {},
+        }
+        result = process_parameter(param, ["fred", "other"], single_provider=None)
+        assert result["description"] == "General symbol description"
+
+
+class TestGetQuerySchemaWithSingleProvider:
+    """Tests for get_query_schema_for_widget with single_provider parameter."""
+
+    def test_single_provider_passed_to_process_parameter(self, mock_openapi_json):
+        """Test that single_provider is passed through to process_parameter."""
+        # Use a route that has provider-specific params
+        route = "/api/v1/economy/cpi"
+        query_schema, _ = get_query_schema_for_widget(
+            mock_openapi_json, route, single_provider="fred"
+        )
+        country_param = next(
+            (p for p in query_schema if p["parameter_name"] == "country"), None
+        )
+        if country_param:
+            # Should have the default value for fred provider
+            assert country_param.get("value") is not None or country_param.get(
+                "optional"
+            )
 
 
 if __name__ == "__main__":

@@ -10,18 +10,57 @@ from openbb_core.provider.standard_models.available_indicators import (
     AvailableIndicatorsData,
     AvailableIndicesQueryParams,
 )
-from pydantic import Field
+from pydantic import ConfigDict, Field
 
 
 class ImfAvailableIndicatorsQueryParams(AvailableIndicesQueryParams):
     """IMF Available Indicators Query Parameters."""
 
-    __json_schema_extra__ = {"query": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "query": {"multiple_items_allowed": True},
+        "dataflows": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": "/api/v1/imf_utils/list_dataflow_choices",
+                "multiSelect": False,
+                "style": {"popupWidth": 950},
+            },
+        },
+        "symbol": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "type": "text",
+                "multiSelect": False,
+                "style": {"width": 400},
+                "multiple": True,
+            },
+        },
+        "keywords": {"multiple_items_allowed": True},
+    }
 
     query: str | None = Field(
         default=None,
-        description="The query string to search through the available indicators."
-        + " Use semicolons to separate multiple terms.",
+        description="The search query string. Multiple search phrases can be separated by semicolons."
+        + " Each phrase can use AND (+) and OR (|) operators, as well as quoted phrases."
+        + " Semicolon separation allows commas to be used within search phrases.",
+    )
+    dataflows: str | list[str] | None = Field(
+        default=None,
+        description="List of IMF dataflow IDs to filter the indicators."
+        + " Use semicolons to separate multiple dataflow IDs.",
+    )
+    keywords: str | list[str] | None = Field(
+        default=None,
+        description="List of keywords to filter results. Each keyword is a single word that must"
+        + " appear in the indicator's label or description. Keywords prefixed with 'not'"
+        + " will exclude indicators containing that word (e.g., 'not USD' excludes indicators"
+        + " with 'USD' in them).",
+    )
+    symbol: str | None = Field(
+        default=None,
+        exclude=True,
+        description="Dummy field to allow grouping by symbol.",
     )
 
 
@@ -29,32 +68,46 @@ class ImfAvailableIndicatorsData(AvailableIndicatorsData):
     """IMF Available Indicators Data."""
 
     __alias_dict__ = {
-        "symbol_root": "parent",
-        "description": "title",
+        "description": "label",
+        "symbol": "series_id",
+        "symbol_root": "indicator",
+        "long_description": "description",
     }
-    dataset: str | None = Field(
-        default=None,
-        description="The IMF dataset associated with the symbol.",
+
+    model_config = ConfigDict(
+        extra="ignore",
+        json_schema_extra={
+            "symbol": {
+                "x-widget_config": {
+                    "renderFn": "cellOnClick",
+                    "renderFnParams": {
+                        "actionType": "groupBy",
+                        "groupByParamName": "symbol",
+                    },
+                }
+            }
+        },
     )
-    table: str | None = Field(
-        default=None,
-        description="The name of the table associated with the symbol.",
+
+    agency_id: str = Field(description="The agency ID responsible for the indicator.")
+    dataflow_id: str = Field(
+        description="The IMF dataflow ID associated with the indicator."
     )
-    level: int | None = Field(
-        default=None,
-        description="The indentation level of the data, relative to the table and symbol_root",
+    dataflow_name: str = Field(
+        description="The name of the IMF dataflow (symbol root)."
     )
-    order: int | float | None = Field(
-        default=None,
-        description="Order of the data, relative to the table.",
+    structure_id: str = Field(
+        description="The data structure ID associated with the indicator."
     )
-    children: str | None = Field(
-        default=None,
-        description="The symbol of the child data, if any.",
+    dimension_id: str = Field(
+        description="The dimension ID of the indicator in the data structure."
     )
-    unit: str | None = Field(
-        default=None,
-        description="The unit of the data.",
+    long_description: str | None = Field(
+        default=None, description="Detailed description of the indicator."
+    )
+    member_of: list[str] = Field(
+        default_factory=list,
+        description="List of table symbols (dataflow_id::table_id) this indicator belongs to.",
     )
 
 
@@ -76,45 +129,38 @@ class ImfAvailableIndicatorsFetcher(
     ) -> list[dict]:
         """Fetch the data."""
         # pylint: disable=import-outside-toplevel
-        from numpy import nan
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_imf.utils.constants import load_symbols
-        from pandas import DataFrame, Series
+        from openbb_imf.utils.metadata import ImfMetadata
+
+        metadata = ImfMetadata()
+
+        if isinstance(query.dataflows, str):
+            dataflows = query.dataflows.split(",")
+        elif isinstance(query.dataflows, list):
+            dataflows = query.dataflows
+        else:
+            dataflows = None
+
+        if isinstance(query.keywords, str):
+            keywords = query.keywords.split(",")
+        elif isinstance(query.keywords, list):
+            keywords = query.keywords
+        else:
+            keywords = None
 
         try:
-            all_symbols = load_symbols("all")
-        except OpenBBError as e:
-            raise OpenBBError(f"Failed to load IMF symbols static file: {e}") from e
+            results = metadata.search_indicators(
+                query=query.query.replace(",", ", ") if query.query else "",
+                dataflows=dataflows,
+                keywords=keywords,
+            )
+        except Exception as e:  # pylint: disable=broad-except
+            raise OpenBBError(e) from e
 
-        terms = [term.strip() for term in query.query.split(";")] if query.query else []
+        if not results:
+            raise EmptyDataError("No indicators found for the given query.")
 
-        df = (
-            DataFrame(all_symbols)
-            .T.reset_index()
-            .rename(columns={"index": "symbol"})
-            .replace({nan: None})
-        )
-
-        if not terms:
-            records = df.to_dict(orient="records")
-        else:
-            combined_mask = Series([True] * len(df))
-            for term in terms:
-                mask = df.apply(
-                    lambda row, term=term: row.astype(str).str.contains(
-                        term, case=False, regex=True, na=False
-                    )
-                ).any(axis=1)
-                combined_mask &= mask
-
-            matches = df[combined_mask]
-
-            if matches.empty:
-                raise EmptyDataError("No results found for the provided query.")
-
-            records = matches.to_dict(orient="records")
-
-        return records
+        return results
 
     @staticmethod
     def transform_data(
@@ -123,4 +169,11 @@ class ImfAvailableIndicatorsFetcher(
         **kwargs: Any,
     ) -> list[ImfAvailableIndicatorsData]:
         """Transform the data."""
-        return [ImfAvailableIndicatorsData.model_validate(d) for d in data]
+        results = []
+        for d in data:
+            # Build the ready-to-use symbol: dataflow_id::indicator_code
+            dataflow_id = d.get("dataflow_id", "")
+            indicator_code = d.get("indicator", "")
+            d["symbol"] = f"{dataflow_id}::{indicator_code}"
+            results.append(ImfAvailableIndicatorsData.model_validate(d))
+        return results

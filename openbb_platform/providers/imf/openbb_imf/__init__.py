@@ -2,6 +2,7 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_imf.models.available_indicators import ImfAvailableIndicatorsFetcher
+from openbb_imf.models.consumer_price_index import ImfConsumerPriceIndexFetcher
 from openbb_imf.models.direction_of_trade import ImfDirectionOfTradeFetcher
 from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoFetcher
@@ -17,6 +18,7 @@ imf_provider = Provider(
     description="Access International Monetary Fund (IMF) data APIs.",
     fetcher_dict={
         "AvailableIndicators": ImfAvailableIndicatorsFetcher,
+        "ConsumerPriceIndex": ImfConsumerPriceIndexFetcher,
         "DirectionOfTrade": ImfDirectionOfTradeFetcher,
         "EconomicIndicators": ImfEconomicIndicatorsFetcher,
         "MaritimeChokePointInfo": ImfMaritimeChokePointInfoFetcher,
