@@ -19,8 +19,6 @@ from openbb_core.app.router import Router
 from openbb_commodity.price.price_router import router as price_router
 
 router = Router(prefix="", description="Commodity market data.")
-
-
 router.include_router(price_router)
 
 
@@ -78,3 +76,54 @@ async def short_term_energy_outlook(
     Source: www.eia.gov/steo/
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CommodityPsdReport",
+    no_validate=True,
+    widget_config={
+        "name": "USDA FAS Commodity Production Supply & Demand Report",
+        "description": "Monthly publications released by the USDA Foreign Agriculture Service.",
+        "type": "pdf",
+        "refetchInterval": False,
+        "gridData": {
+            "w": 20,
+            "h": 30,
+        },
+        "category": "Commodity",
+        "subCategory": "Agriculture",
+        "source": ["USDA", "FAS"],
+    },
+    examples=[
+        APIEx(
+            parameters={
+                "provider": "government_us",
+                "commodity": "sugar",
+                "year": 2022,
+                "month": 5,
+            }
+        ),
+        APIEx(
+            description="Get the PSD report for coffee for March 2023.",
+            parameters={
+                "provider": "government_us",
+                "commodity": "coffee",
+                "year": 2023,
+                "month": 3,
+            },
+        ),
+    ],
+)
+async def psd_report(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Agriculture commodity production, supply, and demand PDF reports (World Agricultural Outlook).
+
+    This command returns only the results portion of the OBBject response.
+    It contains a dictionary where the PDF content is base64 encoded under the 'content' key.
+    """
+    response = await OBBject.from_query(Query(**locals()))
+    return response.model_dump().get("results", {})

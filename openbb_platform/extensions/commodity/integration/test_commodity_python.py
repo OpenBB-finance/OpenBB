@@ -98,3 +98,25 @@ def test_commodity_short_term_energy_outlook(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "commodity": "sugar",
+                "year": 2025,
+                "month": 5,
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_psd_report(params, obb):
+    """Test Commodity PSD Report endpoint."""
+    result = obb.commodity.psd_report(**params)
+    assert result
+    assert isinstance(result, dict)
+    assert result["data_format"]["data_type"] == "pdf"

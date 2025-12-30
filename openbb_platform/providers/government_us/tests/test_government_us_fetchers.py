@@ -4,6 +4,9 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_government_us.models.commodity_psd_report import (
+    GovernmentUsCommodityPsdReportFetcher,
+)
 from openbb_government_us.models.treasury_auctions import (
     GovernmentUSTreasuryAuctionsFetcher,
 )
@@ -46,5 +49,19 @@ def test_government_us_treasury_prices_fetcher(credentials=test_credentials):
     params = {"date": datetime.date(2024, 6, 25)}
 
     fetcher = GovernmentUSTreasuryPricesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_government_us_commodity_psd_report_fetcher(credentials=test_credentials):
+    """Test GovernmentUsCommodityPsdReportFetcher."""
+    params = {
+        "commodity": "sugar",
+        "year": 2025,
+        "month": 5,
+    }
+
+    fetcher = GovernmentUsCommodityPsdReportFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

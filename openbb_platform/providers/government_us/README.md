@@ -10,4 +10,12 @@ To install the extension:
 pip install openbb-us-government
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
+See the OpenBB Documentation [here](https://docs.openbb.co/python/) for details on getting started.
+
+## Coverage
+
+This extension covers services with no registration requirement.
+
+- `obb.commodity.psd_report`
+- `obb.fixed_income.government.treasury_auctions`
+- `obb.fixed_income.government.treasury_prices`
