@@ -56,7 +56,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + " and the original units and scale differ between entities."
         + "\n    `tusd` should only be used where values are currencies.",
     )
-    frequency: str = Field(
+    frequency: str | None = Field(
         default="quarter",
         description="The frequency of the data, default is 'quarter'."
         + " Only valid when 'symbol' is 'main'.",
