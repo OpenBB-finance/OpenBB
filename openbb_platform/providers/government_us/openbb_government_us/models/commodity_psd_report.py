@@ -17,11 +17,10 @@ COMMODITIES = {
     "coffee": "Coffee",
     "cotton": "Cotton",
     "dairy": "Dairy",
-    "fruit": "Fruits",
+    "fruit": "Fruit",
     "grain": "Grain",
     "livestock": "Livestock_poultry",
     "oilseeds": "Oilseeds",
-    "raisins": "Raisins",
     "stone_fruit": "StoneFruit",
     "sugar": "Sugar",
     "tree_nuts": "TreeNuts",
@@ -30,7 +29,10 @@ COMMODITIES = {
 
 
 class GovernmentUsCommodityPsdReportQueryParams(CommodityPsdReportQueryParams):
-    """US Government Commodity PSD Report Query Params."""
+    """US Government Commodity PSD Report Query Params.
+
+    Source: https://apps.fas.usda.gov/psdonline/app/index.html#/app/downloads
+    """
 
     __json_schema_extra__ = {
         "year": {
@@ -127,6 +129,7 @@ class GovernmentUsCommodityPsdReportFetcher(
     def transform_query(
         params: dict[str, Any],
     ) -> GovernmentUsCommodityPsdReportQueryParams:
+        """Transform params into the query params model."""
         return GovernmentUsCommodityPsdReportQueryParams(**params)
 
     @staticmethod
@@ -175,7 +178,7 @@ class GovernmentUsCommodityPsdReportFetcher(
         data: dict,
         **kwargs: Any,
     ) -> GovernmentUsCommodityPsdReportData:
-        """Transform data into the standard model."""
+        """Transform data into the encoded format."""
         # pylint: disable=import-outside-toplevel
         import base64
 
