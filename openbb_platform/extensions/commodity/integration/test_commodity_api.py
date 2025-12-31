@@ -135,3 +135,52 @@ def test_commodity_psd_report(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "urls": "https://esmis.nal.usda.gov/sites/default/release-files/cj82k728n/vx023b997/z890tr81b/wwcb1825.pdf"
+                + ",https://esmis.nal.usda.gov/sites/default/release-files/cj82k728n/w6635s43r/x059dz29h/wwcb1924.pdf",
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_weather_bulletins_download(params, headers):
+    """Test the Commodity Weather Bulletin Download endpoint."""
+    params = {p: v for p, v in params.items() if v}
+    urls = params.pop("urls", "")
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/commodity/weather_bulletins_download?{query_str}"
+    result = requests.post(url, headers=headers, json=urls, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "year": 2025,
+                "month": 5,
+                "week": 2,
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_weather_bulletins(params, headers):
+    """Test the Commodity Weather Bulletins endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/commodity/weather_bulletins?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

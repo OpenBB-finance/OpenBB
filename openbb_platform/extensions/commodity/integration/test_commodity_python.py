@@ -120,3 +120,55 @@ def test_commodity_psd_report(params, obb):
     assert result
     assert isinstance(result, dict)
     assert result["data_format"]["data_type"] == "pdf"
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "year": 2025,
+                "month": 5,
+                "week": 2,
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_weather_bulletins(params, obb):
+    """Test Commodity Weather Bulletins endpoint."""
+    result = obb.commodity.weather_bulletins(**params)
+    assert result
+    assert isinstance(result, list)
+    assert len(result) > 0
+    for bulletin in result:
+        assert bulletin["label"]
+        assert bulletin["value"]
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "urls": [
+                    "https://esmis.nal.usda.gov/sites/default/release-files/cj82k728n/vx023b997/z890tr81b/wwcb1825.pdf",
+                    "https://esmis.nal.usda.gov/sites/default/release-files/cj82k728n/w6635s43r/x059dz29h/wwcb1924.pdf",
+                ],
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_weather_bulletins_download(params, obb):
+    """Test Commodity Weather Bulletins Download endpoint."""
+    result = obb.commodity.weather_bulletins_download(**params)
+    assert result
+    assert isinstance(result, list)
+    assert len(result) > 0
+    for bulletin in result:
+        assert isinstance(bulletin, dict)
+        assert bulletin["content"]
+        assert bulletin["data_format"]["data_type"] == "pdf"

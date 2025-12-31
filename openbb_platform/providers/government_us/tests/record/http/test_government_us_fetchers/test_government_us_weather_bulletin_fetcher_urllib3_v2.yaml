@@ -1,0 +1,380 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://esmis.nal.usda.gov/publication/weekly-weather-and-crop-bulletin?date=2024-12
+  response:
+    body:
+      string: !!binary |
+        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
+        qgOxp9i2uQmWTasZbMCf/DfoXDzEhh0BAA==
+    headers:
+      Cache-Control:
+      - max-age=3600, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '11425'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self'' https://platform.twitter.com https://youtube.com;
+        connect-src ''self'' https://dap.digitalgov.gov https://*.doubleclick.net
+        https://orcid.org/userStatus.json https://search.usa.gov https://translate.googleapis.com
+        https://usda.libanswers.com https://*.google-analytics.com https://*.analytics.google.com
+        https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com
+        https://*.google.com https://*.google.ad https://*.google.ae https://*.google.com.af
+        https://*.google.com.ag https://*.google.al https://*.google.am https://*.google.co.ao
+        https://*.google.com.ar https://*.google.as https://*.google.at https://*.google.com.au
+        https://*.google.az https://*.google.ba https://*.google.com.bd https://*.google.be
+        https://*.google.bf https://*.google.bg https://*.google.com.bh https://*.google.bi
+        https://*.google.bj https://*.google.com.bn https://*.google.com.bo https://*.google.com.br
+        https://*.google.bs https://*.google.bt https://*.google.co.bw https://*.google.by
+        https://*.google.com.bz https://*.google.ca https://*.google.cd https://*.google.cf
+        https://*.google.cg https://*.google.ch https://*.google.ci https://*.google.co.ck
+        https://*.google.cl https://*.google.cm https://*.google.cn https://*.google.com.co
+        https://*.google.co.cr https://*.google.com.cu https://*.google.cv https://*.google.com.cy
+        https://*.google.cz https://*.google.de https://*.google.dj https://*.google.dk
+        https://*.google.dm https://*.google.com.do https://*.google.dz https://*.google.com.ec
+        https://*.google.ee https://*.google.com.eg https://*.google.es https://*.google.com.et
+        https://*.google.fi https://*.google.com.fj https://*.google.fm https://*.google.fr
+        https://*.google.ga https://*.google.ge https://*.google.gg https://*.google.com.gh
+        https://*.google.com.gi https://*.google.gl https://*.google.gm https://*.google.gr
+        https://*.google.com.gt https://*.google.gy https://*.google.com.hk https://*.google.hn
+        https://*.google.hr https://*.google.ht https://*.google.hu https://*.google.co.id
+        https://*.google.ie https://*.google.co.il https://*.google.im https://*.google.co.in
+        https://*.google.iq https://*.google.is https://*.google.it https://*.google.je
+        https://*.google.com.jm https://*.google.jo https://*.google.co.jp https://*.google.co.ke
+        https://*.google.com.kh https://*.google.ki https://*.google.kg https://*.google.co.kr
+        https://*.google.com.kw https://*.google.kz https://*.google.la https://*.google.com.lb
+        https://*.google.li https://*.google.lk https://*.google.co.ls https://*.google.lt
+        https://*.google.lu https://*.google.lv https://*.google.com.ly https://*.google.co.ma
+        https://*.google.md https://*.google.me https://*.google.mg https://*.google.mk
+        https://*.google.ml https://*.google.com.mm https://*.google.mn https://*.google.com.mt
+        https://*.google.mu https://*.google.mv https://*.google.mw https://*.google.com.mx
+        https://*.google.com.my https://*.google.co.mz https://*.google.com.na https://*.google.com.ng
+        https://*.google.com.ni https://*.google.ne https://*.google.nl https://*.google.no
+        https://*.google.com.np https://*.google.nr https://*.google.nu https://*.google.co.nz
+        https://*.google.com.om https://*.google.com.pa https://*.google.com.pe https://*.google.com.pg
+        https://*.google.com.ph https://*.google.com.pk https://*.google.pl https://*.google.pn
+        https://*.google.com.pr https://*.google.ps https://*.google.pt https://*.google.com.py
+        https://*.google.com.qa https://*.google.ro https://*.google.ru https://*.google.rw
+        https://*.google.com.sa https://*.google.com.sb https://*.google.sc https://*.google.se
+        https://*.google.com.sg https://*.google.sh https://*.google.si https://*.google.sk
+        https://*.google.com.sl https://*.google.sn https://*.google.so https://*.google.sm
+        https://*.google.sr https://*.google.st https://*.google.com.sv https://*.google.td
+        https://*.google.tg https://*.google.co.th https://*.google.com.tj https://*.google.tl
+        https://*.google.tm https://*.google.tn https://*.google.to https://*.google.com.tr
+        https://*.google.tt https://*.google.com.tw https://*.google.co.tz https://*.google.com.ua
+        https://*.google.co.ug https://*.google.co.uk https://*.google.com.uy https://*.google.co.uz
+        https://*.google.com.vc https://*.google.co.ve https://*.google.co.vi https://*.google.com.vn
+        https://*.google.vu https://*.google.ws https://*.google.rs https://*.google.co.za
+        https://*.google.co.zm https://*.google.co.zw https://*.google.cat; font-src
+        ''self'' data: https://cdn.knightlab.com https://fonts.gstatic.com; frame-src
+        ''self'' https://publicdashboards.dl.usda.gov https://*.twitter.com https://usda.libanswers.com
+        https://player.vimeo.com https://*.youtube.com; frame-ancestors ''self'';
+        img-src ''self'' data: https://cdn.knightlab.com https://feed.informer.com
+        https://fonts.gstatic.com https://*.nal.usda.gov https://orcid.org https://info.orcid.org
+        https://*.twitter.com https://*.usa.gov https://validator.swagger.io https://*.ytimg.com
+        https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com
+        https://*.g.doubleclick.net https://*.google.com https://*.google.com https://*.google.ad
+        https://*.google.ae https://*.google.com.af https://*.google.com.ag https://*.google.al
+        https://*.google.am https://*.google.co.ao https://*.google.com.ar https://*.google.as
+        https://*.google.at https://*.google.com.au https://*.google.az https://*.google.ba
+        https://*.google.com.bd https://*.google.be https://*.google.bf https://*.google.bg
+        https://*.google.com.bh https://*.google.bi https://*.google.bj https://*.google.com.bn
+        https://*.google.com.bo https://*.google.com.br https://*.google.bs https://*.google.bt
+        https://*.google.co.bw https://*.google.by https://*.google.com.bz https://*.google.ca
+        https://*.google.cd https://*.google.cf https://*.google.cg https://*.google.ch
+        https://*.google.ci https://*.google.co.ck https://*.google.cl https://*.google.cm
+        https://*.google.cn https://*.google.com.co https://*.google.co.cr https://*.google.com.cu
+        https://*.google.cv https://*.google.com.cy https://*.google.cz https://*.google.de
+        https://*.google.dj https://*.google.dk https://*.google.dm https://*.google.com.do
+        https://*.google.dz https://*.google.com.ec https://*.google.ee https://*.google.com.eg
+        https://*.google.es https://*.google.com.et https://*.google.fi https://*.google.com.fj
+        https://*.google.fm https://*.google.fr https://*.google.ga https://*.google.ge
+        https://*.google.gg https://*.google.com.gh https://*.google.com.gi https://*.google.gl
+        https://*.google.gm https://*.google.gr https://*.google.com.gt https://*.google.gy
+        https://*.google.com.hk https://*.google.hn https://*.google.hr https://*.google.ht
+        https://*.google.hu https://*.google.co.id https://*.google.ie https://*.google.co.il
+        https://*.google.im https://*.google.co.in https://*.google.iq https://*.google.is
+        https://*.google.it https://*.google.je https://*.google.com.jm https://*.google.jo
+        https://*.google.co.jp https://*.google.co.ke https://*.google.com.kh https://*.google.ki
+        https://*.google.kg https://*.google.co.kr https://*.google.com.kw https://*.google.kz
+        https://*.google.la https://*.google.com.lb https://*.google.li https://*.google.lk
+        https://*.google.co.ls https://*.google.lt https://*.google.lu https://*.google.lv
+        https://*.google.com.ly https://*.google.co.ma https://*.google.md https://*.google.me
+        https://*.google.mg https://*.google.mk https://*.google.ml https://*.google.com.mm
+        https://*.google.mn https://*.google.com.mt https://*.google.mu https://*.google.mv
+        https://*.google.mw https://*.google.com.mx https://*.google.com.my https://*.google.co.mz
+        https://*.google.com.na https://*.google.com.ng https://*.google.com.ni https://*.google.ne
+        https://*.google.nl https://*.google.no https://*.google.com.np https://*.google.nr
+        https://*.google.nu https://*.google.co.nz https://*.google.com.om https://*.google.com.pa
+        https://*.google.com.pe https://*.google.com.pg https://*.google.com.ph https://*.google.com.pk
+        https://*.google.pl https://*.google.pn https://*.google.com.pr https://*.google.ps
+        https://*.google.pt https://*.google.com.py https://*.google.com.qa https://*.google.ro
+        https://*.google.ru https://*.google.rw https://*.google.com.sa https://*.google.com.sb
+        https://*.google.sc https://*.google.se https://*.google.com.sg https://*.google.sh
+        https://*.google.si https://*.google.sk https://*.google.com.sl https://*.google.sn
+        https://*.google.so https://*.google.sm https://*.google.sr https://*.google.st
+        https://*.google.com.sv https://*.google.td https://*.google.tg https://*.google.co.th
+        https://*.google.com.tj https://*.google.tl https://*.google.tm https://*.google.tn
+        https://*.google.to https://*.google.com.tr https://*.google.tt https://*.google.com.tw
+        https://*.google.co.tz https://*.google.com.ua https://*.google.co.ug https://*.google.co.uk
+        https://*.google.com.uy https://*.google.co.uz https://*.google.com.vc https://*.google.co.ve
+        https://*.google.co.vi https://*.google.com.vn https://*.google.vu https://*.google.ws
+        https://*.google.rs https://*.google.co.za https://*.google.co.zm https://*.google.co.zw
+        https://*.google.cat; script-src ''self'' https://ajax.googleapis.com https://cdn.knightlab.com
+        https://dap.digitalgov.gov https://feed.informer.com https://*.google-analytics.com
+        https://*.libanswers.com https://www.nal.usda.gov https://platform.twitter.com
+        https://search.usa.gov https://www.googletagmanager.com https://www.youtube.com;
+        script-src-elem ''self'' ''unsafe-inline'' https://ajax.googleapis.com https://cdn.knightlab.com
+        https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/ https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/
+        https://dap.digitalgov.gov https://feed.informer.com https://*.libanswers.com
+        https://www.nal.usda.gov https://publicdashboards.dl.usda.gov https://search.usa.gov
+        https://*.twitter.com https://unpkg.com/chart.js@4.4.0/ https://unpkg.com/chartjs-adapter-date-fns@3.0.0/
+        https://unpkg.com/chartjs-plugin-datalabels@2.0.0/ https://*.vimeo.com https://www.google-analytics.com
+        https://www.googletagmanager.com https://www.youtube.com; style-src ''self''
+        ''unsafe-inline'' https://cdn.knightlab.com https://fonts.googleapis.com https://search.usa.gov;
+        style-src-elem ''self'' ''unsafe-inline'' https://cdn.knightlab.com https://static-assets-us.libanswers.com
+        https://search.usa.gov;;'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Wed, 31 Dec 2025 05:25:42 GMT
+      Etag:
+      - '"1767143210-gzip"'
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Last-Modified:
+      - Wed, 31 Dec 2025 01:06:50 GMT
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Cookie,Accept-Encoding
+      X-Backend-Server:
+      - '2'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (poor cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 11 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+version: 1

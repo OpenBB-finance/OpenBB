@@ -10,6 +10,12 @@ from openbb_government_us.models.treasury_auctions import (
 from openbb_government_us.models.treasury_prices import (
     GovernmentUSTreasuryPricesFetcher,
 )
+from openbb_government_us.models.weather_bulletin import (
+    GovernmentUsWeatherBulletinFetcher,
+)
+from openbb_government_us.models.weather_bulletin_download import (
+    GovernmentUsWeatherBulletinDownloadFetcher,
+)
 
 government_us_provider = Provider(
     name="government_us",
@@ -23,6 +29,8 @@ an open and transparent government. https://api.data.gov/signup/""",
         "CommodityPsdReport": GovernmentUsCommodityPsdReportFetcher,
         "TreasuryAuctions": GovernmentUSTreasuryAuctionsFetcher,
         "TreasuryPrices": GovernmentUSTreasuryPricesFetcher,
+        "WeatherBulletin": GovernmentUsWeatherBulletinFetcher,
+        "WeatherBulletinDownload": GovernmentUsWeatherBulletinDownloadFetcher,
     },
     repr_name="Data.gov | United States Government",
 )
