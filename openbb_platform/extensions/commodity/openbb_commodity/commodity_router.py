@@ -156,7 +156,7 @@ async def weather_bulletins(
     This command returns only the results portion of the OBBject response.
     It contains a list of dictionaries where each dictionary has 'label' and 'value' keys.
 
-    Use this endpoint to programatically access the list of available weather bulletins.
+    Use this endpoint to programmatically access the list of available weather bulletins.
     Suitable for dropdown selections in a UI.
     """
     response = await OBBject.from_query(Query(**locals()))
