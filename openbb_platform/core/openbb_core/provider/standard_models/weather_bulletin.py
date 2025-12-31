@@ -12,7 +12,7 @@ class WeatherBulletinQueryParams(QueryParams):
 
     year: int = Field(
         description="Year of the data. Default is the current year.",
-        default_factory=lambda: datetime.now().year,
+        default=datetime.now().year,
     )
     month: int | None = Field(
         description="Month of the data. If not provided, data for the entire year is returned.",

@@ -8,7 +8,7 @@
 from datetime import datetime
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -139,9 +139,30 @@ async def psd_report(
     widget_config={"exclude": True},
     examples=[
         APIEx(
+            description="Get weather bulletins for the current year.",
             parameters={
                 "provider": "government_us",
-            }
+            },
+        ),
+        APIEx(
+            description="Get weather bulletins for May 2023, week 2.",
+            parameters={
+                "provider": "government_us",
+                "year": 2023,
+                "month": 5,
+                "week": 2,
+            },
+        ),
+        PythonEx(
+            description="Get URLs for comparing versus 1 year ago and download the base64-encoded PDF content to memory.",
+            code=[
+                "from datetime import datetime",
+                "urls = []",
+                "for year in [datetime.now().year, datetime.now().year - 1]:",
+                "    urls.append(obb.commodity.weather_bulletins(year=year, month=5, week=2)[0]['value'])",
+                "pdfs = obb.commodity.weather_bulletins_download(urls=urls)",
+                "# PDFs are now in a list where each item has 'content' and 'data_format' keys",
+            ],
         ),
     ],
 )
@@ -241,6 +262,13 @@ async def weather_bulletins(
                 "value": None,
                 "options": [{"value": week, "label": str(week)} for week in range(1, 6)]
                 + [{"value": None, "label": "All Weeks"}],
+            },
+            {
+                "paramName": "provider",
+                "show": False,
+                "value": "government_us",
+                "type": "text",
+                "options": [{"value": "government_us", "label": "government_us"}],
             },
         ],
     },
