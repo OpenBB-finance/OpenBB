@@ -151,7 +151,7 @@ async def weather_bulletins(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current and historical weather bulletins with their PDF links.
+    """Get current and historical weather bulletins with their PDF links.
 
     This command returns only the results portion of the OBBject response.
     It contains a list of dictionaries where each dictionary has 'label' and 'value' keys.
