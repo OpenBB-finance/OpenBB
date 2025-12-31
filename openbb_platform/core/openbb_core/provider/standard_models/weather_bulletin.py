@@ -21,7 +21,7 @@ class WeatherBulletinQueryParams(QueryParams):
         default=None,
     )
     week: int | None = Field(
-        description="Numberic week of the data, relative to the month."
+        description="Numeric week of the data, relative to the month."
         + " If not provided, data for the entire month is returned.",
         ge=1,
         le=5,
