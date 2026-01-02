@@ -191,7 +191,7 @@ def test_commodity_weather_bulletins_download(params, obb):
                 "attributes": None,
                 "start_year": None,
                 "end_year": None,
-                "aggregate_region": False,
+                "aggregate_regions": False,
             }
         ),
         (
@@ -203,7 +203,7 @@ def test_commodity_weather_bulletins_download(params, obb):
                 "start_year": 2025,
                 "end_year": 2025,
                 "provider": "government_us",
-                "aggregate_region": False,
+                "aggregate_regions": False,
             }
         ),
     ],

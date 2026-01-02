@@ -411,8 +411,9 @@ def get_timeseries(  # pylint: disable=R0912,R0914,R0915,R0917  # noqa: PLR0912
             country_codes = list(set(country_codes))  # Dedupe
         elif country is None:
             region_codes = set(REGIONS.values())
+            # Exclude E4 (EU as country) since we're requesting R05 (EU as region)
             country_only_codes = [
-                c for c in valid_country_codes if c not in region_codes
+                c for c in valid_country_codes if c not in region_codes and c != "E4"
             ]
             country_codes = list(REGIONS.values()) + country_only_codes
             country_codes = list(set(country_codes))
@@ -520,12 +521,18 @@ def get_timeseries(  # pylint: disable=R0912,R0914,R0915,R0917  # noqa: PLR0912
             return True
         if country_name == "European Union":
             return False  # EU is a country otherwise
+        # "Other" is a region aggregate, not a country
+        if country_name == "Other":
+            return True
         return country_name in region_names
 
     # Melt to long format - include attribute per row from API response
     rows = []
     for _, row in df.iterrows():
         country_name = row["country"]
+        # Skip rows with no country name
+        if not notna(country_name) or not country_name:
+            continue
         commodity_display = row["commodity"] if row["commodity"] else commodity.title()
         attr_display = row["attribute"] if row["attribute"] else ""
         unit = row.get("unit Description", "") or ""
