@@ -1962,7 +1962,7 @@ COUNTRY_TO_REGION = {
     "TW": "R18",
 }
 
-REGION_TO_COUNTRIES = {}
+REGION_TO_COUNTRIES: dict = {}
 for country_code, region_code in COUNTRY_TO_REGION.items():
     if region_code not in REGION_TO_COUNTRIES:
         REGION_TO_COUNTRIES[region_code] = []
