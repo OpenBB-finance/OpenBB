@@ -188,7 +188,7 @@ def test_commodity_weather_bulletins_download(params, obb):
                 "report_id": "coffee_summary",
                 "commodity": None,
                 "country": None,
-                "attributes": None,
+                "attribute": None,
                 "start_year": None,
                 "end_year": None,
                 "aggregate_regions": False,
@@ -199,7 +199,7 @@ def test_commodity_weather_bulletins_download(params, obb):
                 "report_id": "world_crop_production_summary",  # ignored if commodity is set
                 "commodity": "corn",
                 "country": "united_states,argentina",
-                "attributes": "exports",
+                "attribute": "exports",
                 "start_year": 2025,
                 "end_year": 2025,
                 "provider": "government_us",

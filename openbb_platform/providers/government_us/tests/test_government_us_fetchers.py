@@ -4,6 +4,9 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_government_us.models.commodity_psd_data import (
+    GovernmentUsCommodityPsdDataFetcher,
+)
 from openbb_government_us.models.commodity_psd_report import (
     GovernmentUsCommodityPsdReportFetcher,
 )
@@ -94,4 +97,29 @@ def test_government_us_weather_bulletin_download_fetcher(credentials=test_creden
 
     fetcher = GovernmentUsWeatherBulletinDownloadFetcher()
     result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_government_us_commodity_psd_data_fetcher(credentials=test_credentials):
+    """Test GovernmentUsCommodityPsdDataFetcher."""
+
+    params = {
+        "report_id": "coffee_summary",
+    }
+
+    fetcher = GovernmentUsCommodityPsdDataFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+    time_series_params = {
+        "report_id": "world_crop_production_summary",
+        "commodity": "coffee",
+        "attribute": ["exports"],
+        "country": "BR",
+        "start_year": 2025,
+        "end_year": 2025,
+        "aggregate_regions": False,
+    }
+    result = fetcher.test(time_series_params, credentials)
     assert result is None
