@@ -159,7 +159,7 @@ class GovernmentUsCommodityPsdDataQueryParams(CommodityPsdDataQueryParams):
     )
     attribute: str | list[str] | None = Field(
         default=None,
-        description="Attribute to filter the data. If None, retrives all available attributes for the commodity.\n"
+        description="Attribute to filter the data. If None, retrieves all available attributes for the commodity.\n"
         + "Parameter is ignored when commodity is None. Valid attributes depend on the commodity, "
         + "an invalid choice will show the available attributes for the entered commodity.\n"
         + "All attributes choices are:\n"
