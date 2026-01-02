@@ -83,10 +83,79 @@ async def short_term_energy_outlook(
 
 
 @router.command(
+    model="CommodityPsdData",
+    examples=[
+        APIEx(
+            description="Get the World Crop Production Summary table.",
+            parameters={
+                "provider": "government_us",
+            },
+        ),
+        APIEx(
+            description="Get the current Corn World Trade table from the PDS report.",
+            parameters={
+                "provider": "government_us",
+                "report_id": "corn_world_trade",
+            },
+        ),
+        APIEx(
+            description="Get all attributes for Coffee globally, for a single year.",
+            parameters={
+                "provider": "government_us",
+                "commodity": "coffee",
+                "start_year": 2025,
+                "end_year": 2025,
+            },
+        ),
+        APIEx(
+            description="Compare Brazil coffee exports versus the world from 2010 to present.",
+            parameters={
+                "provider": "government_us",
+                "commodity": "coffee",
+                "country": "brazil",
+                "attribute": "exports",
+                "aggregate_region": True,
+                "start_year": 2010,
+            },
+        ),
+        APIEx(
+            description="Get historical production of corn in the US from 2020.",
+            parameters={
+                "provider": "government_us",
+                "commodity": "corn",
+                "country": "united_states",
+                "attribute": "production",
+                "start_year": 2020,
+            },
+        ),
+        APIEx(
+            description="Get regional aggregates for wheat beginning and ending stocks from 2020.",
+            parameters={
+                "provider": "government_us",
+                "commodity": "wheat",
+                "country": "world",
+                "attribute": "beginning_stocks,ending_stocks",
+                "aggregate_region": True,
+                "start_year": 2020,
+            },
+        ),
+    ],
+)
+async def psd_data(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get data tables and historical time series from the USDA FAS Production, Supply, and Distribution (PSD) Reports."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="CommodityPsdReport",
     no_validate=True,
     widget_config={
-        "name": "USDA FAS Commodity Production Supply & Demand Report",
+        "name": "USDA FAS Commodity Production Supply & Distribution Reports",
         "description": "Monthly publications released by the USDA Foreign Agriculture Service.",
         "type": "pdf",
         "refetchInterval": False,
@@ -124,7 +193,7 @@ async def psd_report(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Agriculture commodity production, supply, and demand PDF reports (World Agricultural Outlook).
+    """Agriculture commodity production, supply, and distribution PDF reports (World Agricultural Outlook).
 
     This command returns only the results portion of the OBBject response.
     It contains a dictionary where the PDF content is base64 encoded under the 'content' key.

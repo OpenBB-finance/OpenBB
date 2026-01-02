@@ -1,4 +1,4 @@
-"""US Government Production Supply & Demand Publications Model."""
+"""US Government Production Supply & Distribution Publications Model."""
 
 # pylint: disable=unused-argument
 

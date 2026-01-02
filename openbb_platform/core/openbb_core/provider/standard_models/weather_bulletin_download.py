@@ -22,7 +22,7 @@ class WeatherBulletinDownloadQueryParams(QueryParams):
                 return v.split(",")
             return [v]
         if isinstance(v, dict) and "urls" in v:
-            return [v["urls"]]
+            return v["urls"]
         if isinstance(v, list):
             return v
         raise ValueError("Invalid format for URLs. Must be str, dict, or list.")

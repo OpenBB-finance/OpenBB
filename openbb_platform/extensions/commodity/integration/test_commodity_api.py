@@ -184,3 +184,49 @@ def test_commodity_weather_bulletins(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "provider": "government_us",
+                "report_id": "coffee_summary",
+                "commodity": None,
+                "country": None,
+                "attributes": None,
+                "start_year": None,
+                "end_year": None,
+                "aggregate_region": False,
+            }
+        ),
+        (
+            {
+                "report_id": "world_crop_production_summary",  # ignored if commodity is set
+                "commodity": "corn",
+                "country": "united_states,argentina",
+                "attributes": "exports",
+                "start_year": 2025,
+                "end_year": 2025,
+                "provider": "government_us",
+                "aggregate_region": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_psd_data(params, headers):
+    """Test the Commodity PSD Data endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/commodity/psd_data?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

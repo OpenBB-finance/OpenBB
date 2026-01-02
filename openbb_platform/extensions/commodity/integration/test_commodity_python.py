@@ -172,3 +172,48 @@ def test_commodity_weather_bulletins_download(params, obb):
         assert isinstance(bulletin, dict)
         assert bulletin["content"]
         assert bulletin["data_format"]["data_type"] == "pdf"
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "provider": "government_us",
+                "report_id": "coffee_summary",
+                "commodity": None,
+                "country": None,
+                "attributes": None,
+                "start_year": None,
+                "end_year": None,
+                "aggregate_region": False,
+            }
+        ),
+        (
+            {
+                "report_id": "world_crop_production_summary",  # ignored if commodity is set
+                "commodity": "corn",
+                "country": "united_states,argentina",
+                "attributes": "exports",
+                "start_year": 2025,
+                "end_year": 2025,
+                "provider": "government_us",
+                "aggregate_region": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_commodity_psd_data(params, obb):
+    """Test Commodity PSD Data endpoint."""
+    params = {p: v for p, v in params.items() if v is not None}
+
+    result = obb.commodity.psd_data(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
