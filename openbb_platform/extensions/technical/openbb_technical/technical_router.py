@@ -566,6 +566,93 @@ def bbands(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Keltner Channels.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=2)",
+            ],
+        ),
+        APIEx(parameters={"length": 20, "scalar": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
+def kc(
+    data: list[Data],
+    target: str = "close",
+    high_column: str = "high",
+    low_column: str = "low",
+    index: str = "date",
+    length: int = 20,
+    scalar: float = 2.0,
+    mamode: Literal["ema", "sma", "wma", "rma"] = "ema",
+    offset: int = 0,
+) -> OBBject[list[Data]]:
+    """Calculate the Keltner Channels.
+
+    Keltner Channels are a volatility-based Technical Analysis indicator similar to Bollinger Bands
+    and Donchian Channels. They use an Exponential Moving Average (EMA) for the middle line
+    and Average True Range (ATR) for the upper and lower channel lines.
+
+    The upper band is calculated by adding a multiple of the ATR to the EMA.
+    The lower band is calculated by subtracting a multiple of the ATR from the EMA.
+
+    Parameters
+    ----------
+    data : list[Data]
+        list of data to be used for the calculation.
+    target : str
+        Target column name, by default "close".
+    high_column : str
+        High column name, by default "high".
+    low_column : str
+        Low column name, by default "low".
+    index : str, optional
+        Index column name to use with `data`, by default "date".
+    length : int, optional
+        Number of periods to be used for the calculation, by default 20.
+    scalar : float, optional
+        Scalar to be used for the calculation, by default 2.0.
+    mamode : Literal["ema", "sma", "wma", "rma"], optional
+        Moving average mode to be used for the calculation, by default "ema".
+    offset : int, optional
+        Offset from the current period, by default 0.
+
+    Returns
+    -------
+    OBBject[list[Data]]
+        The calculated data.
+    """
+    # pylint: disable=import-outside-toplevel
+    import pandas as pd
+    import pandas_ta as ta  # noqa
+
+    validate_data(data, length)
+    df = basemodel_to_df(data, index=index)
+
+    # Ensure we use the user-specified column names
+    get_target_columns(df, [high_column, low_column, target])
+
+    kc_df = pd.DataFrame(
+        df.ta.kc(
+            high=df[high_column],
+            low=df[low_column],
+            close=df[target],
+            length=length,
+            scalar=scalar,
+            mamode=mamode,
+            offset=offset,
+        )
+    )
+
+    output = pd.concat([df, kc_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
+
+    return OBBject(results=results)
+
+
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
             description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
