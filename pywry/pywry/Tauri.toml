@@ -1,0 +1,27 @@
+"$schema" = "https://schema.tauri.app/config/2"
+productName = "pywry"
+version = "2.0.0"
+identifier = "com.pywry.app"
+
+[build]
+frontendDist = "./frontend"
+
+[app]
+withGlobalTauri = true
+
+# Main window - hidden by default, shown when needed
+[[app.windows]]
+label = "main"
+title = "PyWry"
+width = 800
+height = 600
+visible = false
+center = true
+closable = true
+
+[bundle]
+icon = [
+    "frontend/assets/icon.png",
+    "frontend/assets/icon.ico",
+    "frontend/assets/icon.icns",
+]

@@ -14,11 +14,15 @@ PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 CLI_PATH = Path(__file__).parent.parent.resolve() / "cli"
 CLI_PYPROJECT = CLI_PATH / "pyproject.toml"
 CLI_LOCK = CLI_PATH / "poetry.lock"
+PYWRY_PATH = Path(__file__).parent.parent.resolve() / "pywry"
+PYWRY_PROJECT = PYWRY_PATH / "pyproject.toml"
+PYWRY_LOCK = PYWRY_PATH / "poetry.lock"
+
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
+openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-core = { path = "./core", develop = true }
 openbb-platform-api = { path = "./extensions/platform_api", develop = true }
 
@@ -165,6 +169,41 @@ def install_platform_local(_extras: bool = False):
             f.write(original_lock)
 
 
+def install_pywry():
+    """Install the PyWry locally for development purposes."""
+    original_lock = PYWRY_LOCK.read_text(encoding="utf-8")
+    original_pyproject = PYWRY_PROJECT.read_text(encoding="utf-8")
+
+    with open(PYWRY_PROJECT) as f:
+        pyproject_toml = load(f)
+
+    TEMP_PYPROJECT = dumps(pyproject_toml)
+
+    try:
+        with open(PYWRY_PROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(TEMP_PYPROJECT)
+
+        CMD = [sys.executable, "-m", "poetry"]
+
+        subprocess.run(
+            CMD + ["lock", "--regenerate"],
+            cwd=PYWRY_PATH,
+            check=True,  # noqa: S603
+        )
+        subprocess.run(CMD + ["install"], cwd=PYWRY_PATH, check=True)  # noqa: S603
+    except (Exception, KeyboardInterrupt) as e:
+        print(e)  # noqa: T201
+        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
+
+    finally:
+        # Revert pyproject.toml and poetry.lock to their original state.
+        with open(PYWRY_PROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_pyproject)
+
+        with open(PYWRY_LOCK, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_lock)
+
+
 def install_platform_cli():
     """Install the CLI locally for development purposes."""
     original_lock = CLI_LOCK.read_text(encoding="utf-8")
@@ -210,6 +249,9 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
     cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
+    pywry = any(arg.lower() in ["-p", "--pywry"] for arg in args)
     install_platform_local(extras)
     if cli:
         install_platform_cli()
+    if pywry:
+        install_pywry()

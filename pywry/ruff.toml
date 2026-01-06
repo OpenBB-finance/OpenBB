@@ -1,0 +1,169 @@
+# PyWry - Ruff Configuration
+
+target-version = "py310"
+line-length = 100
+
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".pytest_cache",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".venv",
+    "venv",
+]
+include = ["*.py", "*.pyi"]
+fix = true
+show-fixes = true
+output-format = "grouped"
+
+[lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "UP",
+    "B",
+    "C4",
+    "SIM",
+    "N",
+    "D",
+    "S",
+    "A",
+    "C90",
+    "RUF",
+    "ASYNC",
+    "TCH",
+    "PTH",
+    "PL",
+    "TRY",
+    "PERF",
+    "LOG",
+]
+
+ignore = [
+    "E501",
+    "D100",
+    "D104",
+    "D105",
+    "D107",
+    "D203",
+    "D213",
+    "S101",
+    "TRY003",
+    "PLR0913",
+    "PLR2004",
+    "D401",
+    "B008",
+    "N818",
+    "PERF203",
+    "PLC0415",
+]
+
+fixable = ["ALL"]
+unfixable = [
+    "F401",
+    "F841",
+]
+
+# Allow unused variables when underscore-prefixed
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",
+    "D",
+    "PLR2004",
+    "S105",
+    "S106",
+    "ARG",
+]
+
+"__init__.py" = [
+    "F401",
+    "D104",
+]
+
+"pywry/__main__.py" = [
+    "W293",  # Trailing whitespace in JS template strings
+    "S110",  # try-except-pass in window cleanup
+]
+
+"pywry/cli.py" = [
+    "PLR0912",
+]
+
+"pywry/config.py" = [
+    "N815",
+    "S110",  # try-except-pass in TOML parsing
+]
+
+"pywry/runtime.py" = [
+    "PLW0602",  # Global used but not assigned
+    "PLW0603",  # Global statement for singleton pattern
+    "S110",     # try-except-pass in shutdown
+    "S603",     # subprocess call
+]
+
+"pywry/asset_loader.py" = [
+    "PLW0603",  # Global statement for singleton pattern
+    "TRY300",   # Return in try block is intentional
+]
+
+"pywry/hot_reload.py" = [
+    "PLW0603",  # Global statement for singleton pattern
+    "TRY300",   # Return in try block is intentional
+]
+
+"pywry/watcher.py" = [
+    "PLW0603",  # Global statement for singleton pattern
+]
+
+"pywry/callbacks.py" = [
+    "TRY300",   # Return in try block is intentional
+]
+
+"pywry/commands/__init__.py" = [
+    "TRY300",   # Return in try block is intentional
+]
+
+[lint.isort]
+known-first-party = ["pywry"]
+known-third-party = ["pytauri", "pydantic", "pydantic_settings", "anyio", "watchdog"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+force-single-line = false
+combine-as-imports = true
+lines-after-imports = 2
+lines-between-types = 1
+
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.mccabe]
+max-complexity = 12
+
+[lint.pylint]
+max-args = 10
+max-locals = 20
+max-branches = 12
+max-statements = 50
+max-public-methods = 25
+
+[lint.flake8-bugbear]
+extend-immutable-calls = ["pydantic.Field", "Field"]
+
+[lint.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
+runtime-evaluated-base-classes = ["pydantic.BaseModel", "pydantic_settings.BaseSettings"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "native"
+preview = false
+docstring-code-format = true
+docstring-code-line-length = 80

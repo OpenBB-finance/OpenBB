@@ -1,0 +1,127 @@
+name: Test pywry
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - 'pywry/**'
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - 'pywry/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: pywry
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pywry/pyproject.toml'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run Ruff linter
+        run: |
+          ruff check pywry/ tests/
+
+      - name: Run Ruff formatter check
+        run: |
+          ruff format --check pywry/ tests/
+
+      - name: Run Mypy type checker
+        run: |
+          mypy pywry/
+
+  test:
+    name: Test - ${{ matrix.os }} - Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # x64 platforms: test min (3.10) and max (3.14)
+          - os: ubuntu-24.04
+            python-version: '3.10'
+          - os: ubuntu-24.04
+            python-version: '3.14'
+          - os: windows-2025
+            python-version: '3.10'
+          - os: windows-2025
+            python-version: '3.14'
+          - os: macos-15-intel
+            python-version: '3.10'
+          - os: macos-15-intel
+            python-version: '3.14'
+          # ARM platforms: test min available and max (3.14)
+          - os: ubuntu-24.04-arm
+            python-version: '3.11'
+          - os: ubuntu-24.04-arm
+            python-version: '3.14'
+          - os: windows-11-arm
+            python-version: '3.12'
+          - os: windows-11-arm
+            python-version: '3.14'
+          - os: macos-15
+            python-version: '3.10'
+          - os: macos-15
+            python-version: '3.14'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'pywry/pyproject.toml'
+
+      # Linux: Install Xvfb and other dependencies for GUI tests
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1-mesa-glx libegl1-mesa libwebkit2gtk-4.1-0 libgtk-3-0
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # Linux: Run tests with Xvfb for display
+      - name: Run tests (Linux)
+        if: runner.os == 'Linux'
+        env:
+          PYWRY_HEADLESS: "1"
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
+
+      # Windows: Run tests
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        env:
+          PYWRY_HEADLESS: "1"
+        run: |
+          python -m pytest tests/ -v --tb=short
+
+      # macOS: Run tests
+      - name: Run tests (macOS)
+        if: runner.os == 'macOS'
+        env:
+          PYWRY_HEADLESS: "1"
+        run: |
+          python -m pytest tests/ -v --tb=short

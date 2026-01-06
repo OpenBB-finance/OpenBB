@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/assets/icon.ico" />
+    <link rel="stylesheet" href="/assets/pywry.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Data Platform by OpenBB</title>
+    
+    <style>
+      #app { width: 100%; min-height: 100vh; padding: 20px; }
+      
+      .pywry-loading { 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center; 
+        height: 100vh;
+      }
+      .pywry-loading h1 { margin-bottom: 10px; }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="pywry-loading">
+        <p>Waiting for content...</p>
+      </div>
+    </div>
+    <script src="/src/main.js"></script>
+  </body>
+</html>

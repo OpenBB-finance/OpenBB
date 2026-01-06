@@ -1,0 +1,68 @@
+[project]
+name = "pywry"
+version = "2.0.0"
+description = "A blazingly fast 100% Python library for cross-platform webview window handling and content rendering, with offline support for AgGrid and Plotly."
+authors = [{ name = "OpenBB-finance", email = "contact@openbb.finance" }]
+license = { text = "AGPL-3.0-only" }
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Desktop Environment :: Window Managers",
+]
+keywords = ["webview", "tauri", "gui", "plotly", "aggrid", "desktop"]
+
+dependencies = [
+    "pytauri>=0.8.0",
+    "pytauri-wheel>=0.8.0",
+    "anyio>=4.0.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "watchdog>=3.0.0",
+]
+
+[project.scripts]
+pywry = "pywry.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-timeout>=2.0.0",
+    "ruff>=0.13",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenBB-finance/OpenBB"
+Repository = "https://github.com/OpenBB-finance/OpenBB/pywry"
+Documentation = "https://github.com/OpenBB-finance/OpenBB/pywry#readme"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{include = "pywry"}]
+include = [
+    "pywry/frontend/**/*",
+    "pywry/capabilities/**/*",
+    "pywry/Tauri.toml",
+]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = ["tests/"]

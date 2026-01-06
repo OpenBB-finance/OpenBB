@@ -1,0 +1,18 @@
+identifier = "default"
+description = "Capability for PyWry windows"
+windows = ["*"]
+permissions = [
+    "core:default",
+    "pytauri:default",
+    "core:window:allow-close",
+    "core:window:allow-hide",
+    "core:window:allow-show",
+    "core:window:allow-set-title",
+    "core:window:allow-set-size",
+    "core:window:allow-set-position",
+    "core:window:allow-center",
+    "core:window:allow-set-focus",
+    "core:webview:default",
+    "core:app:default",
+    "notification:default",
+]

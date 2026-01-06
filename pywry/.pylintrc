@@ -1,0 +1,80 @@
+[MAIN]
+# PyWry - Pylint Configuration
+
+fail-under=8.0
+ignore=__pycache__,.git,.ruff_cache,.pytest_cache,build,dist,*.egg-info
+init-hook='import sys; sys.path.insert(0, ".")'
+jobs=2
+py-version=3.10
+recursive=yes
+
+[MESSAGES CONTROL]
+disable=
+    too-few-public-methods,
+    logging-fstring-interpolation,
+    duplicate-code,
+    too-many-positional-arguments,
+    too-many-locals,
+    trailing-whitespace,
+    trailing-newlines,
+    line-too-long,
+    no-member,
+    import-outside-toplevel,
+    global-statement,
+    global-variable-not-assigned,
+    protected-access,
+
+[FORMAT]
+max-line-length=100
+max-module-lines=1000
+expected-line-ending-format=
+
+[BASIC]
+argument-naming-style=snake_case
+attr-naming-style=snake_case
+class-naming-style=PascalCase
+const-naming-style=UPPER_CASE
+function-naming-style=snake_case
+method-naming-style=snake_case
+module-naming-style=snake_case
+variable-naming-style=snake_case
+argument-rgx=[a-z_][a-z0-9_]{0,30}$
+attr-rgx=[a-z_][a-z0-9_]{0,30}$
+good-names=i,j,k,ex,_,id,js,css,fn,e,f,w,h,x,y
+bad-names=foo,bar,baz,toto,tutu,tata
+
+[DESIGN]
+max-args=10
+max-attributes=15
+max-bool-expr=5
+max-branches=12
+max-locals=20
+max-parents=10
+max-public-methods=25
+max-returns=6
+max-statements=50
+min-public-methods=0
+
+[IMPORTS]
+known-third-party=pytauri,pydantic,pydantic_settings,anyio,watchdog
+
+[TYPECHECK]
+ignored-classes=Pydantic,BaseModel,BaseSettings
+ignored-modules=pytauri,pydantic,pydantic_settings
+missing-member-hint=yes
+missing-member-max-choices=2
+
+[LOGGING]
+logging-format-style=new
+
+[SIMILARITIES]
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
+min-similarity-lines=6
+
+[STRING]
+check-str-concat-over-line-jumps=no
+
+[EXCEPTIONS]
+overgeneral-exceptions=builtins.BaseException

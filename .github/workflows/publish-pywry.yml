@@ -1,0 +1,195 @@
+name: Publish pywry to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Publish target'
+        required: true
+        default: 'testpypi'
+        type: choice
+        options:
+          - 'testpypi'
+          - 'pypi'
+
+defaults:
+  run:
+    working-directory: pywry
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  # Build source distribution and universal wheel
+  build:
+    name: Build distribution
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: List dist contents
+        run: ls -la dist/
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: pywry/dist/
+
+  # Test the built wheel across platforms
+  test:
+    name: Test - ${{ matrix.os }} - Python ${{ matrix.python-version }}
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # x64 platforms: test min (3.10) and max (3.14)
+          - os: ubuntu-24.04
+            python-version: '3.10'
+          - os: ubuntu-24.04
+            python-version: '3.14'
+          - os: windows-2025
+            python-version: '3.10'
+          - os: windows-2025
+            python-version: '3.14'
+          - os: macos-15-intel
+            python-version: '3.10'
+          - os: macos-15-intel
+            python-version: '3.14'
+          # ARM platforms: test min available and max (3.14)
+          - os: ubuntu-24.04-arm
+            python-version: '3.11'
+          - os: ubuntu-24.04-arm
+            python-version: '3.14'
+          - os: windows-11-arm
+            python-version: '3.12'
+          - os: windows-11-arm
+            python-version: '3.14'
+          - os: macos-15
+            python-version: '3.10'
+          - os: macos-15
+            python-version: '3.14'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Linux: Install dependencies for GUI tests
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1-mesa-glx libegl1-mesa libwebkit2gtk-4.1-0 libgtk-3-0
+
+      - name: Install wheel and test dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install dist/*.whl
+          pip install pytest pytest-asyncio pytest-timeout
+
+      # Linux: Run tests with Xvfb
+      - name: Run tests (Linux)
+        if: runner.os == 'Linux'
+        env:
+          PYWRY_HEADLESS: "1"
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
+
+      # Windows/macOS: Run tests
+      - name: Run tests (Windows/macOS)
+        if: runner.os != 'Linux'
+        env:
+          PYWRY_HEADLESS: "1"
+        run: |
+          python -m pytest tests/ -v --tb=short
+
+  # Publish to PyPI with attestations
+  publish-pypi:
+    name: Publish to PyPI
+    needs: test
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'pypi')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pywry
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read
+
+    steps:
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Display dist contents
+        run: ls -la dist/
+        working-directory: .
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          attestations: true
+          print-hash: true
+
+  # Publish to TestPyPI with attestations
+  publish-testpypi:
+    name: Publish to TestPyPI
+    needs: test
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'testpypi'
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/pywry
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read
+
+    steps:
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Display dist contents
+        run: ls -la dist/
+        working-directory: .
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          repository-url: https://test.pypi.org/legacy/
+          attestations: true
+          print-hash: true
