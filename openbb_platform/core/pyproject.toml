@@ -23,7 +23,7 @@ pydantic = "^2.12.3"
 requests = "^2.32.5"
 importlib-metadata = ">=6.8.0"
 python-dotenv = "^1.0.0"
-aiohttp = "^3.13.2"
+aiohttp = ">=3.13.3"
 ruff = "^0.13"              # Needed here to lint generated code
 pyjwt = "^2.10.1"
 
