@@ -55,13 +55,13 @@ interactions:
       content-type:
       - text/csv;charset=UTF-8
       date:
-      - Fri, 05 Dec 2025 06:07:48 GMT
+      - Tue, 06 Jan 2026 03:15:34 GMT
       etag:
-      - 1d283da5-3b70-417e-a23b-f2f46e019811
+      - 22a699ad-e7d3-41a3-92bb-ca31373a57a2
       set-cookie:
-      - JSESSIONID=8CC795564B67AD703AFC97DC986DBD7A; Path=/FusionEdgeServer; Secure;
+      - JSESSIONID=C436B61C04488232C55A411E7AF7624F; Path=/FusionEdgeServer; Secure;
         HttpOnly
-      - f6b4bfbfef5805a1561a29548fc3e36c=670c52fc2b4da486c1e4dce88f65536f; path=/;
+      - f6b4bfbfef5805a1561a29548fc3e36c=9d099afb8d760e8dbab37aefb740b8bd; path=/;
         HttpOnly; Secure; SameSite=None
     status:
       code: 200

@@ -1,17 +1,18 @@
 """BIS House Price Index Model."""
 
 # pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any
 from warnings import warn
 
+import pandas as pd
 from openbb_bis.utils.constants import (
     CODE_TO_COUNTRY_HOUSE_PRICE_INDEX,
     COUNTRY_TO_CODE_HOUSE_PRICE_INDEX,
     FREQUENCY_TO_FREQ,
 )
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.house_price_index import (
     HousePriceIndexData,
@@ -147,9 +148,8 @@ class BISHousePriceIndexFetcher(
             raise OpenBBError(
                 f"Error with the BIS request (HTTP {response.status_code}): `{response.text}`"
             )
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
+
+        df = read_csv(StringIO(response.text))
         if df.empty:
             raise EmptyDataError()
         df = df.rename(
@@ -169,6 +169,20 @@ class BISHousePriceIndexFetcher(
     @staticmethod
     def transform_data(
         query: BISHousePriceIndexQueryParams, data: list[dict], **kwargs: Any
-    ) -> list[BISHousePriceIndexData]:
+    ) -> AnnotatedResult[list[BISHousePriceIndexData]]:
         """Transform the data from the BIS endpoint."""
-        return [BISHousePriceIndexData.model_validate(d) for d in data]
+        df = pd.DataFrame(data)  # better receive in df, but consistency is kept
+
+        # Prepare to return everything else as metadata
+        result_headers = ["country", "date", "value"]
+        headers = df.columns.tolist()
+        meta_headers = headers
+        for h in result_headers:
+            meta_headers.remove(h)
+
+        records = df.get(result_headers, []).to_dict("records")
+        metadata = df.get(meta_headers, []).to_dict(orient="list")
+        return AnnotatedResult(
+            result=[BISHousePriceIndexData.model_validate(r) for r in records],
+            metadata=metadata,
+        )
