@@ -122,6 +122,7 @@ jobs:
         if: runner.os == 'Linux'
         env:
           PYWRY_HEADLESS: "1"
+          NO_AT_BRIDGE: "1"
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
 

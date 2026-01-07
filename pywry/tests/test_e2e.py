@@ -1,7 +1,8 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
 
-import time
+import sys
 import threading
+import time
 
 from typing import Any
 
@@ -314,7 +315,6 @@ class TestLightThemeCoordination:
         app = PyWry(theme=ThemeMode.LIGHT)
         figure = {"data": [{"x": [1, 2, 3], "y": [10, 15, 13], "type": "bar"}]}
         label = show_plotly_and_wait_ready(app, figure, title="Light+Plotly")
-        # Plotly renders asynchronously after DOM is ready
         time.sleep(0.5)
 
         result = verify_theme_and_rendering(label, expect_dark=False)

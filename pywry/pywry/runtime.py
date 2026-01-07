@@ -389,13 +389,11 @@ def start() -> bool:
 
     _ready_event.clear()
     _running = True
-
-    # Get the path to the subprocess entry point
     pywry_dir = get_pywry_dir()
-
-    # Start subprocess with Python running pywry/__main__.py
     python_exe = sys.executable
-    cmd = [python_exe, "-m", "pywry"]
+    cmd = [python_exe, "-u", "-m", "pywry"]
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
 
     try:
         _process = subprocess.Popen(  # pylint: disable=R1732
@@ -403,9 +401,10 @@ def start() -> bool:
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            cwd=pywry_dir.parent,  # pywry-pytauri directory
+            cwd=pywry_dir.parent,
             text=True,
             bufsize=1,
+            env=env,
         )
     except Exception as e:
         sys.stderr.write(f"[pywry] Failed to start subprocess: {e}\n")

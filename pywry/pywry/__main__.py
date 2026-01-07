@@ -408,34 +408,42 @@ def main() -> int:
     reader_thread = threading.Thread(target=stdin_reader, args=(ipc,), daemon=True)
     reader_thread.start()
 
-    with (
-        start_blocking_portal("asyncio") as portal,
-        portal.wrap_async_context_manager(portal.call(create_task_group)) as _,
-    ):
-        context = context_factory(src_dir)
-        commands = Commands()
-        register_commands(commands)
+    try:
+        with (
+            start_blocking_portal("asyncio") as portal,
+            portal.wrap_async_context_manager(portal.call(create_task_group)) as _,
+        ):
+            context = context_factory(src_dir)
+            commands = Commands()
+            register_commands(commands)
 
-        app = builder_factory().build(
-            context=context,
-            invoke_handler=commands.generate_handler(portal),
-        )
+            app = builder_factory().build(
+                context=context,
+                invoke_handler=commands.generate_handler(portal),
+            )
 
-        def on_run(app_handle: Any, run_event: Any) -> None:
-            if isinstance(run_event, RunEvent.Ready):
-                log("App ready!")
-                ipc.app_handle = app_handle
-                # Get pre-configured main window
-                main_window = Manager.get_webview_window(app_handle, "main")
-                if main_window:
-                    ipc.windows["main"] = main_window
-                    log("Registered 'main' window")
-                else:
-                    log("WARNING: 'main' window not found!")
-                ipc.send_ready()
+            def on_run(app_handle: Any, run_event: Any) -> None:
+                if isinstance(run_event, RunEvent.Ready):
+                    log("App ready!")
+                    ipc.app_handle = app_handle
+                    # Get pre-configured main window
+                    main_window = Manager.get_webview_window(app_handle, "main")
+                    if main_window:
+                        ipc.windows["main"] = main_window
+                        log("Registered 'main' window")
+                    else:
+                        log("WARNING: 'main' window not found!")
+                    ipc.send_ready()
 
-        log("Starting app.run()...")
-        app.run(on_run)
+            log("Starting app.run()...")
+            app.run(on_run)
+    except Exception as e:
+        sys.stderr.write(f"[pywry] FATAL: {e}\n")
+        sys.stderr.flush()
+        import traceback
+
+        traceback.print_exc()
+        return 1
 
     log("Subprocess exiting")
     return 0
