@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Set up Rust (required for pytauri-wheel)
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
@@ -98,6 +101,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Set up Rust (Linux only)
+        if: runner.os == 'Linux'
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Download dist artifacts
         uses: actions/download-artifact@v4

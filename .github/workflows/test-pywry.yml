@@ -96,6 +96,10 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'pywry/pyproject.toml'
 
+      - name: Set up Rust (Linux only)
+        if: runner.os == 'Linux'
+        uses: dtolnay/rust-toolchain@stable
+
       # Linux: Install Xvfb and other dependencies for GUI tests
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
