@@ -1,6 +1,7 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
 
 import time
+import threading
 
 from typing import Any
 
@@ -14,33 +15,131 @@ from pywry.models import HtmlContent, ThemeMode, WindowMode
 
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
-    """Ensure runtime is stopped after each test."""
-    # Clear any destroyed labels from previous tests
+    """Ensure runtime is fresh for each test - STOP before AND after."""
+    # STOP runtime first to ensure clean state (prevents race conditions from previous test)
+    runtime.stop()
+    time.sleep(0.2)
+
+    # Clear any stale callbacks
     registry = get_registry()
     registry.clear()
+
     yield
+
+    # Cleanup after test
     runtime.stop()
     registry.clear()
     time.sleep(0.1)
 
 
-def wait_for_result(label: str, script: str, timeout: float = 3.0) -> dict[str, Any] | None:
-    """Execute JS and wait for pywry.result() callback."""
-    result: dict[str, Any] = {"received": False, "data": None}
+class ReadyWaiter:
+    """Helper to wait for window ready event. Must be created BEFORE show()."""
 
-    def on_result(data):
-        result["received"] = True
-        result["data"] = data
+    def __init__(self, timeout: float = 10.0):
+        self.timeout = timeout
+        self._ready = threading.Event()
 
+    def on_ready(self, data: Any) -> None:
+        """Callback for pywry:ready event."""
+        self._ready.set()
+
+    def wait(self) -> bool:
+        """Wait for window to be ready. Call AFTER show()."""
+        return self._ready.wait(timeout=self.timeout)
+
+
+def show_and_wait_ready(
+    app: PyWry,
+    content: str | HtmlContent,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show content and wait for window to be ready.
+
+    This registers the ready callback BEFORE calling show().
+    """
+    waiter = ReadyWaiter(timeout=timeout)
+
+    # Merge callbacks if provided
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+
+    label = app.show(content, callbacks=callbacks, **kwargs)
+
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+
+    return label
+
+
+def show_dataframe_and_wait_ready(
+    app: PyWry,
+    data: Any,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show dataframe and wait for window to be ready."""
+    waiter = ReadyWaiter(timeout=timeout)
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+    label = app.show_dataframe(data, callbacks=callbacks, **kwargs)
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+    return label
+
+
+def show_plotly_and_wait_ready(
+    app: PyWry,
+    figure: Any,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show plotly figure and wait for window to be ready."""
+    waiter = ReadyWaiter(timeout=timeout)
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+    label = app.show_plotly(figure, callbacks=callbacks, **kwargs)
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+    return label
+
+
+def wait_for_result(
+    label: str, script: str, timeout: float = 5.0, retries: int = 3
+) -> dict[str, Any] | None:
+    """Execute JS and wait for pywry.result() callback.
+
+    Args:
+        label: Window label to execute script in
+        script: JavaScript to execute
+        timeout: Timeout per attempt in seconds
+        retries: Number of retry attempts for race conditions (macOS)
+    """
     registry = get_registry()
-    registry.register(label, "pywry:result", on_result)
-    runtime.eval_js(label, script)
 
-    start = time.time()
-    while not result["received"] and (time.time() - start) < timeout:
-        time.sleep(0.05)
+    for attempt in range(retries):
+        result: dict[str, Any] = {"received": False, "data": None}
 
-    registry.unregister(label, "pywry:result", on_result)
+        def on_result(data):
+            result["received"] = True
+            result["data"] = data
+
+        registry.register(label, "pywry:result", on_result)
+        runtime.eval_js(label, script)
+
+        start = time.time()
+        while not result["received"] and (time.time() - start) < timeout:
+            time.sleep(0.05)
+
+        registry.unregister(label, "pywry:result", on_result)
+
+        if result["received"] and result["data"]:
+            return result["data"]
+
+        # Retry after brief delay (helps with macOS race conditions)
+        if attempt < retries - 1:
+            time.sleep(0.5)
+
     return result["data"]
 
 
@@ -167,8 +266,9 @@ class TestDarkThemeCoordination:
         """DARK show_dataframe renders with DARK AG Grid theme."""
         app = PyWry(theme=ThemeMode.DARK)
         data = [{"x": 1, "y": 10}, {"x": 2, "y": 15}]
-        label = app.show_dataframe(data, title="Dark+Grid")
-        time.sleep(2.0)  # AG Grid needs time to render on macOS
+        label = show_dataframe_and_wait_ready(app, data, title="Dark+Grid")
+        # AG Grid renders asynchronously after DOM is ready
+        time.sleep(0.5)
 
         result = verify_theme_and_rendering(label, expect_dark=True)
         assert "error" not in result, f"Verification failed: {result.get('error')}"
@@ -180,8 +280,9 @@ class TestDarkThemeCoordination:
         """DARK show_plotly renders with DARK template."""
         app = PyWry(theme=ThemeMode.DARK)
         figure = {"data": [{"x": [1, 2, 3], "y": [10, 15, 13], "type": "scatter"}]}
-        label = app.show_plotly(figure, title="Dark+Plotly")
-        time.sleep(2.0)  # Give Plotly time to fully render
+        label = show_plotly_and_wait_ready(app, figure, title="Dark+Plotly")
+        # Plotly renders asynchronously after DOM is ready
+        time.sleep(0.5)
 
         result = verify_theme_and_rendering(label, expect_dark=True)
         assert result["hasPlotly"], "Plotly div not found!"
@@ -196,8 +297,9 @@ class TestLightThemeCoordination:
         """LIGHT show_dataframe renders with LIGHT AG Grid theme."""
         app = PyWry(theme=ThemeMode.LIGHT)
         data = [{"x": 1, "y": 10}, {"x": 2, "y": 15}]
-        label = app.show_dataframe(data, title="Light+Grid")
-        time.sleep(2.0)  # AG Grid needs time to render on macOS
+        label = show_dataframe_and_wait_ready(app, data, title="Light+Grid")
+        # AG Grid renders asynchronously after DOM is ready
+        time.sleep(0.5)
 
         result = verify_theme_and_rendering(label, expect_dark=False)
         assert "error" not in result, f"Verification failed: {result.get('error')}"
@@ -209,8 +311,9 @@ class TestLightThemeCoordination:
         """LIGHT show_plotly renders with LIGHT template."""
         app = PyWry(theme=ThemeMode.LIGHT)
         figure = {"data": [{"x": [1, 2, 3], "y": [10, 15, 13], "type": "bar"}]}
-        label = app.show_plotly(figure, title="Light+Plotly")
-        time.sleep(2.0)  # Give Plotly time to fully render
+        label = show_plotly_and_wait_ready(app, figure, title="Light+Plotly")
+        # Plotly renders asynchronously after DOM is ready
+        time.sleep(0.5)
 
         result = verify_theme_and_rendering(label, expect_dark=False)
         assert result["hasPlotly"], "Plotly div not found!"
@@ -230,8 +333,7 @@ class TestContentRendering:
             json_data={"key": "value"},
             init_script="window.__INIT_RAN__ = true;",
         )
-        label = app.show(content, title="Content Test")
-        time.sleep(1.0)  # Give window time to render
+        label = show_and_wait_ready(app, content, title="Content Test")
 
         result = wait_for_result(
             label,
@@ -255,11 +357,9 @@ class TestContentRendering:
     def test_single_window_mode_reuses(self):
         """SINGLE_WINDOW mode reuses the same window."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
-        label1 = app.show("<div id='first'>First</div>")
-        time.sleep(0.5)  # Let first content render
-        label2 = app.show("<div id='second'>Second</div>")
+        label1 = show_and_wait_ready(app, "<div id='first'>First</div>")
+        label2 = show_and_wait_ready(app, "<div id='second'>Second</div>")
         assert label1 == label2, "SINGLE_WINDOW should reuse label!"
-        time.sleep(1.0)  # Let second content render (set_content takes longer)
 
         result = wait_for_result(
             label2,
@@ -278,10 +378,9 @@ class TestContentRendering:
     def test_new_window_mode_creates_multiple(self):
         """NEW_WINDOW mode creates separate windows."""
         app = PyWry(mode=WindowMode.NEW_WINDOW, theme=ThemeMode.DARK)
-        label1 = app.show("<div id='win1'>W1</div>")
-        label2 = app.show("<div id='win2'>W2</div>")
+        label1 = show_and_wait_ready(app, "<div id='win1'>W1</div>")
+        label2 = show_and_wait_ready(app, "<div id='win2'>W2</div>")
         assert label1 != label2, "NEW_WINDOW should create unique labels!"
-        time.sleep(0.3)
 
         r1 = wait_for_result(label1, "pywry.result({ has: !!document.getElementById('win1') });")
         r2 = wait_for_result(label2, "pywry.result({ has: !!document.getElementById('win2') });")

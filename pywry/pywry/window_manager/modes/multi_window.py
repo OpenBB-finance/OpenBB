@@ -77,21 +77,27 @@ class MultiWindowMode(WindowModeBase):
         if label and label in self._windows:
             # Update existing window
             debug(f"Updating multi-window '{label}'")
-            # MUST pass theme so window background matches content
-            theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
-            lifecycle.set_content(label, html, theme_str)
 
-            # Register any additional callbacks from show() call
-            # Note: Don't unregister existing callbacks - those came from pywry.on()
+            # Register callbacks FIRST, before content update
             if callbacks:
                 for event_type, handler in callbacks.items():
                     registry.register(label, event_type, handler)
+
+            # MUST pass theme so window background matches content
+            theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
+            lifecycle.set_content(label, html, theme_str)
         else:
             # Create new window
             if label is None:
                 label = self._generate_label(config.title.lower().replace(" ", "-"))
 
             debug(f"Creating multi-window '{label}'")
+
+            # Register callbacks FIRST, before window is created
+            # This ensures pywry:ready callback is registered before the window sends its ready event
+            if callbacks:
+                for event_type, handler in callbacks.items():
+                    registry.register(label, event_type, handler)
 
             lifecycle.create(
                 label,
@@ -102,10 +108,6 @@ class MultiWindowMode(WindowModeBase):
             # MUST pass theme so window background matches content
             theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
             lifecycle.set_content(label, html, theme_str)
-
-            if callbacks:
-                for event_type, handler in callbacks.items():
-                    registry.register(label, event_type, handler)
 
             self._windows[label] = True
 

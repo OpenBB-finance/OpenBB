@@ -1,6 +1,15 @@
 // PyWry main entry point
 // Listens for events from Python backend
 
+// Read label from URL query string IMMEDIATELY before anything else
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const label = params.get('label');
+  if (label) {
+    window.__PYWRY_LABEL__ = label;
+  }
+})();
+
 window.pywry = {
   ready: false,
   handlers: {},
@@ -14,6 +23,8 @@ window.pywry = {
       htmlEl.classList.add('dark');
     }
     document.getElementById('app').innerHTML = html;
+    // Notify Python that content has been set
+    window.pywry.sendEvent('content:ready', { timestamp: Date.now() });
   },
 
   // Send result back to Python

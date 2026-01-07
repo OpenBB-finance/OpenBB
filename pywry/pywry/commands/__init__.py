@@ -30,7 +30,6 @@ __all__ = [
     "handle_pywry_event",
     "handle_pywry_result",
     "handle_window_close",
-    "handle_window_ready",
     "register_commands",
     "serialize_response",
 ]
@@ -223,24 +222,6 @@ def handle_aggrid_event(label: str, event_data: dict[str, Any]) -> dict[str, Any
     return {"success": True, "dispatched": dispatched}
 
 
-def handle_window_ready(label: str) -> dict[str, Any]:
-    """Handle window ready event.
-
-    Parameters
-    ----------
-    label : str
-        The window label.
-
-    Returns
-    -------
-    dict of str to Any
-        Response dict.
-    """
-    debug(f"Window '{label}' is ready")
-    get_registry().dispatch(label, "pywry:ready", {"label": label})
-    return {"success": True}
-
-
 def handle_window_close(label: str) -> dict[str, Any]:
     """Handle window close event - aggressive cleanup.
 
@@ -332,7 +313,6 @@ COMMAND_HANDLERS: dict[str, Any] = {
     "pywry_event": handle_pywry_event,
     "plotly_event": handle_plotly_event,
     "aggrid_event": handle_aggrid_event,
-    "window_ready": handle_window_ready,
     "window_close": handle_window_close,
     "open_file": handle_open_file,
     "open_url": handle_open_url,

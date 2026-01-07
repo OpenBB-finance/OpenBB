@@ -100,6 +100,13 @@ def _dispatch_event(msg: dict[str, Any]) -> None:
     data = msg.get("data", {})
 
     registry = _get_registry()
+
+    # Map content:ready -> pywry:ready for consistent public API
+    # content:ready is sent AFTER content is actually set in the DOM
+    # (window:ready fires too early - before set_content completes)
+    if event_type == "content:ready":
+        event_type = "pywry:ready"
+
     registry.dispatch(label, event_type, data)
 
 

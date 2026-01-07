@@ -66,6 +66,12 @@ class SingleWindowMode(WindowModeBase):
         lifecycle = get_lifecycle()
         registry = get_registry()
 
+        # Register callbacks FIRST, before window is created/updated
+        # This ensures pywry:ready callback is registered before the window sends its ready event
+        if callbacks:
+            for event_type, handler in callbacks.items():
+                registry.register(self._label, event_type, handler)
+
         if not self._is_created:
             # Create new window
             debug(f"Creating single window '{self._label}'")
@@ -83,12 +89,6 @@ class SingleWindowMode(WindowModeBase):
         # Update content - MUST pass theme so window background matches
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
         lifecycle.set_content(self._label, html, theme_str)
-
-        # Register any additional callbacks from show() call
-        # Note: Don't unregister existing callbacks - those came from pywry.on()
-        if callbacks:
-            for event_type, handler in callbacks.items():
-                registry.register(self._label, event_type, handler)
 
         return self._label
 

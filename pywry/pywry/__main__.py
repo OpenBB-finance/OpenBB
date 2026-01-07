@@ -125,7 +125,7 @@ class JsonIPC:
             return
 
         try:
-            url = WebviewUrl.App("index.html")
+            url = WebviewUrl.App(f"index.html?label={label}")
             window = WebviewWindowBuilder.build(
                 self.app_handle,
                 label,
@@ -134,8 +134,6 @@ class JsonIPC:
                 inner_size=(float(width), float(height)),
                 visible=not HEADLESS,  # Hidden in headless mode for CI
             )
-            # Set the window label in JavaScript so pywry.result knows who it is
-            window.eval(f"window.__PYWRY_LABEL__ = '{label}';")
             if not HEADLESS:
                 window.show()
             self.windows[label] = window
@@ -233,6 +231,10 @@ class JsonIPC:
                             if (oldScript.src) newScript.src = oldScript.src;
                             else newScript.textContent = oldScript.textContent;
                             oldScript.parentNode.replaceChild(newScript, oldScript);
+                        }}
+                        // Notify Python that content is ready
+                        if (window.pywry && window.pywry.sendEvent) {{
+                            window.pywry.sendEvent('content:ready', {{ timestamp: Date.now() }});
                         }}
                     }}, 50);
                 }}, 100);

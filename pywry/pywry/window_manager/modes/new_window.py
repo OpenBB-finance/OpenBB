@@ -72,6 +72,13 @@ class NewWindowMode(WindowModeBase):
 
         debug(f"Creating new window '{label}'")
 
+        # Register callbacks FIRST, before window is created
+        # This ensures pywry:ready callback is registered before the window sends its ready event
+        if callbacks:
+            registry = get_registry()
+            for event_type, handler in callbacks.items():
+                registry.register(label, event_type, handler)
+
         # Create lifecycle tracking and actual window
         lifecycle = get_lifecycle()
         lifecycle.create(
@@ -83,12 +90,6 @@ class NewWindowMode(WindowModeBase):
         # MUST pass theme so window background matches content
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
         lifecycle.set_content(label, html, theme_str)
-
-        # Register callbacks
-        if callbacks:
-            registry = get_registry()
-            for event_type, handler in callbacks.items():
-                registry.register(label, event_type, handler)
 
         # Track the window
         self._windows.add(label)

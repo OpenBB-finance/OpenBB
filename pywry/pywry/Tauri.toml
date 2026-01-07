@@ -13,6 +13,7 @@ withGlobalTauri = true
 [[app.windows]]
 label = "main"
 title = "PyWry"
+url = "index.html?label=main"
 width = 800
 height = 600
 visible = false
