@@ -121,8 +121,9 @@ def verify_theme_and_rendering(label: str, expect_dark: bool) -> dict:
     if expect_dark:
         assert result["windowIsDark"], f"Window should be DARK! Got: {result['htmlClass']}"
         if result["hasGrid"]:
-            assert result["gridIsDark"], \
+            assert result["gridIsDark"], (
                 f"Grid MUST be dark when window is dark! Got: {result['gridThemeClass']}"
+            )
         if result["hasPlotly"]:
             # Verify applied colors match plotly_dark template FROM THE SOURCE
             actual_paper = result.get("plotlyPaperBg")
@@ -130,15 +131,18 @@ def verify_theme_and_rendering(label: str, expect_dark: bool) -> dict:
             expected_paper = result.get("expectedDarkPaperBg")
             expected_plot = result.get("expectedDarkPlotBg")
             assert expected_paper is not None, "plotly_dark template not loaded!"
-            assert actual_paper == expected_paper, \
+            assert actual_paper == expected_paper, (
                 f"paper_bgcolor MUST match plotly_dark template! Expected: '{expected_paper}', Got: '{actual_paper}'"
-            assert actual_plot == expected_plot, \
+            )
+            assert actual_plot == expected_plot, (
                 f"plot_bgcolor MUST match plotly_dark template! Expected: '{expected_plot}', Got: '{actual_plot}'"
+            )
     else:
         assert result["windowIsLight"], f"Window should be LIGHT! Got: {result['htmlClass']}"
         if result["hasGrid"]:
-            assert not result["gridIsDark"], \
+            assert not result["gridIsDark"], (
                 f"Grid MUST be light when window is light! Got: {result['gridThemeClass']}"
+            )
         if result["hasPlotly"]:
             # Verify applied colors match plotly_white template FROM THE SOURCE
             actual_paper = result.get("plotlyPaperBg")
@@ -146,10 +150,12 @@ def verify_theme_and_rendering(label: str, expect_dark: bool) -> dict:
             expected_paper = result.get("expectedLightPaperBg")
             expected_plot = result.get("expectedLightPlotBg")
             assert expected_paper is not None, "plotly_white template not loaded!"
-            assert actual_paper == expected_paper, \
+            assert actual_paper == expected_paper, (
                 f"paper_bgcolor MUST match plotly_white template! Expected: '{expected_paper}', Got: '{actual_paper}'"
-            assert actual_plot == expected_plot, \
+            )
+            assert actual_plot == expected_plot, (
                 f"plot_bgcolor MUST match plotly_white template! Expected: '{expected_plot}', Got: '{actual_plot}'"
+            )
 
     return result
 
@@ -162,9 +168,10 @@ class TestDarkThemeCoordination:
         app = PyWry(theme=ThemeMode.DARK)
         data = [{"x": 1, "y": 10}, {"x": 2, "y": 15}]
         label = app.show_dataframe(data, title="Dark+Grid")
-        time.sleep(1.0)
+        time.sleep(2.0)  # AG Grid needs time to render on macOS
 
         result = verify_theme_and_rendering(label, expect_dark=True)
+        assert "error" not in result, f"Verification failed: {result.get('error')}"
         assert result["hasGrid"], "AG Grid not found!"
         assert result["gridRowCount"] > 0, "No rows rendered!"
         app.close()
@@ -190,9 +197,10 @@ class TestLightThemeCoordination:
         app = PyWry(theme=ThemeMode.LIGHT)
         data = [{"x": 1, "y": 10}, {"x": 2, "y": 15}]
         label = app.show_dataframe(data, title="Light+Grid")
-        time.sleep(1.0)
+        time.sleep(2.0)  # AG Grid needs time to render on macOS
 
         result = verify_theme_and_rendering(label, expect_dark=False)
+        assert "error" not in result, f"Verification failed: {result.get('error')}"
         assert result["hasGrid"], "AG Grid not found!"
         assert result["gridRowCount"] > 0, "No rows rendered!"
         app.close()
@@ -225,7 +233,9 @@ class TestContentRendering:
         label = app.show(content, title="Content Test")
         time.sleep(1.0)  # Give window time to render
 
-        result = wait_for_result(label, """
+        result = wait_for_result(
+            label,
+            """
             pywry.result({
                 divExists: !!document.getElementById('test-div'),
                 divText: document.getElementById('test-div')?.textContent || 'NONE',
@@ -233,7 +243,8 @@ class TestContentRendering:
                 hasJsonData: !!window.json_data,
                 jsonKey: window.json_data?.key || 'NONE'
             });
-        """)
+        """,
+        )
         assert result and isinstance(result, dict), "No response!"
         assert result["divExists"], "Content div not found!"
         assert result["divText"] == "Hello World", f"Wrong content: {result['divText']}"
@@ -250,14 +261,18 @@ class TestContentRendering:
         assert label1 == label2, "SINGLE_WINDOW should reuse label!"
         time.sleep(1.0)  # Let second content render (set_content takes longer)
 
-        result = wait_for_result(label2, """
+        result = wait_for_result(
+            label2,
+            """
             pywry.result({
                 hasSecond: !!document.getElementById('second'),
                 hasFirst: !!document.getElementById('first')
             });
-        """)
-        assert result and isinstance(result, dict) and result["hasSecond"], \
+        """,
+        )
+        assert result and isinstance(result, dict) and result["hasSecond"], (
             f"Second content not rendered! Got: {result}"
+        )
         app.close()
 
     def test_new_window_mode_creates_multiple(self):

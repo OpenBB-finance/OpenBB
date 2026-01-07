@@ -213,7 +213,7 @@ class PyWry:
 
         # Get window label - for SINGLE_WINDOW mode, use the mode's fixed label
         # For other modes, let the mode's show() generate unique label if not provided
-        if hasattr(self._mode, 'label'):
+        if hasattr(self._mode, "label"):
             target_label = self._mode.label
         else:
             target_label = label if label else f"pywry-{uuid.uuid4().hex[:8]}"
@@ -245,9 +245,7 @@ class PyWry:
 
             if html_content.script_files:
                 for script_file in html_content.script_files:
-                    script_path = (
-                        Path(script_file) if isinstance(script_file, str) else script_file
-                    )
+                    script_path = Path(script_file) if isinstance(script_file, str) else script_file
                     lifecycle.add_watched_file(target_label, script_path, "js")
 
             watch_content = html_content
@@ -449,10 +447,7 @@ class PyWry:
                 if isinstance(first_value, (list, tuple)):
                     keys = list(data.keys())
                     num_rows = len(first_value)
-                    row_data = [
-                        {key: data[key][i] for key in keys}
-                        for i in range(num_rows)
-                    ]
+                    row_data = [{key: data[key][i] for key in keys} for i in range(num_rows)]
                 else:
                     row_data = [data]
             else:

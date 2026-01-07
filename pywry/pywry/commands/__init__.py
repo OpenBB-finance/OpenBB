@@ -288,6 +288,7 @@ def handle_open_file(path: str) -> dict[str, Any]:
     try:
         if sys.platform == "win32":
             import os
+
             os.startfile(path)  # noqa: S606
         elif sys.platform == "darwin":
             subprocess.run(["open", path], check=True)  # noqa: S603, S607

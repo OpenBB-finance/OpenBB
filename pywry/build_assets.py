@@ -14,9 +14,7 @@ PLOTLY_JS_URL = "https://cdn.plot.ly/plotly-3.3.1.js"
 AGGRID_JS_URL = (
     "https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/dist/ag-grid-community.min.js"
 )
-AGGRID_CSS_BASE_URL = (
-    "https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/styles"
-)
+AGGRID_CSS_BASE_URL = "https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/styles"
 
 # OpenBB icon URL (placeholder - should be replaced with actual URL)
 OPENBB_ICON_URL = (

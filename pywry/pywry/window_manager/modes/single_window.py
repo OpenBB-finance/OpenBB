@@ -187,6 +187,7 @@ class SingleWindowMode(WindowModeBase):
 
         # Actually emit the event to the window
         from ...runtime import emit_event
+
         return emit_event(self._label, event_type, data)
 
     def get_labels(self) -> list[str]:

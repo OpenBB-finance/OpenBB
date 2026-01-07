@@ -39,6 +39,7 @@ def run_async(func: F) -> F:
 
     return wrapper  # type: ignore[return-value]
 
+
 def async_task(func: F) -> F:
     """Mark a function as an async task.
 
@@ -59,6 +60,7 @@ def async_task(func: F) -> F:
         return await func(*args, **kwargs)
 
     return wrapper  # type: ignore[return-value]
+
 
 def run_in_thread(func: F) -> Callable[..., Any]:
     """Run a function in a new thread.

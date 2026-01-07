@@ -149,9 +149,7 @@ class FileWatcher:
             if label is None:
                 del self._watches[resolved]
             else:
-                self._watches[resolved] = [
-                    w for w in self._watches[resolved] if w.label != label
-                ]
+                self._watches[resolved] = [w for w in self._watches[resolved] if w.label != label]
                 if not self._watches[resolved]:
                     del self._watches[resolved]
 
@@ -322,9 +320,7 @@ class _WatchHandler(FileSystemEventHandler):
         super().__init__()
         self._watcher = watcher
 
-    def on_modified(
-        self, event: DirModifiedEvent | FileModifiedEvent
-    ) -> None:
+    def on_modified(self, event: DirModifiedEvent | FileModifiedEvent) -> None:
         """Handle file modification events."""
         if event.is_directory:
             return

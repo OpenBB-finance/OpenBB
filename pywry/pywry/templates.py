@@ -40,6 +40,7 @@ def build_csp_meta(settings: SecuritySettings | None = None) -> str:
     """
     if settings is None:
         from .config import SecuritySettings
+
         settings = SecuritySettings()
 
     csp = settings.build_csp()
@@ -209,6 +210,7 @@ def build_custom_css(content: HtmlContent, loader: AssetLoader | None = None) ->
     if content.css_files:
         if loader is None:
             from .asset_loader import get_asset_loader
+
             loader = get_asset_loader()
 
         for path in content.css_files:
@@ -240,6 +242,7 @@ def build_custom_scripts(content: HtmlContent, loader: AssetLoader | None = None
 
     if loader is None:
         from .asset_loader import get_asset_loader
+
         loader = get_asset_loader()
 
     parts = []
@@ -273,6 +276,7 @@ def build_global_css(
 
     if loader is None:
         from .asset_loader import configure_asset_loader, get_asset_loader
+
         # Configure loader with AssetSettings.path if available
         if settings.path:
             loader = configure_asset_loader(base_dir=Path(settings.path))
@@ -311,6 +315,7 @@ def build_global_scripts(
 
     if loader is None:
         from .asset_loader import configure_asset_loader, get_asset_loader
+
         # Configure loader with AssetSettings.path if available
         if settings.path:
             loader = configure_asset_loader(base_dir=Path(settings.path))
@@ -351,13 +356,13 @@ def fix_aggrid_theme_classes(content: str, theme: ThemeMode) -> str:
 
     # Pattern to match AG Grid theme classes
     # Matches: ag-theme-quartz, ag-theme-quartz-dark, ag-theme-alpine, etc.
-    pattern = r'ag-theme-(quartz|alpine|balham|material)(-dark)?'
+    pattern = r"ag-theme-(quartz|alpine|balham|material)(-dark)?"
 
     def replacer(match: re.Match[str]) -> str:
         base_theme = match.group(1)  # quartz, alpine, balham, or material
         if is_dark:
-            return f'ag-theme-{base_theme}-dark'
-        return f'ag-theme-{base_theme}'
+            return f"ag-theme-{base_theme}-dark"
+        return f"ag-theme-{base_theme}"
 
     return re.sub(pattern, replacer, content)
 
@@ -382,7 +387,7 @@ def fix_plotly_template(content: str, theme: ThemeMode) -> str:
     import re
 
     is_dark = theme == ThemeMode.DARK
-    correct_template = 'plotly_dark' if is_dark else 'plotly_white'
+    correct_template = "plotly_dark" if is_dark else "plotly_white"
 
     # Fix template string
     pattern = r"template\s*:\s*['\"](?:plotly_dark|plotly_white|plotly)['\"]"
@@ -464,7 +469,8 @@ def build_html(
         # Find <html ...> tag and add class
         def add_theme_class_to_html_tag(html_str: str, theme_cls: str) -> str:
             """Add theme class to <html> tag, preserving existing classes."""
-            pattern = r'(<html)(\s+[^>]*)?>'
+            pattern = r"(<html)(\s+[^>]*)?>"
+
             def replacer(match: re.Match[str]) -> str:
                 opening = match.group(1)
                 attrs = match.group(2) or ""
@@ -475,11 +481,12 @@ def build_html(
                 if class_match:
                     existing = class_match.group(1)
                     if theme_cls not in existing.split():
-                        new_class = f'{existing} {theme_cls}'
+                        new_class = f"{existing} {theme_cls}"
                         attrs = re.sub(class_pattern, f'class="{new_class}"', attrs)
                 else:
                     attrs = f' class="{theme_cls}"' + attrs
-                return f'{opening}{attrs}>'
+                return f"{opening}{attrs}>"
+
             return re.sub(pattern, replacer, html_str, count=1, flags=re.IGNORECASE)
 
         user_html = add_theme_class_to_html_tag(user_html, theme_class)
@@ -510,7 +517,9 @@ def build_html(
             if html_end != -1:
                 before = user_html[: html_end + 1]
                 after = user_html[html_end + 1 :]
-                return before + f"""
+                return (
+                    before
+                    + f"""
                     <head>
                         {csp_meta}
                         {base_styles}
@@ -524,7 +533,9 @@ def build_html(
                         {custom_scripts}
                         {custom_init}
                     </head>
-                """ + after
+                """
+                    + after
+                )
         return user_html
 
     # Build a complete document wrapper for HTML fragments

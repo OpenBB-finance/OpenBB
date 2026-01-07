@@ -55,7 +55,8 @@ def main() -> int:
         help="Show configuration file sources",
     )
     config_parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=str,
         help="Output file path (default: stdout)",
     )
@@ -66,12 +67,14 @@ def main() -> int:
         help="Initialize a pywry.toml configuration file",
     )
     init_parser.add_argument(
-        "--force", "-f",
+        "--force",
+        "-f",
         action="store_true",
         help="Overwrite existing configuration file",
     )
     init_parser.add_argument(
-        "--path", "-p",
+        "--path",
+        "-p",
         type=str,
         default="pywry.toml",
         help="Path for configuration file (default: pywry.toml)",
@@ -202,6 +205,7 @@ def show_config_sources() -> int:
         # Check if file exists
         elif name == "Environment variables":
             import os
+
             pywry_vars = [k for k in os.environ if k.startswith("PYWRY_")]
             if pywry_vars:
                 status = f"✓ {len(pywry_vars)} vars"

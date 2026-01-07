@@ -63,7 +63,9 @@ class WindowLifecycle:
         self._initialized = True
         self._windows: dict[str, WindowResources] = {}
 
-    def create(self, label: str, title: str = "PyWry", width: int = 800, height: int = 600) -> WindowResources:
+    def create(
+        self, label: str, title: str = "PyWry", width: int = 800, height: int = 600
+    ) -> WindowResources:
         """Create or register a window via subprocess IPC.
 
         Parameters
@@ -359,11 +361,7 @@ class WindowLifecycle:
         list of str
             List of window labels.
         """
-        return [
-            label
-            for label, resources in self._windows.items()
-            if not resources.is_destroyed
-        ]
+        return [label for label, resources in self._windows.items() if not resources.is_destroyed]
 
     def get_stats(self) -> dict[str, Any]:
         """Get statistics about tracked windows.

@@ -171,7 +171,7 @@ class JsonIPC:
 
             escaped = json.dumps(html)
             escaped_theme = json.dumps(theme)
-            
+
             # Inject content into #app div and execute scripts
             # Order: Theme class -> CSS -> Scripts -> Body -> Body scripts
             script = f"""
@@ -309,9 +309,7 @@ class JsonIPC:
         except Exception as e:
             self.send_error(f"emit: Failed to emit event: {e}")
 
-    def _emit_to_window(
-        self, window: Any, event: str, payload: dict[str, Any]
-    ) -> None:
+    def _emit_to_window(self, window: Any, event: str, payload: dict[str, Any]) -> None:
         """Emit event to a window using JavaScript eval."""
         # Build JavaScript to dispatch the event
         payload_json = json.dumps(payload)
@@ -406,8 +404,7 @@ def main() -> int:
 
     with (
         start_blocking_portal("asyncio") as portal,
-        portal.wrap_async_context_manager(portal.call(create_task_group))
-        as _
+        portal.wrap_async_context_manager(portal.call(create_task_group)) as _,
     ):
         context = context_factory(src_dir)
         commands = Commands()

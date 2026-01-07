@@ -276,17 +276,13 @@ class TestPyWrySettings:
 
     def test_custom_window_settings(self):
         """Custom window settings work."""
-        settings = PyWrySettings(
-            window=WindowSettings(width=1024, height=768)
-        )
+        settings = PyWrySettings(window=WindowSettings(width=1024, height=768))
         assert settings.window.width == 1024
         assert settings.window.height == 768
 
     def test_custom_theme_css_file(self):
         """Custom theme settings with css_file work."""
-        settings = PyWrySettings(
-            theme=ThemeSettings(css_file="/path/to/custom.css")
-        )
+        settings = PyWrySettings(theme=ThemeSettings(css_file="/path/to/custom.css"))
         assert settings.theme.css_file == "/path/to/custom.css"
 
     def test_custom_csp_settings(self):
@@ -297,17 +293,13 @@ class TestPyWrySettings:
 
     def test_dict_window_settings(self):
         """Dict window settings work."""
-        settings = PyWrySettings(
-            window={"width": 800, "height": 600}
-        )
+        settings = PyWrySettings(window={"width": 800, "height": 600})
         assert settings.window.width == 800
         assert settings.window.height == 600
 
     def test_dict_theme_css_file(self):
         """Dict theme settings with css_file work."""
-        settings = PyWrySettings(
-            theme={"css_file": "/path/to/custom.css"}
-        )
+        settings = PyWrySettings(theme={"css_file": "/path/to/custom.css"})
         assert settings.theme.css_file == "/path/to/custom.css"
 
 
@@ -447,16 +439,12 @@ class TestPyWrySettingsWithAsset:
 
     def test_custom_asset_settings(self):
         """Custom asset settings work."""
-        settings = PyWrySettings(
-            asset=AssetSettings(plotly_version="4.0.0")
-        )
+        settings = PyWrySettings(asset=AssetSettings(plotly_version="4.0.0"))
         assert settings.asset.plotly_version == "4.0.0"
 
     def test_dict_asset_settings(self):
         """Dict asset settings work."""
-        settings = PyWrySettings(
-            asset={"plotly_version": "4.0.0", "css_files": ["test.css"]}
-        )
+        settings = PyWrySettings(asset={"plotly_version": "4.0.0", "css_files": ["test.css"]})
         assert settings.asset.plotly_version == "4.0.0"
         assert settings.asset.css_files == ["test.css"]
 

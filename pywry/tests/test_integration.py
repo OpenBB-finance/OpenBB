@@ -204,7 +204,7 @@ class TestModelIntegration:
             json_data={"key": "value"},
             init_script="console.log('init');",
             inline_css="body { margin: 0; }",
-            watch=True
+            watch=True,
         )
         assert content.html == "<div id='app'></div>"
         assert content.json_data == {"key": "value"}
@@ -221,7 +221,7 @@ class TestModelIntegration:
             theme=ThemeMode.LIGHT,
             enable_plotly=True,
             enable_aggrid=True,
-            devtools=True
+            devtools=True,
         )
         assert config.title == "Test Window"
         assert config.width == 1024

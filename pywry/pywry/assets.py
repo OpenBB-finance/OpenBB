@@ -95,9 +95,6 @@ def get_aggrid_js() -> str:
     return ""
 
 
-
-
-
 @lru_cache(maxsize=8)
 def get_aggrid_css(theme: str, mode: ThemeMode) -> str:
     """Get the AG Grid CSS for a specific theme and mode.

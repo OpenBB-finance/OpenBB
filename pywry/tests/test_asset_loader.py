@@ -250,4 +250,3 @@ class TestFileWatching:
         loader.load_css("tracked.css")
         resolved = loader.resolve_path("tracked.css")
         assert resolved in loader._hash_cache
-

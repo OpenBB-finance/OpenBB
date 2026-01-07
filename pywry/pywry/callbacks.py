@@ -187,8 +187,9 @@ class CallbackRegistry:
             try:
                 # Try to call with all args first, fall back to just data
                 sig = inspect.signature(handler)
-                num_params = len([p for p in sig.parameters.values()
-                                  if p.default is inspect.Parameter.empty])
+                num_params = len(
+                    [p for p in sig.parameters.values() if p.default is inspect.Parameter.empty]
+                )
                 if num_params >= 3:
                     result = handler(data, event_type, label)
                 elif num_params == 2:

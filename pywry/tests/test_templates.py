@@ -42,7 +42,11 @@ class TestFixAggridThemeClasses:
         """Dark AG Grid class is fixed to light when window is light."""
         html = '<div class="ag-theme-quartz-dark"></div>'
         result = fix_aggrid_theme_classes(html, ThemeMode.LIGHT)
-        assert 'ag-theme-quartz"' in result or "ag-theme-quartz " in result or result.endswith("ag-theme-quartz")
+        assert (
+            'ag-theme-quartz"' in result
+            or "ag-theme-quartz " in result
+            or result.endswith("ag-theme-quartz")
+        )
         assert "ag-theme-quartz-dark" not in result
 
     def test_keeps_light_class_when_light_mode(self):
@@ -155,22 +159,26 @@ class TestThemeCoordinationInBuildHtml:
     def test_dark_window_fixes_light_plotly_template(self):
         """Dark window automatically fixes light Plotly template to dark."""
         config = WindowConfig(theme=ThemeMode.DARK)
-        content = HtmlContent(html="<script>Plotly.newPlot('div', data, {template: 'plotly_white'})</script>")
+        content = HtmlContent(
+            html="<script>Plotly.newPlot('div', data, {template: 'plotly_white'})</script>"
+        )
         html = build_html(content, config, window_label="main")
         # Check user content in pywry-container only (THEME_MANAGER_JS contains both for runtime switching)
         container_start = html.find('class="pywry-container"')
-        container_section = html[container_start:container_start + 500]
+        container_section = html[container_start : container_start + 500]
         assert "template: 'plotly_dark'" in container_section
         assert "template: 'plotly_white'" not in container_section
 
     def test_light_window_fixes_dark_plotly_template(self):
         """Light window automatically fixes dark Plotly template to light."""
         config = WindowConfig(theme=ThemeMode.LIGHT)
-        content = HtmlContent(html="<script>Plotly.newPlot('div', data, {template: 'plotly_dark'})</script>")
+        content = HtmlContent(
+            html="<script>Plotly.newPlot('div', data, {template: 'plotly_dark'})</script>"
+        )
         html = build_html(content, config, window_label="main")
         # Check user content in pywry-container only (THEME_MANAGER_JS contains both for runtime switching)
         container_start = html.find('class="pywry-container"')
-        container_section = html[container_start:container_start + 500]
+        container_section = html[container_start : container_start + 500]
         assert "template: 'plotly_white'" in container_section
         assert "template: 'plotly_dark'" not in container_section
 
@@ -195,15 +203,15 @@ class TestThemeCoordinationInBuildHtml:
         config = WindowConfig(theme=ThemeMode.DARK)
         content = HtmlContent(html='<div class="ag-theme-quartz"></div>')
         html = build_html(content, config, window_label="main")
-        assert 'ag-theme-quartz-dark' in html
+        assert "ag-theme-quartz-dark" in html
 
     def test_light_window_fixes_class_to_light(self):
         """Light window fixes AG Grid class to light variant."""
         config = WindowConfig(theme=ThemeMode.LIGHT)
         content = HtmlContent(html='<div class="ag-theme-quartz-dark"></div>')
         html = build_html(content, config, window_label="main")
-        assert 'ag-theme-quartz-dark' not in html
-        assert 'ag-theme-quartz' in html
+        assert "ag-theme-quartz-dark" not in html
+        assert "ag-theme-quartz" in html
 
     @pytest.mark.parametrize("aggrid_theme", ["quartz", "alpine", "balham", "material"])
     def test_dark_window_full_theme_coordination(self, aggrid_theme):
@@ -211,7 +219,7 @@ class TestThemeCoordinationInBuildHtml:
         config = WindowConfig(theme=ThemeMode.DARK)
         content = HtmlContent(html=f'<div class="ag-theme-{aggrid_theme}"></div>')
         html = build_html(content, config, window_label="main")
-        assert f'ag-theme-{aggrid_theme}-dark' in html
+        assert f"ag-theme-{aggrid_theme}-dark" in html
         assert f'class="ag-theme-{aggrid_theme}"' not in html
 
 
@@ -413,12 +421,7 @@ class TestBuildJsonDataScript:
 
     def test_handles_nested_data(self):
         """Handles nested data structures."""
-        data = {
-            "outer": {
-                "inner": [1, 2, 3],
-                "value": "test"
-            }
-        }
+        data = {"outer": {"inner": [1, 2, 3], "value": "test"}}
         script = build_json_data_script(data)
         assert "outer" in script
         assert "inner" in script
@@ -437,9 +440,7 @@ class TestBuildHtmlWithSettings:
 
     def test_permissive_csp_includes_unsafe_eval(self):
         """Permissive CSP includes unsafe-eval."""
-        settings = PyWrySettings(
-            csp=SecuritySettings.permissive()
-        )
+        settings = PyWrySettings(csp=SecuritySettings.permissive())
         config = WindowConfig()
         content = HtmlContent(html="<div></div>")
         html = build_html(content, config, window_label="main", settings=settings)
@@ -604,18 +605,14 @@ class TestBuildAggridScriptAllThemes:
     @pytest.mark.parametrize("theme", ["quartz", "alpine", "balham", "material"])
     def test_theme_with_dark_mode(self, theme):
         """Each theme works with dark mode."""
-        config = WindowConfig(
-            enable_aggrid=True, aggrid_theme=theme, theme=ThemeMode.DARK
-        )
+        config = WindowConfig(enable_aggrid=True, aggrid_theme=theme, theme=ThemeMode.DARK)
         result = build_aggrid_script(config)
         assert len(result) > 0
 
     @pytest.mark.parametrize("theme", ["quartz", "alpine", "balham", "material"])
     def test_theme_with_light_mode(self, theme):
         """Each theme works with light mode."""
-        config = WindowConfig(
-            enable_aggrid=True, aggrid_theme=theme, theme=ThemeMode.LIGHT
-        )
+        config = WindowConfig(enable_aggrid=True, aggrid_theme=theme, theme=ThemeMode.LIGHT)
         result = build_aggrid_script(config)
         assert len(result) > 0
 
@@ -709,9 +706,7 @@ class TestBuildHtmlWithGlobalAssets:
         """Includes global CSS from AssetSettings."""
         css_file = tmp_path / "global.css"
         css_file.write_text(".global { color: green; }")
-        settings = PyWrySettings(
-            asset=AssetSettings(path=str(tmp_path), css_files=["global.css"])
-        )
+        settings = PyWrySettings(asset=AssetSettings(path=str(tmp_path), css_files=["global.css"]))
         config = WindowConfig()
         content = HtmlContent(html="<div></div>")
         html = build_html(content, config, window_label="main", settings=settings)
@@ -733,9 +728,7 @@ class TestBuildHtmlWithGlobalAssets:
         """Global CSS appears before custom CSS."""
         (tmp_path / "global.css").write_text("/* global */")
         (tmp_path / "custom.css").write_text("/* custom */")
-        settings = PyWrySettings(
-            asset=AssetSettings(path=str(tmp_path), css_files=["global.css"])
-        )
+        settings = PyWrySettings(asset=AssetSettings(path=str(tmp_path), css_files=["global.css"]))
         config = WindowConfig()
         content = HtmlContent(
             html="<div></div>",
@@ -752,9 +745,7 @@ class TestBuildHtmlWithThemeSettings:
 
     def test_base_styles_included_without_custom_css(self):
         """Base pywry.css styles are included when no custom CSS file."""
-        settings = PyWrySettings(
-            theme=ThemeSettings()
-        )
+        settings = PyWrySettings(theme=ThemeSettings())
         config = WindowConfig()
         content = HtmlContent(html="<div></div>")
         html = build_html(content, config, window_label="main", settings=settings)
@@ -767,9 +758,7 @@ class TestBuildHtmlWithThemeSettings:
         css_file = tmp_path / "custom.css"
         css_file.write_text(":root { --custom-var: red; }")
 
-        settings = PyWrySettings(
-            theme=ThemeSettings(css_file=str(css_file))
-        )
+        settings = PyWrySettings(theme=ThemeSettings(css_file=str(css_file)))
         config = WindowConfig()
         content = HtmlContent(html="<div></div>")
         html = build_html(content, config, window_label="main", settings=settings)
@@ -820,4 +809,3 @@ class TestBuildHtmlWithAggridTheme:
         content = HtmlContent(html="<div id='grid'></div>")
         html = build_html(content, config, window_label="main")
         assert f"ag-theme-{aggrid_theme}" in html
-

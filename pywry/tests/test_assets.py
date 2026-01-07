@@ -71,7 +71,12 @@ class TestGetPlotlyJs:
         plotly_full = ASSETS_DIR / "plotly-3.3.1.js"
         plotly_min_gz = ASSETS_DIR / "plotly-3.3.1.min.js.gz"
         plotly_min = ASSETS_DIR / "plotly-3.3.1.min.js"
-        assert plotly_full_gz.exists() or plotly_full.exists() or plotly_min_gz.exists() or plotly_min.exists()
+        assert (
+            plotly_full_gz.exists()
+            or plotly_full.exists()
+            or plotly_min_gz.exists()
+            or plotly_min.exists()
+        )
 
 
 class TestGetAggridJs:
@@ -336,6 +341,7 @@ class TestGetOpenbbIconPath:
         result = get_openbb_icon_path()
         assert result is not None
         from pathlib import Path
+
         assert isinstance(result, Path)
 
     def test_path_exists(self):

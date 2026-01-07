@@ -5,10 +5,12 @@ on:
     branches: [main, master, develop]
     paths:
       - 'pywry/**'
+      - '.github/workflows/test-pywry.yml'
   pull_request:
     branches: [main, master, develop]
     paths:
       - 'pywry/**'
+      - '.github/workflows/test-pywry.yml'
   workflow_dispatch:
 
 defaults:
@@ -19,6 +21,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -49,6 +53,8 @@ jobs:
   test:
     name: Test - ${{ matrix.os }} - Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -95,7 +101,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1-mesa-glx libegl1-mesa libwebkit2gtk-4.1-0 libgtk-3-0
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1 libegl1 libwebkit2gtk-4.1-0 libgtk-3-0
 
       - name: Install dependencies
         run: |

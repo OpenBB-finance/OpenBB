@@ -168,8 +168,7 @@ class SecuritySettings(BaseSettings):
         """
         if ports:
             port_list = " ".join(
-                f"http://localhost:{p} http://127.0.0.1:{p} "
-                f"ws://localhost:{p} ws://127.0.0.1:{p}"
+                f"http://localhost:{p} http://127.0.0.1:{p} ws://localhost:{p} ws://127.0.0.1:{p}"
                 for p in ports
             )
             connect = f"'self' {port_list} data: blob:"
@@ -223,21 +222,13 @@ class TimeoutSettings(BaseSettings):
         extra="ignore",
     )
 
-    startup: float = Field(
-        default=10.0, ge=1.0, description="Subprocess ready timeout in seconds"
-    )
-    response: float = Field(
-        default=5.0, ge=0.5, description="IPC response timeout in seconds"
-    )
+    startup: float = Field(default=10.0, ge=1.0, description="Subprocess ready timeout in seconds")
+    response: float = Field(default=5.0, ge=0.5, description="IPC response timeout in seconds")
     create_window: float = Field(
         default=5.0, ge=0.5, description="Window creation timeout in seconds"
     )
-    set_content: float = Field(
-        default=5.0, ge=0.5, description="Content update timeout in seconds"
-    )
-    shutdown: float = Field(
-        default=2.0, ge=0.5, description="Graceful shutdown timeout in seconds"
-    )
+    set_content: float = Field(default=5.0, ge=0.5, description="Content update timeout in seconds")
+    shutdown: float = Field(default=2.0, ge=0.5, description="Graceful shutdown timeout in seconds")
 
 
 class AssetSettings(BaseSettings):

@@ -47,6 +47,7 @@ class HotReloadManager:
         """
         if settings is None:
             from .config import HotReloadSettings
+
             settings = HotReloadSettings()
 
         self._settings = settings
@@ -168,10 +169,7 @@ class HotReloadManager:
                 debug(f"Watching script: {resolved} for window {label}")
 
         if self._window_files[label]:
-            info(
-                f"Hot reload enabled for window {label}: "
-                f"{len(self._window_files[label])} file(s)"
-            )
+            info(f"Hot reload enabled for window {label}: {len(self._window_files[label])} file(s)")
 
     def disable_for_window(self, label: str) -> None:
         """Disable hot reload for a window.
@@ -307,10 +305,7 @@ class HotReloadManager:
                 return {label: list(self._window_files[label].keys())}
             return {}
 
-        return {
-            lbl: list(files.keys())
-            for lbl, files in self._window_files.items()
-        }
+        return {lbl: list(files.keys()) for lbl, files in self._window_files.items()}
 
 
 # Global hot reload manager instance

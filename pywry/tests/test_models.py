@@ -319,7 +319,7 @@ class TestPlotlyClickEvent:
             point_indices=[0, 1, 2],
             curve_number=1,
             point_data={"x": 5, "y": 10},
-            window_label="chart"
+            window_label="chart",
         )
         assert event.point_indices == [0, 1, 2]
         assert event.curve_number == 1
@@ -345,7 +345,7 @@ class TestPlotlySelectEvent:
         event = PlotlySelectEvent(
             points=[{"x": 1, "y": 2}, {"x": 3, "y": 4}],
             range={"x": [0, 10], "y": [0, 20]},
-            window_label="chart"
+            window_label="chart",
         )
         assert len(event.points) == 2
         assert event.range is not None
@@ -368,7 +368,7 @@ class TestPlotlyHoverEvent:
             point_indices=[5],
             curve_number=2,
             point_data={"x": 100, "y": 200},
-            window_label="hover-chart"
+            window_label="hover-chart",
         )
         assert event.point_indices == [5]
         assert event.curve_number == 2
@@ -389,9 +389,9 @@ class TestPlotlyRelayoutEvent:
                 "xaxis.range[0]": 0,
                 "xaxis.range[1]": 100,
                 "yaxis.range[0]": 0,
-                "yaxis.range[1]": 50
+                "yaxis.range[1]": 50,
             },
-            window_label="zoom-chart"
+            window_label="zoom-chart",
         )
         assert "xaxis.range[0]" in event.relayout_data
         assert event.relayout_data["xaxis.range[1]"] == 100
@@ -415,7 +415,7 @@ class TestGridSelectionEvent:
         event = GridSelectionEvent(
             selected_rows=[{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}],
             selected_row_ids=["1", "2"],
-            window_label="grid"
+            window_label="grid",
         )
         assert len(event.selected_rows) == 2
         assert event.selected_row_ids == ["1", "2"]
@@ -441,7 +441,7 @@ class TestGridCellEvent:
             column="price",
             old_value=100,
             new_value=150,
-            window_label="edit-grid"
+            window_label="edit-grid",
         )
         assert event.row_id == "row-123"
         assert event.row_index == 5
@@ -466,7 +466,7 @@ class TestGridRowClickEvent:
             row_data={"id": 1, "name": "Test", "value": 42},
             row_id="row-1",
             row_index=0,
-            window_label="click-grid"
+            window_label="click-grid",
         )
         assert event.row_data["name"] == "Test"
         assert event.row_id == "row-1"

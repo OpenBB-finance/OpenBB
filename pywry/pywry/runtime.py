@@ -147,13 +147,15 @@ def create_window(
     height: int = 600,
 ) -> bool:
     """Create a window via IPC. Waits for window to be created."""
-    send_command({
-        "action": "create",
-        "label": label,
-        "title": title,
-        "width": width,
-        "height": height,
-    })
+    send_command(
+        {
+            "action": "create",
+            "label": label,
+            "title": title,
+            "width": width,
+            "height": height,
+        }
+    )
     # Wait for the window to be created
     response = get_response(timeout=5.0)
     return response is not None and response.get("success", False)
@@ -171,31 +173,37 @@ def set_content(label: str, html: str, theme: str = "dark") -> bool:
     theme : str
         Theme mode ('dark' or 'light') - MUST match window background.
     """
-    send_command({
-        "action": "set_content",
-        "label": label,
-        "html": html,
-        "theme": theme,
-    })
+    send_command(
+        {
+            "action": "set_content",
+            "label": label,
+            "html": html,
+            "theme": theme,
+        }
+    )
     response = get_response(timeout=5.0)
     return response is not None and response.get("success", False)
 
 
 def close_window(label: str) -> bool:
     """Close a window via IPC."""
-    send_command({
-        "action": "close",
-        "label": label,
-    })
+    send_command(
+        {
+            "action": "close",
+            "label": label,
+        }
+    )
     return True
 
 
 def show_window(label: str) -> bool:
     """Show a hidden window via IPC."""
-    send_command({
-        "action": "show",
-        "label": label,
-    })
+    send_command(
+        {
+            "action": "show",
+            "label": label,
+        }
+    )
     return True
 
 
@@ -216,15 +224,17 @@ def inject_css(label: str, css: str, asset_id: str) -> bool:
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "emit",
-        "label": label,
-        "event": "pywry:inject-css",
-        "payload": {
-            "css": css,
-            "id": asset_id,
-        },
-    })
+    send_command(
+        {
+            "action": "emit",
+            "label": label,
+            "event": "pywry:inject-css",
+            "payload": {
+                "css": css,
+                "id": asset_id,
+            },
+        }
+    )
     return True
 
 
@@ -243,14 +253,16 @@ def remove_css(label: str, asset_id: str) -> bool:
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "emit",
-        "label": label,
-        "event": "pywry:remove-css",
-        "payload": {
-            "id": asset_id,
-        },
-    })
+    send_command(
+        {
+            "action": "emit",
+            "label": label,
+            "event": "pywry:remove-css",
+            "payload": {
+                "id": asset_id,
+            },
+        }
+    )
     return True
 
 
@@ -269,12 +281,14 @@ def refresh_window(label: str) -> bool:
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "emit",
-        "label": label,
-        "event": "pywry:refresh",
-        "payload": {},
-    })
+    send_command(
+        {
+            "action": "emit",
+            "label": label,
+            "event": "pywry:refresh",
+            "payload": {},
+        }
+    )
     return True
 
 
@@ -286,12 +300,14 @@ def refresh_all_windows() -> bool:
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "emit",
-        "label": "*",
-        "event": "pywry:refresh",
-        "payload": {},
-    })
+    send_command(
+        {
+            "action": "emit",
+            "label": "*",
+            "event": "pywry:refresh",
+            "payload": {},
+        }
+    )
     return True
 
 
@@ -312,12 +328,14 @@ def emit_event(label: str, event: str, payload: dict[str, Any] | None = None) ->
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "emit",
-        "label": label,
-        "event": event,
-        "payload": payload or {},
-    })
+    send_command(
+        {
+            "action": "emit",
+            "label": label,
+            "event": event,
+            "payload": payload or {},
+        }
+    )
     return True
 
 
@@ -339,11 +357,13 @@ def eval_js(label: str, script: str) -> bool:
     bool
         True if command was sent.
     """
-    send_command({
-        "action": "eval",
-        "label": label,
-        "script": script,
-    })
+    send_command(
+        {
+            "action": "eval",
+            "label": label,
+            "script": script,
+        }
+    )
     return True
 
 

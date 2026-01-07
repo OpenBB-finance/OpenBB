@@ -84,9 +84,7 @@ class HtmlContent(BaseModel):
         return [Path(p) if isinstance(p, str) else p for p in v]
 
 
-EVENT_NAMESPACE_PATTERN = re.compile(
-    r"^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$"
-)
+EVENT_NAMESPACE_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$")
 RESERVED_NAMESPACES = frozenset({"pywry", "plotly", "grid"})
 
 

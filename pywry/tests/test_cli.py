@@ -31,7 +31,7 @@ class TestMainEntryPoint:
         assert result == 0
         assert "usage:" in output.lower() or "pywry" in output
         assert "config" in output  # Should mention config subcommand
-        assert "init" in output    # Should mention init subcommand
+        assert "init" in output  # Should mention init subcommand
 
     def test_help_flag_shows_usage(self):
         """--help flag shows usage information."""
@@ -119,7 +119,7 @@ class TestHandleConfigShow:
         assert "width" in output
         assert "height" in output
         assert "1280" in output  # Default width
-        assert "720" in output   # Default height
+        assert "720" in output  # Default height
 
 
 class TestHandleConfigToml:
@@ -289,7 +289,10 @@ class TestHandleInit:
                 result = handle_init(args)
 
             assert result == 1
-            assert "already exists" in mock_stderr.getvalue().lower() or "error" in mock_stderr.getvalue().lower()
+            assert (
+                "already exists" in mock_stderr.getvalue().lower()
+                or "error" in mock_stderr.getvalue().lower()
+            )
             # File should not be modified
             assert config_path.read_text() == original_content
 
