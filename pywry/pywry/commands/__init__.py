@@ -16,6 +16,7 @@ from ..callbacks import get_registry
 from ..log import debug, warn
 from ..models import GenericEvent
 
+
 # Lock for thread-safe stdout writes
 _stdout_lock = threading.Lock()
 

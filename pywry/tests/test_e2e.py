@@ -1,6 +1,5 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
 
-import sys
 import threading
 import time
 
