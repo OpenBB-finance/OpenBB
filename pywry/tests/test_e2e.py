@@ -39,7 +39,7 @@ class ReadyWaiter:
         self.timeout = timeout
         self._ready = threading.Event()
 
-    def on_ready(self, data: Any) -> None:
+    def on_ready(self, _data: Any) -> None:
         """Callback for pywry:ready event."""
         self._ready.set()
 
@@ -117,12 +117,15 @@ def wait_for_result(
     """
     registry = get_registry()
 
-    for attempt in range(retries):
-        result: dict[str, Any] = {"received": False, "data": None}
+    result: dict[str, Any] = {"received": False, "data": None}
 
-        def on_result(data):
-            result["received"] = True
-            result["data"] = data
+    def on_result(data: Any) -> None:
+        result["received"] = True
+        result["data"] = data
+
+    for attempt in range(retries):
+        result["received"] = False
+        result["data"] = None
 
         registry.register(label, "pywry:result", on_result)
         runtime.eval_js(label, script)

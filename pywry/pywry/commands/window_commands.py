@@ -18,7 +18,6 @@ from . import (
     handle_pywry_event,
     handle_pywry_result,
     handle_window_close,
-    handle_window_ready,
 )
 
 
@@ -31,7 +30,6 @@ __all__ = [
     "handle_pywry_event",
     "handle_pywry_result",
     "handle_window_close",
-    "handle_window_ready",
     "on_aggrid_event",
     "on_open_file",
     "on_open_url",
@@ -39,24 +37,7 @@ __all__ = [
     "on_pywry_event",
     "on_pywry_result",
     "on_window_close",
-    "on_window_ready",
 ]
-
-
-def on_window_ready(label: str) -> dict[str, Any]:
-    """Handle window ready event.
-
-    Parameters
-    ----------
-    label : str
-        The window label.
-
-    Returns
-    -------
-    dict of str to Any
-        Response dict.
-    """
-    return handle_window_ready(label)
 
 
 def on_window_close(label: str) -> dict[str, Any]:
