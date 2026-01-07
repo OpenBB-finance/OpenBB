@@ -50,6 +50,10 @@ jobs:
         run: |
           mypy pywry/
 
+      - name: Run Pylint
+        run: |
+          pylint pywry/ --exit-zero --output-format=colorized
+
   test:
     name: Test - ${{ matrix.os }} - Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
@@ -104,18 +108,8 @@ jobs:
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
-          for i in 1 2 3; do
-            sudo apt-get update && break
-            echo "Retry $i: apt-get update failed, waiting..."
-            sleep 15
-          done
-          # Retry install as well - ARM mirrors often lag behind x64
-          for i in 1 2 3; do
-            sudo apt-get install -y --fix-missing xvfb dbus-x11 at-spi2-core libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1 libegl1 libwebkit2gtk-4.1-dev libgtk-3-dev && break
-            echo "Retry $i: apt-get install failed, refreshing mirrors..."
-            sleep 30
-            sudo apt-get update
-          done
+          for i in 1 2 3; do sudo apt-get update && break || sleep 15; done
+          for i in 1 2 3; do sudo apt-get install -y --fix-missing xvfb dbus-x11 at-spi2-core libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1 libegl1 libwebkit2gtk-4.1-dev libgtk-3-dev && break || { sleep 30; sudo apt-get update; }; done
 
       - name: Install dependencies
         run: |

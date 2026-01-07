@@ -41,6 +41,7 @@ dev = [
     "pytest-timeout>=2.0.0",
     "ruff>=0.13",
     "mypy>=1.0.0",
+    "pylint>=3.0.0",
 ]
 
 [project.urls]

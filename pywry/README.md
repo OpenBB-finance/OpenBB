@@ -22,6 +22,18 @@ A lightweight 100% Python library for creating native desktop windows with full 
 - anyio >= 4.0.0
 - watchdog >= 3.0.0
 
+### Linux
+
+Linux requires WebKitGTK and GTK3 development libraries:
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install libwebkit2gtk-4.1-dev libgtk-3-dev libglib2.0-dev \
+    libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+    libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 \
+    libxcb-shape0 libgl1 libegl1
+```
+
 ## Installation
 
 ```bash
