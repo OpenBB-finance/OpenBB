@@ -25,6 +25,9 @@ DEBUG = os.environ.get("PYWRY_DEBUG", "").lower() in ("1", "true", "yes", "on")
 # Headless mode for CI testing - windows are created but not shown
 HEADLESS = os.environ.get("PYWRY_HEADLESS", "").lower() in ("1", "true", "yes", "on")
 
+# Lock for thread-safe stdout writes
+_stdout_lock = threading.Lock()
+
 
 def log(msg: str) -> None:
     """Log to stderr for debugging (only when DEBUG is enabled)."""
@@ -52,8 +55,9 @@ class JsonIPC:
         """Send a JSON message to stdout."""
         try:
             line = json.dumps(msg)
-            sys.stdout.write(line + "\n")
-            sys.stdout.flush()
+            with _stdout_lock:
+                sys.stdout.write(line + "\n")
+                sys.stdout.flush()
         except Exception as e:
             log(f"IPC send error: {e}")
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import threading
 
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -14,6 +15,9 @@ from pydantic import BaseModel
 from ..callbacks import get_registry
 from ..log import debug, warn
 from ..models import GenericEvent
+
+# Lock for thread-safe stdout writes
+_stdout_lock = threading.Lock()
 
 
 if TYPE_CHECKING:
@@ -68,10 +72,19 @@ def register_commands(commands: Commands) -> None:
     @commands.command()
     async def pywry_event(body: EventPayload) -> dict[str, Any]:
         """Handle event from JavaScript."""
-        debug(f"[IPC] pywry_event: label={body.label}, type={body.event_type}, data={body.data}")
-        result = handle_pywry_event(body.label, {"type": body.event_type, "data": body.data})
-        debug(f"[IPC] pywry_event returning: {result}")
-        return result
+        try:
+            debug(
+                f"[IPC] pywry_event: label={body.label}, type={body.event_type}, data={body.data}"
+            )
+            result = handle_pywry_event(body.label, {"type": body.event_type, "data": body.data})
+            debug(f"[IPC] pywry_event returning: {result}")
+            return result
+        except Exception as e:
+            import traceback
+
+            sys.stderr.write(f"[pywry_event ERROR] {e}\n{traceback.format_exc()}\n")
+            sys.stderr.flush()
+            raise
 
     @commands.command()
     async def pywry_result(body: ResultPayload) -> dict[str, Any]:
@@ -113,9 +126,17 @@ def send_event_to_parent(label: str, event_type: str, data: dict[str, Any]) -> N
         "data": data,
     }
     debug(f"[IPC] send_event_to_parent: {msg}")
-    sys.stdout.write(json.dumps(msg) + "\n")
-    sys.stdout.flush()
-    debug("[IPC] Event sent to stdout")
+    try:
+        with _stdout_lock:
+            sys.stdout.write(json.dumps(msg) + "\n")
+            sys.stdout.flush()
+        debug("[IPC] Event sent to stdout")
+    except Exception as e:
+        # Log error but don't crash - stdout might be closed during shutdown
+        import traceback
+
+        sys.stderr.write(f"[send_event_to_parent ERROR] {e}\n{traceback.format_exc()}\n")
+        sys.stderr.flush()
 
 
 def handle_pywry_result(label: str, data: dict[str, Any]) -> dict[str, Any]:

@@ -270,8 +270,7 @@ class TestDarkThemeCoordination:
         app = PyWry(theme=ThemeMode.DARK)
         data = [{"x": 1, "y": 10}, {"x": 2, "y": 15}]
         label = show_dataframe_and_wait_ready(app, data, title="Dark+Grid")
-        # AG Grid renders asynchronously after DOM is ready
-        time.sleep(0.5)
+        time.sleep(1.5)
 
         result = verify_theme_and_rendering(label, expect_dark=True)
         assert "error" not in result, f"Verification failed: {result.get('error')}"
@@ -284,8 +283,8 @@ class TestDarkThemeCoordination:
         app = PyWry(theme=ThemeMode.DARK)
         figure = {"data": [{"x": [1, 2, 3], "y": [10, 15, 13], "type": "scatter"}]}
         label = show_plotly_and_wait_ready(app, figure, title="Dark+Plotly")
-        # Plotly renders asynchronously after DOM is ready
-        time.sleep(0.5)
+        # Plotly renders asynchronously after DOM is ready (longer wait for WebKitGTK)
+        time.sleep(1.5)
 
         result = verify_theme_and_rendering(label, expect_dark=True)
         assert result["hasPlotly"], "Plotly div not found!"
