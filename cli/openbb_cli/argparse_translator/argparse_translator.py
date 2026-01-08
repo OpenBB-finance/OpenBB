@@ -175,7 +175,7 @@ class ArgparseTranslator:
             type_str = re.sub(r"Union\[\s*(.*?)\s*\]", lambda m: m.group(1).replace(", ", " or "), type_str)
             # Handle Optional[A] -> A or None
             type_str = re.sub(r"Optional\[\s*(.*?)\s*\]", r"\1 or None", type_str)
-            
+
             return type_str.strip()
 
         lines = func_doc.split("\n")
