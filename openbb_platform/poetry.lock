@@ -4115,15 +4115,15 @@ type = ["mypy (>=1.18.2)"]
 
 [[package]]
 name = "plotly"
-version = "6.5.0"
+version = "6.5.1"
 description = "An open-source interactive data visualization library for Python"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
 markers = "extra == \"charting\" or extra == \"all\""
 files = [
-    {file = "plotly-6.5.0-py3-none-any.whl", hash = "sha256:5ac851e100367735250206788a2b1325412aa4a4917a4fe3e6f0bc5aa6f3d90a"},
-    {file = "plotly-6.5.0.tar.gz", hash = "sha256:d5d38224883fd38c1409bef7d6a8dc32b74348d39313f3c52ca998b8e447f5c8"},
+    {file = "plotly-6.5.1-py3-none-any.whl", hash = "sha256:5adad4f58c360612b6c5ce11a308cdbc4fd38ceb1d40594a614f0062e227abe1"},
+    {file = "plotly-6.5.1.tar.gz", hash = "sha256:b0478c8d5ada0c8756bce15315bcbfec7d3ab8d24614e34af9aff7bfcfea9281"},
 ]
 
 [package.dependencies]
