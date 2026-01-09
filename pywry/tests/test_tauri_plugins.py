@@ -38,19 +38,19 @@ class TestPluginCapabilities:
     def test_capabilities_has_dialog_permission(self):
         """Capabilities file includes dialog:default permission."""
         capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
-        content = capabilities_file.read_text()
+        content = capabilities_file.read_text(encoding="utf-8")
         assert "dialog:default" in content, "dialog:default permission not found in capabilities"
 
     def test_capabilities_has_fs_permission(self):
         """Capabilities file includes fs:default permission."""
         capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
-        content = capabilities_file.read_text()
+        content = capabilities_file.read_text(encoding="utf-8")
         assert "fs:default" in content, "fs:default permission not found in capabilities"
 
     def test_capabilities_has_pytauri_permission(self):
         """Capabilities file includes pytauri:default for IPC."""
         capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
-        content = capabilities_file.read_text()
+        content = capabilities_file.read_text(encoding="utf-8")
         assert "pytauri:default" in content, "pytauri:default permission not found in capabilities"
 
 
@@ -76,7 +76,7 @@ class TestMainModulePluginRegistration:
     def test_main_imports_dialog_plugin(self):
         """__main__.py imports dialog plugin."""
         main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
-        content = main_file.read_text()
+        content = main_file.read_text(encoding="utf-8")
         # Check for various import patterns including aliased imports
         has_dialog_import = (
             "from pytauri_plugins import dialog" in content
@@ -88,7 +88,7 @@ class TestMainModulePluginRegistration:
     def test_main_imports_fs_plugin(self):
         """__main__.py imports fs plugin."""
         main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
-        content = main_file.read_text()
+        content = main_file.read_text(encoding="utf-8")
         # Check for various import patterns including aliased imports
         has_fs_import = (
             "from pytauri_plugins import fs" in content
@@ -100,7 +100,7 @@ class TestMainModulePluginRegistration:
     def test_main_registers_plugins(self):
         """__main__.py registers plugins in builder.build()."""
         main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
-        content = main_file.read_text()
+        content = main_file.read_text(encoding="utf-8")
         assert "plugins=" in content, "plugins= parameter not found in __main__.py"
         assert "dialog" in content and "init()" in content, (
             "dialog.init() not found in plugins list"
@@ -315,7 +315,7 @@ class TestAGGridExportIntegration:
         aggrid_js_file = (
             Path(__file__).parent.parent / "pywry" / "frontend" / "src" / "aggrid-defaults.js"
         )
-        content = aggrid_js_file.read_text()
+        content = aggrid_js_file.read_text(encoding="utf-8")
 
         # Verify Tauri is checked BEFORE showSaveFilePicker
         tauri_check_pos = content.find("if (window.__TAURI__)")

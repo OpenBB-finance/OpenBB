@@ -23,7 +23,12 @@ from typing import TYPE_CHECKING, Any, Literal
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable
 
-    from plotly.graph_objects import Figure
+    try:
+        from plotly.graph_objects import Figure
+
+        HAS_PLOTLY = True
+    except ImportError:
+        HAS_PLOTLY = False
 
 # Check for debug mode environment variable
 PYWRY_DEBUG = os.environ.get("PYWRY_DEBUG", "").lower() in ("1", "true", "yes", "on")

@@ -76,3 +76,7 @@ strict = true
 warn_return_any = true
 warn_unused_configs = true
 exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = ["plotly.*"]
+ignore_missing_imports = true
