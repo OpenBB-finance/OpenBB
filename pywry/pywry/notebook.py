@@ -339,9 +339,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     # Fallback to InlineWidget (FastAPI server)
     from . import inline
 
-    # Re-using the same wrapping logic for consistency
-    html = inline.generate_plotly_html(figure_json, widget_id, title, theme, buttons=None)
-
+    html = inline.generate_plotly_html(figure_json, widget_id, title, theme, buttons=None
     # Inject toolbar using templates logic
     from .templates import ThemeMode, build_toolbar_html
 
