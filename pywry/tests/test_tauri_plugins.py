@@ -146,9 +146,7 @@ def show_and_wait_ready(app: PyWry, content: str, timeout: float = 10.0, **kwarg
     return label
 
 
-def wait_for_result(
-    label: str, script: str, timeout: float = 5.0
-) -> dict[str, Any] | None:
+def wait_for_result(label: str, script: str, timeout: float = 5.0) -> dict[str, Any] | None:
     """Execute JS and wait for pywry.result() callback."""
     registry = get_registry()
     result: dict[str, Any] = {"received": False, "data": None}
