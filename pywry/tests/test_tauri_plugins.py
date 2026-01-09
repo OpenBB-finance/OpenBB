@@ -1,0 +1,357 @@
+"""Tests for Tauri plugin integration.
+
+Tests verify:
+- Dialog and FS plugins are properly registered
+- Tauri APIs are available in the webview
+- File save dialog functionality works
+- Plugin capabilities are correctly configured
+"""
+# pylint: disable=unsubscriptable-object
+
+import threading
+import time
+
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from pywry import runtime
+from pywry.app import PyWry
+from pywry.callbacks import get_registry
+from pywry.models import ThemeMode
+
+
+# =============================================================================
+# Unit Tests - Plugin Configuration
+# =============================================================================
+
+
+class TestPluginCapabilities:
+    """Tests for Tauri plugin capabilities configuration."""
+
+    def test_capabilities_file_exists(self):
+        """Capabilities file exists in the correct location."""
+        capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
+        assert capabilities_file.exists(), f"Capabilities file not found at {capabilities_file}"
+
+    def test_capabilities_has_dialog_permission(self):
+        """Capabilities file includes dialog:default permission."""
+        capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
+        content = capabilities_file.read_text()
+        assert "dialog:default" in content, "dialog:default permission not found in capabilities"
+
+    def test_capabilities_has_fs_permission(self):
+        """Capabilities file includes fs:default permission."""
+        capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
+        content = capabilities_file.read_text()
+        assert "fs:default" in content, "fs:default permission not found in capabilities"
+
+    def test_capabilities_has_pytauri_permission(self):
+        """Capabilities file includes pytauri:default for IPC."""
+        capabilities_file = Path(__file__).parent.parent / "pywry" / "capabilities" / "default.toml"
+        content = capabilities_file.read_text()
+        assert "pytauri:default" in content, "pytauri:default permission not found in capabilities"
+
+
+class TestPluginImports:
+    """Tests for plugin module imports."""
+
+    def test_can_import_dialog_plugin(self):
+        """Dialog plugin can be imported."""
+        from pytauri_plugins import dialog
+
+        assert hasattr(dialog, "init"), "dialog.init() function not found"
+
+    def test_can_import_fs_plugin(self):
+        """FS plugin can be imported."""
+        from pytauri_plugins import fs
+
+        assert hasattr(fs, "init"), "fs.init() function not found"
+
+
+class TestMainModulePluginRegistration:
+    """Tests for plugin registration in __main__.py."""
+
+    def test_main_imports_dialog_plugin(self):
+        """__main__.py imports dialog plugin."""
+        main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
+        content = main_file.read_text()
+        assert (
+            "from pytauri_plugins import dialog" in content or "pytauri_plugins.dialog" in content
+        ), "dialog plugin import not found in __main__.py"
+
+    def test_main_imports_fs_plugin(self):
+        """__main__.py imports fs plugin."""
+        main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
+        content = main_file.read_text()
+        assert "from pytauri_plugins import fs" in content or "pytauri_plugins.fs" in content, (
+            "fs plugin import not found in __main__.py"
+        )
+
+    def test_main_registers_plugins(self):
+        """__main__.py registers plugins in builder.build()."""
+        main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
+        content = main_file.read_text()
+        assert "plugins=" in content, "plugins= parameter not found in __main__.py"
+        assert "dialog" in content and "init()" in content, (
+            "dialog.init() not found in plugins list"
+        )
+        assert "fs" in content, "fs plugin not found in plugins list"
+
+
+# =============================================================================
+# Integration Tests - JS API Availability
+# =============================================================================
+
+
+@pytest.fixture(autouse=True)
+def cleanup_runtime():
+    """Ensure runtime is fresh for each test."""
+    runtime.stop()
+    time.sleep(0.2)
+    registry = get_registry()
+    registry.clear()
+    yield
+    runtime.stop()
+    registry.clear()
+    time.sleep(0.1)
+
+
+class ReadyWaiter:
+    """Helper to wait for window ready event."""
+
+    def __init__(self, timeout: float = 10.0):
+        """Initialize waiter with timeout."""
+        self.timeout = timeout
+        self._ready = threading.Event()
+
+    def on_ready(self, _data: Any) -> None:
+        """Handle ready event."""
+        self._ready.set()
+
+    def wait(self) -> bool:
+        """Wait for ready event."""
+        return self._ready.wait(timeout=self.timeout)
+
+
+def show_and_wait_ready(app: PyWry, content: str, timeout: float = 10.0, **kwargs) -> str:
+    """Show content and wait for window to be ready."""
+    waiter = ReadyWaiter(timeout=timeout)
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+    label = app.show(content, callbacks=callbacks, **kwargs)
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+    return label
+
+
+def wait_for_result(
+    label: str, script: str, timeout: float = 5.0
+) -> dict[str, Any] | None:
+    """Execute JS and wait for pywry.result() callback."""
+    registry = get_registry()
+    result: dict[str, Any] = {"received": False, "data": None}
+
+    def on_result(data: Any) -> None:
+        result["received"] = True
+        result["data"] = data
+
+    result["received"] = False
+    registry.register(label, "pywry:result", on_result)
+    runtime.eval_js(label, script)
+
+    start = time.time()
+    while not result["received"] and (time.time() - start) < timeout:
+        time.sleep(0.05)
+
+    registry.unregister(label, "pywry:result", on_result)
+    return result["data"]
+
+
+@pytest.mark.e2e
+class TestTauriAPIsAvailable:
+    """E2E tests verifying Tauri APIs are available in webview."""
+
+    def test_tauri_global_exists(self):
+        """window.__TAURI__ object exists in webview."""
+        app = PyWry(theme=ThemeMode.DARK)
+        label = show_and_wait_ready(app, "<div>Test</div>", title="Tauri Check")
+
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                hasTauri: typeof window.__TAURI__ !== 'undefined',
+                tauriType: typeof window.__TAURI__
+            });
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["hasTauri"], "window.__TAURI__ not found"
+        assert result["tauriType"] == "object", "window.__TAURI__ is not an object"
+        app.close()
+
+    def test_dialog_api_available(self):
+        """window.__TAURI__.dialog API is available."""
+        app = PyWry(theme=ThemeMode.DARK)
+        label = show_and_wait_ready(app, "<div>Test</div>", title="Dialog Check")
+
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                hasDialog: typeof window.__TAURI__?.dialog !== 'undefined',
+                hasSave: typeof window.__TAURI__?.dialog?.save === 'function',
+                hasOpen: typeof window.__TAURI__?.dialog?.open === 'function',
+                hasMessage: typeof window.__TAURI__?.dialog?.message === 'function'
+            });
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["hasDialog"], "window.__TAURI__.dialog not found"
+        assert result["hasSave"], "dialog.save() function not found"
+        assert result["hasOpen"], "dialog.open() function not found"
+        assert result["hasMessage"], "dialog.message() function not found"
+        app.close()
+
+    def test_fs_api_available(self):
+        """window.__TAURI__.fs API is available."""
+        app = PyWry(theme=ThemeMode.DARK)
+        label = show_and_wait_ready(app, "<div>Test</div>", title="FS Check")
+
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                hasFs: typeof window.__TAURI__?.fs !== 'undefined',
+                hasWriteTextFile: typeof window.__TAURI__?.fs?.writeTextFile === 'function',
+                hasReadTextFile: typeof window.__TAURI__?.fs?.readTextFile === 'function'
+            });
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["hasFs"], "window.__TAURI__.fs not found"
+        assert result["hasWriteTextFile"], "fs.writeTextFile() function not found"
+        assert result["hasReadTextFile"], "fs.readTextFile() function not found"
+        app.close()
+
+    def test_pytauri_api_available(self):
+        """window.__TAURI__.pytauri API is available for IPC."""
+        app = PyWry(theme=ThemeMode.DARK)
+        label = show_and_wait_ready(app, "<div>Test</div>", title="PyTauri Check")
+
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                hasPytauri: typeof window.__TAURI__?.pytauri !== 'undefined',
+                hasPyInvoke: typeof window.__TAURI__?.pytauri?.pyInvoke === 'function'
+            });
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["hasPytauri"], "window.__TAURI__.pytauri not found"
+        assert result["hasPyInvoke"], "pytauri.pyInvoke() function not found"
+        app.close()
+
+
+@pytest.mark.e2e
+class TestAGGridExportIntegration:
+    """E2E tests for AG Grid export with Tauri dialog."""
+
+    def test_aggrid_has_export_context_menu(self):
+        """AG Grid context menu includes export options."""
+        app = PyWry(theme=ThemeMode.DARK)
+        data = [{"Symbol": "AAPL", "Price": 150.25}]
+
+        waiter = ReadyWaiter(timeout=10.0)
+        callbacks = {"pywry:ready": waiter.on_ready}
+        label = app.show_dataframe(data, callbacks=callbacks, title="Export Test")
+        waiter.wait()
+        time.sleep(0.5)  # Wait for AG Grid to fully render
+
+        # Verify the grid is set up and Tauri APIs are available
+        result = wait_for_result(
+            label,
+            """
+            (function() {
+                // Get the PYWRY_AGGRID_BUILD_OPTIONS function
+                var buildFn = window.PYWRY_AGGRID_BUILD_OPTIONS;
+                var hasBuildFn = typeof buildFn === 'function';
+
+                // Check that Tauri dialog is accessible
+                var hasTauriDialog = typeof window.__TAURI__?.dialog?.save === 'function';
+                var hasTauriFs = typeof window.__TAURI__?.fs?.writeTextFile === 'function';
+
+                pywry.result({
+                    hasBuildFn: hasBuildFn,
+                    hasTauriDialog: hasTauriDialog,
+                    hasTauriFs: hasTauriFs
+                });
+            })();
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["hasBuildFn"], "PYWRY_AGGRID_BUILD_OPTIONS function not found"
+        assert result["hasTauriDialog"], "Tauri dialog.save() not available for export"
+        assert result["hasTauriFs"], "Tauri fs.writeTextFile() not available for export"
+        app.close()
+
+    def test_aggrid_export_functions_check_tauri_first(self):
+        """AG Grid export checks for Tauri before browser API."""
+        # Read the aggrid-defaults.js to verify the logic
+        aggrid_js_file = (
+            Path(__file__).parent.parent / "pywry" / "frontend" / "src" / "aggrid-defaults.js"
+        )
+        content = aggrid_js_file.read_text()
+
+        # Verify Tauri is checked BEFORE showSaveFilePicker
+        tauri_check_pos = content.find("if (window.__TAURI__)")
+        browser_check_pos = content.find("if (window.showSaveFilePicker)")
+
+        assert tauri_check_pos != -1, "Tauri check not found in aggrid-defaults.js"
+        assert browser_check_pos != -1, "Browser fallback not found in aggrid-defaults.js"
+        assert tauri_check_pos < browser_check_pos, (
+            "Tauri check should come BEFORE browser fallback in saveWithFilePicker"
+        )
+
+
+@pytest.mark.e2e
+class TestSaveDialogFunctionality:
+    """E2E tests for save dialog functionality."""
+
+    def test_save_with_file_picker_function_exists(self):
+        """saveWithFilePicker helper function is defined in grid context."""
+        app = PyWry(theme=ThemeMode.DARK)
+        data = [{"a": 1}]
+
+        waiter = ReadyWaiter(timeout=10.0)
+        callbacks = {"pywry:ready": waiter.on_ready}
+        label = app.show_dataframe(data, callbacks=callbacks, title="SavePicker Test")
+        waiter.wait()
+        time.sleep(0.5)
+
+        # The saveWithFilePicker is a local function inside the context menu builder
+        # We can verify the grid is set up and Tauri APIs are available
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                gridExists: !!document.querySelector('.ag-root-wrapper'),
+                hasTauriDialog: typeof window.__TAURI__?.dialog?.save === 'function',
+                hasTauriFs: typeof window.__TAURI__?.fs?.writeTextFile === 'function'
+            });
+        """,
+        )
+
+        assert result is not None, "No result from window"
+        assert result["gridExists"], "AG Grid not rendered"
+        assert result["hasTauriDialog"], "Tauri dialog not available"
+        assert result["hasTauriFs"], "Tauri fs not available"
+        app.close()

@@ -2,7 +2,7 @@
 name = "pywry"
 version = "2.0.0"
 description = "A blazingly fast 100% Python library for cross-platform webview window handling and content rendering, with offline support for AgGrid and Plotly."
-authors = [{ name = "OpenBB-finance", email = "contact@openbb.finance" }]
+authors = [{ name = "OpenBB Team", email = "hello@openbb.finance" }]
 license = { text = "AGPL-3.0-only" }
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Desktop Environment :: Window Managers",
 ]
-keywords = ["webview", "tauri", "gui", "plotly", "aggrid", "desktop"]
+keywords = ["webview", "tauri", "gui", "plotly", "aggrid", "desktop", "notebook", "ipywidget"]
 
 dependencies = [
     "pytauri>=0.8.0",
@@ -28,7 +28,10 @@ dependencies = [
     "anyio>=4.0.0",
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
+    "fastapi>=0.128.0",
+    "uvicorn>=0.40.0",
     "watchdog>=3.0.0",
+    "websockets>=15.0.1",
 ]
 
 [project.scripts]
@@ -42,6 +45,10 @@ dev = [
     "ruff>=0.13",
     "mypy>=1.0.0",
     "pylint>=3.0.0",
+    "anywidget>=0.9.0",
+]
+notebook = [
+    "anywidget>=0.9.0",
 ]
 
 [project.urls]
@@ -58,6 +65,7 @@ packages = [{include = "pywry"}]
 include = [
     "pywry/frontend/**/*",
     "pywry/capabilities/**/*",
+    "pywry/static/**/*",
     "pywry/Tauri.toml",
 ]
 

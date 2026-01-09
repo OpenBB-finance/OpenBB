@@ -99,13 +99,29 @@ class WindowLifecycle:
                 self._windows[label] = resources
                 return resources
 
-        # The "main" window is pre-created by Tauri.toml - don't create again, just show it
-        if label != "main":
+            # Fresh subprocess start - main window is auto-created by Tauri.toml
+            # Just show it, don't check (IPC might not be ready for checks yet)
+            if label == "main":
+                debug("Fresh start - showing auto-created 'main' window")
+                runtime.show_window(label)
+                resources = WindowResources(label=label)
+                self._windows[label] = resources
+                return resources
+
+        # Runtime already running - check window state
+        if label == "main":
+            # Check if main window still exists
+            if runtime.check_window_open(label):
+                runtime.show_window(label)
+                debug("Showing pre-existing 'main' window")
+            else:
+                # Main was closed - recreate it
+                debug("Main window was closed, recreating...")
+                runtime.create_window(label, title, width, height)
+                debug("Recreated 'main' window via IPC")
+        else:
             runtime.create_window(label, title, width, height)
             debug(f"Created window '{label}' via IPC")
-        else:
-            runtime.show_window(label)
-            debug("Showing pre-existing 'main' window")
 
         resources = WindowResources(label=label)
         self._windows[label] = resources
@@ -142,10 +158,37 @@ class WindowLifecycle:
         resources = self._windows.get(label)
         if resources is None or resources.is_destroyed:
             return False
+
         resources.html_content = html
-        runtime.set_content(label, html, theme)
-        debug(f"Sent content to window '{label}' via IPC with theme '{theme}'")
-        return True
+        success = runtime.set_content(label, html, theme)
+
+        if success:
+            debug(f"Sent content to window '{label}' via IPC with theme '{theme}'")
+        else:
+            # Only warn if we think it should be open
+            debug(f"Failed to set content for window '{label}' - it may be closed")
+
+        return success
+
+    def is_open(self, label: str) -> bool:
+        """Check if window is truly open via IPC.
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        bool
+            True if window is verified open in backend.
+        """
+        from .. import runtime
+
+        if not self.exists(label):
+            return False
+
+        return runtime.check_window_open(label)
 
     def store_content_for_refresh(
         self,

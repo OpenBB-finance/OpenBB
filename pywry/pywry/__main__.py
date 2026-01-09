@@ -9,13 +9,15 @@ import os
 import sys
 import threading
 
+from contextlib import suppress
 from pathlib import Path
 from typing import Any
 
 from anyio import create_task_group
 from anyio.from_thread import start_blocking_portal
-from pytauri import Commands, Manager, RunEvent, WebviewUrl
+from pytauri import Commands, Manager, RunEvent, WebviewUrl, WindowEvent
 from pytauri.webview import WebviewWindowBuilder
+from pytauri_plugins import dialog as dialog_plugin, fs as fs_plugin
 from pytauri_wheel.lib import builder_factory, context_factory
 
 
@@ -91,6 +93,8 @@ class JsonIPC:
             self.emit_event(cmd)
         elif action == "eval":
             self.eval_js(cmd)
+        elif action == "check_open":
+            self.check_window_open(cmd)
         elif action == "quit":
             self.quit()
         else:
@@ -100,25 +104,30 @@ class JsonIPC:
         """Quit the application."""
         log("Quit command received, exiting...")
         self.running = False
-        # Close all windows to trigger app exit
+        # Destroy all windows (bypasses CloseRequested handler)
         if self.app_handle:
             for label in list(self.windows.keys()):
                 try:
                     window = self.windows.get(label)
                     if window:
-                        window.close()
+                        window.destroy()
                 except Exception:
                     pass
-            # Also close the main window if it exists
+            # Also destroy the main window if it exists
             try:
                 main_window = Manager.get_webview_window(self.app_handle, "main")
                 if main_window:
-                    main_window.close()
+                    main_window.destroy()
             except Exception:
                 pass
+        # Force exit the process since prevent_exit() may have been called
+        log("Forcing process exit...")
+        import os  # pylint: disable=redefined-outer-name,reimported
+
+        os._exit(0)
 
     def create_window(self, cmd: dict[str, Any]) -> None:
-        """Create a new window."""
+        """Create a new window, or reuse existing one."""
         label = cmd.get("label", "main")
         title = cmd.get("title", "PyWry")
         width = cmd.get("width", 800)
@@ -127,6 +136,20 @@ class JsonIPC:
         if self.app_handle is None:
             self.send_error("App not ready")
             return
+
+        # Check if window already exists - if so, just show it
+        try:
+            existing = Manager.get_webview_window(self.app_handle, label)
+            if existing:
+                log(f"Window '{label}' already exists, reusing it")
+                self.windows[label] = existing
+                if not HEADLESS:
+                    existing.show()
+                    existing.set_focus()
+                self.send_result(label, True)
+                return
+        except Exception as e:
+            log(f"Warning: Failed to check existing window: {e}")
 
         try:
             url = WebviewUrl.App(f"index.html?label={label}")
@@ -139,7 +162,9 @@ class JsonIPC:
                 visible=not HEADLESS,  # Hidden in headless mode for CI
             )
             if not HEADLESS:
+                window.center()
                 window.show()
+                window.set_focus()
             self.windows[label] = window
             log(f"Created window '{label}' (headless={HEADLESS})")
             self.send_result(label, True)
@@ -354,8 +379,24 @@ class JsonIPC:
         except Exception as e:
             self.send_error(f"eval: Failed to evaluate JS: {e}")
 
+    def check_window_open(self, cmd: dict[str, Any]) -> None:
+        """Check if a window is open."""
+        label = cmd.get("label", "main")
+
+        # Check cache
+        window = self.windows.get(label)
+
+        # Check manager if not in cache
+        if window is None and self.app_handle:
+            with suppress(Exception):
+                window = Manager.get_webview_window(self.app_handle, label)
+
+        is_open = window is not None
+        log(f"check_open for '{label}': {is_open}")
+        self.send({"type": "result", "label": label, "is_open": is_open})
+
     def close_window(self, cmd: dict[str, Any]) -> None:
-        """Close a window."""
+        """Force-close a window (bypasses CloseRequested handler)."""
         label = cmd.get("label", "main")
         window = self.windows.pop(label, None)
 
@@ -364,8 +405,9 @@ class JsonIPC:
 
         if window:
             try:
-                window.close()
-                log(f"Closed window '{label}'")
+                # Use destroy() to bypass CloseRequested handler
+                window.destroy()
+                log(f"Destroyed window '{label}'")
                 self.send_result(label, True)
             except Exception as e:
                 self.send_error(f"Failed to close window: {e}")
@@ -397,7 +439,7 @@ def stdin_reader(ipc: JsonIPC) -> None:
     log("stdin_reader exiting")
 
 
-def main() -> int:
+def main() -> int:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     """Run the PyWry subprocess."""
     from .commands import register_commands
 
@@ -420,6 +462,7 @@ def main() -> int:
             app = builder_factory().build(
                 context=context,
                 invoke_handler=commands.generate_handler(portal),
+                plugins=[dialog_plugin.init(), fs_plugin.init()],
             )
 
             def on_run(app_handle: Any, run_event: Any) -> None:
@@ -434,6 +477,33 @@ def main() -> int:
                     else:
                         log("WARNING: 'main' window not found!")
                     ipc.send_ready()
+                elif isinstance(run_event, RunEvent.ExitRequested):
+                    # Prevent app exit when all windows are closed
+                    # This keeps the subprocess alive so windows can be recreated
+                    # The app will only exit when Python sends a "quit" command
+                    if ipc.running:
+                        log("ExitRequested - preventing exit to keep subprocess alive")
+                        run_event.api.prevent_exit()
+                elif isinstance(run_event, RunEvent.WindowEvent):
+                    # Handle window events
+                    window_event = run_event.event
+                    label = run_event.label
+                    if isinstance(window_event, WindowEvent.CloseRequested):
+                        # User clicked X - HIDE the window instead of closing it
+                        # This way we can just show() it again later
+                        log(f"CloseRequested for '{label}' - hiding instead of closing")
+                        window_event.api.prevent_close()
+                        window = ipc.windows.get(label)
+                        if window is None:
+                            window = Manager.get_webview_window(app_handle, label)
+                        if window:
+                            window.hide()
+                            log(f"Window '{label}' hidden")
+                    elif isinstance(window_event, WindowEvent.Destroyed):
+                        # Window was actually destroyed (e.g., by explicit close command)
+                        if label in ipc.windows:
+                            del ipc.windows[label]
+                            log(f"Window '{label}' destroyed, removed from cache")
 
             log("Starting app.run()...")
             app.run(on_run)

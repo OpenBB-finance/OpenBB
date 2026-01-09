@@ -25,6 +25,7 @@ from .models import (
     WindowConfig,
     WindowMode,
 )
+from .notebook import should_use_inline_rendering
 from .runtime import refresh_window as runtime_refresh_window
 from .templates import build_html
 from .window_manager import (
@@ -37,6 +38,7 @@ from .window_manager import (
 
 
 if TYPE_CHECKING:
+    from .widget_protocol import BaseWidget
     from .window_manager import WindowLifecycle
 
 
@@ -166,8 +168,14 @@ class PyWry:
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         label: str | None = None,
         watch: bool | None = None,
-    ) -> str:
+        buttons: list[dict[str, str]] | None = None,
+        toolbar_position: str | None = None,
+    ) -> str | BaseWidget:
         """Show content in a window.
+
+        In a notebook environment (Jupyter, IPython, Colab, etc.), this will
+        automatically render content inline via IFrame instead of opening
+        a native window.
 
         Parameters
         ----------
@@ -191,12 +199,46 @@ class PyWry:
             Window label (for MULTI_WINDOW mode updates).
         watch : bool or None, optional
             Enable hot reload for CSS/JS files (overrides HtmlContent.watch).
+        buttons : list[dict[str, str]] or None, optional
+            List of button configs to generate a toolbar.
 
         Returns
         -------
-        str
-            The window label.
+        str or InlineWidget
+            The window label (native window) or InlineWidget (notebook).
         """
+        # Resolve toolbar position from args or settings
+        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
+
+        # Check if we're in a notebook environment
+        if should_use_inline_rendering():
+            from . import inline as pywry_inline
+
+            # Convert HtmlContent to string if needed
+            html_str = content.html if isinstance(content, HtmlContent) else content
+
+            # Build callbacks dict from CallbackFunc to plain Callable
+            inline_callbacks: dict[str, Any] | None = None
+            if callbacks:
+                inline_callbacks = {
+                    event: (cb.func if hasattr(cb, "func") else cb)
+                    for event, cb in callbacks.items()
+                }
+
+            return pywry_inline.show(
+                content=html_str,
+                title=title or self._default_config.title,
+                width="100%",
+                height=height or self._default_config.height,
+                theme="dark" if self._theme == ThemeMode.DARK else "light",
+                callbacks=inline_callbacks,
+                include_plotly=include_plotly,
+                include_aggrid=include_aggrid,
+                aggrid_theme=aggrid_theme,
+                buttons=buttons,
+                toolbar_position=toolbar_pos,
+            )
+
         # Build config
         config = WindowConfig(
             title=title or self._default_config.title,
@@ -230,6 +272,8 @@ class PyWry:
             settings=self._settings,
             loader=self._asset_loader,
             enable_hot_reload=enable_hot_reload,
+            buttons=buttons,
+            toolbar_position=toolbar_pos,
         )
 
         # Store content for refresh support
@@ -269,15 +313,25 @@ class PyWry:
         # Show in window (pass label for multi-window mode)
         return self._mode.show(config, html, callbacks, target_label)
 
-    def show_plotly(
+    def show_plotly(  # noqa: PLR0912  # pylint: disable=too-many-branches
         self,
         figure: Any,
         title: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
         callbacks: dict[str, CallbackFunc] | None = None,
         label: str | None = None,
         inline_css: str | None = None,
-    ) -> str:
+        on_click: Any = None,
+        on_hover: Any = None,
+        on_select: Any = None,
+        buttons: list[dict[str, str]] | None = None,
+        toolbar_position: str | None = None,
+    ) -> str | BaseWidget:
         """Show a Plotly figure.
+
+        In a notebook environment, this will automatically render the figure
+        inline via IFrame with full interactivity.
 
         Parameters
         ----------
@@ -285,18 +339,59 @@ class PyWry:
             Plotly figure object (must have to_html method) or dictionary spec.
         title : str or None, optional
             Window title.
+        width : int or None, optional
+            Window/IFrame width (overrides default).
+        height : int or None, optional
+            Window/IFrame height (overrides default).
         callbacks : dict[str, CallbackFunc] or None, optional
             Event callbacks.
         label : str or None, optional
             Window label (for MULTI_WINDOW mode).
         inline_css : str or None, optional
             Custom CSS to inject (e.g., override window background).
+        on_click : Callable or None, optional
+            Click callback for notebook mode.
+        on_hover : Callable or None, optional
+            Hover callback for notebook mode.
+        on_select : Callable or None, optional
+            Selection callback for notebook mode.
+        buttons : list[dict[str, str]] or None, optional
+            List of button configs to generate a toolbar.
+        toolbar_position : str or None
+            Toolbar position ("top", "bottom", "left", "right", "inside").
 
         Returns
         -------
-        str
-            The window label.
+        str or InlineWidget
+            The window label (native window) or InlineWidget (notebook).
         """
+        # Resolve toolbar position from args or settings
+        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
+
+        # Check if we're in a notebook environment
+        if should_use_inline_rendering():
+            from . import inline as pywry_inline
+
+            # Map specific callbacks to generic dict for inline
+            inline_callbacks = callbacks or {}
+            if on_click and "plotly_click" not in inline_callbacks:
+                inline_callbacks["plotly_click"] = on_click
+            if on_hover and "plotly_hover" not in inline_callbacks:
+                inline_callbacks["plotly_hover"] = on_hover
+            if on_select and "plotly_selected" not in inline_callbacks:
+                inline_callbacks["plotly_selected"] = on_select
+
+            return pywry_inline.show_plotly(
+                figure=figure,
+                title=title or "Plotly Chart",
+                width="100%",
+                height=height or self._default_config.height,
+                theme="dark" if self._theme == ThemeMode.DARK else "light",
+                callbacks=inline_callbacks,
+                buttons=buttons,
+                toolbar_position=toolbar_pos,
+            )
+
         plotly_template = "plotly_dark" if self._theme == ThemeMode.DARK else "plotly_white"
 
         if isinstance(figure, dict):
@@ -395,23 +490,36 @@ class PyWry:
         return self.show(
             content=content,
             title=title or "Plotly Chart",
+            width=width,
+            height=height,
             callbacks=callbacks,
             include_plotly=True,
             label=label,
+            buttons=buttons,
+            toolbar_position=toolbar_pos,
         )
 
     def show_dataframe(
         self,
         data: Any,
         title: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
         callbacks: dict[str, CallbackFunc] | None = None,
         label: str | None = None,
         column_defs: list[dict[str, Any]] | None = None,
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         grid_options: dict[str, Any] | None = None,
+        buttons: list[dict[str, str]] | None = None,
         inline_css: str | None = None,
-    ) -> str:
+        on_cell_click: Any = None,
+        on_row_selected: Any = None,
+        toolbar_position: str | None = None,
+    ) -> str | BaseWidget:
         """Show a DataFrame in an AG Grid table.
+
+        In a notebook environment, this will automatically render the table
+        inline via IFrame with full interactivity.
 
         Parameters
         ----------
@@ -419,6 +527,10 @@ class PyWry:
             DataFrame or list of dicts to display.
         title : str or None, optional
             Window title.
+        width : int or None, optional
+            Window/IFrame width (overrides default).
+        height : int or None, optional
+            Window/IFrame height (overrides default).
         callbacks : dict[str, CallbackFunc] or None, optional
             Event callbacks.
         label : str or None, optional
@@ -429,14 +541,46 @@ class PyWry:
             AG Grid theme.
         grid_options : dict[str, Any] or None, optional
             Custom AG Grid options to merge with defaults.
+        buttons : list[dict[str, str]] or None, optional
+             List of button configs to generate a toolbar.
         inline_css : str or None, optional
             Custom CSS to inject (e.g., override window background).
+        on_cell_click : Callable or None, optional
+            Cell click callback for notebook mode.
+        on_row_selected : Callable or None, optional
+            Row selection callback for notebook mode.
 
         Returns
         -------
-        str
-            The window label.
+        str or InlineWidget
+            The window label (native window) or InlineWidget (notebook).
         """
+        # Resolve toolbar position from args or settings
+        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
+
+        # Check if we're in a notebook environment
+        if should_use_inline_rendering():
+            from . import inline as pywry_inline
+
+            # Map specific callbacks to generic dict for inline
+            inline_callbacks = callbacks or {}
+            if on_cell_click and "cell_click" not in inline_callbacks:
+                inline_callbacks["cell_click"] = on_cell_click
+            if on_row_selected and "row_selected" not in inline_callbacks:
+                inline_callbacks["row_selected"] = on_row_selected
+
+            return pywry_inline.show_dataframe(
+                df=data,
+                title=title or "Data Table",
+                width="100%",
+                height=height or self._default_config.height,
+                theme="dark" if self._theme == ThemeMode.DARK else "light",
+                aggrid_theme=aggrid_theme,
+                buttons=buttons,
+                callbacks=inline_callbacks,
+                toolbar_position=toolbar_pos,
+            )
+
         # Convert to list of dicts if DataFrame or column-oriented dict
         try:
             if hasattr(data, "to_dict"):
@@ -471,7 +615,7 @@ class PyWry:
         user_options_json = json.dumps(grid_options or {})
 
         grid_html = f"""
-        <div id="myGrid" style="height: 100%; width: 100%;" class="{theme_class}"></div>
+        <div id="myGrid" class="pywry-grid {theme_class}" style="width:100%;height:100%;"></div>
         <script>
             (function() {{
                 function initGrid() {{
@@ -480,31 +624,36 @@ class PyWry:
                         return;
                     }}
 
-                    // Base grid options with theme-appropriate defaults
-                    var baseOptions = {{
+                    // Grid config - centralized defaults handle everything else
+                    var gridConfig = {{
                         columnDefs: {json.dumps(column_defs or [])},
-                        rowData: {json.dumps(row_data)},
-                        rowSelection: {{ mode: "multiRow" }},
-                        onSelectionChanged: function(event) {{
-                            if (window.pywry) {{
-                                window.pywry.emit('aggrid:selection', {{
-                                    selected: event.api.getSelectedRows()
-                                }});
-                            }}
-                        }}
+                        rowData: {json.dumps(row_data)}
                     }};
 
-                    // Merge user options on top of base (user options take precedence)
+                    // Merge user options on top of base config
                     var userOptions = {user_options_json};
-                    var gridOptions = Object.assign({{}}, baseOptions, userOptions);
-
-                    // Preserve columnDefs and rowData if user didn't override
-                    if (!userOptions.columnDefs) gridOptions.columnDefs = baseOptions.columnDefs;
-                    if (!userOptions.rowData) gridOptions.rowData = baseOptions.rowData;
+                    if (userOptions) {{
+                        Object.assign(gridConfig, userOptions);
+                        // Preserve columnDefs and rowData if user didn't override
+                        if (!userOptions.columnDefs) gridConfig.columnDefs = {json.dumps(column_defs or [])};
+                        if (!userOptions.rowData) gridConfig.rowData = {json.dumps(row_data)};
+                    }}
 
                     const gridDiv = document.querySelector('#myGrid');
                     if (gridDiv) {{
+                        const gridId = 'app-grid-' + Math.random().toString(36).substr(2, 9);
+
+                        // Use centralized AG Grid defaults from aggrid-defaults.js
+                        var gridOptions = window.PYWRY_AGGRID_BUILD_OPTIONS
+                            ? window.PYWRY_AGGRID_BUILD_OPTIONS(gridConfig, gridId)
+                            : gridConfig;
+
                         window.__PYWRY_GRID_API__ = agGrid.createGrid(gridDiv, gridOptions);
+
+                        // Register event listeners + context menu using centralized function
+                        if (window.PYWRY_AGGRID_REGISTER_LISTENERS) {{
+                            window.PYWRY_AGGRID_REGISTER_LISTENERS(window.__PYWRY_GRID_API__, gridDiv, gridId);
+                        }}
                     }}
                 }}
                 initGrid();
@@ -518,10 +667,14 @@ class PyWry:
         return self.show(
             content=content,
             title=title or "Data Table",
+            width=width,
+            height=height,
             callbacks=callbacks,
             include_aggrid=True,
             aggrid_theme=aggrid_theme,
             label=label,
+            buttons=buttons,
+            toolbar_position=toolbar_pos,
         )
 
     def on(self, event_type: str, handler: CallbackFunc, label: str | None = None) -> bool:

@@ -246,6 +246,25 @@ class CallbackRegistry:
 
         return existed
 
+    def recover_label(self, label: str) -> bool:
+        """Recover a destroyed label to allow new registrations.
+
+        This is useful when restarting the application or reusing a label
+        that was previously destroyed.
+
+        Args:
+            label: The window label to recover.
+
+        Returns
+        -------
+            True if the label was recovered (was in destroyed set).
+        """
+        if label in self._destroyed_labels:
+            self._destroyed_labels.remove(label)
+            debug(f"Recovered destroyed label '{label}'")
+            return True
+        return False
+
     def is_destroyed(self, label: str) -> bool:
         """Check if a window label has been destroyed.
 

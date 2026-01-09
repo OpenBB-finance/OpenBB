@@ -7,6 +7,8 @@ import pytest
 
 from pywry.assets import (
     ASSETS_DIR,
+    SRC_DIR,
+    STYLE_DIR,
     clear_cache,
     get_aggrid_css,
     get_aggrid_js,
@@ -32,6 +34,51 @@ class TestAssetsDir:
         """Assets directory path is frontend/assets."""
         assert ASSETS_DIR.name == "assets"
         assert ASSETS_DIR.parent.name == "frontend"
+
+
+class TestSrcDir:
+    """Tests for SRC_DIR constant."""
+
+    def test_src_dir_exists(self):
+        """Source directory exists."""
+        assert SRC_DIR.exists()
+
+    def test_src_dir_is_directory(self):
+        """Source directory is a directory."""
+        assert SRC_DIR.is_dir()
+
+    def test_src_dir_path_correct(self):
+        """Source directory path is frontend/src."""
+        assert SRC_DIR.name == "src"
+        assert SRC_DIR.parent.name == "frontend"
+
+    def test_src_dir_contains_js_files(self):
+        """Source directory contains our JS source files."""
+        assert (SRC_DIR / "aggrid-defaults.js").exists()
+        assert (SRC_DIR / "plotly-templates.js").exists()
+        assert (SRC_DIR / "plotly-widget.js").exists()
+        assert (SRC_DIR / "main.js").exists()
+
+
+class TestStyleDir:
+    """Tests for STYLE_DIR constant."""
+
+    def test_style_dir_exists(self):
+        """Style directory exists."""
+        assert STYLE_DIR.exists()
+
+    def test_style_dir_is_directory(self):
+        """Style directory is a directory."""
+        assert STYLE_DIR.is_dir()
+
+    def test_style_dir_path_correct(self):
+        """Style directory path is frontend/style."""
+        assert STYLE_DIR.name == "style"
+        assert STYLE_DIR.parent.name == "frontend"
+
+    def test_style_dir_contains_css_files(self):
+        """Style directory contains our CSS source files."""
+        assert (STYLE_DIR / "pywry.css").exists()
 
 
 class TestGetPlotlyJs:

@@ -11,8 +11,14 @@ from .log import debug
 from .models import ThemeMode
 
 
-# Asset directory path
+# Asset directory path (bundled/external files: libraries, icons, CSS)
 ASSETS_DIR = Path(__file__).parent / "frontend" / "assets"
+
+# Source directory path (our JavaScript source files)
+SRC_DIR = Path(__file__).parent / "frontend" / "src"
+
+# Style directory path (our CSS source files)
+STYLE_DIR = Path(__file__).parent / "frontend" / "style"
 
 
 @lru_cache(maxsize=1)
@@ -61,12 +67,12 @@ def get_plotly_templates_js() -> str:
     str
         JavaScript that defines window.PYWRY_PLOTLY_TEMPLATES, or empty if not bundled.
     """
-    js_file = ASSETS_DIR / "plotly-templates.js"
+    js_file = SRC_DIR / "plotly-templates.js"
     if js_file.exists():
-        debug("Loading Plotly templates from bundled assets")
+        debug("Loading Plotly templates from src")
         return js_file.read_text(encoding="utf-8")
 
-    debug("Plotly templates not bundled")
+    debug("Plotly templates not found")
     return ""
 
 
@@ -92,6 +98,21 @@ def get_aggrid_js() -> str:
         return js_file.read_text(encoding="utf-8")
 
     debug("Using AG Grid CDN fallback")
+    return ""
+
+
+@lru_cache(maxsize=1)
+def get_pywry_css() -> str:
+    """Get the PyWry CSS content.
+
+    Returns
+    -------
+    str
+        The PyWry CSS content, or empty if not found.
+    """
+    css_file = STYLE_DIR / "pywry.css"
+    if css_file.exists():
+        return css_file.read_text(encoding="utf-8")
     return ""
 
 
@@ -132,16 +153,15 @@ def get_aggrid_css(theme: str, mode: ThemeMode) -> str:
     return ""
 
 
-@lru_cache(maxsize=1)
-def get_pywry_css() -> str:
-    """Get the bundled PyWry base CSS.
+def _get_pywry_css_bundled() -> str:
+    """Get the bundled PyWry base CSS (internal helper).
 
     Returns
     -------
     str
         The PyWry base CSS content.
     """
-    css_file = ASSETS_DIR / "pywry.css"
+    css_file = STYLE_DIR / "pywry.css"
     if css_file.exists():
         debug("Loading PyWry CSS from bundled assets")
         return css_file.read_text(encoding="utf-8")
@@ -165,6 +185,26 @@ def get_openbb_icon() -> bytes:
     return b""
 
 
+@lru_cache(maxsize=1)
+def get_aggrid_defaults_js() -> str:
+    """Get the PyWry AG Grid defaults JavaScript.
+
+    This is the SINGLE SOURCE OF TRUTH for all AG Grid configuration.
+    All rendering paths (notebook, inline, window) must include this.
+
+    Returns
+    -------
+    str
+        The AG Grid defaults JavaScript content.
+    """
+    js_file = SRC_DIR / "aggrid-defaults.js"
+    if js_file.exists():
+        debug("Loading AG Grid defaults JS from src")
+        return js_file.read_text(encoding="utf-8")
+    debug("AG Grid defaults JS not found")
+    return ""
+
+
 def get_openbb_icon_path() -> Path | None:
     """Get the path to the bundled OpenBB icon.
 
@@ -184,5 +224,6 @@ def clear_cache() -> None:
     get_plotly_js.cache_clear()
     get_aggrid_js.cache_clear()
     get_aggrid_css.cache_clear()
+    get_aggrid_defaults_js.cache_clear()
     get_pywry_css.cache_clear()
     get_openbb_icon.cache_clear()

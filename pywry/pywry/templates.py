@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Any
 
 from .assets import (
     get_aggrid_css,
+    get_aggrid_defaults_js,
     get_aggrid_js,
     get_plotly_js,
     get_plotly_templates_js,
@@ -19,9 +20,61 @@ from .models import HtmlContent, ThemeMode, WindowConfig
 from .scripts import build_init_script
 
 
+# Re-export ThemeMode for consumers importing from templates
+__all__ = ["ThemeMode", "build_html", "build_toolbar_html"]
+
+
 if TYPE_CHECKING:
     from .asset_loader import AssetLoader
     from .config import AssetSettings, PyWrySettings, SecuritySettings
+
+
+def build_toolbar_html(
+    buttons: list[dict[str, str]] | None,
+    theme: ThemeMode,  # pylint: disable=unused-argument
+    position: str = "top",
+) -> str:
+    """Build the HTML for a toolbar with buttons.
+
+    Parameters
+    ----------
+    buttons : list[dict[str, str]]
+        List of button configurations. Each dict should have:
+        - label: Button text
+        - event: Event name to emit on click
+        - style: Optional CSS style string
+    theme : ThemeMode
+        The theme mode for default styling (unused here as we use CSS definitions).
+    position : str
+        Toolbar position: "top", "bottom", "left", "right", "inside" (overlay-top-right).
+
+    Returns
+    -------
+    str
+        The toolbar HTML string.
+    """
+    if not buttons:
+        return ""
+
+    button_htmls = []
+    for btn in buttons:
+        label = btn.get("label", "Button")
+        event = btn.get("event", "button_click")
+        user_style = btn.get("style", "")
+
+        onclick = f"window.pywry.emit('{event}', {{}})"
+
+        button_htmls.append(
+            f'<button class="pywry-btn" onclick="{onclick}" style="{user_style}">{label}</button>'
+        )
+
+    container_class = f"pywry-toolbar pywry-toolbar-{position}"
+
+    return f"""
+    <div class="{container_class}">
+        {"".join(button_htmls)}
+    </div>
+    """
 
 
 def build_csp_meta(settings: SecuritySettings | None = None) -> str:
@@ -169,6 +222,7 @@ def build_aggrid_script(config: WindowConfig) -> str:
 
     aggrid_js = get_aggrid_js()
     aggrid_css = get_aggrid_css(config.aggrid_theme, config.theme)
+    aggrid_defaults_js = get_aggrid_defaults_js()
 
     parts = []
 
@@ -181,6 +235,10 @@ def build_aggrid_script(config: WindowConfig) -> str:
         parts.append(f"<script>{aggrid_js}</script>")
     else:
         raise RuntimeError("AG Grid JS not found in bundled assets")
+
+    # Include our AG Grid defaults (context menu, column defaults, etc.)
+    if aggrid_defaults_js:
+        parts.append(f"<script>{aggrid_defaults_js}</script>")
 
     return "\n".join(parts)
 
@@ -395,13 +453,15 @@ def fix_plotly_template(content: str, theme: ThemeMode) -> str:
     return re.sub(pattern, replacement, content)
 
 
-def build_html(
+def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     content: HtmlContent,
     config: WindowConfig,
     window_label: str,
     settings: PyWrySettings | None = None,
     loader: AssetLoader | None = None,
     enable_hot_reload: bool = False,
+    buttons: list[dict[str, str]] | None = None,
+    toolbar_position: str = "top",
 ) -> str:
     """Build the complete HTML document for a PyWry window.
 
@@ -419,6 +479,10 @@ def build_html(
         Asset loader for custom CSS/JS files.
     enable_hot_reload : bool, optional
         Whether to include hot reload JavaScript.
+    buttons : list[dict[str, str]] or None, optional
+        List of button configs to generate a toolbar.
+    toolbar_position : str
+        Toolbar position ("top", "bottom", "left", "right", "inside").
 
     Returns
     -------
@@ -460,6 +524,25 @@ def build_html(
     is_complete_doc = user_html.lower().startswith("<!doctype") or user_html.lower().startswith(
         "<html"
     )
+
+    # Build toolbar if needed
+    toolbar_html = build_toolbar_html(buttons, config.theme, toolbar_position)
+
+    # Handle toolbar injection
+    if toolbar_html:
+        if toolbar_position == "bottom":
+            # Append to content
+            user_html = f"<div class='pywry-wrapper-bottom'><div class='pywry-content'>{user_html}</div>{toolbar_html}</div>"
+        elif toolbar_position == "top":
+            # Prepend to content
+            user_html = f"<div class='pywry-wrapper-top'>{toolbar_html}<div class='pywry-content'>{user_html}</div></div>"
+        elif toolbar_position == "left":
+            user_html = f"<div class='pywry-wrapper-left'>{toolbar_html}<div class='pywry-content'>{user_html}</div></div>"
+        elif toolbar_position == "right":
+            user_html = f"<div class='pywry-wrapper-right'><div class='pywry-content'>{user_html}</div>{toolbar_html}</div>"
+        elif toolbar_position == "inside":
+            # Wrap in relative container to allow absolute positioning of toolbar
+            user_html = f"<div class='pywry-wrapper-inside'>{toolbar_html}{user_html}</div>"
 
     if is_complete_doc:
         # Inject our scripts into the existing document
@@ -540,7 +623,7 @@ def build_html(
 
     # Build a complete document wrapper for HTML fragments
     return f"""<!DOCTYPE html>
-<html lang="en" class="{theme_class}">
+<html lang="en" class="pywry-native {theme_class}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

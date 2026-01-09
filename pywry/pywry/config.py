@@ -18,10 +18,10 @@ import sys
 
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, ClassVar, Literal
+from typing import Annotated, Any, ClassVar, Literal
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 if sys.version_info >= (3, 11):
@@ -30,7 +30,7 @@ else:
     try:
         import tomli as tomllib  # type: ignore[import-not-found]
     except ImportError:
-        tomllib = None  # type: ignore[assignment, unused-ignore]
+        tomllib = None
 
 
 def _find_config_files() -> list[Path]:
@@ -301,6 +301,7 @@ class WindowSettings(BaseSettings):
     center: bool = True
     always_on_top: bool = False
     devtools: bool = False
+    toolbar_position: Literal["top", "bottom", "left", "right", "inside", "hidden"] = "top"
 
 
 class HotReloadSettings(BaseSettings):
@@ -325,6 +326,77 @@ class HotReloadSettings(BaseSettings):
     watch_directories: list[str] = Field(default_factory=list)
 
     @field_validator("watch_directories", mode="before")
+    @classmethod
+    def parse_comma_separated(cls, v: Any) -> list[str]:
+        """Parse comma-separated strings from env vars."""
+        if isinstance(v, str):
+            return [s.strip() for s in v.split(",") if s.strip()]
+        return v or []
+
+
+class ServerSettings(BaseSettings):
+    """Inline server settings for notebook/web mode.
+
+    Exposes full uvicorn configuration for deployment.
+
+    Environment prefix: PYWRY_SERVER__
+    Example: PYWRY_SERVER__PORT=8080
+    """
+
+    model_config = SettingsConfigDict(
+        env_prefix="PYWRY_SERVER__",
+        extra="ignore",
+    )
+
+    # Core server settings
+    host: str = Field(default="127.0.0.1", description="Server bind address")
+    port: int = Field(default=8765, ge=1, le=65535, description="Server port")
+    auto_start: bool = Field(default=True, description="Auto-start server when needed")
+    force_notebook: bool = Field(
+        default=False,
+        description="Force notebook mode even in headless environments (for web deployments)",
+    )
+
+    # Uvicorn settings
+    workers: int = Field(default=1, ge=1, description="Number of worker processes")
+    log_level: Literal["critical", "error", "warning", "info", "debug", "trace"] = Field(
+        default="warning", description="Uvicorn log level"
+    )
+    access_log: bool = Field(default=False, description="Enable access logging")
+    reload: bool = Field(default=False, description="Enable auto-reload (dev mode)")
+
+    # Timeouts
+    timeout_keep_alive: int = Field(default=5, ge=0, description="Keep-alive timeout in seconds")
+    timeout_graceful_shutdown: int | None = Field(
+        default=None, description="Graceful shutdown timeout (None = wait forever)"
+    )
+
+    # SSL/TLS settings (for HTTPS)
+    ssl_keyfile: str | None = Field(default=None, description="SSL key file path")
+    ssl_certfile: str | None = Field(default=None, description="SSL certificate file path")
+    ssl_keyfile_password: str | None = Field(default=None, description="SSL key file password")
+    ssl_ca_certs: str | None = Field(default=None, description="CA certificates file")
+
+    # CORS settings - use NoDecode to disable JSON parsing and use our validator
+    cors_origins: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["*"], description="Allowed CORS origins"
+    )
+    cors_allow_credentials: bool = Field(default=True, description="Allow credentials in CORS")
+    cors_allow_methods: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["*"], description="Allowed CORS methods"
+    )
+    cors_allow_headers: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["*"], description="Allowed CORS headers"
+    )
+
+    # Limits
+    limit_concurrency: int | None = Field(default=None, description="Max concurrent connections")
+    limit_max_requests: int | None = Field(
+        default=None, description="Max requests before worker restart"
+    )
+    backlog: int = Field(default=2048, ge=1, description="Socket backlog size")
+
+    @field_validator("cors_origins", "cors_allow_methods", "cors_allow_headers", mode="before")
     @classmethod
     def parse_comma_separated(cls, v: Any) -> list[str]:
         """Parse comma-separated strings from env vars."""
@@ -360,6 +432,7 @@ class PyWrySettings(BaseSettings):
     log: LogSettings = Field(default_factory=LogSettings)
     window: WindowSettings = Field(default_factory=WindowSettings)
     hot_reload: HotReloadSettings = Field(default_factory=HotReloadSettings)
+    server: ServerSettings = Field(default_factory=ServerSettings)
 
     # Tracks where each value came from (for CLI display)
     _sources: ClassVar[dict[str, str]] = {}
@@ -385,6 +458,7 @@ class PyWrySettings(BaseSettings):
             ("log", self.log),
             ("window", self.window),
             ("hot_reload", self.hot_reload),
+            ("server", self.server),
         ]
 
         for section_name, section in sections:
@@ -415,6 +489,7 @@ class PyWrySettings(BaseSettings):
             ("LOG", self.log),
             ("WINDOW", self.window),
             ("HOT_RELOAD", self.hot_reload),
+            ("SERVER", self.server),
         ]
 
         for section_name, section in sections:
@@ -442,6 +517,7 @@ class PyWrySettings(BaseSettings):
             ("Logging", self.log),
             ("Window Defaults", self.window),
             ("Hot Reload", self.hot_reload),
+            ("Server (Notebook/Web)", self.server),
         ]
 
         for section_name, section in sections:

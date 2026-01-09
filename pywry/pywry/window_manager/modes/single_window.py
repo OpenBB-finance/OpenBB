@@ -31,6 +31,10 @@ class SingleWindowMode(WindowModeBase):
         self._label = label
         self._is_created = False
 
+        # Ensure label is available for registration
+        # This handles cases where the label was previously destroyed in a persistent session
+        get_registry().recover_label(label)
+
     @property
     def label(self) -> str:
         """Get the window label."""
@@ -46,6 +50,7 @@ class SingleWindowMode(WindowModeBase):
         """Show content in the single window.
 
         If window doesn't exist, creates it. Otherwise replaces content.
+        Window is never destroyed - just hidden when user clicks X.
 
         Parameters
         ----------
@@ -65,16 +70,17 @@ class SingleWindowMode(WindowModeBase):
         """
         lifecycle = get_lifecycle()
         registry = get_registry()
+        from ... import runtime
 
-        # Register callbacks FIRST, before window is created/updated
-        # This ensures pywry:ready callback is registered before the window sends its ready event
-        if callbacks:
-            for event_type, handler in callbacks.items():
-                registry.register(self._label, event_type, handler)
+        # SINGLE_WINDOW mode: Window is never destroyed, just hidden when user clicks X
+        # So we just need to ensure runtime is started, show the window, and set content
+
+        # Ensure label is available (might have been destroyed by close())
+        registry.recover_label(self._label)
 
         if not self._is_created:
-            # Create new window
-            debug(f"Creating single window '{self._label}'")
+            # First time - create the window
+            debug(f"First show - creating window '{self._label}'")
             lifecycle.create(
                 self._label,
                 title=config.title,
@@ -83,12 +89,31 @@ class SingleWindowMode(WindowModeBase):
             )
             self._is_created = True
         else:
-            # Window exists, just update content
-            debug(f"Updating single window '{self._label}'")
+            # Window exists (possibly hidden) - just show it
+            debug(f"Window '{self._label}' already created, showing it")
+            runtime.show_window(self._label)
 
-        # Update content - MUST pass theme so window background matches
+        # Register callbacks
+        if callbacks:
+            for event_type, handler in callbacks.items():
+                registry.register(self._label, event_type, handler)
+
+        # Ensure lifecycle has resources registered
+        if not lifecycle.exists(self._label):
+            debug(f"Creating lifecycle resources for '{self._label}'")
+            from ...window_manager.lifecycle import WindowResources
+
+            resources = WindowResources(label=self._label)
+            lifecycle._windows[self._label] = resources
+
+        # Send content via IPC
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
-        lifecycle.set_content(self._label, html, theme_str)
+        debug(f"Calling lifecycle.set_content for '{self._label}'")
+        success = lifecycle.set_content(self._label, html, theme_str)
+        debug(f"lifecycle.set_content returned: {success}")
+
+        if not success:
+            warn(f"set_content failed for '{self._label}'")
 
         return self._label
 

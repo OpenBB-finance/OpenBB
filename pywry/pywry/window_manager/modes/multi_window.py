@@ -93,6 +93,9 @@ class MultiWindowMode(WindowModeBase):
 
             debug(f"Creating multi-window '{label}'")
 
+            # Ensure label is available if it was previously destroyed
+            registry.recover_label(label)
+
             # Register callbacks FIRST, before window is created
             # This ensures pywry:ready callback is registered before the window sends its ready event
             if callbacks:

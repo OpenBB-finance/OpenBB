@@ -17,6 +17,7 @@ from pywry.templates import (
     build_json_data_script,
     build_plotly_script,
     build_theme_class,
+    build_toolbar_html,
     fix_aggrid_theme_classes,
     fix_plotly_template,
 )
@@ -809,3 +810,87 @@ class TestBuildHtmlWithAggridTheme:
         content = HtmlContent(html="<div id='grid'></div>")
         html = build_html(content, config, window_label="main")
         assert f"ag-theme-{aggrid_theme}" in html
+
+
+class TestBuildToolbarHtml:
+    """Tests for build_toolbar_html function."""
+
+    def test_returns_empty_when_no_buttons(self):
+        """Returns empty string when no buttons provided."""
+        result = build_toolbar_html([], ThemeMode.DARK)
+        assert result == ""
+
+    def test_returns_html_with_buttons(self):
+        """Returns HTML with buttons."""
+        buttons = [{"label": "Click Me", "event": "click_me"}]
+        result = build_toolbar_html(buttons, ThemeMode.DARK)
+        assert "Click Me" in result
+        assert "click_me" in result
+        assert "pywry-toolbar" in result
+
+    def test_includes_position_class(self):
+        """Includes position class in toolbar div."""
+        buttons = [{"label": "Btn"}]
+        result = build_toolbar_html(buttons, ThemeMode.DARK, position="bottom")
+        assert "pywry-toolbar-bottom" in result
+
+
+class TestBuildHtmlWithToolbar:
+    """Tests for build_html with toolbar configurations."""
+
+    def test_toolbar_position_top(self):
+        """Verifies structure for top-positioned toolbar."""
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+        buttons = [{"label": "Btn"}]
+        html = build_html(
+            content, config, window_label="main", buttons=buttons, toolbar_position="top"
+        )
+        assert "pywry-wrapper-top" in html
+        assert "pywry-toolbar-top" in html
+        assert "pywry-content" in html
+
+    def test_toolbar_position_bottom(self):
+        """Verifies structure for bottom-positioned toolbar."""
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+        buttons = [{"label": "Btn"}]
+        html = build_html(
+            content, config, window_label="main", buttons=buttons, toolbar_position="bottom"
+        )
+        assert "pywry-wrapper-bottom" in html
+        assert "pywry-toolbar-bottom" in html
+        assert "pywry-content" in html
+
+    def test_toolbar_position_left(self):
+        """Verifies structure for left-positioned toolbar."""
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+        buttons = [{"label": "Btn"}]
+        html = build_html(
+            content, config, window_label="main", buttons=buttons, toolbar_position="left"
+        )
+        assert "pywry-wrapper-left" in html
+        assert "pywry-toolbar-left" in html
+
+    def test_toolbar_position_right(self):
+        """Verifies structure for right-positioned toolbar."""
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+        buttons = [{"label": "Btn"}]
+        html = build_html(
+            content, config, window_label="main", buttons=buttons, toolbar_position="right"
+        )
+        assert "pywry-wrapper-right" in html
+        assert "pywry-toolbar-right" in html
+
+    def test_toolbar_position_inside(self):
+        """Verifies structure for inside-positioned toolbar."""
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+        buttons = [{"label": "Btn"}]
+        html = build_html(
+            content, config, window_label="main", buttons=buttons, toolbar_position="inside"
+        )
+        assert "pywry-wrapper-inside" in html
+        assert "pywry-toolbar-inside" in html

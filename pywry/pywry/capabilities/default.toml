@@ -15,4 +15,6 @@ permissions = [
     "core:webview:default",
     "core:app:default",
     "notification:default",
+    "dialog:default",
+    "fs:default",
 ]

@@ -1,7 +1,7 @@
 [MAIN]
 # PyWry - Pylint Configuration
 
-fail-under=8.0
+fail-under=10.0
 ignore=__pycache__,.git,.ruff_cache,.pytest_cache,build,dist,*.egg-info
 init-hook='import sys; sys.path.insert(0, ".")'
 jobs=2

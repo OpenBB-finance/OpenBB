@@ -160,6 +160,7 @@ def handle_init(args: argparse.Namespace) -> int:
 #   PYWRY_CSP__DEFAULT_SRC="'self'"
 #   PYWRY_THEME__DARK_BG="#000000"
 #   PYWRY_TIMEOUT__STARTUP=30.0
+#   PYWRY_WINDOW__TOOLBAR_POSITION="left"
 #   PYWRY_HOT_RELOAD__ENABLED=true
 #
 # Use nested keys with __ (double underscore) delimiter.

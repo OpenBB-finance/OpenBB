@@ -26,6 +26,7 @@ class WindowMode(str, Enum):
     NEW_WINDOW = "new_window"
     SINGLE_WINDOW = "single_window"
     MULTI_WINDOW = "multi_window"
+    NOTEBOOK = "notebook"  # Inline rendering in Jupyter notebooks
 
 
 class WindowConfig(BaseModel):

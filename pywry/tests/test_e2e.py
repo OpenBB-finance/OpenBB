@@ -388,3 +388,166 @@ class TestContentRendering:
         assert r1 and isinstance(r1, dict) and r1["has"], "Window 1 content missing!"
         assert r2 and isinstance(r2, dict) and r2["has"], "Window 2 content missing!"
         app.close()
+
+
+class TestToolbarAndStyles:
+    """Tests for toolbar rendering and CSS application in window mode."""
+
+    def test_toolbar_renders_correctly(self):
+        """Toolbar renders with correct classes and buttons."""
+        app = PyWry(theme=ThemeMode.DARK)
+        buttons = [{"label": "MyButton", "event": "click"}]
+
+        # Test top toolbar
+        label = show_and_wait_ready(
+            app, "<div>Content</div>", title="Toolbar Test", buttons=buttons, toolbar_position="top"
+        )
+
+        result = wait_for_result(
+            label,
+            """
+            pywry.result({
+                hasWrapper: !!document.querySelector('.pywry-wrapper-top'),
+                hasToolbar: !!document.querySelector('.pywry-toolbar-top'),
+                btnText: document.querySelector('.pywry-btn')?.textContent || '',
+                wrapperClass: document.querySelector('.pywry-wrapper-top')?.className
+            });
+            """,
+        )
+
+        assert result and isinstance(result, dict)
+        assert result["hasWrapper"], "Wrapper top not found"
+        assert result["hasToolbar"], "Toolbar top not found"
+        assert result["btnText"] == "MyButton", "Button text incorrect"
+        app.close()
+
+    def test_css_variables_applied(self):
+        """CSS variables from pywry.css are applied to document."""
+        app = PyWry(theme=ThemeMode.DARK)
+        label = show_and_wait_ready(app, "<div>CSS Test</div>", title="CSS Test")
+
+        result = wait_for_result(
+            label,
+            """
+            (function() {
+                var style = getComputedStyle(document.documentElement);
+                var bg = style.getPropertyValue('--pywry-bg-primary').trim();
+                var text = style.getPropertyValue('--pywry-text-primary').trim();
+
+                pywry.result({
+                    bg: bg,
+                    text: text,
+                    isDark: document.documentElement.classList.contains('dark')
+                });
+            })();
+            """,
+        )
+
+        assert result and isinstance(result, dict)
+        # Check for non-empty values first
+        assert result["bg"], "Background var not set"
+        assert result["text"], "Text var not set"
+        assert result["isDark"], "Dark class not applied"
+
+        # We can check for specific values if we know what pywry.css defines for dark mode
+        # Based on pywry.css: #212124 (dark bg)
+        # Note: Browsers might normalize colors, so loose check is safer or exact if known standard
+        # But presence confirms CSS file was loaded and variable exposed
+        app.close()
+
+
+class TestToolbarIntegration:
+    """Tests for toolbar functionality across all content/framework modes."""
+
+    def test_toolbar_html_buttons_work(self):
+        """Toolbar buttons trigger Python callbacks in HTML mode."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        # Event tracking
+        events = {"clicked": False}
+
+        def on_click(data):
+            events["clicked"] = True
+            events["data"] = data
+
+        registry = get_registry()
+        # Pre-register because we can't reliably predict label for single window until shown
+        # But show() returns label, so we can register after show() IF we click after show()
+
+        buttons = [{"label": "ClickMe", "event": "custom:click"}]
+        label = show_and_wait_ready(app, "<div>HTML</div>", buttons=buttons)
+        registry.register(label, "custom:click", on_click)
+
+        # Trigger click via JS
+        app.eval_js("document.querySelector('.pywry-btn').click()", label=label)
+
+        # Wait for event
+        start = time.time()
+        while not events["clicked"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["clicked"], "Button click callback not triggered"
+        app.close()
+
+    def test_toolbar_plotly_buttons_work(self):
+        """Toolbar buttons trigger Python callbacks in Plotly mode."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"clicked": False}
+
+        def on_click(data):  # pylint: disable=unused-argument
+            events["clicked"] = True
+
+        buttons = [{"label": "PlotBtn", "event": "plot:click"}]
+        figure = {"data": [{"x": [1], "y": [2], "type": "bar"}]}
+
+        label = show_plotly_and_wait_ready(app, figure, buttons=buttons, toolbar_position="bottom")
+        get_registry().register(label, "plot:click", on_click)
+
+        # Verify structure first (bottom position)
+        result = wait_for_result(
+            label, "pywry.result({ hasWrapper: !!document.querySelector('.pywry-wrapper-bottom') })"
+        )
+        assert result["hasWrapper"], "Wrapper bottom not found in Plotly mode"
+
+        # Trigger click
+        app.eval_js("document.querySelector('.pywry-btn').click()", label=label)
+
+        start = time.time()
+        while not events["clicked"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["clicked"], "Plotly toolbar button callback not triggered"
+        app.close()
+
+    def test_toolbar_dataframe_buttons_work(self):
+        """Toolbar buttons trigger Python callbacks in DataFrame/AG Grid mode."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"clicked": False}
+
+        def on_click(data):  # pylint: disable=unused-argument
+            events["clicked"] = True
+
+        buttons = [{"label": "GridBtn", "event": "grid:click"}]
+        data = [{"x": 1}]
+
+        # Using left position to test layout variation
+        label = show_dataframe_and_wait_ready(app, data, buttons=buttons, toolbar_position="left")
+        get_registry().register(label, "grid:click", on_click)
+
+        # Verify structure (left position)
+        result = wait_for_result(
+            label, "pywry.result({ hasWrapper: !!document.querySelector('.pywry-wrapper-left') })"
+        )
+        assert result["hasWrapper"], "Wrapper left not found in DataFrame mode"
+
+        # Trigger click
+        app.eval_js("document.querySelector('.pywry-btn').click()", label=label)
+
+        start = time.time()
+        while not events["clicked"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["clicked"], "DataFrame toolbar button callback not triggered"
+        app.close()

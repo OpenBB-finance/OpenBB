@@ -189,7 +189,32 @@ def set_content(label: str, html: str, theme: str = "dark") -> bool:
         }
     )
     response = get_response(timeout=5.0)
-    return response is not None and response.get("success", False)
+
+    # Check if window was found (success=True or error absent)
+    return bool(response and response.get("success", False))
+
+
+def check_window_open(label: str) -> bool:
+    """Check if a window exists and is open via IPC.
+
+    Parameters
+    ----------
+    label : str
+        Window label.
+
+    Returns
+    -------
+    bool
+        True if window exists.
+    """
+    send_command(
+        {
+            "action": "check_open",
+            "label": label,
+        }
+    )
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("is_open", False)
 
 
 def close_window(label: str) -> bool:
@@ -200,7 +225,9 @@ def close_window(label: str) -> bool:
             "label": label,
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def show_window(label: str) -> bool:
@@ -211,7 +238,9 @@ def show_window(label: str) -> bool:
             "label": label,
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def inject_css(label: str, css: str, asset_id: str) -> bool:
@@ -229,7 +258,7 @@ def inject_css(label: str, css: str, asset_id: str) -> bool:
     Returns
     -------
     bool
-        True if command was sent.
+        True if command succeeded.
     """
     send_command(
         {
@@ -242,7 +271,9 @@ def inject_css(label: str, css: str, asset_id: str) -> bool:
             },
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def remove_css(label: str, asset_id: str) -> bool:
@@ -258,7 +289,7 @@ def remove_css(label: str, asset_id: str) -> bool:
     Returns
     -------
     bool
-        True if command was sent.
+        True if command succeeded.
     """
     send_command(
         {
@@ -270,7 +301,9 @@ def remove_css(label: str, asset_id: str) -> bool:
             },
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def refresh_window(label: str) -> bool:
@@ -286,7 +319,7 @@ def refresh_window(label: str) -> bool:
     Returns
     -------
     bool
-        True if command was sent.
+        True if command succeeded.
     """
     send_command(
         {
@@ -296,7 +329,9 @@ def refresh_window(label: str) -> bool:
             "payload": {},
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def refresh_all_windows() -> bool:
@@ -305,7 +340,7 @@ def refresh_all_windows() -> bool:
     Returns
     -------
     bool
-        True if command was sent.
+        True if command succeeded.
     """
     send_command(
         {
@@ -315,7 +350,9 @@ def refresh_all_windows() -> bool:
             "payload": {},
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def emit_event(label: str, event: str, payload: dict[str, Any] | None = None) -> bool:
@@ -333,7 +370,7 @@ def emit_event(label: str, event: str, payload: dict[str, Any] | None = None) ->
     Returns
     -------
     bool
-        True if command was sent.
+        True if command succeeded.
     """
     send_command(
         {
@@ -343,7 +380,9 @@ def emit_event(label: str, event: str, payload: dict[str, Any] | None = None) ->
             "payload": payload or {},
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def eval_js(label: str, script: str) -> bool:
@@ -362,7 +401,7 @@ def eval_js(label: str, script: str) -> bool:
     Returns
     -------
     bool
-        True if command was sent.
+        True if command was sent and succeeded.
     """
     send_command(
         {
@@ -371,7 +410,9 @@ def eval_js(label: str, script: str) -> bool:
             "script": script,
         }
     )
-    return True
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
 
 
 def start() -> bool:
