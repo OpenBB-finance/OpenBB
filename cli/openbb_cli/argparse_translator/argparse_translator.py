@@ -172,7 +172,11 @@ class ArgparseTranslator:
             # Handle Annotated[type, ...] -> type
             type_str = re.sub(r"Annotated\[\s*([^,\]]+).*?\]", r"\1", type_str)
             # Handle Union[A, B] -> A or B
-            type_str = re.sub(r"Union\[\s*(.*?)\s*\]", lambda m: m.group(1).replace(", ", " or "), type_str)
+            type_str = re.sub(
+                r"Union\[\s*(.*?)\s*\]",
+                lambda m: m.group(1).replace(", ", " or "),
+                type_str,
+            )
             # Handle Optional[A] -> A or None
             type_str = re.sub(r"Optional\[\s*(.*?)\s*\]", r"\1 or None", type_str)
 
