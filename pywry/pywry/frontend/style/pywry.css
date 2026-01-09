@@ -1,0 +1,268 @@
+:root {
+    /* ---- Color Palette (Dark Theme Default) ---- */
+    --pywry-bg-primary: #212124;
+    --pywry-bg-secondary: #1e1e1e;
+    --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
+    --pywry-text-primary: #ebebed;
+    --pywry-text-secondary: #a0a0a0;
+    --pywry-border-color: #333;
+
+    /* ---- Accent Colors ---- */
+    --pywry-accent: #0078d4;
+    --pywry-accent-hover: #106ebe;
+    --pywry-accent-text: #ffffff;
+
+    /* ---- Typography ---- */
+    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --pywry-font-size: 14px;
+    --pywry-font-weight-normal: 400;
+    --pywry-font-weight-medium: 500;
+
+    /* ---- Spacing & Layout ---- */
+    --pywry-radius: 4px;
+    --pywry-radius-lg: 6px;
+    --pywry-spacing-xs: 4px;
+    --pywry-spacing-sm: 6px;
+    --pywry-spacing-md: 8px;
+    --pywry-spacing-lg: 12px;
+
+    /* ---- Widget Sizing ---- */
+    --pywry-widget-width: 100%;
+    --pywry-widget-min-height: 200px;
+    --pywry-widget-max-height: none;
+    --pywry-grid-min-height: 200px;
+
+    /* ---- Transitions ---- */
+    --pywry-transition-fast: 0.1s ease;
+    --pywry-transition-normal: 0.2s ease;
+}
+
+/* ---- Light Theme Overrides ---- */
+html.light, .pywry-theme-light {
+    --pywry-bg-primary: #f5f5f5;
+    --pywry-bg-secondary: #ffffff;
+    --pywry-bg-overlay: rgba(255, 255, 255, 0.8);
+    --pywry-text-primary: #000000;
+    --pywry-text-secondary: #666666;
+    --pywry-border-color: #ccc;
+}
+
+/* ============================================
+   Native Window Base Styles (full page context)
+   Only applies when PyWry renders a full HTML document.
+   The .pywry-native class is added to <html> in templates.py
+   ============================================ */
+
+html.pywry-native,
+html.pywry-native body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden !important;
+    background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
+    font-family: var(--pywry-font-family);
+    font-size: var(--pywry-font-size);
+}
+
+/* ============================================
+   Widget Container (anywidget ESM)
+   ============================================ */
+
+.pywry-widget {
+    width: var(--pywry-widget-width);
+    min-height: var(--pywry-widget-min-height);
+    max-height: var(--pywry-widget-max-height);
+    overflow: visible; /* CRITICAL: Must be visible for AG Grid filter popups */
+    border-radius: var(--pywry-radius);
+    padding: var(--pywry-spacing-md);
+    box-sizing: border-box;
+    position: relative;
+    background-color: var(--pywry-bg-secondary);
+    color: var(--pywry-text-primary);
+    font-family: var(--pywry-font-family);
+    border: 1px solid var(--pywry-border-color);
+}
+
+/* ============================================
+   Native Window Container
+   ============================================ */
+
+.pywry-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden !important;
+    background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
+}
+
+/* ============================================
+   Toolbar Styles
+   ============================================ */
+
+.pywry-toolbar {
+    display: flex;
+    gap: var(--pywry-spacing-md);
+    padding: var(--pywry-spacing-md);
+    background-color: var(--pywry-bg-primary);
+    border: 1px solid var(--pywry-border-color);
+}
+
+.pywry-toolbar-top {
+    border-bottom: 1px solid var(--pywry-border-color);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.pywry-toolbar-bottom {
+    border-top: 1px solid var(--pywry-border-color);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+.pywry-toolbar-left,
+.pywry-toolbar-right {
+    flex-direction: column;
+    height: 100%;
+}
+
+.pywry-toolbar-left {
+    border-right: 1px solid var(--pywry-border-color);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+}
+
+.pywry-toolbar-right {
+    border-left: 1px solid var(--pywry-border-color);
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+}
+
+.pywry-toolbar-inside {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: var(--pywry-bg-overlay);
+    backdrop-filter: blur(4px);
+    border-radius: var(--pywry-radius-lg);
+    border: 1px solid var(--pywry-border-color);
+}
+
+/* ============================================
+   Button Styles
+   ============================================ */
+
+.pywry-btn {
+    padding: var(--pywry-spacing-sm) var(--pywry-spacing-lg);
+    cursor: pointer;
+    background-color: var(--pywry-accent);
+    color: var(--pywry-accent-text);
+    border: none;
+    border-radius: var(--pywry-radius);
+    font-weight: var(--pywry-font-weight-medium);
+    font-family: var(--pywry-font-family);
+    font-size: var(--pywry-font-size);
+    transition: background-color var(--pywry-transition-fast);
+}
+
+.pywry-btn:hover {
+    background-color: var(--pywry-accent-hover);
+}
+
+.pywry-btn:active {
+    opacity: 0.9;
+}
+
+.pywry-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   Layout Wrappers
+   ============================================ */
+
+.pywry-wrapper-left,
+.pywry-wrapper-right {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.pywry-wrapper-top,
+.pywry-wrapper-bottom {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.pywry-wrapper-inside {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+/* ============================================
+   Content Areas
+   ============================================ */
+
+.pywry-content {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+    min-height: 0;
+}
+
+.pywry-grid {
+    flex: 1;
+    min-height: var(--pywry-grid-min-height);
+    height: 100%;
+    width: 100%;
+}
+
+/* ============================================
+   Plotly Widget Specifics
+   ============================================ */
+
+.pywry-plotly {
+    overflow: visible;
+}
+
+.pywry-plotly .js-plotly-plot {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================
+   AG Grid Customizations
+   ============================================ */
+.ag-text-field-input:focus,
+.ag-number-field-input:focus,
+.ag-picker-field-wrapper:focus-within,
+.ag-select .ag-picker-field-wrapper:focus-within {
+    border-color: var(--pywry-accent, #0078d4) !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+.ag-filter .ag-input-wrapper::before,
+.ag-simple-filter-body-wrapper .ag-input-wrapper::before,
+.ag-filter-body-wrapper .ag-input-wrapper::before {
+    display: none !important;
+}
+.ag-filter .ag-text-field-input,
+.ag-filter .ag-number-field-input,
+.ag-simple-filter-body-wrapper .ag-text-field-input,
+.ag-simple-filter-body-wrapper .ag-number-field-input {
+    padding-left: var(--ag-spacing, 8px) !important;
+}
