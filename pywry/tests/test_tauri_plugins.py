@@ -77,17 +77,25 @@ class TestMainModulePluginRegistration:
         """__main__.py imports dialog plugin."""
         main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
         content = main_file.read_text()
-        assert (
-            "from pytauri_plugins import dialog" in content or "pytauri_plugins.dialog" in content
-        ), "dialog plugin import not found in __main__.py"
+        # Check for various import patterns including aliased imports
+        has_dialog_import = (
+            "from pytauri_plugins import dialog" in content
+            or "pytauri_plugins.dialog" in content
+            or "dialog as dialog_plugin" in content
+        )
+        assert has_dialog_import, "dialog plugin import not found in __main__.py"
 
     def test_main_imports_fs_plugin(self):
         """__main__.py imports fs plugin."""
         main_file = Path(__file__).parent.parent / "pywry" / "__main__.py"
         content = main_file.read_text()
-        assert "from pytauri_plugins import fs" in content or "pytauri_plugins.fs" in content, (
-            "fs plugin import not found in __main__.py"
+        # Check for various import patterns including aliased imports
+        has_fs_import = (
+            "from pytauri_plugins import fs" in content
+            or "pytauri_plugins.fs" in content
+            or "fs as fs_plugin" in content
         )
+        assert has_fs_import, "fs plugin import not found in __main__.py"
 
     def test_main_registers_plugins(self):
         """__main__.py registers plugins in builder.build()."""
