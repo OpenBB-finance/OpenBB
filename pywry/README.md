@@ -129,6 +129,7 @@ pywry.destroy()
 - [Hot Reload](#hot-reload)
 - [Plotly Templates](#plotly-templates)
 - [Event System](#event-system)
+- [Toolbar System](#toolbar-system)
 - [JavaScript Bridge](#javascript-bridge)
 - [Direct Tauri API Access](#direct-tauri-api-access)
 - [CLI Commands](#cli-commands)
@@ -348,13 +349,23 @@ html.light, .pywry-theme-light {
 ### Example: Custom Styling
 
 ```python
-pywry.show(
-    "<h1>Content</h1>",
-    buttons=[{"label": "Action", "event": "do-it"}],
+from pywry import HtmlContent
+
+def on_action(data, event_type, label):
+    pywry.eval_js("document.querySelector('h1').textContent = 'Styled action!'")
+
+content = HtmlContent(
+    html="<h1>Click me</h1>",
     inline_css="""
         .pywry-btn { background: blue !important; border-radius: 20px; }
-        .pywry-toolbar { justify-content: center; } /* Center buttons */
+        .pywry-toolbar { justify-content: center; }
     """
+)
+
+pywry.show(
+    content,
+    buttons=[{"label": "Action", "event": "app:action"}],
+    callbacks={"app:action": on_action},
 )
 ```
 
@@ -827,6 +838,148 @@ def on_row_select(data):
     logging.info(f"Selected rows: {data}")
 
 pywry.on("grid:select", on_row_select)
+```
+
+---
+
+## Toolbar System
+
+PyWry provides a simple toolbar system for adding interactive buttons to any window. Toolbar buttons emit events that Python can handle.
+
+### Button Configuration
+
+Buttons are defined as a list of dictionaries with the following keys:
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `label` | `str` | Yes | Button text displayed to user |
+| `event` | `str` | Yes | Event name emitted on click (e.g., `app:action`) |
+| `style` | `str` | No | Custom inline CSS for the button |
+
+```python
+buttons = [
+    {"label": "Save", "event": "app:save"},
+    {"label": "Export", "event": "app:export"},
+    {"label": "Settings", "event": "app:settings", "style": "background: #4CAF50;"},
+]
+```
+
+### Toolbar Positions
+
+The `toolbar_position` parameter controls where the toolbar appears:
+
+| Position | Description |
+|----------|-------------|
+| `"top"` | Horizontal bar above content (default) |
+| `"bottom"` | Horizontal bar below content |
+| `"left"` | Vertical bar to the left of content |
+| `"right"` | Vertical bar to the right of content |
+| `"inside"` | Overlay positioned in top-right corner |
+| `"hidden"` | Toolbar not rendered |
+
+### Complete Example
+
+```python
+from pywry import PyWry
+
+pywry = PyWry()
+
+# Define handlers - receive (data, event_type, label)
+def on_save(data, event_type, label):
+    pywry.eval_js("document.getElementById('status').textContent = 'Saved!'", label=label)
+
+def on_export(data, event_type, label):
+    pywry.eval_js("document.getElementById('status').textContent = 'Exported!'", label=label)
+
+def on_theme_toggle(data, event_type, label):
+    pywry.eval_js("""
+        document.documentElement.classList.toggle('light');
+        document.getElementById('status').textContent = 'Theme toggled!';
+    """, label=label)
+
+# Define buttons
+buttons = [
+    {"label": "Save", "event": "app:save"},
+    {"label": "Export CSV", "event": "app:export"},
+    {"label": "Toggle Theme", "event": "app:theme", "style": "margin-left: auto;"},
+]
+
+# Show with toolbar - pass callbacks directly to show()
+pywry.show(
+    "<h1>My Application</h1><p id='status'>Click a button...</p>",
+    buttons=buttons,
+    toolbar_position="top",
+    callbacks={
+        "app:save": on_save,
+        "app:export": on_export,
+        "app:theme": on_theme_toggle,
+    }
+)
+```
+
+### Styling Buttons
+
+Buttons use the `.pywry-btn` class. Override styles via `HtmlContent.inline_css` or custom CSS:
+
+```python
+from pywry import PyWry, HtmlContent
+
+pywry = PyWry()
+
+def on_action(data, event_type, label):
+    pywry.eval_js("document.querySelector('h1').textContent = 'Action triggered!'", label=label)
+
+content = HtmlContent(
+    html="<h1>Click the button</h1>",
+    inline_css="""
+        .pywry-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 8px 20px;
+        }
+        .pywry-btn:hover {
+            transform: scale(1.05);
+        }
+        .pywry-toolbar {
+            justify-content: center;
+            gap: 12px;
+        }
+    """
+)
+
+pywry.show(
+    content,
+    buttons=[{"label": "Action", "event": "app:action"}],
+    callbacks={"app:action": on_action},
+)
+```
+
+### Toolbar with Plotly/AG Grid
+
+Toolbars work with all display methods:
+
+```python
+# Plotly with toolbar - reset zoom on click
+def on_reset(data, event_type, label):
+    pywry.eval_js("Plotly.relayout(window.__PYWRY_PLOTLY_DIV__, {xaxis: {autorange: true}, yaxis: {autorange: true}})")
+
+pywry.show_plotly(
+    fig,
+    buttons=[{"label": "Reset Zoom", "event": "app:reset"}],
+    toolbar_position="bottom",
+    callbacks={"app:reset": on_reset},
+)
+
+# AG Grid with toolbar - export on click
+def on_export(data, event_type, label):
+    pywry.eval_js("window.__PYWRY_GRID_API__.exportDataAsCsv()")
+
+pywry.show_dataframe(
+    df,
+    buttons=[{"label": "Export CSV", "event": "app:export"}],
+    toolbar_position="top",
+    callbacks={"app:export": on_export},
+)
 ```
 
 ---

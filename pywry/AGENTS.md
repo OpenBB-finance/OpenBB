@@ -51,9 +51,9 @@ User Code → PyWry (app.py) → Runtime (runtime.py) → PyTauri Subprocess →
 ```
 User Code → inline.py → FastAPI Server → IFrame in Notebook
                  ↑              ↓
-         WebSocket/HTTP    HTML/JS/CSS
+              WebSocket    HTML/JS/CSS
                  ↓              ↑
-         Callbacks ← Events via HTTP POST + Polling
+         Callbacks ← Events via WebSocket
 ```
 
 **3. anywidget Mode** (Jupyter widget protocol):
@@ -66,7 +66,7 @@ User Code → widget.py → anywidget ESM → Jupyter Widget
 ### Key Architectural Points
 
 - **Desktop**: Python manages the high-level API through the `PyWry` class; a PyTauri subprocess handles actual window creation and OS webview; communication uses JSON IPC over stdin/stdout; subprocess starts lazily on first `show()` call
-- **Notebook**: Detected automatically via `notebook.py`; FastAPI server starts on first render; IFrame displays content; bidirectional events via HTTP POST + polling
+- **Notebook**: Detected automatically via `notebook.py`; FastAPI server starts on first render; IFrame displays content; bidirectional events via WebSocket
 - **anywidget**: Uses anywidget/traitlets for Jupyter widget protocol; bundles Plotly.js and AG Grid as ESM modules
 
 ### Tauri Plugin Integration
