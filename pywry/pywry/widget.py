@@ -225,6 +225,44 @@ function render({ model, el }) {
             }
         };
     }
+    // Global emit function that routes to the correct widget based on gridId
+    // This is needed for context menus and other global handlers in aggrid-defaults.js
+    window.pywry.emit = function(type, data) {
+        // Find the grid by gridId if provided, otherwise use most recent
+        const gridId = data && data.gridId;
+        let gridInfo = gridId ? (window.__PYWRY_GRIDS__ || {})[gridId] : null;
+        if (!gridInfo) {
+            // Fallback to most recent grid
+            gridInfo = Object.values(window.__PYWRY_GRIDS__ || {}).pop();
+        }
+        if (gridInfo && gridInfo.div) {
+            const widget = gridInfo.div.closest('.pywry-widget');
+            if (widget && widget._pywryModel) {
+                const m = widget._pywryModel;
+                const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                m.set('_js_event', evt);
+                m.save_changes();
+                return;
+            }
+        }
+        console.warn('[PyWry] No widget found for global emit:', type, data);
+    };
+    // Also add global 'on' for event handlers in aggrid-defaults.js
+    if (!window.pywry._handlers) {
+        window.pywry._handlers = {};
+    }
+    if (!window.pywry.on) {
+        window.pywry.on = function(type, callback) {
+            if (!window.pywry._handlers[type]) window.pywry._handlers[type] = [];
+            window.pywry._handlers[type].push(callback);
+        };
+    }
+    if (!window.pywry._fire) {
+        window.pywry._fire = function(type, data) {
+            const handlers = window.pywry._handlers[type] || [];
+            handlers.forEach(h => h(data));
+        };
+    }
 
     // Local bridge - specialized for this widget instance
     const pywry = {
@@ -304,6 +342,10 @@ function render({ model, el }) {
                     console.log('[PyWry] Grid fully updated');
                 }
                 pywry._fire(event.type, event.data);
+                // Also fire on window.pywry for global handlers (e.g., show_notification)
+                if (window.pywry && window.pywry._fire) {
+                    window.pywry._fire(event.type, event.data);
+                }
             }
         } catch(e) {
             console.error('[PyWry] Failed to parse Python event:', e);

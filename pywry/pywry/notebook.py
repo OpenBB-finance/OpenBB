@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 
+from datetime import datetime
 from enum import Enum
 from functools import lru_cache
 from pathlib import Path
@@ -355,6 +356,56 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     )
 
 
+def _make_grid_export_handler(widget: Any) -> Any:
+    """Create a grid_export_csv handler bound to a widget.
+
+    Parameters
+    ----------
+    widget : InlineWidget
+        Widget instance to emit notifications through.
+
+    Returns
+    -------
+    Callable
+        Handler function for grid_export_csv events.
+    """
+
+    def handle_export(data: dict[str, Any], _event_type: str, _label: str) -> None:
+        csv_content = data.get("csvContent", "")
+        suggested_name = data.get("fileName", "export.csv")
+        export_type = data.get("exportType", "unknown")
+
+        # Normalize line endings - AG Grid uses \r\n, convert to \n
+        csv_content = csv_content.replace("\r\n", "\n").replace("\r", "\n")
+
+        # Use current directory for exports
+        save_dir = Path.cwd()
+
+        # Generate unique filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = suggested_name.rsplit(".", 1)[0]
+        filename = f"{base_name}_{timestamp}.csv"
+        filepath = save_dir / filename
+
+        try:
+            save_dir.mkdir(parents=True, exist_ok=True)
+            filepath.write_text(csv_content, encoding="utf-8")
+            # Show notification in the grid
+            widget.emit(
+                "pywry:show_notification",
+                {"message": f"Saved: {filepath}", "duration": 3000},
+            )
+            print(f"[PyWry] CSV exported ({export_type}): {filepath}")
+        except Exception as e:
+            widget.emit(
+                "pywry:show_notification",
+                {"message": f"Export failed: {e}", "duration": 4000},
+            )
+            print(f"[PyWry] Failed to save CSV: {e}")
+
+    return handle_export
+
+
 def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-arguments
     row_data: list[dict],
     columns: list[str],
@@ -499,10 +550,15 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         toolbar_position=toolbar_position,
     )
 
-    return inline.InlineWidget(
+    widget = inline.InlineWidget(
         html=html,
         width=width,
         height=height,
         port=port or 8765,
         widget_id=widget_id,
     )
+
+    # Register grid_export_csv handler for IFrame path (mirrors anywidget behavior)
+    widget.on("grid_export_csv", _make_grid_export_handler(widget))
+
+    return widget

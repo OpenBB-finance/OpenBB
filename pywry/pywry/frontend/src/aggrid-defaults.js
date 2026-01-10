@@ -392,33 +392,6 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         
         option.style.cssText = optionStyles.join(';') + ';';
 
-        var iconPart = document.createElement('span');
-        iconPart.className = 'ag-menu-option-part ag-menu-option-icon pywry-menu-icon';
-        iconPart.style.cssText = 'width: 20px; margin-right: 8px; text-align: center; flex-shrink: 0;';
-        if (item.icon) {
-            var iconMap = {
-                'copy': '📋',
-                'csv': '📄',
-                'columns': '▤',
-                'filter': '🔍',
-                'tick': '✓',
-                'cross': '✕',
-                'menu': '☰',
-                'eye': '👁',
-                'eye-slash': '◌',
-                'pin': '📌',
-                'unpin': '⊘',
-                'left': '⬅',
-                'right': '➡'
-            };
-            iconPart.textContent = iconMap[item.icon] || item.icon;
-        } else if (item.checked !== undefined) {
-            // Show check mark for checked items - color from CSS var
-            iconPart.textContent = item.checked ? '✓' : '';
-            iconPart.style.color = item.checked ? 'var(--ag-input-focus-border-color, #4CAF50)' : 'transparent';
-        }
-        option.appendChild(iconPart);
-
         var textPart = document.createElement('span');
         textPart.className = 'ag-menu-option-part ag-menu-option-text pywry-menu-text';
         textPart.textContent = item.label;
@@ -428,7 +401,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         pointerPart.className = 'ag-menu-option-part ag-menu-option-popup-pointer pywry-menu-pointer';
         pointerPart.style.cssText = 'width: 16px; text-align: right; flex-shrink: 0; opacity: 0.6;';
         if (item.submenu && item.submenu.length > 0) {
-            pointerPart.textContent = '▶';
+            pointerPart.textContent = '>';
         }
         option.appendChild(pointerPart);
 
