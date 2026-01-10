@@ -62,7 +62,7 @@ def build_toolbar_html(
         event = btn.get("event", "button_click")
         user_style = btn.get("style", "")
 
-        onclick = f"window.pywry.emit('{event}', {{}})"
+        onclick = f"if (window.pywry && window.pywry.emitButton) {{ window.pywry.emitButton(this, '{event}', {{}}); }} else {{ console.warn('PyWry not ready'); }}"
 
         button_htmls.append(
             f'<button class="pywry-btn" onclick="{onclick}" style="{user_style}">{label}</button>'

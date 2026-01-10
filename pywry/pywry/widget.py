@@ -31,10 +31,9 @@ _SRC_DIR = pathlib.Path(__file__).parent / "frontend" / "src"
 
 
 @lru_cache(maxsize=1)
-@lru_cache(maxsize=1)
 def _get_plotly_widget_esm() -> str:
     """Build the Plotly widget ESM by combining Plotly.js with the widget code."""
-    from .assets import get_plotly_js
+    from .assets import get_plotly_js, get_plotly_templates_js
 
     # Get the widget render code
     widget_js_file = _SRC_DIR / "plotly-widget.js"
@@ -47,6 +46,9 @@ def _get_plotly_widget_esm() -> str:
     plotly_js = get_plotly_js()
     if not plotly_js:
         raise RuntimeError("Plotly.js not found in bundled assets")
+
+    # Get Plotly templates for theme switching
+    templates_js = get_plotly_templates_js() or ""
 
     # Wrap Plotly.js in IIFE to expose to window
     # Plotly 3.x UMD checks for AMD/CommonJS first, we force global export
@@ -103,6 +105,12 @@ if (!getPlotly()) {{
     }}
 }} else {{
     console.log('[PyWry Plotly ESM] Plotly already loaded, version:', getPlotly().version);
+}}
+
+// Load Plotly templates (plotly_dark, plotly_white, etc.) for theme switching
+if (typeof window !== 'undefined' && !window.PYWRY_PLOTLY_TEMPLATES) {{
+{templates_js}
+    console.log('[PyWry Plotly ESM] Templates loaded:', Object.keys(window.PYWRY_PLOTLY_TEMPLATES || {{}}).join(', '));
 }}
 
 {widget_js}
@@ -167,7 +175,7 @@ function render({ model, el }) {
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
     if (modelHeight) {
-        container.style.setProperty('--pywry-widget-max-height', modelHeight);
+        container.style.setProperty('--pywry-widget-height', modelHeight);
     }
     if (modelWidth) {
         container.style.setProperty('--pywry-widget-width', modelWidth);
@@ -197,8 +205,29 @@ function render({ model, el }) {
     }
     applyTheme();
 
-    // pywry bridge
-    window.pywry = {
+    // Attach model to container for global dispatch lookup
+    container._pywryModel = model;
+
+    // Initialize global dispatcher if not present
+    if (!window.pywry) {
+        window.pywry = {};
+    }
+    if (!window.pywry.emitButton) {
+        window.pywry.emitButton = function(el, type, data) {
+            const widget = el.closest('.pywry-widget');
+            if (widget && widget._pywryModel) {
+                 const model = widget._pywryModel;
+                 const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                 model.set('_js_event', evt);
+                 model.save_changes();
+            } else {
+                 console.warn('[PyWry] Could not find widget model for element', el);
+            }
+        };
+    }
+
+    // Local bridge - specialized for this widget instance
+    const pywry = {
         _ready: false,
         _handlers: {},
         _pending: [],
@@ -229,17 +258,30 @@ function render({ model, el }) {
         }
     };
 
+    // Attach local pywry to container for debugging if needed
+    container._pywryInstance = pywry;
+
     model.on('change:_py_event', () => {
         try {
             const event = JSON.parse(model.get('_py_event') || '{}');
             if (event.type) {
-                // Handle theme updates directly
+                // Handle theme updates - set model property AND apply directly
                 if (event.type === 'pywry:update_theme' && event.data && event.data.theme) {
                     const gridDiv = container.querySelector('#grid');
                     if (gridDiv) {
-                        gridDiv.className = event.data.theme;
-                        console.log('[PyWry] Theme updated to:', event.data.theme);
+                        // Update grid theme class
+                        const classes = Array.from(gridDiv.classList).filter(c => !c.startsWith('ag-theme-'));
+                        gridDiv.className = classes.join(' ') + ' ' + event.data.theme;
+                        console.log('[PyWry] Grid theme class updated to:', event.data.theme);
                     }
+                    // Determine if light or dark and set model property
+                    const isDark = event.data.theme.includes('dark');
+                    const newTheme = isDark ? 'dark' : 'light';
+                    model.set('theme', newTheme);
+                    model.save_changes();
+                    // Apply theme directly (model.on('change:theme') only fires for changes FROM Python)
+                    applyTheme();
+                    console.log('[PyWry] Model theme set to:', newTheme);
                 }
                 // Handle grid data updates (row data)
                 if (event.type === 'pywry:update_rows' && gridApi && event.data && event.data.rows) {
@@ -261,7 +303,7 @@ function render({ model, el }) {
                     }
                     console.log('[PyWry] Grid fully updated');
                 }
-                window.pywry._fire(event.type, event.data);
+                pywry._fire(event.type, event.data);
             }
         } catch(e) {
             console.error('[PyWry] Failed to parse Python event:', e);
@@ -485,8 +527,29 @@ function render({ model, el }) {
     applyTheme();
     el.appendChild(container);
 
-    // pywry bridge - sends events via traitlet
-    window.pywry = {
+    // Attach model to container for global dispatch lookup
+    container._pywryModel = model;
+
+    // Initialize global dispatcher if not present
+    if (!window.pywry) {
+        window.pywry = {};
+    }
+    if (!window.pywry.emitButton) {
+        window.pywry.emitButton = function(el, type, data) {
+            const widget = el.closest('.pywry-widget');
+            if (widget && widget._pywryModel) {
+                 const model = widget._pywryModel;
+                 const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                 model.set('_js_event', evt);
+                 model.save_changes();
+            } else {
+                 console.warn('[PyWry] Could not find widget model for element', el);
+            }
+        };
+    }
+
+    // Local bridge - specialized for this widget instance
+    const pywry = {
         _ready: false,
         _handlers: {},
         _pending: [],
@@ -517,11 +580,24 @@ function render({ model, el }) {
         }
     };
 
+    // Attach local pywry to container for debugging if needed
+    container._pywryInstance = pywry;
+
     model.on('change:_py_event', () => {
         try {
             const event = JSON.parse(model.get('_py_event') || '{}');
             if (event.type) {
-                window.pywry._fire(event.type, event.data);
+                // Handle theme updates - set model property AND apply directly
+                if (event.type === 'pywry:update_theme' && event.data && event.data.theme) {
+                    const isDark = event.data.theme.includes('dark');
+                    const newTheme = isDark ? 'dark' : 'light';
+                    model.set('theme', newTheme);
+                    model.save_changes();
+                    // Apply theme directly (model.on('change:theme') only fires for changes FROM Python)
+                    applyTheme();
+                    console.log('[PyWry] Model theme set to:', newTheme);
+                }
+                pywry._fire(event.type, event.data);
             }
         } catch(e) {
             console.error('[PyWry] Failed to parse Python event:', e);
@@ -544,7 +620,7 @@ function render({ model, el }) {
                 parent.appendChild(errDiv);
             }
         });
-        window.pywry._ready = true;
+        pywry._ready = true;
     }
 
     function renderContent() {
@@ -711,6 +787,7 @@ if HAS_ANYWIDGET:
         _css = _get_pywry_base_css()
 
         content = traitlets.Unicode("").tag(sync=True)
+        figure_json = traitlets.Unicode("").tag(sync=True)  # Plotly figure as JSON
         theme = traitlets.Unicode("dark").tag(sync=True)
         width = traitlets.Unicode("100%").tag(sync=True)
         height = traitlets.Unicode("500px").tag(sync=True)
@@ -723,6 +800,7 @@ if HAS_ANYWIDGET:
             theme: str = "dark",
             width: str = "100%",
             height: str = "500px",
+            figure_json: str = "",
             **kwargs,
         ):
             """Initialize the widget with Plotly bundled."""
@@ -730,6 +808,7 @@ if HAS_ANYWIDGET:
             self._label = f"w-{uuid.uuid4().hex[:8]}"
             self._handlers: dict[str, list[Callable[[dict[str, Any], str, str], Any]]] = {}
             self.content = content
+            self.figure_json = figure_json
             self.theme = theme
             self.width = width
             self.height = height
@@ -820,19 +899,15 @@ if HAS_ANYWIDGET:
             --------
             >>> widget.update_figure(new_fig)  # Clean API!
             """
-            from . import inline
-
             # Merge config into figure JSON
             fig_dict = json.loads(figure.to_json())
             config = getattr(self, "_plotly_config", None)
             if config:
                 fig_dict["config"] = config
-            fig_json = json.dumps(fig_dict)
 
-            html = inline.generate_plotly_html(
-                fig_json, self._label, "PyWry", self.theme, full_document=False
-            )
-            self.update(html)
+            # Send update event to JS (handled by pywry:update_plotly listener)
+            # This avoids regenerating the HTML and resetting the widget state
+            self.emit("pywry:update_plotly", {"figure": fig_dict, "config": config or {}})
 
     class PyWryAgGridWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
         """Widget for inline notebook rendering with AG Grid bundled.

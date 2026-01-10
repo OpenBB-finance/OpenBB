@@ -120,8 +120,8 @@ class TestServerSettingsCustomValues:
 
     def test_custom_host(self):
         """Custom host can be set."""
-        settings = ServerSettings(host="0.0.0.0")  # noqa: S104
-        assert settings.host == "0.0.0.0"  # noqa: S104
+        settings = ServerSettings(host="0.0.0.0")
+        assert settings.host == "0.0.0.0"
 
     def test_custom_port(self):
         """Custom port can be set."""
@@ -350,9 +350,9 @@ class TestServerSettingsEnvVars:
 
     def test_host_from_env(self, clean_env):
         """Host can be set via environment variable."""
-        os.environ["PYWRY_SERVER__HOST"] = "0.0.0.0"  # noqa: S104
+        os.environ["PYWRY_SERVER__HOST"] = "0.0.0.0"
         settings = ServerSettings()
-        assert settings.host == "0.0.0.0"  # noqa: S104
+        assert settings.host == "0.0.0.0"
 
     def test_port_from_env(self, clean_env):
         """Port can be set via environment variable."""
@@ -423,14 +423,14 @@ class TestPyWrySettingsServer:
 
     def test_server_custom_values(self):
         """Server settings can be customized."""
-        settings = PyWrySettings(server=ServerSettings(host="0.0.0.0", port=9000))  # noqa: S104
-        assert settings.server.host == "0.0.0.0"  # noqa: S104
+        settings = PyWrySettings(server=ServerSettings(host="0.0.0.0", port=9000))
+        assert settings.server.host == "0.0.0.0"
         assert settings.server.port == 9000
 
     def test_server_from_dict(self):
         """Server settings can be passed as dict."""
-        settings = PyWrySettings(server={"host": "0.0.0.0", "port": 9000})  # noqa: S104
-        assert settings.server.host == "0.0.0.0"  # noqa: S104
+        settings = PyWrySettings(server={"host": "0.0.0.0", "port": 9000})
+        assert settings.server.host == "0.0.0.0"
         assert settings.server.port == 9000
 
 

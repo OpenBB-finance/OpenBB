@@ -625,9 +625,11 @@ class PyWry:
                     }}
 
                     // Grid config - centralized defaults handle everything else
+                    // domLayout: 'normal' ensures grid uses internal scrollbars (matches IFrame behavior)
                     var gridConfig = {{
                         columnDefs: {json.dumps(column_defs or [])},
-                        rowData: {json.dumps(row_data)}
+                        rowData: {json.dumps(row_data)},
+                        domLayout: 'normal'
                     }};
 
                     // Merge user options on top of base config

@@ -59,6 +59,7 @@ from .assets import (  # noqa: E402
     get_aggrid_defaults_js,
     get_aggrid_js,
     get_plotly_js,
+    get_plotly_templates_js,
     get_pywry_css,
 )
 from .config import get_settings  # noqa: E402
@@ -77,8 +78,8 @@ class _ServerState:
         self.port: int | None = None
         self.host: str | None = None
         self.widgets: dict[str, dict[str, Any]] = {}
-        self.event_queues: dict[str, queue.Queue[Any]] = {}
-        self.connections: dict[str, list[WebSocket]] = {}
+        self.event_queues: dict[str, asyncio.Queue[Any]] = {}
+        self.connections: dict[str, WebSocket] = {}
         self.callback_queue: queue.Queue[Any] = queue.Queue()
         self.shutdown_event: asyncio.Event | None = None
 
@@ -90,8 +91,8 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     """Generate the pywry JavaScript bridge with bidirectional communication.
 
     Supports:
-    - JS → Python via HTTP POST to /emit/{widget_id}
-    - Python → JS via polling /poll/{widget_id} endpoint
+    - JS → Python via WebSocket
+    - Python → JS via WebSocket
     """
     return f"""
 <script>
@@ -102,49 +103,43 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     const host = window.location.hostname;
     const port = window.location.port;
     const apiUrl = protocol + '//' + host + (port ? ':' + port : '');
-    let pollInterval = null;
+
+    // WebSocket connection
+    const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = wsProtocol + '//' + host + (port ? ':' + port : '') + '/ws/' + widgetId;
+    let socket = null;
+    let reconnectAttempts = 0;
 
     window.pywry = {{
         _ready: false,
         _handlers: {{}},
         _pending: [],
+        _msgQueue: [],
         _widgetId: widgetId,
 
         result: function(data) {{
             this.emit('pywry:result', data);
         }},
 
-        // Send event to Python
+        // Send event to Python via WebSocket
         emit: function(type, data) {{
-            if ({str(PYWRY_DEBUG).lower()}) {{
-                console.log('[PyWry] emit() called with type:', type, 'data:', data);
-            }}
             const msg = {{ type: type, data: data, widgetId: widgetId, ts: Date.now() }};
-            if ({str(PYWRY_DEBUG).lower()}) {{
-                console.log('[PyWry] Sending POST to:', apiUrl + '/emit/' + widgetId);
-                console.log('[PyWry] Message body:', msg);
+
+            if (!socket || socket.readyState !== WebSocket.OPEN) {{
+                console.warn('[PyWry] WebSocket not ready, queueing emit:', type);
+                this._msgQueue.push(msg);
+                return;
             }}
 
-            fetch(apiUrl + '/emit/' + widgetId, {{
-                method: 'POST',
-                headers: {{ 'Content-Type': 'application/json' }},
-                body: JSON.stringify(msg),
-                mode: 'cors'
-            }})
-            .then(response => {{
-                if ({str(PYWRY_DEBUG).lower()}) {{
-                    console.log('[PyWry] Emit response status:', response.status);
-                }}
-                return response.json();
-            }})
-            .then(data => {{
-                if ({str(PYWRY_DEBUG).lower()}) {{
-                    console.log('[PyWry] Emit response data:', data);
-                }}
-            }})
-            .catch(err => {{
-                console.error('[PyWry] Emit error:', err);
-            }});
+            if ({str(PYWRY_DEBUG).lower()}) {{
+                console.log('[PyWry] Sending via WS:', msg);
+            }}
+            socket.send(JSON.stringify(msg));
+        }},
+
+        // emitButton - legacy support for IFrame mode (element arg ignored)
+        emitButton: function(el, type, data) {{
+            this.emit(type, data);
         }},
 
         // Register listener for events from Python
@@ -172,35 +167,75 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
         }}
     }};
 
-    // Start polling for events from Python
-    function pollEvents() {{
-        fetch(apiUrl + '/poll/' + widgetId, {{
-            method: 'GET',
-            mode: 'cors'
-        }})
-        .then(response => response.json())
-        .then(data => {{
-            if (data.events && Array.isArray(data.events)) {{
-                if (data.events.length > 0) {{
-                     if ({str(PYWRY_DEBUG).lower()}) {{
-                        console.log('[PyWry] Polled events:', data.events);
-                     }}
+    function connect() {{
+        if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {{
+            return;
+        }}
+
+        if ({str(PYWRY_DEBUG).lower()}) {{
+            console.log('[PyWry] Connecting to WebSocket:', wsUrl);
+        }}
+
+        socket = new WebSocket(wsUrl);
+
+        socket.onopen = function() {{
+            console.log('[PyWry] WebSocket connected');
+            reconnectAttempts = 0;
+
+            // Flush pending outgoing messages
+            if (window.pywry._msgQueue && window.pywry._msgQueue.length > 0) {{
+                if ({str(PYWRY_DEBUG).lower()}) {{
+                    console.log('[PyWry] Flushing ' + window.pywry._msgQueue.length + ' queued messages');
                 }}
-                data.events.forEach(event => {{
-                     if ({str(PYWRY_DEBUG).lower()}) {{
-                        console.log('[PyWry] Firing event:', event.type, event.data);
-                     }}
-                    window.pywry._fire(event.type, event.data);
+                window.pywry._msgQueue.forEach(function(msg) {{
+                    socket.send(JSON.stringify(msg));
                 }});
+                window.pywry._msgQueue = [];
             }}
-        }})
-        .catch(err => {{
-            // Poll errors are silent - network issues are normal
-        }});
+
+            window.pywry._ready = true;
+            window.pywry._fire('pywry:ready', {{}});
+        }};
+
+        socket.onmessage = function(event) {{
+            try {{
+                const msg = JSON.parse(event.data);
+                if ({str(PYWRY_DEBUG).lower()}) {{
+                    console.log('[PyWry] WebSocket received:', msg);
+                }}
+
+                // Handle single event or list of events
+                const events = msg.events || [msg];
+                events.forEach(e => {{
+                    if (e && e.type) {{
+                        window.pywry._fire(e.type, e.data);
+                    }}
+                }});
+            }} catch (err) {{
+                console.error('[PyWry] Error parsing message:', err);
+            }}
+        }};
+
+        socket.onclose = function(e) {{
+            if ({str(PYWRY_DEBUG).lower()}) {{
+                console.log('[PyWry] WebSocket closed. Code:', e.code, 'Reason:', e.reason);
+            }}
+            window.pywry._ready = false;
+
+            // Reconnect with backoff
+            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
+            reconnectAttempts++;
+            setTimeout(connect, delay);
+        }};
+
+        socket.onerror = function(err) {{
+            console.error('[PyWry] WebSocket error:', err);
+            socket.close();
+        }};
     }}
 
-    // Poll every 100ms for events from Python
-    pollInterval = setInterval(pollEvents, 100);
+    // Connect immediately
+    connect();
     window.pywry._ready = true;
     if ({str(PYWRY_DEBUG).lower()}) {{
         console.log('[PyWry] Bridge ready! widgetId:', widgetId);
@@ -212,6 +247,18 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
         if ({str(PYWRY_DEBUG).lower()}) {{
             console.log('[PyWry] Received theme update:', data.theme);
         }}
+
+        // Update document theme class for CSS variables (Toolbar, etc.)
+        if (data.theme && data.theme.includes('light')) {{
+            document.documentElement.className = 'light';
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+        }} else {{
+            document.documentElement.className = 'dark';
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        }}
+
         const gridDiv = document.getElementById('grid');
         if (gridDiv && data.theme) {{
             // Remove all ag-theme-* classes
@@ -280,11 +327,38 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
 
 @asynccontextmanager
 async def _lifespan(app: FastAPI) -> AsyncIterator[None]:  # pylint: disable=unused-argument
-    """Lifespan context manager for graceful shutdown."""
-    # Startup: create shutdown event
     _state.shutdown_event = asyncio.Event()
     yield
-    # Shutdown: nothing special needed, event loop will stop
+
+
+async def _ws_sender_loop(
+    event_queue: asyncio.Queue[Any], websocket: WebSocket, widget_id: str
+) -> None:
+    """Pump events from queue to websocket until cancelled."""
+    try:
+        while True:
+            event = await event_queue.get()
+            if PYWRY_DEBUG:
+                print(f"[SERVER] Sending event to {widget_id}: {event}")
+            await websocket.send_json(event)
+            event_queue.task_done()
+    except asyncio.CancelledError:
+        pass
+    except Exception as e:
+        if PYWRY_DEBUG:
+            print(f"[SERVER] Sender error for {widget_id}: {e}")
+
+
+def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
+    """Route incoming websocket message to callback queue if handler exists."""
+    if widget_id not in _state.widgets:
+        return
+    callbacks = _state.widgets[widget_id].get("callbacks", {})
+    event_type = msg.get("type", "")
+    if event_type in callbacks:
+        _state.callback_queue.put(
+            (callbacks[event_type], msg.get("data", {}), event_type, widget_id)
+        )
 
 
 def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
@@ -331,50 +405,45 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
 
     @app.websocket("/ws/{widget_id}")
     async def websocket_endpoint(websocket: WebSocket, widget_id: str) -> None:
+        if PYWRY_DEBUG:
+            print(f"[SERVER] WebSocket connection request for {widget_id}")
+
         await websocket.accept()
 
-        if widget_id not in _state.connections:
-            _state.connections[widget_id] = []
-        _state.connections[widget_id].append(websocket)
+        if widget_id in _state.connections:
+            if PYWRY_DEBUG:
+                print(f"[SERVER] Closing existing connection for {widget_id}")
+            with suppress(Exception):
+                await _state.connections[widget_id].close(
+                    code=1000, reason="New connection replaced old one"
+                )
+
+        _state.connections[widget_id] = websocket
+
+        if widget_id not in _state.event_queues:
+            _state.event_queues[widget_id] = asyncio.Queue()
+
+        event_queue = _state.event_queues[widget_id]
+        sender = asyncio.create_task(_ws_sender_loop(event_queue, websocket, widget_id))
 
         try:
             while True:
                 data = await websocket.receive_text()
                 msg = json.loads(data)
-
-                # Put callback in queue for processing
-                if widget_id in _state.widgets:
-                    callbacks = _state.widgets[widget_id].get("callbacks", {})
-                    event_type = msg.get("type", "")
-                    if event_type in callbacks:
-                        _state.callback_queue.put(
-                            (callbacks[event_type], msg.get("data", {}), widget_id)
-                        )
+                if PYWRY_DEBUG:
+                    print(f"[SERVER] Received from {widget_id}: {msg}")
+                _route_ws_message(widget_id, msg)
         except WebSocketDisconnect:
-            if widget_id in _state.connections:
-                _state.connections[widget_id].remove(websocket)
+            if PYWRY_DEBUG:
+                print(f"[SERVER] WebSocket disconnected for {widget_id}")
+            if widget_id in _state.connections and _state.connections[widget_id] == websocket:
+                del _state.connections[widget_id]
+        finally:
+            sender.cancel()
 
     @app.get("/health")
     async def health() -> dict[str, str]:
         return {"status": "ok"}
-
-    @app.get("/poll/{widget_id}")
-    async def poll_events(widget_id: str) -> dict[str, list[Any]]:
-        """Poll endpoint for Python→JS events (bidirectional communication)."""
-        if widget_id not in _state.event_queues:
-            return {"events": []}
-
-        events = []
-        event_q = _state.event_queues[widget_id]
-        try:
-            # Collect all pending events (non-blocking)
-            while True:
-                event = event_q.get_nowait()
-                events.append(event)
-        except queue.Empty:
-            pass
-
-        return {"events": events}
 
     @app.post("/register_widget")
     async def register_widget(request: Request) -> dict[str, str]:
@@ -388,33 +457,11 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
                 return {"error": "Missing widget_id or html"}
 
             _state.widgets[widget_id] = {"html": html, "callbacks": {}}
-            _state.event_queues[widget_id] = queue.Queue()
+            _state.event_queues[widget_id] = asyncio.Queue()
 
             return {"status": "registered", "widget_id": widget_id}  # noqa: TRY300
         except Exception as e:
             return {"error": str(e)}
-
-    @app.post("/emit/{widget_id}")
-    async def emit_event(widget_id: str, request: Request) -> dict[str, Any]:
-        """HTTP POST endpoint for JavaScript callbacks."""
-        try:
-            body = await request.json()
-        except json.JSONDecodeError:
-            return {"error": "Invalid JSON"}
-
-        if widget_id not in _state.widgets:
-            return {"error": "Widget not found"}
-
-        callbacks = _state.widgets[widget_id].get("callbacks", {})
-        event_type = body.get("type", "")
-
-        if event_type in callbacks:
-            _state.callback_queue.put(
-                (callbacks[event_type], body.get("data", {}), event_type, widget_id)
-            )
-            return {"status": "ok", "queued": True}
-
-        return {"status": "ok", "queued": False, "reason": f"No callback for {event_type}"}
 
     return app
 
@@ -636,13 +683,6 @@ class InlineWidget:
         # Create an Output widget to capture callback output in the correct cell
         self._output = Output()
 
-        # Reuse existing event queue if widget_id already exists, otherwise create new one
-        if self._widget_id in _state.event_queues:
-            self._event_queue = _state.event_queues[self._widget_id]
-        else:
-            self._event_queue = queue.Queue()
-            _state.event_queues[self._widget_id] = self._event_queue
-
         # Register widget with output
         _state.widgets[self._widget_id] = {
             "html": html,
@@ -686,6 +726,17 @@ class InlineWidget:
         # Start server if not already running
         _start_server(port)
 
+        # Initialize event queue on the server loop
+        if _state.server_loop and _state.server_loop.is_running():
+
+            async def _init_queue() -> None:
+                if self._widget_id not in _state.event_queues:
+                    _state.event_queues[self._widget_id] = asyncio.Queue()
+
+            future = asyncio.run_coroutine_threadsafe(_init_queue(), _state.server_loop)
+            with suppress(Exception):
+                future.result(timeout=1.0)
+
     @property
     def widget_id(self) -> str:
         """Get the widget ID."""
@@ -728,7 +779,15 @@ class InlineWidget:
             JSON-serializable payload to send to JavaScript.
         """
         event = {"type": event_type, "data": data, "ts": uuid.uuid4().hex}
-        self._event_queue.put(event)
+
+        if _state.server_loop and _state.server_loop.is_running():
+
+            async def _send() -> None:
+                if self._widget_id not in _state.event_queues:
+                    _state.event_queues[self._widget_id] = asyncio.Queue()
+                await _state.event_queues[self._widget_id].put(event)
+
+            asyncio.run_coroutine_threadsafe(_send(), _state.server_loop)
 
     def send(self, event_type: str, data: Any) -> None:
         """Alias for emit().
@@ -765,32 +824,25 @@ class InlineWidget:
         Note: This only returns the IFrame. For callback output, use display() method
         or access the .output property directly.
         """
-        url = self._build_iframe_url()
-        return f'<iframe src="{url}" width="{self._width}" height="{self._height}" style="border:none;border-radius:8px;"></iframe>'
+        from IPython.display import IFrame
+
+        # Add cache busting to prevent caching issues
+        host = get_settings().server.host
+        url = f"http://{host}:{self._port}/widget/{self._widget_id}?ts={uuid.uuid4().hex}"
+
+        return IFrame(url, width=self._width, height=self._height)._repr_html_()
 
     def _repr_mimebundle_(self, **kwargs: Any) -> dict[str, str]:  # pylint: disable=unused-argument
         """Return mimebundle for rich display with Output widget."""
+        # This is used when the object is returned by a cell
         from IPython.display import display as ipy_display
 
-        # Display Output widget for callbacks
-        ipy_display(self._output)
+        # Display Output widget first (side effect)
+        if self._output:
+            ipy_display(self._output)
 
-        # Return HTML mimebundle for IFrame
-        url = self._build_iframe_url()
-        iframe_html = f'<iframe src="{url}" width="{self._width}" height="{self._height}" style="border:none;border-radius:8px;"></iframe>'
-        return {"text/html": iframe_html}
-
-    def _build_iframe_url(self) -> str:
-        """Build the IFrame URL for the widget with cache-busting parameter."""
-        import time  # pylint: disable=redefined-outer-name,reimported
-
-        settings = get_settings().server
-        protocol = "https" if settings.ssl_certfile else "http"
-        host = _state.host or settings.host
-        port = _state.port or settings.port
-        # Add timestamp to prevent browser caching when cell is re-run
-        timestamp = int(time.time() * 1000)
-        return f"{protocol}://{host}:{port}/widget/{self._widget_id}?_t={timestamp}"
+        # Return HTML for the main display
+        return {"text/html": self._repr_html_()}
 
     def display(self) -> None:
         """Display the widget in the current output context.
@@ -799,11 +851,16 @@ class InlineWidget:
         """
         from IPython.display import IFrame, display as ipy_display
 
-        url = self._build_iframe_url()
+        # Add cache busting to prevent caching issues
+        host = get_settings().server.host
+        url = f"http://{host}:{self._port}/widget/{self._widget_id}?ts={uuid.uuid4().hex}"
 
-        # Display IFrame first, then Output widget below it for callback output
-        ipy_display(IFrame(src=url, width=self._width, height=self._height))
-        ipy_display(self._output)
+        # Display IFrame directly using IPython's class to avoid warnings
+        ipy_display(IFrame(url, width=self._width, height=self._height))
+
+        # Display Output widget below it for callback output
+        if self._output:
+            ipy_display(self._output)
 
     def update_figure(self, figure: Figure) -> None:
         """Update the Plotly figure without manual HTML generation.
@@ -820,6 +877,11 @@ class InlineWidget:
         # Convert figure to dict
         fig_dict = json.loads(figure.to_json())
         stored_config = getattr(self, "_plotly_config", None)
+
+        # NOTE: For InlineWidget, we send an update event for the partial plot update.
+        # This keeps the rest of the page (including toolbar) intact.
+        # If we wanted to replace the toolbar, we'd need to reload the whole HTML.
+        # For full replacement, see update_html.
 
         # Send update via Plotly.react (no page reload needed)
         self.emit("pywry:update_plotly", {"figure": fig_dict, "config": stored_config or {}})
@@ -1001,8 +1063,6 @@ def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-
     )
 
     widget_id = uuid.uuid4().hex
-    bg_color = "#1e1e1e" if theme == "dark" else "#ffffff"
-    text_color = "#ffffff" if theme == "dark" else "#000000"
 
     # Generate toolbar HTML from buttons if provided
     toolbar_html = ""
@@ -1028,14 +1088,14 @@ def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-
         '<meta charset="utf-8">',
         f"<title>{title}</title>",
         f"<style>{pywry_css}</style>" if pywry_css else "",
-        f"""<style>
-            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-            body {{
-                background: {bg_color};
-                color: {text_color};
+        """<style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                background: var(--pywry-bg-primary);
+                color: var(--pywry-text-primary);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 padding: 16px;
-            }}
+            }
         </style>""",
     ]
 
@@ -1083,6 +1143,7 @@ def generate_plotly_html(
     theme: Literal["dark", "light"] = "dark",
     full_document: bool = True,
     buttons: list[dict[str, str]] | None = None,
+    toolbar_position: str = "top",
 ) -> str:
     """Generate HTML for a Plotly figure from JSON.
 
@@ -1105,6 +1166,10 @@ def generate_plotly_html(
         If False, return only content fragment (for anywidget).
     buttons : list[dict], optional
         List of button configs to generate a toolbar.
+    toolbar_position : str
+        Toolbar position ("top" or "bottom").
+    buttons : list[dict], optional
+        List of button configs to generate a toolbar.
 
     Returns
     -------
@@ -1118,12 +1183,15 @@ def generate_plotly_html(
         else '<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>'
     )
 
+    # Include Plotly templates (plotly_dark, plotly_white, etc.) for theme switching
+    templates_js = get_plotly_templates_js()
+    templates_script = f"<script>{templates_js}</script>" if templates_js else ""
+
     # Generate toolbar HTML from buttons if provided
     toolbar_html = ""
     if buttons:
-        # Internal generation defaults to top position
         toolbar_html = build_toolbar_html(
-            buttons, ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT, "top"
+            buttons, ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT, toolbar_position
         )
 
     # Plotly event handlers script
@@ -1179,7 +1247,29 @@ def generate_plotly_html(
         }}
 
         const finalConfig = Object.assign({{responsive: true}}, plotlyConfig);
+
         waitForPlotly(function(PlotlyLib) {{
+            // Register handler for figure updates - cleaner than full re-render
+            window.pywry.on('pywry:update_plotly', function(data) {{
+                const chartEl = document.getElementById('chart');
+                if (chartEl && data.figure) {{
+                    const figData = data.figure;
+                    const config = data.config || {{}};
+                    // Process modebar button click handlers
+                    if (config.modeBarButtonsToAdd) {{
+                        config.modeBarButtonsToAdd = config.modeBarButtonsToAdd.map(function(btn) {{
+                            if (typeof btn.click === 'string') {{
+                                try {{
+                                    btn.click = eval('(' + btn.click + ')');
+                                }} catch(e) {{}}
+                            }}
+                            return btn;
+                        }});
+                    }}
+                    PlotlyLib.react(chartEl, figData.data, figData.layout, config);
+                }}
+            }});
+
             PlotlyLib.newPlot('chart', figData.data, figData.layout, finalConfig).then(function() {{
         const chartEl = document.getElementById('chart');
 
@@ -1225,34 +1315,124 @@ def generate_plotly_html(
     pywry_css = get_pywry_css()
     pywry_style = f"<style>{pywry_css}</style>" if pywry_css else ""
 
+    widget_theme_class = "pywry-theme-dark" if theme == "dark" else "pywry-theme-light"
+
     # For anywidget: content fragment WITHOUT pywry bridge (widget provides it)
     # For IFrame: full document WITH pywry bridge
     if not full_document:
         # Content fragment for anywidget - NO bridge, widget already has window.pywry
-        return f"""<div class="pywry-wrapper-top">
-        {toolbar_html}
-        <div id="chart" class="pywry-content"></div>
-        </div>
+        # Return simpler structure without hardcoded wrapper to allow flexible layout composition
+        return f"""<div id="chart" class="pywry-content" style="height: 100%; width: 100%;"></div>
 {plotly_handlers_script}"""
 
+    # Build wrapper structure based on toolbar_position (matches AG Grid pattern)
+    chart_div = '<div id="chart"></div>'
+    if toolbar_position == "bottom":
+        wrapper_class = "pywry-wrapper-bottom"
+        inner_content = f"<div class='pywry-content'>{chart_div}</div>{toolbar_html}"
+    else:  # top (default)
+        wrapper_class = "pywry-wrapper-top"
+        inner_content = f"{toolbar_html}<div class='pywry-content'>{chart_div}</div>"
+
+    widget_content = f"<div class='{wrapper_class}'>{inner_content}</div>"
+
     # Full document for IFrame - INCLUDE bridge
+    # Structure matches AG Grid IFrame for visual consistency
     return f"""<!DOCTYPE html>
 <html class="{theme}">
 <head>
     <meta charset="utf-8">
     <title>{title}</title>
     {plotly_script}
+    {templates_script}
     {pywry_style}
     <style>
-        body {{ display: flex; flex-direction: column; height: 100vh; width: 100vw; margin: 0; }}
-        #chart {{ flex-grow: 1; min-height: 0; }}
+        html, body {{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Match toolbar background for seamless look */
+            background: var(--pywry-bg-primary);
+        }}
+        .pywry-widget {{
+            --pywry-widget-width: 100%;
+            --pywry-widget-height: 100%;
+            border: none;
+            border-radius: 0;
+            /* Match toolbar background */
+            background-color: var(--pywry-bg-primary);
+        }}
+        /* Remove toolbar borders in IFrame context */
+        .pywry-toolbar {{
+            border: none;
+        }}
+        #chart {{
+            height: 100%;
+            width: 100%;
+        }}
+        .pywry-wrapper-top {{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }}
+        .pywry-wrapper-bottom {{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }}
+        .pywry-content {{
+            flex: 1;
+            min-height: 0;
+        }}
     </style>
 </head>
 <body>
-    {toolbar_html}
-    <div id="chart"></div>
+    <div class="pywry-widget {widget_theme_class}">
+        {widget_content}
+    </div>
     {_get_pywry_bridge_js(widget_id)}
     {plotly_handlers_script}
+    <script>
+        // Listen for theme updates (background/container AND Plotly figure)
+        window.pywry.on('pywry:update_theme', function(data) {{
+            const widgetEl = document.querySelector('.pywry-widget');
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+
+            const isDark = data.theme && data.theme.includes('dark');
+            const isLight = !isDark;
+
+            if (widgetEl) {{
+                widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }}
+
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            // Read background from CSS variable (set by theme class)
+            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
+            bodyEl.style.background = bgColor || '';
+
+            // Update Plotly figure template using PYWRY_PLOTLY_TEMPLATES
+            const plotDiv = document.querySelector('.js-plotly-plot');
+            if (plotDiv && window.Plotly && plotDiv.data) {{
+                const templateName = isLight ? 'plotly_white' : 'plotly_dark';
+                const template = window.PYWRY_PLOTLY_TEMPLATES?.[templateName];
+                if (template) {{
+                    // Use newPlot to fully re-render with new template
+                    const newLayout = Object.assign({{}}, plotDiv.layout || {{}}, {{ template: template }});
+                    window.Plotly.newPlot(plotDiv, plotDiv.data, newLayout, plotDiv._fullLayout?._config || {{}});
+                }}
+            }}
+
+            console.log('[PyWry Plotly IFrame] Theme updated, isLight:', isLight);
+        }});
+    </script>
 </body>
 </html>"""
 
@@ -1337,8 +1517,9 @@ def show_plotly(
         toolbar_position=toolbar_position,
     )
 
-    # Store config for updates
+    # Store config and buttons for updates
     widget._plotly_config = config  # pylint: disable=attribute-defined-outside-init
+    widget._toolbar_buttons = buttons  # pylint: disable=attribute-defined-outside-init
 
     # Auto-register callbacks
     if callbacks:
@@ -1348,6 +1529,79 @@ def show_plotly(
     # Display automatically
     widget.display()
     return widget
+
+
+_TOOLBAR_POSITIONS = {
+    "top": ("pywry-wrapper-top", lambda t, g: f"{t}<div class='pywry-content'>{g}</div>"),
+    "bottom": ("pywry-wrapper-bottom", lambda t, g: f"<div class='pywry-content'>{g}</div>{t}"),
+    "left": ("pywry-wrapper-left", lambda t, g: f"{t}<div class='pywry-content'>{g}</div>"),
+    "right": ("pywry-wrapper-right", lambda t, g: f"<div class='pywry-content'>{g}</div>{t}"),
+    "inside": ("pywry-wrapper-inside", lambda t, g: f"{t}{g}"),
+}
+
+_AGGRID_IFRAME_CSS = """
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--pywry-bg-primary);
+}
+.pywry-widget {
+    --pywry-widget-width: 100%;
+    --pywry-widget-height: 100%;
+    border: none;
+    border-radius: 0;
+    background-color: var(--pywry-bg-primary);
+}
+.pywry-toolbar {
+    border: none;
+}
+.pywry-grid {
+    height: 100%;
+    width: 100%;
+}
+"""
+
+
+def _load_all_aggrid_theme_css() -> str:
+    css_parts = []
+    for theme_name in ["alpine", "quartz", "balham", "material"]:
+        for mode in [ThemeMode.DARK, ThemeMode.LIGHT]:
+            theme_css = get_aggrid_css(theme_name, mode)
+            if theme_css:
+                css_parts.append(theme_css)
+    return "\n".join(css_parts)
+
+
+def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, str]:
+    aggrid_js = get_aggrid_js()
+    aggrid_defaults_js = get_aggrid_defaults_js()
+    all_css = _load_all_aggrid_theme_css()
+    aggrid_css = all_css if all_css else get_aggrid_css(aggrid_theme, theme_mode)
+    pywry_css = get_pywry_css()
+
+    return {
+        "script": (
+            f"<script>{aggrid_js}</script>"
+            if aggrid_js
+            else '<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/dist/ag-grid-community.min.js"></script>'
+        ),
+        "defaults_script": f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else "",
+        "style": f"<style>{aggrid_css}</style>" if aggrid_css else "",
+        "pywry_style": f"<style>{pywry_css}</style>" if pywry_css else "",
+    }
+
+
+def _build_grid_layout(
+    toolbar_position: str, toolbar_html: str, header_html: str, theme_class: str
+) -> str:
+    grid_div = f"<div id='grid' class='pywry-grid {theme_class}'></div>"
+    toolbar = header_html + toolbar_html if toolbar_position == "top" else toolbar_html
+    wrapper_class, layout_fn = _TOOLBAR_POSITIONS.get(toolbar_position, _TOOLBAR_POSITIONS["top"])
+    inner_content = layout_fn(toolbar, grid_div)
+    return f"<div class='{wrapper_class}'>{inner_content}</div>"
 
 
 def generate_dataframe_html(
@@ -1360,8 +1614,9 @@ def generate_dataframe_html(
     header_html: str = "",
     grid_options: dict[str, Any] | None = None,
     buttons: list[dict[str, str]] | None = None,
+    toolbar_position: str = "top",
 ) -> str:
-    """Generate HTML for tabular data using AG Grid.
+    """Generate HTML for AG Grid widget.
 
     This is the pure HTML generation function - no display, no IPython required,
     no pandas import required. Used internally by show_dataframe() and for testing.
@@ -1387,6 +1642,8 @@ def generate_dataframe_html(
     buttons : list[dict], optional
         List of button configs to generate a toolbar.
         Each dict should have: {'label': str, 'event': str, 'style': str (optional)}.
+    toolbar_position : str
+        Toolbar position ("top" or "bottom").
 
     Returns
     -------
@@ -1394,85 +1651,73 @@ def generate_dataframe_html(
         Complete HTML document.
     """
     theme_mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
+    toolbar_html = build_toolbar_html(buttons, theme_mode, toolbar_position) if buttons else ""
 
-    # Generate toolbar HTML from buttons if provided
-    if buttons:
-        toolbar = build_toolbar_html(buttons, theme_mode, "top")
-        # Append to existing header_html or use as header
-        header_html = header_html + toolbar if header_html else toolbar
-
-    # Grid config - just the data, defaults come from aggrid-defaults.js
-    grid_config = {
+    grid_config: dict[str, Any] = {
         "columnDefs": [{"field": col} for col in columns],
         "rowData": row_data,
+        "domLayout": "normal",
     }
-
-    # Merge/Override with provided options
     if grid_options:
         grid_config.update(grid_options)
-        # Ensure rowData is set if not provided in grid_options
         if "rowData" not in grid_config:
             grid_config["rowData"] = row_data
 
-    aggrid_js = get_aggrid_js()
-    aggrid_defaults_js = get_aggrid_defaults_js()
-
-    # Load CSS for ALL themes so JavaScript can switch between them
-    all_themes_css = []
-    for theme_name in ["alpine", "quartz", "balham", "material"]:
-        for mode in [ThemeMode.DARK, ThemeMode.LIGHT]:
-            theme_css = get_aggrid_css(theme_name, mode)
-            if theme_css:
-                all_themes_css.append(theme_css)
-
-    aggrid_css = (
-        "\n".join(all_themes_css) if all_themes_css else get_aggrid_css(aggrid_theme, theme_mode)
-    )
-
-    aggrid_script = (
-        f"<script>{aggrid_js}</script>"
-        if aggrid_js
-        else '<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/dist/ag-grid-community.min.js"></script>'
-    )
-    aggrid_style = f"<style>{aggrid_css}</style>" if aggrid_css else ""
-    aggrid_defaults_script = f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else ""
-
-    theme_class = f"ag-theme-{aggrid_theme}-{'dark' if theme == 'dark' else 'light'}"
-
-    pywry_css = get_pywry_css()
-    pywry_style = f"<style>{pywry_css}</style>" if pywry_css else ""
+    assets = _build_aggrid_assets(aggrid_theme, theme_mode)
+    theme_class = f"ag-theme-{aggrid_theme}{'-dark' if theme == 'dark' else ''}"
+    widget_theme_class = f"pywry-theme-{theme}"
+    widget_content = _build_grid_layout(toolbar_position, toolbar_html, header_html, theme_class)
 
     return f"""<!DOCTYPE html>
 <html class="{theme}">
 <head>
     <meta charset="utf-8">
     <title>{title}</title>
-    {aggrid_script}
-    {aggrid_defaults_script}
-    {aggrid_style}
-    {pywry_style}
-    <style>
-        body {{ display: flex; flex-direction: column; height: 100vh; width: 100vw; margin: 0; }}
-        #grid {{ flex: 1; min-height: 0; width: 100%; }}
-    </style>
+    {assets["script"]}
+    {assets["defaults_script"]}
+    {assets["style"]}
+    {assets["pywry_style"]}
+    <style>{_AGGRID_IFRAME_CSS}</style>
 </head>
 <body>
-    {header_html}
-    <div id="grid" class="{theme_class}"></div>
+    <div class="pywry-widget {widget_theme_class}">
+        {widget_content}
+    </div>
     {_get_pywry_bridge_js(widget_id)}
     <script>
-        // Build grid options using centralized defaults (scoped by widget_id)
         const gridId = '{widget_id}';
         const gridConfig = {json.dumps(grid_config)};
         const gridOptions = window.PYWRY_AGGRID_BUILD_OPTIONS(gridConfig, gridId);
-
         const gridDiv = document.getElementById('grid');
         const gridApi = agGrid.createGrid(gridDiv, gridOptions);
 
-        // Register Python event listeners + context menu using centralized function (scoped by gridId)
         if (window.PYWRY_AGGRID_REGISTER_LISTENERS) {{
             window.PYWRY_AGGRID_REGISTER_LISTENERS(gridApi, gridDiv, gridId);
         }}
+
+        window.pywry.on('pywry:update_theme', function(data) {{
+            const widgetEl = document.querySelector('.pywry-widget');
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+            const isDark = data.theme && data.theme.includes('dark');
+            const isLight = !isDark;
+
+            if (widgetEl) {{
+                widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }}
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
+            bodyEl.style.background = bgColor || '';
+
+            if (gridDiv && data.theme && data.theme.startsWith('ag-theme-')) {{
+                const classes = Array.from(gridDiv.classList).filter(c => !c.startsWith('ag-theme-'));
+                gridDiv.className = classes.join(' ') + ' ' + data.theme;
+            }}
+            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight);
+        }});
     </script>
 </body>
 </html>"""

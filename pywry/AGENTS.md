@@ -200,7 +200,8 @@ pywry/
 |-------|------|---------|
 | `PyWrySettings` | `config.py` | Root settings composing all subsettings |
 | `SecuritySettings` | `config.py` | CSP with factory methods (permissive, strict, localhost) |
-| `ThemeSettings` | `config.py` | Theme colors and fonts |
+| `ThemeSettings` | `config.py` | External CSS file for custom styling |
+| `ServerSettings` | `config.py` | Inline FastAPI/uvicorn server settings |
 | `WindowSettings` | `config.py` | Default window properties |
 | `TimeoutSettings` | `config.py` | Timeout values |
 | `HotReloadSettings` | `config.py` | Hot reload behavior |
@@ -405,12 +406,14 @@ pywry.show_dataframe(df, title="My Table")
 ### With Event Callbacks
 
 ```python
+import logging
 from pywry import PyWry
 
+logging.basicConfig(level=logging.INFO)
 pywry = PyWry()
 
 def handle_click(data, event_type, label):
-    print(f"Clicked: {data}")
+    logging.info(f"Clicked: {data}")
 
 pywry.on("plotly:click", handle_click)
 pywry.show_plotly(fig)
@@ -547,7 +550,7 @@ def create_window(
     Examples
     --------
     >>> app = PyWry()
-    >>> window_id = app.create_window(HtmlContent(body="<h1>Hi</h1>"))
+    >>> window_id = app.create_window(HtmlContent(html="<h1>Hi</h1>"))
     """
 ```
 
@@ -668,7 +671,7 @@ from pywry import HtmlContent, WindowConfig, PyWrySettings
 
 @pytest.fixture
 def sample_content() -> HtmlContent:
-    return HtmlContent(body="<h1>Test</h1>")
+    return HtmlContent(html="<h1>Test</h1>")
 
 @pytest.fixture
 def sample_config() -> WindowConfig:
@@ -830,24 +833,26 @@ export PYWRY_LOG__LEVEL=DEBUG
 ### Check Subprocess Status
 
 ```python
+# For terminal/script debugging
 from pywry.runtime import is_running, wait_ready
 
-print(f"Subprocess running: {is_running()}")
+status = is_running()
 wait_ready(timeout=5.0)
 ```
 
 ### Validate HTML Output
 
 ```python
+# For terminal/script debugging - inspect generated HTML
 from pywry.templates import build_html
 from pywry.models import HtmlContent
 from pywry.config import PyWrySettings
 
 html = build_html(
-    HtmlContent(body="<h1>Test</h1>"),
+    HtmlContent(html="<h1>Test</h1>"),
     PyWrySettings(),
 )
-print(html)  # Inspect generated HTML
+# html contains the full generated HTML string
 ```
 
 ---
@@ -896,10 +901,10 @@ csp = SecuritySettings.localhost(port=8000)
 
 ```python
 csp = SecuritySettings(
-    default_src=["'self'"],
-    script_src=["'self'", "'unsafe-inline'", "https://cdn.plot.ly"],
-    style_src=["'self'", "'unsafe-inline'"],
-    img_src=["'self'", "data:", "https:"],
+    default_src="'self'",
+    script_src="'self' 'unsafe-inline' https://cdn.plot.ly",
+    style_src="'self' 'unsafe-inline'",
+    img_src="'self' data: https:",
 )
 ```
 

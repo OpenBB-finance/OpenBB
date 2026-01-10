@@ -23,6 +23,7 @@ disable=
     global-statement,
     global-variable-not-assigned,
     protected-access,
+    cyclic-import,
 
 [FORMAT]
 max-line-length=100

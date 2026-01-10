@@ -322,6 +322,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
             toolbar_html = build_toolbar_html(buttons, mode, toolbar_position)
 
         # Generate HTML content for the widget (content only, not full document)
+        # This provides just the chart container div, no embedded scripts
         html = inline.generate_plotly_html(
             figure_json, widget_id, title, theme, full_document=False, buttons=None
         )  # Don't pass buttons to generate_plotly_html, we handle it here
@@ -331,6 +332,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
 
         return PyWryPlotlyWidget(
             content=html,
+            figure_json=figure_json,  # Pass figure data directly to widget
             theme=theme,
             width=width,
             height=f"{height}px",
@@ -339,22 +341,10 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     # Fallback to InlineWidget (FastAPI server)
     from . import inline
 
-    html = inline.generate_plotly_html(figure_json, widget_id, title, theme, buttons=None
-    # Inject toolbar using templates logic
-    from .templates import ThemeMode, build_toolbar_html
-
-    mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
-    toolbar_html = build_toolbar_html(buttons, mode, toolbar_position)
-
-    if toolbar_html and "<body>" in html:
-        parts = html.split("<body>")
-        head = parts[0] + "<body>"
-        body = parts[1].split("</body>")[0]
-        foot = "</body>" + parts[1].split("</body>")[1]
-
-        # Wrap body content using helper
-        content = _wrap_content_with_toolbar(body, toolbar_html, toolbar_position)
-        html = head + content + foot
+    # Let generate_plotly_html handle toolbar injection for IFrame
+    html = inline.generate_plotly_html(
+        figure_json, widget_id, title, theme, buttons=buttons, toolbar_position=toolbar_position
+    )
 
     return inline.InlineWidget(
         html=html,
@@ -365,7 +355,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     )
 
 
-def create_dataframe_widget(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches,too-many-arguments
+def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-arguments
     row_data: list[dict],
     columns: list[str],
     widget_id: str,
@@ -447,6 +437,7 @@ def create_dataframe_widget(  # noqa: C901, PLR0912  # pylint: disable=too-many-
         grid_config = {
             "columnDefs": [{"field": col} for col in columns],
             "rowData": row_data,
+            "domLayout": "normal",
         }
         # Merge/Override with provided options
         if grid_options:
@@ -455,22 +446,28 @@ def create_dataframe_widget(  # noqa: C901, PLR0912  # pylint: disable=too-many-
                 grid_config["rowData"] = row_data
 
         # Construct content HTML for the widget
-        grid_html = '<div id="grid" class="pywry-grid"></div>'
+        grid_html = '<div id="grid" class="pywry-grid" style="height: 100%; width: 100%;"></div>'
 
         # Layout logic
         content_html = grid_html
         if toolbar_html:
+            # NOTE: We do NOT wrap the content in a flex container for AnyWidget
+            # because AnyWidget handles the container size.
+            # Instead, we just stack them blocks, but give the grid correct height usage.
+            # Actually, standard flex usage is safer, but we must ensure the grid div behaves.
+
             if toolbar_position == "bottom":
-                content_html = f"<div class='pywry-wrapper-bottom'><div class='pywry-content'>{grid_html}</div>{toolbar_html}</div>"
+                # Fixed height for toolbar, flex-grow for grid content
+                content_html = f"<div class='pywry-wrapper-bottom' style='height: 100%; display: flex; flex-direction: column;'><div class='pywry-content' style='flex: 1; min-height: 0;'>{grid_html}</div><div style='flex: 0 0 auto;'>{toolbar_html}</div></div>"
             elif toolbar_position == "top":
-                content_html = f"<div class='pywry-wrapper-top'>{toolbar_html}<div class='pywry-content'>{grid_html}</div></div>"
+                content_html = f"<div class='pywry-wrapper-top' style='height: 100%; display: flex; flex-direction: column;'><div style='flex: 0 0 auto;'>{toolbar_html}</div><div class='pywry-content' style='flex: 1; min-height: 0;'>{grid_html}</div></div>"
             elif toolbar_position == "left":
-                content_html = f"<div class='pywry-wrapper-left'>{toolbar_html}<div class='pywry-content'>{grid_html}</div></div>"
+                content_html = f"<div class='pywry-wrapper-left' style='height: 100%; display: flex; flex-direction: row;'><div style='flex: 0 0 auto;'>{toolbar_html}</div><div class='pywry-content' style='flex: 1; min-width: 0;'>{grid_html}</div></div>"
             elif toolbar_position == "right":
-                content_html = f"<div class='pywry-wrapper-right'><div class='pywry-content'>{grid_html}</div>{toolbar_html}</div>"
+                content_html = f"<div class='pywry-wrapper-right' style='height: 100%; display: flex; flex-direction: row;'><div class='pywry-content' style='flex: 1; min-width: 0;'>{grid_html}</div><div style='flex: 0 0 auto;'>{toolbar_html}</div></div>"
             elif toolbar_position == "inside":
                 # Use relative container for grid and absolute toolbar
-                content_html = f"<div class='pywry-wrapper-inside'>{toolbar_html}{grid_html}</div>"
+                content_html = f"<div class='pywry-wrapper-inside' style='position: relative; height: 100%; width: 100%;'>{toolbar_html}{grid_html}</div>"
 
         # If header_html exists and wasn't toolbar, prepend/append?
         # User only asked to support buttons model position. header_html is legacy param here.
@@ -488,10 +485,7 @@ def create_dataframe_widget(  # noqa: C901, PLR0912  # pylint: disable=too-many-
         )
 
     # Fallback to InlineWidget
-    # We strip buttons from here because InlineWidget/generate_dataframe_html DOES support it internally
-    # via build_html? No, inline isn't using build_html fully.
-    # Let's clean up InlineWidget generation too.
-
+    # Pass buttons and toolbar_position to generate_dataframe_html - it handles layout natively
     html = inline.generate_dataframe_html(
         row_data,
         columns,
@@ -499,32 +493,11 @@ def create_dataframe_widget(  # noqa: C901, PLR0912  # pylint: disable=too-many-
         title,
         theme,
         aggrid_theme,
-        header_html,  # Passed here, but buttons=None to avoid double rendering if we inject manually?
+        header_html,
         grid_options=grid_options,
-        buttons=None,
+        buttons=buttons,
+        toolbar_position=toolbar_position,
     )
-
-    # Inject toolbar manually for InlineWidget too to support generic pos
-    if toolbar_html and "<body>" in html:
-        parts = html.split("<body>")
-        head = parts[0] + "<body>"
-        body = parts[1].split("</body>")[0]
-        foot = "</body>" + parts[1].split("</body>")[1]
-
-        content = body
-        # Same injection logic
-        if toolbar_position == "bottom":
-            content = f"<div class='pywry-wrapper-bottom'><div class='pywry-content'>{content}</div>{toolbar_html}</div>"
-        elif toolbar_position == "top":
-            content = f"<div class='pywry-wrapper-top'>{toolbar_html}<div class='pywry-content'>{content}</div></div>"
-        elif toolbar_position == "left":
-            content = f"<div class='pywry-wrapper-left'>{toolbar_html}<div class='pywry-content'>{content}</div></div>"
-        elif toolbar_position == "right":
-            content = f"<div class='pywry-wrapper-right'><div class='pywry-content'>{content}</div>{toolbar_html}</div>"
-        elif toolbar_position == "inside":
-            content = f"<div class='pywry-wrapper-inside'>{toolbar_html}{content}</div>"
-
-        html = head + content + foot
 
     return inline.InlineWidget(
         html=html,

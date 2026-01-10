@@ -29,7 +29,7 @@
     /* ---- Widget Sizing ---- */
     --pywry-widget-width: 100%;
     --pywry-widget-min-height: 200px;
-    --pywry-widget-max-height: none;
+    --pywry-widget-height: 500px;
     --pywry-grid-min-height: 200px;
 
     /* ---- Transitions ---- */
@@ -45,6 +45,15 @@ html.light, .pywry-theme-light {
     --pywry-text-primary: #000000;
     --pywry-text-secondary: #666666;
     --pywry-border-color: #ccc;
+}
+
+/* Explicit background for themed widgets - ensures CSS variable is applied */
+.pywry-widget.pywry-theme-light {
+    background-color: var(--pywry-bg-primary);
+}
+
+.pywry-widget.pywry-theme-dark {
+    background-color: var(--pywry-bg-primary);
 }
 
 /* ============================================
@@ -72,16 +81,16 @@ html.pywry-native body {
 .pywry-widget {
     width: var(--pywry-widget-width);
     min-height: var(--pywry-widget-min-height);
-    max-height: var(--pywry-widget-max-height);
+    height: var(--pywry-widget-height);
     overflow: visible; /* CRITICAL: Must be visible for AG Grid filter popups */
     border-radius: var(--pywry-radius);
     padding: var(--pywry-spacing-md);
     box-sizing: border-box;
     position: relative;
-    background-color: var(--pywry-bg-secondary);
+    background-color: var(--pywry-bg-primary);
     color: var(--pywry-text-primary);
     font-family: var(--pywry-font-family);
-    border: 1px solid var(--pywry-border-color);
+    border: none;
 }
 
 /* ============================================
@@ -97,6 +106,8 @@ html.pywry-native body {
     right: 0;
     bottom: 0;
     overflow: hidden !important;
+    padding: var(--pywry-spacing-md);
+    box-sizing: border-box;
     background-color: var(--pywry-bg-primary);
     color: var(--pywry-text-primary);
 }
@@ -110,21 +121,26 @@ html.pywry-native body {
     gap: var(--pywry-spacing-md);
     padding: var(--pywry-spacing-md);
     background-color: var(--pywry-bg-primary);
-    border: 1px solid var(--pywry-border-color);
+    border: none;
+}
+
+/* Explicit toolbar backgrounds for themed contexts */
+.pywry-theme-light .pywry-toolbar,
+.pywry-theme-light.pywry-toolbar {
+    background-color: var(--pywry-bg-primary);
+}
+
+.pywry-theme-dark .pywry-toolbar,
+.pywry-theme-dark.pywry-toolbar {
+    background-color: var(--pywry-bg-primary);
 }
 
 .pywry-toolbar-top {
-    border-bottom: 1px solid var(--pywry-border-color);
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border: none;
 }
 
 .pywry-toolbar-bottom {
-    border-top: 1px solid var(--pywry-border-color);
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
+    border: none;
 }
 
 .pywry-toolbar-left,
@@ -134,17 +150,11 @@ html.pywry-native body {
 }
 
 .pywry-toolbar-left {
-    border-right: 1px solid var(--pywry-border-color);
-    border-left: none;
-    border-top: none;
-    border-bottom: none;
+    border: none;
 }
 
 .pywry-toolbar-right {
-    border-left: 1px solid var(--pywry-border-color);
-    border-right: none;
-    border-top: none;
-    border-bottom: none;
+    border: none;
 }
 
 .pywry-toolbar-inside {
@@ -155,7 +165,7 @@ html.pywry-native body {
     background: var(--pywry-bg-overlay);
     backdrop-filter: blur(4px);
     border-radius: var(--pywry-radius-lg);
-    border: 1px solid var(--pywry-border-color);
+    border: none;
 }
 
 /* ============================================
@@ -224,6 +234,12 @@ html.pywry-native body {
     min-height: 0;
 }
 
+/* When content contains AG Grid, let grid handle its own scrolling */
+.pywry-content:has(.pywry-grid),
+.pywry-content:has([class*="ag-theme-"]) {
+    overflow: hidden;
+}
+
 .pywry-grid {
     flex: 1;
     min-height: var(--pywry-grid-min-height);
@@ -265,4 +281,57 @@ html.pywry-native body {
 .ag-simple-filter-body-wrapper .ag-text-field-input,
 .ag-simple-filter-body-wrapper .ag-number-field-input {
     padding-left: var(--ag-spacing, 8px) !important;
+}
+
+/* ============================================
+   Scrollbars (Theme Integrated - Enhanced Specificity)
+   ============================================ */
+
+/* Target generic widget areas AND AG Grid specific viewports explicitly */
+.pywry-widget ::-webkit-scrollbar,
+.pywry-container ::-webkit-scrollbar,
+.ag-body-viewport ::-webkit-scrollbar,
+.ag-body-horizontal-scroll-viewport ::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.pywry-widget ::-webkit-scrollbar-track,
+.pywry-container ::-webkit-scrollbar-track,
+.ag-body-viewport ::-webkit-scrollbar-track,
+.ag-body-horizontal-scroll-viewport ::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+.pywry-widget ::-webkit-scrollbar-thumb,
+.pywry-container ::-webkit-scrollbar-thumb,
+.ag-body-viewport ::-webkit-scrollbar-thumb,
+.ag-body-horizontal-scroll-viewport ::-webkit-scrollbar-thumb {
+    background-color: var(--pywry-border-color) !important;
+    border-radius: 6px !important;
+    border: 3px solid transparent !important;
+    background-clip: content-box !important;
+    transition: background-color var(--pywry-transition-fast);
+}
+
+.pywry-widget ::-webkit-scrollbar-thumb:hover,
+.pywry-container ::-webkit-scrollbar-thumb:hover,
+.ag-body-viewport ::-webkit-scrollbar-thumb:hover,
+.ag-body-horizontal-scroll-viewport ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--pywry-text-secondary) !important;
+}
+
+.pywry-widget ::-webkit-scrollbar-corner,
+.pywry-container ::-webkit-scrollbar-corner,
+.ag-body-viewport ::-webkit-scrollbar-corner,
+.ag-body-horizontal-scroll-viewport ::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+/* Firefox / Standard Support */
+.pywry-widget .ag-body-viewport,
+.pywry-widget .ag-body-horizontal-scroll-viewport,
+.pywry-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--pywry-border-color) transparent;
 }

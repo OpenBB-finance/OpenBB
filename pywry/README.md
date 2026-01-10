@@ -89,9 +89,12 @@ pywry.show(
 
 # Display Plotly figure with a custom PyWry toolbar on the left
 # Note: This positions the PyWry toolbar independently of Plotly's internal modebar
+import logging
+logging.basicConfig(level=logging.INFO)
+
 def on_custom_action(data):
     # This runs in Python when the button is clicked
-    print("Custom action triggered!")
+    logging.info("Custom action triggered!")
     pywry.eval_js("alert('Custom action triggered from Python!')")
 
 pywry.on("app:custom", on_custom_action)
@@ -473,7 +476,6 @@ config = WindowConfig(
 | `min_width` | `int` | `400` | Minimum width (min: 100) |
 | `min_height` | `int` | `300` | Minimum height (min: 100) |
 | `theme` | `ThemeMode` | `DARK` | Theme mode |
-| `toolbar_position` | `str` | `"top"` | Toolbar position |
 | `center` | `bool` | `True` | Center window on screen |
 | `resizable` | `bool` | `True` | Allow window resizing |
 | `decorations` | `bool` | `True` | Show window decorations |
@@ -483,7 +485,7 @@ config = WindowConfig(
 | `enable_plotly` | `bool` | `False` | Include Plotly.js library |
 | `enable_aggrid` | `bool` | `False` | Include AG Grid library |
 | `plotly_theme` | `str` | `"plotly_dark"` | Plotly theme |
-| `aggrid_theme` | `str` | `"quartz"` | AG Grid theme |
+| `aggrid_theme` | `str` | `"alpine"` | AG Grid theme |
 
 ---
 
@@ -503,11 +505,8 @@ User config overrides project-level settings, allowing personal preferences acro
 
 ```toml
 [theme]
-dark_bg = "#1a1a2e"
-dark_text = "#e4e4e7"
-light_bg = "#ffffff"
-light_text = "#18181b"
-font_family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+# Optional: Path to custom CSS file for styling overrides
+# css_file = "/path/to/custom.css"
 
 [window]
 title = "My Application"
@@ -558,8 +557,8 @@ Add configuration to your existing `pyproject.toml`:
 title = "My App"
 width = 1280
 
-[tool.pywry.theme]
-dark_bg = "#0d1117"
+[tool.pywry.log]
+level = "DEBUG"
 ```
 
 ### Environment Variables
@@ -569,7 +568,7 @@ Override any setting with environment variables using the pattern `PYWRY_{SECTIO
 ```bash
 export PYWRY_WINDOW__TITLE="Production App"
 export PYWRY_WINDOW__WIDTH=1920
-export PYWRY_THEME__DARK_BG="#000000"
+export PYWRY_THEME__CSS_FILE="/path/to/custom.css"
 export PYWRY_HOT_RELOAD__ENABLED=true
 export PYWRY_LOG__LEVEL=DEBUG
 ```
@@ -579,24 +578,26 @@ export PYWRY_LOG__LEVEL=DEBUG
 | Section | Env Prefix | Description |
 |---------|------------|-------------|
 | `csp` | `PYWRY_CSP__` | Content Security Policy directives |
-| `theme` | `PYWRY_THEME__` | Colors and fonts |
+| `theme` | `PYWRY_THEME__` | Custom CSS file path |
 | `timeout` | `PYWRY_TIMEOUT__` | Timeout values in seconds |
-| `asset` | `PYWRY_ASSET__` | Library versions and CDN URLs |
+| `asset` | `PYWRY_ASSET__` | Library versions and asset paths |
 | `log` | `PYWRY_LOG__` | Log level and format |
 | `window` | `PYWRY_WINDOW__` | Default window properties |
 | `hot_reload` | `PYWRY_HOT_RELOAD__` | Hot reload behavior |
+| `server` | `PYWRY_SERVER__` | Inline server settings (host, port, CORS) |
 
 ### Programmatic Configuration
 
 Pass settings directly to PyWry:
 
 ```python
-from pywry import PyWry, PyWrySettings, ThemeSettings
+from pywry import PyWry, PyWrySettings, WindowSettings
 
 settings = PyWrySettings(
-    theme=ThemeSettings(
-        dark_bg="#1e1e1e",
-        dark_text="#d4d4d4",
+    window=WindowSettings(
+        title="My App",
+        width=1920,
+        height=1080,
     )
 )
 
@@ -707,7 +708,7 @@ PyWry bundles all official Plotly templates for consistent theming with no netwo
 | `plotly` | Default Plotly theme |
 | `plotly_white` | Light theme with white background |
 | `plotly_dark` | Dark theme with dark background |
-| `ggplot2` | R ggplot2 style |
+| `ggplot2` | ggplot2 style |
 | `seaborn` | Seaborn style |
 | `simple_white` | Minimal white theme |
 | `presentation` | High contrast for presentations |
@@ -774,15 +775,18 @@ Events follow the pattern: `namespace:event-name`
 ### Register Event Handlers (Python)
 
 ```python
+import logging
+logging.basicConfig(level=logging.INFO)
+
 # Register handler
 def handle_click(data, event_type, label):
-    print(f"Received {event_type} from {label}: {data}")
+    logging.info(f"Received {event_type} from {label}: {data}")
 
 pywry.on("app:button-click", handle_click)
 
 # Wildcard - receive all events
 def handle_all(data, event_type, label):
-    print(f"Event: {event_type}")
+    logging.info(f"Event: {event_type}")
 
 pywry.on("*", handle_all)
 ```
@@ -811,13 +815,16 @@ pywry.send_event("app:update", {"message": "Hello"}, label="main-window")
 - `grid:row-click` - Row clicked
 
 ```python
+import logging
+logging.basicConfig(level=logging.INFO)
+
 def on_chart_click(data):
-    print(f"Clicked point: {data}")
+    logging.info(f"Clicked point: {data}")
 
 pywry.on("plotly:click", on_chart_click)
 
 def on_row_select(data):
-    print(f"Selected rows: {data}")
+    logging.info(f"Selected rows: {data}")
 
 pywry.on("grid:select", on_row_select)
 ```
@@ -1212,8 +1219,8 @@ export PYWRY_LOG__LEVEL=DEBUG
 
 ```bash
 # Clone repository
-git clone https://github.com/OpenBB-finance/pywry.git
-cd pywry/pywry-pytauri
+git clone https://github.com/OpenBB-finance/OpenBB.git
+cd pywry
 
 # Create virtual environment
 python -m venv venv
@@ -1222,9 +1229,6 @@ venv\Scripts\activate     # Windows
 
 # Install in development mode
 pip install -e ".[dev]"
-
-# Download bundled assets
-python build_assets.py
 ```
 
 ### Run Tests
@@ -1253,7 +1257,7 @@ mypy pywry/
 ### Project Structure
 
 ```
-pywry-pytauri/
+pywry/
 ├── pywry/
 │   ├── __init__.py        # Public API exports
 │   ├── app.py             # Main PyWry class

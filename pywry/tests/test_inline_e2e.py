@@ -5,6 +5,7 @@ and verify content is rendered correctly. Designed for CI/GitHub Actions.
 """
 # pylint: disable=redefined-outer-name
 
+import asyncio
 import json
 import os
 import re
@@ -15,6 +16,13 @@ import urllib.request
 from unittest.mock import patch
 
 import pytest
+
+
+try:
+    import websockets
+except ImportError:
+    websockets = None
+
 
 from pywry.config import clear_settings, get_settings
 from pywry.inline import (
@@ -67,7 +75,7 @@ def server_port():
     import socket
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
+        s.bind(("0.0.0.0", 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s.getsockname()[1]
 
@@ -121,7 +129,7 @@ class TestServerStartup:
 
     def test_server_starts_and_responds(self, server_port):
         """Server should start and respond to health check."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
 
         assert wait_for_server("127.0.0.1", server_port), "Server did not start"
 
@@ -133,14 +141,14 @@ class TestServerStartup:
 
     def test_server_uses_configured_port(self, server_port):
         """Server should use the configured port."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
 
         assert wait_for_server("127.0.0.1", server_port)
         assert _state.port == server_port
 
     def test_server_stop(self, server_port):
         """Server should stop gracefully."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         stop_server()
@@ -156,7 +164,7 @@ class TestServerStartup:
     def test_server_config_from_settings(self, server_port):
         """Server should use settings for configuration."""
         os.environ["PYWRY_SERVER__PORT"] = str(server_port)
-        os.environ["PYWRY_SERVER__HOST"] = "127.0.0.1"
+        os.environ["PYWRY_SERVER__HOST"] = "0.0.0.0"
         clear_settings()
 
         settings = get_settings()
@@ -176,7 +184,7 @@ class TestWidgetRendering:
 
     def test_widget_registration(self, server_port):
         """Widget should be registered and accessible."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         # Register a widget directly
@@ -192,7 +200,7 @@ class TestWidgetRendering:
 
     def test_widget_html_preserved(self, server_port):
         """Widget HTML content should be preserved exactly."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "exact-html-test"
@@ -216,7 +224,7 @@ class TestWidgetRendering:
 
     def test_widget_not_found(self, server_port):
         """Non-existent widget should return 404."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         status, _ = http_get(f"http://127.0.0.1:{server_port}/widget/nonexistent")
@@ -224,7 +232,7 @@ class TestWidgetRendering:
 
     def test_widget_returns_registered_html(self, server_port):
         """Widget endpoint should return the registered HTML content."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "content-test"
@@ -239,7 +247,7 @@ class TestWidgetRendering:
 
     def test_multiple_widgets(self, server_port):
         """Multiple widgets should be independently accessible."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         widgets = {
@@ -261,88 +269,7 @@ class TestWidgetRendering:
 # =============================================================================
 # Callback Tests
 # =============================================================================
-
-
-class TestCallbacks:
-    """Test that callbacks work via HTTP POST (uses /emit/ endpoint)."""
-
-    def test_emit_endpoint_queues_callback(self, server_port):
-        """Emit endpoint should queue callback for processing."""
-        _start_server(port=server_port, host="127.0.0.1")
-        assert wait_for_server("127.0.0.1", server_port)
-
-        widget_id = "emit-test"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {"test_event": lambda data, event_type, label: data},
-        }
-
-        # Use /emit/ endpoint (the actual endpoint name)
-        status, body = http_post(
-            f"http://127.0.0.1:{server_port}/emit/{widget_id}",
-            {"type": "test_event", "data": {"value": 42}},
-        )
-
-        assert status == 200
-        response = json.loads(body)
-        # Emit endpoint queues callbacks, returns status
-        assert response.get("status") == "ok"
-        assert response.get("queued") is True
-
-    def test_emit_unknown_event_returns_not_queued(self, server_port):
-        """Emit with unknown event type should return not queued."""
-        _start_server(port=server_port, host="127.0.0.1")
-        assert wait_for_server("127.0.0.1", server_port)
-
-        widget_id = "emit-unknown"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {"known_event": lambda data, event_type, label: data},
-        }
-
-        status, body = http_post(
-            f"http://127.0.0.1:{server_port}/emit/{widget_id}",
-            {"type": "unknown_event", "data": {}},
-        )
-
-        assert status == 200
-        response = json.loads(body)
-        assert response.get("queued") is False
-
-    def test_emit_widget_exists_no_callbacks(self, server_port):
-        """Emit to widget with no matching callback should return not queued."""
-        _start_server(port=server_port, host="127.0.0.1")
-        assert wait_for_server("127.0.0.1", server_port)
-
-        widget_id = "emit-no-cb"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {},
-        }
-
-        status, body = http_post(
-            f"http://127.0.0.1:{server_port}/emit/{widget_id}",
-            {"type": "any_event", "data": {}},
-        )
-
-        assert status == 200
-        response = json.loads(body)
-        assert response.get("queued") is False
-
-    def test_emit_widget_not_found(self, server_port):
-        """Emit to non-existent widget should return error."""
-        _start_server(port=server_port, host="127.0.0.1")
-        assert wait_for_server("127.0.0.1", server_port)
-
-        status, body = http_post(
-            f"http://127.0.0.1:{server_port}/emit/nonexistent",
-            {"type": "test", "data": {}},
-        )
-
-        # Returns 200 with error in body (not 404)
-        assert status == 200
-        response = json.loads(body)
-        assert "error" in response
+# Callback tests moved to TestWebSocketUpdates as HTTP emit endpoint is removed.
 
 
 # =============================================================================
@@ -534,7 +461,7 @@ class TestCORS:
 
     def test_cors_headers_present(self, server_port):
         """CORS headers should be present in responses."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         # Make OPTIONS request to check CORS
@@ -563,7 +490,7 @@ class TestContentTypes:
 
     def test_health_returns_json(self, server_port):
         """Health endpoint should return JSON."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         url = f"http://127.0.0.1:{server_port}/health"
@@ -573,7 +500,7 @@ class TestContentTypes:
 
     def test_widget_returns_html(self, server_port):
         """Widget endpoint should return HTML."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "html-type-test"
@@ -600,7 +527,7 @@ class TestPlotlyIntegration:
         """E2E: generate_plotly_html() creates HTML with figure JSON, served via HTTP."""
         from pywry.inline import generate_plotly_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         # Raw JSON - no Plotly import needed
@@ -627,7 +554,7 @@ class TestPlotlyIntegration:
         """E2E: generate_plotly_html() with dark theme has correct background."""
         from pywry.inline import generate_plotly_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         figure_json = '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
@@ -646,7 +573,7 @@ class TestPlotlyIntegration:
         """E2E: generate_plotly_html() with light theme has white background."""
         from pywry.inline import generate_plotly_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         figure_json = '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
@@ -673,7 +600,7 @@ class TestDataFrameIntegration:
         """E2E: generate_dataframe_html() creates HTML with data, served via HTTP."""
         from pywry.inline import generate_dataframe_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         # Raw data - no pandas import needed
@@ -706,7 +633,7 @@ class TestDataFrameIntegration:
         """E2E: generate_dataframe_html() preserves numeric precision."""
         from pywry.inline import generate_dataframe_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         row_data = [{"Amount": 1234.56}, {"Amount": 7890.12}]
@@ -726,7 +653,7 @@ class TestDataFrameIntegration:
         """E2E: generate_dataframe_html() with dark theme has correct background."""
         from pywry.inline import generate_dataframe_html
 
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         row_data = [{"Col": 1}, {"Col": 2}, {"Col": 3}]
@@ -751,35 +678,9 @@ class TestDataFrameIntegration:
 class TestErrorHandling:
     """Test error handling in various scenarios."""
 
-    def test_invalid_json_in_emit(self, server_port):
-        """Invalid JSON in emit should return error."""
-        _start_server(port=server_port, host="127.0.0.1")
-        assert wait_for_server("127.0.0.1", server_port)
-
-        widget_id = "error-test"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {"test": lambda data, event_type, label: data},
-        }
-
-        # Send invalid JSON to /emit/ endpoint
-        url = f"http://127.0.0.1:{server_port}/emit/{widget_id}"
-        req = urllib.request.Request(  # noqa: S310
-            url,
-            data=b"not valid json",
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-
-        # Server should handle gracefully and return error in JSON
-        with urllib.request.urlopen(req, timeout=5) as resp:  # noqa: S310
-            data = json.loads(resp.read().decode())
-            assert "error" in data
-            assert data["error"] == "Invalid JSON"
-
     def test_server_survives_errors(self, server_port):
         """Server should survive after errors."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "survive-test"
@@ -790,7 +691,12 @@ class TestErrorHandling:
 
         # Make some requests
         http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
-        http_post(f"http://127.0.0.1:{server_port}/emit/{widget_id}", {"type": "x", "data": {}})
+
+        # Simulate a bad request (non-existent widget for register which is POST)
+        http_post(
+            f"http://127.0.0.1:{server_port}/register_widget",
+            {"widget_id": "", "html": ""},  # Missing required fields
+        )
 
         # Server should still be running
         health_status, _ = http_get(f"http://127.0.0.1:{server_port}/health")
@@ -802,7 +708,7 @@ class TestToolbarRendering:
 
     def test_toolbar_position_passed_to_show(self, server_port):
         """Toolbar position should be respected in rendered HTML."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         buttons = [{"label": "MyButton", "event": "click"}]
@@ -831,7 +737,7 @@ class TestDOMStructure:
 
     def test_css_injection(self, server_port):
         """Standard PyWry CSS should be injected."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         with (
@@ -852,7 +758,7 @@ class TestDOMStructure:
 
     def test_toolbar_inner_structure_top(self, server_port):
         """Verifies top toolbar inner structure."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         buttons = [{"label": "Btn", "event": "click"}]
@@ -886,7 +792,7 @@ class TestDOMStructure:
 
     def test_toolbar_inner_structure_left(self, server_port):
         """Verifies left toolbar inner structure."""
-        _start_server(port=server_port, host="127.0.0.1")
+        _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         buttons = [{"label": "Btn", "event": "click"}]
@@ -917,12 +823,15 @@ class TestDOMStructure:
         assert wrapper_match.start() < toolbar_match.start() < content_match.start()
 
 
-class TestDynamicUpdates:
-    """Tests for dynamic updates via the polling mechanism."""
+@pytest.mark.skipif(websockets is None, reason="websockets not installed")
+class TestWebSocketUpdates:
+    """Tests for dynamic updates via the WebSocket mechanism."""
 
-    def test_theme_update_event_propagation(self, server_port):
-        """Test that theme update events are correctly queued and polled."""
-        _start_server(port=server_port, host="127.0.0.1")
+    @pytest.mark.asyncio
+    async def test_websocket_event_propagation(self, server_port):
+        """Test that events are correctly broadcast via WebSocket."""
+        host = "0.0.0.0"
+        _start_server(port=server_port, host=host)
         assert wait_for_server("127.0.0.1", server_port)
 
         with (
@@ -933,19 +842,68 @@ class TestDynamicUpdates:
         ):
             widget = show("<div></div>", port=server_port)
 
-        # Emit theme update event from Python side
-        theme_data = {"theme": "ag-theme-quartz-dark"}
-        widget.emit("pywry:update_theme", theme_data)
+        # Connect to WebSocket
+        ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget._widget_id}"
 
-        # Poll for events simulating the JS client
-        status, body = http_get(f"http://127.0.0.1:{server_port}/poll/{widget._widget_id}")
-        assert status == 200
+        async with websockets.connect(ws_url) as ws:
+            # 1. Emit theme update event from Python side
+            theme_data = {"theme": "ag-theme-quartz-dark"}
+            widget.emit("pywry:update_theme", theme_data)
 
-        data = json.loads(body)
-        assert "events" in data
-        events = data["events"]
+            # 2. Wait for message on WebSocket
+            # The server pushes immediately, so we should receive it
+            message = await asyncio.wait_for(ws.recv(), timeout=2.0)
+            data = json.loads(message)
 
-        # Verify event was delivered
-        update_event = next((e for e in events if e.get("type") == "pywry:update_theme"), None)
-        assert update_event is not None
-        assert update_event["data"] == theme_data
+            # 3. Verify event
+            assert data["type"] == "pywry:update_theme"
+            assert data["data"]["theme"] == "ag-theme-quartz-dark"
+
+            # 4. Test Python -> JS multiple events
+            widget.emit("custom_event", {"foo": "bar"})
+            message = await asyncio.wait_for(ws.recv(), timeout=2.0)
+            data = json.loads(message)
+            assert data["type"] == "custom_event"
+            assert data["data"]["foo"] == "bar"
+
+    @pytest.mark.asyncio
+    async def test_websocket_client_to_server_msg(self, server_port):
+        """Test that client-to-server messages are handled (callback_queue)."""
+        host = "0.0.0.0"
+        _start_server(port=server_port, host=host)
+        assert wait_for_server("127.0.0.1", server_port)
+
+        received_events = []
+
+        def on_event(data, event_type, _label):
+            received_events.append((event_type, data))
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output"),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show("<div></div>", port=server_port)
+            widget.on("test_click", on_event)
+
+        # Connect via WS
+        ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget._widget_id}"
+        async with websockets.connect(ws_url) as ws:
+            # Send message simulating JS client
+            payload = {
+                "type": "test_click",
+                "data": {"x": 10, "y": 20},
+                "widgetId": widget._widget_id,
+            }
+            await ws.send(json.dumps(payload))
+
+            # Allow some time for the background thread process_callbacks to pick it up
+            for _ in range(20):
+                if received_events:
+                    break
+                await asyncio.sleep(0.1)
+
+            assert len(received_events) == 1
+            assert received_events[0][0] == "test_click"
+            assert received_events[0][1] == {"x": 10, "y": 20}

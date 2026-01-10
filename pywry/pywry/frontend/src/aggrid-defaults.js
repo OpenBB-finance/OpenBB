@@ -96,7 +96,7 @@ window.PYWRY_AGGRID_BUILD_OPTIONS = function(config, gridId) {
         pagination: config.pagination !== false,
         paginationPageSize: config.paginationPageSize || 100,
         paginationAutoPageSize: false,
-        domLayout: config.domLayout || 'autoHeight',
+        domLayout: config.domLayout || 'normal',  // 'normal' ensures grid uses internal scrollbars
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
         columnMenu: 'new',
         suppressMenuHide: true,

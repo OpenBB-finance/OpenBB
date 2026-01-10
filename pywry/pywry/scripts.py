@@ -84,8 +84,11 @@ PYWRY_BRIDGE_JS = """
     };
 
     window.pywry._trigger = function(eventType, data) {
+        console.log('[PyWry] _trigger called:', eventType, data);
+        console.log('[PyWry] registered handlers:', Object.keys(this._handlers));
         var handlers = this._handlers[eventType] || [];
         var wildcardHandlers = this._handlers['*'] || [];
+        console.log('[PyWry] found', handlers.length, 'handlers for', eventType);
         handlers.concat(wildcardHandlers).forEach(function(handler) {
             try {
                 handler(data, eventType);
@@ -96,7 +99,16 @@ PYWRY_BRIDGE_JS = """
     };
 
     window.pywry.dispatch = function(eventType, data) {
+        console.log('[PyWry] dispatch called:', eventType, data);
         this._trigger(eventType, data);
+    };
+
+    // emitButton - used by toolbar buttons (same as emit but also triggers local handlers)
+    window.pywry.emitButton = function(el, eventType, data) {
+        // Trigger local handlers first
+        this._trigger(eventType, data || {});
+        // Then send to Python
+        this.emit(eventType, data || {});
     };
 
     console.log('PyWry bridge initialized/updated');
@@ -161,6 +173,43 @@ THEME_MANAGER_JS = """
         window.pywry._trigger('pywry:theme-update', { mode: resolvedMode, original: mode });
     }
 
+    // Register handler for pywry:update_theme events IMMEDIATELY (not in DOMContentLoaded)
+    // because content is injected via JavaScript after the page loads
+    console.log('[PyWry] Registering pywry:update_theme handler');
+    window.pywry.on('pywry:update_theme', function(data) {
+        console.log('[PyWry] pywry:update_theme handler called with:', data);
+        var theme = data.theme || 'plotly_dark';
+        var isDark = theme.includes('dark');
+        var mode = isDark ? 'dark' : 'light';
+        updateTheme(mode);
+
+        // Also update Plotly with full template if available
+        if (window.Plotly && window.__PYWRY_PLOTLY_DIV__) {
+            var templateName = theme;
+            var template = window.PYWRY_PLOTLY_TEMPLATES && window.PYWRY_PLOTLY_TEMPLATES[templateName];
+            if (template) {
+                var plotDiv = window.__PYWRY_PLOTLY_DIV__;
+                var newLayout = Object.assign({}, plotDiv.layout || {}, { template: template });
+                window.Plotly.newPlot(plotDiv, plotDiv.data, newLayout, plotDiv._fullLayout?._config || {});
+            }
+        }
+
+        // Update AG Grid theme if present
+        if (data.theme && data.theme.startsWith('ag-theme-')) {
+            var gridDiv = document.querySelector('[class*="ag-theme-"]');
+            if (gridDiv) {
+                var classList = Array.from(gridDiv.classList);
+                classList.forEach(function(cls) {
+                    if (cls.startsWith('ag-theme-')) {
+                        gridDiv.classList.remove(cls);
+                    }
+                });
+                gridDiv.classList.add(data.theme);
+            }
+        }
+    });
+
+    // Initialize theme on DOMContentLoaded (for initial page load)
     document.addEventListener('DOMContentLoaded', function() {
         var html = document.documentElement;
         var currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
