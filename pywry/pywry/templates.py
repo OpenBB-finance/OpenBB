@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -18,6 +19,15 @@ from .assets import (
 )
 from .models import HtmlContent, ThemeMode, WindowConfig
 from .scripts import build_init_script
+from .toolbar import (
+    Toolbar,
+    build_toolbars_by_position,
+    build_toolbars_html as _build_toolbars_html,
+)
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 # Re-export ThemeMode for consumers importing from templates
@@ -29,52 +39,60 @@ if TYPE_CHECKING:
     from .config import AssetSettings, PyWrySettings, SecuritySettings
 
 
+# Legacy function - delegates to Toolbar.build_html() for backwards compatibility
 def build_toolbar_html(
-    buttons: list[dict[str, str]] | None,
+    items: list[dict[str, Any]] | None,
     theme: ThemeMode,  # pylint: disable=unused-argument
     position: str = "top",
 ) -> str:
-    """Build the HTML for a toolbar with buttons.
+    """Build HTML for a single toolbar.
+
+    DEPRECATED: Use Toolbar model directly.
 
     Parameters
     ----------
-    buttons : list[dict[str, str]]
-        List of button configurations. Each dict should have:
-        - label: Button text
-        - event: Event name to emit on click
-        - style: Optional CSS style string
+    items : list[dict] | None
+        List of toolbar item configurations.
     theme : ThemeMode
-        The theme mode for default styling (unused here as we use CSS definitions).
+        Theme mode (unused, kept for backwards compatibility).
     position : str
-        Toolbar position: "top", "bottom", "left", "right", "inside" (overlay-top-right).
+        Toolbar position: "top", "bottom", "left", "right", "inside".
 
     Returns
     -------
     str
-        The toolbar HTML string.
+        HTML string for the toolbar.
     """
-    if not buttons:
+    if not items:
         return ""
+    toolbar = Toolbar(position=position, items=items)  # type: ignore[arg-type]
+    return toolbar.build_html()
 
-    button_htmls = []
-    for btn in buttons:
-        label = btn.get("label", "Button")
-        event = btn.get("event", "button_click")
-        user_style = btn.get("style", "")
 
-        onclick = f"if (window.pywry && window.pywry.emitButton) {{ window.pywry.emitButton(this, '{event}', {{}}); }} else {{ console.warn('PyWry not ready'); }}"
+# Legacy function - delegates to toolbar module
+def build_toolbars_html(
+    toolbars: list[dict[str, Any]] | None,
+    theme: ThemeMode,  # pylint: disable=unused-argument
+) -> str:
+    """Build HTML for multiple toolbars.
 
-        button_htmls.append(
-            f'<button class="pywry-btn" onclick="{onclick}" style="{user_style}">{label}</button>'
-        )
+    DEPRECATED: Use toolbar.build_toolbars_html() directly.
 
-    container_class = f"pywry-toolbar pywry-toolbar-{position}"
+    Parameters
+    ----------
+    toolbars : list[dict] | None
+        List of toolbar configurations.
+    theme : ThemeMode
+        Theme mode (unused, kept for backwards compatibility).
 
-    return f"""
-    <div class="{container_class}">
-        {"".join(button_htmls)}
-    </div>
+    Returns
+    -------
+    str
+        Combined HTML string for all toolbars.
     """
+    if not toolbars:
+        return ""
+    return _build_toolbars_html(toolbars)
 
 
 def build_csp_meta(settings: SecuritySettings | None = None) -> str:
@@ -408,8 +426,6 @@ def fix_aggrid_theme_classes(content: str, theme: ThemeMode) -> str:
     str
         HTML with corrected AG Grid theme classes.
     """
-    import re
-
     is_dark = theme == ThemeMode.DARK
 
     # Pattern to match AG Grid theme classes
@@ -442,8 +458,6 @@ def fix_plotly_template(content: str, theme: ThemeMode) -> str:
     str
         HTML with corrected Plotly template references.
     """
-    import re
-
     is_dark = theme == ThemeMode.DARK
     correct_template = "plotly_dark" if is_dark else "plotly_white"
 
@@ -460,8 +474,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     settings: PyWrySettings | None = None,
     loader: AssetLoader | None = None,
     enable_hot_reload: bool = False,
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: Sequence[Toolbar | dict[str, Any]] | None = None,
 ) -> str:
     """Build the complete HTML document for a PyWry window.
 
@@ -479,10 +492,10 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
         Asset loader for custom CSS/JS files.
     enable_hot_reload : bool, optional
         Whether to include hot reload JavaScript.
-    buttons : list[dict[str, str]] or None, optional
-        List of button configs to generate a toolbar.
-    toolbar_position : str
-        Toolbar position ("top", "bottom", "left", "right", "inside").
+    toolbars : list[Toolbar | dict] or None, optional
+        List of toolbar configurations. Each can be a Toolbar model or dict with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of toolbar item configurations (Button, Select, etc.)
 
     Returns
     -------
@@ -525,30 +538,34 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
         "<html"
     )
 
-    # Build toolbar if needed
-    toolbar_html = build_toolbar_html(buttons, config.theme, toolbar_position)
+    # Build and inject toolbars
+    if toolbars:
+        # Use centralized function that handles both Toolbar models and dicts
+        by_position = build_toolbars_by_position(toolbars)
 
-    # Handle toolbar injection
-    if toolbar_html:
-        if toolbar_position == "bottom":
-            # Append to content
-            user_html = f"<div class='pywry-wrapper-bottom'><div class='pywry-content'>{user_html}</div>{toolbar_html}</div>"
-        elif toolbar_position == "top":
-            # Prepend to content
-            user_html = f"<div class='pywry-wrapper-top'>{toolbar_html}<div class='pywry-content'>{user_html}</div></div>"
-        elif toolbar_position == "left":
-            user_html = f"<div class='pywry-wrapper-left'>{toolbar_html}<div class='pywry-content'>{user_html}</div></div>"
-        elif toolbar_position == "right":
-            user_html = f"<div class='pywry-wrapper-right'><div class='pywry-content'>{user_html}</div>{toolbar_html}</div>"
-        elif toolbar_position == "inside":
-            # Wrap in relative container to allow absolute positioning of toolbar
-            user_html = f"<div class='pywry-wrapper-inside'>{toolbar_html}{user_html}</div>"
+        # Wrap content with toolbars in correct order
+        if by_position["inside"]:
+            user_html = (
+                f"<div class='pywry-wrapper-inside'>{by_position['inside']}{user_html}</div>"
+            )
+        if by_position["left"] or by_position["right"]:
+            user_html = (
+                f"<div class='pywry-wrapper-left'>{by_position['left']}"
+                f"<div class='pywry-content'>{user_html}</div>"
+                f"{by_position['right']}</div>"
+            )
+        if by_position["top"] or by_position["bottom"]:
+            # Use wrapper-top if top toolbars exist, else wrapper-bottom
+            wrapper_class = "pywry-wrapper-top" if by_position["top"] else "pywry-wrapper-bottom"
+            user_html = (
+                f"<div class='{wrapper_class}'>{by_position['top']}"
+                f"<div class='pywry-content'>{user_html}</div>"
+                f"{by_position['bottom']}</div>"
+            )
 
     if is_complete_doc:
         # Inject our scripts into the existing document
         # First, add theme class to <html> tag
-        import re
-
         # Find <html ...> tag and add class
         def add_theme_class_to_html_tag(html_str: str, theme_cls: str) -> str:
             """Add theme class to <html> tag, preserving existing classes."""

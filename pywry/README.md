@@ -61,10 +61,10 @@ pip install pywry[dev]
 ## Quick Start
 
 ```python
-from pywry import PyWry, WindowMode, ThemeMode
+from pywry import PyWry, WindowMode, ThemeMode, Toolbar, Button
 
 # Create instance
-pywry = PyWry(
+app = PyWry(
     mode=WindowMode.SINGLE_WINDOW,
     theme=ThemeMode.DARK,
     title="My App",
@@ -72,63 +72,72 @@ pywry = PyWry(
     height=720,
 )
 
-# Define handler that updates the window content
-def on_click(data):
-    pywry.eval_js("document.querySelector('h1').innerText = 'Toolbar Works!'")
-    pywry.eval_js("document.body.style.backgroundColor = '#222244'")
+# Define handler (receives data, event_type, and window label)
+def on_click(data, event_type, label):
+    app.eval_js("document.querySelector('h1').innerText = 'Toolbar Works!'")
+    app.eval_js("document.body.style.backgroundColor = '#222244'")
 
-pywry.on("app:click", on_click)
-
-# Display HTML with an interactive toolbar
-buttons = [{"label": "Update Text", "event": "app:click"}]
-pywry.show(
-    "<h1>Hello, World!</h1>", 
-    buttons=buttons, 
-    toolbar_position="bottom"
+# Display HTML with an interactive toolbar using callbacks parameter
+toolbar = Toolbar(
+    position="bottom",
+    items=[Button(label="Update Text", event="app:click")]
+)
+app.show(
+    "<h1>Hello, World!</h1>",
+    toolbars=[toolbar],
+    callbacks={"app:click": on_click},
 )
 
-# Display Plotly figure with a custom PyWry toolbar on the left
-# Note: This positions the PyWry toolbar independently of Plotly's internal modebar
+# Display Plotly figure with a custom PyWry toolbar
 import logging
 logging.basicConfig(level=logging.INFO)
 
-def on_custom_action(data):
-    # This runs in Python when the button is clicked
+def on_custom_action(data, event_type, label):
     logging.info("Custom action triggered!")
-    pywry.eval_js("alert('Custom action triggered from Python!')")
-
-pywry.on("app:custom", on_custom_action)
+    app.eval_js("alert('Custom action triggered from Python!')")
 
 fig = {"data": [{"x": [1, 2, 3], "y": [4, 5, 6], "type": "scatter"}]}
-plotly_buttons = [{"label": "Custom Action", "event": "app:custom"}]
-pywry.show_plotly(
-    fig, 
-    buttons=plotly_buttons, 
-    toolbar_position="left"
+plotly_toolbar = Toolbar(
+    position="top",
+    items=[Button(label="Custom Action", event="app:custom")]
+)
+app.show_plotly(
+    fig,
+    toolbars=[plotly_toolbar],
+    callbacks={"app:custom": on_custom_action},
 )
 
 # Display DataFrame with AG Grid
 import pandas as pd
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [30, 25]})
-pywry.show_dataframe(df, toolbar_position="top")
+app.show_dataframe(df)
 
 # Cleanup
-pywry.destroy()
+app.destroy()
 ```
 
 ---
 
 ## Table of Contents
 
-- [Window Modes](#window-modes)
-- [PyWry Class API](#pywry-class-api)
-- [CSS Selectors and Theming](#css-selectors-and-theming)
-- [HtmlContent Model](#htmlcontent-model)
-- [WindowConfig Model](#windowconfig-model)
+- [Rendering Paths](#rendering-paths)
+  - [Native Window](#native-window)
+  - [Notebook Widget (anywidget)](#notebook-widget-anywidget)
+  - [Inline IFrame](#inline-iframe)
+- [Core API](#core-api)
+  - [Imports](#imports)
+  - [PyWry Class](#pywry-class)
+  - [Display Methods](#display-methods)
+  - [Event Methods](#event-methods)
+- [Theming & Styling](#css-selectors-and-theming)
+- [Data Models](#data-models)
+  - [HtmlContent Model](#htmlcontent-model)
+  - [WindowConfig Model](#windowconfig-model)
 - [Configuration System](#configuration-system)
 - [Hot Reload](#hot-reload)
 - [Plotly Templates](#plotly-templates)
 - [Event System](#event-system)
+- [AG Grid Configuration](#ag-grid-configuration)
 - [Toolbar System](#toolbar-system)
 - [JavaScript Bridge](#javascript-bridge)
 - [Direct Tauri API Access](#direct-tauri-api-access)
@@ -138,52 +147,108 @@ pywry.destroy()
 
 ---
 
-## Window Modes
+## Rendering Paths
 
-PyWry supports three window management strategies via the `WindowMode` enum.
+PyWry automatically selects the appropriate rendering path based on your environment:
 
-> **Note on Notebooks**: When running in Jupyter, Colab, or VS Code notebooks, PyWry detects the environment and automatically renders content inline via IFrames, ignoring the native window mode.
+| Environment | Rendering Path | Module | Return Type |
+|-------------|----------------|--------|-------------|
+| Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `str` (window label) |
+| Jupyter/VS Code with anywidget | Notebook Widget | `pywry.widget` | `PyWryWidget` |
+| Jupyter/VS Code without anywidget | Inline IFrame | `pywry.inline` | `InlineWidget` |
 
-### NEW_WINDOW (Default)
+### Native Window
 
-Creates a new window for each `show()` call:
+Uses PyTauri/Tauri to create native OS windows with WebView2 (Windows), WebKit (macOS/Linux).
 
 ```python
-from pywry import PyWry, WindowMode
+from pywry import PyWry, WindowMode, ThemeMode
+from pywry import runtime  # For sending events to JS
 
-pywry = PyWry(mode=WindowMode.NEW_WINDOW)
-pywry.show("<h1>Window 1</h1>")  # Opens window 1
-pywry.show("<h1>Window 2</h1>")  # Opens window 2
+app = PyWry(
+    mode=WindowMode.SINGLE_WINDOW,  # or NEW_WINDOW, MULTI_WINDOW
+    theme=ThemeMode.DARK,
+    title="My App",
+    width=1280,
+    height=720,
+)
+
+# Display content - returns window label
+label = app.show("<h1>Hello</h1>")
+
+# Send event to JavaScript
+runtime.emit_event(label, "app:update", {"message": "Hello from Python"})
 ```
 
-### SINGLE_WINDOW
+**Window Modes:**
 
-Reuses one window, replacing content:
+| Mode | Behavior |
+|------|----------|
+| `NEW_WINDOW` | Creates new window for each `show()` call |
+| `SINGLE_WINDOW` | Reuses one window, replaces content |
+| `MULTI_WINDOW` | Multiple labeled windows, update by label |
+
+### Notebook Widget (anywidget)
+
+When `anywidget` is installed, PyWry uses it for tighter Jupyter integration with bidirectional communication without a local server.
 
 ```python
-pywry = PyWry(mode=WindowMode.SINGLE_WINDOW)
-pywry.show("<h1>First</h1>")   # Shows "First"
-pywry.show("<h1>Second</h1>")  # Replaces with "Second"
+from pywry.inline import show_plotly, show_dataframe
+
+# Returns PyWryPlotlyWidget or PyWryAgGridWidget
+widget = show_plotly(fig, callbacks={"custom:toggle": my_handler})
+
+# Send event to JavaScript via widget
+widget.emit("app:update", {"message": "Hello"})
 ```
 
-### MULTI_WINDOW
+### Inline IFrame
 
-Multiple independent windows with unique labels:
+Fallback when `anywidget` is not available. Uses FastAPI server running in background thread.
 
 ```python
-pywry = PyWry(mode=WindowMode.MULTI_WINDOW)
-pywry.show("<h1>Chart</h1>", label="chart-window")
-pywry.show("<h1>Table</h1>", label="table-window")
+from pywry.inline import show_plotly, show_dataframe
 
-# Update specific window
-pywry.update_content("<h1>Updated Chart</h1>", label="chart-window")
+# Returns InlineWidget (IFrame-based)
+widget = show_plotly(fig, callbacks={"custom:toggle": my_handler})
+
+# Send event to JavaScript via widget
+widget.emit("app:update", {"message": "Hello"})
 ```
 
 ---
 
-## PyWry Class API
+## Core API
 
-### Constructor
+### Imports
+
+```python
+# Main class
+from pywry import PyWry
+
+# Enums
+from pywry import WindowMode, ThemeMode
+
+# Models
+from pywry import HtmlContent, WindowConfig
+
+# Toolbar components
+from pywry import Toolbar, Button, Select, MultiSelect, TextInput, NumberInput, DateInput, RangeInput, Option
+
+# Grid models (for AG Grid customization)
+from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOptions
+
+# Runtime (for sending events to native windows)
+from pywry import runtime
+
+# Inline functions (for notebooks)
+from pywry.inline import show_plotly, show_dataframe
+
+# Settings
+from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings
+```
+
+### PyWry Class
 
 ```python
 PyWry(
@@ -197,80 +262,101 @@ PyWry(
 )
 ```
 
-**Parameters:**
-
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `mode` | `WindowMode` | `NEW_WINDOW` | Window management mode |
-| `theme` | `ThemeMode` | `SYSTEM` | Theme mode (DARK, LIGHT, SYSTEM) |
+| `theme` | `ThemeMode` | `DARK` | Theme mode (DARK, LIGHT, SYSTEM) |
 | `title` | `str` | `"PyWry"` | Default window title |
 | `width` | `int` | `800` | Default window width |
 | `height` | `int` | `600` | Default window height |
-| `settings` | `PyWrySettings` | `None` | Configuration settings (loads from files/env if None) |
-| `hot_reload` | `bool` | `False` | Enable hot reload for CSS/JS files |
+| `settings` | `PyWrySettings` | `None` | Configuration settings |
+| `hot_reload` | `bool` | `False` | Enable hot reload |
 
-### Methods
+### Display Methods
 
-#### Display Methods
-
-All display methods support the following toolbar arguments:
-- `buttons`: List of dicts `[{"label": "Btn Name", "event": "ns:event"}]`
-- `toolbar_position`: `"top"`, `"bottom"`, `"left"`, `"right"`, `"inside"`, `"hidden"`
-
-**`show(content, ...) -> str`**
-
-Display HTML content in a window.
+**`show(content, ...) -> str | BaseWidget`**
 
 ```python
-label = pywry.show(
+label = app.show(
     content,                    # str or HtmlContent
     title=None,                 # Window title override
     width=None,                 # Window width override
     height=None,                # Window height override
-    callbacks=None,             # Dict of event handlers
+    callbacks=None,             # Dict of event handlers {"event:name": handler}
     include_plotly=False,       # Include Plotly.js
     include_aggrid=False,       # Include AG Grid
     label=None,                 # Window label (auto-generated if None)
     watch=None,                 # Enable file watching for hot reload
-    buttons=None,               # Toolbar buttons
-    toolbar_position="top"      # Toolbar position
+    toolbars=None,              # List of Toolbar objects
 )
 ```
 
-**`show_plotly(figure, ...) -> str`**
-
-Display a Plotly figure.
+**`show_plotly(figure, ...) -> str | BaseWidget`**
 
 ```python
-label = pywry.show_plotly(
-    figure,                     # Plotly Figure object or dict spec
-    title=None,                 # Window title
-    callbacks=None,             # Event handlers
-    label=None,                 # Window label
-    inline_css=None,            # Custom CSS to inject
-    buttons=None,               # Toolbar buttons
-    toolbar_position="top"      # Toolbar position
+label = app.show_plotly(
+    figure,                     # Plotly Figure or dict
+    title=None,
+    callbacks=None,
+    label=None,
+    inline_css=None,
+    toolbars=None,
 )
 ```
 
-**`show_dataframe(data, ...) -> str`**
-
-Display a DataFrame using AG Grid.
+**`show_dataframe(data, ...) -> str | BaseWidget`**
 
 ```python
-label = pywry.show_dataframe(
+label = app.show_dataframe(
     data,                       # pandas DataFrame or dict
-    title=None,                 # Window title
-    callbacks=None,             # Event handlers
-    label=None,                 # Window label
-    column_defs=None,           # AG Grid column definitions
-    aggrid_theme="alpine",      # AG Grid theme
-    grid_options=None,          # Custom AG Grid options
-    inline_css=None,            # Custom CSS to inject
-    buttons=None,               # Toolbar buttons
-    toolbar_position="top",     # Toolbar position
+    title=None,
+    callbacks=None,
+    label=None,
+    column_defs=None,           # List of ColDef objects
+    aggrid_theme="alpine",      # quartz, alpine, balham, material
+    grid_options=None,          # GridOptions dict
+    toolbars=None,
+    inline_css=None,
 )
 ```
+
+### Event Methods
+
+**Callback Signature:**
+
+```python
+def my_handler(data: dict, event_type: str, label: str) -> None:
+    """
+    data: Event payload from JavaScript
+    event_type: The event name (e.g., "app:click")
+    label: Window label that triggered the event
+    """
+    pass
+```
+
+**Sending Events to JavaScript:**
+
+```python
+# Native windows - use runtime.emit_event
+from pywry import runtime
+runtime.emit_event(label, "app:response", {"key": "value"})
+
+# Notebook widgets - use widget.emit
+widget = show_plotly(fig)
+widget.emit("app:response", {"key": "value"})
+```
+
+### Other Methods
+
+| Method | Description |
+|--------|-------------|
+| `eval_js(script, label=None)` | Execute JavaScript in window(s) |
+| `update_content(html, label=None)` | Update window HTML content |
+| `close(label=None)` | Close specific or all windows |
+| `destroy()` | Close all windows and cleanup |
+| `enable_hot_reload()` | Enable hot reload |
+| `disable_hot_reload()` | Disable hot reload |
+| `refresh_css(label=None)` | Hot-reload CSS without page refresh |
 
 ---
 
@@ -349,10 +435,12 @@ html.light, .pywry-theme-light {
 ### Example: Custom Styling
 
 ```python
-from pywry import HtmlContent
+from pywry import PyWry, HtmlContent, Toolbar, Button
+
+app = PyWry()
 
 def on_action(data, event_type, label):
-    pywry.eval_js("document.querySelector('h1').textContent = 'Styled action!'")
+    app.eval_js("document.querySelector('h1').textContent = 'Styled action!'")
 
 content = HtmlContent(
     html="<h1>Click me</h1>",
@@ -362,69 +450,14 @@ content = HtmlContent(
     """
 )
 
-pywry.show(
+toolbar = Toolbar(position="top", items=[Button(label="Action", event="app:action")])
+
+app.show(
     content,
-    buttons=[{"label": "Action", "event": "app:action"}],
+    toolbars=[toolbar],
     callbacks={"app:action": on_action},
 )
 ```
-
-#### Event Methods
-
-**`on(event_type, handler, label=None) -> bool`**
-
-Register an event handler. Returns `True` if successful.
-
-**`send_event(event_type, data, label=None) -> bool`**
-
-Send an event to window(s). If `label` is `None`, sends to all windows.
-
-#### Window Management
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `update_content(html, label=None)` | `bool` | Update window HTML content |
-| `eval_js(script, label=None)` | `bool` | Execute JavaScript in window(s) |
-| `close(label=None)` | `bool` | Close window(s) |
-| `refresh(label=None)` | `bool` | Refresh with scroll preservation |
-| `refresh_css(label=None)` | `bool` | Hot-reload CSS without page refresh |
-| `get_labels()` | `list[str]` | Get all active window labels |
-| `is_open(label=None)` | `bool` | Check if window(s) are open |
-
-#### JavaScript Execution
-
-**`eval_js(script, label=None) -> bool`**
-
-Execute JavaScript code in one or all windows. Useful for dynamic updates.
-
-```python
-# Update element in all windows
-pywry.eval_js("document.querySelector('h1').textContent = 'Updated!'")
-
-# Update specific window
-pywry.eval_js("alert('Hello!')", label="main-window")
-
-# Complex operations
-pywry.eval_js("""
-    const chart = document.querySelector('.plotly-graph-div');
-    Plotly.relayout(chart, { title: 'Dynamic Title' });
-""")
-```
-
-#### Lifecycle
-
-| Method | Description |
-|--------|-------------|
-| `enable_hot_reload()` | Enable hot reload for file watching |
-| `disable_hot_reload()` | Disable hot reload and stop watchers |
-| `destroy()` | Close all windows and cleanup resources |
-
-### Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `settings` | `PyWrySettings` | Current settings (read-only) |
-| `theme` | `ThemeMode` | Current theme mode (read/write) |
 
 ---
 
@@ -782,6 +815,7 @@ Events follow the pattern: `namespace:event-name`
 - `pywry:*` - System events
 - `plotly:*` - Plotly chart events
 - `grid:*` - AG Grid events
+- `toolbar:*` - Toolbar state events
 
 ### Register Event Handlers (Python)
 
@@ -793,122 +827,244 @@ logging.basicConfig(level=logging.INFO)
 def handle_click(data, event_type, label):
     logging.info(f"Received {event_type} from {label}: {data}")
 
-pywry.on("app:button-click", handle_click)
+app.on("app:button-click", handle_click)
 
 # Wildcard - receive all events
 def handle_all(data, event_type, label):
     logging.info(f"Event: {event_type}")
 
-pywry.on("*", handle_all)
+app.on("*", handle_all)
 ```
 
 ### Send Events to JavaScript (Python → JS)
 
-```python
-# Send to all windows
-pywry.send_event("app:update", {"message": "Hello"})
+For native windows, use `runtime.emit_event()`:
 
-# Send to specific window
-pywry.send_event("app:update", {"message": "Hello"}, label="main-window")
+```python
+from pywry import runtime
+
+# Send to specific window (native windows)
+runtime.emit_event(label, "app:update", {"message": "Hello"})
+```
+
+For notebook widgets, use `widget.emit()`:
+
+```python
+# widget is returned from show_plotly() or show_dataframe()
+widget.emit("app:update", {"message": "Hello"})
 ```
 
 ### Built-in Events
 
+**System events** (`pywry:*`):
+- `pywry:ready` - Window/widget initialized and ready
+- `pywry:result` - Result data returned from JavaScript
+- `pywry:theme-update` - Theme changed (payload: `{ mode }`)
+
 **Plotly events** (when `include_plotly=True`):
-- `plotly:click` - Point clicked
-- `plotly:select` - Points selected
-- `plotly:hover` - Point hovered
-- `plotly:relayout` - Layout changed (zoom, pan)
+- `plotly:click` - Point clicked (payload: `{ points, point_indices, curve_number }`)
+- `plotly:select` - Points selected (payload: `{ points, range }`)
+- `plotly:hover` - Point hovered (payload: `{ points }`)
+- `plotly:relayout` - Layout changed/zoom/pan (payload: `{ relayout_data }`)
 
 **AG Grid events** (when `include_aggrid=True`):
-- `grid:select` - Row selection changed
-- `grid:cell-edit` - Cell value edited
-- `grid:row-click` - Row clicked
+- `grid:select` - Row selection changed (payload: `{ selected_rows, selected_row_ids }`)
+- `grid:cell-edit` - Cell value edited (payload: `{ row_id, row_index, column, old_value, new_value }`)
+- `grid:row-click` - Row clicked (payload: `{ row_data, row_id, row_index }`)
+- `grid:state_response` - Grid state returned (for state persistence)
+- `grid:request_state` - Request grid state (emitted by widget)
+
+**Toolbar events** (when using toolbars):
+- `toolbar:state_response` - Toolbar/component state returned (payload: `{ toolbars, components, timestamp }` or `{ componentId, value }`)
+- `toolbar:request_state` - Request toolbar state (emitted by widget)
+- `toolbar:set_value` - Set single component value (emitted by widget)
+- `toolbar:set_values` - Set multiple component values (emitted by widget)
 
 ```python
 import logging
 logging.basicConfig(level=logging.INFO)
 
-def on_chart_click(data):
+def on_chart_click(data, event_type, label):
     logging.info(f"Clicked point: {data}")
 
-pywry.on("plotly:click", on_chart_click)
+app.on("plotly:click", on_chart_click)
 
-def on_row_select(data):
+def on_row_select(data, event_type, label):
     logging.info(f"Selected rows: {data}")
 
-pywry.on("grid:select", on_row_select)
+app.on("grid:select", on_row_select)
+
+def on_toolbar_state(data, event_type, label):
+    logging.info(f"Toolbar state: {data}")
+
+app.on("toolbar:state_response", on_toolbar_state)
 ```
+
+---
+
+## AG Grid Configuration
+
+PyWry provides Pydantic models that mirror AG Grid's JavaScript API for type-safe grid configuration.
+
+### Import Grid Models
+
+```python
+from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOptions, build_grid_config
+```
+
+### Column Definitions
+
+Use `ColDef` to define individual columns with all common AG Grid options:
+
+```python
+from pywry import PyWry
+from pywry.grid import ColDef
+import pandas as pd
+
+app = PyWry()
+df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [25, 30], "salary": [50000, 60000]})
+
+# Define custom column configurations
+column_defs = [
+    ColDef(field="name", header_name="Full Name", pinned="left", min_width=120),
+    ColDef(field="age", filter="agNumberColumnFilter", sortable=True),
+    ColDef(field="salary", value_formatter="'$' + value.toLocaleString()", flex=1),
+]
+
+app.show_dataframe(df, column_defs=column_defs)
+```
+
+### ColDef Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `field` | `str` | Column field name (matches DataFrame column) |
+| `header_name` | `str` | Display name in header |
+| `hide` | `bool` | Whether column is hidden |
+| `pinned` | `"left"` \| `"right"` | Pin column to side |
+| `width`, `min_width`, `max_width` | `int` | Column sizing |
+| `flex` | `int` | Flex sizing weight |
+| `sortable` | `bool` | Enable sorting |
+| `filter` | `bool` \| `str` | Enable/specify filter type |
+| `resizable` | `bool` | Allow column resizing |
+| `editable` | `bool` | Allow cell editing |
+| `cell_data_type` | `str` | Data type hint (`"text"`, `"number"`, `"boolean"`, `"date"`) |
+| `value_formatter` | `str` | JS expression for formatting display value |
+| `cell_renderer` | `str` | Custom cell renderer name |
+| `cell_class` | `str` \| `list` | CSS class(es) for cells |
+| `cell_style` | `dict` | Inline styles for cells |
+
+### Row Selection
+
+Configure row selection behavior:
+
+```python
+from pywry.grid import RowSelection
+
+selection = RowSelection(
+    mode="multiRow",           # or "singleRow"
+    checkboxes=True,
+    header_checkbox=True,
+    enable_click_selection=True,
+)
+```
+
+### Grid Options
+
+For full control, use `GridOptions`:
+
+```python
+from pywry.grid import GridOptions, DefaultColDef
+
+grid_options = GridOptions(
+    pagination=True,
+    pagination_page_size=50,
+    animate_rows=True,
+    default_col_def=DefaultColDef(
+        sortable=True,
+        filter=True,
+        resizable=True,
+        min_width=80,
+    ).to_dict(),
+)
+
+app.show_dataframe(df, grid_options=grid_options.to_dict())
+```
+
+### Available Grid Models
+
+| Model | Purpose |
+|-------|---------|
+| `ColDef` | Column definition with all common options |
+| `ColGroupDef` | Column group for MultiIndex columns |
+| `DefaultColDef` | Default settings applied to all columns |
+| `RowSelection` | Row selection configuration |
+| `GridOptions` | Complete AG Grid configuration |
+| `GridConfig` | Combined AG Grid options + PyWry context |
+| `GridData` | Normalized grid data from various inputs |
+
+For full AG Grid API reference, see: https://www.ag-grid.com/javascript-data-grid/grid-options/
 
 ---
 
 ## Toolbar System
 
-PyWry provides a simple toolbar system for adding interactive buttons to any window. Toolbar buttons emit events that Python can handle.
+PyWry provides a flexible toolbar system for adding interactive controls to any window. The toolbar system uses Pydantic models for type-safe configuration.
 
-### Button Configuration
+### Toolbar Models
 
-Buttons are defined as a list of dictionaries with the following keys:
-
-| Key | Type | Required | Description |
-|-----|------|----------|-------------|
-| `label` | `str` | Yes | Button text displayed to user |
-| `event` | `str` | Yes | Event name emitted on click (e.g., `app:action`) |
-| `style` | `str` | No | Custom inline CSS for the button |
+Import the toolbar components:
 
 ```python
-buttons = [
-    {"label": "Save", "event": "app:save"},
-    {"label": "Export", "event": "app:export"},
-    {"label": "Settings", "event": "app:settings", "style": "background: #4CAF50;"},
-]
+from pywry import Toolbar, Button, Select, MultiSelect, TextInput, NumberInput, DateInput, RangeInput, Option
 ```
 
 ### Toolbar Positions
 
-The `toolbar_position` parameter controls where the toolbar appears:
+Each toolbar has a `position` attribute that controls where it appears:
 
 | Position | Description |
 |----------|-------------|
-| `"top"` | Horizontal bar above content (default) |
+| `"top"` | Horizontal bar above content |
 | `"bottom"` | Horizontal bar below content |
 | `"left"` | Vertical bar to the left of content |
 | `"right"` | Vertical bar to the right of content |
 | `"inside"` | Overlay positioned in top-right corner |
-| `"hidden"` | Toolbar not rendered |
 
 ### Complete Example
 
 ```python
-from pywry import PyWry
+from pywry import PyWry, Toolbar, Button
 
-pywry = PyWry()
+app = PyWry()
 
 # Define handlers - receive (data, event_type, label)
 def on_save(data, event_type, label):
-    pywry.eval_js("document.getElementById('status').textContent = 'Saved!'", label=label)
+    app.eval_js("document.getElementById('status').textContent = 'Saved!'", label=label)
 
 def on_export(data, event_type, label):
-    pywry.eval_js("document.getElementById('status').textContent = 'Exported!'", label=label)
+    app.eval_js("document.getElementById('status').textContent = 'Exported!'", label=label)
 
 def on_theme_toggle(data, event_type, label):
-    pywry.eval_js("""
+    app.eval_js("""
         document.documentElement.classList.toggle('light');
         document.getElementById('status').textContent = 'Theme toggled!';
     """, label=label)
 
-# Define buttons
-buttons = [
-    {"label": "Save", "event": "app:save"},
-    {"label": "Export CSV", "event": "app:export"},
-    {"label": "Toggle Theme", "event": "app:theme", "style": "margin-left: auto;"},
-]
+# Define toolbar with buttons
+toolbar = Toolbar(
+    position="top",
+    items=[
+        Button(label="Save", event="app:save"),
+        Button(label="Export CSV", event="app:export"),
+        Button(label="Toggle Theme", event="app:theme", style="margin-left: auto;"),
+    ]
+)
 
 # Show with toolbar - pass callbacks directly to show()
-pywry.show(
+app.show(
     "<h1>My Application</h1><p id='status'>Click a button...</p>",
-    buttons=buttons,
-    toolbar_position="top",
+    toolbars=[toolbar],
     callbacks={
         "app:save": on_save,
         "app:export": on_export,
@@ -917,17 +1073,49 @@ pywry.show(
 )
 ```
 
+### Supported Toolbar Item Types
+
+| Type | Properties | Event Payload |
+|------|------------|---------------|
+| `Button` | `label`, `event`, `data`, `style`, `description` | `data` dict |
+| `Select` | `label`, `event`, `options`, `selected` | `{value: string}` |
+| `MultiSelect` | `label`, `event`, `options`, `selected` | `{values: string[]}` |
+| `TextInput` | `label`, `event`, `value`, `placeholder`, `debounce` | `{value: string}` |
+| `NumberInput` | `label`, `event`, `value`, `min`, `max`, `step` | `{value: number}` |
+| `DateInput` | `label`, `event`, `value`, `min`, `max` | `{value: string}` |
+| `RangeInput` | `label`, `event`, `value`, `min`, `max`, `step`, `show_value` | `{value: number}` |
+
+### Advanced Toolbar Example
+
+```python
+from pywry import Toolbar, Button, Select, TextInput, Option
+
+toolbar = Toolbar(
+    position="top",
+    items=[
+        Button(label="Export", event="toolbar:export", data={"format": "csv"}),
+        Select(
+            label="View:",
+            event="view:change",
+            options=[Option(label="Table", value="table"), Option(label="Chart", value="chart")],
+            selected="table",
+        ),
+        TextInput(label="Search:", event="search:query", placeholder="Type...", debounce=300),
+    ],
+)
+```
+
 ### Styling Buttons
 
 Buttons use the `.pywry-btn` class. Override styles via `HtmlContent.inline_css` or custom CSS:
 
 ```python
-from pywry import PyWry, HtmlContent
+from pywry import PyWry, HtmlContent, Toolbar, Button
 
-pywry = PyWry()
+app = PyWry()
 
 def on_action(data, event_type, label):
-    pywry.eval_js("document.querySelector('h1').textContent = 'Action triggered!'", label=label)
+    app.eval_js("document.querySelector('h1').textContent = 'Action triggered!'", label=label)
 
 content = HtmlContent(
     html="<h1>Click the button</h1>",
@@ -947,9 +1135,11 @@ content = HtmlContent(
     """
 )
 
-pywry.show(
+toolbar = Toolbar(position="top", items=[Button(label="Action", event="app:action")])
+
+app.show(
     content,
-    buttons=[{"label": "Action", "event": "app:action"}],
+    toolbars=[toolbar],
     callbacks={"app:action": on_action},
 )
 ```
@@ -959,27 +1149,117 @@ pywry.show(
 Toolbars work with all display methods:
 
 ```python
+from pywry import Toolbar, Button
+
 # Plotly with toolbar - reset zoom on click
 def on_reset(data, event_type, label):
-    pywry.eval_js("Plotly.relayout(window.__PYWRY_PLOTLY_DIV__, {xaxis: {autorange: true}, yaxis: {autorange: true}})")
+    app.eval_js("Plotly.relayout(window.__PYWRY_PLOTLY_DIV__, {xaxis: {autorange: true}, yaxis: {autorange: true}})")
 
-pywry.show_plotly(
+toolbar = Toolbar(position="bottom", items=[Button(label="Reset Zoom", event="app:reset")])
+
+app.show_plotly(
     fig,
-    buttons=[{"label": "Reset Zoom", "event": "app:reset"}],
-    toolbar_position="bottom",
+    toolbars=[toolbar],
     callbacks={"app:reset": on_reset},
 )
 
 # AG Grid with toolbar - export on click
 def on_export(data, event_type, label):
-    pywry.eval_js("window.__PYWRY_GRID_API__.exportDataAsCsv()")
+    app.eval_js("window.__PYWRY_GRID_API__.exportDataAsCsv()")
 
-pywry.show_dataframe(
+toolbar = Toolbar(position="top", items=[Button(label="Export CSV", event="app:export")])
+
+app.show_dataframe(
     df,
-    buttons=[{"label": "Export CSV", "event": "app:export"}],
-    toolbar_position="top",
+    toolbars=[toolbar],
     callbacks={"app:export": on_export},
 )
+```
+
+### Toolbar State Management
+
+PyWry provides bidirectional communication for querying and setting toolbar component values.
+
+**Query toolbar state:**
+
+```python
+# For notebook widgets - request all toolbar state
+def on_toolbar_state(data, event_type, label):
+    print(f"Toolbar state: {data}")
+    # data = { 
+    #   toolbars: { "toolbar-id": { position: "top", components: [...ids...] } },
+    #   components: { "component-id": { type: "select", value: "dark" } },
+    #   timestamp: 1234567890
+    # }
+
+widget.on("toolbar:state_response", on_toolbar_state)
+widget.request_toolbar_state()
+
+# Query specific toolbar
+widget.request_toolbar_state(toolbar_id="my-toolbar")
+
+# Query single component value
+def on_value(data, event_type, label):
+    print(f"Component value: {data['value']}")
+
+widget.on("toolbar:state_response", on_value)
+widget.get_toolbar_value("theme-select")
+```
+
+**Set toolbar values from Python:**
+
+```python
+# Set single component
+widget.set_toolbar_value("theme-select", "dark")
+widget.set_toolbar_value("columns-multiselect", ["name", "age"])
+widget.set_toolbar_value("search-input", "query text")
+
+# Set multiple components at once
+widget.set_toolbar_values({
+    "theme-select": "dark",
+    "columns-multiselect": ["name", "age"],
+    "limit-number": 50
+})
+```
+
+**Native window toolbar state (via runtime):**
+
+```python
+from pywry import runtime
+
+# Request toolbar state (response comes via toolbar:state_response callback)
+runtime.emit_event("window-label", "toolbar:request_state", {})
+
+# Request specific toolbar
+runtime.emit_event("window-label", "toolbar:request_state", {"toolbarId": "my-toolbar"})
+
+# Set single value
+runtime.emit_event("window-label", "toolbar:set_value", {
+    "componentId": "theme-select",
+    "value": "dark"
+})
+
+# Set multiple values
+runtime.emit_event("window-label", "toolbar:set_values", {
+    "values": {
+        "theme-select": "dark",
+        "columns-multiselect": ["name", "age"]
+    }
+})
+```
+
+**JavaScript access to toolbar state:**
+
+```javascript
+// Get state of all toolbars
+const state = window.__PYWRY_TOOLBAR__.getState();
+
+// Get state of specific toolbar
+const state = window.__PYWRY_TOOLBAR__.getState("my-toolbar-id");
+
+// Get/set individual component value
+const value = window.__PYWRY_TOOLBAR__.getValue("component-id");
+window.__PYWRY_TOOLBAR__.setValue("component-id", "new-value");
 ```
 
 ---
@@ -1068,15 +1348,15 @@ Plotly.update(window.__PYWRY_PLOTLY_DIV__, {}, {
 
 ```python
 from pywry import PyWry
+from pywry import runtime
 
-pywry = PyWry()
+app = PyWry()
 
 def handle_request(data, event_type, label):
-    return {"items": [1, 2, 3]}
+    # Send response back to JavaScript using runtime.emit_event
+    runtime.emit_event(label, "app:response", {"items": [1, 2, 3]})
 
-pywry.on("app:request-data", handle_request)
-
-pywry.show("""
+app.show("""
 <button onclick="requestData()">Fetch Data</button>
 <div id="result"></div>
 <script>
@@ -1087,7 +1367,7 @@ window.pywry.on('app:response', function(data) {
     document.getElementById('result').textContent = JSON.stringify(data);
 });
 </script>
-""")
+""", callbacks={"app:request-data": handle_request})
 ```
 
 ---
@@ -1105,65 +1385,13 @@ When running in a desktop window (not in notebook/inline mode), the `window.__TA
 if (window.__TAURI__) {
     console.log("Running in Tauri desktop mode");
 }
+
+// Available Tauri plugin APIs:
+window.__TAURI__.dialog    // Native file dialogs (save, open, message, ask, confirm)
+window.__TAURI__.fs        // Filesystem operations (readTextFile, writeTextFile, exists, mkdir)
+window.__TAURI__.event     // Event system (listen, emit)
+window.__TAURI__.pytauri   // Python IPC (pyInvoke)
 ```
-
-### Native File Dialogs and Filesystem
-
-PyWry registers Tauri's dialog and filesystem plugins, enabling native OS file dialogs instead of browser-based ones. This avoids browser security warnings and provides a native experience.
-
-```javascript
-// Save file with native dialog
-if (window.__TAURI__) {
-    const filePath = await window.__TAURI__.dialog.save({
-        defaultPath: 'data.csv',
-        filters: [{ name: 'CSV', extensions: ['csv'] }]
-    });
-    if (filePath) {
-        await window.__TAURI__.fs.writeTextFile(filePath, csvContent);
-    }
-}
-
-// Open file dialog
-if (window.__TAURI__) {
-    const selected = await window.__TAURI__.dialog.open({
-        multiple: false,
-        filters: [{ name: 'JSON', extensions: ['json'] }]
-    });
-    if (selected) {
-        const content = await window.__TAURI__.fs.readTextFile(selected);
-        console.log(content);
-    }
-}
-
-// Show message dialog
-if (window.__TAURI__) {
-    await window.__TAURI__.dialog.message('Operation completed!', {
-        title: 'Success',
-        kind: 'info'
-    });
-}
-```
-
-**Available Dialog APIs:**
-
-| Function | Description |
-|----------|-------------|
-| `dialog.save(options)` | Show native save file dialog |
-| `dialog.open(options)` | Show native open file dialog |
-| `dialog.message(message, options)` | Show message/alert dialog |
-| `dialog.ask(message, options)` | Show confirmation dialog |
-| `dialog.confirm(message, options)` | Show yes/no dialog |
-
-**Available Filesystem APIs:**
-
-| Function | Description |
-|----------|-------------|
-| `fs.readTextFile(path)` | Read text file contents |
-| `fs.writeTextFile(path, content)` | Write text to file |
-| `fs.readFile(path)` | Read binary file |
-| `fs.writeFile(path, content)` | Write binary to file |
-| `fs.exists(path)` | Check if file exists |
-| `fs.mkdir(path)` | Create directory |
 
 ### PyTauri IPC (Python ↔ JavaScript)
 
@@ -1187,23 +1415,31 @@ window.__TAURI__.pytauri.pyInvoke('pywry_result', {
 window.__TAURI__.pytauri.pyInvoke('open_file', { path: '/path/to/file.pdf' });
 ```
 
-### Listening to Tauri Events
+### Listening to Python Events
 
-Use the Tauri event system to listen for Python-sent events:
+Use the `window.pywry` bridge to listen for events from Python:
 
 ```javascript
-// Listen for PyWry events
-window.__TAURI__.event.listen('pywry:event', function(event) {
-    const { event_type, data } = event.payload;
-    console.log('Received:', event_type, data);
+// Preferred: Use window.pywry.on() for Python events
+window.pywry.on('custom:update', function(data) {
+    console.log('Received:', data);
 });
 
 // Listen for theme changes
-window.__TAURI__.event.listen('pywry:theme-update', function(event) {
-    const { mode } = event.payload;  // 'dark', 'light', or 'system'
+window.pywry.on('pywry:theme-update', function(data) {
+    const { mode } = data;  // 'dark' or 'light'
     console.log('Theme changed to:', mode);
 });
 
+// Wildcard listener for all events
+window.pywry.on('*', function(data, eventType) {
+    console.log('Any event:', eventType, data);
+});
+```
+
+For low-level Tauri access (advanced use cases):
+
+```javascript
 // Listen for cleanup signal (before window closes)
 window.__TAURI__.event.listen('pywry:cleanup', function() {
     console.log('Window closing, cleanup resources');
@@ -1212,11 +1448,6 @@ window.__TAURI__.event.listen('pywry:cleanup', function() {
 // Listen for Plotly data updates
 window.__TAURI__.event.listen('pywry:plotly-data', function(event) {
     // event.payload contains { data, layout, config }
-});
-
-// Listen for Grid data updates
-window.__TAURI__.event.listen('pywry:grid-data', function(event) {
-    // event.payload contains { rows }
 });
 ```
 
@@ -1230,34 +1461,43 @@ These are the internal event types used by PyWry:
 | `pywry:theme-update` | `{ mode }` | Theme changed |
 | `pywry:cleanup` | None | Window about to close |
 | `pywry:plotly-data` | `{ data, layout, config }` | Plotly chart update |
-| `pywry:grid-data` | `{ rows }` | AG Grid row data update |
-| `pywry:grid-update` | `{ rows }` | AG Grid transaction update |
 
 ### Example: Custom Tauri Handler
 
 ```python
 from pywry import PyWry
+from pywry import runtime
 
-pywry = PyWry()
+app = PyWry()
 
-pywry.show("""
-<div id="output"></div>
+# Define callback - will be called when JS emits 'custom:button-click'
+def on_button_click(data, event_type, label):
+    print(f'Received: {event_type}, data: {data}')
+    # Send event back to JavaScript using runtime.emit_event for native windows
+    runtime.emit_event(label, 'custom:update', {'message': f'Hello from Python! Count: {data.get("count", 0)}'})
+
+# Pass callbacks directly to show() - this is the correct pattern
+label = app.show('''
+<div id="output">Click the button...</div>
+<button onclick="sendToPython()">Send to Python</button>
 <script>
-// Listen directly to Tauri events
-window.__TAURI__.event.listen('pywry:event', function(event) {
-    const { event_type, data } = event.payload;
-    
-    // Handle custom event types
-    if (event_type === 'custom:update') {
-        document.getElementById('output').textContent = data.message;
-    }
-});
-</script>
-""")
+var count = 0;
 
-# Send event to JavaScript
-pywry.send_event("custom:update", {"message": "Hello from Python!"})
+// Use window.pywry.on() to listen for Python events
+window.pywry.on('custom:update', function(data) {
+    document.getElementById('output').textContent = data.message;
+});
+
+function sendToPython() {
+    count++;
+    // Send event to Python
+    window.pywry.emit('custom:button-click', { count: count });
+}
+</script>
+''', callbacks={'custom:button-click': on_button_click})
 ```
+
+> **Note:** The `window.pywry` bridge is automatically initialized by PyWry. Use `window.pywry.on()` to listen for events from Python, and `window.pywry.emit()` to send events to Python. For native windows, use `runtime.emit_event(label, event_type, data)` to send events from Python to JavaScript.
 
 ### Environment Detection
 

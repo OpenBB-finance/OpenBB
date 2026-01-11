@@ -418,41 +418,47 @@ class TestMultiWindowMode:
 class TestCrossModeBehavior:
     """Tests for behavior that applies across all modes."""
 
-    def test_destroy_closes_all_windows(self):
+    @pytest.mark.parametrize(
+        "mode",
+        [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW],
+    )
+    def test_destroy_closes_all_windows(self, mode):
         """destroy() closes all windows regardless of mode."""
-        for mode in [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW]:
-            app = PyWry(mode=mode, theme=ThemeMode.DARK)
+        app = PyWry(mode=mode, theme=ThemeMode.DARK)
 
-            show_and_wait_ready(app, "<div>Content 1</div>")
-            if mode != WindowMode.SINGLE_WINDOW:
-                show_and_wait_ready(app, "<div>Content 2</div>")
+        show_and_wait_ready(app, "<div>Content 1</div>")
+        if mode != WindowMode.SINGLE_WINDOW:
+            show_and_wait_ready(app, "<div>Content 2</div>")
 
-            app.destroy()
-            time.sleep(0.3)
+        app.destroy()
+        time.sleep(0.3)
 
-            # After destroy, get_labels should be empty
-            # (Note: this may depend on implementation details)
+        # After destroy, get_labels should be empty
+        # (Note: this may depend on implementation details)
 
-    def test_eval_js_works_in_all_modes(self):
+    @pytest.mark.parametrize(
+        "mode",
+        [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW],
+    )
+    def test_eval_js_works_in_all_modes(self, mode):
         """eval_js works correctly in all window modes."""
-        for mode in [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW]:
-            app = PyWry(mode=mode, theme=ThemeMode.DARK)
+        app = PyWry(mode=mode, theme=ThemeMode.DARK)
 
-            label = show_and_wait_ready(app, "<h1 id='target'>Original</h1>")
+        label = show_and_wait_ready(app, "<h1 id='target'>Original</h1>")
 
-            # Use eval_js to modify content
-            app.eval_js("document.getElementById('target').textContent = 'Modified';")
-            time.sleep(0.3)
+        # Use eval_js to modify content
+        app.eval_js("document.getElementById('target').textContent = 'Modified';")
+        time.sleep(0.3)
 
-            # Verify modification
-            result = wait_for_result(
-                label, "pywry.result({ text: document.getElementById('target')?.textContent });"
-            )
-            assert result is not None and result["text"] == "Modified", (
-                f"Mode {mode}: eval_js failed: {result}"
-            )
+        # Verify modification
+        result = wait_for_result(
+            label, "pywry.result({ text: document.getElementById('target')?.textContent });"
+        )
+        assert result is not None and result["text"] == "Modified", (
+            f"Mode {mode}: eval_js failed: {result}"
+        )
 
-            app.destroy()
+        app.destroy()
 
     def test_is_open_reports_correctly(self):
         """is_open() correctly reports window state."""
@@ -498,10 +504,13 @@ class TestReadmeQuickStart:
         app.on("app:click", on_click)
 
         # Display HTML with toolbar
-        buttons = [{"label": "Update Text", "event": "app:click"}]
-        label = show_and_wait_ready(
-            app, "<h1>Hello, World!</h1>", buttons=buttons, toolbar_position="bottom"
-        )
+        toolbars = [
+            {
+                "position": "bottom",
+                "items": [{"type": "button", "label": "Update Text", "event": "app:click"}],
+            }
+        ]
+        label = show_and_wait_ready(app, "<h1>Hello, World!</h1>", toolbars=toolbars)
 
         # Verify content rendered
         result = wait_for_result(
@@ -526,8 +535,12 @@ class TestReadmeQuickStart:
         label2 = show_and_wait_ready(
             app,
             "<div id='chart'>Chart Content</div>",
-            buttons=[{"label": "Custom Action", "event": "app:custom"}],
-            toolbar_position="left",
+            toolbars=[
+                {
+                    "position": "left",
+                    "items": [{"type": "button", "label": "Custom Action", "event": "app:custom"}],
+                }
+            ],
         )
 
         assert label == label2, "SINGLE_WINDOW should reuse same label"

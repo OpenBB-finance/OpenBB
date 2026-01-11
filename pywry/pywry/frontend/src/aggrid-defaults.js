@@ -77,6 +77,172 @@ window.PYWRY_AGGRID_DEFAULT_COL_DEF = {
 };
 
 /**
+ * Format numbers intelligently:
+ * - Large integers with trailing zeros → K/M/B (75000 → "75K")
+ * - Large integers without trailing zeros → commas (75123 → "75,123")
+ * - Small decimals (< 1) → preserve full precision, no truncation
+ * - Very small numbers (many leading zeros) → scientific notation
+ * - Regular decimals → preserve full precision
+ * 
+ * @param {number} value - The number to format
+ * @returns {string} Formatted number string
+ */
+window.PYWRY_FORMAT_NUMBER = function(value) {
+    if (value == null || isNaN(value)) return '';
+    
+    var absValue = Math.abs(value);
+    
+    // Very small numbers (with many leading zeros after decimal) → scientific notation
+    // e.g., 0.00000123 → "1.23e-6"
+    if (absValue > 0 && absValue < 0.0001) {
+        return value.toExponential();
+    }
+    
+    // Small decimals (< 1) or any non-integer → preserve full precision
+    if (!Number.isInteger(value)) {
+        // Convert to string to preserve all significant digits
+        // JavaScript's toString() preserves precision better than toLocaleString for decimals
+        var str = value.toString();
+        // If it's a reasonable length, return as-is
+        if (str.length <= 20) {
+            return str;
+        }
+        // For very long decimals, use toPrecision
+        return value.toPrecision(15).replace(/\.?0+$/, '');
+    }
+    
+    // From here, we're dealing with integers only
+    var sign = value < 0 ? '-' : '';
+    
+    // Billions (1,000,000,000+)
+    if (absValue >= 1e9) {
+        // Only abbreviate if cleanly divisible (trailing zeros)
+        if (absValue % 1e8 === 0) {
+            var billions = absValue / 1e9;
+            return sign + (billions % 1 === 0 ? billions.toFixed(0) : billions.toFixed(1)) + 'B';
+        }
+    }
+    
+    // Millions (1,000,000+)
+    if (absValue >= 1e6) {
+        if (absValue % 1e5 === 0) {
+            var millions = absValue / 1e6;
+            return sign + (millions % 1 === 0 ? millions.toFixed(0) : millions.toFixed(1)) + 'M';
+        }
+    }
+    
+    // Thousands (10,000+) - only abbreviate if cleanly divisible
+    if (absValue >= 1e4) {
+        if (absValue % 1e3 === 0) {
+            return sign + (absValue / 1e3).toFixed(0) + 'K';
+        }
+        // For numbers like 75,500 -> 75.5K (divisible by 100)
+        if (absValue % 100 === 0) {
+            var thousands = absValue / 1e3;
+            return sign + thousands.toFixed(1).replace(/\.0$/, '') + 'K';
+        }
+    }
+    
+    // Default for integers: use locale string for comma separators
+    return value.toLocaleString();
+};
+
+/**
+ * Process column definitions to convert string expressions to functions.
+ * AG Grid requires valueGetter, valueFormatter, etc. to be functions.
+ * 
+ * @param {Array} columnDefs - Array of column definitions
+ * @returns {Array} Processed column definitions with functions
+ */
+window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
+    if (!columnDefs || !Array.isArray(columnDefs)) return columnDefs;
+    
+    console.log('[PyWry AG Grid] Processing', columnDefs.length, 'column defs');
+    
+    return columnDefs.map(function(colDef) {
+        var processed = Object.assign({}, colDef);
+        
+        // Convert valueGetter string to function
+        // Expression can use: params, data, node, colDef, column, api, columnApi, context
+        if (typeof processed.valueGetter === 'string') {
+            var getterExpr = processed.valueGetter;
+            console.log('[PyWry AG Grid] Converting valueGetter:', getterExpr);
+            processed.valueGetter = function(params) {
+                try {
+                    var data = params.data;
+                    var node = params.node;
+                    var colDef = params.colDef;
+                    var column = params.column;
+                    var api = params.api;
+                    var context = params.context;
+                    // Guard against undefined data (can happen during initial render)
+                    if (!data) return null;
+                    return eval(getterExpr);
+                } catch (e) {
+                    console.error('[PyWry AG Grid] valueGetter error:', e, 'Expression:', getterExpr, 'Data:', params.data);
+                    return null;
+                }
+            };
+        }
+        
+        // Convert valueFormatter string to function
+        // Expression can use: value, data, node, colDef, column, api, context
+        if (typeof processed.valueFormatter === 'string') {
+            var formatterExpr = processed.valueFormatter;
+            processed.valueFormatter = function(params) {
+                try {
+                    var value = params.value;
+                    var data = params.data;
+                    var node = params.node;
+                    var colDef = params.colDef;
+                    var column = params.column;
+                    var api = params.api;
+                    var context = params.context;
+                    if (value === null || value === undefined) return '';
+                    return eval(formatterExpr);
+                } catch (e) {
+                    console.error('[PyWry AG Grid] valueFormatter error:', e, 'Expression:', formatterExpr, 'Value:', params.value);
+                    return String(params.value);
+                }
+            };
+        }
+        
+        // Auto-apply number formatter for number columns without custom formatter
+        // This formats large numbers as 75K, 1.5M, etc.
+        if (!processed.valueFormatter && processed.cellDataType === 'number') {
+            processed.valueFormatter = function(params) {
+                if (params.value === null || params.value === undefined) return '';
+                return window.PYWRY_FORMAT_NUMBER(params.value);
+            };
+        }
+        
+        // Convert valueSetter string to function
+        if (typeof processed.valueSetter === 'string') {
+            var setterExpr = processed.valueSetter;
+            processed.valueSetter = function(params) {
+                try {
+                    var newValue = params.newValue;
+                    var oldValue = params.oldValue;
+                    var data = params.data;
+                    var node = params.node;
+                    return eval(setterExpr);
+                } catch (e) {
+                    console.error('[PyWry AG Grid] valueSetter error:', e);
+                    return false;
+                }
+            };
+        }
+        
+        // Recursively process children (for column groups)
+        if (processed.children && Array.isArray(processed.children)) {
+            processed.children = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(processed.children);
+        }
+        
+        return processed;
+    });
+};
+
+/**
  * Build complete grid options from config.
  * 
  * @param {Object} config - Grid configuration (columnDefs, rowData, etc.)
@@ -89,19 +255,97 @@ window.PYWRY_AGGRID_BUILD_OPTIONS = function(config, gridId) {
     console.log('[PyWry AG Grid ' + id + '] Building options with defaults');
     console.log('[PyWry AG Grid ' + id + '] defaultColDef:', window.PYWRY_AGGRID_DEFAULT_COL_DEF);
     
+    // Determine row count for pagination decisions
+    var rowCount = (config.rowData && config.rowData.length) || 0;
+    
+    // Server-side mode: data stays in Python, JS only has metadata
+    // Used when dataset is too large for browser memory
+    // Enables filtering/sorting on full dataset even when truncated
+    var serverSideConfig = config.serverSide;
+    var isServerSide = serverSideConfig && typeof serverSideConfig === 'object';
+    
+    if (isServerSide) {
+        var totalRows = serverSideConfig.totalRows || 0;
+        console.info('[PyWry AG Grid ' + id + '] Using Server-Side filtering for ' + 
+            totalRows.toLocaleString() + ' rows (data in Python memory)');
+        return window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS(config, id, serverSideConfig);
+    }
+    
+    // Browser memory limit - AG Grid renders fine but data must fit in memory
+    var MAX_SAFE_ROWS = 100000;  // 100k rows
+    
+    // Handle large datasets - truncate to protect browser memory
+    var rowData = config.rowData;
+    var truncatedRows = 0;
+    
+    if (rowCount > MAX_SAFE_ROWS) {
+        console.warn('[PyWry AG Grid ' + id + '] Dataset has ' + rowCount + 
+            ' rows, truncating to ' + MAX_SAFE_ROWS + ' to prevent browser memory issues. ' +
+            'Use server_side=True for full filtering capability.');
+        rowData = config.rowData.slice(0, MAX_SAFE_ROWS);
+        truncatedRows = rowCount - MAX_SAFE_ROWS;
+        rowCount = MAX_SAFE_ROWS;
+    }
+    
+    // Standard client-side row model with pagination
+    return window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS(config, id, rowData, rowCount, truncatedRows);
+};
+
+/**
+ * Build options for standard client-side row model.
+ * Best for datasets under 100K rows.
+ */
+window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCount, truncatedRows) {
+    var LARGE_DATASET_THRESHOLD = 10000;
+    
+    // Pagination logic:
+    // - If config.pagination === true: always enable
+    // - If config.pagination === false: always disable  
+    // - If config.pagination is undefined/null: auto-enable for >10 rows
+    var usePagination;
+    if (config.pagination === true) {
+        usePagination = true;
+    } else if (config.pagination === false) {
+        usePagination = false;
+    } else {
+        // Auto-decide: enable for datasets > 10 rows
+        usePagination = rowCount > 10;
+    }
+    
+    // For large datasets, adjust page size selector to prevent loading too many rows at once
+    var pageSizeSelector;
+    if (rowCount > LARGE_DATASET_THRESHOLD) {
+        // Limit max visible rows for large datasets
+        pageSizeSelector = [25, 50, 100, 250, 500];
+    } else if (rowCount > 1000) {
+        // Medium datasets get full range
+        pageSizeSelector = [10, 25, 50, 100, 250, 500, 1000];
+    } else {
+        // Small datasets - include "All" option
+        pageSizeSelector = [10, 25, 50, 100, rowCount];
+    }
+    
+    // Default page size based on dataset size
+    var defaultPageSize = config.paginationPageSize || 100;
+    
+    // Process column defs to convert string expressions to functions
+    var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
+    
     var options = {
-        columnDefs: config.columnDefs,
-        rowData: config.rowData,
+        columnDefs: processedColumnDefs,
+        rowData: rowData,
         rowSelection: config.rowSelection || 'multiple',
-        pagination: config.pagination !== false,
-        paginationPageSize: config.paginationPageSize || 100,
-        paginationAutoPageSize: false,
-        domLayout: config.domLayout || 'normal',  // 'normal' ensures grid uses internal scrollbars
+        pagination: usePagination,
+        paginationPageSize: defaultPageSize,
+        paginationPageSizeSelector: pageSizeSelector,
+        domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
         columnMenu: 'new',
         suppressMenuHide: true,
         enableCellTextSelection: true,
         ensureDomOrder: true,
+        // Row spanning support (AG Grid v32+)
+        enableCellSpan: config.enableCellSpan || false,
 
         onCellClicked: function(event) {
             if (window.pywry && window.pywry.emit) {
@@ -121,13 +365,314 @@ window.PYWRY_AGGRID_BUILD_OPTIONS = function(config, gridId) {
             }
         },
         onGridReady: function(event) {
-            console.log('[PyWry AG Grid ' + id + '] Grid ready!');
-            // Auto-size columns to fit content
+            console.log('[PyWry AG Grid ' + id + '] Grid ready (client-side)!');
             event.api.autoSizeAllColumns();
+            
+            if (truncatedRows > 0 && window.pywry && window.pywry.emit) {
+                window.pywry.emit('data_truncated', {
+                    gridId: id,
+                    displayedRows: rowCount,
+                    truncatedRows: truncatedRows,
+                    message: 'Dataset truncated: showing ' + rowCount.toLocaleString() + 
+                             ' of ' + (rowCount + truncatedRows).toLocaleString() + ' rows'
+                });
+            }
         }
     };
     
-    console.log('[PyWry AG Grid ' + id + '] Final options:', Object.keys(options));
+    console.log('[PyWry AG Grid ' + id + '] Built client-side options');
+    return options;
+};
+
+/**
+ * Build options for Server-Side IPC Row Model.
+ * Data stays in Python, JS only has metadata. Python handles sort/filter.
+ * Uses Infinite Row Model with virtual scrolling (no pagination UI).
+ * 
+ * Config: { serverSide: { totalRows: N, blockSize: 100, ... }, columnDefs: [...] }
+ * 
+ * Events:
+ * - JS emits 'grid:request_page' with { gridId, startRow, endRow, sortModel, filterModel }
+ * - Python responds via 'grid:page_response' with { gridId, rows, totalRows, isLastPage }
+ * 
+ * @param {Object} config - Grid configuration
+ * @param {string} id - Grid ID
+ * @param {Object} serverConfig - Server-side config { totalRows, blockSize, ... }
+ */
+window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfig) {
+    var totalRows = serverConfig.totalRows || 0;
+    var blockSize = serverConfig.blockSize || 500;  // Rows per block for infinite scroll
+    var currentFilteredTotal = totalRows;
+    
+    // Pending requests
+    var pendingRequests = {};
+    var requestCounter = 0;
+    
+    // Store grid API for later use
+    var gridApiRef = null;
+    
+    // Set up listener for page responses from Python
+    if (window.pywry && window.pywry.on) {
+        window.pywry.on('grid:page_response', function(response) {
+            if (response.gridId !== id) return;
+            
+            var requestId = response.requestId;
+            var pending = pendingRequests[requestId];
+            
+            if (pending) {
+                delete pendingRequests[requestId];
+                
+                if (response.error) {
+                    console.error('[PyWry AG Grid ' + id + '] Error fetching data:', response.error);
+                    pending.failCallback();
+                } else {
+                    // Update total if filtered
+                    if (response.totalRows !== undefined) {
+                        currentFilteredTotal = response.totalRows;
+                    }
+                    
+                    // lastRow tells grid total size (-1 = unknown/more data)
+                    var lastRow = response.isLastPage ? currentFilteredTotal : -1;
+                    pending.successCallback(response.rows, lastRow);
+                }
+            }
+        });
+    }
+    
+    // Datasource that requests data blocks from Python
+    var datasource = {
+        getRows: function(params) {
+            var requestId = 'req_' + (++requestCounter);
+            var startRow = params.startRow;
+            var endRow = params.endRow;
+            
+            console.log('[PyWry AG Grid ' + id + '] Requesting rows ' + startRow + '-' + endRow);
+            
+            // Store callbacks
+            pendingRequests[requestId] = {
+                successCallback: params.successCallback,
+                failCallback: params.failCallback
+            };
+            
+            // Request from Python with sort/filter state
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('grid:request_page', {
+                    gridId: id,
+                    requestId: requestId,
+                    startRow: startRow,
+                    endRow: endRow,
+                    sortModel: params.sortModel || [],
+                    filterModel: params.filterModel || {}
+                });
+            } else {
+                console.error('[PyWry AG Grid ' + id + '] pywry.emit not available!');
+                params.failCallback();
+                delete pendingRequests[requestId];
+            }
+            
+            // Timeout fallback
+            setTimeout(function() {
+                if (pendingRequests[requestId]) {
+                    console.warn('[PyWry AG Grid ' + id + '] Request ' + requestId + ' timed out');
+                    delete pendingRequests[requestId];
+                    params.failCallback();
+                }
+            }, 30000);
+        }
+    };
+    
+    // Process column defs to convert string expressions to functions
+    var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
+    
+    var options = {
+        columnDefs: processedColumnDefs,
+        rowModelType: 'infinite',
+        datasource: datasource,
+        cacheBlockSize: blockSize,
+        cacheOverflowSize: 2,
+        maxConcurrentDatasourceRequests: 1,
+        maxBlocksInCache: 20,
+        infiniteInitialRowCount: Math.min(blockSize, totalRows),
+        
+        // NO pagination - use infinite scroll only
+        // AG Grid's pagination UI doesn't work properly with infinite row model
+        pagination: false,
+        
+        rowSelection: config.rowSelection || 'multiple',
+        domLayout: config.domLayout || 'normal',
+        defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
+        columnMenu: 'new',
+        suppressMenuHide: true,
+        enableCellTextSelection: true,
+        ensureDomOrder: true,
+        
+        // Row ID for selection persistence
+        getRowId: function(params) {
+            return params.data && params.data.__rowId !== undefined 
+                ? String(params.data.__rowId) 
+                : (params.data && params.data.id !== undefined 
+                    ? String(params.data.id) 
+                    : String(params.rowIndex));
+        },
+
+        onCellClicked: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('cell_click', {
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    colId: event.column.getColId(),
+                    value: event.value,
+                    data: event.data
+                });
+            }
+        },
+        
+        onSelectionChanged: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                var selectedRows = event.api.getSelectedRows();
+                window.pywry.emit('row_selected', { gridId: id, rows: selectedRows });
+            }
+        },
+        
+        // When sort changes, need to refresh data from Python
+        onSortChanged: function(event) {
+            console.log('[PyWry AG Grid ' + id + '] Sort changed, refreshing...');
+            // Infinite model handles this automatically via datasource
+        },
+        
+        // When filter changes, need to refresh data from Python
+        onFilterChanged: function(event) {
+            console.log('[PyWry AG Grid ' + id + '] Filter changed, refreshing...');
+            // The datasource.getRows will be called automatically
+            // We also notify Python of the filter change
+            if (window.pywry && window.pywry.emit && gridApiRef) {
+                window.pywry.emit('grid:filter_changed', {
+                    gridId: id,
+                    filterModel: gridApiRef.getFilterModel()
+                });
+            }
+        },
+        
+        onGridReady: function(event) {
+            gridApiRef = event.api;
+            
+            console.log('[PyWry AG Grid ' + id + '] Grid ready (server-side IPC)!');
+            console.log('[PyWry AG Grid ' + id + '] Total rows: ' + totalRows.toLocaleString() + 
+                ', block size: ' + blockSize);
+            
+            // Auto-size columns after first block loads
+            setTimeout(function() {
+                event.api.autoSizeAllColumns();
+            }, 100);
+            
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('grid_mode', {
+                    gridId: id,
+                    mode: 'server-side',
+                    serverSide: true,
+                    totalRows: totalRows,
+                    blockSize: blockSize,
+                    message: 'Data in Python memory (' + totalRows.toLocaleString() + 
+                        ' rows). Use filters to narrow down results.'
+                });
+            }
+        }
+    };
+    
+    console.log('[PyWry AG Grid ' + id + '] Built server-side options for ' + 
+        totalRows.toLocaleString() + ' rows (block size: ' + blockSize + ')');
+    return options;
+};
+
+/**
+ * Build options for in-memory Infinite Row Model.
+ * Used when serverSide is not enabled but data is very large.
+ * Data is already in browser memory, just loaded in blocks to improve rendering.
+ * 
+ * @deprecated Use PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS for true lazy loading
+ */
+window.PYWRY_AGGRID_BUILD_INFINITE_OPTIONS = function(config, id, rowData, rowCount, truncatedRows) {
+    var totalRows = rowCount;
+    var blockSize = config.cacheBlockSize || 500;
+    var allData = rowData;
+    
+    // In-memory datasource
+    var datasource = {
+        rowCount: totalRows,
+        getRows: function(params) {
+            console.log('[PyWry AG Grid ' + id + '] Memory: rows ' + 
+                params.startRow + '-' + params.endRow);
+            
+            setTimeout(function() {
+                var rowsThisBlock = allData.slice(params.startRow, params.endRow);
+                var lastRow = params.endRow >= totalRows ? totalRows : -1;
+                params.successCallback(rowsThisBlock, lastRow);
+            }, 0);
+        }
+    };
+    
+    // Process column defs to convert string expressions to functions
+    var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
+    
+    var options = {
+        columnDefs: processedColumnDefs,
+        rowModelType: 'infinite',
+        datasource: datasource,
+        cacheBlockSize: blockSize,
+        cacheOverflowSize: 2,
+        maxConcurrentDatasourceRequests: 2,
+        maxBlocksInCache: 20,
+        infiniteInitialRowCount: Math.min(1000, totalRows),
+        pagination: true,
+        paginationPageSize: 100,
+        paginationPageSizeSelector: [25, 50, 100, 250, 500],
+        rowSelection: config.rowSelection || 'multiple',
+        domLayout: config.domLayout || 'normal',
+        defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
+        columnMenu: 'new',
+        suppressMenuHide: true,
+        enableCellTextSelection: true,
+        ensureDomOrder: true,
+        
+        getRowId: function(params) {
+            return params.data && params.data.id !== undefined 
+                ? String(params.data.id) 
+                : String(params.rowIndex);
+        },
+
+        onCellClicked: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('cell_click', {
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    colId: event.column.getColId(),
+                    value: event.value,
+                    data: event.data
+                });
+            }
+        },
+        
+        onSelectionChanged: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                var selectedRows = event.api.getSelectedRows();
+                window.pywry.emit('row_selected', { gridId: id, rows: selectedRows });
+            }
+        },
+        
+        onGridReady: function(event) {
+            console.log('[PyWry AG Grid ' + id + '] Grid ready (infinite in-memory)!');
+            setTimeout(function() { event.api.autoSizeAllColumns(); }, 100);
+            
+            if (truncatedRows > 0 && window.pywry && window.pywry.emit) {
+                window.pywry.emit('data_truncated', {
+                    gridId: id,
+                    displayedRows: rowCount,
+                    truncatedRows: truncatedRows
+                });
+            }
+        }
+    };
+    
     return options;
 };
 
@@ -188,6 +733,40 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
 
     window.__PYWRY_GRIDS__[id].saveState = saveColumnState;
     window.__PYWRY_GRIDS__[id].restoreState = restoreColumnState;
+
+    // Handle explicit state request from Python (grid:request_state)
+    window.pywry.on('grid:request_state', function(data) {
+        if (data && (!data.gridId || data.gridId === id)) {
+            var state = saveColumnState();
+            if (state) {
+                state.gridId = id;
+                // Include any request correlation data
+                if (data.requestId) state.requestId = data.requestId;
+                if (data.context) state.context = data.context;
+                window.pywry.emit('grid:state_response', state);
+                console.log('[PyWry AG Grid ' + id + '] State sent to Python');
+            }
+        }
+    });
+
+    window.pywry.on('pywry:update_cell', function(data) {
+        if (data && (!data.gridId || data.gridId === id)) {
+            var rowIndex = data.rowIndex;
+            var colId = data.colId;
+            var value = data.value;
+            
+            if (rowIndex != null && colId != null) {
+                var rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+                if (rowNode) {
+                    rowNode.setDataValue(colId, value);
+                    console.log('[PyWry AG Grid ' + id + '] Cell updated: row=' + rowIndex + ', col=' + colId + ', value=' + value);
+                } else {
+                    console.warn('[PyWry AG Grid ' + id + '] Row not found at index:', rowIndex);
+                }
+            }
+        }
+    });
+
     window.pywry.on('pywry:update_rows', function(data) {
 
         if (data && data.rows && (!data.gridId || data.gridId === id)) {
@@ -199,7 +778,8 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
     window.pywry.on('pywry:update_columns', function(data) {
         if (data && data.columnDefs && (!data.gridId || data.gridId === id)) {
             var savedState = data.preserveState !== false ? saveColumnState() : null;
-            gridApi.setGridOption('columnDefs', data.columnDefs);
+            var processedCols = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(data.columnDefs);
+            gridApi.setGridOption('columnDefs', processedCols);
             if (savedState && data.preserveState !== false) {
                 setTimeout(function() { restoreColumnState(savedState); }, 0);
             }
@@ -207,20 +787,97 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
         }
     });
 
+    // Apply saved state directly to column definitions (bakes state into config)
+    function applyStateToColumnDefs(columnDefs, state) {
+        if (!state || !state.columnState || !columnDefs) {
+            console.log('[PyWry AG Grid ' + id + '] applyStateToColumnDefs: no state or columnDefs');
+            return columnDefs;
+        }
+        
+        console.log('[PyWry AG Grid ' + id + '] applyStateToColumnDefs:');
+        console.log('  columnDefs:', columnDefs.map(function(c) { return c.field || c.colId; }));
+        console.log('  state.columnState:', state.columnState.map(function(c) { return c.colId; }));
+        
+        // Create lookup from state by colId
+        var stateMap = {};
+        state.columnState.forEach(function(cs) {
+            stateMap[cs.colId] = cs;
+        });
+        
+        // Apply state properties to matching column defs
+        var orderedCols = [];
+        var unorderedCols = [];
+        
+        columnDefs.forEach(function(colDef) {
+            var colId = colDef.field || colDef.colId;
+            var savedState = stateMap[colId];
+            
+            if (savedState) {
+                // Apply saved properties to column def
+                if (savedState.width != null) colDef.width = savedState.width;
+                if (savedState.hide != null) colDef.hide = savedState.hide;
+                if (savedState.pinned != null) colDef.pinned = savedState.pinned;
+                if (savedState.sort != null) colDef.sort = savedState.sort;
+                if (savedState.sortIndex != null) colDef.sortIndex = savedState.sortIndex;
+                
+                // Track order from state
+                colDef._stateOrder = state.columnState.findIndex(function(cs) {
+                    return cs.colId === colId;
+                });
+                orderedCols.push(colDef);
+            } else {
+                console.log('[PyWry AG Grid ' + id + '] No saved state for column:', colId);
+                unorderedCols.push(colDef);
+            }
+        });
+        
+        // Sort by saved order, then append any new columns
+        orderedCols.sort(function(a, b) { return a._stateOrder - b._stateOrder; });
+        orderedCols.forEach(function(c) { delete c._stateOrder; });
+        
+        var result = orderedCols.concat(unorderedCols);
+        console.log('[PyWry AG Grid ' + id + '] Final column order:', result.map(function(c) { return c.field || c.colId; }));
+        
+        return result;
+    }
+
     window.pywry.on('pywry:update_grid', function(data) {
         if (data && (!data.gridId || data.gridId === id)) {
-            var savedState = data.preserveState !== false ? saveColumnState() : null;
+            var columnDefs = data.columnDefs;
+            var stateToApply = data.restoreState;
             
-            if (data.columnDefs) {
-                gridApi.setGridOption('columnDefs', data.columnDefs);
+            console.log('[PyWry AG Grid ' + id + '] update_grid received');
+            console.log('  has columnDefs:', !!columnDefs, columnDefs ? columnDefs.length : 0);
+            console.log('  has restoreState:', !!stateToApply);
+            
+            if (columnDefs) {
+                var processedCols = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(columnDefs);
+                gridApi.setGridOption('columnDefs', processedCols);
+                console.log('[PyWry AG Grid ' + id + '] Set columnDefs');
             }
             if (data.rows) {
                 gridApi.setGridOption('rowData', data.rows);
+                console.log('[PyWry AG Grid ' + id + '] Set rowData:', data.rows.length, 'rows');
             }
             
-            if (savedState && data.preserveState !== false) {
-                setTimeout(function() { restoreColumnState(savedState); }, 0);
+            // Apply column state AFTER setting columnDefs (AG Grid needs this for column order)
+            if (stateToApply && stateToApply.columnState) {
+                // Use setTimeout to ensure columnDefs are applied first
+                setTimeout(function() {
+                    console.log('[PyWry AG Grid ' + id + '] Applying columnState:', stateToApply.columnState.map(function(c) { return c.colId; }));
+                    if (gridApi.applyColumnState) {
+                        gridApi.applyColumnState({
+                            state: stateToApply.columnState,
+                            applyOrder: true
+                        });
+                        console.log('[PyWry AG Grid ' + id + '] applyColumnState done');
+                    }
+                    if (stateToApply.filterModel && gridApi.setFilterModel) {
+                        gridApi.setFilterModel(stateToApply.filterModel);
+                    }
+                }, 0);
             }
+            
             console.log('[PyWry AG Grid ' + id + '] Grid fully updated');
         }
     });
@@ -337,8 +994,9 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
      */
     _getMenuStyles: function() {
         // Core positioning and layout - no colors here, colors come from CSS vars
+        // Use position:absolute - will be positioned relative to container
         var styles = [
-            'position: fixed',
+            'position: absolute',
             'z-index: 2147483647',
             'min-width: 200px',
             'max-width: 300px',
@@ -472,7 +1130,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         var list = document.createElement('div');
         list.className = 'ag-menu-list pywry-menu-list';
         list.setAttribute('role', 'tree');
-        list.style.cssText = 'padding: 4px 0; max-height: 400px; overflow-y: auto;';
+        list.style.cssText = 'padding: 4px 0;';
         
         items.forEach(function(item) {
             var menuItem = self._createMenuItem(item, context, submenu);
@@ -481,28 +1139,67 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         
         submenu.appendChild(list);
 
+        // Append to wrapper (which is inside the widget container)
         if (this._currentMenu) {
             this._currentMenu.appendChild(submenu);
         } else {
             document.body.appendChild(submenu);
         }
 
-        var viewportWidth = window.innerWidth;
-        var viewportHeight = window.innerHeight;
-        var subRect = submenu.getBoundingClientRect();
-
-        if (x + subRect.width > viewportWidth) {
-            var parentRect = parentMenu ? parentMenu.getBoundingClientRect() : { left: x };
-            x = parentRect.left - subRect.width + 4;
+        // Use stored container bounds for positioning
+        var containerRect = this._containerRect;
+        if (!containerRect && this._container) {
+            containerRect = this._container.getBoundingClientRect();
         }
-
-        if (y + subRect.height > viewportHeight) {
-            y = viewportHeight - subRect.height - 5;
+        if (!containerRect) {
+            containerRect = { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
         }
-        if (y < 5) y = 5;
         
-        submenu.style.left = x + 'px';
-        submenu.style.top = y + 'px';
+        var subRect = submenu.getBoundingClientRect();
+        var parentRect = parentMenu ? parentMenu.getBoundingClientRect() : { left: x, right: x, top: y };
+
+        // Convert to container-relative coordinates
+        var parentRelLeft = parentRect.left - containerRect.left;
+        var parentRelRight = parentRect.right - containerRect.left;
+        var relY = y - containerRect.top;
+        
+        var containerWidth = containerRect.width;
+        var containerHeight = containerRect.height;
+        
+        // Calculate available space within container
+        var spaceRight = containerWidth - parentRelRight;
+        var spaceLeft = parentRelLeft;
+        var spaceBelow = containerHeight - relY;
+        var spaceAbove = relY;
+        
+        // Constrain height if needed
+        var availableHeight = Math.max(spaceBelow, spaceAbove) - 10;
+        if (subRect.height > availableHeight && availableHeight > 100) {
+            list.style.maxHeight = availableHeight + 'px';
+            list.style.overflowY = 'auto';
+            subRect = submenu.getBoundingClientRect();
+        }
+
+        // Position horizontally within container
+        var finalX;
+        if (spaceRight >= subRect.width) {
+            finalX = parentRelRight - 4;
+        } else if (spaceLeft >= subRect.width) {
+            finalX = parentRelLeft - subRect.width + 4;
+        } else {
+            finalX = containerWidth - subRect.width - 5;
+        }
+        finalX = Math.max(5, finalX);
+
+        // Position vertically within container
+        var finalY = relY;
+        if (finalY + subRect.height > containerHeight - 5) {
+            finalY = containerHeight - subRect.height - 5;
+        }
+        finalY = Math.max(5, finalY);
+        
+        submenu.style.left = finalX + 'px';
+        submenu.style.top = finalY + 'px';
         this._activeSubmenus.push(submenu);
         submenu.addEventListener('mouseenter', function() {
             // Don't hide
@@ -513,25 +1210,48 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
     
     /**
      * Show context menu at position
-     * @param {number} x - X coordinate
-     * @param {number} y - Y coordinate
+     * @param {number} x - X coordinate (clientX from event)
+     * @param {number} y - Y coordinate (clientY from event)
      * @param {Array} items - Menu items [{label, icon?, action?, disabled?, separator?, submenu?}]
      * @param {Object} context - Context object passed to action callbacks
-     * @param {HTMLElement} container - Optional container element for positioning context
+     * @param {HTMLElement} container - Container element (grid div) for positioning
      */
     show: function(x, y, items, context, container) {
         this.hide();
         var self = this;
-        var containerRect = null;
-        if (container) {
-            containerRect = container.getBoundingClientRect();
+        
+        // Find the pywry-widget container for proper positioning
+        var widgetContainer = container;
+        while (widgetContainer && !widgetContainer.classList.contains('pywry-widget')) {
+            widgetContainer = widgetContainer.parentElement;
         }
+        // Fallback to the grid container if no pywry-widget found
+        if (!widgetContainer) {
+            widgetContainer = container;
+        }
+        
+        // Ensure container has position for absolute children
+        var containerStyle = window.getComputedStyle(widgetContainer);
+        if (containerStyle.position === 'static') {
+            widgetContainer.style.position = 'relative';
+        }
+        
+        // Get container bounds
+        var containerRect = widgetContainer.getBoundingClientRect();
+        
+        // Convert click coordinates to container-relative
+        var relX = x - containerRect.left;
+        var relY = y - containerRect.top;
+        
+        // Create wrapper inside the widget container
         var wrapper = document.createElement('div');
         wrapper.className = 'pywry-context-menu-wrapper ' + this._themeClass;
-        wrapper.style.cssText = 'position:fixed;top:0;left:0;width:0;height:0;z-index:2147483647;pointer-events:none;';
+        wrapper.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:2147483647;pointer-events:none;overflow:visible;';
+        
         var menu = document.createElement('div');
         menu.className = 'ag-popup ag-menu ag-ltr ag-popup-child pywry-context-menu';
         menu.style.cssText = this._getMenuStyles();
+        
         var list = document.createElement('div');
         list.className = 'ag-menu-list pywry-menu-list';
         list.setAttribute('role', 'tree');
@@ -541,36 +1261,63 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         });
         menu.appendChild(list);
         wrapper.appendChild(menu);
-        document.body.appendChild(wrapper);
+        widgetContainer.appendChild(wrapper);
+        
+        // Store reference for positioning submenus
+        this._container = widgetContainer;
+        this._containerRect = containerRect;
+        
+        // Set padding first, measure natural height
+        list.style.cssText = 'padding: 4px 0;';
         var menuRect = menu.getBoundingClientRect();
-        var viewportWidth = window.innerWidth;
-        var viewportHeight = window.innerHeight;
-        var maxBottom = viewportHeight;
-        var maxRight = viewportWidth;
-        if (containerRect) {
-            maxBottom = Math.min(viewportHeight, containerRect.bottom);
-            maxRight = Math.min(viewportWidth, containerRect.right);
+        var menuWidth = menuRect.width;
+        var menuHeight = menuRect.height;
+        
+        // Available space within container from click point
+        var containerWidth = containerRect.width;
+        var containerHeight = containerRect.height;
+        var spaceBelow = containerHeight - relY;
+        var spaceAbove = relY;
+        var spaceRight = containerWidth - relX;
+        var spaceLeft = relX;
+        
+        // Determine if we need to constrain height and add scrolling
+        var preferBelow = spaceBelow >= spaceAbove;
+        var availableHeight = preferBelow ? spaceBelow : spaceAbove;
+        var maxMenuHeight = availableHeight - 10;
+        
+        if (menuHeight > maxMenuHeight && maxMenuHeight > 100) {
+            list.style.maxHeight = maxMenuHeight + 'px';
+            list.style.overflowY = 'auto';
+            menuRect = menu.getBoundingClientRect();
+            menuHeight = menuRect.height;
         }
-        var spaceBelow = maxBottom - y;
-        var spaceAbove = y - (containerRect ? containerRect.top : 0);
-        var maxMenuHeight = Math.max(spaceBelow, spaceAbove) - 10;
-        list.style.cssText = 'padding: 4px 0; max-height: ' + maxMenuHeight + 'px; overflow-y: auto;';
-        menuRect = menu.getBoundingClientRect();
 
-        if (menuRect.height > spaceBelow && spaceAbove > spaceBelow) {
-            y = Math.max(5, y - menuRect.height);
-        } else if (y + menuRect.height > maxBottom) {
-            y = Math.max(5, maxBottom - menuRect.height - 5);
+        // Position vertically within container
+        var finalY;
+        if (preferBelow) {
+            finalY = relY;
+            if (finalY + menuHeight > containerHeight - 5) {
+                finalY = containerHeight - menuHeight - 5;
+            }
+        } else {
+            finalY = relY - menuHeight;
         }
+        finalY = Math.max(5, Math.min(finalY, containerHeight - menuHeight - 5));
         
-        if (x + menuRect.width > maxRight) {
-            x = Math.max(5, maxRight - menuRect.width - 5);
+        // Position horizontally within container
+        var finalX;
+        if (relX + menuWidth <= containerWidth - 5) {
+            finalX = relX;
+        } else if (spaceLeft >= menuWidth) {
+            finalX = relX - menuWidth;
+        } else {
+            finalX = containerWidth - menuWidth - 5;
         }
-        if (x < 5) x = 5;
-        if (y < 5) y = 5;
+        finalX = Math.max(5, finalX);
         
-        menu.style.left = x + 'px';
-        menu.style.top = y + 'px';
+        menu.style.left = finalX + 'px';
+        menu.style.top = finalY + 'px';
         this._currentMenu = wrapper;
 
         var closeHandler = function(e) {

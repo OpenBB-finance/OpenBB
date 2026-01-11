@@ -264,6 +264,52 @@ def _wrap_content_with_toolbar(content: str, toolbar_html: str, position: str) -
     return wrappers.get(position, content)
 
 
+def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None, _mode: Any) -> str:
+    """Wrap content HTML with multiple toolbars based on their positions.
+
+    Parameters
+    ----------
+    content : str
+        The main content HTML.
+    toolbars : list[Toolbar | dict] | None
+        List of toolbar configurations (Toolbar models or dicts).
+    _mode : ThemeMode
+        Theme mode for rendering toolbars (unused, kept for backwards compatibility).
+
+    Returns
+    -------
+    str
+        Wrapped HTML with toolbars in correct positions.
+    """
+    if not toolbars:
+        return content
+
+    from .toolbar import build_toolbars_by_position
+
+    # Use centralized function that handles both Toolbar models and dicts
+    by_pos = build_toolbars_by_position(toolbars)
+
+    # Wrap content with toolbars in correct order
+    if by_pos["inside"]:
+        content = f"<div class='pywry-wrapper-inside'>{by_pos['inside']}{content}</div>"
+    if by_pos["left"] or by_pos["right"]:
+        content = (
+            f"<div class='pywry-wrapper-left'>{by_pos['left']}"
+            f"<div class='pywry-content'>{content}</div>"
+            f"{by_pos['right']}</div>"
+        )
+    if by_pos["top"] or by_pos["bottom"]:
+        # Use wrapper-top if top toolbars exist, else wrapper-bottom
+        wrapper_class = "pywry-wrapper-top" if by_pos["top"] else "pywry-wrapper-bottom"
+        content = (
+            f"<div class='{wrapper_class}'>{by_pos['top']}"
+            f"<div class='pywry-content'>{content}</div>"
+            f"{by_pos['bottom']}</div>"
+        )
+
+    return content
+
+
 def create_plotly_widget(  # pylint: disable=too-many-branches
     figure_json: str,
     widget_id: str,
@@ -272,8 +318,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     width: str = "100%",
     height: int = 500,
     port: int | None = None,
-    buttons: list[dict] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[Any] | None = None,
 ) -> Any:
     """Create a Plotly widget using the best available backend.
 
@@ -297,10 +342,10 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
         Widget height in pixels.
     port : int, optional
         Server port (only for InlineWidget fallback).
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
-    toolbar_position : str
-        Toolbar position ("top", "bottom", "left", "right", "inside").
+    toolbars : list[Toolbar | dict], optional
+        List of toolbars. Each can be a Toolbar model or dict with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs (Button, Select, etc.)
 
     Returns
     -------
@@ -313,23 +358,18 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     use_anywidget = HAS_ANYWIDGET
     if use_anywidget:
         from . import inline
-        from .templates import ThemeMode, build_toolbar_html
+        from .templates import ThemeMode
         from .widget import PyWryPlotlyWidget
 
-        # Generate custom header with toolbar using shared template
-        toolbar_html = ""
-        if buttons:
-            mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
-            toolbar_html = build_toolbar_html(buttons, mode, toolbar_position)
+        mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
         # Generate HTML content for the widget (content only, not full document)
-        # This provides just the chart container div, no embedded scripts
         html = inline.generate_plotly_html(
-            figure_json, widget_id, title, theme, full_document=False, buttons=None
-        )  # Don't pass buttons to generate_plotly_html, we handle it here
+            figure_json, widget_id, title, theme, full_document=False, toolbars=None
+        )
 
-        # Inject toolbar based on position using helper
-        html = _wrap_content_with_toolbar(html, toolbar_html, toolbar_position)
+        # Inject toolbars using position-based layout
+        html = _wrap_content_with_toolbars(html, toolbars, mode)
 
         return PyWryPlotlyWidget(
             content=html,
@@ -343,9 +383,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     from . import inline
 
     # Let generate_plotly_html handle toolbar injection for IFrame
-    html = inline.generate_plotly_html(
-        figure_json, widget_id, title, theme, buttons=buttons, toolbar_position=toolbar_position
-    )
+    html = inline.generate_plotly_html(figure_json, widget_id, title, theme, toolbars=toolbars)
 
     return inline.InlineWidget(
         html=html,
@@ -407,8 +445,7 @@ def _make_grid_export_handler(widget: Any) -> Any:
 
 
 def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-arguments
-    row_data: list[dict],
-    columns: list[str],
+    config: Any,  # GridConfig from grid.py
     widget_id: str,
     title: str = "PyWry",
     theme: str = "dark",
@@ -416,9 +453,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
     width: str = "100%",
     height: int = 500,
     header_html: str = "",
-    grid_options: dict | None = None,
-    buttons: list[dict] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[Any] | None = None,
     port: int | None = None,
 ) -> Any:
     """Create a DataFrame/AG Grid widget using the best available backend.
@@ -429,10 +464,8 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
 
     Parameters
     ----------
-    row_data : list[dict]
-        Table data as list of row dictionaries.
-    columns : list[str]
-        Column names.
+    config : GridConfig
+        Unified grid configuration from grid.build_grid_config().
     widget_id : str
         Unique widget identifier.
     title : str
@@ -447,12 +480,10 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         Widget height in pixels.
     header_html : str
         Custom HTML for header section.
-    grid_options : dict, optional
-        Custom AG Grid options.
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
-    toolbar_position : str
-        Toolbar position ("top", "bottom", "left", "right", "inside").
+    toolbars : list[Toolbar | dict], optional
+        List of toolbars. Each can be a Toolbar model or dict with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs (Button, Select, etc.)
     port : int, optional
         Server port (only for InlineWidget fallback).
 
@@ -462,13 +493,10 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         Widget instance implementing BaseWidget protocol.
     """
     from . import inline
-    from .templates import ThemeMode, build_toolbar_html
+    from .grid import to_js_grid_config
+    from .templates import ThemeMode
 
-    # Prepare toolbar if needed
-    toolbar_html = ""
-    if buttons:
-        mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
-        toolbar_html = build_toolbar_html(buttons, mode, toolbar_position)
+    mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
     # Use anywidget when available for better performance
     from .widget import HAS_ANYWIDGET
@@ -480,50 +508,17 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
 
         from .widget import PyWryAgGridWidget
 
-        # NOTE: header_html is ignored effectively if we rewrite using toolbar_position logic below
-        # Or we should append header_html to toolbar?
-        # Ideally, flexible layout replaces simple header prepend.
-
-        # Grid config - just the data, defaults come from aggrid-defaults.js
-        grid_config = {
-            "columnDefs": [{"field": col} for col in columns],
-            "rowData": row_data,
-            "domLayout": "normal",
-        }
-        # Merge/Override with provided options
-        if grid_options:
-            grid_config.update(grid_options)
-            if "rowData" not in grid_config:
-                grid_config["rowData"] = row_data
+        # Convert GridConfig to JS-consumable dict
+        js_config = to_js_grid_config(config)
 
         # Construct content HTML for the widget
         grid_html = '<div id="grid" class="pywry-grid" style="height: 100%; width: 100%;"></div>'
 
-        # Layout logic
-        content_html = grid_html
-        if toolbar_html:
-            # NOTE: We do NOT wrap the content in a flex container for AnyWidget
-            # because AnyWidget handles the container size.
-            # Instead, we just stack them blocks, but give the grid correct height usage.
-            # Actually, standard flex usage is safer, but we must ensure the grid div behaves.
+        # Use new multi-toolbar wrapping
+        content_html = _wrap_content_with_toolbars(grid_html, toolbars, mode)
 
-            if toolbar_position == "bottom":
-                # Fixed height for toolbar, flex-grow for grid content
-                content_html = f"<div class='pywry-wrapper-bottom' style='height: 100%; display: flex; flex-direction: column;'><div class='pywry-content' style='flex: 1; min-height: 0;'>{grid_html}</div><div style='flex: 0 0 auto;'>{toolbar_html}</div></div>"
-            elif toolbar_position == "top":
-                content_html = f"<div class='pywry-wrapper-top' style='height: 100%; display: flex; flex-direction: column;'><div style='flex: 0 0 auto;'>{toolbar_html}</div><div class='pywry-content' style='flex: 1; min-height: 0;'>{grid_html}</div></div>"
-            elif toolbar_position == "left":
-                content_html = f"<div class='pywry-wrapper-left' style='height: 100%; display: flex; flex-direction: row;'><div style='flex: 0 0 auto;'>{toolbar_html}</div><div class='pywry-content' style='flex: 1; min-width: 0;'>{grid_html}</div></div>"
-            elif toolbar_position == "right":
-                content_html = f"<div class='pywry-wrapper-right' style='height: 100%; display: flex; flex-direction: row;'><div class='pywry-content' style='flex: 1; min-width: 0;'>{grid_html}</div><div style='flex: 0 0 auto;'>{toolbar_html}</div></div>"
-            elif toolbar_position == "inside":
-                # Use relative container for grid and absolute toolbar
-                content_html = f"<div class='pywry-wrapper-inside' style='position: relative; height: 100%; width: 100%;'>{toolbar_html}{grid_html}</div>"
-
-        # If header_html exists and wasn't toolbar, prepend/append?
-        # User only asked to support buttons model position. header_html is legacy param here.
-        if header_html and not buttons:
-            # Prepend if no buttons (legacy behavior)
+        # If header_html exists and wasn't toolbar, prepend (legacy behavior)
+        if header_html and not toolbars:
             content_html = f"<div style='display: flex; flex-direction: column; height: 100%; width: 100%;'>{header_html}{grid_html}</div>"
 
         return PyWryAgGridWidget(
@@ -532,22 +527,19 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
             aggrid_theme=aggrid_theme,
             width=width,
             height=f"{height}px" if isinstance(height, int) else height,
-            grid_config=json.dumps(grid_config),
+            grid_config=json.dumps(js_config),
         )
 
     # Fallback to InlineWidget
-    # Pass buttons and toolbar_position to generate_dataframe_html - it handles layout natively
-    html = inline.generate_dataframe_html(
-        row_data,
-        columns,
-        widget_id,
-        title,
-        theme,
-        aggrid_theme,
-        header_html,
-        grid_options=grid_options,
-        buttons=buttons,
-        toolbar_position=toolbar_position,
+    # Use the grid config directly
+    html = inline.generate_dataframe_html_from_config(
+        config=config,
+        widget_id=widget_id,
+        title=title,
+        theme=theme,
+        aggrid_theme=aggrid_theme,
+        header_html=header_html,
+        toolbars=toolbars,
     )
 
     widget = inline.InlineWidget(

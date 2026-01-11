@@ -23,6 +23,8 @@ from typing import TYPE_CHECKING, Any, Literal
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable
 
+    from .grid import GridConfig
+
     try:
         from plotly.graph_objects import Figure
 
@@ -135,11 +137,6 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
                 console.log('[PyWry] Sending via WS:', msg);
             }}
             socket.send(JSON.stringify(msg));
-        }},
-
-        // emitButton - legacy support for IFrame mode (element arg ignored)
-        emitButton: function(el, type, data) {{
-            this.emit(type, data);
         }},
 
         // Register listener for events from Python
@@ -886,6 +883,29 @@ class InlineWidget:
         # Send update via Plotly.react (no page reload needed)
         self.emit("pywry:update_plotly", {"figure": fig_dict, "config": stored_config or {}})
 
+    def update_cell(self, row_index: int, col_id: str, value: Any) -> None:
+        """Update a single cell value in the grid.
+
+        This is more efficient than update_data() when changing just one cell,
+        as it uses AG Grid's transaction API to update in-place without
+        replacing the entire dataset.
+
+        Parameters
+        ----------
+        row_index : int
+            The row index (0-based) of the cell to update.
+        col_id : str
+            The column field name (colId) of the cell to update.
+        value : Any
+            The new value for the cell.
+
+        Examples
+        --------
+        >>> widget.update_cell(0, "price", 29.99)
+        >>> widget.update_cell(2, "status", "active")
+        """
+        self.emit("pywry:update_cell", {"rowIndex": row_index, "colId": col_id, "value": value})
+
     def update_data(self, data: Any) -> None:
         """Update the grid's row data.
 
@@ -927,6 +947,7 @@ class InlineWidget:
         data: Any = None,
         columns: list[dict[str, Any]] | None = None,
         preserve_state: bool = True,
+        restore_state: dict[str, Any] | None = None,
     ) -> None:
         """Update both row data and column definitions atomically.
 
@@ -939,27 +960,52 @@ class InlineWidget:
         preserve_state : bool, default True
             If True, preserve column visibility, pinning, width, and order
             for columns that exist in both old and new definitions.
+            Ignored if restore_state is provided.
+        restore_state : dict, optional
+            Explicit state to restore after updating. Use this when switching
+            between views with different column structures. The state should
+            have been saved from a previous view with the same columns.
 
         Examples
         --------
         >>> widget.update_grid(new_df, new_columns)
         >>> widget.update_grid(new_df, new_columns, preserve_state=False)  # Reset state
+        >>> widget.update_grid(
+        ...     new_df, new_columns, restore_state=saved_state
+        ... )  # Restore specific state
         """
         payload: dict[str, Any] = {"preserveState": preserve_state}
         if data is not None:
             payload["rows"] = self._normalize_data(data)
         if columns is not None:
             payload["columnDefs"] = columns
+        if restore_state is not None:
+            payload["restoreState"] = restore_state
         if payload:
             self.emit("pywry:update_grid", payload)
 
-    def save_state(self) -> None:
-        """Request the grid to save its current state.
+    def request_grid_state(self, context: dict[str, Any] | None = None) -> None:
+        """Request the grid's current state.
 
-        The grid will emit a 'grid_state_saved' event with the state data.
-        Register a callback for 'grid_state_saved' to receive the state.
+        The grid will emit a 'grid:state_response' event with the state data.
+        Register a callback for 'grid:state_response' to receive the state.
+
+        Parameters
+        ----------
+        context : dict, optional
+            Additional context to include in the response for correlation.
+
+        Examples
+        --------
+        >>> def on_state(data, event_type, label):
+        ...     print(f"Got state: {data}")
+        >>> widget.on("grid:state_response", on_state)
+        >>> widget.request_grid_state({"view": "current_view"})
         """
-        self.emit("pywry:save_state", {})
+        payload: dict[str, Any] = {}
+        if context:
+            payload["context"] = context
+        self.emit("grid:request_state", payload)
 
     def restore_state(self, state: dict[str, Any]) -> None:
         """Restore a previously saved grid state.
@@ -978,6 +1024,107 @@ class InlineWidget:
         and removes all filters.
         """
         self.emit("pywry:reset_state", {})
+
+    # =========================================================================
+    # Toolbar State Methods
+    # =========================================================================
+
+    def request_toolbar_state(
+        self, toolbar_id: str | None = None, context: dict[str, Any] | None = None
+    ) -> None:
+        """Request the current state of toolbar components.
+
+        The widget will emit a 'toolbar:state_response' event with the state data.
+        Register a callback for 'toolbar:state_response' to receive the state.
+
+        Parameters
+        ----------
+        toolbar_id : str, optional
+            Specific toolbar ID to query. If None, returns state of all toolbars.
+        context : dict, optional
+            Additional context to include in the response for correlation.
+
+        Examples
+        --------
+        >>> def on_state(data, event_type, label):
+        ...     print(f"Toolbar state: {data}")
+        >>> widget.on("toolbar:state_response", on_state)
+        >>> widget.request_toolbar_state()
+        """
+        payload: dict[str, Any] = {}
+        if toolbar_id:
+            payload["toolbarId"] = toolbar_id
+        if context:
+            payload["context"] = context
+        self.emit("toolbar:request_state", payload)
+
+    def get_toolbar_value(self, component_id: str, context: dict[str, Any] | None = None) -> None:
+        """Request the current value of a specific toolbar component.
+
+        The widget will emit a 'toolbar:state_response' event with the value.
+        Register a callback for 'toolbar:state_response' to receive it.
+
+        Parameters
+        ----------
+        component_id : str
+            The component_id of the toolbar item to query.
+        context : dict, optional
+            Additional context to include in the response.
+
+        Examples
+        --------
+        >>> def on_value(data, event_type, label):
+        ...     print(f"Component value: {data['value']}")
+        >>> widget.on("toolbar:state_response", on_value)
+        >>> widget.get_toolbar_value("my-select")
+        """
+        payload: dict[str, Any] = {"componentId": component_id}
+        if context:
+            payload["context"] = context
+        self.emit("toolbar:request_state", payload)
+
+    def set_toolbar_value(self, component_id: str, value: Any) -> None:
+        """Set the value of a specific toolbar component.
+
+        Parameters
+        ----------
+        component_id : str
+            The component_id of the toolbar item to update.
+        value : Any
+            The new value for the component.
+            - For Select: string value
+            - For MultiSelect: list of string values
+            - For TextInput: string
+            - For NumberInput/RangeInput: number
+            - For DateInput: string (YYYY-MM-DD format)
+
+        Examples
+        --------
+        >>> widget.set_toolbar_value("theme-select", "dark")
+        >>> widget.set_toolbar_value("columns-multiselect", ["name", "age"])
+        >>> widget.set_toolbar_value("search-input", "query text")
+        """
+        self.emit("toolbar:set_value", {"componentId": component_id, "value": value})
+
+    def set_toolbar_values(self, values: dict[str, Any]) -> None:
+        """Set multiple toolbar component values at once.
+
+        Parameters
+        ----------
+        values : dict[str, Any]
+            Mapping of component_id to value.
+
+        Examples
+        --------
+        >>> widget.set_toolbar_values(
+        ...     {
+        ...         "theme-select": "dark",
+        ...         "columns-multiselect": ["name", "age"],
+        ...         "limit-number": 50,
+        ...     }
+        ... )
+        """
+        self.emit("toolbar:set_values", {"values": values})
 
     def _normalize_data(self, data: Any) -> list[dict[str, Any]]:
         """Convert various data formats to list of row dicts.
@@ -1007,7 +1154,7 @@ class InlineWidget:
         return []
 
 
-def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-branches
+def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,too-many-branches,too-many-statements
     content: str,
     title: str = "PyWry",
     width: str = "100%",
@@ -1017,8 +1164,7 @@ def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-
     include_plotly: bool = False,
     include_aggrid: bool = False,
     aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[dict[str, Any]] | None = None,
     port: int | None = None,
 ) -> InlineWidget:
     """Show HTML content inline in a notebook.
@@ -1046,9 +1192,10 @@ def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-
         Include AG Grid library.
     aggrid_theme : str
         AG Grid theme name.
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
-        Each dict should have: {'label': str, 'event': str, 'style': str (optional)}.
+    toolbars : list[dict], optional
+        List of toolbar configurations, each with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs (button, select, text, number, date, range, multiselect)
     port : int, optional
         Server port (defaults to settings.server.port).
 
@@ -1064,23 +1211,46 @@ def show(  # noqa: C901, PLR0912  # pylint: disable=too-many-arguments,too-many-
 
     widget_id = uuid.uuid4().hex
 
-    # Generate toolbar HTML from buttons if provided
-    toolbar_html = ""
-    if buttons:
-        mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
-        toolbar_html = build_toolbar_html(buttons, mode, toolbar_position)
+    # Generate toolbar HTML from toolbars config
+    mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
+    if toolbars:
+        # Group toolbars by position
+        top_html_parts = []
+        bottom_html_parts = []
+        left_html_parts = []
+        right_html_parts = []
+        inside_html_parts = []
 
-    if toolbar_html:
-        if toolbar_position == "bottom":
-            content = f'<div class="pywry-wrapper-bottom"><div class="pywry-content">{content}</div>{toolbar_html}</div>'
-        elif toolbar_position == "top":
-            content = f'<div class="pywry-wrapper-top">{toolbar_html}<div class="pywry-content">{content}</div></div>'
-        elif toolbar_position == "left":
-            content = f'<div class="pywry-wrapper-left">{toolbar_html}<div class="pywry-content">{content}</div></div>'
-        elif toolbar_position == "right":
-            content = f'<div class="pywry-wrapper-right"><div class="pywry-content">{content}</div>{toolbar_html}</div>'
-        elif toolbar_position == "inside":
-            content = f'<div class="pywry-wrapper-inside">{toolbar_html}{content}</div>'
+        for toolbar in toolbars:
+            position = toolbar.get("position", "top")
+            items = toolbar.get("items", [])
+            if not items:
+                continue
+            toolbar_html = build_toolbar_html(items, mode, position)
+            if position == "top":
+                top_html_parts.append(toolbar_html)
+            elif position == "bottom":
+                bottom_html_parts.append(toolbar_html)
+            elif position == "left":
+                left_html_parts.append(toolbar_html)
+            elif position == "right":
+                right_html_parts.append(toolbar_html)
+            elif position == "inside":
+                inside_html_parts.append(toolbar_html)
+
+        # Wrap content with toolbars
+        if inside_html_parts:
+            content = (
+                f"<div class='pywry-wrapper-inside'>{''.join(inside_html_parts)}{content}</div>"
+            )
+        if left_html_parts or right_html_parts:
+            left_html = "".join(left_html_parts)
+            right_html = "".join(right_html_parts)
+            content = f"<div class='pywry-wrapper-left'>{left_html}<div class='pywry-content'>{content}</div>{right_html}</div>"
+        if top_html_parts or bottom_html_parts:
+            top_html = "".join(top_html_parts)
+            bottom_html = "".join(bottom_html_parts)
+            content = f"<div class='pywry-wrapper-top'>{top_html}<div class='pywry-content'>{content}</div>{bottom_html}</div>"
 
     # Build head with optional libraries
     pywry_css = get_pywry_css()
@@ -1142,8 +1312,7 @@ def generate_plotly_html(
     title: str = "PyWry",
     theme: Literal["dark", "light"] = "dark",
     full_document: bool = True,
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[dict[str, Any]] | None = None,
 ) -> str:
     """Generate HTML for a Plotly figure from JSON.
 
@@ -1164,12 +1333,10 @@ def generate_plotly_html(
     full_document : bool
         If True, return complete HTML document with <!DOCTYPE>, <html>, etc.
         If False, return only content fragment (for anywidget).
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
-    toolbar_position : str
-        Toolbar position ("top" or "bottom").
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
+    toolbars : list[dict], optional
+        List of toolbar configurations, each with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs
 
     Returns
     -------
@@ -1187,12 +1354,15 @@ def generate_plotly_html(
     templates_js = get_plotly_templates_js()
     templates_script = f"<script>{templates_js}</script>" if templates_js else ""
 
-    # Generate toolbar HTML from buttons if provided
+    # Generate toolbar HTML from toolbars config
     toolbar_html = ""
-    if buttons:
-        toolbar_html = build_toolbar_html(
-            buttons, ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT, toolbar_position
-        )
+    mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
+    if toolbars:
+        for toolbar in toolbars:
+            position = toolbar.get("position", "top")
+            items = toolbar.get("items", [])
+            if items:
+                toolbar_html += build_toolbar_html(items, mode, position)
 
     # Plotly event handlers script
     # Use window.Plotly for anywidget compatibility (ESM scope)
@@ -1325,16 +1495,12 @@ def generate_plotly_html(
         return f"""<div id="chart" class="pywry-content" style="height: 100%; width: 100%;"></div>
 {plotly_handlers_script}"""
 
-    # Build wrapper structure based on toolbar_position (matches AG Grid pattern)
+    # Build wrapper structure for toolbars
     chart_div = '<div id="chart"></div>'
-    if toolbar_position == "bottom":
-        wrapper_class = "pywry-wrapper-bottom"
-        inner_content = f"<div class='pywry-content'>{chart_div}</div>{toolbar_html}"
-    else:  # top (default)
-        wrapper_class = "pywry-wrapper-top"
-        inner_content = f"{toolbar_html}<div class='pywry-content'>{chart_div}</div>"
-
-    widget_content = f"<div class='{wrapper_class}'>{inner_content}</div>"
+    widget_content = chart_div
+    if toolbar_html:
+        # Simple layout: toolbar on top, chart below
+        widget_content = f"<div class='pywry-wrapper-top'>{toolbar_html}<div class='pywry-content'>{chart_div}</div></div>"
 
     # Full document for IFrame - INCLUDE bridge
     # Structure matches AG Grid IFrame for visual consistency
@@ -1446,8 +1612,7 @@ def show_plotly(
     theme: Literal["dark", "light"] = "dark",
     port: int | None = None,
     config: dict[str, Any] | None = None,
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[dict[str, Any]] | None = None,
 ) -> BaseWidget:
     """Show a Plotly figure inline in a notebook with automatic event handling.
 
@@ -1474,8 +1639,10 @@ def show_plotly(
         Server port (only used if InlineWidget fallback is needed).
     config : dict, optional
         Plotly config dictionary (e.g., {'modeBarButtonsToAdd': [...]}).
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
+    toolbars : list[dict], optional
+        List of toolbar configurations, each with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs
 
     Returns
     -------
@@ -1513,13 +1680,12 @@ def show_plotly(
         width=width,
         height=height,
         port=port,
-        buttons=buttons,
-        toolbar_position=toolbar_position,
+        toolbars=toolbars,
     )
 
-    # Store config and buttons for updates
+    # Store config and toolbars for updates
     widget._plotly_config = config  # pylint: disable=attribute-defined-outside-init
-    widget._toolbar_buttons = buttons  # pylint: disable=attribute-defined-outside-init
+    widget._toolbars = toolbars  # pylint: disable=attribute-defined-outside-init
 
     # Auto-register callbacks
     if callbacks:
@@ -1530,14 +1696,6 @@ def show_plotly(
     widget.display()
     return widget
 
-
-_TOOLBAR_POSITIONS = {
-    "top": ("pywry-wrapper-top", lambda t, g: f"{t}<div class='pywry-content'>{g}</div>"),
-    "bottom": ("pywry-wrapper-bottom", lambda t, g: f"<div class='pywry-content'>{g}</div>{t}"),
-    "left": ("pywry-wrapper-left", lambda t, g: f"{t}<div class='pywry-content'>{g}</div>"),
-    "right": ("pywry-wrapper-right", lambda t, g: f"<div class='pywry-content'>{g}</div>{t}"),
-    "inside": ("pywry-wrapper-inside", lambda t, g: f"{t}{g}"),
-}
 
 _AGGRID_IFRAME_CSS = """
 html, body {
@@ -1594,14 +1752,41 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
     }
 
 
-def _build_grid_layout(
-    toolbar_position: str, toolbar_html: str, header_html: str, theme_class: str
-) -> str:
+def _build_grid_layout(toolbars_html: dict[str, str], header_html: str, theme_class: str) -> str:
+    """Build grid layout with multiple toolbars.
+
+    Parameters
+    ----------
+    toolbars_html : dict[str, str]
+        Dict mapping position ('top', 'bottom', etc.) to toolbar HTML.
+    header_html : str
+        Custom header HTML (inserted at top).
+    theme_class : str
+        AG Grid theme class.
+
+    Returns
+    -------
+    str
+        The complete layout HTML.
+    """
     grid_div = f"<div id='grid' class='pywry-grid {theme_class}'></div>"
-    toolbar = header_html + toolbar_html if toolbar_position == "top" else toolbar_html
-    wrapper_class, layout_fn = _TOOLBAR_POSITIONS.get(toolbar_position, _TOOLBAR_POSITIONS["top"])
-    inner_content = layout_fn(toolbar, grid_div)
-    return f"<div class='{wrapper_class}'>{inner_content}</div>"
+
+    # Simple layout: top toolbar + header, then grid, then bottom toolbar
+    top_content = header_html + toolbars_html.get("top", "")
+    bottom_content = toolbars_html.get("bottom", "")
+
+    if top_content and bottom_content:
+        # Both top and bottom
+        return f"""<div class='pywry-wrapper-top'>
+            {top_content}
+            <div class='pywry-content'>{grid_div}</div>
+            {bottom_content}
+        </div>"""
+    if top_content:
+        return f"<div class='pywry-wrapper-top'>{top_content}<div class='pywry-content'>{grid_div}</div></div>"
+    if bottom_content:
+        return f"<div class='pywry-wrapper-bottom'><div class='pywry-content'>{grid_div}</div>{bottom_content}</div>"
+    return f"<div class='pywry-content'>{grid_div}</div>"
 
 
 def generate_dataframe_html(
@@ -1613,8 +1798,7 @@ def generate_dataframe_html(
     aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
     header_html: str = "",
     grid_options: dict[str, Any] | None = None,
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[dict[str, Any]] | None = None,
 ) -> str:
     """Generate HTML for AG Grid widget.
 
@@ -1639,11 +1823,8 @@ def generate_dataframe_html(
         Custom HTML to insert above the grid (e.g., buttons).
     grid_options : dict, optional
         Custom AG Grid options to merge with defaults.
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
-        Each dict should have: {'label': str, 'event': str, 'style': str (optional)}.
-    toolbar_position : str
-        Toolbar position ("top" or "bottom").
+    toolbars : list[dict], optional
+        List of toolbar configs. Each toolbar has 'position' and 'items' keys.
 
     Returns
     -------
@@ -1651,7 +1832,16 @@ def generate_dataframe_html(
         Complete HTML document.
     """
     theme_mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
-    toolbar_html = build_toolbar_html(buttons, theme_mode, toolbar_position) if buttons else ""
+
+    # Build toolbar HTML for each position
+    toolbars_html: dict[str, str] = {}
+    if toolbars:
+        for toolbar in toolbars:
+            position = toolbar.get("position", "top")
+            items = toolbar.get("items", [])
+            if items:
+                html = build_toolbar_html(items, theme_mode, position)
+                toolbars_html[position] = toolbars_html.get(position, "") + html
 
     grid_config: dict[str, Any] = {
         "columnDefs": [{"field": col} for col in columns],
@@ -1666,7 +1856,127 @@ def generate_dataframe_html(
     assets = _build_aggrid_assets(aggrid_theme, theme_mode)
     theme_class = f"ag-theme-{aggrid_theme}{'-dark' if theme == 'dark' else ''}"
     widget_theme_class = f"pywry-theme-{theme}"
-    widget_content = _build_grid_layout(toolbar_position, toolbar_html, header_html, theme_class)
+    widget_content = _build_grid_layout(toolbars_html, header_html, theme_class)
+
+    return f"""<!DOCTYPE html>
+<html class="{theme}">
+<head>
+    <meta charset="utf-8">
+    <title>{title}</title>
+    {assets["script"]}
+    {assets["defaults_script"]}
+    {assets["style"]}
+    {assets["pywry_style"]}
+    <style>{_AGGRID_IFRAME_CSS}</style>
+</head>
+<body>
+    <div class="pywry-widget {widget_theme_class}">
+        {widget_content}
+    </div>
+    {_get_pywry_bridge_js(widget_id)}
+    <script>
+        const gridId = '{widget_id}';
+        const gridConfig = {json.dumps(grid_config)};
+        const gridOptions = window.PYWRY_AGGRID_BUILD_OPTIONS(gridConfig, gridId);
+        const gridDiv = document.getElementById('grid');
+        const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
+        if (window.PYWRY_AGGRID_REGISTER_LISTENERS) {{
+            window.PYWRY_AGGRID_REGISTER_LISTENERS(gridApi, gridDiv, gridId);
+        }}
+
+        window.pywry.on('pywry:update_theme', function(data) {{
+            const widgetEl = document.querySelector('.pywry-widget');
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+            const isDark = data.theme && data.theme.includes('dark');
+            const isLight = !isDark;
+
+            if (widgetEl) {{
+                widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }}
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
+            bodyEl.style.background = bgColor || '';
+
+            if (gridDiv && data.theme && data.theme.startsWith('ag-theme-')) {{
+                const classes = Array.from(gridDiv.classList).filter(c => !c.startsWith('ag-theme-'));
+                gridDiv.className = classes.join(' ') + ' ' + data.theme;
+            }}
+            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight);
+        }});
+    </script>
+</body>
+</html>"""
+
+
+def generate_dataframe_html_from_config(
+    config: GridConfig,
+    widget_id: str,
+    title: str = "PyWry",
+    theme: Literal["dark", "light"] = "dark",
+    aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
+    header_html: str = "",
+    toolbars: list[dict[str, Any]] | None = None,
+) -> str:
+    """Generate HTML for AG Grid widget from GridConfig.
+
+    This version accepts a GridConfig from the unified grid module
+    instead of raw row_data/columns. Supports both client-side and
+    server-side modes.
+
+    Parameters
+    ----------
+    config : GridConfig
+        Grid configuration from grid.build_grid_config().
+    widget_id : str
+        Widget ID for the pywry bridge.
+    title : str
+        Page title.
+    theme : 'dark' or 'light'
+        Color theme.
+    aggrid_theme : str
+        AG Grid theme name.
+    header_html : str, optional
+        Custom HTML to insert above the grid.
+    toolbars : list[dict], optional
+        List of toolbar configs. Each toolbar has 'position' and 'items' keys.
+
+    Returns
+    -------
+    str
+        Complete HTML document.
+    """
+    theme_mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
+
+    # Build toolbar HTML for each position
+    toolbars_html: dict[str, str] = {}
+    if toolbars:
+        for toolbar in toolbars:
+            position = toolbar.get("position", "top")
+            items = toolbar.get("items", [])
+            if items:
+                html = build_toolbar_html(items, theme_mode, position)
+                toolbars_html[position] = toolbars_html.get(position, "") + html
+
+    # Get grid config dict from GridConfig.options (Pydantic model)
+    grid_config = config.options.to_dict()
+
+    # Add PyWry metadata for IPC if needed
+    if config.options.row_model_type != "clientSide":
+        grid_config["_pywry"] = {
+            "gridId": config.context.grid_id,
+            "totalRows": config.context.total_rows,
+            "blockSize": config.options.cache_block_size,
+        }
+
+    assets = _build_aggrid_assets(aggrid_theme, theme_mode)
+    theme_class = config.context.theme_class
+    widget_theme_class = f"pywry-theme-{theme}"
+    widget_content = _build_grid_layout(toolbars_html, header_html, theme_class)
 
     return f"""<!DOCTYPE html>
 <html class="{theme}">
@@ -1733,10 +2043,14 @@ def show_dataframe(  # pylint: disable=too-many-arguments
     aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
     header_html: str = "",
     grid_options: dict[str, Any] | None = None,
-    buttons: list[dict[str, str]] | None = None,
-    toolbar_position: str = "top",
+    toolbars: list[Any] | None = None,
     port: int | None = None,
     widget_id: str | None = None,
+    column_defs: list[Any] | None = None,
+    row_selection: Any | bool = True,
+    enable_cell_span: bool | None = None,
+    pagination: bool | None = None,
+    pagination_page_size: int = 100,
 ) -> BaseWidget:
     """Show a DataFrame (or dict/list) inline in a notebook with automatic event handling.
 
@@ -1763,58 +2077,59 @@ def show_dataframe(  # pylint: disable=too-many-arguments
         Custom HTML to display above the grid (e.g., buttons).
     grid_options : dict, optional
         Custom AG Grid options.
-    buttons : list[dict], optional
-        List of button configs to generate a toolbar.
+    toolbars : list[Toolbar | dict], optional
+        List of toolbars. Each can be a Toolbar model or dict with:
+        - position: "top", "bottom", "left", "right", "inside"
+        - items: list of item configs (Button, Select, etc.)
     port : int, optional
         Server port (only used if InlineWidget fallback is needed).
+    column_defs : list, optional
+        Custom column definitions. Can be dicts or ColDef objects.
+    row_selection : RowSelection | dict | bool
+        Row selection config. True = multiRow with checkboxes.
+    enable_cell_span : bool | None
+        Enable row spanning for index columns. None = auto-detect from MultiIndex.
+    pagination : bool | None
+        Enable pagination. None = auto-enable for datasets > 10 rows.
+    pagination_page_size : int
+        Rows per page when pagination is enabled.
 
     Returns
     -------
     BaseWidget
         Widget implementing BaseWidget protocol.
     """
+    from .grid import build_grid_config
     from .notebook import create_dataframe_widget
 
-    # Normalize input to row_data and columns
-    row_data = []
-    columns = []
+    # Use unified grid config builder
+    config = build_grid_config(
+        data=df,
+        column_defs=column_defs,
+        grid_options=grid_options,
+        theme=theme,
+        aggrid_theme=aggrid_theme,
+        grid_id=widget_id,
+        row_selection=row_selection,
+        enable_cell_span=enable_cell_span,
+        pagination=pagination,
+        pagination_page_size=pagination_page_size,
+    )
 
-    # Handle pandas DataFrame (duck typing)
-    if hasattr(df, "to_dict") and hasattr(df, "columns"):
-        row_data = df.to_dict(orient="records")
-        columns = list(df.columns)
-    # Handle list of dicts: [{'a': 1}, {'a': 2}]
-    elif isinstance(df, list):
-        if df:
-            row_data = df
-            columns = list(df[0].keys()) if isinstance(df[0], dict) else []
-    # Handle dict of lists: {'a': [1, 2], 'b': [3, 4]}
-    elif isinstance(df, dict):
-        columns = list(df.keys())
-        if columns:
-            length = len(df[columns[0]])
-            for i in range(length):
-                row = {col: df[col][i] for col in columns}
-                row_data.append(row)
-
-    # Use provided widget_id or generate new one
-    if widget_id is None:
-        widget_id = uuid.uuid4().hex
+    # Use provided widget_id or the one from config
+    wid = widget_id or config.context.grid_id
 
     # Create widget using auto-backend selection
     widget = create_dataframe_widget(
-        row_data=row_data,
-        columns=columns,
-        widget_id=widget_id,
+        config=config,
+        widget_id=wid,
         title=title,
         theme=theme,
         aggrid_theme=aggrid_theme,
         width=width,
         height=height,
         header_html=header_html,
-        grid_options=grid_options,
-        buttons=buttons,
-        toolbar_position=toolbar_position,
+        toolbars=toolbars,
         port=port,
     )
 

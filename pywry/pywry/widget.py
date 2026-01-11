@@ -212,19 +212,6 @@ function render({ model, el }) {
     if (!window.pywry) {
         window.pywry = {};
     }
-    if (!window.pywry.emitButton) {
-        window.pywry.emitButton = function(el, type, data) {
-            const widget = el.closest('.pywry-widget');
-            if (widget && widget._pywryModel) {
-                 const model = widget._pywryModel;
-                 const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
-                 model.set('_js_event', evt);
-                 model.save_changes();
-            } else {
-                 console.warn('[PyWry] Could not find widget model for element', el);
-            }
-        };
-    }
     // Global emit function that routes to the correct widget based on gridId
     // This is needed for context menus and other global handlers in aggrid-defaults.js
     window.pywry.emit = function(type, data) {
@@ -575,19 +562,6 @@ function render({ model, el }) {
     // Initialize global dispatcher if not present
     if (!window.pywry) {
         window.pywry = {};
-    }
-    if (!window.pywry.emitButton) {
-        window.pywry.emitButton = function(el, type, data) {
-            const widget = el.closest('.pywry-widget');
-            if (widget && widget._pywryModel) {
-                 const model = widget._pywryModel;
-                 const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
-                 model.set('_js_event', evt);
-                 model.save_changes();
-            } else {
-                 console.warn('[PyWry] Could not find widget model for element', el);
-            }
-        };
     }
 
     // Local bridge - specialized for this widget instance
@@ -1075,6 +1049,29 @@ if HAS_ANYWIDGET:
             """Alias for update()."""
             self.update(content)
 
+        def update_cell(self, row_index: int, col_id: str, value: Any) -> None:
+            """Update a single cell value in the grid.
+
+            This is more efficient than update_data() when changing just one cell,
+            as it uses AG Grid's transaction API to update in-place without
+            replacing the entire dataset.
+
+            Parameters
+            ----------
+            row_index : int
+                The row index (0-based) of the cell to update.
+            col_id : str
+                The column field name (colId) of the cell to update.
+            value : Any
+                The new value for the cell.
+
+            Examples
+            --------
+            >>> widget.update_cell(0, "price", 29.99)
+            >>> widget.update_cell(2, "status", "active")
+            """
+            self.emit("pywry:update_cell", {"rowIndex": row_index, "colId": col_id, "value": value})
+
         def update_data(self, data: Any) -> None:
             """Update the grid's row data.
 
@@ -1116,6 +1113,7 @@ if HAS_ANYWIDGET:
             data: Any = None,
             columns: list[dict[str, Any]] | None = None,
             preserve_state: bool = True,
+            restore_state: dict[str, Any] | None = None,
         ) -> None:
             """Update both row data and column definitions atomically.
 
@@ -1128,27 +1126,49 @@ if HAS_ANYWIDGET:
             preserve_state : bool, default True
                 If True, preserve column visibility, pinning, width, and order
                 for columns that exist in both old and new definitions.
+                Ignored if restore_state is provided.
+            restore_state : dict, optional
+                Explicit state to restore after updating. Use this when switching
+                between views with different column structures.
 
             Examples
             --------
             >>> widget.update_grid(new_df, new_columns)
             >>> widget.update_grid(new_df, new_columns, preserve_state=False)  # Reset state
+            >>> widget.update_grid(new_df, new_columns, restore_state=saved_state)
             """
             payload: dict[str, Any] = {"preserveState": preserve_state}
             if data is not None:
                 payload["rows"] = self._normalize_data(data)
             if columns is not None:
                 payload["columnDefs"] = columns
+            if restore_state is not None:
+                payload["restoreState"] = restore_state
             if payload:
                 self.emit("pywry:update_grid", payload)
 
-        def save_state(self) -> None:
-            """Request the grid to save its current state.
+        def request_grid_state(self, context: dict[str, Any] | None = None) -> None:
+            """Request the grid's current state.
 
-            The grid will emit a 'grid_state_saved' event with the state data.
-            Register a callback for 'grid_state_saved' to receive the state.
+            The grid will emit a 'grid:state_response' event with the state data.
+            Register a callback for 'grid:state_response' to receive the state.
+
+            Parameters
+            ----------
+            context : dict, optional
+                Additional context to include in the response for correlation.
+
+            Examples
+            --------
+            >>> def on_state(data, event_type, label):
+            ...     print(f"Got state: {data}")
+            >>> widget.on("grid:state_response", on_state)
+            >>> widget.request_grid_state({"view": "current_view"})
             """
-            self.emit("pywry:save_state", {})
+            payload: dict[str, Any] = {}
+            if context:
+                payload["context"] = context
+            self.emit("grid:request_state", payload)
 
         def restore_state(self, state: dict[str, Any]) -> None:
             """Restore a previously saved grid state.
@@ -1156,7 +1176,7 @@ if HAS_ANYWIDGET:
             Parameters
             ----------
             state : dict
-                State object from a previous 'grid_state_saved' event.
+                State object from a previous 'grid:state_response' event.
             """
             self.emit("pywry:restore_state", {"state": state})
 
@@ -1167,6 +1187,109 @@ if HAS_ANYWIDGET:
             and removes all filters.
             """
             self.emit("pywry:reset_state", {})
+
+        # =====================================================================
+        # Toolbar State Methods
+        # =====================================================================
+
+        def request_toolbar_state(
+            self, toolbar_id: str | None = None, context: dict[str, Any] | None = None
+        ) -> None:
+            """Request the current state of toolbar components.
+
+            The widget will emit a 'toolbar:state_response' event with the state data.
+            Register a callback for 'toolbar:state_response' to receive the state.
+
+            Parameters
+            ----------
+            toolbar_id : str, optional
+                Specific toolbar ID to query. If None, returns state of all toolbars.
+            context : dict, optional
+                Additional context to include in the response for correlation.
+
+            Examples
+            --------
+            >>> def on_state(data, event_type, label):
+            ...     print(f"Toolbar state: {data}")
+            >>> widget.on("toolbar:state_response", on_state)
+            >>> widget.request_toolbar_state()
+            """
+            payload: dict[str, Any] = {}
+            if toolbar_id:
+                payload["toolbarId"] = toolbar_id
+            if context:
+                payload["context"] = context
+            self.emit("toolbar:request_state", payload)
+
+        def get_toolbar_value(
+            self, component_id: str, context: dict[str, Any] | None = None
+        ) -> None:
+            """Request the current value of a specific toolbar component.
+
+            The widget will emit a 'toolbar:state_response' event with the value.
+            Register a callback for 'toolbar:state_response' to receive it.
+
+            Parameters
+            ----------
+            component_id : str
+                The component_id of the toolbar item to query.
+            context : dict, optional
+                Additional context to include in the response.
+
+            Examples
+            --------
+            >>> def on_value(data, event_type, label):
+            ...     print(f"Component value: {data['value']}")
+            >>> widget.on("toolbar:state_response", on_value)
+            >>> widget.get_toolbar_value("my-select")
+            """
+            payload: dict[str, Any] = {"componentId": component_id}
+            if context:
+                payload["context"] = context
+            self.emit("toolbar:request_state", payload)
+
+        def set_toolbar_value(self, component_id: str, value: Any) -> None:
+            """Set the value of a specific toolbar component.
+
+            Parameters
+            ----------
+            component_id : str
+                The component_id of the toolbar item to update.
+            value : Any
+                The new value for the component.
+                - For Select: string value
+                - For MultiSelect: list of string values
+                - For TextInput: string
+                - For NumberInput/RangeInput: number
+                - For DateInput: string (YYYY-MM-DD format)
+
+            Examples
+            --------
+            >>> widget.set_toolbar_value("theme-select", "dark")
+            >>> widget.set_toolbar_value("columns-multiselect", ["name", "age"])
+            >>> widget.set_toolbar_value("search-input", "query text")
+            """
+            self.emit("toolbar:set_value", {"componentId": component_id, "value": value})
+
+        def set_toolbar_values(self, values: dict[str, Any]) -> None:
+            """Set multiple toolbar component values at once.
+
+            Parameters
+            ----------
+            values : dict[str, Any]
+                Mapping of component_id to value.
+
+            Examples
+            --------
+            >>> widget.set_toolbar_values(
+            ...     {
+            ...         "theme-select": "dark",
+            ...         "columns-multiselect": ["name", "age"],
+            ...         "limit-number": 50,
+            ...     }
+            ... )
+            """
+            self.emit("toolbar:set_values", {"values": values})
 
         def _register_csv_export_handler(self) -> None:
             """Register automatic CSV export handler for context menu exports."""

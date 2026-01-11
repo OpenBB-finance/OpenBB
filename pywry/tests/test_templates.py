@@ -197,7 +197,8 @@ class TestThemeCoordinationInBuildHtml:
         config = WindowConfig(theme=ThemeMode.LIGHT)
         content = HtmlContent(html=f'<div class="ag-theme-{aggrid_theme}-dark"></div>')
         html = build_html(content, config, window_label="main")
-        assert f"ag-theme-{aggrid_theme}-dark" not in html
+        # Check that user content class was fixed (CSS may contain class selectors)
+        assert f'class="ag-theme-{aggrid_theme}"' in html
 
     def test_dark_window_fixes_class_to_dark(self):
         """Dark window fixes AG Grid class to dark variant."""
@@ -211,8 +212,8 @@ class TestThemeCoordinationInBuildHtml:
         config = WindowConfig(theme=ThemeMode.LIGHT)
         content = HtmlContent(html='<div class="ag-theme-quartz-dark"></div>')
         html = build_html(content, config, window_label="main")
-        assert "ag-theme-quartz-dark" not in html
-        assert "ag-theme-quartz" in html
+        # Check that user content class was fixed (CSS may contain class selectors)
+        assert 'class="ag-theme-quartz"' in html
 
     @pytest.mark.parametrize("aggrid_theme", ["quartz", "alpine", "balham", "material"])
     def test_dark_window_full_theme_coordination(self, aggrid_theme):
@@ -822,16 +823,16 @@ class TestBuildToolbarHtml:
 
     def test_returns_html_with_buttons(self):
         """Returns HTML with buttons."""
-        buttons = [{"label": "Click Me", "event": "click_me"}]
+        buttons = [{"label": "Click Me", "event": "toolbar:click_me"}]
         result = build_toolbar_html(buttons, ThemeMode.DARK)
         assert "Click Me" in result
-        assert "click_me" in result
+        assert "toolbar:click_me" in result
         assert "pywry-toolbar" in result
 
     def test_includes_position_class(self):
         """Includes position class in toolbar div."""
-        buttons = [{"label": "Btn"}]
-        result = build_toolbar_html(buttons, ThemeMode.DARK, position="bottom")
+        items = [{"type": "button", "label": "Btn", "event": "toolbar:click"}]
+        result = build_toolbar_html(items, ThemeMode.DARK, position="bottom")
         assert "pywry-toolbar-bottom" in result
 
 
@@ -842,10 +843,13 @@ class TestBuildHtmlWithToolbar:
         """Verifies structure for top-positioned toolbar."""
         config = WindowConfig()
         content = HtmlContent(html="<div>Content</div>")
-        buttons = [{"label": "Btn"}]
-        html = build_html(
-            content, config, window_label="main", buttons=buttons, toolbar_position="top"
-        )
+        toolbars = [
+            {
+                "position": "top",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-top" in html
         assert "pywry-toolbar-top" in html
         assert "pywry-content" in html
@@ -854,10 +858,13 @@ class TestBuildHtmlWithToolbar:
         """Verifies structure for bottom-positioned toolbar."""
         config = WindowConfig()
         content = HtmlContent(html="<div>Content</div>")
-        buttons = [{"label": "Btn"}]
-        html = build_html(
-            content, config, window_label="main", buttons=buttons, toolbar_position="bottom"
-        )
+        toolbars = [
+            {
+                "position": "bottom",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-bottom" in html
         assert "pywry-toolbar-bottom" in html
         assert "pywry-content" in html
@@ -866,10 +873,13 @@ class TestBuildHtmlWithToolbar:
         """Verifies structure for left-positioned toolbar."""
         config = WindowConfig()
         content = HtmlContent(html="<div>Content</div>")
-        buttons = [{"label": "Btn"}]
-        html = build_html(
-            content, config, window_label="main", buttons=buttons, toolbar_position="left"
-        )
+        toolbars = [
+            {
+                "position": "left",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-left" in html
         assert "pywry-toolbar-left" in html
 
@@ -877,10 +887,13 @@ class TestBuildHtmlWithToolbar:
         """Verifies structure for right-positioned toolbar."""
         config = WindowConfig()
         content = HtmlContent(html="<div>Content</div>")
-        buttons = [{"label": "Btn"}]
-        html = build_html(
-            content, config, window_label="main", buttons=buttons, toolbar_position="right"
-        )
+        toolbars = [
+            {
+                "position": "right",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-right" in html
         assert "pywry-toolbar-right" in html
 
@@ -888,9 +901,12 @@ class TestBuildHtmlWithToolbar:
         """Verifies structure for inside-positioned toolbar."""
         config = WindowConfig()
         content = HtmlContent(html="<div>Content</div>")
-        buttons = [{"label": "Btn"}]
-        html = build_html(
-            content, config, window_label="main", buttons=buttons, toolbar_position="inside"
-        )
+        toolbars = [
+            {
+                "position": "inside",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-inside" in html
         assert "pywry-toolbar-inside" in html

@@ -103,14 +103,6 @@ PYWRY_BRIDGE_JS = """
         this._trigger(eventType, data);
     };
 
-    // emitButton - used by toolbar buttons (same as emit but also triggers local handlers)
-    window.pywry.emitButton = function(el, eventType, data) {
-        // Trigger local handlers first
-        this._trigger(eventType, data || {});
-        // Then send to Python
-        this.emit(eventType, data || {});
-    };
-
     console.log('PyWry bridge initialized/updated');
 })();
 """
@@ -236,6 +228,170 @@ EVENT_BRIDGE_JS = """
     }
 
     console.log('Event bridge initialized');
+})();
+"""
+
+# =============================================================================
+# Toolbar Bridge - Toolbar state management
+# =============================================================================
+
+TOOLBAR_BRIDGE_JS = """
+(function() {
+    'use strict';
+
+    // Collect state from all toolbar components
+    function getToolbarState(toolbarId) {
+        var state = { toolbars: {}, components: {}, timestamp: Date.now() };
+
+        // Find all toolbars (or specific one)
+        var toolbars = toolbarId
+            ? [document.getElementById(toolbarId)]
+            : document.querySelectorAll('.pywry-toolbar');
+
+        toolbars.forEach(function(toolbar) {
+            if (!toolbar) return;
+            var tbId = toolbar.id;
+            if (!tbId) return;
+
+            state.toolbars[tbId] = {
+                position: Array.from(toolbar.classList)
+                    .find(function(c) { return c.startsWith('pywry-toolbar-'); })
+                    ?.replace('pywry-toolbar-', '') || 'top',
+                components: []
+            };
+
+            // Collect all input values within this toolbar
+            toolbar.querySelectorAll('[id]').forEach(function(el) {
+                var id = el.id;
+                var value = null;
+                var type = null;
+
+                if (el.tagName === 'BUTTON') {
+                    type = 'button';
+                    value = { disabled: el.disabled };
+                } else if (el.tagName === 'SELECT') {
+                    type = 'select';
+                    value = el.value;
+                } else if (el.tagName === 'INPUT') {
+                    var inputType = el.type;
+                    if (inputType === 'checkbox') {
+                        // Part of multiselect - handled by parent
+                        return;
+                    } else if (inputType === 'range') {
+                        type = 'range';
+                        value = parseFloat(el.value);
+                    } else if (inputType === 'number') {
+                        type = 'number';
+                        value = parseFloat(el.value) || 0;
+                    } else if (inputType === 'date') {
+                        type = 'date';
+                        value = el.value;
+                    } else {
+                        type = 'text';
+                        value = el.value;
+                    }
+                } else if (el.classList.contains('pywry-multiselect')) {
+                    type = 'multiselect';
+                    value = Array.from(el.querySelectorAll('input:checked'))
+                        .map(function(i) { return i.value; });
+                }
+
+                if (type) {
+                    state.components[id] = { type: type, value: value };
+                    state.toolbars[tbId].components.push(id);
+                }
+            });
+        });
+
+        return state;
+    }
+
+    // Get value of a specific component
+    function getComponentValue(componentId) {
+        var el = document.getElementById(componentId);
+        if (!el) return null;
+
+        if (el.tagName === 'SELECT') {
+            return el.value;
+        } else if (el.tagName === 'INPUT') {
+            var inputType = el.type;
+            if (inputType === 'range' || inputType === 'number') {
+                return parseFloat(el.value);
+            }
+            return el.value;
+        } else if (el.classList.contains('pywry-multiselect')) {
+            return Array.from(el.querySelectorAll('input:checked'))
+                .map(function(i) { return i.value; });
+        }
+        return null;
+    }
+
+    // Set value of a specific component
+    function setComponentValue(componentId, value) {
+        var el = document.getElementById(componentId);
+        if (!el) return false;
+
+        if (el.tagName === 'SELECT' || el.tagName === 'INPUT') {
+            el.value = value;
+            return true;
+        } else if (el.classList.contains('pywry-multiselect')) {
+            var values = Array.isArray(value) ? value : [value];
+            el.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                cb.checked = values.includes(cb.value);
+            });
+            return true;
+        }
+        return false;
+    }
+
+    // Handle toolbar state request from Python
+    window.pywry.on('toolbar:request_state', function(data) {
+        var toolbarId = data && data.toolbarId;
+        var componentId = data && data.componentId;
+        var context = data && data.context;
+
+        var response;
+        if (componentId) {
+            // Single component value
+            response = {
+                componentId: componentId,
+                value: getComponentValue(componentId),
+                context: context
+            };
+        } else {
+            // Full toolbar state
+            response = getToolbarState(toolbarId);
+            response.context = context;
+            if (toolbarId) response.toolbarId = toolbarId;
+        }
+
+        window.pywry.emit('toolbar:state_response', response);
+    });
+
+    // Handle toolbar update from Python
+    window.pywry.on('toolbar:set_value', function(data) {
+        if (data && data.componentId && data.value !== undefined) {
+            setComponentValue(data.componentId, data.value);
+        }
+    });
+
+    // Handle bulk update
+    window.pywry.on('toolbar:set_values', function(data) {
+        if (data && data.values) {
+            Object.keys(data.values).forEach(function(id) {
+                setComponentValue(id, data.values[id]);
+            });
+        }
+    });
+
+    // Expose for manual access
+    window.__PYWRY_TOOLBAR__ = {
+        getState: getToolbarState,
+        getValue: getComponentValue,
+        setValue: setComponentValue
+    };
+
+    console.log('Toolbar bridge initialized');
 })();
 """
 
@@ -371,21 +527,6 @@ AGGRID_BRIDGE_JS = """
         });
 
         console.log('AG Grid bridge initialized');
-    }
-
-    // Listen for grid data updates from Python
-    if (window.__TAURI__ && window.__TAURI__.event) {
-        window.__TAURI__.event.listen('pywry:grid-data', function(event) {
-            if (window.__PYWRY_GRID_API__) {
-                window.__PYWRY_GRID_API__.setGridOption('rowData', event.payload.rows);
-            }
-        });
-
-        window.__TAURI__.event.listen('pywry:grid-update', function(event) {
-            if (window.__PYWRY_GRID_API__) {
-                window.__PYWRY_GRID_API__.applyTransaction({ update: event.payload.rows });
-            }
-        });
     }
 
     initGridBridge();
@@ -543,6 +684,7 @@ def build_init_script(
         PYWRY_BRIDGE_JS,
         THEME_MANAGER_JS,
         EVENT_BRIDGE_JS,
+        TOOLBAR_BRIDGE_JS,
         CLEANUP_JS,
     ]
 

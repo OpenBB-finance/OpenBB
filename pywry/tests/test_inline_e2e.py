@@ -711,7 +711,12 @@ class TestToolbarRendering:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        buttons = [{"label": "MyButton", "event": "click"}]
+        toolbars = [
+            {
+                "position": "bottom",
+                "items": [{"type": "button", "label": "MyButton", "event": "toolbar:click"}],
+            }
+        ]
 
         # Mock IPython display to avoid errors/outputs during test
         with (
@@ -720,9 +725,7 @@ class TestToolbarRendering:
             patch("pywry.inline.Output"),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show(
-                "<div>Content</div>", buttons=buttons, toolbar_position="bottom", port=server_port
-            )
+            widget = show("<div>Content</div>", toolbars=toolbars, port=server_port)
 
         wid = widget._widget_id
 
@@ -761,16 +764,19 @@ class TestDOMStructure:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        buttons = [{"label": "Btn", "event": "click"}]
+        toolbars = [
+            {
+                "position": "top",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
         with (
             patch("IPython.display.display"),
             patch("IPython.display.IFrame"),
             patch("pywry.inline.Output"),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show(
-                "<div>Content</div>", buttons=buttons, toolbar_position="top", port=server_port
-            )
+            widget = show("<div>Content</div>", toolbars=toolbars, port=server_port)
 
         wid = widget._widget_id
         status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{wid}")
@@ -795,16 +801,19 @@ class TestDOMStructure:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        buttons = [{"label": "Btn", "event": "click"}]
+        toolbars = [
+            {
+                "position": "left",
+                "items": [{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+            }
+        ]
         with (
             patch("IPython.display.display"),
             patch("IPython.display.IFrame"),
             patch("pywry.inline.Output"),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show(
-                "<div>Content</div>", buttons=buttons, toolbar_position="left", port=server_port
-            )
+            widget = show("<div>Content</div>", toolbars=toolbars, port=server_port)
 
         wid = widget._widget_id
         status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{wid}")

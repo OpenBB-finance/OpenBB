@@ -1,4 +1,5 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
+# pylint: disable=too-many-lines
 
 import threading
 import time
@@ -396,11 +397,16 @@ class TestToolbarAndStyles:
     def test_toolbar_renders_correctly(self):
         """Toolbar renders with correct classes and buttons."""
         app = PyWry(theme=ThemeMode.DARK)
-        buttons = [{"label": "MyButton", "event": "click"}]
+        toolbars = [
+            {
+                "position": "top",
+                "items": [{"type": "button", "label": "MyButton", "event": "toolbar:click"}],
+            }
+        ]
 
         # Test top toolbar
         label = show_and_wait_ready(
-            app, "<div>Content</div>", title="Toolbar Test", buttons=buttons, toolbar_position="top"
+            app, "<div>Content</div>", title="Toolbar Test", toolbars=toolbars
         )
 
         result = wait_for_result(
@@ -474,8 +480,13 @@ class TestToolbarIntegration:
         # Pre-register because we can't reliably predict label for single window until shown
         # But show() returns label, so we can register after show() IF we click after show()
 
-        buttons = [{"label": "ClickMe", "event": "custom:click"}]
-        label = show_and_wait_ready(app, "<div>HTML</div>", buttons=buttons)
+        toolbars = [
+            {
+                "position": "top",
+                "items": [{"type": "button", "label": "ClickMe", "event": "custom:click"}],
+            }
+        ]
+        label = show_and_wait_ready(app, "<div>HTML</div>", toolbars=toolbars)
         registry.register(label, "custom:click", on_click)
 
         # Trigger click via JS
@@ -498,10 +509,15 @@ class TestToolbarIntegration:
         def on_click(data):  # pylint: disable=unused-argument
             events["clicked"] = True
 
-        buttons = [{"label": "PlotBtn", "event": "plot:click"}]
+        toolbars = [
+            {
+                "position": "bottom",
+                "items": [{"type": "button", "label": "PlotBtn", "event": "plot:click"}],
+            }
+        ]
         figure = {"data": [{"x": [1], "y": [2], "type": "bar"}]}
 
-        label = show_plotly_and_wait_ready(app, figure, buttons=buttons, toolbar_position="bottom")
+        label = show_plotly_and_wait_ready(app, figure, toolbars=toolbars)
         get_registry().register(label, "plot:click", on_click)
 
         # Verify structure first (bottom position)
@@ -529,12 +545,17 @@ class TestToolbarIntegration:
         def on_click(data):  # pylint: disable=unused-argument
             events["clicked"] = True
 
-        buttons = [{"label": "GridBtn", "event": "grid:click"}]
+        toolbars = [
+            {
+                "position": "left",
+                "items": [{"type": "button", "label": "GridBtn", "event": "data:click"}],
+            }
+        ]
         data = [{"x": 1}]
 
         # Using left position to test layout variation
-        label = show_dataframe_and_wait_ready(app, data, buttons=buttons, toolbar_position="left")
-        get_registry().register(label, "grid:click", on_click)
+        label = show_dataframe_and_wait_ready(app, data, toolbars=toolbars)
+        get_registry().register(label, "data:click", on_click)
 
         # Verify structure (left position)
         result = wait_for_result(
@@ -550,4 +571,519 @@ class TestToolbarIntegration:
             time.sleep(0.1)
 
         assert events["clicked"], "DataFrame toolbar button callback not triggered"
+        app.close()
+
+
+class TestToolbarComponentEvents:
+    """E2E tests for all toolbar component types and their event emissions."""
+
+    def test_select_triggers_event_with_value(self):
+        """Select dropdown emits {value: ...} on change."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_select(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "select",
+                        "event": "test:select",
+                        "options": [
+                            {"label": "Option A", "value": "a"},
+                            {"label": "Option B", "value": "b"},
+                        ],
+                        "selected": "a",
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Select Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:select", on_select)
+
+        # Change selection to 'b'
+        app.eval_js(
+            "var sel = document.querySelector('.pywry-select'); "
+            "sel.value = 'b'; "
+            "sel.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "Select change event not received"
+        assert events["data"]["value"] == "b", f"Expected value 'b', got {events['data']}"
+        app.close()
+
+    def test_multiselect_triggers_event_with_values_array(self):
+        """MultiSelect emits {values: [...]} on checkbox change."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_multiselect(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "multiselect",
+                        "event": "test:multiselect",
+                        "options": [
+                            {"label": "Red", "value": "red"},
+                            {"label": "Green", "value": "green"},
+                            {"label": "Blue", "value": "blue"},
+                        ],
+                        "selected": ["red"],
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>MultiSelect Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:multiselect", on_multiselect)
+
+        # Check 'green' checkbox (red is already checked)
+        app.eval_js(
+            "var checkboxes = document.querySelectorAll('.pywry-multiselect input'); "
+            "checkboxes[1].checked = true; "
+            "checkboxes[1].dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "MultiSelect change event not received"
+        assert set(events["data"]["values"]) == {"red", "green"}, f"Got {events['data']}"
+        app.close()
+
+    def test_text_input_triggers_event_with_debounce(self):
+        """TextInput emits {value: ...} after debounce period."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_text(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "text",
+                        "event": "test:text",
+                        "placeholder": "Type here",
+                        "debounce": 100,  # Short debounce for test
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Text Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:text", on_text)
+
+        # Type text
+        app.eval_js(
+            "var inp = document.querySelector('.pywry-input-text'); "
+            "inp.value = 'hello world'; "
+            "inp.dispatchEvent(new Event('input'));",
+            label=label,
+        )
+
+        # Wait for debounce + processing
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "TextInput event not received"
+        assert events["data"]["value"] == "hello world", f"Got {events['data']}"
+        app.close()
+
+    def test_number_input_triggers_event(self):
+        """NumberInput emits {value: <number>} on change."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_number(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "number",
+                        "event": "test:number",
+                        "value": 10,
+                        "min": 1,
+                        "max": 100,
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Number Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:number", on_number)
+
+        # Change number
+        app.eval_js(
+            "var inp = document.querySelector('.pywry-input-number'); "
+            "inp.value = 42; "
+            "inp.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "NumberInput event not received"
+        assert events["data"]["value"] == 42, f"Got {events['data']}"
+        app.close()
+
+    def test_date_input_triggers_event(self):
+        """DateInput emits {value: <date_string>} on change."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_date(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "date",
+                        "event": "test:date",
+                        "value": "2025-01-01",
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Date Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:date", on_date)
+
+        # Change date
+        app.eval_js(
+            "var inp = document.querySelector('.pywry-input-date'); "
+            "inp.value = '2025-06-15'; "
+            "inp.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "DateInput event not received"
+        assert events["data"]["value"] == "2025-06-15", f"Got {events['data']}"
+        app.close()
+
+    def test_range_input_triggers_event(self):
+        """RangeInput emits {value: <number>} on input."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_range(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "range",
+                        "event": "test:range",
+                        "value": 50,
+                        "min": 0,
+                        "max": 100,
+                        "step": 10,
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Range Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:range", on_range)
+
+        # Slide to 80
+        app.eval_js(
+            "var inp = document.querySelector('.pywry-input-range'); "
+            "inp.value = 80; "
+            "inp.dispatchEvent(new Event('input'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "RangeInput event not received"
+        assert events["data"]["value"] == 80, f"Got {events['data']}"
+        app.close()
+
+
+class TestMultiToolbarStateTracking:
+    """E2E tests for tracking state across multiple toolbars in same widget."""
+
+    def test_multiple_toolbars_different_positions(self):
+        """Multiple toolbars at different positions all emit events correctly."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"top_btn": False, "bottom_select": None, "left_range": None}
+
+        def on_top(_data):
+            events["top_btn"] = True
+
+        def on_bottom(data):
+            events["bottom_select"] = data.get("value")
+
+        def on_left(data):
+            events["left_range"] = data.get("value")
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [{"type": "button", "label": "Top Btn", "event": "top:click"}],
+            },
+            {
+                "position": "bottom",
+                "items": [
+                    {
+                        "type": "select",
+                        "event": "bottom:select",
+                        "options": [{"label": "X", "value": "x"}, {"label": "Y", "value": "y"}],
+                    }
+                ],
+            },
+            {
+                "position": "left",
+                "items": [
+                    {"type": "range", "event": "left:range", "value": 25, "min": 0, "max": 100}
+                ],
+            },
+        ]
+
+        label = show_and_wait_ready(app, "<div>Multi-toolbar Test</div>", toolbars=toolbars)
+        get_registry().register(label, "top:click", on_top)
+        get_registry().register(label, "bottom:select", on_bottom)
+        get_registry().register(label, "left:range", on_left)
+
+        # Trigger all three
+        app.eval_js("document.querySelector('.pywry-btn').click();", label=label)
+        app.eval_js(
+            "var sel = document.querySelector('.pywry-select'); "
+            "sel.value = 'y'; sel.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+        app.eval_js(
+            "var rng = document.querySelector('.pywry-input-range'); "
+            "rng.value = 75; rng.dispatchEvent(new Event('input'));",
+            label=label,
+        )
+
+        start = time.time()
+        while (time.time() - start) < 4.0:
+            if events["top_btn"] and events["bottom_select"] and events["left_range"] is not None:
+                break
+            time.sleep(0.1)
+
+        assert events["top_btn"], "Top button event not received"
+        assert events["bottom_select"] == "y", f"Bottom select: {events['bottom_select']}"
+        assert events["left_range"] == 75, f"Left range: {events['left_range']}"
+        app.close()
+
+    def test_multiple_items_in_single_toolbar(self):
+        """Multiple items in one toolbar emit independent events."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"btn1": False, "btn2": False, "select": None, "number": None}
+
+        def on_btn1(_data):
+            events["btn1"] = True
+
+        def on_btn2(_data):
+            events["btn2"] = True
+
+        def on_select(data):
+            events["select"] = data.get("value")
+
+        def on_number(data):
+            events["number"] = data.get("value")
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {"type": "button", "label": "Action 1", "event": "action:one"},
+                    {"type": "button", "label": "Action 2", "event": "action:two"},
+                    {
+                        "type": "select",
+                        "event": "filter:mode",
+                        "options": [
+                            {"label": "All", "value": "all"},
+                            {"label": "Active", "value": "active"},
+                        ],
+                    },
+                    {"type": "number", "event": "filter:limit", "value": 10},
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Multi-item Toolbar</div>", toolbars=toolbars)
+        get_registry().register(label, "action:one", on_btn1)
+        get_registry().register(label, "action:two", on_btn2)
+        get_registry().register(label, "filter:mode", on_select)
+        get_registry().register(label, "filter:limit", on_number)
+
+        # Trigger multiple items
+        app.eval_js(
+            "var btns = document.querySelectorAll('.pywry-btn'); btns[0].click();",
+            label=label,
+        )
+        app.eval_js(
+            "var btns = document.querySelectorAll('.pywry-btn'); btns[1].click();",
+            label=label,
+        )
+        app.eval_js(
+            "var sel = document.querySelector('.pywry-select'); "
+            "sel.value = 'active'; sel.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+        app.eval_js(
+            "var num = document.querySelector('.pywry-input-number'); "
+            "num.value = 25; num.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while (time.time() - start) < 4.0:
+            if all([events["btn1"], events["btn2"], events["select"], events["number"]]):
+                break
+            time.sleep(0.1)
+
+        assert events["btn1"], "Button 1 event not received"
+        assert events["btn2"], "Button 2 event not received"
+        assert events["select"] == "active", f"Select: {events['select']}"
+        assert events["number"] == 25, f"Number: {events['number']}"
+        app.close()
+
+    def test_pydantic_toolbar_models_work_in_e2e(self):
+        """Toolbar Pydantic models work end-to-end with events."""
+        from pywry.toolbar import Button, Option, Select, Toolbar
+
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"export": None, "view": None}
+
+        def on_export(data):
+            events["export"] = data
+
+        def on_view(data):
+            events["view"] = data.get("value")
+
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                Button(label="Export", event="data:export", data={"format": "csv"}),
+                Select(
+                    event="view:change",
+                    options=[
+                        Option(label="Table", value="table"),
+                        Option(label="Chart", value="chart"),
+                    ],
+                    selected="table",
+                ),
+            ],
+        )
+
+        label = show_and_wait_ready(app, "<div>Pydantic Toolbar</div>", toolbars=[toolbar])
+        get_registry().register(label, "data:export", on_export)
+        get_registry().register(label, "view:change", on_view)
+
+        # Trigger button with data payload
+        app.eval_js("document.querySelector('.pywry-btn').click();", label=label)
+        # Change select
+        app.eval_js(
+            "var sel = document.querySelector('.pywry-select'); "
+            "sel.value = 'chart'; sel.dispatchEvent(new Event('change'));",
+            label=label,
+        )
+
+        start = time.time()
+        while (time.time() - start) < 4.0:
+            if events["export"] and events["view"]:
+                break
+            time.sleep(0.1)
+
+        assert events["export"] == {"format": "csv"}, f"Export data: {events['export']}"
+        assert events["view"] == "chart", f"View: {events['view']}"
+        app.close()
+
+    def test_component_ids_are_unique_across_toolbars(self):
+        """Each component gets a unique ID for state tracking."""
+        from pywry.toolbar import Button, Option, Select, Toolbar
+
+        app = PyWry(theme=ThemeMode.DARK)
+
+        toolbar1 = Toolbar(
+            position="top",
+            items=[
+                Button(label="A", event="btn:a"),
+                Select(event="sel:a", options=[Option(label="X", value="x")]),
+            ],
+        )
+        toolbar2 = Toolbar(
+            position="bottom",
+            items=[
+                Button(label="B", event="btn:b"),
+                Select(event="sel:b", options=[Option(label="Y", value="y")]),
+            ],
+        )
+
+        label = show_and_wait_ready(app, "<div>ID Test</div>", toolbars=[toolbar1, toolbar2])
+
+        # Verify unique IDs exist in DOM - just check that both toolbars render
+        result = wait_for_result(
+            label,
+            "pywry.result({ top: !!document.querySelector('.pywry-toolbar-top'), "
+            "bottom: !!document.querySelector('.pywry-toolbar-bottom') })",
+        )
+
+        assert result is not None, "Result not received"
+        assert result["top"], "Top toolbar not found"
+        assert result["bottom"], "Bottom toolbar not found"
+
+        # Verify we have 4 components (2 buttons + 2 selects)
+        result2 = wait_for_result(
+            label,
+            "pywry.result({ btns: document.querySelectorAll('.pywry-btn').length, "
+            "sels: document.querySelectorAll('.pywry-select').length })",
+        )
+        assert result2 is not None, "Second result not received"
+        assert result2["btns"] == 2, f"Expected 2 buttons, got {result2['btns']}"
+        assert result2["sels"] == 2, f"Expected 2 selects, got {result2['sels']}"
         app.close()

@@ -10,8 +10,6 @@ function render({ model, el }) {
     const container = document.createElement('div');
     container.className = 'pywry-widget pywry-plotly';
     container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
-    
-    // Set CSS variables from model for flexible sizing
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
     if (modelHeight) {
@@ -29,19 +27,6 @@ function render({ model, el }) {
     // Initialize global dispatcher if not present
     if (!window.pywry) {
         window.pywry = {};
-    }
-    if (!window.pywry.emitButton) {
-        window.pywry.emitButton = function(btnEl, type, data) {
-            const widget = btnEl.closest('.pywry-widget');
-            if (widget && widget._pywryModel) {
-                 const m = widget._pywryModel;
-                 const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
-                 m.set('_js_event', evt);
-                 m.save_changes();
-            } else {
-                 console.warn('[PyWry] Could not find widget model for element', btnEl);
-            }
-        };
     }
 
     // Local bridge - specialized for this widget instance
@@ -69,9 +54,9 @@ function render({ model, el }) {
             }
         }
     };
-    
-    // Attach local pywry to container for debugging if needed
+
     container._pywryInstance = pywry;
+    window.pywry = pywry;
 
     pywry.on('pywry:update_plotly', (data) => {
         const plotDiv = container.querySelector('.js-plotly-plot');
@@ -82,7 +67,6 @@ function render({ model, el }) {
         }
     });
 
-    // Handle theme updates from Python
     pywry.on('pywry:update_theme', (data) => {
         if (data && data.theme) {
             const isDark = data.theme.includes('dark');

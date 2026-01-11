@@ -194,6 +194,35 @@ pywry/
 | `WindowLifecycle` | `window_manager/lifecycle.py` | Window lifecycle with resource tracking |
 | `WindowController` | `window_manager/controller.py` | Window controller for mode switching |
 
+### Toolbar Classes
+
+| Class | File | Purpose |
+|-------|------|---------|
+| `Toolbar` | `toolbar.py` | Container for positioned toolbar items |
+| `ToolbarItem` | `toolbar.py` | Base class for all toolbar items |
+| `Button` | `toolbar.py` | Clickable button emitting event with data payload |
+| `Select` | `toolbar.py` | Single-select dropdown, emits `{value}` |
+| `MultiSelect` | `toolbar.py` | Multi-select checkbox group, emits `{values: [...]}` |
+| `TextInput` | `toolbar.py` | Text input with debounce, emits `{value}` |
+| `NumberInput` | `toolbar.py` | Numeric input with min/max/step, emits `{value}` |
+| `DateInput` | `toolbar.py` | Date picker, emits `{value}` (YYYY-MM-DD) |
+| `RangeInput` | `toolbar.py` | Slider input with value display, emits `{value}` |
+| `Option` | `toolbar.py` | Option for Select/MultiSelect (label, value) |
+
+### AG Grid Classes
+
+| Class | File | Purpose |
+|-------|------|---------|
+| `GridOptions` | `grid.py` | Complete AG Grid configuration (mirrors JS API) |
+| `ColDef` | `grid.py` | Column definition with all common options |
+| `ColGroupDef` | `grid.py` | Column group for MultiIndex columns |
+| `DefaultColDef` | `grid.py` | Default column settings (sortable, filter, etc.) |
+| `RowSelection` | `grid.py` | Row selection configuration (mode, checkboxes) |
+| `GridConfig` | `grid.py` | Combined AG Grid options + PyWry context |
+| `GridData` | `grid.py` | Normalized grid data from various input formats |
+| `PyWryGridContext` | `grid.py` | PyWry-specific context for grid rendering |
+| `AGGridModel` | `grid.py` | Base model with camelCase serialization |
+
 ### Configuration Classes
 
 | Class | File | Purpose |
@@ -329,13 +358,18 @@ class PyWrySettings(BaseSettings):
 Events follow the format `namespace:event_name`:
 
 ```python
-# Register callback
-pywry.on("plotly:click", handle_plotly_click)
-pywry.on("grid:select", handle_grid_select)
-pywry.on("custom:my_event", handle_custom)
+# Register callbacks via the callbacks parameter in show() methods
+app.show(
+    "<h1>Hello</h1>",
+    callbacks={
+        "plotly:click": handle_plotly_click,
+        "grid:select": handle_grid_select,
+        "custom:my_event": handle_custom,
+    }
+)
 
-# Wildcard for all events in namespace
-pywry.on("plotly:*", handle_all_plotly_events)
+# Or use the on() method for existing windows
+app.on("plotly:click", handle_plotly_click)
 ```
 
 ### Event Validation
@@ -346,6 +380,7 @@ Regex pattern in `models.py`: `^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$`
 - `pywry` - System events
 - `plotly` - Plotly.js events
 - `grid` - AG Grid events
+- `toolbar` - Toolbar state events
 
 ### JavaScript Bridge
 
@@ -361,6 +396,27 @@ window.pywry.on("python:update", (data) => {
 });
 ```
 
+### Toolbar State Events
+
+PyWry provides bidirectional toolbar state communication:
+
+| Event | Direction | Payload |
+|-------|-----------|---------|
+| `toolbar:request_state` | Python→JS | `{ toolbarId?: string, context?: object }` |
+| `toolbar:state_response` | JS→Python | `{ toolbars: {...}, components: {...}, timestamp: number }` |
+| `toolbar:set_value` | Python→JS | `{ componentId: string, value: any }` |
+| `toolbar:set_values` | Python→JS | `{ values: { [componentId]: value } }` |
+
+**JavaScript access:**
+```javascript
+// Get toolbar state
+const state = window.__PYWRY_TOOLBAR__.getState();
+
+// Get/set individual values
+const value = window.__PYWRY_TOOLBAR__.getValue("component-id");
+window.__PYWRY_TOOLBAR__.setValue("component-id", "new-value");
+```
+
 ---
 
 ## Usage Examples
@@ -370,7 +426,7 @@ window.pywry.on("python:update", (data) => {
 ```python
 from pywry import PyWry, WindowMode, ThemeMode
 
-pywry = PyWry(
+app = PyWry(
     mode=WindowMode.SINGLE_WINDOW,
     theme=ThemeMode.DARK,
     title="My App",
@@ -378,7 +434,7 @@ pywry = PyWry(
     height=720,
 )
 
-pywry.show("<h1>Hello World</h1>")
+app.show("<h1>Hello World</h1>")
 ```
 
 ### With Plotly Chart
@@ -386,10 +442,10 @@ pywry.show("<h1>Hello World</h1>")
 ```python
 from pywry import PyWry
 
-pywry = PyWry()
+app = PyWry()
 
 fig = {"data": [{"x": [1, 2, 3], "y": [4, 5, 6], "type": "scatter"}]}
-pywry.show_plotly(fig, title="My Chart")
+app.show_plotly(fig, title="My Chart")
 ```
 
 ### With DataFrame (AG Grid)
@@ -398,9 +454,9 @@ pywry.show_plotly(fig, title="My Chart")
 import pandas as pd
 from pywry import PyWry
 
-pywry = PyWry()
+app = PyWry()
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [30, 25]})
-pywry.show_dataframe(df, title="My Table")
+app.show_dataframe(df, title="My Table")
 ```
 
 ### With Event Callbacks
@@ -410,33 +466,69 @@ import logging
 from pywry import PyWry
 
 logging.basicConfig(level=logging.INFO)
-pywry = PyWry()
+app = PyWry()
 
 def handle_click(data, event_type, label):
     logging.info(f"Clicked: {data}")
 
-pywry.on("plotly:click", handle_click)
-pywry.show_plotly(fig)
+fig = {"data": [{"x": [1, 2, 3], "y": [4, 5, 6], "type": "scatter"}]}
+app.show_plotly(fig, callbacks={"plotly:click": handle_click})
 ```
 
-### With Toolbar Buttons
+### With Toolbars
+
+PyWry supports toolbars with various input types. Use Pydantic models for type-safe configuration:
 
 ```python
-pywry = PyWry()
+from pywry import PyWry, Toolbar, Button, Select, Option
+
+app = PyWry()
 
 def on_action(data, event_type, label):
-    pywry.eval_js("alert('Button clicked!')")
+    app.eval_js("alert('Button clicked!')")
 
-pywry.on("app:action", on_action)
+def on_view_change(data, event_type, label):
+    print(f"View changed to: {data['value']}")
 
-buttons = [{"label": "Click Me", "event": "app:action"}]
-pywry.show("<h1>Content</h1>", buttons=buttons, toolbar_position="top")
+toolbars = [
+    Toolbar(
+        position="top",
+        items=[
+            Button(label="Click Me", event="app:action"),
+            Select(
+                label="View:",
+                event="app:view_change",
+                options=[Option(label="Chart", value="chart"), Option(label="Table", value="table")],
+                selected="chart",
+            ),
+        ]
+    ),
+]
+
+app.show(
+    "<h1>Content</h1>",
+    toolbars=toolbars,
+    callbacks={"app:action": on_action, "app:view_change": on_view_change},
+)
 ```
+
+#### Supported Toolbar Item Types
+
+| Type | Properties | Event Payload |
+|------|------------|---------------|
+| `Button` | `label`, `event`, `data`, `style`, `description` | `data` dict |
+| `Select` | `label`, `event`, `options`, `selected` | `{value: string}` |
+| `MultiSelect` | `label`, `event`, `options`, `selected` | `{values: string[]}` |
+| `TextInput` | `label`, `event`, `value`, `placeholder`, `debounce` | `{value: string}` |
+| `NumberInput` | `label`, `event`, `value`, `min`, `max`, `step` | `{value: number}` |
+| `DateInput` | `label`, `event`, `value`, `min`, `max` | `{value: string}` |
+| `RangeInput` | `label`, `event`, `value`, `min`, `max`, `step`, `show_value` | `{value: number}` |
 
 ### Inline Notebook Usage
 
 ```python
 # Direct functions (auto-detect notebook environment)
+import pandas as pd
 from pywry import show_plotly, show_dataframe
 
 fig = {"data": [{"x": [1, 2, 3], "y": [4, 5, 6]}]}
@@ -486,27 +578,29 @@ display(widget)
 ```python
 from pywry import PyWry, WindowMode
 
-pywry = PyWry(mode=WindowMode.MULTI_WINDOW)
+app = PyWry(mode=WindowMode.MULTI_WINDOW)
 
 # Show multiple independent windows
-pywry.show("<h1>Window 1</h1>", label="win1")
-pywry.show("<h1>Window 2</h1>", label="win2")
+app.show("<h1>Window 1</h1>", label="win1")
+app.show("<h1>Window 2</h1>", label="win2")
 
 # Update specific window
-pywry.update_content("<h1>Updated Window 1</h1>", label="win1")
+app.update_content("<h1>Updated Window 1</h1>", label="win1")
 ```
 
 ### Hot Reload Development
 
 ```python
-from pywry import PyWry
+from pywry import PyWry, HtmlContent
 
-pywry = PyWry(hot_reload=True)
+app = PyWry(hot_reload=True)
 
-pywry.show(
-    '<div class="container">Content</div>',
+content = HtmlContent(
+    html='<div class="container">Content</div>',
     css_files=["styles.css"],  # Changes to this file auto-reload
+    watch=True,
 )
+app.show(content)
 ```
 
 ---
@@ -1018,16 +1112,16 @@ window.__TAURI__.event.listen(event, handler)
 ```python
 from pywry import PyWry
 
-pywry = PyWry()
+app = PyWry()
 
 # Simple dict-based figure
 fig = {"data": [{"x": [1, 2, 3], "y": [4, 5, 6], "type": "scatter"}]}
-pywry.show_plotly(fig, title="My Chart")
+app.show_plotly(fig, title="My Chart")
 
 # Or with plotly.graph_objects
 import plotly.graph_objects as go
 fig = go.Figure(data=go.Scatter(x=[1, 2, 3], y=[4, 5, 6]))
-pywry.show_plotly(fig)
+app.show_plotly(fig)
 ```
 
 ### AG Grid
@@ -1036,9 +1130,9 @@ pywry.show_plotly(fig)
 import pandas as pd
 from pywry import PyWry
 
-pywry = PyWry()
+app = PyWry()
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [30, 25]})
-pywry.show_dataframe(df, title="My Table")
+app.show_dataframe(df, title="My Table")
 ```
 
 ### Asset Loading Priority

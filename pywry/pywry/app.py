@@ -1,4 +1,5 @@
 """Main PyWry application class."""
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -168,8 +169,7 @@ class PyWry:
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         label: str | None = None,
         watch: bool | None = None,
-        buttons: list[dict[str, str]] | None = None,
-        toolbar_position: str | None = None,
+        toolbars: list[dict[str, Any]] | None = None,
     ) -> str | BaseWidget:
         """Show content in a window.
 
@@ -199,17 +199,14 @@ class PyWry:
             Window label (for MULTI_WINDOW mode updates).
         watch : bool or None, optional
             Enable hot reload for CSS/JS files (overrides HtmlContent.watch).
-        buttons : list[dict[str, str]] or None, optional
-            List of button configs to generate a toolbar.
+        toolbars : list[dict], optional
+            List of toolbar configs. Each toolbar has 'position' and 'items' keys.
 
         Returns
         -------
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Resolve toolbar position from args or settings
-        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
-
         # Check if we're in a notebook environment
         if should_use_inline_rendering():
             from . import inline as pywry_inline
@@ -235,8 +232,7 @@ class PyWry:
                 include_plotly=include_plotly,
                 include_aggrid=include_aggrid,
                 aggrid_theme=aggrid_theme,
-                buttons=buttons,
-                toolbar_position=toolbar_pos,
+                toolbars=toolbars,
             )
 
         # Build config
@@ -272,8 +268,7 @@ class PyWry:
             settings=self._settings,
             loader=self._asset_loader,
             enable_hot_reload=enable_hot_reload,
-            buttons=buttons,
-            toolbar_position=toolbar_pos,
+            toolbars=toolbars,
         )
 
         # Store content for refresh support
@@ -325,8 +320,7 @@ class PyWry:
         on_click: Any = None,
         on_hover: Any = None,
         on_select: Any = None,
-        buttons: list[dict[str, str]] | None = None,
-        toolbar_position: str | None = None,
+        toolbars: list[dict[str, Any]] | None = None,
     ) -> str | BaseWidget:
         """Show a Plotly figure.
 
@@ -355,19 +349,14 @@ class PyWry:
             Hover callback for notebook mode.
         on_select : Callable or None, optional
             Selection callback for notebook mode.
-        buttons : list[dict[str, str]] or None, optional
-            List of button configs to generate a toolbar.
-        toolbar_position : str or None
-            Toolbar position ("top", "bottom", "left", "right", "inside").
+        toolbars : list[dict], optional
+            List of toolbar configs. Each toolbar has 'position' and 'items' keys.
 
         Returns
         -------
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Resolve toolbar position from args or settings
-        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
-
         # Check if we're in a notebook environment
         if should_use_inline_rendering():
             from . import inline as pywry_inline
@@ -388,8 +377,7 @@ class PyWry:
                 height=height or self._default_config.height,
                 theme="dark" if self._theme == ThemeMode.DARK else "light",
                 callbacks=inline_callbacks,
-                buttons=buttons,
-                toolbar_position=toolbar_pos,
+                toolbars=toolbars,
             )
 
         plotly_template = "plotly_dark" if self._theme == ThemeMode.DARK else "plotly_white"
@@ -495,11 +483,10 @@ class PyWry:
             callbacks=callbacks,
             include_plotly=True,
             label=label,
-            buttons=buttons,
-            toolbar_position=toolbar_pos,
+            toolbars=toolbars,
         )
 
-    def show_dataframe(
+    def show_dataframe(  # noqa: PLR0912  # pylint: disable=too-many-branches
         self,
         data: Any,
         title: str | None = None,
@@ -510,11 +497,11 @@ class PyWry:
         column_defs: list[dict[str, Any]] | None = None,
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         grid_options: dict[str, Any] | None = None,
-        buttons: list[dict[str, str]] | None = None,
+        toolbars: list[dict[str, Any]] | None = None,
         inline_css: str | None = None,
         on_cell_click: Any = None,
         on_row_selected: Any = None,
-        toolbar_position: str | None = None,
+        server_side: bool = False,
     ) -> str | BaseWidget:
         """Show a DataFrame in an AG Grid table.
 
@@ -541,23 +528,25 @@ class PyWry:
             AG Grid theme.
         grid_options : dict[str, Any] or None, optional
             Custom AG Grid options to merge with defaults.
-        buttons : list[dict[str, str]] or None, optional
-             List of button configs to generate a toolbar.
+        toolbars : list[dict], optional
+            List of toolbar configs. Each toolbar has 'position' and 'items' keys.
         inline_css : str or None, optional
             Custom CSS to inject (e.g., override window background).
         on_cell_click : Callable or None, optional
             Cell click callback for notebook mode.
         on_row_selected : Callable or None, optional
             Row selection callback for notebook mode.
+        server_side : bool, optional
+            Enable server-side mode where data stays in Python memory.
+            Useful for very large datasets (>100K rows) where you want
+            to filter/sort the full data. Data is fetched via IPC on
+            demand. Default is False.
 
         Returns
         -------
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Resolve toolbar position from args or settings
-        toolbar_pos = toolbar_position or self._settings.window.toolbar_position
-
         # Check if we're in a notebook environment
         if should_use_inline_rendering():
             from . import inline as pywry_inline
@@ -576,9 +565,8 @@ class PyWry:
                 height=height or self._default_config.height,
                 theme="dark" if self._theme == ThemeMode.DARK else "light",
                 aggrid_theme=aggrid_theme,
-                buttons=buttons,
+                toolbars=toolbars,
                 callbacks=inline_callbacks,
-                toolbar_position=toolbar_pos,
             )
 
         # Convert to list of dicts if DataFrame or column-oriented dict
@@ -604,6 +592,10 @@ class PyWry:
         if column_defs is None and row_data:
             column_defs = [{"field": key} for key in row_data[0]]
 
+        # Convert ColDef objects to dicts for JSON serialization
+        if column_defs:
+            column_defs = [c.to_dict() if hasattr(c, "to_dict") else c for c in column_defs]
+
         # Build the AG Grid HTML
         # Theme class automatically includes -dark suffix for dark mode
         if self._theme == ThemeMode.DARK:
@@ -614,7 +606,21 @@ class PyWry:
         # Serialize user grid options for merging in JS
         user_options_json = json.dumps(grid_options or {})
 
-        grid_html = f"""
+        # Generate unique grid ID for this instance
+        grid_id = f"app-grid-{uuid.uuid4().hex[:8]}"
+        row_count = len(row_data)
+
+        if server_side:
+            # Server-side mode: data stays in Python, JS gets it via IPC
+            # Useful for very large datasets where you want full filtering
+            info(f"Server-side mode for {row_count:,} rows (grid: {grid_id})")
+
+            server_config = {
+                "totalRows": row_count,
+                "blockSize": 500,
+            }
+
+            grid_html = f"""
         <div id="myGrid" class="pywry-grid {theme_class}" style="width:100%;height:100%;"></div>
         <script>
             (function() {{
@@ -624,35 +630,75 @@ class PyWry:
                         return;
                     }}
 
-                    // Grid config - centralized defaults handle everything else
-                    // domLayout: 'normal' ensures grid uses internal scrollbars (matches IFrame behavior)
                     var gridConfig = {{
                         columnDefs: {json.dumps(column_defs or [])},
-                        rowData: {json.dumps(row_data)},
+                        serverSide: {json.dumps(server_config)},
                         domLayout: 'normal'
                     }};
 
-                    // Merge user options on top of base config
                     var userOptions = {user_options_json};
                     if (userOptions) {{
                         Object.assign(gridConfig, userOptions);
-                        // Preserve columnDefs and rowData if user didn't override
-                        if (!userOptions.columnDefs) gridConfig.columnDefs = {json.dumps(column_defs or [])};
-                        if (!userOptions.rowData) gridConfig.rowData = {json.dumps(row_data)};
                     }}
 
                     const gridDiv = document.querySelector('#myGrid');
                     if (gridDiv) {{
-                        const gridId = 'app-grid-' + Math.random().toString(36).substr(2, 9);
+                        const gridId = '{grid_id}';
 
-                        // Use centralized AG Grid defaults from aggrid-defaults.js
                         var gridOptions = window.PYWRY_AGGRID_BUILD_OPTIONS
                             ? window.PYWRY_AGGRID_BUILD_OPTIONS(gridConfig, gridId)
                             : gridConfig;
 
                         window.__PYWRY_GRID_API__ = agGrid.createGrid(gridDiv, gridOptions);
 
-                        // Register event listeners + context menu using centralized function
+                        if (window.PYWRY_AGGRID_REGISTER_LISTENERS) {{
+                            window.PYWRY_AGGRID_REGISTER_LISTENERS(window.__PYWRY_GRID_API__, gridDiv, gridId);
+                        }}
+                    }}
+                }}
+                initGrid();
+            }})();
+        </script>
+        """
+            # Set up IPC handler for data requests
+            self._setup_server_side_handler(grid_id, row_data, label)
+        else:
+            # Client-side mode: send all data to frontend
+            # AG Grid's DOM virtualization handles large datasets efficiently
+            # JS-side truncates if > 100K rows to protect browser memory
+            grid_html = f"""
+        <div id="myGrid" class="pywry-grid {theme_class}" style="width:100%;height:100%;"></div>
+        <script>
+            (function() {{
+                function initGrid() {{
+                    if (typeof agGrid === 'undefined') {{
+                        setTimeout(initGrid, 50);
+                        return;
+                    }}
+
+                    var gridConfig = {{
+                        columnDefs: {json.dumps(column_defs or [])},
+                        rowData: {json.dumps(row_data)},
+                        domLayout: 'normal'
+                    }};
+
+                    var userOptions = {user_options_json};
+                    if (userOptions) {{
+                        Object.assign(gridConfig, userOptions);
+                        if (!userOptions.columnDefs) gridConfig.columnDefs = {json.dumps(column_defs or [])};
+                        if (!userOptions.rowData) gridConfig.rowData = {json.dumps(row_data)};
+                    }}
+
+                    const gridDiv = document.querySelector('#myGrid');
+                    if (gridDiv) {{
+                        const gridId = '{grid_id}';
+
+                        var gridOptions = window.PYWRY_AGGRID_BUILD_OPTIONS
+                            ? window.PYWRY_AGGRID_BUILD_OPTIONS(gridConfig, gridId)
+                            : gridConfig;
+
+                        window.__PYWRY_GRID_API__ = agGrid.createGrid(gridDiv, gridOptions);
+
                         if (window.PYWRY_AGGRID_REGISTER_LISTENERS) {{
                             window.PYWRY_AGGRID_REGISTER_LISTENERS(window.__PYWRY_GRID_API__, gridDiv, gridId);
                         }}
@@ -675,8 +721,7 @@ class PyWry:
             include_aggrid=True,
             aggrid_theme=aggrid_theme,
             label=label,
-            buttons=buttons,
-            toolbar_position=toolbar_pos,
+            toolbars=toolbars,
         )
 
     def on(self, event_type: str, handler: CallbackFunc, label: str | None = None) -> bool:
@@ -929,6 +974,245 @@ class PyWry:
             self._hot_reload_manager.stop()
             self._hot_reload_manager = None
             info("Hot reload disabled")
+
+    # Storage for server-side grid data
+    _grid_data: dict[str, list[dict[str, Any]]]
+
+    def _setup_server_side_handler(
+        self,
+        grid_id: str,
+        row_data: list[dict[str, Any]],
+        label: str | None,
+    ) -> None:
+        """Set up IPC handler for server-side grid data requests.
+
+        This keeps the data in Python and sends slices on demand.
+
+        Parameters
+        ----------
+        grid_id : str
+            Unique grid identifier.
+        row_data : list[dict[str, Any]]
+            The full dataset (kept in Python memory).
+        label : str or None
+            Window label to register handler on.
+        """
+        # Initialize storage if needed
+        if not hasattr(self, "_grid_data"):
+            self._grid_data = {}
+
+        # Store the data
+        self._grid_data[grid_id] = row_data
+
+        def handle_page_request(event_data: dict[str, Any]) -> None:
+            """Handle grid:request_page events from frontend."""
+            # Only respond to requests for this grid
+            if event_data.get("gridId") != grid_id:
+                return
+
+            request_id = event_data.get("requestId", "")
+            start_row = event_data.get("startRow", 0)
+            end_row = event_data.get("endRow", 100)
+            sort_model = event_data.get("sortModel", [])
+            filter_model = event_data.get("filterModel", {})
+
+            debug(
+                f"Grid {grid_id}: page request {request_id} "
+                f"rows {start_row}-{end_row}, "
+                f"sort={sort_model}, filter={filter_model}"
+            )
+
+            # Get the full dataset
+            data = self._grid_data.get(grid_id, [])
+
+            # Apply filtering (simple contains/equals logic)
+            filtered_data = self._apply_grid_filter(data, filter_model)
+
+            # Apply sorting
+            sorted_data = self._apply_grid_sort(filtered_data, sort_model)
+
+            # Get the requested slice
+            total_rows = len(sorted_data)
+            rows = sorted_data[start_row:end_row]
+            is_last_page = end_row >= total_rows
+
+            # Add row IDs for selection persistence
+            for i, row in enumerate(rows):
+                row["__rowId"] = start_row + i
+
+            # Send response back to frontend
+            self.send_event(
+                "grid:page_response",
+                {
+                    "gridId": grid_id,
+                    "requestId": request_id,
+                    "rows": rows,
+                    "totalRows": total_rows,
+                    "isLastPage": is_last_page,
+                },
+                label=label,
+            )
+
+        # Register the handler
+        target_label = label or (self._mode.get_labels() or ["main"])[0]
+        registry = get_registry()
+        registry.register(target_label, "grid:request_page", handle_page_request)
+
+        debug(f"Registered server-side handler for grid {grid_id} on label {target_label}")
+
+    def _apply_grid_filter(
+        self,
+        data: list[dict[str, Any]],
+        filter_model: dict[str, Any],
+    ) -> list[dict[str, Any]]:
+        """Apply AG Grid filter model to data.
+
+        Parameters
+        ----------
+        data : list[dict[str, Any]]
+            Data to filter.
+        filter_model : dict[str, Any]
+            AG Grid filter model.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            Filtered data.
+        """
+        if not filter_model:
+            return data
+
+        result = data
+        for field, filter_def in filter_model.items():
+            filter_type = filter_def.get("filterType", "text")
+            filter_op = filter_def.get("type", "contains")
+            filter_value = filter_def.get("filter")
+
+            if filter_value is None:
+                continue
+
+            result = [
+                row
+                for row in result
+                if self._row_matches_filter(row, field, filter_type, filter_op, filter_value)
+            ]
+
+        return result
+
+    def _row_matches_filter(
+        self,
+        row: dict[str, Any],
+        field: str,
+        filter_type: str,
+        filter_op: str,
+        filter_value: Any,
+    ) -> bool:
+        """Check if a row matches a single filter condition."""
+        val = row.get(field)
+        if val is None:
+            return False
+
+        if filter_type == "text":
+            return self._text_filter_match(val, filter_op, filter_value)
+
+        if filter_type == "number":
+            return self._number_filter_match(val, filter_op, filter_value)
+
+        return True
+
+    def _text_filter_match(  # noqa: PLR0911  # pylint: disable=too-many-return-statements
+        self, val: Any, filter_op: str, filter_value: Any
+    ) -> bool:
+        """Check if value matches text filter."""
+        val_str = str(val).lower()
+        filter_str = str(filter_value).lower()
+
+        if filter_op == "contains":
+            return filter_str in val_str
+        if filter_op == "equals":
+            return val_str == filter_str
+        if filter_op == "startsWith":
+            return val_str.startswith(filter_str)
+        if filter_op == "endsWith":
+            return val_str.endswith(filter_str)
+        if filter_op == "notContains":
+            return filter_str not in val_str
+        if filter_op == "notEqual":
+            return val_str != filter_str
+        return filter_str in val_str
+
+    def _number_filter_match(  # noqa: PLR0911  # pylint: disable=too-many-return-statements
+        self, val: Any, filter_op: str, filter_value: Any
+    ) -> bool:
+        """Check if value matches number filter."""
+        try:
+            num_val = float(val)
+            num_filter = float(filter_value)
+        except (ValueError, TypeError):
+            return False
+
+        if filter_op == "equals":
+            return num_val == num_filter
+        if filter_op == "notEqual":
+            return num_val != num_filter
+        if filter_op == "lessThan":
+            return num_val < num_filter
+        if filter_op == "lessThanOrEqual":
+            return num_val <= num_filter
+        if filter_op == "greaterThan":
+            return num_val > num_filter
+        if filter_op == "greaterThanOrEqual":
+            return num_val >= num_filter
+        return True
+
+    def _apply_grid_sort(
+        self,
+        data: list[dict[str, Any]],
+        sort_model: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        """Apply AG Grid sort model to data.
+
+        Parameters
+        ----------
+        data : list[dict[str, Any]]
+            Data to sort.
+        sort_model : list[dict[str, Any]]
+            AG Grid sort model.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            Sorted data.
+        """
+        if not sort_model:
+            return data
+
+        # Apply sorts in reverse order (last sort is primary)
+        result = list(data)
+        for sort_item in reversed(sort_model):
+            col_id = sort_item.get("colId")
+            sort_dir = sort_item.get("sort", "asc")
+
+            if not col_id:
+                continue
+
+            # Use functools.partial or lambda with default arg to capture col_id
+            result.sort(
+                key=lambda row, c=col_id: self._get_sort_key(row, c),  # type: ignore[misc]
+                reverse=(sort_dir == "desc"),
+            )
+
+        return result
+
+    def _get_sort_key(self, row: dict[str, Any], col_id: str) -> tuple[int, Any]:
+        """Get sort key for a row value."""
+        val = row.get(col_id)
+        if val is None:
+            return (1, "")
+        try:
+            return (0, float(val))
+        except (ValueError, TypeError):
+            return (0, str(val).lower())
 
     def _get_plotly_js(self) -> str:
         """Get Plotly.js library (lazy loaded)."""
