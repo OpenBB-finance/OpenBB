@@ -267,7 +267,9 @@ class YFinanceEtfInfoFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await asyncio.wait_for(
+                    asyncio.to_thread(lambda: Ticker(symbol).get_info()), timeout=30
+                )
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
