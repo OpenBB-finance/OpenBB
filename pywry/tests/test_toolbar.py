@@ -760,17 +760,17 @@ class TestToolbarExtraFieldsRejected:
     def test_button_extra_field_rejected(self) -> None:
         """Test Button rejects extra fields."""
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            Button(label="Test", event="toolbar:click", lable="typo")
+            Button(label="Test", event="toolbar:click", unknown_field="typo")
 
     def test_select_extra_field_rejected(self) -> None:
         """Test Select rejects extra fields."""
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            Select(event="view:change", options=[], optins="typo")
+            Select(event="view:change", options=[], unknown_field="typo")
 
     def test_toolbar_extra_field_rejected(self) -> None:
         """Test Toolbar rejects extra fields."""
         with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
-            Toolbar(items=[], positon="typo")
+            Toolbar(items=[], unknown_field="typo")
 
 
 # =============================================================================
