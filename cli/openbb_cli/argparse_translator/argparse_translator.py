@@ -152,93 +152,50 @@ class ArgparseTranslator:
     @staticmethod
     def _build_description(func_doc: str) -> str:
         """Build the description of the argparse program from the function docstring."""
-        # Remove only the Examples section and the openbb header if present
-        patterns_to_remove = [
-            (r"openbb\n\s+={3,}\n", ""),  # Remove openbb header
-            (r"\n\s*Examples\n\s*-{3,}\n.*", ""),  # Remove Examples section to end
-        ]
+        if not func_doc:
+            return ""
 
-        for pattern, replacement in patterns_to_remove:
-            func_doc = re.sub(pattern, replacement, func_doc, flags=re.DOTALL)
+        # Remove the openbb header if present
+        func_doc = re.sub(r"openbb\n\s+={3,}\n", "", func_doc, flags=re.DOTALL)
 
-        # Clean up type annotations in docstrings
+        # Senior Approach: The main description should only be the summary.
+        # Sections like Parameters, Returns, and Examples are handled by argparse or are redundant.
+        for section in ["Parameters", "Returns", "Examples", "Raises"]:
+            pattern = rf"\n\s*{section}\n\s*-{{3,}}\n.*"
+            func_doc = re.sub(pattern, "", func_doc, flags=re.DOTALL | re.IGNORECASE)
+
+        # Clean up any remaining type-style annotations in the summary
         def clean_type_annotation(type_str: str) -> str:
-            """Clean up a single type annotation."""
-            # First, handle the pipe union syntax: type1 | type2 -> type1 or type2
-            # Do this FIRST before other transformations
+            """Clean up type annotations for human readability."""
+            # Handle pipe unions: int | str -> int or str
             type_str = re.sub(r"\s*\|\s*", " or ", type_str)
-
             # Handle Annotated[type, ...] -> type
-            type_str = re.sub(r"Annotated\[([^,\]]+)(?:,\s*[^\]]+)?\]", r"\1", type_str)
-
-            # Handle Union[type1, type2, ...] -> type1 or type2 or ...
+            type_str = re.sub(r"Annotated\[\s*([^,\]]+).*?\]", r"\1", type_str)
+            # Handle Union[A, B] -> A or B
             type_str = re.sub(
-                r"Union\[([^\]]+)\]",
-                lambda m: " or ".join(m.group(1).split(", ")),
+                r"Union\[\s*(.*?)\s*\]",
+                lambda m: m.group(1).replace(", ", " or "),
                 type_str,
             )
+            # Handle Optional[A] -> A or None
+            type_str = re.sub(r"Optional\[\s*(.*?)\s*\]", r"\1 or None", type_str)
 
-            # Handle Optional[type] -> type or None
-            type_str = re.sub(r"Optional\[([^\]]+)\]", r"\1 or None", type_str)
+            return type_str.strip()
 
-            # Deduplicate "or" separated types
-            parts = [p.strip() for p in type_str.split(" or ")]
-
-            # Remove duplicates while preserving order (case-insensitive)
-            seen = set()
-            unique_parts = []
-            for part in parts:
-                part_lower = part.lower()
-                if part_lower not in seen:
-                    seen.add(part_lower)
-                    unique_parts.append(part)
-
-            # If None is present, move it to the end
-            if "None" in unique_parts:
-                unique_parts.remove("None")
-                unique_parts.append("None")
-
-            type_str = " or ".join(unique_parts)
-
-            return type_str
-
-        # Process each line that contains a type annotation (format: "name : type")
         lines = func_doc.split("\n")
         cleaned_lines = []
-
         for line in lines:
-            # Match lines with type annotations (parameter_name : type_annotation)
+            # If a line still looks like a parameter definition (e.g. "param : type"), clean it
             if ":" in line and not line.strip().startswith("#"):
-                # Split only on the first colon to preserve any colons in the description
                 parts = line.split(":", 1)
-                if len(parts) == 2:
-                    param_name = parts[0]
-                    rest = parts[1].strip()
+                param_name = parts[0]
+                type_info = parts[1].strip()
+                cleaned_type = clean_type_annotation(type_info)
+                cleaned_lines.append(f"{param_name}: {cleaned_type}")
+            else:
+                cleaned_lines.append(line)
 
-                    # Extract the type part (everything before the first real description line)
-                    # Type annotations typically don't contain spaces at the start of continuation lines
-                    type_match = re.match(r"^([^\n]+?)(?:\n\s{4,}|\s{2,}|$)", rest)
-                    if type_match:
-                        type_part = type_match.group(1).strip()
-                        description_part = rest[len(type_match.group(1)) :]
-
-                        # Clean the type annotation
-                        cleaned_type = clean_type_annotation(type_part)
-
-                        # Reconstruct the line
-                        if description_part:
-                            cleaned_lines.append(
-                                f"{param_name}: {cleaned_type}{description_part}"
-                            )
-                        else:
-                            cleaned_lines.append(f"{param_name}: {cleaned_type}")
-                        continue
-
-            cleaned_lines.append(line)
-
-        func_doc = "\n".join(cleaned_lines)
-
-        return func_doc.strip()
+        return "\n".join(cleaned_lines).strip()
 
     @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
