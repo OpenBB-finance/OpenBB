@@ -11,11 +11,11 @@ import uuid
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
+from .state_mixins import GridStateMixin, PlotlyStateMixin
+
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-
-    from plotly.graph_objects import Figure
 
 try:
     import anywidget
@@ -309,25 +309,72 @@ function render({ model, el }) {
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
                 // Handle grid data updates (row data)
-                if (event.type === 'pywry:update_rows' && gridApi && event.data && event.data.rows) {
-                    gridApi.setGridOption('rowData', event.data.rows);
-                    console.log('[PyWry] Grid rows updated:', event.data.rows.length, 'rows');
+                if (event.type === 'grid:update_data' && gridApi && event.data && event.data.data) {
+                    gridApi.setGridOption('rowData', event.data.data);
+                    console.log('[PyWry] Grid data updated:', event.data.data.length, 'rows');
                 }
                 // Handle column definition updates
-                if (event.type === 'pywry:update_columns' && gridApi && event.data && event.data.columnDefs) {
+                if (event.type === 'grid:update_columns' && gridApi && event.data && event.data.columnDefs) {
                     gridApi.setGridOption('columnDefs', event.data.columnDefs);
                     console.log('[PyWry] Grid columns updated:', event.data.columnDefs.length, 'columns');
                 }
-                // Handle full grid config update (rows + columns)
-                if (event.type === 'pywry:update_grid' && gridApi && event.data) {
-                    if (event.data.columnDefs) {
-                        gridApi.setGridOption('columnDefs', event.data.columnDefs);
+                // Handle generic options
+                if (event.type === 'grid:update_options' && gridApi && event.data && event.data.options) {
+                    const options = event.data.options;
+                    if (options.columnDefs) {
+                        gridApi.setGridOption('columnDefs', options.columnDefs);
                     }
-                    if (event.data.rows) {
-                        gridApi.setGridOption('rowData', event.data.rows);
+                    if (options.rowData) {
+                         gridApi.setGridOption('rowData', options.rowData);
                     }
-                    console.log('[PyWry] Grid fully updated');
+                     // Apply other options
+                     Object.keys(options).forEach(key => {
+                         if (key !== 'columnDefs' && key !== 'rowData') {
+                             gridApi.setGridOption(key, options[key]);
+                         }
+                     });
+                    console.log('[PyWry] Grid options updated');
                 }
+                // Handle cell updates
+                if (event.type === 'grid:update_cell' && gridApi && event.data) {
+                    // grid:update_cell { rowId, colId, value }
+                    // Simplest approach: find row node by ID if row IDs are used, otherwise this is hard.
+                    // Assuming rowId is provided and grid uses row IDs.
+                    const rowNode = gridApi.getRowNode(event.data.rowId);
+                    if (rowNode) {
+                        rowNode.setDataValue(event.data.colId, event.data.value);
+                    }
+                }
+                // Handle state request
+                if (event.type === 'grid:request_state' && gridApi) {
+                    const state = {
+                        columnState: gridApi.getColumnState(),
+                        filterModel: gridApi.getFilterModel()
+                    };
+                    // Emit response
+                    pywry.emit('grid:state_response', { state: state, gridId: event.data.gridId });
+                }
+                // Handle restore state
+                if (event.type === 'grid:restore_state' && gridApi && event.data && event.data.state) {
+                    const state = event.data.state;
+                    if (state.columnState) {
+                        gridApi.applyColumnState({ state: state.columnState, applyOrder: true });
+                    }
+                    if (state.filterModel) {
+                        gridApi.setFilterModel(state.filterModel);
+                    }
+                }
+                // Handle reset state
+                if (event.type === 'grid:reset_state' && gridApi) {
+                    gridApi.resetColumnState();
+                    gridApi.setFilterModel(null);
+                    if (event.data.hard) {
+                        // Hard reset - not fully implemented in JS logic yet besides clearing state
+                        gridApi.setFilterModel(null);
+                        gridApi.resetColumnState();
+                    }
+                }
+
                 pywry._fire(event.type, event.data);
                 // Also fire on window.pywry for global handlers (e.g., show_notification)
                 if (window.pywry && window.pywry._fire) {
@@ -338,6 +385,140 @@ function render({ model, el }) {
             console.error('[PyWry] Failed to parse Python event:', e);
         }
     });
+
+    // Initialize toolbar handlers (dropdowns, buttons, inputs, etc.)
+    // This is scoped to the container to avoid conflicts between widgets
+    function initToolbarHandlers(container, pywry) {
+        console.log('[PyWry Toolbar] Initializing toolbar handlers...');
+
+        // --- Dropdown (Select) handling ---
+        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
+            var selected = dropdown.querySelector('.pywry-dropdown-selected');
+            var menu = dropdown.querySelector('.pywry-dropdown-menu');
+            var textEl = dropdown.querySelector('.pywry-dropdown-text');
+
+            if (!selected || !menu || !textEl) return;
+
+            // Toggle dropdown on click
+            selected.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Close all other dropdowns in this container first
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
+                    if (other !== dropdown) other.classList.remove('pywry-open');
+                });
+                dropdown.classList.toggle('pywry-open');
+            });
+
+            // Handle option selection
+            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var value = option.getAttribute('data-value');
+
+                    // Update selected state
+                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                        opt.classList.remove('pywry-selected');
+                    });
+                    option.classList.add('pywry-selected');
+                    textEl.textContent = option.textContent;
+                    dropdown.classList.remove('pywry-open');
+
+                    // Emit event
+                    var eventName = dropdown.getAttribute('data-event');
+                    if (eventName && pywry) {
+                        console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
+                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
+                    }
+                });
+            });
+        });
+
+        // --- Close dropdowns when clicking outside ---
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.pywry-dropdown')) {
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
+                    dropdown.classList.remove('pywry-open');
+                });
+            }
+        });
+
+        // --- Button handling ---
+        container.querySelectorAll('.pywry-toolbar-button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                if (btn.classList.contains('pywry-disabled')) return;
+                var eventName = btn.getAttribute('data-event');
+                var data = {};
+                try {
+                    if (btn.getAttribute('data-data')) data = JSON.parse(btn.getAttribute('data-data'));
+                } catch (err) {}
+                if (eventName && pywry) {
+                    console.log('[PyWry Toolbar] Button clicked:', eventName, data);
+                    pywry.emit(eventName, data);
+                }
+            });
+        });
+
+        // --- Text/Number/Date Input handling (with debounce) ---
+        var inputDebounceTimers = {};
+        container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
+            input.addEventListener('input', function(e) {
+                var eventName = input.getAttribute('data-event');
+                var debounce = parseInt(input.getAttribute('data-debounce') || '0', 10);
+                var inputId = input.id || input.getAttribute('data-event');
+
+                if (inputDebounceTimers[inputId]) {
+                    clearTimeout(inputDebounceTimers[inputId]);
+                }
+
+                var sendValue = function() {
+                    var value = input.value;
+                    if (input.type === 'number') value = parseFloat(value);
+                    if (eventName && pywry) {
+                        pywry.emit(eventName, { value: value, componentId: input.id });
+                    }
+                };
+
+                if (debounce > 0) {
+                    inputDebounceTimers[inputId] = setTimeout(sendValue, debounce);
+                } else {
+                    sendValue();
+                }
+            });
+        });
+
+        // --- Slider/Range Input handling ---
+        container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
+            slider.addEventListener('input', function(e) {
+                var eventName = slider.getAttribute('data-event');
+                var value = parseFloat(slider.value);
+                // Update display value if present
+                var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
+                if (display) display.textContent = value;
+                if (eventName && pywry) {
+                    pywry.emit(eventName, { value: value, componentId: slider.id });
+                }
+            });
+        });
+
+        // --- MultiSelect handling ---
+        container.querySelectorAll('.pywry-multiselect-group input[type="checkbox"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function(e) {
+                var group = checkbox.closest('.pywry-multiselect-group');
+                if (group) {
+                    var eventName = group.getAttribute('data-event');
+                    var selected = [];
+                    group.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+                        selected.push(cb.value);
+                    });
+                    if (eventName && pywry) {
+                        pywry.emit(eventName, { values: selected, componentId: group.id });
+                    }
+                }
+            });
+        });
+
+        console.log('[PyWry Toolbar] Handlers initialized');
+    }
 
     function renderContent(retryCount = 0) {
         // CRITICAL: Check if this render is stale (a newer render has started)
@@ -353,6 +534,8 @@ function render({ model, el }) {
             // Only set innerHTML on first attempt to avoid flicker
             if (retryCount === 0) {
                 container.innerHTML = content;
+                // Initialize toolbar handlers (dropdowns, buttons, inputs, etc.)
+                initToolbarHandlers(container, pywry);
             }
 
             // Initialize AG Grid if grid config is present
@@ -599,6 +782,141 @@ function render({ model, el }) {
     // Attach local pywry to container for debugging if needed
     container._pywryInstance = pywry;
 
+    // =========================================================================
+    // TOOLBAR HANDLERS - Shared by ALL widgets
+    // Handles dropdowns, buttons, inputs, sliders, multiselects
+    // =========================================================================
+    function initToolbarHandlers(container, pywry) {
+        console.log('[PyWry Toolbar] Initializing toolbar handlers...');
+
+        // --- Dropdown (Select) handling ---
+        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
+            var selected = dropdown.querySelector('.pywry-dropdown-selected');
+            var menu = dropdown.querySelector('.pywry-dropdown-menu');
+            var textEl = dropdown.querySelector('.pywry-dropdown-text');
+
+            if (!selected || !menu || !textEl) return;
+
+            // Toggle dropdown on click
+            selected.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Close all other dropdowns in this container first
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
+                    if (other !== dropdown) other.classList.remove('pywry-open');
+                });
+                dropdown.classList.toggle('pywry-open');
+            });
+
+            // Handle option selection
+            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var value = option.getAttribute('data-value');
+
+                    // Update selected state
+                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                        opt.classList.remove('pywry-selected');
+                    });
+                    option.classList.add('pywry-selected');
+                    textEl.textContent = option.textContent;
+                    dropdown.classList.remove('pywry-open');
+
+                    // Emit event
+                    var eventName = dropdown.getAttribute('data-event');
+                    if (eventName && pywry) {
+                        console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
+                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
+                    }
+                });
+            });
+        });
+
+        // --- Close dropdowns when clicking outside ---
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.pywry-dropdown')) {
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
+                    dropdown.classList.remove('pywry-open');
+                });
+            }
+        });
+
+        // --- Button handling ---
+        container.querySelectorAll('.pywry-toolbar-button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                if (btn.classList.contains('pywry-disabled')) return;
+                var eventName = btn.getAttribute('data-event');
+                var data = {};
+                try {
+                    if (btn.getAttribute('data-data')) data = JSON.parse(btn.getAttribute('data-data'));
+                } catch (err) {}
+                if (eventName && pywry) {
+                    console.log('[PyWry Toolbar] Button clicked:', eventName, data);
+                    pywry.emit(eventName, data);
+                }
+            });
+        });
+
+        // --- Text/Number/Date Input handling (with debounce) ---
+        var inputDebounceTimers = {};
+        container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
+            input.addEventListener('input', function(e) {
+                var eventName = input.getAttribute('data-event');
+                var debounce = parseInt(input.getAttribute('data-debounce') || '0', 10);
+                var inputId = input.id || input.getAttribute('data-event');
+
+                if (inputDebounceTimers[inputId]) {
+                    clearTimeout(inputDebounceTimers[inputId]);
+                }
+
+                var sendValue = function() {
+                    var value = input.value;
+                    if (input.type === 'number') value = parseFloat(value);
+                    if (eventName && pywry) {
+                        pywry.emit(eventName, { value: value, componentId: input.id });
+                    }
+                };
+
+                if (debounce > 0) {
+                    inputDebounceTimers[inputId] = setTimeout(sendValue, debounce);
+                } else {
+                    sendValue();
+                }
+            });
+        });
+
+        // --- Slider/Range Input handling ---
+        container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
+            slider.addEventListener('input', function(e) {
+                var eventName = slider.getAttribute('data-event');
+                var value = parseFloat(slider.value);
+                var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
+                if (display) display.textContent = value;
+                if (eventName && pywry) {
+                    pywry.emit(eventName, { value: value, componentId: slider.id });
+                }
+            });
+        });
+
+        // --- MultiSelect handling ---
+        container.querySelectorAll('.pywry-multiselect-group input[type="checkbox"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function(e) {
+                var group = checkbox.closest('.pywry-multiselect-group');
+                if (group) {
+                    var eventName = group.getAttribute('data-event');
+                    var selected = [];
+                    group.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+                        selected.push(cb.value);
+                    });
+                    if (eventName && pywry) {
+                        pywry.emit(eventName, { values: selected, componentId: group.id });
+                    }
+                }
+            });
+        });
+
+        console.log('[PyWry Toolbar] Handlers initialized');
+    }
+
     model.on('change:_py_event', () => {
         try {
             const event = JSON.parse(model.get('_py_event') || '{}');
@@ -644,6 +962,8 @@ function render({ model, el }) {
         if (content) {
             container.innerHTML = content;
             setTimeout(() => runScripts(container), 0);
+            // Initialize toolbar handlers for dropdowns, buttons, inputs, etc.
+            setTimeout(() => initToolbarHandlers(container, pywry), 10);
         }
     }
 
@@ -772,24 +1092,7 @@ if HAS_ANYWIDGET:
 
             ipy_display(self)
 
-        def update_figure(self, figure: Figure) -> None:
-            """Update the Plotly figure (convenience method for Plotly widgets).
-
-            Parameters
-            ----------
-            figure : plotly.graph_objects.Figure
-                New Plotly figure to display.
-            """
-            # For generic PyWryWidget, just update with figure HTML
-            # This is a fallback - PyWryPlotlyWidget has better implementation
-            from . import inline
-
-            html = inline.generate_plotly_html(
-                figure.to_json(), self._label, "PyWry", self.theme, full_document=False
-            )
-            self.update(html)
-
-    class PyWryPlotlyWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
+    class PyWryPlotlyWidget(PyWryWidget, PlotlyStateMixin):  # pylint: disable=abstract-method,too-many-ancestors
         """Widget for inline notebook rendering with Plotly.js bundled.
 
         Dynamically loads Plotly.js from bundled assets and combines it
@@ -807,6 +1110,7 @@ if HAS_ANYWIDGET:
         theme = traitlets.Unicode("dark").tag(sync=True)
         width = traitlets.Unicode("100%").tag(sync=True)
         height = traitlets.Unicode("500px").tag(sync=True)
+        chart_id = traitlets.Unicode("").tag(sync=True)  # Unique ID for scoped events
         _js_event = traitlets.Unicode("").tag(sync=True)
         _py_event = traitlets.Unicode("").tag(sync=True)
 
@@ -817,115 +1121,23 @@ if HAS_ANYWIDGET:
             width: str = "100%",
             height: str = "500px",
             figure_json: str = "",
+            chart_id: str = "",
             **kwargs,
         ):
             """Initialize the widget with Plotly bundled."""
-            super().__init__(**kwargs)
-            self._label = f"w-{uuid.uuid4().hex[:8]}"
-            self._handlers: dict[str, list[Callable[[dict[str, Any], str, str], Any]]] = {}
-            self.content = content
+            super().__init__(content=content, theme=theme, width=width, height=height, **kwargs)
             self.figure_json = figure_json
-            self.theme = theme
-            self.width = width
-            self.height = height
+            self.chart_id = chart_id or self._label
             self.observe(self._handle_js_event, names=["_js_event"])
 
-        @property
-        def label(self) -> str:
-            """Get widget label."""
-            return self._label
+        def emit(self, event_type: str, data: dict[str, Any] | None = None) -> None:
+            """Send an event from Python to JavaScript."""
+            # Include chart_id for scoped event handling
+            payload = data.copy() if data else {}
+            payload.setdefault("chartId", self.chart_id)
+            super().emit(event_type, payload)
 
-        def _handle_js_event(self, change: dict[str, Any]) -> None:
-            """Handle events from JavaScript."""
-            if not change["new"]:
-                return
-            try:
-                event = json.loads(change["new"])
-                event_type = event.get("type", "")
-                event_data = event.get("data", {})
-                for handler in self._handlers.get(event_type, []):
-                    handler(event_data, event_type, self._label)
-            except Exception as e:
-                print(f"[PyWry] Error handling JS event: {e}")
-
-        def on(
-            self, event_type: str, callback: Callable[[dict[str, Any], str, str], Any]
-        ) -> PyWryPlotlyWidget:
-            """Register a callback for events from JavaScript.
-
-            Parameters
-            ----------
-            event_type : str
-                Event name (e.g., 'plotly_click', 'plotly_hover', 'plotly_selected').
-            callback : Callable[[dict[str, Any], str, str], Any]
-                Handler function receiving (data, event_type, label).
-
-            Returns
-            -------
-            PyWryPlotlyWidget
-                Self for method chaining.
-            """
-            if event_type not in self._handlers:
-                self._handlers[event_type] = []
-            self._handlers[event_type].append(callback)
-            return self
-
-        def emit(self, event_type: str, data: dict) -> None:
-            """Send an event from Python to JavaScript.
-
-            Parameters
-            ----------
-            event_type : str
-                Event name that JS listeners can subscribe to.
-            data : dict
-                JSON-serializable payload to send to JavaScript.
-            """
-            event = json.dumps({"type": event_type, "data": data or {}, "ts": uuid.uuid4().hex})
-            self._py_event = event
-
-        def update(self, html: str) -> None:
-            """Update the widget's HTML content.
-
-            Parameters
-            ----------
-            html : str
-                New HTML content to render.
-            """
-            self.content = html
-
-        def set_content(self, content: str) -> None:
-            """Alias for update()."""
-            self.update(content)
-
-        def display(self) -> None:
-            """Display the widget in the current output context."""
-            from IPython.display import display as ipy_display
-
-            ipy_display(self)
-
-        def update_figure(self, figure: Figure) -> None:
-            """Update the Plotly figure without manual HTML generation.
-
-            Parameters
-            ----------
-            figure : plotly.graph_objects.Figure
-                New Plotly figure to display.
-
-            Examples
-            --------
-            >>> widget.update_figure(new_fig)  # Clean API!
-            """
-            # Merge config into figure JSON
-            fig_dict = json.loads(figure.to_json())
-            config = getattr(self, "_plotly_config", None)
-            if config:
-                fig_dict["config"] = config
-
-            # Send update event to JS (handled by pywry:update_plotly listener)
-            # This avoids regenerating the HTML and resetting the widget state
-            self.emit("pywry:update_plotly", {"figure": fig_dict, "config": config or {}})
-
-    class PyWryAgGridWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
+    class PyWryAgGridWidget(PyWryWidget, GridStateMixin):  # pylint: disable=abstract-method,too-many-ancestors
         """Widget for inline notebook rendering with AG Grid bundled.
 
         Implements BaseWidget protocol for unified API.
@@ -963,15 +1175,9 @@ if HAS_ANYWIDGET:
             export_dir : str, optional
                 Directory for CSV exports from context menu. If None, uses current directory.
             """
-            super().__init__(**kwargs)
-            self._label = f"w-{uuid.uuid4().hex[:8]}"
-            self._handlers: dict[str, list[Callable[[dict[str, Any], str, str], Any]]] = {}
+            super().__init__(content=content, theme=theme, width=width, height=height, **kwargs)
             self._export_dir = export_dir
-            self.content = content
-            self.theme = theme
             self.aggrid_theme = aggrid_theme
-            self.width = width
-            self.height = height
             self.grid_config = grid_config
             self.grid_id = grid_id or self._label  # Use label as default grid_id
             self.observe(self._handle_js_event, names=["_js_event"])
@@ -979,47 +1185,7 @@ if HAS_ANYWIDGET:
             # Automatically register CSV export handler
             self._register_csv_export_handler()
 
-        @property
-        def label(self) -> str:
-            """Get widget label."""
-            return self._label
-
-        def _handle_js_event(self, change: dict[str, Any]) -> None:
-            """Handle events from JavaScript."""
-            if not change["new"]:
-                return
-            try:
-                event = json.loads(change["new"])
-                event_type = event.get("type", "")
-                event_data = event.get("data", {})
-                for handler in self._handlers.get(event_type, []):
-                    handler(event_data, event_type, self._label)
-            except Exception as e:
-                print(f"[PyWry] Error handling JS event: {e}")
-
-        def on(
-            self, event_type: str, callback: Callable[[dict[str, Any], str, str], Any]
-        ) -> PyWryAgGridWidget:
-            """Register a callback for events from JavaScript.
-
-            Parameters
-            ----------
-            event_type : str
-                Event name (e.g., 'cell_click', 'row_selected').
-            callback : Callable[[dict[str, Any], str, str], Any]
-                Handler function receiving (data, event_type, label).
-
-            Returns
-            -------
-            PyWryAgGridWidget
-                Self for method chaining.
-            """
-            if event_type not in self._handlers:
-                self._handlers[event_type] = []
-            self._handlers[event_type].append(callback)
-            return self
-
-        def emit(self, event_type: str, data: dict) -> None:
+        def emit(self, event_type: str, data: dict[str, Any] | None = None) -> None:
             """Send an event from Python to JavaScript.
 
             Parameters
@@ -1031,265 +1197,8 @@ if HAS_ANYWIDGET:
             """
             # Include grid_id for scoped event handling
             payload = data.copy() if data else {}
-            payload["gridId"] = self.grid_id
-            event = json.dumps({"type": event_type, "data": payload, "ts": uuid.uuid4().hex})
-            self._py_event = event
-
-        def update(self, html: str) -> None:
-            """Update the widget's HTML content.
-
-            Parameters
-            ----------
-            html : str
-                New HTML content to render.
-            """
-            self.content = html
-
-        def set_content(self, content: str) -> None:
-            """Alias for update()."""
-            self.update(content)
-
-        def update_cell(self, row_index: int, col_id: str, value: Any) -> None:
-            """Update a single cell value in the grid.
-
-            This is more efficient than update_data() when changing just one cell,
-            as it uses AG Grid's transaction API to update in-place without
-            replacing the entire dataset.
-
-            Parameters
-            ----------
-            row_index : int
-                The row index (0-based) of the cell to update.
-            col_id : str
-                The column field name (colId) of the cell to update.
-            value : Any
-                The new value for the cell.
-
-            Examples
-            --------
-            >>> widget.update_cell(0, "price", 29.99)
-            >>> widget.update_cell(2, "status", "active")
-            """
-            self.emit("pywry:update_cell", {"rowIndex": row_index, "colId": col_id, "value": value})
-
-        def update_data(self, data: Any) -> None:
-            """Update the grid's row data.
-
-            Parameters
-            ----------
-            data : DataFrame | list[dict] | dict[str, list]
-                New data to display. Can be pandas DataFrame, list of row dicts,
-                or dict of columns.
-
-            Examples
-            --------
-            >>> widget.update_data(new_df)
-            >>> widget.update_data([{"a": 1}, {"a": 2}])
-            """
-            row_data = self._normalize_data(data)
-            self.emit("pywry:update_rows", {"rows": row_data})
-
-        def update_columns(self, columns: list[dict[str, Any]]) -> None:
-            """Update the grid's column definitions.
-
-            Parameters
-            ----------
-            columns : list[dict]
-                List of AG Grid column definitions.
-
-            Examples
-            --------
-            >>> widget.update_columns(
-            ...     [
-            ...         {"field": "name", "headerName": "Name"},
-            ...         {"field": "value", "headerName": "Value", "type": "numericColumn"},
-            ...     ]
-            ... )
-            """
-            self.emit("pywry:update_columns", {"columnDefs": columns})
-
-        def update_grid(
-            self,
-            data: Any = None,
-            columns: list[dict[str, Any]] | None = None,
-            preserve_state: bool = True,
-            restore_state: dict[str, Any] | None = None,
-        ) -> None:
-            """Update both row data and column definitions atomically.
-
-            Parameters
-            ----------
-            data : DataFrame | list[dict] | dict[str, list], optional
-                New row data.
-            columns : list[dict], optional
-                New column definitions.
-            preserve_state : bool, default True
-                If True, preserve column visibility, pinning, width, and order
-                for columns that exist in both old and new definitions.
-                Ignored if restore_state is provided.
-            restore_state : dict, optional
-                Explicit state to restore after updating. Use this when switching
-                between views with different column structures.
-
-            Examples
-            --------
-            >>> widget.update_grid(new_df, new_columns)
-            >>> widget.update_grid(new_df, new_columns, preserve_state=False)  # Reset state
-            >>> widget.update_grid(new_df, new_columns, restore_state=saved_state)
-            """
-            payload: dict[str, Any] = {"preserveState": preserve_state}
-            if data is not None:
-                payload["rows"] = self._normalize_data(data)
-            if columns is not None:
-                payload["columnDefs"] = columns
-            if restore_state is not None:
-                payload["restoreState"] = restore_state
-            if payload:
-                self.emit("pywry:update_grid", payload)
-
-        def request_grid_state(self, context: dict[str, Any] | None = None) -> None:
-            """Request the grid's current state.
-
-            The grid will emit a 'grid:state_response' event with the state data.
-            Register a callback for 'grid:state_response' to receive the state.
-
-            Parameters
-            ----------
-            context : dict, optional
-                Additional context to include in the response for correlation.
-
-            Examples
-            --------
-            >>> def on_state(data, event_type, label):
-            ...     print(f"Got state: {data}")
-            >>> widget.on("grid:state_response", on_state)
-            >>> widget.request_grid_state({"view": "current_view"})
-            """
-            payload: dict[str, Any] = {}
-            if context:
-                payload["context"] = context
-            self.emit("grid:request_state", payload)
-
-        def restore_state(self, state: dict[str, Any]) -> None:
-            """Restore a previously saved grid state.
-
-            Parameters
-            ----------
-            state : dict
-                State object from a previous 'grid:state_response' event.
-            """
-            self.emit("pywry:restore_state", {"state": state})
-
-        def reset_state(self) -> None:
-            """Reset grid to its default state.
-
-            Clears all column customizations (width, order, visibility, pinning)
-            and removes all filters.
-            """
-            self.emit("pywry:reset_state", {})
-
-        # =====================================================================
-        # Toolbar State Methods
-        # =====================================================================
-
-        def request_toolbar_state(
-            self, toolbar_id: str | None = None, context: dict[str, Any] | None = None
-        ) -> None:
-            """Request the current state of toolbar components.
-
-            The widget will emit a 'toolbar:state_response' event with the state data.
-            Register a callback for 'toolbar:state_response' to receive the state.
-
-            Parameters
-            ----------
-            toolbar_id : str, optional
-                Specific toolbar ID to query. If None, returns state of all toolbars.
-            context : dict, optional
-                Additional context to include in the response for correlation.
-
-            Examples
-            --------
-            >>> def on_state(data, event_type, label):
-            ...     print(f"Toolbar state: {data}")
-            >>> widget.on("toolbar:state_response", on_state)
-            >>> widget.request_toolbar_state()
-            """
-            payload: dict[str, Any] = {}
-            if toolbar_id:
-                payload["toolbarId"] = toolbar_id
-            if context:
-                payload["context"] = context
-            self.emit("toolbar:request_state", payload)
-
-        def get_toolbar_value(
-            self, component_id: str, context: dict[str, Any] | None = None
-        ) -> None:
-            """Request the current value of a specific toolbar component.
-
-            The widget will emit a 'toolbar:state_response' event with the value.
-            Register a callback for 'toolbar:state_response' to receive it.
-
-            Parameters
-            ----------
-            component_id : str
-                The component_id of the toolbar item to query.
-            context : dict, optional
-                Additional context to include in the response.
-
-            Examples
-            --------
-            >>> def on_value(data, event_type, label):
-            ...     print(f"Component value: {data['value']}")
-            >>> widget.on("toolbar:state_response", on_value)
-            >>> widget.get_toolbar_value("my-select")
-            """
-            payload: dict[str, Any] = {"componentId": component_id}
-            if context:
-                payload["context"] = context
-            self.emit("toolbar:request_state", payload)
-
-        def set_toolbar_value(self, component_id: str, value: Any) -> None:
-            """Set the value of a specific toolbar component.
-
-            Parameters
-            ----------
-            component_id : str
-                The component_id of the toolbar item to update.
-            value : Any
-                The new value for the component.
-                - For Select: string value
-                - For MultiSelect: list of string values
-                - For TextInput: string
-                - For NumberInput/RangeInput: number
-                - For DateInput: string (YYYY-MM-DD format)
-
-            Examples
-            --------
-            >>> widget.set_toolbar_value("theme-select", "dark")
-            >>> widget.set_toolbar_value("columns-multiselect", ["name", "age"])
-            >>> widget.set_toolbar_value("search-input", "query text")
-            """
-            self.emit("toolbar:set_value", {"componentId": component_id, "value": value})
-
-        def set_toolbar_values(self, values: dict[str, Any]) -> None:
-            """Set multiple toolbar component values at once.
-
-            Parameters
-            ----------
-            values : dict[str, Any]
-                Mapping of component_id to value.
-
-            Examples
-            --------
-            >>> widget.set_toolbar_values(
-            ...     {
-            ...         "theme-select": "dark",
-            ...         "columns-multiselect": ["name", "age"],
-            ...         "limit-number": 50,
-            ...     }
-            ... )
-            """
-            self.emit("toolbar:set_values", {"values": values})
+            payload.setdefault("gridId", self.grid_id)
+            super().emit(event_type, payload)
 
         def _register_csv_export_handler(self) -> None:
             """Register automatic CSV export handler for context menu exports."""

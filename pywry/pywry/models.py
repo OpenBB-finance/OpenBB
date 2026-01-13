@@ -27,6 +27,7 @@ class WindowMode(str, Enum):
     SINGLE_WINDOW = "single_window"
     MULTI_WINDOW = "multi_window"
     NOTEBOOK = "notebook"  # Inline rendering in Jupyter notebooks
+    BROWSER = "browser"  # Opens in system browser, headless server mode
 
 
 class WindowConfig(BaseModel):
@@ -85,7 +86,10 @@ class HtmlContent(BaseModel):
         return [Path(p) if isinstance(p, str) else p for p in v]
 
 
-EVENT_NAMESPACE_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$")
+# Allow namespace:event or namespace:event:id
+EVENT_NAMESPACE_PATTERN = re.compile(
+    r"^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*(:[a-zA-Z0-9_-]+)?$"
+)
 RESERVED_NAMESPACES = frozenset({"pywry", "plotly", "grid"})
 
 

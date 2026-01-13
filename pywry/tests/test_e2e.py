@@ -607,11 +607,16 @@ class TestToolbarComponentEvents:
         label = show_and_wait_ready(app, "<div>Select Test</div>", toolbars=toolbars)
         get_registry().register(label, "test:select", on_select)
 
-        # Change selection to 'b'
+        # Open the dropdown by clicking the selected area
         app.eval_js(
-            "var sel = document.querySelector('.pywry-select'); "
-            "sel.value = 'b'; "
-            "sel.dispatchEvent(new Event('change'));",
+            "document.querySelector('.pywry-dropdown-selected').click();",
+            label=label,
+        )
+        time.sleep(0.2)
+
+        # Select option 'b' from the open menu
+        app.eval_js(
+            "document.querySelector('.pywry-dropdown-option[data-value=\"b\"]').click();",
             label=label,
         )
 
@@ -712,6 +717,7 @@ class TestToolbarComponentEvents:
 
         assert events["received"], "TextInput event not received"
         assert events["data"]["value"] == "hello world", f"Got {events['data']}"
+
         app.close()
 
     def test_number_input_triggers_event(self):
@@ -756,6 +762,7 @@ class TestToolbarComponentEvents:
 
         assert events["received"], "NumberInput event not received"
         assert events["data"]["value"] == 42, f"Got {events['data']}"
+
         app.close()
 
     def test_date_input_triggers_event(self):
@@ -798,10 +805,57 @@ class TestToolbarComponentEvents:
 
         assert events["received"], "DateInput event not received"
         assert events["data"]["value"] == "2025-06-15", f"Got {events['data']}"
+
+        app.close()
+
+    def test_slider_input_triggers_event(self):
+        """SliderInput emits {value: <number>} on input."""
+        app = PyWry(theme=ThemeMode.DARK)
+
+        events = {"received": False, "data": None}
+
+        def on_slider(data):
+            events["received"] = True
+            events["data"] = data
+
+        toolbars = [
+            {
+                "position": "top",
+                "items": [
+                    {
+                        "type": "slider",
+                        "event": "test:slider",
+                        "value": 50,
+                        "min": 0,
+                        "max": 100,
+                        "step": 10,
+                    }
+                ],
+            }
+        ]
+
+        label = show_and_wait_ready(app, "<div>Slider Test</div>", toolbars=toolbars)
+        get_registry().register(label, "test:slider", on_slider)
+
+        # Slide to 80
+        app.eval_js(
+            "var inp = document.querySelector('.pywry-input-range'); "
+            "inp.value = 80; "
+            "inp.dispatchEvent(new Event('input'));",
+            label=label,
+        )
+
+        start = time.time()
+        while not events["received"] and (time.time() - start) < 3.0:
+            time.sleep(0.1)
+
+        assert events["received"], "SliderInput event not received"
+        assert events["data"]["value"] == 80, f"Got {events['data']}"
+
         app.close()
 
     def test_range_input_triggers_event(self):
-        """RangeInput emits {value: <number>} on input."""
+        """RangeInput emits {start: <number>, end: <number>} on input."""
         app = PyWry(theme=ThemeMode.DARK)
 
         events = {"received": False, "data": None}
@@ -817,7 +871,8 @@ class TestToolbarComponentEvents:
                     {
                         "type": "range",
                         "event": "test:range",
-                        "value": 50,
+                        "start": 20,
+                        "end": 80,
                         "min": 0,
                         "max": 100,
                         "step": 10,
@@ -829,20 +884,23 @@ class TestToolbarComponentEvents:
         label = show_and_wait_ready(app, "<div>Range Test</div>", toolbars=toolbars)
         get_registry().register(label, "test:range", on_range)
 
-        # Slide to 80
+        # Adjust the end slider to 90
         app.eval_js(
-            "var inp = document.querySelector('.pywry-input-range'); "
-            "inp.value = 80; "
-            "inp.dispatchEvent(new Event('input'));",
+            "var inputs = document.querySelectorAll('.pywry-input-range'); "
+            "var endInput = inputs[1]; "  # Second slider is the end
+            "endInput.value = 90; "
+            "endInput.dispatchEvent(new Event('input'));",
             label=label,
         )
 
-        start = time.time()
-        while not events["received"] and (time.time() - start) < 3.0:
+        start_time = time.time()
+        while not events["received"] and (time.time() - start_time) < 3.0:
             time.sleep(0.1)
 
         assert events["received"], "RangeInput event not received"
-        assert events["data"]["value"] == 80, f"Got {events['data']}"
+        assert events["data"]["start"] == 20, f"Got start={events['data'].get('start')}"
+        assert events["data"]["end"] == 90, f"Got end={events['data'].get('end')}"
+
         app.close()
 
 
@@ -882,7 +940,7 @@ class TestMultiToolbarStateTracking:
             {
                 "position": "left",
                 "items": [
-                    {"type": "range", "event": "left:range", "value": 25, "min": 0, "max": 100}
+                    {"type": "slider", "event": "left:range", "value": 25, "min": 0, "max": 100}
                 ],
             },
         ]
@@ -894,9 +952,16 @@ class TestMultiToolbarStateTracking:
 
         # Trigger all three
         app.eval_js("document.querySelector('.pywry-btn').click();", label=label)
+        # Open the dropdown by clicking the selected area
         app.eval_js(
-            "var sel = document.querySelector('.pywry-select'); "
-            "sel.value = 'y'; sel.dispatchEvent(new Event('change'));",
+            "document.querySelector('.pywry-dropdown-selected').click();",
+            label=label,
+        )
+        time.sleep(0.2)
+
+        # Select 'y' option from the open menu
+        app.eval_js(
+            "document.querySelector('.pywry-dropdown-option[data-value=\"y\"]').click();",
             label=label,
         )
         app.eval_js(
@@ -968,9 +1033,16 @@ class TestMultiToolbarStateTracking:
             "var btns = document.querySelectorAll('.pywry-btn'); btns[1].click();",
             label=label,
         )
+        # Open the dropdown by clicking the selected area
         app.eval_js(
-            "var sel = document.querySelector('.pywry-select'); "
-            "sel.value = 'active'; sel.dispatchEvent(new Event('change'));",
+            "document.querySelector('.pywry-dropdown-selected').click();",
+            label=label,
+        )
+        time.sleep(0.2)
+
+        # Select 'active' option from the open menu
+        app.eval_js(
+            "document.querySelector('.pywry-dropdown-option[data-value=\"active\"]').click();",
             label=label,
         )
         app.eval_js(
@@ -1026,10 +1098,16 @@ class TestMultiToolbarStateTracking:
 
         # Trigger button with data payload
         app.eval_js("document.querySelector('.pywry-btn').click();", label=label)
-        # Change select
+        # Open the dropdown by clicking the selected area
         app.eval_js(
-            "var sel = document.querySelector('.pywry-select'); "
-            "sel.value = 'chart'; sel.dispatchEvent(new Event('change'));",
+            "document.querySelector('.pywry-dropdown-selected').click();",
+            label=label,
+        )
+        time.sleep(0.2)
+
+        # Select 'chart' option from the open menu
+        app.eval_js(
+            "document.querySelector('.pywry-dropdown-option[data-value=\"chart\"]').click();",
             label=label,
         )
 
@@ -1039,7 +1117,12 @@ class TestMultiToolbarStateTracking:
                 break
             time.sleep(0.1)
 
-        assert events["export"] == {"format": "csv"}, f"Export data: {events['export']}"
+        # Event data now includes componentId alongside custom data
+        export_data = events["export"]
+        assert export_data is not None, "Export event not received"
+        assert isinstance(export_data, dict), f"Export data should be dict: {export_data}"
+        assert export_data["format"] == "csv", f"Export data: {export_data}"
+        assert "componentId" in export_data, "Button should include componentId"  # pylint: disable=unsupported-membership-test
         assert events["view"] == "chart", f"View: {events['view']}"
         app.close()
 
@@ -1077,11 +1160,11 @@ class TestMultiToolbarStateTracking:
         assert result["top"], "Top toolbar not found"
         assert result["bottom"], "Bottom toolbar not found"
 
-        # Verify we have 4 components (2 buttons + 2 selects)
+        # Verify we have 4 components (2 buttons + 2 dropdowns)
         result2 = wait_for_result(
             label,
             "pywry.result({ btns: document.querySelectorAll('.pywry-btn').length, "
-            "sels: document.querySelectorAll('.pywry-select').length })",
+            "sels: document.querySelectorAll('.pywry-dropdown').length })",
         )
         assert result2 is not None, "Second result not received"
         assert result2["btns"] == 2, f"Expected 2 buttons, got {result2['btns']}"

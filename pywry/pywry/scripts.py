@@ -2,12 +2,6 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-
-if TYPE_CHECKING:
-    from .models import WindowConfig
-
 
 PYWRY_BRIDGE_JS = """
 (function() {
@@ -327,12 +321,41 @@ TOOLBAR_BRIDGE_JS = """
     }
 
     // Set value of a specific component
-    function setComponentValue(componentId, value) {
+    function setComponentValue(componentId, value, options) {
         var el = document.getElementById(componentId);
         if (!el) return false;
 
         if (el.tagName === 'SELECT' || el.tagName === 'INPUT') {
             el.value = value;
+            return true;
+        } else if (el.classList.contains('pywry-dropdown')) {
+            // Custom dropdown - update options if provided, then set value
+            if (options && Array.isArray(options)) {
+                var menu = el.querySelector('.pywry-dropdown-menu');
+                if (menu) {
+                    menu.innerHTML = options.map(function(opt) {
+                        var isSelected = String(opt.value) === String(value);
+                        return '<div class="pywry-dropdown-option' + (isSelected ? ' pywry-selected' : '') +
+                               '" data-value="' + opt.value + '">' + opt.label + '</div>';
+                    }).join('');
+                    // Re-bind click handlers for new options
+                    bindDropdownOptionClicks(el);
+                }
+            }
+            // Update selected text and data-value
+            var textEl = el.querySelector('.pywry-dropdown-text');
+            if (textEl) {
+                // Find the label for this value
+                var optionEl = el.querySelector('.pywry-dropdown-option[data-value="' + value + '"]');
+                if (optionEl) {
+                    textEl.textContent = optionEl.textContent;
+                    // Update selected state
+                    el.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                        opt.classList.remove('pywry-selected');
+                    });
+                    optionEl.classList.add('pywry-selected');
+                }
+            }
             return true;
         } else if (el.classList.contains('pywry-multiselect')) {
             var values = Array.isArray(value) ? value : [value];
@@ -342,6 +365,68 @@ TOOLBAR_BRIDGE_JS = """
             return true;
         }
         return false;
+    }
+
+    // Bind click handlers to dropdown options
+    function bindDropdownOptionClicks(dropdown) {
+        var options = dropdown.querySelectorAll('.pywry-dropdown-option');
+        options.forEach(function(option) {
+            option.onclick = function(e) {
+                e.stopPropagation();
+                var value = option.dataset.value;
+                var event = dropdown.dataset.event;
+                var componentId = dropdown.id;
+
+                // Update visual state
+                dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                    opt.classList.remove('pywry-selected');
+                });
+                option.classList.add('pywry-selected');
+
+                // Update displayed text
+                var textEl = dropdown.querySelector('.pywry-dropdown-text');
+                if (textEl) textEl.textContent = option.textContent;
+
+                // Close dropdown
+                dropdown.classList.remove('pywry-open');
+
+                // Emit event to Python
+                if (window.pywry && window.pywry.emit && event) {
+                    window.pywry.emit(event, { value: value, componentId: componentId });
+                }
+            };
+        });
+    }
+
+    // Initialize all custom dropdowns
+    function initDropdowns() {
+        document.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
+            var selected = dropdown.querySelector('.pywry-dropdown-selected');
+            if (!selected) return;
+
+            // Toggle dropdown on click
+            selected.onclick = function(e) {
+                e.stopPropagation();
+                if (dropdown.classList.contains('pywry-disabled')) return;
+
+                // Close other open dropdowns
+                document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
+                    if (other !== dropdown) other.classList.remove('pywry-open');
+                });
+
+                dropdown.classList.toggle('pywry-open');
+            };
+
+            // Bind option clicks
+            bindDropdownOptionClicks(dropdown);
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
+                dropdown.classList.remove('pywry-open');
+            });
+        });
     }
 
     // Handle toolbar state request from Python
@@ -388,150 +473,29 @@ TOOLBAR_BRIDGE_JS = """
     window.__PYWRY_TOOLBAR__ = {
         getState: getToolbarState,
         getValue: getComponentValue,
-        setValue: setComponentValue
+        setValue: setComponentValue,
+        initDropdowns: initDropdowns
     };
 
-    console.log('Toolbar bridge initialized');
+    // Initialize dropdowns on DOM ready
+    // Always defer to ensure body is parsed, even if readyState suggests we're ready.
+    // This script runs from <head> so body might not exist at script execution time.
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDropdowns);
+    } else {
+        // Defer to next tick to ensure body is ready
+        setTimeout(initDropdowns, 0);
+    }
 })();
 """
 
 # =============================================================================
-# Plotly Bridge - Hooks Plotly events to PyWry
+# NOTE: Plotly and AG Grid event bridges are NOT defined here.
+# They are loaded from the frontend JS files:
+#   - pywry/frontend/src/plotly-defaults.js (single source of truth for Plotly events)
+#   - pywry/frontend/src/aggrid-defaults.js (single source of truth for AG Grid events)
+# These files are loaded via templates.py's build_plotly_script() and build_aggrid_script()
 # =============================================================================
-
-PLOTLY_BRIDGE_JS = """
-(function() {
-    'use strict';
-
-    // Wait for Plotly and graph to be ready
-    function initPlotlyBridge() {
-        var plotDiv = document.querySelector('.plotly-graph-div, [data-plotly]');
-        if (!plotDiv || !window.Plotly) {
-            setTimeout(initPlotlyBridge, 100);
-            return;
-        }
-
-        window.__PYWRY_PLOTLY_DIV__ = plotDiv;
-
-        // Click event
-        plotDiv.on('plotly_click', function(data) {
-            if (!data || !data.points) return;
-            var points = data.points.map(function(pt) {
-                return {
-                    curveNumber: pt.curveNumber,
-                    pointIndex: pt.pointIndex,
-                    x: pt.x,
-                    y: pt.y,
-                    data: pt.data ? { name: pt.data.name } : {}
-                };
-            });
-            window.pywry.emit('plotly:click', {
-                points: points,
-                point_indices: data.points.map(function(pt) { return pt.pointIndex; }),
-                curve_number: data.points[0] ? data.points[0].curveNumber : 0
-            });
-        });
-
-        // Hover event
-        plotDiv.on('plotly_hover', function(data) {
-            if (!data || !data.points) return;
-            window.pywry.emit('plotly:hover', {
-                points: data.points.map(function(pt) {
-                    return { x: pt.x, y: pt.y, curveNumber: pt.curveNumber };
-                })
-            });
-        });
-
-        // Selection event
-        plotDiv.on('plotly_selected', function(data) {
-            if (!data) {
-                window.pywry.emit('plotly:select', { points: [], range: null });
-                return;
-            }
-            window.pywry.emit('plotly:select', {
-                points: (data.points || []).map(function(pt) {
-                    return { x: pt.x, y: pt.y, pointIndex: pt.pointIndex };
-                }),
-                range: data.range || null
-            });
-        });
-
-        // Relayout event (zoom, pan)
-        plotDiv.on('plotly_relayout', function(data) {
-            window.pywry.emit('plotly:relayout', { relayout_data: data });
-        });
-
-        console.log('Plotly bridge initialized');
-    }
-
-    // Listen for plotly data updates from Python
-    if (window.__TAURI__ && window.__TAURI__.event) {
-        window.__TAURI__.event.listen('pywry:plotly-data', function(event) {
-            var data = event.payload;
-            if (window.__PYWRY_PLOTLY_DIV__ && window.Plotly) {
-                Plotly.react(
-                    window.__PYWRY_PLOTLY_DIV__,
-                    data.data || [],
-                    data.layout || {},
-                    data.config || {}
-                );
-            }
-        });
-    }
-
-    initPlotlyBridge();
-})();
-"""
-
-AGGRID_BRIDGE_JS = """
-(function() {
-    'use strict';
-
-    // Wait for grid to be ready
-    function initGridBridge() {
-        if (!window.__PYWRY_GRID_API__) {
-            setTimeout(initGridBridge, 100);
-            return;
-        }
-
-        var gridApi = window.__PYWRY_GRID_API__;
-
-        // Selection changed
-        gridApi.addEventListener('selectionChanged', function() {
-            var selectedRows = gridApi.getSelectedRows();
-            var selectedNodes = gridApi.getSelectedNodes();
-            window.pywry.emit('grid:select', {
-                selected_rows: selectedRows,
-                selected_row_ids: selectedNodes.map(function(n) { return n.id || String(n.rowIndex); })
-            });
-        });
-
-        // Cell value changed
-        gridApi.addEventListener('cellValueChanged', function(event) {
-            window.pywry.emit('grid:cell-edit', {
-                row_id: event.node.id || String(event.rowIndex),
-                row_index: event.rowIndex,
-                column: event.colDef.field,
-                old_value: event.oldValue,
-                new_value: event.newValue
-            });
-        });
-
-        // Row clicked
-        gridApi.addEventListener('rowClicked', function(event) {
-            window.pywry.emit('grid:row-click', {
-                row_data: event.data,
-                row_id: event.node.id || String(event.rowIndex),
-                row_index: event.rowIndex
-            });
-        });
-
-        console.log('AG Grid bridge initialized');
-    }
-
-    initGridBridge();
-})();
-"""
 
 
 CLEANUP_JS = """
@@ -659,16 +623,25 @@ HOT_RELOAD_JS = """
 
 
 def build_init_script(
-    config: WindowConfig,
     window_label: str,
     enable_hot_reload: bool = False,
 ) -> str:
-    """Build the complete initialization script based on config.
+    """Build the core initialization script for a window.
+
+    This builds the CORE JavaScript bridges:
+    - pywry bridge (emit, on, result, etc.)
+    - theme manager
+    - event bridge
+    - toolbar bridge
+    - cleanup handler
+    - hot reload (optional)
+
+    NOTE: Plotly and AG Grid defaults are loaded separately via templates.py's
+    build_plotly_script() and build_aggrid_script() functions, which include
+    the library JS AND the defaults JS together.
 
     Parameters
     ----------
-    config : WindowConfig
-        The window configuration.
     window_label : str
         The label for this window.
     enable_hot_reload : bool, optional
@@ -691,12 +664,5 @@ def build_init_script(
     # Add hot reload bridge only when enabled
     if enable_hot_reload:
         scripts.append(HOT_RELOAD_JS)
-
-    # Add library-specific bridges
-    if config.enable_plotly:
-        scripts.append(PLOTLY_BRIDGE_JS)
-
-    if config.enable_aggrid:
-        scripts.append(AGGRID_BRIDGE_JS)
 
     return "\n".join(scripts)

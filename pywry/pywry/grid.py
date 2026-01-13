@@ -19,6 +19,7 @@ Usage:
 
 AG Grid API Reference: https://www.ag-grid.com/javascript-data-grid/grid-options/
 """
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -32,17 +33,11 @@ from pydantic import BaseModel, ConfigDict, Field
 from .log import debug, info, warn
 
 
-# =============================================================================
-# Thresholds
-# =============================================================================
-
+# --- Thresholds ---
 MAX_SAFE_ROWS = 100_000  # Browser memory limit - truncate beyond this
 SERVER_SIDE_THRESHOLD = 10_000  # Recommend infinite row model above this
 
-
-# =============================================================================
-# DateTime Serialization Helpers
-# =============================================================================
+# --- DateTime Serialization Helpers ---
 
 
 def _serialize_value(value: Any) -> Any:  # noqa: PLR0911  # pylint: disable=too-many-return-statements
@@ -108,9 +103,7 @@ def _serialize_row(row: dict[str, Any]) -> dict[str, Any]:
     return {k: _serialize_value(v) for k, v in row.items()}
 
 
-# =============================================================================
-# AG Grid Type Aliases (following official API)
-# =============================================================================
+# --- AG Grid Type Aliases (following official API) ---
 
 RowModelType = Literal["clientSide", "infinite", "serverSide", "viewport"]
 DomLayoutType = Literal["normal", "autoHeight", "print"]
@@ -123,10 +116,7 @@ FilterType = Literal[
 ]
 PinnedPosition = Literal["left", "right"]
 
-
-# =============================================================================
-# Base Model with camelCase serialization
-# =============================================================================
+# --- Base Model with camelCase serialization ---
 
 
 class AGGridModel(BaseModel):
@@ -615,6 +605,8 @@ def normalize_data(data: Any) -> GridData:
             row_data = list(data)
             if row_data and isinstance(row_data[0], dict):
                 columns = list(row_data[0].keys())
+                # Infer types from actual values
+                column_types = _infer_column_types_from_values(row_data, columns)
         else:
             row_data = list(data)
             if row_data and isinstance(row_data[0], dict):
@@ -637,6 +629,50 @@ def normalize_data(data: Any) -> GridData:
     )
 
 
+def _infer_column_types_from_values(
+    row_data: list[dict[str, Any]], columns: list[str]
+) -> dict[str, str]:
+    """Infer AG Grid cellDataType from Python values in list of dicts.
+
+    Used when data is passed as list of dicts instead of DataFrame,
+    so we can't use pandas dtypes.
+
+    Returns a dict mapping column names to AG Grid cell data types:
+    - int/float values → 'number'
+    - bool values → 'boolean'
+    - strings that look like numbers with leading zeros → 'text'
+    """
+    if not row_data or not columns:
+        return {}
+
+    column_types: dict[str, str] = {}
+    # Sample first 100 rows for type inference
+    sample = row_data[:100]
+
+    for col in columns:
+        values = [row.get(col) for row in sample if row.get(col) is not None]
+        if not values:
+            continue
+
+        # Check first non-None value for type
+        first_val = values[0]
+
+        if isinstance(first_val, bool):
+            column_types[col] = "boolean"
+        elif isinstance(first_val, (int, float)):
+            column_types[col] = "number"
+        elif isinstance(first_val, str):
+            # Check for leading zeros (should stay as text)
+            has_leading_zero = any(
+                isinstance(v, str) and len(v) > 1 and v[0] == "0" and v.isdigit() for v in values
+            )
+            if has_leading_zero:
+                column_types[col] = "text"
+            # Otherwise let AG Grid infer
+
+    return column_types
+
+
 def _build_datetime_col_def(col_def: dict[str, Any], col_type: str) -> None:
     """Configure datetime columns with proper AG Grid date filter including time.
 
@@ -645,6 +681,33 @@ def _build_datetime_col_def(col_def: dict[str, Any], col_type: str) -> None:
     """
     if col_type == "dateTimeString":
         col_def["filterParams"] = {"includeBlanksInEquals": True}
+
+
+def _build_number_col_def(col_def: dict[str, Any], col_type: str) -> None:
+    """Configure number columns with proper formatting.
+
+    Uses PYWRY_FORMAT_NUMBER for intelligent number formatting:
+    - Large integers: 75K, 1.5M, 2B (when cleanly divisible)
+    - Regular integers: thousands separators (12,345)
+    - Decimals: preserve precision
+    - Very small: scientific notation
+
+    Skips formatting for temporal columns (year, date, period, etc.).
+    """
+    if col_type != "number":
+        return
+
+    # Check column name for temporal patterns - don't format years, dates, etc.
+    field_name = col_def.get("field", "").lower()
+    temporal_patterns = ("year", "date", "period", "month", "day", "quarter", "week")
+    if any(pattern in field_name for pattern in temporal_patterns):
+        # Set pass-through formatter to prevent JS auto-apply from formatting
+        col_def["valueFormatter"] = "value == null ? '' : String(value)"
+        return
+
+    # Use the global PYWRY_FORMAT_NUMBER function for intelligent formatting
+    # This handles: 75K, 1.5M, 2B for large numbers, commas for regular integers
+    col_def["valueFormatter"] = "value == null ? '' : window.PYWRY_FORMAT_NUMBER(value)"
 
 
 def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branches
@@ -710,6 +773,7 @@ def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branch
             if col in types:
                 col_def["cellDataType"] = types[col]
                 _build_datetime_col_def(col_def, types[col])
+                _build_number_col_def(col_def, types[col])
             result.append(col_def)
 
     # If we have column groups from MultiIndex, use them
@@ -723,6 +787,7 @@ def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branch
                     if child_field in types:
                         child_with_type = {**child, "cellDataType": types[child_field]}
                         _build_datetime_col_def(child_with_type, types[child_field])
+                        _build_number_col_def(child_with_type, types[child_field])
                         children_with_types.append(child_with_type)
                     else:
                         children_with_types.append(child)
@@ -739,6 +804,7 @@ def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branch
                 if group["field"] in types:
                     col_def["cellDataType"] = types[group["field"]]
                     _build_datetime_col_def(col_def, types[group["field"]])
+                    _build_number_col_def(col_def, types[group["field"]])
                 result.append(col_def)
         return result
 
@@ -749,14 +815,13 @@ def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branch
             if col in types:
                 col_def["cellDataType"] = types[col]
                 _build_datetime_col_def(col_def, types[col])
+                _build_number_col_def(col_def, types[col])
             result.append(col_def)
 
     return result
 
 
-# =============================================================================
-# Main Entry Point
-# =============================================================================
+# --- Main Entry Point ---
 
 
 def build_grid_config(  # pylint: disable=too-many-arguments
@@ -909,9 +974,7 @@ def build_grid_config(  # pylint: disable=too-many-arguments
     return GridConfig(options=options, context=context)
 
 
-# =============================================================================
-# Serialization Helpers
-# =============================================================================
+# --- Serialization Helpers ---
 
 
 def to_js_grid_config(config: GridConfig) -> dict[str, Any]:

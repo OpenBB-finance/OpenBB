@@ -335,21 +335,47 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
         columnDefs: processedColumnDefs,
         rowData: rowData,
         rowSelection: config.rowSelection || 'multiple',
+        suppressRowClickSelection: true,  // Let onCellClicked handle selection
         pagination: usePagination,
         paginationPageSize: defaultPageSize,
         paginationPageSizeSelector: pageSizeSelector,
         domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
+        // Override AG Grid's default number formatter to use our K/M/B formatting
+        dataTypeDefinitions: {
+            number: {
+                baseDataType: 'number',
+                valueFormatter: function(params) {
+                    if (params.value === null || params.value === undefined) return '';
+                    return window.PYWRY_FORMAT_NUMBER(params.value);
+                }
+            }
+        },
         columnMenu: 'new',
         suppressMenuHide: true,
-        enableCellTextSelection: true,
         ensureDomOrder: true,
         // Row spanning support (AG Grid v32+)
         enableCellSpan: config.enableCellSpan || false,
 
         onCellClicked: function(event) {
+            // Select the row on cell click (works with row selection enabled)
+            if (event.node && config.rowSelection !== false) {
+                event.node.setSelected(true, true);  // select this row, clear others
+            }
+            
             if (window.pywry && window.pywry.emit) {
+                // Emit standard event (grid:cell_click)
+                window.pywry.emit('grid:cell_click', {
+                    widget_type: 'grid',
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    colId: event.column.getColId(),
+                    value: event.value,
+                    data: event.data
+                });
+                // Emit short event for convenience
                 window.pywry.emit('cell_click', {
+                    widget_type: 'grid',
                     gridId: id,
                     rowIndex: event.rowIndex,
                     colId: event.column.getColId(),
@@ -360,16 +386,17 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
         },
         onSelectionChanged: function(event) {
             if (window.pywry && window.pywry.emit) {
-                var selectedRows = event.api.getSelectedRows();
-                window.pywry.emit('row_selected', { gridId: id, rows: selectedRows });
+                 var selectedRows = event.api.getSelectedRows();
+                 window.pywry.emit('grid:row_selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
+                 window.pywry.emit('row_selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
             }
         },
         onGridReady: function(event) {
             console.log('[PyWry AG Grid ' + id + '] Grid ready (client-side)!');
             event.api.autoSizeAllColumns();
-            
             if (truncatedRows > 0 && window.pywry && window.pywry.emit) {
                 window.pywry.emit('data_truncated', {
+                    widget_type: 'grid',
                     gridId: id,
                     displayedRows: rowCount,
                     truncatedRows: truncatedRows,
@@ -499,8 +526,19 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         pagination: false,
         
         rowSelection: config.rowSelection || 'multiple',
+        suppressRowClickSelection: true,  // Let onCellClicked handle selection
         domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
+        // Override AG Grid's default number formatter to use our K/M/B formatting
+        dataTypeDefinitions: {
+            number: {
+                baseDataType: 'number',
+                valueFormatter: function(params) {
+                    if (params.value === null || params.value === undefined) return '';
+                    return window.PYWRY_FORMAT_NUMBER(params.value);
+                }
+            }
+        },
         columnMenu: 'new',
         suppressMenuHide: true,
         enableCellTextSelection: true,
@@ -516,8 +554,24 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         },
 
         onCellClicked: function(event) {
+            // Select the row on cell click (works with row selection enabled)
+            if (event.node && config.rowSelection !== false) {
+                event.node.setSelected(true, true);
+            }
+            
             if (window.pywry && window.pywry.emit) {
+                // Emit standard event (grid:cell_click)
+                window.pywry.emit('grid:cell_click', {
+                    widget_type: 'grid',
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    colId: event.column.getColId(),
+                    value: event.value,
+                    data: event.data
+                });
+                // Short event for convenience
                 window.pywry.emit('cell_click', {
+                    widget_type: 'grid',
                     gridId: id,
                     rowIndex: event.rowIndex,
                     colId: event.column.getColId(),
@@ -530,11 +584,11 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         onSelectionChanged: function(event) {
             if (window.pywry && window.pywry.emit) {
                 var selectedRows = event.api.getSelectedRows();
-                window.pywry.emit('row_selected', { gridId: id, rows: selectedRows });
+                window.pywry.emit('grid:row_selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
+                window.pywry.emit('row_selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
             }
         },
         
-        // When sort changes, need to refresh data from Python
         onSortChanged: function(event) {
             console.log('[PyWry AG Grid ' + id + '] Sort changed, refreshing...');
             // Infinite model handles this automatically via datasource
@@ -547,6 +601,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             // We also notify Python of the filter change
             if (window.pywry && window.pywry.emit && gridApiRef) {
                 window.pywry.emit('grid:filter_changed', {
+                    widget_type: 'grid',
                     gridId: id,
                     filterModel: gridApiRef.getFilterModel()
                 });
@@ -567,6 +622,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             
             if (window.pywry && window.pywry.emit) {
                 window.pywry.emit('grid_mode', {
+                    widget_type: 'grid',
                     gridId: id,
                     mode: 'server-side',
                     serverSide: true,
@@ -581,98 +637,6 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
     
     console.log('[PyWry AG Grid ' + id + '] Built server-side options for ' + 
         totalRows.toLocaleString() + ' rows (block size: ' + blockSize + ')');
-    return options;
-};
-
-/**
- * Build options for in-memory Infinite Row Model.
- * Used when serverSide is not enabled but data is very large.
- * Data is already in browser memory, just loaded in blocks to improve rendering.
- * 
- * @deprecated Use PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS for true lazy loading
- */
-window.PYWRY_AGGRID_BUILD_INFINITE_OPTIONS = function(config, id, rowData, rowCount, truncatedRows) {
-    var totalRows = rowCount;
-    var blockSize = config.cacheBlockSize || 500;
-    var allData = rowData;
-    
-    // In-memory datasource
-    var datasource = {
-        rowCount: totalRows,
-        getRows: function(params) {
-            console.log('[PyWry AG Grid ' + id + '] Memory: rows ' + 
-                params.startRow + '-' + params.endRow);
-            
-            setTimeout(function() {
-                var rowsThisBlock = allData.slice(params.startRow, params.endRow);
-                var lastRow = params.endRow >= totalRows ? totalRows : -1;
-                params.successCallback(rowsThisBlock, lastRow);
-            }, 0);
-        }
-    };
-    
-    // Process column defs to convert string expressions to functions
-    var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
-    
-    var options = {
-        columnDefs: processedColumnDefs,
-        rowModelType: 'infinite',
-        datasource: datasource,
-        cacheBlockSize: blockSize,
-        cacheOverflowSize: 2,
-        maxConcurrentDatasourceRequests: 2,
-        maxBlocksInCache: 20,
-        infiniteInitialRowCount: Math.min(1000, totalRows),
-        pagination: true,
-        paginationPageSize: 100,
-        paginationPageSizeSelector: [25, 50, 100, 250, 500],
-        rowSelection: config.rowSelection || 'multiple',
-        domLayout: config.domLayout || 'normal',
-        defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
-        columnMenu: 'new',
-        suppressMenuHide: true,
-        enableCellTextSelection: true,
-        ensureDomOrder: true,
-        
-        getRowId: function(params) {
-            return params.data && params.data.id !== undefined 
-                ? String(params.data.id) 
-                : String(params.rowIndex);
-        },
-
-        onCellClicked: function(event) {
-            if (window.pywry && window.pywry.emit) {
-                window.pywry.emit('cell_click', {
-                    gridId: id,
-                    rowIndex: event.rowIndex,
-                    colId: event.column.getColId(),
-                    value: event.value,
-                    data: event.data
-                });
-            }
-        },
-        
-        onSelectionChanged: function(event) {
-            if (window.pywry && window.pywry.emit) {
-                var selectedRows = event.api.getSelectedRows();
-                window.pywry.emit('row_selected', { gridId: id, rows: selectedRows });
-            }
-        },
-        
-        onGridReady: function(event) {
-            console.log('[PyWry AG Grid ' + id + '] Grid ready (infinite in-memory)!');
-            setTimeout(function() { event.api.autoSizeAllColumns(); }, 100);
-            
-            if (truncatedRows > 0 && window.pywry && window.pywry.emit) {
-                window.pywry.emit('data_truncated', {
-                    gridId: id,
-                    displayedRows: rowCount,
-                    truncatedRows: truncatedRows
-                });
-            }
-        }
-    };
-    
     return options;
 };
 
@@ -749,115 +713,83 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
         }
     });
 
-    window.pywry.on('pywry:update_cell', function(data) {
+    // --- Unified Grid State Listeners (grid: namespace) ---
+
+    window.pywry.on('grid:update_cell', function(data) {
         if (data && (!data.gridId || data.gridId === id)) {
-            var rowIndex = data.rowIndex;
+            var rowId = data.rowId; // Can be ID or Index
             var colId = data.colId;
             var value = data.value;
             
-            if (rowIndex != null && colId != null) {
-                var rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+            if (colId != null) {
+                 var rowNode;
+                 // Try index if numeric
+                 if (typeof rowId === 'number') {
+                     rowNode = gridApi.getDisplayedRowAtIndex(rowId);
+                 }
+                 // Try ID if not found or not number
+                 if (!rowNode && rowId != null) {
+                     rowNode = gridApi.getRowNode(String(rowId));
+                 }
+
                 if (rowNode) {
                     rowNode.setDataValue(colId, value);
-                    console.log('[PyWry AG Grid ' + id + '] Cell updated: row=' + rowIndex + ', col=' + colId + ', value=' + value);
+                    console.log('[PyWry AG Grid ' + id + '] Cell updated: row=' + rowId + ', col=' + colId + ', value=' + value);
                 } else {
-                    console.warn('[PyWry AG Grid ' + id + '] Row not found at index:', rowIndex);
+                    console.warn('[PyWry AG Grid ' + id + '] Row not found for update: ' + rowId);
                 }
             }
         }
     });
 
-    window.pywry.on('pywry:update_rows', function(data) {
-
-        if (data && data.rows && (!data.gridId || data.gridId === id)) {
-            gridApi.setGridOption('rowData', data.rows);
-            console.log('[PyWry AG Grid ' + id + '] Rows updated:', data.rows.length, 'rows');
+    window.pywry.on('grid:update_data', function(data) {
+        if (data && data.data && (!data.gridId || data.gridId === id)) {
+            if (data.strategy === 'append') {
+                gridApi.applyTransaction({ add: data.data });
+            } else if (data.strategy === 'update') {
+                gridApi.applyTransaction({ update: data.data });
+            } else {
+                // Default: set
+                gridApi.setGridOption('rowData', data.data);
+            }
+            console.log('[PyWry AG Grid ' + id + '] Data updated (' + (data.strategy || 'set') +'):', data.data.length, 'rows');
         }
     });
 
-    window.pywry.on('pywry:update_columns', function(data) {
+    window.pywry.on('grid:update_columns', function(data) {
         if (data && data.columnDefs && (!data.gridId || data.gridId === id)) {
-            var savedState = data.preserveState !== false ? saveColumnState() : null;
+            var savedState = saveColumnState();
             var processedCols = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(data.columnDefs);
             gridApi.setGridOption('columnDefs', processedCols);
-            if (savedState && data.preserveState !== false) {
-                setTimeout(function() { restoreColumnState(savedState); }, 0);
-            }
+            // Try to restore state if structure matches
+            setTimeout(function() { restoreColumnState(savedState); }, 0);
             console.log('[PyWry AG Grid ' + id + '] Columns updated:', data.columnDefs.length, 'columns');
         }
     });
 
-    // Apply saved state directly to column definitions (bakes state into config)
-    function applyStateToColumnDefs(columnDefs, state) {
-        if (!state || !state.columnState || !columnDefs) {
-            console.log('[PyWry AG Grid ' + id + '] applyStateToColumnDefs: no state or columnDefs');
-            return columnDefs;
-        }
-        
-        console.log('[PyWry AG Grid ' + id + '] applyStateToColumnDefs:');
-        console.log('  columnDefs:', columnDefs.map(function(c) { return c.field || c.colId; }));
-        console.log('  state.columnState:', state.columnState.map(function(c) { return c.colId; }));
-        
-        // Create lookup from state by colId
-        var stateMap = {};
-        state.columnState.forEach(function(cs) {
-            stateMap[cs.colId] = cs;
-        });
-        
-        // Apply state properties to matching column defs
-        var orderedCols = [];
-        var unorderedCols = [];
-        
-        columnDefs.forEach(function(colDef) {
-            var colId = colDef.field || colDef.colId;
-            var savedState = stateMap[colId];
-            
-            if (savedState) {
-                // Apply saved properties to column def
-                if (savedState.width != null) colDef.width = savedState.width;
-                if (savedState.hide != null) colDef.hide = savedState.hide;
-                if (savedState.pinned != null) colDef.pinned = savedState.pinned;
-                if (savedState.sort != null) colDef.sort = savedState.sort;
-                if (savedState.sortIndex != null) colDef.sortIndex = savedState.sortIndex;
-                
-                // Track order from state
-                colDef._stateOrder = state.columnState.findIndex(function(cs) {
-                    return cs.colId === colId;
-                });
-                orderedCols.push(colDef);
-            } else {
-                console.log('[PyWry AG Grid ' + id + '] No saved state for column:', colId);
-                unorderedCols.push(colDef);
-            }
-        });
-        
-        // Sort by saved order, then append any new columns
-        orderedCols.sort(function(a, b) { return a._stateOrder - b._stateOrder; });
-        orderedCols.forEach(function(c) { delete c._stateOrder; });
-        
-        var result = orderedCols.concat(unorderedCols);
-        console.log('[PyWry AG Grid ' + id + '] Final column order:', result.map(function(c) { return c.field || c.colId; }));
-        
-        return result;
-    }
-
-    window.pywry.on('pywry:update_grid', function(data) {
+    // Combined update for view switching: updates data, columns, and restores state in one operation
+    window.pywry.on('grid:update_grid', function(data) {
         if (data && (!data.gridId || data.gridId === id)) {
             var columnDefs = data.columnDefs;
+            var rowData = data.data;  // Python sends 'data', also check 'rows' for compat
             var stateToApply = data.restoreState;
             
-            console.log('[PyWry AG Grid ' + id + '] update_grid received');
+            console.log('[PyWry AG Grid ' + id + '] grid:update_grid received');
             console.log('  has columnDefs:', !!columnDefs, columnDefs ? columnDefs.length : 0);
+            console.log('  has data:', !!rowData, rowData ? rowData.length : 0);
             console.log('  has restoreState:', !!stateToApply);
             
+            // Update columns first
             if (columnDefs) {
                 var processedCols = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(columnDefs);
                 gridApi.setGridOption('columnDefs', processedCols);
                 console.log('[PyWry AG Grid ' + id + '] Set columnDefs');
             }
-            if (data.rows) {
-                gridApi.setGridOption('rowData', data.rows);
-                console.log('[PyWry AG Grid ' + id + '] Set rowData:', data.rows.length, 'rows');
+            
+            // Update row data
+            if (rowData) {
+                gridApi.setGridOption('rowData', rowData);
+                console.log('[PyWry AG Grid ' + id + '] Set rowData:', rowData.length, 'rows');
             }
             
             // Apply column state AFTER setting columnDefs (AG Grid needs this for column order)
@@ -882,7 +814,30 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
         }
     });
 
-    window.pywry.on('pywry:update_theme', function(data) {
+    window.pywry.on('grid:restore_state', function(data) {
+        if (data && data.state && (!data.gridId || data.gridId === id)) {
+            restoreColumnState(data.state);
+            console.log('[PyWry AG Grid ' + id + '] State restored');
+        }
+    });
+
+    window.pywry.on('grid:reset_state', function(data) {
+        if (!data || !data.gridId || data.gridId === id) {
+            if (data && data.hard) {
+                // Hard reset: completely reset all state
+                gridApi.resetColumnState();
+                gridApi.setFilterModel(null);
+                if (gridApi.setSortModel) gridApi.setSortModel(null);
+            } else {
+                // Soft reset: just clear filters and sort
+                gridApi.setFilterModel(null);
+                if (gridApi.setSortModel) gridApi.setSortModel(null);
+            }
+            console.log('[PyWry AG Grid ' + id + '] State reset (hard=' + (data && data.hard) + ')');
+        }
+    });
+
+    window.pywry.on('grid:update_theme', function(data) {
         if (data && data.theme && (!data.gridId || data.gridId === id) && gridDiv) {
             var classes = gridDiv.className.split(' ').filter(function(c) {
                 return !c.startsWith('ag-theme-');
@@ -893,39 +848,13 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
         }
     });
 
-    window.pywry.on('pywry:save_state', function(data) {
-        if (!data.gridId || data.gridId === id) {
-            var state = saveColumnState();
-            if (window.pywry && window.pywry.emit) {
-                window.pywry.emit('grid_state_saved', {
-                    gridId: id,
-                    state: state
-                });
-            }
-        }
-    });
-
-    window.pywry.on('pywry:restore_state', function(data) {
-        if (data && data.state && (!data.gridId || data.gridId === id)) {
-            restoreColumnState(data.state);
-        }
-    });
-
-    window.pywry.on('pywry:reset_state', function(data) {
-        if (!data.gridId || data.gridId === id) {
-            gridApi.resetColumnState();
-            gridApi.setFilterModel(null);
-            console.log('[PyWry AG Grid ' + id + '] State reset');
-        }
-    });
-
-    window.pywry.on('pywry:show_notification', function(data) {
+    window.pywry.on('grid:show_notification', function(data) {
         if (!data.gridId || data.gridId === id) {
             window.PYWRY_SHOW_NOTIFICATION(data.message, data.duration, gridDiv);
         }
     });
 
-    console.log('[PyWry AG Grid ' + id + '] Python event listeners registered');
+    console.log('[PyWry AG Grid ' + id + '] Event listeners registered');
 
     if (window.PYWRY_AGGRID_SETUP_CONTEXT_MENU) {
         window.PYWRY_AGGRID_SETUP_CONTEXT_MENU(gridApi, gridDiv, id);

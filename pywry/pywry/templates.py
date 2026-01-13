@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import datetime
 import html
 import json
 import re
+import uuid
 
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -13,6 +15,7 @@ from .assets import (
     get_aggrid_css,
     get_aggrid_defaults_js,
     get_aggrid_js,
+    get_plotly_defaults_js,
     get_plotly_js,
     get_plotly_templates_js,
     get_pywry_css,
@@ -22,8 +25,30 @@ from .scripts import build_init_script
 from .toolbar import (
     Toolbar,
     build_toolbars_by_position,
-    build_toolbars_html as _build_toolbars_html,
 )
+
+
+class _NumpyEncoder(json.JSONEncoder):
+    """JSON encoder that handles numpy arrays, scalars, and datetime types."""
+
+    def default(self, o: Any) -> Any:
+        """Convert numpy/datetime types to JSON-serializable Python native types."""
+        # Check for numpy array (includes datetime64 arrays)
+        if hasattr(o, "tolist"):
+            return o.tolist()
+        # Check for numpy scalar types (int64, float64, datetime64, etc.)
+        if hasattr(o, "item"):
+            return o.item()
+        # Python datetime types
+        if isinstance(o, (datetime.datetime, datetime.date)):
+            return o.isoformat()
+        if isinstance(o, datetime.timedelta):
+            return o.total_seconds()
+        # numpy datetime64/timedelta64 scalars
+        type_name = type(o).__name__
+        if type_name in ("datetime64", "timedelta64"):
+            return str(o)
+        return super().default(o)
 
 
 if TYPE_CHECKING:
@@ -31,68 +56,12 @@ if TYPE_CHECKING:
 
 
 # Re-export ThemeMode for consumers importing from templates
-__all__ = ["ThemeMode", "build_html", "build_toolbar_html"]
+__all__ = ["ThemeMode", "build_html", "build_plotly_init_script"]
 
 
 if TYPE_CHECKING:
     from .asset_loader import AssetLoader
     from .config import AssetSettings, PyWrySettings, SecuritySettings
-
-
-# Legacy function - delegates to Toolbar.build_html() for backwards compatibility
-def build_toolbar_html(
-    items: list[dict[str, Any]] | None,
-    theme: ThemeMode,  # pylint: disable=unused-argument
-    position: str = "top",
-) -> str:
-    """Build HTML for a single toolbar.
-
-    DEPRECATED: Use Toolbar model directly.
-
-    Parameters
-    ----------
-    items : list[dict] | None
-        List of toolbar item configurations.
-    theme : ThemeMode
-        Theme mode (unused, kept for backwards compatibility).
-    position : str
-        Toolbar position: "top", "bottom", "left", "right", "inside".
-
-    Returns
-    -------
-    str
-        HTML string for the toolbar.
-    """
-    if not items:
-        return ""
-    toolbar = Toolbar(position=position, items=items)  # type: ignore[arg-type]
-    return toolbar.build_html()
-
-
-# Legacy function - delegates to toolbar module
-def build_toolbars_html(
-    toolbars: list[dict[str, Any]] | None,
-    theme: ThemeMode,  # pylint: disable=unused-argument
-) -> str:
-    """Build HTML for multiple toolbars.
-
-    DEPRECATED: Use toolbar.build_toolbars_html() directly.
-
-    Parameters
-    ----------
-    toolbars : list[dict] | None
-        List of toolbar configurations.
-    theme : ThemeMode
-        Theme mode (unused, kept for backwards compatibility).
-
-    Returns
-    -------
-    str
-        Combined HTML string for all toolbars.
-    """
-    if not toolbars:
-        return ""
-    return _build_toolbars_html(toolbars)
 
 
 def build_csp_meta(settings: SecuritySettings | None = None) -> str:
@@ -187,8 +156,92 @@ def build_json_data_script(json_data: dict[str, Any] | None) -> str:
     if json_data is None:
         return ""
 
-    json_str = json.dumps(json_data)
+    json_str = json.dumps(json_data, cls=_NumpyEncoder)
     return f"<script>window.json_data = {json_str};</script>"
+
+
+def build_plotly_init_script(
+    figure: dict[str, Any],
+    chart_id: str | None = None,
+    theme: ThemeMode = ThemeMode.DARK,
+) -> str:
+    """Build the Plotly initialization script and container.
+
+    Features:
+    - Creates div with unique ID
+    - Injects Plotly.newPlot call
+    - Handles theme templating (dark/light)
+    - Registers chart with PyWry (window.registerPyWryChart)
+    - Sets up resize handler
+
+    Parameters
+    ----------
+    figure : dict
+        The Plotly figure dictionary (data, layout, config).
+    chart_id : str, optional
+        The unique chart ID. If None, one will be generated.
+    theme : ThemeMode
+        The window theme.
+
+    Returns
+    -------
+    str
+        The HTML string containing the container div and initialization script.
+    """
+    if chart_id is None:
+        chart_id = f"chart-{uuid.uuid4().hex[:8]}"
+
+    # Ensure layout exists
+    if "layout" not in figure:
+        figure["layout"] = {}
+
+    # Don't modify original figure in-place - use _NumpyEncoder for numpy array support
+    fig_json = json.dumps(figure, cls=_NumpyEncoder)
+
+    plotly_template = "plotly_dark" if theme == ThemeMode.DARK else "plotly_white"
+
+    return f"""
+    <div id="{chart_id}" class="plotly-graph-div" data-pywry-chart="{chart_id}" style="height: 100%; width: 100%;"></div>
+    <script>
+        (function() {{
+            if (typeof Plotly === 'undefined') {{
+                console.error("Plotly.js not loaded");
+                return;
+            }}
+
+            var figData = {fig_json};
+            var layout = figData.layout || {{}};
+            var themeTemplate = '{plotly_template}';
+            var templates = window.PYWRY_PLOTLY_TEMPLATES || {{}};
+
+            // Resolve template if it's a string name
+            if (typeof layout.template === 'string' && templates[layout.template]) {{
+                layout.template = templates[layout.template];
+            }} else if (!layout.template) {{
+                // No user template - use window theme template
+                layout.template = templates[themeTemplate] || null;
+            }}
+
+            figData.layout = layout;
+
+            Plotly.newPlot('{chart_id}', figData.data || [], figData.layout, figData.config).then(function(gd) {{
+                // Register with PyWry
+                if (window.registerPyWryChart) {{
+                    window.registerPyWryChart('{chart_id}', gd);
+                }}
+
+                // Store theme template for later reference
+                gd.__pywry_theme_template__ = themeTemplate;
+                // Expose last created chart for debugging access
+                window.__PYWRY_PLOTLY_DIV__ = gd;
+
+                window.addEventListener('resize', function() {{
+                    Plotly.Plots.resize(gd);
+                }});
+            }});
+        }})();
+    </script>
+    """
 
 
 def build_plotly_script(config: WindowConfig) -> str:
@@ -218,6 +271,12 @@ def build_plotly_script(config: WindowConfig) -> str:
     templates_js = get_plotly_templates_js()
     if templates_js:
         parts.append(f"<script>{templates_js}</script>")
+
+    # Include PyWry Plotly Defaults (event handling, registration logic)
+    # This is the single source of truth for all Plotly event bridging
+    plotly_defaults = get_plotly_defaults_js()
+    if plotly_defaults:
+        parts.append(f"<script>{plotly_defaults}</script>")
 
     return "\n".join(parts)
 
@@ -512,7 +571,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     json_script = build_json_data_script(content.json_data)
     plotly_script = build_plotly_script(config)
     aggrid_script = build_aggrid_script(config)
-    init_script = build_init_script(config, window_label, enable_hot_reload)
+    init_script = build_init_script(window_label, enable_hot_reload)
 
     # Custom CSS and scripts from content
     custom_css = build_custom_css(content, loader)

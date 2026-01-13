@@ -58,13 +58,201 @@ function render({ model, el }) {
     container._pywryInstance = pywry;
     window.pywry = pywry;
 
-    pywry.on('pywry:update_plotly', (data) => {
-        const plotDiv = container.querySelector('.js-plotly-plot');
-        if (plotDiv && window.Plotly && data.figure) {
-            console.log('[PyWry Plotly] Updating figure via event');
-            const fig = data.figure;
-            window.Plotly.react(plotDiv, fig.data, fig.layout, data.config || fig.config || {});
+    // Helper function to trigger CSV download from data sent by Python
+    function downloadCsv(csvContent, filename) {
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename || 'data.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        console.log('[PyWry Export] Downloaded:', filename);
+    }
+    
+    // Listen for CSV data from Python
+    pywry.on('pywry:download_csv', (data) => {
+        console.log('[PyWry Export] Received CSV from Python, length:', data.csv?.length);
+        downloadCsv(data.csv, data.filename);
+    });
+    
+    // Listen for toolbar:set_value to update a single component's value/options
+    pywry.on('toolbar:set_value', (data) => {
+        console.log('[PyWry] toolbar:set_value:', data.componentId, data.value);
+        const componentId = data.componentId;
+        
+        // Find component by ID
+        const component = container.querySelector(`#${componentId}`);
+        if (!component) {
+            console.warn('[PyWry] Component not found:', componentId);
+            return;
         }
+        
+        // Handle dropdown - can update options OR selected value
+        if (component.classList.contains('pywry-dropdown')) {
+            const menu = component.querySelector('.pywry-dropdown-menu');
+            const textEl = component.querySelector('.pywry-dropdown-text');
+            
+            // If options array provided, rebuild the dropdown options
+            if (data.options && Array.isArray(data.options)) {
+                menu.innerHTML = '';
+                const selected = data.value || data.selected;
+                
+                data.options.forEach(opt => {
+                    const optEl = document.createElement('div');
+                    optEl.className = 'pywry-dropdown-option';
+                    if (opt.value === selected) {
+                        optEl.classList.add('pywry-selected');
+                        textEl.textContent = opt.label;
+                    }
+                    optEl.setAttribute('data-value', opt.value);
+                    optEl.textContent = opt.label;
+                    
+                    // Add click handler
+                    optEl.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        menu.querySelectorAll('.pywry-dropdown-option').forEach(o => o.classList.remove('pywry-selected'));
+                        optEl.classList.add('pywry-selected');
+                        textEl.textContent = opt.label;
+                        component.classList.remove('pywry-open');
+                        
+                        const eventName = component.getAttribute('data-event');
+                        if (eventName) {
+                            pywry.emit(eventName, { value: opt.value, componentId: componentId });
+                        }
+                    });
+                    
+                    menu.appendChild(optEl);
+                });
+            } else if (data.value !== undefined) {
+                // Just update selected value (find matching option)
+                const options = menu.querySelectorAll('.pywry-dropdown-option');
+                options.forEach(opt => {
+                    opt.classList.remove('pywry-selected');
+                    if (opt.getAttribute('data-value') === data.value) {
+                        opt.classList.add('pywry-selected');
+                        textEl.textContent = opt.textContent;
+                    }
+                });
+            }
+        }
+    });
+
+    // Helper function to process config - converts icon names to objects and event props to click handlers
+    function processPlotlyConfig(config) {
+        if (!config) return config;
+        
+        if (config.modeBarButtonsToAdd && Array.isArray(config.modeBarButtonsToAdd)) {
+            console.log('[PyWry Plotly] Processing', config.modeBarButtonsToAdd.length, 'custom buttons');
+            config.modeBarButtonsToAdd = config.modeBarButtonsToAdd.map(function(btn, idx) {
+                console.log('[PyWry Plotly] Button', idx, ':', btn.name, 'icon:', btn.icon, 'event:', btn.event);
+                
+                // Handle icon - could be string (Plotly icon name) or object (custom SVG)
+                if (typeof btn.icon === 'string') {
+                    // String icon name - look up in Plotly.Icons
+                    var iconName = btn.icon;
+                    if (window.Plotly && window.Plotly.Icons && window.Plotly.Icons[iconName]) {
+                        btn.icon = window.Plotly.Icons[iconName];
+                        console.log('[PyWry Plotly] Icon', iconName, 'resolved to Plotly.Icons');
+                    } else {
+                        // Fallback: use question mark icon if the named icon doesn't exist
+                        console.warn('[PyWry Plotly] Unknown icon:', iconName, '- using fallback');
+                        if (window.Plotly && window.Plotly.Icons && window.Plotly.Icons.question) {
+                            btn.icon = window.Plotly.Icons.question;
+                        } else {
+                            btn.icon = {
+                                width: 857.1,
+                                height: 1000,
+                                path: 'm500 82v107q0 8-5 13t-13 5h-107q-8 0-13-5t-5-13v-107q0-8 5-13t13-5h107q8 0 13 5t5 13z m143 375q0 49-31 91t-77 65-95 23q-136 0-207-119-9-14 4-24l74-55q4-4 10-4 9 0 14 7 30 38 48 51 19 14 48 14 27 0 48-15t21-33q0-21-11-34t-38-25q-35-16-65-48t-29-70v-20q0-8 5-13t13-5h107q8 0 13 5t5 13q0 10 12 27t30 28q18 10 28 16t25 19 25 27 16 34 7 45z m214-107q0-117-57-215t-156-156-215-58-216 58-155 156-58 215 58 215 155 156 216 58 215-58 156-156 57-215z',
+                                transform: 'matrix(1 0 0 -1 0 850)'
+                            };
+                        }
+                    }
+                } else if (btn.icon && typeof btn.icon === 'object') {
+                    // Object icon - custom SVG definition from Python SvgIcon
+                    // Ensure it has required properties for Plotly
+                    if (!btn.icon.width) btn.icon.width = 1000;
+                    if (!btn.icon.height) btn.icon.height = 1000;
+                    console.log('[PyWry Plotly] Using custom SVG icon for', btn.name);
+                }
+                
+                // Convert 'event' property to 'click' function
+                if (btn.event) {
+                    var eventName = btn.event;
+                    var eventData = btn.data || {};
+                    btn.click = function(gd) {
+                        console.log('[PyWry Plotly] Button clicked, emitting:', eventName);
+                        // Just emit to Python - Python will send back CSV data
+                        pywry.emit(eventName, eventData);
+                    };
+                    delete btn.event;
+                    delete btn.data;
+                    console.log('[PyWry Plotly] Button', btn.name, 'click handler set for event:', eventName);
+                }
+                
+                return btn;
+            });
+        }
+        
+        return config;
+    }
+
+    pywry.on('plotly:update_figure', (data) => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv && window.Plotly) {
+            console.log('[PyWry Plotly] Updating figure via event, data keys:', Object.keys(data));
+            // Python sends {data: [...], layout: {...}} directly, not nested in figure
+            const figData = data.figure ? data.figure.data : data.data;
+            const figLayout = data.figure ? data.figure.layout : data.layout;
+            // Process config to convert icon names and event properties, always hide logo
+            const config = Object.assign({displaylogo: false}, processPlotlyConfig(data.config || {}));
+            if (figData) {
+                window.Plotly.react(plotDiv, figData, figLayout || {}, config);
+            }
+        }
+    });
+
+    pywry.on('plotly:update_layout', (data) => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv && window.Plotly && data.layout) {
+            window.Plotly.relayout(plotDiv, data.layout);
+        }
+    });
+
+    pywry.on('plotly:update_traces', (data) => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv && window.Plotly && data.update) {
+            window.Plotly.restyle(plotDiv, data.update, data.indices);
+        }
+    });
+
+    pywry.on('plotly:reset_zoom', () => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv && window.Plotly) {
+            window.Plotly.relayout(plotDiv, {
+                'xaxis.autorange': true,
+                'yaxis.autorange': true
+            });
+        }
+    });
+
+    pywry.on('plotly:request_state', () => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv && window.Plotly) {
+            pywry.emit('plotly:state_response', {
+                layout: plotDiv.layout,
+                data: plotDiv.data,
+                chartId: model.get('chart_id')
+            });
+        }
+    });
+
+    // Also allow export to be triggered from Python
+    pywry.on('plotly:export_data', () => {
+        const plotDiv = container.querySelector('.js-plotly-plot');
+        if (plotDiv) doExportData(plotDiv);
     });
 
     pywry.on('pywry:update_theme', (data) => {
@@ -107,6 +295,9 @@ function render({ model, el }) {
     }
 
     function setupPlotlyEvents(chartEl) {
+        // Get chartId from model for event payloads
+        const chartId = model.get('chart_id') || 'default';
+        
         chartEl.on('plotly_click', function(data) {
             const points = data.points.map(p => ({
                 curveNumber: p.curveNumber,
@@ -117,7 +308,8 @@ function render({ model, el }) {
                 text: p.text,
                 customdata: p.customdata
             }));
-            pywry.emit('plotly_click', { points: points });
+            // Emit with colon format for consistency with native windows
+            pywry.emit('plotly:click', { chartId: chartId, widget_type: 'chart', points: points });
         });
         chartEl.on('plotly_hover', function(data) {
             const points = data.points.map(p => ({
@@ -126,7 +318,7 @@ function render({ model, el }) {
                 x: p.x,
                 y: p.y
             }));
-            pywry.emit('plotly_hover', { points: points });
+            pywry.emit('plotly:hover', { chartId: chartId, widget_type: 'chart', points: points });
         });
         chartEl.on('plotly_selected', function(data) {
             if (data) {
@@ -136,8 +328,11 @@ function render({ model, el }) {
                     x: p.x,
                     y: p.y
                 }));
-                pywry.emit('plotly_selected', { points: points, range: data.range });
+                pywry.emit('plotly:select', { chartId: chartId, widget_type: 'chart', points: points, range: data.range });
             }
+        });
+        chartEl.on('plotly_relayout', function(data) {
+            pywry.emit('plotly:relayout', { chartId: chartId, widget_type: 'chart', relayout_data: data });
         });
     }
     
@@ -155,6 +350,90 @@ function render({ model, el }) {
         
         // Set content HTML (toolbar + chart container)
         container.innerHTML = content;
+        
+        // Set up custom dropdown handlers (replaces native <select>)
+        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
+            var selected = dropdown.querySelector('.pywry-dropdown-selected');
+            var menu = dropdown.querySelector('.pywry-dropdown-menu');
+            var textEl = dropdown.querySelector('.pywry-dropdown-text');
+            
+            // Toggle dropdown on click
+            selected.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Close all other dropdowns first
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
+                    if (other !== dropdown) other.classList.remove('pywry-open');
+                });
+                dropdown.classList.toggle('pywry-open');
+            });
+            
+            // Handle option selection
+            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var value = option.getAttribute('data-value');
+                    var label = option.textContent;
+                    
+                    // Update selected state
+                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                        opt.classList.remove('pywry-selected');
+                    });
+                    option.classList.add('pywry-selected');
+                    textEl.textContent = label;
+                    dropdown.classList.remove('pywry-open');
+                    
+                    // Emit event
+                    var eventName = dropdown.getAttribute('data-event');
+                    if (eventName) {
+                        console.log('[PyWry Plotly] Dropdown changed:', eventName, value);
+                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
+                    }
+                });
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.pywry-dropdown')) {
+                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
+                    dropdown.classList.remove('pywry-open');
+                });
+            }
+        });
+        
+        // Set up toolbar event handlers using event delegation (for native selects - backwards compat)
+        // This ensures pywry.emit works because pywry is defined in this scope
+        container.querySelectorAll('.pywry-select').forEach(function(select) {
+            select.addEventListener('change', function(e) {
+                var eventName = select.getAttribute('data-event') || select.getAttribute('onchange')?.match(/emit\('([^']+)'/)?.[1];
+                if (!eventName) {
+                    // Extract from inline onchange
+                    var onchange = select.getAttribute('onchange') || '';
+                    var match = onchange.match(/emit\s*\(\s*['"]([^'"]+)['"]/);
+                    if (match) eventName = match[1];
+                }
+                if (eventName) {
+                    console.log('[PyWry Plotly] Select changed:', eventName, select.value);
+                    pywry.emit(eventName, { value: select.value, componentId: select.id });
+                }
+            });
+        });
+        
+        container.querySelectorAll('.pywry-button').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                var eventName = button.getAttribute('data-event') || button.getAttribute('onclick')?.match(/emit\('([^']+)'/)?.[1];
+                if (!eventName) {
+                    var onclick = button.getAttribute('onclick') || '';
+                    var match = onclick.match(/emit\s*\(\s*['"]([^'"]+)['"]/);
+                    if (match) eventName = match[1];
+                }
+                if (eventName) {
+                    console.log('[PyWry Plotly] Button clicked:', eventName);
+                    pywry.emit(eventName, { componentId: button.id });
+                }
+            });
+        });
+        
         applyTheme();
         
         // Find chart element within our container (NOT document.getElementById!)
@@ -176,14 +455,26 @@ function render({ model, el }) {
             try {
                 const figData = JSON.parse(figureJson);
                 const config = figData.config || {};
-                const finalConfig = Object.assign({responsive: true}, config);
                 
+                console.log('[PyWry Plotly] Config from figure_json:', JSON.stringify(config, null, 2));
+                
+                // Process modebar buttons using shared helper
+                processPlotlyConfig(config);
+                
+                if (config.modeBarButtonsToRemove) {
+                    console.log('[PyWry Plotly] Buttons to remove:', config.modeBarButtonsToRemove);
+                }
+                
+                const finalConfig = Object.assign({responsive: true, displaylogo: false}, config);
+                
+                console.log('[PyWry Plotly] Final config for Plotly.newPlot:', Object.keys(finalConfig));
                 console.log('[PyWry Plotly] Rendering chart from figure_json');
                 window.Plotly.newPlot(chartEl, figData.data, figData.layout, finalConfig).then(function() {
                     setupPlotlyEvents(chartEl);
                     console.log('[PyWry Plotly] Chart rendered successfully');
                 }).catch(function(err) {
                     console.error('[PyWry Plotly] Plotly.newPlot failed:', err);
+                    chartEl.innerHTML = '<div style="background:#ff4444;color:white;padding:20px;">Plotly error: ' + err.message + '</div>';
                 });
             } catch(e) {
                 console.error('[PyWry Plotly] Failed to parse figure_json:', e);

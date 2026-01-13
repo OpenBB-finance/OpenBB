@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 """Pydantic models for PyWry toolbar components.
 
 This module provides strongly-typed models for toolbar configurations:
@@ -46,7 +47,7 @@ if TYPE_CHECKING:
 # =============================================================================
 
 ToolbarPosition = Literal["top", "bottom", "left", "right", "inside"]
-ItemType = Literal["button", "select", "multiselect", "text", "number", "date", "range"]
+ItemType = Literal["button", "select", "multiselect", "text", "number", "date", "slider", "range"]
 
 
 # =============================================================================
@@ -60,6 +61,11 @@ EVENT_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$")
 
 # Reserved namespaces that users should not use
 RESERVED_NAMESPACES = frozenset({"pywry", "plotly", "grid"})
+
+# Exceptions to reserved namespaces
+ALLOWED_RESERVED_PATTERNS = [
+    "plotly:modebar_",
+]
 
 
 def validate_event_format(event: str) -> bool:
@@ -159,10 +165,18 @@ class ToolbarItem(BaseModel):
         # Check for reserved namespaces
         namespace = v.split(":")[0].lower()
         if namespace in RESERVED_NAMESPACES:
-            raise ValueError(
-                f"Reserved namespace '{namespace}' cannot be used. "
-                f"Reserved namespaces: {', '.join(sorted(RESERVED_NAMESPACES))}"
-            )
+            # Check exceptions
+            is_allowed = False
+            for pattern in ALLOWED_RESERVED_PATTERNS:
+                if v.startswith(pattern):
+                    is_allowed = True
+                    break
+
+            if not is_allowed:
+                raise ValueError(
+                    f"Reserved namespace '{namespace}' cannot be used. "
+                    f"Reserved namespaces: {', '.join(sorted(RESERVED_NAMESPACES))}"
+                )
         return v
 
     def _build_title_attr(self) -> str:
@@ -184,12 +198,19 @@ class ToolbarItem(BaseModel):
 class Button(ToolbarItem):
     """A clickable button that emits an event with optional data payload.
 
+    Parameters
+    ----------
+        variant: Button style variant - "primary" (default blue), "secondary" (gray),
+                 "ghost" (transparent), "outline" (bordered), "danger" (red).
+
     Example:
         Button(label="Export", event="export:csv", data={"format": "csv"})
+        Button(label="Cancel", event="cancel", variant="secondary")
     """
 
     type: Literal["button"] = "button"
     data: dict[str, Any] = Field(default_factory=dict)
+    variant: Literal["primary", "secondary", "ghost", "outline", "danger"] = "primary"
 
     def build_html(self) -> str:
         """Build button HTML."""
@@ -198,11 +219,15 @@ class Button(ToolbarItem):
         title_attr = self._build_title_attr()
         onclick = (
             f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', JSON.parse(this.dataset.eventData || '{{}}')); "
+            f"var data = JSON.parse(this.dataset.eventData || '{{}}'); "
+            f"data.componentId = '{self.component_id}'; "
+            f"window.pywry.emit('{self.event}', data); "
             f"}} else {{ console.warn('PyWry not ready'); }}"
         )
+        # Add variant class if not primary (primary is the default styling)
+        variant_class = f" pywry-btn-{self.variant}" if self.variant != "primary" else ""
         return (
-            f'<button class="pywry-btn" id="{self.component_id}" '
+            f'<button class="pywry-btn{variant_class}" id="{self.component_id}" '
             f'onclick="{onclick}" data-event-data="{data_json}" '
             f'style="{self.style}"{title_attr}{disabled_attr}>'
             f"{html.escape(self.label or 'Button')}</button>"
@@ -251,33 +276,44 @@ class Select(ToolbarItem):
         return result
 
     def build_html(self) -> str:
-        """Build select HTML."""
-        disabled_attr = " disabled" if self.disabled else ""
+        """Build custom dropdown HTML (not native select, for consistent styling)."""
+        disabled_attr = " pywry-disabled" if self.disabled else ""
         title_attr = self._build_title_attr()
-        onchange = (
-            f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', {{value: this.value}}); "
-            f"}} else {{ console.warn('PyWry not ready'); }}"
-        )
+
+        # Find selected option label
+        selected_label = self.selected
+        for opt in self.options:
+            if str(opt.value) == self.selected:
+                selected_label = opt.label
+                break
+
+        # Build options HTML
         options_html = "".join(
-            f'<option value="{html.escape(str(opt.value))}"'
-            f"{' selected' if str(opt.value) == self.selected else ''}>"
-            f"{html.escape(str(opt.label))}</option>"
+            f'<div class="pywry-dropdown-option{" pywry-selected" if str(opt.value) == self.selected else ""}" '
+            f'data-value="{html.escape(str(opt.value))}">'
+            f"{html.escape(str(opt.label))}</div>"
             for opt in self.options
         )
 
-        select_html = (
-            f'<select class="pywry-select" id="{self.component_id}" '
-            f'onchange="{onchange}"{title_attr}{disabled_attr}>{options_html}</select>'
+        # Custom dropdown structure
+        dropdown_html = (
+            f'<div class="pywry-dropdown{disabled_attr}" id="{self.component_id}" '
+            f'data-event="{self.event}"{title_attr}>'
+            f'<div class="pywry-dropdown-selected">'
+            f'<span class="pywry-dropdown-text">{html.escape(str(selected_label))}</span>'
+            f'<span class="pywry-dropdown-arrow"></span>'
+            f"</div>"
+            f'<div class="pywry-dropdown-menu">{options_html}</div>'
+            f"</div>"
         )
 
         if self.label:
             return (
-                f'<span class="pywry-input-group pywry-input-inline" style="{self.style}">'
+                f'<div class="pywry-input-group pywry-input-inline" style="{self.style}">'
                 f'<span class="pywry-input-label">{html.escape(self.label)}</span>'
-                f"{select_html}</span>"
+                f"{dropdown_html}</div>"
             )
-        return f'<span style="{self.style}">{select_html}</span>' if self.style else select_html
+        return f'<div style="{self.style}">{dropdown_html}</div>' if self.style else dropdown_html
 
 
 # =============================================================================
@@ -345,7 +381,7 @@ class MultiSelect(ToolbarItem):
                 f"var container = el.closest('.pywry-multiselect'); "
                 f"var checked = Array.from(container.querySelectorAll('input:checked')).map(i => i.value); "
                 f"if (window.pywry && window.pywry.emit) {{ "
-                f"window.pywry.emit('{self.event}', {{values: checked}}); "
+                f"window.pywry.emit('{self.event}', {{values: checked, componentId: '{self.component_id}'}}); "
                 f"}} }})(this)"
             )
             checkboxes.append(
@@ -392,7 +428,7 @@ class TextInput(ToolbarItem):
             f"clearTimeout(this._debounce); "
             f"this._debounce = setTimeout(() => {{ "
             f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', {{value: this.value}}); "
+            f"window.pywry.emit('{self.event}', {{value: this.value, componentId: '{self.component_id}'}}); "
             f"}} }}, {self.debounce});"
         )
         input_html = (
@@ -430,12 +466,12 @@ class NumberInput(ToolbarItem):
     step: float | int | None = None
 
     def build_html(self) -> str:
-        """Build number input HTML."""
+        """Build number input HTML with custom spinner buttons."""
         disabled_attr = " disabled" if self.disabled else ""
         title_attr = self._build_title_attr()
         onchange = (
             f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', {{value: parseFloat(this.value) || 0}}); "
+            f"window.pywry.emit('{self.event}', {{value: parseFloat(this.value) || 0, componentId: '{self.component_id}'}}); "
             f"}} else {{ console.warn('PyWry not ready'); }}"
         )
 
@@ -454,12 +490,25 @@ class NumberInput(ToolbarItem):
             f'{" ".join(attrs)} onchange="{onchange}"{title_attr}{disabled_attr}>'
         )
 
+        # Custom spinner buttons
+        spinner_html = (
+            '<span class="pywry-number-spinner">'
+            '<button type="button" tabindex="-1" '
+            "onclick=\"var inp=this.parentElement.previousElementSibling;inp.stepUp();inp.dispatchEvent(new Event('change'));\">&#9650;</button>"
+            '<button type="button" tabindex="-1" '
+            "onclick=\"var inp=this.parentElement.previousElementSibling;inp.stepDown();inp.dispatchEvent(new Event('change'));\">&#9660;</button>"
+            "</span>"
+        )
+
+        # Wrap input and spinner together
+        wrapper_html = f'<span class="pywry-number-wrapper">{input_html}{spinner_html}</span>'
+
         if self.label:
             return (
                 f'<span class="pywry-input-group pywry-input-inline" style="{self.style}">'
-                f'<span class="pywry-input-label">{html.escape(self.label)}</span>{input_html}</span>'
+                f'<span class="pywry-input-label">{html.escape(self.label)}</span>{wrapper_html}</span>'
             )
-        return input_html
+        return wrapper_html
 
 
 # =============================================================================
@@ -487,7 +536,7 @@ class DateInput(ToolbarItem):
         title_attr = self._build_title_attr()
         onchange = (
             f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', {{value: this.value}}); "
+            f"window.pywry.emit('{self.event}', {{value: this.value, componentId: '{self.component_id}'}}); "
             f"}} else {{ console.warn('PyWry not ready'); }}"
         )
 
@@ -517,16 +566,16 @@ class DateInput(ToolbarItem):
 # =============================================================================
 
 
-class RangeInput(ToolbarItem):
-    """A range slider input.
+class SliderInput(ToolbarItem):
+    """A single-value slider input.
 
     Emits: {value: <number_value>}
 
     Example:
-        RangeInput(label="Zoom:", event="zoom:level", value=50, min=0, max=100, step=5, show_value=True)
+        SliderInput(label="Zoom:", event="zoom:level", value=50, min=0, max=100, step=5, show_value=True)
     """
 
-    type: Literal["range"] = "range"
+    type: Literal["slider"] = "slider"
     value: float | int = 50
     min: float | int = 0
     max: float | int = 100
@@ -539,7 +588,7 @@ class RangeInput(ToolbarItem):
         title_attr = self._build_title_attr()
         onchange = (
             f"if (window.pywry && window.pywry.emit) {{ "
-            f"window.pywry.emit('{self.event}', {{value: parseFloat(this.value)}}); "
+            f"window.pywry.emit('{self.event}', {{value: parseFloat(this.value), componentId: '{self.component_id}'}}); "
             f"}} "
             f"var display = this.nextElementSibling; "
             f"if (display) display.textContent = this.value;"
@@ -563,11 +612,110 @@ class RangeInput(ToolbarItem):
 
 
 # =============================================================================
+# RangeInput (Dual-Handle Range Selector)
+# =============================================================================
+
+
+class RangeInput(ToolbarItem):
+    """A dual-handle range selector for selecting a value range.
+
+    Emits: {start: <number>, end: <number>}
+
+    This component provides two sliders for selecting a minimum and maximum
+    value within a range. Unlike SliderInput which selects a single value,
+    RangeInput allows users to define a range of values.
+
+    Example:
+        RangeInput(
+            label="Price Range:",
+            event="filter:price",
+            start=100,
+            end=500,
+            min=0,
+            max=1000,
+            step=10,
+        )
+    """
+
+    type: Literal["range"] = "range"
+    start: float | int = 0
+    end: float | int = 100
+    min: float | int = 0
+    max: float | int = 100
+    step: float | int = 1
+    show_value: bool = True
+
+    def build_html(self) -> str:
+        """Build dual-range input HTML with two sliders."""
+        disabled_attr = " disabled" if self.disabled else ""
+        title_attr = self._build_title_attr()
+
+        # Generate unique IDs for start and end sliders
+        start_id = f"{self.component_id}-start"
+        end_id = f"{self.component_id}-end"
+
+        # JavaScript to emit combined range event and update displays
+        emit_js = (
+            f"(function() {{"
+            f"  var startEl = document.getElementById('{start_id}');"
+            f"  var endEl = document.getElementById('{end_id}');"
+            f"  var startVal = parseFloat(startEl.value);"
+            f"  var endVal = parseFloat(endEl.value);"
+            f"  if (startVal > endVal) {{"
+            f"    if (this.id === '{start_id}') {{ startVal = endVal; startEl.value = endVal; }}"
+            f"    else {{ endVal = startVal; endEl.value = startVal; }}"
+            f"  }}"
+            f"  var startDisplay = startEl.nextElementSibling;"
+            f"  var endDisplay = endEl.nextElementSibling;"
+            f"  if (startDisplay) startDisplay.textContent = startEl.value;"
+            f"  if (endDisplay) endDisplay.textContent = endEl.value;"
+            f"  if (window.pywry && window.pywry.emit) {{"
+            f"    window.pywry.emit('{self.event}', {{"
+            f"      start: startVal, end: endVal, componentId: '{self.component_id}'"
+            f"    }});"
+            f"  }}"
+            f"}})()"
+        )
+
+        # Build start slider
+        start_html = (
+            f'<input type="range" class="pywry-input pywry-input-range" '
+            f'id="{start_id}" value="{self.start}" min="{self.min}" '
+            f'max="{self.max}" step="{self.step}" oninput="{emit_js}"{title_attr}{disabled_attr}>'
+        )
+        if self.show_value:
+            start_html += f'<span class="pywry-range-value">{self.start}</span>'
+
+        # Build end slider
+        end_html = (
+            f'<input type="range" class="pywry-input pywry-input-range" '
+            f'id="{end_id}" value="{self.end}" min="{self.min}" '
+            f'max="{self.max}" step="{self.step}" oninput="{emit_js}"{title_attr}{disabled_attr}>'
+        )
+        if self.show_value:
+            end_html += f'<span class="pywry-range-value">{self.end}</span>'
+
+        # Combine with separator
+        range_html = (
+            f'<span class="pywry-range-group" id="{self.component_id}">'
+            f'{start_html}<span class="pywry-range-separator">-</span>{end_html}'
+            f"</span>"
+        )
+
+        if self.label:
+            return (
+                f'<span class="pywry-input-group pywry-input-inline" style="{self.style}">'
+                f'<span class="pywry-input-label">{html.escape(self.label)}</span>{range_html}</span>'
+            )
+        return range_html
+
+
+# =============================================================================
 # Union Type for All Toolbar Items
 # =============================================================================
 
 AnyToolbarItem = Annotated[
-    Button | Select | MultiSelect | TextInput | NumberInput | DateInput | RangeInput,
+    Button | Select | MultiSelect | TextInput | NumberInput | DateInput | SliderInput | RangeInput,
     Field(discriminator="type"),
 ]
 
@@ -675,6 +823,7 @@ _ITEM_TYPE_MAP: dict[str, type[ToolbarItem]] = {
     "text": TextInput,
     "number": NumberInput,
     "date": DateInput,
+    "slider": SliderInput,
     "range": RangeInput,
 }
 
@@ -690,7 +839,7 @@ def build_toolbar_html(toolbar: Toolbar | dict[str, Any]) -> str:
     Parameters
     ----------
     toolbar : Toolbar or dict
-        Toolbar configuration (Toolbar model or legacy dict format).
+        Toolbar configuration.
 
     Returns
     -------
@@ -761,3 +910,221 @@ def build_toolbars_by_position(
             result[tb_model.position].append(toolbar_html)
 
     return {k: "".join(v) for k, v in result.items()}
+
+
+# =============================================================================
+# Toolbar JavaScript (for dropdown/select interactivity)
+# =============================================================================
+
+# This is the SINGLE SOURCE OF TRUTH for toolbar JavaScript.
+# It handles all dropdown/select/multiselect interactivity.
+# Must be included in widget HTML when toolbars are present.
+
+TOOLBAR_SCRIPT = """
+(function() {
+    // Guard: only init once per page
+    if (window.__PYWRY_TOOLBAR_INIT__) return;
+    window.__PYWRY_TOOLBAR_INIT__ = true;
+
+    // --- Dropdown (Select) handling ---
+    document.addEventListener('click', function(e) {
+        // Toggle dropdown on click of .pywry-dropdown-selected
+        var selected = e.target.closest('.pywry-dropdown-selected');
+        if (selected) {
+            var dropdown = selected.closest('.pywry-dropdown');
+            if (dropdown && !dropdown.classList.contains('pywry-disabled')) {
+                // Close all other dropdowns first
+                document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(d) {
+                    if (d !== dropdown) d.classList.remove('pywry-open');
+                });
+                dropdown.classList.toggle('pywry-open');
+            }
+            e.stopPropagation();
+            return;
+        }
+
+        // Handle option selection
+        var option = e.target.closest('.pywry-dropdown-option');
+        if (option) {
+            var dropdown = option.closest('.pywry-dropdown');
+            if (dropdown) {
+                // Update selected state
+                dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                    opt.classList.remove('pywry-selected');
+                });
+                option.classList.add('pywry-selected');
+
+                // Update display text
+                var textEl = dropdown.querySelector('.pywry-dropdown-text');
+                if (textEl) textEl.textContent = option.textContent;
+
+                // Close the dropdown
+                dropdown.classList.remove('pywry-open');
+
+                // Emit event via pywry
+                var eventName = dropdown.dataset.event;
+                var value = option.dataset.value;
+                if (eventName && window.pywry && window.pywry.emit) {
+                    console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
+                    window.pywry.emit(eventName, { value: value, componentId: dropdown.id });
+                }
+            }
+            e.stopPropagation();
+            return;
+        }
+
+        // Close all dropdowns when clicking outside
+        document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(d) {
+            d.classList.remove('pywry-open');
+        });
+    });
+
+    // --- Button handling ---
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.pywry-toolbar-button');
+        if (btn && !btn.classList.contains('pywry-disabled')) {
+            var eventName = btn.dataset.event;
+            var data = {};
+            try {
+                if (btn.dataset.data) data = JSON.parse(btn.dataset.data);
+            } catch (err) {}
+            if (eventName && window.pywry && window.pywry.emit) {
+                console.log('[PyWry Toolbar] Button clicked:', eventName, data);
+                window.pywry.emit(eventName, data);
+            }
+        }
+    });
+
+    // --- Text/Number/Date Input handling (with debounce) ---
+    var inputDebounceTimers = {};
+    document.addEventListener('input', function(e) {
+        var input = e.target.closest('.pywry-text-input, .pywry-number-input, .pywry-date-input');
+        if (input) {
+            var eventName = input.dataset.event;
+            var debounce = parseInt(input.dataset.debounce || '0', 10);
+            var inputId = input.id || input.dataset.event;
+
+            if (inputDebounceTimers[inputId]) {
+                clearTimeout(inputDebounceTimers[inputId]);
+            }
+
+            var sendValue = function() {
+                var value = input.value;
+                if (input.type === 'number') value = parseFloat(value);
+                if (eventName && window.pywry && window.pywry.emit) {
+                    window.pywry.emit(eventName, { value: value, componentId: input.id });
+                }
+            };
+
+            if (debounce > 0) {
+                inputDebounceTimers[inputId] = setTimeout(sendValue, debounce);
+            } else {
+                sendValue();
+            }
+        }
+    });
+
+    // --- Slider/Range Input handling ---
+    document.addEventListener('input', function(e) {
+        var slider = e.target.closest('.pywry-slider-input, .pywry-range-input');
+        if (slider) {
+            var eventName = slider.dataset.event;
+            var value = parseFloat(slider.value);
+            // Update display value if present
+            var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
+            if (display) display.textContent = value;
+            if (eventName && window.pywry && window.pywry.emit) {
+                window.pywry.emit(eventName, { value: value, componentId: slider.id });
+            }
+        }
+    });
+
+    // --- MultiSelect handling ---
+    document.addEventListener('change', function(e) {
+        var checkbox = e.target.closest('.pywry-multiselect-group input[type="checkbox"]');
+        if (checkbox) {
+            var group = checkbox.closest('.pywry-multiselect-group');
+            if (group) {
+                var eventName = group.dataset.event;
+                var selected = [];
+                group.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+                    selected.push(cb.value);
+                });
+                if (eventName && window.pywry && window.pywry.emit) {
+                    window.pywry.emit(eventName, { values: selected, componentId: group.id });
+                }
+            }
+        }
+    });
+
+    // --- Handle toolbar:set_value from Python (to update dropdowns dynamically) ---
+    if (window.pywry && window.pywry.on) {
+        window.pywry.on('toolbar:set_value', function(data) {
+            if (!data.componentId) return;
+            var dropdown = document.getElementById(data.componentId);
+            if (!dropdown) return;
+
+            var menu = dropdown.querySelector('.pywry-dropdown-menu');
+            var textEl = dropdown.querySelector('.pywry-dropdown-text');
+            if (!menu || !textEl) return;
+
+            // Update options if provided
+            if (data.options && Array.isArray(data.options)) {
+                menu.innerHTML = '';
+                data.options.forEach(function(opt) {
+                    var optEl = document.createElement('div');
+                    optEl.className = 'pywry-dropdown-option';
+                    optEl.setAttribute('data-value', opt.value);
+                    optEl.textContent = opt.label;
+                    if (opt.value === data.value) {
+                        optEl.classList.add('pywry-selected');
+                        textEl.textContent = opt.label;
+                    }
+                    menu.appendChild(optEl);
+                });
+            }
+
+            // Update selected value if provided (without replacing options)
+            if (data.value !== undefined && !data.options) {
+                menu.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                    if (opt.getAttribute('data-value') === data.value) {
+                        menu.querySelectorAll('.pywry-dropdown-option').forEach(function(o) {
+                            o.classList.remove('pywry-selected');
+                        });
+                        opt.classList.add('pywry-selected');
+                        textEl.textContent = opt.textContent;
+                    }
+                });
+            }
+        });
+    }
+})();
+"""
+
+
+def get_toolbar_script(*, with_script_tag: bool = True) -> str:
+    """Get the JavaScript required for toolbar interactivity.
+
+    This script handles:
+    - Dropdown (Select) open/close and option selection
+    - Button click events
+    - Text/Number/Date input with debouncing
+    - Slider/Range input with live updates
+    - MultiSelect checkbox handling
+    - Dynamic toolbar updates via toolbar:set_value event
+
+    Parameters
+    ----------
+    with_script_tag : bool, default True
+        If True, wrap in <script> tags. If False, return raw JavaScript
+        (for embedding inside an existing script block).
+
+    Returns
+    -------
+    str
+        JavaScript code or script tag containing toolbar JavaScript.
+        Safe to include multiple times (has internal guard).
+    """
+    if with_script_tag:
+        return f"<script>{TOOLBAR_SCRIPT}</script>"
+    return TOOLBAR_SCRIPT

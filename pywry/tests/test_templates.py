@@ -17,10 +17,10 @@ from pywry.templates import (
     build_json_data_script,
     build_plotly_script,
     build_theme_class,
-    build_toolbar_html,
     fix_aggrid_theme_classes,
     fix_plotly_template,
 )
+from pywry.toolbar import Toolbar
 
 
 class TestFixAggridThemeClasses:
@@ -814,25 +814,29 @@ class TestBuildHtmlWithAggridTheme:
 
 
 class TestBuildToolbarHtml:
-    """Tests for build_toolbar_html function."""
+    """Tests for Toolbar.build_html() method."""
 
     def test_returns_empty_when_no_buttons(self):
-        """Returns empty string when no buttons provided."""
-        result = build_toolbar_html([], ThemeMode.DARK)
+        """Returns empty string when no items provided."""
+        toolbar = Toolbar(items=[])
+        result = toolbar.build_html()
         assert result == ""
 
     def test_returns_html_with_buttons(self):
         """Returns HTML with buttons."""
-        buttons = [{"label": "Click Me", "event": "toolbar:click_me"}]
-        result = build_toolbar_html(buttons, ThemeMode.DARK)
+        toolbar = Toolbar(items=[{"label": "Click Me", "event": "toolbar:click_me"}])
+        result = toolbar.build_html()
         assert "Click Me" in result
         assert "toolbar:click_me" in result
         assert "pywry-toolbar" in result
 
     def test_includes_position_class(self):
         """Includes position class in toolbar div."""
-        items = [{"type": "button", "label": "Btn", "event": "toolbar:click"}]
-        result = build_toolbar_html(items, ThemeMode.DARK, position="bottom")
+        toolbar = Toolbar(
+            position="bottom",
+            items=[{"type": "button", "label": "Btn", "event": "toolbar:click"}],
+        )
+        result = toolbar.build_html()
         assert "pywry-toolbar-bottom" in result
 
 

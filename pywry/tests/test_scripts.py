@@ -3,7 +3,6 @@
 Tests the PyWry JavaScript bridge and event system scripts.
 """
 
-from pywry.models import WindowConfig
 from pywry.scripts import PYWRY_BRIDGE_JS, build_init_script
 
 
@@ -48,27 +47,23 @@ class TestBuildInitScript:
 
     def test_returns_string(self):
         """Returns a string."""
-        config = WindowConfig()
-        script = build_init_script(config, window_label="main")
+        script = build_init_script(window_label="main")
         assert isinstance(script, str)
 
     def test_includes_window_label(self):
         """Includes window label."""
-        config = WindowConfig()
-        script = build_init_script(config, window_label="test-window")
+        script = build_init_script(window_label="test-window")
         assert "test-window" in script
 
     def test_includes_pywry_bridge(self):
         """Includes pywry bridge code."""
-        config = WindowConfig()
-        script = build_init_script(config, window_label="main")
+        script = build_init_script(window_label="main")
         assert "pywry" in script
 
     def test_different_labels_produce_different_scripts(self):
         """Different labels produce different scripts."""
-        config = WindowConfig()
-        script1 = build_init_script(config, window_label="window-1")
-        script2 = build_init_script(config, window_label="window-2")
+        script1 = build_init_script(window_label="window-1")
+        script2 = build_init_script(window_label="window-2")
         assert "window-1" in script1
         assert "window-2" in script2
 

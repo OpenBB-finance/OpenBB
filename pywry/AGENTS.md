@@ -20,7 +20,7 @@
 
 ### Core Capabilities
 
-- **Three Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW` (plus automatic `NOTEBOOK` mode)
+- **Five Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER`
 - **Notebook Support**: Automatic inline rendering via FastAPI IFrame or anywidget
 - **Hot Reload**: CSS injection and JS refresh with scroll preservation
 - **Bundled Libraries**: Plotly.js 3.3.1 and AG Grid 35.0.0 (offline capable)
@@ -29,14 +29,15 @@
 - **Dynamic Theming**: Light, Dark, and System modes
 - **CLI Tools**: `pywry config` and `pywry init`
 - **anywidget Integration**: `PyWryWidget`, `PyWryPlotlyWidget`, `PyWryAgGridWidget`
+- **Browser Mode**: Opens in system browser for headless/server environments
 
 ---
 
 ## Architecture
 
-### Dual Rendering Modes
+### Rendering Modes
 
-PyWry supports two primary rendering architectures:
+PyWry supports four rendering architectures:
 
 **1. Desktop Mode** (PyTauri subprocess):
 ```
@@ -63,11 +64,21 @@ User Code → widget.py → anywidget ESM → Jupyter Widget
          traitlets sync    Bundled Plotly/AG Grid
 ```
 
+**4. Browser Mode** (FastAPI + system browser):
+```
+User Code → PyWry (mode=BROWSER) → BrowserMode → inline.py → FastAPI Server
+                                                      ↓
+                                              Opens browser → Widget URL
+                                                      ↓
+                                              WebSocket ↔ Callbacks
+```
+
 ### Key Architectural Points
 
 - **Desktop**: Python manages the high-level API through the `PyWry` class; a PyTauri subprocess handles actual window creation and OS webview; communication uses JSON IPC over stdin/stdout; subprocess starts lazily on first `show()` call
 - **Notebook**: Detected automatically via `notebook.py`; FastAPI server starts on first render; IFrame displays content; bidirectional events via WebSocket
 - **anywidget**: Uses anywidget/traitlets for Jupyter widget protocol; bundles Plotly.js and AG Grid as ESM modules
+- **Browser**: Uses same FastAPI server as Notebook mode; opens URL in system default browser; ideal for headless/SSH/server environments
 
 ### Tauri Plugin Integration
 
@@ -116,13 +127,13 @@ if (window.__TAURI__) {
 
 ```
 pywry/
-├── __init__.py          # Public API exports
+├── __init__.py          # Public API exports (version 2.0.0)
 ├── __main__.py          # PyTauri subprocess entry point
 ├── app.py               # Main PyWry class - user entry point
 ├── runtime.py           # PyTauri subprocess management (stdin/stdout IPC)
-├── inline.py            # FastAPI-based inline notebook rendering
-├── notebook.py          # Notebook environment detection
-├── widget.py            # anywidget-based widgets (PyWryWidget, PyWryPlotlyWidget, etc.)
+├── inline.py            # FastAPI-based inline rendering + InlineWidget class
+├── notebook.py          # Notebook environment detection (NotebookEnvironment enum)
+├── widget.py            # anywidget-based widgets (PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget)
 ├── widget_protocol.py   # BaseWidget protocol definition
 ├── config.py            # Layered configuration system (pydantic-settings)
 ├── models.py            # Pydantic models (WindowConfig, HtmlContent, ThemeMode, WindowMode)
@@ -131,31 +142,42 @@ pywry/
 ├── callbacks.py         # Event callback registry (singleton)
 ├── assets.py            # Bundled asset loading (Plotly.js, AG Grid, CSS)
 ├── asset_loader.py      # CSS/JS file loading with caching
+├── grid.py              # AG Grid Pydantic models (ColDef, GridOptions, etc.)
+├── plotly_config.py     # Plotly configuration models (PlotlyConfig, ModeBarButton, etc.)
+├── toolbar.py           # Toolbar component models (Button, Select, etc.)
+├── state_mixins.py      # Widget state management mixins (GridStateMixin, PlotlyStateMixin, ToolbarStateMixin)
 ├── hot_reload.py        # Hot reload manager
 ├── watcher.py           # File system watcher (watchdog-based)
 ├── log.py               # Logging utilities
-├── cli.py               # CLI commands
+├── cli.py               # CLI commands (config, init)
 ├── Tauri.toml           # Tauri configuration
 ├── capabilities/        # Tauri capability permissions
-│   └── default.toml
+│   └── default.toml     # Default permissions (core:default, dialog:default, fs:default)
 ├── commands/            # IPC command handlers
 │   ├── __init__.py
 │   └── window_commands.py
 ├── frontend/            # Frontend HTML and bundled assets
-│   ├── assets/          # Plotly.js, AG Grid, icons, widget JS
-│   ├── src/             # Main JS files (main.js, aggrid-defaults.js, plotly-widget.js)
-│   └── style/           # CSS files
-│       └── pywry.css    # Core PyWry CSS with variables, toolbar, layout classes
+│   ├── index.html       # Base HTML template
+│   ├── assets/          # Compressed libraries (plotly-3.3.1.js.gz, ag-grid-*.gz, icons)
+│   ├── src/             # JavaScript files
+│   │   ├── main.js              # Main initialization
+│   │   ├── aggrid-defaults.js   # AG Grid setup, registry, and events (includes gridId)
+│   │   ├── plotly-defaults.js   # Plotly setup and events (includes chartId)
+│   │   ├── plotly-templates.js  # Bundled Plotly templates
+│   │   └── plotly-widget.js     # anywidget Plotly render code (includes chartId)
+│   └── style/
+│       └── pywry.css    # Core CSS with variables, toolbar, layout classes
 ├── utils/               # Utility helpers
 │   ├── __init__.py
 │   └── async_helpers.py
 └── window_manager/      # Window mode implementations
-    ├── __init__.py
+    ├── __init__.py          # Exports all modes
     ├── controller.py        # WindowController
     ├── lifecycle.py         # WindowLifecycle with resource tracking
     └── modes/
         ├── __init__.py
         ├── base.py          # Abstract WindowModeBase interface
+        ├── browser.py       # BROWSER mode - opens in system browser
         ├── single_window.py # SINGLE_WINDOW mode
         ├── new_window.py    # NEW_WINDOW mode
         └── multi_window.py  # MULTI_WINDOW mode
@@ -173,12 +195,14 @@ pywry/
 | `CallbackRegistry` | `callbacks.py` | Singleton managing event callbacks with namespace support |
 | `HotReloadManager` | `hot_reload.py` | Coordinates file watching and CSS injection |
 | `FileWatcher` | `watcher.py` | Watchdog-based file monitoring with debouncing |
+| `AssetLoader` | `asset_loader.py` | CSS/JS file loading with caching |
 
 ### Rendering Mode Classes
 
 | Class | File | Responsibility |
 |-------|------|----------------|
 | `_ServerState` | `inline.py` | Global state for FastAPI inline server |
+| `InlineWidget` | `inline.py` | IFrame-based widget for notebook rendering (when anywidget unavailable) |
 | `PyWryWidget` | `widget.py` | Base anywidget for notebook rendering |
 | `PyWryPlotlyWidget` | `widget.py` | Plotly-specific anywidget with bundled Plotly.js |
 | `PyWryAgGridWidget` | `widget.py` | AG Grid anywidget with bundled AG Grid |
@@ -191,6 +215,7 @@ pywry/
 | `SingleWindowMode` | `window_manager/modes/single_window.py` | Reuses one window, replaces content |
 | `NewWindowMode` | `window_manager/modes/new_window.py` | Creates new window for each `show()` |
 | `MultiWindowMode` | `window_manager/modes/multi_window.py` | Multiple independent labeled windows |
+| `BrowserMode` | `window_manager/modes/browser.py` | Opens in system browser (headless/SSH) |
 | `WindowLifecycle` | `window_manager/lifecycle.py` | Window lifecycle with resource tracking |
 | `WindowController` | `window_manager/controller.py` | Window controller for mode switching |
 
@@ -206,13 +231,15 @@ pywry/
 | `TextInput` | `toolbar.py` | Text input with debounce, emits `{value}` |
 | `NumberInput` | `toolbar.py` | Numeric input with min/max/step, emits `{value}` |
 | `DateInput` | `toolbar.py` | Date picker, emits `{value}` (YYYY-MM-DD) |
-| `RangeInput` | `toolbar.py` | Slider input with value display, emits `{value}` |
+| `SliderInput` | `toolbar.py` | Single-value slider, emits `{value}` |
+| `RangeInput` | `toolbar.py` | Dual-handle range selector, emits `{start, end}` |
 | `Option` | `toolbar.py` | Option for Select/MultiSelect (label, value) |
 
 ### AG Grid Classes
 
 | Class | File | Purpose |
 |-------|------|---------|
+| `AGGridModel` | `grid.py` | Base model with camelCase serialization |
 | `GridOptions` | `grid.py` | Complete AG Grid configuration (mirrors JS API) |
 | `ColDef` | `grid.py` | Column definition with all common options |
 | `ColGroupDef` | `grid.py` | Column group for MultiIndex columns |
@@ -221,7 +248,29 @@ pywry/
 | `GridConfig` | `grid.py` | Combined AG Grid options + PyWry context |
 | `GridData` | `grid.py` | Normalized grid data from various input formats |
 | `PyWryGridContext` | `grid.py` | PyWry-specific context for grid rendering |
-| `AGGridModel` | `grid.py` | Base model with camelCase serialization |
+
+### Plotly Config Classes
+
+| Class | File | Purpose |
+|-------|------|---------|
+| `PlotlyConfig` | `plotly_config.py` | Top-level Plotly configuration (responsiveness, modebar, etc.) |
+| `ModeBarButton` | `plotly_config.py` | Custom modebar button definition |
+| `ModeBarConfig` | `plotly_config.py` | Modebar configuration container |
+| `SvgIcon` | `plotly_config.py` | Custom SVG icon for modebar buttons |
+| `StandardButton` | `plotly_config.py` | Enum of standard Plotly modebar button names |
+| `PlotlyIconName` | `plotly_config.py` | Enum of built-in Plotly icon names |
+| `DownloadImageButton` | `plotly_config.py` | Pre-built download image button |
+| `ResetAxesButton` | `plotly_config.py` | Pre-built reset axes button |
+| `ToggleGridButton` | `plotly_config.py` | Pre-built toggle grid button |
+
+### State Mixin Classes
+
+| Class | File | Purpose |
+|-------|------|---------|
+| `EmittingWidget` | `state_mixins.py` | Abstract base with `emit()` method |
+| `GridStateMixin` | `state_mixins.py` | AG Grid state management methods |
+| `PlotlyStateMixin` | `state_mixins.py` | Plotly state management methods |
+| `ToolbarStateMixin` | `state_mixins.py` | Toolbar state management methods |
 
 ### Configuration Classes
 
@@ -230,7 +279,7 @@ pywry/
 | `PyWrySettings` | `config.py` | Root settings composing all subsettings |
 | `SecuritySettings` | `config.py` | CSP with factory methods (permissive, strict, localhost) |
 | `ThemeSettings` | `config.py` | External CSS file for custom styling |
-| `ServerSettings` | `config.py` | Inline FastAPI/uvicorn server settings |
+| `ServerSettings` | `config.py` | Inline FastAPI/uvicorn server settings (host, port, SSL, CORS) |
 | `WindowSettings` | `config.py` | Default window properties |
 | `TimeoutSettings` | `config.py` | Timeout values |
 | `HotReloadSettings` | `config.py` | Hot reload behavior |
@@ -244,8 +293,10 @@ pywry/
 | Enum | File | Values |
 |------|------|--------|
 | `ThemeMode` | `models.py` | `LIGHT`, `DARK`, `SYSTEM` |
-| `WindowMode` | `models.py` | `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK` |
+| `WindowMode` | `models.py` | `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER` |
 | `NotebookEnvironment` | `notebook.py` | `NONE`, `COLAB`, `KAGGLE`, `AZURE`, `VSCODE`, `NTERACT`, `COCALC`, `DATABRICKS`, `JUPYTERLAB`, `JUPYTER_NOTEBOOK`, `IPYTHON_TERMINAL`, `REMOTE_JUPYTER` |
+| `StandardButton` | `plotly_config.py` | Standard Plotly modebar button names |
+| `PlotlyIconName` | `plotly_config.py` | Built-in Plotly icon names |
 
 ---
 
@@ -349,6 +400,149 @@ class PyWrySettings(BaseSettings):
     )
 ```
 
+### 5. Mixin Pattern
+
+State management is implemented via mixins that can be composed onto different widget classes. This eliminates code duplication across `PyWry`, `InlineWidget`, `PyWryAgGridWidget`, and `PyWryPlotlyWidget`.
+
+```python
+# state_mixins.py
+class GridStateMixin:
+    """Mixin providing AG Grid state management methods."""
+    
+    def emit(self, event_type: str, data: dict[str, Any]) -> None:
+        raise NotImplementedError("Must implement emit()")
+    
+    def update_data(self, data: list[dict], strategy: str = "set", grid_id: str | None = None) -> None:
+        self.emit("grid:update_data", {"data": data, "strategy": strategy, "gridId": grid_id})
+
+class PlotlyStateMixin:
+    """Mixin providing Plotly state management methods."""
+    
+    def update_layout(self, layout: dict, chart_id: str | None = None) -> None:
+        self.emit("plotly:update_layout", {"layout": layout, "chartId": chart_id})
+
+class ToolbarStateMixin:
+    """Mixin providing toolbar state management methods."""
+    
+    def set_toolbar_value(self, component_id: str, value: Any) -> None:
+        self.emit("toolbar:set_value", {"componentId": component_id, "value": value})
+```
+
+**Mixin usage:**
+
+```python
+# app.py - PyWry inherits all three
+class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
+    def emit(self, event_type, data, label=None):
+        # Implements emit for native windows
+        ...
+
+# widget.py - Specialized widgets inherit relevant mixins
+class PyWryAgGridWidget(GridStateMixin, ToolbarStateMixin, PyWryWidget):
+    def emit(self, event_type, data):
+        # Implements emit for anywidget
+        ...
+```
+
+### 6. ID Assignment Architecture
+
+PyWry uses hierarchical IDs for event routing:
+
+| ID Level | Scope | Example |
+|----------|-------|---------|
+| `label` | Window | `"main"`, `"settings_window"` |
+| `widgetId` | Widget instance | `"widget_abc123"` |
+| `gridId` | AG Grid instance | `"grid_def456"` |
+| `chartId` | Plotly chart | `"chart_ghi789"` |
+| `componentId` | Toolbar component | `"widget_1"`, `"widget_2"` |
+
+**ID generation:**
+
+```python
+# templates.py
+def _generate_id(prefix: str = "widget") -> str:
+    return f"{prefix}_{uuid.uuid4().hex[:8]}"
+
+# Grid ID from template
+grid_id = context.grid_id or f"grid_{uuid.uuid4().hex[:8]}"
+
+# Chart ID from template  
+chart_id = context.chart_id or f"chart_{uuid.uuid4().hex[:8]}"
+```
+
+**Event routing with widget_type:**
+
+Events now include `widget_type` for compound ID matching:
+
+```javascript
+// AG Grid event
+window.pywry.emit('grid:cell_click', {
+    widget_type: 'grid',
+    gridId: 'grid_abc123',
+    rowIndex: 5,
+    value: 'test'
+});
+
+// Plotly event
+window.pywry.emit('plotly:click', {
+    widget_type: 'chart', 
+    chartId: 'chart_def456',
+    points: [...]
+});
+```
+
+Python handlers can filter by widget type:
+
+```python
+# Handle all grid events
+app.on_grid("grid:cell_click", handler)
+
+# Handle specific chart
+app.on_chart("plotly:click", handler, chart_id="chart_def456")
+
+# Handle all toolbar events
+app.on_toolbar("*", handler)
+```
+
+### 7. JavaScript Registries
+
+Global registries track all widget instances for state management:
+
+```javascript
+// aggrid-defaults.js
+window.__PYWRY_GRIDS__ = window.__PYWRY_GRIDS__ || {};
+
+// Register grid
+window.__PYWRY_GRIDS__[gridId] = {
+    api: gridApi,
+    div: gridDiv,
+    saveState: function() { ... },
+    restoreState: function(state) { ... }
+};
+
+// Access grid by ID
+var grid = window.PYWRY_AGGRID_GET_GRID("grid_abc123");
+grid.api.refreshCells();
+```
+
+```javascript
+// plotly-defaults.js
+window.__PYWRY_CHARTS__ = window.__PYWRY_CHARTS__ || {};
+
+// Register chart
+window.__PYWRY_CHARTS__[chartId] = plotDiv;
+
+// Access chart by ID
+var chart = window.__PYWRY_CHARTS__["chart_def456"];
+Plotly.relayout(chart, { title: "Updated Title" });
+```
+
+**Registry lifecycle:**
+1. Widget created → registered in `__PYWRY_GRIDS__` / `__PYWRY_CHARTS__`
+2. Events include ID for routing to correct Python callback
+3. Python can send targeted updates using widget ID
+4. Widget destroyed → removed from registry
+
 ---
 
 ## Event System
@@ -374,7 +568,11 @@ app.on("plotly:click", handle_plotly_click)
 
 ### Event Validation
 
-Regex pattern in `models.py`: `^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*$`
+Regex pattern in `models.py`: `^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*(:[a-zA-Z0-9_-]+)?$`
+
+This Supports:
+- Simple namespaced events: `plotly:click`
+- Compound ID events: `plotly:click:chart_123`
 
 **Reserved namespaces:**
 - `pywry` - System events
@@ -512,17 +710,30 @@ app.show(
 )
 ```
 
-#### Supported Toolbar Item Types
+#### Toolbar Item Types
 
-| Type | Properties | Event Payload |
-|------|------------|---------------|
-| `Button` | `label`, `event`, `data`, `style`, `description` | `data` dict |
-| `Select` | `label`, `event`, `options`, `selected` | `{value: string}` |
-| `MultiSelect` | `label`, `event`, `options`, `selected` | `{values: string[]}` |
-| `TextInput` | `label`, `event`, `value`, `placeholder`, `debounce` | `{value: string}` |
-| `NumberInput` | `label`, `event`, `value`, `min`, `max`, `step` | `{value: number}` |
-| `DateInput` | `label`, `event`, `value`, `min`, `max` | `{value: string}` |
-| `RangeInput` | `label`, `event`, `value`, `min`, `max`, `step`, `show_value` | `{value: number}` |
+All toolbar items share common properties:
+- `event` (str, required): Event name in `namespace:event-name` format
+- `component_id` (str, auto-generated): Unique ID for state tracking
+- `label` (str, optional): Label text displayed next to the control
+- `description` (str, optional): Tooltip text shown on hover
+- `disabled` (bool, default=False): Whether the control is disabled
+- `style` (str, optional): Inline CSS styles
+
+| Type | Key Properties | Event Payload |
+|------|----------------|---------------|
+| `Button` | `data` (dict) | The `data` dict or `{}` |
+| `Select` | `options` (list[Option]), `selected` (str) | `{value: string}` |
+| `MultiSelect` | `options` (list[Option]), `selected` (list[str]) | `{values: string[]}` |
+| `TextInput` | `value`, `placeholder`, `debounce` (ms) | `{value: string}` |
+| `NumberInput` | `value`, `min`, `max`, `step` | `{value: number}` |
+| `DateInput` | `value` (YYYY-MM-DD), `min`, `max` | `{value: string}` |
+| `SliderInput` | `value`, `min`, `max`, `step`, `show_value` | `{value: number}` |
+| `RangeInput` | `start`, `end`, `min`, `max`, `step`, `show_value` | `{start: number, end: number}` |
+
+**SliderInput vs RangeInput:**
+- `SliderInput`: Single handle slider for one value
+- `RangeInput`: Dual handle selector for defining a min/max range
 
 ### Inline Notebook Usage
 
@@ -740,21 +951,29 @@ PYWRY_HEADLESS=1 pytest tests/
 
 ```
 tests/
-├── conftest.py           # Shared fixtures
-├── test_assets.py        # Bundled asset tests
-├── test_asset_loader.py  # Asset loader tests
-├── test_cli.py           # CLI tests
-├── test_config.py        # Configuration tests
-├── test_csp.py           # CSP tests
-├── test_e2e.py           # End-to-end window tests
-├── test_inline_e2e.py    # Inline/FastAPI server tests
-├── test_integration.py   # Integration tests
-├── test_models.py        # Model validation tests
-├── test_scripts.py       # JavaScript bridge tests
-├── test_server_config.py # Server configuration tests
-├── test_tauri_plugins.py # Tauri plugin integration tests (dialog, fs)
-├── test_templates.py     # HTML template tests
-└── test_window_modes.py  # Window mode tests
+├── conftest.py             # Shared fixtures
+├── test_assets.py          # Bundled asset tests
+├── test_asset_loader.py    # Asset loader tests
+├── test_browser_mode_e2e.py # Browser mode E2E tests
+├── test_cli.py             # CLI tests
+├── test_config.py          # Configuration tests
+├── test_csp.py             # CSP tests
+├── test_e2e.py             # End-to-end window tests
+├── test_grid.py            # AG Grid model tests
+├── test_hot_reload.py      # Hot reload tests
+├── test_inline_e2e.py      # Inline/FastAPI server tests
+├── test_inline_ssl.py      # SSL/TLS inline server tests
+├── test_integration.py     # Integration tests
+├── test_models.py          # Model validation tests
+├── test_plotly_config.py   # Plotly config model tests
+├── test_scripts.py         # JavaScript bridge tests
+├── test_server_config.py   # Server configuration tests
+├── test_state_mixins.py    # State mixin tests
+├── test_tauri_plugins.py   # Tauri plugin integration tests (dialog, fs)
+├── test_templates.py       # HTML template tests
+├── test_toolbar.py         # Toolbar model tests
+├── test_watcher.py         # File watcher tests
+└── test_window_modes.py    # Window mode tests
 ```
 
 ### Key Fixtures (conftest.py)
@@ -806,43 +1025,6 @@ class TestWindowConfig:
         config = WindowConfig(width=width, height=height)
         assert config.width == width
         assert config.height == height
-```
-
----
-
-## CI/CD
-
-### GitHub Actions Workflows
-
-**test_pywry.yml** - Runs on push/PR:
-- **Lint job**: Ruff check, Ruff format, Mypy
-- **Test job**: Matrix across OS × Python versions
-  - Ubuntu, Windows, macOS
-  - Python 3.10, 3.11, 3.12, 3.13, 3.14
-- Linux uses Xvfb for headless display
-
-**publish_pywry.yml** - Release publishing:
-- Builds sdist and wheels for all platforms
-- Includes ARM builds (ubuntu-24.04-arm, windows-11-arm, macos-latest)
-- Publishes to PyPI
-
-### CI Environment Variables
-
-```yaml
-env:
-  PYWRY_HEADLESS: "1"  # Hide windows during tests
-```
-
-### Linux CI Setup
-
-```yaml
-- name: Install X11 dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y xvfb libwebkit2gtk-4.1-dev
-
-- name: Run tests
-  run: xvfb-run pytest tests/ -v
 ```
 
 ---
@@ -1006,18 +1188,38 @@ csp = SecuritySettings(
 
 ## Bundled Assets
 
-Located in `pywry/frontend/assets/`:
+### Frontend Assets (`pywry/frontend/assets/`)
 
 | File | Description |
 |------|-------------|
 | `plotly-3.3.1.js.gz` | Compressed Plotly.js full bundle |
-| `plotly-templates.js` | Plotly templates (plotly_dark, plotly_white, ggplot2, seaborn, simple_white, plotly, presentation, xgridoff, ygridoff, gridon) |
-| `plotly-widget.js` | Plotly anywidget render code |
-| `ag-grid-community-35.0.0.min.js.gz` | Compressed AG Grid |
+| `ag-grid-community-35.0.0.min.js.gz` | Compressed AG Grid Community |
 | `ag-grid-35.0.0.css.gz` | AG Grid base CSS |
-| `ag-theme-*.css.gz` | Theme CSS files (quartz, alpine, balham, material × light/dark) |
-| `pywry.css` | PyWry CSS variables and classes |
-| `PyWry.png`, `icon.*` | Icons |
+| `ag-theme-quartz-dark-35.0.0.css.gz` | Quartz dark theme |
+| `ag-theme-quartz-light-35.0.0.css.gz` | Quartz light theme |
+| `ag-theme-alpine-dark-35.0.0.css.gz` | Alpine dark theme |
+| `ag-theme-alpine-light-35.0.0.css.gz` | Alpine light theme |
+| `ag-theme-balham-dark-35.0.0.css.gz` | Balham dark theme |
+| `ag-theme-balham-light-35.0.0.css.gz` | Balham light theme |
+| `ag-theme-material-dark-35.0.0.css.gz` | Material dark theme |
+| `ag-theme-material-light-35.0.0.css.gz` | Material light theme |
+| `PyWry.png`, `icon.ico`, `icon.icns`, `icon.png` | App icons |
+
+### Frontend Source (`pywry/frontend/src/`)
+
+| File | Description |
+|------|-------------|
+| `main.js` | Main initialization and event bridge setup |
+| `aggrid-defaults.js` | AG Grid setup, registries, event handling (emits `gridId` in all events) |
+| `plotly-defaults.js` | Plotly setup, chart registries, event handling (emits `chartId` in all events) |
+| `plotly-templates.js` | Bundled Plotly templates (plotly_dark, plotly_white, ggplot2, seaborn, etc.) |
+| `plotly-widget.js` | Plotly anywidget render/initialize code (emits `chartId` in events) |
+
+### Frontend Style (`pywry/frontend/style/`)
+
+| File | Description |
+|------|-------------|
+| `pywry.css` | Core PyWry CSS with variables, toolbar, layout classes |
 
 ---
 
@@ -1170,6 +1372,7 @@ app.show_dataframe(df, title="My Table")
 - `uvicorn >= 0.40.0` - ASGI server
 - `watchdog >= 3.0.0` - File monitoring
 - `websockets >= 15.0.1` - WebSocket support
+- `requests >= 2.32.5` - HTTP requests
 
 ### Optional (notebook extra)
 
@@ -1190,15 +1393,26 @@ app.show_dataframe(df, title="My Table")
 |------|-------|
 | Public API | `pywry/__init__.py` |
 | Main class | `pywry/app.py` |
-| Inline server | `pywry/inline.py` |
+| Inline server + InlineWidget | `pywry/inline.py` |
 | anywidget widgets | `pywry/widget.py` |
 | Notebook detection | `pywry/notebook.py` |
-| All models | `pywry/models.py` |
-| All config | `pywry/config.py` |
+| Pydantic models (WindowConfig, HtmlContent) | `pywry/models.py` |
+| Configuration system | `pywry/config.py` |
+| Toolbar components | `pywry/toolbar.py` |
+| AG Grid models | `pywry/grid.py` |
+| Plotly config models | `pywry/plotly_config.py` |
+| State mixins | `pywry/state_mixins.py` |
 | JS bridge code | `pywry/scripts.py` |
 | HTML assembly | `pywry/templates.py` |
 | Logging utilities | `pywry/log.py` |
+| CLI commands | `pywry/cli.py` |
+| Runtime/IPC | `pywry/runtime.py` |
+| Window modes | `pywry/window_manager/modes/` |
 | Bundled assets | `pywry/frontend/assets/` |
+| JS source files | `pywry/frontend/src/` |
+| CSS styles | `pywry/frontend/style/` |
+| Tauri capabilities | `pywry/capabilities/default.toml` |
 | Test fixtures | `tests/conftest.py` |
-| CI workflows | `.github/workflows/` |
 | Style config | `ruff.toml`, `.pylintrc` |
+| Type checking config | `pyproject.toml [tool.mypy]` |
+| Package config | `pyproject.toml` |

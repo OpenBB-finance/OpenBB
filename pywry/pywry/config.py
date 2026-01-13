@@ -191,11 +191,11 @@ class SecuritySettings(BaseSettings):
 class ThemeSettings(BaseSettings):
     """Theme and styling settings.
 
-    Allows specifying an external CSS file to override or extend the default
-    pywry.css styling. The CSS file path should be absolute or relative to
-    the working directory.
+    Controls the visual appearance of PyWry windows and widgets.
+    The mode setting determines light/dark theme behavior.
 
     Environment prefix: PYWRY_THEME__
+    Example: PYWRY_THEME__MODE=dark
     Example: PYWRY_THEME__CSS_FILE=/path/to/custom.css
     """
 
@@ -204,6 +204,10 @@ class ThemeSettings(BaseSettings):
         extra="ignore",
     )
 
+    mode: Literal["system", "dark", "light"] = Field(
+        default="system",
+        description="Theme mode: 'system' follows browser/OS preference, 'dark' or 'light' forces theme",
+    )
     css_file: str | None = Field(
         default=None,
         description="Path to external CSS file for custom styling",
@@ -282,6 +286,9 @@ class LogSettings(BaseSettings):
 class WindowSettings(BaseSettings):
     """Default window settings.
 
+    These settings correspond to WindowConfig fields and are used
+    when creating native windows via the window manager.
+
     Environment prefix: PYWRY_WINDOW__
     Example: PYWRY_WINDOW__TITLE="My App"
     """
@@ -291,17 +298,32 @@ class WindowSettings(BaseSettings):
         extra="ignore",
     )
 
+    # Window basics
     title: str = "PyWry"
-    width: int = Field(default=1280, ge=200)
-    height: int = Field(default=720, ge=150)
-    min_width: int = Field(default=400, ge=100)
-    min_height: int = Field(default=300, ge=100)
-    resizable: bool = True
-    decorations: bool = True
-    center: bool = True
-    always_on_top: bool = False
-    devtools: bool = False
-    toolbar_position: Literal["top", "bottom", "left", "right", "inside", "hidden"] = "top"
+    width: int = Field(default=1280, ge=200, description="Window width in pixels")
+    height: int = Field(default=720, ge=150, description="Window height in pixels")
+    min_width: int = Field(default=400, ge=100, description="Minimum window width")
+    min_height: int = Field(default=300, ge=100, description="Minimum window height")
+
+    # Window behavior
+    center: bool = Field(default=True, description="Center window on screen")
+    resizable: bool = Field(default=True, description="Allow window resizing")
+    decorations: bool = Field(
+        default=True, description="Show window decorations (title bar, borders)"
+    )
+    always_on_top: bool = Field(default=False, description="Keep window above others")
+    devtools: bool = Field(default=False, description="Open developer tools on start")
+    allow_network: bool = Field(default=True, description="Allow network requests")
+
+    # Library integration
+    enable_plotly: bool = Field(default=False, description="Include Plotly.js in window")
+    enable_aggrid: bool = Field(default=False, description="Include AG Grid in window")
+    plotly_theme: Literal[
+        "plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white"
+    ] = Field(default="plotly_dark", description="Default Plotly theme")
+    aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = Field(
+        default="alpine", description="Default AG Grid theme"
+    )
 
 
 class HotReloadSettings(BaseSettings):
@@ -351,6 +373,10 @@ class ServerSettings(BaseSettings):
     # Core server settings
     host: str = Field(default="127.0.0.1", description="Server bind address")
     port: int = Field(default=8765, ge=1, le=65535, description="Server port")
+    widget_prefix: str = Field(
+        default="/widget",
+        description="URL prefix for widget routes (e.g., '/widget' -> /widget/{id})",
+    )
     auto_start: bool = Field(default=True, description="Auto-start server when needed")
     force_notebook: bool = Field(
         default=False,

@@ -3,12 +3,13 @@
 Tests cover:
 - Option model
 - Base ToolbarItem functionality
-- Individual item types (Button, Select, MultiSelect, TextInput, NumberInput, DateInput, RangeInput)
+- Individual item types (Button, Select, MultiSelect, TextInput, NumberInput, DateInput, SliderInput, RangeInput)
 - Toolbar container
 - Event validation
 - HTML generation
 - Helper functions
 """
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -25,6 +26,7 @@ from pywry.toolbar import (
     Option,
     RangeInput,
     Select,
+    SliderInput,
     TextInput,
     Toolbar,
     build_toolbar_html,
@@ -360,17 +362,17 @@ class TestSelect:
         assert sel.selected == "B"
 
     def test_html_contains_select_tag(self) -> None:
-        """Test HTML contains select element."""
+        """Test HTML contains dropdown element (custom styled select)."""
         sel = Select(event="view:change", options=[Option(label="A")])
         html = sel.build_html()
-        assert "<select" in html
-        assert "</select>" in html
+        assert 'class="pywry-dropdown"' in html
+        assert "pywry-dropdown-menu" in html
 
     def test_html_contains_options(self) -> None:
         """Test HTML contains option elements."""
         sel = Select(event="view:change", options=[Option(label="Opt1"), Option(label="Opt2")])
         html = sel.build_html()
-        assert "<option" in html
+        assert "pywry-dropdown-option" in html
         assert "Opt1" in html
         assert "Opt2" in html
 
@@ -382,7 +384,8 @@ class TestSelect:
             selected="B",
         )
         html = sel.build_html()
-        assert 'value="B" selected' in html
+        assert 'data-value="B"' in html
+        assert "pywry-selected" in html
 
     def test_html_with_label(self) -> None:
         """Test HTML includes label wrapper."""
@@ -392,10 +395,10 @@ class TestSelect:
         assert "pywry-input-label" in html
 
     def test_html_class_pywry_select(self) -> None:
-        """Test HTML has pywry-select class."""
+        """Test HTML has pywry-dropdown class (styled select)."""
         sel = Select(event="view:change", options=[Option(label="A")])
         html = sel.build_html()
-        assert 'class="pywry-select"' in html
+        assert 'class="pywry-dropdown"' in html
 
 
 # =============================================================================
@@ -592,12 +595,62 @@ class TestDateInput:
 
 
 # =============================================================================
-# RangeInput Tests
+# SliderInput Tests (single-value slider, formerly RangeInput)
+# =============================================================================
+
+
+class TestSliderInput:
+    """Test the SliderInput model (single-value slider)."""
+
+    def test_type_is_slider(self) -> None:
+        """Test type field is 'slider'."""
+        si = SliderInput(event="zoom:level")
+        assert si.type == "slider"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        si = SliderInput(event="zoom:level")
+        assert si.value == 50
+        assert si.min == 0
+        assert si.max == 100
+        assert si.step == 1
+        assert si.show_value is True
+
+    def test_custom_range(self) -> None:
+        """Test custom slider values."""
+        si = SliderInput(event="zoom:level", value=25, min=10, max=50, step=5)
+        assert si.value == 25
+        assert si.min == 10
+        assert si.max == 50
+        assert si.step == 5
+
+    def test_html_contains_range_input(self) -> None:
+        """Test HTML contains range input element."""
+        si = SliderInput(event="zoom:level")
+        html = si.build_html()
+        assert 'type="range"' in html
+
+    def test_html_shows_value_display(self) -> None:
+        """Test HTML shows value display span."""
+        si = SliderInput(event="zoom:level", value=75, show_value=True)
+        html = si.build_html()
+        assert 'class="pywry-range-value"' in html
+        assert ">75<" in html
+
+    def test_html_hides_value_display(self) -> None:
+        """Test HTML hides value when show_value=False."""
+        si = SliderInput(event="zoom:level", show_value=False)
+        html = si.build_html()
+        assert "pywry-range-value" not in html
+
+
+# =============================================================================
+# RangeInput Tests (dual-handle range selector)
 # =============================================================================
 
 
 class TestRangeInput:
-    """Test the RangeInput model."""
+    """Test the RangeInput model (dual-handle range selector)."""
 
     def test_type_is_range(self) -> None:
         """Test type field is 'range'."""
@@ -607,7 +660,8 @@ class TestRangeInput:
     def test_default_values(self) -> None:
         """Test default values."""
         ri = RangeInput(event="zoom:level")
-        assert ri.value == 50
+        assert ri.start == 0
+        assert ri.end == 100
         assert ri.min == 0
         assert ri.max == 100
         assert ri.step == 1
@@ -615,23 +669,31 @@ class TestRangeInput:
 
     def test_custom_range(self) -> None:
         """Test custom range values."""
-        ri = RangeInput(event="zoom:level", value=25, min=10, max=50, step=5)
-        assert ri.value == 25
-        assert ri.min == 10
-        assert ri.max == 50
-        assert ri.step == 5
+        ri = RangeInput(event="filter:price", start=100, end=500, min=0, max=1000, step=10)
+        assert ri.start == 100
+        assert ri.end == 500
+        assert ri.min == 0
+        assert ri.max == 1000
+        assert ri.step == 10
 
-    def test_html_contains_range_input(self) -> None:
-        """Test HTML contains range input."""
+    def test_html_contains_two_range_inputs(self) -> None:
+        """Test HTML contains two range input elements for start and end."""
         ri = RangeInput(event="zoom:level")
         html = ri.build_html()
-        assert 'type="range"' in html
+        # Should have two range inputs
+        assert html.count('type="range"') == 2
+        # Should have the range group container
+        assert 'class="pywry-range-group"' in html
+        # Should have the separator
+        assert 'class="pywry-range-separator"' in html
 
-    def test_html_shows_value_display(self) -> None:
-        """Test HTML shows value display span."""
-        ri = RangeInput(event="zoom:level", value=75, show_value=True)
+    def test_html_shows_both_value_displays(self) -> None:
+        """Test HTML shows value display spans for both sliders."""
+        ri = RangeInput(event="zoom:level", start=25, end=75, show_value=True)
         html = ri.build_html()
-        assert 'class="pywry-range-value"' in html
+        # Should have two value displays
+        assert html.count('class="pywry-range-value"') == 2
+        assert ">25<" in html
         assert ">75<" in html
 
     def test_html_hides_value_display(self) -> None:
@@ -639,6 +701,13 @@ class TestRangeInput:
         ri = RangeInput(event="zoom:level", show_value=False)
         html = ri.build_html()
         assert "pywry-range-value" not in html
+
+    def test_html_contains_start_and_end_ids(self) -> None:
+        """Test HTML contains proper IDs for start and end sliders."""
+        ri = RangeInput(event="zoom:level")
+        html = ri.build_html()
+        assert f'id="{ri.component_id}-start"' in html
+        assert f'id="{ri.component_id}-end"' in html
 
 
 # =============================================================================
@@ -897,7 +966,16 @@ class TestAnyToolbarItemDiscriminator:
     def test_all_types_have_unique_type_field(self) -> None:
         """Test all item types have unique type field values."""
         types = set()
-        for cls in [Button, Select, MultiSelect, TextInput, NumberInput, DateInput, RangeInput]:
+        for cls in [
+            Button,
+            Select,
+            MultiSelect,
+            TextInput,
+            NumberInput,
+            DateInput,
+            SliderInput,
+            RangeInput,
+        ]:
             # Create instance with minimal required fields
             if cls == Button:
                 inst = cls(label="Test", event="toolbar:click")

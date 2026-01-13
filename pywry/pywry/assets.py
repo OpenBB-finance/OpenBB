@@ -186,6 +186,27 @@ def get_openbb_icon() -> bytes:
 
 
 @lru_cache(maxsize=1)
+def get_plotly_defaults_js() -> str:
+    """Get the PyWry Plotly defaults JavaScript.
+
+    This is the SINGLE SOURCE OF TRUTH for all Plotly chart configuration
+    and event handling. All rendering paths (notebook, inline, window)
+    must include this.
+
+    Returns
+    -------
+    str
+        The Plotly defaults JavaScript content.
+    """
+    js_file = SRC_DIR / "plotly-defaults.js"
+    if js_file.exists():
+        debug("Loading Plotly defaults JS from src")
+        return js_file.read_text(encoding="utf-8")
+    debug("Plotly defaults JS not found")
+    return ""
+
+
+@lru_cache(maxsize=1)
 def get_aggrid_defaults_js() -> str:
     """Get the PyWry AG Grid defaults JavaScript.
 

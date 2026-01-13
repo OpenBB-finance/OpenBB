@@ -136,6 +136,10 @@ class WindowLifecycle:
         resources = self._windows.get(label)
         return resources is not None and not resources.is_destroyed
 
+    def get_active_windows(self) -> list[str]:
+        """Get labels of all tracked active windows."""
+        return [label for label, res in self._windows.items() if not res.is_destroyed]
+
     def set_content(self, label: str, html: str, theme: str = "dark") -> bool:
         """Set the HTML content for a window via IPC.
 

@@ -319,6 +319,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     height: int = 500,
     port: int | None = None,
     toolbars: list[Any] | None = None,
+    force_iframe: bool = False,
 ) -> Any:
     """Create a Plotly widget using the best available backend.
 
@@ -346,16 +347,22 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
         List of toolbars. Each can be a Toolbar model or dict with:
         - position: "top", "bottom", "left", "right", "inside"
         - items: list of item configs (Button, Select, etc.)
+    force_iframe : bool, optional
+        If True, force use of InlineWidget instead of anywidget.
+        Required for BROWSER mode which needs open_in_browser() method.
+        Default: False.
 
     Returns
     -------
     BaseWidget
         Widget instance implementing BaseWidget protocol.
     """
-    # Use anywidget when available for better performance
+    # Use anywidget when available for better performance (unless forced to use IFrame)
+    # In headless mode (PYWRY_HEADLESS=1), always use InlineWidget for server deployments
+    from .runtime import is_headless
     from .widget import HAS_ANYWIDGET
 
-    use_anywidget = HAS_ANYWIDGET
+    use_anywidget = HAS_ANYWIDGET and not force_iframe and not is_headless()
     if use_anywidget:
         from . import inline
         from .templates import ThemeMode
@@ -391,6 +398,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
         height=height,
         port=port or 8765,
         widget_id=widget_id,
+        browser_only=force_iframe,  # Skip IPython requirement for BROWSER mode
     )
 
 
@@ -455,6 +463,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
     header_html: str = "",
     toolbars: list[Any] | None = None,
     port: int | None = None,
+    force_iframe: bool = False,
 ) -> Any:
     """Create a DataFrame/AG Grid widget using the best available backend.
 
@@ -486,6 +495,10 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         - items: list of item configs (Button, Select, etc.)
     port : int, optional
         Server port (only for InlineWidget fallback).
+    force_iframe : bool, optional
+        If True, force use of InlineWidget instead of anywidget.
+        Required for BROWSER mode which needs open_in_browser() method.
+        Default: False.
 
     Returns
     -------
@@ -494,14 +507,16 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
     """
     from . import inline
     from .grid import to_js_grid_config
+    from .runtime import is_headless
     from .templates import ThemeMode
 
     mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
-    # Use anywidget when available for better performance
+    # Use anywidget when available for better performance (unless forced to use IFrame)
+    # In headless mode (PYWRY_HEADLESS=1), always use InlineWidget for server deployments
     from .widget import HAS_ANYWIDGET
 
-    use_anywidget = HAS_ANYWIDGET
+    use_anywidget = HAS_ANYWIDGET and not force_iframe and not is_headless()
 
     if use_anywidget:
         import json
@@ -517,7 +532,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         # Use new multi-toolbar wrapping
         content_html = _wrap_content_with_toolbars(grid_html, toolbars, mode)
 
-        # If header_html exists and wasn't toolbar, prepend (legacy behavior)
+        # If header_html exists and toolbars not used, wrap with header
         if header_html and not toolbars:
             content_html = f"<div style='display: flex; flex-direction: column; height: 100%; width: 100%;'>{header_html}{grid_html}</div>"
 
@@ -548,6 +563,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         height=height,
         port=port or 8765,
         widget_id=widget_id,
+        browser_only=force_iframe,  # Skip IPython requirement for BROWSER mode
     )
 
     # Register grid_export_csv handler for IFrame path (mirrors anywidget behavior)

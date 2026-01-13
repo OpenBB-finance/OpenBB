@@ -28,8 +28,10 @@ from .models import (
 )
 from .notebook import should_use_inline_rendering
 from .runtime import refresh_window as runtime_refresh_window
-from .templates import build_html
+from .state_mixins import GridStateMixin, PlotlyStateMixin, ToolbarStateMixin
+from .templates import build_html, build_plotly_init_script
 from .window_manager import (
+    BrowserMode,
     MultiWindowMode,
     NewWindowMode,
     SingleWindowMode,
@@ -39,11 +41,12 @@ from .window_manager import (
 
 
 if TYPE_CHECKING:
+    from .toolbar import Toolbar
     from .widget_protocol import BaseWidget
     from .window_manager import WindowLifecycle
 
 
-class PyWry:
+class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     """Main PyWry application for displaying content in native windows.
 
     Supports three window modes:
@@ -86,6 +89,7 @@ class PyWry:
         hot_reload : bool, optional
             Enable hot reload for CSS/JS files.
         """
+        super().__init__()
         self._mode_enum = mode
         self._theme = theme
         self._default_config = WindowConfig(
@@ -137,6 +141,8 @@ class PyWry:
             return NewWindowMode()
         if mode == WindowMode.SINGLE_WINDOW:
             return SingleWindowMode()
+        if mode == WindowMode.BROWSER:
+            return BrowserMode()
         # MULTI_WINDOW
         return MultiWindowMode()
 
@@ -169,7 +175,7 @@ class PyWry:
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         label: str | None = None,
         watch: bool | None = None,
-        toolbars: list[dict[str, Any]] | None = None,
+        toolbars: list[dict[str, Any] | Toolbar] | None = None,
     ) -> str | BaseWidget:
         """Show content in a window.
 
@@ -207,8 +213,11 @@ class PyWry:
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Check if we're in a notebook environment
-        if should_use_inline_rendering():
+        # Check if we're in BROWSER mode - use inline server but open in system browser
+        is_browser_mode = isinstance(self._mode, BrowserMode)
+
+        # Check if we're in a notebook environment OR explicit BROWSER mode
+        if should_use_inline_rendering() or is_browser_mode:
             from . import inline as pywry_inline
 
             # Convert HtmlContent to string if needed
@@ -233,6 +242,7 @@ class PyWry:
                 include_aggrid=include_aggrid,
                 aggrid_theme=aggrid_theme,
                 toolbars=toolbars,
+                open_browser=is_browser_mode,  # Open in browser for BROWSER mode
             )
 
         # Build config
@@ -308,7 +318,7 @@ class PyWry:
         # Show in window (pass label for multi-window mode)
         return self._mode.show(config, html, callbacks, target_label)
 
-    def show_plotly(  # noqa: PLR0912  # pylint: disable=too-many-branches
+    def show_plotly(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches
         self,
         figure: Any,
         title: str | None = None,
@@ -320,7 +330,8 @@ class PyWry:
         on_click: Any = None,
         on_hover: Any = None,
         on_select: Any = None,
-        toolbars: list[dict[str, Any]] | None = None,
+        toolbars: list[dict[str, Any] | Toolbar] | None = None,
+        config: Any = None,
     ) -> str | BaseWidget:
         """Show a Plotly figure.
 
@@ -351,14 +362,19 @@ class PyWry:
             Selection callback for notebook mode.
         toolbars : list[dict], optional
             List of toolbar configs. Each toolbar has 'position' and 'items' keys.
+        config : PlotlyConfig or dict, optional
+            Plotly.js configuration (modebar, responsive, etc.).
 
         Returns
         -------
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Check if we're in a notebook environment
-        if should_use_inline_rendering():
+        # Check if we're in BROWSER mode - use inline server but open in system browser
+        is_browser_mode = isinstance(self._mode, BrowserMode)
+
+        # Check if we're in a notebook environment OR explicit BROWSER mode
+        if should_use_inline_rendering() or is_browser_mode:
             from . import inline as pywry_inline
 
             # Map specific callbacks to generic dict for inline
@@ -370,7 +386,7 @@ class PyWry:
             if on_select and "plotly_selected" not in inline_callbacks:
                 inline_callbacks["plotly_selected"] = on_select
 
-            return pywry_inline.show_plotly(
+            widget = pywry_inline.show_plotly(
                 figure=figure,
                 title=title or "Plotly Chart",
                 width="100%",
@@ -378,95 +394,51 @@ class PyWry:
                 theme="dark" if self._theme == ThemeMode.DARK else "light",
                 callbacks=inline_callbacks,
                 toolbars=toolbars,
+                config=config,
+                open_browser=is_browser_mode,  # Open in browser for BROWSER mode
             )
 
-        plotly_template = "plotly_dark" if self._theme == ThemeMode.DARK else "plotly_white"
+            return widget
 
-        if isinstance(figure, dict):
-            fig_dict = dict(figure)  # Make a copy
+        # Generate unique chart ID
+        chart_id = f"chart_{uuid.uuid4().hex}"
+
+        # Convert figure to JSON
+        try:
+            if isinstance(figure, dict):
+                fig_dict = dict(figure)
+            elif hasattr(figure, "to_plotly_json"):
+                fig_dict = figure.to_plotly_json()
+            elif hasattr(figure, "to_dict"):
+                fig_dict = figure.to_dict()
+            else:
+                fig_dict = {"data": [], "layout": {}}
+                warn("Figure does not have to_plotly_json or to_dict method")
+
             if "layout" not in fig_dict:
                 fig_dict["layout"] = {}
-            fig_json = json.dumps(fig_dict)
-            html_content = f"""
-            <div id="plotly-chart" class="plotly-graph-div" style="height: 100%; width: 100%;"></div>
-            <script>
-                if (typeof Plotly === 'undefined') {{
-                    console.error("Plotly.js not loaded");
-                }} else {{
-                    var figData = {fig_json};
-                    var layout = figData.layout || {{}};
-                    var themeTemplate = '{plotly_template}';
-                    var templates = window.PYWRY_PLOTLY_TEMPLATES || {{}};
 
-                    // Resolve template if it's a string name
-                    if (typeof layout.template === 'string' && templates[layout.template]) {{
-                        layout.template = templates[layout.template];
-                    }} else if (!layout.template) {{
-                        // No user template - use window theme template
-                        layout.template = templates[themeTemplate] || null;
-                    }}
-
-                    figData.layout = layout;
-                    Plotly.newPlot('plotly-chart', figData.data || [], figData.layout, figData.config);
-                    // Store on the element for test verification
-                    var chartEl = document.getElementById('plotly-chart');
-                    chartEl.__pywry_theme_template__ = themeTemplate;
-                    window.__PYWRY_PLOTLY_DIV__ = chartEl;
-                    window.addEventListener('resize', function() {{
-                        Plotly.Plots.resize('plotly-chart');
-                    }});
-                }}
-            </script>
-            """
-        else:
-            # Handle Plotly Figure objects - convert to JSON spec and use same logic
-            try:
-                if hasattr(figure, "to_plotly_json"):
-                    fig_dict = figure.to_plotly_json()
-                elif hasattr(figure, "to_dict"):
-                    fig_dict = figure.to_dict()
+            # Apply PlotlyConfig if provided
+            if config is not None:
+                if hasattr(config, "model_dump"):
+                    # Pydantic model - convert to dict with camelCase aliases
+                    config_dict = config.model_dump(by_alias=True, exclude_none=True)
+                elif isinstance(config, dict):
+                    config_dict = config
                 else:
-                    # Fallback: try direct serialization
-                    fig_dict = {"data": [], "layout": {}}
-                    warn("Figure does not have to_plotly_json or to_dict method")
+                    config_dict = {}
+                fig_dict["config"] = config_dict
 
-                if "layout" not in fig_dict:
-                    fig_dict["layout"] = {}
+            # Generate HTML containing div + init script
+            html_content = build_plotly_init_script(
+                figure=fig_dict,
+                chart_id=chart_id,
+                theme=self._theme,
+            )
 
-                fig_json = json.dumps(fig_dict)
-
-                html_content = f"""
-            <div id="plotly-chart" class="plotly-graph-div" data-pywry-chart style="height: 100%; width: 100%;"></div>
-            <script>
-                if (typeof Plotly === 'undefined') {{
-                    console.error("Plotly.js not loaded");
-                }} else {{
-                    var figData = {fig_json};
-                    var layout = figData.layout || {{}};
-                    var themeTemplate = '{plotly_template}';
-                    var templates = window.PYWRY_PLOTLY_TEMPLATES || {{}};
-
-                    // Resolve template if it's a string name
-                    if (typeof layout.template === 'string' && templates[layout.template]) {{
-                        layout.template = templates[layout.template];
-                    }} else if (!layout.template) {{
-                        // No user template - use window theme template
-                        layout.template = templates[themeTemplate] || null;
-                    }}
-
-                    figData.layout = layout;
-                    Plotly.newPlot('plotly-chart', figData.data || [], figData.layout, figData.config);
-                    var chartEl = document.getElementById('plotly-chart');
-                    window.__PYWRY_PLOTLY_DIV__ = chartEl;
-                    window.addEventListener('resize', function() {{
-                        Plotly.Plots.resize('plotly-chart');
-                    }});
-                }}
-            </script>
-            """
-            except Exception as e:
-                warn(f"Failed to convert figure: {e}")
-                html_content = f"<pre>Error: {e}</pre>"
+        except Exception as e:
+            warn(f"Failed to convert figure: {e}")
+            html_content = f"<pre>Error: {e}</pre>"
 
         # Wrap in HtmlContent if inline_css provided
         content: str | HtmlContent
@@ -486,7 +458,7 @@ class PyWry:
             toolbars=toolbars,
         )
 
-    def show_dataframe(  # noqa: PLR0912  # pylint: disable=too-many-branches
+    def show_dataframe(  # pylint: disable=too-many-branches
         self,
         data: Any,
         title: str | None = None,
@@ -497,7 +469,7 @@ class PyWry:
         column_defs: list[dict[str, Any]] | None = None,
         aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
         grid_options: dict[str, Any] | None = None,
-        toolbars: list[dict[str, Any]] | None = None,
+        toolbars: list[dict[str, Any] | Toolbar] | None = None,
         inline_css: str | None = None,
         on_cell_click: Any = None,
         on_row_selected: Any = None,
@@ -547,8 +519,11 @@ class PyWry:
         str or InlineWidget
             The window label (native window) or InlineWidget (notebook).
         """
-        # Check if we're in a notebook environment
-        if should_use_inline_rendering():
+        # Check if we're in BROWSER mode - use inline server but open in system browser
+        is_browser_mode = isinstance(self._mode, BrowserMode)
+
+        # Check if we're in a notebook environment OR explicit BROWSER mode
+        if should_use_inline_rendering() or is_browser_mode:
             from . import inline as pywry_inline
 
             # Map specific callbacks to generic dict for inline
@@ -567,33 +542,24 @@ class PyWry:
                 aggrid_theme=aggrid_theme,
                 toolbars=toolbars,
                 callbacks=inline_callbacks,
+                open_browser=is_browser_mode,  # Open in browser for BROWSER mode
             )
 
-        # Convert to list of dicts if DataFrame or column-oriented dict
-        try:
-            if hasattr(data, "to_dict"):
-                row_data = data.to_dict("records")
-            elif isinstance(data, dict):
-                # Check if it's column-oriented (dict of lists) or already list of dicts
-                first_value = next(iter(data.values()), None)
-                if isinstance(first_value, (list, tuple)):
-                    keys = list(data.keys())
-                    num_rows = len(first_value)
-                    row_data = [{key: data[key][i] for key in keys} for i in range(num_rows)]
-                else:
-                    row_data = [data]
-            else:
-                row_data = list(data)
-        except (ValueError, TypeError) as e:
-            warn(f"Failed to convert data: {e}")
-            row_data = []
+        # Use unified grid config builder for column defs with type detection
+        from .grid import build_column_defs, normalize_data
 
-        # Auto-generate column defs if not provided
-        if column_defs is None and row_data:
-            column_defs = [{"field": key} for key in row_data[0]]
+        # Normalize input data (handles DataFrame, dict, list)
+        grid_data = normalize_data(data)
+        row_data = grid_data.row_data
 
-        # Convert ColDef objects to dicts for JSON serialization
-        if column_defs:
+        # Build column defs with type detection and formatters
+        if column_defs is None:
+            column_defs = build_column_defs(
+                grid_data.columns,
+                column_types=grid_data.column_types,
+            )
+        else:
+            # Convert ColDef objects to dicts for JSON serialization
             column_defs = [c.to_dict() if hasattr(c, "to_dict") else c for c in column_defs]
 
         # Build the AG Grid HTML
@@ -724,7 +690,30 @@ class PyWry:
             toolbars=toolbars,
         )
 
-    def on(self, event_type: str, handler: CallbackFunc, label: str | None = None) -> bool:
+    def emit(self, event_type: str, data: dict[str, Any], label: str | None = None) -> None:
+        """Emit an event to the JavaScript side.
+
+        Parameters
+        ----------
+        event_type : str
+            Event name.
+        data : dict
+            Event data.
+        label : str, optional
+            Window label. If None, targets all active windows.
+        """
+        labels = [label] if label else self._mode.get_labels()
+
+        for lbl in labels:
+            self.send_event(event_type, data, label=lbl)
+
+    def on(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+        widget_id: str | None = None,
+    ) -> bool:
         """Register an event handler.
 
         Parameters
@@ -733,8 +722,10 @@ class PyWry:
             Event type (namespace:event-name or * for wildcard).
         handler : CallbackFunc
             Callback function.
-        label : str or None, optional
-            Window label (required for NEW_WINDOW mode).
+        label : str, optional
+            Window label. If None, registers on all active windows.
+        widget_id : str, optional
+            Widget ID to target specific component events.
 
         Returns
         -------
@@ -742,6 +733,11 @@ class PyWry:
             True if registered successfully.
         """
         registry = get_registry()
+        # If widget_id provided, compound the event type
+        if widget_id and ":" not in event_type:
+            # e.g., "plotly_click" -> "plotly_click:my_chart_id"
+            event_type = f"{event_type}:{widget_id}"
+
         labels = self._mode.get_labels()
 
         if label:
@@ -755,6 +751,211 @@ class PyWry:
             if not registry.register(lbl, event_type, handler):
                 success = False
 
+        return success
+
+    def on_grid(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+        grid_id: str = "*",
+    ) -> bool:
+        """Register an event handler for grid events.
+
+        Convenience method that filters events to only AG Grid widgets.
+
+        Parameters
+        ----------
+        event_type : str
+            Event type (e.g., "grid:cell_click", "cell_click").
+        handler : CallbackFunc
+            Callback function.
+        label : str, optional
+            Window label. If None, registers on all active windows.
+        grid_id : str, optional
+            Grid ID to target specific grid instance (default "*" for all).
+
+        Returns
+        -------
+        bool
+            True if registered successfully.
+        """
+        registry = get_registry()
+        labels = self._mode.get_labels()
+        if label:
+            labels = [label]
+        elif not labels:
+            labels = ["main"]
+
+        success = True
+        for lbl in labels:
+            if not registry.register(
+                lbl, event_type, handler, widget_type="grid", widget_id=grid_id
+            ):
+                success = False
+        return success
+
+    def on_chart(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+        chart_id: str = "*",
+    ) -> bool:
+        """Register an event handler for chart (Plotly) events.
+
+        Convenience method that filters events to only Plotly chart widgets.
+
+        Parameters
+        ----------
+        event_type : str
+            Event type (e.g., "plotly:click", "plotly:hover").
+        handler : CallbackFunc
+            Callback function.
+        label : str, optional
+            Window label. If None, registers on all active windows.
+        chart_id : str, optional
+            Chart ID to target specific chart instance (default "*" for all).
+
+        Returns
+        -------
+        bool
+            True if registered successfully.
+        """
+        registry = get_registry()
+        labels = self._mode.get_labels()
+        if label:
+            labels = [label]
+        elif not labels:
+            labels = ["main"]
+
+        success = True
+        for lbl in labels:
+            if not registry.register(
+                lbl, event_type, handler, widget_type="chart", widget_id=chart_id
+            ):
+                success = False
+        return success
+
+    def on_toolbar(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+        toolbar_id: str = "*",
+    ) -> bool:
+        """Register an event handler for toolbar events.
+
+        Convenience method that filters events to only toolbar widgets.
+
+        Parameters
+        ----------
+        event_type : str
+            Event type (e.g., "toolbar:change", custom button events).
+        handler : CallbackFunc
+            Callback function.
+        label : str, optional
+            Window label. If None, registers on all active windows.
+        toolbar_id : str, optional
+            Toolbar ID to target specific toolbar (default "*" for all).
+
+        Returns
+        -------
+        bool
+            True if registered successfully.
+        """
+        registry = get_registry()
+        labels = self._mode.get_labels()
+        if label:
+            labels = [label]
+        elif not labels:
+            labels = ["main"]
+
+        success = True
+        for lbl in labels:
+            if not registry.register(
+                lbl, event_type, handler, widget_type="toolbar", widget_id=toolbar_id
+            ):
+                success = False
+        return success
+
+    def on_html(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+        element_id: str = "*",
+    ) -> bool:
+        """Register an event handler for HTML element events.
+
+        Convenience method that filters events to HTML content.
+
+        Parameters
+        ----------
+        event_type : str
+            Event type (e.g., custom events from HTML elements).
+        handler : CallbackFunc
+            Callback function.
+        label : str, optional
+            Window label. If None, registers on all active windows.
+        element_id : str, optional
+            HTML element ID to target specific element (default "*" for all).
+
+        Returns
+        -------
+        bool
+            True if registered successfully.
+        """
+        registry = get_registry()
+        labels = self._mode.get_labels()
+        if label:
+            labels = [label]
+        elif not labels:
+            labels = ["main"]
+
+        success = True
+        for lbl in labels:
+            if not registry.register(
+                lbl, event_type, handler, widget_type="html", widget_id=element_id
+            ):
+                success = False
+        return success
+
+    def on_window(
+        self,
+        event_type: str,
+        handler: CallbackFunc,
+        label: str | None = None,
+    ) -> bool:
+        """Register an event handler for window-level events.
+
+        Convenience method that filters events to window lifecycle events.
+
+        Parameters
+        ----------
+        event_type : str
+            Event type (e.g., "window:close", "window:resize").
+        handler : CallbackFunc
+            Callback function.
+        label : str, optional
+            Window label. If None, registers on all active windows.
+
+        Returns
+        -------
+        bool
+            True if registered successfully.
+        """
+        registry = get_registry()
+        labels = self._mode.get_labels()
+        if label:
+            labels = [label]
+        elif not labels:
+            labels = ["main"]
+
+        success = True
+        for lbl in labels:
+            if not registry.register(lbl, event_type, handler, widget_type="window", widget_id="*"):
+                success = False
         return success
 
     def send_event(
