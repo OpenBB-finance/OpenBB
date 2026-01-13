@@ -167,6 +167,9 @@ app.destroy()
 
 ## Rendering Paths
 
+<details>
+<summary>Click to expand</summary>
+
 PyWry automatically selects the appropriate rendering path based on your environment:
 
 | Environment | Rendering Path | Module | Return Type |
@@ -256,9 +259,14 @@ app.show_dataframe(df)
 
 Browser mode starts a FastAPI server and opens the widget URL in the browser. Use `pywry.inline.block()` to keep the server running after your script completes.
 
+</details>
+
 ---
 
 ## Core API
+
+<details>
+<summary>Click to expand</summary>
 
 ### Imports
 
@@ -416,9 +424,14 @@ widget.emit("app:response", {"key": "value"})
 | `disable_hot_reload()` | Disable hot reload |
 | `refresh_css(label=None)` | Hot-reload CSS without page refresh |
 
+</details>
+
 ---
 
 ## CSS Selectors and Theming
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AG Grid).
 
@@ -517,9 +530,14 @@ app.show(
 )
 ```
 
+</details>
+
 ---
 
 ## HtmlContent Model
+
+<details>
+<summary>Click to expand</summary>
 
 For advanced content configuration, use the `HtmlContent` model:
 
@@ -551,9 +569,14 @@ pywry.show(content)
 | `inline_css` | `str` | `None` | Inline CSS styles |
 | `watch` | `bool` | `False` | Enable hot reload for these files |
 
+</details>
+
 ---
 
 ## WindowConfig Model
+
+<details>
+<summary>Click to expand</summary>
 
 The `WindowConfig` model controls window properties:
 
@@ -589,9 +612,14 @@ config = WindowConfig(
 | `plotly_theme` | `str` | `"plotly_dark"` | Plotly theme |
 | `aggrid_theme` | `str` | `"alpine"` | AG Grid theme |
 
+</details>
+
 ---
 
 ## Configuration System
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry uses a layered configuration system. Settings are merged in this order (highest priority last):
 
@@ -726,9 +754,14 @@ localhost = SecuritySettings.localhost()
 localhost_ports = SecuritySettings.localhost(ports=[8000, 8080])
 ```
 
+</details>
+
 ---
 
 ## Hot Reload
+
+<details>
+<summary>Click to expand</summary>
 
 Hot reload enables live updates during development without restarting.
 
@@ -797,9 +830,14 @@ preserve_scroll = true   # Keep scroll position on JS refresh
 watch_directories = ["./src", "./styles"]
 ```
 
+</details>
+
 ---
 
 ## Event System
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry provides bidirectional communication between Python and JavaScript through a **namespace-based event system**. This allows your Python code to respond to user interactions in the browser (clicks, selections, form inputs) and to send updates back to the browser UI.
 
@@ -1317,9 +1355,14 @@ window.pywry.on('app:response', function(data) {  // Python → JS
 """, callbacks={"app:request-data": handle_request})
 ```
 
+</details>
+
 ---
 
 ## Toolbar System
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry provides a flexible toolbar system for adding interactive controls to any window. The toolbar system uses Pydantic models for type-safe configuration.
 
@@ -1740,9 +1783,14 @@ const value = window.__PYWRY_TOOLBAR__.getValue("component-id");
 window.__PYWRY_TOOLBAR__.setValue("component-id", "new-value");
 ```
 
+</details>
+
 ---
 
 ## JavaScript Bridge
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry injects a `window.pywry` object for JavaScript ↔ Python communication.
 
@@ -1848,9 +1896,14 @@ window.pywry.on('app:response', function(data) {
 """, callbacks={"app:request-data": handle_request})
 ```
 
+</details>
+
 ---
 
 ## Direct Tauri API Access
+
+<details>
+<summary>Click to expand</summary>
 
 For advanced use cases, you can access the underlying Tauri IPC system directly. PyWry is built on [PyTauri](https://pypi.org/project/pytauri/), which provides full access to Tauri's capabilities.
 
@@ -1995,9 +2048,14 @@ if (isDesktop) {
 }
 ```
 
+</details>
+
 ---
 
 ## Managing Multiple Windows/Widgets
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry can display content in multiple ways, and each has its own management model. This section explains how to create, control, and clean up your display contexts.
 
@@ -2312,9 +2370,14 @@ Methods available on widget objects returned by `show_*()` in NOTEBOOK/BROWSER m
 | `widget.set_toolbar_value(id, value)` | Set a component's value |
 | `widget.set_toolbar_values(values)` | Set multiple component values at once |
 
+</details>
+
 ---
 
 ## Browser Mode & Server Configuration
+
+<details>
+<summary>Click to expand</summary>
 
 For headless environments, remote deployments, or when you want to serve dashboards via HTTP, use `BROWSER` mode with the inline FastAPI server.
 
@@ -2403,9 +2466,8 @@ For production deployments, create **view factory functions** that generate widg
 #### Environment Variables for Production
 
 ```bash
-# Set these environment variables on your server:
-export PYWRY_HEADLESS=1              # Required: Forces InlineWidget, skips browser.open()
-export PYWRY_WINDOW_MODE__BROWSER=1  # Optional: Explicit browser mode
+# Set this environment variable on your server:
+export PYWRY_HEADLESS=1  # Forces InlineWidget, skips browser.open()
 ```
 
 **What `PYWRY_HEADLESS=1` does:**
@@ -2763,9 +2825,14 @@ curl http://localhost:8765/health
 
 Use this for load balancer health checks or monitoring.
 
+</details>
+
 ---
 
 ## CLI Commands
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry provides a CLI for **configuration management only**. Entry point: `pywry`
 
@@ -2813,9 +2880,14 @@ Configuration sources (in priority order):
   5. Environment variables (PYWRY_*)
 ```
 
+</details>
+
 ---
 
 ## Debugging
+
+<details>
+<summary>Click to expand</summary>
 
 ### Enable Debug Logging
 
@@ -2842,9 +2914,14 @@ logging.getLogger("pywry.runtime").setLevel(logging.DEBUG)
 export PYWRY_LOG__LEVEL=DEBUG
 ```
 
+</details>
+
 ---
 
 ## Building from Source
+
+<details>
+<summary>Click to expand</summary>
 
 ### Prerequisites
 
@@ -2953,14 +3030,16 @@ pywry/
 └── README.md
 ```
 
+</details>
+
 ---
 
 # Integrations
 
-<details>
-<summary><strong>Plotly Integration</strong></summary>
-
 ## Plotly Integration
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry bundles Plotly.js 3.3.1 for offline charting with full event integration. Display figures with `show_plotly()` and handle chart events in Python.
 
@@ -3193,10 +3272,10 @@ Plotly.update(window.__PYWRY_PLOTLY_DIV__, {}, {
 
 </details>
 
-<details>
-<summary><strong>AG Grid Integration</strong></summary>
-
 ## AG Grid Integration
+
+<details>
+<summary>Click to expand</summary>
 
 PyWry bundles AG Grid 35.0.0 for high-performance data tables. Display DataFrames with `show_dataframe()` and handle grid events in Python.
 
