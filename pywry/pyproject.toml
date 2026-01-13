@@ -67,8 +67,8 @@ packages = [{include = "pywry"}]
 include = [
     "pywry/frontend/**/*",
     "pywry/capabilities/**/*",
-    "pywry/static/**/*",
     "pywry/Tauri.toml",
+    "./AGENTS.md",
 ]
 
 [tool.mypy]
