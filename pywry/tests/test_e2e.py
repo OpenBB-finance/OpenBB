@@ -520,11 +520,12 @@ class TestToolbarIntegration:
         label = show_plotly_and_wait_ready(app, figure, toolbars=toolbars)
         get_registry().register(label, "plot:click", on_click)
 
-        # Verify structure first (bottom position)
+        # Verify toolbar rendered (check for toolbar class, not wrapper)
         result = wait_for_result(
-            label, "pywry.result({ hasWrapper: !!document.querySelector('.pywry-wrapper-bottom') })"
+            label,
+            "pywry.result({ hasToolbar: !!document.querySelector('.pywry-toolbar-bottom') })",
         )
-        assert result["hasWrapper"], "Wrapper bottom not found in Plotly mode"
+        assert result["hasToolbar"], "Toolbar bottom not found in Plotly mode"
 
         # Trigger click
         app.eval_js("document.querySelector('.pywry-btn').click()", label=label)
