@@ -14,7 +14,7 @@ Its unified API lets you build fast and use anywhere. Batteries included.
 - **Notebook Support**: Automatic inline rendering via anywidget or IFrame in Jupyter/Colab
 - **Toolbar System**: Pydantic-based toolbar components with bidirectional state management
 - **Hot Reload**: CSS injection and JS refresh with scroll preservation
-- **Bundled Libraries**: Plotly.js 3.3.1 and AG Grid 35.0.0 (offline capable)
+- **Bundled Libraries**: Plotly.js 3.3.1 and AgGrid 35.0.0 (offline capable)
 - **Native File Dialogs**: Tauri-powered save/open dialogs and filesystem access
 - **Configuration System**: TOML files, pyproject.toml, and environment variables
 - **Dynamic Theming**: Light, Dark, and System modes
@@ -123,7 +123,7 @@ app.show_plotly(
     callbacks={"app:custom": on_custom_action},
 )
 
-# Display DataFrame with AG Grid
+# Display DataFrame with AgGrid
 import pandas as pd
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [30, 25]})
 app.show_dataframe(df)
@@ -136,32 +136,49 @@ app.destroy()
 
 ## Table of Contents
 
-- [Rendering Paths](#rendering-paths)
-  - [Native Window](#native-window)
-  - [Notebook Widget (anywidget)](#notebook-widget-anywidget)
-  - [Inline IFrame](#inline-iframe)
-  - [Browser Mode](#browser-mode)
-- [Core API](#core-api)
-  - [Imports](#imports)
-  - [PyWry Class](#pywry-class)
-  - [Display Methods](#display-methods)
-  - [Event Methods](#event-methods)
-- [Theming & Styling](#css-selectors-and-theming)
-- [Data Models](#data-models)
-  - [HtmlContent Model](#htmlcontent-model)
-  - [WindowConfig Model](#windowconfig-model)
-- [Configuration System](#configuration-system)
-- [Hot Reload](#hot-reload)
-- [Event System](#event-system)
-- [Toolbar System](#toolbar-system)
-- [JavaScript Bridge](#javascript-bridge)
-- [Direct Tauri API Access](#direct-tauri-api-access)
-- [CLI Commands](#cli-commands)
-- [Debugging](#debugging)
-- [Building from Source](#building-from-source)
-- [**Integrations**](#integrations)
-  - [Plotly Integration](#plotly-integration)
-  - [AG Grid Integration](#ag-grid-integration)
+| Section | Description |
+|---------|-------------|
+| [Features](#features) | Overview of PyWry capabilities |
+| [Dependencies](#dependencies) | Required and optional packages |
+| [Installation](#installation) | How to install PyWry |
+| [Quick Start](#quick-start) | Minimal working example |
+
+**Core Documentation**
+
+| Section | Description |
+|---------|-------------|
+| [Rendering Paths](#rendering-paths) | Native Window, Notebook, IFrame, Browser modes |
+| [Core API](#core-api) | PyWry class, imports, display & event methods |
+| [CSS Selectors and Theming](#css-selectors-and-theming) | Styling with CSS variables and classes |
+| [HtmlContent Model](#htmlcontent-model) | Advanced content configuration |
+| [WindowConfig Model](#windowconfig-model) | Window property configuration |
+| [Configuration System](#configuration-system) | TOML files, environment variables, presets |
+| [Hot Reload](#hot-reload) | Live CSS/JS updates during development |
+
+**Event & Toolbar Systems**
+
+| Section | Description |
+|---------|-------------|
+| [Event System](#event-system) | Bidirectional Python ↔ JS communication |
+| [Pre-Registered Events](#pre-registered-events-built-in) | Built-in system, Plotly, and AgGrid events |
+| [Toolbar System](#toolbar-system) | All 14 toolbar components with examples |
+
+**Advanced Topics**
+
+| Section | Description |
+|---------|-------------|
+| [JavaScript Bridge](#javascript-bridge) | `window.pywry` API reference |
+| [Direct Tauri API Access](#direct-tauri-api-access) | Native filesystem, dialogs, clipboard |
+| [CLI Commands](#cli-commands) | Command-line tools |
+| [Debugging](#debugging) | DevTools, logging, troubleshooting |
+| [Building from Source](#building-from-source) | Development setup |
+
+**Integrations**
+
+| Section | Description |
+|---------|-------------|
+| [Plotly Integration](#plotly-integration) | Charts with custom modebar buttons |
+| [AgGrid Integration](#ag-grid-integration) | DataFrames with column definitions |
 
 ---
 
@@ -281,12 +298,16 @@ from pywry import WindowMode, ThemeMode
 from pywry import HtmlContent, WindowConfig
 
 # Toolbar components
-from pywry import Toolbar, Button, Select, MultiSelect, TextInput, NumberInput, DateInput, SliderInput, RangeInput, Option, ToolbarItem
+from pywry import (
+    Toolbar, Button, Select, MultiSelect, TextInput, NumberInput,
+    DateInput, SliderInput, RangeInput, Toggle, Checkbox, RadioGroup,
+    TabGroup, Div, Option, ToolbarItem
+)
 
 # Plotly configuration (for customizing modebar, icons, buttons)
 from pywry import PlotlyConfig, PlotlyIconName, ModeBarButton, ModeBarConfig, SvgIcon, StandardButton
 
-# Grid models (for AG Grid customization)
+# Grid models (for AgGrid customization)
 from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOptions, GridConfig, GridData, build_grid_config, to_js_grid_config
 
 # State mixins (for extending custom widgets)
@@ -350,7 +371,7 @@ label = app.show(
     height=None,                # Window height override
     callbacks=None,             # Dict of event handlers {"event:name": handler}
     include_plotly=False,       # Include Plotly.js
-    include_aggrid=False,       # Include AG Grid
+    include_aggrid=False,       # Include AgGrid
     label=None,                 # Window label (auto-generated if None)
     watch=None,                 # Enable file watching for hot reload
     toolbars=None,              # List of Toolbar objects
@@ -433,24 +454,61 @@ widget.emit("app:response", {"key": "value"})
 <details>
 <summary>Click to expand</summary>
 
-PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AG Grid).
+PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AgGrid).
 
-### Key Classes
+### Theme Classes
+
+PyWry uses a dual-class theming system for maximum compatibility:
 
 | Selector | Description |
 |----------|-------------|
-| `.pywry-container` | Root container for native window rendering |
-| `.pywry-widget` | Container for anywidget/notebook rendering |
+| `html.dark` | Dark theme indicator on document root |
+| `html.light` | Light theme indicator on document root |
+| `html.pywry-native` | Added to html element in native window mode |
+| `.pywry-theme-dark` | Dark theme on widget container (notebook/browser mode) |
+| `.pywry-theme-light` | Light theme on widget container (notebook/browser mode) |
+
+> **Note:** The `html.dark`/`html.light` classes are applied to the document root for global styling. The `.pywry-theme-*` classes are applied to widget containers for scoped styling in notebooks.
+
+### Layout Classes
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-widget` | Root container for widgets (notebook/browser mode) |
+| `.pywry-content` | Flex container for user content (HTML/Chart/Grid) |
+| `.pywry-wrapper-{pos}` | Layout wrapper for toolbar positioning (`top`, `bottom`, `left`, `right`) |
+| `.pywry-plotly` | Plotly chart container element |
+| `.pywry-grid` | AgGrid container element |
+| `.plotly-graph-div` | Plotly internal container (Plotly's own class) |
+
+### Toolbar Classes
+
+| Selector | Description |
+|----------|-------------|
 | `.pywry-toolbar` | Toolbar container flexbox |
 | `.pywry-toolbar-{pos}` | Toolbar position variant (`top`, `bottom`, `left`, `right`, `inside`) |
-| `.pywry-btn` | Button element class with accent styling |
-| `.pywry-content` | Flex container for user content (HTML/Chart/Grid) |
-| `.pywry-wrapper-{pos}` | Layout wrapper for toolbar positioning (`top`, `bottom`, `left`, `right`, `inside`) |
-| `.pywry-grid` | AG Grid container element |
-| `.pywry-plotly` | Plotly container element |
-| `.plotly-graph-div` | Plotly internal container |
-| `html.pywry-native` | Added to html element in native window mode |
-| `html.light` | Light theme indicator on html element |
+| `.pywry-toolbar-content` | Inner container for toolbar items |
+| `.pywry-toolbar-toggle` | Collapsible toolbar toggle button |
+| `.pywry-toolbar-button` | Button within toolbar |
+
+### Component Classes
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-btn` | Button element with accent styling |
+| `.pywry-btn-{variant}` | Button variant (`secondary`, `ghost`, `danger`) |
+| `.pywry-btn-{size}` | Button size (`sm`, `lg`) |
+| `.pywry-dropdown` | Select/dropdown container |
+| `.pywry-dropdown-selected` | Selected value display |
+| `.pywry-dropdown-menu` | Dropdown options container |
+| `.pywry-dropdown-option` | Individual dropdown option |
+| `.pywry-multiselect` | Multi-select dropdown container |
+| `.pywry-multiselect-checkbox` | Checkbox input in multi-select |
+| `.pywry-input-group` | Input with label container |
+| `.pywry-input-label` | Label for input elements |
+| `.pywry-tab` | Tab button element |
+| `.pywry-tab-active` | Active tab indicator |
+| `.pywry-selected` | Selected state for options |
 
 ### CSS Variables
 
@@ -608,9 +666,9 @@ config = WindowConfig(
 | `devtools` | `bool` | `False` | Open developer tools |
 | `allow_network` | `bool` | `True` | Allow network requests |
 | `enable_plotly` | `bool` | `False` | Include Plotly.js library |
-| `enable_aggrid` | `bool` | `False` | Include AG Grid library |
+| `enable_aggrid` | `bool` | `False` | Include AgGrid library |
 | `plotly_theme` | `str` | `"plotly_dark"` | Plotly theme |
-| `aggrid_theme` | `str` | `"alpine"` | AG Grid theme |
+| `aggrid_theme` | `str` | `"alpine"` | AgGrid theme |
 
 </details>
 
@@ -883,7 +941,7 @@ These namespaces are used by PyWry internally. **Do not use them for custom even
 |-----------|---------|
 | `pywry:*` | System events (initialization, results) |
 | `plotly:*` | Plotly chart events |
-| `grid:*` | AG Grid table events |
+| `grid:*` | AgGrid table events |
 
 > **Tip:** Use a namespace that makes sense for your app (e.g., `app:`, `data:`, `view:`, `myapp:`).
 
@@ -995,11 +1053,11 @@ app.on("*", log_all_events)
 
 ## Pre-Registered Events (Built-in)
 
-PyWry automatically hooks into Plotly and AG Grid event systems. These **pre-registered events** are emitted automatically when users interact with charts and grids — **no JavaScript required**.
+PyWry automatically hooks into Plotly and AgGrid event systems. These **pre-registered events** are emitted automatically when users interact with charts and grids — **no JavaScript required**.
 
 ### What "Pre-Registered" Means
 
-When you create a Plotly chart or AG Grid table, PyWry injects JavaScript that:
+When you create a Plotly chart or AgGrid table, PyWry injects JavaScript that:
 1. Listens for native library events (e.g., Plotly's `plotly_click`)
 2. Transforms the raw event data into a standardized payload
 3. Emits a PyWry event (e.g., `plotly:click`) that triggers your Python callback
@@ -1014,12 +1072,12 @@ PyWry uses a hierarchy of identifiers:
 |---------|-------|---------|---------|
 | `label` | Window/Widget | Identifies a window (native) or widget (notebook/browser) | `"pywry-abc123"`, `"w-def456"` |
 | `chartId` | Component | Identifies a specific Plotly chart within a window | `"sales-chart"` |
-| `gridId` | Component | Identifies a specific AG Grid table within a window | `"users-grid"` |
+| `gridId` | Component | Identifies a specific AgGrid table within a window | `"users-grid"` |
 | `componentId` | Toolbar Item | Identifies a specific toolbar control | `"theme-select"`, `"export-btn"` |
 
 **Event Payloads Include IDs:**
 - **Plotly events** (`plotly:click`, `plotly:hover`, etc.) include `chartId` and `widget_type: "chart"` in the payload.
-- **AG Grid events** (`grid:select`, `grid:cell-edit`, etc.) include `gridId` and `widget_type: "grid"` in the payload.
+- **AgGrid events** (`grid:select`, `grid:cell-edit`, etc.) include `gridId` and `widget_type: "grid"` in the payload.
 - **Toolbar components** always include `componentId` in their payloads.
 - **Python → JS events** support targeting via `chartId`/`gridId` when using widget methods like `widget.update_figure(fig, chart_id="my-chart")`.
 
@@ -1037,20 +1095,54 @@ These are internal events for window/widget lifecycle and utility operations.
 
 #### Utility Events (Python → JS)
 
-These events trigger built-in browser behaviors:
+These events trigger built-in browser behaviors. They are handled automatically by PyWry's JavaScript bridge — **no custom JavaScript required**:
 
 | Event | Payload | Description |
 |-------|---------|-------------|
+| `pywry:update_theme` | `{ theme: str }` | Update theme dynamically (e.g., `"plotly_dark"`, `"plotly_white"`) |
+| `pywry:inject-css` | `{ css: str, id?: str }` | Inject CSS dynamically; optional `id` for replacing existing styles |
+| `pywry:set_style` | `{ id?: str, selector?: str, styles: {} }` | Update inline styles on element(s) by id or CSS selector |
+| `pywry:set_content` | `{ id?: str, selector?: str, html?: str, text?: str }` | Update innerHTML or textContent on element(s) |
+| `pywry:download` | `{ content: str, filename: str, mimeType?: str }` | Trigger a file download (IFrame/browser mode only) |
 | `pywry:navigate` | `{ url: str }` | Navigate to a URL (SPA-style navigation) |
 | `pywry:alert` | `{ message: str }` or `{ text: str }` | Show a browser alert dialog |
-| `pywry:download` | `{ content: str, filename: str, mimeType?: str }` | Trigger a file download |
 | `pywry:update_html` | `{ html: str }` | Replace widget content (triggers page reload) |
 
-**Example: Navigation and Downloads**
+**Example: DOM Manipulation Without Custom JavaScript**
 
 ```python
-# Navigate to a different view
-widget.emit("pywry:navigate", {"url": "/dashboard"})
+# Update theme dynamically
+widget.emit("pywry:update_theme", {"theme": "plotly_white"})
+
+# Inject CSS dynamically
+widget.emit("pywry:inject-css", {
+    "css": ".my-class { color: red; font-weight: bold; }",
+    "id": "my-dynamic-styles"  # Optional: allows replacing later
+})
+
+# Update element styles by ID
+widget.emit("pywry:set_style", {
+    "id": "status-badge",
+    "styles": {"backgroundColor": "green", "color": "white"}
+})
+
+# Or by CSS selector (updates all matching elements)
+widget.emit("pywry:set_style", {
+    "selector": ".highlight-row",
+    "styles": {"backgroundColor": "#ffffcc"}
+})
+
+# Update element content by ID
+widget.emit("pywry:set_content", {
+    "id": "values-display",
+    "html": "<strong>Updated!</strong> 42 items"
+})
+
+# Or use plain text (safer, no HTML parsing)
+widget.emit("pywry:set_content", {
+    "selector": ".status-text",
+    "text": "Processing complete"
+})
 
 # Trigger a CSV download
 widget.emit("pywry:download", {
@@ -1058,10 +1150,9 @@ widget.emit("pywry:download", {
     "filename": "users.csv",
     "mimeType": "text/csv"
 })
-
-# Show an alert
-widget.emit("pywry:alert", {"message": "Operation complete!"})
 ```
+
+> **Note:** `pywry:set_style` and `pywry:set_content` support either `id` (for a single element by ID) or `selector` (for multiple elements via CSS selector). If both are provided, `id` takes precedence.
 
 ### Plotly Events (`plotly:*`)
 
@@ -1122,11 +1213,11 @@ Use these to update the chart programmatically. These methods support optional `
 | `plotly:reset_zoom` | `widget.reset_zoom()` | `{}` |
 | `plotly:request_state` | `widget.request_plotly_state(chart_id=...)` | `{ chartId? }` |
 
-### AG Grid Events (`grid:*`)
+### AgGrid Events (`grid:*`)
 
 #### Events from JavaScript → Python (User Interactions)
 
-These events fire automatically when users interact with AG Grid tables:
+These events fire automatically when users interact with AgGrid tables:
 
 | Event | Trigger | Payload |
 |-------|---------|---------|
@@ -1135,13 +1226,13 @@ These events fire automatically when users interact with AG Grid tables:
 | `grid:row-click` | User clicks a row | `{ gridId, widget_type: "grid", row_data: {...}, row_id, row_index }` |
 | `grid:state_response` | Response to state request | `{ gridId, state: { columnState, filterModel } }` |
 
-> **Note:** All AG Grid events include `gridId` and `widget_type: "grid"` in the payload for identifying which grid triggered the event.
+> **Note:** All AgGrid events include `gridId` and `widget_type: "grid"` in the payload for identifying which grid triggered the event.
 
 **`grid:select` payload structure:**
 ```python
 {
     "gridId": "grid_def456",      # Unique grid identifier
-    "widget_type": "grid",        # Always "grid" for AG Grid events
+    "widget_type": "grid",        # Always "grid" for AgGrid events
     "selected_rows": [
         {"name": "Alice", "age": 30, "city": "NYC"},
         {"name": "Bob", "age": 25, "city": "LA"}
@@ -1236,7 +1327,7 @@ def on_export(data, event_type, label):
 
 def on_theme_change(data, event_type, label):
     print(f"Theme changed to: {data['value']}")
-    # data = { "value": "dark", "componentId": "item-abc123" }
+    # data = { "value": "dark", "componentId": "select-a1b2c3d4" }
 
 app.show(
     content,
@@ -1250,18 +1341,22 @@ app.show(
 
 **Toolbar component payloads:**
 
-All toolbar components include `componentId` in their event payload for identification:
+All toolbar components include `componentId` in their event payload for identification. Component IDs are auto-generated in the format `{type}-{uuid8}` (e.g., `button-a1b2c3d4`, `select-f099cfba`).
 
 | Component | Payload |
 |-----------|---------|
-| `Button` | `{ componentId: str, ...data }` (merges `Button(data={...})` with componentId) |
-| `Select` | `{ value: str, componentId: str }` |
-| `MultiSelect` | `{ values: [str, ...], componentId: str }` |
-| `TextInput` | `{ value: str, componentId: str }` |
-| `NumberInput` | `{ value: number, componentId: str }` |
-| `DateInput` | `{ value: "YYYY-MM-DD", componentId: str }` |
-| `SliderInput` | `{ value: number, componentId: str }` |
-| `RangeInput` | `{ start: number, end: number, componentId: str }` |
+| `Button` | `{ componentId, ...data }` (merges `Button(data={...})` with componentId) |
+| `Select` | `{ value: str, componentId }` |
+| `MultiSelect` | `{ values: [str, ...], componentId }` |
+| `TextInput` | `{ value: str, componentId }` |
+| `NumberInput` | `{ value: number, componentId }` |
+| `DateInput` | `{ value: "YYYY-MM-DD", componentId }` |
+| `SliderInput` | `{ value: number, componentId }` |
+| `RangeInput` | `{ start: number, end: number, componentId }` |
+| `Toggle` | `{ value: bool, componentId }` |
+| `Checkbox` | `{ value: bool, componentId }` |
+| `RadioGroup` | `{ value: str, componentId }` |
+| `TabGroup` | `{ value: str, componentId }` |
 
 **Using componentId to identify which button was clicked:**
 
@@ -1364,162 +1459,273 @@ window.pywry.on('app:response', function(data) {  // Python → JS
 <details>
 <summary>Click to expand</summary>
 
-PyWry provides a flexible toolbar system for adding interactive controls to any window. The toolbar system uses Pydantic models for type-safe configuration.
+PyWry provides a flexible toolbar system for adding interactive controls to any window. The toolbar system uses Pydantic models for type-safe configuration with auto-generated component IDs for state tracking.
 
-### Toolbar Models
-
-Import the toolbar components:
+### Quick Start
 
 ```python
-from pywry import Toolbar, Button, Select, MultiSelect, TextInput, NumberInput, DateInput, RangeInput, Option
-```
-
-### Toolbar Positions
-
-Each toolbar has a `position` attribute that controls where it appears:
-
-| Position | Description |
-|----------|-------------|
-| `"top"` | Horizontal bar above content |
-| `"bottom"` | Horizontal bar below content |
-| `"left"` | Vertical bar to the left of content |
-| `"right"` | Vertical bar to the right of content |
-| `"inside"` | Overlay positioned in top-right corner |
-
-### Complete Example
-
-```python
-from pywry import PyWry, Toolbar, Button
+from pywry import PyWry, Toolbar, Button, Select, Option
 
 app = PyWry()
 
-# Define handlers - receive (data, event_type, label)
 def on_save(data, event_type, label):
-    app.eval_js("document.getElementById('status').textContent = 'Saved!'", label=label)
+    print(f"Save clicked! Component: {data['componentId']}")
 
-def on_export(data, event_type, label):
-    app.eval_js("document.getElementById('status').textContent = 'Exported!'", label=label)
+def on_view_change(data, event_type, label):
+    print(f"View changed to: {data['value']}")
 
-def on_theme_toggle(data, event_type, label):
-    app.eval_js("""
-        document.documentElement.classList.toggle('light');
-        document.getElementById('status').textContent = 'Theme toggled!';
-    """, label=label)
-
-# Define toolbar with buttons
 toolbar = Toolbar(
     position="top",
     items=[
         Button(label="Save", event="app:save"),
-        Button(label="Export CSV", event="app:export"),
-        Button(label="Toggle Theme", event="app:theme", style="margin-left: auto;"),
-    ]
+        Select(
+            label="View:",
+            event="view:change",
+            options=["Table", "Chart", "Map"],  # Simple strings work too
+            selected="Table",
+        ),
+    ],
 )
 
-# Show with toolbar - pass callbacks directly to show()
 app.show(
-    "<h1>My Application</h1><p id='status'>Click a button...</p>",
+    "<h1>My App</h1>",
     toolbars=[toolbar],
-    callbacks={
-        "app:save": on_save,
-        "app:export": on_export,
-        "app:theme": on_theme_toggle,
-    }
+    callbacks={"app:save": on_save, "view:change": on_view_change},
 )
 ```
 
-### Toolbar Item Types
+### Imports
 
-PyWry provides several toolbar component types. All items share common properties:
+```python
+from pywry import (
+    Toolbar,           # Container for toolbar items
+    Button,            # Clickable button
+    Select,            # Single-select dropdown
+    MultiSelect,       # Multi-select dropdown with checkboxes
+    TextInput,         # Text input with debounce
+    NumberInput,       # Numeric input with min/max/step
+    DateInput,         # Date picker (YYYY-MM-DD)
+    SliderInput,       # Single-value slider
+    RangeInput,        # Dual-handle range slider
+    Toggle,            # Boolean switch (on/off)
+    Checkbox,          # Boolean checkbox
+    RadioGroup,        # Radio button group
+    TabGroup,          # Tab-style selection
+    Div,               # Container for custom HTML/nested items
+    Option,            # Option for Select/MultiSelect/RadioGroup/TabGroup
+)
+```
 
-**Common Properties (all items):**
-- `event` (str, required): Event name in `namespace:event-name` format
-- `component_id` (str, auto-generated): Unique ID for state tracking
-- `label` (str, optional): Label text displayed next to the control
-- `description` (str, optional): Tooltip text shown on hover
-- `disabled` (bool, default=False): Whether the control is disabled
-- `style` (str, optional): Inline CSS styles
+### Toolbar Positions & Layout
+
+PyWry supports **7 toolbar positions** that combine to create a flexible layout system:
+
+| Position | Description |
+|----------|-------------|
+| `"header"` | Full-width bar at the very top (outermost) |
+| `"footer"` | Full-width bar at the very bottom (outermost) |
+| `"left"` | Vertical bar on the left, extends between header/footer |
+| `"right"` | Vertical bar on the right, extends between header/footer |
+| `"top"` | Horizontal bar above content, inside left/right sidebars |
+| `"bottom"` | Horizontal bar below content, inside left/right sidebars |
+| `"inside"` | Floating overlay in the top-right corner of content |
+
+<details>
+<summary><strong>Layout Diagram</strong> — How positions nest together</summary>
+
+When you use multiple toolbars, they are layered from outside in:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                      HEADER                             │  ← Full width, outermost
+├───────┬─────────────────────────────────────────┬───────┤
+│       │                 TOP                     │       │
+│       ├─────────────────────────────────────────┤       │
+│ LEFT  │                                         │ RIGHT │  ← Extend full height
+│       │              CONTENT                    │       │    between header/footer
+│       │         ┌─────────────┐                 │       │
+│       │         │   INSIDE    │ (overlay)       │       │
+│       │         └─────────────┘                 │       │
+│       ├─────────────────────────────────────────┤       │
+│       │                BOTTOM                   │       │
+├───────┴─────────────────────────────────────────┴───────┤
+│                      FOOTER                             │  ← Full width, outermost
+└─────────────────────────────────────────────────────────┘
+```
+
+**Nesting order (outside → inside):**
+1. `header` / `footer` — Span full width at very top/bottom
+2. `left` / `right` — Extend full height between header and footer
+3. `top` / `bottom` — Inside left/right columns, above/below content
+4. `inside` — Floating overlay on top of content
+5. Content — Your actual HTML/chart/grid
+
+</details>
+
+<details>
+<summary><strong>Multi-Toolbar Example</strong></summary>
+
+```python
+from pywry import PyWry, Toolbar, Button, Select, Toggle
+
+app = PyWry()
+
+# Header: App-wide navigation
+header = Toolbar(
+    position="header",
+    items=[
+        Button(label="Home", event="nav:home"),
+        Button(label="Settings", event="nav:settings", style="margin-left: auto;"),
+    ],
+)
+
+# Left sidebar: View controls
+sidebar = Toolbar(
+    position="left",
+    items=[
+        Button(label="📊", event="view:chart", variant="icon"),
+        Button(label="📋", event="view:table", variant="icon"),
+        Button(label="🗺️", event="view:map", variant="icon"),
+    ],
+)
+
+# Top: Context-specific controls
+top_bar = Toolbar(
+    position="top",
+    items=[
+        Select(label="Period:", event="filter:period", options=["1D", "1W", "1M", "1Y"]),
+        Toggle(label="Live:", event="data:live", value=True),
+    ],
+)
+
+# Inside: Quick actions overlay
+overlay = Toolbar(
+    position="inside",
+    items=[
+        Button(label="⟳", event="data:refresh", variant="icon"),
+    ],
+)
+
+# Footer: Status bar
+footer = Toolbar(
+    position="footer",
+    items=[
+        Button(label="Last updated: 12:34:56", event="status:info", variant="ghost", disabled=True),
+    ],
+)
+
+app.show(
+    "<h1>Dashboard</h1>",
+    toolbars=[header, sidebar, top_bar, overlay, footer],
+    callbacks={...},
+)
+```
+
+</details>
+
+### Common Properties
+
+All toolbar items share these properties:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `event` | `str` | `"toolbar:input"` | Event name in `namespace:event-name` format |
+| `component_id` | `str` | auto-generated | Unique ID (format: `{type}-{uuid8}`, e.g., `button-a1b2c3d4`) |
+| `label` | `str` | `""` | Label text displayed next to the control |
+| `description` | `str` | `""` | Tooltip text shown on hover |
+| `disabled` | `bool` | `False` | Whether the control is disabled |
+| `style` | `str` | `""` | Inline CSS styles |
 
 ---
 
-#### Button
+### Component Reference
 
-A clickable button that emits an event with optional data payload.
+<details>
+<summary><strong>Button</strong> — Clickable button with optional data payload</summary>
 
 ```python
 Button(
-    label="Export",           # Button text
-    event="toolbar:export",   # Event to emit
-    data={"format": "csv"},   # Optional data payload
+    label="Export",
+    event="app:export",
+    data={"format": "csv"},     # Optional payload merged into event data
+    variant="primary",          # Style: primary|secondary|neutral|ghost|outline|danger|warning|icon
+    size=None,                  # Size: None|xs|sm|lg|xl
 )
 ```
 
-**Emits:** The `data` dict when clicked, or `{}` if no data specified.
+**Emits:** `{ componentId, ...data }` — The `data` dict merged with `componentId`.
 
----
+**Variants:**
+- `"primary"` — Theme-aware (light bg in dark mode, accent in light mode)
+- `"secondary"` — Subtle background, theme-aware
+- `"neutral"` — Always blue accent (for primary actions)
+- `"ghost"` — Transparent background
+- `"outline"` — Bordered, transparent fill
+- `"danger"` — Red accent for destructive actions
+- `"warning"` — Orange accent for caution
+- `"icon"` — Square aspect ratio for icon-only buttons
 
-#### Select
+</details>
 
-A single-select dropdown menu.
+<details>
+<summary><strong>Select</strong> — Single-select dropdown</summary>
 
 ```python
 Select(
-    label="View:",
-    event="view:change",
+    label="Theme:",
+    event="theme:change",
     options=[
-        Option(label="Table", value="table"),
-        Option(label="Chart", value="chart"),
+        Option(label="Dark", value="dark"),
+        Option(label="Light", value="light"),
     ],
-    selected="table",  # Initially selected value
+    selected="dark",
 )
+
+# Shorthand: strings auto-convert to Option(label=s, value=s)
+Select(event="view:change", options=["Table", "Chart", "Map"], selected="Table")
 ```
 
-**Emits:** `{value: "<selected_value>", componentId: "<id>"}`
+**Emits:** `{ value: str, componentId: str }`
 
----
+</details>
 
-#### MultiSelect
-
-A group of checkboxes for multiple selection.
+<details>
+<summary><strong>MultiSelect</strong> — Multi-select dropdown with checkboxes</summary>
 
 ```python
 MultiSelect(
     label="Columns:",
     event="columns:filter",
-    options=[
-        Option(label="Name", value="name"),
-        Option(label="Age", value="age"),
-        Option(label="City", value="city"),
-    ],
-    selected=["name", "age"],  # Initially selected values
+    options=["Name", "Age", "City", "Country"],
+    selected=["Name", "Age"],   # Initially selected values
 )
 ```
 
-**Emits:** `{values: ["<value1>", "<value2>", ...], componentId: "<id>"}`
+Features a search box and "All" / "None" quick-select buttons. Selected items appear at the top.
 
----
+**Emits:** `{ values: [str, ...], componentId: str }`
 
-#### TextInput
+</details>
 
-A text input field with optional debounce.
+<details>
+<summary><strong>TextInput</strong> — Text input with debounce</summary>
 
 ```python
 TextInput(
     label="Search:",
     event="search:query",
-    value="",                 # Initial value
-    placeholder="Type...",    # Placeholder text
-    debounce=300,             # Debounce delay in milliseconds
+    value="",                   # Initial value
+    placeholder="Type...",      # Placeholder text
+    debounce=300,               # Delay in ms before emitting (default: 300)
 )
 ```
 
-**Emits:** `{value: "<text>", componentId: "<id>"}` after debounce delay.
+**Emits:** `{ value: str, componentId: str }` after debounce delay.
 
----
+</details>
 
-#### NumberInput
-
-A numeric input with optional min/max/step constraints.
+<details>
+<summary><strong>NumberInput</strong> — Numeric input with constraints</summary>
 
 ```python
 NumberInput(
@@ -1532,256 +1738,789 @@ NumberInput(
 )
 ```
 
-**Emits:** `{value: <number>, componentId: "<id>"}`
+Includes up/down spinner buttons.
 
----
+**Emits:** `{ value: number, componentId: str }`
 
-#### DateInput
+</details>
 
-A date picker input.
+<details>
+<summary><strong>DateInput</strong> — Date picker</summary>
 
 ```python
 DateInput(
     label="Start Date:",
     event="filter:date",
-    value="2025-01-01",       # YYYY-MM-DD format
-    min="2020-01-01",         # Optional minimum date
-    max="2030-12-31",         # Optional maximum date
+    value="2025-01-01",         # YYYY-MM-DD format
+    min="2020-01-01",           # Optional minimum
+    max="2030-12-31",           # Optional maximum
 )
 ```
 
-**Emits:** `{value: "<YYYY-MM-DD>", componentId: "<id>"}`
+**Emits:** `{ value: "YYYY-MM-DD", componentId: str }`
 
----
+</details>
 
-#### SliderInput
-
-A single-value slider for selecting a value within a range.
+<details>
+<summary><strong>SliderInput</strong> — Single-value slider</summary>
 
 ```python
 SliderInput(
     label="Zoom:",
     event="zoom:level",
-    value=50,                 # Initial value
-    min=0,                    # Minimum value
-    max=100,                  # Maximum value
-    step=5,                   # Step increment
-    show_value=True,          # Show current value next to slider
+    value=50,
+    min=0,
+    max=100,
+    step=5,
+    show_value=True,            # Display current value (default: True)
+    debounce=50,                # Delay in ms (default: 50)
 )
 ```
 
-**Emits:** `{value: <number>, componentId: "<id>"}`
+**Emits:** `{ value: number, componentId: str }`
 
----
+</details>
 
-#### RangeInput
-
-A dual-handle range selector for defining a min/max range.
+<details>
+<summary><strong>RangeInput</strong> — Dual-handle range slider</summary>
 
 ```python
 RangeInput(
     label="Price Range:",
     event="filter:price",
-    start=100,                # Initial start value
-    end=500,                  # Initial end value
-    min=0,                    # Minimum allowed value
-    max=1000,                 # Maximum allowed value
-    step=10,                  # Step increment
-    show_value=True,          # Show current values
+    start=100,                  # Initial start value
+    end=500,                    # Initial end value
+    min=0,
+    max=1000,
+    step=10,
+    show_value=True,            # Display start/end values
+    debounce=50,
 )
 ```
 
-**Emits:** `{start: <number>, end: <number>, componentId: "<id>"}`
+Two handles on a single track for selecting a value range.
 
----
+**Emits:** `{ start: number, end: number, componentId: str }`
 
-#### Option
+</details>
 
-Used with `Select` and `MultiSelect` to define choices.
+<details>
+<summary><strong>Toggle</strong> — Boolean switch</summary>
+
+```python
+Toggle(
+    label="Dark Mode:",
+    event="theme:toggle",
+    value=True,                 # Initial state (default: False)
+)
+```
+
+A sliding on/off switch.
+
+**Emits:** `{ value: bool, componentId: str }`
+
+</details>
+
+<details>
+<summary><strong>Checkbox</strong> — Boolean checkbox</summary>
+
+```python
+Checkbox(
+    label="Enable notifications",
+    event="settings:notify",
+    value=True,                 # Initial checked state
+)
+```
+
+A standard checkbox with label.
+
+**Emits:** `{ value: bool, componentId: str }`
+
+</details>
+
+<details>
+<summary><strong>RadioGroup</strong> — Radio button group</summary>
+
+```python
+RadioGroup(
+    label="View:",
+    event="view:change",
+    options=["List", "Grid", "Cards"],
+    selected="List",
+    direction="horizontal",     # horizontal|vertical (default: horizontal)
+)
+```
+
+Mutually exclusive radio buttons.
+
+**Emits:** `{ value: str, componentId: str }`
+
+</details>
+
+<details>
+<summary><strong>TabGroup</strong> — Tab-style selection</summary>
+
+```python
+TabGroup(
+    label="View:",
+    event="view:change",
+    options=[
+        Option(label="Table", value="table"),
+        Option(label="Chart", value="chart"),
+        Option(label="Map", value="map"),
+    ],
+    selected="table",
+    size="md",                  # sm|md|lg (default: md)
+)
+```
+
+Similar to RadioGroup but styled as tabs. Ideal for view switching.
+
+**Emits:** `{ value: str, componentId: str }`
+
+</details>
+
+<details>
+<summary><strong>Div</strong> — Container for custom HTML and nested items</summary>
+
+```python
+Div(
+    content="<h3>Controls</h3>",          # Custom HTML
+    class_name="my-controls",             # CSS class (added to pywry-div)
+    children=[                            # Nested toolbar items
+        Button(label="Action", event="app:action"),
+        Div(content="<span>Nested</span>"),
+    ],
+    script="console.log('Div loaded');",  # JS file path or inline script
+)
+```
+
+Container for grouping items or injecting custom HTML. Supports unlimited nesting.
+
+**Emits:** No automatic events (children emit their own events).
+
+</details>
+
+<details>
+<summary><strong>Option</strong> — Choice for Select/MultiSelect/RadioGroup/TabGroup</summary>
 
 ```python
 Option(
-    label="Display Text",     # Text shown in UI
-    value="internal_value",   # Value sent in event (defaults to label if not set)
+    label="Display Text",       # Text shown in UI
+    value="internal_value",     # Value sent in event (defaults to label)
+)
+
+# Shorthand: strings auto-convert
+options=["A", "B", "C"]  # → [Option(label="A", value="A"), ...]
+```
+
+</details>
+
+---
+
+### Toolbar Container
+
+```python
+Toolbar(
+    position="top",                     # top|bottom|left|right|inside
+    items=[...],                        # List of toolbar items
+    component_id="my-toolbar",          # Optional custom ID (auto-generated if omitted)
+    class_name="my-toolbar-class",      # Custom CSS class
+    style="gap: 12px;",                 # Inline CSS for the content wrapper
+    collapsible=False,                  # Enable collapse/expand toggle button
+    resizable=False,                    # Enable drag-to-resize edge handle
+    script="console.log('loaded');",    # JS file path or inline script
 )
 ```
 
-### Advanced Toolbar Example
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `position` | `str` | `"top"` | Toolbar placement |
+| `items` | `list` | `[]` | List of toolbar items |
+| `component_id` | `str` | `"toolbar-{uuid8}"` | Unique toolbar ID |
+| `class_name` | `str` | `""` | Additional CSS class |
+| `style` | `str` | `""` | Inline CSS for content area |
+| `collapsible` | `bool` | `False` | Show collapse/expand toggle |
+| `resizable` | `bool` | `False` | Enable drag-to-resize |
+| `script` | `str\|Path` | `None` | Custom JavaScript to inject |
+
+---
+
+### Examples
+
+<details>
+<summary><strong>Complete Example with Multiple Components</strong></summary>
 
 ```python
-from pywry import Toolbar, Button, Select, TextInput, Option
+from pywry import PyWry, Toolbar, Button, Select, TextInput, Toggle, Option
+
+app = PyWry()
+
+def on_save(data, event_type, label):
+    app.eval_js("document.getElementById('status').textContent = 'Saved!'", label)
+
+def on_export(data, event_type, label):
+    app.eval_js("document.getElementById('status').textContent = 'Exported!'", label)
+
+def on_theme(data, event_type, label):
+    is_dark = data["value"]
+    app.eval_js(f"document.documentElement.classList.toggle('light', {str(not is_dark).lower()})", label)
+
+def on_search(data, event_type, label):
+    app.eval_js(f"document.getElementById('status').textContent = 'Searching: {data['value']}'", label)
 
 toolbar = Toolbar(
     position="top",
     items=[
-        Button(label="Export", event="toolbar:export", data={"format": "csv"}),
+        Button(label="Save", event="app:save"),
+        Button(label="Export", event="app:export", variant="secondary"),
         Select(
             label="View:",
             event="view:change",
-            options=[Option(label="Table", value="table"), Option(label="Chart", value="chart")],
-            selected="table",
+            options=["Table", "Chart"],
+            selected="Table",
         ),
-        TextInput(label="Search:", event="search:query", placeholder="Type...", debounce=300),
+        TextInput(label="Search:", event="search:query", placeholder="Type..."),
+        Toggle(label="Dark:", event="theme:toggle", value=True, style="margin-left: auto;"),
     ],
+)
+
+app.show(
+    "<h1>My App</h1><p id='status'>Ready</p>",
+    toolbars=[toolbar],
+    callbacks={
+        "app:save": on_save,
+        "app:export": on_export,
+        "theme:toggle": on_theme,
+        "search:query": on_search,
+    },
 )
 ```
 
-### Styling Buttons
+</details>
 
-Buttons use the `.pywry-btn` class. Override styles via `HtmlContent.inline_css` or custom CSS:
+<details>
+<summary><strong>Styling Buttons</strong></summary>
 
 ```python
 from pywry import PyWry, HtmlContent, Toolbar, Button
 
-app = PyWry()
-
-def on_action(data, event_type, label):
-    app.eval_js("document.querySelector('h1').textContent = 'Action triggered!'", label=label)
-
 content = HtmlContent(
-    html="<h1>Click the button</h1>",
+    html="<h1>Styled Buttons</h1>",
     inline_css="""
         .pywry-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             padding: 8px 20px;
         }
-        .pywry-btn:hover {
-            transform: scale(1.05);
-        }
-        .pywry-toolbar {
-            justify-content: center;
-            gap: 12px;
-        }
+        .pywry-btn:hover { transform: scale(1.05); }
+        .pywry-toolbar { justify-content: center; gap: 12px; }
     """
 )
 
-toolbar = Toolbar(position="top", items=[Button(label="Action", event="app:action")])
-
-app.show(
-    content,
-    toolbars=[toolbar],
-    callbacks={"app:action": on_action},
+toolbar = Toolbar(
+    position="top",
+    items=[
+        Button(label="Primary", event="app:primary"),
+        Button(label="Secondary", event="app:secondary", variant="secondary"),
+        Button(label="Danger", event="app:danger", variant="danger"),
+    ],
 )
+
+app.show(content, toolbars=[toolbar])
 ```
 
-### Toolbar with Plotly/AG Grid
+</details>
 
-Toolbars work with all display methods:
+<details>
+<summary><strong>Toolbar with Plotly/AgGrid</strong></summary>
 
 ```python
-from pywry import Toolbar, Button
+from pywry import PyWry, Toolbar, Button
 
-# Plotly with toolbar - reset zoom on click
+app = PyWry()
+
+# Plotly with toolbar
 def on_reset(data, event_type, label):
-    app.eval_js("Plotly.relayout(window.__PYWRY_PLOTLY_DIV__, {xaxis: {autorange: true}, yaxis: {autorange: true}})")
+    app.eval_js(
+        "Plotly.relayout(window.__PYWRY_PLOTLY_DIV__, "
+        "{xaxis: {autorange: true}, yaxis: {autorange: true}})"
+    )
 
-toolbar = Toolbar(position="bottom", items=[Button(label="Reset Zoom", event="app:reset")])
-
-app.show_plotly(
-    fig,
-    toolbars=[toolbar],
-    callbacks={"app:reset": on_reset},
+toolbar = Toolbar(
+    position="bottom",
+    items=[Button(label="Reset Zoom", event="app:reset")],
 )
 
-# AG Grid with toolbar - export on click
+app.show_plotly(fig, toolbars=[toolbar], callbacks={"app:reset": on_reset})
+
+# AgGrid with toolbar
 def on_export(data, event_type, label):
     app.eval_js("window.__PYWRY_GRID_API__.exportDataAsCsv()")
 
-toolbar = Toolbar(position="top", items=[Button(label="Export CSV", event="app:export")])
+toolbar = Toolbar(
+    position="top",
+    items=[Button(label="Export CSV", event="app:export")],
+)
 
-app.show_dataframe(
-    df,
-    toolbars=[toolbar],
-    callbacks={"app:export": on_export},
+app.show_dataframe(df, toolbars=[toolbar], callbacks={"app:export": on_export})
+```
+
+</details>
+ 
+<details>
+<summary><strong>All Toolbar Inputs - No Javascript Required</strong></summary>
+
+```python
+from pywry import (
+    PyWry,
+    Toolbar,
+    Button,
+    Select,
+    MultiSelect,
+    TextInput,
+    NumberInput,
+    SliderInput,
+    DateInput,
+    RangeInput,
+    Toggle,
+    Checkbox,
+    RadioGroup,
+    TabGroup,
+    Option,
+    Div,
+)
+
+
+app = PyWry()
+
+# State to display current values
+component_values = {}
+current_theme = "dark"  # Track current theme
+
+def make_handler(name):
+    """Create a handler that updates the display with the component's value."""
+    def handler(data, event_type, label):
+        # Extract the relevant value(s) from the event data
+        if "value" in data:
+            component_values[name] = data["value"]
+        elif "values" in data:
+            component_values[name] = data["values"]
+        elif "start" in data and "end" in data:
+            component_values[name] = f"{data['start']} - {data['end']}"
+        elif "btn" in data:
+            component_values[name] = data["btn"]
+        else:
+            component_values[name] = "clicked"
+        
+        # Build display text for footer using built-in pywry:set_content
+        parts = [f"<strong>{k}:</strong> {v}" for k, v in component_values.items()]
+        components_widget.emit("pywry:set_content", {
+            "id": "values-display",
+            "html": " | ".join(parts)
+        })
+    return handler
+
+def on_theme_toggle(data, event_type, label):
+    """Toggle between dark and light mode using built-in pywry event."""
+    global current_theme
+    current_theme = "light" if current_theme == "dark" else "dark"
+    components_widget.emit("pywry:update_theme", {"theme": current_theme})
+
+def on_title_size(data, event_type, label):
+    """Change the title size using built-in pywry:set_style event."""
+    sizes = {"sm": "16px", "md": "20px", "lg": "26px"}
+    size = data.get("value", "md")
+    # Use built-in pywry:set_style event to update element styles
+    components_widget.emit("pywry:set_style", {
+        "id": "demo-title",
+        "styles": {"fontSize": sizes.get(size, "20px")}
+    })
+
+def on_label_style(data, event_type, label):
+    """Change all component label styles using built-in pywry:set_style event."""
+    style_map = {
+        "normal": {"fontWeight": "400", "fontStyle": "normal"},
+        "semi": {"fontWeight": "500", "fontStyle": "normal"},
+        "bold": {"fontWeight": "700", "fontStyle": "normal"},
+        "italic": {"fontWeight": "400", "fontStyle": "italic"},
+    }
+    style = data.get("value", "normal")
+    # Use built-in pywry:set_style event to update all labels
+    components_widget.emit("pywry:set_style", {
+        "selector": ".pywry-input-label",
+        "styles": style_map.get(style, style_map["normal"])
+    })
+
+def on_accent_color(data, event_type, label):
+    """Change the accent color using built-in pywry:inject-css event."""
+    colors = {
+        "blue": "#0078d4",
+        "green": "#28a745",
+        "purple": "#6f42c1",
+        "orange": "#fd7e14",
+        "pink": "#e91e63",
+    }
+    color = data.get("value", "blue")
+    accent = colors.get(color, colors["blue"])
+    
+    # Use built-in pywry:inject-css to dynamically inject CSS
+    # The 'id' allows replacing the same style block on subsequent calls
+    components_widget.emit("pywry:inject-css", {
+        "id": "custom-accent-color",
+        "css": f"""
+            :root {{
+                --pywry-accent: {accent} !important;
+                --pywry-accent-hover: {accent}dd !important;
+            }}
+            .pywry-btn-neutral {{
+                background: {accent} !important;
+            }}
+            .pywry-btn-neutral:hover {{
+                background: {accent}dd !important;
+            }}
+        """
+    })
+
+# Header toolbar with title and theme toggle
+components_header = Toolbar(
+    position="header",
+    items=[
+        Div(
+            content="<h3 id='demo-title' style='margin: 0;'>🧩 All Toolbar Components</h3>",
+            style="flex: 1;",
+        ),
+        Select(
+            label="Accent:",
+            event="demo:accent",
+            options=[
+                Option(label="Blue", value="blue"),
+                Option(label="Green", value="green"),
+                Option(label="Purple", value="purple"),
+                Option(label="Orange", value="orange"),
+                Option(label="Pink", value="pink"),
+            ],
+            selected="blue",
+        ),
+        Select(
+            label="Title:",
+            event="demo:title_size",
+            options=[Option(label="SM", value="sm"), Option(label="MD", value="md"), Option(label="LG", value="lg")],
+            selected="md",
+        ),
+        Select(
+            label="Labels:",
+            event="demo:label_style",
+            options=[Option(label="Normal", value="normal"), Option(label="Semi", value="semi"), Option(label="Bold", value="bold"), Option(label="Italic", value="italic")],
+            selected="normal",
+        ),
+        Button(label="☀️", event="demo:theme", variant="ghost", component_id="theme-toggle-btn"),
+    ],
+)
+
+# Top toolbar with text, number, and date inputs
+inputs_row = Toolbar(
+    position="top",
+    items=[
+        TextInput(
+            label="Text:",
+            event="demo:text",
+            value="Hello",
+            placeholder="Type here...",
+        ),
+        NumberInput(
+            label="Number:",
+            event="demo:number",
+            value=42,
+            min=0,
+            max=100,
+            step=1,
+        ),
+        DateInput(
+            label="Date:",
+            event="demo:date",
+            value="2026-01-13",
+        ),
+    ],
+)
+
+# Second row with select, multi-select
+selects_row = Toolbar(
+    position="top",
+    items=[
+        Select(
+            label="Select:",
+            event="demo:select",
+            options=[
+                Option(label="Option A", value="a"),
+                Option(label="Option B", value="b"),
+                Option(label="Option C", value="c"),
+            ],
+            selected="a",
+        ),
+        MultiSelect(
+            label="Multi:",
+            event="demo:multi",
+            options=[
+                Option(label="Red", value="red"),
+                Option(label="Green", value="green"),
+                Option(label="Blue", value="blue"),
+            ],
+            selected=["red"],
+        ),
+    ],
+)
+
+# Third row with sliders and range
+sliders_row = Toolbar(
+    position="top",
+    items=[
+        SliderInput(
+            label="Slider:",
+            event="demo:slider",
+            value=50,
+            min=0,
+            max=100,
+            step=5,
+            show_value=True,
+        ),
+        RangeInput(
+            label="Range:",
+            event="demo:range",
+            min=0,
+            max=100,
+            start=20,
+            end=80,
+            show_value=True,
+        ),
+    ],
+)
+
+# Fourth row with toggle, checkbox, and horizontal radio
+booleans_row = Toolbar(
+    position="top",
+    items=[
+        Toggle(label="Toggle:", event="demo:toggle", value=True),
+        Div(content="<span class='pywry-input-label'>Check:</span>", style="margin-right: 4px;"),
+        Checkbox(label="", event="demo:checkbox", value=False),
+        RadioGroup(
+            label="Radio:",
+            event="demo:radio",
+            options=[Option(label="A", value="a"), Option(label="B", value="b"), Option(label="C", value="c")],
+            selected="a",
+            direction="horizontal",
+        ),
+    ],
+)
+
+# Fifth row with TabGroups
+tabs_row = Toolbar(
+    position="top",
+    items=[
+        TabGroup(
+            label="View:",
+            event="demo:tabs",
+            options=[
+                Option(label="Table", value="table"),
+                Option(label="Chart", value="chart"),
+                Option(label="Map", value="map"),
+            ],
+            selected="table",
+        ),
+        TabGroup(
+            label="Size:",
+            event="demo:tabsize",
+            options=["SM", "MD", "LG"],
+            selected="MD",
+            size="sm",
+        ),
+    ],
+)
+
+# Right sidebar with vertical radio group
+right_sidebar = Toolbar(
+    position="right",
+    style="padding: 8px 12px;",
+    items=[
+        Div(content="<span class='pywry-input-label'>Priority</span>", style="margin-bottom: 4px;"),
+        RadioGroup(
+            event="demo:priority",
+            options=[
+                Option(label="Low", value="low"),
+                Option(label="Medium", value="med"),
+                Option(label="High", value="high"),
+            ],
+            selected="med",
+            direction="vertical",
+        ),
+    ],
+    collapsible=True,
+)
+
+# Bottom toolbar with buttons (all variants)
+buttons_row = Toolbar(
+    position="top",
+    items=[
+        Div(content="<span class='pywry-input-label'>Variants:</span>", style="margin-right: 4px;"),
+        Button(label="Primary", event="demo:btn", data={"btn": "primary"}, variant="primary"),
+        Button(label="Secondary", event="demo:btn", data={"btn": "secondary"}, variant="secondary"),
+        Button(label="Neutral", event="demo:btn", data={"btn": "neutral"}, variant="neutral"),
+        Button(label="Ghost", event="demo:btn", data={"btn": "ghost"}, variant="ghost"),
+        Button(label="Outline", event="demo:btn", data={"btn": "outline"}, variant="outline"),
+        Button(label="Danger", event="demo:btn", data={"btn": "danger"}, variant="danger"),
+        Button(label="Warning", event="demo:btn", data={"btn": "warning"}, variant="warning"),
+        Button(label="⚙", event="demo:btn", data={"btn": "icon"}, variant="icon"),
+    ],
+)
+
+# Size variants row
+sizes_row = Toolbar(
+    position="top",
+    items=[
+        Div(content="<span class='pywry-input-label'>Sizes</span>", style="margin-right: 4px;"),
+        Button(label="XS", event="demo:btn", data={"btn": "xs"}, variant="neutral", size="xs"),
+        Button(label="SM", event="demo:btn", data={"btn": "sm"}, variant="neutral", size="sm"),
+        Button(label="Default", event="demo:btn", data={"btn": "default"}, variant="neutral"),
+        Button(label="LG", event="demo:btn", data={"btn": "lg"}, variant="neutral", size="lg"),
+        Button(label="XL", event="demo:btn", data={"btn": "xl"}, variant="neutral", size="xl"),
+    ],
+)
+
+# Footer with live status display
+components_footer = Toolbar(
+    position="footer",
+    items=[
+        Div(
+            content="<span id='values-display'><em>Interact with components above...</em></span>",
+            style="color: var(--pywry-text-secondary); width: 100%; text-align: center;",
+        ),
+    ],
+)
+
+# No custom HTML or custom JS needed - all interactions use built-in pywry events!
+components_html = ""
+
+components_widget = app.show(
+    components_html,
+    title="All Components Demo",
+    toolbars=[
+        components_header,
+        inputs_row,
+        selects_row,
+        sliders_row,
+        booleans_row,
+        tabs_row,
+        buttons_row,
+        sizes_row,
+        right_sidebar,
+        components_footer,
+    ],
+    callbacks={
+        "demo:text": make_handler("Text"),
+        "demo:number": make_handler("Number"),
+        "demo:date": make_handler("Date"),
+        "demo:select": make_handler("Select"),
+        "demo:multi": make_handler("Multi"),
+        "demo:slider": make_handler("Slider"),
+        "demo:range": make_handler("Range"),
+        "demo:toggle": make_handler("Toggle"),
+        "demo:checkbox": make_handler("Checkbox"),
+        "demo:radio": make_handler("Radio"),
+        "demo:tabs": make_handler("Tabs"),
+        "demo:tabsize": make_handler("TabSize"),
+        "demo:priority": make_handler("Priority"),
+        "demo:btn": make_handler("Button"),
+        "demo:theme": on_theme_toggle,
+        "demo:title_size": on_title_size,
+        "demo:label_style": on_label_style,
+        "demo:accent": on_accent_color,
+    },
+    height=375
 )
 ```
 
-### Toolbar State Management
+</details>
 
-PyWry provides bidirectional communication for querying and setting toolbar component values.
+---
 
-**Query toolbar state:**
+### State Management
+
+<details>
+<summary><strong>Querying Toolbar State</strong></summary>
 
 ```python
-# For notebook widgets - request all toolbar state
-def on_toolbar_state(data, event_type, label):
-    print(f"Toolbar state: {data}")
-    # data = { 
-    #   toolbars: { "toolbar-id": { position: "top", components: [...ids...] } },
-    #   components: { "component-id": { type: "select", value: "dark" } },
-    #   timestamp: 1234567890
-    # }
+# Notebook widgets
+def on_state(data, event_type, label):
+    print(f"Toolbars: {data['toolbars']}")
+    print(f"Components: {data['components']}")
 
-widget.on("toolbar:state_response", on_toolbar_state)
+widget.on("toolbar:state_response", on_state)
 widget.request_toolbar_state()
 
 # Query specific toolbar
 widget.request_toolbar_state(toolbar_id="my-toolbar")
 
-# Query single component value
-def on_value(data, event_type, label):
-    print(f"Component value: {data['value']}")
-
-widget.on("toolbar:state_response", on_value)
-widget.get_toolbar_value("theme-select")
+# Native windows (via runtime)
+from pywry import runtime
+runtime.emit_event("window-label", "toolbar:request_state", {})
 ```
 
-**Set toolbar values from Python:**
+**Response payload:**
+```python
+{
+    "toolbars": {"toolbar-a1b2c3d4": {"position": "top", "components": ["button-x1y2z3", ...]}},
+    "components": {"button-x1y2z3": {"type": "button", "value": None}, ...},
+    "timestamp": 1234567890
+}
+```
+
+</details>
+
+<details>
+<summary><strong>Setting Toolbar Values</strong></summary>
 
 ```python
-# Set single component
-widget.set_toolbar_value("theme-select", "dark")
-widget.set_toolbar_value("columns-multiselect", ["name", "age"])
-widget.set_toolbar_value("search-input", "query text")
+# Notebook widgets
+widget.set_toolbar_value("select-a1b2c3d4", "dark")
+widget.set_toolbar_value("multiselect-x1y2z3", ["name", "age"])
 
-# Set multiple components at once
+# Set multiple at once
 widget.set_toolbar_values({
-    "theme-select": "dark",
-    "columns-multiselect": ["name", "age"],
-    "limit-number": 50
+    "select-a1b2c3d4": "dark",
+    "number-b2c3d4e5": 50,
 })
-```
 
-**Native window toolbar state (via runtime):**
-
-```python
+# Native windows (via runtime)
 from pywry import runtime
 
-# Request toolbar state (response comes via toolbar:state_response callback)
-runtime.emit_event("window-label", "toolbar:request_state", {})
-
-# Request specific toolbar
-runtime.emit_event("window-label", "toolbar:request_state", {"toolbarId": "my-toolbar"})
-
-# Set single value
 runtime.emit_event("window-label", "toolbar:set_value", {
-    "componentId": "theme-select",
+    "componentId": "select-a1b2c3d4",
     "value": "dark"
 })
 
-# Set multiple values
 runtime.emit_event("window-label", "toolbar:set_values", {
-    "values": {
-        "theme-select": "dark",
-        "columns-multiselect": ["name", "age"]
-    }
+    "values": {"select-a1b2c3d4": "dark", "number-b2c3d4e5": 50}
 })
 ```
 
-**JavaScript access to toolbar state:**
+</details>
+
+<details>
+<summary><strong>JavaScript Access</strong></summary>
 
 ```javascript
-// Get state of all toolbars
+// Get all toolbar state
 const state = window.__PYWRY_TOOLBAR__.getState();
 
-// Get state of specific toolbar
-const state = window.__PYWRY_TOOLBAR__.getState("my-toolbar-id");
+// Get specific toolbar state
+const state = window.__PYWRY_TOOLBAR__.getState("toolbar-a1b2c3d4");
 
 // Get/set individual component value
-const value = window.__PYWRY_TOOLBAR__.getValue("component-id");
-window.__PYWRY_TOOLBAR__.setValue("component-id", "new-value");
+const value = window.__PYWRY_TOOLBAR__.getValue("select-a1b2c3d4");
+window.__PYWRY_TOOLBAR__.setValue("select-a1b2c3d4", "light");
 ```
+
+</details>
 
 </details>
 
@@ -1832,14 +2571,14 @@ window.json_data  // e.g., { key: "value" }
 // Plotly reference (when include_plotly=True)
 window.__PYWRY_PLOTLY_DIV__  // Reference to Plotly chart container
 
-// AG Grid API (when include_aggrid=True)
-window.__PYWRY_GRID_API__  // AG Grid API for programmatic control
+// AgGrid API (when include_aggrid=True)
+window.__PYWRY_GRID_API__  // AgGrid API for programmatic control
 
 // Bundled Plotly templates (when include_plotly=True)
 window.PYWRY_PLOTLY_TEMPLATES  // Object with all Plotly templates
 ```
 
-### Accessing AG Grid API
+### Accessing AgGrid API
 
 ```javascript
 // Get selected rows
@@ -1895,6 +2634,31 @@ window.pywry.on('app:response', function(data) {
 </script>
 """, callbacks={"app:request-data": handle_request})
 ```
+
+### Built-in System Event Handlers
+
+PyWry pre-registers handlers for common UI manipulation events. These are handled automatically by the JavaScript bridge — **you don't need to write any JavaScript to use them**:
+
+```python
+# Theme switching (updates Plotly templates, AgGrid themes, and CSS classes)
+widget.emit("pywry:update_theme", {"theme": "plotly_white"})
+
+# Inject CSS dynamically (with optional id for replacement)
+widget.emit("pywry:inject-css", {"css": ".status { color: green; }", "id": "status-css"})
+
+# Update element styles by id or CSS selector
+widget.emit("pywry:set_style", {"id": "counter", "styles": {"fontSize": "24px", "fontWeight": "bold"}})
+widget.emit("pywry:set_style", {"selector": ".highlight", "styles": {"backgroundColor": "yellow"}})
+
+# Update element content by id or CSS selector
+widget.emit("pywry:set_content", {"id": "message", "html": "<strong>Success!</strong>"})
+widget.emit("pywry:set_content", {"selector": ".count", "text": "42"})
+
+# Trigger file download (IFrame/browser mode only)
+widget.emit("pywry:download", {"content": "CSV data...", "filename": "data.csv", "mimeType": "text/csv"})
+```
+
+See [Utility Events (Python → JS)](#utility-events-python--js) for complete documentation.
 
 </details>
 
@@ -2066,7 +2830,7 @@ PyWry can display content in multiple ways, and each has its own management mode
 | **Window** | A native desktop window (Tauri/WRY) | `WindowMode.NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW` |
 | **Widget** | An embedded display in a notebook cell or browser tab | `WindowMode.NOTEBOOK`, `BROWSER` |
 
-Both **windows** and **widgets** display the same content (HTML, Plotly charts, AG Grid tables). The difference is where and how they appear to the user.
+Both **windows** and **widgets** display the same content (HTML, Plotly charts, AgGrid tables). The difference is where and how they appear to the user.
 
 ### WindowMode Options
 
@@ -2206,7 +2970,7 @@ widget.update("<h1>New content</h1>")
 # For Plotly widgets: update the figure
 widget.update_figure(new_fig)
 
-# For AG Grid widgets: update the data
+# For AgGrid widgets: update the data
 widget.update_data(new_rows)
 ```
 
@@ -2311,7 +3075,7 @@ Methods available on the `PyWry` app instance:
 |--------|-------------|
 | `app.show(html, ...)` | Show HTML content, returns label or widget |
 | `app.show_plotly(fig, ...)` | Show Plotly figure, returns label or widget |
-| `app.show_dataframe(df, ...)` | Show DataFrame as AG Grid, returns label or widget |
+| `app.show_dataframe(df, ...)` | Show DataFrame as AgGrid, returns label or widget |
 | `app.get_labels()` | Get list of all active window labels |
 | `app.is_open(label=None)` | Check if window(s) are open |
 | `app.emit(event, data, label=None)` | Send event to window(s) |
@@ -2320,7 +3084,7 @@ Methods available on the `PyWry` app instance:
 | `app.refresh_css(label=None)` | Hot-reload CSS without page refresh |
 | `app.on(event, handler)` | Register global event handler |
 | `app.on_chart(event, handler)` | Register Plotly event handler (convenience) |
-| `app.on_grid(event, handler)` | Register AG Grid event handler (convenience) |
+| `app.on_grid(event, handler)` | Register AgGrid event handler (convenience) |
 | `app.on_toolbar(event, handler)` | Register toolbar event handler (convenience) |
 | `app.on_html(event, handler)` | Register HTML element event handler (convenience) |
 | `app.on_window(event, handler)` | Register window lifecycle event handler (convenience) |
@@ -2349,7 +3113,7 @@ Methods available on widget objects returned by `show_*()` in NOTEBOOK/BROWSER m
 | `widget.reset_zoom()` | Reset chart zoom to auto-range |
 | `widget.set_zoom(x_range, y_range)` | Set chart zoom to specific range |
 
-**AG Grid-specific widget methods:**
+**AgGrid-specific widget methods:**
 
 | Method | Description |
 |--------|-------------|
@@ -2506,7 +3270,7 @@ from pywry.inline import (
     _start_server,
     show,              # For HTML content
     show_plotly,       # For Plotly figures  
-    show_dataframe,    # For DataFrames/AG Grid
+    show_dataframe,    # For DataFrames/AgGrid
 )
 import plotly.express as px
 import pandas as pd
@@ -2976,11 +3740,11 @@ pywry/
 │   ├── __main__.py        # PyTauri subprocess entry point
 │   ├── app.py             # Main PyWry class - user entry point
 │   ├── asset_loader.py    # CSS/JS file loading with caching
-│   ├── assets.py          # Bundled asset loading (Plotly.js, AG Grid, CSS)
+│   ├── assets.py          # Bundled asset loading (Plotly.js, AgGrid, CSS)
 │   ├── callbacks.py       # Event callback registry (singleton)
 │   ├── cli.py             # CLI commands (pywry config, pywry init)
 │   ├── config.py          # Layered configuration system (pydantic-settings)
-│   ├── grid.py            # AG Grid Pydantic models (ColDef, GridOptions, etc.)
+│   ├── grid.py            # AgGrid Pydantic models (ColDef, GridOptions, etc.)
 │   ├── hot_reload.py      # Hot reload manager
 │   ├── inline.py          # FastAPI-based inline server + InlineWidget
 │   ├── log.py             # Logging utilities
@@ -3002,7 +3766,7 @@ pywry/
 │   │   ├── __init__.py
 │   │   └── window_commands.py
 │   ├── frontend/          # Frontend HTML and bundled assets
-│   │   ├── assets/        # Plotly.js, AG Grid, icons
+│   │   ├── assets/        # Plotly.js, AgGrid, icons
 │   │   ├── src/           # main.js, aggrid-defaults.js, plotly-widget.js, plotly-templates.js
 │   │   └── style/         # CSS files (pywry.css)
 │   ├── utils/             # Utility helpers
@@ -3272,12 +4036,12 @@ Plotly.update(window.__PYWRY_PLOTLY_DIV__, {}, {
 
 </details>
 
-## AG Grid Integration
+## AgGrid Integration
 
 <details>
 <summary>Click to expand</summary>
 
-PyWry bundles AG Grid 35.0.0 for high-performance data tables. Display DataFrames with `show_dataframe()` and handle grid events in Python.
+PyWry bundles AgGrid 35.0.0 for high-performance data tables. Display DataFrames with `show_dataframe()` and handle grid events in Python.
 
 ### Basic Usage
 
@@ -3298,7 +4062,7 @@ from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOpt
 
 ### Column Definitions
 
-Use `ColDef` to define individual columns with all common AG Grid options:
+Use `ColDef` to define individual columns with all common AgGrid options:
 
 ```python
 from pywry import PyWry
@@ -3383,11 +4147,11 @@ app.show_dataframe(df, grid_options=grid_options.to_dict())
 | `ColGroupDef` | Column group for MultiIndex columns |
 | `DefaultColDef` | Default settings applied to all columns |
 | `RowSelection` | Row selection configuration |
-| `GridOptions` | Complete AG Grid configuration |
-| `GridConfig` | Combined AG Grid options + PyWry context |
+| `GridOptions` | Complete AgGrid configuration |
+| `GridConfig` | Combined AgGrid options + PyWry context |
 | `GridData` | Normalized grid data from various inputs |
 
-### Accessing AG Grid API (JavaScript)
+### Accessing AgGrid API (JavaScript)
 
 ```javascript
 // Get selected rows
@@ -3403,7 +4167,7 @@ window.__PYWRY_GRID_API__.applyTransaction({ update: [row1, row2] });
 window.__PYWRY_GRID_API__.exportDataAsCsv();
 ```
 
-For full AG Grid API reference, see: https://www.ag-grid.com/javascript-data-grid/grid-options/
+For full AgGrid API reference, see: https://www.ag-grid.com/javascript-data-grid/grid-options/
 
 </details>
 

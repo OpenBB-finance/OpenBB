@@ -233,11 +233,9 @@ TOOLBAR_BRIDGE_JS = """
 (function() {
     'use strict';
 
-    // Collect state from all toolbar components
     function getToolbarState(toolbarId) {
         var state = { toolbars: {}, components: {}, timestamp: Date.now() };
 
-        // Find all toolbars (or specific one)
         var toolbars = toolbarId
             ? [document.getElementById(toolbarId)]
             : document.querySelectorAll('.pywry-toolbar');
@@ -254,7 +252,6 @@ TOOLBAR_BRIDGE_JS = """
                 components: []
             };
 
-            // Collect all input values within this toolbar
             toolbar.querySelectorAll('[id]').forEach(function(el) {
                 var id = el.id;
                 var value = null;
@@ -269,7 +266,6 @@ TOOLBAR_BRIDGE_JS = """
                 } else if (el.tagName === 'INPUT') {
                     var inputType = el.type;
                     if (inputType === 'checkbox') {
-                        // Part of multiselect - handled by parent
                         return;
                     } else if (inputType === 'range') {
                         type = 'range';
@@ -288,6 +284,10 @@ TOOLBAR_BRIDGE_JS = """
                     type = 'multiselect';
                     value = Array.from(el.querySelectorAll('input:checked'))
                         .map(function(i) { return i.value; });
+                } else if (el.classList.contains('pywry-dropdown')) {
+                    type = 'select';
+                    var selectedOpt = el.querySelector('.pywry-dropdown-option.pywry-selected');
+                    value = selectedOpt ? selectedOpt.getAttribute('data-value') : null;
                 }
 
                 if (type) {
@@ -300,7 +300,6 @@ TOOLBAR_BRIDGE_JS = """
         return state;
     }
 
-    // Get value of a specific component
     function getComponentValue(componentId) {
         var el = document.getElementById(componentId);
         if (!el) return null;
@@ -316,11 +315,13 @@ TOOLBAR_BRIDGE_JS = """
         } else if (el.classList.contains('pywry-multiselect')) {
             return Array.from(el.querySelectorAll('input:checked'))
                 .map(function(i) { return i.value; });
+        } else if (el.classList.contains('pywry-dropdown')) {
+            var selectedOpt = el.querySelector('.pywry-dropdown-option.pywry-selected');
+            return selectedOpt ? selectedOpt.getAttribute('data-value') : null;
         }
         return null;
     }
 
-    // Set value of a specific component
     function setComponentValue(componentId, value, options) {
         var el = document.getElementById(componentId);
         if (!el) return false;
@@ -329,7 +330,6 @@ TOOLBAR_BRIDGE_JS = """
             el.value = value;
             return true;
         } else if (el.classList.contains('pywry-dropdown')) {
-            // Custom dropdown - update options if provided, then set value
             if (options && Array.isArray(options)) {
                 var menu = el.querySelector('.pywry-dropdown-menu');
                 if (menu) {
@@ -338,18 +338,13 @@ TOOLBAR_BRIDGE_JS = """
                         return '<div class="pywry-dropdown-option' + (isSelected ? ' pywry-selected' : '') +
                                '" data-value="' + opt.value + '">' + opt.label + '</div>';
                     }).join('');
-                    // Re-bind click handlers for new options
-                    bindDropdownOptionClicks(el);
                 }
             }
-            // Update selected text and data-value
             var textEl = el.querySelector('.pywry-dropdown-text');
             if (textEl) {
-                // Find the label for this value
                 var optionEl = el.querySelector('.pywry-dropdown-option[data-value="' + value + '"]');
                 if (optionEl) {
                     textEl.textContent = optionEl.textContent;
-                    // Update selected state
                     el.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
                         opt.classList.remove('pywry-selected');
                     });
@@ -367,69 +362,6 @@ TOOLBAR_BRIDGE_JS = """
         return false;
     }
 
-    // Bind click handlers to dropdown options
-    function bindDropdownOptionClicks(dropdown) {
-        var options = dropdown.querySelectorAll('.pywry-dropdown-option');
-        options.forEach(function(option) {
-            option.onclick = function(e) {
-                e.stopPropagation();
-                var value = option.dataset.value;
-                var event = dropdown.dataset.event;
-                var componentId = dropdown.id;
-
-                // Update visual state
-                dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
-                    opt.classList.remove('pywry-selected');
-                });
-                option.classList.add('pywry-selected');
-
-                // Update displayed text
-                var textEl = dropdown.querySelector('.pywry-dropdown-text');
-                if (textEl) textEl.textContent = option.textContent;
-
-                // Close dropdown
-                dropdown.classList.remove('pywry-open');
-
-                // Emit event to Python
-                if (window.pywry && window.pywry.emit && event) {
-                    window.pywry.emit(event, { value: value, componentId: componentId });
-                }
-            };
-        });
-    }
-
-    // Initialize all custom dropdowns
-    function initDropdowns() {
-        document.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
-            var selected = dropdown.querySelector('.pywry-dropdown-selected');
-            if (!selected) return;
-
-            // Toggle dropdown on click
-            selected.onclick = function(e) {
-                e.stopPropagation();
-                if (dropdown.classList.contains('pywry-disabled')) return;
-
-                // Close other open dropdowns
-                document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
-                    if (other !== dropdown) other.classList.remove('pywry-open');
-                });
-
-                dropdown.classList.toggle('pywry-open');
-            };
-
-            // Bind option clicks
-            bindDropdownOptionClicks(dropdown);
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
-                dropdown.classList.remove('pywry-open');
-            });
-        });
-    }
-
-    // Handle toolbar state request from Python
     window.pywry.on('toolbar:request_state', function(data) {
         var toolbarId = data && data.toolbarId;
         var componentId = data && data.componentId;
@@ -437,14 +369,12 @@ TOOLBAR_BRIDGE_JS = """
 
         var response;
         if (componentId) {
-            // Single component value
             response = {
                 componentId: componentId,
                 value: getComponentValue(componentId),
                 context: context
             };
         } else {
-            // Full toolbar state
             response = getToolbarState(toolbarId);
             response.context = context;
             if (toolbarId) response.toolbarId = toolbarId;
@@ -453,14 +383,12 @@ TOOLBAR_BRIDGE_JS = """
         window.pywry.emit('toolbar:state_response', response);
     });
 
-    // Handle toolbar update from Python
     window.pywry.on('toolbar:set_value', function(data) {
         if (data && data.componentId && data.value !== undefined) {
-            setComponentValue(data.componentId, data.value);
+            setComponentValue(data.componentId, data.value, data.options);
         }
     });
 
-    // Handle bulk update
     window.pywry.on('toolbar:set_values', function(data) {
         if (data && data.values) {
             Object.keys(data.values).forEach(function(id) {
@@ -469,23 +397,11 @@ TOOLBAR_BRIDGE_JS = """
         }
     });
 
-    // Expose for manual access
     window.__PYWRY_TOOLBAR__ = {
         getState: getToolbarState,
         getValue: getComponentValue,
-        setValue: setComponentValue,
-        initDropdowns: initDropdowns
+        setValue: setComponentValue
     };
-
-    // Initialize dropdowns on DOM ready
-    // Always defer to ensure body is parsed, even if readyState suggests we're ready.
-    // This script runs from <head> so body might not exist at script execution time.
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDropdowns);
-    } else {
-        // Defer to next tick to ensure body is ready
-        setTimeout(initDropdowns, 0);
-    }
 })();
 """
 
@@ -610,6 +526,43 @@ HOT_RELOAD_JS = """
 
         window.__TAURI__.event.listen('pywry:remove-css', function(event) {
             window.pywry.removeCSS(event.payload.id);
+        });
+
+        window.__TAURI__.event.listen('pywry:set_style', function(event) {
+            var styles = event.payload.styles;
+            if (!styles) return;
+            var elements = [];
+            if (event.payload.id) {
+                var el = document.getElementById(event.payload.id);
+                if (el) elements.push(el);
+            } else if (event.payload.selector) {
+                elements = Array.from(document.querySelectorAll(event.payload.selector));
+            }
+            elements.forEach(function(el) {
+                Object.keys(styles).forEach(function(prop) {
+                    el.style[prop] = styles[prop];
+                });
+            });
+            console.log('[PyWry] Set styles on', elements.length, 'elements:', styles);
+        });
+
+        // Built-in handler for updating element content (innerHTML or textContent)
+        window.__TAURI__.event.listen('pywry:set_content', function(event) {
+            var elements = [];
+            if (event.payload.id) {
+                var el = document.getElementById(event.payload.id);
+                if (el) elements.push(el);
+            } else if (event.payload.selector) {
+                elements = Array.from(document.querySelectorAll(event.payload.selector));
+            }
+            elements.forEach(function(el) {
+                if ('html' in event.payload) {
+                    el.innerHTML = event.payload.html;
+                } else if ('text' in event.payload) {
+                    el.textContent = event.payload.text;
+                }
+            });
+            console.log('[PyWry] Set content on', elements.length, 'elements');
         });
 
         window.__TAURI__.event.listen('pywry:refresh', function() {

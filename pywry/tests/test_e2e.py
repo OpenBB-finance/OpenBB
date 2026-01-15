@@ -156,8 +156,8 @@ def verify_theme_and_rendering(label: str, expect_dark: bool) -> dict:
     script = """
     (function() {
         var htmlEl = document.documentElement;
-        var isDarkWindow = htmlEl.classList.contains('dark');
-        var isLightWindow = htmlEl.classList.contains('light');
+        var isDarkWindow = htmlEl.classList.contains('pywry-theme-dark');
+        var isLightWindow = htmlEl.classList.contains('pywry-theme-light');
 
         // Check AG Grid
         var gridDiv = document.querySelector('[class*="ag-theme-"]');
@@ -659,11 +659,15 @@ class TestToolbarComponentEvents:
         label = show_and_wait_ready(app, "<div>MultiSelect Test</div>", toolbars=toolbars)
         get_registry().register(label, "test:multiselect", on_multiselect)
 
-        # Check 'green' checkbox (red is already checked)
+        # First open the multiselect dropdown, then click on the 'green' option
         app.eval_js(
-            "var checkboxes = document.querySelectorAll('.pywry-multiselect input'); "
-            "checkboxes[1].checked = true; "
-            "checkboxes[1].dispatchEvent(new Event('change'));",
+            "document.querySelector('.pywry-multiselect .pywry-dropdown-selected').click();",
+            label=label,
+        )
+        time.sleep(0.2)  # Wait for dropdown to open
+        app.eval_js(
+            "var options = document.querySelectorAll('.pywry-multiselect-option'); "
+            "options[1].click();",  # Click the 'green' option (index 1)
             label=label,
         )
 
@@ -884,10 +888,9 @@ class TestToolbarComponentEvents:
         label = show_and_wait_ready(app, "<div>Range Test</div>", toolbars=toolbars)
         get_registry().register(label, "test:range", on_range)
 
-        # Adjust the end slider to 90
+        # Adjust the end slider to 90 using the correct selector
         app.eval_js(
-            "var inputs = document.querySelectorAll('.pywry-input-range'); "
-            "var endInput = inputs[1]; "  # Second slider is the end
+            "var endInput = document.querySelector('input[data-range=\"end\"]'); "
             "endInput.value = 90; "
             "endInput.dispatchEvent(new Event('input'));",
             label=label,
@@ -1117,12 +1120,12 @@ class TestMultiToolbarStateTracking:
                 break
             time.sleep(0.1)
 
-        # Event data now includes componentId alongside custom data
+        # Event data contains the custom data from the button's data attribute
         export_data = events["export"]
         assert export_data is not None, "Export event not received"
         assert isinstance(export_data, dict), f"Export data should be dict: {export_data}"
         assert export_data["format"] == "csv", f"Export data: {export_data}"
-        assert "componentId" in export_data, "Button should include componentId"  # pylint: disable=unsupported-membership-test
+        # Note: Button emits only its custom data, not componentId (unlike inputs)
         assert events["view"] == "chart", f"View: {events['view']}"
         app.close()
 

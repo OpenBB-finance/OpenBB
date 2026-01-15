@@ -184,10 +184,14 @@ def handle_pywry_event(label: str, event_data: dict[str, Any]) -> dict[str, Any]
 
     debug(f"Received event '{event_type}' from window '{label}'")
 
-    # Send to parent process via stdout
+    # Dispatch to registered callbacks
+    dispatched = get_registry().dispatch(label, event_type, data)
+    debug(f"Event '{event_type}' dispatched={dispatched}")
+
+    # Also send to parent process via stdout (for external consumers)
     send_event_to_parent(label, event_type, data)
 
-    return {"success": True}
+    return {"success": True, "dispatched": dispatched}
 
 
 def handle_plotly_event(label: str, event_data: dict[str, Any]) -> dict[str, Any]:

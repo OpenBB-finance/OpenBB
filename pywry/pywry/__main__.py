@@ -205,11 +205,12 @@ class JsonIPC:
             (function() {{
                 var html = {escaped};
                 var theme = {escaped_theme};
+                var themeClass = 'pywry-theme-' + theme;
                 
                 // Set theme class on <html> element
                 var htmlEl = document.documentElement;
-                htmlEl.classList.remove('dark', 'light');
-                htmlEl.classList.add(theme);
+                htmlEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                htmlEl.classList.add('pywry-native', themeClass);
                 
                 var app = document.getElementById('app');
                 if (!app) return;
@@ -261,6 +262,13 @@ class JsonIPC:
                             else newScript.textContent = oldScript.textContent;
                             oldScript.parentNode.replaceChild(newScript, oldScript);
                         }}
+                        
+                        // Re-initialize toolbar handlers now that content is in DOM
+                        if (typeof initToolbarHandlers === 'function' && window.pywry) {{
+                            console.log('[PyWry] Re-initializing toolbar handlers after content injection');
+                            initToolbarHandlers(document, window.pywry);
+                        }}
+                        
                         // Notify Python that content is ready
                         if (window.pywry && window.pywry.sendEvent) {{
                             window.pywry.sendEvent('content:ready', {{ timestamp: Date.now() }});

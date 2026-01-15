@@ -8,12 +8,12 @@ function render({ model, el }) {
     el.innerHTML = '';
 
     const container = document.createElement('div');
-    container.className = 'pywry-widget pywry-plotly';
+    container.className = 'pywry-widget';
     container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
     if (modelHeight) {
-        container.style.setProperty('--pywry-widget-max-height', modelHeight);
+        container.style.setProperty('--pywry-widget-height', modelHeight);
     }
     if (modelWidth) {
         container.style.setProperty('--pywry-widget-width', modelWidth);
@@ -58,6 +58,11 @@ function render({ model, el }) {
     container._pywryInstance = pywry;
     window.pywry = pywry;
 
+    // =========================================================================
+    // TOOLBAR HANDLERS - LOADED FROM CENTRALIZED SOURCE
+    // See: frontend/src/toolbar-handlers.js
+    // =========================================================================
+    __TOOLBAR_HANDLERS__
     // Helper function to trigger CSV download from data sent by Python
     function downloadCsv(csvContent, filename) {
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -351,88 +356,9 @@ function render({ model, el }) {
         // Set content HTML (toolbar + chart container)
         container.innerHTML = content;
         
-        // Set up custom dropdown handlers (replaces native <select>)
-        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
-            var selected = dropdown.querySelector('.pywry-dropdown-selected');
-            var menu = dropdown.querySelector('.pywry-dropdown-menu');
-            var textEl = dropdown.querySelector('.pywry-dropdown-text');
-            
-            // Toggle dropdown on click
-            selected.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // Close all other dropdowns first
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
-                    if (other !== dropdown) other.classList.remove('pywry-open');
-                });
-                dropdown.classList.toggle('pywry-open');
-            });
-            
-            // Handle option selection
-            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
-                option.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var value = option.getAttribute('data-value');
-                    var label = option.textContent;
-                    
-                    // Update selected state
-                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
-                        opt.classList.remove('pywry-selected');
-                    });
-                    option.classList.add('pywry-selected');
-                    textEl.textContent = label;
-                    dropdown.classList.remove('pywry-open');
-                    
-                    // Emit event
-                    var eventName = dropdown.getAttribute('data-event');
-                    if (eventName) {
-                        console.log('[PyWry Plotly] Dropdown changed:', eventName, value);
-                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
-                    }
-                });
-            });
-        });
-        
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.pywry-dropdown')) {
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
-                    dropdown.classList.remove('pywry-open');
-                });
-            }
-        });
-        
-        // Set up toolbar event handlers using event delegation (for native selects - backwards compat)
-        // This ensures pywry.emit works because pywry is defined in this scope
-        container.querySelectorAll('.pywry-select').forEach(function(select) {
-            select.addEventListener('change', function(e) {
-                var eventName = select.getAttribute('data-event') || select.getAttribute('onchange')?.match(/emit\('([^']+)'/)?.[1];
-                if (!eventName) {
-                    // Extract from inline onchange
-                    var onchange = select.getAttribute('onchange') || '';
-                    var match = onchange.match(/emit\s*\(\s*['"]([^'"]+)['"]/);
-                    if (match) eventName = match[1];
-                }
-                if (eventName) {
-                    console.log('[PyWry Plotly] Select changed:', eventName, select.value);
-                    pywry.emit(eventName, { value: select.value, componentId: select.id });
-                }
-            });
-        });
-        
-        container.querySelectorAll('.pywry-button').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                var eventName = button.getAttribute('data-event') || button.getAttribute('onclick')?.match(/emit\('([^']+)'/)?.[1];
-                if (!eventName) {
-                    var onclick = button.getAttribute('onclick') || '';
-                    var match = onclick.match(/emit\s*\(\s*['"]([^'"]+)['"]/);
-                    if (match) eventName = match[1];
-                }
-                if (eventName) {
-                    console.log('[PyWry Plotly] Button clicked:', eventName);
-                    pywry.emit(eventName, { componentId: button.id });
-                }
-            });
-        });
+        // Initialize toolbar handlers using centralized function
+        // This handles all component types: Button, Select, MultiSelect, Toggle, Checkbox, etc.
+        setTimeout(() => initToolbarHandlers(container, pywry), 10);
         
         applyTheme();
         

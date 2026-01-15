@@ -68,7 +68,7 @@ window.PYWRY_AGGRID_DEFAULT_COL_DEF = {
     filter: true,
     sortable: true,
     resizable: true,
-    menuTabs: ['generalMenuTab', 'filterMenuTab', 'columnsMenuTab'],
+    // Note: menuTabs removed - requires AG Grid Enterprise
     filterParams: {
         buttons: ['apply', 'clear', 'reset'],
         closeOnApply: true,
@@ -161,6 +161,11 @@ window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
     
     return columnDefs.map(function(colDef) {
         var processed = Object.assign({}, colDef);
+        
+        // Remove undefined cellDataType to avoid AG Grid warning
+        if (processed.cellDataType === undefined || processed.cellDataType === null) {
+            delete processed.cellDataType;
+        }
         
         // Convert valueGetter string to function
         // Expression can use: params, data, node, colDef, column, api, columnApi, context
@@ -334,8 +339,8 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
     var options = {
         columnDefs: processedColumnDefs,
         rowData: rowData,
-        rowSelection: config.rowSelection || 'multiple',
-        suppressRowClickSelection: true,  // Let onCellClicked handle selection
+        // AG Grid v32.2+: rowSelection is now an object
+        rowSelection: config.rowSelection || { mode: 'multiRow', enableClickSelection: false },
         pagination: usePagination,
         paginationPageSize: defaultPageSize,
         paginationPageSizeSelector: pageSizeSelector,
@@ -525,8 +530,8 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         // AG Grid's pagination UI doesn't work properly with infinite row model
         pagination: false,
         
-        rowSelection: config.rowSelection || 'multiple',
-        suppressRowClickSelection: true,  // Let onCellClicked handle selection
+        // AG Grid v32.2+: rowSelection is now an object
+        rowSelection: config.rowSelection || { mode: 'multiRow', enableClickSelection: false },
         domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
         // Override AG Grid's default number formatter to use our K/M/B formatting

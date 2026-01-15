@@ -20,17 +20,21 @@ from pydantic import ValidationError
 from pywry.toolbar import (
     RESERVED_NAMESPACES,
     Button,
+    Checkbox,
     DateInput,
+    Div,
     MultiSelect,
     NumberInput,
     Option,
+    RadioGroup,
     RangeInput,
     Select,
     SliderInput,
+    TabGroup,
     TextInput,
+    Toggle,
     Toolbar,
     build_toolbar_html,
-    build_toolbars_by_position,
     build_toolbars_html,
     validate_event_format,
 )
@@ -192,11 +196,26 @@ class TestToolbarItemEventValidation:
 class TestToolbarItemComponentId:
     """Test component ID generation."""
 
-    def test_auto_generates_component_id(self) -> None:
-        """Test component ID is auto-generated."""
+    def test_auto_generates_component_id_with_type(self) -> None:
+        """Test component ID is auto-generated with component type prefix."""
         btn = Button(label="Test", event="toolbar:click")
-        assert btn.component_id.startswith("item-")
-        assert len(btn.component_id) == len("item-") + 8
+        assert btn.component_id.startswith("button-")
+        assert len(btn.component_id) == len("button-") + 8
+
+    def test_select_component_id_has_select_prefix(self) -> None:
+        """Test Select component ID uses 'select-' prefix."""
+        sel = Select(event="view:change", options=["A"])
+        assert sel.component_id.startswith("select-")
+
+    def test_multiselect_component_id_has_multiselect_prefix(self) -> None:
+        """Test MultiSelect component ID uses 'multiselect-' prefix."""
+        ms = MultiSelect(event="filter:cols", options=["A"])
+        assert ms.component_id.startswith("multiselect-")
+
+    def test_text_input_component_id_has_text_prefix(self) -> None:
+        """Test TextInput component ID uses 'text-' prefix."""
+        ti = TextInput(event="search:query")
+        assert ti.component_id.startswith("text-")
 
     def test_custom_component_id(self) -> None:
         """Test custom component ID is preserved."""
@@ -287,24 +306,27 @@ class TestButton:
         html = btn.build_html()
         assert "Click Me" in html
 
-    def test_html_contains_pywry_emit(self) -> None:
-        """Test HTML contains pywry.emit call."""
+    def test_html_contains_data_event(self) -> None:
+        """Test HTML contains data-event attribute for external handler."""
         btn = Button(label="Test", event="toolbar:click")
         html = btn.build_html()
-        assert "window.pywry.emit" in html
-        assert "toolbar:click" in html
+        # Button now uses data-event attributes, handled by toolbar-handlers.js
+        assert 'data-event="toolbar:click"' in html
 
     def test_html_contains_data_attribute(self) -> None:
-        """Test HTML contains data-event-data attribute."""
+        """Test HTML contains data-data attribute for event payload."""
         btn = Button(label="Test", event="toolbar:click", data={"test": 123})
         html = btn.build_html()
-        assert "data-event-data" in html
+        # Data attribute is now called data-data
+        assert "data-data" in html
 
     def test_html_class_pywry_btn(self) -> None:
         """Test HTML has pywry-btn class."""
         btn = Button(label="Test", event="toolbar:click")
         html = btn.build_html()
-        assert 'class="pywry-btn"' in html
+        # Button now has both pywry-btn and pywry-toolbar-button classes
+        assert "pywry-btn" in html
+        assert "pywry-toolbar-button" in html
 
     def test_html_escapes_label(self) -> None:
         """Test HTML escapes special characters in label."""
@@ -455,7 +477,9 @@ class TestMultiSelect:
         """Test HTML has pywry-multiselect class."""
         ms = MultiSelect(event="filter:columns", options=[Option(label="A")])
         html = ms.build_html()
-        assert 'class="pywry-multiselect"' in html
+        # MultiSelect uses dropdown with pywry-multiselect class
+        assert "pywry-multiselect" in html
+        assert "pywry-dropdown" in html
 
 
 # =============================================================================
@@ -684,15 +708,16 @@ class TestRangeInput:
         assert html.count('type="range"') == 2
         # Should have the range group container
         assert 'class="pywry-range-group"' in html
-        # Should have the separator
-        assert 'class="pywry-range-separator"' in html
+        # Should have the track structure (not separator)
+        assert 'class="pywry-range-track"' in html
 
     def test_html_shows_both_value_displays(self) -> None:
         """Test HTML shows value display spans for both sliders."""
         ri = RangeInput(event="zoom:level", start=25, end=75, show_value=True)
         html = ri.build_html()
-        # Should have two value displays
-        assert html.count('class="pywry-range-value"') == 2
+        # Should have two value displays with position-specific classes
+        assert "pywry-range-start-value" in html
+        assert "pywry-range-end-value" in html
         assert ">25<" in html
         assert ">75<" in html
 
@@ -702,12 +727,13 @@ class TestRangeInput:
         html = ri.build_html()
         assert "pywry-range-value" not in html
 
-    def test_html_contains_start_and_end_ids(self) -> None:
-        """Test HTML contains proper IDs for start and end sliders."""
+    def test_html_contains_start_and_end_markers(self) -> None:
+        """Test HTML contains proper markers for start and end sliders."""
         ri = RangeInput(event="zoom:level")
         html = ri.build_html()
-        assert f'id="{ri.component_id}-start"' in html
-        assert f'id="{ri.component_id}-end"' in html
+        # Inputs now use data-range attribute instead of separate IDs
+        assert 'data-range="start"' in html
+        assert 'data-range="end"' in html
 
 
 # =============================================================================
@@ -895,56 +921,6 @@ class TestBuildToolbarsHtml:
         assert "Two" in html
 
 
-class TestBuildToolbarsByPosition:
-    """Test build_toolbars_by_position function."""
-
-    def test_none_returns_empty_positions(self) -> None:
-        """Test None returns empty positions."""
-        result = build_toolbars_by_position(None)
-        assert result["top"] == ""
-        assert result["bottom"] == ""
-        assert result["left"] == ""
-        assert result["right"] == ""
-        assert result["inside"] == ""
-
-    def test_groups_by_position(self) -> None:
-        """Test toolbars are grouped by position."""
-        toolbars = [
-            Toolbar(position="top", items=[Button(label="Top", event="toolbar:top")]),
-            Toolbar(position="bottom", items=[Button(label="Bottom", event="toolbar:bottom")]),
-            Toolbar(position="left", items=[Button(label="Left", event="toolbar:left")]),
-        ]
-        result = build_toolbars_by_position(toolbars)
-        assert "Top" in result["top"]
-        assert "Bottom" in result["bottom"]
-        assert "Left" in result["left"]
-        assert result["right"] == ""
-        assert result["inside"] == ""
-
-    def test_combines_same_position(self) -> None:
-        """Test multiple toolbars at same position are combined."""
-        toolbars = [
-            Toolbar(position="top", items=[Button(label="One", event="toolbar:one")]),
-            Toolbar(position="top", items=[Button(label="Two", event="toolbar:two")]),
-        ]
-        result = build_toolbars_by_position(toolbars)
-        assert "One" in result["top"]
-        assert "Two" in result["top"]
-
-    def test_accepts_mixed_models_and_dicts(self) -> None:
-        """Test accepts mix of Toolbar models and dicts."""
-        toolbars = [
-            Toolbar(position="top", items=[Button(label="Model", event="toolbar:model")]),
-            {
-                "position": "bottom",
-                "items": [{"type": "button", "label": "Dict", "event": "toolbar:dict"}],
-            },
-        ]
-        result = build_toolbars_by_position(toolbars)
-        assert "Model" in result["top"]
-        assert "Dict" in result["bottom"]
-
-
 # =============================================================================
 # Type Discriminator Tests
 # =============================================================================
@@ -1050,3 +1026,1153 @@ class TestStyleAttribute:
         tb = Toolbar(style="padding: 5px;", items=[Button(label="Test", event="toolbar:click")])
         html = tb.build_html()
         assert 'style="padding: 5px;"' in html
+
+
+# =============================================================================
+# Div Container Tests
+# =============================================================================
+
+
+class TestDiv:
+    """Test the Div container model."""
+
+    def test_type_is_div(self) -> None:
+        """Test type field is 'div'."""
+        div = Div(event="toolbar:div")
+        assert div.type == "div"
+
+    def test_content_rendering(self) -> None:
+        """Test content is rendered inside div."""
+        div = Div(content="<h1>Hello</h1>", event="toolbar:div")
+        html = div.build_html()
+        assert "<h1>Hello</h1>" in html
+
+    def test_html_class_pywry_div(self) -> None:
+        """Test HTML has pywry-div class."""
+        div = Div(event="toolbar:div")
+        html = div.build_html()
+        assert 'class="pywry-div"' in html
+
+    def test_custom_class_name(self) -> None:
+        """Test custom class_name is added."""
+        div = Div(event="toolbar:div", class_name="my-custom-class")
+        html = div.build_html()
+        assert "pywry-div" in html
+        assert "my-custom-class" in html
+
+    def test_component_id_in_html(self) -> None:
+        """Test component_id is in HTML attributes."""
+        div = Div(event="toolbar:div", component_id="my-div")
+        html = div.build_html()
+        assert 'id="my-div"' in html
+        assert 'data-component-id="my-div"' in html
+
+    def test_parent_id_passed_to_html(self) -> None:
+        """Test parent_id is added when provided."""
+        div = Div(event="toolbar:div")
+        html = div.build_html(parent_id="parent-toolbar")
+        assert 'data-parent-id="parent-toolbar"' in html
+
+    def test_no_parent_id_when_not_provided(self) -> None:
+        """Test no data-parent-id when not provided."""
+        div = Div(event="toolbar:div")
+        html = div.build_html()
+        assert "data-parent-id" not in html
+
+    def test_nested_children(self) -> None:
+        """Test nested toolbar items in children."""
+        div = Div(
+            content="<span>Header</span>",
+            event="toolbar:div",
+            children=[
+                Button(label="Child Button", event="toolbar:child"),
+            ],
+        )
+        html = div.build_html()
+        assert "<span>Header</span>" in html
+        assert "Child Button" in html
+
+    def test_nested_divs(self) -> None:
+        """Test nested Div elements."""
+        parent = Div(
+            content="<p>Parent</p>",
+            event="toolbar:parent",
+            component_id="parent-div",
+            children=[
+                Div(
+                    content="<p>Child</p>",
+                    event="toolbar:child",
+                    component_id="child-div",
+                ),
+            ],
+        )
+        html = parent.build_html()
+        assert "<p>Parent</p>" in html
+        assert "<p>Child</p>" in html
+        assert 'id="child-div"' in html
+
+    def test_parent_context_inherited_by_nested_divs(self) -> None:
+        """Test nested Divs get parent context."""
+        parent = Div(
+            content="",
+            event="toolbar:parent",
+            component_id="parent-div",
+            children=[
+                Div(
+                    content="",
+                    event="toolbar:child",
+                    component_id="child-div",
+                ),
+            ],
+        )
+        html = parent.build_html(parent_id="toolbar-123")
+        # Parent should have parent_id from build_html
+        assert 'data-parent-id="toolbar-123"' in html
+        # Child should have parent's component_id as its parent_id
+        assert 'data-parent-id="parent-div"' in html
+
+    def test_style_attribute(self) -> None:
+        """Test style attribute in HTML."""
+        div = Div(event="toolbar:div", style="background: red;")
+        html = div.build_html()
+        assert 'style="background: red;"' in html
+
+    def test_script_inline(self) -> None:
+        """Test inline script collection."""
+        div = Div(event="toolbar:div", script="console.log('test');")
+        scripts = div.collect_scripts()
+        assert len(scripts) == 1
+        assert "console.log('test');" in scripts[0]
+
+    def test_collect_scripts_depth_first(self) -> None:
+        """Test scripts collected depth-first (parent before children)."""
+        parent = Div(
+            event="toolbar:parent",
+            script="// parent script",
+            children=[
+                Div(
+                    event="toolbar:child",
+                    script="// child script",
+                ),
+            ],
+        )
+        scripts = parent.collect_scripts()
+        assert len(scripts) == 2
+        assert "parent script" in scripts[0]
+        assert "child script" in scripts[1]
+
+
+class TestDivInToolbar:
+    """Test Div integration within Toolbar."""
+
+    def test_toolbar_with_div(self) -> None:
+        """Test Toolbar containing Div."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                Button(label="Before", event="toolbar:before"),
+                Div(content="<span>Custom</span>", event="toolbar:div"),
+                Button(label="After", event="toolbar:after"),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "Before" in html
+        assert "<span>Custom</span>" in html
+        assert "After" in html
+        assert "pywry-div" in html
+
+    def test_toolbar_passes_parent_id_to_div(self) -> None:
+        """Test Toolbar passes its component_id to Div children."""
+        toolbar = Toolbar(
+            component_id="my-toolbar",
+            position="top",
+            items=[
+                Div(content="", event="toolbar:div", component_id="my-div"),
+            ],
+        )
+        html = toolbar.build_html()
+        assert 'data-parent-id="my-toolbar"' in html
+
+    def test_toolbar_collect_scripts_includes_divs(self) -> None:
+        """Test Toolbar.collect_scripts includes Div scripts."""
+        toolbar = Toolbar(
+            position="top",
+            script="// toolbar script",
+            items=[
+                Div(event="toolbar:div", script="// div script"),
+            ],
+        )
+        scripts = toolbar.collect_scripts()
+        assert len(scripts) == 2
+        assert "toolbar script" in scripts[0]
+        assert "div script" in scripts[1]
+
+
+# =============================================================================
+# Toolbar New Parameters Tests
+# =============================================================================
+
+
+class TestToolbarClassname:
+    """Test toolbar class_name parameter."""
+
+    def test_class_name_in_html(self) -> None:
+        """Test class_name is added to toolbar container."""
+        toolbar = Toolbar(
+            position="top",
+            class_name="my-custom-toolbar",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar" in html
+        assert "my-custom-toolbar" in html
+
+    def test_multiple_classes(self) -> None:
+        """Test class_name combines with position class."""
+        toolbar = Toolbar(
+            position="left",
+            class_name="custom-class",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar" in html
+        assert "pywry-toolbar-left" in html
+        assert "custom-class" in html
+
+
+class TestToolbarCollapsible:
+    """Test toolbar collapsible parameter."""
+
+    def test_collapsible_false_by_default(self) -> None:
+        """Test collapsible is False by default."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        assert toolbar.collapsible is False
+
+    def test_collapsible_data_attribute(self) -> None:
+        """Test collapsible adds data attribute."""
+        toolbar = Toolbar(
+            position="top",
+            collapsible=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert 'data-collapsible="true"' in html
+
+    def test_collapsible_aria_expanded(self) -> None:
+        """Test collapsible adds aria-expanded."""
+        toolbar = Toolbar(
+            position="top",
+            collapsible=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert 'aria-expanded="true"' in html
+
+    def test_collapsible_toggle_button(self) -> None:
+        """Test collapsible adds toggle button."""
+        toolbar = Toolbar(
+            position="top",
+            collapsible=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar-toggle" in html
+        assert "pywry-toggle-icon" in html
+
+    def test_not_collapsible_no_toggle(self) -> None:
+        """Test non-collapsible toolbar has no toggle."""
+        toolbar = Toolbar(
+            position="top",
+            collapsible=False,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar-toggle" not in html
+
+
+class TestToolbarResizable:
+    """Test toolbar resizable parameter."""
+
+    def test_resizable_false_by_default(self) -> None:
+        """Test resizable is False by default."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        assert toolbar.resizable is False
+
+    def test_resizable_data_attribute(self) -> None:
+        """Test resizable adds data attribute."""
+        toolbar = Toolbar(
+            position="top",
+            resizable=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert 'data-resizable="true"' in html
+
+    def test_resizable_resize_handle(self) -> None:
+        """Test resizable adds resize handle."""
+        toolbar = Toolbar(
+            position="top",
+            resizable=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-resize-handle" in html
+
+    def test_not_resizable_no_handle(self) -> None:
+        """Test non-resizable toolbar has no resize handle."""
+        toolbar = Toolbar(
+            position="top",
+            resizable=False,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-resize-handle" not in html
+
+
+class TestToolbarScript:
+    """Test toolbar script parameter."""
+
+    def test_script_none_by_default(self) -> None:
+        """Test script is None by default."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        assert toolbar.script is None
+
+    def test_collect_scripts_with_inline_script(self) -> None:
+        """Test collect_scripts returns inline script."""
+        toolbar = Toolbar(
+            position="top",
+            script="console.log('toolbar init');",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        scripts = toolbar.collect_scripts()
+        assert len(scripts) == 1
+        assert "console.log('toolbar init');" in scripts[0]
+
+    def test_collect_scripts_empty_when_no_script(self) -> None:
+        """Test collect_scripts returns empty list when no script."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        scripts = toolbar.collect_scripts()
+        assert len(scripts) == 0
+
+
+class TestToolbarDataAttributes:
+    """Test toolbar data attributes in HTML."""
+
+    def test_data_position_attribute(self) -> None:
+        """Test data-position attribute is set."""
+        for position in ["top", "bottom", "left", "right", "inside"]:
+            toolbar = Toolbar(
+                position=position,
+                items=[Button(label="Test", event="toolbar:click")],
+            )
+            html = toolbar.build_html()
+            assert f'data-position="{position}"' in html
+
+    def test_data_component_id_attribute(self) -> None:
+        """Test data-component-id attribute is set."""
+        toolbar = Toolbar(
+            component_id="test-toolbar",
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert 'data-component-id="test-toolbar"' in html
+
+
+class TestToolbarContentWrapper:
+    """Test toolbar content wrapper element."""
+
+    def test_content_wrapper_present(self) -> None:
+        """Test pywry-toolbar-content wrapper is present."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar-content" in html
+
+    def test_items_inside_content_wrapper(self) -> None:
+        """Test items are inside content wrapper."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        # Content wrapper should contain the button
+        assert '<div class="pywry-toolbar-content">' in html
+
+    def test_style_on_content_wrapper_for_non_inside_positions(self) -> None:
+        """Test style goes on content wrapper for top/bottom/left/right positions."""
+        for position in ["top", "bottom", "left", "right"]:
+            toolbar = Toolbar(
+                position=position,  # type: ignore[arg-type]
+                style="justify-content: center;",
+                items=[Button(label="Test", event="toolbar:click")],
+            )
+            html = toolbar.build_html()
+            # Style should be on the content wrapper
+            assert 'class="pywry-toolbar-content" style="justify-content: center;"' in html
+            # Outer div should NOT have style attribute
+            assert f'class="pywry-toolbar pywry-toolbar-{position}"' in html
+            assert f'pywry-toolbar-{position}" style=' not in html
+
+    def test_style_on_outer_div_for_inside_position(self) -> None:
+        """Test style goes on outer div for inside position (for absolute positioning)."""
+        toolbar = Toolbar(
+            position="inside",
+            style="top: 40px; right: 20px;",
+            items=[Button(label="Overlay", event="toolbar:click")],
+        )
+        html = toolbar.build_html()
+        # Style should be on the outer div for inside position
+        assert 'style="top: 40px; right: 20px;"' in html
+        # Check style is NOT on content wrapper
+        assert 'class="pywry-toolbar-content">' in html  # No style attr on content
+
+
+class TestToolbarToDict:
+    """Test toolbar to_dict includes new fields."""
+
+    def test_to_dict_includes_class_name(self) -> None:
+        """Test to_dict includes class_name."""
+        toolbar = Toolbar(
+            position="top",
+            class_name="my-class",
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        d = toolbar.to_dict()
+        assert d["class_name"] == "my-class"
+
+    def test_to_dict_includes_collapsible(self) -> None:
+        """Test to_dict includes collapsible."""
+        toolbar = Toolbar(
+            position="top",
+            collapsible=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        d = toolbar.to_dict()
+        assert d["collapsible"] is True
+
+    def test_to_dict_includes_resizable(self) -> None:
+        """Test to_dict includes resizable."""
+        toolbar = Toolbar(
+            position="top",
+            resizable=True,
+            items=[Button(label="Test", event="toolbar:click")],
+        )
+        d = toolbar.to_dict()
+        assert d["resizable"] is True
+
+
+# =============================================================================
+# Div Item Type Mapping Tests
+# =============================================================================
+
+
+class TestDivItemTypeMapping:
+    """Test Div is properly registered in item type mapping."""
+
+    def test_div_in_item_types(self) -> None:
+        """Test Div type is recognized when creating from dict."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                {"type": "div", "content": "<span>From dict</span>", "event": "toolbar:div"},
+            ],
+        )
+        assert len(toolbar.items) == 1
+        assert toolbar.items[0].type == "div"
+        assert isinstance(toolbar.items[0], Div)
+
+    def test_mixed_items_including_div(self) -> None:
+        """Test toolbar with mixed item types including Div."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                {"type": "button", "label": "Button", "event": "toolbar:button"},
+                {"type": "div", "content": "<span>Div</span>", "event": "toolbar:div"},
+                {"type": "select", "options": ["A", "B"], "event": "toolbar:select"},
+            ],
+        )
+        assert len(toolbar.items) == 3
+        assert toolbar.items[0].type == "button"
+        assert toolbar.items[1].type == "div"
+        assert toolbar.items[2].type == "select"
+
+
+class TestDivDiscriminator:
+    """Test Div in type discriminator."""
+
+    def test_div_has_unique_type(self) -> None:
+        """Test Div has unique type field."""
+        div = Div(event="toolbar:div")
+        assert div.type == "div"
+
+    def test_all_types_including_div_unique(self) -> None:
+        """Test all item types including Div have unique type values."""
+        types = set()
+        for cls in [
+            Button,
+            Select,
+            MultiSelect,
+            TextInput,
+            NumberInput,
+            DateInput,
+            SliderInput,
+            RangeInput,
+            Div,
+            Toggle,
+            Checkbox,
+            RadioGroup,
+            TabGroup,
+        ]:
+            if cls == Button:
+                inst = cls(label="Test", event="toolbar:click")
+            elif cls in (Select, MultiSelect, RadioGroup, TabGroup):
+                inst = cls(event="toolbar:click", options=[])
+            else:
+                inst = cls(event="toolbar:click")
+            assert inst.type not in types, f"Duplicate type: {inst.type}"
+            types.add(inst.type)
+
+
+# =============================================================================
+# Toggle Tests
+# =============================================================================
+
+
+class TestToggle:
+    """Test the Toggle model (boolean switch)."""
+
+    def test_type_is_toggle(self) -> None:
+        """Test type field is 'toggle'."""
+        toggle = Toggle(event="theme:toggle")
+        assert toggle.type == "toggle"
+
+    def test_default_value_false(self) -> None:
+        """Test default value is False."""
+        toggle = Toggle(event="theme:toggle")
+        assert toggle.value is False
+
+    def test_value_true(self) -> None:
+        """Test value can be set to True."""
+        toggle = Toggle(event="theme:toggle", value=True)
+        assert toggle.value is True
+
+    def test_html_contains_checkbox_input(self) -> None:
+        """Test HTML contains checkbox input for toggle."""
+        toggle = Toggle(event="theme:toggle")
+        html = toggle.build_html()
+        assert 'type="checkbox"' in html
+
+    def test_html_contains_toggle_class(self) -> None:
+        """Test HTML contains pywry-toggle class."""
+        toggle = Toggle(event="theme:toggle")
+        html = toggle.build_html()
+        assert "pywry-toggle" in html
+        assert "pywry-toggle-input" in html
+        assert "pywry-toggle-slider" in html
+
+    def test_html_checked_when_true(self) -> None:
+        """Test HTML has checked attribute when value is True."""
+        toggle = Toggle(event="theme:toggle", value=True)
+        html = toggle.build_html()
+        assert " checked" in html
+        assert "pywry-toggle-checked" in html
+
+    def test_html_not_checked_when_false(self) -> None:
+        """Test HTML has no checked attribute when value is False."""
+        toggle = Toggle(event="theme:toggle", value=False)
+        html = toggle.build_html()
+        # Should not have checked attribute (but may have "onchange" containing "checked")
+        assert 'type="checkbox"' in html
+        # The checked attribute should not be present as a standalone attribute
+        assert "pywry-toggle-checked" not in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML wraps toggle with label."""
+        toggle = Toggle(label="Dark Mode:", event="theme:toggle")
+        html = toggle.build_html()
+        assert "Dark Mode:" in html
+        assert "pywry-input-label" in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML contains emit call with value and componentId."""
+        toggle = Toggle(event="theme:toggle")
+        html = toggle.build_html()
+        assert "pywry.emit" in html
+        assert "theme:toggle" in html
+        assert "value: this.checked" in html
+        assert "componentId:" in html
+
+
+# =============================================================================
+# Checkbox Tests
+# =============================================================================
+
+
+class TestCheckbox:
+    """Test the Checkbox model (single checkbox)."""
+
+    def test_type_is_checkbox(self) -> None:
+        """Test type field is 'checkbox'."""
+        cb = Checkbox(event="settings:notify")
+        assert cb.type == "checkbox"
+
+    def test_default_value_false(self) -> None:
+        """Test default value is False."""
+        cb = Checkbox(event="settings:notify")
+        assert cb.value is False
+
+    def test_value_true(self) -> None:
+        """Test value can be set to True."""
+        cb = Checkbox(event="settings:notify", value=True)
+        assert cb.value is True
+
+    def test_html_contains_checkbox_input(self) -> None:
+        """Test HTML contains checkbox input."""
+        cb = Checkbox(event="settings:notify")
+        html = cb.build_html()
+        assert 'type="checkbox"' in html
+
+    def test_html_contains_checkbox_class(self) -> None:
+        """Test HTML contains pywry-checkbox class."""
+        cb = Checkbox(event="settings:notify")
+        html = cb.build_html()
+        assert "pywry-checkbox" in html
+        assert "pywry-checkbox-input" in html
+        assert "pywry-checkbox-box" in html
+
+    def test_html_checked_when_true(self) -> None:
+        """Test HTML has checked attribute when value is True."""
+        cb = Checkbox(event="settings:notify", value=True)
+        html = cb.build_html()
+        assert " checked" in html
+
+    def test_html_contains_label_text(self) -> None:
+        """Test HTML contains label text."""
+        cb = Checkbox(label="Enable notifications", event="settings:notify")
+        html = cb.build_html()
+        assert "Enable notifications" in html
+        assert "pywry-checkbox-label" in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML contains emit call with value and componentId."""
+        cb = Checkbox(event="settings:notify")
+        html = cb.build_html()
+        assert "pywry.emit" in html
+        assert "settings:notify" in html
+        assert "value: this.checked" in html
+        assert "componentId:" in html
+
+    def test_html_disabled_state(self) -> None:
+        """Test HTML has disabled attribute when disabled."""
+        cb = Checkbox(event="settings:notify", disabled=True)
+        html = cb.build_html()
+        assert " disabled" in html
+        assert "pywry-disabled" in html
+
+
+# =============================================================================
+# RadioGroup Tests
+# =============================================================================
+
+
+class TestRadioGroup:
+    """Test the RadioGroup model (radio button group)."""
+
+    def test_type_is_radio(self) -> None:
+        """Test type field is 'radio'."""
+        rg = RadioGroup(event="view:change", options=[])
+        assert rg.type == "radio"
+
+    def test_default_direction_horizontal(self) -> None:
+        """Test default direction is horizontal."""
+        rg = RadioGroup(event="view:change", options=[])
+        assert rg.direction == "horizontal"
+
+    def test_direction_vertical(self) -> None:
+        """Test direction can be set to vertical."""
+        rg = RadioGroup(event="view:change", options=[], direction="vertical")
+        assert rg.direction == "vertical"
+
+    def test_options_from_option_objects(self) -> None:
+        """Test options from Option objects."""
+        rg = RadioGroup(
+            event="view:change",
+            options=[Option(label="List", value="list"), Option(label="Grid", value="grid")],
+        )
+        assert len(rg.options) == 2
+        assert rg.options[0].label == "List"
+        assert rg.options[0].value == "list"
+
+    def test_options_from_dicts(self) -> None:
+        """Test options from dict inputs."""
+        rg = RadioGroup(
+            event="view:change",
+            options=[{"label": "List", "value": "list"}, {"label": "Grid", "value": "grid"}],
+        )
+        assert len(rg.options) == 2
+
+    def test_options_from_strings(self) -> None:
+        """Test options from string inputs."""
+        rg = RadioGroup(event="view:change", options=["List", "Grid"])
+        assert len(rg.options) == 2
+        assert rg.options[0].label == "List"
+        assert rg.options[0].value == "List"
+
+    def test_selected_value(self) -> None:
+        """Test selected value."""
+        rg = RadioGroup(event="view:change", options=["List", "Grid"], selected="Grid")
+        assert rg.selected == "Grid"
+
+    def test_html_contains_radio_inputs(self) -> None:
+        """Test HTML contains radio input elements."""
+        rg = RadioGroup(event="view:change", options=["A", "B"])
+        html = rg.build_html()
+        assert 'type="radio"' in html
+        assert html.count('type="radio"') == 2
+
+    def test_html_contains_radio_group_class(self) -> None:
+        """Test HTML contains pywry-radio-group class."""
+        rg = RadioGroup(event="view:change", options=["A"])
+        html = rg.build_html()
+        assert "pywry-radio-group" in html
+
+    def test_html_direction_class(self) -> None:
+        """Test HTML contains direction class."""
+        rg_h = RadioGroup(event="view:change", options=["A"], direction="horizontal")
+        html_h = rg_h.build_html()
+        assert "pywry-radio-horizontal" in html_h
+
+        rg_v = RadioGroup(event="view:change", options=["A"], direction="vertical")
+        html_v = rg_v.build_html()
+        assert "pywry-radio-vertical" in html_v
+
+    def test_html_marks_checked_option(self) -> None:
+        """Test HTML marks selected option as checked."""
+        rg = RadioGroup(event="view:change", options=["A", "B"], selected="B")
+        html = rg.build_html()
+        # The checked attribute should appear for option B
+        assert " checked" in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML includes label."""
+        rg = RadioGroup(label="View:", event="view:change", options=["A"])
+        html = rg.build_html()
+        assert "View:" in html
+        assert "pywry-input-label" in html
+
+    def test_html_contains_data_event(self) -> None:
+        """Test HTML contains data-event attribute."""
+        rg = RadioGroup(event="view:change", options=["A"])
+        html = rg.build_html()
+        assert 'data-event="view:change"' in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML contains emit call with value and componentId."""
+        rg = RadioGroup(event="view:change", options=["A"])
+        html = rg.build_html()
+        assert "pywry.emit" in html
+        assert "view:change" in html
+        assert "componentId:" in html
+
+
+# =============================================================================
+# TabGroup Tests
+# =============================================================================
+
+
+class TestTabGroup:
+    """Test the TabGroup model (tab-style selection)."""
+
+    def test_type_is_tab(self) -> None:
+        """Test type field is 'tab'."""
+        tg = TabGroup(event="view:change", options=[])
+        assert tg.type == "tab"
+
+    def test_default_size_md(self) -> None:
+        """Test default size is 'md'."""
+        tg = TabGroup(event="view:change", options=[])
+        assert tg.size == "md"
+
+    def test_size_variants(self) -> None:
+        """Test size can be sm, md, or lg."""
+        for size in ["sm", "md", "lg"]:
+            tg = TabGroup(event="view:change", options=[], size=size)
+            assert tg.size == size
+
+    def test_options_from_option_objects(self) -> None:
+        """Test options from Option objects."""
+        tg = TabGroup(
+            event="view:change",
+            options=[Option(label="Table", value="table"), Option(label="Chart", value="chart")],
+        )
+        assert len(tg.options) == 2
+        assert tg.options[0].label == "Table"
+        assert tg.options[0].value == "table"
+
+    def test_options_from_dicts(self) -> None:
+        """Test options from dict inputs."""
+        tg = TabGroup(
+            event="view:change",
+            options=[{"label": "Table", "value": "table"}, {"label": "Chart", "value": "chart"}],
+        )
+        assert len(tg.options) == 2
+
+    def test_options_from_strings(self) -> None:
+        """Test options from string inputs."""
+        tg = TabGroup(event="view:change", options=["Table", "Chart"])
+        assert len(tg.options) == 2
+        assert tg.options[0].label == "Table"
+        assert tg.options[0].value == "Table"
+
+    def test_selected_value(self) -> None:
+        """Test selected value."""
+        tg = TabGroup(event="view:change", options=["Table", "Chart"], selected="Chart")
+        assert tg.selected == "Chart"
+
+    def test_html_contains_tab_buttons(self) -> None:
+        """Test HTML contains button elements for tabs."""
+        tg = TabGroup(event="view:change", options=["A", "B"])
+        html = tg.build_html()
+        assert "<button" in html
+        assert html.count("<button") == 2
+
+    def test_html_contains_tab_group_class(self) -> None:
+        """Test HTML contains pywry-tab-group class."""
+        tg = TabGroup(event="view:change", options=["A"])
+        html = tg.build_html()
+        assert "pywry-tab-group" in html
+        assert "pywry-tab" in html
+
+    def test_html_size_class(self) -> None:
+        """Test HTML contains size class for non-default sizes."""
+        tg_sm = TabGroup(event="view:change", options=["A"], size="sm")
+        html_sm = tg_sm.build_html()
+        assert "pywry-tab-sm" in html_sm
+
+        tg_lg = TabGroup(event="view:change", options=["A"], size="lg")
+        html_lg = tg_lg.build_html()
+        assert "pywry-tab-lg" in html_lg
+
+        tg_md = TabGroup(event="view:change", options=["A"], size="md")
+        html_md = tg_md.build_html()
+        # Default md size should not have size class
+        assert "pywry-tab-sm" not in html_md
+        assert "pywry-tab-lg" not in html_md
+
+    def test_html_marks_active_tab(self) -> None:
+        """Test HTML marks selected tab as active."""
+        tg = TabGroup(event="view:change", options=["A", "B"], selected="B")
+        html = tg.build_html()
+        assert "pywry-tab-active" in html
+
+    def test_html_contains_data_value(self) -> None:
+        """Test HTML contains data-value on tab buttons."""
+        tg = TabGroup(event="view:change", options=[Option(label="Table", value="table")])
+        html = tg.build_html()
+        assert 'data-value="table"' in html
+
+    def test_html_contains_data_event(self) -> None:
+        """Test HTML contains data-event attribute."""
+        tg = TabGroup(event="view:change", options=["A"])
+        html = tg.build_html()
+        assert 'data-event="view:change"' in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML contains emit call with value and componentId."""
+        tg = TabGroup(event="view:change", options=["A"])
+        html = tg.build_html()
+        assert "pywry.emit" in html
+        assert "view:change" in html
+        assert "componentId:" in html
+
+    def test_html_escapes_labels(self) -> None:
+        """Test HTML escapes special characters in labels."""
+        tg = TabGroup(event="view:change", options=["<script>"])
+        html = tg.build_html()
+        assert "<script>" not in html
+        assert "&lt;script&gt;" in html
+
+
+# =============================================================================
+# Event Data Structure Tests
+# =============================================================================
+
+
+class TestEventDataStructure:
+    """Test that each component emits events with the correct data structure.
+
+    This validates that the JavaScript emit calls in HTML contain the expected
+    data format for each component type.
+    """
+
+    def test_button_emits_component_id_and_custom_data(self) -> None:
+        """Button emits componentId plus any custom data payload."""
+        btn = Button(label="Export", event="export:csv", data={"format": "csv", "all": True})
+        html = btn.build_html()
+        # Button uses data-data attribute for custom payload
+        assert 'data-data="' in html
+        # Data should contain the custom payload
+        assert "format" in html
+        assert "csv" in html
+        # Button has id attribute for componentId (added by toolbar-handlers.js)
+        assert f'id="{btn.component_id}"' in html
+
+    def test_select_emits_value_and_component_id(self) -> None:
+        """Select emits {value, componentId}."""
+        sel = Select(
+            event="view:change",
+            options=[Option(label="A", value="a"), Option(label="B", value="b")],
+        )
+        html = sel.build_html()
+        # Select uses toolbar-handlers.js which adds componentId
+        assert 'data-event="view:change"' in html
+        assert f'id="{sel.component_id}"' in html
+
+    def test_multiselect_emits_values_array_and_component_id(self) -> None:
+        """MultiSelect emits {values: [...], componentId}."""
+        ms = MultiSelect(
+            event="filter:columns",
+            options=[Option(label="A", value="a"), Option(label="B", value="b")],
+            selected=["a"],
+        )
+        html = ms.build_html()
+        # MultiSelect uses toolbar-handlers.js which emits values array
+        assert 'data-event="filter:columns"' in html
+        assert f'id="{ms.component_id}"' in html
+
+    def test_text_input_emits_value_and_component_id(self) -> None:
+        """TextInput emits {value, componentId}."""
+        ti = TextInput(event="search:query", debounce=300)
+        html = ti.build_html()
+        # TextInput has inline emit with componentId
+        assert "pywry.emit" in html
+        assert "search:query" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_number_input_emits_value_and_component_id(self) -> None:
+        """NumberInput emits {value: <number>, componentId}."""
+        ni = NumberInput(event="limit:set", value=10)
+        html = ni.build_html()
+        assert "pywry.emit" in html
+        assert "limit:set" in html
+        # Should parse as float/number
+        assert "parseFloat" in html
+        assert "componentId:" in html
+
+    def test_date_input_emits_value_and_component_id(self) -> None:
+        """DateInput emits {value: <date_string>, componentId}."""
+        di = DateInput(event="date:start", value="2025-01-01")
+        html = di.build_html()
+        assert "pywry.emit" in html
+        assert "date:start" in html
+        assert "componentId:" in html
+
+    def test_slider_input_emits_value_and_component_id(self) -> None:
+        """SliderInput emits {value: <number>, componentId}."""
+        si = SliderInput(event="zoom:level", value=50)
+        html = si.build_html()
+        assert "pywry.emit" in html
+        assert "zoom:level" in html
+        assert "parseFloat" in html
+        assert "componentId:" in html
+
+    def test_range_input_emits_start_end_and_component_id(self) -> None:
+        """RangeInput emits {start: <number>, end: <number>, componentId}."""
+        ri = RangeInput(event="filter:price", start=100, end=500)
+        html = ri.build_html()
+        assert "pywry.emit" in html
+        assert "filter:price" in html
+        assert "start:" in html
+        assert "end:" in html
+        assert "componentId:" in html
+
+    def test_toggle_emits_value_and_component_id(self) -> None:
+        """Toggle emits {value: <boolean>, componentId}."""
+        toggle = Toggle(event="theme:dark", value=True)
+        html = toggle.build_html()
+        assert "pywry.emit" in html
+        assert "theme:dark" in html
+        assert "value: this.checked" in html
+        assert "componentId:" in html
+
+    def test_checkbox_emits_value_and_component_id(self) -> None:
+        """Checkbox emits {value: <boolean>, componentId}."""
+        cb = Checkbox(label="Enable", event="settings:enable", value=False)
+        html = cb.build_html()
+        assert "pywry.emit" in html
+        assert "settings:enable" in html
+        assert "value: this.checked" in html
+        assert "componentId:" in html
+
+    def test_radio_group_emits_value_and_component_id(self) -> None:
+        """RadioGroup emits {value: <selected>, componentId}."""
+        rg = RadioGroup(event="view:mode", options=["list", "grid"], selected="list")
+        html = rg.build_html()
+        assert "pywry.emit" in html
+        assert "view:mode" in html
+        assert "componentId:" in html
+
+    def test_tab_group_emits_value_and_component_id(self) -> None:
+        """TabGroup emits {value: <selected>, componentId}."""
+        tg = TabGroup(event="view:tab", options=["A", "B"], selected="A")
+        html = tg.build_html()
+        assert "pywry.emit" in html
+        assert "view:tab" in html
+        assert "this.dataset.value" in html
+        assert "componentId:" in html
+
+
+# =============================================================================
+# Component ID in HTML Tests
+# =============================================================================
+
+
+class TestComponentIdInHtml:
+    """Test that all components include their component_id in generated HTML."""
+
+    def test_button_has_id(self) -> None:
+        """Button HTML includes id attribute."""
+        btn = Button(label="Test", event="toolbar:click")
+        html = btn.build_html()
+        assert f'id="{btn.component_id}"' in html
+
+    def test_select_has_id(self) -> None:
+        """Select HTML includes id attribute."""
+        sel = Select(event="view:change", options=["A"])
+        html = sel.build_html()
+        assert f'id="{sel.component_id}"' in html
+
+    def test_multiselect_has_id(self) -> None:
+        """MultiSelect HTML includes id attribute."""
+        ms = MultiSelect(event="filter:cols", options=["A"])
+        html = ms.build_html()
+        assert f'id="{ms.component_id}"' in html
+
+    def test_text_input_has_id(self) -> None:
+        """TextInput HTML includes id attribute."""
+        ti = TextInput(event="search:query")
+        html = ti.build_html()
+        assert f'id="{ti.component_id}"' in html
+
+    def test_number_input_has_id(self) -> None:
+        """NumberInput HTML includes id attribute."""
+        ni = NumberInput(event="limit:set")
+        html = ni.build_html()
+        assert f'id="{ni.component_id}"' in html
+
+    def test_date_input_has_id(self) -> None:
+        """DateInput HTML includes id attribute."""
+        di = DateInput(event="date:change")
+        html = di.build_html()
+        assert f'id="{di.component_id}"' in html
+
+    def test_slider_input_has_id(self) -> None:
+        """SliderInput HTML includes id attribute."""
+        si = SliderInput(event="zoom:level")
+        html = si.build_html()
+        assert f'id="{si.component_id}"' in html
+
+    def test_range_input_has_id(self) -> None:
+        """RangeInput HTML includes id attribute on group container."""
+        ri = RangeInput(event="filter:price")
+        html = ri.build_html()
+        assert f'id="{ri.component_id}"' in html
+
+    def test_toggle_has_id(self) -> None:
+        """Toggle HTML includes id attribute."""
+        toggle = Toggle(event="theme:toggle")
+        html = toggle.build_html()
+        assert f'id="{toggle.component_id}"' in html
+
+    def test_checkbox_has_id(self) -> None:
+        """Checkbox HTML includes id attribute."""
+        cb = Checkbox(event="settings:enable")
+        html = cb.build_html()
+        assert f'id="{cb.component_id}"' in html
+
+    def test_radio_group_has_id(self) -> None:
+        """RadioGroup HTML includes id attribute."""
+        rg = RadioGroup(event="view:mode", options=["A"])
+        html = rg.build_html()
+        assert f'id="{rg.component_id}"' in html
+
+    def test_tab_group_has_id(self) -> None:
+        """TabGroup HTML includes id attribute."""
+        tg = TabGroup(event="view:tab", options=["A"])
+        html = tg.build_html()
+        assert f'id="{tg.component_id}"' in html
+
+    def test_div_has_id(self) -> None:
+        """Div HTML includes id attribute."""
+        div = Div(event="container:div", content="<p>Test</p>")
+        html = div.build_html()
+        assert f'id="{div.component_id}"' in html
+
+
+# =============================================================================
+# All Types in Discriminator Tests (updated)
+# =============================================================================
+
+
+class TestAllTypesDiscriminator:
+    """Test that all toolbar item types are properly handled."""
+
+    def test_all_item_types_have_unique_type(self) -> None:
+        """All item types have unique type field values."""
+        all_types = set()
+        items = [
+            Button(label="Test", event="toolbar:click"),
+            Select(event="toolbar:select", options=[]),
+            MultiSelect(event="toolbar:multiselect", options=[]),
+            TextInput(event="toolbar:text"),
+            NumberInput(event="toolbar:number"),
+            DateInput(event="toolbar:date"),
+            SliderInput(event="toolbar:slider"),
+            RangeInput(event="toolbar:range"),
+            Toggle(event="toolbar:toggle"),
+            Checkbox(event="toolbar:checkbox"),
+            RadioGroup(event="toolbar:radio", options=[]),
+            TabGroup(event="toolbar:tab", options=[]),
+            Div(event="toolbar:div"),
+        ]
+        for item in items:
+            assert item.type not in all_types, f"Duplicate type: {item.type}"
+            all_types.add(item.type)
+
+    def test_all_types_build_valid_html(self) -> None:
+        """All item types produce non-empty HTML."""
+        items = [
+            Button(label="Test", event="toolbar:click"),
+            Select(event="toolbar:select", options=["A"]),
+            MultiSelect(event="toolbar:multiselect", options=["A"]),
+            TextInput(event="toolbar:text"),
+            NumberInput(event="toolbar:number"),
+            DateInput(event="toolbar:date"),
+            SliderInput(event="toolbar:slider"),
+            RangeInput(event="toolbar:range"),
+            Toggle(event="toolbar:toggle"),
+            Checkbox(label="Check", event="toolbar:checkbox"),
+            RadioGroup(event="toolbar:radio", options=["A"]),
+            TabGroup(event="toolbar:tab", options=["A"]),
+            Div(event="toolbar:div", content="<p>Content</p>"),
+        ]
+        for item in items:
+            html = item.build_html()
+            assert html, f"{item.type} produced empty HTML"
+            assert len(html) > 10, f"{item.type} HTML too short"

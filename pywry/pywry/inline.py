@@ -5,6 +5,7 @@ Supports ALL PyWry features: HTML content, Plotly, AG Grid, callbacks.
 """
 # pylint: disable=too-many-lines,wrong-import-position
 # mypy: disable-error-code="import-untyped,no-untyped-call,no-any-return"
+# flake8: noqa S608
 
 from __future__ import annotations
 
@@ -38,7 +39,7 @@ from .state_mixins import (
     ToolbarStateMixin,
     _normalize_figure,
 )
-from .toolbar import Toolbar, get_toolbar_script
+from .toolbar import Toolbar, get_toolbar_script, wrap_content_with_toolbars
 from .widget_protocol import BaseWidget  # noqa: TC001
 
 
@@ -384,6 +385,96 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
             console.log('[PyWry] Alert:', message);
         }}
         alert(message);
+    }});
+
+    // Register handler for CSS injection - inject or update a style element
+    window.pywry.on('pywry:inject-css', function(data) {{
+        if (!data.css) {{
+            console.error('[PyWry] inject-css requires css property');
+            return;
+        }}
+        const id = data.id || 'pywry-injected-style';
+        let style = document.getElementById(id);
+        if (style) {{
+            style.textContent = data.css;
+        }} else {{
+            style = document.createElement('style');
+            style.id = id;
+            style.textContent = data.css;
+            document.head.appendChild(style);
+        }}
+        if ({str(PYWRY_DEBUG).lower()}) {{
+            console.log('[PyWry] Injected CSS with id:', id);
+        }}
+    }});
+
+    // Register handler for CSS removal
+    window.pywry.on('pywry:remove-css', function(data) {{
+        if (!data.id) {{
+            console.error('[PyWry] remove-css requires id property');
+            return;
+        }}
+        const style = document.getElementById(data.id);
+        if (style) {{
+            style.remove();
+            if ({str(PYWRY_DEBUG).lower()}) {{
+                console.log('[PyWry] Removed CSS with id:', data.id);
+            }}
+        }}
+    }});
+
+    // Register handler for setting inline styles on elements
+    // Usage: emit('pywry:set_style', {{selector: '.my-class', styles: {{fontWeight: 'bold', color: 'red'}}}})
+    // Or target by id: emit('pywry:set_style', {{id: 'my-element', styles: {{fontSize: '20px'}}}})
+    window.pywry.on('pywry:set_style', function(data) {{
+        if (!data.styles) {{
+            console.error('[PyWry] set_style requires styles property');
+            return;
+        }}
+        let elements = [];
+        if (data.id) {{
+            const el = document.getElementById(data.id);
+            if (el) elements.push(el);
+        }} else if (data.selector) {{
+            elements = Array.from(document.querySelectorAll(data.selector));
+        }} else {{
+            console.error('[PyWry] set_style requires id or selector property');
+            return;
+        }}
+        elements.forEach(function(el) {{
+            Object.keys(data.styles).forEach(function(prop) {{
+                el.style[prop] = data.styles[prop];
+            }});
+        }});
+        if ({str(PYWRY_DEBUG).lower()}) {{
+            console.log('[PyWry] Set styles on', elements.length, 'elements:', data.styles);
+        }}
+    }});
+
+    // Built-in handler for updating element content (innerHTML or textContent)
+    // Usage: emit('pywry:set_content', {{id: 'my-element', html: '<b>Bold</b>'}})
+    // Or: emit('pywry:set_content', {{selector: '.my-class', text: 'Plain text'}})
+    window.pywry.on('pywry:set_content', function(data) {{
+        let elements = [];
+        if (data.id) {{
+            const el = document.getElementById(data.id);
+            if (el) elements.push(el);
+        }} else if (data.selector) {{
+            elements = Array.from(document.querySelectorAll(data.selector));
+        }} else {{
+            console.error('[PyWry] set_content requires id or selector property');
+            return;
+        }}
+        elements.forEach(function(el) {{
+            if ('html' in data) {{
+                el.innerHTML = data.html;
+            }} else if ('text' in data) {{
+                el.textContent = data.text;
+            }}
+        }});
+        if ({str(PYWRY_DEBUG).lower()}) {{
+            console.log('[PyWry] Set content on', elements.length, 'elements');
+        }}
     }});
 
     // Register handler for file downloads - triggers browser save dialog
@@ -1758,7 +1849,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         return []
 
 
-def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,too-many-branches,too-many-statements
+def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-statements
     content: str,
     title: str = "PyWry",
     width: str = "100%",
@@ -1822,50 +1913,8 @@ def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,
 
     widget_id = widget_id or uuid.uuid4().hex
 
-    # Generate toolbar HTML from toolbars config
-    if toolbars:
-        # Group toolbars by position
-        top_html_parts = []
-        bottom_html_parts = []
-        left_html_parts = []
-        right_html_parts = []
-        inside_html_parts = []
-
-        for toolbar_cfg in toolbars:
-            # Handle both Toolbar Pydantic models and dict configs
-            if hasattr(toolbar_cfg, "build_html"):
-                position = getattr(toolbar_cfg, "position", "top")
-                toolbar_html = toolbar_cfg.build_html()
-            else:
-                position = toolbar_cfg.get("position", "top")
-                items = toolbar_cfg.get("items", [])
-                if not items:
-                    continue
-                toolbar_html = Toolbar(position=position, items=items).build_html()
-            if position == "top":
-                top_html_parts.append(toolbar_html)
-            elif position == "bottom":
-                bottom_html_parts.append(toolbar_html)
-            elif position == "left":
-                left_html_parts.append(toolbar_html)
-            elif position == "right":
-                right_html_parts.append(toolbar_html)
-            elif position == "inside":
-                inside_html_parts.append(toolbar_html)
-
-        # Wrap content with toolbars
-        if inside_html_parts:
-            content = (
-                f"<div class='pywry-wrapper-inside'>{''.join(inside_html_parts)}{content}</div>"
-            )
-        if left_html_parts or right_html_parts:
-            left_html = "".join(left_html_parts)
-            right_html = "".join(right_html_parts)
-            content = f"<div class='pywry-wrapper-left'>{left_html}<div class='pywry-content'>{content}</div>{right_html}</div>"
-        if top_html_parts or bottom_html_parts:
-            top_html = "".join(top_html_parts)
-            bottom_html = "".join(bottom_html_parts)
-            content = f"<div class='pywry-wrapper-top'>{top_html}<div class='pywry-content'>{content}</div>{bottom_html}</div>"
+    # Wrap content with toolbars using the centralized function
+    content = wrap_content_with_toolbars(content, toolbars)
 
     # Build head with optional libraries
     pywry_css = get_pywry_css()
@@ -1875,7 +1924,13 @@ def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,
         f"<style>{pywry_css}</style>" if pywry_css else "",
         """<style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
+            html, body {
+                height: 100%;
+                width: 100%;
+            }
             body {
+                display: flex;
+                flex-direction: column;
                 background: var(--pywry-bg-primary);
                 color: var(--pywry-text-primary);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1901,15 +1956,21 @@ def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,
         if aggrid_css:
             head_parts.append(f"<style>{aggrid_css}</style>")
 
-    # Build full HTML
+    # Include toolbar script if toolbars are present
+    toolbar_script = ""
+    if toolbars:
+        toolbar_script = f"<script>{get_toolbar_script(with_script_tag=False)}</script>"
+
+    # Build full HTML - bridge MUST be in head so window.pywry exists before user scripts run
     html = f"""<!DOCTYPE html>
 <html>
 <head>
     {"".join(head_parts)}
+    {_get_pywry_bridge_js(widget_id)}
+    {toolbar_script}
 </head>
 <body>
     {content}
-    {_get_pywry_bridge_js(widget_id)}
 </body>
 </html>"""
 
@@ -1926,23 +1987,6 @@ def show(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-many-arguments,
     else:
         widget.display()  # Jupyter notebook mode: show IFrame
     return widget
-
-
-def _process_toolbar_config(
-    toolbar_cfg: dict[str, Any] | Toolbar,
-) -> tuple[str, str]:
-    """Process a toolbar config and return (position, html).
-
-    Handles both Toolbar Pydantic models and dict configs.
-    Returns empty string for html if no items.
-    """
-    if hasattr(toolbar_cfg, "build_html"):
-        return getattr(toolbar_cfg, "position", "top"), toolbar_cfg.build_html()
-
-    pos = toolbar_cfg.get("position", "top")
-    items = toolbar_cfg.get("items", [])
-    html = Toolbar(position=pos, items=items).build_html() if items else ""
-    return pos, html
 
 
 def generate_plotly_html(
@@ -1996,20 +2040,6 @@ def generate_plotly_html(
     # Include Plotly templates (plotly_dark, plotly_white, etc.) for theme switching
     templates_js = get_plotly_templates_js()
     templates_script = f"<script>{templates_js}</script>" if templates_js else ""
-
-    # Generate toolbar HTML from toolbars config - grouped by position
-    toolbar_by_position: dict[str, list[str]] = {
-        "top": [],
-        "bottom": [],
-        "left": [],
-        "right": [],
-        "inside": [],
-    }
-    if toolbars:
-        for toolbar_cfg in toolbars:
-            pos, html = _process_toolbar_config(toolbar_cfg)
-            if html:
-                toolbar_by_position[pos].append(html)
 
     # Plotly event handlers script
     # Use window.Plotly for anywidget compatibility (ESM scope)
@@ -2169,29 +2199,16 @@ def generate_plotly_html(
     # For anywidget: content fragment WITHOUT pywry bridge (widget provides it)
     # For IFrame: full document WITH pywry bridge
     if not full_document:
-        # Content fragment for anywidget - NO bridge, widget already has window.pywry
-        # Return simpler structure without hardcoded wrapper to allow flexible layout composition
-        return f"""<div id="chart" class="pywry-content pywry-plotly" style="height: 100%; width: 100%;"></div>
+        # Content fragment for anywidget - return just the chart div
+        # Caller (create_plotly_widget) will handle toolbar wrapping
+        chart_div = '<div id="chart" class="pywry-plotly"></div>'
+        wrapped_content = wrap_content_with_toolbars(chart_div, toolbars) if toolbars else chart_div
+        return f"""{wrapped_content}
 {plotly_handlers_script}"""
 
-    # Build wrapper structure for toolbars - properly handle all positions
+    # Build wrapper structure for toolbars using centralized function
     chart_div = '<div id="chart" class="pywry-plotly"></div>'
-    widget_content = chart_div
-
-    # Build wrapper structure based on toolbar positions
-    top_html = "".join(toolbar_by_position["top"])
-    bottom_html = "".join(toolbar_by_position["bottom"])
-    left_html = "".join(toolbar_by_position["left"])
-    right_html = "".join(toolbar_by_position["right"])
-    inside_html = "".join(toolbar_by_position["inside"])
-
-    # Layer wrappers from inside out: inside → left/right → top/bottom
-    if inside_html:
-        widget_content = f"<div class='pywry-wrapper-inside'>{inside_html}{widget_content}</div>"
-    if left_html or right_html:
-        widget_content = f"<div class='pywry-wrapper-left'>{left_html}<div class='pywry-content'>{widget_content}</div>{right_html}</div>"
-    if top_html or bottom_html:
-        widget_content = f"<div class='pywry-wrapper-top'>{top_html}<div class='pywry-content'>{widget_content}</div>{bottom_html}</div>"
+    widget_content = wrap_content_with_toolbars(chart_div, toolbars)
 
     # Full document for IFrame - INCLUDE bridge
     # Structure matches AG Grid IFrame for visual consistency
@@ -2216,8 +2233,13 @@ def generate_plotly_html(
         .pywry-widget {{
             --pywry-widget-width: 100%;
             --pywry-widget-height: 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
             border: none;
             border-radius: 0;
+            box-sizing: border-box;
             /* Match toolbar background */
             background-color: var(--pywry-bg-primary);
         }}
@@ -2225,10 +2247,20 @@ def generate_plotly_html(
         .pywry-toolbar {{
             border: none;
         }}
+        .pywry-content {{
+            flex: 1;
+            min-height: 0;
+            padding: 16px;
+            box-sizing: border-box;
+        }}
         #chart {{
-            height: 100%;
-            width: 100%;
+            flex: 1;
+            min-height: 0;
             position: relative;
+            box-sizing: border-box;
+            border: 1px solid var(--pywry-border-color, #333);
+            border-radius: var(--pywry-radius, 4px);
+            overflow: hidden;
         }}
         /* Ensure modebar never causes scrollbars */
         .modebar-container {{
@@ -2237,7 +2269,8 @@ def generate_plotly_html(
             right: 0 !important;
         }}
         .js-plotly-plot, .plot-container, .plotly {{
-            overflow: visible !important;
+            width: 100% !important;
+            height: 100% !important;
         }}
         .pywry-wrapper-top {{
             display: flex;
@@ -2250,10 +2283,6 @@ def generate_plotly_html(
             flex-direction: column;
             height: 100%;
             width: 100%;
-        }}
-        .pywry-content {{
-            flex: 1;
-            min-height: 0;
         }}
     </style>
 </head>
@@ -2523,17 +2552,21 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
     }
 
 
-def _build_grid_layout(toolbars_html: dict[str, str], header_html: str, theme_class: str) -> str:
-    """Build grid layout with multiple toolbars.
+def _build_grid_layout(
+    theme_class: str,
+    toolbars: list[dict[str, Any] | Toolbar] | None = None,
+    extra_top_html: str = "",
+) -> str:
+    """Build grid layout with toolbars.
 
     Parameters
     ----------
-    toolbars_html : dict[str, str]
-        Dict mapping position ('top', 'bottom', 'left', 'right', 'inside') to toolbar HTML.
-    header_html : str
-        Custom header HTML (inserted at top).
     theme_class : str
         AG Grid theme class.
+    toolbars : list
+        List of toolbar configurations (Toolbar models or dicts).
+    extra_top_html : str
+        Custom header HTML to prepend to top toolbar area.
 
     Returns
     -------
@@ -2541,28 +2574,7 @@ def _build_grid_layout(toolbars_html: dict[str, str], header_html: str, theme_cl
         The complete layout HTML.
     """
     grid_div = f"<div id='grid' class='pywry-grid {theme_class}'></div>"
-    content = grid_div
-
-    # Get toolbar HTML for each position
-    top_html = header_html + toolbars_html.get("top", "")
-    bottom_html = toolbars_html.get("bottom", "")
-    left_html = toolbars_html.get("left", "")
-    right_html = toolbars_html.get("right", "")
-    inside_html = toolbars_html.get("inside", "")
-
-    # Layer wrappers from inside out: inside → left/right → top/bottom
-    if inside_html:
-        content = f"<div class='pywry-wrapper-inside'>{inside_html}{content}</div>"
-    if left_html or right_html:
-        content = f"<div class='pywry-wrapper-left'>{left_html}<div class='pywry-content'>{content}</div>{right_html}</div>"
-    if top_html or bottom_html:
-        content = f"<div class='pywry-wrapper-top'>{top_html}<div class='pywry-content'>{content}</div>{bottom_html}</div>"
-
-    # If no toolbars at all, just wrap in content div
-    if not any([top_html, bottom_html, left_html, right_html, inside_html]):
-        content = f"<div class='pywry-content'>{grid_div}</div>"
-
-    return content
+    return wrap_content_with_toolbars(grid_div, toolbars, extra_top_html)
 
 
 def generate_dataframe_html(
@@ -2614,14 +2626,6 @@ def generate_dataframe_html(
     # For "system" theme, use dark mode CSS assets (JS will switch dynamically)
     theme_mode = ThemeMode.DARK if theme in ("dark", "system") else ThemeMode.LIGHT
 
-    # Build toolbar HTML for each position
-    toolbars_html: dict[str, str] = {}
-    if toolbars:
-        for toolbar_cfg in toolbars:
-            position, html = _process_toolbar_config(toolbar_cfg)
-            if html:
-                toolbars_html[position] = toolbars_html.get(position, "") + html
-
     grid_config: dict[str, Any] = {
         "columnDefs": [{"field": col} for col in columns],
         "rowData": row_data,
@@ -2636,7 +2640,7 @@ def generate_dataframe_html(
     # For system theme, default to dark AG Grid theme (JS will switch)
     theme_class = f"ag-theme-{aggrid_theme}{'-dark' if theme in ('dark', 'system') else ''}"
     widget_theme_class = f"pywry-theme-{theme}"
-    widget_content = _build_grid_layout(toolbars_html, header_html, theme_class)
+    widget_content = _build_grid_layout(theme_class, toolbars, header_html)
 
     return f"""<!DOCTYPE html>
 <html class="{theme}">
@@ -2763,14 +2767,6 @@ def generate_dataframe_html_from_config(
     # For "system" theme, use dark mode CSS assets (JS will switch dynamically)
     theme_mode = ThemeMode.DARK if theme in ("dark", "system") else ThemeMode.LIGHT
 
-    # Build toolbar HTML for each position
-    toolbars_html: dict[str, str] = {}
-    if toolbars:
-        for toolbar_cfg in toolbars:
-            position, html = _process_toolbar_config(toolbar_cfg)
-            if html:
-                toolbars_html[position] = toolbars_html.get(position, "") + html
-
     # Get grid config dict from GridConfig.options (Pydantic model)
     grid_config = config.options.to_dict()
 
@@ -2785,7 +2781,7 @@ def generate_dataframe_html_from_config(
     assets = _build_aggrid_assets(aggrid_theme, theme_mode)
     theme_class = config.context.theme_class
     widget_theme_class = f"pywry-theme-{theme}"
-    widget_content = _build_grid_layout(toolbars_html, header_html, theme_class)
+    widget_content = _build_grid_layout(theme_class, toolbars, header_html)
 
     return f"""<!DOCTYPE html>
 <html class="{theme}">

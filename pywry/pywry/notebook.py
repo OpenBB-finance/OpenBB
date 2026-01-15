@@ -281,33 +281,11 @@ def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None, _mode:
     str
         Wrapped HTML with toolbars in correct positions.
     """
-    if not toolbars:
-        return content
+    from .toolbar import wrap_content_with_toolbars
 
-    from .toolbar import build_toolbars_by_position
-
-    # Use centralized function that handles both Toolbar models and dicts
-    by_pos = build_toolbars_by_position(toolbars)
-
-    # Wrap content with toolbars in correct order
-    if by_pos["inside"]:
-        content = f"<div class='pywry-wrapper-inside'>{by_pos['inside']}{content}</div>"
-    if by_pos["left"] or by_pos["right"]:
-        content = (
-            f"<div class='pywry-wrapper-left'>{by_pos['left']}"
-            f"<div class='pywry-content'>{content}</div>"
-            f"{by_pos['right']}</div>"
-        )
-    if by_pos["top"] or by_pos["bottom"]:
-        # Use wrapper-top if top toolbars exist, else wrapper-bottom
-        wrapper_class = "pywry-wrapper-top" if by_pos["top"] else "pywry-wrapper-bottom"
-        content = (
-            f"<div class='{wrapper_class}'>{by_pos['top']}"
-            f"<div class='pywry-content'>{content}</div>"
-            f"{by_pos['bottom']}</div>"
-        )
-
-    return content
+    # Use the canonical wrap_content_with_toolbars from toolbar.py
+    # This handles all 7 positions: header, footer, top, bottom, left, right, inside
+    return wrap_content_with_toolbars(content, toolbars)
 
 
 def create_plotly_widget(  # pylint: disable=too-many-branches

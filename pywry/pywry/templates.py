@@ -24,7 +24,8 @@ from .models import HtmlContent, ThemeMode, WindowConfig
 from .scripts import build_init_script
 from .toolbar import (
     Toolbar,
-    build_toolbars_by_position,
+    get_toolbar_script,
+    wrap_content_with_toolbars,
 )
 
 
@@ -101,10 +102,10 @@ def build_theme_class(theme: ThemeMode) -> str:
         The CSS class name.
     """
     if theme == ThemeMode.DARK:
-        return "dark"
+        return "pywry-theme-dark"
     if theme == ThemeMode.LIGHT:
-        return "light"
-    return "dark"
+        return "pywry-theme-light"
+    return "pywry-theme-dark"
 
 
 def build_base_styles(settings: PyWrySettings | None = None) -> str:
@@ -195,13 +196,25 @@ def build_plotly_init_script(
     if "layout" not in figure:
         figure["layout"] = {}
 
+    # Apply default Plotly config (hide logo, responsive, etc.)
+    default_config = {
+        "displaylogo": False,
+        "responsive": True,
+        "displayModeBar": "hover",
+    }
+    if "config" not in figure or figure["config"] is None:
+        figure["config"] = default_config
+    else:
+        # Merge defaults with user config (user wins)
+        figure["config"] = {**default_config, **figure["config"]}
+
     # Don't modify original figure in-place - use _NumpyEncoder for numpy array support
     fig_json = json.dumps(figure, cls=_NumpyEncoder)
 
     plotly_template = "plotly_dark" if theme == ThemeMode.DARK else "plotly_white"
 
     return f"""
-    <div id="{chart_id}" class="plotly-graph-div" data-pywry-chart="{chart_id}" style="height: 100%; width: 100%;"></div>
+    <div id="{chart_id}" class="pywry-plotly" data-pywry-chart="{chart_id}"></div>
     <script>
         (function() {{
             if (typeof Plotly === 'undefined') {{
@@ -526,7 +539,7 @@ def fix_plotly_template(content: str, theme: ThemeMode) -> str:
     return re.sub(pattern, replacement, content)
 
 
-def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
+def build_html(  # pylint: disable=too-many-statements
     content: HtmlContent,
     config: WindowConfig,
     window_label: str,
@@ -572,6 +585,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     plotly_script = build_plotly_script(config)
     aggrid_script = build_aggrid_script(config)
     init_script = build_init_script(window_label, enable_hot_reload)
+    toolbar_script = get_toolbar_script() if toolbars else ""
 
     # Custom CSS and scripts from content
     custom_css = build_custom_css(content, loader)
@@ -597,30 +611,11 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
         "<html"
     )
 
-    # Build and inject toolbars
+    # Build and inject toolbars using centralized function
     if toolbars:
-        # Use centralized function that handles both Toolbar models and dicts
-        by_position = build_toolbars_by_position(toolbars)
-
-        # Wrap content with toolbars in correct order
-        if by_position["inside"]:
-            user_html = (
-                f"<div class='pywry-wrapper-inside'>{by_position['inside']}{user_html}</div>"
-            )
-        if by_position["left"] or by_position["right"]:
-            user_html = (
-                f"<div class='pywry-wrapper-left'>{by_position['left']}"
-                f"<div class='pywry-content'>{user_html}</div>"
-                f"{by_position['right']}</div>"
-            )
-        if by_position["top"] or by_position["bottom"]:
-            # Use wrapper-top if top toolbars exist, else wrapper-bottom
-            wrapper_class = "pywry-wrapper-top" if by_position["top"] else "pywry-wrapper-bottom"
-            user_html = (
-                f"<div class='{wrapper_class}'>{by_position['top']}"
-                f"<div class='pywry-content'>{user_html}</div>"
-                f"{by_position['bottom']}</div>"
-            )
+        # Use the canonical wrap_content_with_toolbars from toolbar.py
+        # This handles all 7 positions: header, footer, top, bottom, left, right, inside
+        user_html = wrap_content_with_toolbars(user_html, toolbars)
 
     if is_complete_doc:
         # Inject our scripts into the existing document
@@ -662,6 +657,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
                 {aggrid_script}
                 {json_script}
                 <script>{init_script}</script>
+                {toolbar_script}
                 {global_scripts}
                 {custom_scripts}
                 {custom_init}
@@ -688,6 +684,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
                         {aggrid_script}
                         {json_script}
                         <script>{init_script}</script>
+                        {toolbar_script}
                         {global_scripts}
                         {custom_scripts}
                         {custom_init}
@@ -712,6 +709,7 @@ def build_html(  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
     {aggrid_script}
     {json_script}
     <script>{init_script}</script>
+    {toolbar_script}
     {global_scripts}
     {custom_scripts}
 </head>

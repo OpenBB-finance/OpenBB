@@ -162,12 +162,55 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         self._theme = value
         debug(f"Theme changed to {value.value}")
 
+    def _setup_hot_reload_watching(
+        self,
+        target_label: str,
+        html_content: HtmlContent,
+    ) -> None:
+        """Set up hot reload file watching for a window.
+
+        Parameters
+        ----------
+        target_label : str
+            The window label.
+        html_content : HtmlContent
+            The HTML content with files to watch.
+        """
+        lifecycle = get_lifecycle()
+
+        if html_content.css_files:
+            for css_file in html_content.css_files:
+                css_path = Path(css_file) if isinstance(css_file, str) else css_file
+                lifecycle.add_watched_file(target_label, css_path, "css")
+
+        if html_content.script_files:
+            for script_file in html_content.script_files:
+                script_path = Path(script_file) if isinstance(script_file, str) else script_file
+                lifecycle.add_watched_file(target_label, script_path, "js")
+
+        watch_content = html_content
+        if not html_content.watch:
+            watch_content = HtmlContent(
+                html=html_content.html,
+                json_data=html_content.json_data,
+                init_script=html_content.init_script,
+                css_files=html_content.css_files,
+                script_files=html_content.script_files,
+                inline_css=html_content.inline_css,
+                watch=True,
+            )
+
+        if self._hot_reload_manager:
+            self._hot_reload_manager.enable_for_window(target_label, watch_content)
+
+        debug(f"Hot reload enabled for window {target_label}")
+
     # pylint: disable=too-many-arguments
     def show(
         self,
         content: str | HtmlContent,
         title: str | None = None,
-        width: int | None = None,
+        width: int | str | None = None,
         height: int | None = None,
         callbacks: dict[str, CallbackFunc] | None = None,
         include_plotly: bool = False,
@@ -189,8 +232,8 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             HTML content or HtmlContent object.
         title : str or None, optional
             Window title (overrides default).
-        width : int or None, optional
-            Window width (overrides default).
+        width : int or str or None, optional
+            Window width - int for pixels, str for CSS value (e.g., "60%", "500px").
         height : int or None, optional
             Window height (overrides default).
         callbacks : dict[str, CallbackFunc] or None, optional
@@ -210,45 +253,89 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         Returns
         -------
-        str or InlineWidget
-            The window label (native window) or InlineWidget (notebook).
+        str or PyWryWidget or InlineWidget
+            The window label (native window) or widget (notebook).
         """
         # Check if we're in BROWSER mode - use inline server but open in system browser
         is_browser_mode = isinstance(self._mode, BrowserMode)
 
         # Check if we're in a notebook environment OR explicit BROWSER mode
         if should_use_inline_rendering() or is_browser_mode:
-            from . import inline as pywry_inline
-
             # Convert HtmlContent to string if needed
             html_str = content.html if isinstance(content, HtmlContent) else content
 
             # Build callbacks dict from CallbackFunc to plain Callable
-            inline_callbacks: dict[str, Any] | None = None
+            plain_callbacks: dict[str, Any] | None = None
             if callbacks:
-                inline_callbacks = {
+                plain_callbacks = {
                     event: (cb.func if hasattr(cb, "func") else cb)
                     for event, cb in callbacks.items()
                 }
 
-            return pywry_inline.show(
-                content=html_str,
-                title=title or self._default_config.title,
-                width="100%",
-                height=height or self._default_config.height,
-                theme="dark" if self._theme == ThemeMode.DARK else "light",
-                callbacks=inline_callbacks,
-                include_plotly=include_plotly,
-                include_aggrid=include_aggrid,
-                aggrid_theme=aggrid_theme,
-                toolbars=toolbars,
-                open_browser=is_browser_mode,  # Open in browser for BROWSER mode
-            )
+            # For BROWSER mode, use InlineWidget (IFrame + WebSocket)
+            if is_browser_mode:
+                from . import inline as pywry_inline
 
-        # Build config
+                return pywry_inline.show(
+                    content=html_str,
+                    title=title or self._default_config.title,
+                    width="100%",
+                    height=height or self._default_config.height,
+                    theme="dark" if self._theme == ThemeMode.DARK else "light",
+                    callbacks=plain_callbacks,
+                    include_plotly=include_plotly,
+                    include_aggrid=include_aggrid,
+                    aggrid_theme=aggrid_theme,
+                    toolbars=toolbars,
+                    open_browser=True,
+                )
+
+            # For notebook inline: use PyWryWidget (AnyWidget) for plain HTML
+            # Use InlineWidget only for Plotly/AG Grid (they need specialized handling)
+            if include_plotly or include_aggrid:
+                from . import inline as pywry_inline
+
+                return pywry_inline.show(
+                    content=html_str,
+                    title=title or self._default_config.title,
+                    width="100%",
+                    height=height or self._default_config.height,
+                    theme="dark" if self._theme == ThemeMode.DARK else "light",
+                    callbacks=plain_callbacks,
+                    include_plotly=include_plotly,
+                    include_aggrid=include_aggrid,
+                    aggrid_theme=aggrid_theme,
+                    toolbars=toolbars,
+                    open_browser=False,
+                )
+
+            # Plain HTML with toolbars: use PyWryWidget (AnyWidget)
+            from .widget import PyWryWidget
+
+            # Handle width - can be int (pixels), string (css value), or None
+            widget_width = width
+            if widget_width is None:
+                widget_width = "100%"
+            elif isinstance(widget_width, int):
+                widget_width = f"{widget_width}px"
+            # else: already a string like "60%" or "500px"
+
+            widget = PyWryWidget.from_html(
+                content=html_str,
+                callbacks=plain_callbacks,
+                theme="dark" if self._theme == ThemeMode.DARK else "light",
+                width=widget_width,
+                height=f"{height or self._default_config.height}px",
+                toolbars=toolbars,
+            )
+            widget.display()  # Auto-display in notebook
+            return widget
+
+        # Build config - width must be int for native window
+        native_width = width if isinstance(width, int) else self._default_config.width
         config = WindowConfig(
             title=title or self._default_config.title,
-            width=width or self._default_config.width,
+            width=native_width,
             height=height or self._default_config.height,
             theme=self._theme,
             enable_plotly=include_plotly,
@@ -261,10 +348,11 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         # Get window label - for SINGLE_WINDOW mode, use the mode's fixed label
         # For other modes, let the mode's show() generate unique label if not provided
-        if hasattr(self._mode, "label"):
-            target_label = self._mode.label
-        else:
-            target_label = label if label else f"pywry-{uuid.uuid4().hex[:8]}"
+        target_label = (
+            self._mode.label
+            if hasattr(self._mode, "label")
+            else (label or f"pywry-{uuid.uuid4().hex[:8]}")
+        )
 
         # Determine if hot reload should be enabled for this window
         should_watch = watch if watch is not None else html_content.watch
@@ -287,33 +375,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         # Enable hot reload watching if requested
         if enable_hot_reload:
-            if html_content.css_files:
-                for css_file in html_content.css_files:
-                    css_path = Path(css_file) if isinstance(css_file, str) else css_file
-                    lifecycle.add_watched_file(target_label, css_path, "css")
-
-            if html_content.script_files:
-                for script_file in html_content.script_files:
-                    script_path = Path(script_file) if isinstance(script_file, str) else script_file
-                    lifecycle.add_watched_file(target_label, script_path, "js")
-
-            watch_content = html_content
-
-            if not html_content.watch:
-                watch_content = HtmlContent(
-                    html=html_content.html,
-                    json_data=html_content.json_data,
-                    init_script=html_content.init_script,
-                    css_files=html_content.css_files,
-                    script_files=html_content.script_files,
-                    inline_css=html_content.inline_css,
-                    watch=True,
-                )
-
-            if self._hot_reload_manager:
-                self._hot_reload_manager.enable_for_window(target_label, watch_content)
-
-            debug(f"Hot reload enabled for window {target_label}")
+            self._setup_hot_reload_watching(target_label, html_content)
 
         # Show in window (pass label for multi-window mode)
         return self._mode.show(config, html, callbacks, target_label)

@@ -31,6 +31,19 @@ _SRC_DIR = pathlib.Path(__file__).parent / "frontend" / "src"
 
 
 @lru_cache(maxsize=1)
+def _get_toolbar_handlers_js() -> str:
+    """Load the centralized toolbar handlers JavaScript.
+
+    This is the SINGLE source of truth for all toolbar interaction handlers.
+    Used by AG Grid, Plotly, and basic widget ESMs.
+    """
+    toolbar_handlers_file = _SRC_DIR / "toolbar-handlers.js"
+    if not toolbar_handlers_file.exists():
+        raise FileNotFoundError(f"Toolbar handlers JS not found: {toolbar_handlers_file}")
+    return toolbar_handlers_file.read_text(encoding="utf-8")
+
+
+@lru_cache(maxsize=1)
 def _get_plotly_widget_esm() -> str:
     """Build the Plotly widget ESM by combining Plotly.js with the widget code."""
     from .assets import get_plotly_js, get_plotly_templates_js
@@ -41,6 +54,12 @@ def _get_plotly_widget_esm() -> str:
         raise FileNotFoundError(f"Widget JS not found: {widget_js_file}")
 
     widget_js = widget_js_file.read_text(encoding="utf-8")
+
+    # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
+    toolbar_handlers_js = _get_toolbar_handlers_js()
+
+    # Inject toolbar handlers into the widget JS
+    widget_js = widget_js.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
 
     # Get Plotly.js
     plotly_js = get_plotly_js()
@@ -150,7 +169,11 @@ def _get_aggrid_widget_esm() -> str:
     if not aggrid_defaults_js:
         raise RuntimeError("AG Grid defaults JS not found in bundled assets")
 
+    # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
+    toolbar_handlers_js = _get_toolbar_handlers_js()
+
     # AG Grid widget render code - with ensureAgGrid() that guarantees availability
+    # Note: Uses __TOOLBAR_HANDLERS__ placeholder which is replaced below
     widget_js = """
 console.log('[PyWry AG Grid] Widget module loaded');
 
@@ -214,7 +237,18 @@ function render({ model, el }) {
     }
     // Global emit function that routes to the correct widget based on gridId
     // This is needed for context menus and other global handlers in aggrid-defaults.js
-    window.pywry.emit = function(type, data) {
+    window.pywry.emit = function(type, data, element) {
+        // Try to find widget from provided element first (for toolbar buttons)
+        if (element) {
+            const widget = element.closest('.pywry-widget');
+            if (widget && widget._pywryModel) {
+                const m = widget._pywryModel;
+                const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                m.set('_js_event', evt);
+                m.save_changes();
+                return;
+            }
+        }
         // Find the grid by gridId if provided, otherwise use most recent
         const gridId = data && data.gridId;
         let gridInfo = gridId ? (window.__PYWRY_GRIDS__ || {})[gridId] : null;
@@ -232,24 +266,48 @@ function render({ model, el }) {
                 return;
             }
         }
+        // Last resort: find any widget on page
+        const anyWidget = document.querySelector('.pywry-widget');
+        if (anyWidget && anyWidget._pywryModel) {
+            const m = anyWidget._pywryModel;
+            const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+            m.set('_js_event', evt);
+            m.save_changes();
+            return;
+        }
         console.warn('[PyWry] No widget found for global emit:', type, data);
     };
-    // Also add global 'on' for event handlers in aggrid-defaults.js
+    // Also add global 'on' for event handlers in aggrid-defaults.js and user scripts
     if (!window.pywry._handlers) {
         window.pywry._handlers = {};
     }
-    if (!window.pywry.on) {
-        window.pywry.on = function(type, callback) {
-            if (!window.pywry._handlers[type]) window.pywry._handlers[type] = [];
-            window.pywry._handlers[type].push(callback);
-        };
+    if (!window.pywry._pending) {
+        window.pywry._pending = [];
     }
-    if (!window.pywry._fire) {
-        window.pywry._fire = function(type, data) {
-            const handlers = window.pywry._handlers[type] || [];
+    // Always update on/fire to ensure pending event support
+    window.pywry.on = function(type, callback) {
+        if (!window.pywry._handlers[type]) window.pywry._handlers[type] = [];
+        window.pywry._handlers[type].push(callback);
+        // Flush any pending events for this type
+        const pending = (window.pywry._pending || []).filter(p => p.type === type);
+        window.pywry._pending = (window.pywry._pending || []).filter(p => p.type !== type);
+        pending.forEach(p => {
+            console.log('[PyWry] Flushing pending event:', type, p.data);
+            callback(p.data);
+        });
+    };
+    window.pywry._fire = function(type, data) {
+        console.log('[PyWry] window.pywry._fire:', type, data);
+        const handlers = window.pywry._handlers[type] || [];
+        if (handlers.length === 0) {
+            // Queue if no handlers yet (script may not have run)
+            console.log('[PyWry] No handlers for', type, '- queuing event');
+            window.pywry._pending = window.pywry._pending || [];
+            window.pywry._pending.push({type: type, data: data});
+        } else {
             handlers.forEach(h => h(data));
-        };
-    }
+        }
+    };
 
     // Local bridge - specialized for this widget instance
     const pywry = {
@@ -307,6 +365,64 @@ function render({ model, el }) {
                     // Apply theme directly (model.on('change:theme') only fires for changes FROM Python)
                     applyTheme();
                     console.log('[PyWry] Model theme set to:', newTheme);
+                }
+                // Handle CSS injection - inject or update a style element
+                if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
+                    const id = event.data.id || 'pywry-injected-style';
+                    let style = document.getElementById(id);
+                    if (style) {
+                        style.textContent = event.data.css;
+                    } else {
+                        style = document.createElement('style');
+                        style.id = id;
+                        style.textContent = event.data.css;
+                        document.head.appendChild(style);
+                    }
+                    console.log('[PyWry] Injected CSS with id:', id);
+                }
+                // Handle CSS removal
+                if (event.type === 'pywry:remove-css' && event.data && event.data.id) {
+                    const style = document.getElementById(event.data.id);
+                    if (style) {
+                        style.remove();
+                        console.log('[PyWry] Removed CSS with id:', event.data.id);
+                    }
+                }
+                // Handle inline style updates on elements
+                // Usage: emit('pywry:set_style', {selector: '.my-class', styles: {fontWeight: 'bold'}})
+                if (event.type === 'pywry:set_style' && event.data && event.data.styles) {
+                    let elements = [];
+                    if (event.data.id) {
+                        const el = document.getElementById(event.data.id);
+                        if (el) elements.push(el);
+                    } else if (event.data.selector) {
+                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                    }
+                    elements.forEach(function(el) {
+                        Object.keys(event.data.styles).forEach(function(prop) {
+                            el.style[prop] = event.data.styles[prop];
+                        });
+                    });
+                    console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
+                }
+                // Built-in handler for updating element content (innerHTML or textContent)
+                // Usage: emit('pywry:set_content', {id: 'my-element', html: '<b>Bold</b>'})
+                if (event.type === 'pywry:set_content' && event.data) {
+                    let elements = [];
+                    if (event.data.id) {
+                        const el = document.getElementById(event.data.id);
+                        if (el) elements.push(el);
+                    } else if (event.data.selector) {
+                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                    }
+                    elements.forEach(function(el) {
+                        if ('html' in event.data) {
+                            el.innerHTML = event.data.html;
+                        } else if ('text' in event.data) {
+                            el.textContent = event.data.text;
+                        }
+                    });
+                    console.log('[PyWry] Set content on', elements.length, 'elements');
                 }
                 // Handle grid data updates (row data)
                 if (event.type === 'grid:update_data' && gridApi && event.data && event.data.data) {
@@ -386,139 +502,9 @@ function render({ model, el }) {
         }
     });
 
-    // Initialize toolbar handlers (dropdowns, buttons, inputs, etc.)
-    // This is scoped to the container to avoid conflicts between widgets
-    function initToolbarHandlers(container, pywry) {
-        console.log('[PyWry Toolbar] Initializing toolbar handlers...');
-
-        // --- Dropdown (Select) handling ---
-        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
-            var selected = dropdown.querySelector('.pywry-dropdown-selected');
-            var menu = dropdown.querySelector('.pywry-dropdown-menu');
-            var textEl = dropdown.querySelector('.pywry-dropdown-text');
-
-            if (!selected || !menu || !textEl) return;
-
-            // Toggle dropdown on click
-            selected.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // Close all other dropdowns in this container first
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
-                    if (other !== dropdown) other.classList.remove('pywry-open');
-                });
-                dropdown.classList.toggle('pywry-open');
-            });
-
-            // Handle option selection
-            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
-                option.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var value = option.getAttribute('data-value');
-
-                    // Update selected state
-                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
-                        opt.classList.remove('pywry-selected');
-                    });
-                    option.classList.add('pywry-selected');
-                    textEl.textContent = option.textContent;
-                    dropdown.classList.remove('pywry-open');
-
-                    // Emit event
-                    var eventName = dropdown.getAttribute('data-event');
-                    if (eventName && pywry) {
-                        console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
-                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
-                    }
-                });
-            });
-        });
-
-        // --- Close dropdowns when clicking outside ---
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.pywry-dropdown')) {
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
-                    dropdown.classList.remove('pywry-open');
-                });
-            }
-        });
-
-        // --- Button handling ---
-        container.querySelectorAll('.pywry-toolbar-button').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                if (btn.classList.contains('pywry-disabled')) return;
-                var eventName = btn.getAttribute('data-event');
-                var data = {};
-                try {
-                    if (btn.getAttribute('data-data')) data = JSON.parse(btn.getAttribute('data-data'));
-                } catch (err) {}
-                if (eventName && pywry) {
-                    console.log('[PyWry Toolbar] Button clicked:', eventName, data);
-                    pywry.emit(eventName, data);
-                }
-            });
-        });
-
-        // --- Text/Number/Date Input handling (with debounce) ---
-        var inputDebounceTimers = {};
-        container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
-            input.addEventListener('input', function(e) {
-                var eventName = input.getAttribute('data-event');
-                var debounce = parseInt(input.getAttribute('data-debounce') || '0', 10);
-                var inputId = input.id || input.getAttribute('data-event');
-
-                if (inputDebounceTimers[inputId]) {
-                    clearTimeout(inputDebounceTimers[inputId]);
-                }
-
-                var sendValue = function() {
-                    var value = input.value;
-                    if (input.type === 'number') value = parseFloat(value);
-                    if (eventName && pywry) {
-                        pywry.emit(eventName, { value: value, componentId: input.id });
-                    }
-                };
-
-                if (debounce > 0) {
-                    inputDebounceTimers[inputId] = setTimeout(sendValue, debounce);
-                } else {
-                    sendValue();
-                }
-            });
-        });
-
-        // --- Slider/Range Input handling ---
-        container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
-            slider.addEventListener('input', function(e) {
-                var eventName = slider.getAttribute('data-event');
-                var value = parseFloat(slider.value);
-                // Update display value if present
-                var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
-                if (display) display.textContent = value;
-                if (eventName && pywry) {
-                    pywry.emit(eventName, { value: value, componentId: slider.id });
-                }
-            });
-        });
-
-        // --- MultiSelect handling ---
-        container.querySelectorAll('.pywry-multiselect-group input[type="checkbox"]').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function(e) {
-                var group = checkbox.closest('.pywry-multiselect-group');
-                if (group) {
-                    var eventName = group.getAttribute('data-event');
-                    var selected = [];
-                    group.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
-                        selected.push(cb.value);
-                    });
-                    if (eventName && pywry) {
-                        pywry.emit(eventName, { values: selected, componentId: group.id });
-                    }
-                }
-            });
-        });
-
-        console.log('[PyWry Toolbar] Handlers initialized');
-    }
+    // Initialize toolbar handlers - LOADED FROM CENTRALIZED SOURCE
+    // See: frontend/src/toolbar-handlers.js
+    __TOOLBAR_HANDLERS__
 
     function renderContent(retryCount = 0) {
         // CRITICAL: Check if this render is stale (a newer render has started)
@@ -624,6 +610,9 @@ function render({ model, el }) {
 }
 export default { render };
 """
+    # Inject toolbar handlers using simple replacement (avoids escaping issues)
+    widget_js = widget_js.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
+
     # AG Grid UMD checks for AMD (define) first - we must disable it temporarily
     return f"""
 console.log('[PyWry AG Grid ESM] Module loading...');
@@ -715,6 +704,14 @@ if (!getAgGrid()) {{
 """
 
 
+@lru_cache(maxsize=1)
+def _get_widget_esm() -> str:
+    """Build the basic widget ESM with centralized toolbar handlers."""
+    # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
+    toolbar_handlers_js = _get_toolbar_handlers_js()
+    return _WIDGET_ESM.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
+
+
 # Basic widget ESM without Plotly
 _WIDGET_ESM = """
 function render({ model, el }) {
@@ -725,7 +722,7 @@ function render({ model, el }) {
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
     if (modelHeight) {
-        container.style.setProperty('--pywry-widget-max-height', modelHeight);
+        container.style.setProperty('--pywry-widget-height', modelHeight);
     }
     if (modelWidth) {
         container.style.setProperty('--pywry-widget-width', modelWidth);
@@ -742,9 +739,51 @@ function render({ model, el }) {
     // Attach model to container for global dispatch lookup
     container._pywryModel = model;
 
-    // Initialize global dispatcher if not present
-    if (!window.pywry) {
-        window.pywry = {};
+    // Initialize global dispatcher if not present (with full API for user scripts)
+    if (!window.pywry || !window.pywry._fire) {
+        window.pywry = {
+            _handlers: {},
+            _pending: [],
+            on: function(type, callback) {
+                if (!this._handlers[type]) this._handlers[type] = [];
+                this._handlers[type].push(callback);
+                // Flush pending events for this type
+                const pending = this._pending.filter(p => p.type === type);
+                this._pending = this._pending.filter(p => p.type !== type);
+                pending.forEach(p => callback(p.data));
+            },
+            _fire: function(type, data) {
+                const handlers = this._handlers[type] || [];
+                if (handlers.length === 0) {
+                    this._pending.push({type: type, data: data});
+                } else {
+                    handlers.forEach(h => h(data));
+                }
+            },
+            emit: function(type, data, element) {
+                // Try to find widget from provided element first (for toolbar buttons)
+                if (element) {
+                    const widget = element.closest('.pywry-widget');
+                    if (widget && widget._pywryModel) {
+                        const m = widget._pywryModel;
+                        const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                        m.set('_js_event', evt);
+                        m.save_changes();
+                        return;
+                    }
+                }
+                // Fallback: find any widget on page
+                const anyWidget = document.querySelector('.pywry-widget');
+                if (anyWidget && anyWidget._pywryModel) {
+                    const m = anyWidget._pywryModel;
+                    const evt = JSON.stringify({ type: type, data: data, ts: Date.now() });
+                    m.set('_js_event', evt);
+                    m.save_changes();
+                    return;
+                }
+                console.warn('[PyWry] No widget found for global emit:', type, data);
+            }
+        };
     }
 
     // Local bridge - specialized for this widget instance
@@ -783,139 +822,10 @@ function render({ model, el }) {
     container._pywryInstance = pywry;
 
     // =========================================================================
-    // TOOLBAR HANDLERS - Shared by ALL widgets
-    // Handles dropdowns, buttons, inputs, sliders, multiselects
+    // TOOLBAR HANDLERS - LOADED FROM CENTRALIZED SOURCE
+    // See: frontend/src/toolbar-handlers.js
     // =========================================================================
-    function initToolbarHandlers(container, pywry) {
-        console.log('[PyWry Toolbar] Initializing toolbar handlers...');
-
-        // --- Dropdown (Select) handling ---
-        container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
-            var selected = dropdown.querySelector('.pywry-dropdown-selected');
-            var menu = dropdown.querySelector('.pywry-dropdown-menu');
-            var textEl = dropdown.querySelector('.pywry-dropdown-text');
-
-            if (!selected || !menu || !textEl) return;
-
-            // Toggle dropdown on click
-            selected.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // Close all other dropdowns in this container first
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
-                    if (other !== dropdown) other.classList.remove('pywry-open');
-                });
-                dropdown.classList.toggle('pywry-open');
-            });
-
-            // Handle option selection
-            dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
-                option.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var value = option.getAttribute('data-value');
-
-                    // Update selected state
-                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
-                        opt.classList.remove('pywry-selected');
-                    });
-                    option.classList.add('pywry-selected');
-                    textEl.textContent = option.textContent;
-                    dropdown.classList.remove('pywry-open');
-
-                    // Emit event
-                    var eventName = dropdown.getAttribute('data-event');
-                    if (eventName && pywry) {
-                        console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
-                        pywry.emit(eventName, { value: value, componentId: dropdown.id });
-                    }
-                });
-            });
-        });
-
-        // --- Close dropdowns when clicking outside ---
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.pywry-dropdown')) {
-                container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
-                    dropdown.classList.remove('pywry-open');
-                });
-            }
-        });
-
-        // --- Button handling ---
-        container.querySelectorAll('.pywry-toolbar-button').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                if (btn.classList.contains('pywry-disabled')) return;
-                var eventName = btn.getAttribute('data-event');
-                var data = {};
-                try {
-                    if (btn.getAttribute('data-data')) data = JSON.parse(btn.getAttribute('data-data'));
-                } catch (err) {}
-                if (eventName && pywry) {
-                    console.log('[PyWry Toolbar] Button clicked:', eventName, data);
-                    pywry.emit(eventName, data);
-                }
-            });
-        });
-
-        // --- Text/Number/Date Input handling (with debounce) ---
-        var inputDebounceTimers = {};
-        container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
-            input.addEventListener('input', function(e) {
-                var eventName = input.getAttribute('data-event');
-                var debounce = parseInt(input.getAttribute('data-debounce') || '0', 10);
-                var inputId = input.id || input.getAttribute('data-event');
-
-                if (inputDebounceTimers[inputId]) {
-                    clearTimeout(inputDebounceTimers[inputId]);
-                }
-
-                var sendValue = function() {
-                    var value = input.value;
-                    if (input.type === 'number') value = parseFloat(value);
-                    if (eventName && pywry) {
-                        pywry.emit(eventName, { value: value, componentId: input.id });
-                    }
-                };
-
-                if (debounce > 0) {
-                    inputDebounceTimers[inputId] = setTimeout(sendValue, debounce);
-                } else {
-                    sendValue();
-                }
-            });
-        });
-
-        // --- Slider/Range Input handling ---
-        container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
-            slider.addEventListener('input', function(e) {
-                var eventName = slider.getAttribute('data-event');
-                var value = parseFloat(slider.value);
-                var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
-                if (display) display.textContent = value;
-                if (eventName && pywry) {
-                    pywry.emit(eventName, { value: value, componentId: slider.id });
-                }
-            });
-        });
-
-        // --- MultiSelect handling ---
-        container.querySelectorAll('.pywry-multiselect-group input[type="checkbox"]').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function(e) {
-                var group = checkbox.closest('.pywry-multiselect-group');
-                if (group) {
-                    var eventName = group.getAttribute('data-event');
-                    var selected = [];
-                    group.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
-                        selected.push(cb.value);
-                    });
-                    if (eventName && pywry) {
-                        pywry.emit(eventName, { values: selected, componentId: group.id });
-                    }
-                }
-            });
-        });
-
-        console.log('[PyWry Toolbar] Handlers initialized');
-    }
+    __TOOLBAR_HANDLERS__
 
     model.on('change:_py_event', () => {
         try {
@@ -931,7 +841,67 @@ function render({ model, el }) {
                     applyTheme();
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
+                // Handle CSS injection - inject or update a style element
+                if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
+                    const id = event.data.id || 'pywry-injected-style';
+                    let style = document.getElementById(id);
+                    if (style) {
+                        style.textContent = event.data.css;
+                    } else {
+                        style = document.createElement('style');
+                        style.id = id;
+                        style.textContent = event.data.css;
+                        document.head.appendChild(style);
+                    }
+                    console.log('[PyWry] Injected CSS with id:', id);
+                }
+                // Handle CSS removal
+                if (event.type === 'pywry:remove-css' && event.data && event.data.id) {
+                    const style = document.getElementById(event.data.id);
+                    if (style) {
+                        style.remove();
+                        console.log('[PyWry] Removed CSS with id:', event.data.id);
+                    }
+                }
+                // Handle inline style updates on elements
+                if (event.type === 'pywry:set_style' && event.data && event.data.styles) {
+                    let elements = [];
+                    if (event.data.id) {
+                        const el = document.getElementById(event.data.id);
+                        if (el) elements.push(el);
+                    } else if (event.data.selector) {
+                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                    }
+                    elements.forEach(function(el) {
+                        Object.keys(event.data.styles).forEach(function(prop) {
+                            el.style[prop] = event.data.styles[prop];
+                        });
+                    });
+                    console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
+                }
+                // Built-in handler for updating element content (innerHTML or textContent)
+                if (event.type === 'pywry:set_content' && event.data) {
+                    let elements = [];
+                    if (event.data.id) {
+                        const el = document.getElementById(event.data.id);
+                        if (el) elements.push(el);
+                    } else if (event.data.selector) {
+                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                    }
+                    elements.forEach(function(el) {
+                        if ('html' in event.data) {
+                            el.innerHTML = event.data.html;
+                        } else if ('text' in event.data) {
+                            el.textContent = event.data.text;
+                        }
+                    });
+                    console.log('[PyWry] Set content on', elements.length, 'elements');
+                }
                 pywry._fire(event.type, event.data);
+                // Also fire on window.pywry for global handlers (e.g., user scripts using window.pywry.on)
+                if (window.pywry && window.pywry._fire && window.pywry !== pywry) {
+                    window.pywry._fire(event.type, event.data);
+                }
             }
         } catch(e) {
             console.error('[PyWry] Failed to parse Python event:', e);
@@ -991,7 +961,7 @@ if HAS_ANYWIDGET:
         Implements BaseWidget protocol for unified API.
         """
 
-        _esm = _WIDGET_ESM
+        _esm = _get_widget_esm()
         _css = _get_pywry_base_css()
 
         content = traitlets.Unicode("").tag(sync=True)
@@ -1032,10 +1002,14 @@ if HAS_ANYWIDGET:
                 event = json.loads(change["new"])
                 event_type = event.get("type", "")
                 event_data = event.get("data", {})
-                for handler in self._handlers.get(event_type, []):
+                handlers = self._handlers.get(event_type, [])
+                for handler in handlers:
                     handler(event_data, event_type, self._label)
             except Exception as e:
                 print(f"[PyWry] Error handling JS event: {e}")
+                import traceback
+
+                traceback.print_exc()
 
         def on(
             self, event_type: str, callback: Callable[[dict[str, Any], str, str], Any]
@@ -1071,6 +1045,7 @@ if HAS_ANYWIDGET:
             """
             event = json.dumps({"type": event_type, "data": data or {}, "ts": uuid.uuid4().hex})
             self._py_event = event
+            self.send_state("_py_event")  # Force sync to frontend
 
         def update(self, html: str) -> None:
             """Update the widget's HTML content.
@@ -1091,6 +1066,62 @@ if HAS_ANYWIDGET:
             from IPython.display import display as ipy_display
 
             ipy_display(self)
+
+        @classmethod
+        def from_html(
+            cls,
+            content: str,
+            callbacks: dict[str, Callable[[dict[str, Any], str, str], Any]] | None = None,
+            theme: str = "dark",
+            width: str = "100%",
+            height: str = "500px",
+            toolbars: list | None = None,
+        ) -> PyWryWidget:
+            """Create a PyWryWidget from HTML content with callbacks.
+
+            Parameters
+            ----------
+            content : str
+                HTML content to display.
+            callbacks : dict[str, Callable], optional
+                Event callbacks: {event_type: handler_function}.
+            theme : str
+                Color theme ('dark' or 'light').
+            width : str
+                Widget width (CSS value).
+            height : str
+                Widget height (CSS value or int pixels).
+            toolbars : list, optional
+                List of toolbar configurations.
+
+            Returns
+            -------
+            PyWryWidget
+                Configured widget with callbacks registered.
+            """
+            from .toolbar import wrap_content_with_toolbars
+
+            # Always wrap content with proper container structure
+            # This ensures consistent styling even without toolbars
+            content = wrap_content_with_toolbars(content, toolbars)
+
+            # Normalize height to string with px
+            height_str = f"{height}px" if isinstance(height, int) else height
+
+            # Create widget
+            widget = cls(
+                content=content,
+                theme=theme,
+                width=width,
+                height=height_str,
+            )
+
+            # Register callbacks
+            if callbacks:
+                for event_type, handler in callbacks.items():
+                    widget.on(event_type, handler)
+
+            return widget
 
     class PyWryPlotlyWidget(PyWryWidget, PlotlyStateMixin):  # pylint: disable=abstract-method,too-many-ancestors
         """Widget for inline notebook rendering with Plotly.js bundled.

@@ -492,19 +492,19 @@ class TestBuildThemeClass:
     """Tests for build_theme_class function."""
 
     def test_dark_returns_dark(self):
-        """Dark theme returns 'dark' class."""
+        """Dark theme returns 'pywry-theme-dark' class."""
         result = build_theme_class(ThemeMode.DARK)
-        assert result == "dark"
+        assert result == "pywry-theme-dark"
 
     def test_light_returns_light(self):
-        """Light theme returns 'light' class."""
+        """Light theme returns 'pywry-theme-light' class."""
         result = build_theme_class(ThemeMode.LIGHT)
-        assert result == "light"
+        assert result == "pywry-theme-light"
 
     def test_system_returns_dark(self):
-        """System theme defaults to 'dark' class."""
+        """System theme defaults to 'pywry-theme-dark' class."""
         result = build_theme_class(ThemeMode.SYSTEM)
-        assert result == "dark"
+        assert result == "pywry-theme-dark"
 
 
 class TestBuildBaseStyles:
