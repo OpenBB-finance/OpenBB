@@ -148,11 +148,15 @@ app.destroy()
 | Section | Description |
 |---------|-------------|
 | [Rendering Paths](#rendering-paths) | Native Window, Notebook, IFrame, Browser modes |
+| ↳ [Native Window](#rendering-paths) ・ [Notebook Widget](#rendering-paths) ・ [Inline IFrame](#rendering-paths) ・ [Browser Mode](#rendering-paths) | |
 | [Core API](#core-api) | PyWry class, imports, display & event methods |
+| ↳ [Imports](#core-api) ・ [PyWry Class](#core-api) ・ [Display Methods](#core-api) ・ [Event Methods](#core-api) | |
 | [CSS Selectors and Theming](#css-selectors-and-theming) | Styling with CSS variables and classes |
+| ↳ [Theme Classes](#css-selectors-and-theming) ・ [Layout Classes](#css-selectors-and-theming) ・ [CSS Variables](#css-selectors-and-theming) | |
 | [HtmlContent Model](#htmlcontent-model) | Advanced content configuration |
 | [WindowConfig Model](#windowconfig-model) | Window property configuration |
 | [Configuration System](#configuration-system) | TOML files, environment variables, presets |
+| ↳ [pywry.toml](#configuration-system) ・ [pyproject.toml](#configuration-system) ・ [Environment Variables](#configuration-system) ・ [Security Presets](#configuration-system) | |
 | [Hot Reload](#hot-reload) | Live CSS/JS updates during development |
 
 **Event & Toolbar Systems**
@@ -160,15 +164,19 @@ app.destroy()
 | Section | Description |
 |---------|-------------|
 | [Event System](#event-system) | Bidirectional Python ↔ JS communication |
+| ↳ [Event Naming](#event-system) ・ [Handler Signature](#event-system) ・ [Registering Handlers](#event-system) ・ [Utility Events](#utility-events-python-to-js) | |
 | [Pre-Registered Events](#pre-registered-events-built-in) | Built-in system, Plotly, and AgGrid events |
 | [Toolbar System](#toolbar-system) | All 14 toolbar components with examples |
+| ↳ [Positions & Layout](#toolbar-system) ・ [Component Reference](#toolbar-system) ・ [State Management](#toolbar-system) | |
 
 **Advanced Topics**
 
 | Section | Description |
 |---------|-------------|
 | [JavaScript Bridge](#javascript-bridge) | `window.pywry` API reference |
+| ↳ [Available Methods](#javascript-bridge) ・ [Injected Globals](#javascript-bridge) ・ [Plotly/AgGrid APIs](#javascript-bridge) | |
 | [Direct Tauri API Access](#direct-tauri-api-access) | Native filesystem, dialogs, clipboard |
+| ↳ [`__TAURI__` Global](#direct-tauri-api-access) ・ [PyTauri IPC](#direct-tauri-api-access) ・ [Tauri Events](#direct-tauri-api-access) | |
 | [CLI Commands](#cli-commands) | Command-line tools |
 | [Debugging](#debugging) | DevTools, logging, troubleshooting |
 | [Building from Source](#building-from-source) | Development setup |
@@ -186,6 +194,10 @@ app.destroy()
 
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [Native Window](#native-window) · [Notebook Widget](#notebook-widget-anywidget) · [Inline IFrame](#inline-iframe) · [Browser Mode](#browser-mode)
+
+---
 
 PyWry automatically selects the appropriate rendering path based on your environment:
 
@@ -358,6 +370,10 @@ Browser mode starts a FastAPI server and opens the widget URL in the browser. Us
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [Imports](#imports) · [PyWry Class](#pywry-class) · [Display Methods](#display-methods) · [Event Methods](#event-methods) · [Other Methods](#other-methods)
+
+---
+
 ### Imports
 
 ```python
@@ -526,6 +542,10 @@ widget.emit("app:response", {"key": "value"})
 
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [Theme Classes](#theme-classes) · [Layout Classes](#layout-classes) · [Toolbar Classes](#toolbar-classes) · [Component Classes](#component-classes) · [CSS Variables](#css-variables) · [Example](#example-custom-styling)
+
+---
 
 PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AgGrid).
 
@@ -752,6 +772,10 @@ config = WindowConfig(
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [pywry.toml](#configuration-file-pywrytoml) · [pyproject.toml](#pyprojecttoml) · [Environment Variables](#environment-variables) · [Configuration Sections](#configuration-sections) · [Programmatic Config](#programmatic-configuration) · [Security Presets](#security-presets)
+
+---
+
 PyWry uses a layered configuration system. Settings are merged in this order (highest priority last):
 
 1. **Built-in defaults**
@@ -894,6 +918,10 @@ localhost_ports = SecuritySettings.localhost(ports=[8000, 8080])
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [Enable Hot Reload](#enable-hot-reload) · [Behavior](#behavior) · [Watch Files](#watch-files) · [Manual CSS Reload](#manual-css-reload) · [Configuration](#configuration)
+
+---
+
 Hot reload enables live updates during development without restarting.
 
 ### Enable Hot Reload
@@ -967,8 +995,14 @@ watch_directories = ["./src", "./styles"]
 
 ## Event System
 
+<a id="utility-events-python-to-js"></a>
+
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [What is an Event?](#what-is-an-event) · [Event Naming](#event-naming-format) · [Reserved Namespaces](#reserved-namespaces) · [Handler Signature](#handler-signature) · [Registering Handlers](#registering-handlers) · [Wildcard Handlers](#wildcard-handlers)
+
+---
 
 PyWry provides bidirectional communication between Python and JavaScript through a **namespace-based event system**. This allows your Python code to respond to user interactions in the browser (clicks, selections, form inputs) and to send updates back to the browser UI.
 
@@ -1531,6 +1565,10 @@ window.pywry.on('app:response', function(data) {  // Python → JS
 
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [Quick Start](#quick-start) · [Imports](#imports-1) · [Positions & Layout](#toolbar-positions--layout) · [Common Properties](#common-properties) · [Component Reference](#component-reference) · [Toolbar Container](#toolbar-container) · [Examples](#examples) · [State Management](#state-management)
+
+---
 
 PyWry provides a flexible toolbar system for adding interactive controls to any window. The toolbar system uses Pydantic models for type-safe configuration with auto-generated component IDs for state tracking.
 
@@ -2604,6 +2642,10 @@ window.__PYWRY_TOOLBAR__.setValue("select-a1b2c3d4", "light");
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [Available Methods](#available-methods) · [Injected Globals](#injected-globals) · [AgGrid API](#accessing-aggrid-api) · [Plotly API](#accessing-plotly-api) · [Two-Way Communication](#example-two-way-communication) · [System Event Handlers](#built-in-system-event-handlers)
+
+---
+
 PyWry injects a `window.pywry` object for JavaScript ↔ Python communication.
 
 ### Available Methods
@@ -2731,7 +2773,7 @@ widget.emit("pywry:set-content", {"selector": ".count", "text": "42"})
 widget.emit("pywry:download", {"content": "CSV data...", "filename": "data.csv", "mimeType": "text/csv"})
 ```
 
-See [Utility Events (Python → JS)](#utility-events-python--js) for complete documentation.
+See [Utility Events (Python → JS)](#utility-events-python-to-js) for complete documentation.
 
 </details>
 
@@ -2741,6 +2783,10 @@ See [Utility Events (Python → JS)](#utility-events-python--js) for complete do
 
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [`__TAURI__` Global](#the-__tauri__-global) · [PyTauri IPC](#pytauri-ipc-python--javascript) · [Listening to Events](#listening-to-python-events-javascript) · [Tauri Events](#tauri-internal-events-advanced) · [Custom Handler](#example-custom-tauri-handler) · [Environment Detection](#environment-detection)
+
+---
 
 For advanced use cases, you can access the underlying Tauri IPC system directly. PyWry is built on [PyTauri](https://pypi.org/project/pytauri/), which provides full access to Tauri's capabilities.
 
