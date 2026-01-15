@@ -2176,3 +2176,973 @@ class TestAllTypesDiscriminator:
             html = item.build_html()
             assert html, f"{item.type} produced empty HTML"
             assert len(html) > 10, f"{item.type} HTML too short"
+
+
+# =============================================================================
+# Toolbar HTML Structure Tests
+# =============================================================================
+
+
+class TestToolbarHtmlStructure:
+    """Test correct HTML div structure from Toolbar.build_html()."""
+
+    def test_toolbar_outer_container_class(self) -> None:
+        """Toolbar has pywry-toolbar class on outer container."""
+        toolbar = Toolbar(items=[Button(label="Click", event="app:click")])
+        html = toolbar.build_html()
+        assert 'class="pywry-toolbar' in html
+
+    def test_toolbar_position_class(self) -> None:
+        """Toolbar has position-specific class."""
+        for position in ["top", "bottom", "left", "right", "header", "footer", "inside"]:
+            toolbar = Toolbar(
+                position=position,  # type: ignore[arg-type]
+                items=[Button(label="Click", event="app:click")],
+            )
+            html = toolbar.build_html()
+            assert f"pywry-toolbar-{position}" in html
+
+    def test_toolbar_content_wrapper(self) -> None:
+        """Toolbar items are wrapped in pywry-toolbar-content div."""
+        toolbar = Toolbar(items=[Button(label="Click", event="app:click")])
+        html = toolbar.build_html()
+        assert 'class="pywry-toolbar-content"' in html
+
+    def test_toolbar_has_component_id(self) -> None:
+        """Toolbar has both id and data-component-id attributes."""
+        toolbar = Toolbar(items=[Button(label="Click", event="app:click")])
+        html = toolbar.build_html()
+        assert f'id="{toolbar.component_id}"' in html
+        assert f'data-component-id="{toolbar.component_id}"' in html
+
+    def test_toolbar_has_position_data_attribute(self) -> None:
+        """Toolbar has data-position attribute."""
+        toolbar = Toolbar(position="left", items=[Button(label="X", event="app:x")])
+        html = toolbar.build_html()
+        assert 'data-position="left"' in html
+
+    def test_empty_toolbar_returns_empty_string(self) -> None:
+        """Toolbar with no items returns empty string."""
+        toolbar = Toolbar(items=[])
+        html = toolbar.build_html()
+        assert html == ""
+
+    def test_collapsible_toolbar_has_toggle_button(self) -> None:
+        """Collapsible toolbar includes toggle button."""
+        toolbar = Toolbar(
+            items=[Button(label="Click", event="app:click")],
+            collapsible=True,
+        )
+        html = toolbar.build_html()
+        assert 'class="pywry-toolbar-toggle"' in html
+        assert 'data-collapsible="true"' in html
+        assert 'aria-expanded="true"' in html
+
+    def test_resizable_toolbar_has_resize_handle(self) -> None:
+        """Resizable toolbar includes resize handle."""
+        toolbar = Toolbar(
+            items=[Button(label="Click", event="app:click")],
+            resizable=True,
+        )
+        html = toolbar.build_html()
+        assert 'class="pywry-resize-handle"' in html
+        assert 'data-resizable="true"' in html
+
+    def test_toolbar_custom_class_name(self) -> None:
+        """Toolbar custom class_name is added to classes."""
+        toolbar = Toolbar(
+            items=[Button(label="X", event="app:x")],
+            class_name="my-custom-toolbar",
+        )
+        html = toolbar.build_html()
+        assert "my-custom-toolbar" in html
+
+    def test_toolbar_style_on_inside_position(self) -> None:
+        """For 'inside' position, style goes on outer div."""
+        toolbar = Toolbar(
+            position="inside",
+            items=[Button(label="X", event="app:x")],
+            style="top: 10px; right: 10px;",
+        )
+        html = toolbar.build_html()
+        # Style should be on outer div, not content div
+        assert 'style="top: 10px; right: 10px;"' in html
+
+    def test_toolbar_style_on_other_positions(self) -> None:
+        """For non-inside positions, style goes on content wrapper."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="X", event="app:x")],
+            style="justify-content: center;",
+        )
+        html = toolbar.build_html()
+        # Style should be on content div
+        assert 'class="pywry-toolbar-content" style="justify-content: center;"' in html
+
+
+class TestToolbarNesting:
+    """Test correct nesting of Div children within toolbars."""
+
+    def test_div_has_pywry_div_class(self) -> None:
+        """Div container has pywry-div class."""
+        div = Div(content="<span>Hello</span>", event="app:container")
+        html = div.build_html()
+        assert 'class="pywry-div"' in html
+
+    def test_div_custom_class_name(self) -> None:
+        """Div custom class_name is added to classes."""
+        div = Div(
+            content="<span>Hello</span>",
+            event="app:container",
+            class_name="my-group",
+        )
+        html = div.build_html()
+        assert "pywry-div" in html
+        assert "my-group" in html
+
+    def test_div_with_children(self) -> None:
+        """Div renders nested children components."""
+        div = Div(
+            event="app:group",
+            children=[
+                Button(label="Btn1", event="app:btn1"),
+                Button(label="Btn2", event="app:btn2"),
+            ],
+        )
+        html = div.build_html()
+        assert "Btn1" in html
+        assert "Btn2" in html
+        # Should have button tags inside div
+        assert html.count("<button") == 2
+
+    def test_div_nested_divs(self) -> None:
+        """Div can contain nested Div children."""
+        outer = Div(
+            event="app:outer",
+            class_name="outer-group",
+            children=[
+                Div(
+                    event="app:inner",
+                    class_name="inner-group",
+                    children=[Button(label="Deep", event="app:deep")],
+                ),
+            ],
+        )
+        html = outer.build_html()
+        assert "outer-group" in html
+        assert "inner-group" in html
+        assert "Deep" in html
+        # Two div containers (outer + inner)
+        assert html.count('class="pywry-div') == 2
+
+    def test_div_parent_id_propagation(self) -> None:
+        """Div passes parent_id to nested Div children."""
+        outer = Div(
+            event="app:outer",
+            component_id="outer-div-123",
+            children=[
+                Div(event="app:inner", class_name="inner"),
+            ],
+        )
+        html = outer.build_html()
+        # Inner div should have data-parent-id pointing to outer
+        assert 'data-parent-id="outer-div-123"' in html
+
+    def test_div_content_and_children_combined(self) -> None:
+        """Div renders both content and children."""
+        div = Div(
+            event="app:combined",
+            content="<h3>Header</h3>",
+            children=[Button(label="Action", event="app:action")],
+        )
+        html = div.build_html()
+        assert "<h3>Header</h3>" in html
+        assert "Action" in html
+
+    def test_toolbar_with_nested_divs(self) -> None:
+        """Toolbar correctly renders Div items with nested children."""
+        toolbar = Toolbar(
+            items=[
+                Div(
+                    event="app:controls",
+                    class_name="control-group",
+                    children=[
+                        Button(label="Save", event="app:save"),
+                        Button(label="Cancel", event="app:cancel"),
+                    ],
+                ),
+                Select(event="app:mode", options=["A", "B"]),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify structure
+        assert 'class="pywry-toolbar' in html
+        assert "control-group" in html
+        assert "Save" in html
+        assert "Cancel" in html
+        # Select renders as pywry-dropdown (custom dropdown component)
+        assert 'class="pywry-dropdown"' in html
+
+
+class TestBuildToolbarsHtmlStructure:
+    """Test build_toolbars_html for multiple toolbars structure."""
+
+    def test_single_toolbar_structure(self) -> None:
+        """Single toolbar builds correctly."""
+        toolbar = Toolbar(items=[Button(label="A", event="app:a")])
+        html = build_toolbars_html([toolbar])
+        assert 'class="pywry-toolbar ' in html
+        # One outer toolbar container
+        assert html.count('class="pywry-toolbar ') == 1
+
+    def test_multiple_toolbars_concatenated(self) -> None:
+        """Multiple toolbars are concatenated in order."""
+        toolbar1 = Toolbar(items=[Button(label="First", event="app:first")])
+        toolbar2 = Toolbar(items=[Button(label="Second", event="app:second")])
+        html = build_toolbars_html([toolbar1, toolbar2])
+        # Both toolbars present (use exact class prefix to avoid matching position classes)
+        assert html.count('class="pywry-toolbar ') == 2
+        assert "First" in html
+        assert "Second" in html
+        # Order preserved (First before Second)
+        assert html.index("First") < html.index("Second")
+
+    def test_empty_list_returns_empty_string(self) -> None:
+        """Empty toolbar list returns empty string."""
+        html = build_toolbars_html([])
+        assert html == ""
+
+    def test_none_returns_empty_string(self) -> None:
+        """None input returns empty string."""
+        html = build_toolbars_html(None)
+        assert html == ""
+
+    def test_dict_toolbars_converted(self) -> None:
+        """Dict-based toolbar configs are converted to Toolbar objects."""
+        html = build_toolbars_html(
+            [
+                {"items": [{"type": "button", "label": "DictBtn", "event": "app:dict"}]},
+            ]
+        )
+        assert "DictBtn" in html
+
+    def test_mixed_toolbar_and_dict(self) -> None:
+        """Mix of Toolbar objects and dicts works correctly."""
+        toolbar = Toolbar(items=[Button(label="Model", event="app:model")])
+        html = build_toolbars_html(
+            [
+                toolbar,
+                {"items": [{"type": "button", "label": "Dict", "event": "app:dict"}]},
+            ]
+        )
+        assert "Model" in html
+        assert "Dict" in html
+
+
+class TestWrapContentWithToolbars:
+    """Test wrap_content_with_toolbars layout structure."""
+
+    def test_no_toolbars_wraps_in_pywry_content(self) -> None:
+        """Content without toolbars is wrapped in pywry-content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        html = wrap_content_with_toolbars("<div>My Content</div>")
+        assert html == "<div class='pywry-content'><div>My Content</div></div>"
+
+    def test_top_toolbar_position(self) -> None:
+        """Top toolbar appears before content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar = Toolbar(position="top", items=[Button(label="Top", event="app:top")])
+        html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[toolbar])
+        assert "pywry-wrapper-top" in html
+        # Top toolbar should come before pywry-content
+        top_idx = html.index("Top")
+        content_idx = html.index("<p>Content</p>")
+        assert top_idx < content_idx
+
+    def test_bottom_toolbar_position(self) -> None:
+        """Bottom toolbar appears after content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar = Toolbar(position="bottom", items=[Button(label="Bottom", event="app:bottom")])
+        html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[toolbar])
+        # Bottom toolbar should come after pywry-content
+        bottom_idx = html.index("Bottom")
+        content_idx = html.index("<p>Content</p>")
+        assert bottom_idx > content_idx
+
+    def test_header_footer_outermost(self) -> None:
+        """Header/footer are outermost wrappers."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        header = Toolbar(position="header", items=[Button(label="Header", event="app:header")])
+        footer = Toolbar(position="footer", items=[Button(label="Footer", event="app:footer")])
+        html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[header, footer])
+        assert "pywry-wrapper-header" in html
+        # Header first, footer last in document order
+        header_idx = html.index("Header")
+        footer_idx = html.index("Footer")
+        content_idx = html.index("<p>Content</p>")
+        assert header_idx < content_idx < footer_idx
+
+    def test_left_right_extend_height(self) -> None:
+        """Left/right toolbars use wrapper-left class."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        left = Toolbar(position="left", items=[Button(label="Left", event="app:left")])
+        right = Toolbar(position="right", items=[Button(label="Right", event="app:right")])
+        html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[left, right])
+        assert "pywry-wrapper-left" in html
+        # Left before content, right after
+        left_idx = html.index("Left")
+        right_idx = html.index("Right")
+        content_idx = html.index("<p>Content</p>")
+        assert left_idx < content_idx < right_idx
+
+    def test_inside_toolbar_overlays_content(self) -> None:
+        """Inside toolbar uses wrapper-inside class."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        inside = Toolbar(position="inside", items=[Button(label="Inside", event="app:inside")])
+        html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[inside])
+        assert "pywry-wrapper-inside" in html
+
+    def test_multiple_positions_nested_correctly(self) -> None:
+        """Multiple positions nest in correct order: header > left/right > top/bottom > inside > content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(position="header", items=[Button(label="H", event="app:h")]),
+            Toolbar(position="footer", items=[Button(label="F", event="app:f")]),
+            Toolbar(position="left", items=[Button(label="L", event="app:l")]),
+            Toolbar(position="right", items=[Button(label="R", event="app:r")]),
+            Toolbar(position="top", items=[Button(label="T", event="app:t")]),
+            Toolbar(position="bottom", items=[Button(label="B", event="app:b")]),
+            Toolbar(position="inside", items=[Button(label="I", event="app:i")]),
+        ]
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=toolbars)
+        # All wrappers present
+        assert "pywry-wrapper-header" in html
+        assert "pywry-wrapper-left" in html
+        assert "pywry-wrapper-top" in html
+        assert "pywry-wrapper-inside" in html
+        # Content is innermost
+        assert "pywry-content" in html
+
+    def test_stacked_top_toolbars_order_preserved(self) -> None:
+        """Multiple top toolbars are stacked in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar1 = Toolbar(position="top", items=[Button(label="TopA", event="app:a")])
+        toolbar2 = Toolbar(position="top", items=[Button(label="TopB", event="app:b")])
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
+        # Both present
+        assert "TopA" in html
+        assert "TopB" in html
+        # Order preserved
+        assert html.index("TopA") < html.index("TopB")
+
+    def test_extra_top_html_prepended(self) -> None:
+        """extra_top_html is prepended to top toolbar area."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        html = wrap_content_with_toolbars(
+            "<p>Content</p>",
+            toolbars=[],
+            extra_top_html="<div class='custom-header'>Custom</div>",
+        )
+        assert "custom-header" in html
+        # Custom header before content
+        custom_idx = html.index("Custom")
+        content_idx = html.index("Content")
+        assert custom_idx < content_idx
+
+
+class TestComponentOrderInToolbar:
+    """Test that component order is preserved within toolbars."""
+
+    def test_items_render_in_order(self) -> None:
+        """Toolbar items render in the order they were added."""
+        toolbar = Toolbar(
+            items=[
+                Button(label="Alpha", event="app:alpha"),
+                Select(event="app:sel", options=["X"]),
+                Button(label="Beta", event="app:beta"),
+                TextInput(event="app:text"),
+                Button(label="Gamma", event="app:gamma"),
+            ],
+        )
+        html = toolbar.build_html()
+        # Check order
+        alpha_idx = html.index("Alpha")
+        beta_idx = html.index("Beta")
+        gamma_idx = html.index("Gamma")
+        assert alpha_idx < beta_idx < gamma_idx
+
+    def test_nested_children_order_preserved(self) -> None:
+        """Nested Div children maintain order."""
+        div = Div(
+            event="app:group",
+            children=[
+                Button(label="First", event="app:first"),
+                Button(label="Second", event="app:second"),
+                Button(label="Third", event="app:third"),
+            ],
+        )
+        html = div.build_html()
+        first_idx = html.index("First")
+        second_idx = html.index("Second")
+        third_idx = html.index("Third")
+        assert first_idx < second_idx < third_idx
+
+
+# =============================================================================
+# Complex Stacked Toolbar Layout Tests
+# =============================================================================
+
+
+class TestStackedToolbarsSamePosition:
+    """Test multiple toolbars stacked at the same position."""
+
+    def test_two_top_toolbars_stacked(self) -> None:
+        """Two top toolbars are rendered in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar1 = Toolbar(position="top", items=[Button(label="TopRow1", event="app:t1")])
+        toolbar2 = Toolbar(position="top", items=[Button(label="TopRow2", event="app:t2")])
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
+
+        assert "TopRow1" in html
+        assert "TopRow2" in html
+        assert html.index("TopRow1") < html.index("TopRow2")
+        # Both should be before content
+        assert html.index("TopRow2") < html.index("<p>C</p>")
+
+    def test_three_left_toolbars_stacked(self) -> None:
+        """Three left toolbars are rendered in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(position="left", items=[Button(label="Left1", event="app:l1")]),
+            Toolbar(position="left", items=[Button(label="Left2", event="app:l2")]),
+            Toolbar(position="left", items=[Button(label="Left3", event="app:l3")]),
+        ]
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=toolbars)
+
+        assert html.index("Left1") < html.index("Left2") < html.index("Left3")
+        # All left toolbars before content
+        assert html.index("Left3") < html.index("<p>C</p>")
+
+    def test_two_bottom_toolbars_stacked(self) -> None:
+        """Two bottom toolbars are rendered after content in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar1 = Toolbar(position="bottom", items=[Button(label="Bot1", event="app:b1")])
+        toolbar2 = Toolbar(position="bottom", items=[Button(label="Bot2", event="app:b2")])
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
+
+        # Both after content
+        assert html.index("<p>C</p>") < html.index("Bot1")
+        assert html.index("Bot1") < html.index("Bot2")
+
+    def test_two_right_toolbars_stacked(self) -> None:
+        """Two right toolbars are rendered after content in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar1 = Toolbar(position="right", items=[Button(label="Right1", event="app:r1")])
+        toolbar2 = Toolbar(position="right", items=[Button(label="Right2", event="app:r2")])
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
+
+        # Both after content (right side)
+        assert html.index("<p>C</p>") < html.index("Right1")
+        assert html.index("Right1") < html.index("Right2")
+
+    def test_two_inside_toolbars_stacked(self) -> None:
+        """Two inside toolbars overlay content in order."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbar1 = Toolbar(
+            position="inside",
+            items=[Button(label="Overlay1", event="app:o1")],
+            style="top: 10px; left: 10px;",
+        )
+        toolbar2 = Toolbar(
+            position="inside",
+            items=[Button(label="Overlay2", event="app:o2")],
+            style="top: 10px; right: 10px;",
+        )
+        html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
+
+        assert "pywry-wrapper-inside" in html
+        assert "Overlay1" in html
+        assert "Overlay2" in html
+        # Inside toolbars come before content in HTML
+        assert html.index("Overlay1") < html.index("<p>C</p>")
+
+
+class TestMixedPositionLayouts:
+    """Test layouts combining toolbars at different positions."""
+
+    def test_top_and_bottom(self) -> None:
+        """Top and bottom toolbars sandwich content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        top = Toolbar(position="top", items=[Button(label="TopNav", event="app:top")])
+        bottom = Toolbar(position="bottom", items=[Button(label="Status", event="app:status")])
+        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[top, bottom])
+
+        top_idx = html.index("TopNav")
+        content_idx = html.index("<main>Content</main>")
+        bottom_idx = html.index("Status")
+        assert top_idx < content_idx < bottom_idx
+
+    def test_left_and_right(self) -> None:
+        """Left and right toolbars flank content."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        left = Toolbar(position="left", items=[Button(label="Sidebar", event="app:side")])
+        right = Toolbar(position="right", items=[Button(label="Panel", event="app:panel")])
+        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[left, right])
+
+        left_idx = html.index("Sidebar")
+        content_idx = html.index("<main>Content</main>")
+        right_idx = html.index("Panel")
+        assert left_idx < content_idx < right_idx
+
+    def test_header_and_footer(self) -> None:
+        """Header and footer wrap entire layout."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        header = Toolbar(position="header", items=[Button(label="Logo", event="app:logo")])
+        footer = Toolbar(position="footer", items=[Button(label="Copyright", event="app:copy")])
+        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[header, footer])
+
+        # Header first, footer last
+        header_idx = html.index("Logo")
+        content_idx = html.index("<main>Content</main>")
+        footer_idx = html.index("Copyright")
+        assert header_idx < content_idx < footer_idx
+        # Verify header wrapper is outermost
+        assert "pywry-wrapper-header" in html
+
+    def test_all_edge_positions(self) -> None:
+        """All four edge positions (top, bottom, left, right)."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(position="top", items=[Button(label="T", event="app:t")]),
+            Toolbar(position="bottom", items=[Button(label="B", event="app:b")]),
+            Toolbar(position="left", items=[Button(label="L", event="app:l")]),
+            Toolbar(position="right", items=[Button(label="R", event="app:r")]),
+        ]
+        html = wrap_content_with_toolbars("<div>C</div>", toolbars=toolbars)
+
+        # Structure: left > top > content > bottom > right
+        l_idx = html.index(">L<")
+        t_idx = html.index(">T<")
+        c_idx = html.index("<div>C</div>")
+        b_idx = html.index(">B<")
+        r_idx = html.index(">R<")
+        assert l_idx < t_idx < c_idx < b_idx < r_idx
+
+    def test_header_footer_with_inner_toolbars(self) -> None:
+        """Header/footer wrap inner top/bottom toolbars."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(position="header", items=[Button(label="H", event="app:h")]),
+            Toolbar(position="footer", items=[Button(label="F", event="app:f")]),
+            Toolbar(position="top", items=[Button(label="T", event="app:t")]),
+            Toolbar(position="bottom", items=[Button(label="B", event="app:b")]),
+        ]
+        html = wrap_content_with_toolbars("<div>C</div>", toolbars=toolbars)
+
+        # Header outermost top, Footer outermost bottom
+        h_idx = html.index(">H<")
+        t_idx = html.index(">T<")
+        c_idx = html.index("<div>C</div>")
+        b_idx = html.index(">B<")
+        f_idx = html.index(">F<")
+        assert h_idx < t_idx < c_idx < b_idx < f_idx
+
+
+class TestComplexRealWorldLayouts:
+    """Test complex layouts similar to real applications."""
+
+    def test_dashboard_layout(self) -> None:
+        """Dashboard: header + left sidebar + top toolbar + content + bottom status."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(
+                position="header",
+                items=[
+                    Button(label="Logo", event="app:logo"),
+                    Button(label="Settings", event="app:settings"),
+                ],
+            ),
+            Toolbar(
+                position="left",
+                items=[
+                    Button(label="Home", event="nav:home"),
+                    Button(label="Reports", event="nav:reports"),
+                    Button(label="Admin", event="nav:admin"),
+                ],
+            ),
+            Toolbar(
+                position="top",
+                items=[
+                    Select(event="app:view", options=["Table", "Chart", "Grid"]),
+                    Button(label="Refresh", event="app:refresh"),
+                ],
+            ),
+            Toolbar(
+                position="bottom",
+                items=[TextInput(event="app:search", placeholder="Search...")],
+            ),
+        ]
+        html = wrap_content_with_toolbars(
+            "<div id='dashboard'>Dashboard Content</div>", toolbars=toolbars
+        )
+
+        # All components present
+        assert "Logo" in html
+        assert "Settings" in html
+        assert "Home" in html
+        assert "Reports" in html
+        assert "Admin" in html
+        assert "Refresh" in html
+        assert "Dashboard Content" in html
+
+        # Layout order
+        assert html.index("Logo") < html.index("Home")  # Header before left
+        assert html.index("Home") < html.index("Refresh")  # Left before top
+        assert html.index("Refresh") < html.index("Dashboard Content")  # Top before content
+
+    def test_editor_layout_with_inside_toolbar(self) -> None:
+        """Editor: header + floating inside toolbar + content + bottom status."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(
+                position="header",
+                items=[
+                    Button(label="File", event="menu:file"),
+                    Button(label="Edit", event="menu:edit"),
+                ],
+            ),
+            Toolbar(
+                position="inside",
+                items=[
+                    Button(label="Bold", event="format:bold"),
+                    Button(label="Italic", event="format:italic"),
+                ],
+                style="top: 40px; right: 20px;",
+            ),
+            Toolbar(
+                position="bottom",
+                items=[Button(label="Ln 1, Col 1", event="status:position")],
+            ),
+        ]
+        html = wrap_content_with_toolbars("<textarea>Editor</textarea>", toolbars=toolbars)
+
+        # All present
+        assert "File" in html
+        assert "Bold" in html
+        assert "Italic" in html
+        assert "Ln 1, Col 1" in html
+        assert "pywry-wrapper-inside" in html
+        assert "pywry-wrapper-header" in html
+
+    def test_chart_with_all_seven_positions(self) -> None:
+        """Chart viewer with all seven positions populated."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(position="header", items=[Button(label="HEADER", event="app:header")]),
+            Toolbar(position="footer", items=[Button(label="FOOTER", event="app:footer")]),
+            Toolbar(position="left", items=[Button(label="LEFT", event="app:left")]),
+            Toolbar(position="right", items=[Button(label="RIGHT", event="app:right")]),
+            Toolbar(position="top", items=[Button(label="TOP", event="app:top")]),
+            Toolbar(position="bottom", items=[Button(label="BOTTOM", event="app:bottom")]),
+            Toolbar(
+                position="inside",
+                items=[Button(label="INSIDE", event="app:inside")],
+                style="position: absolute; top: 10px; left: 10px;",
+            ),
+        ]
+        html = wrap_content_with_toolbars("<canvas id='chart'></canvas>", toolbars=toolbars)
+
+        # All wrappers present
+        assert "pywry-wrapper-header" in html
+        assert "pywry-wrapper-left" in html
+        assert "pywry-wrapper-top" in html
+        assert "pywry-wrapper-inside" in html
+        assert "pywry-content" in html
+
+        # All labels present
+        for label in ["HEADER", "FOOTER", "LEFT", "RIGHT", "TOP", "BOTTOM", "INSIDE"]:
+            assert label in html
+
+        # Verify nesting order: HEADER > LEFT > TOP > INSIDE > content
+        header_idx = html.index("HEADER")
+        left_idx = html.index("LEFT")
+        top_idx = html.index("TOP")
+        inside_idx = html.index("INSIDE")
+        content_idx = html.index("<canvas id='chart'>")
+        bottom_idx = html.index("BOTTOM")
+        right_idx = html.index("RIGHT")
+        footer_idx = html.index("FOOTER")
+
+        assert header_idx < left_idx < top_idx < inside_idx < content_idx
+        assert content_idx < bottom_idx < right_idx < footer_idx
+
+    def test_stacked_toolbars_at_multiple_positions(self) -> None:
+        """Multiple toolbars stacked at multiple positions simultaneously."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            # Two top toolbars
+            Toolbar(position="top", items=[Button(label="Top1", event="app:t1")]),
+            Toolbar(position="top", items=[Button(label="Top2", event="app:t2")]),
+            # Two left toolbars
+            Toolbar(position="left", items=[Button(label="Left1", event="app:l1")]),
+            Toolbar(position="left", items=[Button(label="Left2", event="app:l2")]),
+            # Two bottom toolbars
+            Toolbar(position="bottom", items=[Button(label="Bot1", event="app:b1")]),
+            Toolbar(position="bottom", items=[Button(label="Bot2", event="app:b2")]),
+        ]
+        html = wrap_content_with_toolbars("<div>Content</div>", toolbars=toolbars)
+
+        # Verify stacking order within each position
+        assert html.index("Left1") < html.index("Left2")
+        assert html.index("Top1") < html.index("Top2")
+        assert html.index("Bot1") < html.index("Bot2")
+
+        # Verify inter-position order
+        assert html.index("Left2") < html.index("Top1")  # Left before top
+        assert html.index("Top2") < html.index("<div>Content</div>")  # Top before content
+        assert html.index("<div>Content</div>") < html.index("Bot1")  # Content before bottom
+
+
+class TestToolbarStackWithDifferentComponents:
+    """Test stacked toolbars with varying component types."""
+
+    def test_mixed_components_across_toolbars(self) -> None:
+        """Different component types in different toolbars."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[
+                    Button(label="Action", event="app:action"),
+                    Toggle(label="Dark Mode", event="app:dark"),
+                ],
+            ),
+            Toolbar(
+                position="top",
+                items=[
+                    Select(event="app:view", options=["List", "Grid", "Card"]),
+                    TextInput(event="app:filter", placeholder="Filter..."),
+                ],
+            ),
+            Toolbar(
+                position="left",
+                items=[
+                    RadioGroup(event="nav:section", options=["Home", "Settings", "Help"]),
+                ],
+            ),
+        ]
+        html = wrap_content_with_toolbars("<div>App</div>", toolbars=toolbars)
+
+        # All component types rendered
+        assert "Action" in html
+        assert "Dark Mode" in html
+        assert 'class="pywry-dropdown"' in html  # Select
+        assert 'placeholder="Filter..."' in html
+        assert "pywry-radio-group" in html
+
+    def test_toolbar_with_nested_divs_in_stack(self) -> None:
+        """Stacked toolbars with nested Div groupings."""
+        from pywry.toolbar import wrap_content_with_toolbars
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[
+                    Div(
+                        event="app:file-group",
+                        class_name="file-actions",
+                        children=[
+                            Button(label="New", event="file:new"),
+                            Button(label="Open", event="file:open"),
+                            Button(label="Save", event="file:save"),
+                        ],
+                    ),
+                    Div(
+                        event="app:edit-group",
+                        class_name="edit-actions",
+                        children=[
+                            Button(label="Undo", event="edit:undo"),
+                            Button(label="Redo", event="edit:redo"),
+                        ],
+                    ),
+                ],
+            ),
+            Toolbar(
+                position="top",
+                items=[
+                    SliderInput(event="view:zoom", min=50, max=200, value=100),
+                ],
+            ),
+        ]
+        html = wrap_content_with_toolbars("<canvas>Editor</canvas>", toolbars=toolbars)
+
+        # Div groups present
+        assert "file-actions" in html
+        assert "edit-actions" in html
+        # Buttons within groups
+        assert "New" in html
+        assert "Open" in html
+        assert "Undo" in html
+        # Slider in second toolbar
+        assert 'class="pywry-input pywry-input-range"' in html
+
+        # Order: New < Open < Save < Undo < Redo < slider
+        assert html.index("New") < html.index("Open") < html.index("Save")
+        assert html.index("Save") < html.index("Undo") < html.index("Redo")
+
+
+class TestToolbarPositionSpecificBehavior:
+    """Test position-specific rendering behavior."""
+
+    def test_inside_position_has_absolute_style(self) -> None:
+        """Inside toolbar style is on outer div for absolute positioning."""
+        toolbar = Toolbar(
+            position="inside",
+            items=[Button(label="Float", event="app:float")],
+            style="top: 10px; right: 10px;",
+        )
+        html = toolbar.build_html()
+
+        # Style should be on the outer toolbar div, not content div
+        # Pattern: <div class="pywry-toolbar..." style="top: 10px; right: 10px;">
+        assert 'class="pywry-toolbar pywry-toolbar-inside"' in html
+        assert 'style="top: 10px; right: 10px;"' in html
+
+    def test_non_inside_position_style_on_content(self) -> None:
+        """Non-inside toolbar style is on content div for flex alignment."""
+        toolbar = Toolbar(
+            position="top",
+            items=[Button(label="Btn", event="app:btn")],
+            style="justify-content: center; gap: 10px;",
+        )
+        html = toolbar.build_html()
+
+        # Style should be on content div
+        assert 'class="pywry-toolbar-content" style="justify-content: center; gap: 10px;"' in html
+
+    def test_each_position_has_correct_class(self) -> None:
+        """Each position produces correct position class."""
+        positions = ["top", "bottom", "left", "right", "header", "footer", "inside"]
+        for pos in positions:
+            toolbar = Toolbar(
+                position=pos,  # type: ignore[arg-type]
+                items=[Button(label="X", event="app:x")],
+            )
+            html = toolbar.build_html()
+            assert f"pywry-toolbar-{pos}" in html
+
+    def test_collapsible_works_at_each_position(self) -> None:
+        """Collapsible attribute works at all positions."""
+        for pos in ["top", "left", "right"]:
+            toolbar = Toolbar(
+                position=pos,  # type: ignore[arg-type]
+                items=[Button(label="X", event="app:x")],
+                collapsible=True,
+            )
+            html = toolbar.build_html()
+            assert 'data-collapsible="true"' in html
+            assert "pywry-toolbar-toggle" in html
+
+    def test_resizable_works_at_each_position(self) -> None:
+        """Resizable attribute works at all positions."""
+        for pos in ["left", "right", "bottom"]:
+            toolbar = Toolbar(
+                position=pos,  # type: ignore[arg-type]
+                items=[Button(label="X", event="app:x")],
+                resizable=True,
+            )
+            html = toolbar.build_html()
+            assert 'data-resizable="true"' in html
+            assert "pywry-resize-handle" in html
+
+
+class TestToolbarIdPropagation:
+    """Test component ID propagation through stacked toolbars."""
+
+    def test_each_toolbar_has_unique_id(self) -> None:
+        """Each toolbar in a stack has a unique component ID."""
+        toolbar1 = Toolbar(items=[Button(label="A", event="app:a")])
+        toolbar2 = Toolbar(items=[Button(label="B", event="app:b")])
+        toolbar3 = Toolbar(items=[Button(label="C", event="app:c")])
+
+        ids = {toolbar1.component_id, toolbar2.component_id, toolbar3.component_id}
+        assert len(ids) == 3  # All unique
+
+    def test_toolbar_id_in_html(self) -> None:
+        """Toolbar ID appears in rendered HTML."""
+        toolbar = Toolbar(
+            component_id="my-toolbar-123",
+            items=[Button(label="X", event="app:x")],
+        )
+        html = toolbar.build_html()
+
+        assert 'id="my-toolbar-123"' in html
+        assert 'data-component-id="my-toolbar-123"' in html
+
+    def test_div_parent_id_chain(self) -> None:
+        """Div children receive parent toolbar ID."""
+        toolbar = Toolbar(
+            component_id="parent-toolbar",
+            items=[
+                Div(
+                    event="app:group",
+                    class_name="group",
+                    children=[Button(label="Nested", event="app:nested")],
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+
+        # Div should have data-parent-id pointing to toolbar
+        assert 'data-parent-id="parent-toolbar"' in html
+
+    def test_nested_div_chain(self) -> None:
+        """Nested Divs maintain parent ID chain."""
+        toolbar = Toolbar(
+            component_id="root",
+            items=[
+                Div(
+                    event="app:level1",
+                    component_id="level1-div",
+                    children=[
+                        Div(
+                            event="app:level2",
+                            component_id="level2-div",
+                            children=[Button(label="Deep", event="app:deep")],
+                        ),
+                    ],
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+
+        # Level 1 div has root as parent
+        assert 'id="level1-div"' in html
+        assert 'data-parent-id="root"' in html
+        # Level 2 div has level1 as parent
+        assert 'id="level2-div"' in html
+        assert 'data-parent-id="level1-div"' in html
