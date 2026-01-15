@@ -660,9 +660,7 @@ const ExtensionSelector = ({
 																							className="my-2 text-theme-secondary"
 																						/>
 																					),
-																					/* eslint-disable */
 																					code: ({
-																						inline: _,
 																						...props
 																					}) => (
 																						<code
