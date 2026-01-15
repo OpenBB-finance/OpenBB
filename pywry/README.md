@@ -196,6 +196,79 @@ PyWry automatically selects the appropriate rendering path based on your environ
 | Jupyter/VS Code without anywidget | Inline IFrame | `pywry.inline` | `InlineWidget` |
 | Headless / Server / SSH | Browser Mode | `pywry.window_manager.modes.browser` | `str` (widget ID) |
 
+<details>
+<summary><b>Rendering Path Diagram</b></summary>
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              PyWry Rendering Paths                              │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+                              ┌──────────────────┐
+                              │   PyWry.show()   │
+                              │  show_plotly()   │
+                              │ show_dataframe() │
+                              └────────┬─────────┘
+                                       │
+                         ┌─────────────┴─────────────┐
+                         ▼                           ▼
+              ┌────────────────────┐     ┌────────────────────┐
+              │  Desktop/Terminal  │     │  Notebook/Browser  │
+              │   (GUI Available)  │     │    Environment     │
+              └─────────┬──────────┘     └──────────┬─────────┘
+                        │                           │
+                        ▼                     ┌─────┴─────┐
+              ┌──────────────────┐            ▼           ▼
+              │   NATIVE WINDOW  │    ┌─────────────┐ ┌─────────────┐
+              │                  │    │  Notebook?  │ │  Headless/  │
+              │  PyTauri + Rust  │    │             │ │   Server    │
+              │  WebView2/WebKit │    └──────┬──────┘ └──────┬──────┘
+              │                  │           │               │
+              │  ┌────────────┐  │     ┌─────┴─────┐         ▼
+              │  │ OS WebView │  │     ▼           ▼   ┌───────────┐
+              │  │            │  │  ┌───────┐ ┌───────┐│  BROWSER  │
+              │  │ HTML/JS/CSS│  │  │ any-  │ │IFrame ││   MODE    │
+              │  └────────────┘  │  │widget │ │       ││           │
+              │                  │  │ avail?│ │ Falls ││  FastAPI  │
+              │  Returns: label  │  └───┬───┘ │ back  ││  Server   │
+              │  (str)           │      │     └───┬───┘│           │
+              └──────────────────┘      ▼         │    │  Opens in │
+                        │         ┌─────────┐     │    │  Browser  │
+                        │         │NOTEBOOK │     │    └─────┬─────┘
+                        │         │ WIDGET  │     │          │
+                        │         │         │     ▼          ▼
+                        │         │anywidget│ ┌─────────┐ Returns:
+                        │         │ comms   │ │ INLINE  │ widget_id
+                        │         │         │ │ IFRAME  │ (str)
+                        │         │ Returns:│ │         │
+                        │         │PyWry-   │ │ FastAPI │
+                        │         │ Widget  │ │ Server  │
+                        │         └─────────┘ │         │
+                        │              │      │ Returns:│
+                        │              │      │ Inline- │
+                        │              │      │ Widget  │
+                        │              │      └─────────┘
+                        │              │           │
+                        ▼              ▼           ▼
+              ┌─────────────────────────────────────────────────┐
+              │              Bidirectional Events               │
+              │         Python ◄────────────► JavaScript        │
+              │                                                 │
+              │  • widget.emit("event:name", data)  (Python→JS) │
+              │  • window.pywry.emit("event:name")  (JS→Python) │
+              │  • callbacks={"event:name": handler}            │
+              └─────────────────────────────────────────────────┘
+```
+
+**Decision Flow:**
+
+1. **Desktop/Terminal with GUI** → Native Window (PyTauri + WebView)
+2. **Jupyter/VS Code + anywidget installed** → Notebook Widget (anywidget comms)
+3. **Jupyter/VS Code without anywidget** → Inline IFrame (FastAPI server)
+4. **Headless/SSH/Server** → Browser Mode (FastAPI + system browser)
+
+</details>
+
 ### Native Window
 
 Uses PyTauri/Tauri to create native OS windows with WebView2 (Windows), WebKit (macOS/Linux).
