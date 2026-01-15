@@ -1,10 +1,13 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
 # pylint: disable=too-many-lines
 
+import sys
 import threading
 import time
 
-from typing import Any
+from collections.abc import Callable
+from functools import wraps
+from typing import Any, TypeVar
 
 import pytest
 
@@ -14,12 +17,45 @@ from pywry.callbacks import get_registry
 from pywry.models import HtmlContent, ThemeMode, WindowMode
 
 
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
+    """Retry decorator for tests that may fail due to transient subprocess issues.
+
+    On Windows, WebView2 sometimes fails to start due to resource contention
+    ("Failed to unregister class Chrome_WidgetWin_0"). This decorator retries
+    the test after a delay to allow resources to be released.
+    """
+
+    def decorator(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            last_error: Exception | None = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except TimeoutError as e:
+                    last_error = e
+                    if attempt < max_attempts - 1:
+                        # Clean up and wait before retry
+                        runtime.stop()
+                        time.sleep(delay)
+            raise last_error  # type: ignore[misc]
+
+        return wrapper  # type: ignore[return-value]
+
+    return decorator
+
+
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
     """Ensure runtime is fresh for each test - STOP before AND after."""
     # STOP runtime first to ensure clean state (prevents race conditions from previous test)
     runtime.stop()
-    time.sleep(0.2)
+    # Windows WebView2 needs more time to release resources
+    cleanup_delay = 0.5 if sys.platform == "win32" else 0.2
+    time.sleep(cleanup_delay)
 
     # Clear any stale callbacks
     registry = get_registry()
@@ -266,6 +302,7 @@ def verify_theme_and_rendering(label: str, expect_dark: bool) -> dict:
 class TestDarkThemeCoordination:
     """DARK window MUST have DARK sub-elements."""
 
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_dark_dataframe(self):
         """DARK show_dataframe renders with DARK AG Grid theme."""
         app = PyWry(theme=ThemeMode.DARK)

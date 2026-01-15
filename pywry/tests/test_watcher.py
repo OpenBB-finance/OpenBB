@@ -301,8 +301,8 @@ class TestFileChangeCallbacks:
         resolved = test_file.resolve()
         watcher._on_file_change(resolved)
 
-        # Wait for debounce
-        time.sleep(0.05)
+        # Wait for debounce (longer wait for CI timer scheduling variance)
+        time.sleep(0.2)
 
         callback.assert_called_once_with(resolved, "window1")
 
@@ -319,8 +319,8 @@ class TestFileChangeCallbacks:
         # Simulate change to unwatched file
         watcher._on_file_change(unwatched_file.resolve())
 
-        # Wait a bit
-        time.sleep(0.05)
+        # Wait a bit (ensure debounce timer has time to fire if it would)
+        time.sleep(0.2)
 
         callback.assert_not_called()
 
