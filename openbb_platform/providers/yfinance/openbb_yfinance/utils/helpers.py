@@ -615,3 +615,14 @@ def df_transform_numbers(data: "DataFrame", columns: list) -> "DataFrame":
                 data[col] = data[col].apply(replace_suffix, args=(suffix, multiplier))
 
     return data
+
+
+async def get_ticker_info(symbol: str, timeout: int = 30) -> dict:
+    """Get ticker info with timeout."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio  # noqa
+    from yfinance import Ticker
+
+    return await asyncio.wait_for(
+        asyncio.to_thread(lambda: Ticker(symbol).get_info()), timeout=timeout
+    )

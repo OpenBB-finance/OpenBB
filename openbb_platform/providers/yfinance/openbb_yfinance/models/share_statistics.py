@@ -11,6 +11,7 @@ from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_yfinance.utils.helpers import get_ticker_info
 from openbb_core.provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
@@ -146,10 +147,13 @@ class YFinanceShareStatisticsFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                _ticker = await asyncio.to_thread(lambda: Ticker(symbol))
-                ticker = await asyncio.to_thread(lambda: _ticker.get_info())
-                major_holders = await asyncio.to_thread(
-                    lambda: _ticker.get_major_holders(as_dict=True).get("Value")
+                ticker = await get_ticker_info(symbol)
+                _ticker = Ticker(symbol)
+                major_holders = await asyncio.wait_for(
+                    asyncio.to_thread(
+                        lambda: _ticker.get_major_holders(as_dict=True).get("Value")
+                    ),
+                    timeout=30,
                 )
                 if major_holders:
                     ticker.update(major_holders)  # type: ignore

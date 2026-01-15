@@ -116,8 +116,8 @@ class YFinanceOptionsChainsFetcher(
 
             return underlying, chains_output, expirations
 
-        underlying, chains_output, expirations = await asyncio.to_thread(
-            _get_all_data, symbol
+        underlying, chains_output, expirations = await asyncio.wait_for(
+            asyncio.to_thread(_get_all_data, symbol), timeout=30
         )
 
         if not expirations or len(expirations) == 0:

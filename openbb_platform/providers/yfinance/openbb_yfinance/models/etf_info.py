@@ -216,6 +216,7 @@ class YFinanceEtfInfoFetcher(
         from openbb_core.provider.utils.helpers import (
             safe_fromtimestamp,
         )
+        from openbb_yfinance.utils.helpers import get_ticker_info
         from warnings import warn
         from yfinance import Ticker
 
@@ -267,9 +268,7 @@ class YFinanceEtfInfoFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = await asyncio.wait_for(
-                    asyncio.to_thread(lambda: Ticker(symbol).get_info()), timeout=30
-                )
+                ticker = await get_ticker_info(symbol)
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"

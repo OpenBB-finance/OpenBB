@@ -133,7 +133,9 @@ class YFinanceCompanyNewsFetcher(
         async def get_one(sym: str) -> None:
             """Get the data for one ticker symbol."""
             try:
-                items = await asyncio.to_thread(_fetch_news, sym)
+                items = await asyncio.wait_for(
+                    asyncio.to_thread(_fetch_news, sym), timeout=30
+                )
             except Exception as e:
                 warn(f"Error getting news for {sym}: {e}")
                 return
