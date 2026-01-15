@@ -329,7 +329,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }}
 
     // Register handler for theme updates - update grid theme class
-    window.pywry.on('pywry:update_theme', function(data) {{
+    window.pywry.on('pywry:update-theme', function(data) {{
         if ({str(PYWRY_DEBUG).lower()}) {{
             console.log('[PyWry] Received theme update:', data.theme);
         }}
@@ -358,7 +358,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Register handler for HTML content updates - reload the page to get new content
-    window.pywry.on('pywry:update_html', function(data) {{
+    window.pywry.on('pywry:update-html', function(data) {{
         if ({str(PYWRY_DEBUG).lower()}) {{
             console.log('[PyWry] Received HTML update, reloading page');
         }}
@@ -424,9 +424,9 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Register handler for setting inline styles on elements
-    // Usage: emit('pywry:set_style', {{selector: '.my-class', styles: {{fontWeight: 'bold', color: 'red'}}}})
-    // Or target by id: emit('pywry:set_style', {{id: 'my-element', styles: {{fontSize: '20px'}}}})
-    window.pywry.on('pywry:set_style', function(data) {{
+    // Usage: emit('pywry:set-style', {{selector: '.my-class', styles: {{fontWeight: 'bold', color: 'red'}}}})
+    // Or target by id: emit('pywry:set-style', {{id: 'my-element', styles: {{fontSize: '20px'}}}})
+    window.pywry.on('pywry:set-style', function(data) {{
         if (!data.styles) {{
             console.error('[PyWry] set_style requires styles property');
             return;
@@ -452,9 +452,9 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Built-in handler for updating element content (innerHTML or textContent)
-    // Usage: emit('pywry:set_content', {{id: 'my-element', html: '<b>Bold</b>'}})
-    // Or: emit('pywry:set_content', {{selector: '.my-class', text: 'Plain text'}})
-    window.pywry.on('pywry:set_content', function(data) {{
+    // Usage: emit('pywry:set-content', {{id: 'my-element', html: '<b>Bold</b>'}})
+    // Or: emit('pywry:set-content', {{selector: '.my-class', text: 'Plain text'}})
+    window.pywry.on('pywry:set-content', function(data) {{
         let elements = [];
         if (data.id) {{
             const el = document.getElementById(data.id);
@@ -499,7 +499,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Register handler for Plotly figure updates - use Plotly.react for smooth updates
-    window.pywry.on('plotly:update_figure', function(data) {{
+    window.pywry.on('plotly:update-figure', function(data) {{
         const chartEl = document.getElementById('chart');
 
         if (chartEl && (typeof Plotly !== 'undefined' || typeof window.Plotly !== 'undefined')) {{
@@ -539,7 +539,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Register handler for Plotly layout updates (partial updates like axis type, title, etc.)
-    window.pywry.on('plotly:update_layout', function(data) {{
+    window.pywry.on('plotly:update-layout', function(data) {{
         const chartEl = document.getElementById('chart');
         if (chartEl && (typeof Plotly !== 'undefined' || typeof window.Plotly !== 'undefined')) {{
             const PlotlyLib = typeof Plotly !== 'undefined' ? Plotly : window.Plotly;
@@ -1453,7 +1453,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         Parameters
         ----------
         event_type : str
-            Event name (e.g., 'plotly_click', 'toggle', 'cell_click').
+            Event name (e.g., 'plotly:click', 'toggle', 'grid:cell-click').
         callback : Callable[[dict[str, Any], str, str], Any]
             Handler function receiving (data, event_type, label).
 
@@ -1510,7 +1510,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         _state.widgets[self._widget_id]["html"] = html
 
         # Send update event to JavaScript to refresh the IFrame content
-        self.emit("pywry:update_html", {"html": html})
+        self.emit("pywry:update-html", {"html": html})
 
     def update_html(self, html: str) -> None:
         """Alias for update()."""
@@ -1605,7 +1605,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         # Send update via Plotly.react (no page reload needed)
         self.emit(
-            "plotly:update_figure",
+            "plotly:update-figure",
             {
                 "figure": fig_dict,
                 "config": final_config,
@@ -1623,7 +1623,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     ) -> None:
         """Update a single cell value."""
         self.emit(
-            "grid:update_cell",
+            "grid:update-cell",
             {"rowId": row_id, "colId": col_id, "value": value, "gridId": grid_id},
         )
 
@@ -1635,7 +1635,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     ) -> None:
         """Update grid data rows."""
         self.emit(
-            "grid:update_data",
+            "grid:update-data",
             {"data": data, "gridId": grid_id, "strategy": strategy},
         )
 
@@ -1654,7 +1654,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             Grid ID to update.
         """
         self.emit(
-            "grid:update_columns",
+            "grid:update-columns",
             {"columnDefs": column_defs, "gridId": grid_id},
         )
 
@@ -1678,15 +1678,15 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             payload["restoreState"] = restore_state
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:update_grid", payload)
+        self.emit("grid:update-grid", payload)
 
     def request_grid_state(
         self, context: dict[str, Any] | None = None, grid_id: str | None = None
     ) -> None:
         """Request the grid's current state.
 
-        The grid will emit a 'grid:state_response' event with the state data.
-        Register a callback for 'grid:state_response' to receive the state.
+        The grid will emit a 'grid:state-response' event with the state data.
+        Register a callback for 'grid:state-response' to receive the state.
 
         Parameters
         ----------
@@ -1700,7 +1700,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             payload["gridId"] = grid_id
         if context:
             payload["context"] = context
-        self.emit("grid:request_state", payload)
+        self.emit("grid:request-state", payload)
 
     def restore_state(self, state: dict[str, Any], grid_id: str | None = None) -> None:
         """Restore a previously saved grid state.
@@ -1708,12 +1708,12 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         Parameters
         ----------
         state : dict
-            State object from a previous 'grid:state_response' event.
+            State object from a previous 'grid:state-response' event.
         grid_id : str, optional
             Grid ID to restore state to.
         """
         self.emit(
-            "grid:restore_state",
+            "grid:restore-state",
             {"state": state, "gridId": grid_id},
         )
 
@@ -1730,7 +1730,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         hard : bool, optional
             If True, perform a hard reset.
         """
-        self.emit("grid:reset_state", {"gridId": grid_id, "hard": hard})
+        self.emit("grid:reset-state", {"gridId": grid_id, "hard": hard})
 
     # =========================================================================
     # Toolbar State Methods
@@ -1741,8 +1741,8 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     ) -> None:
         """Request the current state of toolbar components.
 
-        The widget will emit a 'toolbar:state_response' event with the state data.
-        Register a callback for 'toolbar:state_response' to receive the state.
+        The widget will emit a 'toolbar:state-response' event with the state data.
+        Register a callback for 'toolbar:state-response' to receive the state.
 
         Parameters
         ----------
@@ -1755,7 +1755,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         --------
         >>> def on_state(data, event_type, label):
         ...     print(f"Toolbar state: {data}")
-        >>> widget.on("toolbar:state_response", on_state)
+        >>> widget.on("toolbar:state-response", on_state)
         >>> widget.request_toolbar_state()
         """
         payload: dict[str, Any] = {}
@@ -1763,13 +1763,13 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             payload["toolbarId"] = toolbar_id
         if context:
             payload["context"] = context
-        self.emit("toolbar:request_state", payload)
+        self.emit("toolbar:request-state", payload)
 
     def get_toolbar_value(self, component_id: str, context: dict[str, Any] | None = None) -> None:
         """Request the current value of a specific toolbar component.
 
-        The widget will emit a 'toolbar:state_response' event with the value.
-        Register a callback for 'toolbar:state_response' to receive it.
+        The widget will emit a 'toolbar:state-response' event with the value.
+        Register a callback for 'toolbar:state-response' to receive it.
 
         Parameters
         ----------
@@ -1782,13 +1782,13 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         --------
         >>> def on_value(data, event_type, label):
         ...     print(f"Component value: {data['value']}")
-        >>> widget.on("toolbar:state_response", on_value)
+        >>> widget.on("toolbar:state-response", on_value)
         >>> widget.get_toolbar_value("my-select")
         """
         payload: dict[str, Any] = {"componentId": component_id}
         if context:
             payload["context"] = context
-        self.emit("toolbar:request_state", payload)
+        self.emit("toolbar:request-state", payload)
 
     def set_toolbar_value(
         self, component_id: str, value: Any, toolbar_id: str | None = None
@@ -1805,7 +1805,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             The toolbar ID (if applicable).
         """
         self.emit(
-            "toolbar:set_value",
+            "toolbar:set-value",
             {"componentId": component_id, "value": value, "toolbarId": toolbar_id},
         )
 
@@ -1819,7 +1819,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         toolbar_id : str, optional
             The toolbar ID (if applicable).
         """
-        self.emit("toolbar:set_values", {"values": values, "toolbarId": toolbar_id})
+        self.emit("toolbar:set-values", {"values": values, "toolbarId": toolbar_id})
 
     def _normalize_data(self, data: Any) -> list[dict[str, Any]]:
         """Convert various data formats to list of row dicts.
@@ -2105,7 +2105,7 @@ def generate_plotly_html(
 
         waitForPlotly(function(PlotlyLib) {{
             // Register handler for figure updates - cleaner than full re-render
-            window.pywry.on('plotly:update_figure', function(data) {{
+            window.pywry.on('plotly:update-figure', function(data) {{
                 const chartEl = document.getElementById('chart');
                 if (chartEl && data.figure) {{
                     const figData = data.figure;
@@ -2133,7 +2133,7 @@ def generate_plotly_html(
             }});
 
             // Register handler for layout updates (partial updates like axis type, title, etc.)
-            window.pywry.on('plotly:update_layout', function(data) {{
+            window.pywry.on('plotly:update-layout', function(data) {{
                 const chartEl = document.getElementById('chart');
                 if (chartEl) {{
                     const layout = data.layout || {{}};
@@ -2322,7 +2322,7 @@ def generate_plotly_html(
     </script>
     <script>
         // Listen for theme updates (background/container AND Plotly figure)
-        window.pywry.on('pywry:update_theme', function(data) {{
+        window.pywry.on('pywry:update-theme', function(data) {{
             const widgetEl = document.querySelector('.pywry-widget');
             const htmlEl = document.documentElement;
             const bodyEl = document.body;
@@ -2693,7 +2693,7 @@ def generate_dataframe_html(
             }}
         }})();
 
-        window.pywry.on('pywry:update_theme', function(data) {{
+        window.pywry.on('pywry:update-theme', function(data) {{
             const widgetEl = document.querySelector('.pywry-widget');
             const htmlEl = document.documentElement;
             const bodyEl = document.body;
@@ -2834,7 +2834,7 @@ def generate_dataframe_html_from_config(
             }}
         }})();
 
-        window.pywry.on('pywry:update_theme', function(data) {{
+        window.pywry.on('pywry:update-theme', function(data) {{
             const widgetEl = document.querySelector('.pywry-widget');
             const htmlEl = document.documentElement;
             const bodyEl = document.body;
@@ -2886,7 +2886,7 @@ def show_dataframe(  # pylint: disable=too-many-arguments
 ) -> BaseWidget:
     """Show a DataFrame (or dict/list) inline in a notebook with automatic event handling.
 
-    This function automatically wires up AG Grid events (cell_click, row_selected)
+    This function automatically wires up AG Grid events (grid:cell-click, grid:row-selected)
     and uses the best available widget backend (anywidget or InlineWidget).
 
     Parameters

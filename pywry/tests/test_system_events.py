@@ -7,10 +7,10 @@ all rendering paths:
 - scripts.py (native Tauri window mode)
 
 System events tested:
-- pywry:update_theme - Toggle dark/light mode
+- pywry:update-theme - Toggle dark/light mode
 - pywry:inject-css - Inject CSS dynamically
-- pywry:set_style - Update element inline styles
-- pywry:set_content - Update element innerHTML/textContent
+- pywry:set-style - Update element inline styles
+- pywry:set-content - Update element innerHTML/textContent
 - pywry:download - Trigger file download (IFrame mode only)
 """
 
@@ -62,9 +62,9 @@ class TestInlineModeSystemEvents:
     """Tests for system event handlers in inline IFrame mode."""
 
     def test_update_theme_handler_registered(self) -> None:
-        """Verify pywry:update_theme handler is registered in IFrame mode."""
+        """Verify pywry:update-theme handler is registered in IFrame mode."""
         js = _get_inline_widget_js()
-        assert "pywry:update_theme" in js
+        assert "pywry:update-theme" in js
 
     def test_inject_css_handler_registered(self) -> None:
         """Verify pywry:inject-css handler is registered in IFrame mode."""
@@ -72,14 +72,14 @@ class TestInlineModeSystemEvents:
         assert "pywry:inject-css" in js
 
     def test_set_style_handler_registered(self) -> None:
-        """Verify pywry:set_style handler is registered in IFrame mode."""
+        """Verify pywry:set-style handler is registered in IFrame mode."""
         js = _get_inline_widget_js()
-        assert "pywry:set_style" in js
+        assert "pywry:set-style" in js
 
     def test_set_content_handler_registered(self) -> None:
-        """Verify pywry:set_content handler is registered in IFrame mode."""
+        """Verify pywry:set-content handler is registered in IFrame mode."""
         js = _get_inline_widget_js()
-        assert "pywry:set_content" in js
+        assert "pywry:set-content" in js
 
     def test_download_handler_registered(self) -> None:
         """Verify pywry:download handler is registered in IFrame mode."""
@@ -116,9 +116,9 @@ class TestPyWryWidgetSystemEvents:
     """Tests for system event handlers in PyWryWidget (anywidget mode)."""
 
     def test_update_theme_handler_registered(self) -> None:
-        """Verify pywry:update_theme handler is registered in PyWryWidget."""
+        """Verify pywry:update-theme handler is registered in PyWryWidget."""
         esm = _get_widget_esm()
-        assert "pywry:update_theme" in esm
+        assert "pywry:update-theme" in esm
 
     def test_inject_css_handler_registered(self) -> None:
         """Verify pywry:inject-css handler is registered in PyWryWidget."""
@@ -126,14 +126,14 @@ class TestPyWryWidgetSystemEvents:
         assert "pywry:inject-css" in esm
 
     def test_set_style_handler_registered(self) -> None:
-        """Verify pywry:set_style handler is registered in PyWryWidget."""
+        """Verify pywry:set-style handler is registered in PyWryWidget."""
         esm = _get_widget_esm()
-        assert "pywry:set_style" in esm
+        assert "pywry:set-style" in esm
 
     def test_set_content_handler_registered(self) -> None:
-        """Verify pywry:set_content handler is registered in PyWryWidget."""
+        """Verify pywry:set-content handler is registered in PyWryWidget."""
         esm = _get_widget_esm()
-        assert "pywry:set_content" in esm
+        assert "pywry:set-content" in esm
 
     def test_set_style_supports_id_selector(self) -> None:
         """Verify set_style handler supports targeting by id."""
@@ -175,14 +175,14 @@ class TestNativeModeSystemEvents:
         assert "pywry:remove-css" in js
 
     def test_set_style_listener_registered(self) -> None:
-        """Verify pywry:set_style Tauri listener is registered."""
+        """Verify pywry:set-style Tauri listener is registered."""
         js = _get_hot_reload_js()
-        assert "pywry:set_style" in js
+        assert "pywry:set-style" in js
 
     def test_set_content_listener_registered(self) -> None:
-        """Verify pywry:set_content Tauri listener is registered."""
+        """Verify pywry:set-content Tauri listener is registered."""
         js = _get_hot_reload_js()
-        assert "pywry:set_content" in js
+        assert "pywry:set-content" in js
 
     def test_refresh_listener_registered(self) -> None:
         """Verify pywry:refresh Tauri listener is registered."""
@@ -219,9 +219,9 @@ class TestThemeManagerSystemEvents:
     """Tests for theme-related system events in theme manager."""
 
     def test_update_theme_handler_registered(self) -> None:
-        """Verify pywry:update_theme handler is registered in theme manager."""
+        """Verify pywry:update-theme handler is registered in theme manager."""
         js = _get_theme_manager_js()
-        assert "pywry:update_theme" in js
+        assert "pywry:update-theme" in js
 
     def test_theme_classes_applied(self) -> None:
         """Verify theme CSS classes are applied."""
@@ -245,10 +245,10 @@ class TestSystemEventConsistency:
     """Tests to ensure system events are consistent across all rendering paths."""
 
     CORE_SYSTEM_EVENTS: ClassVar[list[str]] = [
-        "pywry:update_theme",
+        "pywry:update-theme",
         "pywry:inject-css",
-        "pywry:set_style",
-        "pywry:set_content",
+        "pywry:set-style",
+        "pywry:set-content",
     ]
 
     def test_inline_has_all_core_events(self) -> None:
@@ -268,8 +268,8 @@ class TestSystemEventConsistency:
         js = _get_hot_reload_js()
         native_events = [
             "pywry:inject-css",
-            "pywry:set_style",
-            "pywry:set_content",
+            "pywry:set-style",
+            "pywry:set-content",
         ]
         for event in native_events:
             assert event in js, f"Missing {event} in native mode"
@@ -302,9 +302,9 @@ class TestPywryBridgeSystemSupport:
         assert "_handlers" in PYWRY_BRIDGE_JS
 
     def test_theme_manager_update_theme_handler(self) -> None:
-        """Verify theme manager registers pywry:update_theme handler."""
+        """Verify theme manager registers pywry:update-theme handler."""
         js = _get_theme_manager_js()
-        assert "pywry:update_theme" in js
+        assert "pywry:update-theme" in js
 
     def test_theme_manager_applies_theme_classes(self) -> None:
         """Verify theme manager applies theme CSS classes."""

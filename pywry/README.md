@@ -1099,20 +1099,20 @@ These events trigger built-in browser behaviors. They are handled automatically 
 
 | Event | Payload | Description |
 |-------|---------|-------------|
-| `pywry:update_theme` | `{ theme: str }` | Update theme dynamically (e.g., `"plotly_dark"`, `"plotly_white"`) |
+| `pywry:update-theme` | `{ theme: str }` | Update theme dynamically (e.g., `"plotly_dark"`, `"plotly_white"`) |
 | `pywry:inject-css` | `{ css: str, id?: str }` | Inject CSS dynamically; optional `id` for replacing existing styles |
-| `pywry:set_style` | `{ id?: str, selector?: str, styles: {} }` | Update inline styles on element(s) by id or CSS selector |
-| `pywry:set_content` | `{ id?: str, selector?: str, html?: str, text?: str }` | Update innerHTML or textContent on element(s) |
+| `pywry:set-style` | `{ id?: str, selector?: str, styles: {} }` | Update inline styles on element(s) by id or CSS selector |
+| `pywry:set-content` | `{ id?: str, selector?: str, html?: str, text?: str }` | Update innerHTML or textContent on element(s) |
 | `pywry:download` | `{ content: str, filename: str, mimeType?: str }` | Trigger a file download (IFrame/browser mode only) |
 | `pywry:navigate` | `{ url: str }` | Navigate to a URL (SPA-style navigation) |
 | `pywry:alert` | `{ message: str }` or `{ text: str }` | Show a browser alert dialog |
-| `pywry:update_html` | `{ html: str }` | Replace widget content (triggers page reload) |
+| `pywry:update-html` | `{ html: str }` | Replace widget content (triggers page reload) |
 
 **Example: DOM Manipulation Without Custom JavaScript**
 
 ```python
 # Update theme dynamically
-widget.emit("pywry:update_theme", {"theme": "plotly_white"})
+widget.emit("pywry:update-theme", {"theme": "plotly_white"})
 
 # Inject CSS dynamically
 widget.emit("pywry:inject-css", {
@@ -1121,25 +1121,25 @@ widget.emit("pywry:inject-css", {
 })
 
 # Update element styles by ID
-widget.emit("pywry:set_style", {
+widget.emit("pywry:set-style", {
     "id": "status-badge",
     "styles": {"backgroundColor": "green", "color": "white"}
 })
 
 # Or by CSS selector (updates all matching elements)
-widget.emit("pywry:set_style", {
+widget.emit("pywry:set-style", {
     "selector": ".highlight-row",
     "styles": {"backgroundColor": "#ffffcc"}
 })
 
 # Update element content by ID
-widget.emit("pywry:set_content", {
+widget.emit("pywry:set-content", {
     "id": "values-display",
     "html": "<strong>Updated!</strong> 42 items"
 })
 
 # Or use plain text (safer, no HTML parsing)
-widget.emit("pywry:set_content", {
+widget.emit("pywry:set-content", {
     "selector": ".status-text",
     "text": "Processing complete"
 })
@@ -1152,7 +1152,7 @@ widget.emit("pywry:download", {
 })
 ```
 
-> **Note:** `pywry:set_style` and `pywry:set_content` support either `id` (for a single element by ID) or `selector` (for multiple elements via CSS selector). If both are provided, `id` takes precedence.
+> **Note:** `pywry:set-style` and `pywry:set-content` support either `id` (for a single element by ID) or `selector` (for multiple elements via CSS selector). If both are provided, `id` takes precedence.
 
 ### Plotly Events (`plotly:*`)
 
@@ -1166,7 +1166,7 @@ These events fire automatically when users interact with Plotly charts:
 | `plotly:hover` | User hovers over a point | `{ chartId, widget_type: "chart", points: [{ x, y, curveNumber }, ...] }` |
 | `plotly:select` | User selects with box/lasso | `{ chartId, widget_type: "chart", points: [...], range: {...} or null }` |
 | `plotly:relayout` | User zooms, pans, or resizes | `{ chartId, widget_type: "chart", relayout_data: {...} }` |
-| `plotly:state_response` | Response to state request | `{ chartId, layout: {...}, data: [...] }` |
+| `plotly:state-response` | Response to state request | `{ chartId, layout: {...}, data: [...] }` |
 
 > **Note:** All Plotly events include `chartId` and `widget_type: "chart"` in the payload for identifying which chart triggered the event.
 
@@ -1207,11 +1207,11 @@ Use these to update the chart programmatically. These methods support optional `
 
 | Event | Method | Payload |
 |-------|--------|---------|
-| `plotly:update_figure` | `widget.update_figure(fig, chart_id=...)` | `{ figure: {...}, chartId?, config?: {...}, animate?: bool }` |
-| `plotly:update_layout` | `widget.update_layout({...})` | `{ layout: {...} }` |
-| `plotly:update_traces` | `widget.update_traces({...}, indices)` | `{ update: {...}, indices: [int, ...] or null }` |
-| `plotly:reset_zoom` | `widget.reset_zoom()` | `{}` |
-| `plotly:request_state` | `widget.request_plotly_state(chart_id=...)` | `{ chartId? }` |
+| `plotly:update-figure` | `widget.update_figure(fig, chart_id=...)` | `{ figure: {...}, chartId?, config?: {...}, animate?: bool }` |
+| `plotly:update-layout` | `widget.update_layout({...})` | `{ layout: {...} }` |
+| `plotly:update-traces` | `widget.update_traces({...}, indices)` | `{ update: {...}, indices: [int, ...] or null }` |
+| `plotly:reset-zoom` | `widget.reset_zoom()` | `{}` |
+| `plotly:request-state` | `widget.request_plotly_state(chart_id=...)` | `{ chartId? }` |
 
 ### AgGrid Events (`grid:*`)
 
@@ -1224,7 +1224,7 @@ These events fire automatically when users interact with AgGrid tables:
 | `grid:select` | Row selection changes | `{ gridId, widget_type: "grid", selected_rows: [...], selected_row_ids: [...] }` |
 | `grid:cell-edit` | User edits a cell | `{ gridId, widget_type: "grid", row_id, row_index, column, old_value, new_value }` |
 | `grid:row-click` | User clicks a row | `{ gridId, widget_type: "grid", row_data: {...}, row_id, row_index }` |
-| `grid:state_response` | Response to state request | `{ gridId, state: { columnState, filterModel } }` |
+| `grid:state-response` | Response to state request | `{ gridId, state: { columnState, filterModel } }` |
 
 > **Note:** All AgGrid events include `gridId` and `widget_type: "grid"` in the payload for identifying which grid triggered the event.
 
@@ -1261,13 +1261,13 @@ Use these to update the grid programmatically. These methods support optional `g
 
 | Event | Method | Payload |
 |-------|--------|---------|
-| `grid:update_data` | `widget.update_data(rows, grid_id=...)` | `{ data: [...], gridId? }` |
-| `grid:update_columns` | `widget.update_columns(col_defs, grid_id=...)` | `{ columnDefs: [...], gridId? }` |
-| `grid:update_cell` | `widget.update_cell(row_id, col, value, grid_id=...)` | `{ rowId, colId, value, gridId? }` |
-| `grid:update_options` | `widget.update_grid(options, grid_id=...)` | `{ options: {...}, gridId? }` |
-| `grid:request_state` | `widget.request_grid_state(grid_id=...)` | `{ gridId? }` |
-| `grid:restore_state` | `widget.restore_state(state, grid_id=...)` | `{ state: {...}, gridId? }` |
-| `grid:reset_state` | `widget.reset_state(grid_id=...)` | `{ gridId?, hard?: bool }` |
+| `grid:update-data` | `widget.update_data(rows, grid_id=...)` | `{ data: [...], gridId? }` |
+| `grid:update-columns` | `widget.update_columns(col_defs, grid_id=...)` | `{ columnDefs: [...], gridId? }` |
+| `grid:update-cell` | `widget.update_cell(row_id, col, value, grid_id=...)` | `{ rowId, colId, value, gridId? }` |
+| `grid:update-options` | `widget.update_grid(options, grid_id=...)` | `{ options: {...}, gridId? }` |
+| `grid:request-state` | `widget.request_grid_state(grid_id=...)` | `{ gridId? }` |
+| `grid:restore-state` | `widget.restore_state(state, grid_id=...)` | `{ state: {...}, gridId? }` |
+| `grid:reset-state` | `widget.reset_state(grid_id=...)` | `{ gridId?, hard?: bool }` |
 
 ### Toolbar Events (`toolbar:*`)
 
@@ -1275,10 +1275,10 @@ Toolbar events are used for state management (querying and setting component val
 
 | Event | Direction | Payload | Description |
 |-------|-----------|---------|-------------|
-| `toolbar:state_response` | JS → Python | `{ toolbars, components, timestamp, context? }` | Response to state request |
-| `toolbar:request_state` | Python → JS | `{ toolbarId?, componentId?, context? }` | Request current state |
-| `toolbar:set_value` | Python → JS | `{ componentId, value, toolbarId? }` | Set single component value |
-| `toolbar:set_values` | Python → JS | `{ values: { id: value, ... }, toolbarId? }` | Set multiple component values |
+| `toolbar:state-response` | JS → Python | `{ toolbars, components, timestamp, context? }` | Response to state request |
+| `toolbar:request-state` | Python → JS | `{ toolbarId?, componentId?, context? }` | Request current state |
+| `toolbar:set-value` | Python → JS | `{ componentId, value, toolbarId? }` | Set single component value |
+| `toolbar:set-values` | Python → JS | `{ values: { id: value, ... }, toolbarId? }` | Set multiple component values |
 
 > **Note:** Toolbar *components* (Button, Select, etc.) emit their own custom events that you define via the `event` parameter. All component events automatically include `componentId` in their payload. See the Toolbar System section.
 
@@ -2113,9 +2113,9 @@ def make_handler(name):
         else:
             component_values[name] = "clicked"
         
-        # Build display text for footer using built-in pywry:set_content
+        # Build display text for footer using built-in pywry:set-content
         parts = [f"<strong>{k}:</strong> {v}" for k, v in component_values.items()]
-        components_widget.emit("pywry:set_content", {
+        components_widget.emit("pywry:set-content", {
             "id": "values-display",
             "html": " | ".join(parts)
         })
@@ -2125,20 +2125,20 @@ def on_theme_toggle(data, event_type, label):
     """Toggle between dark and light mode using built-in pywry event."""
     global current_theme
     current_theme = "light" if current_theme == "dark" else "dark"
-    components_widget.emit("pywry:update_theme", {"theme": current_theme})
+    components_widget.emit("pywry:update-theme", {"theme": current_theme})
 
 def on_title_size(data, event_type, label):
-    """Change the title size using built-in pywry:set_style event."""
+    """Change the title size using built-in pywry:set-style event."""
     sizes = {"sm": "16px", "md": "20px", "lg": "26px"}
     size = data.get("value", "md")
-    # Use built-in pywry:set_style event to update element styles
-    components_widget.emit("pywry:set_style", {
+    # Use built-in pywry:set-style event to update element styles
+    components_widget.emit("pywry:set-style", {
         "id": "demo-title",
         "styles": {"fontSize": sizes.get(size, "20px")}
     })
 
 def on_label_style(data, event_type, label):
-    """Change all component label styles using built-in pywry:set_style event."""
+    """Change all component label styles using built-in pywry:set-style event."""
     style_map = {
         "normal": {"fontWeight": "400", "fontStyle": "normal"},
         "semi": {"fontWeight": "500", "fontStyle": "normal"},
@@ -2146,8 +2146,8 @@ def on_label_style(data, event_type, label):
         "italic": {"fontWeight": "400", "fontStyle": "italic"},
     }
     style = data.get("value", "normal")
-    # Use built-in pywry:set_style event to update all labels
-    components_widget.emit("pywry:set_style", {
+    # Use built-in pywry:set-style event to update all labels
+    components_widget.emit("pywry:set-style", {
         "selector": ".pywry-input-label",
         "styles": style_map.get(style, style_map["normal"])
     })
@@ -2454,7 +2454,7 @@ def on_state(data, event_type, label):
     print(f"Toolbars: {data['toolbars']}")
     print(f"Components: {data['components']}")
 
-widget.on("toolbar:state_response", on_state)
+widget.on("toolbar:state-response", on_state)
 widget.request_toolbar_state()
 
 # Query specific toolbar
@@ -2462,7 +2462,7 @@ widget.request_toolbar_state(toolbar_id="my-toolbar")
 
 # Native windows (via runtime)
 from pywry import runtime
-runtime.emit_event("window-label", "toolbar:request_state", {})
+runtime.emit_event("window-label", "toolbar:request-state", {})
 ```
 
 **Response payload:**
@@ -2493,12 +2493,12 @@ widget.set_toolbar_values({
 # Native windows (via runtime)
 from pywry import runtime
 
-runtime.emit_event("window-label", "toolbar:set_value", {
+runtime.emit_event("window-label", "toolbar:set-value", {
     "componentId": "select-a1b2c3d4",
     "value": "dark"
 })
 
-runtime.emit_event("window-label", "toolbar:set_values", {
+runtime.emit_event("window-label", "toolbar:set-values", {
     "values": {"select-a1b2c3d4": "dark", "number-b2c3d4e5": 50}
 })
 ```
@@ -2641,18 +2641,18 @@ PyWry pre-registers handlers for common UI manipulation events. These are handle
 
 ```python
 # Theme switching (updates Plotly templates, AgGrid themes, and CSS classes)
-widget.emit("pywry:update_theme", {"theme": "plotly_white"})
+widget.emit("pywry:update-theme", {"theme": "plotly_white"})
 
 # Inject CSS dynamically (with optional id for replacement)
 widget.emit("pywry:inject-css", {"css": ".status { color: green; }", "id": "status-css"})
 
 # Update element styles by id or CSS selector
-widget.emit("pywry:set_style", {"id": "counter", "styles": {"fontSize": "24px", "fontWeight": "bold"}})
-widget.emit("pywry:set_style", {"selector": ".highlight", "styles": {"backgroundColor": "yellow"}})
+widget.emit("pywry:set-style", {"id": "counter", "styles": {"fontSize": "24px", "fontWeight": "bold"}})
+widget.emit("pywry:set-style", {"selector": ".highlight", "styles": {"backgroundColor": "yellow"}})
 
 # Update element content by id or CSS selector
-widget.emit("pywry:set_content", {"id": "message", "html": "<strong>Success!</strong>"})
-widget.emit("pywry:set_content", {"selector": ".count", "text": "42"})
+widget.emit("pywry:set-content", {"id": "message", "html": "<strong>Success!</strong>"})
+widget.emit("pywry:set-content", {"selector": ".count", "text": "42"})
 
 # Trigger file download (IFrame/browser mode only)
 widget.emit("pywry:download", {"content": "CSV data...", "filename": "data.csv", "mimeType": "text/csv"})
@@ -3002,7 +3002,7 @@ windows["sidebar"] = app.show_dataframe(df, title="Data Panel")
 
 # Later: send events to specific windows
 def refresh_main():
-    app.emit("plotly:update_figure", {"figure": new_fig_dict}, label=windows["main"])
+    app.emit("plotly:update-figure", {"figure": new_fig_dict}, label=windows["main"])
 
 def close_sidebar():
     app.close(windows["sidebar"])
@@ -3121,7 +3121,7 @@ Methods available on widget objects returned by `show_*()` in NOTEBOOK/BROWSER m
 | `widget.update_columns(col_defs)` | Replace column definitions |
 | `widget.update_cell(row_id, col, value)` | Update a single cell |
 | `widget.update_grid(data, columns, state)` | Update multiple aspects at once |
-| `widget.request_grid_state()` | Request current grid state (emits `grid:state_response`) |
+| `widget.request_grid_state()` | Request current grid state (emits `grid:state-response`) |
 | `widget.restore_state(state)` | Restore a saved grid state |
 | `widget.reset_state()` | Reset grid to default state |
 
@@ -3129,7 +3129,7 @@ Methods available on widget objects returned by `show_*()` in NOTEBOOK/BROWSER m
 
 | Method | Description |
 |--------|-------------|
-| `widget.request_toolbar_state()` | Request current toolbar state (emits `toolbar:state_response`) |
+| `widget.request_toolbar_state()` | Request current toolbar state (emits `toolbar:state-response`) |
 | `widget.get_toolbar_value(component_id)` | Request a specific component's value |
 | `widget.set_toolbar_value(id, value)` | Set a component's value |
 | `widget.set_toolbar_values(values)` | Set multiple component values at once |
@@ -3998,7 +3998,7 @@ config = PlotlyConfig(
     mode_bar_buttons_to_add=[
         DownloadImageButton(),
         ResetAxesButton(),
-        ToggleGridButton(),  # Emits "plotly:toggle_grid" event
+        ToggleGridButton(),  # Emits "plotly:toggle-grid" event
     ],
 )
 ```

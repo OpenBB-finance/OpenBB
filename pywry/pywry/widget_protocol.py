@@ -39,7 +39,7 @@ class BaseWidget(Protocol):
         Parameters
         ----------
         event_type : str
-            Event name (e.g., 'plotly_click', 'toggle', 'cell_click').
+            Event name (e.g., 'plotly:click', 'toggle', 'grid:cell-click').
         callback : Callable[[dict, str, str], Any]
             Handler function receiving (data, event_type, label).
             - data: Event payload from JavaScript
@@ -53,8 +53,8 @@ class BaseWidget(Protocol):
 
         Examples
         --------
-        >>> widget.on("plotly_click", lambda d, t, l: print(f"Clicked: {d}"))
-        >>> widget.on("custom_event", my_handler).on("another", other_handler)
+        >>> widget.on("plotly:click", lambda d, t, l: print(f"Clicked: {d}"))
+        >>> widget.on("custom-event", my_handler).on("another", other_handler)
         """
 
     def emit(self, event_type: str, data: dict[str, Any]) -> None:

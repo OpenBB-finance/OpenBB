@@ -90,6 +90,9 @@ class WindowLifecycle:
             warn(f"Window '{label}' already exists, destroying first")
             self.destroy(label)
 
+        # After destroying, recover the label so callbacks can be registered again
+        get_registry().recover_label(label)
+
         # Ensure runtime subprocess is started
         if not runtime.is_running():
             debug("Starting pytauri subprocess...")

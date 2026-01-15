@@ -480,7 +480,7 @@ class TestBrowserModeCallbacks:
         )
 
         # Emit an event
-        widget.emit("pywry:test_event", {"value": 42})
+        widget.emit("pywry:test-event", {"value": 42})
 
         # Give async queue time to process
         time.sleep(0.2)

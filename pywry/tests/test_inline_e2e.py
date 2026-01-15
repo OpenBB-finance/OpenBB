@@ -857,7 +857,7 @@ class TestWebSocketUpdates:
         async with websockets.connect(ws_url) as ws:
             # 1. Emit theme update event from Python side
             theme_data = {"theme": "ag-theme-quartz-dark"}
-            widget.emit("pywry:update_theme", theme_data)
+            widget.emit("pywry:update-theme", theme_data)
 
             # 2. Wait for message on WebSocket
             # The server pushes immediately, so we should receive it
@@ -865,7 +865,7 @@ class TestWebSocketUpdates:
             data = json.loads(message)
 
             # 3. Verify event
-            assert data["type"] == "pywry:update_theme"
+            assert data["type"] == "pywry:update-theme"
             assert data["data"]["theme"] == "ag-theme-quartz-dark"
 
             # 4. Test Python -> JS multiple events

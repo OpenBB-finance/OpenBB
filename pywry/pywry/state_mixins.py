@@ -56,7 +56,7 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
     ) -> None:
         """Request the current state of the grid (sort, filter, columns, etc.).
 
-        The frontend will respond with a 'grid:state_response' event.
+        The frontend will respond with a 'grid:state-response' event.
 
         Parameters
         ----------
@@ -72,14 +72,14 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
             payload["gridId"] = grid_id
         if context:
             payload["context"] = context
-        self.emit("grid:request_state", payload)
+        self.emit("grid:request-state", payload)
 
     def restore_state(self, state: dict[str, Any], grid_id: str | None = None) -> None:
         """Restore the grid state from a previous state object."""
         payload: dict[str, Any] = {"state": state}
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:restore_state", payload)
+        self.emit("grid:restore-state", payload)
 
     def reset_state(self, grid_id: str | None = None, hard: bool = False) -> None:
         """Reset the grid state to default values.
@@ -92,7 +92,7 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         payload: dict[str, Any] = {"hard": hard}
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:reset_state", payload)
+        self.emit("grid:reset-state", payload)
 
     def update_cell(
         self, row_id: str | int, col_id: str, value: Any, grid_id: str | None = None
@@ -105,7 +105,7 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         }
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:update_cell", payload)
+        self.emit("grid:update-cell", payload)
 
     def update_data(
         self, data: list[dict[str, Any]], grid_id: str | None = None, strategy: str = "set"
@@ -121,14 +121,14 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         payload: dict[str, Any] = {"data": data, "strategy": strategy}
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:update_data", payload)
+        self.emit("grid:update-data", payload)
 
     def update_columns(self, column_defs: list[dict[str, Any]], grid_id: str | None = None) -> None:
         """Update column definitions."""
         payload: dict[str, Any] = {"columnDefs": column_defs}
         if grid_id:
             payload["gridId"] = grid_id
-        self.emit("grid:update_columns", payload)
+        self.emit("grid:update-columns", payload)
 
     def update_grid(
         self,
@@ -150,7 +150,7 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         columns : list[dict], optional
             New column definitions.
         restore_state : dict, optional
-            Previously saved grid state to restore (from grid:state_response).
+            Previously saved grid state to restore (from grid:state-response).
             Contains columnState, filterModel, sortModel.
         grid_id : str, optional
             The ID of the grid to update.
@@ -175,7 +175,7 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
             payload["gridId"] = grid_id
 
         # Emit combined update event
-        self.emit("grid:update_grid", payload)
+        self.emit("grid:update-grid", payload)
 
 
 class PlotlyStateMixin(EmittingWidget):  # pylint: disable=abstract-method
@@ -199,14 +199,14 @@ class PlotlyStateMixin(EmittingWidget):  # pylint: disable=abstract-method
             payload["chartId"] = chart_id
         if config:
             payload["config"] = config
-        self.emit("plotly:update_figure", payload)
+        self.emit("plotly:update-figure", payload)
 
     def update_layout(self, layout: dict[str, Any], chart_id: str | None = None) -> None:
         """Update specific layout properties (Plotly.relayout)."""
         payload: dict[str, Any] = {"layout": layout}
         if chart_id:
             payload["chartId"] = chart_id
-        self.emit("plotly:update_layout", payload)
+        self.emit("plotly:update-layout", payload)
 
     def update_traces(
         self, patch: dict[str, Any], indices: list[int] | None = None, chart_id: str | None = None
@@ -217,21 +217,21 @@ class PlotlyStateMixin(EmittingWidget):  # pylint: disable=abstract-method
             payload["chartId"] = chart_id
         if indices is not None:
             payload["indices"] = indices
-        self.emit("plotly:update_traces", payload)
+        self.emit("plotly:update-traces", payload)
 
     def request_plotly_state(self, chart_id: str | None = None) -> None:
         """Request current chart state (viewport, zoom, selections)."""
         payload = {}
         if chart_id:
             payload["chartId"] = chart_id
-        self.emit("plotly:request_state", payload)
+        self.emit("plotly:request-state", payload)
 
     def reset_zoom(self, chart_id: str | None = None) -> None:
         """Reset the chart zoom/pan to default."""
         payload = {}
         if chart_id:
             payload["chartId"] = chart_id
-        self.emit("plotly:reset_zoom", payload)
+        self.emit("plotly:reset-zoom", payload)
 
     def set_zoom(
         self,
@@ -267,7 +267,7 @@ class ToolbarStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         payload: dict[str, Any] = {}
         if toolbar_id:
             payload["toolbarId"] = toolbar_id
-        self.emit("toolbar:request_state", payload)
+        self.emit("toolbar:request-state", payload)
 
     def set_toolbar_value(
         self, component_id: str, value: Any, toolbar_id: str | None = None
@@ -276,11 +276,11 @@ class ToolbarStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         payload: dict[str, Any] = {"componentId": component_id, "value": value}
         if toolbar_id:
             payload["toolbarId"] = toolbar_id
-        self.emit("toolbar:set_value", payload)
+        self.emit("toolbar:set-value", payload)
 
     def set_toolbar_values(self, values: dict[str, Any], toolbar_id: str | None = None) -> None:
         """Set multiple toolbar input values at once."""
         payload: dict[str, Any] = {"values": values}
         if toolbar_id:
             payload["toolbarId"] = toolbar_id
-        self.emit("toolbar:set_values", payload)
+        self.emit("toolbar:set-values", payload)

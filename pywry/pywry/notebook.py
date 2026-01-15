@@ -381,7 +381,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
 
 
 def _make_grid_export_handler(widget: Any) -> Any:
-    """Create a grid_export_csv handler bound to a widget.
+    """Create a grid:export-csv handler bound to a widget.
 
     Parameters
     ----------
@@ -391,7 +391,7 @@ def _make_grid_export_handler(widget: Any) -> Any:
     Returns
     -------
     Callable
-        Handler function for grid_export_csv events.
+        Handler function for grid:export-csv events.
     """
 
     def handle_export(data: dict[str, Any], _event_type: str, _label: str) -> None:
@@ -416,13 +416,13 @@ def _make_grid_export_handler(widget: Any) -> Any:
             filepath.write_text(csv_content, encoding="utf-8")
             # Show notification in the grid
             widget.emit(
-                "pywry:show_notification",
+                "pywry:show-notification",
                 {"message": f"Saved: {filepath}", "duration": 3000},
             )
             print(f"[PyWry] CSV exported ({export_type}): {filepath}")
         except Exception as e:
             widget.emit(
-                "pywry:show_notification",
+                "pywry:show-notification",
                 {"message": f"Export failed: {e}", "duration": 4000},
             )
             print(f"[PyWry] Failed to save CSV: {e}")
@@ -544,7 +544,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         browser_only=force_iframe,  # Skip IPython requirement for BROWSER mode
     )
 
-    # Register grid_export_csv handler for IFrame path (mirrors anywidget behavior)
-    widget.on("grid_export_csv", _make_grid_export_handler(widget))
+    # Register grid:export-csv handler for IFrame path (mirrors anywidget behavior)
+    widget.on("grid:export-csv", _make_grid_export_handler(widget))
 
     return widget

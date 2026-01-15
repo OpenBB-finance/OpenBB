@@ -159,11 +159,11 @@ THEME_MANAGER_JS = """
         window.pywry._trigger('pywry:theme-update', { mode: resolvedMode, original: mode });
     }
 
-    // Register handler for pywry:update_theme events IMMEDIATELY (not in DOMContentLoaded)
+    // Register handler for pywry:update-theme events IMMEDIATELY (not in DOMContentLoaded)
     // because content is injected via JavaScript after the page loads
-    console.log('[PyWry] Registering pywry:update_theme handler');
-    window.pywry.on('pywry:update_theme', function(data) {
-        console.log('[PyWry] pywry:update_theme handler called with:', data);
+    console.log('[PyWry] Registering pywry:update-theme handler');
+    window.pywry.on('pywry:update-theme', function(data) {
+        console.log('[PyWry] pywry:update-theme handler called with:', data);
         var theme = data.theme || 'plotly_dark';
         var isDark = theme.includes('dark');
         var mode = isDark ? 'dark' : 'light';
@@ -362,7 +362,7 @@ TOOLBAR_BRIDGE_JS = """
         return false;
     }
 
-    window.pywry.on('toolbar:request_state', function(data) {
+    window.pywry.on('toolbar:request-state', function(data) {
         var toolbarId = data && data.toolbarId;
         var componentId = data && data.componentId;
         var context = data && data.context;
@@ -380,16 +380,16 @@ TOOLBAR_BRIDGE_JS = """
             if (toolbarId) response.toolbarId = toolbarId;
         }
 
-        window.pywry.emit('toolbar:state_response', response);
+        window.pywry.emit('toolbar:state-response', response);
     });
 
-    window.pywry.on('toolbar:set_value', function(data) {
+    window.pywry.on('toolbar:set-value', function(data) {
         if (data && data.componentId && data.value !== undefined) {
             setComponentValue(data.componentId, data.value, data.options);
         }
     });
 
-    window.pywry.on('toolbar:set_values', function(data) {
+    window.pywry.on('toolbar:set-values', function(data) {
         if (data && data.values) {
             Object.keys(data.values).forEach(function(id) {
                 setComponentValue(id, data.values[id]);
@@ -528,7 +528,7 @@ HOT_RELOAD_JS = """
             window.pywry.removeCSS(event.payload.id);
         });
 
-        window.__TAURI__.event.listen('pywry:set_style', function(event) {
+        window.__TAURI__.event.listen('pywry:set-style', function(event) {
             var styles = event.payload.styles;
             if (!styles) return;
             var elements = [];
@@ -547,7 +547,7 @@ HOT_RELOAD_JS = """
         });
 
         // Built-in handler for updating element content (innerHTML or textContent)
-        window.__TAURI__.event.listen('pywry:set_content', function(event) {
+        window.__TAURI__.event.listen('pywry:set-content', function(event) {
             var elements = [];
             if (event.payload.id) {
                 var el = document.getElementById(event.payload.id);

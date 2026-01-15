@@ -349,7 +349,7 @@ function render({ model, el }) {
             const event = JSON.parse(model.get('_py_event') || '{}');
             if (event.type) {
                 // Handle theme updates - set model property AND apply directly
-                if (event.type === 'pywry:update_theme' && event.data && event.data.theme) {
+                if (event.type === 'pywry:update-theme' && event.data && event.data.theme) {
                     const gridDiv = container.querySelector('#grid');
                     if (gridDiv) {
                         // Update grid theme class
@@ -389,8 +389,8 @@ function render({ model, el }) {
                     }
                 }
                 // Handle inline style updates on elements
-                // Usage: emit('pywry:set_style', {selector: '.my-class', styles: {fontWeight: 'bold'}})
-                if (event.type === 'pywry:set_style' && event.data && event.data.styles) {
+                // Usage: emit('pywry:set-style', {selector: '.my-class', styles: {fontWeight: 'bold'}})
+                if (event.type === 'pywry:set-style' && event.data && event.data.styles) {
                     let elements = [];
                     if (event.data.id) {
                         const el = document.getElementById(event.data.id);
@@ -406,8 +406,8 @@ function render({ model, el }) {
                     console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
                 }
                 // Built-in handler for updating element content (innerHTML or textContent)
-                // Usage: emit('pywry:set_content', {id: 'my-element', html: '<b>Bold</b>'})
-                if (event.type === 'pywry:set_content' && event.data) {
+                // Usage: emit('pywry:set-content', {id: 'my-element', html: '<b>Bold</b>'})
+                if (event.type === 'pywry:set-content' && event.data) {
                     let elements = [];
                     if (event.data.id) {
                         const el = document.getElementById(event.data.id);
@@ -425,17 +425,17 @@ function render({ model, el }) {
                     console.log('[PyWry] Set content on', elements.length, 'elements');
                 }
                 // Handle grid data updates (row data)
-                if (event.type === 'grid:update_data' && gridApi && event.data && event.data.data) {
+                if (event.type === 'grid:update-data' && gridApi && event.data && event.data.data) {
                     gridApi.setGridOption('rowData', event.data.data);
                     console.log('[PyWry] Grid data updated:', event.data.data.length, 'rows');
                 }
                 // Handle column definition updates
-                if (event.type === 'grid:update_columns' && gridApi && event.data && event.data.columnDefs) {
+                if (event.type === 'grid:update-columns' && gridApi && event.data && event.data.columnDefs) {
                     gridApi.setGridOption('columnDefs', event.data.columnDefs);
                     console.log('[PyWry] Grid columns updated:', event.data.columnDefs.length, 'columns');
                 }
                 // Handle generic options
-                if (event.type === 'grid:update_options' && gridApi && event.data && event.data.options) {
+                if (event.type === 'grid:update-options' && gridApi && event.data && event.data.options) {
                     const options = event.data.options;
                     if (options.columnDefs) {
                         gridApi.setGridOption('columnDefs', options.columnDefs);
@@ -452,8 +452,8 @@ function render({ model, el }) {
                     console.log('[PyWry] Grid options updated');
                 }
                 // Handle cell updates
-                if (event.type === 'grid:update_cell' && gridApi && event.data) {
-                    // grid:update_cell { rowId, colId, value }
+                if (event.type === 'grid:update-cell' && gridApi && event.data) {
+                    // grid:update-cell { rowId, colId, value }
                     // Simplest approach: find row node by ID if row IDs are used, otherwise this is hard.
                     // Assuming rowId is provided and grid uses row IDs.
                     const rowNode = gridApi.getRowNode(event.data.rowId);
@@ -462,16 +462,16 @@ function render({ model, el }) {
                     }
                 }
                 // Handle state request
-                if (event.type === 'grid:request_state' && gridApi) {
+                if (event.type === 'grid:request-state' && gridApi) {
                     const state = {
                         columnState: gridApi.getColumnState(),
                         filterModel: gridApi.getFilterModel()
                     };
                     // Emit response
-                    pywry.emit('grid:state_response', { state: state, gridId: event.data.gridId });
+                    pywry.emit('grid:state-response', { state: state, gridId: event.data.gridId });
                 }
                 // Handle restore state
-                if (event.type === 'grid:restore_state' && gridApi && event.data && event.data.state) {
+                if (event.type === 'grid:restore-state' && gridApi && event.data && event.data.state) {
                     const state = event.data.state;
                     if (state.columnState) {
                         gridApi.applyColumnState({ state: state.columnState, applyOrder: true });
@@ -481,7 +481,7 @@ function render({ model, el }) {
                     }
                 }
                 // Handle reset state
-                if (event.type === 'grid:reset_state' && gridApi) {
+                if (event.type === 'grid:reset-state' && gridApi) {
                     gridApi.resetColumnState();
                     gridApi.setFilterModel(null);
                     if (event.data.hard) {
@@ -832,7 +832,7 @@ function render({ model, el }) {
             const event = JSON.parse(model.get('_py_event') || '{}');
             if (event.type) {
                 // Handle theme updates - set model property AND apply directly
-                if (event.type === 'pywry:update_theme' && event.data && event.data.theme) {
+                if (event.type === 'pywry:update-theme' && event.data && event.data.theme) {
                     const isDark = event.data.theme.includes('dark');
                     const newTheme = isDark ? 'dark' : 'light';
                     model.set('theme', newTheme);
@@ -864,7 +864,7 @@ function render({ model, el }) {
                     }
                 }
                 // Handle inline style updates on elements
-                if (event.type === 'pywry:set_style' && event.data && event.data.styles) {
+                if (event.type === 'pywry:set-style' && event.data && event.data.styles) {
                     let elements = [];
                     if (event.data.id) {
                         const el = document.getElementById(event.data.id);
@@ -880,7 +880,7 @@ function render({ model, el }) {
                     console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
                 }
                 // Built-in handler for updating element content (innerHTML or textContent)
-                if (event.type === 'pywry:set_content' && event.data) {
+                if (event.type === 'pywry:set-content' && event.data) {
                     let elements = [];
                     if (event.data.id) {
                         const el = document.getElementById(event.data.id);
@@ -1258,18 +1258,18 @@ if HAS_ANYWIDGET:
                     filepath.write_text(csv_content, encoding="utf-8")
                     # Show notification in the grid
                     self.emit(
-                        "pywry:show_notification",
+                        "pywry:show-notification",
                         {"message": f"Saved: {filepath}", "duration": 3000},
                     )
                     print(f"[PyWry] CSV exported ({export_type}): {filepath}")
                 except Exception as e:
                     self.emit(
-                        "pywry:show_notification",
+                        "pywry:show-notification",
                         {"message": f"Export failed: {e}", "duration": 4000},
                     )
                     print(f"[PyWry] Failed to save CSV: {e}")
 
-            self.on("grid_export_csv", handle_export)
+            self.on("grid:export-csv", handle_export)
 
         @property
         def export_dir(self) -> str | None:

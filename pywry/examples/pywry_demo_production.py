@@ -117,7 +117,7 @@ def on_toggle_theme(_data: dict[str, Any], _event_type: str, _label: str) -> Non
     # Update chart and page theme using proper methods
     widget = _widgets.get("sales")
     if widget:
-        widget.emit("pywry:update_theme", {"theme": sales_state["theme"]})
+        widget.emit("pywry:update-theme", {"theme": sales_state["theme"]})
 
 
 def on_export_csv(_data: dict[str, Any], _event_type: str, _label: str) -> None:
@@ -310,7 +310,7 @@ def create_inventory_widget() -> str:
         callbacks={
             "inv:category": on_category_filter,
             "inv:restock": on_restock,
-            "grid:row_selected": on_row_selected,
+            "grid:row-selected": on_row_selected,
             "nav:sales": on_nav_sales,
             "nav:home": on_nav_home_inv,
         },

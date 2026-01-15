@@ -83,7 +83,7 @@ RESERVED_NAMESPACES = frozenset({"pywry", "plotly", "grid"})
 
 # Exceptions to reserved namespaces
 ALLOWED_RESERVED_PATTERNS = [
-    "plotly:modebar_",
+    "plotly:modebar-",
 ]
 
 
@@ -1651,7 +1651,7 @@ def get_toolbar_script(*, with_script_tag: bool = True) -> str:
     - Text/Number/Date input with debouncing
     - Slider/Range input with live updates
     - MultiSelect checkbox handling
-    - Dynamic toolbar updates via toolbar:set_value event
+    - Dynamic toolbar updates via toolbar:set-value event
 
     Parameters
     ----------

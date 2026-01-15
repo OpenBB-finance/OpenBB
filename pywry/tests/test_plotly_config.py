@@ -213,10 +213,10 @@ class TestModeBarButton:
             name="exportBtn",
             title="Export Data",
             icon=PlotlyIconName.DISK,  # Plotly uses 'disk' not 'save'
-            event="plotly:modebar_export",
+            event="plotly:modebar-export",
             data={"format": "csv"},
         )
-        assert button.event == "plotly:modebar_export"
+        assert button.event == "plotly:modebar-export"
         assert button.data == {"format": "csv"}
 
     def test_button_with_toggle(self) -> None:
@@ -450,8 +450,8 @@ class TestDownloadImageButton:
 
     def test_custom_event(self) -> None:
         """Test button with custom event."""
-        button = DownloadImageButton(event="plotly:modebar_download")
-        assert button.event == "plotly:modebar_download"
+        button = DownloadImageButton(event="plotly:modebar-download")
+        assert button.event == "plotly:modebar-download"
 
 
 class TestResetAxesButton:
@@ -472,13 +472,13 @@ class TestToggleGridButton:
         button = ToggleGridButton()
         assert button.name == "toggleGrid"
         assert button.toggle is True
-        assert button.event == "plotly:toggle_grid"
+        assert button.event == "plotly:toggle-grid"
 
     def test_custom_event(self) -> None:
         """Test button preserves custom kwargs passed to parent."""
         # Note: event is hardcoded in ToggleGridButton, test uses data instead
         button = ToggleGridButton(data={"custom_key": "value"})
-        assert button.event == "plotly:toggle_grid"  # Always this value
+        assert button.event == "plotly:toggle-grid"  # Always this value
         assert button.data == {"custom_key": "value"}
 
 

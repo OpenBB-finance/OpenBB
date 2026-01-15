@@ -246,7 +246,7 @@ class ToggleGridButton(ModeBarButton):
             name="toggleGrid",
             title="Toggle Grid",
             icon=PlotlyIconName.DRAW_LINE,
-            event="plotly:toggle_grid",
+            event="plotly:toggle-grid",
             toggle=True,
             **kwargs,
         )

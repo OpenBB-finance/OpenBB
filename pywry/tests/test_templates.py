@@ -824,10 +824,10 @@ class TestBuildToolbarHtml:
 
     def test_returns_html_with_buttons(self):
         """Returns HTML with buttons."""
-        toolbar = Toolbar(items=[{"label": "Click Me", "event": "toolbar:click_me"}])
+        toolbar = Toolbar(items=[{"label": "Click Me", "event": "toolbar:click-me"}])
         result = toolbar.build_html()
         assert "Click Me" in result
-        assert "toolbar:click_me" in result
+        assert "toolbar:click-me" in result
         assert "pywry-toolbar" in result
 
     def test_includes_position_class(self):

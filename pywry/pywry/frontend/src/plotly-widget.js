@@ -78,14 +78,14 @@ function render({ model, el }) {
     }
     
     // Listen for CSV data from Python
-    pywry.on('pywry:download_csv', (data) => {
+    pywry.on('pywry:download-csv', (data) => {
         console.log('[PyWry Export] Received CSV from Python, length:', data.csv?.length);
         downloadCsv(data.csv, data.filename);
     });
     
-    // Listen for toolbar:set_value to update a single component's value/options
-    pywry.on('toolbar:set_value', (data) => {
-        console.log('[PyWry] toolbar:set_value:', data.componentId, data.value);
+    // Listen for toolbar:set-value to update a single component's value/options
+    pywry.on('toolbar:set-value', (data) => {
+        console.log('[PyWry] toolbar:set-value:', data.componentId, data.value);
         const componentId = data.componentId;
         
         // Find component by ID
@@ -204,7 +204,7 @@ function render({ model, el }) {
         return config;
     }
 
-    pywry.on('plotly:update_figure', (data) => {
+    pywry.on('plotly:update-figure', (data) => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly) {
             console.log('[PyWry Plotly] Updating figure via event, data keys:', Object.keys(data));
@@ -219,21 +219,21 @@ function render({ model, el }) {
         }
     });
 
-    pywry.on('plotly:update_layout', (data) => {
+    pywry.on('plotly:update-layout', (data) => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly && data.layout) {
             window.Plotly.relayout(plotDiv, data.layout);
         }
     });
 
-    pywry.on('plotly:update_traces', (data) => {
+    pywry.on('plotly:update-traces', (data) => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly && data.update) {
             window.Plotly.restyle(plotDiv, data.update, data.indices);
         }
     });
 
-    pywry.on('plotly:reset_zoom', () => {
+    pywry.on('plotly:reset-zoom', () => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly) {
             window.Plotly.relayout(plotDiv, {
@@ -243,10 +243,10 @@ function render({ model, el }) {
         }
     });
 
-    pywry.on('plotly:request_state', () => {
+    pywry.on('plotly:request-state', () => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly) {
-            pywry.emit('plotly:state_response', {
+            pywry.emit('plotly:state-response', {
                 layout: plotDiv.layout,
                 data: plotDiv.data,
                 chartId: model.get('chart_id')
@@ -255,12 +255,12 @@ function render({ model, el }) {
     });
 
     // Also allow export to be triggered from Python
-    pywry.on('plotly:export_data', () => {
+    pywry.on('plotly:export-data', () => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv) doExportData(plotDiv);
     });
 
-    pywry.on('pywry:update_theme', (data) => {
+    pywry.on('pywry:update-theme', (data) => {
         if (data && data.theme) {
             const isDark = data.theme.includes('dark');
             const newTheme = isDark ? 'dark' : 'light';

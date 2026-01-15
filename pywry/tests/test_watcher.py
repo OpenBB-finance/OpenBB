@@ -340,8 +340,8 @@ class TestFileChangeCallbacks:
         watcher._on_file_change(resolved)
         watcher._on_file_change(resolved)
 
-        # Wait for debounce
-        time.sleep(0.1)
+        # Wait for debounce (longer wait for CI timer scheduling variance)
+        time.sleep(0.3)
 
         # Should only call once despite multiple changes
         assert callback.call_count == 1
@@ -415,7 +415,8 @@ class TestEdgeCases:
         resolved = test_file.resolve()
         watcher._on_file_change(resolved)
 
-        time.sleep(0.05)
+        # Wait for debounce timer (longer wait for CI timer scheduling variance)
+        time.sleep(0.2)
 
         # Callback was called (and raised)
         bad_callback.assert_called_once()

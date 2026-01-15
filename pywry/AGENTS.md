@@ -309,10 +309,10 @@ Events follow the format `namespace:event-name`:
 | Event | Direction | Description |
 |-------|-----------|-------------|
 | `pywry:ready` | JS → Python | Window/widget initialized |
-| `pywry:update_theme` | Python → JS | Update theme dynamically |
+| `pywry:update-theme` | Python → JS | Update theme dynamically |
 | `pywry:inject-css` | Python → JS | Inject CSS dynamically |
-| `pywry:set_style` | Python → JS | Update element styles |
-| `pywry:set_content` | Python → JS | Update element innerHTML/textContent |
+| `pywry:set-style` | Python → JS | Update element styles |
+| `pywry:set-content` | Python → JS | Update element innerHTML/textContent |
 | `pywry:download` | Python → JS | Trigger file download |
 
 ### JavaScript Bridge

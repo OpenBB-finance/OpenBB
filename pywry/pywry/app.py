@@ -829,7 +829,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         Parameters
         ----------
         event_type : str
-            Event type (e.g., "grid:cell_click", "cell_click").
+            Event type (e.g., "grid:cell-click", "cell_click").
         handler : CallbackFunc
             Callback function.
         label : str, optional
@@ -1268,7 +1268,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         self._grid_data[grid_id] = row_data
 
         def handle_page_request(event_data: dict[str, Any]) -> None:
-            """Handle grid:request_page events from frontend."""
+            """Handle grid:request-page events from frontend."""
             # Only respond to requests for this grid
             if event_data.get("gridId") != grid_id:
                 return
@@ -1305,7 +1305,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
             # Send response back to frontend
             self.send_event(
-                "grid:page_response",
+                "grid:page-response",
                 {
                     "gridId": grid_id,
                     "requestId": request_id,
@@ -1319,7 +1319,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         # Register the handler
         target_label = label or (self._mode.get_labels() or ["main"])[0]
         registry = get_registry()
-        registry.register(target_label, "grid:request_page", handle_page_request)
+        registry.register(target_label, "grid:request-page", handle_page_request)
 
         debug(f"Registered server-side handler for grid {grid_id} on label {target_label}")
 

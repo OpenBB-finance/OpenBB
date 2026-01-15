@@ -120,7 +120,7 @@ class TestGridStateMixin:
         widget.request_grid_state()
 
         event, data = widget.get_last_event()
-        assert event == "grid:request_state"
+        assert event == "grid:request-state"
         assert data == {}
 
     def test_request_grid_state_with_id(self) -> None:
@@ -130,7 +130,7 @@ class TestGridStateMixin:
         widget.request_grid_state(grid_id="grid1")
 
         event, data = widget.get_last_event()
-        assert event == "grid:request_state"
+        assert event == "grid:request-state"
         assert data["gridId"] == "grid1"
 
     def test_request_grid_state_with_context(self) -> None:
@@ -140,7 +140,7 @@ class TestGridStateMixin:
         widget.request_grid_state({"target_view": "product_pivot"})
 
         event, data = widget.get_last_event()
-        assert event == "grid:request_state"
+        assert event == "grid:request-state"
         assert data["context"] == {"target_view": "product_pivot"}
 
     def test_restore_state(self) -> None:
@@ -155,7 +155,7 @@ class TestGridStateMixin:
         widget.restore_state(state)
 
         event, data = widget.get_last_event()
-        assert event == "grid:restore_state"
+        assert event == "grid:restore-state"
         assert data["state"] == state
 
     def test_reset_state(self) -> None:
@@ -165,7 +165,7 @@ class TestGridStateMixin:
         widget.reset_state()
 
         event, data = widget.get_last_event()
-        assert event == "grid:reset_state"
+        assert event == "grid:reset-state"
         assert data["hard"] is False
 
     def test_reset_state_hard(self) -> None:
@@ -175,7 +175,7 @@ class TestGridStateMixin:
         widget.reset_state(hard=True)
 
         event, data = widget.get_last_event()
-        assert event == "grid:reset_state"
+        assert event == "grid:reset-state"
         assert data["hard"] is True
 
     def test_update_cell(self) -> None:
@@ -185,7 +185,7 @@ class TestGridStateMixin:
         widget.update_cell(row_id="row1", col_id="price", value=99.99)
 
         event, data = widget.get_last_event()
-        assert event == "grid:update_cell"
+        assert event == "grid:update-cell"
         assert data["rowId"] == "row1"
         assert data["colId"] == "price"
         assert data["value"] == 99.99
@@ -198,7 +198,7 @@ class TestGridStateMixin:
         widget.update_data(new_data)
 
         event, data = widget.get_last_event()
-        assert event == "grid:update_data"
+        assert event == "grid:update-data"
         assert data["data"] == new_data
         assert data["strategy"] == "set"
 
@@ -213,7 +213,7 @@ class TestGridStateMixin:
         widget.update_columns(columns)
 
         event, data = widget.get_last_event()
-        assert event == "grid:update_columns"
+        assert event == "grid:update-columns"
         assert data["columnDefs"] == columns
 
     def test_update_grid(self) -> None:
@@ -225,7 +225,7 @@ class TestGridStateMixin:
         widget.update_grid(data=new_data, columns=new_columns)
 
         event, data = widget.get_last_event()
-        assert event == "grid:update_grid"
+        assert event == "grid:update-grid"
         assert data["data"] == new_data
         assert data["columnDefs"] == new_columns
 
@@ -241,7 +241,7 @@ class TestGridStateMixin:
         widget.update_grid(data=new_data, restore_state=saved_state)
 
         event, data = widget.get_last_event()
-        assert event == "grid:update_grid"
+        assert event == "grid:update-grid"
         assert data["data"] == new_data
         assert data["restoreState"] == saved_state
 
@@ -252,7 +252,7 @@ class TestGridStateMixin:
         widget.request_grid_state(context={"target_view": "summary"})
 
         event, data = widget.get_last_event()
-        assert event == "grid:request_state"
+        assert event == "grid:request-state"
         assert data["context"] == {"target_view": "summary"}
 
 
@@ -272,7 +272,7 @@ class TestPlotlyStateMixin:
         widget.update_figure(figure)
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_figure"
+        assert event == "plotly:update-figure"
         assert data["data"] == [{"x": [1, 2], "y": [3, 4]}]
         assert data["layout"] == {"title": "Test"}
         assert data["animate"] is False
@@ -287,7 +287,7 @@ class TestPlotlyStateMixin:
         widget.update_figure(mock_figure)
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_figure"
+        assert event == "plotly:update-figure"
         assert data["data"] == [{"x": [1]}]
         assert data["layout"] == {"title": "Mock"}
 
@@ -299,7 +299,7 @@ class TestPlotlyStateMixin:
         widget.update_layout(layout_update)
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_layout"
+        assert event == "plotly:update-layout"
         assert data["layout"] == layout_update
 
     def test_update_traces(self) -> None:
@@ -310,7 +310,7 @@ class TestPlotlyStateMixin:
         widget.update_traces(trace_update, indices=[0, 1])
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_traces"
+        assert event == "plotly:update-traces"
         assert data["update"] == trace_update
         assert data["indices"] == [0, 1]
 
@@ -322,7 +322,7 @@ class TestPlotlyStateMixin:
         widget.update_traces(trace_update)
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_traces"
+        assert event == "plotly:update-traces"
         assert data["update"] == trace_update
         assert "indices" not in data  # Not included when None
 
@@ -333,7 +333,7 @@ class TestPlotlyStateMixin:
         widget.request_plotly_state()
 
         event, data = widget.get_last_event()
-        assert event == "plotly:request_state"
+        assert event == "plotly:request-state"
         assert data == {}
 
     def test_reset_zoom(self) -> None:
@@ -343,7 +343,7 @@ class TestPlotlyStateMixin:
         widget.reset_zoom()
 
         event, data = widget.get_last_event()
-        assert event == "plotly:reset_zoom"
+        assert event == "plotly:reset-zoom"
         assert data == {}
 
     def test_set_zoom(self) -> None:
@@ -354,7 +354,7 @@ class TestPlotlyStateMixin:
 
         # set_zoom calls update_layout internally
         event, data = widget.get_last_event()
-        assert event == "plotly:update_layout"
+        assert event == "plotly:update-layout"
         assert data["layout"]["xaxis.range"] == [0, 100]
         assert data["layout"]["yaxis.range"] == [10, 50]
 
@@ -365,7 +365,7 @@ class TestPlotlyStateMixin:
         widget.set_zoom(xaxis_range=[0, 100])
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_layout"
+        assert event == "plotly:update-layout"
         assert data["layout"]["xaxis.range"] == [0, 100]
         assert "yaxis.range" not in data["layout"]
 
@@ -376,7 +376,7 @@ class TestPlotlyStateMixin:
         widget.set_trace_visibility(visible=False, indices=[0])
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_traces"
+        assert event == "plotly:update-traces"
         assert data["update"] == {"visible": False}
         assert data["indices"] == [0]
 
@@ -387,7 +387,7 @@ class TestPlotlyStateMixin:
         widget.set_trace_visibility(visible="legendonly", indices=[2])
 
         event, data = widget.get_last_event()
-        assert event == "plotly:update_traces"
+        assert event == "plotly:update-traces"
         assert data["update"]["visible"] == "legendonly"
         assert data["indices"] == [2]
 
@@ -407,7 +407,7 @@ class TestToolbarStateMixin:
         widget.request_toolbar_state()
 
         event, data = widget.get_last_event()
-        assert event == "toolbar:request_state"
+        assert event == "toolbar:request-state"
         assert data == {}
 
     def test_set_toolbar_value(self) -> None:
@@ -417,7 +417,7 @@ class TestToolbarStateMixin:
         widget.set_toolbar_value(component_id="dropdown_1", value="option_a")
 
         event, data = widget.get_last_event()
-        assert event == "toolbar:set_value"
+        assert event == "toolbar:set-value"
         assert data["componentId"] == "dropdown_1"
         assert data["value"] == "option_a"
 
@@ -428,7 +428,7 @@ class TestToolbarStateMixin:
         widget.set_toolbar_value(component_id="multi_select", value=["a", "b", "c"])
 
         event, data = widget.get_last_event()
-        assert event == "toolbar:set_value"
+        assert event == "toolbar:set-value"
         assert data["componentId"] == "multi_select"
         assert data["value"] == ["a", "b", "c"]
 
@@ -440,7 +440,7 @@ class TestToolbarStateMixin:
         widget.set_toolbar_values(values)
 
         event, data = widget.get_last_event()
-        assert event == "toolbar:set_values"
+        assert event == "toolbar:set-values"
         assert data["values"] == values
 
 
@@ -481,9 +481,9 @@ class TestCombinedMixins:
         assert len(widget.emitted_events) == 3
 
         event_types = [event for event, _ in widget.emitted_events]
-        assert "grid:request_state" in event_types
-        assert "plotly:update_layout" in event_types
-        assert "toolbar:set_value" in event_types
+        assert "grid:request-state" in event_types
+        assert "plotly:update-layout" in event_types
+        assert "toolbar:set-value" in event_types
 
 
 # =============================================================================
@@ -537,7 +537,7 @@ class TestEdgeCases:
         result = widget.get_last_event()
         assert result is not None
         event, data = result  # pylint: disable=unpacking-non-sequence
-        assert event == "grid:restore_state"
+        assert event == "grid:restore-state"
         assert data["state"] == {}
 
     def test_empty_data_update(self) -> None:
@@ -549,7 +549,7 @@ class TestEdgeCases:
         result = widget.get_last_event()
         assert result is not None
         event, data = result  # pylint: disable=unpacking-non-sequence
-        assert event == "grid:update_data"
+        assert event == "grid:update-data"
         assert data["data"] == []
 
     def test_empty_layout_update(self) -> None:
@@ -561,7 +561,7 @@ class TestEdgeCases:
         result = widget.get_last_event()
         assert result is not None
         event, data = result  # pylint: disable=unpacking-non-sequence
-        assert event == "plotly:update_layout"
+        assert event == "plotly:update-layout"
         assert data["layout"] == {}
 
     def test_none_value_in_toolbar(self) -> None:
@@ -573,7 +573,7 @@ class TestEdgeCases:
         result = widget.get_last_event()
         assert result is not None
         event, data = result  # pylint: disable=unpacking-non-sequence
-        assert event == "toolbar:set_value"
+        assert event == "toolbar:set-value"
         assert data["value"] is None
 
     def test_large_data_update(self) -> None:
@@ -586,5 +586,5 @@ class TestEdgeCases:
         result = widget.get_last_event()
         assert result is not None
         event, data = result  # pylint: disable=unpacking-non-sequence
-        assert event == "grid:update_data"
+        assert event == "grid:update-data"
         assert len(data["data"]) == 10000
