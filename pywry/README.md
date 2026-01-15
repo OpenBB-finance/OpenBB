@@ -543,11 +543,11 @@ widget.emit("app:response", {"key": "value"})
 <details>
 <summary>Click to expand</summary>
 
-**In this section:** [Theme Classes](#theme-classes) · [Layout Classes](#layout-classes) · [Toolbar Classes](#toolbar-classes) · [Component Classes](#component-classes) · [CSS Variables](#css-variables) · [Example](#example-custom-styling)
+**In this section:** [Theme Classes](#theme-classes) · [Container Classes](#container-classes) · [Layout Wrappers](#layout-wrappers) · [Toolbar Classes](#toolbar-classes) · [Component Classes](#component-classes) · [Component ID Targeting](#component-id-targeting) · [CSS Variables](#css-variables) · [Example](#example-custom-styling)
 
 ---
 
-PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AgGrid).
+PyWry provides a consistent DOM structure across all rendering modes (HTML, Plotly, AgGrid). Understanding the class hierarchy enables precise styling and JavaScript targeting.
 
 ### Theme Classes
 
@@ -555,104 +555,394 @@ PyWry uses a dual-class theming system for maximum compatibility:
 
 | Selector | Description |
 |----------|-------------|
-| `html.dark` | Dark theme indicator on document root |
-| `html.light` | Light theme indicator on document root |
-| `html.pywry-native` | Added to html element in native window mode |
+| `html.dark` | Dark theme on document root (native windows) |
+| `html.light` | Light theme on document root (native windows) |
+| `html.pywry-native` | Added to `<html>` in native window mode |
 | `.pywry-theme-dark` | Dark theme on widget container (notebook/browser mode) |
 | `.pywry-theme-light` | Light theme on widget container (notebook/browser mode) |
+| `.pywry-theme-system` | System preference theme (follows `prefers-color-scheme`) |
 
-> **Note:** The `html.dark`/`html.light` classes are applied to the document root for global styling. The `.pywry-theme-*` classes are applied to widget containers for scoped styling in notebooks.
+> **Note:** In native windows, theme classes are applied to `<html>`. In notebooks/inline mode, they're applied to `.pywry-widget` for scoped styling that doesn't affect the notebook theme.
 
-### Layout Classes
+### Container Classes
 
 | Selector | Description |
 |----------|-------------|
-| `.pywry-widget` | Root container for widgets (notebook/browser mode) |
-| `.pywry-content` | Flex container for user content (HTML/Chart/Grid) |
-| `.pywry-wrapper-{pos}` | Layout wrapper for toolbar positioning (`top`, `bottom`, `left`, `right`) |
-| `.pywry-plotly` | Plotly chart container element |
+| `.pywry-container` | Root container for native windows (full page, absolute positioned) |
+| `.pywry-widget` | Root container for widgets in notebook/browser mode |
+| `.pywry-content` | Flex container for user content (HTML/Chart/Grid), includes 16px padding |
+| `.pywry-plotly` | Plotly chart container with border styling |
 | `.pywry-grid` | AgGrid container element |
-| `.plotly-graph-div` | Plotly internal container (Plotly's own class) |
+| `.plotly-graph-div` | Plotly's internal container (Plotly's own class) |
+
+### Layout Wrappers
+
+<details>
+<summary>Wrapper hierarchy diagram and classes</summary>
+
+Layout wrappers create the nested flexbox structure for toolbar positioning. They are applied in a specific order to create the visual hierarchy:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ .pywry-wrapper-header (column: header toolbar + rest)       │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ .pywry-toolbar-header                                 │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │ .pywry-wrapper-left (row: left toolbar + rest)        │  │
+│  │  ┌──────┬────────────────────────────────────────┐    │  │
+│  │  │.left │ .pywry-wrapper-right (row: rest + right)│   │  │
+│  │  │      │  ┌────────────────────────────────┬────┐│   │  │
+│  │  │      │  │ .pywry-wrapper-top             │.rt ││   │  │
+│  │  │      │  │  ┌──────────────────────────┐  │    ││   │  │
+│  │  │      │  │  │ .pywry-toolbar-top       │  │    ││   │  │
+│  │  │      │  │  ├──────────────────────────┤  │    ││   │  │
+│  │  │      │  │  │ .pywry-wrapper-bottom    │  │    ││   │  │
+│  │  │      │  │  │  ┌────────────────────┐  │  │    ││   │  │
+│  │  │      │  │  │  │ .pywry-wrapper-ins │  │  │    ││   │  │
+│  │  │      │  │  │  │  ┌──────────────┐  │  │  │    ││   │  │
+│  │  │      │  │  │  │  │ .pywry-cont  │  │  │  │    ││   │  │
+│  │  │      │  │  │  │  │   (content)  │  │  │  │    ││   │  │
+│  │  │      │  │  │  │  └──────────────┘  │  │  │    ││   │  │
+│  │  │      │  │  │  │ .pywry-toolbar-ins │  │  │    ││   │  │
+│  │  │      │  │  │  └────────────────────┘  │  │    ││   │  │
+│  │  │      │  │  │  .pywry-toolbar-bottom   │  │    ││   │  │
+│  │  │      │  │  └──────────────────────────┘  │    ││   │  │
+│  │  │      │  └────────────────────────────────┴────┘│   │  │
+│  │  └──────┴─────────────────────────────────────────┘   │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │ .pywry-toolbar-footer                                 │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-wrapper-header` | Outermost wrapper; column layout for header/footer toolbars |
+| `.pywry-wrapper-left` | Row layout; left toolbar extends full height |
+| `.pywry-wrapper-right` | Row layout; right toolbar extends full height |
+| `.pywry-wrapper-top` | Column layout; top toolbar is inside left/right |
+| `.pywry-wrapper-bottom` | Column layout; bottom toolbar is inside left/right |
+| `.pywry-wrapper-inside` | Innermost wrapper; positions inside toolbar as overlay |
+
+> **Nesting Behavior:** Wrappers are nested based on which toolbars are present. If you only have `top` and `bottom` toolbars, only `.pywry-wrapper-top` and `.pywry-wrapper-bottom` are created (no left/right wrappers). The `header` and `footer` positions are always outermost when present.
+
+</details>
 
 ### Toolbar Classes
 
 | Selector | Description |
 |----------|-------------|
-| `.pywry-toolbar` | Toolbar container flexbox |
-| `.pywry-toolbar-{pos}` | Toolbar position variant (`top`, `bottom`, `left`, `right`, `inside`) |
+| `.pywry-toolbar` | Base toolbar container with flex layout |
+| `.pywry-toolbar-header` | Full-width toolbar at page top, with bottom border |
+| `.pywry-toolbar-footer` | Full-width toolbar at page bottom, with top border |
+| `.pywry-toolbar-top` | Toolbar above content, inside left/right toolbars |
+| `.pywry-toolbar-bottom` | Toolbar below content, inside left/right toolbars |
+| `.pywry-toolbar-left` | Vertical toolbar on left, full height, with right border |
+| `.pywry-toolbar-right` | Vertical toolbar on right, full height, with left border |
+| `.pywry-toolbar-inside` | Floating toolbar overlay at top-right of content |
 | `.pywry-toolbar-content` | Inner container for toolbar items |
-| `.pywry-toolbar-toggle` | Collapsible toolbar toggle button |
-| `.pywry-toolbar-button` | Button within toolbar |
+| `.pywry-toolbar-toggle` | Collapse/expand button for collapsible toolbars |
+| `.pywry-toggle-icon` | Arrow icon inside toggle button |
+| `.pywry-collapsed` | State class for collapsed toolbars |
+| `.pywry-resize-handle` | Drag handle for resizable toolbars |
 
 ### Component Classes
 
+<details>
+<summary>All component selectors (Buttons, Inputs, Dropdowns, Toggle, Radio, Tabs, Div)</summary>
+
+#### Buttons
+
 | Selector | Description |
 |----------|-------------|
-| `.pywry-btn` | Button element with accent styling |
-| `.pywry-btn-{variant}` | Button variant (`secondary`, `ghost`, `danger`) |
-| `.pywry-btn-{size}` | Button size (`sm`, `lg`) |
-| `.pywry-dropdown` | Select/dropdown container |
-| `.pywry-dropdown-selected` | Selected value display |
-| `.pywry-dropdown-menu` | Dropdown options container |
-| `.pywry-dropdown-option` | Individual dropdown option |
-| `.pywry-multiselect` | Multi-select dropdown container |
-| `.pywry-multiselect-checkbox` | Checkbox input in multi-select |
-| `.pywry-input-group` | Input with label container |
-| `.pywry-input-label` | Label for input elements |
-| `.pywry-tab` | Tab button element |
-| `.pywry-tab-active` | Active tab indicator |
+| `.pywry-btn` | Base button with primary styling |
+| `.pywry-btn-primary` | Primary button (default) - accent background |
+| `.pywry-btn-secondary` | Secondary button - subtle gray background |
+| `.pywry-btn-neutral` | Neutral button - blue accent, always visible |
+| `.pywry-btn-ghost` | Ghost button - transparent, text only |
+| `.pywry-btn-outline` | Outline button - border only, no fill |
+| `.pywry-btn-danger` | Danger button - red background |
+| `.pywry-btn-warning` | Warning button - orange background |
+| `.pywry-btn-icon` | Icon-only button - square aspect ratio |
+| `.pywry-btn-xs` | Extra small size |
+| `.pywry-btn-sm` | Small size |
+| `.pywry-btn-lg` | Large size |
+| `.pywry-btn-xl` | Extra large size |
+
+#### Inputs
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-input` | Base input styling (text, number, date) |
+| `.pywry-input-text` | Text input specific styling |
+| `.pywry-input-number` | Number input with hidden spinners |
+| `.pywry-input-date` | Date picker input |
+| `.pywry-input-range` | Slider/range input |
+| `.pywry-input-group` | Container with label + input |
+| `.pywry-input-inline` | Horizontal label + input layout |
+| `.pywry-input-label` | Label text styling |
+| `.pywry-number-wrapper` | Number input with custom spinner buttons |
+| `.pywry-number-spinner` | Custom up/down spinner container |
+| `.pywry-range-value` | Current value display for sliders |
+| `.pywry-range-group` | Dual-range slider container |
+| `.pywry-range-track` | Track element for range sliders |
+| `.pywry-range-separator` | "–" separator between min/max values |
+
+#### Dropdowns & Select
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-select` | Native `<select>` element styling |
+| `.pywry-dropdown` | Custom dropdown container |
+| `.pywry-dropdown-selected` | Selected value display area |
+| `.pywry-dropdown-text` | Text inside selected area |
+| `.pywry-dropdown-arrow` | Chevron arrow indicator |
+| `.pywry-dropdown-menu` | Dropdown options popup |
+| `.pywry-dropdown-option` | Individual option in dropdown |
+| `.pywry-dropdown-up` | Opens dropdown upward (for bottom toolbars) |
+| `.pywry-open` | State class when dropdown is expanded |
 | `.pywry-selected` | Selected state for options |
+| `.pywry-disabled` | Disabled state for dropdowns |
+
+#### Multi-Select
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-multiselect` | Multi-select dropdown container |
+| `.pywry-multiselect-header` | Header with search and actions |
+| `.pywry-multiselect-search` | Search input in header |
+| `.pywry-multiselect-actions` | Select All / Clear buttons container |
+| `.pywry-multiselect-action` | Individual action button |
+| `.pywry-multiselect-options` | Scrollable options container |
+| `.pywry-multiselect-option` | Individual option row |
+| `.pywry-multiselect-checkbox` | Checkbox input |
+| `.pywry-multiselect-label` | Option label text |
+
+#### Toggle & Checkbox
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-toggle` | Toggle switch container |
+| `.pywry-toggle-input` | Hidden checkbox input |
+| `.pywry-toggle-slider` | Visual slider track |
+| `.pywry-checkbox` | Checkbox container |
+| `.pywry-checkbox-input` | Hidden checkbox input |
+| `.pywry-checkbox-box` | Visual checkbox square |
+| `.pywry-checkbox-label` | Checkbox label text |
+
+#### Radio Group
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-radio-group` | Radio button group container |
+| `.pywry-radio-horizontal` | Horizontal layout |
+| `.pywry-radio-vertical` | Vertical layout |
+| `.pywry-radio-option` | Individual radio option |
+| `.pywry-radio-button` | Visual radio circle |
+| `.pywry-radio-label` | Radio option label |
+
+#### Tab Group
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-tab-group` | Tab container with background |
+| `.pywry-tab` | Individual tab button |
+| `.pywry-tab-active` | Currently selected tab |
+| `.pywry-tab-sm` | Small tab size variant |
+| `.pywry-tab-lg` | Large tab size variant |
+
+#### Div Container
+
+| Selector | Description |
+|----------|-------------|
+| `.pywry-div` | Custom HTML container in toolbars |
+
+</details>
+
+### Component ID Targeting
+
+<details>
+<summary>ID patterns, targeting examples, and parent-child relationships</summary>
+
+Every toolbar component has a unique `component_id` that becomes its HTML `id` attribute. This enables precise CSS and JavaScript targeting.
+
+**Default ID Pattern:** `{type}-{8-char-random}`
+
+| Component | ID Prefix | Example |
+|-----------|-----------|---------|
+| `Button` | `button-` | `button-a1b2c3d4` |
+| `Select` | `select-` | `select-e5f6g7h8` |
+| `MultiSelect` | `multiselect-` | `multiselect-i9j0k1l2` |
+| `TextInput` | `text-` | `text-m3n4o5p6` |
+| `NumberInput` | `number-` | `number-q7r8s9t0` |
+| `DateInput` | `date-` | `date-u1v2w3x4` |
+| `SliderInput` | `slider-` | `slider-y5z6a7b8` |
+| `RangeInput` | `range-` | `range-c9d0e1f2` |
+| `Toggle` | `toggle-` | `toggle-g3h4i5j6` |
+| `Checkbox` | `checkbox-` | `checkbox-k7l8m9n0` |
+| `RadioGroup` | `radio-` | `radio-o1p2q3r4` |
+| `TabGroup` | `tabs-` | `tabs-s5t6u7v8` |
+| `Div` | `div-` | `div-w9x0y1z2` |
+| `Toolbar` | `toolbar-` | `toolbar-a3b4c5d6` |
+
+**Custom IDs:** Set `component_id` explicitly for stable targeting:
+
+```python
+Button(label="Save", event="app:save", component_id="save-btn")
+Toolbar(position="top", items=[...], component_id="main-toolbar")
+```
+
+**HTML Output:**
+
+```html
+<button class="pywry-btn" id="save-btn" data-event="app:save">Save</button>
+<div class="pywry-toolbar pywry-toolbar-top" id="main-toolbar" data-component-id="main-toolbar">
+```
+
+**Targeting in CSS:**
+
+```css
+/* Target specific component by ID */
+#save-btn { background: green; }
+
+/* Target component type */
+[id^="button-"] { font-weight: bold; }
+
+/* Target by data attribute */
+[data-event="app:save"] { border: 2px solid gold; }
+```
+
+**Targeting in JavaScript:**
+
+```javascript
+// Direct selection
+document.getElementById('save-btn').style.display = 'none';
+
+// Query by data attribute
+document.querySelector('[data-event="app:save"]').click();
+```
+
+**Parent-Child Relationships:**
+
+`Div` containers pass their `component_id` as `data-parent-id` to children:
+
+```python
+Div(
+    component_id="actions-group",
+    children=[
+        Button(label="Edit", event="app:edit"),
+        Button(label="Delete", event="app:delete", variant="danger"),
+    ]
+)
+```
+
+```html
+<div class="pywry-div" id="actions-group" data-component-id="actions-group">
+    <button class="pywry-btn" id="button-xyz123" data-parent-id="actions-group" ...>Edit</button>
+    <button class="pywry-btn pywry-btn-danger" id="button-abc456" data-parent-id="actions-group" ...>Delete</button>
+</div>
+```
+
+</details>
 
 ### CSS Variables
 
-Customize these variables via `inline_css` or a custom theme CSS file to style the application.
+<details>
+<summary>All CSS custom properties (colors, typography, spacing, transitions)</summary>
+
+Customize these variables via `inline_css` or a custom theme CSS file:
 
 ```css
 :root {
-  /* Color Palette (Dark Theme Default) */
+  /* ---- Color Palette (Dark Theme Default) ---- */
   --pywry-bg-primary: #212124;
   --pywry-bg-secondary: #1e1e1e;
+  --pywry-bg-hover: rgba(255, 255, 255, 0.08);
   --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
   --pywry-text-primary: #ebebed;
   --pywry-text-secondary: #a0a0a0;
   --pywry-border-color: #333;
 
-  /* Accent Colors */
+  /* ---- Scrollbar Colors ---- */
+  --pywry-scrollbar-thumb: #555;
+  --pywry-scrollbar-thumb-hover: #777;
+  --pywry-scrollbar-track: transparent;
+
+  /* ---- Accent Colors ---- */
   --pywry-accent: #0078d4;
   --pywry-accent-hover: #106ebe;
   --pywry-accent-text: #ffffff;
 
-  /* Typography */
+  /* ---- Button Colors ---- */
+  --pywry-btn-primary-bg: #e2e2e2;
+  --pywry-btn-primary-text: #151518;
+  --pywry-btn-primary-hover: #cccccc;
+  --pywry-btn-secondary-bg: rgba(54, 54, 63, 1);
+  --pywry-btn-secondary-text: #ebebed;
+  --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
+  --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
+  --pywry-btn-neutral-bg: rgb(0, 136, 204);
+  --pywry-btn-neutral-text: #ffffff;
+  --pywry-btn-neutral-hover: rgb(0, 115, 173);
+
+  /* ---- Tab Group Colors ---- */
+  --pywry-tab-bg: #2a2a2e;
+  --pywry-tab-active-bg: #3d3d42;
+  --pywry-tab-hover-bg: #353538;
+
+  /* ---- Typography ---- */
   --pywry-font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --pywry-font-size: 14px;
+  --pywry-font-weight-normal: 400;
+  --pywry-font-weight-medium: 500;
 
-  /* Spacing & Layout */
+  /* ---- Spacing & Layout ---- */
   --pywry-radius: 4px;
   --pywry-radius-lg: 6px;
-  --pywry-spacing-xs: 4px;
-  --pywry-spacing-sm: 6px;
-  --pywry-spacing-md: 8px;
-  --pywry-spacing-lg: 12px;
+  --pywry-spacing-xs: 2px;
+  --pywry-spacing-sm: 4px;
+  --pywry-spacing-md: 6px;
+  --pywry-spacing-lg: 8px;
 
-  /* Widget Sizing */
+  /* ---- Widget Sizing ---- */
   --pywry-widget-width: 100%;
   --pywry-widget-min-height: 200px;
+  --pywry-widget-height: 500px;
   --pywry-grid-min-height: 200px;
 
-  /* Transitions */
+  /* ---- Focus & Borders ---- */
+  --pywry-border-focus: #555;
+
+  /* ---- Transitions ---- */
   --pywry-transition-fast: 0.1s ease;
   --pywry-transition-normal: 0.2s ease;
 }
 
-/* Light Theme Overrides */
+/* ---- Light Theme Overrides ---- */
 html.light, .pywry-theme-light {
   --pywry-bg-primary: #f5f5f5;
   --pywry-bg-secondary: #ffffff;
+  --pywry-bg-hover: rgba(0, 0, 0, 0.06);
   --pywry-text-primary: #000000;
   --pywry-text-secondary: #666666;
   --pywry-border-color: #ccc;
+  --pywry-scrollbar-thumb: #bbb;
+  --pywry-scrollbar-thumb-hover: #999;
+  --pywry-border-focus: #999;
+  --pywry-tab-bg: #e8e8ec;
+  --pywry-tab-active-bg: #ffffff;
+  --pywry-tab-hover-bg: #f0f0f4;
+  --pywry-btn-primary-bg: #2c2c32;
+  --pywry-btn-primary-text: #ffffff;
+  --pywry-btn-primary-hover: #1a1a1e;
+  --pywry-btn-secondary-bg: #ffffff;
+  --pywry-btn-secondary-text: #2c2c32;
+  --pywry-btn-secondary-hover: #f3f3f6;
+  --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
 }
 ```
+
+</details>
 
 ### Example: Custom Styling
 
@@ -667,12 +957,21 @@ def on_action(data, event_type, label):
 content = HtmlContent(
     html="<h1>Click me</h1>",
     inline_css="""
-        .pywry-btn { background: blue !important; border-radius: 20px; }
+        /* Override button accent */
+        :root { --pywry-accent: #ff6b6b; }
+        
+        /* Target specific button by ID */
+        #action-btn { border-radius: 20px; }
+        
+        /* Center toolbar items */
         .pywry-toolbar { justify-content: center; }
     """
 )
 
-toolbar = Toolbar(position="top", items=[Button(label="Action", event="app:action")])
+toolbar = Toolbar(
+    position="top",
+    items=[Button(label="Action", event="app:action", component_id="action-btn")]
+)
 
 app.show(
     content,
