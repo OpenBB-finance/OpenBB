@@ -143,9 +143,11 @@ class TestPyWryWidgetSystemEvents:
         assert "pywry:set-content" in esm
 
     def test_set_style_supports_id_selector(self) -> None:
-        """Verify set_style handler supports targeting by id."""
+        """Verify set_style handler supports targeting by id (scoped to container)."""
         esm = _get_widget_esm()
-        assert "getElementById" in esm
+        # PyWryWidget uses container.querySelector('#' + id) for scoped element lookup
+        assert "container.querySelector" in esm
+        assert "event.data.id" in esm
 
     def test_set_style_supports_css_selector(self) -> None:
         """Verify set_style handler supports targeting by CSS selector."""
