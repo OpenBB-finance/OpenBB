@@ -134,9 +134,12 @@ class SingleWindowMode(WindowModeBase):
 
         # SINGLE_WINDOW mode: Window is never destroyed, just hidden when user clicks X
         # So we just need to ensure runtime is started, show the window, and set content
-
         # Ensure label is available (might have been destroyed by close())
         registry.recover_label(self._label)
+
+        if callbacks:
+            for event_type, handler in callbacks.items():
+                registry.register(self._label, event_type, handler)
 
         # Check lifecycle directly (survives multiple PyWry instances)
         window_exists = lifecycle.exists(self._label)
@@ -154,11 +157,6 @@ class SingleWindowMode(WindowModeBase):
             runtime.show_window(self._label)
             self._is_created = True  # Sync our flag with reality
             self._is_visible = True
-
-        # Register callbacks
-        if callbacks:
-            for event_type, handler in callbacks.items():
-                registry.register(self._label, event_type, handler)
 
         # Ensure lifecycle has resources registered
         if not lifecycle.exists(self._label):
