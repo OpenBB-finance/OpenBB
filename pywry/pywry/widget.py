@@ -192,6 +192,8 @@ function render({ model, el }) {
 
     const container = document.createElement('div');
     container.className = 'pywry-widget';
+    // Generate unique widget ID for CSS scoping
+    container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
     // Theme class for CSS variable switching
     container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
     // Set CSS variables from model for flexible sizing
@@ -366,60 +368,78 @@ function render({ model, el }) {
                     applyTheme();
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
-                // Handle CSS injection - inject or update a style element
-                // Rewrite :root selectors to also target widget containers for notebook scoping
+                // Handle CSS injection - inject or update a style element INSIDE the widget container
+                // This ensures CSS isolation between multiple widgets in the same notebook
                 if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
-                    const id = event.data.id || 'pywry-injected-style';
+                    const baseId = event.data.id || 'pywry-injected-style';
+                    const widgetId = container.dataset.widgetId;
+                    const scopedId = baseId + '-' + widgetId;
                     let css = event.data.css;
-                    // Rewrite :root to also target widget containers
-                    if (css.includes(':root')) {
-                        css = css.replace(/:root\s*\{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {');
-                    }
-                    let style = document.getElementById(id);
+                    const widgetSelector = '[data-widget-id="' + widgetId + '"]';
+
+                    // Scope ALL selectors to this widget container
+                    // Replace :root with widget selector
+                    css = css.replace(/:root\s*\{/g, widgetSelector + ' {');
+                    // Prepend widget selector to class/element selectors (e.g., .pywry-btn-neutral)
+                    // Match selectors at start of line or after closing brace
+                    css = css.replace(/(\n\s*)(\.[a-zA-Z])/g, '$1' + widgetSelector + ' $2');
+                    // Also handle selectors right after closing brace (for minified CSS)
+                    css = css.replace(/(\}\s*)(\.[a-zA-Z])/g, '$1' + widgetSelector + ' $2');
+
+                    // Look for existing style element INSIDE container first
+                    let style = container.querySelector('style[data-pywry-style="' + scopedId + '"]');
                     if (style) {
                         style.textContent = css;
                     } else {
                         style = document.createElement('style');
-                        style.id = id;
+                        style.setAttribute('data-pywry-style', scopedId);
                         style.textContent = css;
-                        document.head.appendChild(style);
+                        // Insert at beginning of container for proper cascade
+                        container.insertBefore(style, container.firstChild);
                     }
-                    console.log('[PyWry] Injected CSS with id:', id);
+                    console.log('[PyWry] Injected scoped CSS with id:', scopedId);
                 }
-                // Handle CSS removal
+                // Handle CSS removal - scoped to widget
                 if (event.type === 'pywry:remove-css' && event.data && event.data.id) {
-                    const style = document.getElementById(event.data.id);
+                    const baseId = event.data.id;
+                    const widgetId = container.dataset.widgetId;
+                    const scopedId = baseId + '-' + widgetId;
+                    const style = container.querySelector('style[data-pywry-style="' + scopedId + '"]');
                     if (style) {
                         style.remove();
-                        console.log('[PyWry] Removed CSS with id:', event.data.id);
+                        console.log('[PyWry] Removed scoped CSS with id:', scopedId);
                     }
                 }
-                // Handle inline style updates on elements
+                // Handle inline style updates on elements - SCOPED to widget container
                 // Usage: emit('pywry:set-style', {selector: '.my-class', styles: {fontWeight: 'bold'}})
                 if (event.type === 'pywry:set-style' && event.data && event.data.styles) {
                     let elements = [];
                     if (event.data.id) {
-                        const el = document.getElementById(event.data.id);
+                        // Use container.querySelector to scope to this widget only
+                        const el = container.querySelector('#' + event.data.id);
                         if (el) elements.push(el);
                     } else if (event.data.selector) {
-                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                        // Scope selector to container
+                        elements = Array.from(container.querySelectorAll(event.data.selector));
                     }
                     elements.forEach(function(el) {
                         Object.keys(event.data.styles).forEach(function(prop) {
                             el.style[prop] = event.data.styles[prop];
                         });
                     });
-                    console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
+                    console.log('[PyWry] Set styles on', elements.length, 'elements (scoped):', event.data.styles);
                 }
-                // Built-in handler for updating element content (innerHTML or textContent)
+                // Built-in handler for updating element content - SCOPED to widget container
                 // Usage: emit('pywry:set-content', {id: 'my-element', html: '<b>Bold</b>'})
                 if (event.type === 'pywry:set-content' && event.data) {
                     let elements = [];
                     if (event.data.id) {
-                        const el = document.getElementById(event.data.id);
+                        // Use container.querySelector to scope to this widget only
+                        const el = container.querySelector('#' + event.data.id);
                         if (el) elements.push(el);
                     } else if (event.data.selector) {
-                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                        // Scope selector to container
+                        elements = Array.from(container.querySelectorAll(event.data.selector));
                     }
                     elements.forEach(function(el) {
                         if ('html' in event.data) {
@@ -428,7 +448,7 @@ function render({ model, el }) {
                             el.textContent = event.data.text;
                         }
                     });
-                    console.log('[PyWry] Set content on', elements.length, 'elements');
+                    console.log('[PyWry] Set content on', elements.length, 'elements (scoped)');
                 }
                 // Handle grid data updates (row data)
                 if (event.type === 'grid:update-data' && gridApi && event.data && event.data.data) {
@@ -756,6 +776,8 @@ _WIDGET_ESM = r"""
 function render({ model, el }) {
     const container = document.createElement('div');
     container.className = 'pywry-widget';
+    // Generate unique widget ID for CSS scoping
+    container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
     container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
     // Set CSS variables from model for flexible sizing
     const modelHeight = model.get('height');
@@ -880,58 +902,76 @@ function render({ model, el }) {
                     applyTheme();
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
-                // Handle CSS injection - inject or update a style element
-                // Rewrite :root selectors to also target widget containers for notebook scoping
+                // Handle CSS injection - inject or update a style element INSIDE the widget container
+                // This ensures CSS isolation between multiple widgets in the same notebook
                 if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
-                    const id = event.data.id || 'pywry-injected-style';
+                    const baseId = event.data.id || 'pywry-injected-style';
+                    const widgetId = container.dataset.widgetId;
+                    const scopedId = baseId + '-' + widgetId;
                     let css = event.data.css;
-                    // Rewrite :root to also target widget containers
-                    if (css.includes(':root')) {
-                        css = css.replace(/:root\s*\{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {');
-                    }
-                    let style = document.getElementById(id);
+                    const widgetSelector = '[data-widget-id="' + widgetId + '"]';
+
+                    // Scope ALL selectors to this widget container
+                    // Replace :root with widget selector
+                    css = css.replace(/:root\s*\{/g, widgetSelector + ' {');
+                    // Prepend widget selector to class/element selectors (e.g., .pywry-btn-neutral)
+                    // Match selectors at start of line or after closing brace
+                    css = css.replace(/(\n\s*)(\.[a-zA-Z])/g, '$1' + widgetSelector + ' $2');
+                    // Also handle selectors right after closing brace (for minified CSS)
+                    css = css.replace(/(\}\s*)(\.[a-zA-Z])/g, '$1' + widgetSelector + ' $2');
+
+                    // Look for existing style element INSIDE container first
+                    let style = container.querySelector('style[data-pywry-style="' + scopedId + '"]');
                     if (style) {
                         style.textContent = css;
                     } else {
                         style = document.createElement('style');
-                        style.id = id;
+                        style.setAttribute('data-pywry-style', scopedId);
                         style.textContent = css;
-                        document.head.appendChild(style);
+                        // Insert at beginning of container for proper cascade
+                        container.insertBefore(style, container.firstChild);
                     }
-                    console.log('[PyWry] Injected CSS with id:', id);
+                    console.log('[PyWry] Injected scoped CSS with id:', scopedId);
                 }
-                // Handle CSS removal
+                // Handle CSS removal - scoped to widget
                 if (event.type === 'pywry:remove-css' && event.data && event.data.id) {
-                    const style = document.getElementById(event.data.id);
+                    const baseId = event.data.id;
+                    const widgetId = container.dataset.widgetId;
+                    const scopedId = baseId + '-' + widgetId;
+                    const style = container.querySelector('style[data-pywry-style="' + scopedId + '"]');
                     if (style) {
                         style.remove();
-                        console.log('[PyWry] Removed CSS with id:', event.data.id);
+                        console.log('[PyWry] Removed scoped CSS with id:', scopedId);
                     }
                 }
-                // Handle inline style updates on elements
+                // Handle inline style updates on elements - SCOPED to widget container
                 if (event.type === 'pywry:set-style' && event.data && event.data.styles) {
                     let elements = [];
                     if (event.data.id) {
-                        const el = document.getElementById(event.data.id);
+                        // Use container.querySelector to scope to this widget only
+                        const el = container.querySelector('#' + event.data.id);
                         if (el) elements.push(el);
                     } else if (event.data.selector) {
-                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                        // Scope selector to container
+                        elements = Array.from(container.querySelectorAll(event.data.selector));
                     }
                     elements.forEach(function(el) {
                         Object.keys(event.data.styles).forEach(function(prop) {
                             el.style[prop] = event.data.styles[prop];
                         });
                     });
-                    console.log('[PyWry] Set styles on', elements.length, 'elements:', event.data.styles);
+                    console.log('[PyWry] Set styles on', elements.length, 'elements (scoped):', event.data.styles);
                 }
-                // Built-in handler for updating element content (innerHTML or textContent)
+                // Built-in handler for updating element content - SCOPED to widget container
                 if (event.type === 'pywry:set-content' && event.data) {
                     let elements = [];
                     if (event.data.id) {
-                        const el = document.getElementById(event.data.id);
+                        // Use container.querySelector to scope to this widget only
+                        const el = container.querySelector('#' + event.data.id);
                         if (el) elements.push(el);
                     } else if (event.data.selector) {
-                        elements = Array.from(document.querySelectorAll(event.data.selector));
+                        // Scope selector to container
+                        elements = Array.from(container.querySelectorAll(event.data.selector));
                     }
                     elements.forEach(function(el) {
                         if ('html' in event.data) {
@@ -1034,7 +1074,7 @@ def _get_pywry_base_css() -> str:
 
 if HAS_ANYWIDGET:
 
-    class PyWryWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
+    class PyWryWidget(anywidget.AnyWidget):  # type: ignore[misc]
         """Widget for inline notebook rendering using anywidget (no Plotly).
 
         Implements BaseWidget protocol for unified API.

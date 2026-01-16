@@ -24,12 +24,16 @@ from pywry.models import ThemeMode, WindowMode
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
     """Ensure runtime is fresh for each test."""
+    from pywry.window_manager import get_lifecycle
+
     runtime.stop()
     time.sleep(0.2)
     get_registry().clear()
+    get_lifecycle().clear()  # Reset lifecycle window tracking
     yield
     runtime.stop()
     get_registry().clear()
+    get_lifecycle().clear()  # Reset lifecycle window tracking
     time.sleep(0.1)
 
 

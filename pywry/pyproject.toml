@@ -81,5 +81,5 @@ warn_unused_configs = true
 exclude = ["tests/"]
 
 [[tool.mypy.overrides]]
-module = ["plotly.*"]
+module = ["plotly.*", "anywidget", "anywidget.*", "ipywidgets", "ipywidgets.*"]
 ignore_missing_imports = true

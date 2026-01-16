@@ -51,21 +51,25 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
     """Ensure runtime is fresh for each test - STOP before AND after."""
+    from pywry.window_manager import get_lifecycle
+
     # STOP runtime first to ensure clean state (prevents race conditions from previous test)
     runtime.stop()
     # Windows WebView2 needs more time to release resources
     cleanup_delay = 0.5 if sys.platform == "win32" else 0.2
     time.sleep(cleanup_delay)
 
-    # Clear any stale callbacks
+    # Clear any stale callbacks and window lifecycle state
     registry = get_registry()
     registry.clear()
+    get_lifecycle().clear()
 
     yield
 
     # Cleanup after test
     runtime.stop()
     registry.clear()
+    get_lifecycle().clear()
     time.sleep(0.1)
 
 

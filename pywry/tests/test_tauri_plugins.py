@@ -116,13 +116,17 @@ class TestMainModulePluginRegistration:
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
     """Ensure runtime is fresh for each test."""
+    from pywry.window_manager import get_lifecycle
+
     runtime.stop()
     time.sleep(0.2)
     registry = get_registry()
     registry.clear()
+    get_lifecycle().clear()
     yield
     runtime.stop()
     registry.clear()
+    get_lifecycle().clear()
     time.sleep(0.1)
 
 

@@ -63,6 +63,14 @@ class WindowLifecycle:
         self._initialized = True
         self._windows: dict[str, WindowResources] = {}
 
+    def clear(self) -> None:
+        """Clear all tracked windows.
+
+        This resets the lifecycle manager to its initial state.
+        Useful for test cleanup when the runtime is stopped.
+        """
+        self._windows.clear()
+
     def create(
         self, label: str, title: str = "PyWry", width: int = 800, height: int = 600
     ) -> WindowResources:
