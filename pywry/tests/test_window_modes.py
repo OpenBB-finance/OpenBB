@@ -59,7 +59,9 @@ def show_and_wait_ready(
     waiter = ReadyWaiter(timeout=timeout)
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
-    label = app.show(content, callbacks=callbacks, **kwargs)
+    widget = app.show(content, callbacks=callbacks, **kwargs)
+    # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
+    label = widget.label if hasattr(widget, "label") else widget
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
     return label

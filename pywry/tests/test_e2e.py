@@ -101,7 +101,9 @@ def show_and_wait_ready(
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
 
-    label = app.show(content, callbacks=callbacks, **kwargs)
+    widget = app.show(content, callbacks=callbacks, **kwargs)
+    # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
+    label = widget.label if hasattr(widget, "label") else widget
 
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
@@ -119,7 +121,9 @@ def show_dataframe_and_wait_ready(
     waiter = ReadyWaiter(timeout=timeout)
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
-    label = app.show_dataframe(data, callbacks=callbacks, **kwargs)
+    widget = app.show_dataframe(data, callbacks=callbacks, **kwargs)
+    # Extract label from NativeWidget
+    label = widget.label if hasattr(widget, "label") else widget
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
     return label
@@ -135,7 +139,9 @@ def show_plotly_and_wait_ready(
     waiter = ReadyWaiter(timeout=timeout)
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
-    label = app.show_plotly(figure, callbacks=callbacks, **kwargs)
+    widget = app.show_plotly(figure, callbacks=callbacks, **kwargs)
+    # Extract label from NativeWidget
+    label = widget.label if hasattr(widget, "label") else widget
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
     return label

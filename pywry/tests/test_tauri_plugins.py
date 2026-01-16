@@ -148,7 +148,9 @@ def show_and_wait_ready(app: PyWry, content: str, timeout: float = 10.0, **kwarg
     waiter = ReadyWaiter(timeout=timeout)
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
-    label = app.show(content, callbacks=callbacks, **kwargs)
+    widget = app.show(content, callbacks=callbacks, **kwargs)
+    # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
+    label = widget.label if hasattr(widget, "label") else widget
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
     return label
@@ -277,7 +279,8 @@ class TestAGGridExportIntegration:
 
         waiter = ReadyWaiter(timeout=10.0)
         callbacks = {"pywry:ready": waiter.on_ready}
-        label = app.show_dataframe(data, callbacks=callbacks, title="Export Test")
+        widget = app.show_dataframe(data, callbacks=callbacks, title="Export Test")
+        label = widget.label if hasattr(widget, "label") else widget
         waiter.wait()
         time.sleep(0.5)  # Wait for AG Grid to fully render
 
@@ -339,7 +342,8 @@ class TestSaveDialogFunctionality:
 
         waiter = ReadyWaiter(timeout=10.0)
         callbacks = {"pywry:ready": waiter.on_ready}
-        label = app.show_dataframe(data, callbacks=callbacks, title="SavePicker Test")
+        widget = app.show_dataframe(data, callbacks=callbacks, title="SavePicker Test")
+        label = widget.label if hasattr(widget, "label") else widget
         waiter.wait()
         time.sleep(0.5)
 

@@ -46,6 +46,13 @@ def _get_hot_reload_js() -> str:
     return HOT_RELOAD_JS
 
 
+def _get_system_events_js() -> str:
+    """Get the JavaScript for system event handlers (pywry:inject-css, etc.)."""
+    from pywry.scripts import PYWRY_SYSTEM_EVENTS_JS
+
+    return PYWRY_SYSTEM_EVENTS_JS
+
+
 def _get_theme_manager_js() -> str:
     """Get the theme manager JavaScript."""
     from pywry.scripts import THEME_MANAGER_JS
@@ -166,47 +173,47 @@ class TestNativeModeSystemEvents:
 
     def test_inject_css_listener_registered(self) -> None:
         """Verify pywry:inject-css Tauri listener is registered."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "pywry:inject-css" in js
 
     def test_remove_css_listener_registered(self) -> None:
         """Verify pywry:remove-css Tauri listener is registered."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "pywry:remove-css" in js
 
     def test_set_style_listener_registered(self) -> None:
         """Verify pywry:set-style Tauri listener is registered."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "pywry:set-style" in js
 
     def test_set_content_listener_registered(self) -> None:
         """Verify pywry:set-content Tauri listener is registered."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "pywry:set-content" in js
 
     def test_refresh_listener_registered(self) -> None:
         """Verify pywry:refresh Tauri listener is registered."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "pywry:refresh" in js
 
     def test_set_style_supports_id_selector(self) -> None:
         """Verify set_style handler supports targeting by id."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "getElementById" in js
 
     def test_set_style_supports_css_selector(self) -> None:
         """Verify set_style handler supports targeting by CSS selector."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "querySelectorAll" in js
 
     def test_set_content_supports_html(self) -> None:
         """Verify set_content handler supports innerHTML."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "innerHTML" in js
 
     def test_set_content_supports_text(self) -> None:
         """Verify set_content handler supports textContent."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         assert "textContent" in js
 
 
@@ -265,7 +272,7 @@ class TestSystemEventConsistency:
 
     def test_native_mode_has_core_style_events(self) -> None:
         """Native mode has core style system events."""
-        js = _get_hot_reload_js()
+        js = _get_system_events_js()
         native_events = [
             "pywry:inject-css",
             "pywry:set-style",
