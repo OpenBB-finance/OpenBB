@@ -1,5 +1,8 @@
 """IMF Utilities Router."""
 
+# pylint: disable=C0302
+# pylint: disable=unused-argument,protected-access,too-many-positional-arguments,too-many-locals,too-many-branches
+
 from typing import Annotated, Any, Literal
 
 from fastapi import Query
@@ -17,8 +20,6 @@ from openbb_imf.utils.constants import (
     table_name_map,
 )
 from openbb_imf.utils.metadata import ImfMetadata
-
-# pylint: disable=unused-argument,protected-access,too-many-positional-arguments,too-many-lines,too-many-locals,too-many-branches
 
 router = Router(prefix="", description="Utilities for IMF provider.")
 api_prefix = SystemService().system_settings.api_settings.prefix

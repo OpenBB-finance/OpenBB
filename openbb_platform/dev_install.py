@@ -30,6 +30,7 @@ openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
+openbb-government-us = { path = "./providers/government_us", develop = true }
 openbb-imf = { path = "./providers/imf", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
@@ -62,7 +63,6 @@ openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
-openbb-government-us = { path = "./providers/government_us", optional = true, develop = true }
 openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }

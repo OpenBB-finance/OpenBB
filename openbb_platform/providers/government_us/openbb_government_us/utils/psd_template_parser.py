@@ -5,7 +5,7 @@ Ensures all table formats are consistent long/tidy format:
     region | country | commodity | attribute | marketing_year | value | unit
 """
 
-# pylint: disable=unused-argument,too-many-lines
+# pylint: disable=unused-argument,C0302
 
 from openbb_government_us.utils.psd_codes import REGION_DISPLAY
 
