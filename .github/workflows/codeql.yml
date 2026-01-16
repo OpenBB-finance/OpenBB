@@ -16,10 +16,14 @@ on:
     branches: [ "develop", "PR-review", "gh-pages", "main" ]
     paths-ignore:
       - 'cookiecutter/**'
+      - 'pywry/frontend/assets/**'
+      - 'pywry/tests/**'
   pull_request:
     branches: [ "develop", "PR-review", "gh-pages", "main" ]
     paths-ignore:
       - 'cookiecutter/**'
+      - 'pywry/frontend/assets/**'
+      - 'pywry/tests/**'
   schedule:
     - cron: '37 0 * * 6'
 

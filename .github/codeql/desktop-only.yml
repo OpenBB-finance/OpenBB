@@ -1,3 +1,4 @@
 name: desktop-only
 paths:
   - desktop/**
+  - pywry/frontend/src/**
