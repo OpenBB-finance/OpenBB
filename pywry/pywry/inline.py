@@ -87,7 +87,7 @@ except ImportError:
 
 try:
     from IPython.display import HTML, display  # noqa: F401  # pylint: disable=unused-import
-    from ipywidgets import Output  # type: ignore[import-not-found]
+    from ipywidgets import Output
 
     HAS_IPYTHON = True
 except ImportError:

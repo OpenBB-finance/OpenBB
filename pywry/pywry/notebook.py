@@ -196,7 +196,7 @@ def is_anywidget_available() -> bool:
         True if anywidget >= 0.9.0 is available.
     """
     try:
-        import anywidget  # type: ignore[import-not-found]
+        import anywidget
     except ImportError:
         return False
     # Check version - we need 0.9.0+ for proper ESM support
