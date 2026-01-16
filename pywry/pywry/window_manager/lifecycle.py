@@ -139,6 +139,31 @@ class WindowLifecycle:
         resources = self._windows.get(label)
         return resources is not None and not resources.is_destroyed
 
+    def register_window(self, label: str) -> WindowResources:
+        """Register a window in lifecycle tracking without creating via IPC.
+
+        Use this when the window already exists (e.g., from previous PyWry instance)
+        and just needs to be tracked.
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        WindowResources
+            The window resources object.
+        """
+        if label in self._windows:
+            # Already tracked - just ensure not marked destroyed
+            self._windows[label].is_destroyed = False
+            return self._windows[label]
+
+        resources = WindowResources(label=label)
+        self._windows[label] = resources
+        return resources
+
     def get_active_windows(self) -> list[str]:
         """Get labels of all tracked active windows."""
         return [label for label, res in self._windows.items() if not res.is_destroyed]

@@ -43,6 +43,8 @@ _outgoing: Queue[dict[str, Any]] = Queue()
 _responses: Queue[dict[str, Any]] = Queue()
 _running = False  # pylint: disable=invalid-name
 _registry = None  # pylint: disable=invalid-name
+_ON_WINDOW_CLOSE = "hide"  # Setting for MULTI_WINDOW close behavior
+_WINDOW_MODE = "new"  # Window mode: "single", "multi", "new"
 
 
 def _get_registry() -> Any:
@@ -51,6 +53,30 @@ def _get_registry() -> Any:
     if _registry is None:
         _registry = get_registry()
     return _registry
+
+
+def set_on_window_close(behavior: str) -> None:
+    """Set the global window close behavior.
+
+    Parameters
+    ----------
+    behavior : str
+        Either "hide" (keep window alive) or "close" (destroy window).
+    """
+    global _ON_WINDOW_CLOSE
+    _ON_WINDOW_CLOSE = behavior if behavior in ("hide", "close") else "hide"
+
+
+def set_window_mode(mode: str) -> None:
+    """Set the window mode.
+
+    Parameters
+    ----------
+    mode : str
+        Either "single", "multi", or "new".
+    """
+    global _WINDOW_MODE
+    _WINDOW_MODE = mode if mode in ("single", "multi", "new") else "new"
 
 
 def get_pywry_dir() -> Path:
@@ -235,6 +261,19 @@ def show_window(label: str) -> bool:
     send_command(
         {
             "action": "show",
+            "label": label,
+        }
+    )
+    # Consume the response to prevent queue buildup
+    response = get_response(timeout=1.0)
+    return response is not None and response.get("success", False)
+
+
+def hide_window(label: str) -> bool:
+    """Hide a window via IPC (keeps it alive, just not visible)."""
+    send_command(
+        {
+            "action": "hide",
             "label": label,
         }
     )
@@ -436,6 +475,8 @@ def start() -> bool:
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
     env["PYTHONUTF8"] = "1"  # Force UTF-8
+    env["PYWRY_ON_WINDOW_CLOSE"] = _ON_WINDOW_CLOSE  # Pass close behavior to subprocess
+    env["PYWRY_WINDOW_MODE"] = _WINDOW_MODE  # Pass window mode to subprocess
 
     try:
         _process = subprocess.Popen(  # pylint: disable=R1732

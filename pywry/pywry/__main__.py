@@ -38,6 +38,12 @@ DEBUG = os.environ.get("PYWRY_DEBUG", "").lower() in ("1", "true", "yes", "on")
 # Headless mode for CI testing - windows are created but not shown
 HEADLESS = os.environ.get("PYWRY_HEADLESS", "").lower() in ("1", "true", "yes", "on")
 
+# Window mode: "single", "multi", or "new"
+WINDOW_MODE = os.environ.get("PYWRY_WINDOW_MODE", "new").lower()
+
+# What happens when user clicks X in MULTI_WINDOW mode: "hide" or "close"
+ON_WINDOW_CLOSE = os.environ.get("PYWRY_ON_WINDOW_CLOSE", "hide").lower()
+
 # Lock for thread-safe stdout writes
 _stdout_lock = threading.Lock()
 
@@ -98,6 +104,8 @@ class JsonIPC:
             self.set_content(cmd)
         elif action == "show":
             self.show_window(cmd)
+        elif action == "hide":
+            self.hide_window(cmd)
         elif action == "close":
             self.close_window(cmd)
         elif action == "emit":
@@ -317,6 +325,36 @@ class JsonIPC:
         else:
             self.send_error(f"Window not found: {label}")
 
+    def hide_window(self, cmd: dict[str, Any]) -> None:
+        """Hide a window (keeps it alive, just not visible)."""
+        label = cmd.get("label", "main")
+        window = self.windows.get(label)
+
+        if window is None and self.app_handle:
+            window = Manager.get_webview_window(self.app_handle, label)
+            if window:
+                self.windows[label] = window
+
+        if window:
+            try:
+                if not HEADLESS:
+                    window.hide()
+                log(f"Hid window '{label}' (headless={HEADLESS})")
+                # Notify Python side that window is hidden
+                self.send(
+                    {
+                        "type": "event",
+                        "event_type": "window:hidden",
+                        "label": label,
+                        "data": {},
+                    }
+                )
+                self.send_result(label, True)
+            except Exception as e:
+                self.send_error(f"Failed to hide window: {e}")
+        else:
+            self.send_error(f"Window not found: {label}")
+
     def emit_event(self, cmd: dict[str, Any]) -> None:
         """Emit an event to a window.
 
@@ -459,7 +497,55 @@ def stdin_reader(ipc: JsonIPC) -> None:
     log("stdin_reader exiting")
 
 
-def main() -> int:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
+def _handle_ready_event(ipc: JsonIPC, app_handle: Any) -> None:
+    """Handle app ready event."""
+    log("App ready!")
+    ipc.app_handle = app_handle
+    # Get pre-configured main window
+    main_window = Manager.get_webview_window(app_handle, "main")
+    if main_window:
+        ipc.windows["main"] = main_window
+        log("Registered 'main' window")
+    else:
+        log("WARNING: 'main' window not found!")
+    ipc.send_ready()
+
+
+def _handle_close_requested(ipc: JsonIPC, app_handle: Any, label: str, window_event: Any) -> None:
+    """Handle window close requested event."""
+    # User clicked X - behavior depends on window mode:
+    # - SINGLE_WINDOW: Always hide (reuse the window)
+    # - NEW_WINDOW: Always destroy (each window is independent)
+    # - MULTI_WINDOW: Use ON_WINDOW_CLOSE setting
+    window_event.api.prevent_close()
+
+    window = ipc.windows.get(label)
+    if window is None:
+        window = Manager.get_webview_window(app_handle, label)
+
+    # Determine whether to destroy based on window mode
+    if WINDOW_MODE == "single":
+        should_destroy = False  # SINGLE_WINDOW: Always hide
+    elif WINDOW_MODE == "new":
+        should_destroy = True  # NEW_WINDOW: Always destroy
+    else:
+        should_destroy = ON_WINDOW_CLOSE == "close"  # MULTI_WINDOW: Use setting
+
+    if should_destroy:
+        log(f"CloseRequested for '{label}' - destroying")
+        if window:
+            window.destroy()
+        if label in ipc.windows:
+            del ipc.windows[label]
+        ipc.send({"type": "event", "event_type": "window:closed", "label": label, "data": {}})
+    else:
+        log(f"CloseRequested for '{label}' - hiding")
+        if window:
+            window.hide()
+        ipc.send({"type": "event", "event_type": "window:hidden", "label": label, "data": {}})
+
+
+def main() -> int:  # pylint: disable=too-many-statements
     """Run the PyWry subprocess."""
     from .commands import register_commands
 
@@ -487,43 +573,21 @@ def main() -> int:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
 
             def on_run(app_handle: Any, run_event: Any) -> None:
                 if isinstance(run_event, RunEvent.Ready):
-                    log("App ready!")
-                    ipc.app_handle = app_handle
-                    # Get pre-configured main window
-                    main_window = Manager.get_webview_window(app_handle, "main")
-                    if main_window:
-                        ipc.windows["main"] = main_window
-                        log("Registered 'main' window")
-                    else:
-                        log("WARNING: 'main' window not found!")
-                    ipc.send_ready()
+                    _handle_ready_event(ipc, app_handle)
                 elif isinstance(run_event, RunEvent.ExitRequested):
                     # Prevent app exit when all windows are closed
                     # This keeps the subprocess alive so windows can be recreated
-                    # The app will only exit when Python sends a "quit" command
                     if ipc.running:
                         log("ExitRequested - preventing exit to keep subprocess alive")
                         run_event.api.prevent_exit()
                 elif isinstance(run_event, RunEvent.WindowEvent):
-                    # Handle window events
                     window_event = run_event.event
                     label = run_event.label
                     if isinstance(window_event, WindowEvent.CloseRequested):
-                        # User clicked X - HIDE the window instead of closing it
-                        # This way we can just show() it again later
-                        log(f"CloseRequested for '{label}' - hiding instead of closing")
-                        window_event.api.prevent_close()
-                        window = ipc.windows.get(label)
-                        if window is None:
-                            window = Manager.get_webview_window(app_handle, label)
-                        if window:
-                            window.hide()
-                            log(f"Window '{label}' hidden")
-                    elif isinstance(window_event, WindowEvent.Destroyed):
-                        # Window was actually destroyed (e.g., by explicit close command)
-                        if label in ipc.windows:
-                            del ipc.windows[label]
-                            log(f"Window '{label}' destroyed, removed from cache")
+                        _handle_close_requested(ipc, app_handle, label, window_event)
+                    elif isinstance(window_event, WindowEvent.Destroyed) and label in ipc.windows:
+                        del ipc.windows[label]
+                        log(f"Window '{label}' destroyed, removed from cache")
 
             log("Starting app.run()...")
             app.run(on_run)

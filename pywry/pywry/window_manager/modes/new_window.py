@@ -24,7 +24,7 @@ class NewWindowMode(WindowModeBase):
 
     def __init__(self) -> None:
         """Initialize the mode."""
-        self._windows: set[str] = set()
+        self._windows: dict[str, bool] = {}  # label -> is_visible
 
     def _generate_label(self, prefix: str = "pywry") -> str:
         """Generate a unique window label.
@@ -79,6 +79,15 @@ class NewWindowMode(WindowModeBase):
             for event_type, handler in callbacks.items():
                 registry.register(label, event_type, handler)
 
+        # Register visibility handler for block() support
+        registry = get_registry()
+
+        def on_hidden(_data: dict[str, Any], _event_type: str, hidden_label: str) -> None:
+            if hidden_label in self._windows:
+                self._windows[hidden_label] = False
+
+        registry.register(label, "window:hidden", on_hidden)
+
         # Create lifecycle tracking and actual window
         lifecycle = get_lifecycle()
         lifecycle.create(
@@ -91,8 +100,8 @@ class NewWindowMode(WindowModeBase):
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
         lifecycle.set_content(label, html, theme_str)
 
-        # Track the window
-        self._windows.add(label)
+        # Track the window as visible
+        self._windows[label] = True
 
         # Actual pytauri window creation will be added in controller
 
@@ -121,7 +130,7 @@ class NewWindowMode(WindowModeBase):
         get_lifecycle().destroy(label)
 
         # Remove from tracking
-        self._windows.discard(label)
+        del self._windows[label]
 
         return True
 
@@ -136,9 +145,9 @@ class NewWindowMode(WindowModeBase):
         Returns
         -------
         bool
-            True if window is open, False otherwise.
+            True if window is open and visible, False otherwise.
         """
-        return label in self._windows and get_lifecycle().exists(label)
+        return self._windows.get(label, False) and get_lifecycle().exists(label)
 
     def update_content(self, label: str, html: str, theme: str = "dark") -> bool:
         """Update window content.
@@ -191,17 +200,20 @@ class NewWindowMode(WindowModeBase):
 
         debug(f"Sending event '{event_type}' to window '{label}'")
 
-        return True
+        # Actually emit the event to the window
+        from ...runtime import emit_event
+
+        return emit_event(label, event_type, data)
 
     def get_labels(self) -> list[str]:
-        """Get all window labels managed by this mode.
+        """Get all visible window labels managed by this mode.
 
         Returns
         -------
         list of str
-            List of window labels.
+            List of visible window labels.
         """
-        return list(self._windows)
+        return [label for label, visible in self._windows.items() if visible]
 
     def close_all(self) -> int:
         """Close all windows.
@@ -211,7 +223,7 @@ class NewWindowMode(WindowModeBase):
         int
             Number of windows closed.
         """
-        labels = list(self._windows)
+        labels = list(self._windows.keys())
         count = 0
         for label in labels:
             if self.close(label):

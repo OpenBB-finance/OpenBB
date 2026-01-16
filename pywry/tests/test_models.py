@@ -236,13 +236,13 @@ class TestEventTypeValidation:
     def test_valid_plotly_event(self):
         """Plotly events are valid."""
         assert validate_event_type("plotly:click") is True
-        assert validate_event_type("plotly:select") is True
+        assert validate_event_type("plotly:selected") is True
         assert validate_event_type("plotly:hover") is True
 
     def test_valid_grid_event(self):
         """Grid events are valid."""
-        assert validate_event_type("grid:select") is True
-        assert validate_event_type("grid:cellEdit") is True
+        assert validate_event_type("grid:row-selected") is True
+        assert validate_event_type("grid:cell-edit") is True
 
     def test_valid_custom_event(self):
         """Custom events are valid."""

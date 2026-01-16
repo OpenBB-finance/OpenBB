@@ -315,6 +315,12 @@ class WindowSettings(BaseSettings):
     devtools: bool = Field(default=False, description="Open developer tools on start")
     allow_network: bool = Field(default=True, description="Allow network requests")
 
+    # Window close behavior
+    on_window_close: Literal["hide", "close"] = Field(
+        default="hide",
+        description="What happens when user clicks X: 'hide' keeps window alive, 'close' destroys it",
+    )
+
     # Library integration
     enable_plotly: bool = Field(default=False, description="Include Plotly.js in window")
     enable_aggrid: bool = Field(default=False, description="Include AG Grid in window")

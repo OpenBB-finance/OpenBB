@@ -49,7 +49,7 @@ _ENV_CHECKS: list[tuple[str, NotebookEnvironment]] = [
 
 def _check_colab() -> bool:
     try:
-        import google.colab as _colab  # type: ignore[import-not-found]
+        import google.colab as _colab  # type: ignore
 
         del _colab
     except ImportError:
@@ -196,7 +196,7 @@ def is_anywidget_available() -> bool:
         True if anywidget >= 0.9.0 is available.
     """
     try:
-        import anywidget
+        import anywidget  # type: ignore[import-not-found]
     except ImportError:
         return False
     # Check version - we need 0.9.0+ for proper ESM support

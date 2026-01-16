@@ -46,7 +46,7 @@ if TYPE_CHECKING:
     from .window_manager import WindowLifecycle
 
 
-class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
+class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: disable=too-many-public-methods
     """Main PyWry application for displaying content in native windows.
 
     Supports three window modes:
@@ -100,6 +100,18 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         # Load settings (from env vars, config files, or defaults)
         self._settings = settings or PyWrySettings()
+
+        # Set window close behavior before subprocess starts
+        from . import runtime
+
+        runtime.set_on_window_close(self._settings.window.on_window_close)
+        # Set window mode so subprocess knows how to handle X button
+        mode_map = {
+            WindowMode.SINGLE_WINDOW: "single",
+            WindowMode.MULTI_WINDOW: "multi",
+            WindowMode.NEW_WINDOW: "new",
+        }
+        runtime.set_window_mode(mode_map.get(mode, "new"))
 
         # Initialize the appropriate window mode
         self._mode: WindowModeBase = self._create_mode(mode)
@@ -380,10 +392,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         # Show in window (pass label for multi-window mode)
         label_result = self._mode.show(config, html, callbacks, target_label)
 
-        # Wrap the label in a NativeWidget so callbacks can use widget.emit()
-        from .widget import NativeWidget
-
-        return NativeWidget(label=label_result, callbacks=callbacks)
+        return label_result
 
     def show_plotly(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches
         self,
@@ -1117,6 +1126,36 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         return runtime.eval_js(label, script)
 
+    def show_window(self, label: str) -> bool:
+        """Show a hidden window.
+
+        Parameters
+        ----------
+        label : str
+            Window label to show.
+
+        Returns
+        -------
+        bool
+            True if window was shown.
+        """
+        return self._mode.show_window(label)
+
+    def hide_window(self, label: str) -> bool:
+        """Hide a window (keeps it alive, just not visible).
+
+        Parameters
+        ----------
+        label : str
+            Window label to hide.
+
+        Returns
+        -------
+        bool
+            True if window was hidden.
+        """
+        return self._mode.hide_window(label)
+
     def close(self, label: str | None = None) -> bool:
         """Close window(s).
 
@@ -1536,3 +1575,52 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         self._aggrid_js = None
         self._aggrid_css.clear()
         self._asset_loader.clear_cache()
+
+    def block(self, label: str | None = None) -> None:
+        """Block until window(s) are closed or KeyboardInterrupt.
+
+        This is the recommended way to keep your script running while
+        windows are open. Works for all modes:
+
+        - Native modes (NEW_WINDOW, SINGLE_WINDOW, MULTI_WINDOW): Waits for
+          windows to close via the Tauri event loop.
+        - BROWSER mode: Delegates to pywry.inline.block() to wait for
+          browser tabs to disconnect.
+
+        Parameters
+        ----------
+        label : str or None, optional
+            Specific window label to wait for. If None, waits for all windows.
+
+        Examples
+        --------
+        >>> app = PyWry()
+        >>> label = app.show("<h1>Hello</h1>")
+        >>> app.block()  # Wait until all windows are closed
+
+        >>> # Or wait for a specific window
+        >>> app.block(label)  # Wait until this specific window is closed
+        """
+        if isinstance(self._mode, BrowserMode):
+            # Browser mode uses inline server
+            from . import inline as pywry_inline
+
+            pywry_inline.block()
+        else:
+            # Native mode - wait for window(s) to close
+            try:
+                if label:
+                    # Wait for specific window to close
+                    while label in self._mode.get_labels():
+                        import time
+
+                        time.sleep(0.1)
+                else:
+                    # Wait for all windows to close
+                    while self._mode.get_labels():
+                        import time
+
+                        time.sleep(0.1)
+            except KeyboardInterrupt:
+                info("Interrupted, closing windows...")
+                self.destroy()

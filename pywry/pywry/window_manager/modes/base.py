@@ -127,3 +127,37 @@ class WindowModeBase(ABC):
         int
             Number of windows closed.
         """
+
+    def show_window(self, label: str) -> bool:
+        """Show a hidden window.
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        bool
+            True if shown successfully, False otherwise.
+        """
+        from ... import runtime
+
+        return runtime.show_window(label)
+
+    def hide_window(self, label: str) -> bool:
+        """Hide a window (keeps it alive, just not visible).
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        bool
+            True if hidden successfully, False otherwise.
+        """
+        from ... import runtime
+
+        return runtime.hide_window(label)

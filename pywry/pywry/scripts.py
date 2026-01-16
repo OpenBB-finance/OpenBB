@@ -196,6 +196,72 @@ PYWRY_SYSTEM_EVENTS_JS = """
         }
     });
 
+    // Handler for file downloads - uses Tauri save dialog in native mode
+    window.pywry.on('pywry:download', function(data) {
+        if (!data.content || !data.filename) {
+            console.error('[PyWry] Download requires content and filename');
+            return;
+        }
+        // Use Tauri's native save dialog if available
+        if (window.__TAURI__ && window.__TAURI__.dialog && window.__TAURI__.fs) {
+            window.__TAURI__.dialog.save({
+                defaultPath: data.filename,
+                title: 'Save File'
+            }).then(function(filePath) {
+                if (filePath) {
+                    // Write the file using Tauri's filesystem API
+                    window.__TAURI__.fs.writeTextFile(filePath, data.content).then(function() {
+                        console.log('[PyWry] Saved to:', filePath);
+                    }).catch(function(err) {
+                        console.error('[PyWry] Failed to save file:', err);
+                    });
+                } else {
+                    console.log('[PyWry] Save cancelled by user');
+                }
+            }).catch(function(err) {
+                console.error('[PyWry] Save dialog error:', err);
+            });
+        } else {
+            // Fallback for browser/iframe mode
+            var mimeType = data.mimeType || 'application/octet-stream';
+            var blob = new Blob([data.content], { type: mimeType });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = data.filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            console.log('[PyWry] Downloaded:', data.filename);
+        }
+    });
+
+    // Handler for navigation
+    window.pywry.on('pywry:navigate', function(data) {
+        if (data.url) {
+            window.location.href = data.url;
+        }
+    });
+
+    // Handler for alert dialogs
+    window.pywry.on('pywry:alert', function(data) {
+        var message = data.message || data.text || '';
+        alert(message);
+    });
+
+    // Handler for replacing HTML content
+    window.pywry.on('pywry:update-html', function(data) {
+        if (data.html) {
+            var app = document.getElementById('app');
+            if (app) {
+                app.innerHTML = data.html;
+            } else {
+                document.body.innerHTML = data.html;
+            }
+        }
+    });
+
     // Register Tauri event listeners that use the shared helper functions
     if (window.__TAURI__ && window.__TAURI__.event) {
         window.__TAURI__.event.listen('pywry:inject-css', function(event) {
@@ -219,6 +285,53 @@ PYWRY_SYSTEM_EVENTS_JS = """
                 window.pywry.refresh();
             } else {
                 window.location.reload();
+            }
+        });
+
+        window.__TAURI__.event.listen('pywry:download', function(event) {
+            var data = event.payload;
+            if (!data.content || !data.filename) {
+                console.error('[PyWry] Download requires content and filename');
+                return;
+            }
+            // Use Tauri's native save dialog
+            window.__TAURI__.dialog.save({
+                defaultPath: data.filename,
+                title: 'Save File'
+            }).then(function(filePath) {
+                if (filePath) {
+                    window.__TAURI__.fs.writeTextFile(filePath, data.content).then(function() {
+                        console.log('[PyWry] Saved to:', filePath);
+                    }).catch(function(err) {
+                        console.error('[PyWry] Failed to save file:', err);
+                    });
+                } else {
+                    console.log('[PyWry] Save cancelled by user');
+                }
+            }).catch(function(err) {
+                console.error('[PyWry] Save dialog error:', err);
+            });
+        });
+
+        window.__TAURI__.event.listen('pywry:navigate', function(event) {
+            if (event.payload.url) {
+                window.location.href = event.payload.url;
+            }
+        });
+
+        window.__TAURI__.event.listen('pywry:alert', function(event) {
+            var message = event.payload.message || event.payload.text || '';
+            alert(message);
+        });
+
+        window.__TAURI__.event.listen('pywry:update-html', function(event) {
+            if (event.payload.html) {
+                var app = document.getElementById('app');
+                if (app) {
+                    app.innerHTML = event.payload.html;
+                } else {
+                    document.body.innerHTML = event.payload.html;
+                }
             }
         });
     }

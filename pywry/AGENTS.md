@@ -68,7 +68,7 @@ PyWry automatically selects the appropriate rendering path based on environment:
 | Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `str` (window label) |
 | Jupyter/VS Code with anywidget | Notebook Widget | `pywry.widget` | `PyWryWidget` |
 | Jupyter/VS Code without anywidget | Inline IFrame | `pywry.inline` | `InlineWidget` |
-| Headless / Server / SSH | Browser Mode | `pywry.window_manager.modes.browser` | `str` (widget ID) |
+| Headless / Server / SSH | Browser Mode | `pywry.window_manager.modes.browser` | `InlineWidget` |
 
 ### Window Modes
 
@@ -174,7 +174,10 @@ from pywry.inline import show_plotly, show_dataframe, block, stop_server
 # Settings
 from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings
 
-# Runtime (for sending events in native mode)
+# Widget classes (PyWryWidget for notebooks)
+from pywry import PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget
+
+# Runtime (alternative for sending events in native mode)
 from pywry import runtime
 ```
 
@@ -196,7 +199,7 @@ PyWry(
 
 ```python
 # Show HTML content
-label = app.show(
+widget = app.show(
     content,                    # str or HtmlContent
     title=None,
     callbacks=None,             # Dict of event handlers {"event:name": handler}
@@ -206,7 +209,7 @@ label = app.show(
 )
 
 # Show Plotly figure
-label = app.show_plotly(
+widget = app.show_plotly(
     figure,                     # Plotly Figure or dict
     title=None,
     callbacks=None,
@@ -214,7 +217,7 @@ label = app.show_plotly(
 )
 
 # Show DataFrame as AgGrid
-label = app.show_dataframe(
+widget = app.show_dataframe(
     data,                       # pandas DataFrame or dict
     title=None,
     callbacks=None,
@@ -240,14 +243,12 @@ def handler(data: dict, event_type: str, label: str) -> None:
 ### Sending Events to JavaScript
 
 ```python
-# Native windows - use runtime.emit_event
-from pywry import runtime
-runtime.emit_event(label, "app:response", {"key": "value"})
-
-# Notebook widgets - use widget.emit
-widget = show_plotly(fig)
+# All modes return a widget with emit() method
+widget = app.show("<h1>Hello</h1>")
 widget.emit("app:response", {"key": "value"})
 ```
+
+> **Low-level alternative:** `runtime.emit_event(widget.label, ...)` for direct access in native windows.
 
 ### Other Methods
 
@@ -293,16 +294,17 @@ Events follow the format `namespace:event-name`:
 |-------|---------|-------------------|
 | `plotly:click` | User clicks a data point | `chartId`, `points`, `widget_type: "chart"` |
 | `plotly:hover` | User hovers over a point | `chartId`, `points` |
-| `plotly:select` | User selects with box/lasso | `chartId`, `points`, `range` |
+| `plotly:selected` | User selects with box/lasso | `chartId`, `points`, `range` |
 | `plotly:relayout` | User zooms, pans, or resizes | `chartId`, `relayout_data` |
 
 **AgGrid Events (JS → Python):**
 
 | Event | Trigger | Key Payload Fields |
 |-------|---------|-------------------|
-| `grid:select` | Row selection changes | `gridId`, `selected_rows`, `widget_type: "grid"` |
-| `grid:cell-edit` | User edits a cell | `gridId`, `row_id`, `column`, `old_value`, `new_value` |
-| `grid:row-click` | User clicks a row | `gridId`, `row_data`, `row_index` |
+| `grid:row-selected` | Row selection changes | `gridId`, `rows`, `widget_type: "grid"` |
+| `grid:cell-click` | User clicks a cell | `gridId`, `rowIndex`, `colId`, `value`, `data` |
+| `grid:cell-edit` | User edits a cell | `gridId`, `rowIndex`, `rowId`, `colId`, `oldValue`, `newValue`, `data` |
+| `grid:filter-changed` | Filter applied | `gridId`, `filterModel` |
 
 **System Events:**
 
@@ -373,9 +375,15 @@ window.__PYWRY_GRID_API__     // AgGrid API
 from pywry import PyWry, Toolbar, Button, Select, Option
 
 app = PyWry()
+widget = None
 
 def on_export(data, event_type, label):
-    print(f"Export clicked: {data}")
+    """Trigger a file download when export is clicked."""
+    widget.emit("pywry:download", {
+        "content": "name,score\nAlice,95\nBob,87",
+        "filename": "export.csv",
+        "mimeType": "text/csv"
+    })
 
 toolbar = Toolbar(
     position="top",
@@ -390,7 +398,11 @@ toolbar = Toolbar(
     ],
 )
 
-app.show("<h1>Dashboard</h1>", toolbars=[toolbar], callbacks={"app:export": on_export})
+widget = app.show(
+    '<h1 id="heading">Dashboard</h1>',
+    toolbars=[toolbar],
+    callbacks={"app:export": on_export}
+)
 ```
 
 ---
@@ -452,7 +464,7 @@ level = "WARNING"
 
 | Class | File | Responsibility |
 |-------|------|----------------|
-| `InlineWidget` | `inline.py` | IFrame-based widget (fallback) |
+| `InlineWidget` | `inline.py` | IFrame-based widget (notebook fallback) |
 | `PyWryWidget` | `widget.py` | Base anywidget |
 | `PyWryPlotlyWidget` | `widget.py` | Plotly-specific anywidget |
 | `PyWryAgGridWidget` | `widget.py` | AgGrid anywidget |
@@ -648,12 +660,17 @@ from pywry import PyWry
 import plotly.express as px
 
 app = PyWry()
+widget = None
 
 def on_click(data, event_type, label):
-    print(f"Clicked: {data['points'][0]}")
+    """Update chart title to show clicked point coordinates."""
+    point = data["points"][0]
+    widget.emit("plotly:update-layout", {
+        "layout": {"title": f"Clicked: ({point['x']}, {point['y']})"}
+    })
 
 fig = px.scatter(x=[1, 2, 3], y=[4, 5, 6])
-app.show_plotly(fig, callbacks={"plotly:click": on_click})
+widget = app.show_plotly(fig, title="Click a point", callbacks={"plotly:click": on_click})
 ```
 
 ### DataFrame with Toolbar
@@ -664,12 +681,18 @@ from pywry import PyWry, Toolbar, Button
 
 app = PyWry()
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [25, 30]})
+widget = None
 
 def on_export(data, event_type, label):
-    print("Exporting...")
+    """Download the DataFrame as CSV."""
+    widget.emit("pywry:download", {
+        "content": df.to_csv(index=False),
+        "filename": "data.csv",
+        "mimeType": "text/csv"
+    })
 
 toolbar = Toolbar(position="top", items=[Button(label="Export", event="app:export")])
-app.show_dataframe(df, toolbars=[toolbar], callbacks={"app:export": on_export})
+widget = app.show_dataframe(df, toolbars=[toolbar], callbacks={"app:export": on_export})
 ```
 
 ### Browser Mode (Server)

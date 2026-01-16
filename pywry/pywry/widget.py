@@ -18,141 +18,12 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 try:
-    import anywidget
+    import anywidget  # type: ignore[import-not-found]
     import traitlets
 
     HAS_ANYWIDGET = True
 except ImportError:
     HAS_ANYWIDGET = False
-
-
-class NativeWidget:
-    """Widget wrapper for native window rendering.
-
-    Implements the BaseWidget protocol for native windows, providing a unified API
-    that works the same way as notebook widgets (PyWryWidget, InlineWidget).
-
-    This class wraps a native window label and uses runtime.emit_event() to send
-    events to the JavaScript side, enabling the same callback-based interaction
-    pattern used in notebook mode.
-
-    Examples
-    --------
-    >>> widget = app.show("<h1>Hello</h1>", callbacks={"btn:click": handler})
-    >>> widget.emit("update", {"value": 42})  # Works in both notebook and native!
-    """
-
-    def __init__(
-        self,
-        label: str,
-        callbacks: dict[str, Any] | None = None,
-    ) -> None:
-        """Initialize the native widget wrapper.
-
-        Parameters
-        ----------
-        label : str
-            The native window label.
-        callbacks : dict[str, Any] or None, optional
-            Event callbacks that were registered with the window.
-        """
-        self._label = label
-        self._callbacks = callbacks or {}
-        # Track handlers for local dispatch (not used for native, but kept for API compat)
-        self._handlers: dict[str, list[Any]] = {}
-
-    @property
-    def label(self) -> str:
-        """Get the window label."""
-        return self._label
-
-    def emit(self, event_type: str, data: dict[str, Any] | None = None) -> None:
-        """Send an event from Python to JavaScript in the native window.
-
-        Parameters
-        ----------
-        event_type : str
-            Event name that JS listeners can subscribe to.
-        data : dict
-            JSON-serializable payload to send to JavaScript.
-
-        Examples
-        --------
-        >>> widget.emit("pywry:set-content", {"id": "display", "html": "Updated!"})
-        >>> widget.emit("pywry:update-theme", {"theme": "light"})
-        """
-        from . import runtime
-
-        runtime.emit_event(self._label, event_type, data or {})
-
-    def on(self, event_type: str, callback: Any) -> NativeWidget:
-        """Register a callback for events from JavaScript.
-
-        Note: For native windows, callbacks should be registered via app.show()
-        or app.on(). This method is provided for API compatibility but callbacks
-        registered here won't receive events from the native window.
-
-        Parameters
-        ----------
-        event_type : str
-            Event name.
-        callback : Callable
-            Handler function receiving (data, event_type, label).
-
-        Returns
-        -------
-        NativeWidget
-            Self for method chaining.
-        """
-        from .callbacks import get_registry
-
-        registry = get_registry()
-        registry.register(self._label, event_type, callback)
-        return self
-
-    def update(self, html: str) -> None:
-        """Update the window's HTML content.
-
-        Parameters
-        ----------
-        html : str
-            New HTML content to render.
-        """
-        from . import runtime
-
-        runtime.set_content(self._label, html)
-
-    def display(self) -> None:
-        """Show the native window (no-op if already visible)."""
-        from . import runtime
-
-        runtime.show_window(self._label)
-
-    def close(self) -> None:
-        """Close the native window."""
-        from . import runtime
-
-        runtime.close_window(self._label)
-
-    def __repr__(self) -> str:
-        """String representation."""
-        return f"NativeWidget(label={self._label!r})"
-
-    def __str__(self) -> str:
-        """String conversion returns the label for backwards compatibility."""
-        return self._label
-
-    def __eq__(self, other: object) -> bool:
-        """Compare equal to another NativeWidget with same label, or to label string."""
-        if isinstance(other, NativeWidget):
-            return self._label == other._label
-        if isinstance(other, str):
-            return self._label == other
-        return False
-
-    def __hash__(self) -> int:
-        """Hash by label to allow use in sets/dicts."""
-        return hash(self._label)
 
 
 # Path to the source JS directory
@@ -626,6 +497,39 @@ function render({ model, el }) {
                     }
                 }
 
+                // Handle file downloads - triggers browser save dialog
+                if (event.type === 'pywry:download' && event.data && event.data.content && event.data.filename) {
+                    const mimeType = event.data.mimeType || 'application/octet-stream';
+                    const blob = new Blob([event.data.content], { type: mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = event.data.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    console.log('[PyWry] Downloaded:', event.data.filename);
+                }
+
+                // Handle navigation
+                if (event.type === 'pywry:navigate' && event.data && event.data.url) {
+                    window.location.href = event.data.url;
+                }
+
+                // Handle alert dialogs
+                if (event.type === 'pywry:alert' && event.data) {
+                    const message = event.data.message || event.data.text || '';
+                    alert(message);
+                }
+
+                // Handle HTML content update
+                if (event.type === 'pywry:update-html' && event.data && event.data.html) {
+                    container.innerHTML = event.data.html;
+                    // Re-initialize toolbar handlers after content update
+                    initToolbarHandlers(container, pywry);
+                }
+
                 pywry._fire(event.type, event.data);
                 // Also fire on window.pywry for global handlers (e.g., show_notification)
                 if (window.pywry && window.pywry._fire) {
@@ -1038,6 +942,40 @@ function render({ model, el }) {
                     });
                     console.log('[PyWry] Set content on', elements.length, 'elements');
                 }
+
+                // Handle file downloads - triggers browser save dialog
+                if (event.type === 'pywry:download' && event.data && event.data.content && event.data.filename) {
+                    const mimeType = event.data.mimeType || 'application/octet-stream';
+                    const blob = new Blob([event.data.content], { type: mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = event.data.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    console.log('[PyWry] Downloaded:', event.data.filename);
+                }
+
+                // Handle navigation
+                if (event.type === 'pywry:navigate' && event.data && event.data.url) {
+                    window.location.href = event.data.url;
+                }
+
+                // Handle alert dialogs
+                if (event.type === 'pywry:alert' && event.data) {
+                    const message = event.data.message || event.data.text || '';
+                    alert(message);
+                }
+
+                // Handle HTML content update
+                if (event.type === 'pywry:update-html' && event.data && event.data.html) {
+                    container.innerHTML = event.data.html;
+                    // Re-initialize toolbar handlers after content update
+                    initToolbarHandlers(container, pywry);
+                }
+
                 pywry._fire(event.type, event.data);
                 // Also fire on window.pywry for global handlers (e.g., user scripts using window.pywry.on)
                 if (window.pywry && window.pywry._fire && window.pywry !== pywry) {
@@ -1096,7 +1034,7 @@ def _get_pywry_base_css() -> str:
 
 if HAS_ANYWIDGET:
 
-    class PyWryWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
+    class PyWryWidget(anywidget.AnyWidget):  # type: ignore[misc]  # pylint: disable=abstract-method
         """Widget for inline notebook rendering using anywidget (no Plotly).
 
         Implements BaseWidget protocol for unified API.

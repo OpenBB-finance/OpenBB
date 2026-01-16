@@ -30,10 +30,70 @@ class SingleWindowMode(WindowModeBase):
         """
         self._label = label
         self._is_created = False
+        self._is_visible = False  # Track visibility for block()
 
         # Ensure label is available for registration
         # This handles cases where the label was previously destroyed in a persistent session
         get_registry().recover_label(label)
+
+        # Register for window:hidden events to track visibility
+        self._register_visibility_handler()
+
+    def _register_visibility_handler(self) -> None:
+        """Register handler for window:hidden events."""
+
+        def on_hidden(_data: dict[str, Any], _event_type: str, label: str) -> None:
+            if label == self._label:
+                self._is_visible = False
+
+        registry = get_registry()
+        registry.register(self._label, "window:hidden", on_hidden)
+
+    def _ensure_window(
+        self,
+        lifecycle: Any,
+        config: WindowConfig,
+    ) -> None:
+        """Ensure the window exists, creating or showing as needed.
+
+        This method handles the single window lifecycle properly:
+        - If window doesn't exist in Tauri, create it
+        - If window exists but is hidden, show it
+        - Never destroy and recreate
+
+        Parameters
+        ----------
+        lifecycle : WindowLifecycle
+            The lifecycle manager.
+        config : WindowConfig
+            Window configuration.
+        """
+        from ... import runtime
+
+        # Ensure runtime is started
+        if not runtime.is_running():
+            debug("Starting pytauri subprocess...")
+            if not runtime.start():
+                warn("Failed to start pytauri subprocess")
+                return
+
+        # Check if window exists in Tauri backend
+        if runtime.check_window_open(self._label):
+            # Window exists - just show it (may be hidden)
+            debug(f"Window '{self._label}' exists in backend, showing it")
+            runtime.show_window(self._label)
+        else:
+            # Window doesn't exist - create it
+            debug(f"Creating window '{self._label}' via IPC")
+            runtime.create_window(
+                self._label,
+                config.title,
+                config.width,
+                config.height,
+            )
+
+        # Ensure lifecycle resources are tracked (use public method)
+        lifecycle.register_window(self._label)
 
     @property
     def label(self) -> str:
@@ -78,20 +138,22 @@ class SingleWindowMode(WindowModeBase):
         # Ensure label is available (might have been destroyed by close())
         registry.recover_label(self._label)
 
-        if not self._is_created:
-            # First time - create the window
-            debug(f"First show - creating window '{self._label}'")
-            lifecycle.create(
-                self._label,
-                title=config.title,
-                width=config.width,
-                height=config.height,
-            )
+        # Check lifecycle directly (survives multiple PyWry instances)
+        window_exists = lifecycle.exists(self._label)
+
+        if not window_exists:
+            # Window doesn't exist yet - create it
+            # Use _ensure_window which handles showing hidden windows properly
+            debug(f"Creating window '{self._label}'")
+            self._ensure_window(lifecycle, config)
             self._is_created = True
+            self._is_visible = True
         else:
             # Window exists (possibly hidden) - just show it
-            debug(f"Window '{self._label}' already created, showing it")
+            debug(f"Window '{self._label}' already exists, showing it")
             runtime.show_window(self._label)
+            self._is_created = True  # Sync our flag with reality
+            self._is_visible = True
 
         # Register callbacks
         if callbacks:
@@ -101,10 +163,7 @@ class SingleWindowMode(WindowModeBase):
         # Ensure lifecycle has resources registered
         if not lifecycle.exists(self._label):
             debug(f"Creating lifecycle resources for '{self._label}'")
-            from ...window_manager.lifecycle import WindowResources
-
-            resources = WindowResources(label=self._label)
-            lifecycle._windows[self._label] = resources
+            lifecycle.register_window(self._label)
 
         # Send content via IPC
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
@@ -221,9 +280,9 @@ class SingleWindowMode(WindowModeBase):
         Returns
         -------
         list of str
-            List containing the single window label if created.
+            List containing the single window label if visible.
         """
-        return [self._label] if self._is_created else []
+        return [self._label] if self._is_visible else []
 
     def close_all(self) -> int:
         """Close all windows (just the one).

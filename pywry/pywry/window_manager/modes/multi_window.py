@@ -102,6 +102,20 @@ class MultiWindowMode(WindowModeBase):
                 for event_type, handler in callbacks.items():
                     registry.register(label, event_type, handler)
 
+            # Register visibility handler for block() support
+            def on_hidden(_data: dict[str, Any], _event_type: str, hidden_label: str) -> None:
+                if hidden_label in self._windows:
+                    self._windows[hidden_label] = False
+
+            registry.register(label, "window:hidden", on_hidden)
+
+            # Register close handler for when window is destroyed (on_window_close='close')
+            def on_closed(_data: dict[str, Any], _event_type: str, closed_label: str) -> None:
+                if closed_label in self._windows:
+                    del self._windows[closed_label]
+
+            registry.register(label, "window:closed", on_closed)
+
             lifecycle.create(
                 label,
                 title=config.title,
@@ -207,7 +221,10 @@ class MultiWindowMode(WindowModeBase):
 
         debug(f"Sending event '{event_type}' to multi-window '{label}'")
 
-        return True
+        # Actually emit the event to the window
+        from ...runtime import emit_event
+
+        return emit_event(label, event_type, data)
 
     def send_event_all(self, event_type: str, data: Any) -> int:
         """Send an event to all windows.
@@ -231,14 +248,14 @@ class MultiWindowMode(WindowModeBase):
         return count
 
     def get_labels(self) -> list[str]:
-        """Get all window labels.
+        """Get all visible window labels.
 
         Returns
         -------
         list of str
-            List of window labels.
+            List of visible window labels.
         """
-        return list(self._windows.keys())
+        return [label for label, visible in self._windows.items() if visible]
 
     def close_all(self) -> int:
         """Close all windows.
@@ -264,3 +281,51 @@ class MultiWindowMode(WindowModeBase):
             Number of open windows.
         """
         return len(self._windows)
+
+    def show_window(self, label: str) -> bool:
+        """Show a hidden window and update visibility tracking.
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        bool
+            True if shown successfully, False otherwise.
+        """
+        if label not in self._windows:
+            warn(f"Window '{label}' not managed by this mode")
+            return False
+
+        from ... import runtime
+
+        result = runtime.show_window(label)
+        if result:
+            self._windows[label] = True
+        return result
+
+    def hide_window(self, label: str) -> bool:
+        """Hide a window and update visibility tracking.
+
+        Parameters
+        ----------
+        label : str
+            The window label.
+
+        Returns
+        -------
+        bool
+            True if hidden successfully, False otherwise.
+        """
+        if label not in self._windows:
+            warn(f"Window '{label}' not managed by this mode")
+            return False
+
+        from ... import runtime
+
+        result = runtime.hide_window(label)
+        if result:
+            self._windows[label] = False
+        return result

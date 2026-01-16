@@ -310,30 +310,73 @@ function render({ model, el }) {
                 pointIndex: p.pointIndex,
                 x: p.x,
                 y: p.y,
+                z: p.z,
                 text: p.text,
-                customdata: p.customdata
+                customdata: p.customdata,
+                data: p.data,
+                trace_name: p.data ? p.data.name : null
             }));
-            // Emit with colon format for consistency with native windows
-            pywry.emit('plotly:click', { chartId: chartId, widget_type: 'chart', points: points });
+            pywry.emit('plotly:click', {
+                chartId: chartId,
+                widget_type: 'chart',
+                points: points,
+                point_indices: points.map(p => p.pointNumber),
+                curve_number: points.length > 0 ? points[0].curveNumber : null,
+                event: data.event
+            });
         });
         chartEl.on('plotly_hover', function(data) {
             const points = data.points.map(p => ({
                 curveNumber: p.curveNumber,
                 pointNumber: p.pointNumber,
+                pointIndex: p.pointIndex,
                 x: p.x,
-                y: p.y
+                y: p.y,
+                z: p.z,
+                text: p.text,
+                customdata: p.customdata,
+                data: p.data,
+                trace_name: p.data ? p.data.name : null
             }));
-            pywry.emit('plotly:hover', { chartId: chartId, widget_type: 'chart', points: points });
+            pywry.emit('plotly:hover', {
+                chartId: chartId,
+                widget_type: 'chart',
+                points: points,
+                point_indices: points.map(p => p.pointNumber),
+                curve_number: points.length > 0 ? points[0].curveNumber : null
+            });
         });
         chartEl.on('plotly_selected', function(data) {
             if (data) {
                 const points = data.points.map(p => ({
                     curveNumber: p.curveNumber,
                     pointNumber: p.pointNumber,
+                    pointIndex: p.pointIndex,
                     x: p.x,
-                    y: p.y
+                    y: p.y,
+                    z: p.z,
+                    text: p.text,
+                    customdata: p.customdata,
+                    data: p.data,
+                    trace_name: p.data ? p.data.name : null
                 }));
-                pywry.emit('plotly:select', { chartId: chartId, widget_type: 'chart', points: points, range: data.range });
+                pywry.emit('plotly:selected', {
+                    chartId: chartId,
+                    widget_type: 'chart',
+                    points: points,
+                    point_indices: points.map(p => p.pointNumber),
+                    range: data.range || null,
+                    lassoPoints: data.lassoPoints || null
+                });
+            } else {
+                pywry.emit('plotly:selected', {
+                    chartId: chartId,
+                    widget_type: 'chart',
+                    points: [],
+                    point_indices: [],
+                    range: null,
+                    lassoPoints: null
+                });
             }
         });
         chartEl.on('plotly_relayout', function(data) {

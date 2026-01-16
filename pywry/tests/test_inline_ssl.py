@@ -18,7 +18,22 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 
-from pywry.inline import InlineWidget, _make_server_request, show, stop_server
+from pywry.inline import InlineWidget, _get_pywry_bridge_js, _make_server_request, stop_server
+
+
+def _build_test_html(content: str, widget_id: str) -> str:
+    """Build a full HTML document with pywry bridge for testing."""
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    {_get_pywry_bridge_js(widget_id)}
+</head>
+<body>
+    {content}
+</body>
+</html>"""
 
 
 # pylint: disable=redefined-outer-name
@@ -122,7 +137,7 @@ def test_https_server_configuration(ssl_certs):
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
 
-        widget = InlineWidget("<h1>Test</h1>", port=8766)
+        widget = InlineWidget("<h1>Test</h1>", port=8766, browser_only=True)
 
         try:
             assert widget.url.startswith("https://")
@@ -208,11 +223,18 @@ async def test_e2e_wss_callback_flow(ssl_certs):  # noqa: PLR0915
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
 
-        # 1. Setup widget with a callback
+        # 1. Setup widget with a callback (browser_only=True skips IPython requirement)
         callback_mock = MagicMock()
+        widget_id = "e2e_test_widget"
 
         # We need to ensure we use unique ports/IDs to prevent collision if concurrent
-        widget = show("<h1>E2E Test</h1>", callbacks={"test_event": callback_mock}, port=8769)
+        widget = InlineWidget(
+            _build_test_html("<h1>E2E Test</h1>", widget_id),
+            callbacks={"test_event": callback_mock},
+            port=8769,
+            widget_id=widget_id,
+            browser_only=True,
+        )
         wid = widget.widget_id
 
         try:
@@ -289,7 +311,14 @@ def test_content_generation_https(ssl_certs):
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
 
-        widget = show("<h1>Content Test</h1>", port=8768, title="Content Test")
+        # browser_only=True skips IPython requirement
+        widget_id = "content_test_widget"
+        widget = InlineWidget(
+            _build_test_html("<h1>Content Test</h1>", widget_id),
+            port=8768,
+            widget_id=widget_id,
+            browser_only=True,
+        )
 
         try:
             resp = requests.get(widget.url, verify=cert_path, timeout=5.0)

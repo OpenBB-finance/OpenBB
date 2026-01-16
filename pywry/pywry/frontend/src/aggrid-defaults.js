@@ -386,6 +386,20 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
                  window.pywry.emit('grid:row-selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
             }
         },
+        onCellValueChanged: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('grid:cell-edit', {
+                    widget_type: 'grid',
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    rowId: event.node.id,
+                    colId: event.column.getColId(),
+                    oldValue: event.oldValue,
+                    newValue: event.newValue,
+                    data: event.data
+                });
+            }
+        },
         onGridReady: function(event) {
             console.log('[PyWry AG Grid ' + id + '] Grid ready (client-side)!');
             event.api.autoSizeAllColumns();
@@ -571,6 +585,21 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             if (window.pywry && window.pywry.emit) {
                 var selectedRows = event.api.getSelectedRows();
                 window.pywry.emit('grid:row-selected', { widget_type: 'grid', gridId: id, rows: selectedRows });
+            }
+        },
+
+        onCellValueChanged: function(event) {
+            if (window.pywry && window.pywry.emit) {
+                window.pywry.emit('grid:cell-edit', {
+                    widget_type: 'grid',
+                    gridId: id,
+                    rowIndex: event.rowIndex,
+                    rowId: event.node.id,
+                    colId: event.column.getColId(),
+                    oldValue: event.oldValue,
+                    newValue: event.newValue,
+                    data: event.data
+                });
             }
         },
         

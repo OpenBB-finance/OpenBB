@@ -69,6 +69,10 @@ def wait_for_port_release(port: int, host: str = "127.0.0.1", timeout: float = 5
     return False
 
 
+# Default port used by PyWry when no port is specified
+DEFAULT_PORT = 8765
+
+
 @pytest.fixture(autouse=True)
 def clean_state():
     """Clean up server state before and after each test."""
@@ -84,6 +88,8 @@ def clean_state():
     # Wait for port to be released if server was running
     if old_port is not None:
         wait_for_port_release(old_port, timeout=3.0)
+    # Also wait for default port in case a test used it without our fixture
+    wait_for_port_release(DEFAULT_PORT, timeout=2.0)
 
     yield
 
@@ -95,9 +101,12 @@ def clean_state():
     _state.event_queues.clear()
     clear_settings()
 
-    # Wait for port release
+    # Wait for port release - check both the used port and default port
+    ports_to_wait = {DEFAULT_PORT}
     if old_port is not None:
-        wait_for_port_release(old_port, timeout=3.0)
+        ports_to_wait.add(old_port)
+    for port in ports_to_wait:
+        wait_for_port_release(port, timeout=3.0)
 
     # Remove any env vars we set
     for key in list(os.environ.keys()):

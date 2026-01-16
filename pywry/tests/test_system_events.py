@@ -256,6 +256,10 @@ class TestSystemEventConsistency:
         "pywry:inject-css",
         "pywry:set-style",
         "pywry:set-content",
+        "pywry:download",
+        "pywry:navigate",
+        "pywry:alert",
+        "pywry:update-html",
     ]
 
     def test_inline_has_all_core_events(self) -> None:
@@ -277,6 +281,10 @@ class TestSystemEventConsistency:
             "pywry:inject-css",
             "pywry:set-style",
             "pywry:set-content",
+            "pywry:download",
+            "pywry:navigate",
+            "pywry:alert",
+            "pywry:update-html",
         ]
         for event in native_events:
             assert event in js, f"Missing {event} in native mode"

@@ -87,7 +87,7 @@ except ImportError:
 
 try:
     from IPython.display import HTML, display  # noqa: F401  # pylint: disable=unused-import
-    from ipywidgets import Output
+    from ipywidgets import Output  # type: ignore[import-not-found]
 
     HAS_IPYTHON = True
 except ImportError:
@@ -398,7 +398,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
         // This ensures CSS variables work in both native windows and notebook widgets
         let css = data.css;
         if (css.includes(':root')) {{
-            css = css.replace(/:root\s*\{{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {{');
+            css = css.replace(/:root\\s*\\{{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {{');
         }}
         const id = data.id || 'pywry-injected-style';
         let style = document.getElementById(id);
@@ -956,12 +956,18 @@ def _start_server(port: int | None = None, host: str | None = None) -> None:  # 
         except asyncio.CancelledError:
             # Expected when tasks are cancelled during shutdown
             pass
+        except SystemExit:
+            # uvicorn calls sys.exit(1) when port bind fails - suppress it
+            pass
         finally:
             # Clean up any pending tasks - suppress all errors during cleanup
-            with suppress(RuntimeError):
+            with suppress(RuntimeError, asyncio.CancelledError):
                 pending = asyncio.all_tasks(loop)
                 for task in pending:
                     task.cancel()
+                # Give tasks a chance to handle cancellation
+                if pending:
+                    loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
             with suppress(RuntimeError):
                 loop.close()
 
@@ -999,14 +1005,18 @@ def stop_server(timeout: float = 5.0) -> None:
     timeout : float
         Maximum time to wait for server to stop, in seconds.
     """
-    if _state.server is not None:
+    server = _state.server
+    server_thread = _state.server_thread
+    server_loop = _state.server_loop
+
+    if server is not None:
         # Fire disconnect callbacks for all active widgets (clean shutdown)
         widget_ids = list(_state.widgets.keys())
         for widget_id in widget_ids:
             _handle_widget_disconnect(widget_id, "server_shutdown")
 
         # Signal the server to exit
-        _state.server.should_exit = True
+        server.should_exit = True
 
         # Send a request to wake up the server so it checks should_exit
         if _state.port is not None and _state.host is not None:
@@ -1020,20 +1030,27 @@ def stop_server(timeout: float = 5.0) -> None:
                 )
 
         # Wait for graceful shutdown
-        if _state.server_thread is not None and _state.server_thread.is_alive():
-            _state.server_thread.join(timeout=timeout)
+        if server_thread is not None and server_thread.is_alive():
+            server_thread.join(timeout=timeout)
+
+            # If thread is still alive after timeout, force-stop the loop
+            if server_thread.is_alive() and server_loop is not None:
+                with suppress(Exception):
+                    server_loop.call_soon_threadsafe(server_loop.stop)
+                server_thread.join(timeout=1.0)
 
         # Give OS time to release the socket
         time.sleep(0.3)
 
-        _state.server = None
-        _state.server_thread = None
-        _state.server_loop = None
-        _state.port = None
-        _state.app = None
-        _state.shutdown_event = None
-        # Reset disconnect event for next server start
-        _state.disconnect_event.clear()
+    # Always reset state, even if server was None (handles partial startup failures)
+    _state.server = None
+    _state.server_thread = None
+    _state.server_loop = None
+    _state.port = None
+    _state.app = None
+    _state.shutdown_event = None
+    # Reset disconnect event for next server start
+    _state.disconnect_event.clear()
 
 
 def block() -> None:
