@@ -944,39 +944,27 @@ html.light, .pywry-theme-light {
 
 </details>
 
-### Example: Custom Styling
+### Example: Custom Styling with Built-in Events
 
 ```python
-from pywry import PyWry, HtmlContent, Toolbar, Button
+from pywry import PyWry, Toolbar, Button
 
 app = PyWry()
 
-def on_action(data, event_type, label):
-    app.eval_js("document.querySelector('h1').textContent = 'Styled action!'")
+def on_click(data, event_type, label):
+    # Change the button to green using built-in pywry:set-style event
+    app.emit("pywry:set-style", {
+        "id": "my-btn",
+        "styles": {"backgroundColor": "#22c55e", "color": "#fff"}
+    }, label=label)
 
-content = HtmlContent(
-    html="<h1>Click me</h1>",
-    inline_css="""
-        /* Override button accent */
-        :root { --pywry-accent: #ff6b6b; }
-        
-        /* Target specific button by ID */
-        #action-btn { border-radius: 20px; }
-        
-        /* Center toolbar items */
-        .pywry-toolbar { justify-content: center; }
-    """
-)
-
-toolbar = Toolbar(
-    position="top",
-    items=[Button(label="Action", event="app:action", component_id="action-btn")]
-)
+app.on("app:click", on_click)
 
 app.show(
-    content,
-    toolbars=[toolbar],
-    callbacks={"app:action": on_action},
+    "",
+    toolbars=[Toolbar(position="top", items=[
+        Button(label="Click Me", event="app:click", component_id="my-btn")
+    ])],
 )
 ```
 
@@ -2597,7 +2585,7 @@ components_header = Toolbar(
     position="header",
     items=[
         Div(
-            content="<h3 id='demo-title' style='margin: 0;'>🧩 All Toolbar Components</h3>",
+            content="<h3 id='demo-title' style='margin: 0;'>&#x1F9E9; All Toolbar Components</h3>",
             style="flex: 1;",
         ),
         Select(
@@ -2624,7 +2612,7 @@ components_header = Toolbar(
             options=[Option(label="Normal", value="normal"), Option(label="Semi", value="semi"), Option(label="Bold", value="bold"), Option(label="Italic", value="italic")],
             selected="normal",
         ),
-        Button(label="☀️", event="demo:theme", variant="ghost", component_id="theme-toggle-btn"),
+        Button(label="\u2600\uFE0F", event="demo:theme", variant="ghost", component_id="theme-toggle-btn"),
     ],
 )
 
@@ -2779,7 +2767,7 @@ buttons_row = Toolbar(
         Button(label="Outline", event="demo:btn", data={"btn": "outline"}, variant="outline"),
         Button(label="Danger", event="demo:btn", data={"btn": "danger"}, variant="danger"),
         Button(label="Warning", event="demo:btn", data={"btn": "warning"}, variant="warning"),
-        Button(label="⚙", event="demo:btn", data={"btn": "icon"}, variant="icon"),
+        Button(label="\u2699", event="demo:btn", data={"btn": "icon"}, variant="icon"),
     ],
 )
 

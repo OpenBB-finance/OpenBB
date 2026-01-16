@@ -378,7 +378,12 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             self._setup_hot_reload_watching(target_label, html_content)
 
         # Show in window (pass label for multi-window mode)
-        return self._mode.show(config, html, callbacks, target_label)
+        label_result = self._mode.show(config, html, callbacks, target_label)
+
+        # Wrap the label in a NativeWidget so callbacks can use widget.emit()
+        from .widget import NativeWidget
+
+        return NativeWidget(label=label_result, callbacks=callbacks)
 
     def show_plotly(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches
         self,

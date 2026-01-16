@@ -44,8 +44,10 @@ PYWRY_BRIDGE_JS = """
     };
 
     window.pywry.emit = function(eventType, data) {
-        // Validate event type format
-        if (eventType !== '*' && !/^[a-z][a-z0-9]*:[a-z][a-z0-9-]*$/.test(eventType)) {
+        // Validate event type format (matches Python pattern in models.py)
+        // Pattern: namespace:event-name with optional :suffix
+        // Allows: letters, numbers, underscores, hyphens (case-insensitive)
+        if (eventType !== '*' && !/^[a-zA-Z][a-zA-Z0-9]*:[a-zA-Z][a-zA-Z0-9_-]*(:[a-zA-Z0-9_-]+)?$/.test(eventType)) {
             console.error('Invalid event type:', eventType, 'Must match namespace:event-name pattern');
             return;
         }
@@ -98,6 +100,130 @@ PYWRY_BRIDGE_JS = """
     };
 
     console.log('PyWry bridge initialized/updated');
+})();
+"""
+
+# System event handlers for built-in pywry events
+# These are ALWAYS included, not just during hot reload
+PYWRY_SYSTEM_EVENTS_JS = """
+(function() {
+    'use strict';
+
+    // Helper function to inject or update CSS
+    window.pywry.injectCSS = function(css, id) {
+        var style = document.getElementById(id);
+        if (style) {
+            style.textContent = css;
+        } else {
+            style = document.createElement('style');
+            style.id = id;
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+        console.log('[PyWry] Injected CSS with id:', id);
+    };
+
+    // Helper function to remove CSS by id
+    window.pywry.removeCSS = function(id) {
+        var style = document.getElementById(id);
+        if (style) {
+            style.remove();
+            console.log('[PyWry] Removed CSS with id:', id);
+        }
+    };
+
+    // Helper function to set element styles
+    window.pywry.setStyle = function(data) {
+        var styles = data.styles;
+        if (!styles) return;
+        var elements = [];
+        if (data.id) {
+            var el = document.getElementById(data.id);
+            if (el) elements.push(el);
+        } else if (data.selector) {
+            elements = Array.from(document.querySelectorAll(data.selector));
+        }
+        elements.forEach(function(el) {
+            Object.keys(styles).forEach(function(prop) {
+                el.style[prop] = styles[prop];
+            });
+        });
+        console.log('[PyWry] Set styles on', elements.length, 'elements:', styles);
+    };
+
+    // Helper function to set element content
+    window.pywry.setContent = function(data) {
+        var elements = [];
+        if (data.id) {
+            var el = document.getElementById(data.id);
+            if (el) elements.push(el);
+        } else if (data.selector) {
+            elements = Array.from(document.querySelectorAll(data.selector));
+        }
+        elements.forEach(function(el) {
+            if ('html' in data) {
+                el.innerHTML = data.html;
+            } else if ('text' in data) {
+                el.textContent = data.text;
+            }
+        });
+        console.log('[PyWry] Set content on', elements.length, 'elements');
+    };
+
+    // Register built-in pywry.on handlers for system events
+    // These are triggered via pywry.dispatch() when Python calls widget.emit()
+    window.pywry.on('pywry:inject-css', function(data) {
+        window.pywry.injectCSS(data.css, data.id);
+    });
+
+    window.pywry.on('pywry:remove-css', function(data) {
+        window.pywry.removeCSS(data.id);
+    });
+
+    window.pywry.on('pywry:set-style', function(data) {
+        window.pywry.setStyle(data);
+    });
+
+    window.pywry.on('pywry:set-content', function(data) {
+        window.pywry.setContent(data);
+    });
+
+    window.pywry.on('pywry:refresh', function() {
+        if (window.pywry.refresh) {
+            window.pywry.refresh();
+        } else {
+            window.location.reload();
+        }
+    });
+
+    // Register Tauri event listeners that use the shared helper functions
+    if (window.__TAURI__ && window.__TAURI__.event) {
+        window.__TAURI__.event.listen('pywry:inject-css', function(event) {
+            window.pywry.injectCSS(event.payload.css, event.payload.id);
+        });
+
+        window.__TAURI__.event.listen('pywry:remove-css', function(event) {
+            window.pywry.removeCSS(event.payload.id);
+        });
+
+        window.__TAURI__.event.listen('pywry:set-style', function(event) {
+            window.pywry.setStyle(event.payload);
+        });
+
+        window.__TAURI__.event.listen('pywry:set-content', function(event) {
+            window.pywry.setContent(event.payload);
+        });
+
+        window.__TAURI__.event.listen('pywry:refresh', function() {
+            if (window.pywry.refresh) {
+                window.pywry.refresh();
+            } else {
+                window.location.reload();
+            }
+        });
+    }
+
+    console.log('PyWry system events initialized');
 })();
 """
 
@@ -487,25 +613,7 @@ HOT_RELOAD_JS = """
         }
     }
 
-    window.pywry.injectCSS = function(css, id) {
-        var style = document.getElementById(id);
-        if (style) {
-            style.textContent = css;
-        } else {
-            style = document.createElement('style');
-            style.id = id;
-            style.textContent = css;
-            document.head.appendChild(style);
-        }
-    };
-
-    window.pywry.removeCSS = function(id) {
-        var style = document.getElementById(id);
-        if (style) {
-            style.remove();
-        }
-    };
-
+    // Override refresh to save scroll position before reloading
     window.pywry.refresh = function() {
         saveScrollPosition();
         window.location.reload();
@@ -515,59 +623,6 @@ HOT_RELOAD_JS = """
         restoreScrollPosition();
     } else {
         window.addEventListener('load', restoreScrollPosition);
-    }
-
-    if (window.__TAURI__ && window.__TAURI__.event) {
-        window.__TAURI__.event.listen('pywry:inject-css', function(event) {
-            var css = event.payload.css;
-            var id = event.payload.id;
-            window.pywry.injectCSS(css, id);
-        });
-
-        window.__TAURI__.event.listen('pywry:remove-css', function(event) {
-            window.pywry.removeCSS(event.payload.id);
-        });
-
-        window.__TAURI__.event.listen('pywry:set-style', function(event) {
-            var styles = event.payload.styles;
-            if (!styles) return;
-            var elements = [];
-            if (event.payload.id) {
-                var el = document.getElementById(event.payload.id);
-                if (el) elements.push(el);
-            } else if (event.payload.selector) {
-                elements = Array.from(document.querySelectorAll(event.payload.selector));
-            }
-            elements.forEach(function(el) {
-                Object.keys(styles).forEach(function(prop) {
-                    el.style[prop] = styles[prop];
-                });
-            });
-            console.log('[PyWry] Set styles on', elements.length, 'elements:', styles);
-        });
-
-        // Built-in handler for updating element content (innerHTML or textContent)
-        window.__TAURI__.event.listen('pywry:set-content', function(event) {
-            var elements = [];
-            if (event.payload.id) {
-                var el = document.getElementById(event.payload.id);
-                if (el) elements.push(el);
-            } else if (event.payload.selector) {
-                elements = Array.from(document.querySelectorAll(event.payload.selector));
-            }
-            elements.forEach(function(el) {
-                if ('html' in event.payload) {
-                    el.innerHTML = event.payload.html;
-                } else if ('text' in event.payload) {
-                    el.textContent = event.payload.text;
-                }
-            });
-            console.log('[PyWry] Set content on', elements.length, 'elements');
-        });
-
-        window.__TAURI__.event.listen('pywry:refresh', function() {
-            window.pywry.refresh();
-        });
     }
 
     console.log('Hot reload bridge initialized');
@@ -608,6 +663,7 @@ def build_init_script(
     scripts = [
         f"window.__PYWRY_LABEL__ = '{window_label}';",
         PYWRY_BRIDGE_JS,
+        PYWRY_SYSTEM_EVENTS_JS,
         THEME_MANAGER_JS,
         EVENT_BRIDGE_JS,
         TOOLBAR_BRIDGE_JS,

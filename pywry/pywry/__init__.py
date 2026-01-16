@@ -73,7 +73,7 @@ from .toolbar import (
     Toolbar,
     ToolbarItem,
 )
-from .widget import PyWryAgGridWidget, PyWryPlotlyWidget, PyWryWidget
+from .widget import NativeWidget, PyWryAgGridWidget, PyWryPlotlyWidget, PyWryWidget
 from .window_manager import BrowserMode, get_lifecycle
 
 
@@ -100,6 +100,7 @@ __all__ = [
     "ModeBarButton",
     "ModeBarConfig",
     "MultiSelect",
+    "NativeWidget",
     "NotebookEnvironment",
     "NumberInput",
     "Option",

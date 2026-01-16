@@ -26,6 +26,135 @@ except ImportError:
     HAS_ANYWIDGET = False
 
 
+class NativeWidget:
+    """Widget wrapper for native window rendering.
+
+    Implements the BaseWidget protocol for native windows, providing a unified API
+    that works the same way as notebook widgets (PyWryWidget, InlineWidget).
+
+    This class wraps a native window label and uses runtime.emit_event() to send
+    events to the JavaScript side, enabling the same callback-based interaction
+    pattern used in notebook mode.
+
+    Examples
+    --------
+    >>> widget = app.show("<h1>Hello</h1>", callbacks={"btn:click": handler})
+    >>> widget.emit("update", {"value": 42})  # Works in both notebook and native!
+    """
+
+    def __init__(
+        self,
+        label: str,
+        callbacks: dict[str, Any] | None = None,
+    ) -> None:
+        """Initialize the native widget wrapper.
+
+        Parameters
+        ----------
+        label : str
+            The native window label.
+        callbacks : dict[str, Any] or None, optional
+            Event callbacks that were registered with the window.
+        """
+        self._label = label
+        self._callbacks = callbacks or {}
+        # Track handlers for local dispatch (not used for native, but kept for API compat)
+        self._handlers: dict[str, list[Any]] = {}
+
+    @property
+    def label(self) -> str:
+        """Get the window label."""
+        return self._label
+
+    def emit(self, event_type: str, data: dict[str, Any] | None = None) -> None:
+        """Send an event from Python to JavaScript in the native window.
+
+        Parameters
+        ----------
+        event_type : str
+            Event name that JS listeners can subscribe to.
+        data : dict
+            JSON-serializable payload to send to JavaScript.
+
+        Examples
+        --------
+        >>> widget.emit("pywry:set-content", {"id": "display", "html": "Updated!"})
+        >>> widget.emit("pywry:update-theme", {"theme": "light"})
+        """
+        from . import runtime
+
+        runtime.emit_event(self._label, event_type, data or {})
+
+    def on(self, event_type: str, callback: Any) -> NativeWidget:
+        """Register a callback for events from JavaScript.
+
+        Note: For native windows, callbacks should be registered via app.show()
+        or app.on(). This method is provided for API compatibility but callbacks
+        registered here won't receive events from the native window.
+
+        Parameters
+        ----------
+        event_type : str
+            Event name.
+        callback : Callable
+            Handler function receiving (data, event_type, label).
+
+        Returns
+        -------
+        NativeWidget
+            Self for method chaining.
+        """
+        from .callbacks import get_registry
+
+        registry = get_registry()
+        registry.register(self._label, event_type, callback)
+        return self
+
+    def update(self, html: str) -> None:
+        """Update the window's HTML content.
+
+        Parameters
+        ----------
+        html : str
+            New HTML content to render.
+        """
+        from . import runtime
+
+        runtime.set_content(self._label, html)
+
+    def display(self) -> None:
+        """Show the native window (no-op if already visible)."""
+        from . import runtime
+
+        runtime.show_window(self._label)
+
+    def close(self) -> None:
+        """Close the native window."""
+        from . import runtime
+
+        runtime.close_window(self._label)
+
+    def __repr__(self) -> str:
+        """String representation."""
+        return f"NativeWidget(label={self._label!r})"
+
+    def __str__(self) -> str:
+        """String conversion returns the label for backwards compatibility."""
+        return self._label
+
+    def __eq__(self, other: object) -> bool:
+        """Compare equal to another NativeWidget with same label, or to label string."""
+        if isinstance(other, NativeWidget):
+            return self._label == other._label
+        if isinstance(other, str):
+            return self._label == other
+        return False
+
+    def __hash__(self) -> int:
+        """Hash by label to allow use in sets/dicts."""
+        return hash(self._label)
+
+
 # Path to the source JS directory
 _SRC_DIR = pathlib.Path(__file__).parent / "frontend" / "src"
 
@@ -174,7 +303,7 @@ def _get_aggrid_widget_esm() -> str:
 
     # AG Grid widget render code - with ensureAgGrid() that guarantees availability
     # Note: Uses __TOOLBAR_HANDLERS__ placeholder which is replaced below
-    widget_js = """
+    widget_js = r"""
 console.log('[PyWry AG Grid] Widget module loaded');
 
 // Module-level render counter to detect/cancel stale renders
@@ -367,15 +496,21 @@ function render({ model, el }) {
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
                 // Handle CSS injection - inject or update a style element
+                // Rewrite :root selectors to also target widget containers for notebook scoping
                 if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
                     const id = event.data.id || 'pywry-injected-style';
+                    let css = event.data.css;
+                    // Rewrite :root to also target widget containers
+                    if (css.includes(':root')) {
+                        css = css.replace(/:root\s*\{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {');
+                    }
                     let style = document.getElementById(id);
                     if (style) {
-                        style.textContent = event.data.css;
+                        style.textContent = css;
                     } else {
                         style = document.createElement('style');
                         style.id = id;
-                        style.textContent = event.data.css;
+                        style.textContent = css;
                         document.head.appendChild(style);
                     }
                     console.log('[PyWry] Injected CSS with id:', id);
@@ -713,7 +848,7 @@ def _get_widget_esm() -> str:
 
 
 # Basic widget ESM without Plotly
-_WIDGET_ESM = """
+_WIDGET_ESM = r"""
 function render({ model, el }) {
     const container = document.createElement('div');
     container.className = 'pywry-widget';
@@ -842,15 +977,21 @@ function render({ model, el }) {
                     console.log('[PyWry] Model theme set to:', newTheme);
                 }
                 // Handle CSS injection - inject or update a style element
+                // Rewrite :root selectors to also target widget containers for notebook scoping
                 if (event.type === 'pywry:inject-css' && event.data && event.data.css) {
                     const id = event.data.id || 'pywry-injected-style';
+                    let css = event.data.css;
+                    // Rewrite :root to also target widget containers
+                    if (css.includes(':root')) {
+                        css = css.replace(/:root\s*\{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {');
+                    }
                     let style = document.getElementById(id);
                     if (style) {
-                        style.textContent = event.data.css;
+                        style.textContent = css;
                     } else {
                         style = document.createElement('style');
                         style.id = id;
-                        style.textContent = event.data.css;
+                        style.textContent = css;
                         document.head.appendChild(style);
                     }
                     console.log('[PyWry] Injected CSS with id:', id);

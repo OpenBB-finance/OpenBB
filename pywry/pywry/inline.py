@@ -388,19 +388,26 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }});
 
     // Register handler for CSS injection - inject or update a style element
+    // For notebook widgets, also duplicate :root rules to .pywry-widget for proper scoping
     window.pywry.on('pywry:inject-css', function(data) {{
         if (!data.css) {{
             console.error('[PyWry] inject-css requires css property');
             return;
         }}
+        // Rewrite :root selectors to also target .pywry-widget for notebook scoping
+        // This ensures CSS variables work in both native windows and notebook widgets
+        let css = data.css;
+        if (css.includes(':root')) {{
+            css = css.replace(/:root\s*\{{/g, ':root, .pywry-widget, .pywry-theme-dark, .pywry-theme-light {{');
+        }}
         const id = data.id || 'pywry-injected-style';
         let style = document.getElementById(id);
         if (style) {{
-            style.textContent = data.css;
+            style.textContent = css;
         }} else {{
             style = document.createElement('style');
             style.id = id;
-            style.textContent = data.css;
+            style.textContent = css;
             document.head.appendChild(style);
         }}
         if ({str(PYWRY_DEBUG).lower()}) {{

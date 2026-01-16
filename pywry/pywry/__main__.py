@@ -4,6 +4,9 @@ This module runs as a subprocess, handling the pytauri event loop on the main th
 and receiving commands via stdin JSON IPC.
 """
 
+# pylint: disable=C0413
+
+import io
 import json
 import os
 import sys
@@ -12,6 +15,14 @@ import threading
 from contextlib import suppress
 from pathlib import Path
 from typing import Any
+
+
+# Reconfigure stdin/stdout to UTF-8 on Windows
+# This is needed because Windows may default to the locale encoding (cp1252)
+if sys.platform == "win32":
+    sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", errors="replace")
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 from anyio import create_task_group
 from anyio.from_thread import start_blocking_portal
@@ -196,8 +207,9 @@ class JsonIPC:
             # Wait for page to load
             time.sleep(0.5)
 
-            escaped = json.dumps(html)
-            escaped_theme = json.dumps(theme)
+            # Use ensure_ascii=False to preserve emoji and unicode characters
+            escaped = json.dumps(html, ensure_ascii=False)
+            escaped_theme = json.dumps(theme, ensure_ascii=False)
 
             # Inject content into #app div and execute scripts
             # Order: Theme class -> CSS -> Scripts -> Body -> Body scripts
@@ -351,11 +363,12 @@ class JsonIPC:
     def _emit_to_window(self, window: Any, event: str, payload: dict[str, Any]) -> None:
         """Emit event to a window using JavaScript eval."""
         # Build JavaScript to dispatch the event
-        payload_json = json.dumps(payload)
+        # Use ensure_ascii=False to preserve emoji and unicode characters
+        payload_json = json.dumps(payload, ensure_ascii=False)
         script = f"""
         (function() {{
             if (window.pywry && window.pywry.dispatch) {{
-                window.pywry.dispatch({json.dumps(event)}, {payload_json});
+                window.pywry.dispatch({json.dumps(event, ensure_ascii=False)}, {payload_json});
             }}
         }})();
         """
@@ -431,7 +444,6 @@ def stdin_reader(ipc: JsonIPC) -> None:
             line = raw_line.strip()
             if not line:
                 continue
-            log(f"Received line: {line[:100]}...")
             try:
                 cmd = json.loads(line)
                 ipc.handle_command(cmd)

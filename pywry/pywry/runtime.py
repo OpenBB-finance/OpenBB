@@ -435,6 +435,7 @@ def start() -> bool:
     cmd = [python_exe, "-u", "-m", "pywry"]
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
+    env["PYTHONUTF8"] = "1"  # Force UTF-8
 
     try:
         _process = subprocess.Popen(  # pylint: disable=R1732
@@ -446,6 +447,7 @@ def start() -> bool:
             text=True,
             bufsize=1,
             env=env,
+            encoding="utf-8",
         )
     except Exception as e:
         sys.stderr.write(f"[pywry] Failed to start subprocess: {e}\n")

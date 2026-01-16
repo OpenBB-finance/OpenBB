@@ -735,7 +735,8 @@ def build_content_update_script(html_content: str) -> str:
     str
         JavaScript code to update the document content.
     """
-    escaped_html = json.dumps(html_content)
+    # Use ensure_ascii=False to preserve emoji and unicode characters
+    escaped_html = json.dumps(html_content, ensure_ascii=False)
     return f"""
     (function() {{
         var container = document.querySelector('.pywry-container');

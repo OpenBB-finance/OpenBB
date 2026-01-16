@@ -43,7 +43,7 @@
     --pywry-btn-neutral-hover: rgb(0, 115, 173);
 
     /* ---- Typography ---- */
-    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
     --pywry-font-size: 14px;
     --pywry-font-weight-normal: 400;
     --pywry-font-weight-medium: 500;
@@ -232,6 +232,26 @@ html.pywry-native body {
     color: var(--pywry-text-primary);
     font-family: var(--pywry-font-family);
     font-size: var(--pywry-font-size);
+}
+
+/* Ensure emoji rendering in native windows */
+html.pywry-native * {
+    font-family: inherit;
+}
+
+/* Explicit emoji font stack for elements that may contain emojis */
+html.pywry-native h1,
+html.pywry-native h2,
+html.pywry-native h3,
+html.pywry-native h4,
+html.pywry-native h5,
+html.pywry-native h6,
+html.pywry-native p,
+html.pywry-native span,
+html.pywry-native button,
+html.pywry-native .pywry-btn,
+html.pywry-native .pywry-input-label {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', var(--pywry-font-family);
 }
 
 /* ============================================
