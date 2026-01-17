@@ -1,6 +1,6 @@
 ![PyWry](./pywry/frontend/assets/PyWry.png)
 
-PyWry is a blazingly fast rendering library for generating and managing native desktop windows, iFrames, and Jupyter widgets - with full bidirectional Python ↔ JavaScript communication. Get started making beautiful dashboards in minutes, not hours.
+PyWry is a blazingly fast rendering library for generating and managing native desktop windows, iFrames, and Jupyter widgets - with full bidirectional Python ↔ JavaScript communication. Get started in minutes, not hours.
 
 Unlike dashboard libraries that only render output, PyWry provides a complete event system where Python can send events to JavaScript and JavaScript can invoke Python callbacks, enabling truly interactive applications.
 
@@ -12,7 +12,7 @@ Its unified API lets you build fast and use anywhere. Batteries included.
 
 - **Five Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER`
 - **Notebook Support**: Automatic inline rendering via anywidget or IFrame in Jupyter/Colab
-- **Headless Operation***: 
+- **Headless Operation***: Deploy the app
 - **Event System**: Bidirectional Python ↔ JavaScript communication
 - **Toolbar System**: Pydantic-based toolbar components with bidirectional state management
 - **Dynamic Theming**: Light, Dark, and System modes.
@@ -108,11 +108,17 @@ app = PyWry()
 fig = px.scatter(px.data.iris(), x="sepal_width", y="sepal_length", color="species")
 
 def on_click(data, event_type, label):
-    """Update chart title when a point is clicked.""""
+    """Update chart title when a point is clicked."""
     point = data["points"][0]
-    app.emit("plotly:update-layout", {"layout": {
-        "title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"}
-    }}, label)
+    app.emit(
+        "plotly:update-layout", 
+        {
+            "layout": {
+                "title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"
+            },
+        },
+        label
+    )
 
 def on_reset(data, event_type, label):
     """Reset the chart zoom."""
