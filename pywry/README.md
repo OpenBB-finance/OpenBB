@@ -1,6 +1,6 @@
 ![PyWry](./pywry/frontend/assets/PyWry.png)
 
-PyWry is a blazingly fast rendering library for generating and managing native desktop windows, iFrames, and Jupyter widgets - with full bidirectional Python ↔ JavaScript communication.
+PyWry is a blazingly fast rendering library for generating and managing native desktop windows, iFrames, and Jupyter widgets - with full bidirectional Python ↔ JavaScript communication. Get started making beautiful dashboards in minutes, not hours.
 
 Unlike dashboard libraries that only render output, PyWry provides a complete event system where Python can send events to JavaScript and JavaScript can invoke Python callbacks, enabling truly interactive applications.
 
@@ -12,13 +12,14 @@ Its unified API lets you build fast and use anywhere. Batteries included.
 
 - **Five Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER`
 - **Notebook Support**: Automatic inline rendering via anywidget or IFrame in Jupyter/Colab
+- **Headless Operation***: 
+- **Event System**: Bidirectional Python ↔ JavaScript communication
 - **Toolbar System**: Pydantic-based toolbar components with bidirectional state management
-- **Hot Reload**: CSS injection and JS refresh with scroll preservation
+- **Dynamic Theming**: Light, Dark, and System modes.
 - **Bundled Libraries**: Plotly.js 3.3.1 and AgGrid 35.0.0 (offline capable)
+- **Hot Reload**: CSS injection and JS refresh with scroll preservation
 - **Native File Dialogs**: Tauri-powered save/open dialogs and filesystem access
 - **Configuration System**: TOML files, pyproject.toml, and environment variables
-- **Dynamic Theming**: Light, Dark, and System modes
-- **Event System**: Bidirectional Python ↔ JavaScript communication
 - **CLI Tools**: Configuration management and project initialization
 
 ## Dependencies
@@ -107,11 +108,11 @@ app = PyWry()
 fig = px.scatter(px.data.iris(), x="sepal_width", y="sepal_length", color="species")
 
 def on_click(data, event_type, label):
-    """Update chart title when a point is clicked."""
+    """Update chart title when a point is clicked.""""
     point = data["points"][0]
-    app.emit("plotly:update-layout", {
-        "layout": {"title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"}
-    }, label)
+    app.emit("plotly:update-layout", {"layout": {
+        "title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"}
+    }}, label)
 
 def on_reset(data, event_type, label):
     """Reset the chart zoom."""
@@ -140,7 +141,7 @@ df = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [30, 25, 35]})
 def on_select(data, event_type, label):
     """Print selected row names."""
     names = ", ".join(row["name"] for row in data["rows"])
-    print(f"Selected: {names}" if names else "None selected")
+    app.emit("pywry:alert", {"message": f"Selected: {names}" if names else "None selected"}, label)
 
 label = app.show_dataframe(
     df,

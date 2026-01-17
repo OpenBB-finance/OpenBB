@@ -88,6 +88,14 @@ class NewWindowMode(WindowModeBase):
 
         registry.register(label, "window:hidden", on_hidden)
 
+        # Register close handler for when window is destroyed
+        # This is essential for block() to detect when the window is closed
+        def on_closed(_data: dict[str, Any], _event_type: str, closed_label: str) -> None:
+            if closed_label in self._windows:
+                del self._windows[closed_label]
+
+        registry.register(label, "window:closed", on_closed)
+
         # Create lifecycle tracking and actual window
         lifecycle = get_lifecycle()
         lifecycle.create(

@@ -125,7 +125,11 @@ window.registerPyWryChart = registerPyWryChart;
         if (chartId && window.__PYWRY_CHARTS__ && window.__PYWRY_CHARTS__[chartId]) {
             return window.__PYWRY_CHARTS__[chartId];
         }
-        // Fall back to finding any Plotly chart on the page
+        // Use the most recently created chart's graph div object (set by Plotly.newPlot callback)
+        if (window.__PYWRY_PLOTLY_DIV__) {
+            return window.__PYWRY_PLOTLY_DIV__;
+        }
+        // Final fallback - querySelector (may not work for relayout without internal state)
         return document.querySelector('.js-plotly-plot');
     }
     
@@ -203,10 +207,28 @@ window.registerPyWryChart = registerPyWryChart;
         window.pywry.on('plotly:update-layout', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.Plotly && data && data.layout) {
-                console.log('[PyWry Plotly] Updating layout');
-                window.Plotly.relayout(plotDiv, data.layout);
+                // Build update object using Plotly's dot notation for proper merging
+                var layoutUpdate = {};
+                
+                Object.keys(data.layout).forEach(function(key) {
+                    var value = data.layout[key];
+                    // Handle title specially - use dot notation for template compatibility
+                    if (key === 'title' && typeof value === 'string') {
+                        layoutUpdate['title.text'] = value;
+                    } else if (key === 'title' && typeof value === 'object' && value !== null) {
+                        // Flatten title object to dot notation
+                        Object.keys(value).forEach(function(titleKey) {
+                            layoutUpdate['title.' + titleKey] = value[titleKey];
+                        });
+                    } else {
+                        layoutUpdate[key] = value;
+                    }
+                });
+                
+                console.log('[PyWry Plotly] Calling relayout with:', layoutUpdate);
+                window.Plotly.relayout(plotDiv, layoutUpdate);
             } else {
-                console.warn('[PyWry Plotly] plotly:update-layout - no plotDiv, Plotly, or layout');
+                console.warn('[PyWry Plotly] plotly:update-layout - missing requirements', {plotDiv: !!plotDiv, Plotly: !!window.Plotly, data: data});
             }
         });
         
