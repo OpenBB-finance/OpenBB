@@ -255,8 +255,9 @@ class TestSingleWindowMode:
         label1 = show_and_wait_ready(app, "<h1>First Content</h1>")
 
         # Simulate user closing window - close the window
+        # The close() method now waits for confirmation, but add extra buffer for CI
         app.close()
-        time.sleep(0.5)  # Give time for close
+        time.sleep(0.3)  # Extra buffer for slow Windows CI runners
 
         # Show new content - this should reopen the window
         label2 = show_and_wait_ready(app, "<h1>Second Content</h1>", timeout=15.0)

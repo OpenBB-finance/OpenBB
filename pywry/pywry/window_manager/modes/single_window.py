@@ -68,6 +68,8 @@ class SingleWindowMode(WindowModeBase):
         config : WindowConfig
             Window configuration.
         """
+        import time
+
         from ... import runtime
 
         # Ensure runtime is started
@@ -78,19 +80,38 @@ class SingleWindowMode(WindowModeBase):
                 return
 
         # Check if window exists in Tauri backend
-        if runtime.check_window_open(self._label):
-            # Window exists - just show it (may be hidden)
-            debug(f"Window '{self._label}' exists in backend, showing it")
-            runtime.show_window(self._label)
+        # Use retry logic to handle race condition where window is being closed
+        max_retries = 3
+        for attempt in range(max_retries):
+            if runtime.check_window_open(self._label):
+                # Window exists - just show it (may be hidden)
+                debug(f"Window '{self._label}' exists in backend, showing it")
+                if runtime.show_window(self._label):
+                    # Verify window is actually open after show
+                    if runtime.check_window_open(self._label):
+                        break
+                    # Window disappeared after show - was likely closing
+                    debug(f"Window '{self._label}' disappeared after show, retrying...")
+                    time.sleep(0.1 * (attempt + 1))
+                    continue
+                # show_window failed - window might have closed, retry
+                debug(f"show_window failed for '{self._label}', retrying...")
+                time.sleep(0.1 * (attempt + 1))
+            else:
+                # Window doesn't exist - create it
+                debug(f"Creating window '{self._label}' via IPC")
+                if runtime.create_window(
+                    self._label,
+                    config.title,
+                    config.width,
+                    config.height,
+                ):
+                    break
+                # create_window failed - retry
+                debug(f"create_window failed for '{self._label}', retrying...")
+                time.sleep(0.1 * (attempt + 1))
         else:
-            # Window doesn't exist - create it
-            debug(f"Creating window '{self._label}' via IPC")
-            runtime.create_window(
-                self._label,
-                config.title,
-                config.width,
-                config.height,
-            )
+            warn(f"Failed to ensure window '{self._label}' after {max_retries} attempts")
 
         # Ensure lifecycle resources are tracked (use public method)
         lifecycle.register_window(self._label)
@@ -187,6 +208,10 @@ class SingleWindowMode(WindowModeBase):
         bool
             True if closed successfully, False otherwise.
         """
+        import time
+
+        from ... import runtime
+
         if label != self._label:
             warn(f"SingleWindowMode only manages '{self._label}', not '{label}'")
             return False
@@ -197,9 +222,23 @@ class SingleWindowMode(WindowModeBase):
 
         debug(f"Closing single window '{self._label}'")
 
-        # Destroy lifecycle resources
+        # Destroy lifecycle resources (this sends close_window IPC)
         get_lifecycle().destroy(self._label)
         self._is_created = False
+
+        # Wait for window to actually be closed in the backend
+        # This is important on Windows where the close operation can be slow
+        max_wait = 1.0  # Maximum wait time in seconds
+        wait_interval = 0.05
+        elapsed = 0.0
+        while elapsed < max_wait:
+            if not runtime.check_window_open(self._label):
+                debug(f"Window '{self._label}' confirmed closed")
+                break
+            time.sleep(wait_interval)
+            elapsed += wait_interval
+        else:
+            debug(f"Window '{self._label}' close not confirmed after {max_wait}s")
 
         return True
 
