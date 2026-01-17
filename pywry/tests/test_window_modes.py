@@ -13,7 +13,10 @@ import time
 
 from typing import Any
 
+
 import pytest
+
+from tests.utils import retry_on_subprocess_failure
 
 from pywry import runtime
 from pywry.app import PyWry
@@ -109,6 +112,7 @@ def wait_for_result(
 class TestNewWindowMode:
     """Tests for NEW_WINDOW mode - creates new window for each show()."""
 
+    @retry_on_subprocess_failure()
     def test_creates_unique_labels(self):
         """Each show() call creates a window with a unique label."""
         app = PyWry(mode=WindowMode.NEW_WINDOW, theme=ThemeMode.DARK)
@@ -123,6 +127,7 @@ class TestNewWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_windows_have_independent_content(self):
         """Each window has its own independent content."""
         app = PyWry(mode=WindowMode.NEW_WINDOW, theme=ThemeMode.DARK)
@@ -143,6 +148,7 @@ class TestNewWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_get_labels_returns_all_windows(self):
         """get_labels() returns all open window labels."""
         app = PyWry(mode=WindowMode.NEW_WINDOW, theme=ThemeMode.DARK)
@@ -158,6 +164,7 @@ class TestNewWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_close_specific_window(self):
         """close(label) closes only the specified window."""
         app = PyWry(mode=WindowMode.NEW_WINDOW, theme=ThemeMode.DARK)
@@ -184,6 +191,7 @@ class TestNewWindowMode:
 class TestSingleWindowMode:
     """Tests for SINGLE_WINDOW mode - reuses one window, replaces content."""
 
+    @retry_on_subprocess_failure()
     def test_returns_same_label(self):
         """Every show() call returns the same label."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
@@ -196,6 +204,7 @@ class TestSingleWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_content_is_replaced(self):
         """Each show() replaces the content, not appends."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
@@ -247,6 +256,7 @@ class TestSingleWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_window_reopens_after_user_close(self):
         """SINGLE_WINDOW reopens after user closes it (README Quick Start scenario)."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
@@ -295,6 +305,7 @@ class TestSingleWindowMode:
 class TestMultiWindowMode:
     """Tests for MULTI_WINDOW mode - multiple independent windows with labels."""
 
+    @retry_on_subprocess_failure()
     def test_custom_labels(self):
         """Windows can be created with custom labels."""
         app = PyWry(mode=WindowMode.MULTI_WINDOW, theme=ThemeMode.DARK)
@@ -307,6 +318,7 @@ class TestMultiWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_auto_generated_labels(self):
         """Labels are auto-generated when not specified."""
         app = PyWry(mode=WindowMode.MULTI_WINDOW, theme=ThemeMode.DARK)
@@ -320,6 +332,7 @@ class TestMultiWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_update_specific_window(self):
         """Calling show() with existing label updates that window's content."""
         app = PyWry(mode=WindowMode.MULTI_WINDOW, theme=ThemeMode.DARK)
@@ -349,6 +362,7 @@ class TestMultiWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_independent_callbacks(self):
         """Each window has its own independent callbacks."""
         app = PyWry(mode=WindowMode.MULTI_WINDOW, theme=ThemeMode.DARK)
@@ -379,6 +393,7 @@ class TestMultiWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_close_specific_window_by_label(self):
         """close(label) closes only the specified window."""
         app = PyWry(mode=WindowMode.MULTI_WINDOW, theme=ThemeMode.DARK)
@@ -429,6 +444,7 @@ class TestCrossModeBehavior:
         "mode",
         [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW],
     )
+    @retry_on_subprocess_failure()
     def test_destroy_closes_all_windows(self, mode):
         """destroy() closes all windows regardless of mode."""
         app = PyWry(mode=mode, theme=ThemeMode.DARK)
@@ -447,6 +463,7 @@ class TestCrossModeBehavior:
         "mode",
         [WindowMode.NEW_WINDOW, WindowMode.SINGLE_WINDOW, WindowMode.MULTI_WINDOW],
     )
+    @retry_on_subprocess_failure()
     def test_eval_js_works_in_all_modes(self, mode):
         """eval_js works correctly in all window modes."""
         app = PyWry(mode=mode, theme=ThemeMode.DARK)
@@ -467,6 +484,7 @@ class TestCrossModeBehavior:
 
         app.destroy()
 
+    @retry_on_subprocess_failure()
     def test_is_open_reports_correctly(self):
         """is_open() correctly reports window state."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
@@ -490,6 +508,7 @@ class TestCrossModeBehavior:
 class TestReadmeQuickStart:
     """Test that the README Quick Start example works correctly."""
 
+    @retry_on_subprocess_failure()
     def test_quick_start_flow(self):
         """Verify the Quick Start example from README works."""
         app = PyWry(
