@@ -108,9 +108,10 @@ class YFinancePriceTargetConsensusFetcher(
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
             result: dict = {}
-            ticker: dict = {}
+            from openbb_yfinance.utils.helpers import get_ticker_info
+
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await get_ticker_info(symbol)
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol}: {e.__class__.__name__}: {e}"

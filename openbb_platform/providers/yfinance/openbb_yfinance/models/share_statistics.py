@@ -11,11 +11,11 @@ from typing import Any
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_yfinance.utils.helpers import get_ticker_info
 from openbb_core.provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
+from openbb_yfinance.utils.helpers import get_ticker_info
 from pydantic import Field, field_validator
 
 

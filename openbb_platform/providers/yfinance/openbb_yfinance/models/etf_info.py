@@ -218,7 +218,7 @@ class YFinanceEtfInfoFetcher(
         )
         from openbb_yfinance.utils.helpers import get_ticker_info
         from warnings import warn
-        from yfinance import Ticker
+
 
         symbols = query.symbol.split(",")
         results: list = []
