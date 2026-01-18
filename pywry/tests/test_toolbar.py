@@ -2447,7 +2447,10 @@ class TestWrapContentWithToolbars:
         from pywry.toolbar import wrap_content_with_toolbars
 
         html = wrap_content_with_toolbars("<div>My Content</div>")
-        assert html == "<div class='pywry-content'><div>My Content</div></div>"
+        assert (
+            html
+            == "<div class='pywry-content'><div>My Content</div></div><div class='pywry-toast-container pywry-toast-container--top-right' aria-label='Notifications'></div>"
+        )
 
     def test_top_toolbar_position(self) -> None:
         """Top toolbar appears before content."""
