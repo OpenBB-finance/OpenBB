@@ -121,6 +121,10 @@ jobs:
         env:
           PYWRY_HEADLESS: "1"
           NO_AT_BRIDGE: "1"
+          # Increase timeouts for slower CI runners
+          PYWRY_TIMEOUT__STARTUP: "30.0"
+          PYWRY_TIMEOUT__RESPONSE: "15.0"
+          PYWRY_TIMEOUT__CREATE_WINDOW: "15.0"
         run: |
           dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
 
@@ -129,6 +133,9 @@ jobs:
         if: runner.os == 'Windows'
         env:
           PYWRY_HEADLESS: "1"
+          PYWRY_TIMEOUT__STARTUP: "30.0"
+          PYWRY_TIMEOUT__RESPONSE: "15.0"
+          PYWRY_TIMEOUT__CREATE_WINDOW: "15.0"
         run: |
           python -m pytest tests/ -v --tb=short
 
@@ -137,5 +144,8 @@ jobs:
         if: runner.os == 'macOS'
         env:
           PYWRY_HEADLESS: "1"
+          PYWRY_TIMEOUT__STARTUP: "30.0"
+          PYWRY_TIMEOUT__RESPONSE: "15.0"
+          PYWRY_TIMEOUT__CREATE_WINDOW: "15.0"
         run: |
           python -m pytest tests/ -v --tb=short
