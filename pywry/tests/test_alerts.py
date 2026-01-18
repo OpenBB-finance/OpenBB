@@ -16,9 +16,44 @@ import sys
 import threading
 import time
 
-from typing import Any
+from collections.abc import Callable
+from functools import wraps
+from typing import Any, TypeVar
 
 import pytest
+
+
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
+    """Retry decorator for tests that may fail due to transient subprocess issues.
+
+    On Windows, WebView2 sometimes fails to start due to resource contention
+    ("Failed to unregister class Chrome_WidgetWin_0"). This decorator retries
+    the test after a delay to allow resources to be released.
+    """
+
+    def decorator(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            from pywry import runtime
+
+            last_error: Exception | None = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except TimeoutError as e:
+                    last_error = e
+                    if attempt < max_attempts - 1:
+                        # Clean up and wait before retry
+                        runtime.stop()
+                        time.sleep(delay)
+            raise last_error  # type: ignore[misc]
+
+        return wrapper  # type: ignore[return-value]
+
+    return decorator
 
 
 @pytest.fixture(autouse=True)
@@ -662,6 +697,7 @@ class TestNativeWindowAlertE2E:
     """E2E tests for alerts in native windows."""
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_pywry_toast_is_available(self) -> None:
         """E2E: Verify PYWRY_TOAST is available in window."""
         from pywry.app import PyWry
@@ -693,6 +729,7 @@ class TestNativeWindowAlertE2E:
         assert result["hasDismiss"] is True
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_show_info_toast_renders(self) -> None:
         """E2E: Verify info toast renders correctly."""
         from pywry.app import PyWry
@@ -738,6 +775,7 @@ class TestNativeWindowAlertE2E:
         assert result["messageText"] == "Test info message"
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_show_confirm_toast_has_buttons(self) -> None:
         """E2E: Verify confirm toast has cancel and confirm buttons."""
         from pywry.app import PyWry
@@ -789,6 +827,7 @@ class TestNativeWindowAlertE2E:
         assert result["confirmText"] == "Confirm"
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_confirm_button_triggers_callback(self) -> None:
         """E2E: Verify confirm button triggers onConfirm callback."""
         from pywry.app import PyWry
@@ -836,6 +875,7 @@ class TestNativeWindowAlertE2E:
         assert result["toastDismissed"] is True
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_cancel_button_triggers_callback(self) -> None:
         """E2E: Verify cancel button triggers onCancel callback."""
         from pywry.app import PyWry
@@ -883,6 +923,7 @@ class TestNativeWindowAlertE2E:
         assert result["toastDismissed"] is True
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_dismiss_all_clears_toasts(self) -> None:
         """E2E: Verify dismissAllInWidget clears all toasts."""
         from pywry.app import PyWry
@@ -925,6 +966,7 @@ class TestNativeWindowAlertE2E:
         assert result["countAfter"] == 0
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_max_visible_limit_enforced(self) -> None:
         """E2E: Verify maxVisible limit is enforced."""
         from pywry.app import PyWry
@@ -964,6 +1006,7 @@ class TestNativeWindowAlertE2E:
         assert result["visibleCount"] <= result["maxVisible"]
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_toast_position_top_right(self) -> None:
         """E2E: Verify toast position top-right."""
         from pywry.app import PyWry
@@ -1001,6 +1044,7 @@ class TestNativeWindowAlertE2E:
         assert result["hasPositionClass"] is True
 
     @pytest.mark.e2e
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_pywry_alert_event_triggers_toast(self) -> None:
         """E2E: Verify pywry:alert event triggers toast notification."""
         from pywry.app import PyWry
