@@ -1706,9 +1706,12 @@ def wrap_content_with_toolbars(
     str
         Content wrapped with appropriate layout divs.
     """
+    # Toast container div - ALWAYS included for alert support
+    toast_container = "<div class='pywry-toast-container pywry-toast-container--top-right' aria-label='Notifications'></div>"
+
     if not toolbars and not extra_top_html:
-        # No toolbars - just wrap in pywry-content
-        return f"<div class='pywry-content'>{content}</div>"
+        # No toolbars - just wrap in pywry-content + toast container
+        return f"<div class='pywry-content'>{content}</div>{toast_container}"
 
     # Group toolbars by position
     toolbar_html: dict[str, list[str]] = {
@@ -1769,5 +1772,8 @@ def wrap_content_with_toolbars(
     # Header/Footer (outermost, full width)
     if header_str or footer_str:
         wrapped = f"<div class='pywry-wrapper-header'>{header_str}{wrapped}{footer_str}</div>"
+
+    # Add toast container (defined earlier, always included)
+    wrapped = wrapped + toast_container
 
     return wrapped

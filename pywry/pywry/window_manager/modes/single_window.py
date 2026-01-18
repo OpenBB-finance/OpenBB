@@ -198,6 +198,10 @@ class SingleWindowMode(WindowModeBase):
     def close(self, label: str) -> bool:
         """Close the window.
 
+        This closes the window but preserves lifecycle tracking and callbacks,
+        allowing the window to be reopened via show(). For full cleanup, use
+        the app's destroy() method instead.
+
         Parameters
         ----------
         label : str
@@ -222,9 +226,17 @@ class SingleWindowMode(WindowModeBase):
 
         debug(f"Closing single window '{self._label}'")
 
-        # Destroy lifecycle resources (this sends close_window IPC)
-        get_lifecycle().destroy(self._label)
+        # Close the window via IPC but DON'T destroy lifecycle/callbacks
+        # This allows the window to be reopened later
+        runtime.close_window(self._label)
         self._is_created = False
+        self._is_visible = False
+
+        # Mark as not destroyed in lifecycle (window is closed but trackable)
+        lifecycle = get_lifecycle()
+        resources = lifecycle.get(self._label)
+        if resources:
+            resources.is_destroyed = True  # Mark as needing recreation
 
         # Wait for window to actually be closed in the backend
         # This is important on Windows where the close operation can be slow

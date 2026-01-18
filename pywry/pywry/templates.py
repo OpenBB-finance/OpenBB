@@ -19,6 +19,7 @@ from .assets import (
     get_plotly_js,
     get_plotly_templates_js,
     get_pywry_css,
+    get_toast_css,
 )
 from .models import HtmlContent, ThemeMode, WindowConfig
 from .scripts import build_init_script
@@ -127,6 +128,11 @@ def build_base_styles(settings: PyWrySettings | None = None) -> str:
     # Load base pywry.css
     css = get_pywry_css()
     result = f"<style>{css}</style>" if css else ""
+
+    # Load toast.css for notifications
+    toast_css = get_toast_css()
+    if toast_css:
+        result += f"\n<style>{toast_css}</style>"
 
     # Load custom CSS file if specified
     if settings and settings.theme and settings.theme.css_file:

@@ -266,3 +266,28 @@ class WindowClosedPayload(BaseModel):
     """Payload for window closed notification."""
 
     window_label: str
+
+
+class AlertPayload(BaseModel):
+    """Enhanced alert event payload for pywry:alert system event.
+
+    Supports typed toast notifications with auto-dismiss, persistence,
+    and confirmation dialogs with callbacks.
+    """
+
+    message: str = Field(..., description="Alert message text (required)")
+    type: Literal["info", "success", "warning", "error", "confirm"] = Field(
+        default="info", description="Alert type determining icon and behavior"
+    )
+    title: str | None = Field(default=None, description="Optional alert title/header")
+    duration: int | None = Field(
+        default=None,
+        description="Auto-dismiss duration in ms (None uses type default)",
+    )
+    callback_event: str | None = Field(
+        default=None,
+        description="Event to emit on confirm/cancel (for type='confirm')",
+    )
+    position: Literal["top-right", "bottom-right", "bottom-left", "top-left"] = Field(
+        default="top-right", description="Toast position on screen"
+    )

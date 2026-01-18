@@ -21,6 +21,7 @@ from .config import PyWrySettings
 from .hot_reload import HotReloadManager
 from .log import debug, info, warn
 from .models import (
+    AlertPayload,
     HtmlContent,
     ThemeMode,
     WindowConfig,
@@ -321,7 +322,28 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
                     open_browser=False,
                 )
 
-            # Plain HTML with toolbars: use PyWryWidget (AnyWidget)
+            # Plain HTML with toolbars: use PyWryWidget (AnyWidget) if available
+            # Otherwise fall back to InlineWidget (IFrame)
+            from .widget import HAS_ANYWIDGET
+
+            if not HAS_ANYWIDGET:
+                # Fall back to InlineWidget when anywidget is not available
+                from . import inline as pywry_inline
+
+                return pywry_inline.show(
+                    content=html_str,
+                    title=title or self._default_config.title,
+                    width="100%",
+                    height=height or self._default_config.height,
+                    theme="dark" if self._theme == ThemeMode.DARK else "light",
+                    callbacks=plain_callbacks,
+                    include_plotly=include_plotly,
+                    include_aggrid=include_aggrid,
+                    aggrid_theme=aggrid_theme,
+                    toolbars=toolbars,
+                    open_browser=False,
+                )
+
             from .widget import PyWryWidget
 
             # Handle width - can be int (pixels), string (css value), or None
@@ -782,6 +804,45 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
 
         for lbl in labels:
             self.send_event(event_type, data, label=lbl)
+
+    def alert(
+        self,
+        message: str,
+        alert_type: Literal["info", "success", "warning", "error", "confirm"] = "info",
+        title: str | None = None,
+        duration: int | None = None,
+        callback_event: str | None = None,
+        position: Literal["top-right", "bottom-right", "bottom-left", "top-left"] = "top-right",
+        label: str | None = None,
+    ) -> None:
+        """Show a toast notification.
+
+        Parameters
+        ----------
+        message : str
+            The message to display.
+        alert_type : str
+            Alert type: 'info', 'success', 'warning', 'error', or 'confirm'.
+        title : str, optional
+            Optional title for the toast.
+        duration : int, optional
+            Auto-dismiss duration in ms. Defaults based on type.
+        callback_event : str, optional
+            Event name to emit when confirm dialog is answered.
+        position : str
+            Toast position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        label : str, optional
+            Window label. If None, targets all active windows.
+        """
+        payload = AlertPayload(
+            message=message,
+            type=alert_type,
+            title=title,
+            duration=duration,
+            callback_event=callback_event,
+            position=position,
+        )
+        self.emit("pywry:alert", payload.model_dump(exclude_none=True), label=label)
 
     def on(
         self,

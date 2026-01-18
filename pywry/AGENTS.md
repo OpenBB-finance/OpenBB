@@ -316,6 +316,55 @@ Events follow the format `namespace:event-name`:
 | `pywry:set-style` | Python → JS | Update element styles |
 | `pywry:set-content` | Python → JS | Update element innerHTML/textContent |
 | `pywry:download` | Python → JS | Trigger file download |
+| `pywry:alert` | Python → JS | Show toast notification |
+
+### Toast Notifications (`pywry:alert`)
+
+PyWry provides a unified toast notification system across all rendering paths.
+
+**Alert Types:**
+
+| Type | Behavior | Use Case |
+|------|----------|----------|
+| `info` | Auto-dismiss 5s | Status updates |
+| `success` | Auto-dismiss 3s | Completed actions |
+| `warning` | Persist until clicked | Important notices |
+| `error` | Persist until clicked | Errors requiring acknowledgment |
+| `confirm` | Blocks UI until response | User confirmation needed |
+
+**AlertPayload Model:**
+
+```python
+class AlertPayload(BaseModel):
+    message: str  # Required
+    type: Literal["info", "success", "warning", "error", "confirm"] = "info"
+    title: str | None = None
+    duration: int | None = None  # Auto-dismiss ms
+    callback_event: str | None = None  # Event on confirm/cancel
+    position: Literal["top-right", "bottom-right", "bottom-left", "top-left"] = "top-right"
+```
+
+**Usage:**
+
+```python
+# Convenience method
+app.alert("Data loaded", alert_type="success", label=label)
+
+# With emit
+app.emit("pywry:alert", {"message": "Done", "type": "info"}, label)
+
+# Confirm dialog with callback
+app.alert("Delete item?", alert_type="confirm", callback_event="app:confirm-delete", label=label)
+
+# Handle response
+@app.on("app:confirm-delete")
+def on_confirm(data, event_type, label):
+    if data.get("confirmed"):
+        # User clicked Confirm
+        pass
+```
+
+**Keyboard:** Press `Escape` to dismiss all visible toasts.
 
 ### JavaScript Bridge
 
@@ -603,6 +652,34 @@ Events include `widget_type` for identification:
 | `.pywry-toolbar` | Toolbar container |
 | `.pywry-plotly` | Plotly container |
 | `.pywry-grid` | AgGrid container |
+
+### Toast Notification Classes
+
+| Class | Purpose |
+|-------|---------|
+| `.pywry-toast-container` | Toast stack container (positioned absolutely) |
+| `.pywry-toast-container--top-right` | Top-right position (default) |
+| `.pywry-toast-container--blocking` | Elevated z-index for confirm |
+| `.pywry-toast` | Base toast styling |
+| `.pywry-toast--info/success/warning/error/confirm` | Type variants |
+| `.pywry-toast__icon` | Toast icon |
+| `.pywry-toast__title` | Toast title |
+| `.pywry-toast__message` | Toast message |
+| `.pywry-toast__close` | Close button |
+| `.pywry-toast__buttons` | Confirm dialog buttons |
+| `.pywry-toast__btn--cancel/--confirm` | Button variants |
+| `.pywry-toast-overlay` | Blocking overlay for confirm |
+| `.pywry-toast-overlay--visible` | Visible overlay state |
+
+**Toast CSS Variables:**
+
+```css
+.pywry-toast {
+  --pywry-toast-bg: rgba(30, 30, 30, 0.95);
+  --pywry-toast-color: #ffffff;
+  --pywry-toast-accent: #0ea5e9;  /* Left border color */
+}
+```
 
 ---
 

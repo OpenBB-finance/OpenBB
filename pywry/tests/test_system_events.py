@@ -329,3 +329,108 @@ class TestPywryBridgeSystemSupport:
         # Theme manager uses 'dark' and 'light' classes
         assert "classList.remove('light', 'dark')" in js
         assert "classList.add(resolvedMode)" in js
+
+
+# =============================================================================
+# Alert System Tests
+# =============================================================================
+
+
+class TestAlertSystemEvents:
+    """Tests for the pywry:alert toast notification system."""
+
+    def test_inline_alert_uses_pywry_toast(self) -> None:
+        """Verify inline mode uses PYWRY_TOAST for alerts."""
+        js = _get_inline_widget_js()
+        assert "PYWRY_TOAST" in js
+        assert "pywry:alert" in js
+
+    def test_widget_alert_uses_pywry_toast(self) -> None:
+        """Verify PyWryWidget uses PYWRY_TOAST for alerts."""
+        esm = _get_widget_esm()
+        assert "PYWRY_TOAST" in esm
+        assert "pywry:alert" in esm
+
+    def test_native_mode_alert_uses_pywry_toast(self) -> None:
+        """Verify native mode uses PYWRY_TOAST for alerts."""
+        js = _get_system_events_js()
+        assert "PYWRY_TOAST" in js
+        assert "pywry:alert" in js
+
+    def test_alert_supports_confirm_type(self) -> None:
+        """Verify alert handler distinguishes confirm type."""
+        js = _get_inline_widget_js()
+        assert "type === 'confirm'" in js or "type==='confirm'" in js
+
+    def test_toast_js_asset_available(self) -> None:
+        """Verify toast-notifications.js is available via assets."""
+        from pywry.assets import get_toast_notifications_js
+
+        js = get_toast_notifications_js()
+        assert "PYWRY_TOAST" in js
+        assert "show" in js
+        assert "confirm" in js
+        assert "dismiss" in js
+        assert "dismissAll" in js
+
+    def test_toast_css_asset_available(self) -> None:
+        """Verify toast.css is available via assets."""
+        from pywry.assets import get_toast_css
+
+        css = get_toast_css()
+        assert ".pywry-toast" in css
+        assert ".pywry-toast--info" in css
+
+    def test_alert_payload_model(self) -> None:
+        """Verify AlertPayload model has all required fields."""
+        from pywry.models import AlertPayload
+
+        payload = AlertPayload(
+            message="Test message",
+            type="warning",
+            title="Test Title",
+            duration=5000,
+            callback_event="my:callback",
+            position="bottom-left",
+        )
+        assert payload.message == "Test message"
+        assert payload.type == "warning"
+        assert payload.title == "Test Title"
+        assert payload.duration == 5000
+        assert payload.callback_event == "my:callback"
+        assert payload.position == "bottom-left"
+
+    def test_alert_payload_defaults(self) -> None:
+        """Verify AlertPayload has sensible defaults."""
+        from pywry.models import AlertPayload
+
+        payload = AlertPayload(message="Simple message")
+        assert payload.type == "info"
+        assert payload.position == "top-right"
+        assert payload.title is None
+        assert payload.duration is None
+        assert payload.callback_event is None
+
+    def test_emitting_widget_has_alert_method(self) -> None:
+        """Verify EmittingWidget provides alert() convenience method."""
+        from pywry.state_mixins import EmittingWidget
+
+        assert hasattr(EmittingWidget, "alert")
+
+        # Test that it calls emit correctly
+        class MockWidget(EmittingWidget):
+            """Mock widget for testing."""
+
+            def __init__(self) -> None:
+                self.last_event: tuple[str, dict] | None = None
+
+            def emit(self, event_type: str, data: dict) -> None:  # type: ignore[override]
+                self.last_event = (event_type, data)
+
+        widget = MockWidget()
+        widget.alert("Hello", alert_type="success", title="Done")
+        assert widget.last_event is not None
+        assert widget.last_event[0] == "pywry:alert"
+        assert widget.last_event[1]["message"] == "Hello"
+        assert widget.last_event[1]["type"] == "success"
+        assert widget.last_event[1]["title"] == "Done"

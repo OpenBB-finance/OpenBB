@@ -21,6 +21,12 @@ function render({ model, el }) {
     container.style.overflow = 'visible';
     el.appendChild(container);
 
+    // Set toast container for this widget instance
+    if (window.PYWRY_TOAST && window.PYWRY_TOAST.setContainer) {
+        window.PYWRY_TOAST.setContainer(container);
+        console.log('[PyWry Plotly Widget] PYWRY_TOAST container set');
+    }
+
     // Attach model to container for global dispatch lookup
     container._pywryModel = model;
 
@@ -56,7 +62,6 @@ function render({ model, el }) {
     };
 
     container._pywryInstance = pywry;
-    window.pywry = pywry;
 
     // =========================================================================
     // TOOLBAR HANDLERS - LOADED FROM CENTRALIZED SOURCE
@@ -271,6 +276,38 @@ function render({ model, el }) {
         }
     });
 
+    // Handle alert/toast notifications
+    pywry.on('pywry:alert', (data) => {
+        console.log('[PyWry Plotly] Alert received:', data);
+        if (window.PYWRY_TOAST) {
+            const type = data.type || 'info';
+            if (type === 'confirm') {
+                window.PYWRY_TOAST.confirm({
+                    message: data.message || data.text || '',
+                    title: data.title,
+                    position: data.position,
+                    container: container,
+                    onConfirm: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: true });
+                        }
+                    },
+                    onCancel: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: false });
+                        }
+                    }
+                });
+            } else {
+                window.PYWRY_TOAST.show({ ...data, container: container });
+            }
+        } else {
+            // Fallback to browser alert
+            const message = data.message || data.text || '';
+            alert(message);
+        }
+    });
+
     model.off('change:_py_event');
     model.off('change:content');
     model.off('change:figure_json');
@@ -279,7 +316,16 @@ function render({ model, el }) {
     model.on('change:_py_event', () => {
         try {
             const event = JSON.parse(model.get('_py_event') || '{}');
-            if (event.type) pywry._fire(event.type, event.data);
+            if (event.type) {
+                // Fire locally
+                pywry._fire(event.type, event.data);
+
+                // Bubbling: fire to global pywry only if not handled locally
+                const inlineHandledEvents = ['pywry:update-theme', 'pywry:alert'];
+                if (!inlineHandledEvents.includes(event.type) && window.pywry && window.pywry._fire && window.pywry !== pywry) {
+                    window.pywry._fire(event.type, event.data);
+                }
+            }
         } catch(e) {}
     });
 

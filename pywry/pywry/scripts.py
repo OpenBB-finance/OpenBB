@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .assets import get_toast_notifications_js
+
 
 PYWRY_BRIDGE_JS = """
 (function() {
@@ -244,10 +246,42 @@ PYWRY_SYSTEM_EVENTS_JS = """
         }
     });
 
-    // Handler for alert dialogs
+    // Handler for alert dialogs - uses PYWRY_TOAST for typed notifications
     window.pywry.on('pywry:alert', function(data) {
         var message = data.message || data.text || '';
-        alert(message);
+        var type = data.type || 'info';
+
+        // Use toast system if available
+        if (window.PYWRY_TOAST) {
+            if (type === 'confirm') {
+                window.PYWRY_TOAST.confirm({
+                    message: message,
+                    title: data.title,
+                    position: data.position,
+                    onConfirm: function() {
+                        if (data.callback_event) {
+                            window.pywry.emit(data.callback_event, { confirmed: true });
+                        }
+                    },
+                    onCancel: function() {
+                        if (data.callback_event) {
+                            window.pywry.emit(data.callback_event, { confirmed: false });
+                        }
+                    }
+                });
+            } else {
+                window.PYWRY_TOAST.show({
+                    message: message,
+                    title: data.title,
+                    type: type,
+                    duration: data.duration,
+                    position: data.position
+                });
+            }
+        } else {
+            // Fallback to browser alert
+            alert(message);
+        }
     });
 
     // Handler for replacing HTML content
@@ -319,10 +353,8 @@ PYWRY_SYSTEM_EVENTS_JS = """
             }
         });
 
-        window.__TAURI__.event.listen('pywry:alert', function(event) {
-            var message = event.payload.message || event.payload.text || '';
-            alert(message);
-        });
+        // pywry:alert is handled by window.pywry.on() - no need for duplicate Tauri listener
+        // The Tauri event fires window.pywry._fire() which triggers the pywry.on handler
 
         window.__TAURI__.event.listen('pywry:update-html', function(event) {
             if (event.payload.html) {
@@ -777,6 +809,7 @@ def build_init_script(
         f"window.__PYWRY_LABEL__ = '{window_label}';",
         PYWRY_BRIDGE_JS,
         PYWRY_SYSTEM_EVENTS_JS,
+        get_toast_notifications_js(),  # Toast notification system
         THEME_MANAGER_JS,
         EVENT_BRIDGE_JS,
         TOOLBAR_BRIDGE_JS,

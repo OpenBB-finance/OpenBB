@@ -29,6 +29,8 @@ from .assets import (
     get_plotly_js,
     get_plotly_templates_js,
     get_pywry_css,
+    get_toast_css,
+    get_toast_notifications_js,
 )
 from .config import get_settings
 from .models import ThemeMode
@@ -378,13 +380,49 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
         }}
     }});
 
-    // Register handler for showing alerts
+    // Register handler for showing alerts - uses PYWRY_TOAST for typed notifications
     window.pywry.on('pywry:alert', function(data) {{
-        const message = data.message || data.text || 'Alert';
+        const message = data.message || data.text || '';
+        const type = data.type || 'info';
+        // Get the widget container for scoped toast positioning
+        const container = document.querySelector('.pywry-widget') || document.body;
         if ({str(PYWRY_DEBUG).lower()}) {{
-            console.log('[PyWry] Alert:', message);
+            console.log('[PyWry] Alert:', type, message);
         }}
-        alert(message);
+
+        // Use toast system if available
+        if (window.PYWRY_TOAST) {{
+            if (type === 'confirm') {{
+                window.PYWRY_TOAST.confirm({{
+                    message: message,
+                    title: data.title,
+                    position: data.position,
+                    container: container,
+                    onConfirm: function() {{
+                        if (data.callback_event) {{
+                            window.pywry.emit(data.callback_event, {{ confirmed: true }});
+                        }}
+                    }},
+                    onCancel: function() {{
+                        if (data.callback_event) {{
+                            window.pywry.emit(data.callback_event, {{ confirmed: false }});
+                        }}
+                    }}
+                }});
+            }} else {{
+                window.PYWRY_TOAST.show({{
+                    message: message,
+                    title: data.title,
+                    type: type,
+                    duration: data.duration,
+                    position: data.position,
+                    container: container
+                }});
+            }}
+        }} else {{
+            // Fallback to browser alert
+            alert(message);
+        }}
     }});
 
     // Register handler for CSS injection - inject or update a style element
@@ -563,6 +601,9 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     }}
 }})();
 </script>
+<script>
+{get_toast_notifications_js()}
+</script>
 """
 
 
@@ -652,8 +693,16 @@ def _handle_widget_disconnect(widget_id: str, reason: str = "unknown") -> None:
     if widget_id in _state.connections:
         del _state.connections[widget_id]
 
-    # WebSocket close (e.g., page refresh) should keep the widget alive
-    if reason in ("client", "beacon", "server_shutdown"):
+    # These reasons indicate the browser tab is actually closing/leaving
+    # (not just a page refresh or websocket reconnect)
+    _remove_widget_reasons = (
+        "client",
+        "beacon",
+        "server_shutdown",
+        "beforeunload",  # Browser tab closing
+        "pagehide",  # Mobile/Safari tab closing
+    )
+    if reason in _remove_widget_reasons:
         if widget_id in _state.widgets:
             del _state.widgets[widget_id]
         if widget_id in _state.event_queues:
@@ -1083,6 +1132,8 @@ def block() -> None:
             _state.disconnect_event.clear()
     except KeyboardInterrupt:
         print("\n[PyWry] Interrupted, stopping server...")
+    finally:
+        # Always stop the server when block() exits
         stop_server()
 
 
@@ -1523,6 +1574,41 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         """
         self.emit(event_type, data)
 
+    def alert(
+        self,
+        message: str,
+        alert_type: str = "info",
+        title: str | None = None,
+        duration: int | None = None,
+        callback_event: str | None = None,
+        position: str = "top-right",
+    ) -> None:
+        """Show a toast notification.
+
+        Parameters
+        ----------
+        message : str
+            The message to display.
+        alert_type : str
+            Alert type: 'info', 'success', 'warning', 'error', or 'confirm'.
+        title : str, optional
+            Optional title for the toast.
+        duration : int, optional
+            Auto-dismiss duration in ms. Defaults based on type.
+        callback_event : str, optional
+            Event name to emit when confirm dialog is answered.
+        position : str
+            Toast position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        """
+        payload: dict[str, Any] = {"message": message, "type": alert_type, "position": position}
+        if title is not None:
+            payload["title"] = title
+        if duration is not None:
+            payload["duration"] = duration
+        if callback_event is not None:
+            payload["callback_event"] = callback_event
+        self.emit("pywry:alert", payload)
+
     def update(self, html: str) -> None:
         """Update the widget's HTML content.
 
@@ -1942,23 +2028,34 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
 
     # Build head with optional libraries
     pywry_css = get_pywry_css()
+    toast_css = get_toast_css()
     head_parts = [
         '<meta charset="utf-8">',
         f"<title>{title}</title>",
         f"<style>{pywry_css}</style>" if pywry_css else "",
+        f"<style>{toast_css}</style>" if toast_css else "",
         """<style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             html, body {
                 height: 100%;
                 width: 100%;
+                overflow: hidden;
             }
             body {
+                display: flex;
+                flex-direction: column;
+            }
+            .pywry-widget {
+                --pywry-widget-width: 100%;
+                --pywry-widget-height: 100%;
+                width: 100%;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 background: var(--pywry-bg-primary);
                 color: var(--pywry-text-primary);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                padding: 16px;
+                position: relative;
             }
         </style>""",
     ]
@@ -1985,16 +2082,49 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
     if toolbars:
         toolbar_script = f"<script>{get_toolbar_script(with_script_tag=False)}</script>"
 
+    # Determine widget theme class based on theme
+    if theme == "system":
+        widget_theme_class = (
+            "pywry-theme-system pywry-theme-dark"  # Default to dark, JS will update
+        )
+    elif theme == "light":
+        widget_theme_class = "pywry-theme-light"
+    else:
+        widget_theme_class = "pywry-theme-dark"
+
+    # Also set html class for CSS variable inheritance
+    html_theme_class = "light" if theme == "light" else "dark"
+
     # Build full HTML - bridge MUST be in head so window.pywry exists before user scripts run
+    # Note: wrap_content_with_toolbars already wraps content in pywry-content div
     html = f"""<!DOCTYPE html>
-<html>
+<html class="{html_theme_class}">
 <head>
     {"".join(head_parts)}
     {_get_pywry_bridge_js(widget_id)}
     {toolbar_script}
 </head>
 <body>
-    {content}
+    <div class="pywry-widget {widget_theme_class}">
+        {content}
+    </div>
+    <script>
+        // System theme detection - follows browser/OS preference
+        (function() {{
+            const widgetEl = document.querySelector('.pywry-widget');
+            if (widgetEl && widgetEl.classList.contains('pywry-theme-system')) {{
+                function applySystemTheme() {{
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                    widgetEl.classList.add(prefersDark ? 'pywry-theme-dark' : 'pywry-theme-light');
+                    document.documentElement.classList.remove('dark', 'light');
+                    document.documentElement.classList.add(prefersDark ? 'dark' : 'light');
+                }}
+                applySystemTheme();
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+            }}
+        }})();
+    </script>
 </body>
 </html>"""
 
@@ -2210,7 +2340,9 @@ def generate_plotly_html(
 </script>"""
 
     pywry_css = get_pywry_css()
+    toast_css = get_toast_css()
     pywry_style = f"<style>{pywry_css}</style>" if pywry_css else ""
+    toast_style = f"<style>{toast_css}</style>" if toast_css else ""
 
     # Determine widget theme class - "system" follows browser preferences
     if theme == "system":
@@ -2244,6 +2376,7 @@ def generate_plotly_html(
     {plotly_script}
     {templates_script}
     {pywry_style}
+    {toast_style}
     <style>
         html, body {{
             margin: 0;
@@ -2563,6 +2696,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
     all_css = _load_all_aggrid_theme_css()
     aggrid_css = all_css if all_css else get_aggrid_css(aggrid_theme, theme_mode)
     pywry_css = get_pywry_css()
+    toast_css = get_toast_css()
 
     return {
         "script": (
@@ -2573,6 +2707,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
         "defaults_script": f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else "",
         "style": f"<style>{aggrid_css}</style>" if aggrid_css else "",
         "pywry_style": f"<style>{pywry_css}</style>" if pywry_css else "",
+        "toast_style": f"<style>{toast_css}</style>" if toast_css else "",
     }
 
 
@@ -2675,6 +2810,7 @@ def generate_dataframe_html(
     {assets["defaults_script"]}
     {assets["style"]}
     {assets["pywry_style"]}
+    {assets["toast_style"]}
     <style>{_AGGRID_IFRAME_CSS}</style>
 </head>
 <body>
@@ -2816,6 +2952,7 @@ def generate_dataframe_html_from_config(
     {assets["defaults_script"]}
     {assets["style"]}
     {assets["pywry_style"]}
+    {assets["toast_style"]}
     <style>{_AGGRID_IFRAME_CSS}</style>
 </head>
 <body>

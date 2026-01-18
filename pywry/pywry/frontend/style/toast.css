@@ -1,0 +1,235 @@
+/**
+ * PyWry Toast Notification Styles
+ *
+ * Provides themed, animated toast notifications.
+ * Uses CSS custom properties for theming integration.
+ */
+
+/* Toast Container - positioned absolutely inside widget */
+.pywry-toast-container {
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    max-height: calc(100vh - 40px);
+    overflow: hidden;
+}
+
+/* Position variants */
+.pywry-toast-container--top-right {
+    top: 12px;
+    right: 12px;
+    align-items: flex-end;
+}
+
+.pywry-toast-container--bottom-right {
+    bottom: 12px;
+    right: 12px;
+    align-items: flex-end;
+    flex-direction: column-reverse;
+}
+
+.pywry-toast-container--top-left {
+    top: 12px;
+    left: 12px;
+    align-items: flex-start;
+}
+
+.pywry-toast-container--bottom-left {
+    bottom: 12px;
+    left: 12px;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+}
+
+/* Base Toast Styles */
+.pywry-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    min-width: 280px;
+    max-width: 420px;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.22), 0 0 1px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
+    opacity: 1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: var(--pywry-toast-bg, rgba(30, 30, 30, 0.95));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--pywry-toast-color, #ffffff);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--pywry-toast-accent, #0ea5e9);
+}
+
+/* Toast Icon */
+.pywry-toast__icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+/* Toast Content */
+.pywry-toast__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.pywry-toast__title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+}
+
+.pywry-toast__message {
+    opacity: 0.9;
+    word-wrap: break-word;
+}
+
+/* Close Button */
+.pywry-toast__close {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: -4px -8px -4px 4px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    opacity: 0.6;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 4px;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.pywry-toast__close:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Confirm Buttons */
+.pywry-toast__buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: flex-end;
+}
+
+.pywry-toast__btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.pywry-toast__btn:active {
+    transform: scale(0.98);
+}
+
+.pywry-toast__btn--cancel {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+}
+
+.pywry-toast__btn--cancel:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.pywry-toast__btn--confirm {
+    background-color: var(--pywry-toast-accent, #6366f1);
+    color: #ffffff;
+}
+
+.pywry-toast__btn--confirm:hover {
+    filter: brightness(1.1);
+}
+
+/* Type Variants - accent colors */
+.pywry-toast--info {
+    --pywry-toast-accent: #0ea5e9;
+}
+
+.pywry-toast--success {
+    --pywry-toast-accent: #22c55e;
+}
+
+.pywry-toast--warning {
+    --pywry-toast-accent: #f59e0b;
+}
+
+.pywry-toast--error {
+    --pywry-toast-accent: #ef4444;
+}
+
+.pywry-toast--confirm {
+    --pywry-toast-accent: #6366f1;
+}
+
+/* Hide close button on confirm (use buttons instead) */
+.pywry-toast--confirm .pywry-toast__close {
+    display: none;
+}
+
+/* Blocking Overlay for Confirm Toasts - scoped to widget container */
+.pywry-toast-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.pywry-toast-overlay--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Ensure confirm toast container is above overlay */
+.pywry-toast-container--blocking {
+    z-index: 1001;
+}
+
+/* Light theme variant */
+.pywry-theme-light .pywry-toast,
+.pywry-toast--light {
+    --pywry-toast-bg: rgba(255, 255, 255, 0.95);
+    --pywry-toast-color: #1f2937;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.pywry-theme-light .pywry-toast__close:hover,
+.pywry-toast--light .pywry-toast__close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.pywry-theme-light .pywry-toast__btn--cancel,
+.pywry-toast--light .pywry-toast__btn--cancel {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.pywry-theme-light .pywry-toast__btn--cancel:hover,
+.pywry-toast--light .pywry-toast__btn--cancel:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Light theme overlay variant */

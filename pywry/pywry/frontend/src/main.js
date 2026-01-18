@@ -192,13 +192,8 @@ function registerBuiltinHandlers() {
     }
   });
 
-  // pywry:alert - Show browser alert
-  window.pywry.on('pywry:alert', function(data) {
-    var message = data.message || data.text || '';
-    if (message) {
-      alert(message);
-    }
-  });
+  // pywry:alert is handled by PYWRY_SYSTEM_EVENTS_JS in scripts.py
+  // Do not duplicate the handler here to avoid double toasts
 
   // pywry:update-html - Replace entire widget content
   window.pywry.on('pywry:update-html', function(data) {

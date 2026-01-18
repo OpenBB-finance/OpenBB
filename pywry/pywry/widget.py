@@ -11,7 +11,7 @@ import uuid
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
-from .state_mixins import GridStateMixin, PlotlyStateMixin
+from .state_mixins import EmittingWidget, GridStateMixin, PlotlyStateMixin
 
 
 if TYPE_CHECKING:
@@ -46,7 +46,7 @@ def _get_toolbar_handlers_js() -> str:
 @lru_cache(maxsize=1)
 def _get_plotly_widget_esm() -> str:
     """Build the Plotly widget ESM by combining Plotly.js with the widget code."""
-    from .assets import get_plotly_js, get_plotly_templates_js
+    from .assets import get_plotly_js, get_plotly_templates_js, get_toast_notifications_js
 
     # Get the widget render code
     widget_js_file = _SRC_DIR / "plotly-widget.js"
@@ -69,9 +69,15 @@ def _get_plotly_widget_esm() -> str:
     # Get Plotly templates for theme switching
     templates_js = get_plotly_templates_js() or ""
 
+    # Get toast notification system
+    toast_js = get_toast_notifications_js() or ""
+
     # Wrap Plotly.js in IIFE to expose to window
     # Plotly 3.x UMD checks for AMD/CommonJS first, we force global export
     return f"""
+// Load toast notification system first
+{toast_js}
+
 console.log('[PyWry Plotly ESM] Module loading...');
 
 // Module-level reference to Plotly (survives re-renders within same module)
@@ -159,7 +165,7 @@ def _get_aggrid_css_all() -> str:
 @lru_cache(maxsize=1)
 def _get_aggrid_widget_esm() -> str:
     """Build the AG Grid widget ESM by combining AG Grid with widget code."""
-    from .assets import get_aggrid_defaults_js, get_aggrid_js
+    from .assets import get_aggrid_defaults_js, get_aggrid_js, get_toast_notifications_js
 
     aggrid_js = get_aggrid_js()
     if not aggrid_js:
@@ -168,6 +174,9 @@ def _get_aggrid_widget_esm() -> str:
     aggrid_defaults_js = get_aggrid_defaults_js()
     if not aggrid_defaults_js:
         raise RuntimeError("AG Grid defaults JS not found in bundled assets")
+
+    # Get toast notification system
+    toast_js = get_toast_notifications_js() or ""
 
     # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
     toolbar_handlers_js = _get_toolbar_handlers_js()
@@ -207,6 +216,12 @@ function render({ model, el }) {
     }
 
     el.appendChild(container);
+
+    // Set toast container for this widget instance
+    if (typeof PYWRY_TOAST !== 'undefined' && PYWRY_TOAST.setContainer) {
+        PYWRY_TOAST.setContainer(container);
+        console.log('[PyWry AG Grid Widget] PYWRY_TOAST container set');
+    }
 
     let gridApi = null;
 
@@ -345,6 +360,50 @@ function render({ model, el }) {
 
     // Attach local pywry to container for debugging if needed
     container._pywryInstance = pywry;
+
+    // Handle alert/toast notifications - registered via pywry.on() for consistent handling
+    pywry.on('pywry:alert', (data) => {
+        console.log('[PyWry AG Grid] Alert received:', data);
+        const message = data.message || data.text || '';
+        const type = data.type || 'info';
+        if (typeof PYWRY_TOAST !== 'undefined') {
+            if (type === 'confirm') {
+                PYWRY_TOAST.confirm({
+                    message: message,
+                    title: data.title,
+                    position: data.position,
+                    container: container,
+                    onConfirm: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: true });
+                        }
+                    },
+                    onCancel: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: false });
+                        }
+                    }
+                });
+            } else {
+                PYWRY_TOAST.show({
+                    message: message,
+                    title: data.title,
+                    type: type,
+                    duration: data.duration,
+                    position: data.position,
+                    container: container
+                });
+            }
+        } else {
+            alert(message);
+        }
+    });
+
+    // Remove old handlers to prevent duplicates on re-render
+    model.off('change:_py_event');
+    model.off('change:data');
+    model.off('change:columns');
+    model.off('change:theme');
 
     model.on('change:_py_event', () => {
         try {
@@ -537,11 +596,7 @@ function render({ model, el }) {
                     window.location.href = event.data.url;
                 }
 
-                // Handle alert dialogs
-                if (event.type === 'pywry:alert' && event.data) {
-                    const message = event.data.message || event.data.text || '';
-                    alert(message);
-                }
+                // Note: pywry:alert is handled via pywry.on() for consistent behavior across all widget types
 
                 // Handle HTML content update
                 if (event.type === 'pywry:update-html' && event.data && event.data.html) {
@@ -550,9 +605,15 @@ function render({ model, el }) {
                     initToolbarHandlers(container, pywry);
                 }
 
+                // Fire to registered handlers
+                // Note: pywry:alert is handled via pywry.on() for consistency with Plotly widget
+                const inlineHandledEvents = ['pywry:update-theme', 'pywry:inject-css', 'pywry:remove-css',
+                    'pywry:set-style', 'pywry:set-content', 'pywry:download', 'pywry:navigate',
+                    'pywry:update-html', 'pywry:alert'];
+                // Always fire to local pywry handlers (includes pywry:alert)
                 pywry._fire(event.type, event.data);
-                // Also fire on window.pywry for global handlers (e.g., show_notification)
-                if (window.pywry && window.pywry._fire) {
+                // Also fire non-inline-handled events to window.pywry for global handlers
+                if (!inlineHandledEvents.includes(event.type) && window.pywry && window.pywry._fire && window.pywry !== pywry) {
                     window.pywry._fire(event.type, event.data);
                 }
             }
@@ -674,6 +735,9 @@ export default { render };
 
     # AG Grid UMD checks for AMD (define) first - we must disable it temporarily
     return f"""
+// Load toast notification system first
+{toast_js}
+
 console.log('[PyWry AG Grid ESM] Module loading...');
 
 // Module-level reference to AG Grid (survives re-renders within same module)
@@ -766,22 +830,52 @@ if (!getAgGrid()) {{
 @lru_cache(maxsize=1)
 def _get_widget_esm() -> str:
     """Build the basic widget ESM with centralized toolbar handlers."""
+    from .assets import get_toast_notifications_js
+
     # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
     toolbar_handlers_js = _get_toolbar_handlers_js()
-    return _WIDGET_ESM.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
+
+    # Get toast notification system
+    toast_js = get_toast_notifications_js() or ""
+
+    # Prepend toast JS to the widget ESM
+    esm_with_toast = toast_js + "\n\n" + _WIDGET_ESM
+
+    return esm_with_toast.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
 
 
 # Basic widget ESM without Plotly
 _WIDGET_ESM = r"""
 function render({ model, el }) {
+    let modelHeight = model.get('height');
+    let modelWidth = model.get('width');
+
+    // Helper to ensure units (e.g. "200" -> "200px")
+    const toCss = (v) => {
+        if (!v) return v;
+        const s = String(v).trim();
+        return /^\d+$/.test(s) ? s + 'px' : s;
+    };
+
+    modelHeight = toCss(modelHeight);
+    modelWidth = toCss(modelWidth);
+
+    // CRITICAL: Set height on el (AnyWidget's container) to constrain output size
+    if (modelHeight) {
+        el.style.height = modelHeight;
+        // Ensure el is displayed as block/inline-block to respect height
+        if (!el.style.display) el.style.display = 'block';
+    }
+    if (modelWidth) {
+        el.style.width = modelWidth;
+    }
+
     const container = document.createElement('div');
     container.className = 'pywry-widget';
-    // Generate unique widget ID for CSS scoping
     container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
     container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
-    // Set CSS variables from model for flexible sizing
-    const modelHeight = model.get('height');
-    const modelWidth = model.get('width');
+
+    // Set CSS variables - CSS rules will use these via var(--pywry-widget-height)
     if (modelHeight) {
         container.style.setProperty('--pywry-widget-height', modelHeight);
     }
@@ -796,6 +890,12 @@ function render({ model, el }) {
     }
     applyTheme();
     el.appendChild(container);
+
+    // Set toast container for this widget instance
+    if (typeof PYWRY_TOAST !== 'undefined' && PYWRY_TOAST.setContainer) {
+        PYWRY_TOAST.setContainer(container);
+        console.log('[PyWry Basic Widget] PYWRY_TOAST container set');
+    }
 
     // Attach model to container for global dispatch lookup
     container._pywryModel = model;
@@ -882,11 +982,54 @@ function render({ model, el }) {
     // Attach local pywry to container for debugging if needed
     container._pywryInstance = pywry;
 
+    // Handle alert/toast notifications - registered via pywry.on() for consistent handling
+    pywry.on('pywry:alert', (data) => {
+        console.log('[PyWry Basic Widget] Alert received:', data);
+        const message = data.message || data.text || '';
+        const type = data.type || 'info';
+        if (typeof PYWRY_TOAST !== 'undefined') {
+            if (type === 'confirm') {
+                PYWRY_TOAST.confirm({
+                    message: message,
+                    title: data.title,
+                    position: data.position,
+                    container: container,
+                    onConfirm: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: true });
+                        }
+                    },
+                    onCancel: () => {
+                        if (data.callback_event) {
+                            pywry.emit(data.callback_event, { confirmed: false });
+                        }
+                    }
+                });
+            } else {
+                PYWRY_TOAST.show({
+                    message: message,
+                    title: data.title,
+                    type: type,
+                    duration: data.duration,
+                    position: data.position,
+                    container: container
+                });
+            }
+        } else {
+            alert(message);
+        }
+    });
+
     // =========================================================================
     // TOOLBAR HANDLERS - LOADED FROM CENTRALIZED SOURCE
     // See: frontend/src/toolbar-handlers.js
     // =========================================================================
     __TOOLBAR_HANDLERS__
+
+    // Remove old handlers to prevent duplicates on re-render
+    model.off('change:_py_event');
+    model.off('change:content');
+    model.off('change:theme');
 
     model.on('change:_py_event', () => {
         try {
@@ -1003,11 +1146,7 @@ function render({ model, el }) {
                     window.location.href = event.data.url;
                 }
 
-                // Handle alert dialogs
-                if (event.type === 'pywry:alert' && event.data) {
-                    const message = event.data.message || event.data.text || '';
-                    alert(message);
-                }
+                // Note: pywry:alert is handled via pywry.on() for consistent behavior across all widget types
 
                 // Handle HTML content update
                 if (event.type === 'pywry:update-html' && event.data && event.data.html) {
@@ -1016,9 +1155,15 @@ function render({ model, el }) {
                     initToolbarHandlers(container, pywry);
                 }
 
+                // Fire to registered handlers
+                // Note: pywry:alert is handled via pywry.on() for consistency with Plotly widget
+                const inlineHandledEvents = ['pywry:update-theme', 'pywry:inject-css', 'pywry:remove-css',
+                    'pywry:set-style', 'pywry:set-content', 'pywry:download', 'pywry:navigate',
+                    'pywry:update-html', 'pywry:alert'];
+                // Always fire to local pywry handlers (includes pywry:alert)
                 pywry._fire(event.type, event.data);
-                // Also fire on window.pywry for global handlers (e.g., user scripts using window.pywry.on)
-                if (window.pywry && window.pywry._fire && window.pywry !== pywry) {
+                // Also fire non-inline-handled events to window.pywry for global handlers
+                if (!inlineHandledEvents.includes(event.type) && window.pywry && window.pywry._fire && window.pywry !== pywry) {
                     window.pywry._fire(event.type, event.data);
                 }
             }
@@ -1048,17 +1193,27 @@ function render({ model, el }) {
 
     function renderContent() {
         const content = model.get('content');
+        console.log('[PyWry Basic] renderContent() called');
+        console.log('[PyWry Basic] content length:', content ? content.length : 0);
+        console.log('[PyWry Basic] content preview:', content ? content.substring(0, 100) : 'EMPTY');
         if (content) {
             container.innerHTML = content;
+            console.log('[PyWry Basic] container.innerHTML SET, container.children.length:', container.children.length);
             setTimeout(() => runScripts(container), 0);
-            // Initialize toolbar handlers for dropdowns, buttons, inputs, etc.
             setTimeout(() => initToolbarHandlers(container, pywry), 10);
+        } else {
+            console.error('[PyWry Basic] NO CONTENT - model.get(content) returned empty!');
+            container.innerHTML = '<div style="color:red;padding:20px;background:yellow;">ERROR: No content received from Python. content=' + JSON.stringify(content) + '</div>';
         }
     }
 
     model.on('change:content', renderContent);
     model.on('change:theme', applyTheme);
+
+    // Call renderContent immediately AND after a delay to handle async trait sync
     renderContent();
+    setTimeout(renderContent, 0);
+    setTimeout(renderContent, 100);
 }
 export default { render };
 """
@@ -1066,15 +1221,17 @@ export default { render };
 
 @lru_cache(maxsize=1)
 def _get_pywry_base_css() -> str:
-    """Load pywry base CSS for widget theming."""
-    from .assets import get_pywry_css
+    """Load pywry base CSS for widget theming, including toast styles."""
+    from .assets import get_pywry_css, get_toast_css
 
-    return get_pywry_css() or ""
+    base_css = get_pywry_css() or ""
+    toast_css = get_toast_css() or ""
+    return f"{base_css}\n{toast_css}"
 
 
 if HAS_ANYWIDGET:
 
-    class PyWryWidget(anywidget.AnyWidget):  # pylint: disable=abstract-method
+    class PyWryWidget(anywidget.AnyWidget, EmittingWidget):  # pylint: disable=abstract-method
         """Widget for inline notebook rendering using anywidget (no Plotly).
 
         Implements BaseWidget protocol for unified API.
@@ -1099,13 +1256,15 @@ if HAS_ANYWIDGET:
             **kwargs,
         ):
             """Initialize the widget."""
+            # Set traits BEFORE calling super().__init__() to ensure they're available when render() is called
+            kwargs["content"] = content
+            kwargs["theme"] = theme
+            kwargs["width"] = width
+            kwargs["height"] = height
+
             super().__init__(**kwargs)
             self._label = f"w-{uuid.uuid4().hex[:8]}"
             self._handlers: dict[str, list[Callable[[dict[str, Any], str, str], Any]]] = {}
-            self.content = content
-            self.theme = theme
-            self.width = width
-            self.height = height
             self.observe(self._handle_js_event, names=["_js_event"])
 
         @property
@@ -1436,7 +1595,7 @@ if HAS_ANYWIDGET:
 
 else:
 
-    class PyWryWidget:  # type: ignore[no-redef]
+    class PyWryWidget(EmittingWidget):  # type: ignore[no-redef]
         """Fallback when anywidget is not available."""
 
         def __init__(self, **kwargs: Any) -> None:

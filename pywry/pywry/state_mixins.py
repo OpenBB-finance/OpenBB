@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 
-from typing import Any
+from typing import Any, Literal
 
 
 class EmittingWidget:
@@ -24,6 +24,41 @@ class EmittingWidget:
         This method must be implemented by the consuming class (e.g., PyWryWidget).
         """
         raise NotImplementedError("Classes mixing in EmittingWidget must implement 'emit'")
+
+    def alert(
+        self,
+        message: str,
+        alert_type: Literal["info", "success", "warning", "error", "confirm"] = "info",
+        title: str | None = None,
+        duration: int | None = None,
+        callback_event: str | None = None,
+        position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = "top-right",
+    ) -> None:
+        """Show a toast notification.
+
+        Parameters
+        ----------
+        message : str
+            The message to display.
+        alert_type : str
+            Alert type: 'info', 'success', 'warning', 'error', or 'confirm'.
+        title : str, optional
+            Optional title for the toast.
+        duration : int, optional
+            Auto-dismiss duration in ms. Defaults based on type.
+        callback_event : str, optional
+            Event name to emit when confirm dialog is answered.
+        position : str
+            Toast position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        """
+        payload: dict[str, Any] = {"message": message, "type": alert_type, "position": position}
+        if title is not None:
+            payload["title"] = title
+        if duration is not None:
+            payload["duration"] = duration
+        if callback_event is not None:
+            payload["callback_event"] = callback_event
+        self.emit("pywry:alert", payload)
 
 
 def _normalize_figure(figure: Any) -> dict[str, Any]:

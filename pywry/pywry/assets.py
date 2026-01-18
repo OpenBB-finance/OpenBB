@@ -248,3 +248,42 @@ def clear_cache() -> None:
     get_aggrid_defaults_js.cache_clear()
     get_pywry_css.cache_clear()
     get_openbb_icon.cache_clear()
+    get_toast_notifications_js.cache_clear()
+    get_toast_css.cache_clear()
+
+
+@lru_cache(maxsize=1)
+def get_toast_notifications_js() -> str:
+    """Get the PyWry Toast notification JavaScript.
+
+    This provides the PYWRY_TOAST object for showing typed toast
+    notifications (info, success, warning, error, confirm).
+
+    Returns
+    -------
+    str
+        The toast notifications JavaScript content.
+    """
+    js_file = SRC_DIR / "toast-notifications.js"
+    if js_file.exists():
+        debug("Loading toast notifications JS from src")
+        return js_file.read_text(encoding="utf-8")
+    debug("Toast notifications JS not found")
+    return ""
+
+
+@lru_cache(maxsize=1)
+def get_toast_css() -> str:
+    """Get the PyWry Toast CSS styles.
+
+    Returns
+    -------
+    str
+        The toast CSS content.
+    """
+    css_file = STYLE_DIR / "toast.css"
+    if css_file.exists():
+        debug("Loading toast CSS from style")
+        return css_file.read_text(encoding="utf-8")
+    debug("Toast CSS not found")
+    return ""
