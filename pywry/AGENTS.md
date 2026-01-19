@@ -13,6 +13,7 @@
 | **Style** | Ruff (line length 100), NumPy docstrings |
 | **Testing** | pytest with fixtures, `PYWRY_HEADLESS=1` for CI |
 | **Architecture** | Subprocess IPC (desktop) + FastAPI inline server (notebooks) |
+| **Scaling** | Deploy mode with Redis-backed state for multi-worker deployments |
 
 ---
 
@@ -36,6 +37,8 @@ Built on [PyTauri](https://pypi.org/project/pytauri/) (which uses Rust's [Tauri]
 - **Dynamic Theming**: Light, Dark, and System modes
 - **Event System**: Bidirectional Python ↔ JavaScript communication
 - **CLI Tools**: Configuration management and project initialization
+- **Deploy Mode**: Horizontal scaling with Redis-backed state for multi-worker deployments
+- **Authentication & RBAC**: JWT-based authentication with role-based access control
 
 ### Dependencies
 
@@ -53,6 +56,7 @@ websockets >= 15.0.1
 requests >= 2.32.5
 pandas >= 1.5.3
 anywidget >= 0.9.0 (optional, recommended)
+redis >= 5.0.0 (optional, for deploy mode)
 ```
 
 ---
@@ -129,6 +133,13 @@ pywry/
 │   ├── assets/          # Compressed libraries (plotly, ag-grid, icons)
 │   ├── src/             # JavaScript files (main.js, aggrid-defaults.js, plotly-defaults.js)
 │   └── style/           # CSS files (pywry.css)
+├── state/               # Pluggable state management for deploy mode
+│   ├── __init__.py      # Public exports (stores, factory functions, types)
+│   ├── _factory.py      # Factory functions for store instantiation
+│   ├── memory.py        # In-memory state backends (default)
+│   ├── redis.py         # Redis-backed state backends
+│   ├── types.py         # Type definitions (StateBackend, WidgetData, etc.)
+│   └── auth.py          # Authentication and RBAC utilities
 ├── utils/               # Utility helpers
 └── window_manager/      # Window mode implementations
     ├── controller.py
@@ -173,12 +184,24 @@ from pywry.inline import show_plotly, show_dataframe, block, stop_server
 
 # Settings
 from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings
+from pywry import DeploySettings  # Deploy mode configuration
 
 # Widget classes (PyWryWidget for notebooks)
 from pywry import PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget
 
 # Runtime (alternative for sending events in native mode)
 from pywry import runtime
+
+# State management (deploy mode)
+from pywry.state import (
+    get_widget_store,      # Factory for WidgetStore
+    get_event_bus,         # Factory for EventBus
+    get_connection_router, # Factory for ConnectionRouter
+    get_session_store,     # Factory for SessionStore
+    is_deploy_mode,        # Check if deploy mode is enabled
+    get_worker_id,         # Get current worker ID
+)
+from pywry.state import StateBackend, WidgetData, EventMessage, ConnectionInfo, UserSession
 ```
 
 ### PyWry Class
@@ -478,6 +501,7 @@ widget = app.show(
 | `log` | `PYWRY_LOG__` | Logging configuration |
 | `timeout` | `PYWRY_TIMEOUT__` | Timeout values |
 | `asset` | `PYWRY_ASSET__` | Library versions |
+| `deploy` | `PYWRY_DEPLOY__` | Deploy mode and state backend |
 
 ### Example pywry.toml
 
@@ -494,7 +518,83 @@ debounce_ms = 100
 
 [log]
 level = "WARNING"
+
+[deploy]
+state_backend = "redis"
+redis_url = "redis://localhost:6379/0"
+redis_prefix = "pywry:"
 ```
+
+---
+
+## Deploy Mode & Scaling
+
+Deploy mode enables horizontal scaling for multi-worker deployments (e.g., behind a load balancer).
+
+### When to Use Deploy Mode
+
+| Scenario | Deploy Mode | Backend |
+|----------|-------------|---------|
+| Single process (development, notebooks) | Not needed | Memory (default) |
+| Multiple workers (gunicorn, uvicorn) | Required | Redis |
+| Load-balanced deployment | Required | Redis |
+| Kubernetes / Docker Swarm | Required | Redis |
+
+### State Stores
+
+| Store | Purpose | Key Methods |
+|-------|---------|-------------|
+| `WidgetStore` | Widget metadata persistence | `get()`, `set()`, `delete()`, `list_widgets()` |
+| `EventBus` | Cross-worker event routing | `publish()`, `subscribe()` |
+| `ConnectionRouter` | WebSocket connection tracking | `register()`, `unregister()`, `get_worker()` |
+| `SessionStore` | User session management | `get_session()`, `set_session()`, `delete_session()` |
+
+### Factory Functions
+
+```python
+from pywry.state import (
+    get_widget_store,      # Returns WidgetStore (memory or redis)
+    get_event_bus,         # Returns EventBus (memory or redis)
+    get_connection_router, # Returns ConnectionRouter
+    get_session_store,     # Returns SessionStore
+    is_deploy_mode,        # Returns True if state_backend != "memory"
+    get_worker_id,         # Returns unique worker identifier
+)
+```
+
+### Environment Variables
+
+```bash
+# Enable Redis backend
+PYWRY_DEPLOY__STATE_BACKEND=redis
+PYWRY_DEPLOY__REDIS_URL=redis://localhost:6379/0
+PYWRY_DEPLOY__REDIS_PREFIX=pywry:
+
+# TTL settings
+PYWRY_DEPLOY__WIDGET_TTL=86400      # 24 hours
+PYWRY_DEPLOY__CONNECTION_TTL=300    # 5 minutes
+
+# Authentication (optional)
+PYWRY_DEPLOY__ENABLE_AUTH=true
+PYWRY_DEPLOY__AUTH_SECRET=your-secret-key
+PYWRY_DEPLOY__RBAC_ENABLED=true
+PYWRY_DEPLOY__DEFAULT_ROLE=viewer
+```
+
+### DeploySettings Reference
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `state_backend` | `StateBackend` | `memory` | `"memory"` or `"redis"` |
+| `redis_url` | `str` | `redis://localhost:6379/0` | Redis connection URL |
+| `redis_prefix` | `str` | `pywry:` | Key prefix for Redis keys |
+| `widget_ttl` | `int` | `86400` | Widget data TTL (seconds) |
+| `connection_ttl` | `int` | `300` | Connection registration TTL |
+| `auto_cleanup` | `bool` | `True` | Auto-cleanup expired entries |
+| `enable_auth` | `bool` | `False` | Enable JWT authentication |
+| `auth_secret` | `str \| None` | `None` | JWT signing secret |
+| `rbac_enabled` | `bool` | `False` | Enable role-based access |
+| `default_role` | `str` | `viewer` | Default user role |
 
 ---
 
@@ -535,8 +635,22 @@ level = "WARNING"
 | `SecuritySettings` | `config.py` | CSP configuration |
 | `ServerSettings` | `config.py` | FastAPI server settings |
 | `WindowSettings` | `config.py` | Default window properties |
+| `DeploySettings` | `config.py` | Deploy mode and state backend settings |
 | `WindowConfig` | `models.py` | Window properties model |
 | `HtmlContent` | `models.py` | Content with files/scripts |
+
+### State Classes (Deploy Mode)
+
+| Class | File | Purpose |
+|-------|------|---------|
+| `WidgetStore` | `state/memory.py`, `state/redis.py` | Widget metadata persistence |
+| `EventBus` | `state/memory.py`, `state/redis.py` | Cross-worker event routing |
+| `ConnectionRouter` | `state/memory.py`, `state/redis.py` | WebSocket connection tracking |
+| `SessionStore` | `state/memory.py`, `state/redis.py` | User session management |
+| `WidgetData` | `state/types.py` | Widget metadata model |
+| `EventMessage` | `state/types.py` | Event payload model |
+| `ConnectionInfo` | `state/types.py` | Connection metadata model |
+| `UserSession` | `state/types.py` | Session data model |
 
 ### Enums
 
@@ -545,6 +659,7 @@ level = "WARNING"
 | `ThemeMode` | `models.py` | `LIGHT`, `DARK`, `SYSTEM` |
 | `WindowMode` | `models.py` | `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER` |
 | `NotebookEnvironment` | `notebook.py` | `NONE`, `COLAB`, `KAGGLE`, `AZURE`, `VSCODE`, `JUPYTERLAB`, etc. |
+| `StateBackend` | `state/types.py` | `MEMORY`, `REDIS` |
 
 ---
 

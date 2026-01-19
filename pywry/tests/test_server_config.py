@@ -172,14 +172,14 @@ class TestServerSettingsUvicorn:
         assert settings.workers == 1
 
     def test_default_log_level(self):
-        """Default log level is warning."""
+        """Default log level is info."""
         settings = ServerSettings()
-        assert settings.log_level == "warning"
+        assert settings.log_level == "info"
 
     def test_default_access_log(self):
-        """Access log is disabled by default."""
+        """Access log is enabled by default."""
         settings = ServerSettings()
-        assert settings.access_log is False
+        assert settings.access_log is True
 
     def test_default_reload(self):
         """Reload is disabled by default."""
@@ -553,6 +553,114 @@ class TestInlineServerConfig:
 
 
 # =============================================================================
+# WebSocket Security Settings Tests
+# =============================================================================
+
+
+class TestWebSocketSecurityDefaults:
+    """Tests for WebSocket security settings defaults."""
+
+    def test_default_allowed_origins_empty(self):
+        """Default allowed origins is empty list (allow any, rely on token)."""
+        settings = ServerSettings()
+        assert settings.websocket_allowed_origins == []
+
+    def test_default_require_token_true(self):
+        """Token auth is enabled by default."""
+        settings = ServerSettings()
+        assert settings.websocket_require_token is True
+
+    def test_default_internal_api_header(self):
+        """Default internal API header name."""
+        settings = ServerSettings()
+        assert settings.internal_api_header == "X-PyWry-Token"
+
+    def test_default_internal_api_token_none(self):
+        """Internal API token defaults to None (auto-generated)."""
+        settings = ServerSettings()
+        assert settings.internal_api_token is None
+
+    def test_default_strict_widget_auth_false(self):
+        """Strict widget auth is disabled by default (notebook mode)."""
+        settings = ServerSettings()
+        assert settings.strict_widget_auth is False
+
+
+class TestWebSocketSecurityCustom:
+    """Tests for WebSocket security settings custom values."""
+
+    def test_custom_allowed_origins_list(self):
+        """Allowed origins can be set as list."""
+        origins = ["http://localhost:8080", "https://app.example.com"]
+        settings = ServerSettings(websocket_allowed_origins=origins)
+        assert settings.websocket_allowed_origins == origins
+
+    def test_custom_allowed_origins_comma_string(self):
+        """Allowed origins can be parsed from comma-separated string."""
+        settings = ServerSettings(websocket_allowed_origins="http://a.com,https://b.com")
+        assert settings.websocket_allowed_origins == ["http://a.com", "https://b.com"]
+
+    def test_disable_token_auth(self):
+        """Token auth can be disabled."""
+        settings = ServerSettings(websocket_require_token=False)
+        assert settings.websocket_require_token is False
+
+    def test_custom_internal_api_header(self):
+        """Custom internal API header name."""
+        settings = ServerSettings(internal_api_header="X-Custom-Auth")
+        assert settings.internal_api_header == "X-Custom-Auth"
+
+    def test_custom_internal_api_token(self):
+        """Custom internal API token."""
+        settings = ServerSettings(internal_api_token="my-secret-token")
+        assert settings.internal_api_token == "my-secret-token"
+
+    def test_enable_strict_widget_auth(self):
+        """Strict widget auth can be enabled (browser mode)."""
+        settings = ServerSettings(strict_widget_auth=True)
+        assert settings.strict_widget_auth is True
+
+
+class TestWebSocketSecurityEnvVars:
+    """Tests for WebSocket security via environment variables."""
+
+    def test_allowed_origins_from_env(self, clean_env):
+        """Allowed origins from environment variable."""
+        os.environ["PYWRY_SERVER__WEBSOCKET_ALLOWED_ORIGINS"] = (
+            "http://localhost:8080,https://app.example.com"
+        )
+        settings = ServerSettings()
+        assert settings.websocket_allowed_origins == [
+            "http://localhost:8080",
+            "https://app.example.com",
+        ]
+
+    def test_require_token_from_env(self, clean_env):
+        """Token auth from environment variable."""
+        os.environ["PYWRY_SERVER__WEBSOCKET_REQUIRE_TOKEN"] = "false"
+        settings = ServerSettings()
+        assert settings.websocket_require_token is False
+
+    def test_internal_api_header_from_env(self, clean_env):
+        """Internal API header from environment variable."""
+        os.environ["PYWRY_SERVER__INTERNAL_API_HEADER"] = "X-My-Auth"
+        settings = ServerSettings()
+        assert settings.internal_api_header == "X-My-Auth"
+
+    def test_internal_api_token_from_env(self, clean_env):
+        """Internal API token from environment variable."""
+        os.environ["PYWRY_SERVER__INTERNAL_API_TOKEN"] = "env-secret-token"
+        settings = ServerSettings()
+        assert settings.internal_api_token == "env-secret-token"
+
+    def test_strict_widget_auth_from_env(self, clean_env):
+        """Strict widget auth from environment variable."""
+        os.environ["PYWRY_SERVER__STRICT_WIDGET_AUTH"] = "true"
+        settings = ServerSettings()
+        assert settings.strict_widget_auth is True
+
+
+# =============================================================================
 # Edge Cases
 # =============================================================================
 
@@ -594,3 +702,18 @@ class TestServerSettingsEdgeCases:
         """None for CORS fields becomes empty list."""
         settings = ServerSettings(cors_origins=None)
         assert settings.cors_origins == []
+
+    def test_empty_allowed_origins(self):
+        """Empty allowed origins list."""
+        settings = ServerSettings(websocket_allowed_origins=[])
+        assert settings.websocket_allowed_origins == []
+
+    def test_empty_string_allowed_origins(self):
+        """Empty string for allowed origins."""
+        settings = ServerSettings(websocket_allowed_origins="")
+        assert settings.websocket_allowed_origins == []
+
+    def test_none_allowed_origins_becomes_empty(self):
+        """None for allowed origins becomes empty list."""
+        settings = ServerSettings(websocket_allowed_origins=None)
+        assert settings.websocket_allowed_origins == []

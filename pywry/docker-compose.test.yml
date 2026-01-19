@@ -1,0 +1,23 @@
+# Docker Compose for PyWry Redis integration testing
+#
+# Usage:
+#   docker-compose -f docker-compose.test.yml up -d     # Start Redis
+#   pytest tests/test_state_redis_integration.py -v     # Run tests locally
+#   docker-compose -f docker-compose.test.yml down -v   # Cleanup
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

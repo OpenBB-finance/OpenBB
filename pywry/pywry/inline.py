@@ -1,8 +1,4 @@
-"""FastAPI-based inline notebook rendering for PyWry.
-
-Like Dash, this runs a local server and displays via IFrame.
-Supports ALL PyWry features: HTML content, Plotly, AG Grid, callbacks.
-"""
+"""IFrame Rendering Path and WebSocket Bridge for PyWry Widgets."""
 # pylint: disable=too-many-lines,wrong-import-position
 # mypy: disable-error-code="import-untyped,no-untyped-call,no-any-return"
 # flake8: noqa S608
@@ -44,6 +40,9 @@ from .state_mixins import (
 from .toolbar import Toolbar, get_toolbar_script, wrap_content_with_toolbars
 from .widget_protocol import BaseWidget  # noqa: TC001
 
+# Explicitly export BaseWidget to satisfy mypy explicit re-export check
+__all__ = ["BaseWidget", "InlineWidget"]
+
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable
@@ -81,7 +80,7 @@ try:
 
     from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
     from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import HTMLResponse
+    from fastapi.responses import HTMLResponse, Response
 
     HAS_FASTAPI = True
 except ImportError:
@@ -99,7 +98,7 @@ except ImportError:
 
 
 # Global server state
-class _ServerState:
+class _ServerState:  # pylint: disable=too-many-instance-attributes
     def __init__(self) -> None:
         self.server: Any = None
         self.server_thread: threading.Thread | None = None
@@ -108,29 +107,352 @@ class _ServerState:
         self.port: int | None = None
         self.host: str | None = None
         self.widget_prefix: str = "/widget"  # Configurable URL prefix
-        self.widgets: dict[str, dict[str, Any]] = {}
-        self.event_queues: dict[str, asyncio.Queue[Any]] = {}
+
+        # === Local-only state (not externalized) ===
+        # Callbacks and output widgets must stay in-process (not serializable)
+        self.local_widgets: dict[str, dict[str, Any]] = {}
+        # WebSocket handles are process-specific
         self.connections: dict[str, WebSocket] = {}
+        self.event_queues: dict[str, asyncio.Queue[Any]] = {}
         self.callback_queue: queue.Queue[Any] = queue.Queue()
         self.shutdown_event: asyncio.Event | None = None
         # Event signaled when all widgets disconnect (for block())
         self.disconnect_event: threading.Event = threading.Event()
 
+        # === Local mode state ===
+        # Widget state for single-process (non-deploy) mode
+        self.widgets: dict[str, dict[str, Any]] = {}
+        self.widget_tokens: dict[str, str] = {}
+        # Internal API token for protecting HTTP endpoints
+        self.internal_api_token: str | None = None
+
+        # === Pluggable backends (lazily initialized) ===
+        self._widget_store: Any | None = None
+        self._callback_registry: Any | None = None
+        self._connection_router: Any | None = None
+        self._worker_id: str | None = None
+
+    @property
+    def worker_id(self) -> str:
+        """Get unique worker identifier."""
+        if self._worker_id is None:
+            self._worker_id = f"worker-{uuid.uuid4().hex[:8]}"
+        return self._worker_id
+
+    def get_widget_store(self) -> Any:
+        """Get the configured widget store (lazy initialization)."""
+        if self._widget_store is None:
+            from .state import get_widget_store as _get_store
+
+            self._widget_store = _get_store()
+        return self._widget_store
+
+    def get_callback_registry(self) -> Any:
+        """Get the local callback registry."""
+        if self._callback_registry is None:
+            from .state.callbacks import CallbackRegistry
+
+            self._callback_registry = CallbackRegistry()
+        return self._callback_registry
+
+    def get_connection_router(self) -> Any:
+        """Get the configured connection router (lazy initialization)."""
+        if self._connection_router is None:
+            from .state import get_connection_router as _get_router
+
+            self._connection_router = _get_router()
+        return self._connection_router
+
+    # === Unified Widget Access (works in both modes) ===
+
+    def register_widget(
+        self,
+        widget_id: str,
+        html: str,
+        callbacks: dict[str, Any] | None = None,
+        output: Any = None,
+        token: str | None = None,
+    ) -> None:
+        """Register a widget with HTML content and optional callbacks.
+
+        In deploy mode, HTML/token are stored externally; callbacks stay local.
+        In normal mode, everything is stored in self.widgets dict.
+        """
+        from .state import is_deploy_mode
+
+        # Always store local-only data (callbacks, output widget)
+        self.local_widgets[widget_id] = {
+            "callbacks": callbacks or {},
+            "output": output,
+        }
+
+        if is_deploy_mode():
+            # Store HTML externally via async store
+            from .state import run_async
+
+            store = self.get_widget_store()
+            run_async(store.register(widget_id, html, token=token))
+
+            # Register callbacks in local registry
+            registry = self.get_callback_registry()
+            for event_type, callback in (callbacks or {}).items():
+                run_async(registry.register(widget_id, event_type, callback))
+        else:
+            # Local mode: store everything in widgets dict
+            self.widgets[widget_id] = {
+                "html": html,
+                "callbacks": callbacks or {},
+                "output": output,
+            }
+            if token:
+                self.widget_tokens[widget_id] = token
+
+    def get_widget_html(self, widget_id: str) -> str | None:
+        """Get widget HTML content."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            return run_async(store.get_html(widget_id))
+        widget = self.widgets.get(widget_id)
+        return widget["html"] if widget else None
+
+    def widget_exists(self, widget_id: str) -> bool:
+        """Check if widget exists."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            return run_async(store.exists(widget_id))
+        return widget_id in self.widgets
+
+    def get_widget_callbacks(self, widget_id: str) -> dict[str, Any]:
+        """Get callbacks for a widget (always local)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            local = self.local_widgets.get(widget_id, {})
+            return local.get("callbacks", {})
+        widget = self.widgets.get(widget_id, {})
+        return widget.get("callbacks", {})
+
+    def get_widget_token(self, widget_id: str) -> str | None:
+        """Get widget authentication token (sync version)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            return run_async(store.get_token(widget_id))
+        return self.widget_tokens.get(widget_id)
+
+    def set_widget_token(self, widget_id: str, token: str) -> None:
+        """Set widget authentication token."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            # In deploy mode, token is set during register
+            # For updates, we'd need store.update_token - for now just store locally
+            self.widget_tokens[widget_id] = token
+        else:
+            self.widget_tokens[widget_id] = token
+
+    def update_widget_html(self, widget_id: str, html: str) -> None:
+        """Update widget HTML content."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            run_async(store.update_html(widget_id, html))
+        else:
+            if widget_id in self.widgets:
+                self.widgets[widget_id]["html"] = html
+
+    def update_widget_callbacks(self, widget_id: str, callbacks: dict[str, Any]) -> None:
+        """Update widget callbacks."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            self.local_widgets.setdefault(widget_id, {})["callbacks"] = callbacks
+            # Update registry
+            registry = self.get_callback_registry()
+            for event_type, callback in callbacks.items():
+                registry.register(widget_id, event_type, callback)
+        else:
+            if widget_id in self.widgets:
+                self.widgets[widget_id]["callbacks"] = callbacks
+
+    def delete_widget(self, widget_id: str) -> None:
+        """Delete a widget and all associated data."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async_fire_and_forget
+
+            # Delete from external store
+            store = self.get_widget_store()
+            run_async_fire_and_forget(store.delete(widget_id))
+
+            # Delete from local registry (unregister all events for this widget)
+            registry = self.get_callback_registry()
+            registry.unregister(widget_id, event_type=None)
+
+            # Clean up local data
+            self.local_widgets.pop(widget_id, None)
+        else:
+            self.widgets.pop(widget_id, None)
+
+        # Always clean up these
+        self.widget_tokens.pop(widget_id, None)
+        self.event_queues.pop(widget_id, None)
+
+    def get_active_widget_ids(self) -> list[str]:
+        """Get list of active widget IDs."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            return run_async(store.list_active())
+        return list(self.widgets.keys())
+
+    def widget_count(self) -> int:
+        """Get count of active widgets."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            store = self.get_widget_store()
+            return run_async(store.count())
+        return len(self.widgets)
+
+    # ═══════════════════════════════════════════════════════════
+    # ASYNC METHODS - Use these from async FastAPI route handlers
+    # ═══════════════════════════════════════════════════════════
+
+    async def get_widget_html_async(self, widget_id: str) -> str | None:
+        """Get widget HTML content (async version).
+
+        Use this from async route handlers to avoid deadlock.
+        """
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            store = self.get_widget_store()
+            return await store.get_html(widget_id)
+        widget = self.widgets.get(widget_id)
+        return widget["html"] if widget else None
+
+    async def widget_exists_async(self, widget_id: str) -> bool:
+        """Check if widget exists (async version)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            store = self.get_widget_store()
+            return await store.exists(widget_id)
+        return widget_id in self.widgets
+
+    async def get_widget_token_async(self, widget_id: str) -> str | None:
+        """Get widget authentication token (async version)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            store = self.get_widget_store()
+            return await store.get_token(widget_id)
+        return self.widget_tokens.get(widget_id)
+
+    async def get_active_widget_ids_async(self) -> list[str]:
+        """Get list of active widget IDs (async version)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            store = self.get_widget_store()
+            return await store.list_active()
+        return list(self.widgets.keys())
+
+    async def widget_count_async(self) -> int:
+        """Get count of active widgets (async version)."""
+        from .state import is_deploy_mode
+
+        if is_deploy_mode():
+            store = self.get_widget_store()
+            return await store.count()
+        return len(self.widgets)
+
 
 _state = _ServerState()
 
 
-def _get_pywry_bridge_js(widget_id: str) -> str:
+def _generate_widget_token(widget_id: str) -> str | None:
+    """Generate or retrieve a widget authentication token.
+
+    Returns the token if authentication is enabled, None otherwise.
+    The token is cached in _state.widget_tokens for reuse.
+
+    Parameters
+    ----------
+    widget_id : str
+        The unique widget identifier.
+
+    Returns
+    -------
+    str | None
+        The authentication token, or None if auth is disabled.
+    """
+    server_settings = get_settings().server
+
+    if not server_settings.websocket_require_token:
+        return None
+
+    # Check local cache first
+    if widget_id in _state.widget_tokens:
+        return _state.widget_tokens[widget_id]
+
+    # Generate new token
+    import secrets
+
+    token = secrets.token_urlsafe(32)
+    _state.widget_tokens[widget_id] = token
+    return token
+
+
+def _get_pywry_bridge_js(widget_id: str, widget_token: str | None = None) -> str:
     """Generate the pywry JavaScript bridge with bidirectional communication.
 
     Supports:
     - JS → Python via WebSocket
     - Python → JS via WebSocket
+    - WebSocket security with per-widget token authentication
+
+    Parameters
+    ----------
+    widget_id : str
+        The unique widget identifier.
+    widget_token : str | None
+        The per-widget token for WebSocket authentication.
+        If None, no token auth header is included.
     """
+    # Build token header
+    if widget_token:
+        ws_token_header = f"const WS_AUTH_TOKEN = '{widget_token}';"
+    else:
+        ws_token_header = "const WS_AUTH_TOKEN = null;"
+
     return f"""
 <script>
 (function() {{
     const widgetId = '{widget_id}';
+    {ws_token_header}
+    
     // Use window.location to get current host/port (same as IFrame)
     const protocol = window.location.protocol;
     const host = window.location.hostname;
@@ -142,6 +464,7 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
     const wsUrl = wsProtocol + '//' + host + (port ? ':' + port : '') + '/ws/' + widgetId;
     let socket = null;
     let reconnectAttempts = 0;
+    let authFailures = 0;  // Track auth failures for auto-refresh
 
     window.pywry = {{
         _ready: false,
@@ -204,11 +527,18 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
             console.log('[PyWry] Connecting to WebSocket:', wsUrl);
         }}
 
-        socket = new WebSocket(wsUrl);
+        // Create WebSocket with authentication token in subprotocol if present
+        // This keeps the token out of URLs/logs while still being sent in the handshake
+        if (WS_AUTH_TOKEN) {{
+            socket = new WebSocket(wsUrl, ['pywry.token.' + WS_AUTH_TOKEN]);
+        }} else {{
+            socket = new WebSocket(wsUrl);
+        }}
 
         socket.onopen = function() {{
             console.log('[PyWry] WebSocket connected');
             reconnectAttempts = 0;
+            authFailures = 0;  // Reset auth failure counter on successful connection
 
             // Flush pending outgoing messages
             if (window.pywry._msgQueue && window.pywry._msgQueue.length > 0) {{
@@ -245,27 +575,51 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
         }};
 
         socket.onclose = function(e) {{
-            if ({str(PYWRY_DEBUG).lower()}) {{
-                console.log('[PyWry] WebSocket closed. Code:', e.code, 'Reason:', e.reason);
-            }}
+            console.log('[PyWry] ===== WebSocket CLOSED =====');
+            console.log('[PyWry] Close code:', e.code);
+            console.log('[PyWry] Close reason:', e.reason);
+            console.log('[PyWry] Auth failures before increment:', authFailures);
             window.pywry._ready = false;
+
+            // Don't reconnect if connection was replaced (code 1000 with this reason)
+            if (e.code === 1000 && e.reason === 'New connection replaced old one') {{
+                console.log('[PyWry] Connection replaced by newer instance, not reconnecting');
+                return;
+            }}
+
+            // Track authentication failures (code 4001 or 1006 likely means auth issue)
+            if (e.code === 4001 || e.code === 1006) {{
+                authFailures++;
+                console.log('[PyWry] Auth failure detected! New count:', authFailures);
+                
+                // After 2 auth failures, refresh the page to get new token
+                if (authFailures >= 2) {{
+                    console.log('[PyWry] ===== REFRESHING PAGE NOW =====');
+                    setTimeout(function() {{
+                        console.log('[PyWry] Calling window.location.reload()...');
+                        window.location.reload();
+                    }}, 500);
+                    return;
+                }}
+            }}
 
             // Don't reconnect if intentional disconnect
             if (window.pywry._intentionalDisconnect) {{
-                if ({str(PYWRY_DEBUG).lower()}) {{
-                    console.log('[PyWry] Intentional disconnect, not reconnecting');
-                }}
+                console.log('[PyWry] Intentional disconnect, not reconnecting');
                 return;
             }}
 
             // Reconnect with backoff
             const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
             reconnectAttempts++;
+            console.log('[PyWry] Reconnecting in', delay, 'ms... (attempt', reconnectAttempts, ')');
             setTimeout(connect, delay);
         }};
 
         socket.onerror = function(err) {{
-            console.error('[PyWry] WebSocket error:', err);
+            console.error('[PyWry] ===== WebSocket ERROR =====');
+            console.error('[PyWry] Error:', err);
+            console.error('[PyWry] Socket readyState:', socket.readyState);
             socket.close();
         }};
     }}
@@ -336,6 +690,9 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
             console.log('[PyWry] Received theme update:', data.theme);
         }}
 
+        const isDark = data.theme && data.theme.includes('dark');
+        const isLight = !isDark;
+
         // Update document theme class for CSS variables (Toolbar, etc.)
         if (data.theme && data.theme.includes('light')) {{
             document.documentElement.className = 'light';
@@ -346,6 +703,18 @@ def _get_pywry_bridge_js(widget_id: str) -> str:
             document.documentElement.classList.add('dark');
             document.documentElement.classList.remove('light');
         }}
+
+        // Update ALL toolbar elements (they're part of the same document in browser mode!)
+        document.querySelectorAll('.pywry-toolbar').forEach(function(toolbar) {{
+            toolbar.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+            toolbar.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+        }});
+
+        // Update all wrapper elements
+        document.querySelectorAll('[class*="pywry-wrapper"]').forEach(function(wrapper) {{
+            wrapper.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+            wrapper.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+        }});
 
         const gridDiv = document.getElementById('grid');
         if (gridDiv && data.theme) {{
@@ -635,10 +1004,7 @@ async def _ws_sender_loop(
 
 def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
     """Route incoming websocket message to callback queue if handler exists."""
-    if widget_id not in _state.widgets:
-        if PYWRY_DEBUG:
-            print(f"[SERVER] Widget {widget_id} not in _state.widgets!")
-        return
+    from .state import is_deploy_mode
 
     event_type = msg.get("type", "")
     if PYWRY_DEBUG:
@@ -650,7 +1016,21 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
         _handle_widget_disconnect(widget_id, reason)
         return
 
-    callbacks = _state.widgets[widget_id].get("callbacks", {})
+    # Get callbacks based on mode
+    if is_deploy_mode():
+        # In deploy mode, callbacks are stored in local_widgets
+        local_data = _state.local_widgets.get(widget_id, {})
+        callbacks = local_data.get("callbacks", {})
+        if PYWRY_DEBUG and not callbacks:
+            print(f"[SERVER] No callbacks in local_widgets for {widget_id[:8]}")
+    else:
+        # Local mode
+        if widget_id not in _state.widgets:
+            if PYWRY_DEBUG:
+                print(f"[SERVER] Widget {widget_id} not in _state.widgets!")
+            return
+        callbacks = _state.widgets[widget_id].get("callbacks", {})
+
     if event_type in callbacks:
         if PYWRY_DEBUG:
             print(f"[SERVER] Found callback for {event_type}, queueing...")
@@ -659,7 +1039,9 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
         )
 
 
-def _handle_widget_disconnect(widget_id: str, reason: str = "unknown") -> None:
+def _handle_widget_disconnect(  # pylint: disable=too-many-branches
+    widget_id: str, reason: str = "unknown"
+) -> None:
     """Handle widget disconnection: cleanup state and fire callback.
 
     Parameters
@@ -669,14 +1051,20 @@ def _handle_widget_disconnect(widget_id: str, reason: str = "unknown") -> None:
     reason : str
         Reason for disconnect: 'client', 'websocket_close', 'beacon', 'server_shutdown'.
     """
+    from .state import is_deploy_mode
+
     if PYWRY_DEBUG:
         print(f"[SERVER] Widget disconnect: {widget_id}, reason: {reason}")
 
-    if widget_id not in _state.widgets:
-        return
-
-    widget_data = _state.widgets[widget_id]
-    callbacks = widget_data.get("callbacks", {})
+    # Get callbacks based on mode
+    if is_deploy_mode():
+        local_data = _state.local_widgets.get(widget_id, {})
+        callbacks = local_data.get("callbacks", {})
+    else:
+        if widget_id not in _state.widgets:
+            return
+        widget_data = _state.widgets[widget_id]
+        callbacks = widget_data.get("callbacks", {})
 
     # Fire pywry:disconnect callback if registered, using GenericEvent-style data
     if "pywry:disconnect" in callbacks:
@@ -703,14 +1091,86 @@ def _handle_widget_disconnect(widget_id: str, reason: str = "unknown") -> None:
         "pagehide",  # Mobile/Safari tab closing
     )
     if reason in _remove_widget_reasons:
-        if widget_id in _state.widgets:
-            del _state.widgets[widget_id]
+        if is_deploy_mode():
+            if widget_id in _state.local_widgets:
+                del _state.local_widgets[widget_id]
+        else:
+            if widget_id in _state.widgets:
+                del _state.widgets[widget_id]
         if widget_id in _state.event_queues:
             del _state.event_queues[widget_id]
+        # Clean up per-widget token
+        if widget_id in _state.widget_tokens:
+            del _state.widget_tokens[widget_id]
 
         # Signal disconnect_event if no widgets remain (for block())
-        if len(_state.widgets) == 0:
-            _state.disconnect_event.set()
+        if is_deploy_mode():
+            if len(_state.local_widgets) == 0:
+                _state.disconnect_event.set()
+        else:
+            if len(_state.widgets) == 0:
+                _state.disconnect_event.set()
+
+
+def _validate_websocket_origin(headers: dict[str, str], expected_host: str) -> bool:
+    """Validate WebSocket connection origin matches expected host.
+
+    Parameters
+    ----------
+    headers : dict[str, str]
+        The WebSocket request headers.
+    expected_host : str
+        The expected host (e.g., "127.0.0.1:8765" or "localhost:8765").
+
+    Returns
+    -------
+    bool
+        True if origin is valid, False otherwise.
+    """
+    # Check Origin header (WebSocket standard)
+    origin = headers.get("origin")
+    if origin:
+        # Parse origin to extract host:port
+        # Origin format: "http://host:port" or "https://host:port"
+        try:
+            from urllib.parse import urlparse
+
+            parsed = urlparse(origin)
+            origin_netloc = parsed.netloc  # host:port
+            # Match against expected host
+            if origin_netloc == expected_host:
+                return True
+            # Also accept without port if default ports
+            origin_host = parsed.hostname
+            expected_host_only = expected_host.split(":")[0]
+            if origin_host == expected_host_only:
+                return True
+        except Exception:
+            pass
+
+    # Check Referer as fallback
+    referer = headers.get("referer")
+    if referer:
+        try:
+            from urllib.parse import urlparse
+
+            parsed = urlparse(referer)
+            referer_netloc = parsed.netloc
+            if referer_netloc == expected_host:
+                return True
+            referer_host = parsed.hostname
+            expected_host_only = expected_host.split(":")[0]
+            if referer_host == expected_host_only:
+                return True
+        except Exception:
+            pass
+
+    # Check Host header (should match server)
+    host = headers.get("host")
+    if host and host == expected_host:
+        return True
+
+    return False
 
 
 def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
@@ -733,14 +1193,49 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
     _state.app = app
     _state.widget_prefix = settings.widget_prefix.rstrip("/")  # Store normalized prefix
 
-    @app.get(f"{settings.widget_prefix.rstrip('/')}/{{widget_id}}", response_class=HTMLResponse)
-    async def get_widget(widget_id: str) -> HTMLResponse:
+    # Initialize internal API token for protecting internal HTTP endpoints (not widget serving)
+    if settings.internal_api_token:
+        _state.internal_api_token = settings.internal_api_token
+    else:
+        import secrets
+
+        _state.internal_api_token = secrets.token_urlsafe(32)
+
+    # Header name for internal API authentication
+    internal_header = settings.internal_api_header
+
+    def _check_internal_auth(request: Request) -> bool:
+        """Check if request has valid internal API token. Returns False = 404."""
+        token = request.headers.get(internal_header)
+        return token == _state.internal_api_token
+
+    # Capture strict_widget_auth setting for use in endpoint
+    require_widget_header_auth = settings.strict_widget_auth
+
+    @app.get(
+        f"{settings.widget_prefix.rstrip('/')}/{{widget_id}}",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    async def get_widget(widget_id: str, request: Request) -> HTMLResponse:
+        """Serve widget HTML.
+
+        Security:
+        - strict_widget_auth=True (browser mode): Requires internal API header
+        - strict_widget_auth=False (notebook mode): Only checks widget exists (allows iframes)
+        """
         import time  # pylint: disable=redefined-outer-name,reimported
+
+        # In strict mode (browser), require header auth
+        if require_widget_header_auth and not _check_internal_auth(request):
+            return HTMLResponse(status_code=404)
 
         if PYWRY_DEBUG:
             print(f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}")
+
+        # Widget must exist (created by Python code) - unguessable UUID
         if widget_id not in _state.widgets:
-            return HTMLResponse("<h1>Widget not found</h1>", status_code=404)
+            return HTMLResponse(status_code=404)
 
         widget_data = _state.widgets[widget_id]
         if PYWRY_DEBUG:
@@ -757,11 +1252,78 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         )
 
     @app.websocket("/ws/{widget_id}")
-    async def websocket_endpoint(websocket: WebSocket, widget_id: str) -> None:
+    async def websocket_endpoint(  # pylint: disable=too-many-branches,too-many-statements
+        websocket: WebSocket, widget_id: str
+    ) -> None:
+        """WebSocket endpoint with security hardening.
+
+        Security features:
+        - Origin validation: Ensures connections only come from same-origin (auto-disabled with per-widget tokens)
+        - Per-widget token authentication: Unique token per widget sent via WebSocket subprotocol
+
+        Note: Token is sent via Sec-WebSocket-Protocol header to avoid exposure in logs/URLs
+        """
         if PYWRY_DEBUG:
             print(f"[SERVER] WebSocket connection request for {widget_id}")
 
-        await websocket.accept()
+        # Security validation BEFORE accepting the connection
+        server_settings = get_settings().server
+
+        # 1. Origin validation (if allowed_origins is configured)
+        # Empty list = allow any origin (rely on token auth only)
+        # Non-empty list = only allow specified origins
+        allowed_origins = server_settings.websocket_allowed_origins
+        if allowed_origins:
+            origin = websocket.headers.get("origin", "")
+            if origin not in allowed_origins:
+                if PYWRY_DEBUG:
+                    print(f"[SERVER] WebSocket rejected: Origin '{origin}' not in allowed list")
+                    print(f"[SERVER] Allowed origins: {allowed_origins}")
+                await websocket.close(code=1008, reason="Origin not allowed")
+                return
+
+        # 2. Token validation (if token auth is required)
+        # Extract token from Sec-WebSocket-Protocol header (sent as subprotocol)
+        token = None
+        accepted_subprotocol = None
+        if server_settings.websocket_require_token:
+            # Check for token in Sec-WebSocket-Protocol header
+            # Client sends: new WebSocket(url, ['pywry.token.XXX'])
+            # Server receives in sec-websocket-protocol header
+            sec_websocket_protocol = websocket.headers.get("sec-websocket-protocol", "")
+            if sec_websocket_protocol.startswith("pywry.token."):
+                token = sec_websocket_protocol.replace("pywry.token.", "", 1)
+                # Must accept the subprotocol in response
+                accepted_subprotocol = sec_websocket_protocol
+
+            # Check per-widget token (only supported mode)
+            # Use async version to avoid blocking in async context
+            expected_token = await _state.get_widget_token_async(widget_id)
+
+            # If no token exists for this widget, reject - client needs to reload
+            if not expected_token:
+                if PYWRY_DEBUG:
+                    print(f"[SERVER] No token found for widget: {widget_id}")
+                    print("[SERVER] Client should refresh page to get new token")
+                await websocket.close(code=4001, reason="Unknown widget - refresh page")
+                return
+
+            # Validate token - REJECT invalid tokens (client should refresh page)
+            if not token or token != expected_token:
+                if PYWRY_DEBUG:
+                    print("[SERVER] WebSocket connection rejected: Invalid or missing token")
+                    print(
+                        f"[SERVER] Widget ID: {widget_id}, Expected token exists: {expected_token is not None}"
+                    )
+                    print("[SERVER] Client should refresh page to get new token")
+                await websocket.close(code=4001, reason="Invalid token - refresh page")
+                return
+
+        # Security checks passed, accept connection with subprotocol if provided
+        if accepted_subprotocol:
+            await websocket.accept(subprotocol=accepted_subprotocol)
+        else:
+            await websocket.accept()
 
         if widget_id in _state.connections:
             if PYWRY_DEBUG:
@@ -795,58 +1357,73 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         finally:
             sender.cancel()
 
-    @app.get("/health")
-    async def health() -> dict[str, str]:
-        return {"status": "ok"}
+    @app.get("/health", include_in_schema=False)
+    async def health(request: Request) -> Response:
+        # Health endpoint also requires auth - 404 if missing
+        if not _check_internal_auth(request):
+            return Response(status_code=404)
+        return Response(content='{"status":"ok"}', media_type="application/json")
 
-    @app.post("/register_widget")
-    async def register_widget(request: Request) -> dict[str, str]:
+    @app.post("/register_widget", include_in_schema=False)
+    async def register_widget(request: Request) -> Response:
         """Register a widget with the running server (for kernel restart scenarios)."""
+        # Require internal API token - 404 if missing/invalid
+        if not _check_internal_auth(request):
+            return Response(status_code=404)
+
         try:
             data = await request.json()
             widget_id = data.get("widget_id")
             html = data.get("html")
 
             if not widget_id or not html:
-                return {"error": "Missing widget_id or html"}
+                return Response(status_code=404)
 
             _state.widgets[widget_id] = {"html": html, "callbacks": {}}
             _state.event_queues[widget_id] = asyncio.Queue()
 
-            return {"status": "registered", "widget_id": widget_id}  # noqa: TRY300
+            return Response(
+                content=json.dumps({"status": "registered", "widget_id": widget_id}),
+                media_type="application/json",
+            )
         except Exception:
-            return {"error": "Failed to register widget"}
+            return Response(status_code=404)
 
-    @app.post("/disconnect/{widget_id}")
-    async def disconnect_widget(widget_id: str, reason: str = "beacon") -> dict[str, str]:
+    @app.post("/disconnect/{widget_id}", include_in_schema=False)
+    async def disconnect_widget(
+        widget_id: str, _request: Request, reason: str = "beacon"
+    ) -> Response:
         """Handle widget disconnect via sendBeacon fallback.
 
-        Parameters
-        ----------
-        widget_id : str
-            The widget ID that is disconnecting.
-        reason : str
-            Reason for disconnect (default: 'beacon').
-
-        Returns
-        -------
-        dict[str, str]
-            Status response.
+        This endpoint is called from the browser on page unload.
+        We don't require auth here since:
+        1. It's just cleanup - no data is exposed
+        2. sendBeacon can't set custom headers
+        3. The worst case is premature cleanup which is harmless
         """
         _handle_widget_disconnect(widget_id, reason)
-        return {"status": "disconnected", "widget_id": widget_id}
+        return Response(
+            content=json.dumps({"status": "disconnected", "widget_id": widget_id}),
+            media_type="application/json",
+        )
 
     return app
 
 
-def _process_callbacks() -> None:
+def _process_callbacks() -> None:  # pylint: disable=too-many-branches
     """Background thread to process callbacks."""
     while True:
         try:
             callback, data, event_type, widget_id = _state.callback_queue.get(timeout=0.1)
             try:
                 # Get the output widget for this widget if it exists
-                widget_data = _state.widgets.get(widget_id, {})
+                # In deploy mode, output is stored in local_widgets
+                from .state import is_deploy_mode
+
+                if is_deploy_mode():
+                    widget_data = _state.local_widgets.get(widget_id, {})
+                else:
+                    widget_data = _state.widgets.get(widget_id, {})
                 output_widget = widget_data.get("output")
 
                 if output_widget is not None:
@@ -915,7 +1492,7 @@ def _make_server_request(
     timeout: float = 1.0,
     **kwargs: Any,
 ) -> Any:
-    """Make an internal request to the PyWry server."""
+    """Make an internal request to the PyWry server with authentication."""
     import requests
 
     settings = get_settings().server
@@ -932,8 +1509,19 @@ def _make_server_request(
     url = f"{base_url}{endpoint}"
     verify = _get_verification_settings(settings)
 
+    # Add internal API auth header for protected endpoints
+    headers = kwargs.pop("headers", {})
+    if _state.internal_api_token:
+        headers[settings.internal_api_header] = _state.internal_api_token
+
     return requests.request(
-        method=method, url=url, json=json_data, timeout=timeout, verify=verify, **kwargs
+        method=method,
+        url=url,
+        json=json_data,
+        timeout=timeout,
+        verify=verify,
+        headers=headers,
+        **kwargs,
     )
 
 
@@ -1063,6 +1651,21 @@ def stop_server(timeout: float = 5.0) -> None:
         widget_ids = list(_state.widgets.keys())
         for widget_id in widget_ids:
             _handle_widget_disconnect(widget_id, "server_shutdown")
+
+        # Close all WebSocket connections BEFORE shutting down
+        connections_to_close = list(_state.connections.items())
+        for widget_id, ws in connections_to_close:
+            with suppress(Exception):
+                if ws and ws.client_state.name == "CONNECTED":
+                    # Use asyncio to properly close the websocket
+                    if server_loop:
+                        asyncio.run_coroutine_threadsafe(
+                            ws.close(code=1000, reason="Server shutting down"), server_loop
+                        ).result(timeout=1.0)
+
+        # Clear connection state
+        _state.connections.clear()
+        _state.event_queues.clear()
 
         # Signal the server to exit
         server.should_exit = True
@@ -1241,6 +1844,10 @@ def deploy() -> None:
         config_kwargs["limit_max_requests"] = server.limit_max_requests
 
     # Run the server (blocking)
+    # If a server is already running (e.g., from widget creation), stop it first
+    if _state.server_thread is not None and _state.server_thread.is_alive():
+        stop_server(timeout=2.0)
+
     uvicorn.run(**config_kwargs)
 
 
@@ -1366,9 +1973,41 @@ def get_widget_html(widget_id: str) -> str | None:
     ...         return HTMLResponse(html)
     ...     return HTMLResponse("<h1>Not found</h1>", status_code=404)
     """
-    if widget_id in _state.widgets:
-        return _state.widgets[widget_id]["html"]
-    return None
+    return _state.get_widget_html(widget_id)
+
+
+async def get_widget_html_async(widget_id: str) -> str | None:
+    """Get the HTML content for a widget by ID (async version).
+
+    Use this in async route handlers to avoid deadlock issues with
+    deploy mode's async state stores (e.g., Redis).
+
+    Parameters
+    ----------
+    widget_id : str
+        The widget ID (from widget.label or widget.widget_id).
+
+    Returns
+    -------
+    str | None
+        The widget HTML content, or None if widget not found.
+
+    Examples
+    --------
+    >>> from fastapi.responses import HTMLResponse
+    >>> from pywry.inline import show, get_widget_html_async
+    >>>
+    >>> # Register widget once at startup
+    >>> show("<h1>Hello</h1>", widget_id="home", open_browser=False)
+    >>>
+    >>> @app.get("/home")
+    >>> async def home():
+    ...     html = await get_widget_html_async("home")
+    ...     if html:
+    ...         return HTMLResponse(html)
+    ...     return HTMLResponse("<h1>Not found</h1>", status_code=404)
+    """
+    return await _state.get_widget_html_async(widget_id)
 
 
 class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
@@ -1377,7 +2016,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     Implements BaseWidget protocol for unified API across rendering backends.
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         html: str,
         callbacks: dict[str, Callable[..., Any]] | None = None,
@@ -1388,6 +2027,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         headers: dict[str, str] | None = None,
         auth: Any | None = None,
         browser_only: bool = False,
+        token: str | None = None,
     ) -> None:
         super().__init__()
         if not HAS_FASTAPI:
@@ -1401,6 +2041,8 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         settings = get_settings().server
 
         self._widget_id = widget_id or uuid.uuid4().hex
+        # Generate token if not provided and token auth is required
+        self._token = token if token is not None else _generate_widget_token(self._widget_id)
         self._width = width
         self._height = height
         self._port = port or settings.port
@@ -1415,12 +2057,14 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         # (only if IPython is available, otherwise None for browser-only mode)
         self._output = Output() if HAS_IPYTHON else None
 
-        # Register widget with output
-        _state.widgets[self._widget_id] = {
-            "html": html,
-            "callbacks": self._callbacks,
-            "output": self._output,
-        }
+        # Register widget with proper state management (handles both memory and Redis backends)
+        _state.register_widget(
+            widget_id=self._widget_id,
+            html=html,
+            callbacks=self._callbacks,
+            output=self._output,
+            token=self._token,
+        )
 
         # Check if server is already running (e.g., after kernel restart)
         server_already_running = False
@@ -1537,8 +2181,22 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         InlineWidget
             Self for method chaining.
         """
+        from .state import is_deploy_mode
+
         self._callbacks[event_type] = callback
-        _state.widgets[self._widget_id]["callbacks"] = self._callbacks
+
+        if is_deploy_mode():
+            from .state import run_async
+
+            # In deploy mode, update local widgets and callback registry
+            if self._widget_id in _state.local_widgets:
+                _state.local_widgets[self._widget_id]["callbacks"] = self._callbacks
+            registry = _state.get_callback_registry()
+            run_async(registry.register(self._widget_id, event_type, callback))
+        else:
+            # Local mode: update widgets dict
+            if self._widget_id in _state.widgets:
+                _state.widgets[self._widget_id]["callbacks"] = self._callbacks
         return self
 
     def emit(self, event_type: str, data: dict[str, Any]) -> None:
@@ -2095,13 +2753,16 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
     # Also set html class for CSS variable inheritance
     html_theme_class = "light" if theme == "light" else "dark"
 
+    # Generate widget token FIRST - this will be stored with the widget
+    widget_token = _generate_widget_token(widget_id)
+
     # Build full HTML - bridge MUST be in head so window.pywry exists before user scripts run
     # Note: wrap_content_with_toolbars already wraps content in pywry-content div
     html = f"""<!DOCTYPE html>
 <html class="{html_theme_class}">
 <head>
     {"".join(head_parts)}
-    {_get_pywry_bridge_js(widget_id)}
+    {_get_pywry_bridge_js(widget_id, widget_token)}
     {toolbar_script}
 </head>
 <body>
@@ -2129,7 +2790,13 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
 </html>"""
 
     widget = InlineWidget(
-        html, callbacks=callbacks, width=width, height=height, port=port, widget_id=widget_id
+        html,
+        callbacks=callbacks,
+        width=width,
+        height=height,
+        port=port,
+        widget_id=widget_id,
+        token=widget_token,
     )
 
     # Display - either open in browser or show IFrame
@@ -2150,6 +2817,7 @@ def generate_plotly_html(
     theme: ThemeLiteral | None = None,
     full_document: bool = True,
     toolbars: list[dict[str, Any] | Toolbar] | None = None,
+    token: str | None = None,
 ) -> str:
     """Generate HTML for a Plotly figure from JSON.
 
@@ -2447,7 +3115,7 @@ def generate_plotly_html(
     <div class="pywry-widget {widget_theme_class}">
         {widget_content}
     </div>
-    {_get_pywry_bridge_js(widget_id)}
+    {_get_pywry_bridge_js(widget_id, token)}
     {plotly_handlers_script}
     <script>
         // System theme detection - follows browser/OS preference
@@ -2487,17 +3155,39 @@ def generate_plotly_html(
             const isDark = data.theme && data.theme.includes('dark');
             const isLight = !isDark;
 
+            // Update HTML class FIRST (this controls CSS variables)
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            // Update widget class
             if (widgetEl) {{
                 widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
                 widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
             }}
 
-            htmlEl.classList.remove('dark', 'light');
-            htmlEl.classList.add(isLight ? 'light' : 'dark');
+            // Update ALL toolbar elements (they're part of the same document in browser mode!)
+            document.querySelectorAll('.pywry-toolbar').forEach(function(toolbar) {{
+                toolbar.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                toolbar.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
 
-            // Read background from CSS variable (set by theme class)
-            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
-            bodyEl.style.background = bgColor || '';
+            // Update all wrapper elements
+            document.querySelectorAll('[class*="pywry-wrapper"]').forEach(function(wrapper) {{
+                wrapper.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                wrapper.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
+
+            // Force browser to recompute styles before reading CSS variable
+            void htmlEl.offsetHeight;
+
+            // Read background from CSS variable (now properly set by html.light or html.dark)
+            const bgColor = getComputedStyle(htmlEl).getPropertyValue('--pywry-bg-primary').trim();
+            if (bgColor) {{
+                bodyEl.style.backgroundColor = bgColor;
+                if (widgetEl) {{
+                    widgetEl.style.backgroundColor = bgColor;
+                }}
+            }}
 
             // Update Plotly figure template using PYWRY_PLOTLY_TEMPLATES
             const plotDiv = document.querySelector('.js-plotly-plot');
@@ -2511,7 +3201,7 @@ def generate_plotly_html(
                 }}
             }}
 
-            console.log('[PyWry Plotly IFrame] Theme updated, isLight:', isLight);
+            console.log('[PyWry Plotly IFrame] Theme updated, isLight:', isLight, 'bgColor:', bgColor);
         }});
 
         {get_toolbar_script(with_script_tag=False)}
@@ -2746,6 +3436,7 @@ def generate_dataframe_html(
     header_html: str = "",
     grid_options: dict[str, Any] | None = None,
     toolbars: list[dict[str, Any] | Toolbar] | None = None,
+    token: str | None = None,
 ) -> str:
     """Generate HTML for AG Grid widget.
 
@@ -2817,7 +3508,7 @@ def generate_dataframe_html(
     <div class="pywry-widget {widget_theme_class}">
         {widget_content}
     </div>
-    {_get_pywry_bridge_js(widget_id)}
+    {_get_pywry_bridge_js(widget_id, token)}
     <script>
         const gridId = '{widget_id}';
         const gridConfig = {json.dumps(grid_config)};
@@ -2860,21 +3551,44 @@ def generate_dataframe_html(
             const isDark = data.theme && data.theme.includes('dark');
             const isLight = !isDark;
 
+            // Update HTML class FIRST (this controls CSS variables)
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            // Update widget class
             if (widgetEl) {{
                 widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
                 widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
             }}
-            htmlEl.classList.remove('dark', 'light');
-            htmlEl.classList.add(isLight ? 'light' : 'dark');
 
-            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
-            bodyEl.style.background = bgColor || '';
+            // Update ALL toolbar elements (they're part of the same document in browser mode!)
+            document.querySelectorAll('.pywry-toolbar').forEach(function(toolbar) {{
+                toolbar.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                toolbar.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
+
+            // Update all wrapper elements
+            document.querySelectorAll('[class*="pywry-wrapper"]').forEach(function(wrapper) {{
+                wrapper.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                wrapper.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
+
+            // Force browser to recompute styles
+            void htmlEl.offsetHeight;
+
+            const bgColor = getComputedStyle(htmlEl).getPropertyValue('--pywry-bg-primary').trim();
+            if (bgColor) {{
+                bodyEl.style.backgroundColor = bgColor;
+                if (widgetEl) {{
+                    widgetEl.style.backgroundColor = bgColor;
+                }}
+            }}
 
             if (gridDiv && data.theme && data.theme.startsWith('ag-theme-')) {{
                 const classes = Array.from(gridDiv.classList).filter(c => !c.startsWith('ag-theme-'));
                 gridDiv.className = classes.join(' ') + ' ' + data.theme;
             }}
-            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight);
+            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight, 'bgColor:', bgColor);
         }});
 
         {get_toolbar_script(with_script_tag=False)}
@@ -2891,6 +3605,7 @@ def generate_dataframe_html_from_config(
     aggrid_theme: Literal["quartz", "alpine", "balham", "material"] = "alpine",
     header_html: str = "",
     toolbars: list[dict[str, Any] | Toolbar] | None = None,
+    token: str | None = None,
 ) -> str:
     """Generate HTML for AG Grid widget from GridConfig.
 
@@ -2959,7 +3674,7 @@ def generate_dataframe_html_from_config(
     <div class="pywry-widget {widget_theme_class}">
         {widget_content}
     </div>
-    {_get_pywry_bridge_js(widget_id)}
+    {_get_pywry_bridge_js(widget_id, token)}
     <script>
         const gridId = '{widget_id}';
         const gridConfig = {json.dumps(grid_config)};
@@ -3002,21 +3717,44 @@ def generate_dataframe_html_from_config(
             const isDark = data.theme && data.theme.includes('dark');
             const isLight = !isDark;
 
+            // Update HTML class FIRST (this controls CSS variables)
+            htmlEl.classList.remove('dark', 'light');
+            htmlEl.classList.add(isLight ? 'light' : 'dark');
+
+            // Update widget class
             if (widgetEl) {{
                 widgetEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
                 widgetEl.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
             }}
-            htmlEl.classList.remove('dark', 'light');
-            htmlEl.classList.add(isLight ? 'light' : 'dark');
 
-            const bgColor = getComputedStyle(widgetEl || document.documentElement).getPropertyValue('--pywry-bg-primary').trim();
-            bodyEl.style.background = bgColor || '';
+            // Update ALL toolbar elements (they're part of the same document in browser mode!)
+            document.querySelectorAll('.pywry-toolbar').forEach(function(toolbar) {{
+                toolbar.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                toolbar.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
+
+            // Update all wrapper elements
+            document.querySelectorAll('[class*="pywry-wrapper"]').forEach(function(wrapper) {{
+                wrapper.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+                wrapper.classList.add(isLight ? 'pywry-theme-light' : 'pywry-theme-dark');
+            }});
+
+            // Force browser to recompute styles
+            void htmlEl.offsetHeight;
+
+            const bgColor = getComputedStyle(htmlEl).getPropertyValue('--pywry-bg-primary').trim();
+            if (bgColor) {{
+                bodyEl.style.backgroundColor = bgColor;
+                if (widgetEl) {{
+                    widgetEl.style.backgroundColor = bgColor;
+                }}
+            }}
 
             if (gridDiv && data.theme && data.theme.startsWith('ag-theme-')) {{
                 const classes = Array.from(gridDiv.classList).filter(c => !c.startsWith('ag-theme-'));
                 gridDiv.className = classes.join(' ') + ' ' + data.theme;
             }}
-            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight);
+            console.log('[PyWry IFrame] Theme updated to:', data.theme, 'isLight:', isLight, 'bgColor:', bgColor);
         }});
 
         {get_toolbar_script(with_script_tag=False)}
@@ -3039,7 +3777,7 @@ def show_dataframe(  # pylint: disable=too-many-arguments
     port: int | None = None,
     widget_id: str | None = None,
     column_defs: list[Any] | None = None,
-    row_selection: Any | bool = True,
+    row_selection: Any | bool = False,
     enable_cell_span: bool | None = None,
     pagination: bool | None = None,
     pagination_page_size: int = 100,

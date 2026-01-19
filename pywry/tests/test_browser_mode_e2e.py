@@ -144,36 +144,82 @@ def server_port():
         return s.getsockname()[1]
 
 
+def _get_auth_header() -> dict[str, str]:
+    """Get the internal API auth header for protected endpoints."""
+    from pywry.config import get_settings
+
+    settings = get_settings()
+    if _state.internal_api_token:
+        return {settings.server.internal_api_header: _state.internal_api_token}
+    return {}
+
+
 def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
-    """Wait for server to be ready."""
-    url = f"http://{host}:{port}/health"
+    """Wait for server to be ready.
+
+    Uses socket connection check since health endpoint requires auth.
+    """
     start = time.time()
     while time.time() - start < timeout:
         try:
-            with urllib.request.urlopen(url, timeout=0.5) as resp:  # noqa: S310
-                if resp.status == 200:
-                    return True
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.5)
+                result = s.connect_ex((host, port))
+                if result == 0:
+                    # Socket is open, try health with auth if we have token
+                    url = f"http://{host}:{port}/health"
+                    req = urllib.request.Request(url)  # noqa: S310
+                    auth_header = _get_auth_header()
+                    for k, v in auth_header.items():
+                        req.add_header(k, v)
+                    try:
+                        with urllib.request.urlopen(req, timeout=0.5) as resp:  # noqa: S310
+                            if resp.status == 200:
+                                return True
+                    except Exception:
+                        # Health might 404 without auth, but socket is open
+                        return True
         except Exception:  # noqa: S110
             pass
         time.sleep(0.1)
     return False
 
 
-def http_get(url: str, timeout: float = 5.0) -> tuple[int, str]:
-    """Make HTTP GET request, return (status_code, body)."""
+def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
+    """Make HTTP GET request, return (status_code, body).
+
+    Args:
+        url: URL to fetch
+        timeout: Request timeout in seconds
+        auth: If True, include internal API auth header
+    """
+    req = urllib.request.Request(url)  # noqa: S310
+    if auth:
+        for k, v in _get_auth_header().items():
+            req.add_header(k, v)
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:  # noqa: S310
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
             return resp.status, resp.read().decode("utf-8")
     except urllib.error.HTTPError as e:
         return e.code, e.read().decode("utf-8")
 
 
-def http_post(url: str, data: dict, timeout: float = 5.0) -> tuple[int, str]:
-    """Make HTTP POST request with JSON body."""
+def http_post(url: str, data: dict, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
+    """Make HTTP POST request with JSON body.
+
+    Args:
+        url: URL to POST to
+        data: JSON data dict
+        timeout: Request timeout in seconds
+        auth: If True, include internal API auth header
+    """
+    headers = {"Content-Type": "application/json"}
+    if auth:
+        headers.update(_get_auth_header())
     req = urllib.request.Request(  # noqa: S310
         url,
         data=json.dumps(data).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     try:
@@ -196,7 +242,8 @@ class TestBrowserModeBasics:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        status, body = http_get(f"http://127.0.0.1:{server_port}/health")
+        # Health endpoint requires auth
+        status, body = http_get(f"http://127.0.0.1:{server_port}/health", auth=True)
         assert status == 200
 
         data = json.loads(body)
@@ -515,10 +562,16 @@ class TestBrowserModeWebSocket:
 
         widget_id = "ws-test"
         _state.widgets[widget_id] = {"html": "<html></html>", "callbacks": {}}
+        # Generate a token for WebSocket auth
+        import secrets
+
+        token = secrets.token_urlsafe(16)
+        _state.widget_tokens[widget_id] = token
 
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget_id}"
+        subprotocol = f"pywry.token.{token}"
 
-        async with websockets.connect(ws_url):
+        async with websockets.connect(ws_url, subprotocols=[subprotocol]):
             # Connection should be tracked
             await asyncio.sleep(0.1)
             assert widget_id in _state.connections
@@ -537,8 +590,12 @@ class TestBrowserModeWebSocket:
         )
 
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget.widget_id}"
+        # Get token for this widget
+        token = _state.widget_tokens.get(widget.widget_id)
+        subprotocol = f"pywry.token.{token}" if token else None
+        subprotocols = [subprotocol] if subprotocol else None
 
-        async with websockets.connect(ws_url) as ws:
+        async with websockets.connect(ws_url, subprotocols=subprotocols) as ws:
             # Emit event from Python
             widget.emit("pywry:test", {"message": "hello"})
 
@@ -572,8 +629,11 @@ class TestBrowserModeWebSocket:
         widget.on("custom:action", my_handler)
 
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget.widget_id}"
+        token = _state.widget_tokens.get(widget.widget_id)
+        subprotocol = f"pywry.token.{token}" if token else None
+        subprotocols = [subprotocol] if subprotocol else None
 
-        async with websockets.connect(ws_url) as ws:
+        async with websockets.connect(ws_url, subprotocols=subprotocols) as ws:
             # Send event from "browser" (WebSocket client)
             await ws.send(json.dumps({"type": "custom:action", "data": {"clicked": True}}))
 

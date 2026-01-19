@@ -710,20 +710,20 @@ function render({ model, el }) {
         }
 
         const agGridLib = ensureAgGrid();
-        const hasContent = !!model.get('content');
+        const gridConfig = model.get('grid_config');
         // Log every 10th attempt to reduce spam
         if (attempt % 10 === 0) {
-            console.log('[PyWry AG Grid] waitAndRender attempt', attempt, '- agGrid:', !!agGridLib, 'content:', hasContent);
+            console.log('[PyWry AG Grid] waitAndRender attempt', attempt, '- agGrid:', !!agGridLib, 'gridConfig:', !!gridConfig);
         }
 
-        if (agGridLib && hasContent) {
+        if (agGridLib && gridConfig) {
             renderContent(0);
         } else if (attempt < 100) {
             setTimeout(() => waitAndRender(attempt + 1), 50);
         } else {
-            console.error('[PyWry AG Grid] Timeout waiting for AG Grid/content');
+            console.error('[PyWry AG Grid] Timeout waiting for AG Grid/gridConfig');
             container.innerHTML = '<div style="color:#ff4444;padding:20px;font-family:monospace;">' +
-                'ERROR: Timeout waiting for ' + (!agGridLib ? 'AG Grid library' : 'content') + '</div>';
+                'ERROR: Timeout waiting for ' + (!agGridLib ? 'AG Grid library' : 'grid config') + '</div>';
         }
     }
     waitAndRender(0);
@@ -807,17 +807,29 @@ if (!getAgGrid()) {{
     }}
 
     // Store references in multiple places for reliability
-    console.log('[PyWry AG Grid ESM] After load - self.agGrid:', typeof self.agGrid);
-    if (typeof self.agGrid !== 'undefined') {{
+    console.log('[PyWry AG Grid ESM] After load - self.agGrid:', typeof self.agGrid, 'window.agGrid:', typeof window.agGrid);
+
+    // AG Grid should be available now - check multiple locations
+    if (typeof self.agGrid !== 'undefined' && self.agGrid.createGrid) {{
         _agGridLib = self.agGrid;
         window.agGrid = self.agGrid;
         window._pywryAgGrid = self.agGrid; // Extra persistence
-        console.log('[PyWry AG Grid ESM] SUCCESS - loaded AG Grid');
+        console.log('[PyWry AG Grid ESM] SUCCESS - loaded AG Grid from self.agGrid');
+    }} else if (typeof window.agGrid !== 'undefined' && window.agGrid.createGrid) {{
+        _agGridLib = window.agGrid;
+        window._pywryAgGrid = window.agGrid;
+        console.log('[PyWry AG Grid ESM] SUCCESS - loaded AG Grid from window.agGrid');
+    }} else if (typeof agGrid !== 'undefined' && agGrid.createGrid) {{
+        _agGridLib = agGrid;
+        window.agGrid = agGrid;
+        window._pywryAgGrid = agGrid;
+        console.log('[PyWry AG Grid ESM] SUCCESS - loaded AG Grid from global agGrid');
     }} else {{
-        console.error('[PyWry AG Grid ESM] FAILED - self.agGrid is undefined after loading');
+        console.error('[PyWry AG Grid ESM] FAILED - AG Grid not found in self, window, or global scope after loading');
     }}
 }} else {{
-    console.log('[PyWry AG Grid ESM] AG Grid already loaded, reusing existing instance');
+    console.log('[PyWry AG Grid ESM] AG Grid already loaded, reusing existing instance from:',
+        _agGridLib ? 'cache' : 'unknown');
 }}
 
 // Load PyWry AG Grid defaults (single source of truth for all grid config)

@@ -362,6 +362,109 @@ class HotReloadSettings(BaseSettings):
         return v or []
 
 
+class DeploySettings(BaseSettings):
+    """Deploy mode settings for scalable production deployments.
+
+    Deploy mode is activated when both PYWRY_HEADLESS=1 and a state backend
+    is configured. This enables horizontal scaling with Redis for state storage.
+
+    Environment prefix: PYWRY_DEPLOY__
+    Example: PYWRY_DEPLOY__STATE_BACKEND=redis
+    Example: PYWRY_DEPLOY__REDIS_URL=redis://redis:6379/0
+    """
+
+    model_config = SettingsConfigDict(
+        env_prefix="PYWRY_DEPLOY__",
+        extra="ignore",
+    )
+
+    # State backend configuration
+    state_backend: Literal["memory", "redis"] = Field(
+        default="memory",
+        description=(
+            "State storage backend: 'memory' (single process) or 'redis' (distributed). "
+            "Redis enables multi-worker horizontal scaling."
+        ),
+    )
+
+    # Redis connection settings
+    redis_url: str = Field(
+        default="redis://localhost:6379/0",
+        description=(
+            "Redis connection URL. Supports standard redis:// and redis+sentinel:// schemes. "
+            "Examples: 'redis://host:port/db', 'redis://:password@host:port/db'"
+        ),
+    )
+    redis_prefix: str = Field(
+        default="pywry",
+        description="Key prefix for all Redis keys (namespace isolation)",
+    )
+    redis_pool_size: int = Field(
+        default=10,
+        ge=1,
+        le=100,
+        description="Redis connection pool size per store",
+    )
+
+    # TTL settings (seconds)
+    widget_ttl: int = Field(
+        default=86400,  # 24 hours
+        ge=60,
+        description="Widget data TTL in seconds (auto-deleted after expiry)",
+    )
+    connection_ttl: int = Field(
+        default=300,  # 5 minutes
+        ge=30,
+        description="Connection routing TTL in seconds (refresh on heartbeat)",
+    )
+    session_ttl: int = Field(
+        default=86400,  # 24 hours
+        ge=60,
+        description="User session TTL in seconds",
+    )
+
+    # Worker identification
+    worker_id: str | None = Field(
+        default=None,
+        description=(
+            "Unique worker identifier for connection routing. "
+            "Auto-generated if None (recommended for most deployments)."
+        ),
+    )
+
+    # Authentication settings
+    auth_enabled: bool = Field(
+        default=False,
+        description="Enable user authentication and session management",
+    )
+    auth_session_cookie: str = Field(
+        default="pywry_session",
+        description="Name of the session cookie for authentication",
+    )
+    auth_header: str = Field(
+        default="Authorization",
+        description="HTTP header for bearer token authentication",
+    )
+
+    # RBAC settings
+    default_roles: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["viewer"],
+        description="Default roles assigned to new users",
+    )
+    admin_users: Annotated[list[str], NoDecode] = Field(
+        default_factory=list,
+        description="List of user IDs with admin privileges",
+    )
+
+    @field_validator("default_roles", "admin_users", mode="before")
+    @classmethod
+    def parse_comma_separated(cls, v: Any) -> list[str]:
+        """Parse comma-separated strings from env vars."""
+        if isinstance(v, str):
+            return [s.strip() for s in v.split(",") if s.strip()]
+        return v or []
+
+
 class ServerSettings(BaseSettings):
     """Inline server settings for notebook/web mode.
 
@@ -392,9 +495,9 @@ class ServerSettings(BaseSettings):
     # Uvicorn settings
     workers: int = Field(default=1, ge=1, description="Number of worker processes")
     log_level: Literal["critical", "error", "warning", "info", "debug", "trace"] = Field(
-        default="warning", description="Uvicorn log level"
+        default="info", description="Uvicorn log level"
     )
-    access_log: bool = Field(default=False, description="Enable access logging")
+    access_log: bool = Field(default=True, description="Enable access logging")
     reload: bool = Field(default=False, description="Enable auto-reload (dev mode)")
 
     # Timeouts
@@ -428,7 +531,37 @@ class ServerSettings(BaseSettings):
     )
     backlog: int = Field(default=2048, ge=1, description="Socket backlog size")
 
-    @field_validator("cors_origins", "cors_allow_methods", "cors_allow_headers", mode="before")
+    # WebSocket security settings
+    websocket_allowed_origins: Annotated[list[str], NoDecode] = Field(
+        default_factory=list,
+        description="List of allowed origins for WebSocket connections. Empty list allows any origin (rely on token auth only). Examples: ['http://localhost:8080', 'https://app.example.com']",
+    )
+    websocket_require_token: bool = Field(
+        default=True,
+        description="Require per-widget authentication token for WebSocket connections. Each widget gets a unique short-lived token embedded in its HTML.",
+    )
+
+    # Internal API security - protects internal endpoints from external access
+    internal_api_header: str = Field(
+        default="X-PyWry-Token",
+        description="Header name for internal API authentication.",
+    )
+    internal_api_token: str | None = Field(
+        default=None,
+        description="Token for internal API access. If None, auto-generated on server start. Required for /register_widget, /disconnect, /health endpoints.",
+    )
+    strict_widget_auth: bool = Field(
+        default=False,
+        description="If True, /widget/{id} endpoint also requires internal API header (browser mode). If False, only checks widget exists (notebook mode, allows iframes).",
+    )
+
+    @field_validator(
+        "cors_origins",
+        "cors_allow_methods",
+        "cors_allow_headers",
+        "websocket_allowed_origins",
+        mode="before",
+    )
     @classmethod
     def parse_comma_separated(cls, v: Any) -> list[str]:
         """Parse comma-separated strings from env vars."""
@@ -465,6 +598,7 @@ class PyWrySettings(BaseSettings):
     window: WindowSettings = Field(default_factory=WindowSettings)
     hot_reload: HotReloadSettings = Field(default_factory=HotReloadSettings)
     server: ServerSettings = Field(default_factory=ServerSettings)
+    deploy: DeploySettings = Field(default_factory=DeploySettings)
 
     # Tracks where each value came from (for CLI display)
     _sources: ClassVar[dict[str, str]] = {}
@@ -491,6 +625,7 @@ class PyWrySettings(BaseSettings):
             ("window", self.window),
             ("hot_reload", self.hot_reload),
             ("server", self.server),
+            ("deploy", self.deploy),
         ]
 
         for section_name, section in sections:
@@ -522,6 +657,7 @@ class PyWrySettings(BaseSettings):
             ("WINDOW", self.window),
             ("HOT_RELOAD", self.hot_reload),
             ("SERVER", self.server),
+            ("DEPLOY", self.deploy),
         ]
 
         for section_name, section in sections:
@@ -550,6 +686,7 @@ class PyWrySettings(BaseSettings):
             ("Window Defaults", self.window),
             ("Hot Reload", self.hot_reload),
             ("Server (Notebook/Web)", self.server),
+            ("Deploy (Scalable)", self.deploy),
         ]
 
         for section_name, section in sections:

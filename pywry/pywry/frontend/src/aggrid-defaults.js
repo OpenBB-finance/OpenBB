@@ -68,6 +68,9 @@ window.PYWRY_AGGRID_DEFAULT_COL_DEF = {
     filter: true,
     sortable: true,
     resizable: true,
+    wrapText: true,
+    wrapHeaderText: true,
+    autoHeight: true,
     // Note: menuTabs removed - requires AG Grid Enterprise
     filterParams: {
         buttons: ['apply', 'clear', 'reset'],
@@ -91,6 +94,7 @@ window.PYWRY_FORMAT_NUMBER = function(value) {
     if (value == null || isNaN(value)) return '';
     
     var absValue = Math.abs(value);
+    var sign = value < 0 ? '-' : '';
     
     // Very small numbers (with many leading zeros after decimal) → scientific notation
     // e.g., 0.00000123 → "1.23e-6"
@@ -98,53 +102,39 @@ window.PYWRY_FORMAT_NUMBER = function(value) {
         return value.toExponential();
     }
     
-    // Small decimals (< 1) or any non-integer → preserve full precision
+    // Handle non-integers (decimals) - add thousand separators
     if (!Number.isInteger(value)) {
-        // Convert to string to preserve all significant digits
-        // JavaScript's toString() preserves precision better than toLocaleString for decimals
-        var str = value.toString();
-        // If it's a reasonable length, return as-is
-        if (str.length <= 20) {
-            return str;
-        }
-        // For very long decimals, use toPrecision
-        return value.toPrecision(15).replace(/\.?0+$/, '');
+        var parts = value.toString().split('.');
+        var integerPart = parseInt(parts[0]);
+        var decimalPart = parts[1] || '';
+        
+        // Format integer part with commas
+        var formattedInteger = integerPart.toLocaleString('en-US');
+        
+        // Return with decimal part preserved
+        return decimalPart ? formattedInteger + '.' + decimalPart : formattedInteger;
     }
     
     // From here, we're dealing with integers only
-    var sign = value < 0 ? '-' : '';
+    // Abbreviate integers with trailing zeros consistently
     
-    // Billions (1,000,000,000+)
-    if (absValue >= 1e9) {
-        // Only abbreviate if cleanly divisible (trailing zeros)
-        if (absValue % 1e8 === 0) {
-            var billions = absValue / 1e9;
-            return sign + (billions % 1 === 0 ? billions.toFixed(0) : billions.toFixed(1)) + 'B';
-        }
+    // Billions (1,000,000,000+) - must be divisible by 1B
+    if (absValue >= 1e9 && absValue % 1e9 === 0) {
+        return sign + (absValue / 1e9).toFixed(0) + 'B';
     }
     
-    // Millions (1,000,000+)
-    if (absValue >= 1e6) {
-        if (absValue % 1e5 === 0) {
-            var millions = absValue / 1e6;
-            return sign + (millions % 1 === 0 ? millions.toFixed(0) : millions.toFixed(1)) + 'M';
-        }
+    // Millions (1,000,000+) - must be divisible by 1M
+    if (absValue >= 1e6 && absValue % 1e6 === 0) {
+        return sign + (absValue / 1e6).toFixed(0) + 'M';
     }
     
-    // Thousands (10,000+) - only abbreviate if cleanly divisible
-    if (absValue >= 1e4) {
-        if (absValue % 1e3 === 0) {
-            return sign + (absValue / 1e3).toFixed(0) + 'K';
-        }
-        // For numbers like 75,500 -> 75.5K (divisible by 100)
-        if (absValue % 100 === 0) {
-            var thousands = absValue / 1e3;
-            return sign + thousands.toFixed(1).replace(/\.0$/, '') + 'K';
-        }
+    // Thousands (1,000+) - must be divisible by 1K
+    if (absValue >= 1e3 && absValue % 1e3 === 0) {
+        return sign + (absValue / 1e3).toFixed(0) + 'K';
     }
     
-    // Default for integers: use locale string for comma separators
-    return value.toLocaleString();
+    // Otherwise use thousand separators for non-abbreviatable integers
+    return value.toLocaleString('en-US');
 };
 
 /**
@@ -340,24 +330,16 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
         columnDefs: processedColumnDefs,
         rowData: rowData,
         // AG Grid v32.2+: rowSelection is now an object
-        rowSelection: config.rowSelection || { mode: 'multiRow', enableClickSelection: false },
+        // Use undefined check to allow explicit null (disabled)
+        rowSelection: config.rowSelection !== undefined ? config.rowSelection : { mode: 'multiRow', enableClickSelection: false },
         pagination: usePagination,
         paginationPageSize: defaultPageSize,
         paginationPageSizeSelector: pageSizeSelector,
         domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
-        // Override AG Grid's default number formatter to use our K/M/B formatting
-        dataTypeDefinitions: {
-            number: {
-                baseDataType: 'number',
-                valueFormatter: function(params) {
-                    if (params.value === null || params.value === undefined) return '';
-                    return window.PYWRY_FORMAT_NUMBER(params.value);
-                }
-            }
-        },
         columnMenu: 'new',
         suppressMenuHide: true,
+        enableCellTextSelection: true,
         ensureDomOrder: true,
         // Row spanning support (AG Grid v32+)
         enableCellSpan: config.enableCellSpan || false,
@@ -535,19 +517,10 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         pagination: false,
         
         // AG Grid v32.2+: rowSelection is now an object
-        rowSelection: config.rowSelection || { mode: 'multiRow', enableClickSelection: false },
+        // Use undefined check to allow explicit null (disabled)
+        rowSelection: config.rowSelection !== undefined ? config.rowSelection : { mode: 'multiRow', enableClickSelection: false },
         domLayout: config.domLayout || 'normal',
         defaultColDef: Object.assign({}, window.PYWRY_AGGRID_DEFAULT_COL_DEF, config.defaultColDef || {}),
-        // Override AG Grid's default number formatter to use our K/M/B formatting
-        dataTypeDefinitions: {
-            number: {
-                baseDataType: 'number',
-                valueFormatter: function(params) {
-                    if (params.value === null || params.value === undefined) return '';
-                    return window.PYWRY_FORMAT_NUMBER(params.value);
-                }
-            }
-        },
         columnMenu: 'new',
         suppressMenuHide: true,
         enableCellTextSelection: true,
@@ -555,16 +528,27 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         
         // Row ID for selection persistence
         getRowId: function(params) {
-            return params.data && params.data.__rowId !== undefined 
-                ? String(params.data.__rowId) 
-                : (params.data && params.data.id !== undefined 
-                    ? String(params.data.id) 
-                    : String(params.rowIndex));
+            // Priority 1: PyWry tracking ID (used for pinning)
+            if (params.data && params.data._pywryId) {
+                return String(params.data._pywryId);
+            }
+            // Priority 2: Explicit row ID
+            if (params.data && params.data.__rowId !== undefined) {
+                return String(params.data.__rowId);
+            }
+            // Priority 3: Data 'id' property
+            if (params.data && params.data.id !== undefined) {
+                return String(params.data.id);
+            }
+            // Fallback: Use rowIndex (Client-Side only)
+            // Warning: ID changes if rows are inserted/removed
+            return params.data ? 'idx-' + (Math.random()) : String(params.rowIndex); // Avoid using index as ID if moving rows
         },
 
         onCellClicked: function(event) {
             // Select the row on cell click (works with row selection enabled)
-            if (event.node && config.rowSelection !== false) {
+            // Skip pinned rows to avoid warning #59
+            if (event.node && !event.node.rowPinned && config.rowSelection !== false) {
                 event.node.setSelected(true, true);
             }
             
@@ -1320,28 +1304,66 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 }
             }
         }
-
+        
         var cellInfo = null;
         var target = e.target;
 
         while (target && target !== gridDiv) {
             if (target.classList && target.classList.contains('ag-cell')) {
                 var rowNode = null;
+                var rowData = null;
                 var colId = target.getAttribute('col-id');
                 
                 // Try to get row node
                 var rowElement = target.closest('.ag-row');
                 if (rowElement) {
-                    var rowIndex = parseInt(rowElement.getAttribute('row-index'), 10);
-                    rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+                    var rowIndexAttr = rowElement.getAttribute('row-index');
+                    var rowId = rowElement.getAttribute('row-id');
+                    var isPinned = rowElement.classList.contains('ag-row-pinned');
+                    
+                    // For pinned rows, AG Grid uses format like "b-0", "b-1" (bottom) or "t-0", "t-1" (top)
+                    // For regular rows, it's just a number like "0", "1", "2"
+                    var pinnedIndex = -1;
+                    var pinnedRegion = null;
+                    
+                    if (isPinned && rowIndexAttr) {
+                        // Parse pinned row index: "b-0" -> 0, "t-2" -> 2
+                        if (rowIndexAttr.startsWith('b-')) {
+                            pinnedRegion = 'bottom';
+                            pinnedIndex = parseInt(rowIndexAttr.substring(2), 10);
+                        } else if (rowIndexAttr.startsWith('t-')) {
+                            pinnedRegion = 'top';
+                            pinnedIndex = parseInt(rowIndexAttr.substring(2), 10);
+                        }
+                    }
+                    
+                    var rowIndex = isPinned ? pinnedIndex : parseInt(rowIndexAttr, 10);
+                    
+                    if (isPinned) {
+                        var currentPinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
+                        var currentPinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
+                        
+                        if (pinnedRegion === 'top' && pinnedIndex >= 0 && pinnedIndex < currentPinnedTop.length) {
+                            rowData = currentPinnedTop[pinnedIndex];
+                            rowNode = { data: rowData, rowIndex: pinnedIndex, rowPinned: 'top', id: rowId };
+                        } else if (pinnedRegion === 'bottom' && pinnedIndex >= 0 && pinnedIndex < currentPinnedBottom.length) {
+                            rowData = currentPinnedBottom[pinnedIndex];
+                            rowNode = { data: rowData, rowIndex: pinnedIndex, rowPinned: 'bottom', id: rowId };
+                        }
+                    } else {
+                        // Regular row
+                        rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+                        rowData = rowNode ? rowNode.data : null;
+                    }
                 }
                 
                 cellInfo = {
                     colId: colId,
                     rowNode: rowNode,
-                    data: rowNode ? rowNode.data : null,
+                    data: rowData,
                     value: target.textContent
                 };
+                
                 break;
             }
             target = target.parentElement;
@@ -1554,6 +1576,106 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 
                 menuItems.push({ separator: true });
             }
+        }
+        
+        // Row pinning options - show different menu based on current state
+        // NOTE: Community Edition requires manual pinnedTopRowData/pinnedBottomRowData management
+        // Pinned rows will NOT be selectable (AG Grid limitation for Community)
+        if (cellInfo && cellInfo.rowNode) {
+            var rowPinned = cellInfo.rowNode.rowPinned;
+            var rowNode = cellInfo.rowNode;
+            var rowData = cellInfo.data;
+
+            if (rowPinned) {
+                // ROW IS ALREADY PINNED - Show simple "Unpin Row" action
+                menuItems.push({
+                    label: 'Unpin Row',
+                    icon: '⊘',
+                    action: function(ctx) {
+                        if (!ctx || !ctx.data) return;
+                        
+                        var data = ctx.data;
+                        var pinned = ctx.rowNode ? ctx.rowNode.rowPinned : null;
+                        
+                        // Get current pinned arrays
+                        var pinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
+                        var pinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
+                        
+                        // Remove from pinned array
+                        if (pinned === 'top') {
+                            pinnedTop = pinnedTop.filter(function(r) { return r !== data; });
+                            gridApi.setGridOption('pinnedTopRowData', pinnedTop);
+                        } else if (pinned === 'bottom') {
+                            pinnedBottom = pinnedBottom.filter(function(r) { return r !== data; });
+                            gridApi.setGridOption('pinnedBottomRowData', pinnedBottom);
+                        }
+                        
+                        // Restore to original position
+                        var originalIndex = data._pywryOriginalIndex;
+                        delete data._pywryOriginalIndex; // Clean up
+                        
+                        if (typeof originalIndex === 'number' && originalIndex >= 0) {
+                            gridApi.applyTransaction({ add: [data], addIndex: originalIndex });
+                        } else {
+                            gridApi.applyTransaction({ add: [data] });
+                        }
+                    }
+                });
+            } else {
+                // ROW IS NOT PINNED - Show Pin options submenu
+                menuItems.push({
+                    label: 'Pin Row',
+                    icon: 'pin',
+                    submenu: [
+                        {
+                            label: 'Pin to Top',
+                            icon: '⬆',
+                            action: function(ctx) {
+                                if (!ctx || !ctx.rowNode) return;
+                                
+                                var node = ctx.rowNode;
+                                var data = node.data;
+                                if (!data) return;
+                                
+                                // Store original index for restoration
+                                data._pywryOriginalIndex = node.rowIndex;
+                                
+                                // Remove from main grid
+                                gridApi.applyTransaction({ remove: [data] });
+                                
+                                // Add to top pinned
+                                var pinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
+                                pinnedTop.push(data);
+                                gridApi.setGridOption('pinnedTopRowData', pinnedTop);
+                            }
+                        },
+                        {
+                            label: 'Pin to Bottom',
+                            icon: '⬇',
+                            action: function(ctx) {
+                                if (!ctx || !ctx.rowNode) return;
+                                
+                                var node = ctx.rowNode;
+                                var data = node.data;
+                                if (!data) return;
+                                
+                                // Store original index for restoration
+                                data._pywryOriginalIndex = node.rowIndex;
+                                
+                                // Remove from main grid
+                                gridApi.applyTransaction({ remove: [data] });
+                                
+                                // Add to bottom pinned
+                                var pinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
+                                pinnedBottom.push(data);
+                                gridApi.setGridOption('pinnedBottomRowData', pinnedBottom);
+                            }
+                        }
+                    ]
+                });
+            }
+            
+            menuItems.push({ separator: true });
         }
         
         var allColumns = gridApi.getColumns ? gridApi.getColumns() : [];

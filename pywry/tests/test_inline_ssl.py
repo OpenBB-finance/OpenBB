@@ -137,20 +137,23 @@ def test_https_server_configuration(ssl_certs):
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
 
+        # Security settings (required for server to run)
+        settings_server.websocket_allowed_origins = []
+        settings_server.websocket_require_token = True
+        settings_server.internal_api_header = "X-PyWry-Token"
+        settings_server.internal_api_token = None  # Auto-generated
+        settings_server.strict_widget_auth = False
+
         widget = InlineWidget("<h1>Test</h1>", port=8766, browser_only=True)
 
         try:
             assert widget.url.startswith("https://")
             assert "8766" in widget.url
 
-            # Verify server is reachable via HTTPS
-            response = requests.get("https://127.0.0.1:8766/health", verify=cert_path, timeout=5.0)
-            assert response.status_code == 200
-            assert response.json() == {"status": "ok"}
-
-            # Verify client helper works
+            # Internal helper includes auth token automatically
             internal_resp = _make_server_request("GET", "/health", port=8766, host="127.0.0.1")
             assert internal_resp.status_code == 200
+            assert internal_resp.json() == {"status": "ok"}
 
         finally:
             stop_server()
@@ -195,7 +198,9 @@ def test_client_verification_settings_localhost_default(ssl_certs):
 
 
 @pytest.mark.asyncio
-async def test_e2e_wss_callback_flow(ssl_certs):  # noqa: PLR0915
+async def test_e2e_wss_callback_flow(  # noqa: PLR0915  # pylint: disable=too-many-statements
+    ssl_certs,
+):
     """Test true E2E flow: HTTPS init -> WSS connect -> Client logic triggers callback."""
     cert_path, key_path = ssl_certs
 
@@ -222,6 +227,13 @@ async def test_e2e_wss_callback_flow(ssl_certs):  # noqa: PLR0915
         settings_server.cors_allow_credentials = True
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
+
+        # Security settings (required for server to run)
+        settings_server.websocket_allowed_origins = []
+        settings_server.websocket_require_token = True
+        settings_server.internal_api_header = "X-PyWry-Token"
+        settings_server.internal_api_token = None  # Auto-generated
+        settings_server.strict_widget_auth = False
 
         # 1. Setup widget with a callback (browser_only=True skips IPython requirement)
         callback_mock = MagicMock()
@@ -259,9 +271,14 @@ async def test_e2e_wss_callback_flow(ssl_certs):  # noqa: PLR0915
                 assert "200 OK" in resp_text or "HTTP/1.1 200" in resp_text
                 assert "window.pywry" in resp_text
 
-            # 3. Emulate Browser: Connect to WSS
+            # 3. Emulate Browser: Connect to WSS with token auth
+            from pywry.inline import _state
+
             uri = f"wss://127.0.0.1:8769/ws/{wid}"
-            async with websockets.connect(uri, ssl=ssl_ctx) as websocket:
+            token = _state.widget_tokens.get(wid)
+            subprotocol = f"pywry.token.{token}" if token else None
+            subprotocols = [subprotocol] if subprotocol else None
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 # 4. Simulate browser sending 'pywry:ready'
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
@@ -310,6 +327,13 @@ def test_content_generation_https(ssl_certs):
         settings_server.cors_allow_credentials = True
         settings_server.cors_allow_methods = ["*"]
         settings_server.cors_allow_headers = ["*"]
+
+        # Security settings (required for server to run)
+        settings_server.websocket_allowed_origins = []
+        settings_server.websocket_require_token = True
+        settings_server.internal_api_header = "X-PyWry-Token"
+        settings_server.internal_api_token = None  # Auto-generated
+        settings_server.strict_widget_auth = False
 
         # browser_only=True skips IPython requirement
         widget_id = "content_test_widget"

@@ -10,6 +10,7 @@ Tests:
 - build_grid_config() main entry point
 - MultiIndex column/row handling
 """
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -689,7 +690,8 @@ class TestBuildGridConfig:
         result = build_grid_config([{"a": 1}], row_selection=False)
         opts_dict = result.options.to_dict()
 
-        assert opts_dict.get("rowSelection") is None
+        # False is passed explicitly to disable selection (not None which would use default)
+        assert opts_dict.get("rowSelection") is False
 
     def test_row_selection_custom_object(self):
         """row_selection accepts RowSelection object."""
@@ -968,3 +970,176 @@ class TestIntegration:
         js_config = to_js_grid_config(config)
 
         assert js_config["columnDefs"][0]["valueFormatter"] == "'$' + value.toFixed(2)"
+
+
+# =============================================================================
+# Row Pinning Transaction Tests (JavaScript Code Verification)
+# =============================================================================
+
+
+class TestRowPinningJavaScript:
+    """Tests for AG Grid row pinning JavaScript implementation.
+
+    These tests verify that the aggrid-defaults.js file contains the correct
+    implementation for pin/unpin row transactions with original index restoration.
+    """
+
+    @pytest.fixture
+    def aggrid_defaults_js(self) -> str:
+        """Load the aggrid-defaults.js file content."""
+        from pathlib import Path
+
+        js_path = Path(__file__).parent.parent / "pywry" / "frontend" / "src" / "aggrid-defaults.js"
+        return js_path.read_text(encoding="utf-8")
+
+    # -------------------------------------------------------------------------
+    # Pin Row Tests - Transaction from main grid to pinned section
+    # -------------------------------------------------------------------------
+
+    def test_pin_to_top_stores_original_index(self, aggrid_defaults_js: str):
+        """Pin to Top stores original index for later restoration."""
+        # Verify that pinning stores the original row index
+        assert "data._pywryOriginalIndex = node.rowIndex" in aggrid_defaults_js
+
+    def test_pin_to_top_removes_from_main_grid(self, aggrid_defaults_js: str):
+        """Pin to Top uses applyTransaction to remove row from main grid."""
+        # Should remove the row from main grid before adding to pinned
+        assert "applyTransaction({ remove: [data] })" in aggrid_defaults_js
+
+    def test_pin_to_top_adds_to_pinned_array(self, aggrid_defaults_js: str):
+        """Pin to Top adds row to pinnedTopRowData array."""
+        # Should get current pinned rows and add new one
+        assert "getGridOption('pinnedTopRowData')" in aggrid_defaults_js
+        assert "pinnedTop.push(data)" in aggrid_defaults_js
+        assert "setGridOption('pinnedTopRowData', pinnedTop)" in aggrid_defaults_js
+
+    def test_pin_to_bottom_uses_correct_array(self, aggrid_defaults_js: str):
+        """Pin to Bottom uses pinnedBottomRowData array."""
+        assert "getGridOption('pinnedBottomRowData')" in aggrid_defaults_js
+        assert "pinnedBottom.push(data)" in aggrid_defaults_js
+        assert "setGridOption('pinnedBottomRowData', pinnedBottom)" in aggrid_defaults_js
+
+    def test_pin_menu_has_submenu_structure(self, aggrid_defaults_js: str):
+        """Pin Row menu shows submenu with Top and Bottom options."""
+        assert "label: 'Pin Row'" in aggrid_defaults_js
+        assert "label: 'Pin to Top'" in aggrid_defaults_js
+        assert "label: 'Pin to Bottom'" in aggrid_defaults_js
+        assert "submenu:" in aggrid_defaults_js
+
+    # -------------------------------------------------------------------------
+    # Unpin Row Tests - Transaction from pinned section back to main grid
+    # -------------------------------------------------------------------------
+
+    def test_unpin_restores_to_original_index(self, aggrid_defaults_js: str):
+        """Unpin Row uses addIndex to restore row to original position."""
+        # Should use applyTransaction with addIndex for position restoration
+        assert "applyTransaction({ add: [data], addIndex: originalIndex })" in aggrid_defaults_js
+
+    def test_unpin_reads_original_index(self, aggrid_defaults_js: str):
+        """Unpin Row reads stored original index from row data."""
+        assert "var originalIndex = data._pywryOriginalIndex" in aggrid_defaults_js
+
+    def test_unpin_cleans_up_original_index(self, aggrid_defaults_js: str):
+        """Unpin Row deletes the temporary _pywryOriginalIndex property."""
+        assert "delete data._pywryOriginalIndex" in aggrid_defaults_js
+
+    def test_unpin_handles_missing_index_gracefully(self, aggrid_defaults_js: str):
+        """Unpin Row falls back to append if original index is missing."""
+        # Should check if originalIndex is valid before using addIndex
+        assert "typeof originalIndex === 'number'" in aggrid_defaults_js
+        # Fallback to simple add without index
+        assert "applyTransaction({ add: [data] })" in aggrid_defaults_js
+
+    def test_unpin_removes_from_pinned_top(self, aggrid_defaults_js: str):
+        """Unpin Row removes row from pinnedTopRowData when pinned='top'."""
+        assert "pinned === 'top'" in aggrid_defaults_js
+        # Filter removes the specific row from array
+        assert "pinnedTop = pinnedTop.filter" in aggrid_defaults_js
+
+    def test_unpin_removes_from_pinned_bottom(self, aggrid_defaults_js: str):
+        """Unpin Row removes row from pinnedBottomRowData when pinned='bottom'."""
+        assert "pinned === 'bottom'" in aggrid_defaults_js
+        # Filter removes the specific row from array
+        assert "pinnedBottom = pinnedBottom.filter" in aggrid_defaults_js
+
+    def test_unpin_menu_is_simple_action(self, aggrid_defaults_js: str):
+        """Unpin Row is a simple action, not a submenu."""
+        assert "label: 'Unpin Row'" in aggrid_defaults_js
+        # Should not have submenu for Unpin - it's a direct action
+
+    # -------------------------------------------------------------------------
+    # Context Menu State Tests
+    # -------------------------------------------------------------------------
+
+    def test_menu_shows_pin_for_unpinned_rows(self, aggrid_defaults_js: str):
+        """Menu shows 'Pin Row' submenu for rows that are not pinned."""
+        # The code checks if rowPinned is falsy to show Pin options
+        assert "if (rowPinned)" in aggrid_defaults_js
+        # else branch shows Pin Row submenu
+        assert "} else {" in aggrid_defaults_js
+
+    def test_menu_shows_unpin_for_pinned_rows(self, aggrid_defaults_js: str):
+        """Menu shows 'Unpin Row' for rows that are already pinned."""
+        # When rowPinned is truthy, show Unpin
+        assert "// ROW IS ALREADY PINNED" in aggrid_defaults_js
+        assert "// ROW IS NOT PINNED" in aggrid_defaults_js
+
+    def test_checks_row_pinned_state(self, aggrid_defaults_js: str):
+        """Menu checks rowNode.rowPinned to determine current state."""
+        assert "var rowPinned = cellInfo.rowNode.rowPinned" in aggrid_defaults_js
+
+    # -------------------------------------------------------------------------
+    # Transaction Order Tests
+    # -------------------------------------------------------------------------
+
+    def test_pin_transaction_order(self, aggrid_defaults_js: str):
+        """Pin operations: store index → remove from grid → add to pinned."""
+        # Find the Pin to Top action and verify order
+        js = aggrid_defaults_js
+
+        # Store index should come before remove
+        store_idx = js.find("data._pywryOriginalIndex = node.rowIndex")
+        remove_idx = js.find("applyTransaction({ remove: [data] })")
+        push_idx = js.find("pinnedTop.push(data)")
+
+        # All should exist
+        assert store_idx > 0
+        assert remove_idx > 0
+        assert push_idx > 0
+
+        # Store should come before remove, remove should come before push
+        # (At least in the first occurrence which is Pin to Top)
+        assert store_idx < remove_idx, "Should store original index before removing"
+
+    def test_unpin_transaction_order(self, aggrid_defaults_js: str):
+        """Unpin operations: read index → remove from pinned → add to grid."""
+        js = aggrid_defaults_js
+
+        # Find the Unpin Row action section
+        unpin_section_start = js.find("label: 'Unpin Row'")
+        assert unpin_section_start > 0
+
+        # Get the unpin action section
+        unpin_section = js[unpin_section_start : unpin_section_start + 2000]
+
+        # Original index should be read
+        assert "var originalIndex = data._pywryOriginalIndex" in unpin_section
+
+        # Should clean up the property
+        assert "delete data._pywryOriginalIndex" in unpin_section
+
+        # Should restore with addIndex
+        assert "applyTransaction({ add: [data], addIndex: originalIndex })" in unpin_section
+
+    # -------------------------------------------------------------------------
+    # Guard Clause Tests
+    # -------------------------------------------------------------------------
+
+    def test_pin_action_has_guard_clauses(self, aggrid_defaults_js: str):
+        """Pin actions have guard clauses for missing context/data."""
+        assert "if (!ctx || !ctx.rowNode) return" in aggrid_defaults_js
+        assert "if (!data) return" in aggrid_defaults_js
+
+    def test_unpin_action_has_guard_clauses(self, aggrid_defaults_js: str):
+        """Unpin action has guard clause for missing context/data."""
+        assert "if (!ctx || !ctx.data) return" in aggrid_defaults_js

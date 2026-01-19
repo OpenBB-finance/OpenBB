@@ -80,36 +80,87 @@ def server_port():
         return s.getsockname()[1]
 
 
+def _get_auth_header() -> dict[str, str]:
+    """Get the internal API auth header for protected endpoints."""
+    settings = get_settings()
+    if _state.internal_api_token:
+        return {settings.server.internal_api_header: _state.internal_api_token}
+    return {}
+
+
 def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
-    """Wait for server to be ready."""
-    url = f"http://{host}:{port}/health"
+    """Wait for server to be ready.
+
+    Uses the widget endpoint (not health) since health requires auth and
+    we may not have the token yet during startup wait.
+    """
+    # Try widget endpoint first (doesn't require auth in notebook mode)
+    # or just try the socket until server is listening
+    import socket as sock_mod
+
     start = time.time()
     while time.time() - start < timeout:
         try:
-            with urllib.request.urlopen(url, timeout=0.5) as resp:  # noqa: S310
-                if resp.status == 200:
-                    return True
+            # Try to connect to the socket
+            with sock_mod.socket(sock_mod.AF_INET, sock_mod.SOCK_STREAM) as s:
+                s.settimeout(0.5)
+                result = s.connect_ex((host, port))
+                if result == 0:
+                    # Socket is open, try a simple request
+                    # Use health with auth header if we have token
+                    url = f"http://{host}:{port}/health"
+                    req = urllib.request.Request(url)  # noqa: S310
+                    auth_header = _get_auth_header()
+                    for k, v in auth_header.items():
+                        req.add_header(k, v)
+                    try:
+                        with urllib.request.urlopen(req, timeout=0.5) as resp:  # noqa: S310
+                            if resp.status == 200:
+                                return True
+                    except Exception:
+                        # Health might 404 without auth, but socket is open so server is running
+                        return True
         except Exception:  # noqa: S110
             pass
         time.sleep(0.1)
     return False
 
 
-def http_get(url: str, timeout: float = 5.0) -> tuple[int, str]:
-    """Make HTTP GET request, return (status_code, body)."""
+def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
+    """Make HTTP GET request, return (status_code, body).
+
+    Args:
+        url: URL to fetch
+        timeout: Request timeout in seconds
+        auth: If True, include internal API auth header (for /health, etc.)
+    """
+    req = urllib.request.Request(url)  # noqa: S310
+    if auth:
+        for k, v in _get_auth_header().items():
+            req.add_header(k, v)
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:  # noqa: S310
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
             return resp.status, resp.read().decode("utf-8")
     except urllib.error.HTTPError as e:
         return e.code, e.read().decode("utf-8")
 
 
-def http_post(url: str, data: dict, timeout: float = 5.0) -> tuple[int, str]:
-    """Make HTTP POST request with JSON body."""
+def http_post(url: str, data: dict, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
+    """Make HTTP POST request with JSON body.
+
+    Args:
+        url: URL to POST to
+        data: JSON data dict
+        timeout: Request timeout in seconds
+        auth: If True, include internal API auth header (for /register_widget, etc.)
+    """
+    headers = {"Content-Type": "application/json"}
+    if auth:
+        headers.update(_get_auth_header())
     req = urllib.request.Request(  # noqa: S310
         url,
         data=json.dumps(data).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     try:
@@ -133,7 +184,8 @@ class TestServerStartup:
 
         assert wait_for_server("127.0.0.1", server_port), "Server did not start"
 
-        status, body = http_get(f"http://127.0.0.1:{server_port}/health")
+        # Health endpoint requires auth
+        status, body = http_get(f"http://127.0.0.1:{server_port}/health", auth=True)
         assert status == 200
 
         data = json.loads(body)
@@ -489,14 +541,27 @@ class TestContentTypes:
     """Test that correct content types are returned."""
 
     def test_health_returns_json(self, server_port):
-        """Health endpoint should return JSON."""
+        """Health endpoint should return JSON (requires auth)."""
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
         url = f"http://127.0.0.1:{server_port}/health"
-        with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310
+        # Health endpoint requires internal auth
+        req = urllib.request.Request(url)  # noqa: S310
+        for k, v in _get_auth_header().items():
+            req.add_header(k, v)
+        with urllib.request.urlopen(req, timeout=5) as resp:  # noqa: S310
             content_type = resp.headers.get("Content-Type", "")
             assert "application/json" in content_type
+
+    def test_health_without_auth_returns_404(self, server_port):
+        """Health endpoint without auth should return 404."""
+        _start_server(port=server_port, host="0.0.0.0")
+        assert wait_for_server("127.0.0.1", server_port)
+
+        # No auth header - should get 404
+        status, _ = http_get(f"http://127.0.0.1:{server_port}/health", auth=False)
+        assert status == 404
 
     def test_widget_returns_html(self, server_port):
         """Widget endpoint should return HTML."""
@@ -693,13 +758,15 @@ class TestErrorHandling:
         http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         # Simulate a bad request (non-existent widget for register which is POST)
+        # Note: register_widget requires auth, so without auth we get 404
         http_post(
             f"http://127.0.0.1:{server_port}/register_widget",
-            {"widget_id": "", "html": ""},  # Missing required fields
+            {"widget_id": "", "html": ""},  # Missing required fields, also no auth
+            auth=False,  # No auth = 404
         )
 
-        # Server should still be running
-        health_status, _ = http_get(f"http://127.0.0.1:{server_port}/health")
+        # Server should still be running (use auth to verify)
+        health_status, _ = http_get(f"http://127.0.0.1:{server_port}/health", auth=True)
         assert health_status == 200
 
 
@@ -851,10 +918,14 @@ class TestWebSocketUpdates:
         ):
             widget = show("<div></div>", port=server_port)
 
-        # Connect to WebSocket
+        # Connect to WebSocket with token for authentication
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget._widget_id}"
+        # Get the per-widget token from server state
+        token = _state.widget_tokens.get(widget._widget_id)
+        subprotocol = f"pywry.token.{token}" if token else None
+        subprotocols = [subprotocol] if subprotocol else None
 
-        async with websockets.connect(ws_url) as ws:
+        async with websockets.connect(ws_url, subprotocols=subprotocols) as ws:
             # 1. Emit theme update event from Python side
             theme_data = {"theme": "ag-theme-quartz-dark"}
             widget.emit("pywry:update-theme", theme_data)
@@ -896,9 +967,13 @@ class TestWebSocketUpdates:
             widget = show("<div></div>", port=server_port)
             widget.on("test_click", on_event)
 
-        # Connect via WS
+        # Connect via WS with token for authentication
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget._widget_id}"
-        async with websockets.connect(ws_url) as ws:
+        token = _state.widget_tokens.get(widget._widget_id)
+        subprotocol = f"pywry.token.{token}" if token else None
+        subprotocols = [subprotocol] if subprotocol else None
+
+        async with websockets.connect(ws_url, subprotocols=subprotocols) as ws:
             # Send message simulating JS client
             payload = {
                 "type": "test_click",

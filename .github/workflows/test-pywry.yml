@@ -139,3 +139,65 @@ jobs:
           PYWRY_HEADLESS: "1"
         run: |
           python -m pytest tests/ -v --tb=short
+
+  # Redis integration tests - runs on Linux with Redis service container
+  test-redis:
+    name: Redis Integration Tests
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pywry/pyproject.toml'
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux dependencies
+        run: |
+          for i in 1 2 3; do sudo apt-get update && break || sleep 15; done
+          for i in 1 2 3; do sudo apt-get install -y --fix-missing xvfb dbus-x11 at-spi2-core libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libxcb-shape0 libgl1 libegl1 libwebkit2gtk-4.1-dev libgtk-3-dev redis-tools && break || { sleep 30; sudo apt-get update; }; done
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Wait for Redis
+        run: |
+          for i in {1..30}; do
+            if redis-cli -h localhost -p 6379 ping > /dev/null 2>&1; then
+              echo "Redis is ready!"
+              break
+            fi
+            echo "Waiting for Redis... ($i/30)"
+            sleep 1
+          done
+
+      - name: Run Redis integration tests
+        env:
+          PYWRY_HEADLESS: "1"
+          NO_AT_BRIDGE: "1"
+          PYWRY_DEPLOY__STATE_BACKEND: "redis"
+          PYWRY_DEPLOY__REDIS_URL: "redis://localhost:6379/0"
+          PYWRY_DEPLOY__REDIS_PREFIX: "pywry-ci:"
+        run: |
+          dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+            python -m pytest tests/test_state_redis_integration.py tests/test_state_redis.py -v --tb=short

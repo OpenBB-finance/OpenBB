@@ -130,12 +130,11 @@ class AGGridModel(BaseModel):
     def to_dict(self) -> dict[str, Any]:
         """Convert to dict with camelCase keys, excluding None values.
 
-        Pydantic v2 quirk: by_alias only uses alias if value was set via alias.
-        We need to explicitly map field names to aliases.
+        Explicitly maps field names to aliases.
         """
         result: dict[str, Any] = {
             (field_info.alias if field_info.alias else field_name): getattr(self, field_name)
-            for field_name, field_info in self.model_fields.items()
+            for field_name, field_info in getattr(self, "model_fields", {}).items()
             if getattr(self, field_name) is not None
         }
         # Include extra fields (not in model_fields)
@@ -238,9 +237,6 @@ class DefaultColDef(AGGridModel):
     min_width: int = Field(default=80, alias="minWidth")
     flex: int = 1  # Columns share available space
 
-    # UX improvements
-    enable_cell_text_selection: bool = Field(default=True, alias="enableCellTextSelection")
-
     # Row grouping ready
     enable_row_group: bool = Field(default=True, alias="enableRowGroup")
     enable_pivot: bool = Field(default=True, alias="enablePivot")
@@ -285,7 +281,7 @@ class GridOptions(AGGridModel):
     row_model_type: RowModelType = Field(default="clientSide", alias="rowModelType")
 
     # === Selection (enabled by default) ===
-    row_selection: dict[str, Any] | None = Field(default=None, alias="rowSelection")
+    row_selection: dict[str, Any] | bool | None = Field(default=None, alias="rowSelection")
     cell_selection: bool | None = Field(default=True, alias="cellSelection")
 
     # === Layout ===
@@ -318,7 +314,6 @@ class GridOptions(AGGridModel):
     undo_redo_cell_editing_limit: int = Field(default=20, alias="undoRedoCellEditingLimit")
 
     # === Clipboard ===
-    enable_cell_text_selection: bool = Field(default=True, alias="enableCellTextSelection")
     copy_headers_to_clipboard: bool = Field(default=True, alias="copyHeadersToClipboard")
 
     # === Rendering ===
@@ -684,15 +679,10 @@ def _build_datetime_col_def(col_def: dict[str, Any], col_type: str) -> None:
 
 
 def _build_number_col_def(col_def: dict[str, Any], col_type: str) -> None:
-    """Configure number columns with proper formatting.
+    """Configure number columns for temporal patterns only.
 
-    Uses PYWRY_FORMAT_NUMBER for intelligent number formatting:
-    - Large integers: 75K, 1.5M, 2B (when cleanly divisible)
-    - Regular integers: thousands separators (12,345)
-    - Decimals: preserve precision
-    - Very small: scientific notation
-
-    Skips formatting for temporal columns (year, date, period, etc.).
+    The dataTypeDefinitions.number.valueFormatter in JavaScript handles all formatting.
+    We only intervene for temporal columns to prevent unwanted formatting.
     """
     if col_type != "number":
         return
@@ -701,13 +691,8 @@ def _build_number_col_def(col_def: dict[str, Any], col_type: str) -> None:
     field_name = col_def.get("field", "").lower()
     temporal_patterns = ("year", "date", "period", "month", "day", "quarter", "week")
     if any(pattern in field_name for pattern in temporal_patterns):
-        # Set pass-through formatter to prevent JS auto-apply from formatting
-        col_def["valueFormatter"] = "value == null ? '' : String(value)"
-        return
-
-    # Use the global PYWRY_FORMAT_NUMBER function for intelligent formatting
-    # This handles: 75K, 1.5M, 2B for large numbers, commas for regular integers
-    col_def["valueFormatter"] = "value == null ? '' : window.PYWRY_FORMAT_NUMBER(value)"
+        # Disable data type formatter for temporal columns
+        col_def["cellDataType"] = False
 
 
 def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branches
@@ -836,7 +821,7 @@ def build_grid_config(  # pylint: disable=too-many-arguments
     pagination: bool | None = None,
     pagination_page_size: int = 100,
     cache_block_size: int = 500,
-    row_selection: RowSelection | dict[str, Any] | bool = True,
+    row_selection: RowSelection | dict[str, Any] | bool = False,
     enable_cell_span: bool | None = None,
 ) -> GridConfig:
     """Build complete grid configuration from data.
@@ -939,11 +924,11 @@ def build_grid_config(  # pylint: disable=too-many-arguments
         row_data_for_grid = row_data
 
     # Build row selection config
-    row_sel_dict: dict[str, Any] | None = None
+    row_sel_dict: dict[str, Any] | bool | None = None
     if row_selection is True:
         row_sel_dict = RowSelection().to_dict()
     elif row_selection is False:
-        row_sel_dict = None
+        row_sel_dict = False  # Pass False as-is, not None
     elif isinstance(row_selection, RowSelection):
         row_sel_dict = row_selection.to_dict()
     elif isinstance(row_selection, dict):

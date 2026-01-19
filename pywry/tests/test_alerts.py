@@ -1157,18 +1157,20 @@ class TestInlineAlertE2E:
 
     def test_inline_html_includes_toast_js(self, server_port: int) -> None:
         """E2E: Verify inline widget HTML includes PYWRY_TOAST."""
+        import socket
         import urllib.request
 
         from pywry.inline import _start_server, _state
 
         def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
-            url = f"http://{host}:{port}/health"
+            """Wait for server to be reachable via socket check (health requires auth)."""
             start = time.time()
             while time.time() - start < timeout:
                 try:
-                    with urllib.request.urlopen(url, timeout=0.5) as resp:  # noqa: S310
-                        if resp.status == 200:
-                            return True
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.settimeout(0.5)
+                        s.connect((host, port))
+                        return True
                 except Exception:  # noqa: S110
                     pass
                 time.sleep(0.1)
@@ -1191,18 +1193,20 @@ class TestInlineAlertE2E:
 
     def test_inline_dataframe_includes_alert_handler(self, server_port: int) -> None:
         """E2E: Verify inline dataframe HTML includes alert handler."""
+        import socket
         import urllib.request
 
         from pywry.inline import _start_server, _state, generate_dataframe_html
 
         def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
-            url = f"http://{host}:{port}/health"
+            """Wait for server to be reachable via socket check (health requires auth)."""
             start = time.time()
             while time.time() - start < timeout:
                 try:
-                    with urllib.request.urlopen(url, timeout=0.5) as resp:  # noqa: S310
-                        if resp.status == 200:
-                            return True
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.settimeout(0.5)
+                        s.connect((host, port))
+                        return True
                 except Exception:  # noqa: S110
                     pass
                 time.sleep(0.1)
@@ -1229,18 +1233,20 @@ class TestInlineAlertE2E:
 
     def test_inline_plotly_includes_alert_handler(self, server_port: int) -> None:
         """E2E: Verify inline plotly HTML includes alert handler."""
+        import socket
         import urllib.request
 
         from pywry.inline import _start_server, _state, generate_plotly_html
 
         def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
-            url = f"http://{host}:{port}/health"
+            """Wait for server to be reachable via socket check (health requires auth)."""
             start = time.time()
             while time.time() - start < timeout:
                 try:
-                    with urllib.request.urlopen(url, timeout=0.5) as resp:  # noqa: S310
-                        if resp.status == 200:
-                            return True
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.settimeout(0.5)
+                        s.connect((host, port))
+                        return True
                 except Exception:  # noqa: S110
                     pass
                 time.sleep(0.1)

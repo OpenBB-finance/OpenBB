@@ -348,9 +348,18 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
 
         mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
+        # Generate token for widget authentication
+        widget_token = inline._generate_widget_token(widget_id)
+
         # Generate HTML content for the widget (content only, not full document)
         html = inline.generate_plotly_html(
-            figure_json, widget_id, title, theme, full_document=False, toolbars=None
+            figure_json,
+            widget_id,
+            title,
+            theme,
+            full_document=False,
+            toolbars=None,
+            token=widget_token,
         )
 
         # Inject toolbars using position-based layout
@@ -367,8 +376,13 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     # Fallback to InlineWidget (FastAPI server)
     from . import inline
 
+    # Generate token for widget authentication
+    widget_token = inline._generate_widget_token(widget_id)
+
     # Let generate_plotly_html handle toolbar injection for IFrame
-    html = inline.generate_plotly_html(figure_json, widget_id, title, theme, toolbars=toolbars)
+    html = inline.generate_plotly_html(
+        figure_json, widget_id, title, theme, toolbars=toolbars, token=widget_token
+    )
 
     return inline.InlineWidget(
         html=html,
@@ -377,6 +391,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
         port=port or 8765,
         widget_id=widget_id,
         browser_only=force_iframe,  # Skip IPython requirement for BROWSER mode
+        token=widget_token,
     )
 
 
@@ -524,6 +539,9 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         )
 
     # Fallback to InlineWidget
+    # Generate token for widget authentication
+    widget_token = inline._generate_widget_token(widget_id)
+
     # Use the grid config directly
     html = inline.generate_dataframe_html_from_config(
         config=config,
@@ -533,6 +551,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         aggrid_theme=aggrid_theme,
         header_html=header_html,
         toolbars=toolbars,
+        token=widget_token,
     )
 
     widget = inline.InlineWidget(
@@ -542,6 +561,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         port=port or 8765,
         widget_id=widget_id,
         browser_only=force_iframe,  # Skip IPython requirement for BROWSER mode
+        token=widget_token,
     )
 
     # Register grid:export-csv handler for IFrame path (mirrors anywidget behavior)

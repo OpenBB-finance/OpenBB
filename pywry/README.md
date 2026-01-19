@@ -18,6 +18,8 @@ Its unified API lets you build fast and use anywhere. Batteries included.
 - **Bundled Libraries**: Plotly.js 3.3.1 and AgGrid 35.0.0 (offline capable)
 - **Configuration System**: TOML files, pyproject.toml, and environment variables
 - **CLI Tools**: Configuration management and project initialization
+- **Deploy Mode**: Redis-backed state for horizontal scaling and multi-worker deployments
+- **Authentication & RBAC**: Optional session management with role-based access control
 
 ## Dependencies
 
@@ -33,10 +35,12 @@ Its unified API lets you build fast and use anywhere. Batteries included.
 - websockets >= 15.0.1
 - requests >= 2.32.5
 - pandas >= 1.5.3
+- redis >= 7.1.0
 
 ### Optional
 
-- anywidget >= 0.9.0
+- anywidget >= 0.9.0 (for notebook widget support)
+- redis >= 5.0.0 (for deploy mode / horizontal scaling)
 
 ### Linux
 
@@ -197,6 +201,12 @@ label = app.show_dataframe(
 | ↳ [Available Methods](#javascript-bridge) ・ [Injected Globals](#javascript-bridge) ・ [Plotly/AgGrid APIs](#javascript-bridge) ・ [Toolbar API](#javascript-bridge) ・ [Toast Notifications](#javascript-bridge) | |
 | [Direct Tauri API Access](#direct-tauri-api-access) | Native filesystem, dialogs, clipboard |
 | ↳ [`__TAURI__` Global](#direct-tauri-api-access) ・ [PyTauri IPC](#direct-tauri-api-access) ・ [Tauri Events](#direct-tauri-api-access) | |
+| [Managing Multiple Windows/Widgets](#managing-multiple-windowswidgets) | Window lifecycle, widget references |
+| ↳ [Window Modes](#managing-multiple-windowswidgets) ・ [Native Windows](#managing-multiple-windowswidgets) ・ [Widget Methods](#managing-multiple-windowswidgets) | |
+| [Browser Mode & Server Configuration](#browser-mode--server-configuration) | Headless/web deployment, security settings |
+| ↳ [Server Config](#server-configuration) ・ [HTTPS](#https-configuration) ・ [WebSocket Security](#websocket--api-security) | |
+| [Deploy Mode & Scaling](#deploy-mode--scaling) | Redis backend, horizontal scaling, multi-worker |
+| ↳ [State Backends](#deploy-mode--scaling) ・ [Redis Configuration](#deploy-mode--scaling) ・ [Authentication](#deploy-mode--scaling) | |
 | [CLI Commands](#cli-commands) | Command-line tools |
 | [Debugging](#debugging) | DevTools, logging, troubleshooting |
 | [Building from Source](#building-from-source) | Development setup |
@@ -447,6 +457,25 @@ from pywry import AssetLoader, get_asset_loader
 
 # Callback registry
 from pywry import CallbackFunc, WidgetType, get_registry
+
+# State management (for deploy mode / horizontal scaling)
+from pywry.state import (
+    get_widget_store,
+    get_event_bus,
+    get_connection_router,
+    get_session_store,
+    is_deploy_mode,
+    get_worker_id,
+    get_state_backend,
+    WidgetData,
+    EventMessage,
+    ConnectionInfo,
+    UserSession,
+    StateBackend,
+)
+
+# Deploy settings (for programmatic configuration)
+from pywry.config import DeploySettings
 ```
 
 ### PyWry Class
@@ -813,6 +842,18 @@ aggrid_version = "35.0.0"
 [log]
 level = "WARNING"
 format = "%(name)s - %(levelname)s - %(message)s"
+
+[deploy]
+state_backend = "redis"  # "memory" or "redis"
+redis_url = "redis://localhost:6379/0"
+redis_prefix = "pywry:"
+widget_ttl = 86400  # 24 hours in seconds
+connection_ttl = 300  # 5 minutes
+auto_cleanup = true
+enable_auth = false
+# auth_secret = "your-secret-key"  # Required if enable_auth = true
+# rbac_enabled = false
+# default_role = "viewer"
 ```
 
 ### pyproject.toml
@@ -853,7 +894,30 @@ export PYWRY_LOG__LEVEL=DEBUG
 | `log` | `PYWRY_LOG__` | Log level and format |
 | `window` | `PYWRY_WINDOW__` | Default window properties |
 | `hot_reload` | `PYWRY_HOT_RELOAD__` | Hot reload behavior |
-| `server` | `PYWRY_SERVER__` | Inline server settings (host, port, CORS) |
+| `server` | `PYWRY_SERVER__` | Inline server settings (host, port, CORS, security) |
+| `deploy` | `PYWRY_DEPLOY__` | Deploy mode settings (Redis, scaling, auth) |
+
+#### Server Security Settings
+
+| Setting | Env Variable | Default | Description |
+|---------|--------------|---------|-------------|
+| `websocket_allowed_origins` | `PYWRY_SERVER__WEBSOCKET_ALLOWED_ORIGINS` | `[]` | Allowed WebSocket origins (empty = any) |
+| `websocket_require_token` | `PYWRY_SERVER__WEBSOCKET_REQUIRE_TOKEN` | `true` | Require per-widget token |
+| `internal_api_header` | `PYWRY_SERVER__INTERNAL_API_HEADER` | `X-PyWry-Token` | Internal API auth header |
+| `internal_api_token` | `PYWRY_SERVER__INTERNAL_API_TOKEN` | auto-generated | Internal API token |
+| `strict_widget_auth` | `PYWRY_SERVER__STRICT_WIDGET_AUTH` | `false` | Strict widget endpoint auth |
+
+#### Deploy Mode Settings
+
+| Setting | Env Variable | Default | Description |
+|---------|--------------|---------|-------------|
+| `state_backend` | `PYWRY_DEPLOY__STATE_BACKEND` | `memory` | State storage backend (`memory` or `redis`) |
+| `redis_url` | `PYWRY_DEPLOY__REDIS_URL` | `redis://localhost:6379/0` | Redis connection URL |
+| `redis_prefix` | `PYWRY_DEPLOY__REDIS_PREFIX` | `pywry` | Key prefix for Redis keys |
+| `widget_ttl` | `PYWRY_DEPLOY__WIDGET_TTL` | `86400` | Widget data TTL (seconds) |
+| `auth_enabled` | `PYWRY_DEPLOY__AUTH_ENABLED` | `false` | Enable authentication |
+
+See the [Deploy Mode & Scaling](#deploy-mode--scaling) section for complete documentation.
 
 ### Programmatic Configuration
 
@@ -4315,6 +4379,10 @@ Methods available on widget objects returned by `show_*()` in NOTEBOOK/BROWSER m
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [Getting Widget URL](#getting-the-widget-url) · [Server Configuration](#server-configuration) · [Environment Variables](#environment-variables) · [Production Deployment](#production-deployment-pattern) · [HTTPS](#https-configuration) · [Health Check](#server-health-check) · [WebSocket & API Security](#websocket--api-security)
+
+---
+
 For headless environments, remote deployments, or when you want to serve dashboards via HTTP, use `BROWSER` mode with the inline FastAPI server.
 
 ### Getting the Widget URL
@@ -4372,6 +4440,15 @@ cors_allow_headers = ["*"]
 limit_concurrency = 100       # Max concurrent connections
 limit_max_requests = 10000    # Max requests before worker restart
 backlog = 2048                # Socket backlog size
+
+# WebSocket Security
+websocket_allowed_origins = [] # Allowed origins for WebSocket (empty = any, rely on token)
+websocket_require_token = true # Require per-widget token for WebSocket auth
+
+# Internal API Security
+internal_api_header = "X-PyWry-Token"  # Header name for internal auth
+internal_api_token = ""                # Auto-generated if not set
+strict_widget_auth = false             # false = notebook (lenient), true = browser (strict)
 ```
 
 ### Environment Variables
@@ -4393,6 +4470,15 @@ export PYWRY_SERVER__CORS_ORIGINS='["https://myapp.com"]'
 # Enable logging
 export PYWRY_SERVER__LOG_LEVEL=info
 export PYWRY_SERVER__ACCESS_LOG=true
+
+# WebSocket Security
+export PYWRY_SERVER__WEBSOCKET_ALLOWED_ORIGINS='http://localhost:8080,https://app.example.com'
+export PYWRY_SERVER__WEBSOCKET_REQUIRE_TOKEN=true
+
+# Internal API Security
+export PYWRY_SERVER__INTERNAL_API_HEADER=X-PyWry-Token
+export PYWRY_SERVER__INTERNAL_API_TOKEN=my-secret-token  # Or leave empty for auto-gen
+export PYWRY_SERVER__STRICT_WIDGET_AUTH=true  # Browser mode (stricter)
 ```
 
 ### Production Deployment Pattern
@@ -4804,6 +4890,491 @@ curl http://localhost:8765/health
 
 Use this for load balancer health checks or monitoring.
 
+> **Note:** The `/health` endpoint requires internal API authentication when accessed externally. Python code using `_make_server_request()` automatically includes the required header.
+
+### WebSocket & API Security
+
+PyWry implements a multi-layer security model for WebSocket connections and internal API endpoints.
+
+#### Security Model Overview
+
+| Layer | Setting | Purpose |
+|-------|---------|---------|
+| **Origin Validation** | `websocket_allowed_origins` | Restrict which origins can connect via WebSocket |
+| **Per-Widget Tokens** | `websocket_require_token` | Each widget gets a unique token embedded in HTML |
+| **Internal API Auth** | `internal_api_header/token` | Protect internal endpoints from external access |
+| **Widget Auth Mode** | `strict_widget_auth` | Browser (strict) vs Notebook (lenient) security |
+
+#### Per-Widget Token Authentication
+
+Each widget instance generates a unique short-lived token that's embedded in its HTML:
+
+```python
+# Token flow (automatic, no user code needed):
+# 1. show_plotly() creates widget with unique ID
+# 2. Server generates token, stores in widget_tokens[id]
+# 3. Token embedded in HTML as window.PYWRY_TOKEN
+# 4. JavaScript sends token via Sec-WebSocket-Protocol header
+# 5. Server validates token on WebSocket upgrade
+```
+
+The token is passed during WebSocket handshake via the `Sec-WebSocket-Protocol` header, ensuring it's not exposed in URLs or browser history.
+
+#### Allowed Origins
+
+For deployments where widgets are embedded in iframes on external sites, configure allowed origins:
+
+```toml
+[server]
+# Allow specific origins (empty = allow any, rely on token auth only)
+websocket_allowed_origins = [
+    "http://localhost:8080",
+    "https://app.example.com",
+    "https://dashboard.mycompany.com"
+]
+```
+
+> **Note:** When a widget is embedded in an iframe, the **origin** is the embedding site, not the PyWry server. Configure origins based on where your widgets will be embedded.
+
+#### Internal API Protection
+
+Internal endpoints (`/health`, `/register_widget`, `/disconnect`) are protected from external access:
+
+```toml
+[server]
+internal_api_header = "X-PyWry-Token"  # Custom header name
+internal_api_token = "my-secret"       # Set explicitly, or leave empty for auto-generation
+```
+
+Requests without the correct header receive `404 Not Found` (not `401`/`403`), hiding endpoint existence from attackers.
+
+#### Strict vs Lenient Widget Auth
+
+The `strict_widget_auth` setting controls how the `/widget/{id}` endpoint is protected:
+
+| Mode | `strict_widget_auth` | Behavior | Use Case |
+|------|----------------------|----------|----------|
+| **Notebook** | `false` (default) | Only checks widget ID exists | Jupyter iframes (can't send headers) |
+| **Browser** | `true` | Requires internal API header | Standalone browser mode |
+
+```toml
+[server]
+# For Jupyter/notebook deployments (default)
+strict_widget_auth = false
+
+# For standalone browser deployments
+strict_widget_auth = true
+```
+
+#### Programmatic Configuration
+
+```python
+from pywry import PyWry, PyWrySettings, ServerSettings
+
+settings = PyWrySettings(
+    server=ServerSettings(
+        # WebSocket security
+        websocket_allowed_origins=["https://app.example.com"],
+        websocket_require_token=True,
+        
+        # Internal API security
+        internal_api_header="X-MyApp-Token",
+        internal_api_token="my-secret-token",  # Or None for auto-gen
+        
+        # Widget auth mode
+        strict_widget_auth=True,  # Browser mode
+    )
+)
+
+app = PyWry(settings=settings)
+```
+
+#### Security Configuration Reference
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `websocket_allowed_origins` | `list[str]` | `[]` | Origins allowed for WebSocket. Empty = any origin (token-only auth) |
+| `websocket_require_token` | `bool` | `true` | Require per-widget token via `Sec-WebSocket-Protocol` |
+| `internal_api_header` | `str` | `"X-PyWry-Token"` | Header name for internal API auth |
+| `internal_api_token` | `str \| None` | `None` | Internal API token. `None` = auto-generate on start |
+| `strict_widget_auth` | `bool` | `false` | `true` = require header for `/widget/{id}`, `false` = check ID exists |
+
+</details>
+
+---
+
+## Deploy Mode & Scaling
+
+<details>
+<summary>Click to expand</summary>
+
+**In this section:** [Overview](#deploy-mode-overview) · [Enable Deploy Mode](#enabling-deploy-mode) · [State Backends](#state-backends) · [Redis Configuration](#redis-configuration) · [State Stores](#state-stores) · [Multi-Worker Architecture](#multi-worker-architecture) · [Authentication & Sessions](#authentication--sessions)
+
+---
+
+For production deployments with multiple workers or horizontal scaling, PyWry provides a **deploy mode** that externalizes state to Redis. This enables running PyWry behind a load balancer with multiple Uvicorn workers while maintaining consistent widget state and event routing.
+
+### Deploy Mode Overview
+
+| Feature | Single Process (Default) | Deploy Mode (Redis) |
+|---------|--------------------------|---------------------|
+| **State Storage** | In-memory (dict) | Redis with TTL |
+| **Event Bus** | In-memory queue | Redis Pub/Sub |
+| **Connection Routing** | Local tracking | Redis with worker affinity |
+| **Session Management** | N/A | Redis with RBAC support |
+| **Horizontal Scaling** | ❌ | ✅ |
+| **Worker Crash Recovery** | ❌ | ✅ |
+
+### Enabling Deploy Mode
+
+Deploy mode is activated automatically when:
+
+1. `PYWRY_DEPLOY__STATE_BACKEND=redis` is set, OR
+2. `PYWRY_DEPLOY_MODE=1` is set explicitly
+
+```bash
+# Via environment variables (recommended for production)
+export PYWRY_DEPLOY__STATE_BACKEND=redis
+export PYWRY_DEPLOY__REDIS_URL=redis://localhost:6379/0
+
+# Run with multiple workers
+uvicorn app:app --host 0.0.0.0 --port 8080 --workers 4
+```
+
+### State Backends
+
+| Backend | Use Case | Configuration |
+|---------|----------|---------------|
+| `memory` | Single process, development | Default, no configuration needed |
+| `redis` | Multi-worker, production | Requires Redis server |
+
+### Redis Configuration
+
+Configure Redis connection via `pywry.toml`, `pyproject.toml`, or environment variables:
+
+```toml
+# pywry.toml or [tool.pywry.deploy] in pyproject.toml
+[deploy]
+state_backend = "redis"
+redis_url = "redis://localhost:6379/0"
+redis_prefix = "pywry"              # Key namespace
+redis_pool_size = 10                # Connection pool size per store
+
+# TTL settings (seconds)
+widget_ttl = 86400                  # Widget data TTL (24 hours)
+connection_ttl = 300                # WebSocket connection TTL (5 minutes)
+session_ttl = 86400                 # User session TTL (24 hours)
+
+# Worker identification
+worker_id = ""                      # Auto-generated if empty
+
+# Authentication (optional)
+auth_enabled = false
+auth_session_cookie = "pywry_session"
+auth_header = "Authorization"
+
+# RBAC (optional)
+default_roles = ["viewer"]
+admin_users = []
+```
+
+#### Environment Variables
+
+```bash
+# Core Redis settings
+export PYWRY_DEPLOY__STATE_BACKEND=redis
+export PYWRY_DEPLOY__REDIS_URL=redis://user:password@host:6379/0
+export PYWRY_DEPLOY__REDIS_PREFIX=myapp
+
+# TTL settings
+export PYWRY_DEPLOY__WIDGET_TTL=86400
+export PYWRY_DEPLOY__CONNECTION_TTL=300
+export PYWRY_DEPLOY__SESSION_TTL=86400
+
+# Worker ID (optional - auto-generated if not set)
+export PYWRY_DEPLOY__WORKER_ID=worker-1
+
+# Authentication
+export PYWRY_DEPLOY__AUTH_ENABLED=true
+export PYWRY_DEPLOY__AUTH_SESSION_COOKIE=pywry_session
+export PYWRY_DEPLOY__AUTH_HEADER=Authorization
+
+# RBAC
+export PYWRY_DEPLOY__DEFAULT_ROLES=viewer,editor
+export PYWRY_DEPLOY__ADMIN_USERS=admin@example.com,super@example.com
+```
+
+### State Stores
+
+Deploy mode provides four pluggable state stores:
+
+| Store | Interface | Purpose |
+|-------|-----------|---------|
+| `WidgetStore` | `get_widget_store()` | Widget HTML, tokens, metadata |
+| `EventBus` | `get_event_bus()` | Cross-worker event routing |
+| `ConnectionRouter` | `get_connection_router()` | WebSocket connection affinity |
+| `SessionStore` | `get_session_store()` | User sessions for RBAC |
+
+#### Using State Stores Programmatically
+
+```python
+from pywry.state import (
+    get_widget_store,
+    get_event_bus,
+    get_connection_router,
+    get_session_store,
+    is_deploy_mode,
+    get_worker_id,
+)
+
+# Check if deploy mode is active
+if is_deploy_mode():
+    print(f"Running in deploy mode, worker: {get_worker_id()}")
+
+# Access stores (automatically returns Redis or Memory implementation)
+widget_store = get_widget_store()
+event_bus = get_event_bus()
+connection_router = get_connection_router()
+session_store = get_session_store()
+
+# Example: Register a widget
+await widget_store.register(
+    widget_id="my-widget",
+    html="<h1>Hello</h1>",
+    token="secret-token",
+    owner_worker_id=get_worker_id(),
+    metadata={"title": "My Widget"},
+)
+
+# Example: Get widget data
+widget_data = await widget_store.get("my-widget")
+if widget_data:
+    print(f"Widget HTML: {widget_data.html[:50]}...")
+    print(f"Owner: {widget_data.owner_worker_id}")
+```
+
+#### State Store Interfaces
+
+<details>
+<summary><strong>WidgetStore Interface</strong></summary>
+
+```python
+class WidgetStore(Protocol):
+    """Store for widget HTML content and metadata."""
+
+    async def register(
+        self,
+        widget_id: str,
+        html: str,
+        token: str | None = None,
+        owner_worker_id: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> None:
+        """Register a widget with its HTML content."""
+
+    async def get(self, widget_id: str) -> WidgetData | None:
+        """Get complete widget data."""
+
+    async def get_html(self, widget_id: str) -> str | None:
+        """Get widget HTML content."""
+
+    async def get_token(self, widget_id: str) -> str | None:
+        """Get widget authentication token."""
+
+    async def exists(self, widget_id: str) -> bool:
+        """Check if a widget exists."""
+
+    async def delete(self, widget_id: str) -> bool:
+        """Delete a widget."""
+
+    async def list_active(self) -> list[str]:
+        """List all active widget IDs."""
+
+    async def update_html(self, widget_id: str, html: str) -> bool:
+        """Update widget HTML content."""
+```
+
+</details>
+
+<details>
+<summary><strong>EventBus Interface</strong></summary>
+
+```python
+class EventBus(Protocol):
+    """Cross-worker event bus for widget events."""
+
+    async def publish(self, event: EventMessage) -> None:
+        """Publish an event to the bus."""
+
+    async def subscribe(self, widget_id: str) -> AsyncIterator[EventMessage]:
+        """Subscribe to events for a widget."""
+
+    async def publish_to_worker(
+        self,
+        worker_id: str,
+        event: EventMessage,
+    ) -> None:
+        """Publish an event to a specific worker."""
+```
+
+</details>
+
+<details>
+<summary><strong>ConnectionRouter Interface</strong></summary>
+
+```python
+class ConnectionRouter(Protocol):
+    """Route WebSocket connections to appropriate workers."""
+
+    async def register(self, connection: ConnectionInfo) -> None:
+        """Register a new WebSocket connection."""
+
+    async def get(self, widget_id: str) -> ConnectionInfo | None:
+        """Get connection info for a widget."""
+
+    async def heartbeat(self, widget_id: str) -> bool:
+        """Update connection heartbeat timestamp."""
+
+    async def remove(self, widget_id: str) -> bool:
+        """Remove a connection registration."""
+
+    async def get_worker_connections(self, worker_id: str) -> list[str]:
+        """Get all widget IDs connected to a worker."""
+```
+
+</details>
+
+<details>
+<summary><strong>SessionStore Interface</strong></summary>
+
+```python
+class SessionStore(Protocol):
+    """User session management for RBAC."""
+
+    async def create(
+        self,
+        user_id: str,
+        roles: list[str] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> UserSession:
+        """Create a new user session."""
+
+    async def get(self, session_id: str) -> UserSession | None:
+        """Get a session by ID."""
+
+    async def get_by_user(self, user_id: str) -> list[UserSession]:
+        """Get all sessions for a user."""
+
+    async def update_roles(self, session_id: str, roles: list[str]) -> bool:
+        """Update session roles."""
+
+    async def delete(self, session_id: str) -> bool:
+        """Delete a session."""
+
+    async def touch(self, session_id: str) -> bool:
+        """Refresh session TTL."""
+```
+
+</details>
+
+### Multi-Worker Architecture
+
+When running with multiple workers, PyWry uses the following architecture:
+
+```
+                    ┌─────────────────────────────┐
+                    │        Load Balancer        │
+                    └─────────────┬───────────────┘
+                                  │
+        ┌─────────────────────────┼─────────────────────────┐
+        │                         │                         │
+        ▼                         ▼                         ▼
+┌───────────────┐       ┌───────────────┐       ┌───────────────┐
+│   Worker 1    │       │   Worker 2    │       │   Worker 3    │
+│   (uvicorn)   │       │   (uvicorn)   │       │   (uvicorn)   │
+│               │       │               │       │               │
+│  Callbacks A  │       │  Callbacks B  │       │  Callbacks C  │
+│  WebSockets   │       │  WebSockets   │       │  WebSockets   │
+└───────┬───────┘       └───────┬───────┘       └───────┬───────┘
+        │                       │                       │
+        └───────────────────────┼───────────────────────┘
+                                │
+                    ┌───────────▼───────────┐
+                    │        Redis          │
+                    │                       │
+                    │  • Widget Store       │
+                    │  • Event Bus (Pub/Sub)│
+                    │  • Connection Router  │
+                    │  • Session Store      │
+                    └───────────────────────┘
+```
+
+**Key Concepts:**
+
+1. **Widget Store**: All workers can serve any widget's HTML since content is in Redis
+2. **Connection Router**: Tracks which worker owns each WebSocket connection
+3. **Event Bus**: Routes events to the correct worker for callback execution
+4. **Callbacks**: Python callbacks are executed by the worker that registered them
+
+### Authentication & Sessions
+
+When `auth_enabled=true`, PyWry provides session-based authentication:
+
+```python
+from pywry.state import get_session_store, UserSession
+
+session_store = get_session_store()
+
+# Create a session for a user
+session = await session_store.create(
+    user_id="user@example.com",
+    roles=["viewer", "editor"],
+    metadata={"display_name": "John Doe"},
+)
+
+# Session token can be set as a cookie or header
+# session.session_id = "abc123..."
+
+# Validate a session
+session = await session_store.get(session_id)
+if session and "admin" in session.roles:
+    # Allow admin action
+    pass
+
+# Refresh session TTL on activity
+await session_store.touch(session.session_id)
+```
+
+#### RBAC Configuration
+
+```toml
+[deploy]
+auth_enabled = true
+default_roles = ["viewer"]      # Roles for new users
+admin_users = [                 # Users with admin privileges
+    "admin@example.com",
+    "super@example.com"
+]
+```
+
+### DeploySettings Reference
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `state_backend` | `"memory"` \| `"redis"` | `"memory"` | State storage backend |
+| `redis_url` | `str` | `"redis://localhost:6379/0"` | Redis connection URL |
+| `redis_prefix` | `str` | `"pywry"` | Key prefix for Redis keys |
+| `redis_pool_size` | `int` | `10` | Connection pool size |
+| `widget_ttl` | `int` | `86400` | Widget data TTL (seconds) |
+| `connection_ttl` | `int` | `300` | Connection routing TTL (seconds) |
+| `session_ttl` | `int` | `86400` | User session TTL (seconds) |
+| `worker_id` | `str \| None` | `None` | Worker ID (auto-generated if None) |
+| `auth_enabled` | `bool` | `false` | Enable authentication |
+| `auth_session_cookie` | `str` | `"pywry_session"` | Session cookie name |
+| `auth_header` | `str` | `"Authorization"` | Auth header name |
+| `default_roles` | `list[str]` | `["viewer"]` | Default roles for new users |
+| `admin_users` | `list[str]` | `[]` | User IDs with admin privileges |
+
 </details>
 
 ---
@@ -4984,6 +5555,17 @@ pywry/
 │   │   ├── assets/        # Plotly.js, AgGrid, icons
 │   │   ├── src/           # main.js, aggrid-defaults.js, plotly-widget.js, plotly-templates.js
 │   │   └── style/         # CSS files (pywry.css)
+│   ├── state/             # State management for deploy mode
+│   │   ├── __init__.py    # Public state API exports
+│   │   ├── base.py        # Abstract interfaces (WidgetStore, EventBus, etc.)
+│   │   ├── memory.py      # In-memory implementations (default)
+│   │   ├── redis.py       # Redis implementations (deploy mode)
+│   │   ├── types.py       # Type definitions (WidgetData, EventMessage, etc.)
+│   │   ├── auth.py        # Authentication helpers
+│   │   ├── callbacks.py   # Callback registry for state
+│   │   ├── server.py      # Server state management
+│   │   ├── sync_helpers.py # Async-to-sync utilities
+│   │   └── _factory.py    # Factory functions for state stores
 │   ├── utils/             # Utility helpers
 │   │   ├── __init__.py
 │   │   └── async_helpers.py

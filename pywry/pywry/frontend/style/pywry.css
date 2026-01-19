@@ -1,4 +1,3 @@
-/* Global box-sizing reset - CRITICAL to prevent phantom scrollbars */
 .pywry-widget,
 .pywry-widget *,
 .pywry-widget *::before,
@@ -11,7 +10,51 @@
 }
 
 :root {
-    /* ---- Color Palette (Dark Theme Default) ---- */
+    /* ---- Typography (theme-independent) ---- */
+    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+    --pywry-font-size: 14px;
+    --pywry-font-weight-normal: 400;
+    --pywry-font-weight-medium: 500;
+
+    /* ---- Spacing & Layout (theme-independent) ---- */
+    --pywry-radius: 4px;
+    --pywry-radius-lg: 6px;
+    --pywry-spacing-xs: 2px;
+    --pywry-spacing-sm: 4px;
+    --pywry-spacing-md: 6px;
+    --pywry-spacing-lg: 8px;
+
+    /* ---- Widget Sizing (theme-independent) ---- */
+    --pywry-widget-width: 100%;
+    --pywry-widget-min-height: 200px;
+    --pywry-widget-height: 500px;
+    --pywry-grid-min-height: 200px;
+
+    /* ---- Transitions (theme-independent) ---- */
+    --pywry-transition-fast: 0.1s ease;
+    --pywry-transition-normal: 0.2s ease;
+
+    /* ---- Accent Colors (shared across themes) ---- */
+    --pywry-accent: #0078d4;
+    --pywry-accent-hover: #106ebe;
+    --pywry-accent-text: #ffffff;
+
+    /* ---- Neutral Button (always blue, shared) ---- */
+    --pywry-btn-neutral-bg: rgb(0, 136, 204);
+    --pywry-btn-neutral-text: #ffffff;
+    --pywry-btn-neutral-hover: rgb(0, 115, 173);
+}
+
+/* ============================================
+   DARK THEME
+   - :root default (standalone pages)
+   - html.dark (iframe context)
+   - .pywry-theme-dark (containerized widgets)
+   ============================================ */
+:root,
+html.dark,
+.pywry-theme-dark {
+    /* ---- Core Colors ---- */
     --pywry-bg-primary: #212124;
     --pywry-bg-secondary: #1e1e1e;
     --pywry-bg-hover: rgba(255, 255, 255, 0.08);
@@ -20,81 +63,20 @@
     --pywry-text-secondary: #a0a0a0;
     --pywry-border-color: #333;
 
-    /* ---- Scrollbar Colors (Dark Theme Default) ---- */
+    /* ---- Scrollbar ---- */
     --pywry-scrollbar-thumb: #555;
     --pywry-scrollbar-thumb-hover: #777;
     --pywry-scrollbar-track: transparent;
 
-    /* ---- Accent Colors ---- */
-    --pywry-accent: #0078d4;
-    --pywry-accent-hover: #106ebe;
-    --pywry-accent-text: #ffffff;
-
-    /* ---- Button Colors (Dark Theme) ---- */
-    --pywry-btn-primary-bg: var(--pywry-bg-primary);
-    --pywry-btn-primary-text: var(--pywry-text-primary);
-    --pywry-btn-primary-hover: var(--pywry-bg-secondary);
-    --pywry-btn-secondary-bg: rgba(54, 54, 63, 1);
-    --pywry-btn-secondary-text: #ebebed;
-    --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
-    --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
-    --pywry-btn-neutral-bg: rgb(0, 136, 204);
-    --pywry-btn-neutral-text: #ffffff;
-    --pywry-btn-neutral-hover: rgb(0, 115, 173);
-
-    /* ---- Typography ---- */
-    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
-    --pywry-font-size: 14px;
-    --pywry-font-weight-normal: 400;
-    --pywry-font-weight-medium: 500;
-
-    /* ---- Spacing & Layout ---- */
-    --pywry-radius: 4px;
-    --pywry-radius-lg: 6px;
-    --pywry-spacing-xs: 2px;
-    --pywry-spacing-sm: 4px;
-    --pywry-spacing-md: 6px;
-    --pywry-spacing-lg: 8px;
-
-    /* ---- Tab Group Colors ---- */
-    --pywry-tab-bg: #2a2a2e;
-    --pywry-tab-active-bg: #3d3d42;
-    --pywry-tab-hover-bg: #353538;
-
-    /* ---- Focus Border (subtle, theme-aware) ---- */
+    /* ---- Focus ---- */
     --pywry-border-focus: #555;
 
-    /* ---- Widget Sizing ---- */
-    --pywry-widget-width: 100%;
-    --pywry-widget-min-height: 200px;
-    --pywry-widget-height: 500px;
-    --pywry-grid-min-height: 200px;
-
-    /* ---- Transitions ---- */
-    --pywry-transition-fast: 0.1s ease;
-    --pywry-transition-normal: 0.2s ease;
-
-    /* ---- Input Fixes ---- */
-    --pywry-calendar-icon-filter: invert(1);
-}
-
-/* ---- Dark Theme Explicit (for widget contexts where :root may not apply) ---- */
-.pywry-theme-dark {
-    --pywry-bg-primary: #212124;
-    --pywry-bg-secondary: #1e1e1e;
-    --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
-    --pywry-text-primary: #ebebed;
-    --pywry-text-secondary: #a0a0a0;
-    --pywry-border-color: #333;
-    --pywry-scrollbar-thumb: #555;
-    --pywry-scrollbar-thumb-hover: #777;
-    --pywry-scrollbar-track: transparent;
-    --pywry-accent: #0078d4;
-    --pywry-accent-hover: #106ebe;
-    --pywry-accent-text: #ffffff;
+    /* ---- Tab Group ---- */
     --pywry-tab-bg: #2a2a2e;
     --pywry-tab-active-bg: #3d3d42;
     --pywry-tab-hover-bg: #353538;
+
+    /* ---- Buttons ---- */
     --pywry-btn-primary-bg: #e2e2e2;
     --pywry-btn-primary-text: #151518;
     --pywry-btn-primary-hover: #cccccc;
@@ -102,15 +84,25 @@
     --pywry-btn-secondary-text: #ebebed;
     --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
     --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
-    --pywry-btn-neutral-bg: rgb(0, 136, 204);
-    --pywry-btn-neutral-text: #ffffff;
-    --pywry-btn-neutral-hover: rgb(0, 115, 173);
-    --pywry-border-focus: #555;
+
+    /* ---- Input Fixes ---- */
     --pywry-calendar-icon-filter: invert(1);
 }
 
-/* ---- Light Theme Overrides ---- */
-html.light, .pywry-theme-light {
+/* html.dark also sets background/color on the element itself for iframe */
+html.dark {
+    background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
+}
+
+/* ============================================
+   LIGHT THEME
+   - html.light (iframe context)
+   - .pywry-theme-light (containerized widgets)
+   ============================================ */
+html.light,
+.pywry-theme-light {
+    /* ---- Core Colors ---- */
     --pywry-bg-primary: #f5f5f5;
     --pywry-bg-secondary: #ffffff;
     --pywry-bg-hover: rgba(0, 0, 0, 0.06);
@@ -119,41 +111,46 @@ html.light, .pywry-theme-light {
     --pywry-text-secondary: #666666;
     --pywry-border-color: #ccc;
 
-    /* ---- Scrollbar Colors (Light Theme) ---- */
+    /* ---- Scrollbar ---- */
     --pywry-scrollbar-thumb: #bbb;
     --pywry-scrollbar-thumb-hover: #999;
     --pywry-scrollbar-track: transparent;
 
-    /* ---- Focus Border (Light Theme) ---- */
+    /* ---- Focus ---- */
     --pywry-border-focus: #999;
 
-    /* ---- Tab Group Colors (Light Theme) ---- */
+    /* ---- Tab Group ---- */
     --pywry-tab-bg: #e8e8ec;
     --pywry-tab-active-bg: #ffffff;
     --pywry-tab-hover-bg: #f0f0f4;
 
-    /* ---- Button Colors (Light Theme) ---- */
-    /* Primary: Dark button (inverted from dark mode) */
+    /* ---- Buttons ---- */
     --pywry-btn-primary-bg: #2c2c32;
     --pywry-btn-primary-text: #ffffff;
     --pywry-btn-primary-hover: #1a1a1e;
-    /* Secondary: Light gray with dark text */
     --pywry-btn-secondary-bg: #ffffff;
     --pywry-btn-secondary-text: #2c2c32;
     --pywry-btn-secondary-hover: #f3f3f6;
     --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
-    /* Neutral: Always blue accent */
-    --pywry-btn-neutral-bg: rgb(0, 136, 204);
-    --pywry-btn-neutral-text: #ffffff;
-    --pywry-btn-neutral-hover: rgb(0, 115, 173);
 
-    /* ---- Input Fixes (Light Theme) ---- */
+    /* ---- Input Fixes ---- */
     --pywry-calendar-icon-filter: none;
 }
 
-/* ---- System Theme (follows OS preference) ---- */
+/* html.light also sets background/color on the element itself for iframe */
+html.light {
+    background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
+}
+
+/* ============================================
+   SYSTEM THEME (follows OS preference)
+   - .pywry-theme-system (containerized widgets)
+   ============================================ */
+
+/* System theme: dark by default */
 .pywry-theme-system {
-    /* Default to dark theme variables */
+    /* ---- Core Colors (dark) ---- */
     --pywry-bg-primary: #212124;
     --pywry-bg-secondary: #1e1e1e;
     --pywry-bg-hover: rgba(255, 255, 255, 0.08);
@@ -161,12 +158,20 @@ html.light, .pywry-theme-light {
     --pywry-text-primary: #ebebed;
     --pywry-text-secondary: #a0a0a0;
     --pywry-border-color: #333;
+
+    /* ---- Scrollbar (dark) ---- */
     --pywry-scrollbar-thumb: #555;
     --pywry-scrollbar-thumb-hover: #777;
+
+    /* ---- Focus (dark) ---- */
     --pywry-border-focus: #555;
+
+    /* ---- Tab Group (dark) ---- */
     --pywry-tab-bg: #2a2a2e;
     --pywry-tab-active-bg: #3d3d42;
     --pywry-tab-hover-bg: #353538;
+
+    /* ---- Buttons (dark) ---- */
     --pywry-btn-primary-bg: #e2e2e2;
     --pywry-btn-primary-text: #151518;
     --pywry-btn-primary-hover: #cccccc;
@@ -174,11 +179,15 @@ html.light, .pywry-theme-light {
     --pywry-btn-secondary-text: #ebebed;
     --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
     --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
+
+    /* ---- Input Fixes (dark) ---- */
     --pywry-calendar-icon-filter: invert(1);
 }
 
+/* System theme: light when OS prefers light */
 @media (prefers-color-scheme: light) {
     .pywry-theme-system {
+        /* ---- Core Colors (light) ---- */
         --pywry-bg-primary: #f5f5f5;
         --pywry-bg-secondary: #ffffff;
         --pywry-bg-hover: rgba(0, 0, 0, 0.06);
@@ -186,32 +195,36 @@ html.light, .pywry-theme-light {
         --pywry-text-primary: #000000;
         --pywry-text-secondary: #666666;
         --pywry-border-color: #ccc;
+
+        /* ---- Scrollbar (light) ---- */
         --pywry-scrollbar-thumb: #bbb;
         --pywry-scrollbar-thumb-hover: #999;
+
+        /* ---- Focus (light) ---- */
         --pywry-border-focus: #999;
+
+        /* ---- Tab Group (light) ---- */
         --pywry-tab-bg: #e8e8ec;
         --pywry-tab-active-bg: #ffffff;
         --pywry-tab-hover-bg: #f0f0f4;
-        --pywry-btn-primary-bg: rgba(0, 136, 204, 1);
+
+        /* ---- Buttons (light) ---- */
+        --pywry-btn-primary-bg: #2c2c32;
         --pywry-btn-primary-text: #ffffff;
-        --pywry-btn-primary-hover: rgba(0, 115, 173, 1);
+        --pywry-btn-primary-hover: #1a1a1e;
         --pywry-btn-secondary-bg: #f3f3f6;
         --pywry-btn-secondary-text: #2c2c32;
         --pywry-btn-secondary-hover: #e3e3e6;
         --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
+
+        /* ---- Input Fixes (light) ---- */
         --pywry-calendar-icon-filter: none;
     }
 }
 
 /* Explicit background for themed widgets - ensures CSS variable is applied */
-.pywry-widget.pywry-theme-light {
-    background-color: var(--pywry-bg-primary);
-}
-
-.pywry-widget.pywry-theme-dark {
-    background-color: var(--pywry-bg-primary);
-}
-
+.pywry-widget.pywry-theme-light,
+.pywry-widget.pywry-theme-dark,
 .pywry-widget.pywry-theme-system {
     background-color: var(--pywry-bg-primary);
 }
