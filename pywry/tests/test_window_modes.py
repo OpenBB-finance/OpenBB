@@ -257,10 +257,22 @@ class TestSingleWindowMode:
         # Simulate user closing window - close the window
         # The close() method now waits for confirmation, but add extra buffer for CI
         app.close()
-        time.sleep(0.3)  # Extra buffer for slow Windows CI runners
+
+        # Wait for window to fully close with proper polling
+        # Windows CI can be slow, so give it adequate time
+        max_close_wait = 3.0  # Maximum time to wait for window to close
+        poll_interval = 0.1
+        elapsed = 0.0
+        while elapsed < max_close_wait:
+            if not runtime.check_window_open(label1):
+                break
+            time.sleep(poll_interval)
+            elapsed += poll_interval
+        # Extra buffer after close confirmed for Windows CI cleanup
+        time.sleep(0.5)
 
         # Show new content - this should reopen the window
-        label2 = show_and_wait_ready(app, "<h1>Second Content</h1>", timeout=15.0)
+        label2 = show_and_wait_ready(app, "<h1>Second Content</h1>", timeout=20.0)
 
         # Same label, window reopened with new content
         assert label1 == label2, f"Label should be same: {label1} vs {label2}"

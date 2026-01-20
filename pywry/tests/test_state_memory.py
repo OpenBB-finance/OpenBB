@@ -243,7 +243,8 @@ class TestMemoryConnectionRouter:
         assert info_before is not None
         old_heartbeat = info_before.last_heartbeat
 
-        await asyncio.sleep(0.01)
+        # Use 50ms sleep to ensure Windows timer resolution doesn't cause issues
+        await asyncio.sleep(0.05)
 
         result = await router.refresh_heartbeat("widget-1")
         assert result is True
@@ -334,7 +335,8 @@ class TestMemorySessionStore:
         await store.create_session("session-1", "user-1")
 
         # refresh_session returns True if successful
-        await asyncio.sleep(0.01)
+        # Use 50ms sleep to ensure Windows timer resolution doesn't cause issues
+        await asyncio.sleep(0.05)
 
         result = await store.refresh_session("session-1")
         assert result is True
