@@ -2,45 +2,26 @@
 
 PyWry is a blazingly fast rendering library for generating and managing native desktop windows, iFrames, and Jupyter widgets - with full bidirectional Python ↔ JavaScript communication. Get started in minutes, not hours.
 
-Unlike dashboard libraries that only render output, PyWry provides a complete event system where Python can send events to JavaScript and JavaScript can invoke Python callbacks, enabling truly interactive applications.
+Unlike other similar libraries, PyWry is **not** a web dashboard framework. It is a **rendering engine** that targets three output paths from one API:
 
-Built on [PyTauri](https://pypi.org/project/pytauri/) (which uses Rust's [Tauri](https://tauri.app/) framework), it leverages the OS webview instead of bundling a browser engine—resulting in binaries under 3MB compared to Electron's 150MB+ overhead.
+
+| Mode | Where It Runs | Backend |
+|------|---------------|---------|
+| `NEW_WINDOW` / `SINGLE_WINDOW` / `MULTI_WINDOW` | Native OS window | PyTauri (Tauri/Rust) subprocess using OS webview |
+| `NOTEBOOK` | Jupyter / VS Code / Colab | anywidget or IFrame + FastAPI + WebSocket |
+| `BROWSER` | System browser tab | FastAPI server + WebSocket + Redis |
+
+It uses declarative Pydantic components that automatically wrap content in a nested structure that can be targeted with CSS selectors:
+
+HEADER → LEFT | TOP → CONTENT + INSIDE → BOTTOM | RIGHT → FOOTER
+
+Built on [PyTauri](https://pypi.org/project/pytauri/) (which uses Rust's [Tauri](https://tauri.app/) framework), it leverages the OS webview instead of bundling a browser engine — a few MBs versus Electron's 150MB+ overhead.
 
 Its unified API lets you build fast and use anywhere. Batteries included.
 
-## Features
+## Installation
 
-- **Five Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER`
-- **Notebook Support**: Automatic inline rendering via anywidget, IFrame in Jupyter/Colab
-- **Event System**: Bidirectional Python ↔ JavaScript communication
-- **Toolbar System**: Pydantic-based toolbar components with bidirectional state management
-- **Dynamic Theming**: Light, Dark, and System modes.
-- **Bundled Libraries**: Plotly.js 3.3.1 and AgGrid 35.0.0 (offline capable)
-- **Configuration System**: TOML files, pyproject.toml, and environment variables
-- **CLI Tools**: Configuration management and project initialization
-- **Deploy Mode**: Redis-backed state for horizontal scaling and multi-worker deployments
-- **Authentication & RBAC**: Optional session management with role-based access control
-
-## Dependencies
-
-- Python 3.10+
-- pytauri >= 0.8.0
-- pytauri-wheel >= 0.8.0
-- pydantic >= 2.0.0
-- pydantic-settings >= 2.0.0
-- anyio >= 4.0.0
-- fastapi >= 0.128.0
-- uvicorn >= 0.40.0
-- watchdog >= 3.0.0
-- websockets >= 15.0.1
-- requests >= 2.32.5
-- pandas >= 1.5.3
-- redis >= 7.1.0
-
-### Optional
-
-- anywidget >= 0.9.0 (for notebook widget support)
-- redis >= 5.0.0 (for deploy mode / horizontal scaling)
+Install in a virtual environment with a version of Python between 3.10 and 3.14.
 
 ### Linux
 
@@ -53,8 +34,6 @@ sudo apt-get install libwebkit2gtk-4.1-dev libgtk-3-dev libglib2.0-dev \
     libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 \
     libxcb-shape0 libgl1 libegl1
 ```
-
-## Installation
 
 ```bash
 pip install pywry
@@ -75,6 +54,22 @@ pip install 'pywry[dev]'
 ---
 
 ## Quick Start
+
+### Hello World!
+
+```python
+from pywry import PyWry
+
+app = PyWry()
+
+app.show("Hello World!")
+
+app.block()  # block the main thread until the window closes
+
+app.show("Hello again, World!")
+```
+
+### Button Updates Content
 
 ```python
 from pywry import PyWry, Toolbar, Button
@@ -98,7 +93,30 @@ label = app.show(
 )
 ```
 
-**Display a Plotly chart with interaction:**
+### DataFrame -> AgGrid
+
+```python
+from pywry import PyWry
+import pandas as pd
+
+app = PyWry()
+
+df = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [30, 25, 35]})
+
+def on_select(data, event_type, label):
+    """Print selected row names."""
+    names = ", ".join(row["name"] for row in data["rows"])
+    app.emit("pywry:alert", {"message": f"Selected: {names}" if names else "None selected"}, label)
+
+label = app.show_dataframe(
+    df,
+    callbacks={"grid:row-selected": on_select},
+)
+```
+
+### Plotly Chart
+
+Install Plotly into the environment first (`pip install plotly`).
 
 ```python
 from pywry import PyWry, Toolbar, Button
@@ -132,27 +150,6 @@ label = app.show_plotly(
         "plotly:click": on_click,
         "app:reset": on_reset,
     },
-)
-```
-
-**Display a DataFrame with row selection:**
-
-```python
-from pywry import PyWry
-import pandas as pd
-
-app = PyWry()
-
-df = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [30, 25, 35]})
-
-def on_select(data, event_type, label):
-    """Print selected row names."""
-    names = ", ".join(row["name"] for row in data["rows"])
-    app.emit("pywry:alert", {"message": f"Selected: {names}" if names else "None selected"}, label)
-
-label = app.show_dataframe(
-    df,
-    callbacks={"grid:row-selected": on_select},
 )
 ```
 
