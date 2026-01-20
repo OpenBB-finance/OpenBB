@@ -1364,53 +1364,69 @@ These events trigger built-in browser behaviors. They are handled automatically 
 
 ```python
 from pywry import PyWry
+import time
 
 app = PyWry()
 
-# Show a plotly chart
-label = app.show_plotly(fig, title="My Chart")
+# Show HTML with elements we'll manipulate
+html = """
+<div style="padding: 20px; font-family: sans-serif;">
+    <h1 id="title">Dashboard</h1>
+    <span id="status-badge" style="padding: 4px 8px; border-radius: 4px; background: gray; color: white;">
+        Loading...
+    </span>
+    <div class="data-row" style="margin: 10px 0; padding: 10px; border: 1px solid #ccc;">
+        Row 1: <span class="status-text">Pending</span>
+    </div>
+    <div class="data-row" style="margin: 10px 0; padding: 10px; border: 1px solid #ccc;">
+        Row 2: <span class="status-text">Pending</span>
+    </div>
+    <p id="values-display">Waiting for data...</p>
+</div>
+"""
 
-# After the window is open, you can emit events to manipulate the DOM:
+label = app.show(html, title="DOM Manipulation Demo")
 
-# Update theme dynamically
-app.emit("pywry:update-theme", {"theme": "plotly_white"}, label)
-
-# Inject CSS dynamically
-app.emit("pywry:inject-css", {
-    "css": ".my-class { color: red; font-weight: bold; }",
-    "id": "my-dynamic-styles"  # Optional: allows replacing later
-}, label)
-
-# Update element styles by ID
+# Update the status badge style
 app.emit("pywry:set-style", {
     "id": "status-badge",
     "styles": {"backgroundColor": "green", "color": "white"}
 }, label)
 
-# Or by CSS selector (updates all matching elements)
+time.sleep(1)
+# Update all rows with a highlight (by CSS selector)
 app.emit("pywry:set-style", {
-    "selector": ".highlight-row",
-    "styles": {"backgroundColor": "#ffffcc"}
+    "selector": ".data-row",
+    "styles": {"borderColor": "#3b82f6", "borderWidth": "2px"}  # Blue border
 }, label)
 
-# Update element content by ID
+time.sleep(1)
+# Update content by ID (with HTML)
 app.emit("pywry:set-content", {
     "id": "values-display",
-    "html": "<strong>Updated!</strong> 42 items"
+    "html": "<strong>Updated!</strong> 42 items loaded"
 }, label)
-
-# Or use plain text (safer, no HTML parsing)
+time.sleep(1)
+# Update all status-text elements (plain text, safer)
 app.emit("pywry:set-content", {
     "selector": ".status-text",
-    "text": "Processing complete"
+    "text": "Complete"
 }, label)
 
-# Trigger a CSV download
-app.emit("pywry:download", {
-    "content": "name,age\nAlice,30\nBob,25",
-    "filename": "users.csv",
-    "mimeType": "text/csv"
+# Update the badge text
+app.emit("pywry:set-content", {
+    "id": "status-badge",
+    "text": "Ready"
 }, label)
+time.sleep(1)
+# Inject custom CSS dynamically
+app.emit("pywry:inject-css", {
+    "css": "#title { color: #2563eb; }",
+    "id": "my-styles"
+}, label)
+time.sleep(2)
+
+app.close(label)
 ```
 
 > **Note:** For notebook mode, use `widget.emit("pywry:...", {...})` on the returned widget instead.
@@ -1419,7 +1435,7 @@ app.emit("pywry:download", {
 ### Toast Notifications (`pywry:alert`)
 
 <details>
-<summary>Complete alert system documentation with examples</summary>
+<summary>Alert System</summary>
 
 PyWry provides a unified toast notification system that works consistently across all rendering paths (native window, notebook, and browser). Toast notifications are non-blocking (except `confirm` type) and support multiple types with automatic dismiss behavior.
 
