@@ -160,7 +160,6 @@ label = app.show_plotly(
 | Section | Description |
 |---------|-------------|
 | [Features](#features) | Overview of PyWry capabilities |
-| [Dependencies](#dependencies) | Required and optional packages |
 | [Installation](#installation) | How to install PyWry |
 | [Quick Start](#quick-start) | Minimal working example |
 
