@@ -1449,57 +1449,68 @@ PyWry provides a unified toast notification system that works consistently acros
 | `error` | ⛔ | Persist until clicked | Errors requiring acknowledgment |
 | `confirm` | ❓ | Blocks UI until response | User confirmation needed before action |
 
-#### AlertPayload Model
+#### Example
 
 ```python
-from pydantic import BaseModel, Field
-from typing import Literal
-
-class AlertPayload(BaseModel):
-    message: str  # Required - alert message text
-    type: Literal["info", "success", "warning", "error", "confirm"] = "info"
-    title: str | None = None  # Optional title/header
-    duration: int | None = None  # Auto-dismiss ms (None uses type default)
-    callback_event: str | None = None  # Event to emit on confirm/cancel
-    position: Literal["top-right", "bottom-right", "bottom-left", "top-left"] = "top-right"
-```
-
-#### Using the Convenience Method
-
-```python
-from pywry import PyWry
+from pywry import PyWry, Toolbar, Button
 
 app = PyWry()
-label = app.show_plotly(fig, title="My Chart")
 
-# Info toast (auto-dismisses after 5s)
-app.alert("Data loaded successfully", alert_type="info", label=label)
-
-# Success toast (auto-dismisses after 3s)
-app.alert("Export complete!", alert_type="success", label=label)
-
-# Warning toast (persists until clicked)
-app.alert("No items selected", alert_type="warning", title="Selection Required", label=label)
-
-# Error toast (persists until clicked)
-app.alert("Connection failed", alert_type="error", title="Network Error", label=label)
-
-# Confirm dialog with callback
-app.alert(
-    "Are you sure you want to delete?",
-    alert_type="confirm",
-    callback_event="user:confirm-delete",
-    label=label
+# Create a toolbar with buttons for each alert type
+toolbar = Toolbar(
+    position="top",
+    items=[
+        Button(label="ℹ️ Info", event="alert:info"),
+        Button(label="✅ Success", event="alert:success"),
+        Button(label="⚠️ Warning", event="alert:warning"),
+        Button(label="⛔ Error", event="alert:error"),
+        Button(label="❓ Confirm", event="alert:confirm"),
+    ]
 )
 
-# Handle the confirm response
-@app.on("user:confirm-delete")
-def handle_confirm(data, event_type, label):
+def show_info(data, event_type, label):
+    app.alert("Data refreshed successfully", alert_type="info", label=label)
+
+def show_success(data, event_type, label):
+    app.alert("Export complete!", alert_type="success", title="Done", label=label)
+
+def show_warning(data, event_type, label):
+    app.alert("No items selected.", alert_type="warning", title="Selection Required", label=label)
+
+def show_error(data, event_type, label):
+    app.alert("Failed to connect to server.", alert_type="error", title="Connection Error", label=label)
+
+def show_confirm(data, event_type, label):
+    app.alert(
+        "Are you sure you want to delete these items?",
+        alert_type="confirm",
+        title="Confirm Delete",
+        callback_event="alert:confirm-response",
+        label=label
+    )
+
+def handle_confirm_response(data, event_type, label):
     if data.get("confirmed"):
-        print("User confirmed deletion")
+        app.alert("Items deleted successfully", alert_type="success", label=label)
     else:
-        print("User cancelled")
+        app.alert("Deletion cancelled", alert_type="info", label=label)
+
+label = app.show(
+    "<h1>Alert Demo</h1><p>Click the toolbar buttons to see different alert types.</p>",
+    title="Toast Notifications",
+    toolbars=[toolbar],
+    callbacks={
+        "alert:info": show_info,
+        "alert:success": show_success,
+        "alert:warning": show_warning,
+        "alert:error": show_error,
+        "alert:confirm": show_confirm,
+        "alert:confirm-response": handle_confirm_response,
+    }
+)
 ```
+
+> **Note:** The `callback_event` parameter specifies which event to emit when the user clicks Confirm or Cancel. Register a handler for that event in your `callbacks={}` dict to process the response.
 
 #### Using emit() Directly
 
@@ -1512,49 +1523,6 @@ app.emit("pywry:alert", {
     "duration": 4000,  # Override auto-dismiss time (ms)
     "position": "bottom-right"  # top-right, top-left, bottom-right, bottom-left
 }, label)
-```
-
-#### Confirm Dialogs with Blocking Overlay
-
-The `confirm` type creates a blocking overlay that prevents interaction with the content area until the user responds. This ensures critical confirmations are addressed before proceeding:
-
-```python
-from pywry import PyWry, Toolbar, Button
-
-app = PyWry()
-
-def on_delete(data, event_type, label):
-    """Show confirmation before deleting."""
-    app.alert(
-        "This action cannot be undone. Are you sure?",
-        alert_type="confirm",
-        title="Delete Item",
-        callback_event="app:confirm-delete",
-        label=label
-    )
-
-def on_confirm_delete(data, event_type, label):
-    """Handle the confirm/cancel response."""
-    if data.get("confirmed"):
-        # User clicked Confirm
-        app.alert("Item deleted", alert_type="success", label=label)
-    else:
-        # User clicked Cancel or pressed Escape
-        app.alert("Deletion cancelled", alert_type="info", label=label)
-
-toolbar = Toolbar(
-    position="top",
-    items=[Button(label="Delete", event="app:delete", variant="danger")]
-)
-
-label = app.show(
-    "<h1>My Content</h1>",
-    toolbars=[toolbar],
-    callbacks={
-        "app:delete": on_delete,
-        "app:confirm-delete": on_confirm_delete
-    }
-)
 ```
 
 #### Toast Positions
