@@ -1193,7 +1193,7 @@ label = app.show_plotly(
 
 #### Option 2: `app.on()` — Native Windows Only
 
-For native desktop windows, you can register handlers separately. This approach is useful when you want to register handlers before calling `show()`:
+For native desktop windows, you can register handlers separately using `app.on()`. **Important:** You must use the same `label` when registering handlers and showing content:
 
 ```python
 from pywry import PyWry, Toolbar, Button
@@ -1214,16 +1214,20 @@ def on_zoom_reset(data, event_type, label):
     """Reset chart zoom when button is clicked."""
     app.emit("plotly:reset-zoom", {}, label)
 
-# Using callbacks={} is the recommended approach
+# Register handlers with explicit label BEFORE calling show()
+app.on("plotly:click", on_click, label="my-chart")
+app.on("app:zoom-reset", on_zoom_reset, label="my-chart")
+
+# Use the SAME label when showing content
 label = app.show_plotly(
     fig,
     title="Click points to select them",
     toolbars=[Toolbar(position="top", items=[Button(label="Reset Zoom", event="app:zoom-reset")])],
-    callbacks={
-        "plotly:click": on_click,
-        "app:zoom-reset": on_zoom_reset,
-    }
+    label="my-chart",  # Must match the label used in app.on()
 )
+```
+
+> **Note:** If you omit the `label` parameter, `show()` generates a random label and `app.on()` registers to `"main"`, causing a mismatch. For simpler code, prefer `callbacks={}` in `show()` (Option 1).
 ```
 
 #### Option 3: `widget.on()` — All Modes
