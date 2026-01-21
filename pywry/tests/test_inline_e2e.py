@@ -1,9 +1,6 @@
-"""End-to-end tests for inline notebook rendering.
+"""End-to-end tests for inline notebook rendering."""
 
-These tests actually start the server, make HTTP requests,
-and verify content is rendered correctly. Designed for CI/GitHub Actions.
-"""
-# pylint: disable=redefined-outer-name
+# pylint: disable=too-many-lines,redefined-outer-name
 
 import asyncio
 import json
@@ -38,28 +35,57 @@ from pywry.notebook import (
     detect_notebook_environment,
     should_use_inline_rendering,
 )
+from pywry.state._factory import clear_state_caches
 
 
 # Skip all tests if FastAPI not installed
 pytestmark = pytest.mark.skipif(not HAS_FASTAPI, reason="FastAPI not installed")
 
 
+def _clear_deploy_env_vars():
+    """Remove all deploy-mode related environment variables."""
+    deploy_vars = [
+        "PYWRY_DEPLOY_MODE",
+        "PYWRY_DEPLOY__STATE_BACKEND",
+        "PYWRY_DEPLOY__REDIS_URL",
+        "PYWRY_DEPLOY__REDIS_PREFIX",
+        "PYWRY_HEADLESS",
+    ]
+    for var in deploy_vars:
+        os.environ.pop(var, None)
+    # Also remove any dynamically set vars
+    for key in list(os.environ.keys()):
+        if key.startswith("PYWRY_DEPLOY"):
+            del os.environ[key]
+
+
 @pytest.fixture(autouse=True)
 def clean_state():
     """Clean up server state before and after each test."""
+    # Clear deploy mode env vars FIRST to ensure local mode
+    _clear_deploy_env_vars()
+    clear_state_caches()
+
     # Stop any existing server
     stop_server()
     _state.widgets.clear()
     _state.connections.clear()
+    _state.local_widgets.clear()
+    _state.widget_tokens.clear()
     clear_settings()
     clear_environment_cache()
 
     yield
 
     # Cleanup after test
+    _clear_deploy_env_vars()
+    clear_state_caches()
+
     stop_server()
     _state.widgets.clear()
     _state.connections.clear()
+    _state.local_widgets.clear()
+    _state.widget_tokens.clear()
     clear_settings()
     clear_environment_cache()
 

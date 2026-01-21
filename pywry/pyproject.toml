@@ -52,6 +52,7 @@ dev = [
     "cryptography>=0.46.2",
     "plotly>=6.5.0",
     "fakeredis>=2.33.0",
+    "testcontainers>=4.14.0"
 
 ]
 notebook = [
@@ -86,3 +87,11 @@ exclude = ["tests/"]
 [[tool.mypy.overrides]]
 module = ["plotly.*", "anywidget", "anywidget.*", "ipywidgets", "ipywidgets.*"]
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "redis: marks tests requiring Redis",
+    "container: marks tests requiring Docker containers (deselect with '-m \"not container\"')",
+]

@@ -1223,6 +1223,8 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         Security:
         - strict_widget_auth=True (browser mode): Requires internal API header
         - strict_widget_auth=False (notebook mode): Only checks widget exists (allows iframes)
+
+        Deploy mode: Fetches HTML from Redis store instead of local dict.
         """
         import time  # pylint: disable=redefined-outer-name,reimported
 
@@ -1233,17 +1235,17 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         if PYWRY_DEBUG:
             print(f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}")
 
-        # Widget must exist (created by Python code) - unguessable UUID
-        if widget_id not in _state.widgets:
+        # Use deploy-mode aware async method to check widget existence and get HTML
+        html = await _state.get_widget_html_async(widget_id)
+        if html is None:
             return HTMLResponse(status_code=404)
 
-        widget_data = _state.widgets[widget_id]
         if PYWRY_DEBUG:
-            print(f"[SERVER] Serving HTML for {widget_id}, length: {len(widget_data['html'])}")
+            print(f"[SERVER] Serving HTML for {widget_id}, length: {len(html)}")
 
         # Add headers to prevent browser caching
         return HTMLResponse(
-            widget_data["html"],
+            html,
             headers={
                 "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
                 "Pragma": "no-cache",

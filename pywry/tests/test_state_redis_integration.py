@@ -1,12 +1,12 @@
 """Integration tests for Redis state stores with real Redis.
 
-These tests require a running Redis server. They are skipped if Redis is unavailable.
+These tests use testcontainers to spin up a Redis container automatically.
 Run with: pytest tests/test_state_redis_integration.py -v
 
-For CI, use the docker-compose.test.yml configuration which provides Redis.
+Tests are skipped if Docker is not available.
 
 Environment variables:
-    PYWRY_DEPLOY__REDIS_URL: Redis connection URL (default: redis://localhost:6379/0)
+    PYWRY_DEPLOY__REDIS_URL: Optional Redis connection URL (overrides testcontainers)
     PYWRY_DEPLOY__REDIS_PREFIX: Key prefix (default: pywry-test:)
 """
 # pylint: disable=redefined-outer-name
@@ -24,30 +24,14 @@ import pytest_asyncio
 from pywry.state.types import EventMessage
 
 
-# Check if we can connect to a real Redis server
-REDIS_URL = os.environ.get("PYWRY_DEPLOY__REDIS_URL", "redis://localhost:6379/0")
+# Default prefix for test keys
 REDIS_PREFIX = os.environ.get("PYWRY_DEPLOY__REDIS_PREFIX", "pywry-test:")
 
-
-def _can_connect_to_redis() -> bool:
-    """Check if we can connect to Redis."""
-    try:
-        import redis
-
-        client = redis.from_url(REDIS_URL)
-        client.ping()
-        client.close()
-    except Exception:  # pylint: disable=broad-except
-        return False
-    else:
-        return True
-
-
-# Skip all tests if Redis is unavailable
-pytestmark = pytest.mark.skipif(
-    not _can_connect_to_redis(),
-    reason=f"Redis not available at {REDIS_URL}",
-)
+# Mark all tests in this module as requiring redis container
+pytestmark = [
+    pytest.mark.redis,
+    pytest.mark.container,
+]
 
 
 @pytest.fixture
@@ -60,66 +44,66 @@ def unique_prefix() -> str:
 
 
 @pytest_asyncio.fixture
-async def redis_widget_store(unique_prefix: str):
-    """Create a RedisWidgetStore with real Redis."""
+async def redis_widget_store(redis_container: str, unique_prefix: str):
+    """Create a RedisWidgetStore with testcontainers Redis."""
     from pywry.state.redis import RedisWidgetStore
 
     store = RedisWidgetStore(
-        redis_url=REDIS_URL,
+        redis_url=redis_container,
         prefix=unique_prefix,
         widget_ttl=60,  # Short TTL for tests
     )
     yield store
     # Cleanup: delete all keys with our prefix
-    await _cleanup_redis_keys(unique_prefix)
+    await _cleanup_redis_keys(redis_container, unique_prefix)
 
 
 @pytest_asyncio.fixture
-async def redis_connection_router(unique_prefix: str):
-    """Create a RedisConnectionRouter with real Redis."""
+async def redis_connection_router(redis_container: str, unique_prefix: str):
+    """Create a RedisConnectionRouter with testcontainers Redis."""
     from pywry.state.redis import RedisConnectionRouter
 
     router = RedisConnectionRouter(
-        redis_url=REDIS_URL,
+        redis_url=redis_container,
         prefix=unique_prefix,
         connection_ttl=60,
     )
     yield router
-    await _cleanup_redis_keys(unique_prefix)
+    await _cleanup_redis_keys(redis_container, unique_prefix)
 
 
 @pytest_asyncio.fixture
-async def redis_session_store(unique_prefix: str):
-    """Create a RedisSessionStore with real Redis."""
+async def redis_session_store(redis_container: str, unique_prefix: str):
+    """Create a RedisSessionStore with testcontainers Redis."""
     from pywry.state.redis import RedisSessionStore
 
     store = RedisSessionStore(
-        redis_url=REDIS_URL,
+        redis_url=redis_container,
         prefix=unique_prefix,
         default_ttl=60,
     )
     yield store
-    await _cleanup_redis_keys(unique_prefix)
+    await _cleanup_redis_keys(redis_container, unique_prefix)
 
 
 @pytest_asyncio.fixture
-async def redis_event_bus(unique_prefix: str):
-    """Create a RedisEventBus with real Redis."""
+async def redis_event_bus(redis_container: str, unique_prefix: str):
+    """Create a RedisEventBus with testcontainers Redis."""
     from pywry.state.redis import RedisEventBus
 
     bus = RedisEventBus(
-        redis_url=REDIS_URL,
+        redis_url=redis_container,
         prefix=unique_prefix,
     )
     yield bus
-    await _cleanup_redis_keys(unique_prefix)
+    await _cleanup_redis_keys(redis_container, unique_prefix)
 
 
-async def _cleanup_redis_keys(prefix: str) -> None:
+async def _cleanup_redis_keys(redis_url: str, prefix: str) -> None:
     """Clean up all Redis keys with the given prefix."""
     import redis.asyncio as aioredis
 
-    client = aioredis.from_url(REDIS_URL, decode_responses=True)
+    client = aioredis.from_url(redis_url, decode_responses=True)
     try:
         # Use SCAN to find all keys with prefix
         cursor = 0
@@ -427,7 +411,7 @@ class TestRedisEventBusIntegration:
 
     @pytest.mark.asyncio
     @pytest.mark.timeout(5)
-    async def test_pubsub_round_trip(self, unique_prefix: str) -> None:
+    async def test_pubsub_round_trip(self, redis_container: str, unique_prefix: str) -> None:
         """Test full pub/sub round trip with real Redis."""
         from pywry.state.redis import RedisEventBus
 
@@ -435,8 +419,8 @@ class TestRedisEventBusIntegration:
         received_events: list[EventMessage] = []
 
         # Create two separate bus instances (simulating different workers)
-        publisher = RedisEventBus(redis_url=REDIS_URL, prefix=unique_prefix)
-        subscriber = RedisEventBus(redis_url=REDIS_URL, prefix=unique_prefix)
+        publisher = RedisEventBus(redis_url=redis_container, prefix=unique_prefix)
+        subscriber = RedisEventBus(redis_url=redis_container, prefix=unique_prefix)
 
         # Start subscriber
         event_iterator = subscriber.subscribe(channel)
@@ -468,7 +452,7 @@ class TestRedisEventBusIntegration:
 
         # Cleanup
         await subscriber.unsubscribe(channel)
-        await _cleanup_redis_keys(unique_prefix)
+        await _cleanup_redis_keys(redis_container, unique_prefix)
 
         # We should have received at least some events
         # Note: Pub/Sub is fire-and-forget, timing issues can occur
@@ -582,13 +566,13 @@ class TestRedisTTLBehavior:
 
     @pytest.mark.asyncio
     @pytest.mark.timeout(15)
-    async def test_widget_ttl_expiration(self, unique_prefix: str) -> None:
+    async def test_widget_ttl_expiration(self, redis_container: str, unique_prefix: str) -> None:
         """Test that widgets expire after TTL."""
         from pywry.state.redis import RedisWidgetStore
 
         # Create store with very short TTL
         store = RedisWidgetStore(
-            redis_url=REDIS_URL,
+            redis_url=redis_container,
             prefix=unique_prefix,
             widget_ttl=1,  # 1 second
         )
@@ -606,4 +590,4 @@ class TestRedisTTLBehavior:
         html = await store.get_html(widget_id)
         assert html is None
 
-        await _cleanup_redis_keys(unique_prefix)
+        await _cleanup_redis_keys(redis_container, unique_prefix)

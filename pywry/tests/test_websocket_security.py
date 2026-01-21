@@ -1,6 +1,6 @@
 """Tests for WebSocket security hardening."""
 
-# pylint: disable=redefined-outer-name,protected-access
+# pylint: disable=redefined-outer-name,protected-access,unused-argument
 import os
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -10,17 +10,8 @@ import pytest
 from pywry.inline import _validate_websocket_origin
 
 
-# =============================================================================
-# Origin Validation Unit Tests
-# =============================================================================
-
-
 class TestOriginValidation:
     """Test WebSocket origin validation function."""
-
-    # -------------------------------------------------------------------------
-    # Origin Header Tests
-    # -------------------------------------------------------------------------
 
     def test_validate_origin_exact_match(self):
         """Test exact origin match with host:port."""
@@ -90,10 +81,6 @@ class TestOriginValidation:
         headers = {"referer": "http://attacker.com/fake"}
         assert not _validate_websocket_origin(headers, "127.0.0.1:8765")
 
-    # -------------------------------------------------------------------------
-    # Host Header Tests
-    # -------------------------------------------------------------------------
-
     def test_validate_host_header(self):
         """Test Host header validation (exact match only)."""
         headers = {"host": "127.0.0.1:8765"}
@@ -133,9 +120,6 @@ class TestOriginValidation:
         headers = {"host": "127.0.0.1:8765"}
         assert _validate_websocket_origin(headers, "127.0.0.1:8765")
 
-    # -------------------------------------------------------------------------
-    # Edge Cases and Error Handling
-    # -------------------------------------------------------------------------
 
     def test_validate_no_valid_headers(self):
         """Test rejection when no valid headers present."""
@@ -178,11 +162,6 @@ class TestOriginValidation:
         assert _validate_websocket_origin(headers, "127.0.0.1:12345")
         # Different port but same host - matches via hostname fallback
         assert _validate_websocket_origin(headers, "127.0.0.1:54321")
-
-
-# =============================================================================
-# ServerSettings Security Configuration Tests
-# =============================================================================
 
 
 class TestServerSettingsSecurity:
@@ -306,11 +285,6 @@ class TestServerStateTokenStorage:
         _state.widget_tokens.pop("widget-b", None)
 
 
-# =============================================================================
-# Per-Widget Token Generation Tests
-# =============================================================================
-
-
 class TestPerWidgetTokenGeneration:
     """Test per-widget token generation in bridge JS."""
 
@@ -422,11 +396,6 @@ class TestPerWidgetTokenGeneration:
             _state.widget_tokens.pop(widget_id, None)
 
 
-# =============================================================================
-# Environment Variable Configuration Tests
-# =============================================================================
-
-
 class TestEnvVarConfiguration:
     """Test security configuration via environment variables."""
 
@@ -480,11 +449,6 @@ class TestEnvVarConfiguration:
         settings = ServerSettings()
         assert settings.websocket_allowed_origins == ["https://trusted.com"]
         assert settings.websocket_require_token is True
-
-
-# =============================================================================
-# WebSocket Endpoint Security Tests (Mock-based)
-# =============================================================================
 
 
 @pytest.mark.asyncio
@@ -565,11 +529,6 @@ class TestWebSocketEndpointSecurity:
             else:
                 token = None
             assert token is None, f"Expected None for protocol: {protocol}"
-
-
-# =============================================================================
-# Security Mode Detection Tests
-# =============================================================================
 
 
 class TestSecurityModeDetection:
