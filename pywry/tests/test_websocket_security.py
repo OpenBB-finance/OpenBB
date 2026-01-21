@@ -120,7 +120,6 @@ class TestOriginValidation:
         headers = {"host": "127.0.0.1:8765"}
         assert _validate_websocket_origin(headers, "127.0.0.1:8765")
 
-
     def test_validate_no_valid_headers(self):
         """Test rejection when no valid headers present."""
         headers = {}

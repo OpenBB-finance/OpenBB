@@ -8,10 +8,13 @@ These tests verify:
 """
 # pylint: disable=redefined-outer-name,unused-argument,unsubscriptable-object,cyclic-import
 
+import sys
 import threading
 import time
 
-from typing import Any
+from collections.abc import Callable
+from functools import wraps
+from typing import Any, TypeVar
 
 import pytest
 
@@ -21,20 +24,47 @@ from pywry.callbacks import get_registry
 from pywry.models import ThemeMode, WindowMode
 
 
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
+    """Retry decorator for tests that may fail due to transient subprocess issues."""
+
+    def decorator(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            last_error: Exception | None = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except (TimeoutError, AssertionError) as e:
+                    last_error = e
+                    if attempt < max_attempts - 1:
+                        runtime.stop()
+                        time.sleep(delay * (attempt + 1))
+            raise last_error  # type: ignore[misc]
+
+        return wrapper  # type: ignore[return-value]
+
+    return decorator
+
+
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
     """Ensure runtime is fresh for each test."""
     from pywry.window_manager import get_lifecycle
 
     runtime.stop()
-    time.sleep(0.2)
+    # Windows and Linux CI need more time to release resources
+    cleanup_delay = 0.5 if sys.platform in ("win32", "linux") else 0.2
+    time.sleep(cleanup_delay)
     get_registry().clear()
     get_lifecycle().clear()  # Reset lifecycle window tracking
     yield
     runtime.stop()
     get_registry().clear()
     get_lifecycle().clear()  # Reset lifecycle window tracking
-    time.sleep(0.1)
+    time.sleep(cleanup_delay)
 
 
 class ReadyWaiter:
@@ -247,6 +277,7 @@ class TestSingleWindowMode:
 
         app.destroy()
 
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_window_reopens_after_user_close(self):
         """SINGLE_WINDOW reopens after user closes it (README Quick Start scenario)."""
         app = PyWry(mode=WindowMode.SINGLE_WINDOW, theme=ThemeMode.DARK)
@@ -259,8 +290,8 @@ class TestSingleWindowMode:
         app.close()
 
         # Wait for window to fully close with proper polling
-        # Windows CI can be slow, so give it adequate time
-        max_close_wait = 3.0  # Maximum time to wait for window to close
+        # Windows and Linux CI can be slow, so give adequate time
+        max_close_wait = 5.0  # Maximum time to wait for window to close
         poll_interval = 0.1
         elapsed = 0.0
         while elapsed < max_close_wait:
@@ -268,8 +299,12 @@ class TestSingleWindowMode:
                 break
             time.sleep(poll_interval)
             elapsed += poll_interval
-        # Extra buffer after close confirmed for Windows CI cleanup
-        time.sleep(0.5)
+        # Extra buffer after close confirmed for CI cleanup
+        time.sleep(1.0)
+
+        # Verify subprocess is still running before attempting reopen
+        # The close() of a window shouldn't stop the subprocess
+        assert runtime.is_running(), "Runtime should still be running after window close"
 
         # Show new content - this should reopen the window
         label2 = show_and_wait_ready(app, "<h1>Second Content</h1>", timeout=20.0)

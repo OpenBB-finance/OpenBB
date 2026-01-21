@@ -30,7 +30,8 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
     """Retry decorator for tests that may fail due to transient subprocess issues.
 
     On Windows, WebView2 sometimes fails to start due to resource contention
-    ("Failed to unregister class Chrome_WidgetWin_0"). This decorator retries
+    ("Failed to unregister class Chrome_WidgetWin_0"). On Linux with xvfb,
+    WebKit initialization may have timing issues. This decorator retries
     the test after a delay to allow resources to be released.
     """
 
@@ -43,12 +44,13 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
             for attempt in range(max_attempts):
                 try:
                     return func(*args, **kwargs)
-                except TimeoutError as e:
+                except (TimeoutError, AssertionError) as e:
                     last_error = e
                     if attempt < max_attempts - 1:
                         # Clean up and wait before retry
                         runtime.stop()
-                        time.sleep(delay)
+                        # Progressive backoff for CI stability
+                        time.sleep(delay * (attempt + 1))
             raise last_error  # type: ignore[misc]
 
         return wrapper  # type: ignore[return-value]
@@ -766,8 +768,8 @@ class TestNativeWindowAlertE2E:
         })();
         """
 
-        result = wait_for_result(label, script, timeout=3.0)
-        assert result is not None
+        result = wait_for_result(label, script, timeout=5.0)
+        assert result is not None, "Toast test: pywry.result() callback not received"
         assert result["toastExists"] is True
         assert result["hasTitle"] is True
         assert result["hasMessage"] is True

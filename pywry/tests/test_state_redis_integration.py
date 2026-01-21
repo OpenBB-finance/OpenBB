@@ -410,23 +410,40 @@ class TestRedisEventBusIntegration:
         await redis_event_bus.publish("test-channel", event)
 
     @pytest.mark.asyncio
-    @pytest.mark.timeout(5)
+    @pytest.mark.timeout(10)
     async def test_pubsub_round_trip(self, redis_container: str, unique_prefix: str) -> None:
         """Test full pub/sub round trip with real Redis."""
         from pywry.state.redis import RedisEventBus
 
         channel = f"test-channel-{uuid.uuid4().hex[:8]}"
         received_events: list[EventMessage] = []
+        subscription_ready = asyncio.Event()
+        event_iterator = None
 
         # Create two separate bus instances (simulating different workers)
         publisher = RedisEventBus(redis_url=redis_container, prefix=unique_prefix)
         subscriber = RedisEventBus(redis_url=redis_container, prefix=unique_prefix)
 
-        # Start subscriber
-        event_iterator = subscriber.subscribe(channel)
+        # Collect events in background task
+        async def collect_events():
+            nonlocal event_iterator
+            event_iterator = subscriber.subscribe(channel)
+            subscription_ready.set()
+            count = 0
+            try:
+                async for event in event_iterator:
+                    received_events.append(event)
+                    count += 1
+                    if count >= 3:
+                        break
+            finally:
+                await event_iterator.aclose()
 
-        # Give subscriber time to connect
-        await asyncio.sleep(0.1)
+        collector_task = asyncio.create_task(collect_events())
+
+        # Wait for subscription to be ready
+        await asyncio.wait_for(subscription_ready.wait(), timeout=2.0)
+        await asyncio.sleep(0.5)  # Give Redis time to register subscription
 
         # Publish events
         for i in range(3):
@@ -438,25 +455,23 @@ class TestRedisEventBusIntegration:
             )
             await publisher.publish(channel, event)
 
-        # Collect events with timeout
-        async def collect_events():
-            count = 0
-            async for event in event_iterator:
-                received_events.append(event)
-                count += 1
-                if count >= 3:
-                    break
+        # Wait for collector to finish
+        try:
+            await asyncio.wait_for(collector_task, timeout=5.0)
+        except asyncio.TimeoutError:
+            collector_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await collector_task
+            if event_iterator is not None:
+                with contextlib.suppress(Exception):
+                    await event_iterator.aclose()
 
-        with contextlib.suppress(TimeoutError):
-            await asyncio.wait_for(collect_events(), timeout=3.0)
-
-        # Cleanup
-        await subscriber.unsubscribe(channel)
         await _cleanup_redis_keys(redis_container, unique_prefix)
 
-        # We should have received at least some events
-        # Note: Pub/Sub is fire-and-forget, timing issues can occur
-        assert len(received_events) >= 0  # Lenient check for CI stability
+        # Verify we received all events
+        assert len(received_events) == 3, f"Expected 3 events, got {len(received_events)}"
+        for i, event in enumerate(received_events):
+            assert event.data["index"] == i
 
 
 # --- Factory Function Integration Tests ---

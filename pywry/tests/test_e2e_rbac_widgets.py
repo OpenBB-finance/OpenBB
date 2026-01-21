@@ -1033,6 +1033,8 @@ class TestEventSystem:
 
         channel = f"test-channel-{uuid.uuid4().hex[:8]}"
         received_events: list[EventMessage] = []
+        subscription_ready = asyncio.Event()
+        event_iterator = None
 
         # Create publisher and subscriber
         publisher = RedisEventBus(
@@ -1044,11 +1046,26 @@ class TestEventSystem:
             prefix=rbac_test_env["prefix"],
         )
 
-        # Start subscriber (async generator)
-        event_iterator = subscriber.subscribe(channel)
+        # Collect events in a background task
+        async def collect_events() -> None:
+            nonlocal event_iterator
+            event_iterator = subscriber.subscribe(channel)
+            # Signal that we're about to start listening
+            subscription_ready.set()
+            try:
+                async for event in event_iterator:
+                    received_events.append(event)
+                    break  # Just get one event
+            finally:
+                # Properly close the async generator
+                await event_iterator.aclose()
 
-        # Give subscriber time to connect
-        await asyncio.sleep(0.2)
+        # Start collector task
+        collector_task = asyncio.create_task(collect_events())
+
+        # Wait for subscription to be ready, then give Redis time to register it
+        await asyncio.wait_for(subscription_ready.wait(), timeout=2.0)
+        await asyncio.sleep(0.5)  # Give Redis time to fully register subscription
 
         # Publish event
         test_event = EventMessage(
@@ -1059,23 +1076,23 @@ class TestEventSystem:
         )
         await publisher.publish(channel, test_event)
 
-        # Collect events with timeout
-        async def collect_events() -> None:
-            async for event in event_iterator:
-                received_events.append(event)
-                break  # Just get one event
+        # Wait for collector to finish
+        try:
+            await asyncio.wait_for(collector_task, timeout=5.0)
+        except asyncio.TimeoutError:
+            collector_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await collector_task
+            # Clean up iterator if task was cancelled
+            if event_iterator is not None:
+                with contextlib.suppress(Exception):
+                    await event_iterator.aclose()
 
-        with contextlib.suppress(TimeoutError):
-            await asyncio.wait_for(collect_events(), timeout=3.0)
-
-        # Cleanup
-        await subscriber.unsubscribe(channel)
-
-        # Verify event was received (lenient for CI stability)
-        if received_events:
-            assert received_events[0].event_type == "user_interaction"
-            assert received_events[0].data["action"] == "click"
-            assert received_events[0].data["value"] == 42
+        # Verify event was received
+        assert len(received_events) == 1, f"Expected 1 event, got {len(received_events)}"
+        assert received_events[0].event_type == "user_interaction"
+        assert received_events[0].data["action"] == "click"
+        assert received_events[0].data["value"] == 42
 
     @pytest.mark.asyncio
     @pytest.mark.timeout(10)
@@ -1086,6 +1103,8 @@ class TestEventSystem:
 
         channel = f"multi-events-{uuid.uuid4().hex[:8]}"
         received_events: list[EventMessage] = []
+        subscription_ready = asyncio.Event()
+        event_iterator = None
 
         publisher = RedisEventBus(
             redis_url=rbac_test_env["admin_url"],
@@ -1096,8 +1115,26 @@ class TestEventSystem:
             prefix=rbac_test_env["prefix"],
         )
 
-        event_iterator = subscriber.subscribe(channel)
-        await asyncio.sleep(0.2)
+        # Collect events in background
+        async def collect_events() -> None:
+            nonlocal event_iterator
+            event_iterator = subscriber.subscribe(channel)
+            subscription_ready.set()
+            count = 0
+            try:
+                async for event in event_iterator:
+                    received_events.append(event)
+                    count += 1
+                    if count >= 3:
+                        break
+            finally:
+                await event_iterator.aclose()
+
+        collector_task = asyncio.create_task(collect_events())
+
+        # Wait for subscription to be ready
+        await asyncio.wait_for(subscription_ready.wait(), timeout=2.0)
+        await asyncio.sleep(0.5)  # Give Redis time to register
 
         # Publish 3 events
         for i in range(3):
@@ -1109,22 +1146,21 @@ class TestEventSystem:
             )
             await publisher.publish(channel, event)
 
-        # Collect events
-        async def collect_events() -> None:
-            count = 0
-            async for event in event_iterator:
-                received_events.append(event)
-                count += 1
-                if count >= 3:
-                    break
+        # Wait for collector
+        try:
+            await asyncio.wait_for(collector_task, timeout=5.0)
+        except asyncio.TimeoutError:
+            collector_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await collector_task
+            if event_iterator is not None:
+                with contextlib.suppress(Exception):
+                    await event_iterator.aclose()
 
-        with contextlib.suppress(TimeoutError):
-            await asyncio.wait_for(collect_events(), timeout=3.0)
-
-        await subscriber.unsubscribe(channel)
-
-        # Should have received some events
-        assert len(received_events) >= 0, "Pub/sub timing may vary"
+        # Should have received all 3 events
+        assert len(received_events) == 3, f"Expected 3 events, got {len(received_events)}"
+        for i, event in enumerate(received_events):
+            assert event.data["index"] == i, f"Event {i} has wrong index"
 
     @pytest.mark.asyncio
     async def test_connection_router_registers_connections(self, rbac_test_env) -> None:
@@ -1229,9 +1265,7 @@ class TestEventSystem:
         await router.unregister_connection(widget_id)
 
     @pytest.mark.asyncio
-    async def test_connection_router_with_user_and_session(
-        self, rbac_test_env
-    ) -> None:
+    async def test_connection_router_with_user_and_session(self, rbac_test_env) -> None:
         """Test connection router stores user and session information."""
         from pywry.state.redis import RedisConnectionRouter
 

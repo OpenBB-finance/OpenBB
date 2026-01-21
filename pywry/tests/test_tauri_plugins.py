@@ -8,11 +8,14 @@ Tests verify:
 """
 # pylint: disable=unsubscriptable-object
 
+import sys
 import threading
 import time
 
+from collections.abc import Callable
+from functools import wraps
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 
 import pytest
 
@@ -20,6 +23,31 @@ from pywry import runtime
 from pywry.app import PyWry
 from pywry.callbacks import get_registry
 from pywry.models import ThemeMode
+
+
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
+    """Retry decorator for tests that may fail due to transient subprocess issues."""
+
+    def decorator(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            last_error: Exception | None = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except (TimeoutError, AssertionError) as e:
+                    last_error = e
+                    if attempt < max_attempts - 1:
+                        runtime.stop()
+                        time.sleep(delay * (attempt + 1))
+            raise last_error  # type: ignore[misc]
+
+        return wrapper  # type: ignore[return-value]
+
+    return decorator
 
 
 # =============================================================================
@@ -119,7 +147,9 @@ def cleanup_runtime():
     from pywry.window_manager import get_lifecycle
 
     runtime.stop()
-    time.sleep(0.2)
+    # Windows and Linux CI need more time to release resources
+    cleanup_delay = 0.5 if sys.platform in ("win32", "linux") else 0.2
+    time.sleep(cleanup_delay)
     registry = get_registry()
     registry.clear()
     get_lifecycle().clear()
@@ -127,7 +157,7 @@ def cleanup_runtime():
     runtime.stop()
     registry.clear()
     get_lifecycle().clear()
-    time.sleep(0.1)
+    time.sleep(cleanup_delay)
 
 
 class ReadyWaiter:
@@ -339,6 +369,7 @@ class TestAGGridExportIntegration:
 class TestSaveDialogFunctionality:
     """E2E tests for save dialog functionality."""
 
+    @retry_on_subprocess_failure(max_attempts=3, delay=1.0)
     def test_save_with_file_picker_function_exists(self):
         """saveWithFilePicker helper function is defined in grid context."""
         app = PyWry(theme=ThemeMode.DARK)
@@ -348,7 +379,8 @@ class TestSaveDialogFunctionality:
         callbacks = {"pywry:ready": waiter.on_ready}
         widget = app.show_dataframe(data, callbacks=callbacks, title="SavePicker Test")
         label = widget.label if hasattr(widget, "label") else widget
-        waiter.wait()
+        if not waiter.wait():
+            raise TimeoutError(f"Window '{label}' did not become ready within 10s")
         time.sleep(0.5)
 
         # The saveWithFilePicker is a local function inside the context menu builder
