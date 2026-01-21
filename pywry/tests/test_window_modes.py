@@ -28,7 +28,15 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 
 def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
-    """Retry decorator for tests that may fail due to transient subprocess issues."""
+    """Retry decorator for tests that may fail due to transient subprocess issues.
+
+    On failure, this decorator:
+    1. Stops the runtime subprocess
+    2. Clears all in-process state (registry, lifecycle)
+    3. Waits with progressive backoff
+    4. Retries the test
+    """
+    from pywry.window_manager import get_lifecycle
 
     def decorator(func: F) -> F:
         @wraps(func)
@@ -37,11 +45,19 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
             for attempt in range(max_attempts):
                 try:
                     return func(*args, **kwargs)
-                except (TimeoutError, AssertionError) as e:
+                except (TimeoutError, AssertionError, RuntimeError) as e:
                     last_error = e
                     if attempt < max_attempts - 1:
+                        # Full cleanup before retry
                         runtime.stop()
-                        time.sleep(delay * (attempt + 1))
+                        get_registry().clear()
+                        get_lifecycle().clear()
+
+                        # Progressive backoff
+                        sleep_time = delay * (attempt + 1)
+                        if sys.platform == "win32":
+                            sleep_time *= 1.5  # Extra time for Windows
+                        time.sleep(sleep_time)
             raise last_error  # type: ignore[misc]
 
         return wrapper  # type: ignore[return-value]
@@ -51,14 +67,20 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
 
 @pytest.fixture(autouse=True)
 def cleanup_runtime():
-    """Ensure runtime is fresh for each test."""
+    """Ensure runtime is fresh for each test.
+
+    Windows CI has issues with WebView2 resource cleanup between tests.
+    We need to ensure the subprocess is fully terminated and all
+    in-process state is cleared before starting a new test.
+    """
     from pywry.window_manager import get_lifecycle
 
-    # STOP runtime first - may have been left running by previous test
+    # STOP runtime and ensure subprocess is fully dead
     runtime.stop()
 
+    # Platform-specific delays for resource release
     if sys.platform == "win32":
-        cleanup_delay = 1.0
+        cleanup_delay = 1.5  # Windows WebView2 needs more time
     elif sys.platform == "linux":
         cleanup_delay = 0.5
     else:
@@ -66,13 +88,16 @@ def cleanup_runtime():
 
     time.sleep(cleanup_delay)
 
-    # Clear all state
+    # Clear all in-process state
     get_registry().clear()
     get_lifecycle().clear()
 
+    # Verify runtime is truly stopped
+    assert not runtime.is_running(), "Runtime should be stopped before test"
+
     yield
 
-    # Cleanup after test - stop and wait
+    # Cleanup after test
     runtime.stop()
     time.sleep(cleanup_delay)
     get_registry().clear()
@@ -101,13 +126,21 @@ def show_and_wait_ready(
     timeout: float = 10.0,
     **kwargs: Any,
 ) -> str:
-    """Show content and wait for window to be ready."""
+    """Show content and wait for window to be ready.
+
+    Includes runtime startup verification for CI stability.
+    """
     waiter = ReadyWaiter(timeout=timeout)
     callbacks = kwargs.pop("callbacks", {}) or {}
     callbacks["pywry:ready"] = waiter.on_ready
     widget = app.show(content, callbacks=callbacks, **kwargs)
     # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
     label = widget.label if hasattr(widget, "label") else widget
+
+    # Verify runtime is actually running after show()
+    if not runtime.is_running():
+        raise RuntimeError("Runtime failed to start - subprocess not running")
+
     if not waiter.wait():
         raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
     return label
