@@ -54,17 +54,29 @@ def cleanup_runtime():
     """Ensure runtime is fresh for each test."""
     from pywry.window_manager import get_lifecycle
 
+    # STOP runtime first - may have been left running by previous test
     runtime.stop()
-    # Windows and Linux CI need more time to release resources
-    cleanup_delay = 0.5 if sys.platform in ("win32", "linux") else 0.2
+
+    if sys.platform == "win32":
+        cleanup_delay = 1.0
+    elif sys.platform == "linux":
+        cleanup_delay = 0.5
+    else:
+        cleanup_delay = 0.2
+
     time.sleep(cleanup_delay)
+
+    # Clear all state
     get_registry().clear()
-    get_lifecycle().clear()  # Reset lifecycle window tracking
+    get_lifecycle().clear()
+
     yield
+
+    # Cleanup after test - stop and wait
     runtime.stop()
-    get_registry().clear()
-    get_lifecycle().clear()  # Reset lifecycle window tracking
     time.sleep(cleanup_delay)
+    get_registry().clear()
+    get_lifecycle().clear()
 
 
 class ReadyWaiter:
