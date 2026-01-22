@@ -116,53 +116,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      # Verify Docker is available for testcontainers (Linux only)
-      - name: Verify Docker for testcontainers (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          docker version
-          docker info
-          echo "Docker socket: $(ls -la /var/run/docker.sock)"
+      # Set up Docker on all platforms using official action
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
 
-      # Windows: Install Docker
-      - name: Install Docker (Windows)
-        if: runner.os == 'Windows'
+      - name: Verify Docker
         run: |
-          choco install docker-desktop -y --no-progress
-          & "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-          $timeout = 300
-          $elapsed = 0
-          while ($elapsed -lt $timeout) {
-            try {
-              docker version
-              Write-Host "Docker is ready!"
-              break
-            } catch {
-              Write-Host "Waiting for Docker to start... ($elapsed s)"
-              Start-Sleep -Seconds 10
-              $elapsed += 10
-            }
-          }
-          if ($elapsed -ge $timeout) {
-            Write-Host "Docker failed to start within timeout"
-            exit 1
-          }
-
-      # macOS: Install and start Docker via colima (lightweight Docker runtime)
-      - name: Install Docker (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install docker colima
-          colima start --cpu 2 --memory 4 --disk 10
-          # Wait for Docker to be ready
-          for i in {1..30}; do
-            if docker version &>/dev/null; then
-              echo "Docker is ready!"
-              break
-            fi
-            echo "Waiting for Docker to start... ($i)"
-            sleep 5
-          done
           docker version
           docker info
 
@@ -171,12 +130,9 @@ jobs:
         env:
           PYWRY_HEADLESS: "1"
           NO_AT_BRIDGE: "1"
-          DOCKER_HOST: "unix:///var/run/docker.sock"
-          TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: "/var/run/docker.sock"
         run: |
           dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
 
-      # Windows: Run ALL tests
       - name: Run tests (Windows)
         if: runner.os == 'Windows'
         env:
@@ -184,13 +140,10 @@ jobs:
         run: |
           python -m pytest tests/ -v --tb=short
 
-      # macOS: Run ALL tests
       - name: Run tests (macOS)
         if: runner.os == 'macOS'
         env:
           PYWRY_HEADLESS: "1"
-          DOCKER_HOST: "unix://$HOME/.colima/default/docker.sock"
-          TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: "$HOME/.colima/default/docker.sock"
         run: |
           python -m pytest tests/ -v --tb=short
 
