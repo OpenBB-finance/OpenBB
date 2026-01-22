@@ -122,17 +122,8 @@ jobs:
         run: |
           docker version
 
-      - name: Setup Docker (Windows)
-        id: docker-windows
-        if: runner.os == 'Windows'
-        uses: docker/setup-docker-action@v4
-
-      - name: Verify Docker (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          echo "DOCKER_HOST=$env:DOCKER_HOST"
-          docker version
-          docker info
+      # Windows: Cannot run Linux containers (Docker runs Windows containers only)
+      # Redis only has Linux images, so we use memory backend on Windows
 
       # macOS Intel: Install Docker using docker/setup-docker-action
       - name: Setup Docker (macOS Intel)
@@ -154,16 +145,15 @@ jobs:
           PYWRY_HEADLESS: "1"
           NO_AT_BRIDGE: "1"
         run: |
-          dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
+          dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest -c pytest.ini tests/ -v --tb=short
 
       - name: Run tests (Windows x64)
         if: runner.os == 'Windows' && runner.arch == 'X64'
         env:
           PYWRY_HEADLESS: "1"
-          DOCKER_HOST: ${{ steps.docker-windows.outputs.sock }}
+          PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
-          echo "DOCKER_HOST=$env:DOCKER_HOST"
-          python -m pytest tests/ -v --tb=short
+          python -m pytest -c pytest.ini tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
 
       - name: Run tests (Windows ARM)
         if: runner.os == 'Windows' && runner.arch == 'ARM64'
@@ -171,7 +161,7 @@ jobs:
           PYWRY_HEADLESS: "1"
           PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
-          python -m pytest tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
+          python -m pytest -c pytest.ini tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
 
       - name: Run tests (macOS Intel)
         if: runner.os == 'macOS' && runner.arch == 'X64'
@@ -180,7 +170,7 @@ jobs:
           DOCKER_HOST: ${{ steps.docker-macos.outputs.sock }}
         run: |
           echo "DOCKER_HOST=$DOCKER_HOST"
-          python -m pytest tests/ -v --tb=short
+          python -m pytest -c pytest.ini tests/ -v --tb=short
 
       - name: Run tests (macOS ARM)
         if: runner.os == 'macOS' && runner.arch == 'ARM64'
@@ -188,5 +178,5 @@ jobs:
           PYWRY_HEADLESS: "1"
           PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
-          python -m pytest tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
+          python -m pytest -c pytest.ini tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
 
