@@ -8,7 +8,6 @@ Tests verify:
 """
 # pylint: disable=unsubscriptable-object
 
-import sys
 import threading
 import time
 
