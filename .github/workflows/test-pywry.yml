@@ -155,6 +155,7 @@ jobs:
         if: runner.os == 'Windows'
         env:
           PYWRY_HEADLESS: "1"
+          TESTCONTAINERS_RYUK_DISABLED: "true"
         run: |
           python -m pytest tests/ -v --tb=short
 
