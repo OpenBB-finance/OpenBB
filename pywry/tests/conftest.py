@@ -176,6 +176,11 @@ def redis_container() -> Generator[str, None, None]:
     Returns the Redis URL for connecting to the container.
     Testcontainers handles image pulling, port mapping, and lifecycle automatically.
     """
+    # If memory backend is explicitly set, skip Redis tests
+    if os.environ.get("PYWRY_DEPLOY__STATE_BACKEND", "").lower() == "memory":
+        pytest.skip("Memory backend configured - skipping Redis tests")
+        return
+
     # Allow override via environment variable (for external Redis)
     external_url = os.environ.get("PYWRY_DEPLOY__REDIS_URL")
     if external_url:
@@ -202,7 +207,8 @@ def redis_container() -> Generator[str, None, None]:
         print(f"URL: {redis_url}")
         yield redis_url
     except Exception as e:  # pylint: disable=broad-except
-        pytest.skip(f"Docker not available or container failed to start: {e}")
+        # On platforms without Docker, this will fail - raise the actual error
+        raise RuntimeError(f"Failed to start Redis container: {e}") from e
     finally:
         with contextlib.suppress(Exception):
             container.stop()

@@ -127,10 +127,9 @@ jobs:
 
       # macOS Intel: Install Docker using docker/setup-docker-action
       - name: Setup Docker (macOS Intel)
+        id: docker-macos
         if: runner.os == 'macOS' && runner.arch == 'X64'
         uses: docker/setup-docker-action@v4
-        with:
-          set-host: true
 
       - name: Verify Docker (macOS Intel)
         if: runner.os == 'macOS' && runner.arch == 'X64'
@@ -168,7 +167,9 @@ jobs:
         if: runner.os == 'macOS' && runner.arch == 'X64'
         env:
           PYWRY_HEADLESS: "1"
+          DOCKER_HOST: ${{ steps.docker-macos.outputs.sock }}
         run: |
+          echo "DOCKER_HOST=$DOCKER_HOST"
           python -m pytest tests/ -v --tb=short
 
       - name: Run tests (macOS ARM)
