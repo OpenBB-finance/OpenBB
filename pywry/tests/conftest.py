@@ -149,8 +149,7 @@ REDIS_ACL_COMMANDS = [
 
 
 def _configure_testcontainers() -> None:
-    """Configure testcontainers settings for the current platform.
-    """
+    """Configure testcontainers settings for the current platform."""
     try:
         from testcontainers.core.config import testcontainers_config
 
