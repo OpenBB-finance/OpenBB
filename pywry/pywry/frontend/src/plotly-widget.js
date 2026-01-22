@@ -7,9 +7,14 @@ function render({ model, el }) {
 
     el.innerHTML = '';
 
+    // Apply theme class to el (AnyWidget container) for proper theming
+    // CSS rule on .pywry-theme-dark/.pywry-theme-light applies background-color
+    const isDarkInitial = model.get('theme') === 'dark';
+    el.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
+
     const container = document.createElement('div');
     container.className = 'pywry-widget';
-    container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
+    container.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
     if (modelHeight) {
@@ -331,6 +336,10 @@ function render({ model, el }) {
 
     function applyTheme() {
         const isDark = model.get('theme') === 'dark';
+        // Update el (AnyWidget container) theme
+        el.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+        el.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
+        // Update container theme
         container.classList.remove('pywry-theme-dark', 'pywry-theme-light');
         container.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
 

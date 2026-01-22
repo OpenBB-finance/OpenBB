@@ -1,3 +1,15 @@
+/* ============================================
+   AnyWidget / Jupyter Notebook Container Fix
+   Make notebook output containers transparent so
+   the widget's themed background shows through.
+   ============================================ */
+.cell-output-ipywidget-background {
+    background-color: transparent !important;
+}
+.jp-OutputArea-output {
+    background-color: transparent !important;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -8,10 +20,19 @@ body {
   scrollbar-color: #a2a2a2 #eaeaea;
 }
 
+/* Dark theme scrollbars - for widgets, iframes, and native windows */
 .dark *,
+html.dark *,
 .pywry-theme-dark,
 .pywry-theme-dark * {
   scrollbar-color: #6d6e74 #46464f;
+}
+
+/* Light theme scrollbars - explicit for native windows */
+html.light *,
+.pywry-theme-light,
+.pywry-theme-light * {
+  scrollbar-color: #a2a2a2 #eaeaea;
 }
 
 ::-webkit-scrollbar {
@@ -24,8 +45,15 @@ body {
   border-radius: 6px;
 }
 
-.dark ::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track,
+html.dark ::-webkit-scrollbar-track {
   background: #46464f;
+  border-radius: 6px;
+}
+
+html.light ::-webkit-scrollbar-track,
+.pywry-theme-light ::-webkit-scrollbar-track {
+  background: #eaeaea;
   border-radius: 6px;
 }
 
@@ -35,16 +63,28 @@ body {
   height: 2rem;
 }
 
-.dark ::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb,
+html.dark ::-webkit-scrollbar-thumb {
   background: #6d6e74;
+}
+
+html.light ::-webkit-scrollbar-thumb,
+.pywry-theme-light ::-webkit-scrollbar-thumb {
+  background: #a2a2a2;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #7f7e7e;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover,
+html.dark ::-webkit-scrollbar-thumb:hover {
   background-color: #8d8e94;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover,
+.pywry-theme-light ::-webkit-scrollbar-thumb:hover {
+  background-color: #7f7e7e;
 }
 
 
@@ -279,11 +319,13 @@ html.light {
     }
 }
 
-/* Explicit background for themed widgets - ensures CSS variable is applied */
-.pywry-widget.pywry-theme-light,
-.pywry-widget.pywry-theme-dark,
-.pywry-widget.pywry-theme-system {
+/* Explicit background for themed elements - ensures CSS variable is applied */
+/* This applies to any element with theme class, including AnyWidget's el container */
+.pywry-theme-light,
+.pywry-theme-dark,
+.pywry-theme-system {
     background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
 }
 
 /* ============================================

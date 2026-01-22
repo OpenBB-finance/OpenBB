@@ -199,12 +199,17 @@ function render({ model, el }) {
     // CRITICAL: Clear el completely to avoid stale content from re-renders
     el.innerHTML = '';
 
+    // Apply theme class to el (AnyWidget container) for proper theming
+    // CSS rule on .pywry-theme-dark/.pywry-theme-light applies background-color
+    const isDarkInitial = model.get('theme') === 'dark';
+    el.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
+
     const container = document.createElement('div');
     container.className = 'pywry-widget';
     // Generate unique widget ID for CSS scoping
     container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
     // Theme class for CSS variable switching
-    container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
+    container.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
     // Set CSS variables from model for flexible sizing
     const modelHeight = model.get('height');
     const modelWidth = model.get('width');
@@ -233,6 +238,10 @@ function render({ model, el }) {
 
     function applyTheme() {
         const isDark = model.get('theme') === 'dark';
+        // Update el (AnyWidget container) theme class - CSS applies background
+        el.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+        el.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
+        // Update container theme
         container.classList.remove('pywry-theme-dark', 'pywry-theme-light');
         container.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
 
@@ -882,10 +891,15 @@ function render({ model, el }) {
         el.style.width = modelWidth;
     }
 
+    // Apply theme class to el (AnyWidget container) for proper theming
+    // CSS rule on .pywry-theme-dark/.pywry-theme-light applies background-color
+    const isDarkInitial = model.get('theme') === 'dark';
+    el.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
+
     const container = document.createElement('div');
     container.className = 'pywry-widget';
     container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
-    container.classList.add(model.get('theme') === 'dark' ? 'pywry-theme-dark' : 'pywry-theme-light');
+    container.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
 
     // Set CSS variables - CSS rules will use these via var(--pywry-widget-height)
     if (modelHeight) {
@@ -897,6 +911,10 @@ function render({ model, el }) {
 
     function applyTheme() {
         const isDark = model.get('theme') === 'dark';
+        // Update el (AnyWidget container) theme class - CSS applies background
+        el.classList.remove('pywry-theme-dark', 'pywry-theme-light');
+        el.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
+        // Update container theme
         container.classList.remove('pywry-theme-dark', 'pywry-theme-light');
         container.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
     }
