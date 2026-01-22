@@ -235,16 +235,37 @@ html.light {
    The .pywry-native class is added to <html> in templates.py
    ============================================ */
 
-html.pywry-native,
-html.pywry-native body {
+html.pywry-native {
     margin: 0;
     padding: 0;
+    /* WebKit requires explicit height on html element */
     height: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     overflow: hidden !important;
     background-color: var(--pywry-bg-primary);
     color: var(--pywry-text-primary);
     font-family: var(--pywry-font-family);
     font-size: var(--pywry-font-size);
+    /* WebKit flexbox fix: ensure proper flex behavior */
+    -webkit-text-size-adjust: 100%;
+}
+
+html.pywry-native body {
+    margin: 0;
+    padding: 0;
+    /* Multi-value fallback for cross-browser height */
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden !important;
+    background-color: var(--pywry-bg-primary);
+    color: var(--pywry-text-primary);
+    font-family: var(--pywry-font-family);
+    font-size: var(--pywry-font-size);
+    /* WebKit flex container fix */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Ensure emoji rendering in native windows */
@@ -285,7 +306,9 @@ html.pywry-native .pywry-input-label {
     font-family: var(--pywry-font-family);
     border: none;
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
+    -webkit-flex-direction: column;
 }
 
 /* ============================================
@@ -294,12 +317,11 @@ html.pywry-native .pywry-input-label {
 
 .pywry-container {
     width: 100%;
+    /* WebKit-compatible height - flex: 1 with min-height: 0 for proper shrinking */
+    flex: 1 1 0%;
+    min-height: 0;
+    /* Fallback for non-flex contexts */
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     overflow: hidden !important;
     padding: 0;
     box-sizing: border-box;
@@ -310,21 +332,35 @@ html.pywry-native .pywry-input-label {
     flex-direction: column;
 }
 
+/* When body is not a flex container, use absolute positioning as fallback */
+html.pywry-native body:not([style*="flex"]) .pywry-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex: none;
+}
+
 /* ============================================
    Toolbar Styles
    ============================================ */
 
 .pywry-toolbar {
     display: flex;
+    display: -webkit-flex;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     gap: var(--pywry-spacing-sm);
     padding: var(--pywry-spacing-md);
     background-color: var(--pywry-bg-primary);
     border: none;
     align-items: center;
+    -webkit-align-items: center;
     overflow: visible;
     box-sizing: border-box;
     flex-shrink: 0;
+    -webkit-flex-shrink: 0;
 }
 
 /* Explicit toolbar backgrounds for themed contexts */
@@ -410,18 +446,25 @@ html.pywry-native .pywry-input-label {
 
 .pywry-toolbar-content {
     display: flex;
+    display: -webkit-flex;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     gap: var(--pywry-spacing-md);
     align-items: center;
-    flex: 1;
+    -webkit-align-items: center;
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-width: 0;
 }
 
 .pywry-toolbar-left .pywry-toolbar-content,
 .pywry-toolbar-right .pywry-toolbar-content {
     flex-direction: column;
+    -webkit-flex-direction: column;
     align-items: flex-start;
+    -webkit-align-items: flex-start;
     justify-content: flex-start;
+    -webkit-justify-content: flex-start;
     gap: var(--pywry-spacing-sm);
     padding: var(--pywry-spacing-sm);
     overflow: hidden;
@@ -1808,10 +1851,14 @@ html.light .pywry-select option {
 /* Header/Footer wrapper - outermost, stacks vertically */
 .pywry-wrapper-header {
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
+    -webkit-flex-direction: column;
     align-items: stretch;
-    flex: 1;
-    height: 100%;
+    -webkit-align-items: stretch;
+    /* WebKit-compatible flex grow with explicit basis */
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
     overflow: visible;
@@ -1823,9 +1870,11 @@ html.light .pywry-select option {
 .pywry-wrapper-left,
 .pywry-wrapper-right {
     display: flex;
+    display: -webkit-flex;
     align-items: stretch;
-    flex: 1;
-    height: 100%;
+    -webkit-align-items: stretch;
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
     overflow: visible;
@@ -1835,24 +1884,34 @@ html.light .pywry-select option {
 .pywry-wrapper-top,
 .pywry-wrapper-bottom {
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
+    -webkit-flex-direction: column;
     align-items: stretch;
+    -webkit-align-items: stretch;
     justify-content: flex-start;
-    flex: 1;
+    -webkit-justify-content: flex-start;
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .pywry-wrapper-inside {
     position: relative;
-    flex: 1;
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
     overflow: visible;
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
+    -webkit-flex-direction: column;
     align-items: stretch;
+    -webkit-align-items: stretch;
 }
 
 /* ============================================
@@ -1860,9 +1919,12 @@ html.light .pywry-select option {
    ============================================ */
 
 .pywry-content {
-    flex: 1;
+    /* WebKit-compatible flex grow */
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     width: 100%;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     z-index: 1;
     min-height: 0;
@@ -1871,7 +1933,9 @@ html.light .pywry-select option {
     box-sizing: border-box;
     text-align: left;
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
+    -webkit-flex-direction: column;
 }
 
 /* No padding when content is empty - prevents premature scrollbar */
@@ -1898,7 +1962,9 @@ html.light .pywry-select option {
 }
 
 .pywry-grid {
-    flex: 1;
+    /* WebKit-compatible flex grow */
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     min-height: var(--pywry-grid-min-height);
     width: 100%;
 }
@@ -1909,7 +1975,9 @@ html.light .pywry-select option {
 
 .pywry-plotly {
     overflow: hidden;
-    flex: 1;
+    /* WebKit-compatible flex grow */
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
     width: 100%;
     min-height: 0;
     border: 1px solid var(--pywry-border-color, #333);
