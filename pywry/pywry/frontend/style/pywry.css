@@ -1,3 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a2a2a2 #eaeaea;
+}
+
+.dark *,
+.pywry-theme-dark,
+.pywry-theme-dark * {
+  scrollbar-color: #6d6e74 #46464f;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 6px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #46464f;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a2a2a2;
+  border-radius: 6px;
+  height: 2rem;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6d6e74;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #7f7e7e;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #8d8e94;
+}
+
+
 .pywry-widget,
 .pywry-widget *,
 .pywry-widget *::before,
@@ -9,9 +59,14 @@
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 :root {
     /* ---- Typography (theme-independent) ---- */
-    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+    --pywry-font-family: Inter, 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --pywry-font-size: 14px;
     --pywry-font-weight-normal: 400;
     --pywry-font-weight-medium: 500;
@@ -37,7 +92,7 @@
     /* ---- Accent Colors (shared across themes) ---- */
     --pywry-accent: #0078d4;
     --pywry-accent-hover: #106ebe;
-    --pywry-accent-text: #ffffff;
+    --pywry-text-accent: rgb(51, 187, 255);
 
     /* ---- Neutral Button (always blue, shared) ---- */
     --pywry-btn-neutral-bg: rgb(0, 136, 204);
@@ -56,7 +111,9 @@ html.dark,
 .pywry-theme-dark {
     /* ---- Core Colors ---- */
     --pywry-bg-primary: #212124;
-    --pywry-bg-secondary: #1e1e1e;
+    --pywry-bg-secondary: rgba(21, 21, 24, 1);
+    --pywry-bg-tertiary: rgba(31, 30, 35, 1);
+    --pywry-bg-quartary: rgba(36, 36, 42, 1);
     --pywry-bg-hover: rgba(255, 255, 255, 0.08);
     --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
     --pywry-text-primary: #ebebed;
@@ -285,7 +342,7 @@ html.pywry-native span,
 html.pywry-native button,
 html.pywry-native .pywry-btn,
 html.pywry-native .pywry-input-label {
-    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', var(--pywry-font-family);
+    font-family: var(--pywry-font-family);
 }
 
 /* ============================================
@@ -296,7 +353,7 @@ html.pywry-native .pywry-input-label {
     width: var(--pywry-widget-width);
     min-height: var(--pywry-widget-min-height);
     height: var(--pywry-widget-height);
-    overflow: visible; /* CRITICAL: Must be visible for AG Grid filter popups */
+    overflow: visible;
     border-radius: var(--pywry-radius);
     padding: 0;
     box-sizing: border-box;
@@ -693,11 +750,11 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
 
 /* Left sidebar: arrow points LEFT when expanded (collapse into sidebar), points RIGHT when collapsed (expand outward) */
 .pywry-toolbar-left .pywry-toggle-icon {
-    transform: rotate(-90deg) !important;
+    transform: rotate(90deg) !important;
 }
 
 .pywry-toolbar-left.pywry-collapsed .pywry-toggle-icon {
-    transform: rotate(90deg) !important;
+    transform: rotate(-90deg) !important;
 }
 
 /* Right sidebar: arrow points LEFT when expanded (collapse into sidebar), points RIGHT when collapsed (expand outward) */
@@ -2200,44 +2257,39 @@ html.light .ag-standard-button:hover {
    Scrollbars (Theme Integrated)
    ============================================ */
 
-/* 
- * Scrollbar styling uses CSS variables from :root (dark default) 
+/*
+ * Scrollbar styling uses CSS variables from :root (dark default)
  * and light theme overrides. Variables inherit through the DOM.
  *
  * AG Grid scroll containers:
  * - .ag-body-viewport: main vertical scroll
- * - .ag-body-horizontal-scroll-viewport: horizontal scroll  
+ * - .ag-body-horizontal-scroll-viewport: horizontal scroll
  * - .ag-center-cols-viewport: center columns scroll
  * - .ag-virtual-list-viewport: virtual list scroll (filters, etc)
  */
 
-/* Webkit scrollbar styling */
-::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
+/* ============================================
+   Utility Classes (Ported from Desktop Styles)
+   ============================================ */
 
-::-webkit-scrollbar-track {
-    background: var(--pywry-scrollbar-track);
-}
+.pywry-bg-primary { background-color: var(--pywry-bg-primary); }
+.pywry-bg-secondary { background-color: var(--pywry-bg-secondary); }
+.pywry-bg-tertiary { background-color: var(--pywry-bg-tertiary); }
+.pywry-bg-quartary { background-color: var(--pywry-bg-quartary); }
+.pywry-bg-accent { background-color: var(--pywry-bg-accent); }
+.pywry-bg-toast { background-color: var(--pywry-bg-toast); }
+.pywry-bg-tag { background-color: var(--pywry-tag-bg); }
 
-::-webkit-scrollbar-thumb {
-    background-color: var(--pywry-scrollbar-thumb);
-    border-radius: 6px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-}
+.pywry-text-primary { color: var(--pywry-text-primary); }
+.pywry-text-secondary { color: var(--pywry-text-secondary); }
+.pywry-text-tertiary { color: var(--pywry-text-tertiary); }
+.pywry-text-muted { color: var(--pywry-text-muted); }
+.pywry-text-accent { color: var(--pywry-text-accent); }
 
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--pywry-scrollbar-thumb-hover);
-}
+.pywry-border-theme { border-color: var(--pywry-border-color); }
+.pywry-border-outline { border-color: var(--pywry-border-outline); }
+.pywry-border-modal { border-color: var(--pywry-border-modal); }
 
-::-webkit-scrollbar-corner {
-    background: transparent;
-}
-
-/* Firefox / Standard scrollbar support */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--pywry-scrollbar-thumb) var(--pywry-scrollbar-track);
-}
+.pywry-ghost-icon { color: var(--pywry-ghost-icon); }
+.pywry-ghost-icon:hover { color: var(--pywry-ghost-icon-hover); }
+.pywry-info-icon { color: var(--pywry-info-icon); }
