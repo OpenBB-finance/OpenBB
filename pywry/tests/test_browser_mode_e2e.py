@@ -561,12 +561,11 @@ class TestBrowserModeWebSocket:
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "ws-test"
-        _state.widgets[widget_id] = {"html": "<html></html>", "callbacks": {}}
         # Generate a token for WebSocket auth
         import secrets
 
         token = secrets.token_urlsafe(16)
-        _state.widget_tokens[widget_id] = token
+        _state.register_widget(widget_id, "<html></html>", callbacks={}, token=token)
 
         ws_url = f"ws://127.0.0.1:{server_port}/ws/{widget_id}"
         subprotocol = f"pywry.token.{token}"

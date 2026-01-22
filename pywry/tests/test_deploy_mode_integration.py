@@ -33,11 +33,13 @@ from pywry.state.auth import (
 )
 
 
-# Mark all tests as requiring redis container
-pytestmark = [
-    pytest.mark.redis,
-    pytest.mark.container,
-]
+# Tests now support both Redis and Memory backends - no skip marks needed
+
+
+def _should_use_memory_backend() -> bool:
+    """Check if memory backend should be used based on env var."""
+    # Only use memory if explicitly set (e.g., on macOS ARM)
+    return os.environ.get("PYWRY_DEPLOY__STATE_BACKEND", "").lower() == "memory"
 
 
 # --- Fixtures ---
@@ -56,8 +58,14 @@ def auth_secret() -> str:
 
 
 @pytest.fixture
-def deploy_env_vars(redis_container: str, unique_prefix: str):
-    """Set up deploy mode environment variables."""
+def deploy_env_vars(unique_prefix: str, request):
+    """Set up deploy mode environment variables.
+
+    Supports both Redis (with testcontainers) and Memory backends.
+    On macOS ARM or when Docker isn't available, uses memory backend.
+    """
+    use_memory = _should_use_memory_backend()
+
     env_backup = {
         "PYWRY_DEPLOY_MODE": os.environ.get("PYWRY_DEPLOY_MODE"),
         "PYWRY_DEPLOY__STATE_BACKEND": os.environ.get("PYWRY_DEPLOY__STATE_BACKEND"),
@@ -68,15 +76,56 @@ def deploy_env_vars(redis_container: str, unique_prefix: str):
 
     # Set deploy mode environment
     os.environ["PYWRY_DEPLOY_MODE"] = "1"
-    os.environ["PYWRY_DEPLOY__STATE_BACKEND"] = "redis"
-    os.environ["PYWRY_DEPLOY__REDIS_URL"] = redis_container
-    os.environ["PYWRY_DEPLOY__REDIS_PREFIX"] = unique_prefix
     os.environ["PYWRY_DEPLOY__AUTH_ENABLED"] = "1"
+    os.environ["PYWRY_DEPLOY__REDIS_PREFIX"] = unique_prefix
 
-    yield {
-        "redis_url": redis_container,
-        "prefix": unique_prefix,
-    }
+    if use_memory:
+        # Use memory backend
+        os.environ["PYWRY_DEPLOY__STATE_BACKEND"] = "memory"
+        os.environ.pop("PYWRY_DEPLOY__REDIS_URL", None)
+
+        yield {
+            "backend": "memory",
+            "prefix": unique_prefix,
+        }
+    else:
+        # Use Redis with testcontainers
+        try:
+            from testcontainers.core.config import testcontainers_config
+            from testcontainers.redis import RedisContainer
+
+            # Disable Ryuk on Windows
+            if os.name == "nt" or os.environ.get("TESTCONTAINERS_RYUK_DISABLED", "").lower() in (
+                "true",
+                "1",
+                "yes",
+            ):
+                testcontainers_config.ryuk_disabled = True
+
+            container = RedisContainer("redis:7-alpine")
+            container.with_bind_ports(6379, 6394)
+
+            with container as redis:
+                host = redis.get_container_host_ip()
+                redis_url = f"redis://{host}:6394/0"
+
+                os.environ["PYWRY_DEPLOY__STATE_BACKEND"] = "redis"
+                os.environ["PYWRY_DEPLOY__REDIS_URL"] = redis_url
+
+                yield {
+                    "backend": "redis",
+                    "redis_url": redis_url,
+                    "prefix": unique_prefix,
+                }
+        except Exception:  # pylint: disable=broad-except
+            # Fall back to memory
+            os.environ["PYWRY_DEPLOY__STATE_BACKEND"] = "memory"
+            os.environ.pop("PYWRY_DEPLOY__REDIS_URL", None)
+
+            yield {
+                "backend": "memory",
+                "prefix": unique_prefix,
+            }
 
     # Restore original environment
     for key, value in env_backup.items():
@@ -87,12 +136,20 @@ def deploy_env_vars(redis_container: str, unique_prefix: str):
 
 
 @pytest_asyncio.fixture
-async def redis_cleanup(redis_container: str, unique_prefix: str):
-    """Clean up Redis keys after tests."""
+async def redis_cleanup(deploy_env_vars: dict, unique_prefix: str):
+    """Clean up Redis keys after tests (only if using Redis backend)."""
     yield
+
+    if deploy_env_vars.get("backend") != "redis":
+        return  # Nothing to clean up for memory backend
+
+    redis_url = deploy_env_vars.get("redis_url")
+    if not redis_url:
+        return
+
     import redis.asyncio as aioredis
 
-    client = aioredis.from_url(redis_container, decode_responses=True)
+    client = aioredis.from_url(redis_url, decode_responses=True)
     try:
         cursor = 0
         while True:
@@ -106,58 +163,82 @@ async def redis_cleanup(redis_container: str, unique_prefix: str):
 
 
 @pytest_asyncio.fixture
-async def session_store(redis_container: str, unique_prefix: str, redis_cleanup):
-    """Create a RedisSessionStore for testing."""
-    from pywry.state.redis import RedisSessionStore
+async def session_store(deploy_env_vars: dict, unique_prefix: str, redis_cleanup):
+    """Create a session store for testing - Redis or Memory based on env."""
+    if deploy_env_vars.get("backend") == "redis":
+        from pywry.state.redis import RedisSessionStore
 
-    store = RedisSessionStore(
-        redis_url=redis_container,
-        prefix=unique_prefix,
-        default_ttl=3600,
-    )
-    yield store
-    await store.close()
+        store = RedisSessionStore(
+            redis_url=deploy_env_vars["redis_url"],
+            prefix=unique_prefix,
+            default_ttl=3600,
+        )
+        yield store
+        await store.close()
+    else:
+        from pywry.state.memory import MemorySessionStore
 
-
-@pytest_asyncio.fixture
-async def widget_store(redis_container: str, unique_prefix: str, redis_cleanup):
-    """Create a RedisWidgetStore for testing."""
-    from pywry.state.redis import RedisWidgetStore
-
-    store = RedisWidgetStore(
-        redis_url=redis_container,
-        prefix=unique_prefix,
-        widget_ttl=3600,
-    )
-    yield store
-    await store.close()
+        store = MemorySessionStore()
+        yield store
 
 
 @pytest_asyncio.fixture
-async def connection_router(redis_container: str, unique_prefix: str, redis_cleanup):
-    """Create a RedisConnectionRouter for testing."""
-    from pywry.state.redis import RedisConnectionRouter
+async def widget_store(deploy_env_vars: dict, unique_prefix: str, redis_cleanup):
+    """Create a widget store for testing - Redis or Memory based on env."""
+    if deploy_env_vars.get("backend") == "redis":
+        from pywry.state.redis import RedisWidgetStore
 
-    router = RedisConnectionRouter(
-        redis_url=redis_container,
-        prefix=unique_prefix,
-        connection_ttl=3600,
-    )
-    yield router
-    await router.close()
+        store = RedisWidgetStore(
+            redis_url=deploy_env_vars["redis_url"],
+            prefix=unique_prefix,
+            widget_ttl=3600,
+        )
+        yield store
+        await store.close()
+    else:
+        from pywry.state.memory import MemoryWidgetStore
+
+        store = MemoryWidgetStore()
+        yield store
 
 
 @pytest_asyncio.fixture
-async def event_bus(redis_container: str, unique_prefix: str, redis_cleanup):
-    """Create a RedisEventBus for testing."""
-    from pywry.state.redis import RedisEventBus
+async def connection_router(deploy_env_vars: dict, unique_prefix: str, redis_cleanup):
+    """Create a connection router for testing - Redis or Memory based on env."""
+    if deploy_env_vars.get("backend") == "redis":
+        from pywry.state.redis import RedisConnectionRouter
 
-    bus = RedisEventBus(
-        redis_url=redis_container,
-        prefix=unique_prefix,
-    )
-    yield bus
-    await bus.close()
+        router = RedisConnectionRouter(
+            redis_url=deploy_env_vars["redis_url"],
+            prefix=unique_prefix,
+            connection_ttl=3600,
+        )
+        yield router
+        await router.close()
+    else:
+        from pywry.state.memory import MemoryConnectionRouter
+
+        router = MemoryConnectionRouter()
+        yield router
+
+
+@pytest_asyncio.fixture
+async def event_bus(deploy_env_vars: dict, unique_prefix: str, redis_cleanup):
+    """Create an event bus for testing - Redis or Memory based on env."""
+    if deploy_env_vars.get("backend") == "redis":
+        from pywry.state.redis import RedisEventBus
+
+        bus = RedisEventBus(
+            redis_url=deploy_env_vars["redis_url"],
+            prefix=unique_prefix,
+        )
+        yield bus
+        await bus.close()
+    else:
+        from pywry.state.memory import MemoryEventBus
+
+        bus = MemoryEventBus()
+        yield bus
 
 
 # ============================================================================
@@ -166,7 +247,11 @@ async def event_bus(redis_container: str, unique_prefix: str, redis_cleanup):
 
 
 class TestDeployModeDetection:
-    """Tests for deploy mode detection and configuration."""
+    """Tests for deploy mode detection and configuration.
+
+    These tests require Redis because they test Redis-specific detection logic.
+    Tests will be skipped if redis_container fixture fails.
+    """
 
     def test_deploy_mode_via_env_flag(self, redis_container: str) -> None:
         """Test deploy mode is detected via PYWRY_DEPLOY_MODE=1."""
@@ -336,7 +421,12 @@ class TestDeployModeWidgetManagement:
 
 
 class TestCrossWorkerDeployMode:
-    """Tests for cross-worker functionality in deploy mode."""
+    """Tests for cross-worker functionality in deploy mode.
+
+    These tests require Redis because they test cross-worker scenarios
+    where multiple store instances share state via Redis.
+    Tests will be skipped if redis_container fixture fails.
+    """
 
     @pytest.mark.asyncio
     async def test_session_created_on_worker1_accessible_on_worker2(
@@ -455,7 +545,11 @@ class TestCrossWorkerDeployMode:
 
 
 class TestDeployModeEventBroadcasting:
-    """Tests for Redis Pub/Sub event broadcasting."""
+    """Tests for Redis Pub/Sub event broadcasting.
+
+    These tests require Redis because they test Redis Pub/Sub functionality.
+    Tests will be skipped if redis_container fixture fails.
+    """
 
     @pytest.mark.asyncio
     async def test_event_published_on_worker1_received_on_worker2(

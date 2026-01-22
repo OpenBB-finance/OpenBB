@@ -1183,7 +1183,7 @@ class TestInlineAlertE2E:
 
         widget_id = "toast-test"
         test_html = "<html><body><div class='pywry-widget'>Test</div></body></html>"
-        _state.widgets[widget_id] = {"html": test_html, "callbacks": {}}
+        _state.register_widget(widget_id, test_html, callbacks={})
 
         url = f"http://127.0.0.1:{server_port}/widget/{widget_id}"
         with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310
@@ -1223,7 +1223,7 @@ class TestInlineAlertE2E:
         columns = ["name", "age"]
         html = generate_dataframe_html(data, columns, widget_id, title="Test DF", theme="dark")
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         url = f"http://127.0.0.1:{server_port}/widget/{widget_id}"
         with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310
@@ -1262,7 +1262,7 @@ class TestInlineAlertE2E:
         figure_json = '{"data": [{"type": "scatter", "x": [1, 2], "y": [3, 4]}], "layout": {}}'
         html = generate_plotly_html(figure_json, widget_id, title="Test Plot", theme="dark")
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         url = f"http://127.0.0.1:{server_port}/widget/{widget_id}"
         with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310

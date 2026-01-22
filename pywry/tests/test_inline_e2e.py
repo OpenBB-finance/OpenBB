@@ -265,10 +265,9 @@ class TestWidgetRendering:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        # Register a widget directly
         widget_id = "test-widget-123"
         test_html = "<html><body><h1>Test Content</h1></body></html>"
-        _state.widgets[widget_id] = {"html": test_html, "callbacks": {}}
+        _state.register_widget(widget_id, test_html, callbacks={})
 
         # Fetch widget content
         status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
@@ -291,7 +290,7 @@ class TestWidgetRendering:
     </div>
 </body>
 </html>"""
-        _state.widgets[widget_id] = {"html": test_html, "callbacks": {}}
+        _state.register_widget(widget_id, test_html, callbacks={})
 
         status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -315,7 +314,7 @@ class TestWidgetRendering:
 
         widget_id = "content-test"
         test_html = "<html><body>Content</body></html>"
-        _state.widgets[widget_id] = {"html": test_html, "callbacks": {}}
+        _state.register_widget(widget_id, test_html, callbacks={})
 
         status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -335,24 +334,13 @@ class TestWidgetRendering:
         }
 
         for wid, html in widgets.items():
-            _state.widgets[wid] = {"html": html, "callbacks": {}}
+            _state.register_widget(wid, html, callbacks={})
 
         # Verify each widget returns correct content
         for wid in widgets:
             status, body = http_get(f"http://127.0.0.1:{server_port}/widget/{wid}")
             assert status == 200
             assert f"Widget {wid[-1].upper()} Content" in body
-
-
-# =============================================================================
-# Callback Tests
-# =============================================================================
-# Callback tests moved to TestWebSocketUpdates as HTTP emit endpoint is removed.
-
-
-# =============================================================================
-# InlineWidget Class Tests
-# =============================================================================
 
 
 # Mock Output class for tests when IPython not fully available
@@ -595,10 +583,7 @@ class TestContentTypes:
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "html-type-test"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {},
-        }
+        _state.register_widget(widget_id, "<html><body>Test</body></html>", callbacks={})
 
         url = f"http://127.0.0.1:{server_port}/widget/{widget_id}"
         with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310
@@ -628,8 +613,8 @@ class TestPlotlyIntegration:
         widget_id = "plotly-e2e-test"
         html = generate_plotly_html(figure_json, widget_id, title="E2E Plotly Test", theme="dark")
 
-        # Register in state and serve
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        # Register in state and serve (use register_widget for deploy mode compatibility)
+        _state.register_widget(widget_id, html, callbacks={})
 
         # E2E: Fetch the widget via HTTP
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
@@ -652,7 +637,7 @@ class TestPlotlyIntegration:
         widget_id = "plotly-dark-test"
         html = generate_plotly_html(figure_json, widget_id, theme="dark")
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -671,7 +656,7 @@ class TestPlotlyIntegration:
         widget_id = "plotly-light-test"
         html = generate_plotly_html(figure_json, widget_id, theme="light")
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -704,8 +689,8 @@ class TestDataFrameIntegration:
             row_data, columns, widget_id, title="E2E DataFrame Test", theme="dark"
         )
 
-        # Register in state and serve
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        # Register in state and serve (use register_widget for deploy mode compatibility)
+        _state.register_widget(widget_id, html, callbacks={})
 
         # E2E: Fetch the widget via HTTP
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
@@ -732,7 +717,7 @@ class TestDataFrameIntegration:
         widget_id = "dataframe-numeric-test"
         html = generate_dataframe_html(row_data, columns, widget_id)
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -752,7 +737,7 @@ class TestDataFrameIntegration:
         widget_id = "dataframe-dark-test"
         html = generate_dataframe_html(row_data, columns, widget_id, theme="dark")
 
-        _state.widgets[widget_id] = {"html": html, "callbacks": {}}
+        _state.register_widget(widget_id, html, callbacks={})
 
         status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
@@ -775,10 +760,7 @@ class TestErrorHandling:
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "survive-test"
-        _state.widgets[widget_id] = {
-            "html": "<html><body>Test</body></html>",
-            "callbacks": {},
-        }
+        _state.register_widget(widget_id, "<html><body>Test</body></html>", callbacks={})
 
         # Make some requests
         http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")

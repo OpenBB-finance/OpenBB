@@ -136,12 +136,32 @@ REDIS_ACL_COMMANDS = [
     "ACL SETUSER admin on >admin123 ~* &* +@all",
     # Editor user - can read/write any keys (widgets, sessions, etc.) but not admin commands
     # Needs +@transaction for MULTI/EXEC which widget store uses
-    "ACL SETUSER editor on >editor123 ~* &* +@read +@write +@string +@hash +@set +@list +@connection +@transaction +ping -@admin -@dangerous",
+    (
+        "ACL SETUSER editor on >editor123 ~* &* +@read +@write +@string "
+        "+@hash +@set +@list +@connection +@transaction +ping -@admin -@dangerous"
+    ),
     # Viewer user - read-only access to any keys
     "ACL SETUSER viewer on >viewer123 ~* &* +@read +@connection +ping -@write -@admin -@dangerous",
     # Blocked user - no access except auth
     "ACL SETUSER blocked on >blocked123 ~* &* -@all +auth",
 ]
+
+
+def _configure_testcontainers() -> None:
+    """Configure testcontainers settings for the current platform.
+
+    Disables Ryuk on Windows to avoid volume mount path issues.
+    """
+    try:
+        from testcontainers.core.config import testcontainers_config
+
+        # Disable Ryuk on Windows - it uses Unix socket paths that don't work
+        # Also respect TESTCONTAINERS_RYUK_DISABLED env var
+        ryuk_disabled_env = os.environ.get("TESTCONTAINERS_RYUK_DISABLED", "").lower()
+        if sys.platform == "win32" or ryuk_disabled_env in ("true", "1", "yes"):
+            testcontainers_config.ryuk_disabled = True
+    except ImportError:
+        pass  # testcontainers not installed
 
 
 @pytest.fixture(scope="session")
@@ -166,6 +186,9 @@ def redis_container() -> Generator[str, None, None]:
     except ImportError:
         pytest.skip("testcontainers not installed (pip install testcontainers[redis])")
         return
+
+    # Configure testcontainers (disable Ryuk on Windows)
+    _configure_testcontainers()
 
     # Use fixed port 6399 for predictable testing
     redis_test_port = 6399
@@ -220,6 +243,9 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
     except ImportError:
         pytest.skip("testcontainers not installed")
         return
+
+    # Configure testcontainers (disable Ryuk on Windows)
+    _configure_testcontainers()
 
     # Use fixed port 6398 for ACL testing (different from regular redis)
     redis_acl_test_port = 6398
@@ -284,3 +310,53 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
             }
     except Exception as e:  # pylint: disable=broad-except
         pytest.skip(f"Docker not available or container failed to start: {e}")
+
+
+# --- Session store fixture (Redis or Memory fallback) ---
+
+
+@pytest.fixture
+def session_store_with_fallback(unique_prefix: str = "test:"):
+    """Create a session store - Redis if available, else Memory.
+
+    This fixture allows tests to run on platforms without Docker
+    by falling back to MemorySessionStore.
+
+    Yields a tuple of (store, store_type) where store_type is 'redis' or 'memory'.
+    """
+    from pywry.state.memory import MemorySessionStore
+
+    # Check if we should use memory backend (macOS ARM sets this env var)
+    use_memory = os.environ.get("PYWRY_DEPLOY__STATE_BACKEND", "").lower() == "memory"
+
+    if use_memory:
+        # Use memory backend
+        store = MemorySessionStore()
+        yield store, "memory"
+        return
+
+    # Try to use Redis
+    try:
+        from testcontainers.redis import RedisContainer
+
+        from pywry.state.redis import RedisSessionStore
+
+        _configure_testcontainers()
+
+        container = RedisContainer("redis:7-alpine")
+        container.with_bind_ports(6379, 6397)  # Use different port
+
+        with container as redis:
+            host = redis.get_container_host_ip()
+            redis_url = f"redis://{host}:6397/0"
+
+            store = RedisSessionStore(
+                redis_url=redis_url,
+                prefix=unique_prefix,
+                default_ttl=60,
+            )
+            yield store, "redis"
+    except Exception:  # pylint: disable=broad-except
+        # Fall back to memory
+        store = MemorySessionStore()
+        yield store, "memory"
