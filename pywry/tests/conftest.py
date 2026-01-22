@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 import sys
 
@@ -160,6 +161,10 @@ def _configure_testcontainers() -> None:
         ryuk_disabled_env = os.environ.get("TESTCONTAINERS_RYUK_DISABLED", "").lower()
         if sys.platform == "win32" or ryuk_disabled_env in ("true", "1", "yes"):
             testcontainers_config.ryuk_disabled = True
+
+        # Ensure images are always pulled (don't rely on local cache check)
+        # This fixes issues on some CI environments
+        os.environ.setdefault("TC_IMAGE_PULL_POLICY", "always")
     except ImportError:
         pass  # testcontainers not installed
 
@@ -169,7 +174,7 @@ def redis_container() -> Generator[str, None, None]:
     """Spin up a Redis container for integration tests using testcontainers.
 
     Returns the Redis URL for connecting to the container.
-
+    Testcontainers handles image pulling, port mapping, and lifecycle automatically.
     """
     # Allow override via environment variable (for external Redis)
     external_url = os.environ.get("PYWRY_DEPLOY__REDIS_URL")
@@ -186,17 +191,21 @@ def redis_container() -> Generator[str, None, None]:
     # Configure testcontainers (disable Ryuk on Windows)
     _configure_testcontainers()
 
+    # Use specific Redis image tag for reliability
+    container = RedisContainer("redis:7")
     try:
-        # Use specific Redis image tag (not :latest) for reliability
-        with RedisContainer("redis:7") as redis:
-            host = redis.get_container_host_ip()
-            port = redis.get_exposed_port(redis.port)
-            redis_url = f"redis://{host}:{port}/0"
-            print("\n=== Redis Container Started ===")
-            print(f"URL: {redis_url}")
-            yield redis_url
+        container.start()
+        host = container.get_container_host_ip()
+        port = container.get_exposed_port(container.port)
+        redis_url = f"redis://{host}:{port}/0"
+        print("\n=== Redis Container Started ===")
+        print(f"URL: {redis_url}")
+        yield redis_url
     except Exception as e:  # pylint: disable=broad-except
         pytest.skip(f"Docker not available or container failed to start: {e}")
+    finally:
+        with contextlib.suppress(Exception):
+            container.stop()
 
 
 @pytest.fixture(scope="session")
@@ -204,7 +213,6 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
     """Spin up a Redis container WITH ACL configuration for RBAC testing.
 
     Configures Redis via command-line, then adds ACL users via commands.
-    Uses fixed port 6398 for predictable testing.
 
     Returns a dict with:
     - url: Base Redis URL (no auth - default user)
@@ -223,58 +231,62 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
     # Configure testcontainers (disable Ryuk on Windows)
     _configure_testcontainers()
 
+    container = RedisContainer("redis:7")
     try:
-        with RedisContainer("redis:7") as redis:
-            host = redis.get_container_host_ip()
-            port = redis.get_exposed_port(redis.port)
-            redis_url = f"redis://{host}:{port}/0"
+        container.start()
+        host = container.get_container_host_ip()
+        port = container.get_exposed_port(container.port)
+        redis_url = f"redis://{host}:{port}/0"
 
-            print("\n=== Redis ACL Container Started ===")
-            print(f"URL: {redis_url}")
+        print("\n=== Redis ACL Container Started ===")
+        print(f"URL: {redis_url}")
 
-            # Configure ACL users via Redis commands
-            import redis as redis_sync
+        # Configure ACL users via Redis commands
+        import redis as redis_sync
 
-            client = redis_sync.from_url(redis_url, decode_responses=True)
-            try:
-                # Configure ACL users
-                for acl_cmd in REDIS_ACL_COMMANDS:
-                    # Parse and execute ACL command
-                    parts = acl_cmd.split()
-                    client.execute_command(*parts)
+        client = redis_sync.from_url(redis_url, decode_responses=True)
+        try:
+            # Configure ACL users
+            for acl_cmd in REDIS_ACL_COMMANDS:
+                # Parse and execute ACL command
+                parts = acl_cmd.split()
+                client.execute_command(*parts)
 
-                # Verify users were created
-                acl_list = client.execute_command("ACL", "LIST")
-                print("=== Redis ACL Users Configured ===")
-                for user in acl_list:
-                    print(f"  {user[:80]}...")
-            finally:
-                client.close()
+            # Verify users were created
+            acl_list = client.execute_command("ACL", "LIST")
+            print("=== Redis ACL Users Configured ===")
+            for user in acl_list:
+                print(f"  {user[:80]}...")
+        finally:
+            client.close()
 
-            users = {
-                "default": {"username": "default", "password": None, "role": "admin"},
-                "admin": {"username": "admin", "password": "admin123", "role": "admin"},
-                "editor": {"username": "editor", "password": "editor123", "role": "editor"},
-                "viewer": {"username": "viewer", "password": "viewer123", "role": "viewer"},
-                "blocked": {"username": "blocked", "password": "blocked123", "role": "blocked"},
-            }
+        users = {
+            "default": {"username": "default", "password": None, "role": "admin"},
+            "admin": {"username": "admin", "password": "admin123", "role": "admin"},
+            "editor": {"username": "editor", "password": "editor123", "role": "editor"},
+            "viewer": {"username": "viewer", "password": "viewer123", "role": "viewer"},
+            "blocked": {"username": "blocked", "password": "blocked123", "role": "blocked"},
+        }
 
-            def make_url(username: str, password: str) -> str:
-                return f"redis://{username}:{password}@{host}:{port}/0"
+        def make_url(username: str, password: str) -> str:
+            return f"redis://{username}:{password}@{host}:{port}/0"
 
-            yield {
-                "url": redis_url,
-                "host": host,
-                "port": port,
-                "default_url": redis_url,  # Default user has no password
-                "admin_url": make_url("admin", "admin123"),
-                "editor_url": make_url("editor", "editor123"),
-                "viewer_url": make_url("viewer", "viewer123"),
-                "blocked_url": make_url("blocked", "blocked123"),
-                "users": users,
-            }
+        yield {
+            "url": redis_url,
+            "host": host,
+            "port": port,
+            "default_url": redis_url,  # Default user has no password
+            "admin_url": make_url("admin", "admin123"),
+            "editor_url": make_url("editor", "editor123"),
+            "viewer_url": make_url("viewer", "viewer123"),
+            "blocked_url": make_url("blocked", "blocked123"),
+            "users": users,
+        }
     except Exception as e:  # pylint: disable=broad-except
         pytest.skip(f"Docker not available or container failed to start: {e}")
+    finally:
+        with contextlib.suppress(Exception):
+            container.stop()
 
 
 @pytest.fixture
