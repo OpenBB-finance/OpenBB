@@ -147,8 +147,7 @@ def cleanup_runtime():
     from pywry.window_manager import get_lifecycle
 
     runtime.stop()
-    # Windows and Linux CI need more time to release resources
-    cleanup_delay = 0.5 if sys.platform in ("win32", "linux") else 0.2
+    cleanup_delay = 0.5
     time.sleep(cleanup_delay)
     registry = get_registry()
     registry.clear()
