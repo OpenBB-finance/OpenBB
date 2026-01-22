@@ -399,7 +399,7 @@ def _detect_column_types(data: Any) -> dict[str, str]:
     - timedelta64 → 'text' (we serialize as readable string)
     - bool → 'boolean'
     - int/float → 'number'
-    - object with numeric strings → 'text' (force string to prevent number conversion)
+    - object/string with numeric strings → 'text' (force string to prevent number conversion)
     - object/string → None (let AG Grid infer)
     """
     if not hasattr(data, "dtypes"):
@@ -418,15 +418,18 @@ def _detect_column_types(data: Any) -> dict[str, str]:
             column_types[col_str] = "boolean"
         elif "int" in dtype_str or "float" in dtype_str:
             column_types[col_str] = "number"
-        elif dtype_str == "object":
+        elif dtype.kind in ("O", "U", "S") or "str" in dtype_str or dtype_str == "object":
+            # dtype.kind: O=object, U=unicode string, S=byte string
+            # Also check for "str" in dtype_str for pandas 3.0+ StringDtype
             # Check if this is a string column with numeric-looking strings
             # that should NOT be converted to numbers (leading zeros, pure digit strings)
             # Examples: "007", "0123", "12345" (IDs, codes, etc.)
             sample = data[col].dropna().head(100)
             is_numeric_string = False
             for val in sample:
+                val_str = str(val)
                 # Check for strings with leading zeros (must preserve as text)
-                if isinstance(val, str) and len(val) > 1 and val[0] == "0" and val.isdigit():
+                if len(val_str) > 1 and val_str[0] == "0" and val_str.isdigit():
                     is_numeric_string = True
                     break
             if is_numeric_string:

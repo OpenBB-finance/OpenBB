@@ -116,14 +116,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      # Set up Docker on all platforms using official action
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-
-      - name: Verify Docker
+      # Linux: Docker is pre-installed, testcontainers will work
+      - name: Verify Docker (Linux)
+        if: runner.os == 'Linux'
         run: |
           docker version
           docker info
+
+      # macOS: Install Redis natively (no Docker support on macOS runners)
+      - name: Install Redis (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install redis
+          redis-server --daemonize yes
+          sleep 2
+          redis-cli ping
+
+      # Windows: Install Redis natively (no Docker support)
+      - name: Install Redis (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Download and extract Redis for Windows
+          $redisUrl = "https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.zip"
+          $redisZip = "$env:TEMP\redis.zip"
+          $redisDir = "$env:TEMP\redis"
+          Invoke-WebRequest -Uri $redisUrl -OutFile $redisZip
+          Expand-Archive -Path $redisZip -DestinationPath $redisDir -Force
+          Start-Process -FilePath "$redisDir\redis-server.exe" -WindowStyle Hidden
+          Start-Sleep -Seconds 3
+          & "$redisDir\redis-cli.exe" ping
 
       - name: Run tests (Linux)
         if: runner.os == 'Linux'
@@ -137,6 +159,7 @@ jobs:
         if: runner.os == 'Windows'
         env:
           PYWRY_HEADLESS: "1"
+          PYWRY_DEPLOY__REDIS_URL: "redis://localhost:6379/0"
         run: |
           python -m pytest tests/ -v --tb=short
 
@@ -144,6 +167,7 @@ jobs:
         if: runner.os == 'macOS'
         env:
           PYWRY_HEADLESS: "1"
+          PYWRY_DEPLOY__REDIS_URL: "redis://localhost:6379/0"
         run: |
           python -m pytest tests/ -v --tb=short
 
