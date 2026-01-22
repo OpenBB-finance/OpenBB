@@ -121,16 +121,9 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           docker version
-          docker pull redis:7
 
-      # Windows x64: Docker is pre-installed, verify it works
-      - name: Verify Docker (Windows x64)
-        if: runner.os == 'Windows' && runner.arch == 'X64'
-        run: |
-          docker version
-          docker pull redis:7
-
-      # Windows ARM: No Docker support, use memory backend (skip verification)
+      # Windows: Docker runs Windows containers, Redis only has Linux images
+      # Use memory backend and skip Redis tests on Windows
 
       # macOS Intel: Install Docker using docker/setup-docker-action
       - name: Setup Docker (macOS Intel)
@@ -144,7 +137,6 @@ jobs:
         run: |
           echo "DOCKER_HOST=$DOCKER_HOST"
           docker version
-          docker pull redis:7
 
       # macOS ARM: No Docker support (no nested virtualization), use memory backend
 
@@ -160,9 +152,9 @@ jobs:
         if: runner.os == 'Windows' && runner.arch == 'X64'
         env:
           PYWRY_HEADLESS: "1"
-          TESTCONTAINERS_RYUK_DISABLED: "true"
+          PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
-          python -m pytest tests/ -v --tb=short
+          python -m pytest tests/ -v --tb=short --ignore=tests/test_state_redis_integration.py --ignore=tests/test_auth_rbac_integration.py --ignore=tests/test_deploy_mode_integration.py --ignore=tests/test_e2e_deploy_mode.py --ignore=tests/test_e2e_rbac_widgets.py -m "not redis and not container"
 
       - name: Run tests (Windows ARM)
         if: runner.os == 'Windows' && runner.arch == 'ARM64'
