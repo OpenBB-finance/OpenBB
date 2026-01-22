@@ -136,10 +136,13 @@ jobs:
       - name: Setup Docker (macOS Intel)
         if: runner.os == 'macOS' && runner.arch == 'X64'
         uses: docker/setup-docker-action@v4
+        with:
+          set-host: true
 
       - name: Verify Docker (macOS Intel)
         if: runner.os == 'macOS' && runner.arch == 'X64'
         run: |
+          echo "DOCKER_HOST=$DOCKER_HOST"
           docker version
           docker info
 

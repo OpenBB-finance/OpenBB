@@ -187,8 +187,8 @@ def redis_container() -> Generator[str, None, None]:
     _configure_testcontainers()
 
     try:
-        # Let testcontainers handle EVERYTHING - image pull, port mapping, lifecycle
-        with RedisContainer() as redis:
+        # Use specific Redis image tag (not :latest) for reliability
+        with RedisContainer("redis:7") as redis:
             host = redis.get_container_host_ip()
             port = redis.get_exposed_port(redis.port)
             redis_url = f"redis://{host}:{port}/0"
@@ -224,8 +224,7 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
     _configure_testcontainers()
 
     try:
-        # Let testcontainers handle everything
-        with RedisContainer() as redis:
+        with RedisContainer("redis:7") as redis:
             host = redis.get_container_host_ip()
             port = redis.get_exposed_port(redis.port)
             redis_url = f"redis://{host}:{port}/0"
@@ -276,9 +275,6 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
             }
     except Exception as e:  # pylint: disable=broad-except
         pytest.skip(f"Docker not available or container failed to start: {e}")
-
-
-# --- Session store fixture (Redis or Memory fallback) ---
 
 
 @pytest.fixture
