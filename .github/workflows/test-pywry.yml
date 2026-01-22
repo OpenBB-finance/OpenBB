@@ -123,12 +123,14 @@ jobs:
           docker version
           docker info
 
-      # Windows: Docker is pre-installed, verify it works
-      - name: Verify Docker (Windows)
-        if: runner.os == 'Windows'
+      # Windows x64: Docker is pre-installed, verify it works
+      - name: Verify Docker (Windows x64)
+        if: runner.os == 'Windows' && runner.arch == 'X64'
         run: |
           docker version
           docker info
+
+      # Windows ARM: No Docker support, use memory backend (skip verification)
 
       # macOS Intel: Install Docker using docker/setup-docker-action
       - name: Setup Docker (macOS Intel)
@@ -151,11 +153,19 @@ jobs:
         run: |
           dbus-run-session -- xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python -m pytest tests/ -v --tb=short
 
-      - name: Run tests (Windows)
-        if: runner.os == 'Windows'
+      - name: Run tests (Windows x64)
+        if: runner.os == 'Windows' && runner.arch == 'X64'
         env:
           PYWRY_HEADLESS: "1"
           TESTCONTAINERS_RYUK_DISABLED: "true"
+        run: |
+          python -m pytest tests/ -v --tb=short
+
+      - name: Run tests (Windows ARM)
+        if: runner.os == 'Windows' && runner.arch == 'ARM64'
+        env:
+          PYWRY_HEADLESS: "1"
+          PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
           python -m pytest tests/ -v --tb=short
 

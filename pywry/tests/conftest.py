@@ -169,11 +169,7 @@ def redis_container() -> Generator[str, None, None]:
     """Spin up a Redis container for integration tests using testcontainers.
 
     Returns the Redis URL for connecting to the container.
-    Uses a fixed port (6399) for predictable debugging.
-    Configures Redis via command-line arguments (no config file warning).
-    Skips if Docker is not available or testcontainers is not installed.
 
-    If PYWRY_DEPLOY__REDIS_URL is set, uses that instead of starting a container.
     """
     # Allow override via environment variable (for external Redis)
     external_url = os.environ.get("PYWRY_DEPLOY__REDIS_URL")
@@ -190,34 +186,14 @@ def redis_container() -> Generator[str, None, None]:
     # Configure testcontainers (disable Ryuk on Windows)
     _configure_testcontainers()
 
-    # Use fixed port 6399 for predictable testing
-    redis_test_port = 6399
-
     try:
-        container = RedisContainer("redis:7-alpine")
-        container.with_bind_ports(6379, redis_test_port)
-        # Pass configuration via command-line to avoid "no config file" warning
-        container.with_command(" ".join(REDIS_CMD_ARGS))
-
-        with container as redis:
+        # Let testcontainers handle EVERYTHING - image pull, port mapping, lifecycle
+        with RedisContainer() as redis:
             host = redis.get_container_host_ip()
-            redis_url = f"redis://{host}:{redis_test_port}/0"
+            port = redis.get_exposed_port(redis.port)
+            redis_url = f"redis://{host}:{port}/0"
             print("\n=== Redis Container Started ===")
             print(f"URL: {redis_url}")
-            print(f"Command: {' '.join(REDIS_CMD_ARGS)}")
-
-            # Verify connection works
-            import redis as redis_sync
-
-            client = redis_sync.from_url(redis_url, decode_responses=True)
-            try:
-                pong = client.ping()
-                info = client.info("server")
-                print(f"PING: {pong}")
-                print(f"Redis version: {info.get('redis_version', 'unknown')}")
-            finally:
-                client.close()
-
             yield redis_url
     except Exception as e:  # pylint: disable=broad-except
         pytest.skip(f"Docker not available or container failed to start: {e}")
@@ -247,31 +223,21 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
     # Configure testcontainers (disable Ryuk on Windows)
     _configure_testcontainers()
 
-    # Use fixed port 6398 for ACL testing (different from regular redis)
-    redis_acl_test_port = 6398
-
     try:
-        container = RedisContainer("redis:7-alpine")
-        container.with_bind_ports(6379, redis_acl_test_port)
-        # Pass configuration via command-line
-        container.with_command(" ".join(REDIS_CMD_ARGS))
-
-        with container as redis:
+        # Let testcontainers handle everything
+        with RedisContainer() as redis:
             host = redis.get_container_host_ip()
-            base_url = f"redis://{host}:{redis_acl_test_port}/0"
+            port = redis.get_exposed_port(redis.port)
+            redis_url = f"redis://{host}:{port}/0"
+
             print("\n=== Redis ACL Container Started ===")
-            print(f"URL: {base_url}")
-            print(f"Command: {' '.join(REDIS_CMD_ARGS)}")
+            print(f"URL: {redis_url}")
 
             # Configure ACL users via Redis commands
             import redis as redis_sync
 
-            client = redis_sync.from_url(base_url, decode_responses=True)
+            client = redis_sync.from_url(redis_url, decode_responses=True)
             try:
-                # Verify connection
-                pong = client.ping()
-                print(f"PING: {pong}")
-
                 # Configure ACL users
                 for acl_cmd in REDIS_ACL_COMMANDS:
                     # Parse and execute ACL command
@@ -295,13 +261,13 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
             }
 
             def make_url(username: str, password: str) -> str:
-                return f"redis://{username}:{password}@{host}:{redis_acl_test_port}/0"
+                return f"redis://{username}:{password}@{host}:{port}/0"
 
             yield {
-                "url": base_url,
+                "url": redis_url,
                 "host": host,
-                "port": redis_acl_test_port,
-                "default_url": base_url,  # Default user has no password
+                "port": port,
+                "default_url": redis_url,  # Default user has no password
                 "admin_url": make_url("admin", "admin123"),
                 "editor_url": make_url("editor", "editor123"),
                 "viewer_url": make_url("viewer", "viewer123"),
