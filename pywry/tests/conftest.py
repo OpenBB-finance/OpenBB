@@ -150,17 +150,11 @@ REDIS_ACL_COMMANDS = [
 
 def _configure_testcontainers() -> None:
     """Configure testcontainers settings for the current platform.
-
-    Disables Ryuk on Windows to avoid volume mount path issues.
     """
     try:
         from testcontainers.core.config import testcontainers_config
 
-        # Disable Ryuk on Windows - it uses Unix socket paths that don't work
-        # Also respect TESTCONTAINERS_RYUK_DISABLED env var
-        ryuk_disabled_env = os.environ.get("TESTCONTAINERS_RYUK_DISABLED", "").lower()
-        if sys.platform == "win32" or ryuk_disabled_env in ("true", "1", "yes"):
-            testcontainers_config.ryuk_disabled = True
+        testcontainers_config.ryuk_disabled = True
 
         # Ensure images are always pulled (don't rely on local cache check)
         # This fixes issues on some CI environments
