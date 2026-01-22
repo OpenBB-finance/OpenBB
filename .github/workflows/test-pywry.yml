@@ -123,29 +123,25 @@ jobs:
           docker version
           docker info
 
-      # macOS: Install Redis natively (no Docker support on macOS runners)
-      - name: Install Redis (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install redis
-          redis-server --daemonize yes
-          sleep 2
-          redis-cli ping
-
-      # Windows: Install Redis natively (no Docker support)
-      - name: Install Redis (Windows)
+      # Windows: Docker is pre-installed, verify it works
+      - name: Verify Docker (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
         run: |
-          # Download and extract Redis for Windows
-          $redisUrl = "https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.zip"
-          $redisZip = "$env:TEMP\redis.zip"
-          $redisDir = "$env:TEMP\redis"
-          Invoke-WebRequest -Uri $redisUrl -OutFile $redisZip
-          Expand-Archive -Path $redisZip -DestinationPath $redisDir -Force
-          Start-Process -FilePath "$redisDir\redis-server.exe" -WindowStyle Hidden
-          Start-Sleep -Seconds 3
-          & "$redisDir\redis-cli.exe" ping
+          docker version
+          docker info
+
+      # macOS Intel: Install Docker using docker/setup-docker-action
+      - name: Setup Docker (macOS Intel)
+        if: runner.os == 'macOS' && runner.arch == 'X64'
+        uses: docker/setup-docker-action@v4
+
+      - name: Verify Docker (macOS Intel)
+        if: runner.os == 'macOS' && runner.arch == 'X64'
+        run: |
+          docker version
+          docker info
+
+      # macOS ARM: No Docker support (no nested virtualization), use memory backend
 
       - name: Run tests (Linux)
         if: runner.os == 'Linux'
@@ -159,15 +155,21 @@ jobs:
         if: runner.os == 'Windows'
         env:
           PYWRY_HEADLESS: "1"
-          PYWRY_DEPLOY__REDIS_URL: "redis://localhost:6379/0"
         run: |
           python -m pytest tests/ -v --tb=short
 
-      - name: Run tests (macOS)
-        if: runner.os == 'macOS'
+      - name: Run tests (macOS Intel)
+        if: runner.os == 'macOS' && runner.arch == 'X64'
         env:
           PYWRY_HEADLESS: "1"
-          PYWRY_DEPLOY__REDIS_URL: "redis://localhost:6379/0"
+        run: |
+          python -m pytest tests/ -v --tb=short
+
+      - name: Run tests (macOS ARM)
+        if: runner.os == 'macOS' && runner.arch == 'ARM64'
+        env:
+          PYWRY_HEADLESS: "1"
+          PYWRY_DEPLOY__STATE_BACKEND: "memory"
         run: |
           python -m pytest tests/ -v --tb=short
 
