@@ -59,6 +59,8 @@ def _set_macos_dock_icon() -> None:
         return
 
     try:
+        from ctypes import cdll  # pylint: disable=redefined-outer-name
+
         # Load the icon file - prefer .icns
         assets_dir = Path(__file__).parent / "frontend" / "assets"
         icon_path = assets_dir / "icon.icns"
@@ -623,7 +625,9 @@ def _handle_ready_event(ipc: JsonIPC, app_handle: Any) -> None:
     ipc.send_ready()
 
 
-def _handle_close_requested(ipc: JsonIPC, app_handle: Any, label: str, window_event: Any) -> None:
+def _handle_close_requested(
+    ipc: JsonIPC, app_handle: Any, label: str, window_event: Any
+) -> None:
     """Handle window close requested event."""
     # User clicked X - behavior depends on window mode:
     # - SINGLE_WINDOW: Always hide (reuse the window)
@@ -649,12 +653,16 @@ def _handle_close_requested(ipc: JsonIPC, app_handle: Any, label: str, window_ev
             window.destroy()
         if label in ipc.windows:
             del ipc.windows[label]
-        ipc.send({"type": "event", "event_type": "window:closed", "label": label, "data": {}})
+        ipc.send(
+            {"type": "event", "event_type": "window:closed", "label": label, "data": {}}
+        )
     else:
         log(f"CloseRequested for '{label}' - hiding")
         if window:
             window.hide()
-        ipc.send({"type": "event", "event_type": "window:hidden", "label": label, "data": {}})
+        ipc.send(
+            {"type": "event", "event_type": "window:hidden", "label": label, "data": {}}
+        )
 
 
 def main() -> int:  # pylint: disable=too-many-statements
@@ -697,7 +705,10 @@ def main() -> int:  # pylint: disable=too-many-statements
                     label = run_event.label
                     if isinstance(window_event, WindowEvent.CloseRequested):
                         _handle_close_requested(ipc, app_handle, label, window_event)
-                    elif isinstance(window_event, WindowEvent.Destroyed) and label in ipc.windows:
+                    elif (
+                        isinstance(window_event, WindowEvent.Destroyed)
+                        and label in ipc.windows
+                    ):
                         del ipc.windows[label]
                         log(f"Window '{label}' destroyed, removed from cache")
 
