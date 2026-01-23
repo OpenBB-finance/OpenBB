@@ -12,7 +12,6 @@ if (!window.__PYWRY_CHARTS__) {
  * @param {object} bridge - The PyWry event bridge (optional, will look for window.pywry).
  */
 function registerPyWryChart(chartId, plotDiv, bridge) {
-    console.log('[PyWry Plotly] Registering chart:', chartId);
     window.__PYWRY_CHARTS__[chartId] = plotDiv;
 
     const pywry = bridge || window.pywry;
@@ -112,13 +111,7 @@ function registerPyWryChart(chartId, plotDiv, bridge) {
 // Expose globally
 window.registerPyWryChart = registerPyWryChart;
 
-// =========================================================================
-// PYTHON→JS EVENT HANDLERS
-// These handlers receive events from Python via app.emit() / runtime.emit_event()
-// =========================================================================
 (function() {
-    console.log('[PyWry Plotly] Setting up Python→JS handlers for native window');
-    
     // Helper to find chart container - look for Plotly div
     function findPlotDiv(chartId) {
         // If specific chartId provided, try to find in registry
@@ -132,13 +125,12 @@ window.registerPyWryChart = registerPyWryChart;
         // Final fallback - querySelector (may not work for relayout without internal state)
         return document.querySelector('.js-plotly-plot');
     }
-    
+
     // Helper function to process config - converts icon names to objects and event props to click handlers
     function processPlotlyConfig(config) {
         if (!config) return config;
-        
+
         if (config.modeBarButtonsToAdd && Array.isArray(config.modeBarButtonsToAdd)) {
-            console.log('[PyWry Plotly] Processing', config.modeBarButtonsToAdd.length, 'custom buttons');
             config.modeBarButtonsToAdd = config.modeBarButtonsToAdd.map(function(btn, idx) {
                 // Handle icon - could be string (Plotly icon name) or object (custom SVG)
                 if (typeof btn.icon === 'string') {
@@ -155,13 +147,12 @@ window.registerPyWryChart = registerPyWryChart;
                     if (!btn.icon.width) btn.icon.width = 1000;
                     if (!btn.icon.height) btn.icon.height = 1000;
                 }
-                
+
                 // Convert 'event' property to 'click' function
                 if (btn.event) {
                     var eventName = btn.event;
                     var eventData = btn.data || {};
                     btn.click = function(gd) {
-                        console.log('[PyWry Plotly] Button clicked, emitting:', eventName);
                         if (window.pywry && window.pywry.emit) {
                             window.pywry.emit(eventName, eventData);
                         }
@@ -169,29 +160,25 @@ window.registerPyWryChart = registerPyWryChart;
                     delete btn.event;
                     delete btn.data;
                 }
-                
+
                 return btn;
             });
         }
-        
+
         return config;
     }
 
     // Wait for pywry bridge to be ready
     function setupHandlers() {
         if (!window.pywry || !window.pywry.on) {
-            console.log('[PyWry Plotly] Bridge not ready, waiting...');
             setTimeout(setupHandlers, 50);
             return;
         }
-        
-        console.log('[PyWry Plotly] Registering Python→JS handlers');
-        
+
         // plotly:update-figure - Full figure update
         window.pywry.on('plotly:update-figure', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.Plotly) {
-                console.log('[PyWry Plotly] Updating figure via event, data keys:', Object.keys(data));
                 var figData = data.figure ? data.figure.data : data.data;
                 var figLayout = data.figure ? data.figure.layout : data.layout;
                 var config = Object.assign({displaylogo: false}, processPlotlyConfig(data.config || {}));
@@ -202,14 +189,14 @@ window.registerPyWryChart = registerPyWryChart;
                 console.warn('[PyWry Plotly] plotly:update-figure - no plotDiv or Plotly found');
             }
         });
-        
+
         // plotly:update-layout - Partial layout update
         window.pywry.on('plotly:update-layout', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.Plotly && data && data.layout) {
                 // Build update object using Plotly's dot notation for proper merging
                 var layoutUpdate = {};
-                
+
                 Object.keys(data.layout).forEach(function(key) {
                     var value = data.layout[key];
                     // Handle title specially - use dot notation for template compatibility
@@ -224,30 +211,27 @@ window.registerPyWryChart = registerPyWryChart;
                         layoutUpdate[key] = value;
                     }
                 });
-                
-                console.log('[PyWry Plotly] Calling relayout with:', layoutUpdate);
+
                 window.Plotly.relayout(plotDiv, layoutUpdate);
             } else {
                 console.warn('[PyWry Plotly] plotly:update-layout - missing requirements', {plotDiv: !!plotDiv, Plotly: !!window.Plotly, data: data});
             }
         });
-        
+
         // plotly:update-traces - Update trace data
         window.pywry.on('plotly:update-traces', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.Plotly && data && data.update) {
-                console.log('[PyWry Plotly] Updating traces');
                 window.Plotly.restyle(plotDiv, data.update, data.indices);
             } else {
                 console.warn('[PyWry Plotly] plotly:update-traces - no plotDiv, Plotly, or update data');
             }
         });
-        
+
         // plotly:reset-zoom - Reset chart zoom to autorange
         window.pywry.on('plotly:reset-zoom', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.Plotly) {
-                console.log('[PyWry Plotly] Resetting zoom');
                 window.Plotly.relayout(plotDiv, {
                     'xaxis.autorange': true,
                     'yaxis.autorange': true
@@ -256,13 +240,12 @@ window.registerPyWryChart = registerPyWryChart;
                 console.warn('[PyWry Plotly] plotly:reset-zoom - no plotDiv or Plotly found');
             }
         });
-        
+
         // plotly:request-state - Return current chart state to Python
         window.pywry.on('plotly:request-state', function(data) {
             var chartId = data && data.chartId;
             var plotDiv = findPlotDiv(chartId);
             if (plotDiv && window.Plotly && window.pywry.emit) {
-                console.log('[PyWry Plotly] Sending state response');
                 window.pywry.emit('plotly:state-response', {
                     layout: plotDiv.layout,
                     data: plotDiv.data,
@@ -272,13 +255,11 @@ window.registerPyWryChart = registerPyWryChart;
                 console.warn('[PyWry Plotly] plotly:request-state - cannot respond');
             }
         });
-        
+
         // plotly:export-data - Trigger data export
         window.pywry.on('plotly:export-data', function(data) {
             var plotDiv = findPlotDiv(data && data.chartId);
             if (plotDiv && window.pywry.emit) {
-                console.log('[PyWry Plotly] Exporting data');
-                // Collect all trace data
                 var exportData = [];
                 if (plotDiv.data && Array.isArray(plotDiv.data)) {
                     plotDiv.data.forEach(function(trace, idx) {
@@ -294,20 +275,19 @@ window.registerPyWryChart = registerPyWryChart;
                 window.pywry.emit('plotly:export-response', { data: exportData });
             }
         });
-        
+
         // pywry:update-theme - Theme switching
         window.pywry.on('pywry:update-theme', function(data) {
             if (data && data.theme) {
                 var isDark = data.theme.includes('dark');
-                console.log('[PyWry Plotly] Theme update:', data.theme);
-                
+
                 // Update container classes
                 var container = document.querySelector('.pywry-widget');
                 if (container) {
                     container.classList.remove('pywry-theme-dark', 'pywry-theme-light');
                     container.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
                 }
-                
+
                 // Re-render chart with new template
                 var plotDiv = findPlotDiv();
                 if (plotDiv && window.Plotly && plotDiv.data && window.PYWRY_PLOTLY_TEMPLATES) {
@@ -320,10 +300,8 @@ window.registerPyWryChart = registerPyWryChart;
                 }
             }
         });
-        
-        console.log('[PyWry Plotly] Python→JS handlers registered successfully');
     }
-    
+
     // Start setup when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', setupHandlers);

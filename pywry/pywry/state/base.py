@@ -1,8 +1,7 @@
 """Abstract base classes for pluggable state storage.
 
 These interfaces define the contract for state backends, enabling
-horizontal scaling via Redis or other external stores while maintaining
-backward compatibility with in-memory storage for single-process deployments.
+horizontal scaling via Redis or other external stores.
 """
 
 # pylint: disable=unnecessary-ellipsis

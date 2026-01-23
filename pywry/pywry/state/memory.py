@@ -1,8 +1,6 @@
 """In-memory state store implementations.
 
 Default backend for single-process deployments and development.
-These implementations maintain backward compatibility with the
-original _ServerState behavior.
 """
 
 from __future__ import annotations

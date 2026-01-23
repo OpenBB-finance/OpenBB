@@ -19,6 +19,12 @@ height = 600
 visible = false
 center = true
 closable = true
+titleBarStyle = "Transparent"
+decorations = true
+theme = "Dark"
+backgroundThrottling = "disabled"
+acceptFirstMouse = true
+resizable = true
 
 [bundle]
 icon = [

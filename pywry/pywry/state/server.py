@@ -164,7 +164,6 @@ class ServerStateManager:  # pylint: disable=too-many-instance-attributes
                 metadata=metadata,
             )
         else:
-            # Local in-memory storage (backward compatible)
             self._local_widgets[widget_id] = {
                 "html": html,
                 "callbacks": {},
@@ -319,11 +318,9 @@ class ServerStateManager:  # pylint: disable=too-many-instance-attributes
 
         return list(self._local_widgets.keys())
 
-    # --- Backward Compatibility Properties ---
-
     @property
     def widgets(self) -> dict[str, dict[str, Any]]:
-        """Get local widgets dict (for backward compatibility).
+        """Get local widgets dict.
 
         Note: In deploy mode, this only returns widgets that were
         created by this worker and may not reflect the full state.
@@ -333,17 +330,17 @@ class ServerStateManager:  # pylint: disable=too-many-instance-attributes
 
     @property
     def widget_tokens(self) -> dict[str, str]:
-        """Get local widget tokens dict (for backward compatibility)."""
+        """Get local widget tokens dict."""
         return self._local_widget_tokens
 
     @property
     def connections(self) -> dict[str, Any]:
-        """Get local connections dict (for backward compatibility)."""
+        """Get local connections dict."""
         return self._local_connections
 
     @property
     def event_queues(self) -> dict[str, asyncio.Queue[Any]]:
-        """Get local event queues dict (for backward compatibility)."""
+        """Get local event queues dict."""
         return self._local_event_queues
 
     # --- Connection Management ---
@@ -456,7 +453,6 @@ class ServerStateManager:  # pylint: disable=too-many-instance-attributes
         # Register in local callback registry
         await self._callback_registry.register(widget_id, event_type, callback)  # type: ignore[union-attr]
 
-        # Also update local widget state for backward compatibility
         if widget_id in self._local_widgets:
             if "callbacks" not in self._local_widgets[widget_id]:
                 self._local_widgets[widget_id]["callbacks"] = {}

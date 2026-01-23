@@ -4,17 +4,125 @@ This module runs as a subprocess, handling the pytauri event loop on the main th
 and receiving commands via stdin JSON IPC.
 """
 
-# pylint: disable=C0413
+# pylint: disable=C0413,C0415,C0103
+# flake8: noqa: N806,E402
+
+import sys
+
+
+# Set process and thread title for Activity Monitor/Task Manager visibility
+try:
+    import setproctitle
+
+    setproctitle.setproctitle("PyWry")
+    setproctitle.setthreadtitle("PyWry")
+except ImportError:
+    pass  # setproctitle is optional
+
+# Set macOS process name early (before Tauri starts) so child processes inherit it
+
+from ctypes import c_void_p
+
+
+if sys.platform == "darwin":
+    try:
+        from ctypes import Structure, byref, c_uint32, cdll
+
+        class _ProcessSerialNumber(Structure):
+            _fields_ = [("highLongOfPSN", c_uint32), ("lowLongOfPSN", c_uint32)]  # noqa
+
+        _Carbon = cdll.LoadLibrary("/System/Library/Frameworks/Carbon.framework/Carbon")
+        _psn = _ProcessSerialNumber()
+        _Carbon.GetCurrentProcess(byref(_psn))
+        _Carbon.CPSSetProcessName(byref(_psn), b"PyWry")
+        del _Carbon, _psn, _ProcessSerialNumber
+    except (OSError, AttributeError):
+        pass
 
 import io
 import json
 import os
-import sys
 import threading
 
 from contextlib import suppress
 from pathlib import Path
 from typing import Any
+
+
+def _set_macos_dock_icon() -> None:
+    """Set the macOS dock icon programmatically using Cocoa APIs via ctypes.
+
+    When running as a Python subprocess (not bundled as a .app), macOS uses the
+    Python interpreter's icon for the dock. This function sets it to our custom icon.
+    """
+    if sys.platform != "darwin":
+        return
+
+    try:
+        # Load the icon file - prefer .icns
+        assets_dir = Path(__file__).parent / "frontend" / "assets"
+        icon_path = assets_dir / "icon.icns"
+        if not icon_path.exists():
+            # Fallback to .png if .icns not available
+            icon_path = assets_dir / "icon.png"
+            if not icon_path.exists():
+                return
+
+        # Load Cocoa frameworks
+        objc = cdll.LoadLibrary("/usr/lib/libobjc.A.dylib")
+        AppKit = cdll.LoadLibrary("/System/Library/Frameworks/AppKit.framework/AppKit")
+
+        # Set up objc_msgSend - the core Objective-C message sending function
+        objc.objc_getClass.restype = c_void_p
+        objc.objc_getClass.argtypes = [c_void_p]
+        objc.sel_registerName.restype = c_void_p
+        objc.sel_registerName.argtypes = [c_void_p]
+        objc.objc_msgSend.restype = c_void_p
+        objc.objc_msgSend.argtypes = [c_void_p, c_void_p]
+
+        # Get NSApplication.sharedApplication
+        NSApplication = objc.objc_getClass(b"NSApplication")
+        sel_sharedApplication = objc.sel_registerName(b"sharedApplication")
+        app = objc.objc_msgSend(NSApplication, sel_sharedApplication)
+
+        if not app:
+            return
+
+        # Create NSString with path
+        NSString = objc.objc_getClass(b"NSString")
+        sel_stringWithUTF8String = objc.sel_registerName(b"stringWithUTF8String:")
+        objc.objc_msgSend.argtypes = [c_void_p, c_void_p, c_void_p]
+        path_str = objc.objc_msgSend(
+            NSString, sel_stringWithUTF8String, str(icon_path).encode("utf-8")
+        )
+
+        if not path_str:
+            return
+
+        # Create NSImage from path
+        NSImage = objc.objc_getClass(b"NSImage")
+        sel_alloc = objc.sel_registerName(b"alloc")
+        sel_initWithContentsOfFile = objc.sel_registerName(b"initWithContentsOfFile:")
+
+        objc.objc_msgSend.argtypes = [c_void_p, c_void_p]
+        image = objc.objc_msgSend(NSImage, sel_alloc)
+        objc.objc_msgSend.argtypes = [c_void_p, c_void_p, c_void_p]
+        image = objc.objc_msgSend(image, sel_initWithContentsOfFile, path_str)
+
+        if not image:
+            return
+
+        # Set the application icon
+        sel_setApplicationIconImage = objc.sel_registerName(b"setApplicationIconImage:")
+        objc.objc_msgSend.argtypes = [c_void_p, c_void_p, c_void_p]
+        objc.objc_msgSend(app, sel_setApplicationIconImage, image)
+
+        # Keep reference to AppKit to prevent it from being garbage collected
+        _ = AppKit
+
+    except Exception:
+        # Silently ignore errors - dock icon is non-critical
+        pass
 
 
 # Reconfigure stdin/stdout to UTF-8 on Windows
@@ -226,21 +334,21 @@ class JsonIPC:
                 var html = {escaped};
                 var theme = {escaped_theme};
                 var themeClass = 'pywry-theme-' + theme;
-                
+
                 // Set theme class on <html> element
                 var htmlEl = document.documentElement;
                 htmlEl.classList.remove('pywry-theme-dark', 'pywry-theme-light');
                 htmlEl.classList.add('pywry-native', themeClass);
-                
+
                 var app = document.getElementById('app');
                 if (!app) return;
-                
+
                 // Extract head content
                 var headMatch = html.match(/<head[^>]*>([\\s\\S]*?)<\\/head>/i);
                 if (!headMatch) return;
-                
+
                 var headContent = headMatch[1];
-                
+
                 // Inject CSS
                 var styleRegex = /<style[^>]*>([\\s\\S]*?)<\\/style>/gi;
                 var styleMatch;
@@ -249,7 +357,7 @@ class JsonIPC:
                     styleEl.textContent = styleMatch[1];
                     document.head.appendChild(styleEl);
                 }}
-                
+
                 // Extract head scripts
                 var scriptMatches = headContent.match(/<script[^>]*>([\\s\\S]*?)<\\/script>/gi) || [];
                 var headScripts = [];
@@ -257,7 +365,7 @@ class JsonIPC:
                     var contentMatch = scriptHtml.match(/<script[^>]*>([\\s\\S]*?)<\\/script>/i);
                     if (contentMatch && contentMatch[1].trim()) headScripts.push(contentMatch[1]);
                 }});
-                
+
                 // Wait for CSS parse, then execute scripts and set content
                 setTimeout(function() {{
                     headScripts.forEach(function(scriptContent) {{
@@ -267,11 +375,11 @@ class JsonIPC:
                             document.head.appendChild(scriptEl);
                         }} catch (e) {{ console.error('[PyWry]', e); }}
                     }});
-                    
+
                     // Set body content
                     var bodyMatch = html.match(/<body[^>]*>([\\s\\S]*?)<\\/body>/i);
                     app.innerHTML = bodyMatch ? bodyMatch[1] : html;
-                    
+
                     // Execute body scripts
                     setTimeout(function() {{
                         var scripts = app.querySelectorAll('script');
@@ -282,13 +390,13 @@ class JsonIPC:
                             else newScript.textContent = oldScript.textContent;
                             oldScript.parentNode.replaceChild(newScript, oldScript);
                         }}
-                        
+
                         // Re-initialize toolbar handlers now that content is in DOM
                         if (typeof initToolbarHandlers === 'function' && window.pywry) {{
                             console.log('[PyWry] Re-initializing toolbar handlers after content injection');
                             initToolbarHandlers(document, window.pywry);
                         }}
-                        
+
                         // Notify Python that content is ready
                         if (window.pywry && window.pywry.sendEvent) {{
                             window.pywry.sendEvent('content:ready', {{ timestamp: Date.now() }});
@@ -500,6 +608,10 @@ def stdin_reader(ipc: JsonIPC) -> None:
 def _handle_ready_event(ipc: JsonIPC, app_handle: Any) -> None:
     """Handle app ready event."""
     log("App ready!")
+
+    # Set the macOS dock icon (no-op on other platforms)
+    _set_macos_dock_icon()
+
     ipc.app_handle = app_handle
     # Get pre-configured main window
     main_window = Manager.get_webview_window(app_handle, "main")

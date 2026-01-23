@@ -1,4 +1,5 @@
 """IFrame Rendering Path and WebSocket Bridge for PyWry Widgets."""
+
 # pylint: disable=too-many-lines,wrong-import-position
 # mypy: disable-error-code="import-untyped,no-untyped-call,no-any-return"
 # flake8: noqa S608
@@ -87,7 +88,6 @@ except ImportError:
     HAS_FASTAPI = False
 
 try:
-    from IPython.display import HTML, display  # noqa: F401  # pylint: disable=unused-import
     from ipywidgets import Output
 
     HAS_IPYTHON = True
@@ -452,7 +452,7 @@ def _get_pywry_bridge_js(widget_id: str, widget_token: str | None = None) -> str
 (function() {{
     const widgetId = '{widget_id}';
     {ws_token_header}
-    
+
     // Use window.location to get current host/port (same as IFrame)
     const protocol = window.location.protocol;
     const host = window.location.hostname;
@@ -591,7 +591,7 @@ def _get_pywry_bridge_js(widget_id: str, widget_token: str | None = None) -> str
             if (e.code === 4001 || e.code === 1006) {{
                 authFailures++;
                 console.log('[PyWry] Auth failure detected! New count:', authFailures);
-                
+
                 // After 2 auth failures, refresh the page to get new token
                 if (authFailures >= 2) {{
                     console.log('[PyWry] ===== REFRESHING PAGE NOW =====');
@@ -977,7 +977,9 @@ def _get_pywry_bridge_js(widget_id: str, widget_token: str | None = None) -> str
 
 
 @asynccontextmanager
-async def _lifespan(app: FastAPI) -> AsyncIterator[None]:  # pylint: disable=unused-argument
+async def _lifespan(
+    app: FastAPI,  # pylint: disable=unused-argument
+) -> AsyncIterator[None]:
     # Capture the running event loop for emit() to use
     _state.server_loop = asyncio.get_running_loop()
     _state.shutdown_event = asyncio.Event()
@@ -1073,7 +1075,12 @@ def _handle_widget_disconnect(  # pylint: disable=too-many-branches
             "widget_id": widget_id,
         }
         _state.callback_queue.put(
-            (callbacks["pywry:disconnect"], disconnect_data, "pywry:disconnect", widget_id)
+            (
+                callbacks["pywry:disconnect"],
+                disconnect_data,
+                "pywry:disconnect",
+                widget_id,
+            )
         )
 
     # Clean up connection state (but NOT the widget itself for websocket_close)
@@ -1662,7 +1669,8 @@ def stop_server(timeout: float = 5.0) -> None:
                     # Use asyncio to properly close the websocket
                     if server_loop:
                         asyncio.run_coroutine_threadsafe(
-                            ws.close(code=1000, reason="Server shutting down"), server_loop
+                            ws.close(code=1000, reason="Server shutting down"),
+                            server_loop,
                         ).result(timeout=1.0)
 
         # Clear connection state
@@ -2260,7 +2268,11 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
         position : str
             Toast position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         """
-        payload: dict[str, Any] = {"message": message, "type": alert_type, "position": position}
+        payload: dict[str, Any] = {
+            "message": message,
+            "type": alert_type,
+            "position": position,
+        }
         if title is not None:
             payload["title"] = title
         if duration is not None:
@@ -2501,10 +2513,6 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             If True, perform a hard reset.
         """
         self.emit("grid:reset-state", {"gridId": grid_id, "hard": hard})
-
-    # =========================================================================
-    # Toolbar State Methods
-    # =========================================================================
 
     def request_toolbar_state(
         self, toolbar_id: str | None = None, context: dict[str, Any] | None = None
@@ -3396,7 +3404,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
             if aggrid_js
             else '<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/dist/ag-grid-community.min.js"></script>'
         ),
-        "defaults_script": f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else "",
+        "defaults_script": (f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else ""),
         "style": f"<style>{aggrid_css}</style>" if aggrid_css else "",
         "pywry_style": f"<style>{pywry_css}</style>" if pywry_css else "",
         "toast_style": f"<style>{toast_css}</style>" if toast_css else "",

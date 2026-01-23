@@ -133,7 +133,55 @@ def _dispatch_event(msg: dict[str, Any]) -> None:
     if event_type == "content:ready":
         event_type = "pywry:ready"
 
+    # Handle content request from JS (page load/reload/refresh)
+    # First try user-registered handlers, then fall back to stored content
+    if event_type in ("pywry:content-request", "pywry:refresh-request"):
+        # Check if user has registered a handler for this event
+        dispatched = registry.dispatch(label, event_type, data)
+        if not dispatched:
+            # No user handler - fall back to re-sending stored content
+            _handle_content_request(label, data)
+        return
+
     registry.dispatch(label, event_type, data)
+
+
+def _handle_content_request(label: str, data: dict[str, Any] | None = None) -> None:
+    """Handle a content request from JavaScript (page load/reload).
+
+    This is the default handler when no user callback is registered.
+    Re-sends the stored HTML content to the window.
+
+    Parameters
+    ----------
+    label : str
+        The window label from the event envelope.
+    data : dict, optional
+        Event data which may contain window_label override.
+    """
+    from .window_manager import get_lifecycle
+
+    # Use window_label from data if provided (follows event structure)
+    if data and data.get("window_label"):
+        label = data["window_label"]
+
+    lifecycle = get_lifecycle()
+    resources = lifecycle.get(label)
+
+    if resources is None or resources.is_destroyed:
+        return
+
+    html = resources.html_content
+    if html is None:
+        return
+
+    # Get theme from stored config
+    theme = "dark"
+    if resources.last_config and resources.last_config.theme:
+        theme = resources.last_config.theme.value
+
+    # Re-send content to the window
+    set_content(label, html, theme)
 
 
 def _stdin_writer() -> None:
@@ -346,9 +394,11 @@ def remove_css(label: str, asset_id: str) -> bool:
 
 
 def refresh_window(label: str) -> bool:
-    """Trigger a full page refresh for a window.
+    """Refresh a window by re-sending its stored content.
 
-    Preserves scroll position using sessionStorage.
+    Re-sends the HTML content that was last set on this window.
+    This is useful when you want to restore the window to its
+    original state after dynamic DOM changes.
 
     Parameters
     ----------
@@ -358,19 +408,29 @@ def refresh_window(label: str) -> bool:
     Returns
     -------
     bool
-        True if command succeeded.
+        True if content was re-sent successfully.
     """
-    send_command(
-        {
-            "action": "emit",
-            "label": label,
-            "event": "pywry:refresh",
-            "payload": {},
-        }
-    )
-    # Consume the response to prevent queue buildup
-    response = get_response(timeout=1.0)
-    return response is not None and response.get("success", False)
+    from .window_manager import get_lifecycle
+
+    lifecycle = get_lifecycle()
+    resources = lifecycle.get(label)
+
+    if resources is None or resources.is_destroyed:
+        return False
+
+    # Get the stored HTML content
+    html = resources.html_content
+    if html is None:
+        # No stored content - nothing to refresh
+        return False
+
+    # Get theme from stored config if available
+    theme = "dark"
+    if resources.last_config and resources.last_config.theme:
+        theme = resources.last_config.theme.value
+
+    # Re-send the content to the window
+    return set_content(label, html, theme)
 
 
 def refresh_all_windows() -> bool:

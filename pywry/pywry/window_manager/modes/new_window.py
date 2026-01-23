@@ -105,8 +105,9 @@ class NewWindowMode(WindowModeBase):
             height=config.height,
         )
         # MUST pass theme so window background matches content
+        # Also pass config so content-request handler has access to theme
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
-        lifecycle.set_content(label, html, theme_str)
+        lifecycle.set_content(label, html, theme_str, config=config)
 
         # Track the window as visible
         self._windows[label] = True

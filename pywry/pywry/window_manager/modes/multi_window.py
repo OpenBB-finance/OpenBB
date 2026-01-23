@@ -84,8 +84,9 @@ class MultiWindowMode(WindowModeBase):
                     registry.register(label, event_type, handler)
 
             # MUST pass theme so window background matches content
+            # Also pass config for content-request handler
             theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
-            lifecycle.set_content(label, html, theme_str)
+            lifecycle.set_content(label, html, theme_str, config=config)
         else:
             # Create new window
             if label is None:
@@ -123,8 +124,9 @@ class MultiWindowMode(WindowModeBase):
                 height=config.height,
             )
             # MUST pass theme so window background matches content
+            # Also pass config for content-request handler
             theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
-            lifecycle.set_content(label, html, theme_str)
+            lifecycle.set_content(label, html, theme_str, config=config)
 
             self._windows[label] = True
 

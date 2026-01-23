@@ -12,18 +12,10 @@
  * - confirm: Two buttons (Cancel/Confirm), purple
  *
  * Keyboard: Escape key dismisses all alerts
- *
- * IMPORTANT: State is stored PER-WIDGET to prevent contamination between widgets.
  */
 
 (function() {
     'use strict';
-
-    // Prevent double initialization check removed to allow hot-reloading/updates
-    // regardless of previous state. This ensures the latest logic is always used.
-    // if (window.PYWRY_TOAST && window.PYWRY_TOAST._initialized) {
-    //    return;
-    // }
 
     var toastIdCounter = 0;
 
@@ -429,14 +421,6 @@
             var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
-        },
-
-        /**
-         * Legacy method for compatibility - now a no-op
-         * Container is passed directly to show() and confirm()
-         */
-        setContainer: function(widgetContainer) {
-            // No-op - container is now passed directly to show/confirm
         }
     };
 

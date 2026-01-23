@@ -116,6 +116,17 @@ def get_pywry_css() -> str:
     return ""
 
 
+def clear_css_cache() -> None:
+    """Clear the cached CSS content.
+
+    Call this after modifying pywry.css during development
+    to force a reload of the CSS on the next request.
+    """
+    get_pywry_css.cache_clear()
+    get_toast_css.cache_clear()
+    get_aggrid_css.cache_clear()
+
+
 @lru_cache(maxsize=8)
 def get_aggrid_css(theme: str, mode: ThemeMode) -> str:
     """Get the AG Grid CSS for a specific theme and mode.

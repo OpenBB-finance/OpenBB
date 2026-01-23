@@ -1,15 +1,8 @@
 /**
- * PyWry Toolbar Handlers - CENTRALIZED
- * 
- * This is the SINGLE source of truth for all toolbar interaction handlers.
- * Used by all widget types (AG Grid, Plotly, basic widgets).
- * 
- * DO NOT DUPLICATE THIS CODE ELSEWHERE!
+ * PyWry Toolbar Handlers
  */
 
 function initToolbarHandlers(container, pywry) {
-    console.log('[PyWry Toolbar] Initializing toolbar handlers...');
-
     // --- Dropdown (Select) handling ---
     container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
         var selected = dropdown.querySelector('.pywry-dropdown-selected');
@@ -78,7 +71,6 @@ function initToolbarHandlers(container, pywry) {
                     // Emit event
                     var eventName = dropdown.getAttribute('data-event');
                     if (eventName && pywry) {
-                        console.log('[PyWry Toolbar] Dropdown changed:', eventName, value);
                         pywry.emit(eventName, { value: value, componentId: dropdown.id });
                     }
                 });
@@ -111,7 +103,6 @@ function initToolbarHandlers(container, pywry) {
                 if (emit) {
                     var eventName = dropdown.getAttribute('data-event');
                     if (eventName && pywry) {
-                        console.log('[PyWry Toolbar] MultiSelect changed:', eventName, values);
                         pywry.emit(eventName, { values: values, componentId: dropdown.id });
                     }
                 }
@@ -177,7 +168,7 @@ function initToolbarHandlers(container, pywry) {
                 msOption.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var checkbox = msOption.querySelector('.pywry-multiselect-checkbox');
-                    
+
                     // If clicking the label area (not the checkbox itself), toggle manually
                     if (checkbox && e.target !== checkbox) {
                         e.preventDefault();
@@ -212,9 +203,7 @@ function initToolbarHandlers(container, pywry) {
 
     // --- Button handling ---
     var buttons = container.querySelectorAll('.pywry-toolbar-button');
-    console.log('[PyWry Toolbar] Found', buttons.length, 'toolbar buttons');
     buttons.forEach(function(btn) {
-        console.log('[PyWry Toolbar] Attaching click handler to button:', btn.textContent, 'event:', btn.getAttribute('data-event'));
         btn.addEventListener('click', function(e) {
             if (btn.classList.contains('pywry-disabled')) return;
             var eventName = btn.getAttribute('data-event');
@@ -226,7 +215,6 @@ function initToolbarHandlers(container, pywry) {
                 }
             } catch (err) {}
             if (eventName && pywry) {
-                console.log('[PyWry Toolbar] Button clicked:', eventName, data);
                 pywry.emit(eventName, data);
             }
         });
@@ -361,6 +349,4 @@ function initToolbarHandlers(container, pywry) {
     container.querySelectorAll('.pywry-toolbar-bottom .pywry-dropdown, .pywry-toolbar-footer .pywry-dropdown').forEach(function(dropdown) {
         dropdown.classList.add('pywry-dropdown-up');
     });
-
-    console.log('[PyWry Toolbar] Handlers initialized');
 }

@@ -12,7 +12,7 @@ window.__PYWRY_GRIDS__ = window.__PYWRY_GRIDS__ || {};
  */
 window.PYWRY_SHOW_NOTIFICATION = function(message, duration, container) {
     duration = duration || 3000;
-    
+
     // Find theme class from container or body
     var themeClass = 'ag-theme-alpine-dark';
     var el = container || document.body;
@@ -33,7 +33,7 @@ window.PYWRY_SHOW_NOTIFICATION = function(message, duration, container) {
     var wrapper = document.createElement('div');
     wrapper.className = 'pywry-notification-wrapper ' + themeClass;
     wrapper.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:2147483647;pointer-events:none;';
-    
+
     var toast = document.createElement('div');
     toast.className = 'pywry-toast-notification';
     toast.textContent = message;
@@ -52,7 +52,7 @@ window.PYWRY_SHOW_NOTIFICATION = function(message, duration, container) {
         'word-break: break-all',
         'pointer-events: auto'
     ].join(';') + ';';
-    
+
     wrapper.appendChild(toast);
     document.body.appendChild(wrapper);
 
@@ -71,7 +71,6 @@ window.PYWRY_AGGRID_DEFAULT_COL_DEF = {
     wrapText: true,
     wrapHeaderText: true,
     autoHeight: true,
-    // Note: menuTabs removed - requires AG Grid Enterprise
     filterParams: {
         buttons: ['apply', 'clear', 'reset'],
         closeOnApply: true,
@@ -86,53 +85,53 @@ window.PYWRY_AGGRID_DEFAULT_COL_DEF = {
  * - Small decimals (< 1) → preserve full precision, no truncation
  * - Very small numbers (many leading zeros) → scientific notation
  * - Regular decimals → preserve full precision
- * 
+ *
  * @param {number} value - The number to format
  * @returns {string} Formatted number string
  */
 window.PYWRY_FORMAT_NUMBER = function(value) {
     if (value == null || isNaN(value)) return '';
-    
+
     var absValue = Math.abs(value);
     var sign = value < 0 ? '-' : '';
-    
+
     // Very small numbers (with many leading zeros after decimal) → scientific notation
     // e.g., 0.00000123 → "1.23e-6"
     if (absValue > 0 && absValue < 0.0001) {
         return value.toExponential();
     }
-    
+
     // Handle non-integers (decimals) - add thousand separators
     if (!Number.isInteger(value)) {
         var parts = value.toString().split('.');
         var integerPart = parseInt(parts[0]);
         var decimalPart = parts[1] || '';
-        
+
         // Format integer part with commas
         var formattedInteger = integerPart.toLocaleString('en-US');
-        
+
         // Return with decimal part preserved
         return decimalPart ? formattedInteger + '.' + decimalPart : formattedInteger;
     }
-    
+
     // From here, we're dealing with integers only
     // Abbreviate integers with trailing zeros consistently
-    
+
     // Billions (1,000,000,000+) - must be divisible by 1B
     if (absValue >= 1e9 && absValue % 1e9 === 0) {
         return sign + (absValue / 1e9).toFixed(0) + 'B';
     }
-    
+
     // Millions (1,000,000+) - must be divisible by 1M
     if (absValue >= 1e6 && absValue % 1e6 === 0) {
         return sign + (absValue / 1e6).toFixed(0) + 'M';
     }
-    
+
     // Thousands (1,000+) - must be divisible by 1K
     if (absValue >= 1e3 && absValue % 1e3 === 0) {
         return sign + (absValue / 1e3).toFixed(0) + 'K';
     }
-    
+
     // Otherwise use thousand separators for non-abbreviatable integers
     return value.toLocaleString('en-US');
 };
@@ -140,28 +139,25 @@ window.PYWRY_FORMAT_NUMBER = function(value) {
 /**
  * Process column definitions to convert string expressions to functions.
  * AG Grid requires valueGetter, valueFormatter, etc. to be functions.
- * 
+ *
  * @param {Array} columnDefs - Array of column definitions
  * @returns {Array} Processed column definitions with functions
  */
 window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
     if (!columnDefs || !Array.isArray(columnDefs)) return columnDefs;
-    
-    console.log('[PyWry AG Grid] Processing', columnDefs.length, 'column defs');
-    
+
     return columnDefs.map(function(colDef) {
         var processed = Object.assign({}, colDef);
-        
+
         // Remove undefined cellDataType to avoid AG Grid warning
         if (processed.cellDataType === undefined || processed.cellDataType === null) {
             delete processed.cellDataType;
         }
-        
+
         // Convert valueGetter string to function
         // Expression can use: params, data, node, colDef, column, api, columnApi, context
         if (typeof processed.valueGetter === 'string') {
             var getterExpr = processed.valueGetter;
-            console.log('[PyWry AG Grid] Converting valueGetter:', getterExpr);
             processed.valueGetter = function(params) {
                 try {
                     var data = params.data;
@@ -179,7 +175,7 @@ window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
                 }
             };
         }
-        
+
         // Convert valueFormatter string to function
         // Expression can use: value, data, node, colDef, column, api, context
         if (typeof processed.valueFormatter === 'string') {
@@ -201,7 +197,7 @@ window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
                 }
             };
         }
-        
+
         // Auto-apply number formatter for number columns without custom formatter
         // This formats large numbers as 75K, 1.5M, etc.
         if (!processed.valueFormatter && processed.cellDataType === 'number') {
@@ -210,7 +206,7 @@ window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
                 return window.PYWRY_FORMAT_NUMBER(params.value);
             };
         }
-        
+
         // Convert valueSetter string to function
         if (typeof processed.valueSetter === 'string') {
             var setterExpr = processed.valueSetter;
@@ -227,61 +223,58 @@ window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS = function(columnDefs) {
                 }
             };
         }
-        
+
         // Recursively process children (for column groups)
         if (processed.children && Array.isArray(processed.children)) {
             processed.children = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(processed.children);
         }
-        
+
         return processed;
     });
 };
 
 /**
  * Build complete grid options from config.
- * 
+ *
  * @param {Object} config - Grid configuration (columnDefs, rowData, etc.)
  * @param {string} gridId - Unique identifier for this grid instance
  * @returns {Object} Complete AG Grid options
  */
 window.PYWRY_AGGRID_BUILD_OPTIONS = function(config, gridId) {
     var id = gridId || 'default';
-    
-    console.log('[PyWry AG Grid ' + id + '] Building options with defaults');
-    console.log('[PyWry AG Grid ' + id + '] defaultColDef:', window.PYWRY_AGGRID_DEFAULT_COL_DEF);
-    
+
     // Determine row count for pagination decisions
     var rowCount = (config.rowData && config.rowData.length) || 0;
-    
+
     // Server-side mode: data stays in Python, JS only has metadata
     // Used when dataset is too large for browser memory
     // Enables filtering/sorting on full dataset even when truncated
     var serverSideConfig = config.serverSide;
     var isServerSide = serverSideConfig && typeof serverSideConfig === 'object';
-    
+
     if (isServerSide) {
         var totalRows = serverSideConfig.totalRows || 0;
-        console.info('[PyWry AG Grid ' + id + '] Using Server-Side filtering for ' + 
+        console.info('[PyWry AG Grid ' + id + '] Using Server-Side filtering for ' +
             totalRows.toLocaleString() + ' rows (data in Python memory)');
         return window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS(config, id, serverSideConfig);
     }
-    
+
     // Browser memory limit - AG Grid renders fine but data must fit in memory
     var MAX_SAFE_ROWS = 100000;  // 100k rows
-    
+
     // Handle large datasets - truncate to protect browser memory
     var rowData = config.rowData;
     var truncatedRows = 0;
-    
+
     if (rowCount > MAX_SAFE_ROWS) {
-        console.warn('[PyWry AG Grid ' + id + '] Dataset has ' + rowCount + 
+        console.warn('[PyWry AG Grid ' + id + '] Dataset has ' + rowCount +
             ' rows, truncating to ' + MAX_SAFE_ROWS + ' to prevent browser memory issues. ' +
             'Use server_side=True for full filtering capability.');
         rowData = config.rowData.slice(0, MAX_SAFE_ROWS);
         truncatedRows = rowCount - MAX_SAFE_ROWS;
         rowCount = MAX_SAFE_ROWS;
     }
-    
+
     // Standard client-side row model with pagination
     return window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS(config, id, rowData, rowCount, truncatedRows);
 };
@@ -292,10 +285,10 @@ window.PYWRY_AGGRID_BUILD_OPTIONS = function(config, gridId) {
  */
 window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCount, truncatedRows) {
     var LARGE_DATASET_THRESHOLD = 10000;
-    
+
     // Pagination logic:
     // - If config.pagination === true: always enable
-    // - If config.pagination === false: always disable  
+    // - If config.pagination === false: always disable
     // - If config.pagination is undefined/null: auto-enable for >10 rows
     var usePagination;
     if (config.pagination === true) {
@@ -306,7 +299,7 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
         // Auto-decide: enable for datasets > 10 rows
         usePagination = rowCount > 10;
     }
-    
+
     // For large datasets, adjust page size selector to prevent loading too many rows at once
     var pageSizeSelector;
     if (rowCount > LARGE_DATASET_THRESHOLD) {
@@ -319,13 +312,13 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
         // Small datasets - include "All" option
         pageSizeSelector = [10, 25, 50, 100, rowCount];
     }
-    
+
     // Default page size based on dataset size
     var defaultPageSize = config.paginationPageSize || 100;
-    
+
     // Process column defs to convert string expressions to functions
     var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
-    
+
     var options = {
         columnDefs: processedColumnDefs,
         rowData: rowData,
@@ -349,7 +342,7 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
             if (event.node && config.rowSelection !== false) {
                 event.node.setSelected(true, true);  // select this row, clear others
             }
-            
+
             if (window.pywry && window.pywry.emit) {
                 // Emit namespaced event (grid:cell-click)
                 window.pywry.emit('grid:cell-click', {
@@ -383,7 +376,6 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
             }
         },
         onGridReady: function(event) {
-            console.log('[PyWry AG Grid ' + id + '] Grid ready (client-side)!');
             event.api.autoSizeAllColumns();
             if (truncatedRows > 0 && window.pywry && window.pywry.emit) {
                 window.pywry.emit('grid:data-truncated', {
@@ -391,14 +383,13 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
                     gridId: id,
                     displayedRows: rowCount,
                     truncatedRows: truncatedRows,
-                    message: 'Dataset truncated: showing ' + rowCount.toLocaleString() + 
+                    message: 'Dataset truncated: showing ' + rowCount.toLocaleString() +
                              ' of ' + (rowCount + truncatedRows).toLocaleString() + ' rows'
                 });
             }
         }
     };
-    
-    console.log('[PyWry AG Grid ' + id + '] Built client-side options');
+
     return options;
 };
 
@@ -406,13 +397,13 @@ window.PYWRY_AGGRID_BUILD_CLIENT_OPTIONS = function(config, id, rowData, rowCoun
  * Build options for Server-Side IPC Row Model.
  * Data stays in Python, JS only has metadata. Python handles sort/filter.
  * Uses Infinite Row Model with virtual scrolling (no pagination UI).
- * 
+ *
  * Config: { serverSide: { totalRows: N, blockSize: 100, ... }, columnDefs: [...] }
- * 
+ *
  * Events:
  * - JS emits 'grid:request-page' with { gridId, startRow, endRow, sortModel, filterModel }
  * - Python responds via 'grid:page-response' with { gridId, rows, totalRows, isLastPage }
- * 
+ *
  * @param {Object} config - Grid configuration
  * @param {string} id - Grid ID
  * @param {Object} serverConfig - Server-side config { totalRows, blockSize, ... }
@@ -421,25 +412,25 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
     var totalRows = serverConfig.totalRows || 0;
     var blockSize = serverConfig.blockSize || 500;  // Rows per block for infinite scroll
     var currentFilteredTotal = totalRows;
-    
+
     // Pending requests
     var pendingRequests = {};
     var requestCounter = 0;
-    
+
     // Store grid API for later use
     var gridApiRef = null;
-    
+
     // Set up listener for page responses from Python
     if (window.pywry && window.pywry.on) {
         window.pywry.on('grid:page-response', function(response) {
             if (response.gridId !== id) return;
-            
+
             var requestId = response.requestId;
             var pending = pendingRequests[requestId];
-            
+
             if (pending) {
                 delete pendingRequests[requestId];
-                
+
                 if (response.error) {
                     console.error('[PyWry AG Grid ' + id + '] Error fetching data:', response.error);
                     pending.failCallback();
@@ -448,7 +439,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                     if (response.totalRows !== undefined) {
                         currentFilteredTotal = response.totalRows;
                     }
-                    
+
                     // lastRow tells grid total size (-1 = unknown/more data)
                     var lastRow = response.isLastPage ? currentFilteredTotal : -1;
                     pending.successCallback(response.rows, lastRow);
@@ -456,22 +447,20 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             }
         });
     }
-    
+
     // Datasource that requests data blocks from Python
     var datasource = {
         getRows: function(params) {
             var requestId = 'req_' + (++requestCounter);
             var startRow = params.startRow;
             var endRow = params.endRow;
-            
-            console.log('[PyWry AG Grid ' + id + '] Requesting rows ' + startRow + '-' + endRow);
-            
+
             // Store callbacks
             pendingRequests[requestId] = {
                 successCallback: params.successCallback,
                 failCallback: params.failCallback
             };
-            
+
             // Request from Python with sort/filter state
             if (window.pywry && window.pywry.emit) {
                 window.pywry.emit('grid:request-page', {
@@ -487,7 +476,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                 params.failCallback();
                 delete pendingRequests[requestId];
             }
-            
+
             // Timeout fallback
             setTimeout(function() {
                 if (pendingRequests[requestId]) {
@@ -498,10 +487,10 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             }, 30000);
         }
     };
-    
+
     // Process column defs to convert string expressions to functions
     var processedColumnDefs = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(config.columnDefs);
-    
+
     var options = {
         columnDefs: processedColumnDefs,
         rowModelType: 'infinite',
@@ -511,11 +500,11 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         maxConcurrentDatasourceRequests: 1,
         maxBlocksInCache: 20,
         infiniteInitialRowCount: Math.min(blockSize, totalRows),
-        
+
         // NO pagination - use infinite scroll only
         // AG Grid's pagination UI doesn't work properly with infinite row model
         pagination: false,
-        
+
         // AG Grid v32.2+: rowSelection is now an object
         // Use undefined check to allow explicit null (disabled)
         rowSelection: config.rowSelection !== undefined ? config.rowSelection : { mode: 'multiRow', enableClickSelection: false },
@@ -525,7 +514,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
         suppressMenuHide: true,
         enableCellTextSelection: true,
         ensureDomOrder: true,
-        
+
         // Row ID for selection persistence
         getRowId: function(params) {
             // Priority 1: PyWry tracking ID (used for pinning)
@@ -551,7 +540,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
             if (event.node && !event.node.rowPinned && config.rowSelection !== false) {
                 event.node.setSelected(true, true);
             }
-            
+
             if (window.pywry && window.pywry.emit) {
                 // Emit namespaced event (grid:cell-click)
                 window.pywry.emit('grid:cell-click', {
@@ -564,7 +553,7 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                 });
             }
         },
-        
+
         onSelectionChanged: function(event) {
             if (window.pywry && window.pywry.emit) {
                 var selectedRows = event.api.getSelectedRows();
@@ -586,15 +575,13 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                 });
             }
         },
-        
+
         onSortChanged: function(event) {
-            console.log('[PyWry AG Grid ' + id + '] Sort changed, refreshing...');
             // Infinite model handles this automatically via datasource
         },
-        
+
         // When filter changes, need to refresh data from Python
         onFilterChanged: function(event) {
-            console.log('[PyWry AG Grid ' + id + '] Filter changed, refreshing...');
             // The datasource.getRows will be called automatically
             // We also notify Python of the filter change
             if (window.pywry && window.pywry.emit && gridApiRef) {
@@ -605,19 +592,15 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                 });
             }
         },
-        
+
         onGridReady: function(event) {
             gridApiRef = event.api;
-            
-            console.log('[PyWry AG Grid ' + id + '] Grid ready (server-side IPC)!');
-            console.log('[PyWry AG Grid ' + id + '] Total rows: ' + totalRows.toLocaleString() + 
-                ', block size: ' + blockSize);
-            
+
             // Auto-size columns after first block loads
             setTimeout(function() {
                 event.api.autoSizeAllColumns();
             }, 100);
-            
+
             if (window.pywry && window.pywry.emit) {
                 window.pywry.emit('grid:mode', {
                     widget_type: 'grid',
@@ -626,22 +609,20 @@ window.PYWRY_AGGRID_BUILD_SERVER_SIDE_OPTIONS = function(config, id, serverConfi
                     serverSide: true,
                     totalRows: totalRows,
                     blockSize: blockSize,
-                    message: 'Data in Python memory (' + totalRows.toLocaleString() + 
+                    message: 'Data in Python memory (' + totalRows.toLocaleString() +
                         ' rows). Use filters to narrow down results.'
                 });
             }
         }
     };
-    
-    console.log('[PyWry AG Grid ' + id + '] Built server-side options for ' + 
-        totalRows.toLocaleString() + ' rows (block size: ' + blockSize + ')');
+
     return options;
 };
 
 /**
  * Register Python event listeners on a specific grid instance.
  * Events are scoped by gridId - each grid only responds to its own events.
- * 
+ *
  * @param {Object} gridApi - The AG Grid API instance
  * @param {HTMLElement} gridDiv - The grid container element (for theme updates)
  * @param {string} gridId - Unique identifier for this grid instance
@@ -683,7 +664,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
                     state: state.columnState,
                     applyOrder: true
                 });
-                console.log('[PyWry AG Grid ' + id + '] Column state restored');
             }
             if (state.filterModel && gridApi.setFilterModel) {
                 gridApi.setFilterModel(state.filterModel);
@@ -706,7 +686,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
                 if (data.requestId) state.requestId = data.requestId;
                 if (data.context) state.context = data.context;
                 window.pywry.emit('grid:state-response', state);
-                console.log('[PyWry AG Grid ' + id + '] State sent to Python');
             }
         }
     });
@@ -718,7 +697,7 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
             var rowId = data.rowId; // Can be ID or Index
             var colId = data.colId;
             var value = data.value;
-            
+
             if (colId != null) {
                  var rowNode;
                  // Try index if numeric
@@ -732,7 +711,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
 
                 if (rowNode) {
                     rowNode.setDataValue(colId, value);
-                    console.log('[PyWry AG Grid ' + id + '] Cell updated: row=' + rowId + ', col=' + colId + ', value=' + value);
                 } else {
                     console.warn('[PyWry AG Grid ' + id + '] Row not found for update: ' + rowId);
                 }
@@ -750,7 +728,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
                 // Default: set
                 gridApi.setGridOption('rowData', data.data);
             }
-            console.log('[PyWry AG Grid ' + id + '] Data updated (' + (data.strategy || 'set') +'):', data.data.length, 'rows');
         }
     });
 
@@ -761,7 +738,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
             gridApi.setGridOption('columnDefs', processedCols);
             // Try to restore state if structure matches
             setTimeout(function() { restoreColumnState(savedState); }, 0);
-            console.log('[PyWry AG Grid ' + id + '] Columns updated:', data.columnDefs.length, 'columns');
         }
     });
 
@@ -769,53 +745,41 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
     window.pywry.on('grid:update-grid', function(data) {
         if (data && (!data.gridId || data.gridId === id)) {
             var columnDefs = data.columnDefs;
-            var rowData = data.data;  // Python sends 'data', also check 'rows' for compat
+            var rowData = data.data;
             var stateToApply = data.restoreState;
-            
-            console.log('[PyWry AG Grid ' + id + '] grid:update-grid received');
-            console.log('  has columnDefs:', !!columnDefs, columnDefs ? columnDefs.length : 0);
-            console.log('  has data:', !!rowData, rowData ? rowData.length : 0);
-            console.log('  has restoreState:', !!stateToApply);
-            
+
             // Update columns first
             if (columnDefs) {
                 var processedCols = window.PYWRY_AGGRID_PROCESS_COLUMN_DEFS(columnDefs);
                 gridApi.setGridOption('columnDefs', processedCols);
-                console.log('[PyWry AG Grid ' + id + '] Set columnDefs');
             }
-            
+
             // Update row data
             if (rowData) {
                 gridApi.setGridOption('rowData', rowData);
-                console.log('[PyWry AG Grid ' + id + '] Set rowData:', rowData.length, 'rows');
             }
-            
+
             // Apply column state AFTER setting columnDefs (AG Grid needs this for column order)
             if (stateToApply && stateToApply.columnState) {
                 // Use setTimeout to ensure columnDefs are applied first
                 setTimeout(function() {
-                    console.log('[PyWry AG Grid ' + id + '] Applying columnState:', stateToApply.columnState.map(function(c) { return c.colId; }));
                     if (gridApi.applyColumnState) {
                         gridApi.applyColumnState({
                             state: stateToApply.columnState,
                             applyOrder: true
                         });
-                        console.log('[PyWry AG Grid ' + id + '] applyColumnState done');
                     }
                     if (stateToApply.filterModel && gridApi.setFilterModel) {
                         gridApi.setFilterModel(stateToApply.filterModel);
                     }
                 }, 0);
             }
-            
-            console.log('[PyWry AG Grid ' + id + '] Grid fully updated');
         }
     });
 
     window.pywry.on('grid:restore-state', function(data) {
         if (data && data.state && (!data.gridId || data.gridId === id)) {
             restoreColumnState(data.state);
-            console.log('[PyWry AG Grid ' + id + '] State restored');
         }
     });
 
@@ -831,7 +795,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
                 gridApi.setFilterModel(null);
                 if (gridApi.setSortModel) gridApi.setSortModel(null);
             }
-            console.log('[PyWry AG Grid ' + id + '] State reset (hard=' + (data && data.hard) + ')');
         }
     });
 
@@ -842,7 +805,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
             });
             classes.push(data.theme);
             gridDiv.className = classes.join(' ');
-            console.log('[PyWry AG Grid ' + id + '] Theme updated to:', data.theme);
         }
     });
 
@@ -851,8 +813,6 @@ window.PYWRY_AGGRID_REGISTER_LISTENERS = function(gridApi, gridDiv, gridId) {
             window.PYWRY_SHOW_NOTIFICATION(data.message, data.duration, gridDiv);
         }
     });
-
-    console.log('[PyWry AG Grid ' + id + '] Event listeners registered');
 
     if (window.PYWRY_AGGRID_SETUP_CONTEXT_MENU) {
         window.PYWRY_AGGRID_SETUP_CONTEXT_MENU(gridApi, gridDiv, id);
@@ -877,7 +837,6 @@ window.PYWRY_AGGRID_DESTROY_GRID = function(gridId) {
     if (grid && grid.api) {
         grid.api.destroy();
         delete window.__PYWRY_GRIDS__[gridId];
-        console.log('[PyWry AG Grid ' + gridId + '] Destroyed');
     }
 };
 
@@ -890,7 +849,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
     _currentMenu: null,
     _activeSubmenus: [],
     _themeClass: 'ag-theme-alpine-dark',
-    
+
     /**
      * Hide any visible context menu and submenus
      */
@@ -900,14 +859,14 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             if (sub && sub.parentNode) sub.remove();
         });
         this._activeSubmenus = [];
-        
+
         // Hide main menu
         if (this._currentMenu) {
             this._currentMenu.remove();
             this._currentMenu = null;
         }
     },
-    
+
     /**
      * Set theme for menu styling
      * @param {string} themeClass - The AG Grid theme class (e.g., 'ag-theme-alpine-dark')
@@ -915,7 +874,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
     setTheme: function(themeClass) {
         this._themeClass = themeClass || 'ag-theme-alpine-dark';
     },
-    
+
     /**
      * Get menu styles - uses CSS custom properties from AG Grid theme
      */
@@ -937,16 +896,16 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             'font-family: var(--ag-font-family, inherit)',
             'font-size: var(--ag-font-size, 13px)',
         ];
-        
+
         return styles.join(';') + ';';
     },
-    
+
     /**
      * Create a menu item element - fully CSS-selectable, no inline colors
      */
     _createMenuItem: function(item, context, parentMenu) {
         var self = this;
-        
+
         if (item.separator) {
             var sep = document.createElement('div');
             sep.className = 'ag-menu-separator pywry-menu-separator';
@@ -954,12 +913,12 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             sep.style.cssText = 'height: 1px; background-color: var(--ag-border-color); margin: 4px 8px;';
             return sep;
         }
-        
+
         var option = document.createElement('div');
         option.className = 'ag-menu-option pywry-menu-option' + (item.disabled ? ' ag-menu-option-disabled pywry-menu-option-disabled' : '');
         option.setAttribute('role', 'treeitem');
         option.setAttribute('tabindex', '-1');
-    
+
         var optionStyles = [
             'display: flex',
             'align-items: center',
@@ -969,12 +928,12 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             'position: relative',
             'background-color: transparent',
         ];
-        
+
         if (item.disabled) {
             optionStyles.push('opacity: 0.5');
             optionStyles.push('cursor: default');
         }
-        
+
         option.style.cssText = optionStyles.join(';') + ';';
 
         var textPart = document.createElement('span');
@@ -991,24 +950,24 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         option.appendChild(pointerPart);
 
         var submenuTimeout = null;
-        
+
         if (!item.disabled) {
             option.addEventListener('mouseenter', function() {
                 // Use AG Grid's hover color variable
                 this.style.backgroundColor = 'var(--ag-row-hover-color, var(--ag-range-selection-background-color, rgba(128,128,128,0.2)))';
-                
+
                 // Show submenu after small delay
                 if (item.submenu && item.submenu.length > 0) {
                     submenuTimeout = setTimeout(function() {
                         // Hide any existing submenus at this level
                         self._hideSubmenusAfter(parentMenu);
-                        
+
                         var rect = option.getBoundingClientRect();
                         self._showSubmenu(rect.right - 4, rect.top, item.submenu, context, parentMenu);
                     }, 150);
                 }
             });
-            
+
             option.addEventListener('mouseleave', function() {
                 this.style.backgroundColor = 'transparent';
                 if (submenuTimeout) {
@@ -1016,7 +975,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
                     submenuTimeout = null;
                 }
             });
-            
+
             // Click action (only if no submenu)
             if (item.action && !item.submenu) {
                 option.addEventListener('click', function() {
@@ -1025,45 +984,45 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
                 });
             }
         }
-        
+
         return option;
     },
-    
+
     /**
      * Hide submenus that are children of the given parent
      */
     _hideSubmenusAfter: function(parentMenu) {
         var parentIndex = this._activeSubmenus.indexOf(parentMenu);
         if (parentIndex === -1) parentIndex = -1; // Main menu
-        
+
         // Remove all submenus after this level
         while (this._activeSubmenus.length > parentIndex + 1) {
             var sub = this._activeSubmenus.pop();
             if (sub && sub.parentNode) sub.remove();
         }
     },
-    
+
     /**
      * Show a submenu
      */
     _showSubmenu: function(x, y, items, context, parentMenu) {
         var self = this;
-        
+
         // Create submenu - inherits theme from wrapper
         var submenu = document.createElement('div');
         submenu.className = 'ag-popup ag-menu ag-ltr ag-popup-child pywry-context-submenu';
         submenu.style.cssText = this._getMenuStyles();
-        
+
         var list = document.createElement('div');
         list.className = 'ag-menu-list pywry-menu-list';
         list.setAttribute('role', 'tree');
         list.style.cssText = 'padding: 4px 0;';
-        
+
         items.forEach(function(item) {
             var menuItem = self._createMenuItem(item, context, submenu);
             list.appendChild(menuItem);
         });
-        
+
         submenu.appendChild(list);
 
         // Append to wrapper (which is inside the widget container)
@@ -1081,7 +1040,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         if (!containerRect) {
             containerRect = { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
         }
-        
+
         var subRect = submenu.getBoundingClientRect();
         var parentRect = parentMenu ? parentMenu.getBoundingClientRect() : { left: x, right: x, top: y };
 
@@ -1089,16 +1048,16 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         var parentRelLeft = parentRect.left - containerRect.left;
         var parentRelRight = parentRect.right - containerRect.left;
         var relY = y - containerRect.top;
-        
+
         var containerWidth = containerRect.width;
         var containerHeight = containerRect.height;
-        
+
         // Calculate available space within container
         var spaceRight = containerWidth - parentRelRight;
         var spaceLeft = parentRelLeft;
         var spaceBelow = containerHeight - relY;
         var spaceAbove = relY;
-        
+
         // Constrain height if needed
         var availableHeight = Math.max(spaceBelow, spaceAbove) - 10;
         if (subRect.height > availableHeight && availableHeight > 100) {
@@ -1124,17 +1083,17 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             finalY = containerHeight - subRect.height - 5;
         }
         finalY = Math.max(5, finalY);
-        
+
         submenu.style.left = finalX + 'px';
         submenu.style.top = finalY + 'px';
         this._activeSubmenus.push(submenu);
         submenu.addEventListener('mouseenter', function() {
             // Don't hide
         });
-        
+
         return submenu;
     },
-    
+
     /**
      * Show context menu at position
      * @param {number} x - X coordinate (clientX from event)
@@ -1146,7 +1105,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
     show: function(x, y, items, context, container) {
         this.hide();
         var self = this;
-        
+
         // Find the pywry-widget container for proper positioning
         var widgetContainer = container;
         while (widgetContainer && !widgetContainer.classList.contains('pywry-widget')) {
@@ -1156,29 +1115,29 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         if (!widgetContainer) {
             widgetContainer = container;
         }
-        
+
         // Ensure container has position for absolute children
         var containerStyle = window.getComputedStyle(widgetContainer);
         if (containerStyle.position === 'static') {
             widgetContainer.style.position = 'relative';
         }
-        
+
         // Get container bounds
         var containerRect = widgetContainer.getBoundingClientRect();
-        
+
         // Convert click coordinates to container-relative
         var relX = x - containerRect.left;
         var relY = y - containerRect.top;
-        
+
         // Create wrapper inside the widget container
         var wrapper = document.createElement('div');
         wrapper.className = 'pywry-context-menu-wrapper ' + this._themeClass;
         wrapper.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:2147483647;pointer-events:none;overflow:visible;';
-        
+
         var menu = document.createElement('div');
         menu.className = 'ag-popup ag-menu ag-ltr ag-popup-child pywry-context-menu';
         menu.style.cssText = this._getMenuStyles();
-        
+
         var list = document.createElement('div');
         list.className = 'ag-menu-list pywry-menu-list';
         list.setAttribute('role', 'tree');
@@ -1189,17 +1148,17 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         menu.appendChild(list);
         wrapper.appendChild(menu);
         widgetContainer.appendChild(wrapper);
-        
+
         // Store reference for positioning submenus
         this._container = widgetContainer;
         this._containerRect = containerRect;
-        
+
         // Set padding first, measure natural height
         list.style.cssText = 'padding: 4px 0;';
         var menuRect = menu.getBoundingClientRect();
         var menuWidth = menuRect.width;
         var menuHeight = menuRect.height;
-        
+
         // Available space within container from click point
         var containerWidth = containerRect.width;
         var containerHeight = containerRect.height;
@@ -1207,12 +1166,12 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
         var spaceAbove = relY;
         var spaceRight = containerWidth - relX;
         var spaceLeft = relX;
-        
+
         // Determine if we need to constrain height and add scrolling
         var preferBelow = spaceBelow >= spaceAbove;
         var availableHeight = preferBelow ? spaceBelow : spaceAbove;
         var maxMenuHeight = availableHeight - 10;
-        
+
         if (menuHeight > maxMenuHeight && maxMenuHeight > 100) {
             list.style.maxHeight = maxMenuHeight + 'px';
             list.style.overflowY = 'auto';
@@ -1231,7 +1190,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             finalY = relY - menuHeight;
         }
         finalY = Math.max(5, Math.min(finalY, containerHeight - menuHeight - 5));
-        
+
         // Position horizontally within container
         var finalX;
         if (relX + menuWidth <= containerWidth - 5) {
@@ -1242,7 +1201,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
             finalX = containerWidth - menuWidth - 5;
         }
         finalX = Math.max(5, finalX);
-        
+
         menu.style.left = finalX + 'px';
         menu.style.top = finalY + 'px';
         this._currentMenu = wrapper;
@@ -1277,7 +1236,7 @@ window.PYWRY_AGGRID_CONTEXT_MENU = {
  */
 window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, customItems) {
     var id = gridId || 'default';
-    
+
     // Detect theme class from grid div
     var themeClass = 'ag-theme-alpine-dark';
     if (gridDiv && gridDiv.className) {
@@ -1290,10 +1249,10 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
         }
     }
     window.PYWRY_AGGRID_CONTEXT_MENU.setTheme(themeClass);
-    
+
     gridDiv.addEventListener('contextmenu', function(e) {
         e.preventDefault();
-        
+
         // Update theme each time in case it changed
         if (gridDiv.className) {
             var classes = gridDiv.className.split(' ');
@@ -1304,7 +1263,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 }
             }
         }
-        
+
         var cellInfo = null;
         var target = e.target;
 
@@ -1313,19 +1272,19 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 var rowNode = null;
                 var rowData = null;
                 var colId = target.getAttribute('col-id');
-                
+
                 // Try to get row node
                 var rowElement = target.closest('.ag-row');
                 if (rowElement) {
                     var rowIndexAttr = rowElement.getAttribute('row-index');
                     var rowId = rowElement.getAttribute('row-id');
                     var isPinned = rowElement.classList.contains('ag-row-pinned');
-                    
+
                     // For pinned rows, AG Grid uses format like "b-0", "b-1" (bottom) or "t-0", "t-1" (top)
                     // For regular rows, it's just a number like "0", "1", "2"
                     var pinnedIndex = -1;
                     var pinnedRegion = null;
-                    
+
                     if (isPinned && rowIndexAttr) {
                         // Parse pinned row index: "b-0" -> 0, "t-2" -> 2
                         if (rowIndexAttr.startsWith('b-')) {
@@ -1336,13 +1295,13 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                             pinnedIndex = parseInt(rowIndexAttr.substring(2), 10);
                         }
                     }
-                    
+
                     var rowIndex = isPinned ? pinnedIndex : parseInt(rowIndexAttr, 10);
-                    
+
                     if (isPinned) {
                         var currentPinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
                         var currentPinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
-                        
+
                         if (pinnedRegion === 'top' && pinnedIndex >= 0 && pinnedIndex < currentPinnedTop.length) {
                             rowData = currentPinnedTop[pinnedIndex];
                             rowNode = { data: rowData, rowIndex: pinnedIndex, rowPinned: 'top', id: rowId };
@@ -1356,14 +1315,14 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                         rowData = rowNode ? rowNode.data : null;
                     }
                 }
-                
+
                 cellInfo = {
                     colId: colId,
                     rowNode: rowNode,
                     data: rowData,
                     value: target.textContent
                 };
-                
+
                 break;
             }
             target = target.parentElement;
@@ -1376,9 +1335,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
             icon: 'copy',
             action: function(ctx) {
                 if (ctx.value) {
-                    navigator.clipboard.writeText(ctx.value).then(function() {
-                        console.log('[PyWry] Copied to clipboard');
-                    });
+                    navigator.clipboard.writeText(ctx.value);
                 }
             }
         });
@@ -1389,13 +1346,11 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
             action: function(ctx) {
                 if (ctx.data) {
                     var text = Object.values(ctx.data).join('\t');
-                    navigator.clipboard.writeText(text).then(function() {
-                        console.log('[PyWry] Row copied to clipboard');
-                    });
+                    navigator.clipboard.writeText(text);
                 }
             }
         });
-        
+
         menuItems.push({ separator: true });
 
         async function saveWithFilePicker(csvContent, suggestedName) {
@@ -1410,10 +1365,9 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                             extensions: ['csv']
                         }]
                     });
-                    
+
                     if (filePath) {
                         await fs.writeTextFile(filePath, csvContent);
-                        console.log('[PyWry] CSV saved via Tauri:', filePath);
                         return true;
                     }
                     return false;
@@ -1421,9 +1375,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     console.warn('[PyWry] Tauri file save failed:', err);
                 }
             }
-            
-            // Fallback: Try modern File System Access API (browser)
-            // Note: This shows "this site can see edits" warning in non-Tauri contexts
+
             if (window.showSaveFilePicker) {
                 try {
                     var fileHandle = await window.showSaveFilePicker({
@@ -1436,7 +1388,6 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     var writable = await fileHandle.createWritable();
                     await writable.write(csvContent);
                     await writable.close();
-                    console.log('[PyWry] CSV saved via file picker');
                     return true;
                 } catch (err) {
                     if (err.name !== 'AbortError') {
@@ -1456,7 +1407,6 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     exportType: exportType,  // 'grid_state' or 'raw'
                     csvContent: csvContent
                 });
-                console.log('[PyWry] CSV emitted to Python for saving');
                 return true;
             }
             return false;
@@ -1473,13 +1423,12 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
-            console.log('[PyWry] CSV downloaded:', fileName);
 
             if (window.PYWRY_SHOW_NOTIFICATION) {
                 window.PYWRY_SHOW_NOTIFICATION('Downloaded: ' + fileName, 3000, gridDiv);
             }
         }
-        
+
 
         menuItems.push({
             label: 'Export CSV (Grid State)',
@@ -1524,7 +1473,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 }
             }
         });
-        
+
         menuItems.push({ separator: true });
 
         if (cellInfo && cellInfo.colId) {
@@ -1533,7 +1482,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 var clickedColDef = clickedCol.getColDef();
                 var clickedHeaderName = clickedColDef.headerName || clickedColDef.field || cellInfo.colId;
                 var clickedPinned = clickedCol.getPinned();
-                
+
 
                 menuItems.push({
                     label: 'Pin "' + clickedHeaderName + '"',
@@ -1565,7 +1514,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                         }
                     ]
                 });
-                
+
                 menuItems.push({
                     label: 'Hide "' + clickedHeaderName + '"',
                     icon: 'eye-slash',
@@ -1573,14 +1522,11 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                         gridApi.setColumnsVisible([cellInfo.colId], false);
                     }
                 });
-                
+
                 menuItems.push({ separator: true });
             }
         }
-        
-        // Row pinning options - show different menu based on current state
-        // NOTE: Community Edition requires manual pinnedTopRowData/pinnedBottomRowData management
-        // Pinned rows will NOT be selectable (AG Grid limitation for Community)
+
         if (cellInfo && cellInfo.rowNode) {
             var rowPinned = cellInfo.rowNode.rowPinned;
             var rowNode = cellInfo.rowNode;
@@ -1593,14 +1539,14 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     icon: '⊘',
                     action: function(ctx) {
                         if (!ctx || !ctx.data) return;
-                        
+
                         var data = ctx.data;
                         var pinned = ctx.rowNode ? ctx.rowNode.rowPinned : null;
-                        
+
                         // Get current pinned arrays
                         var pinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
                         var pinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
-                        
+
                         // Remove from pinned array
                         if (pinned === 'top') {
                             pinnedTop = pinnedTop.filter(function(r) { return r !== data; });
@@ -1609,11 +1555,11 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                             pinnedBottom = pinnedBottom.filter(function(r) { return r !== data; });
                             gridApi.setGridOption('pinnedBottomRowData', pinnedBottom);
                         }
-                        
+
                         // Restore to original position
                         var originalIndex = data._pywryOriginalIndex;
                         delete data._pywryOriginalIndex; // Clean up
-                        
+
                         if (typeof originalIndex === 'number' && originalIndex >= 0) {
                             gridApi.applyTransaction({ add: [data], addIndex: originalIndex });
                         } else {
@@ -1632,17 +1578,17 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                             icon: '⬆',
                             action: function(ctx) {
                                 if (!ctx || !ctx.rowNode) return;
-                                
+
                                 var node = ctx.rowNode;
                                 var data = node.data;
                                 if (!data) return;
-                                
+
                                 // Store original index for restoration
                                 data._pywryOriginalIndex = node.rowIndex;
-                                
+
                                 // Remove from main grid
                                 gridApi.applyTransaction({ remove: [data] });
-                                
+
                                 // Add to top pinned
                                 var pinnedTop = gridApi.getGridOption('pinnedTopRowData') || [];
                                 pinnedTop.push(data);
@@ -1654,17 +1600,17 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                             icon: '⬇',
                             action: function(ctx) {
                                 if (!ctx || !ctx.rowNode) return;
-                                
+
                                 var node = ctx.rowNode;
                                 var data = node.data;
                                 if (!data) return;
-                                
+
                                 // Store original index for restoration
                                 data._pywryOriginalIndex = node.rowIndex;
-                                
+
                                 // Remove from main grid
                                 gridApi.applyTransaction({ remove: [data] });
-                                
+
                                 // Add to bottom pinned
                                 var pinnedBottom = gridApi.getGridOption('pinnedBottomRowData') || [];
                                 pinnedBottom.push(data);
@@ -1674,10 +1620,10 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     ]
                 });
             }
-            
+
             menuItems.push({ separator: true });
         }
-        
+
         var allColumns = gridApi.getColumns ? gridApi.getColumns() : [];
         if (allColumns.length > 0) {
             var columnSubmenuItems = [];
@@ -1690,14 +1636,14 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     gridApi.setColumnsVisible(colIds, true);
                 }
             });
-            
+
             columnSubmenuItems.push({ separator: true });
             allColumns.forEach(function(col) {
                 var colDef = col.getColDef();
                 var colId = col.getColId();
                 var headerName = colDef.headerName || colDef.field || colId;
                 var isVisible = col.isVisible();
-                
+
                 columnSubmenuItems.push({
                     label: headerName,
                     checked: isVisible,
@@ -1706,43 +1652,40 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                     }
                 });
             });
-            
+
             menuItems.push({
                 label: 'Columns',
                 icon: 'columns',
                 submenu: columnSubmenuItems
             });
         }
-        
+
         menuItems.push({
             label: 'Reset Columns',
             icon: 'columns',
             action: function() {
                 gridApi.resetColumnState();
-                console.log('[PyWry] Columns reset');
             }
         });
-        
+
         menuItems.push({
             label: 'Auto-size Columns',
             icon: 'columns',
             action: function() {
                 gridApi.autoSizeAllColumns();
-                console.log('[PyWry] Columns auto-sized');
             }
         });
-        
+
         menuItems.push({ separator: true });
-        
+
         menuItems.push({
             label: 'Clear All Filters',
             icon: 'filter',
             action: function() {
                 gridApi.setFilterModel(null);
-                console.log('[PyWry] All filters cleared');
             }
         });
-        
+
         if (customItems && customItems.length > 0) {
             menuItems.push({ separator: true });
             customItems.forEach(function(item) {
@@ -1761,11 +1704,7 @@ window.PYWRY_AGGRID_SETUP_CONTEXT_MENU = function(gridApi, gridDiv, gridId, cust
                 });
             });
         }
-        
+
         window.PYWRY_AGGRID_CONTEXT_MENU.show(e.clientX, e.clientY, menuItems, cellInfo || {}, gridDiv);
     });
-    
-    console.log('[PyWry AG Grid ' + id + '] Context menu enabled');
 };
-
-console.log('[PyWry] AG Grid defaults loaded');

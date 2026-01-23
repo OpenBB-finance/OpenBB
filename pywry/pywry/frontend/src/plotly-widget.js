@@ -1,10 +1,6 @@
 /*PyWry Plotly Widget*/
 
-console.log('[PyWry Plotly] Widget module loaded');
-
 function render({ model, el }) {
-    console.log('[PyWry Plotly] render() called');
-
     el.innerHTML = '';
 
     // Apply theme class to el (AnyWidget container) for proper theming
@@ -29,7 +25,6 @@ function render({ model, el }) {
     // Set toast container for this widget instance
     if (window.PYWRY_TOAST && window.PYWRY_TOAST.setContainer) {
         window.PYWRY_TOAST.setContainer(container);
-        console.log('[PyWry Plotly Widget] PYWRY_TOAST container set');
     }
 
     // Attach model to container for global dispatch lookup
@@ -84,37 +79,34 @@ function render({ model, el }) {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log('[PyWry Export] Downloaded:', filename);
     }
-    
+
     // Listen for CSV data from Python
     pywry.on('pywry:download-csv', (data) => {
-        console.log('[PyWry Export] Received CSV from Python, length:', data.csv?.length);
         downloadCsv(data.csv, data.filename);
     });
-    
+
     // Listen for toolbar:set-value to update a single component's value/options
     pywry.on('toolbar:set-value', (data) => {
-        console.log('[PyWry] toolbar:set-value:', data.componentId, data.value);
         const componentId = data.componentId;
-        
+
         // Find component by ID
         const component = container.querySelector(`#${componentId}`);
         if (!component) {
             console.warn('[PyWry] Component not found:', componentId);
             return;
         }
-        
+
         // Handle dropdown - can update options OR selected value
         if (component.classList.contains('pywry-dropdown')) {
             const menu = component.querySelector('.pywry-dropdown-menu');
             const textEl = component.querySelector('.pywry-dropdown-text');
-            
+
             // If options array provided, rebuild the dropdown options
             if (data.options && Array.isArray(data.options)) {
                 menu.innerHTML = '';
                 const selected = data.value || data.selected;
-                
+
                 data.options.forEach(opt => {
                     const optEl = document.createElement('div');
                     optEl.className = 'pywry-dropdown-option';
@@ -124,7 +116,7 @@ function render({ model, el }) {
                     }
                     optEl.setAttribute('data-value', opt.value);
                     optEl.textContent = opt.label;
-                    
+
                     // Add click handler
                     optEl.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -132,13 +124,13 @@ function render({ model, el }) {
                         optEl.classList.add('pywry-selected');
                         textEl.textContent = opt.label;
                         component.classList.remove('pywry-open');
-                        
+
                         const eventName = component.getAttribute('data-event');
                         if (eventName) {
                             pywry.emit(eventName, { value: opt.value, componentId: componentId });
                         }
                     });
-                    
+
                     menu.appendChild(optEl);
                 });
             } else if (data.value !== undefined) {
@@ -158,19 +150,16 @@ function render({ model, el }) {
     // Helper function to process config - converts icon names to objects and event props to click handlers
     function processPlotlyConfig(config) {
         if (!config) return config;
-        
+
         if (config.modeBarButtonsToAdd && Array.isArray(config.modeBarButtonsToAdd)) {
-            console.log('[PyWry Plotly] Processing', config.modeBarButtonsToAdd.length, 'custom buttons');
             config.modeBarButtonsToAdd = config.modeBarButtonsToAdd.map(function(btn, idx) {
-                console.log('[PyWry Plotly] Button', idx, ':', btn.name, 'icon:', btn.icon, 'event:', btn.event);
-                
+
                 // Handle icon - could be string (Plotly icon name) or object (custom SVG)
                 if (typeof btn.icon === 'string') {
                     // String icon name - look up in Plotly.Icons
                     var iconName = btn.icon;
                     if (window.Plotly && window.Plotly.Icons && window.Plotly.Icons[iconName]) {
                         btn.icon = window.Plotly.Icons[iconName];
-                        console.log('[PyWry Plotly] Icon', iconName, 'resolved to Plotly.Icons');
                     } else {
                         // Fallback: use question mark icon if the named icon doesn't exist
                         console.warn('[PyWry Plotly] Unknown icon:', iconName, '- using fallback');
@@ -190,34 +179,29 @@ function render({ model, el }) {
                     // Ensure it has required properties for Plotly
                     if (!btn.icon.width) btn.icon.width = 1000;
                     if (!btn.icon.height) btn.icon.height = 1000;
-                    console.log('[PyWry Plotly] Using custom SVG icon for', btn.name);
                 }
-                
+
                 // Convert 'event' property to 'click' function
                 if (btn.event) {
                     var eventName = btn.event;
                     var eventData = btn.data || {};
                     btn.click = function(gd) {
-                        console.log('[PyWry Plotly] Button clicked, emitting:', eventName);
-                        // Just emit to Python - Python will send back CSV data
                         pywry.emit(eventName, eventData);
                     };
                     delete btn.event;
                     delete btn.data;
-                    console.log('[PyWry Plotly] Button', btn.name, 'click handler set for event:', eventName);
                 }
-                
+
                 return btn;
             });
         }
-        
+
         return config;
     }
 
     pywry.on('plotly:update-figure', (data) => {
         const plotDiv = container.querySelector('.js-plotly-plot');
         if (plotDiv && window.Plotly) {
-            console.log('[PyWry Plotly] Updating figure via event, data keys:', Object.keys(data));
             // Python sends {data: [...], layout: {...}} directly, not nested in figure
             const figData = data.figure ? data.figure.data : data.data;
             const figLayout = data.figure ? data.figure.layout : data.layout;
@@ -274,7 +258,6 @@ function render({ model, el }) {
         if (data && data.theme) {
             const isDark = data.theme.includes('dark');
             const newTheme = isDark ? 'dark' : 'light';
-            console.log('[PyWry Plotly] Theme update received:', data.theme, '-> model.theme:', newTheme);
             model.set('theme', newTheme);
             model.save_changes();
             applyTheme();
@@ -283,7 +266,6 @@ function render({ model, el }) {
 
     // Handle alert/toast notifications
     pywry.on('pywry:alert', (data) => {
-        console.log('[PyWry Plotly] Alert received:', data);
         if (window.PYWRY_TOAST) {
             const type = data.type || 'info';
             if (type === 'confirm') {
@@ -317,7 +299,7 @@ function render({ model, el }) {
     model.off('change:content');
     model.off('change:figure_json');
     model.off('change:theme');
-    
+
     model.on('change:_py_event', () => {
         try {
             const event = JSON.parse(model.get('_py_event') || '{}');
@@ -357,7 +339,7 @@ function render({ model, el }) {
     function setupPlotlyEvents(chartEl) {
         // Get chartId from model for event payloads
         const chartId = model.get('chart_id') || 'default';
-        
+
         chartEl.on('plotly_click', function(data) {
             const points = data.points.map(p => ({
                 curveNumber: p.curveNumber,
@@ -438,64 +420,52 @@ function render({ model, el }) {
             pywry.emit('plotly:relayout', { chartId: chartId, widget_type: 'chart', relayout_data: data });
         });
     }
-    
+
     function renderContent() {
         const content = model.get('content');
         const figureJson = model.get('figure_json');
-        
-        console.log('[PyWry Plotly] renderContent(), content:', content ? content.length + ' chars' : 'null',
-                    ', figure_json:', figureJson ? figureJson.length + ' chars' : 'null');
-        
+
         if (!content) {
             container.innerHTML = '<div style="padding:20px;color:#888;font-family:monospace;">Waiting for content...</div>';
             return;
         }
-        
+
         // Set content HTML (toolbar + chart container)
         container.innerHTML = content;
-        
+
         // Initialize toolbar handlers using centralized function
         // This handles all component types: Button, Select, MultiSelect, Toggle, Checkbox, etc.
         setTimeout(() => initToolbarHandlers(container, pywry), 10);
-        
+
         applyTheme();
-        
+
         // Find chart element within our container (NOT document.getElementById!)
         const chartEl = container.querySelector('#chart');
-        
+
         if (!chartEl) {
             console.error('[PyWry Plotly] No #chart element found in content');
             return;
         }
-        
+
         if (!window.Plotly) {
             console.error('[PyWry Plotly] Plotly library not available');
             chartEl.innerHTML = '<div style="background:#ff4444;color:white;padding:20px;">Plotly not loaded</div>';
             return;
         }
-        
+
         // Use figure_json from model if available
         if (figureJson) {
             try {
                 const figData = JSON.parse(figureJson);
                 const config = figData.config || {};
-                
-                console.log('[PyWry Plotly] Config from figure_json:', JSON.stringify(config, null, 2));
-                
+
                 // Process modebar buttons using shared helper
                 processPlotlyConfig(config);
-                
-                if (config.modeBarButtonsToRemove) {
-                    console.log('[PyWry Plotly] Buttons to remove:', config.modeBarButtonsToRemove);
-                }
-                
+
                 const finalConfig = Object.assign({responsive: true, displaylogo: false}, config);
-                
-                console.log('[PyWry Plotly] Final config for Plotly.newPlot:', Object.keys(finalConfig));
-                console.log('[PyWry Plotly] Rendering chart from figure_json');
+
                 window.Plotly.newPlot(chartEl, figData.data, figData.layout, finalConfig).then(function() {
                     setupPlotlyEvents(chartEl);
-                    console.log('[PyWry Plotly] Chart rendered successfully');
                 }).catch(function(err) {
                     console.error('[PyWry Plotly] Plotly.newPlot failed:', err);
                     chartEl.innerHTML = '<div style="background:#ff4444;color:white;padding:20px;">Plotly error: ' + err.message + '</div>';
@@ -506,10 +476,10 @@ function render({ model, el }) {
         } else {
             console.warn('[PyWry Plotly] No figure_json provided, chart will be empty');
         }
-        
+
         pywry._ready = true;
     }
-    
+
     model.on('change:content', renderContent);
     model.on('change:figure_json', renderContent);
     model.on('change:theme', applyTheme);

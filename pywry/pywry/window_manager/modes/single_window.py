@@ -184,10 +184,10 @@ class SingleWindowMode(WindowModeBase):
             debug(f"Creating lifecycle resources for '{self._label}'")
             lifecycle.register_window(self._label)
 
-        # Send content via IPC
+        # Send content via IPC - pass config for content-request handler
         theme_str = "dark" if config.theme.value in ("dark", "system") else "light"
         debug(f"Calling lifecycle.set_content for '{self._label}'")
-        success = lifecycle.set_content(self._label, html, theme_str)
+        success = lifecycle.set_content(self._label, html, theme_str, config=config)
         debug(f"lifecycle.set_content returned: {success}")
 
         if not success:

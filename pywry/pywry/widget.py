@@ -1,4 +1,5 @@
 """PyWry widget for inline notebook rendering using anywidget."""
+
 # mypy: disable-error-code="import-untyped,no-untyped-call,no-untyped-def,arg-type,type-arg"
 # pylint: disable=too-many-lines
 
@@ -46,7 +47,11 @@ def _get_toolbar_handlers_js() -> str:
 @lru_cache(maxsize=1)
 def _get_plotly_widget_esm() -> str:
     """Build the Plotly widget ESM by combining Plotly.js with the widget code."""
-    from .assets import get_plotly_js, get_plotly_templates_js, get_toast_notifications_js
+    from .assets import (
+        get_plotly_js,
+        get_plotly_templates_js,
+        get_toast_notifications_js,
+    )
 
     # Get the widget render code
     widget_js_file = _SRC_DIR / "plotly-widget.js"
@@ -165,7 +170,11 @@ def _get_aggrid_css_all() -> str:
 @lru_cache(maxsize=1)
 def _get_aggrid_widget_esm() -> str:
     """Build the AG Grid widget ESM by combining AG Grid with widget code."""
-    from .assets import get_aggrid_defaults_js, get_aggrid_js, get_toast_notifications_js
+    from .assets import (
+        get_aggrid_defaults_js,
+        get_aggrid_js,
+        get_toast_notifications_js,
+    )
 
     aggrid_js = get_aggrid_js()
     if not aggrid_js:
@@ -605,23 +614,16 @@ function render({ model, el }) {
                     window.location.href = event.data.url;
                 }
 
-                // Note: pywry:alert is handled via pywry.on() for consistent behavior across all widget types
-
                 // Handle HTML content update
                 if (event.type === 'pywry:update-html' && event.data && event.data.html) {
                     container.innerHTML = event.data.html;
-                    // Re-initialize toolbar handlers after content update
                     initToolbarHandlers(container, pywry);
                 }
 
-                // Fire to registered handlers
-                // Note: pywry:alert is handled via pywry.on() for consistency with Plotly widget
                 const inlineHandledEvents = ['pywry:update-theme', 'pywry:inject-css', 'pywry:remove-css',
                     'pywry:set-style', 'pywry:set-content', 'pywry:download', 'pywry:navigate',
                     'pywry:update-html', 'pywry:alert'];
-                // Always fire to local pywry handlers (includes pywry:alert)
                 pywry._fire(event.type, event.data);
-                // Also fire non-inline-handled events to window.pywry for global handlers
                 if (!inlineHandledEvents.includes(event.type) && window.pywry && window.pywry._fire && window.pywry !== pywry) {
                     window.pywry._fire(event.type, event.data);
                 }
@@ -631,8 +633,6 @@ function render({ model, el }) {
         }
     });
 
-    // Initialize toolbar handlers - LOADED FROM CENTRALIZED SOURCE
-    // See: frontend/src/toolbar-handlers.js
     __TOOLBAR_HANDLERS__
 
     function renderContent(retryCount = 0) {
@@ -868,6 +868,23 @@ def _get_widget_esm() -> str:
 # Basic widget ESM without Plotly
 _WIDGET_ESM = r"""
 function render({ model, el }) {
+    // Inject CSS into the main document to fix Jupyter output cell backgrounds
+    // This must be done here because _css only applies inside the widget shadow DOM
+    const JUPYTER_FIX_ID = 'pywry-jupyter-fix-css';
+    if (!document.getElementById(JUPYTER_FIX_ID)) {
+        const style = document.createElement('style');
+        style.id = JUPYTER_FIX_ID;
+        style.textContent = `
+            .cell-output-ipywidget-background {
+                background-color: transparent !important;
+            }
+            .jp-OutputArea-output {
+                background-color: transparent !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     let modelHeight = model.get('height');
     let modelWidth = model.get('width');
 
@@ -1176,23 +1193,16 @@ function render({ model, el }) {
                     window.location.href = event.data.url;
                 }
 
-                // Note: pywry:alert is handled via pywry.on() for consistent behavior across all widget types
-
                 // Handle HTML content update
                 if (event.type === 'pywry:update-html' && event.data && event.data.html) {
                     container.innerHTML = event.data.html;
-                    // Re-initialize toolbar handlers after content update
                     initToolbarHandlers(container, pywry);
                 }
 
-                // Fire to registered handlers
-                // Note: pywry:alert is handled via pywry.on() for consistency with Plotly widget
                 const inlineHandledEvents = ['pywry:update-theme', 'pywry:inject-css', 'pywry:remove-css',
                     'pywry:set-style', 'pywry:set-content', 'pywry:download', 'pywry:navigate',
                     'pywry:update-html', 'pywry:alert'];
-                // Always fire to local pywry handlers (includes pywry:alert)
                 pywry._fire(event.type, event.data);
-                // Also fire non-inline-handled events to window.pywry for global handlers
                 if (!inlineHandledEvents.includes(event.type) && window.pywry && window.pywry._fire && window.pywry !== pywry) {
                     window.pywry._fire(event.type, event.data);
                 }
@@ -1254,9 +1264,19 @@ def _get_pywry_base_css() -> str:
     """Load pywry base CSS for widget theming, including toast styles."""
     from .assets import get_pywry_css, get_toast_css
 
+    # Fix for Jupyter notebook output cell backgrounds - must be in the widget CSS
+    # to override the default white/gray backgrounds that hide the widget theme
+    jupyter_fix_css = """
+.cell-output-ipywidget-background {
+    background-color: transparent !important;
+}
+.jp-OutputArea-output {
+    background-color: transparent !important;
+}
+"""
     base_css = get_pywry_css() or ""
     toast_css = get_toast_css() or ""
-    return f"{base_css}\n{toast_css}"
+    return f"{jupyter_fix_css}\n{base_css}\n{toast_css}"
 
 
 if HAS_ANYWIDGET:
@@ -1379,7 +1399,7 @@ if HAS_ANYWIDGET:
         def from_html(
             cls,
             content: str,
-            callbacks: dict[str, Callable[[dict[str, Any], str, str], Any]] | None = None,
+            callbacks: (dict[str, Callable[[dict[str, Any], str, str], Any]] | None) = None,
             theme: str = "dark",
             width: str = "100%",
             height: str = "500px",

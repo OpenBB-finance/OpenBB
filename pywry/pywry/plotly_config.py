@@ -214,11 +214,6 @@ class PlotlyConfig(BaseModel):
     locales: dict[str, Any] | None = None
 
 
-# =============================================================================
-# Pre-built Buttons
-# =============================================================================
-
-
 class DownloadImageButton(ModeBarButton):
     """Button to download the chart as an image."""
 

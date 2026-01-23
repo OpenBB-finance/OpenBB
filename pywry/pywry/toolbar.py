@@ -48,10 +48,6 @@ if TYPE_CHECKING:
 _SRC_DIR = Path(__file__).parent / "frontend" / "src"
 
 
-# =============================================================================
-# Type Aliases
-# =============================================================================
-
 ToolbarPosition = Literal["header", "footer", "top", "bottom", "left", "right", "inside"]
 ItemType = Literal[
     "button",
@@ -68,10 +64,6 @@ ItemType = Literal[
     "div",
 ]
 
-
-# =============================================================================
-# Event Validation
-# =============================================================================
 
 # Event pattern: namespace:event-name (e.g., "app:refresh", "view:change")
 # Namespace: starts with letter, alphanumeric only
@@ -103,11 +95,6 @@ def validate_event_format(event: str) -> bool:
     return bool(EVENT_PATTERN.match(event))
 
 
-# =============================================================================
-# Helper Functions
-# =============================================================================
-
-
 def _generate_component_id(component_type: str = "item") -> str:
     """Generate a unique component ID for state tracking.
 
@@ -122,11 +109,6 @@ def _generate_component_id(component_type: str = "item") -> str:
         A unique ID in the format "{component_type}-{uuid[:8]}".
     """
     return f"{component_type}-{uuid.uuid4().hex[:8]}"
-
-
-# =============================================================================
-# Option Model (for Select/MultiSelect)
-# =============================================================================
 
 
 class Option(BaseModel):
@@ -144,11 +126,6 @@ class Option(BaseModel):
             # Can't modify frozen model, so we use object.__setattr__
             object.__setattr__(self, "value", self.label)
         return self
-
-
-# =============================================================================
-# Base ToolbarItem
-# =============================================================================
 
 
 class ToolbarItem(BaseModel):
@@ -229,11 +206,6 @@ class ToolbarItem(BaseModel):
         raise NotImplementedError
 
 
-# =============================================================================
-# Button
-# =============================================================================
-
-
 class Button(ToolbarItem):
     """A clickable button that emits an event with optional data payload.
 
@@ -265,7 +237,14 @@ class Button(ToolbarItem):
     type: Literal["button"] = "button"
     data: dict[str, Any] = Field(default_factory=dict)
     variant: Literal[
-        "primary", "secondary", "neutral", "ghost", "outline", "danger", "warning", "icon"
+        "primary",
+        "secondary",
+        "neutral",
+        "ghost",
+        "outline",
+        "danger",
+        "warning",
+        "icon",
     ] = "primary"
     size: Literal["xs", "sm", "lg", "xl"] | None = None
 
@@ -290,11 +269,6 @@ class Button(ToolbarItem):
             f"{style_attr}{title_attr}{disabled_attr}>"
             f"{html.escape(self.label or 'Button')}</button>"
         )
-
-
-# =============================================================================
-# Select (Single-Select Dropdown)
-# =============================================================================
 
 
 class Select(ToolbarItem):
@@ -372,11 +346,6 @@ class Select(ToolbarItem):
                 f"{dropdown_html}</div>"
             )
         return f'<div style="{self.style}">{dropdown_html}</div>' if self.style else dropdown_html
-
-
-# =============================================================================
-# MultiSelect (Checkbox Group)
-# =============================================================================
 
 
 class MultiSelect(ToolbarItem):
@@ -496,11 +465,6 @@ class MultiSelect(ToolbarItem):
         return f'<div style="{self.style}">{dropdown_html}</div>' if self.style else dropdown_html
 
 
-# =============================================================================
-# TextInput
-# =============================================================================
-
-
 class TextInput(ToolbarItem):
     """A text input field with debounced change events.
 
@@ -539,11 +503,6 @@ class TextInput(ToolbarItem):
                 f'<span class="pywry-input-label">{html.escape(self.label)}</span>{input_html}</span>'
             )
         return input_html
-
-
-# =============================================================================
-# NumberInput
-# =============================================================================
 
 
 class NumberInput(ToolbarItem):
@@ -607,11 +566,6 @@ class NumberInput(ToolbarItem):
         return wrapper_html
 
 
-# =============================================================================
-# DateInput
-# =============================================================================
-
-
 class DateInput(ToolbarItem):
     """A date picker input.
 
@@ -655,11 +609,6 @@ class DateInput(ToolbarItem):
                 f'<span class="pywry-input-label">{html.escape(self.label)}</span>{input_html}</span>'
             )
         return input_html
-
-
-# =============================================================================
-# RangeInput (Slider)
-# =============================================================================
 
 
 class SliderInput(ToolbarItem):
@@ -711,11 +660,6 @@ class SliderInput(ToolbarItem):
                 f'<span class="pywry-input-label">{html.escape(self.label)}</span>{range_html}</span>'
             )
         return range_html
-
-
-# =============================================================================
-# RangeInput (Dual-Handle Range Selector)
-# =============================================================================
 
 
 class RangeInput(ToolbarItem):
@@ -831,11 +775,6 @@ class RangeInput(ToolbarItem):
         return range_html
 
 
-# =============================================================================
-# Toggle (Boolean Switch)
-# =============================================================================
-
-
 class Toggle(ToolbarItem):
     """A toggle switch for boolean values.
 
@@ -875,11 +814,6 @@ class Toggle(ToolbarItem):
         return toggle_html
 
 
-# =============================================================================
-# Checkbox (Boolean Checkbox)
-# =============================================================================
-
-
 class Checkbox(ToolbarItem):
     """A single checkbox for boolean values.
 
@@ -915,11 +849,6 @@ class Checkbox(ToolbarItem):
         if self.style:
             return f'<span style="{self.style}">{checkbox_html}</span>'
         return checkbox_html
-
-
-# =============================================================================
-# RadioGroup (Radio Buttons)
-# =============================================================================
 
 
 class RadioGroup(ToolbarItem):
@@ -1006,11 +935,6 @@ class RadioGroup(ToolbarItem):
                 f'<span class="pywry-input-label">{html.escape(self.label)}</span>{radio_html}</span>'
             )
         return f'<span style="{self.style}">{radio_html}</span>' if self.style else radio_html
-
-
-# =============================================================================
-# TabGroup (Tab-style Selection)
-# =============================================================================
 
 
 class TabGroup(ToolbarItem):
@@ -1106,11 +1030,6 @@ class TabGroup(ToolbarItem):
         return (
             f'<span style="{self.style}">{tab_group_html}</span>' if self.style else tab_group_html
         )
-
-
-# =============================================================================
-# Div (Container for Custom HTML Content)
-# =============================================================================
 
 
 class Div(ToolbarItem):
@@ -1244,10 +1163,6 @@ class Div(ToolbarItem):
         return scripts
 
 
-# =============================================================================
-# Union Type for All Toolbar Items
-# =============================================================================
-
 AnyToolbarItem = Annotated[
     Button
     | Select
@@ -1268,11 +1183,6 @@ AnyToolbarItem = Annotated[
 
 # Rebuild Div model to resolve forward reference for nested children
 Div.model_rebuild()
-
-
-# =============================================================================
-# Toolbar Container
-# =============================================================================
 
 
 class Toolbar(BaseModel):
@@ -1463,7 +1373,7 @@ class Toolbar(BaseModel):
         return scripts
 
     def to_dict(self) -> dict[str, Any]:
-        """Convert to dict for backward compatibility with dict-based API."""
+        """Convert toolbar to dict."""
         return {
             "component_id": self.component_id,
             "position": self.position,
@@ -1476,7 +1386,14 @@ class Toolbar(BaseModel):
                     "style": item.style,
                     "disabled": item.disabled,
                     **item.model_dump(
-                        exclude={"component_id", "type", "label", "event", "style", "disabled"}
+                        exclude={
+                            "component_id",
+                            "type",
+                            "label",
+                            "event",
+                            "style",
+                            "disabled",
+                        }
                     ),
                 }
                 for item in self.items
@@ -1487,10 +1404,6 @@ class Toolbar(BaseModel):
             "resizable": self.resizable,
         }
 
-
-# =============================================================================
-# Item Type Mapping
-# =============================================================================
 
 _ITEM_TYPE_MAP: dict[str, type[ToolbarItem]] = {
     "button": Button,
@@ -1503,11 +1416,6 @@ _ITEM_TYPE_MAP: dict[str, type[ToolbarItem]] = {
     "range": RangeInput,
     "div": Div,
 }
-
-
-# =============================================================================
-# Helper Functions for Building Toolbars
-# =============================================================================
 
 
 def build_toolbar_html(toolbar: Toolbar | dict[str, Any]) -> str:
@@ -1553,10 +1461,6 @@ def build_toolbars_html(toolbars: Sequence[Toolbar | dict[str, Any]] | None) -> 
     return "".join(html_parts)
 
 
-# =============================================================================
-# Toolbar JavaScript (for dropdown/select interactivity)
-# =============================================================================
-
 # CENTRALIZED: Load toolbar handlers from single source file
 # The same JavaScript is used by widget.py for anywidget rendering
 
@@ -1597,8 +1501,6 @@ def _get_toolbar_script_content() -> str:
     if (window.__PYWRY_TOOLBAR_INIT__) return;
     window.__PYWRY_TOOLBAR_INIT__ = true;
 
-    // Ensure window.pywry exists for native windows
-    // IMPORTANT: Use pyInvoke to send events to Python, not event.emit which is frontend-only
     window.pywry = window.pywry || {{
         _handlers: {{}},
         on: function(event, handler) {{

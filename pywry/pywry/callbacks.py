@@ -131,7 +131,6 @@ class CallbackRegistry:
             warn(f"Cannot register handler for destroyed window '{label}'")
             return False
 
-        # Initialize structures for simple callbacks (backward compat)
         if label not in self._callbacks:
             self._callbacks[label] = {}
         if event_type not in self._callbacks[label]:
@@ -149,7 +148,6 @@ class CallbackRegistry:
                 f"[{widget_type}:{widget_id}] on window '{label}'"
             )
         else:
-            # Store in simple structure for backward compat
             self._callbacks[label][event_type].append(handler)
             debug(f"Registered handler for '{event_type}' on window '{label}'")
 

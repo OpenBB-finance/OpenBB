@@ -3,6 +3,7 @@
 Detects whether PyWry is running in a Jupyter notebook environment
 and provides utilities for inline rendering.
 """
+
 # mypy: disable-error-code="no-untyped-call,attr-defined,arg-type,type-arg"
 
 from __future__ import annotations
@@ -264,7 +265,7 @@ def _wrap_content_with_toolbar(content: str, toolbar_html: str, position: str) -
     return wrappers.get(position, content)
 
 
-def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None, _mode: Any) -> str:
+def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None) -> str:
     """Wrap content HTML with multiple toolbars based on their positions.
 
     Parameters
@@ -273,8 +274,6 @@ def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None, _mode:
         The main content HTML.
     toolbars : list[Toolbar | dict] | None
         List of toolbar configurations (Toolbar models or dicts).
-    _mode : ThemeMode
-        Theme mode for rendering toolbars (unused, kept for backwards compatibility).
 
     Returns
     -------
@@ -283,8 +282,6 @@ def _wrap_content_with_toolbars(content: str, toolbars: list[Any] | None, _mode:
     """
     from .toolbar import wrap_content_with_toolbars
 
-    # Use the canonical wrap_content_with_toolbars from toolbar.py
-    # This handles all 7 positions: header, footer, top, bottom, left, right, inside
     return wrap_content_with_toolbars(content, toolbars)
 
 
@@ -343,10 +340,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
     use_anywidget = HAS_ANYWIDGET and not force_iframe and not is_headless()
     if use_anywidget:
         from . import inline
-        from .templates import ThemeMode
         from .widget import PyWryPlotlyWidget
-
-        mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
         # Generate token for widget authentication
         widget_token = inline._generate_widget_token(widget_id)
@@ -363,7 +357,7 @@ def create_plotly_widget(  # pylint: disable=too-many-branches
         )
 
         # Inject toolbars using position-based layout
-        html = _wrap_content_with_toolbars(html, toolbars, mode)
+        html = _wrap_content_with_toolbars(html, toolbars)
 
         return PyWryPlotlyWidget(
             content=html,
@@ -501,9 +495,6 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
     from . import inline
     from .grid import to_js_grid_config
     from .runtime import is_headless
-    from .templates import ThemeMode
-
-    mode = ThemeMode.DARK if theme == "dark" else ThemeMode.LIGHT
 
     # Use anywidget when available for better performance (unless forced to use IFrame)
     # In headless mode (PYWRY_HEADLESS=1), always use InlineWidget for server deployments
@@ -523,7 +514,7 @@ def create_dataframe_widget(  # pylint: disable=too-many-branches,too-many-argum
         grid_html = '<div id="grid" class="pywry-grid" style="height: 100%; width: 100%;"></div>'
 
         # Use new multi-toolbar wrapping
-        content_html = _wrap_content_with_toolbars(grid_html, toolbars, mode)
+        content_html = _wrap_content_with_toolbars(grid_html, toolbars)
 
         # If header_html exists and toolbars not used, wrap with header
         if header_html and not toolbars:

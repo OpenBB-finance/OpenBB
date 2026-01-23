@@ -475,10 +475,6 @@ THEME_MANAGER_JS = """
 })();
 """
 
-# =============================================================================
-# Event Bridge - Generic event handling
-# =============================================================================
-
 EVENT_BRIDGE_JS = """
 (function() {
     'use strict';
@@ -495,10 +491,6 @@ EVENT_BRIDGE_JS = """
     console.log('Event bridge initialized');
 })();
 """
-
-# =============================================================================
-# Toolbar Bridge - Toolbar state management
-# =============================================================================
 
 TOOLBAR_BRIDGE_JS = """
 (function() {
@@ -676,13 +668,11 @@ TOOLBAR_BRIDGE_JS = """
 })();
 """
 
-# =============================================================================
 # NOTE: Plotly and AG Grid event bridges are NOT defined here.
 # They are loaded from the frontend JS files:
 #   - pywry/frontend/src/plotly-defaults.js (single source of truth for Plotly events)
 #   - pywry/frontend/src/aggrid-defaults.js (single source of truth for AG Grid events)
 # These files are loaded via templates.py's build_plotly_script() and build_aggrid_script()
-# =============================================================================
 
 
 CLEANUP_JS = """

@@ -176,7 +176,13 @@ class WindowLifecycle:
         """Get labels of all tracked active windows."""
         return [label for label, res in self._windows.items() if not res.is_destroyed]
 
-    def set_content(self, label: str, html: str, theme: str = "dark") -> bool:
+    def set_content(
+        self,
+        label: str,
+        html: str,
+        theme: str = "dark",
+        config: WindowConfig | None = None,
+    ) -> bool:
         """Set the HTML content for a window via IPC.
 
         Parameters
@@ -187,6 +193,8 @@ class WindowLifecycle:
             The HTML content.
         theme : str
             Theme mode ('dark' or 'light') - MUST match window background.
+        config : WindowConfig or None, optional
+            Store config for content-request handler to use.
 
         Returns
         -------
@@ -200,6 +208,8 @@ class WindowLifecycle:
             return False
 
         resources.html_content = html
+        if config is not None:
+            resources.last_config = config
         success = runtime.set_content(label, html, theme)
 
         if success:

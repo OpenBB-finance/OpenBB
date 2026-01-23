@@ -1,4 +1,5 @@
 """Main PyWry application class."""
+
 # pylint: disable=too-many-lines
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ from .notebook import should_use_inline_rendering
 from .runtime import refresh_window as runtime_refresh_window
 from .state_mixins import GridStateMixin, PlotlyStateMixin, ToolbarStateMixin
 from .templates import build_html, build_plotly_init_script
+from .widget_protocol import NativeWindowHandle
 from .window_manager import (
     BrowserMode,
     MultiWindowMode,
@@ -232,7 +234,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
         label: str | None = None,
         watch: bool | None = None,
         toolbars: list[dict[str, Any] | Toolbar] | None = None,
-    ) -> str | BaseWidget:
+    ) -> NativeWindowHandle | BaseWidget:
         """Show content in a window.
 
         In a notebook environment (Jupyter, IPython, Colab, etc.), this will
@@ -266,8 +268,9 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
 
         Returns
         -------
-        str or PyWryWidget or InlineWidget
-            The window label (native window) or widget (notebook).
+        NativeWindowHandle or PyWryWidget or InlineWidget
+            A NativeWindowHandle (native window) or widget (notebook).
+            All implement the BaseWidget protocol.
         """
         # Check if we're in BROWSER mode - use inline server but open in system browser
         is_browser_mode = isinstance(self._mode, BrowserMode)
@@ -403,18 +406,20 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
             toolbars=toolbars,
         )
 
-        # Store content for refresh support
+        # Show in window (pass label for multi-window mode)
+        # This creates the window resources entry
+        label_result = self._mode.show(config, html, callbacks, target_label)
+
+        # Store content for refresh support (after window exists)
         lifecycle = get_lifecycle()
-        lifecycle.store_content_for_refresh(target_label, html_content, config)
+        lifecycle.store_content_for_refresh(label_result, html_content, config)
 
         # Enable hot reload watching if requested
         if enable_hot_reload:
-            self._setup_hot_reload_watching(target_label, html_content)
+            self._setup_hot_reload_watching(label_result, html_content)
 
-        # Show in window (pass label for multi-window mode)
-        label_result = self._mode.show(config, html, callbacks, target_label)
-
-        return label_result
+        # Return a NativeWindowHandle for native windows (provides widget-like API)
+        return NativeWindowHandle(label_result, self)
 
     def show_plotly(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches
         self,
@@ -430,7 +435,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
         on_select: Any = None,
         toolbars: list[dict[str, Any] | Toolbar] | None = None,
         config: Any = None,
-    ) -> str | BaseWidget:
+    ) -> NativeWindowHandle | BaseWidget:
         """Show a Plotly figure.
 
         In a notebook environment, this will automatically render the figure
@@ -465,8 +470,9 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
 
         Returns
         -------
-        str or InlineWidget
-            The window label (native window) or InlineWidget (notebook).
+        NativeWindowHandle or BaseWidget
+            A NativeWindowHandle (native window) or widget (notebook).
+            All implement the BaseWidget protocol.
         """
         # Check if we're in BROWSER mode - use inline server but open in system browser
         is_browser_mode = isinstance(self._mode, BrowserMode)
@@ -572,7 +578,7 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
         on_cell_click: Any = None,
         on_row_selected: Any = None,
         server_side: bool = False,
-    ) -> str | BaseWidget:
+    ) -> NativeWindowHandle | BaseWidget:
         """Show a DataFrame in an AG Grid table.
 
         In a notebook environment, this will automatically render the table
@@ -614,8 +620,9 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
 
         Returns
         -------
-        str or InlineWidget
-            The window label (native window) or InlineWidget (notebook).
+        NativeWindowHandle or BaseWidget
+            A NativeWindowHandle (native window) or widget (notebook).
+            All implement the BaseWidget protocol.
         """
         # Check if we're in BROWSER mode - use inline server but open in system browser
         is_browser_mode = isinstance(self._mode, BrowserMode)

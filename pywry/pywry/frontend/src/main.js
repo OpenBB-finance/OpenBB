@@ -12,14 +12,15 @@
 window.pywry = {
   ready: false,
   _handlers: {},
-  
+
   setContent: function(html, theme) {
     var htmlEl = document.documentElement;
-    htmlEl.classList.remove('dark', 'light');
+    // Remove all theme classes
+    htmlEl.classList.remove('dark', 'light', 'pywry-theme-dark', 'pywry-theme-light');
     if (theme === 'light') {
-      htmlEl.classList.add('light');
+      htmlEl.classList.add('light', 'pywry-theme-light');
     } else {
-      htmlEl.classList.add('dark');
+      htmlEl.classList.add('dark', 'pywry-theme-dark');
     }
     document.getElementById('app').innerHTML = html;
     window.pywry.sendEvent('content:ready', { timestamp: Date.now() });
@@ -72,7 +73,7 @@ window.pywry = {
 async function setupEventListeners() {
   if (window.__TAURI__ && window.__TAURI__.event) {
     const { listen } = window.__TAURI__.event;
-    
+
     await listen('pywry:content', (event) => {
       window.pywry.setContent(event.payload.html, event.payload.theme);
       window.pywry.dispatch('content', event.payload);
@@ -99,23 +100,27 @@ async function setupEventListeners() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   await setupEventListeners();
-  
+
   // Register built-in pywry:* handlers for Python→JS utility events
   registerBuiltinHandlers();
-  
+
   window.pywry.ready = true;
   window.pywry.dispatch('ready', {});
-  window.pywry.sendEvent('window:ready', { timestamp: Date.now() });
+
+  // Request content from Python - handles initial load and page reload
+  window.pywry.sendEvent('pywry:content-request', {
+    widget_type: 'window',
+    window_label: window.__PYWRY_LABEL__ || 'main',
+    reason: 'page_load',
+    timestamp: Date.now()
+  });
 });
 
 // Built-in pywry:* utility event handlers
 function registerBuiltinHandlers() {
-  console.log('[pywry] Registering built-in utility handlers...');
-  
   // pywry:set-content - Update element innerHTML or textContent
   window.pywry.on('pywry:set-content', function(data) {
-    console.log('[pywry] pywry:set-content received:', data);
-    var el = data.id ? document.getElementById(data.id) : 
+    var el = data.id ? document.getElementById(data.id) :
              data.selector ? document.querySelector(data.selector) : null;
     if (!el) {
       console.warn('[pywry] pywry:set-content - no element found for', data.id || data.selector);
@@ -130,7 +135,6 @@ function registerBuiltinHandlers() {
 
   // pywry:set-style - Update inline styles on element(s)
   window.pywry.on('pywry:set-style', function(data) {
-    console.log('[pywry] pywry:set-style received:', data);
     var elements = [];
     if (data.id) {
       var el = document.getElementById(data.id);
@@ -142,14 +146,12 @@ function registerBuiltinHandlers() {
       console.warn('[pywry] pywry:set-style - no elements found for', data.id || data.selector);
       return;
     }
-    console.log('[pywry] pywry:set-style - found', elements.length, 'elements');
     var styles = data.styles || {};
     elements.forEach(function(el) {
       Object.keys(styles).forEach(function(prop) {
         el.style[prop] = styles[prop];
       });
     });
-    console.log('[pywry] pywry:set-style - applied styles');
   });
 
   // pywry:inject-css - Inject CSS dynamically
@@ -192,9 +194,6 @@ function registerBuiltinHandlers() {
     }
   });
 
-  // pywry:alert is handled by PYWRY_SYSTEM_EVENTS_JS in scripts.py
-  // Do not duplicate the handler here to avoid double toasts
-
   // pywry:update-html - Replace entire widget content
   window.pywry.on('pywry:update-html', function(data) {
     if (data.html) {
@@ -213,9 +212,11 @@ function registerBuiltinHandlers() {
     if (!data.theme) return;
     var isDark = data.theme.includes('dark');
     var htmlEl = document.documentElement;
-    htmlEl.classList.remove('dark', 'light');
+    // Update all theme classes consistently
+    htmlEl.classList.remove('dark', 'light', 'pywry-theme-dark', 'pywry-theme-light');
     htmlEl.classList.add(isDark ? 'dark' : 'light');
-    
+    htmlEl.classList.add(isDark ? 'pywry-theme-dark' : 'pywry-theme-light');
+
     // Also update widget containers
     var containers = document.querySelectorAll('.pywry-widget, .pywry-container');
     containers.forEach(function(container) {
@@ -224,5 +225,24 @@ function registerBuiltinHandlers() {
     });
   });
 
-  console.log('[pywry] Built-in utility handlers registered');
+  // pywry:refresh - Request fresh content from Python
+  // Emits a content-request to Python to re-send the stored content
+  window.pywry.on('pywry:refresh', function(data) {
+    // Request Python to re-send content for this window
+    window.pywry.sendEvent('pywry:content-request', {
+      widget_type: 'window',
+      window_label: window.__PYWRY_LABEL__ || 'main',
+      reason: 'user_refresh',
+      timestamp: Date.now()
+    });
+  });
+
+  // pywry:remove-css - Remove a CSS style element by ID
+  window.pywry.on('pywry:remove-css', function(data) {
+    if (!data.id) return;
+    var existing = document.getElementById(data.id);
+    if (existing) {
+      existing.remove();
+    }
+  });
 }
