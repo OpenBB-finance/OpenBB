@@ -41,7 +41,7 @@ jobs:
       contents: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
 
@@ -66,7 +66,7 @@ jobs:
           echo "assets_path=./release_assets" >> $GITHUB_OUTPUT
 
       - name: Create VERSIONED release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.extract_version.outputs.versioned_tag }}
           name: ${{ steps.extract_version.outputs.release_name }}

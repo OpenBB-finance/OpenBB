@@ -22,10 +22,10 @@ jobs:
     env:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Cache vcpkg
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.VCPKG_ROOT }}
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('desktop/**/vcpkg.json') }}
@@ -55,7 +55,7 @@ jobs:
           echo "OPENSSL_LIB_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static/lib" >> $GITHUB_ENV
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
 
@@ -68,7 +68,7 @@ jobs:
           override: true
 
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
@@ -78,7 +78,7 @@ jobs:
             windows-x64-cargo-registry-
 
       - name: Cache cargo build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: desktop/target
           key: windows-x64-cargo-build-${{ hashFiles('desktop/**/Cargo.lock') }}
@@ -95,7 +95,7 @@ jobs:
         run: cargo test --all
 
       - name: Cache node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: desktop/node_modules
           key: windows-x64-node-modules-${{ hashFiles('desktop/**/package-lock.json') }}
