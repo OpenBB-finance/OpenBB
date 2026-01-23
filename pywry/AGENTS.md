@@ -107,7 +107,7 @@ pywry/
 ├── inline.py            # FastAPI-based inline rendering + InlineWidget class
 ├── notebook.py          # Notebook environment detection (NotebookEnvironment enum)
 ├── widget.py            # anywidget-based widgets (PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget)
-├── widget_protocol.py   # BaseWidget protocol definition
+├── widget_protocol.py   # BaseWidget protocol and NativeWindowHandle class
 ├── config.py            # Layered configuration system (pydantic-settings)
 ├── models.py            # Pydantic models (WindowConfig, HtmlContent, ThemeMode, WindowMode)
 ├── templates.py         # HTML template builder with CSP, themes, scripts, toolbar
@@ -170,38 +170,60 @@ from pywry import (
     TabGroup, Div, Option, ToolbarItem
 )
 
-# Plotly configuration
+# Plotly configuration (for customizing modebar, icons, buttons)
 from pywry import PlotlyConfig, PlotlyIconName, ModeBarButton, ModeBarConfig, SvgIcon, StandardButton
 
-# Grid models
-from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOptions, GridConfig
+# Grid models (for AgGrid customization)
+from pywry.grid import ColDef, ColGroupDef, DefaultColDef, RowSelection, GridOptions, GridConfig, GridData, build_grid_config, to_js_grid_config
 
-# State mixins
+# State mixins (for extending custom widgets)
 from pywry import GridStateMixin, PlotlyStateMixin, ToolbarStateMixin
 
 # Inline functions (for notebooks)
 from pywry.inline import show_plotly, show_dataframe, block, stop_server
 
-# Settings
-from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings
-from pywry import DeploySettings  # Deploy mode configuration
+# Notebook detection
+from pywry import NotebookEnvironment, detect_notebook_environment, is_anywidget_available, should_use_inline_rendering
 
 # Widget classes (PyWryWidget for notebooks)
 from pywry import PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget
 
+# Widget protocol (for type checking and custom implementations)
+from pywry.widget_protocol import BaseWidget, NativeWindowHandle, is_base_widget
+
+# Window manager
+from pywry import BrowserMode, get_lifecycle
+
+# Settings
+from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings, HotReloadSettings, TimeoutSettings, AssetSettings, LogSettings
+
+# Asset loading
+from pywry import AssetLoader, get_asset_loader
+
+# Callback registry
+from pywry import CallbackFunc, WidgetType, get_registry
+
 # Runtime (alternative for sending events in native mode)
 from pywry import runtime
 
-# State management (deploy mode)
+# State management (for deploy mode / horizontal scaling)
 from pywry.state import (
-    get_widget_store,      # Factory for WidgetStore
-    get_event_bus,         # Factory for EventBus
-    get_connection_router, # Factory for ConnectionRouter
-    get_session_store,     # Factory for SessionStore
-    is_deploy_mode,        # Check if deploy mode is enabled
-    get_worker_id,         # Get current worker ID
+    get_widget_store,
+    get_event_bus,
+    get_connection_router,
+    get_session_store,
+    is_deploy_mode,
+    get_worker_id,
+    get_state_backend,
+    WidgetData,
+    EventMessage,
+    ConnectionInfo,
+    UserSession,
+    StateBackend,
 )
-from pywry.state import StateBackend, WidgetData, EventMessage, ConnectionInfo, UserSession
+
+# Deploy settings (for programmatic configuration)
+from pywry.config import DeploySettings
 ```
 
 ### PyWry Class
@@ -613,6 +635,8 @@ PYWRY_DEPLOY__DEFAULT_ROLE=viewer
 
 | Class | File | Responsibility |
 |-------|------|----------------|
+| `BaseWidget` | `widget_protocol.py` | Protocol defining unified widget API |
+| `NativeWindowHandle` | `widget_protocol.py` | Handle for native windows implementing BaseWidget |
 | `InlineWidget` | `inline.py` | IFrame-based widget (notebook fallback) |
 | `PyWryWidget` | `widget.py` | Base anywidget |
 | `PyWryPlotlyWidget` | `widget.py` | Plotly-specific anywidget |

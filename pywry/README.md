@@ -130,7 +130,7 @@ def on_click(data, event_type, label):
     """Update chart title when a point is clicked."""
     point = data["points"][0]
     app.emit(
-        "plotly:update-layout", 
+        "plotly:update-layout",
         {
             "layout": {
                 "title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"
@@ -441,6 +441,9 @@ from pywry import NotebookEnvironment, detect_notebook_environment, is_anywidget
 
 # Widget classes (PyWryWidget for notebooks)
 from pywry import PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget
+
+# Widget protocol (for type checking and custom implementations)
+from pywry.widget_protocol import BaseWidget, NativeWindowHandle, is_base_widget
 
 # Window manager
 from pywry import BrowserMode, get_lifecycle
@@ -1865,7 +1868,7 @@ def on_action(evt_data, event_type, label):
     else:
         content = data.to_json(orient="records")
         mime = "application/json"
-    
+
     # Trigger download in the browser
     app.emit("pywry:download", {
         "content": content,
@@ -1973,7 +1976,7 @@ function requestData() {
     window.pywry.emit('app:request-data', {});
 }
 window.pywry.on('app:response', function(data) {
-    document.getElementById('result').textContent = 
+    document.getElementById('result').textContent =
         'Received ' + data.total + ' items: ' + JSON.stringify(data.items);
 });
 </script>
@@ -2608,7 +2611,7 @@ app.show_dataframe(df, toolbars=[toolbar], callbacks={"app:export": on_export})
 ```
 
 </details>
- 
+
 <details>
 <summary><strong>All Toolbar Inputs - No Javascript Required</strong></summary>
 
@@ -2654,7 +2657,7 @@ def make_handler(name):
             component_values[name] = data["btn"]
         else:
             component_values[name] = "clicked"
-        
+
         # Build display text for footer using built-in pywry:set-content
         parts = [f"<strong>{k}:</strong> {v}" for k, v in component_values.items()]
         app.emit("pywry:set-content", {
@@ -2705,7 +2708,7 @@ def on_accent_color(data, event_type, label):
     }
     color = data.get("value", "blue")
     accent = colors.get(color, colors["blue"])
-    
+
     # Use built-in pywry:inject-css to dynamically inject CSS
     # The 'id' allows replacing the same style block on subsequent calls
     app.emit("pywry:inject-css", {
@@ -4508,10 +4511,10 @@ GET /sales        →    create_sales()      →  /widget/{unique_id}
 from fastapi import Request
 from fastapi.responses import RedirectResponse
 from pywry.inline import (
-    _state, 
+    _state,
     _start_server,
     show,              # For HTML content
-    show_plotly,       # For Plotly figures  
+    show_plotly,       # For Plotly figures
     show_dataframe,    # For DataFrames/AgGrid
 )
 import plotly.express as px
@@ -4533,11 +4536,11 @@ def create_sales_dashboard(user_id: str | None = None) -> str:
     """Create a sales dashboard widget, return its label."""
     df = get_sales_data(user_id)
     fig = px.bar(df, x="month", y="revenue", title="Sales Dashboard")
-    
+
     # open_browser=True forces InlineWidget which has .url for redirects
     # With PYWRY_HEADLESS=1, open_in_browser() is automatically skipped
     widget = show_plotly(
-        fig, 
+        fig,
         title="Sales Dashboard",
         callbacks={"chart:export": handle_export},
         open_browser=True,  # Forces InlineWidget for server deployments
@@ -4547,7 +4550,7 @@ def create_sales_dashboard(user_id: str | None = None) -> str:
 def create_inventory_view(warehouse_id: str | None = None) -> str:
     """Create an inventory grid widget."""
     df = get_inventory_data(warehouse_id)
-    
+
     widget = show_dataframe(
         df,
         title="Inventory",
@@ -4704,11 +4707,11 @@ class WidgetSession:
 
 class WidgetManager:
     """Manage all active widget sessions."""
-    
+
     def __init__(self):
         self._sessions: dict[str, WidgetSession] = {}
         self._lock = threading.Lock()
-    
+
     def create(self, widget_id: str, view_name: str, user_id: str | None = None) -> WidgetSession:
         session = WidgetSession(
             widget_id=widget_id,
@@ -4719,19 +4722,19 @@ class WidgetManager:
         with self._lock:
             self._sessions[widget_id] = session
         return session
-    
+
     def get(self, widget_id: str) -> WidgetSession | None:
         return self._sessions.get(widget_id)
-    
+
     def update_state(self, widget_id: str, key: str, value: Any) -> None:
         session = self._sessions.get(widget_id)
         if session:
             session.state[key] = value
-    
+
     def remove(self, widget_id: str) -> None:
         with self._lock:
             self._sessions.pop(widget_id, None)
-    
+
     def get_by_user(self, user_id: str) -> list[WidgetSession]:
         return [s for s in self._sessions.values() if s.user_id == user_id]
 
@@ -4741,20 +4744,20 @@ manager = WidgetManager()
 # Use in view factories
 def create_sales_dashboard(user_id: str | None = None) -> str:
     widget = app.show_plotly(fig, title="Sales", open_browser=True)
-    
+
     # Track the session
     manager.create(widget.label, "sales", user_id)
-    
+
     return widget.label
 
 # Use in event handlers
 def handle_filter_change(data, event_type, label):
     """Update state and show feedback in the widget."""
     from pywry import runtime
-    
+
     manager.update_state(label, "filters", data)
     session = manager.get(label)
-    
+
     if session:
         # Show visual feedback in the widget
         runtime.emit_event(label, "pywry:set-content", {
@@ -4960,11 +4963,11 @@ settings = PyWrySettings(
         # WebSocket security
         websocket_allowed_origins=["https://app.example.com"],
         websocket_require_token=True,
-        
+
         # Internal API security
         internal_api_header="X-MyApp-Token",
         internal_api_token="my-secret-token",  # Or None for auto-gen
-        
+
         # Widget auth mode
         strict_widget_auth=True,  # Browser mode
     )
@@ -5529,7 +5532,7 @@ pywry/
 │   ├── toolbar.py         # Toolbar component models (Button, Select, etc.)
 │   ├── watcher.py         # File system watcher (watchdog-based)
 │   ├── widget.py          # anywidget-based widgets (PyWryWidget, PyWryPlotlyWidget, PyWryAgGridWidget)
-│   ├── widget_protocol.py # BaseWidget protocol definition
+│   ├── widget_protocol.py # BaseWidget protocol and NativeWindowHandle class
 │   ├── capabilities/      # Tauri capability permissions
 │   │   └── default.toml   # Default permissions (core, dialog, fs)
 │   ├── commands/          # IPC command handlers
