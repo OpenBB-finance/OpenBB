@@ -80,9 +80,7 @@ class TestNativeWindowHandleConstructor:
 class TestNativeWindowHandleProperties:
     """Tests for NativeWindowHandle properties."""
 
-    def test_resources_property_returns_lifecycle_resources(
-        self, native_handle, mock_resources
-    ):
+    def test_resources_property_returns_lifecycle_resources(self, native_handle, mock_resources):
         """Test that resources property gets from lifecycle."""
         with patch("pywry.window_manager.get_lifecycle") as mock_get_lifecycle:
             mock_lifecycle = MagicMock()
@@ -193,9 +191,7 @@ class TestNativeWindowHandleProperties:
 
             assert native_handle.created_at is None
 
-    def test_is_alive_true_when_exists_and_not_destroyed(
-        self, native_handle, mock_resources
-    ):
+    def test_is_alive_true_when_exists_and_not_destroyed(self, native_handle, mock_resources):
         """Test is_alive returns True when window exists and not destroyed."""
         mock_resources.is_destroyed = False
         with patch("pywry.window_manager.get_lifecycle") as mock_get_lifecycle:
@@ -248,9 +244,7 @@ class TestNativeWindowHandleMethods:
             callback = MagicMock()
             result = native_handle.on("click", callback)
 
-            mock_registry.register.assert_called_once_with(
-                "test-window", "click", callback
-            )
+            mock_registry.register.assert_called_once_with("test-window", "click", callback)
             assert result is native_handle  # Method chaining
 
     def test_on_returns_self_for_chaining(self, native_handle):
@@ -314,9 +308,7 @@ class TestNativeWindowHandleMethods:
         with patch("pywry.runtime.inject_css") as mock_inject:
             mock_inject.return_value = True
             result = native_handle.inject_css("body { color: red; }", "my-theme")
-            mock_inject.assert_called_once_with(
-                "test-window", "body { color: red; }", "my-theme"
-            )
+            mock_inject.assert_called_once_with("test-window", "body { color: red; }", "my-theme")
             assert result is True
 
     def test_inject_css_generates_asset_id(self, native_handle):
@@ -373,9 +365,7 @@ class TestNativeWindowHandleMethods:
             mock_get_lifecycle.return_value = mock_lifecycle
 
             result = native_handle.get_data("state")
-            mock_lifecycle.get_data.assert_called_once_with(
-                "test-window", "state", None
-            )
+            mock_lifecycle.get_data.assert_called_once_with("test-window", "state", None)
             assert result == {"count": 5}
 
     def test_get_data_with_default(self, native_handle):
@@ -399,9 +389,7 @@ class TestNativeWindowHandleMethods:
             mock_get_lifecycle.return_value = mock_lifecycle
 
             result = native_handle.set_data("state", {"count": 10})
-            mock_lifecycle.set_data.assert_called_once_with(
-                "test-window", "state", {"count": 10}
-            )
+            mock_lifecycle.set_data.assert_called_once_with("test-window", "state", {"count": 10})
             assert result is True
 
 
@@ -494,9 +482,7 @@ class TestBaseWidgetProtocol:
     def test_protocol_type_checking(self):
         """Test that BaseWidget protocol can be used for type checking."""
         # Protocol should be runtime checkable
-        assert hasattr(BaseWidget, "__protocol_attrs__") or hasattr(
-            BaseWidget, "__subclasshook__"
-        )
+        assert hasattr(BaseWidget, "__protocol_attrs__") or hasattr(BaseWidget, "__subclasshook__")
 
 
 # =============================================================================
@@ -553,9 +539,7 @@ class TestNativeWindowHandleEdgeCases:
             }
         }
         native_handle.emit("complex_event", nested_data)
-        mock_app.emit.assert_called_once_with(
-            "complex_event", nested_data, "test-window"
-        )
+        mock_app.emit.assert_called_once_with("complex_event", nested_data, "test-window")
 
     def test_eval_js_with_complex_script(self, native_handle):
         """Test eval_js with multi-line script."""
