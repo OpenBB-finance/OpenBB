@@ -36,7 +36,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.62.0",
-    "react-markdown": "^8.0.7",
+    "react-markdown": "^9.0.0",
     "react-select": "^5.10.2",
     "tailwindcss": "^3.4.17",
     "taurpc": "^1.8.1",
@@ -68,5 +68,8 @@
     "vite": "^7.2.2",
     "vite-plugin-svgr": "^4.5.0",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "seroval": ">=1.4.1"
   }
 }
