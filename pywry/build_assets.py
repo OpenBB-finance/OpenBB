@@ -33,13 +33,18 @@ def ensure_assets_dir() -> None:
 def download_file(url: str, dest: Path, description: str) -> bool:
     """Download a file from a URL and compress it with gzip.
 
-    Args:
-        url: The URL to download from.
-        dest: The destination path (will be saved as .gz compressed).
-        description: Description for logging.
+    Parameters
+    ----------
+    url : str
+        The URL to download from.
+    dest : Path
+        The destination path (will be saved as .gz compressed).
+    description : str
+        Description for logging.
 
     Returns
     -------
+    bool
         True if successful, False otherwise.
     """
     print(f"Downloading {description}...")
@@ -144,6 +149,7 @@ def download_all_assets() -> bool:
 
     Returns
     -------
+    bool
         True if all assets were downloaded successfully.
     """
     ensure_assets_dir()
@@ -168,6 +174,7 @@ def verify_assets() -> dict[str, bool]:
 
     Returns
     -------
+    dict[str, bool]
         Dictionary mapping asset names to their existence status.
     """
     required_assets = [

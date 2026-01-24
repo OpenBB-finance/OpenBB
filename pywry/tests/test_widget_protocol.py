@@ -6,6 +6,10 @@ Tests cover:
 - All handle operations with mocked runtime/lifecycle/callbacks
 """
 
+# pylint: disable=redefined-outer-name
+# Pytest fixtures are designed to be used as function parameters with the same name.
+# This is the standard pytest pattern and is not a code smell.
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -445,17 +449,23 @@ class TestBaseWidgetProtocol:
         """Test that a mock implementing all methods is recognized."""
 
         class MockWidget:
+            """Mock widget implementing BaseWidget protocol for testing."""
+
             def on(self, event_type, callback):
+                """Register event handler."""
+                del event_type, callback  # Unused - protocol stub
                 return self
 
             def emit(self, event_type, data):
-                pass
+                """Emit event."""
+                del event_type, data  # Unused - protocol stub
 
             def update(self, html):
-                pass
+                """Update content."""
+                del html  # Unused - protocol stub
 
             def display(self):
-                pass
+                """Display widget."""
 
         widget = MockWidget()
         assert is_base_widget(widget) is True
@@ -464,7 +474,11 @@ class TestBaseWidgetProtocol:
         """Test that incomplete implementations are not recognized."""
 
         class IncompleteWidget:
+            """Incomplete widget missing required methods."""
+
             def on(self, event_type, callback):
+                """Register event handler."""
+                del event_type, callback  # Unused - protocol stub
                 return self
 
             # Missing emit, update, display

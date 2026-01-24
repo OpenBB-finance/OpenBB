@@ -97,6 +97,35 @@ def set_level(level: int | str) -> None:
     get_logger().setLevel(level)
 
 
+def exception(msg: str) -> None:
+    """Log an exception with full traceback.
+
+    Call this from within an except block to log the exception
+    message along with the full stack trace.
+
+    Parameters
+    ----------
+    msg : str
+        The error message to log alongside the traceback.
+    """
+    get_logger().exception(msg)
+
+
+def log_callback_error(event_type: str, label: str, exc: BaseException) -> None:
+    """Log a callback error with standardized format.
+
+    Parameters
+    ----------
+    event_type : str
+        The event type that triggered the callback.
+    label : str
+        The window label where the event occurred.
+    exc : BaseException
+        The exception that was raised.
+    """
+    get_logger().exception(f"Callback error for '{event_type}' on window '{label}': {exc}")
+
+
 def enable_debug() -> None:
     """Enable debug mode for verbose IPC and operation logging.
 

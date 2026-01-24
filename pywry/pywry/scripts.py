@@ -111,6 +111,12 @@ PYWRY_SYSTEM_EVENTS_JS = """
 (function() {
     'use strict';
 
+    // Guard against re-registration of system event handlers
+    if (window.pywry && window.pywry._systemEventsRegistered) {
+        console.log('[PyWry] System events already registered, skipping');
+        return;
+    }
+
     // Helper function to inject or update CSS
     window.pywry.injectCSS = function(css, id) {
         var style = document.getElementById(id);
@@ -368,6 +374,8 @@ PYWRY_SYSTEM_EVENTS_JS = """
         });
     }
 
+    // Mark system events as registered to prevent duplicate handlers
+    window.pywry._systemEventsRegistered = true;
     console.log('PyWry system events initialized');
 })();
 """

@@ -224,6 +224,10 @@ class JsonIPC:
             self.eval_js(cmd)
         elif action == "check_open":
             self.check_window_open(cmd)
+        elif action == "window_get":
+            self.window_get_property(cmd)
+        elif action == "window_call":
+            self.window_call_method(cmd)
         elif action == "quit":
             self.quit()
         else:
@@ -582,6 +586,163 @@ class JsonIPC:
                 self.send_error(f"Failed to close window: {e}")
         else:
             self.send_error(f"Window not found: {label}")
+
+    def _get_window(self, label: str) -> Any | None:
+        """Get a window by label, checking cache first then manager."""
+        window = self.windows.get(label)
+        if window is None and self.app_handle:
+            window = Manager.get_webview_window(self.app_handle, label)
+            if window:
+                self.windows[label] = window
+        return window
+
+    def window_get_property(self, cmd: dict[str, Any]) -> None:
+        """Get a window property - blocking call with response.
+
+        Expected cmd format:
+        {
+            "action": "window_get",
+            "label": "main",
+            "property": "title",
+            "request_id": "uuid-xxx"
+        }
+
+        Response format:
+        {
+            "type": "response",
+            "request_id": "uuid-xxx",
+            "success": true,
+            "value": "Window Title"
+        }
+        or on error:
+        {
+            "type": "response",
+            "request_id": "uuid-xxx",
+            "success": false,
+            "error": "error message"
+        }
+        """
+        label = cmd.get("label", "main")
+        prop = cmd.get("property", "")
+        request_id = cmd.get("request_id", "")
+
+        if not prop:
+            self.send(
+                {
+                    "type": "response",
+                    "request_id": request_id,
+                    "success": False,
+                    "error": "window_get: missing 'property' field",
+                }
+            )
+            return
+
+        window = self._get_window(label)
+        if window is None:
+            self.send(
+                {
+                    "type": "response",
+                    "request_id": request_id,
+                    "success": False,
+                    "error": f"Window not found: {label}",
+                }
+            )
+            return
+
+        try:
+            from .window_dispatch import get_window_property
+
+            value = get_window_property(window, prop)
+            log(f"window_get '{label}'.{prop} = {value!r}")
+            self.send(
+                {
+                    "type": "response",
+                    "request_id": request_id,
+                    "success": True,
+                    "value": value,
+                }
+            )
+        except Exception as e:
+            self.send(
+                {
+                    "type": "response",
+                    "request_id": request_id,
+                    "success": False,
+                    "error": str(e),
+                }
+            )
+
+    def window_call_method(self, cmd: dict[str, Any]) -> None:
+        """Call a window method - fire-and-forget or blocking.
+
+        Expected cmd format:
+        {
+            "action": "window_call",
+            "label": "main",
+            "method": "set_title",
+            "args": ["New Title"],
+            "request_id": "uuid-xxx"  # Optional for fire-and-forget
+        }
+        """
+        label = cmd.get("label", "main")
+        method = cmd.get("method", "")
+        args = cmd.get("args", [])
+        request_id = cmd.get("request_id", "")
+
+        if not method:
+            if request_id:
+                self.send(
+                    {
+                        "type": "response",
+                        "request_id": request_id,
+                        "success": False,
+                        "error": "window_call: missing 'method' field",
+                    }
+                )
+            else:
+                log_error("window_call: missing 'method' field")
+            return
+
+        window = self._get_window(label)
+        if window is None:
+            if request_id:
+                self.send(
+                    {
+                        "type": "response",
+                        "request_id": request_id,
+                        "success": False,
+                        "error": f"Window not found: {label}",
+                    }
+                )
+            else:
+                log_error(f"window_call: Window not found: {label}")
+            return
+
+        try:
+            from .window_dispatch import call_window_method
+
+            result = call_window_method(window, method, args)
+            log(f"window_call '{label}'.{method}({args}) = {result!r}")
+            if request_id:
+                self.send(
+                    {
+                        "type": "response",
+                        "request_id": request_id,
+                        "success": True,
+                        "value": result,
+                    }
+                )
+        except Exception as e:
+            log_error(f"window_call '{label}'.{method} failed: {e}")
+            if request_id:
+                self.send(
+                    {
+                        "type": "response",
+                        "request_id": request_id,
+                        "success": False,
+                        "error": str(e),
+                    }
+                )
 
 
 def stdin_reader(ipc: JsonIPC) -> None:

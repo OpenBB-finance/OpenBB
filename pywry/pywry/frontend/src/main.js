@@ -104,6 +104,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Register built-in pywry:* handlers for Python→JS utility events
   registerBuiltinHandlers();
 
+  // Initialize custom scrollbars for macOS WebKit - ONLY in native windows
+  if (document.documentElement.classList.contains('pywry-native')) {
+    initCustomScrollbars();
+  }
+
   window.pywry.ready = true;
   window.pywry.dispatch('ready', {});
 
@@ -245,4 +250,255 @@ function registerBuiltinHandlers() {
       existing.remove();
     }
   });
+}
+
+// Custom scrollbar implementation for macOS WebKit
+// Native overlay scrollbars ignore CSS, so we create our own
+function initCustomScrollbars() {
+  // Selectors for scroll containers we handle
+  var scrollSelectors = '.pywry-scroll-container';
+
+  // Use MutationObserver to catch dynamically added scroll containers
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
+        if (node.nodeType === 1) {
+          // Check if node matches any scroll selector
+          if (node.matches && node.matches(scrollSelectors)) {
+            setupCustomScrollbar(node);
+          }
+          // Check children for scroll containers
+          var containers = node.querySelectorAll ? node.querySelectorAll(scrollSelectors) : [];
+          containers.forEach(setupCustomScrollbar);
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Also setup any existing scroll containers
+  document.querySelectorAll(scrollSelectors).forEach(setupCustomScrollbar);
+}
+
+function setupCustomScrollbar(scrollContainer) {
+  // Skip if already set up
+  if (scrollContainer.dataset.customScrollbar) return;
+
+  // Skip Plotly containers only - they have their own responsive layout
+  if (scrollContainer.querySelector('.pywry-plotly') ||
+      scrollContainer.querySelector('.js-plotly-plot')) {
+    scrollContainer.dataset.customScrollbar = 'skipped';
+    return;
+  }
+
+  scrollContainer.dataset.customScrollbar = 'true';
+
+  // Standard pywry-scroll-container handling
+  var wrapper;
+  var parent = scrollContainer.parentElement;
+
+  if (parent && parent.classList.contains('pywry-scroll-wrapper')) {
+    wrapper = parent;
+  } else {
+    wrapper = document.createElement('div');
+    wrapper.className = 'pywry-scroll-wrapper';
+    scrollContainer.parentNode.insertBefore(wrapper, scrollContainer);
+    wrapper.appendChild(scrollContainer);
+  }
+
+  // Create vertical scrollbar track and thumb
+  var trackV = document.createElement('div');
+  trackV.className = 'pywry-scrollbar-track-v';
+  wrapper.appendChild(trackV);
+
+  var thumbV = document.createElement('div');
+  thumbV.className = 'pywry-scrollbar-thumb-v';
+  trackV.appendChild(thumbV);
+
+  // Create horizontal scrollbar track and thumb
+  var trackH = document.createElement('div');
+  trackH.className = 'pywry-scrollbar-track-h';
+  wrapper.appendChild(trackH);
+
+  var thumbH = document.createElement('div');
+  thumbH.className = 'pywry-scrollbar-thumb-h';
+  trackH.appendChild(thumbH);
+
+  var isDraggingV = false;
+  var isDraggingH = false;
+  var startY = 0;
+  var startX = 0;
+  var startScrollTop = 0;
+  var startScrollLeft = 0;
+  var scrollTimeout = null;
+  var trackPadding = 6; // Padding inside the track for the thumb
+
+  function updateScrollbars() {
+    var scrollHeight = scrollContainer.scrollHeight;
+    var clientHeight = scrollContainer.clientHeight;
+    var scrollWidth = scrollContainer.scrollWidth;
+    var clientWidth = scrollContainer.clientWidth;
+
+    var hasVertical = scrollHeight > clientHeight;
+    var hasHorizontal = scrollWidth > clientWidth;
+
+    // Update wrapper class for corner handling
+    wrapper.classList.toggle('has-both-scrollbars', hasVertical && hasHorizontal);
+
+    // Vertical scrollbar
+    if (!hasVertical) {
+      trackV.style.display = 'none';
+      scrollContainer.classList.remove('has-scrollbar-v');
+    } else {
+      trackV.style.display = 'block';
+      scrollContainer.classList.add('has-scrollbar-v');
+
+      // Calculate available track height - use wrapper dimensions for positioning
+      var wrapperHeight = wrapper.clientHeight;
+      var trackVBottom = (hasHorizontal ? 22 : 4); // Account for horizontal scrollbar
+      var trackVHeight = wrapperHeight - 4 - trackVBottom;
+      var availableHeightV = trackVHeight - (trackPadding * 2);
+
+      var thumbHeightV = Math.max(30, (clientHeight / scrollHeight) * availableHeightV);
+      var maxScrollV = scrollHeight - clientHeight;
+      var scrollRatioV = scrollContainer.scrollTop / maxScrollV;
+      var maxThumbTopV = availableHeightV - thumbHeightV;
+      var thumbTopV = trackPadding + (scrollRatioV * maxThumbTopV);
+
+      thumbV.style.height = thumbHeightV + 'px';
+      thumbV.style.top = thumbTopV + 'px';
+    }
+
+    // Horizontal scrollbar
+    if (!hasHorizontal) {
+      trackH.style.display = 'none';
+      scrollContainer.classList.remove('has-scrollbar-h');
+    } else {
+      trackH.style.display = 'block';
+      scrollContainer.classList.add('has-scrollbar-h');
+
+      // Calculate available track width - use wrapper dimensions for positioning
+      var wrapperWidth = wrapper.clientWidth;
+      var trackHRight = (hasVertical ? 22 : 4); // Account for vertical scrollbar
+      var trackHWidth = wrapperWidth - 4 - trackHRight;
+      var availableWidthH = trackHWidth - (trackPadding * 2);
+
+      var thumbWidthH = Math.max(30, (clientWidth / scrollWidth) * availableWidthH);
+      var maxScrollH = scrollWidth - clientWidth;
+      var scrollRatioH = scrollContainer.scrollLeft / maxScrollH;
+      var maxThumbLeftH = availableWidthH - thumbWidthH;
+      var thumbLeftH = trackPadding + (scrollRatioH * maxThumbLeftH);
+
+      thumbH.style.width = thumbWidthH + 'px';
+      thumbH.style.left = thumbLeftH + 'px';
+    }
+  }
+
+  // Update on scroll
+  scrollContainer.addEventListener('scroll', function() {
+    updateScrollbars();
+
+    // Show scrollbar while scrolling
+    wrapper.classList.add('is-scrolling');
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      wrapper.classList.remove('is-scrolling');
+    }, 1000);
+  });
+
+  // Vertical drag handling
+  thumbV.addEventListener('mousedown', function(e) {
+    isDraggingV = true;
+    startY = e.clientY;
+    startScrollTop = scrollContainer.scrollTop;
+    thumbV.classList.add('is-dragging');
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  // Horizontal drag handling
+  thumbH.addEventListener('mousedown', function(e) {
+    isDraggingH = true;
+    startX = e.clientX;
+    startScrollLeft = scrollContainer.scrollLeft;
+    thumbH.classList.add('is-dragging');
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (isDraggingV) {
+      var deltaY = e.clientY - startY;
+      var scrollHeight = scrollContainer.scrollHeight;
+      var clientHeight = scrollContainer.clientHeight;
+      var thumbHeightV = Math.max(30, (clientHeight / scrollHeight) * clientHeight);
+      var maxThumbTopV = clientHeight - thumbHeightV;
+      var maxScrollV = scrollHeight - clientHeight;
+
+      var scrollDeltaV = (deltaY / maxThumbTopV) * maxScrollV;
+      scrollContainer.scrollTop = startScrollTop + scrollDeltaV;
+    }
+
+    if (isDraggingH) {
+      var deltaX = e.clientX - startX;
+      var scrollWidth = scrollContainer.scrollWidth;
+      var clientWidth = scrollContainer.clientWidth;
+      var thumbWidthH = Math.max(30, (clientWidth / scrollWidth) * clientWidth);
+      var maxThumbLeftH = clientWidth - thumbWidthH;
+      var maxScrollH = scrollWidth - clientWidth;
+
+      var scrollDeltaH = (deltaX / maxThumbLeftH) * maxScrollH;
+      scrollContainer.scrollLeft = startScrollLeft + scrollDeltaH;
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (isDraggingV) {
+      isDraggingV = false;
+      thumbV.classList.remove('is-dragging');
+      document.body.style.userSelect = '';
+    }
+    if (isDraggingH) {
+      isDraggingH = false;
+      thumbH.classList.remove('is-dragging');
+      document.body.style.userSelect = '';
+    }
+  });
+
+  // Click on vertical track to jump
+  trackV.addEventListener('click', function(e) {
+    if (e.target === thumbV) return;
+
+    var trackRect = trackV.getBoundingClientRect();
+    var clickY = e.clientY - trackRect.top;
+    var scrollHeight = scrollContainer.scrollHeight;
+    var clientHeight = scrollContainer.clientHeight;
+    var maxScrollV = scrollHeight - clientHeight;
+
+    scrollContainer.scrollTop = (clickY / trackRect.height) * maxScrollV;
+  });
+
+  // Click on horizontal track to jump
+  trackH.addEventListener('click', function(e) {
+    if (e.target === thumbH) return;
+
+    var trackRect = trackH.getBoundingClientRect();
+    var clickX = e.clientX - trackRect.left;
+    var scrollWidth = scrollContainer.scrollWidth;
+    var clientWidth = scrollContainer.clientWidth;
+    var maxScrollH = scrollWidth - clientWidth;
+
+    scrollContainer.scrollLeft = (clickX / trackRect.width) * maxScrollH;
+  });
+
+  // Initial update
+  updateScrollbars();
+
+  // Update on resize
+  window.addEventListener('resize', updateScrollbars);
+
+  // Re-observe for content changes
+  var contentObserver = new MutationObserver(updateScrollbars);
+  contentObserver.observe(scrollContainer, { childList: true, subtree: true, characterData: true });
 }

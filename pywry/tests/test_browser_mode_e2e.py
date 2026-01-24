@@ -15,6 +15,7 @@ These tests verify:
 Tests are designed for CI/headless environments - they do NOT actually open
 a browser, but verify the server-side behavior that BROWSER mode relies on.
 """
+
 # pylint: disable=redefined-outer-name
 
 import asyncio
@@ -188,10 +189,14 @@ def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
 def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
     """Make HTTP GET request, return (status_code, body).
 
-    Args:
-        url: URL to fetch
-        timeout: Request timeout in seconds
-        auth: If True, include internal API auth header
+    Parameters
+    ----------
+    url : str
+        URL to fetch.
+    timeout : float, optional
+        Request timeout in seconds.
+    auth : bool, optional
+        If True, include internal API auth header.
     """
     req = urllib.request.Request(url)  # noqa: S310
     if auth:
@@ -207,11 +212,16 @@ def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, s
 def http_post(url: str, data: dict, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
     """Make HTTP POST request with JSON body.
 
-    Args:
-        url: URL to POST to
-        data: JSON data dict
-        timeout: Request timeout in seconds
-        auth: If True, include internal API auth header
+    Parameters
+    ----------
+    url : str
+        URL to POST to.
+    data : dict
+        JSON data dict.
+    timeout : float, optional
+        Request timeout in seconds.
+    auth : bool, optional
+        If True, include internal API auth header.
     """
     headers = {"Content-Type": "application/json"}
     if auth:

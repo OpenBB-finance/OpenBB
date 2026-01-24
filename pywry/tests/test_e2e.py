@@ -1,4 +1,5 @@
 """End-to-end tests for PyWry theme-coordinated rendering."""
+
 # pylint: disable=too-many-lines
 
 import threading
@@ -152,11 +153,16 @@ def wait_for_result(
 ) -> dict[str, Any] | None:
     """Execute JS and wait for pywry.result() callback.
 
-    Args:
-        label: Window label to execute script in
-        script: JavaScript to execute
-        timeout: Timeout per attempt in seconds
-        retries: Number of retry attempts for race conditions (macOS)
+    Parameters
+    ----------
+    label : str
+        Window label to execute script in.
+    script : str
+        JavaScript to execute.
+    timeout : float, optional
+        Timeout per attempt in seconds.
+    retries : int, optional
+        Number of retry attempts for race conditions (macOS).
     """
     registry = get_registry()
 
@@ -603,7 +609,8 @@ class TestToolbarIntegration:
 
         # Verify structure (left position)
         result = wait_for_result(
-            label, "pywry.result({ hasWrapper: !!document.querySelector('.pywry-wrapper-left') })"
+            label,
+            "pywry.result({ hasWrapper: !!document.querySelector('.pywry-wrapper-left') })",
         )
         assert result["hasWrapper"], "Wrapper left not found in DataFrame mode"
 
@@ -720,7 +727,10 @@ class TestToolbarComponentEvents:
             time.sleep(0.1)
 
         assert events["received"], "MultiSelect change event not received"
-        assert set(events["data"]["values"]) == {"red", "green"}, f"Got {events['data']}"
+        assert set(events["data"]["values"]) == {
+            "red",
+            "green",
+        }, f"Got {events['data']}"
         app.close()
 
     def test_text_input_triggers_event_with_debounce(self):
@@ -980,14 +990,23 @@ class TestMultiToolbarStateTracking:
                     {
                         "type": "select",
                         "event": "bottom:select",
-                        "options": [{"label": "X", "value": "x"}, {"label": "Y", "value": "y"}],
+                        "options": [
+                            {"label": "X", "value": "x"},
+                            {"label": "Y", "value": "y"},
+                        ],
                     }
                 ],
             },
             {
                 "position": "left",
                 "items": [
-                    {"type": "slider", "event": "left:range", "value": 25, "min": 0, "max": 100}
+                    {
+                        "type": "slider",
+                        "event": "left:range",
+                        "value": 25,
+                        "min": 0,
+                        "max": 100,
+                    }
                 ],
             },
         ]

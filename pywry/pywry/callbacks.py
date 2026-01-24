@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import fnmatch
 import inspect
 import re
@@ -11,12 +10,15 @@ from collections.abc import Awaitable, Callable
 from enum import Enum
 from typing import Any
 
-from .log import debug, warn
+from .log import debug, log_callback_error, warn
 from .models import validate_event_type
 
 
 # Type alias for callback functions (sync or async)
 CallbackFunc = Callable[..., None] | Callable[..., Awaitable[None]]
+
+# Track whether handler is async: (handler, is_async)
+CallbackEntry = tuple[CallbackFunc, bool]
 
 
 class WidgetType(str, Enum):
@@ -262,31 +264,84 @@ class CallbackRegistry:
     def _invoke_handler(
         self, handler: CallbackFunc, data: Any, event_type: str, label: str
     ) -> bool:
-        """Invoke a single handler with appropriate arguments."""
+        """Invoke a single handler with appropriate arguments.
+
+        Sync handlers are executed directly on the current thread.
+        Async handlers are scheduled via the BlockingPortal for proper
+        async runtime integration.
+        """
         try:
             sig = inspect.signature(handler)
             num_params = len(
                 [p for p in sig.parameters.values() if p.default is inspect.Parameter.empty]
             )
-            if num_params >= 3:
-                result = handler(data, event_type, label)
-            elif num_params == 2:
-                result = handler(data, event_type)
-            else:
-                result = handler(data)
 
-            # Handle async callbacks
-            if asyncio.iscoroutine(result):
-                try:
-                    loop = asyncio.get_running_loop()
-                    task = loop.create_task(result)
-                    task.add_done_callback(lambda t: None)
-                except RuntimeError:
-                    asyncio.run(result)
+            # Check if handler is async at invocation time
+            is_async = inspect.iscoroutinefunction(handler)
+
+            if is_async:
+                # Async handler - schedule via portal
+                return self._invoke_async_handler(handler, data, event_type, label, num_params)
+
+            # Sync handler - execute directly
+            if num_params >= 3:
+                handler(data, event_type, label)
+            elif num_params == 2:
+                handler(data, event_type)
+            else:
+                handler(data)
             return True
-        except (RuntimeError, TypeError, ValueError, AttributeError, KeyError) as e:
-            warn(f"Error in callback for '{event_type}' on window '{label}': {e}")
+
+        except Exception:
+            log_callback_error(event_type, label, Exception("Handler invocation failed"))
             return False
+
+    def _invoke_async_handler(
+        self,
+        handler: CallbackFunc,
+        data: Any,
+        event_type: str,
+        label: str,
+        num_params: int,
+    ) -> bool:
+        """Invoke an async handler via the BlockingPortal.
+
+        Uses portal.start_task_soon() to schedule the coroutine without
+        blocking the current thread. Errors are logged via log_callback_error.
+        """
+        from . import runtime
+
+        portal = runtime.get_portal()
+
+        # Define the async wrapper
+        async def run_async() -> None:
+            try:
+                if num_params >= 3:
+                    await handler(data, event_type, label)  # type: ignore[misc]
+                elif num_params == 2:
+                    await handler(data, event_type)  # type: ignore[misc]
+                else:
+                    await handler(data)  # type: ignore[misc]
+            except Exception as e:
+                log_callback_error(event_type, label, e)
+
+        if portal is not None:
+            # Use portal to schedule async task
+            try:
+                portal.start_task_soon(run_async)
+                return True
+            except Exception as e:
+                log_callback_error(event_type, label, e)
+                return False
+        else:
+            # Fallback: ensure portal is initialized and try again
+            try:
+                portal = runtime._ensure_portal()
+                portal.start_task_soon(run_async)
+                return True
+            except Exception as e:
+                log_callback_error(event_type, label, e)
+                return False
 
     def dispatch(
         self,
@@ -350,11 +405,14 @@ class CallbackRegistry:
         This removes all callbacks and marks the label as destroyed
         to prevent future registrations.
 
-        Args:
-            label: The window label to destroy.
+        Parameters
+        ----------
+        label : str
+            The window label to destroy.
 
         Returns
         -------
+        bool
             True if the label was destroyed, False if it didn't exist.
         """
         existed = label in self._callbacks or label in self._scoped_callbacks
@@ -379,11 +437,14 @@ class CallbackRegistry:
         This is useful when restarting the application or reusing a label
         that was previously destroyed.
 
-        Args:
-            label: The window label to recover.
+        Parameters
+        ----------
+        label : str
+            The window label to recover.
 
         Returns
         -------
+        bool
             True if the label was recovered (was in destroyed set).
         """
         if label in self._destroyed_labels:
@@ -395,11 +456,14 @@ class CallbackRegistry:
     def is_destroyed(self, label: str) -> bool:
         """Check if a window label has been destroyed.
 
-        Args:
-            label: The window label.
+        Parameters
+        ----------
+        label : str
+            The window label.
 
         Returns
         -------
+        bool
             True if destroyed, False otherwise.
         """
         return label in self._destroyed_labels
@@ -407,11 +471,14 @@ class CallbackRegistry:
     def has_handlers(self, label: str) -> bool:
         """Check if a window has any registered handlers.
 
-        Args:
-            label: The window label.
+        Parameters
+        ----------
+        label : str
+            The window label.
 
         Returns
         -------
+        bool
             True if handlers exist, False otherwise.
         """
         has_simple = label in self._callbacks and bool(self._callbacks[label])
@@ -445,6 +512,7 @@ def get_registry() -> CallbackRegistry:
 
     Returns
     -------
+    CallbackRegistry
         The callback registry singleton.
     """
     return CallbackRegistry()

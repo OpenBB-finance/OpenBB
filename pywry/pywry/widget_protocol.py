@@ -96,6 +96,9 @@ class BaseWidget(Protocol):
         """
 
 
+# pylint: disable=too-many-public-methods
+# NativeWindowHandle implements BaseWidget protocol and provides comprehensive
+# window control methods. The large number of methods is intentional for full API coverage.
 class NativeWindowHandle:
     """Handle for a native window that implements BaseWidget protocol.
 
@@ -184,6 +187,40 @@ class NativeWindowHandle:
             f"Window label: {self._label}"
         )
 
+    @property
+    def proxy(self) -> Any:
+        """Get a WindowProxy for full WebviewWindow API access.
+
+        The WindowProxy provides access to all WebviewWindow methods including:
+        - Window state: `is_maximized`, `is_minimized`, `is_fullscreen`, etc.
+        - Window actions: `maximize()`, `minimize()`, `center()`, etc.
+        - Window properties: `set_title()`, `set_size()`, `set_position()`, etc.
+        - Appearance: `set_background_color()`, `set_theme()`, `set_decorations()`, etc.
+        - Webview ops: `navigate()`, `reload()`, `open_devtools()`, `set_zoom()`, etc.
+
+        Returns
+        -------
+        WindowProxy
+            A proxy object for full window control.
+
+        Examples
+        --------
+        >>> handle = app.show("<h1>Hello</h1>")
+        >>> # Access window properties
+        >>> print(handle.proxy.is_maximized)
+        >>> print(handle.proxy.title)
+        >>> # Control window
+        >>> handle.proxy.maximize()
+        >>> handle.proxy.set_background_color((30, 30, 30, 255))
+        >>> handle.proxy.set_always_on_top(True)
+        >>> # Webview operations
+        >>> handle.proxy.open_devtools()
+        >>> handle.proxy.set_zoom(1.5)
+        """
+        from .window_proxy import WindowProxy
+
+        return WindowProxy(self._label)
+
     def eval_js(self, script: str) -> None:
         """Execute JavaScript in the window.
 
@@ -270,6 +307,145 @@ class NativeWindowHandle:
         from . import runtime
 
         runtime.show_window(self._label)
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Convenience methods delegating to WindowProxy
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def maximize(self) -> None:
+        """Maximize the window."""
+        self.proxy.maximize()
+
+    def minimize(self) -> None:
+        """Minimize the window."""
+        self.proxy.minimize()
+
+    def center(self) -> None:
+        """Center the window on screen."""
+        self.proxy.center()
+
+    def set_title(self, title: str) -> None:
+        """Set the window title.
+
+        Parameters
+        ----------
+        title : str
+            New window title.
+        """
+        self.proxy.set_title(title)
+
+    def set_size(self, width: int, height: int) -> None:
+        """Set the window size.
+
+        Parameters
+        ----------
+        width : int
+            Window width in logical pixels.
+        height : int
+            Window height in logical pixels.
+        """
+        from .types import LogicalSize
+
+        self.proxy.set_size(LogicalSize(width, height))
+
+    def set_min_size(self, width: int | None, height: int | None) -> None:
+        """Set minimum window size.
+
+        Parameters
+        ----------
+        width : int or None
+            Minimum width, or None to remove constraint.
+        height : int or None
+            Minimum height, or None to remove constraint.
+        """
+        if width is None or height is None:
+            self.proxy.set_min_size(None)
+        else:
+            from .types import LogicalSize
+
+            self.proxy.set_min_size(LogicalSize(width, height))
+
+    def set_max_size(self, width: int | None, height: int | None) -> None:
+        """Set maximum window size.
+
+        Parameters
+        ----------
+        width : int or None
+            Maximum width, or None to remove constraint.
+        height : int or None
+            Maximum height, or None to remove constraint.
+        """
+        if width is None or height is None:
+            self.proxy.set_max_size(None)
+        else:
+            from .types import LogicalSize
+
+            self.proxy.set_max_size(LogicalSize(width, height))
+
+    def set_always_on_top(self, always_on_top: bool) -> None:
+        """Set whether the window stays on top of other windows.
+
+        Parameters
+        ----------
+        always_on_top : bool
+            If True, window stays above other windows.
+        """
+        self.proxy.set_always_on_top(always_on_top)
+
+    def set_decorations(self, decorations: bool) -> None:
+        """Set whether the window has decorations (title bar, borders).
+
+        Parameters
+        ----------
+        decorations : bool
+            If True, show window decorations.
+        """
+        self.proxy.set_decorations(decorations)
+
+    def set_background_color(self, r: int, g: int, b: int, a: int = 255) -> None:
+        """Set the window background color.
+
+        This sets both the native window background and injects CSS to override
+        the --pywry-bg-primary variable so the content background also changes.
+
+        Parameters
+        ----------
+        r : int
+            Red component (0-255).
+        g : int
+            Green component (0-255).
+        b : int
+            Blue component (0-255).
+        a : int, optional
+            Alpha component (0-255). Default is 255.
+        """
+        # Set native window background
+        self.proxy.set_background_color((r, g, b, a))
+
+        # Also inject CSS to override the content background via CSS variable
+        alpha = a / 255.0
+        color = f"rgb({r}, {g}, {b})" if alpha >= 1.0 else f"rgba({r}, {g}, {b}, {alpha:.3f})"
+
+        css = f":root {{ --pywry-bg-primary: {color} !important; }}"
+        self.emit("pywry:inject-css", {"id": "pywry-bg-override", "css": css})
+
+    def open_devtools(self) -> None:
+        """Open the browser developer tools for this window."""
+        self.proxy.open_devtools()
+
+    def close_devtools(self) -> None:
+        """Close the browser developer tools."""
+        self.proxy.close_devtools()
+
+    def set_zoom(self, scale: float) -> None:
+        """Set the webview zoom level.
+
+        Parameters
+        ----------
+        scale : float
+            Zoom scale (1.0 = 100%, 1.5 = 150%, etc).
+        """
+        self.proxy.set_zoom(scale)
 
     def refresh(self) -> bool:
         """Trigger a full page refresh for the window.

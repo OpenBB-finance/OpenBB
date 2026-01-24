@@ -57,9 +57,134 @@ body {
 }
 
 body::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+    display: none;
 }
 
+/* === NATIVE WINDOW ONLY: Custom scrollbar styles === */
+/* Hide native scrollbar on scroll container - we'll use custom JS scrollbar */
+html.pywry-native .pywry-scroll-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+/* Only reserve space for scrollbar when content overflows (but not for Plotly) */
+html.pywry-native .pywry-scroll-container.has-scrollbar-v:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
+    padding-right: 18px; /* 4px margin + 10px track + 4px inner margin */
+}
+html.pywry-native .pywry-scroll-container.has-scrollbar-h:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
+    padding-bottom: 18px; /* 4px margin + 10px track + 4px inner margin */
+}
+html.pywry-native .pywry-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/WebKit */
+}
+
+/* Custom scrollbar track - vertical (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scrollbar-track-v {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    bottom: 4px;
+    width: 10px;
+    background: var(--pywry-bg-secondary, #212124);
+    border: 1px solid var(--pywry-border-color, #333);
+    border-radius: 5px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Custom scrollbar track - horizontal (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scrollbar-track-h {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    height: 10px;
+    background: var(--pywry-bg-secondary, #212124);
+    border: 1px solid var(--pywry-border-color, #333);
+    border-radius: 5px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Avoid overlap in corner when both scrollbars present (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-v {
+    bottom: 22px; /* 4px margin + 10px track + 4px gap + 4px */
+}
+html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-h {
+    right: 22px; /* 4px margin + 10px track + 4px gap + 4px */
+}
+
+/* Show scrollbar track on hover or when scrolling (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scroll-wrapper:hover .pywry-scrollbar-track-v,
+html.pywry-native .pywry-scroll-wrapper:hover .pywry-scrollbar-track-h,
+html.pywry-native .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-v,
+html.pywry-native .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-h,
+/* AG Grid scrollbars - show on hover of grid */
+html.pywry-native .ag-root-wrapper:hover .pywry-scrollbar-track-v,
+html.pywry-native .ag-root-wrapper:hover .pywry-scrollbar-track-h,
+html.pywry-native .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-v,
+html.pywry-native .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-h {
+    opacity: 1;
+}
+
+/* Custom scrollbar thumb - vertical (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scrollbar-thumb-v {
+    position: absolute;
+    left: 1px;  /* Center: (8px internal - 6px thumb) / 2 = 1px */
+    width: 6px;
+    min-height: 30px;
+    background: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5));
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+/* Custom scrollbar thumb - horizontal (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scrollbar-thumb-h {
+    position: absolute;
+    top: 1px;  /* Center: (8px internal - 6px thumb) / 2 = 1px */
+    height: 6px;
+    min-width: 30px;
+    background: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5));
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+html.pywry-native .pywry-scrollbar-thumb-v:hover,
+html.pywry-native .pywry-scrollbar-thumb-h:hover {
+    background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7));
+}
+
+html.pywry-native .pywry-scrollbar-thumb-v.is-dragging,
+html.pywry-native .pywry-scrollbar-thumb-h.is-dragging {
+    background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7));
+}
+
+/* Scroll wrapper for custom scrollbar positioning (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scroll-wrapper {
+    position: relative;
+    display: flex;
+    flex: 1 1 0%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Scroll container takes full space minus scrollbar area (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scroll-wrapper .pywry-scroll-container {
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+/* When scroll container has Plotly, ensure proper flex layout (NATIVE WINDOW ONLY) */
+html.pywry-native .pywry-scroll-container:has(.pywry-plotly),
+html.pywry-native .pywry-scroll-container:has(.js-plotly-plot) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+}
 
 .pywry-widget,
 .pywry-widget *,
@@ -338,6 +463,17 @@ html.pywry-native button,
 html.pywry-native .pywry-btn,
 html.pywry-native .pywry-input-label {
     font-family: var(--pywry-font-family);
+}
+
+/* Ensure #app container doesn't allow native scrolling */
+html.pywry-native #app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .pywry-widget {
@@ -1871,8 +2007,8 @@ html.light .pywry-select option {
     -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    /* No scrolling here - let .pywry-scroll-container handle it */
+    overflow: hidden;
 }
 
 .pywry-wrapper-inside {
@@ -1895,19 +2031,62 @@ html.light .pywry-select option {
     flex: 1 1 0%;
     -webkit-flex: 1 1 0%;
     width: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
     position: relative;
     z-index: 1;
     min-height: 0;
     min-width: 0;
-    padding: 16px;
     box-sizing: border-box;
     text-align: left;
     display: flex;
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
+}
+
+/* Inner scroll container - handles all scrolling with styled scrollbars */
+.pywry-scroll-container {
+    flex: 1 1 0%;
+    -webkit-flex: 1 1 0%;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+    padding: 16px;
+    box-sizing: border-box;
+    min-height: 0;
+    min-width: 0;
+}
+
+/* Force WebKit to show styled scrollbars on macOS */
+.pywry-scroll-container::-webkit-scrollbar {
+    -webkit-appearance: none !important;
+    width: 10px !important;
+    height: 10px !important;
+    background: var(--pywry-bg-secondary, #212124) !important;
+}
+
+.pywry-scroll-container::-webkit-scrollbar-track {
+    -webkit-appearance: none !important;
+    background: var(--pywry-bg-secondary, #212124) !important;
+    border-radius: 0 !important;
+}
+
+.pywry-scroll-container::-webkit-scrollbar-thumb {
+    -webkit-appearance: none !important;
+    background: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5)) !important;
+    border-radius: 5px !important;
+    border: 2px solid var(--pywry-bg-secondary, #212124) !important;
+    background-clip: padding-box !important;
+}
+
+.pywry-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7)) !important;
+}
+
+.pywry-scroll-container::-webkit-scrollbar-corner {
+    background: var(--pywry-bg-secondary, #212124) !important;
 }
 
 /* No padding when content is empty - prevents premature scrollbar */
@@ -1917,20 +2096,17 @@ html.light .pywry-select option {
 }
 
 /* Don't force height on content children - let them size naturally */
-.pywry-content > div:first-child {
+.pywry-scroll-container > div:first-child {
     width: 100%;
     text-align: left;
 }
 
-/* When content contains AG Grid, let grid handle its own scrolling */
-.pywry-content:has(.pywry-grid),
-.pywry-content:has([class*="ag-theme-"]) {
+/* When content contains AG Grid or Plotly, hide scroll container and let grid/chart handle scrolling */
+.pywry-content:has(.pywry-grid) .pywry-scroll-container,
+.pywry-content:has([class*="ag-theme-"]) .pywry-scroll-container,
+.pywry-content:has(.pywry-plotly) .pywry-scroll-container {
     overflow: hidden;
-}
-
-/* Plotly content - same padding as AG Grid (16px from base .pywry-content) */
-.pywry-content:has(.pywry-plotly) {
-    overflow: hidden;
+    padding: 16px;
 }
 
 .pywry-grid {
@@ -1989,6 +2165,26 @@ html.light .pywry-select option {
     outline: none !important;
 }
 
+/* AG Grid scrollbar styling - NATIVE WINDOW ONLY */
+/* Use AG Grid's browser-color-scheme parameter for appropriate scrollbar colors on macOS */
+/* Dark themes get dark scrollbars */
+html.pywry-native .ag-theme-quartz-dark,
+html.pywry-native .ag-theme-alpine-dark,
+html.pywry-native .ag-theme-balham-dark,
+html.pywry-native .ag-theme-material-dark {
+    --ag-browser-color-scheme: dark !important;
+    color-scheme: dark !important;
+}
+
+/* Light themes get light scrollbars */
+html.pywry-native .ag-theme-quartz:not(.ag-theme-quartz-dark),
+html.pywry-native .ag-theme-alpine:not(.ag-theme-alpine-dark),
+html.pywry-native .ag-theme-balham:not(.ag-theme-balham-dark),
+html.pywry-native .ag-theme-material:not(.ag-theme-material-dark) {
+    --ag-browser-color-scheme: light !important;
+    color-scheme: light !important;
+}
+
 /* Override AG Grid theme variables for subtle styling */
 .ag-root-wrapper,
 .ag-theme-quartz,
@@ -1999,6 +2195,11 @@ html.light .pywry-select option {
 .ag-theme-balham-dark,
 .ag-theme-material,
 .ag-theme-material-dark {
+    /* Scrollbar colors - AG Grid v32+ uses these CSS variables */
+    --ag-scrollbar-size: 10px !important;
+    --ag-scrollbar-color: rgba(155, 155, 155, 0.5) !important;
+    --ag-scrollbar-corner-color: var(--pywry-bg-secondary, #212124) !important;
+    --ag-scrollbar-track-color: var(--pywry-bg-secondary, #212124) !important;
     /* Focus colors */
     --ag-input-focus-border-color: var(--pywry-border-focus, #555) !important;
     --ag-range-selection-border-color: var(--pywry-border-focus, #555) !important;

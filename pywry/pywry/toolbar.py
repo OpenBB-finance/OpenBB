@@ -1612,8 +1612,8 @@ def wrap_content_with_toolbars(
     toast_container = "<div class='pywry-toast-container pywry-toast-container--top-right' aria-label='Notifications'></div>"
 
     if not toolbars and not extra_top_html:
-        # No toolbars - just wrap in pywry-content + toast container
-        return f"<div class='pywry-content'>{content}</div>{toast_container}"
+        # No toolbars - just wrap in pywry-content with inner scroll container + toast container
+        return f"<div class='pywry-content'><div class='pywry-scroll-container'>{content}</div></div>{toast_container}"
 
     # Group toolbars by position
     toolbar_html: dict[str, list[str]] = {
@@ -1656,8 +1656,10 @@ def wrap_content_with_toolbars(
     # content -> inside -> top/bottom -> left/right -> header/footer
     # This makes LEFT/RIGHT extend full height between HEADER/FOOTER
 
-    # Wrap content in pywry-content
-    wrapped = f"<div class='pywry-content'>{content}</div>"
+    # Wrap content in pywry-content with inner scroll container
+    wrapped = (
+        f"<div class='pywry-content'><div class='pywry-scroll-container'>{content}</div></div>"
+    )
 
     # Inside (overlay)
     if inside_str:

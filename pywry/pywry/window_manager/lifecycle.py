@@ -39,6 +39,9 @@ class WindowResources:
     watched_scripts: list[Path] = field(default_factory=list)
     css_asset_ids: dict[Path, str] = field(default_factory=dict)
 
+    # Timestamp when content was last set via IPC (to debounce content-request)
+    content_set_at: datetime | None = None
+
 
 class WindowLifecycle:
     """Manages window lifecycle with aggressive cleanup.
@@ -210,6 +213,11 @@ class WindowLifecycle:
         resources.html_content = html
         if config is not None:
             resources.last_config = config
+
+        # Record timestamp BEFORE calling runtime.set_content to debounce
+        # content-request events that arrive during the blocking IPC call
+        resources.content_set_at = datetime.now()
+
         success = runtime.set_content(label, html, theme)
 
         if success:

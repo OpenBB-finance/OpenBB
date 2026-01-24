@@ -51,7 +51,11 @@ class EmittingWidget:
         position : str
             Toast position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         """
-        payload: dict[str, Any] = {"message": message, "type": alert_type, "position": position}
+        payload: dict[str, Any] = {
+            "message": message,
+            "type": alert_type,
+            "position": position,
+        }
         if title is not None:
             payload["title"] = title
         if duration is not None:
@@ -119,10 +123,13 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
     def reset_state(self, grid_id: str | None = None, hard: bool = False) -> None:
         """Reset the grid state to default values.
 
-        Args:
-            grid_id: The ID of the grid to reset.
-            hard: If True, completely destroys and recreates the grid instance.
-                  If False (default), only resets state columns/filters/sort.
+        Parameters
+        ----------
+        grid_id : str | None, optional
+            The ID of the grid to reset.
+        hard : bool, optional
+            If True, completely destroys and recreates the grid instance.
+            If False (default), only resets state columns/filters/sort.
         """
         payload: dict[str, Any] = {"hard": hard}
         if grid_id:
@@ -143,15 +150,22 @@ class GridStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         self.emit("grid:update-cell", payload)
 
     def update_data(
-        self, data: list[dict[str, Any]], grid_id: str | None = None, strategy: str = "set"
+        self,
+        data: list[dict[str, Any]],
+        grid_id: str | None = None,
+        strategy: str = "set",
     ) -> None:
         """Update grid data rows.
 
-        Args:
-            data: List of row data dictionaries.
-            grid_id: The ID of the grid.
-            strategy: Update strategy ('set', 'append', 'update').
-                      'set' replaces all data.
+        Parameters
+        ----------
+        data : list[dict[str, Any]]
+            List of row data dictionaries.
+        grid_id : str | None, optional
+            The ID of the grid.
+        strategy : str, optional
+            Update strategy ('set', 'append', 'update').
+            'set' replaces all data.
         """
         payload: dict[str, Any] = {"data": data, "strategy": strategy}
         if grid_id:
@@ -244,7 +258,10 @@ class PlotlyStateMixin(EmittingWidget):  # pylint: disable=abstract-method
         self.emit("plotly:update-layout", payload)
 
     def update_traces(
-        self, patch: dict[str, Any], indices: list[int] | None = None, chart_id: str | None = None
+        self,
+        patch: dict[str, Any],
+        indices: list[int] | None = None,
+        chart_id: str | None = None,
     ) -> None:
         """Update specific trace properties (Plotly.restyle)."""
         payload: dict[str, Any] = {"update": patch}

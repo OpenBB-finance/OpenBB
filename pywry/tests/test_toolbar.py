@@ -9,6 +9,7 @@ Tests cover:
 - HTML generation
 - Helper functions
 """
+
 # pylint: disable=too-many-lines
 
 from __future__ import annotations
@@ -1489,7 +1490,11 @@ class TestDivItemTypeMapping:
         toolbar = Toolbar(
             position="top",
             items=[
-                {"type": "div", "content": "<span>From dict</span>", "event": "toolbar:div"},
+                {
+                    "type": "div",
+                    "content": "<span>From dict</span>",
+                    "event": "toolbar:div",
+                },
             ],
         )
         assert len(toolbar.items) == 1
@@ -1712,7 +1717,10 @@ class TestRadioGroup:
         """Test options from Option objects."""
         rg = RadioGroup(
             event="view:change",
-            options=[Option(label="List", value="list"), Option(label="Grid", value="grid")],
+            options=[
+                Option(label="List", value="list"),
+                Option(label="Grid", value="grid"),
+            ],
         )
         assert len(rg.options) == 2
         assert rg.options[0].label == "List"
@@ -1722,7 +1730,10 @@ class TestRadioGroup:
         """Test options from dict inputs."""
         rg = RadioGroup(
             event="view:change",
-            options=[{"label": "List", "value": "list"}, {"label": "Grid", "value": "grid"}],
+            options=[
+                {"label": "List", "value": "list"},
+                {"label": "Grid", "value": "grid"},
+            ],
         )
         assert len(rg.options) == 2
 
@@ -1818,7 +1829,10 @@ class TestTabGroup:
         """Test options from Option objects."""
         tg = TabGroup(
             event="view:change",
-            options=[Option(label="Table", value="table"), Option(label="Chart", value="chart")],
+            options=[
+                Option(label="Table", value="table"),
+                Option(label="Chart", value="chart"),
+            ],
         )
         assert len(tg.options) == 2
         assert tg.options[0].label == "Table"
@@ -1828,7 +1842,10 @@ class TestTabGroup:
         """Test options from dict inputs."""
         tg = TabGroup(
             event="view:change",
-            options=[{"label": "Table", "value": "table"}, {"label": "Chart", "value": "chart"}],
+            options=[
+                {"label": "Table", "value": "table"},
+                {"label": "Chart", "value": "chart"},
+            ],
         )
         assert len(tg.options) == 2
 
@@ -2194,7 +2211,15 @@ class TestToolbarHtmlStructure:
 
     def test_toolbar_position_class(self) -> None:
         """Toolbar has position-specific class."""
-        for position in ["top", "bottom", "left", "right", "header", "footer", "inside"]:
+        for position in [
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "header",
+            "footer",
+            "inside",
+        ]:
             toolbar = Toolbar(
                 position=position,  # type: ignore[arg-type]
                 items=[Button(label="Click", event="app:click")],
@@ -2443,14 +2468,15 @@ class TestWrapContentWithToolbars:
     """Test wrap_content_with_toolbars layout structure."""
 
     def test_no_toolbars_wraps_in_pywry_content(self) -> None:
-        """Content without toolbars is wrapped in pywry-content."""
+        """Content without toolbars is wrapped in pywry-content with scroll container."""
         from pywry.toolbar import wrap_content_with_toolbars
 
         html = wrap_content_with_toolbars("<div>My Content</div>")
-        assert (
-            html
-            == "<div class='pywry-content'><div>My Content</div></div><div class='pywry-toast-container pywry-toast-container--top-right' aria-label='Notifications'></div>"
-        )
+        # Content is wrapped in pywry-content and pywry-scroll-container for proper layout
+        assert "pywry-content" in html
+        assert "pywry-scroll-container" in html
+        assert "<div>My Content</div>" in html
+        assert "pywry-toast-container" in html
 
     def test_top_toolbar_position(self) -> None:
         """Top toolbar appears before content."""

@@ -3085,8 +3085,15 @@ def generate_plotly_html(
         .pywry-content {{
             flex: 1;
             min-height: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }}
+        .pywry-scroll-container {{
+            flex: 1;
+            min-height: 0;
             padding: 16px;
             box-sizing: border-box;
+            overflow: auto;
         }}
         #chart {{
             flex: 1;

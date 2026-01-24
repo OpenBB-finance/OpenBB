@@ -155,10 +155,14 @@ def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
 def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
     """Make HTTP GET request, return (status_code, body).
 
-    Args:
-        url: URL to fetch
-        timeout: Request timeout in seconds
-        auth: If True, include internal API auth header (for /health, etc.)
+    Parameters
+    ----------
+    url : str
+        URL to fetch.
+    timeout : float, optional
+        Request timeout in seconds.
+    auth : bool, optional
+        If True, include internal API auth header (for /health, etc.).
     """
     req = urllib.request.Request(url)  # noqa: S310
     if auth:
@@ -174,11 +178,16 @@ def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, s
 def http_post(url: str, data: dict, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
     """Make HTTP POST request with JSON body.
 
-    Args:
-        url: URL to POST to
-        data: JSON data dict
-        timeout: Request timeout in seconds
-        auth: If True, include internal API auth header (for /register_widget, etc.)
+    Parameters
+    ----------
+    url : str
+        URL to POST to.
+    data : dict
+        JSON data dict.
+    timeout : float, optional
+        Request timeout in seconds.
+    auth : bool, optional
+        If True, include internal API auth header (for /register_widget, etc.).
     """
     headers = {"Content-Type": "application/json"}
     if auth:
@@ -680,7 +689,10 @@ class TestDataFrameIntegration:
         assert wait_for_server("127.0.0.1", server_port)
 
         # Raw data - no pandas import needed
-        row_data = [{"Price": 99.99, "Product": "Widget"}, {"Price": 150.5, "Product": "Gadget"}]
+        row_data = [
+            {"Price": 99.99, "Product": "Widget"},
+            {"Price": 150.5, "Product": "Gadget"},
+        ]
         columns = ["Price", "Product"]
 
         # Use the LIBRARY function to generate HTML

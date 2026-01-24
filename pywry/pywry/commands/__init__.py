@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import BaseModel
 
 from ..callbacks import get_registry
-from ..log import debug, warn
+from ..log import debug, exception, warn
 from ..models import GenericEvent
 
 
@@ -81,10 +81,7 @@ def register_commands(commands: Commands) -> None:
             debug(f"[IPC] pywry_event returning: {result}")
             return result
         except Exception as e:
-            import traceback
-
-            sys.stderr.write(f"[pywry_event ERROR] {e}\n{traceback.format_exc()}\n")
-            sys.stderr.flush()
+            exception(f"pywry_event failed: {e}")
             raise
 
     @commands.command()
@@ -134,10 +131,7 @@ def send_event_to_parent(label: str, event_type: str, data: dict[str, Any]) -> N
         debug("[IPC] Event sent to stdout")
     except Exception as e:
         # Log error but don't crash - stdout might be closed during shutdown
-        import traceback
-
-        sys.stderr.write(f"[send_event_to_parent ERROR] {e}\n{traceback.format_exc()}\n")
-        sys.stderr.flush()
+        exception(f"send_event_to_parent failed: {e}")
 
 
 def handle_pywry_result(label: str, data: dict[str, Any]) -> dict[str, Any]:

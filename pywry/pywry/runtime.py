@@ -12,12 +12,19 @@ import os
 import subprocess
 import sys
 import threading
+import uuid
 
+from contextlib import ExitStack
 from pathlib import Path
 from queue import Empty, Queue
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .callbacks import get_registry
+from .log import debug, error as log_error
+
+
+if TYPE_CHECKING:
+    from anyio.from_thread import BlockingPortal
 
 
 def is_headless() -> bool:
@@ -46,6 +53,16 @@ _registry = None  # pylint: disable=invalid-name
 _ON_WINDOW_CLOSE = "hide"  # Setting for MULTI_WINDOW close behavior
 _WINDOW_MODE = "new"  # Window mode: "single", "multi", "new"
 
+# Portal state for async callback support
+_exit_stack: ExitStack | None = None
+_portal: BlockingPortal | None = None
+_portal_lock = threading.Lock()
+
+# Request/response correlation for blocking calls
+_pending_requests: dict[str, threading.Event] = {}
+_pending_responses: dict[str, dict[str, Any]] = {}
+_pending_lock = threading.Lock()
+
 
 def _get_registry() -> Any:
     """Get the registry, caching the reference."""
@@ -53,6 +70,58 @@ def _get_registry() -> Any:
     if _registry is None:
         _registry = get_registry()
     return _registry
+
+
+def _ensure_portal() -> BlockingPortal:
+    """Ensure the async portal is initialized.
+
+    Creates a BlockingPortal on first call, which stays open until stop() is called.
+    This follows PyTauri's pattern: the portal must not close while the app is running.
+
+    Returns
+    -------
+    BlockingPortal
+        The async portal for scheduling coroutines.
+    """
+    global _exit_stack, _portal
+
+    with _portal_lock:
+        if _portal is not None:
+            return _portal
+
+        from anyio.from_thread import start_blocking_portal
+
+        _exit_stack = ExitStack()
+        _portal = _exit_stack.enter_context(start_blocking_portal("asyncio"))
+        debug("Portal initialized for async callback support")
+        return _portal
+
+
+def get_portal() -> BlockingPortal | None:
+    """Get the async portal if initialized.
+
+    Returns
+    -------
+    BlockingPortal or None
+        The portal, or None if not yet initialized.
+    """
+    return _portal
+
+
+def _cleanup_portal() -> None:
+    """Clean up the async portal on shutdown."""
+    global _exit_stack, _portal
+
+    with _portal_lock:
+        if _exit_stack is not None:
+            try:
+                _exit_stack.__exit__(None, None, None)
+                debug("Portal cleaned up")
+            except Exception as e:
+                log_error(f"Error cleaning up portal: {e}")
+            finally:
+                _exit_stack = None
+                _portal = None
 
 
 def set_on_window_close(behavior: str) -> None:
@@ -112,7 +181,17 @@ def _stdout_reader() -> None:
                 elif msg.get("type") == "event":
                     _dispatch_event(msg)
                 else:
-                    _responses.put(msg)
+                    # Check for request_id correlation
+                    request_id = msg.get("request_id")
+                    if request_id and request_id in _pending_requests:
+                        with _pending_lock:
+                            _pending_responses[request_id] = msg
+                            event = _pending_requests.get(request_id)
+                            if event:
+                                event.set()
+                    else:
+                        # Uncorrelated response goes to general queue
+                        _responses.put(msg)
             except json.JSONDecodeError:
                 pass
     except Exception:
@@ -152,6 +231,10 @@ def _handle_content_request(label: str, data: dict[str, Any] | None = None) -> N
     This is the default handler when no user callback is registered.
     Re-sends the stored HTML content to the window.
 
+    On initial page load, JavaScript fires content-request but Python has
+    already sent the content. We debounce by checking content_set_at timestamp
+    to avoid duplicate set_content calls within 2 seconds.
+
     Parameters
     ----------
     label : str
@@ -159,6 +242,8 @@ def _handle_content_request(label: str, data: dict[str, Any] | None = None) -> N
     data : dict, optional
         Event data which may contain window_label override.
     """
+    from datetime import datetime, timedelta
+
     from .window_manager import get_lifecycle
 
     # Use window_label from data if provided (follows event structure)
@@ -174,6 +259,17 @@ def _handle_content_request(label: str, data: dict[str, Any] | None = None) -> N
     html = resources.html_content
     if html is None:
         return
+
+    # Debounce: Skip if content was set within last 2 seconds
+    # This prevents duplicate set_content on initial load when both
+    # Python sends content AND JS fires content-request on DOMContentLoaded
+    if resources.content_set_at:
+        elapsed = datetime.now() - resources.content_set_at
+        if elapsed < timedelta(seconds=2):
+            debug(
+                f"Skipping content-request for '{label}' - content set {elapsed.total_seconds():.1f}s ago"
+            )
+            return
 
     # Get theme from stored config
     theme = "dark"
@@ -202,10 +298,10 @@ def _stdin_writer() -> None:
                 # Pipe closed during shutdown - expected
                 break
             except Exception as e:
-                sys.stderr.write(f"[pywry] Write error: {e}\n")
+                log_error(f"Write error: {e}")
                 break
     except Exception as e:
-        sys.stderr.write(f"[pywry] Writer error: {e}\n")
+        log_error(f"Writer error: {e}")
 
 
 def send_command(cmd: dict[str, Any]) -> None:
@@ -219,6 +315,168 @@ def get_response(timeout: float = 5.0) -> dict[str, Any] | None:
         return _responses.get(timeout=timeout)
     except Empty:
         return None
+
+
+def send_command_with_response(cmd: dict[str, Any], timeout: float = 5.0) -> dict[str, Any] | None:
+    """Send a command and wait for a correlated response.
+
+    Uses request_id for response correlation, allowing multiple
+    concurrent blocking calls without response mixup.
+
+    Parameters
+    ----------
+    cmd : dict[str, Any]
+        Command to send. A request_id will be added automatically.
+    timeout : float
+        Maximum time to wait for response.
+
+    Returns
+    -------
+    dict[str, Any] or None
+        The response, or None on timeout.
+    """
+    request_id = str(uuid.uuid4())
+    cmd["request_id"] = request_id
+
+    # Register pending request
+    event = threading.Event()
+    with _pending_lock:
+        _pending_requests[request_id] = event
+
+    try:
+        # Send command
+        send_command(cmd)
+
+        # Wait for response
+        if event.wait(timeout=timeout):
+            with _pending_lock:
+                return _pending_responses.pop(request_id, None)
+        return None
+    finally:
+        # Clean up
+        with _pending_lock:
+            _pending_requests.pop(request_id, None)
+            _pending_responses.pop(request_id, None)
+
+
+def window_get(label: str, property_name: str, timeout: float = 5.0) -> Any:
+    """Get a window property via IPC.
+
+    Parameters
+    ----------
+    label : str
+        Window label.
+    property_name : str
+        Name of the property to get.
+    timeout : float
+        Maximum time to wait for response.
+
+    Returns
+    -------
+    Any
+        The property value.
+
+    Raises
+    ------
+    PropertyError
+        If the property cannot be retrieved.
+    IPCTimeoutError
+        If the request times out.
+    """
+    from .exceptions import IPCTimeoutError, PropertyError
+
+    response = send_command_with_response(
+        {
+            "action": "window_get",
+            "label": label,
+            "property": property_name,
+        },
+        timeout=timeout,
+    )
+
+    if response is None:
+        raise IPCTimeoutError(
+            f"Timeout getting property '{property_name}'",
+            timeout=timeout,
+            action="window_get",
+            label=label,
+        )
+
+    if not response.get("success", False):
+        raise PropertyError(
+            response.get("error", f"Failed to get property '{property_name}'"),
+            property_name=property_name,
+            label=label,
+        )
+
+    return response.get("value")
+
+
+def window_call(
+    label: str,
+    method: str,
+    args: dict[str, Any] | None = None,
+    expect_response: bool = False,
+    timeout: float = 5.0,
+) -> Any:
+    """Call a window method via IPC.
+
+    Parameters
+    ----------
+    label : str
+        Window label.
+    method : str
+        Name of the method to call.
+    args : dict[str, Any] or None
+        Method arguments.
+    expect_response : bool
+        Whether to wait for a response.
+    timeout : float
+        Maximum time to wait for response (if expect_response=True).
+
+    Returns
+    -------
+    Any
+        The method result (if expect_response=True), otherwise None.
+
+    Raises
+    ------
+    WindowError
+        If the method call fails.
+    IPCTimeoutError
+        If the request times out (when expect_response=True).
+    """
+    from .exceptions import IPCTimeoutError, WindowError
+
+    cmd: dict[str, Any] = {
+        "action": "window_call",
+        "label": label,
+        "method": method,
+        "args": args or {},
+    }
+
+    if expect_response:
+        response = send_command_with_response(cmd, timeout=timeout)
+
+        if response is None:
+            raise IPCTimeoutError(
+                f"Timeout calling method '{method}'",
+                timeout=timeout,
+                action="window_call",
+                label=label,
+            )
+
+        if not response.get("success", False):
+            raise WindowError(
+                response.get("error", f"Failed to call method '{method}'"),
+                label=label,
+            )
+
+        return response.get("result")
+
+    # Fire-and-forget
+    send_command(cmd)
+    return None
 
 
 def create_window(
@@ -551,7 +809,7 @@ def start() -> bool:
             encoding="utf-8",
         )
     except Exception as e:
-        sys.stderr.write(f"[pywry] Failed to start subprocess: {e}\n")
+        log_error(f"Failed to start subprocess: {e}")
         _running = False
         return False
 
@@ -579,7 +837,7 @@ def start() -> bool:
 
     # Wait for ready signal
     if not wait_ready(timeout=10.0):
-        sys.stderr.write("[pywry] Subprocess did not become ready\n")
+        log_error("Subprocess did not become ready")
         stop()
         return False
 
@@ -589,7 +847,7 @@ def start() -> bool:
     return True
 
 
-def stop() -> None:
+def stop() -> None:  # noqa: C901
     """Stop the pytauri subprocess."""
     global _process, _running  # pylint: disable=W0603
 
@@ -607,6 +865,13 @@ def stop() -> None:
             _responses.get_nowait()
         except Empty:
             break
+
+    # Clear pending requests
+    with _pending_lock:
+        for event in _pending_requests.values():
+            event.set()  # Wake up any waiting threads
+        _pending_requests.clear()
+        _pending_responses.clear()
 
     if _process:
         # Send quit command
@@ -635,3 +900,7 @@ def stop() -> None:
                     _process.kill()
 
         _process = None
+
+    # Clean up portal AFTER subprocess termination
+    # (follows PyTauri pattern: portal must not close while app is running)
+    _cleanup_portal()
