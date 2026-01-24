@@ -8,6 +8,8 @@ Tests are marked slow because they spawn actual subprocess/windows.
 
 from __future__ import annotations
 
+import os
+import sys
 import threading
 import time
 
@@ -206,6 +208,10 @@ class TestWindowProxyActions:
         assert "New Title" in new_title
         app.close()
 
+    @pytest.mark.skipif(
+        os.environ.get("CI") == "true" and sys.platform == "linux",
+        reason="Maximize/minimize requires a real window manager (not available on Linux CI)",
+    )
     def test_maximize_unmaximize(self) -> None:
         """maximize and unmaximize actually change window state."""
         app = PyWry(theme=ThemeMode.DARK)
@@ -227,6 +233,10 @@ class TestWindowProxyActions:
         )
         app.close()
 
+    @pytest.mark.skipif(
+        os.environ.get("CI") == "true" and sys.platform == "linux",
+        reason="Maximize/minimize requires a real window manager (not available on Linux CI)",
+    )
     def test_minimize_unminimize(self) -> None:
         """minimize and unminimize change window state."""
         app = PyWry(theme=ThemeMode.DARK)
@@ -287,6 +297,10 @@ class TestWindowProxyActions:
         assert proxy.is_visible is True
         app.close()
 
+    @pytest.mark.skipif(
+        os.environ.get("CI") == "true" and sys.platform == "linux",
+        reason="Always-on-top requires a real window manager (not available on Linux CI)",
+    )
     def test_set_always_on_top(self) -> None:
         """set_always_on_top changes the always-on-top state."""
         app = PyWry(theme=ThemeMode.DARK)
