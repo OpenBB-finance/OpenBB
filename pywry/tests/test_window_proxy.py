@@ -20,6 +20,7 @@ import pytest
 from pywry import runtime
 from pywry.app import PyWry
 from pywry.callbacks import get_registry
+from pywry.exceptions import IPCTimeoutError
 from pywry.models import ThemeMode, WindowMode
 from pywry.types import PhysicalPosition, PhysicalSize
 from pywry.window_proxy import WindowProxy
@@ -72,11 +73,16 @@ def wait_for_state(
     """Poll a WindowProxy boolean attribute until it matches expected value.
 
     Returns True if the state was reached, False if timeout.
+    Handles transient IPC errors during polling.
     """
     deadline = time.time() + timeout
     while time.time() < deadline:
-        if getattr(proxy, attr) is expected:
-            return True
+        try:
+            if getattr(proxy, attr) is expected:
+                return True
+        except IPCTimeoutError:
+            # Window may be temporarily unresponsive during state changes
+            pass
         time.sleep(poll_interval)
     return False
 
@@ -222,15 +228,15 @@ class TestWindowProxyActions:
 
         # Maximize - use polling for async window state changes
         proxy.maximize()
-        assert wait_for_state(proxy, "is_maximized", True, timeout=3.0), (
-            "Window did not maximize within timeout"
-        )
+        assert wait_for_state(
+            proxy, "is_maximized", True, timeout=3.0
+        ), "Window did not maximize within timeout"
 
         # Unmaximize
         proxy.unmaximize()
-        assert wait_for_state(proxy, "is_maximized", False, timeout=3.0), (
-            "Window did not unmaximize within timeout"
-        )
+        assert wait_for_state(
+            proxy, "is_maximized", False, timeout=3.0
+        ), "Window did not unmaximize within timeout"
         app.close()
 
     @pytest.mark.skipif(
@@ -249,16 +255,18 @@ class TestWindowProxyActions:
 
         # Minimize - use polling for async window state changes
         proxy.minimize()
-        assert wait_for_state(proxy, "is_minimized", True, timeout=3.0), (
-            "Window did not minimize within timeout"
-        )
+        assert wait_for_state(
+            proxy, "is_minimized", True, timeout=5.0
+        ), "Window did not minimize within timeout"
 
         # Unminimize - requires focus on some platforms
+        # Add delay to let window manager process the minimize fully
+        time.sleep(0.5)
         proxy.set_focus()
         proxy.unminimize()
-        assert wait_for_state(proxy, "is_minimized", False, timeout=3.0), (
-            f"Window did not unminimize within timeout (is_visible={proxy.is_visible})"
-        )
+        assert wait_for_state(
+            proxy, "is_minimized", False, timeout=5.0
+        ), f"Window did not unminimize within timeout (is_visible={proxy.is_visible})"
         app.close()
 
     def test_set_size(self) -> None:
@@ -308,15 +316,15 @@ class TestWindowProxyActions:
 
         # Set always on top - use polling for async state changes
         proxy.set_always_on_top(True)
-        assert wait_for_state(proxy, "is_always_on_top", True, timeout=3.0), (
-            "Window did not become always-on-top within timeout"
-        )
+        assert wait_for_state(
+            proxy, "is_always_on_top", True, timeout=3.0
+        ), "Window did not become always-on-top within timeout"
 
         # Disable
         proxy.set_always_on_top(False)
-        assert wait_for_state(proxy, "is_always_on_top", False, timeout=3.0), (
-            "Window did not disable always-on-top within timeout"
-        )
+        assert wait_for_state(
+            proxy, "is_always_on_top", False, timeout=3.0
+        ), "Window did not disable always-on-top within timeout"
         app.close()
 
     def test_set_decorations(self) -> None:
@@ -345,7 +353,9 @@ class TestWindowProxyWebview:
     def test_eval_js(self) -> None:
         """eval executes JavaScript in the window."""
         app = PyWry(theme=ThemeMode.DARK)
-        proxy = show_and_wait_ready(app, "<div id='target'>Original</div>", title="Eval Test")
+        proxy = show_and_wait_ready(
+            app, "<div id='target'>Original</div>", title="Eval Test"
+        )
 
         # Execute JS to modify the DOM
         proxy.eval("document.getElementById('target').textContent = 'Modified';")
@@ -379,9 +389,9 @@ class TestWindowProxyWebview:
 
         # Get initial URL (tauri serves content via tauri:// or http://tauri.localhost/)
         initial_url = proxy.url
-        assert initial_url.startswith(("tauri://", "http://tauri.localhost/")), (
-            f"Unexpected initial URL: {initial_url}"
-        )
+        assert initial_url.startswith(
+            ("tauri://", "http://tauri.localhost/")
+        ), f"Unexpected initial URL: {initial_url}"
 
         # Navigate to about:blank
         proxy.navigate("about:blank")
