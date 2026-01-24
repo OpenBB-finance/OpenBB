@@ -135,9 +135,7 @@ class TestIPCTimeoutError:
 
     def test_with_action_and_label(self) -> None:
         """IPCTimeoutError inherits IPCError attributes."""
-        exc = IPCTimeoutError(
-            "No response", timeout=10.0, action="window_get", label="chart"
-        )
+        exc = IPCTimeoutError("No response", timeout=10.0, action="window_get", label="chart")
         assert exc.timeout == 10.0
         assert exc.action == "window_get"
         assert exc.label == "chart"

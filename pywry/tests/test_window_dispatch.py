@@ -935,9 +935,7 @@ class TestDispatchTableCompleteness:
         seen: set[str] = set()
         for category in all_methods:
             for method in category:
-                assert (
-                    method not in seen
-                ), f"Method {method} appears in multiple categories"
+                assert method not in seen, f"Method {method} appears in multiple categories"
                 seen.add(method)
 
     def test_method_categories_non_empty(self) -> None:

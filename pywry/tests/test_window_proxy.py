@@ -305,9 +305,7 @@ class TestWindowProxyWebview:
     def test_eval_js(self) -> None:
         """eval executes JavaScript in the window."""
         app = PyWry(theme=ThemeMode.DARK)
-        proxy = show_and_wait_ready(
-            app, "<div id='target'>Original</div>", title="Eval Test"
-        )
+        proxy = show_and_wait_ready(app, "<div id='target'>Original</div>", title="Eval Test")
 
         # Execute JS to modify the DOM
         proxy.eval("document.getElementById('target').textContent = 'Modified';")
@@ -341,9 +339,7 @@ class TestWindowProxyWebview:
 
         # Get initial URL (tauri serves content via tauri:// scheme)
         initial_url = proxy.url
-        assert initial_url.startswith(
-            "tauri://"
-        ), f"Unexpected initial URL: {initial_url}"
+        assert initial_url.startswith("tauri://"), f"Unexpected initial URL: {initial_url}"
 
         # Navigate to about:blank
         proxy.navigate("about:blank")
