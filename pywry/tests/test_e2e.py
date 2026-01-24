@@ -332,7 +332,7 @@ class TestDarkThemeCoordination:
         """DARK show_plotly renders with DARK template."""
         app = PyWry(theme=ThemeMode.DARK)
         figure = {"data": [{"x": [1, 2, 3], "y": [10, 15, 13], "type": "scatter"}]}
-        label = show_plotly_and_wait_ready(app, figure, title="Dark+Plotly")
+        label = show_plotly_and_wait_ready(app, figure, title="Dark+Plotly", timeout=20.0)
         # Plotly renders asynchronously after DOM is ready (longer wait for WebKitGTK)
         time.sleep(1.5)
 

@@ -60,6 +60,25 @@ class ReadyWaiter:
         return self._ready.wait(timeout=self.timeout)
 
 
+def wait_for_state(
+    proxy: WindowProxy,
+    attr: str,
+    expected: bool,
+    timeout: float = 3.0,
+    poll_interval: float = 0.1,
+) -> bool:
+    """Poll a WindowProxy boolean attribute until it matches expected value.
+
+    Returns True if the state was reached, False if timeout.
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if getattr(proxy, attr) is expected:
+            return True
+        time.sleep(poll_interval)
+    return False
+
+
 def show_and_wait_ready(
     app: PyWry,
     content: str,
@@ -195,15 +214,17 @@ class TestWindowProxyActions:
         # Initially not maximized
         assert proxy.is_maximized is False
 
-        # Maximize
+        # Maximize - use polling for async window state changes
         proxy.maximize()
-        time.sleep(0.2)
-        assert proxy.is_maximized is True
+        assert wait_for_state(proxy, "is_maximized", True, timeout=3.0), (
+            "Window did not maximize within timeout"
+        )
 
         # Unmaximize
         proxy.unmaximize()
-        time.sleep(0.2)
-        assert proxy.is_maximized is False
+        assert wait_for_state(proxy, "is_maximized", False, timeout=3.0), (
+            "Window did not unmaximize within timeout"
+        )
         app.close()
 
     def test_minimize_unminimize(self) -> None:
@@ -214,17 +235,20 @@ class TestWindowProxyActions:
         # Ensure window is in normal state first (not maximized/minimized)
         if proxy.is_maximized:
             proxy.unmaximize()
-            time.sleep(0.2)
+            wait_for_state(proxy, "is_maximized", False)
 
-        # Minimize
+        # Minimize - use polling for async window state changes
         proxy.minimize()
-        time.sleep(0.5)  # Give time for minimize to complete
-        assert proxy.is_minimized is True
+        assert wait_for_state(proxy, "is_minimized", True, timeout=3.0), (
+            "Window did not minimize within timeout"
+        )
 
-        # Unminimize (show brings it back)
-        proxy.show()
-        time.sleep(0.5)
-        assert proxy.is_minimized is False
+        # Unminimize - requires focus on some platforms
+        proxy.set_focus()
+        proxy.unminimize()
+        assert wait_for_state(proxy, "is_minimized", False, timeout=3.0), (
+            f"Window did not unminimize within timeout (is_visible={proxy.is_visible})"
+        )
         app.close()
 
     def test_set_size(self) -> None:
@@ -268,15 +292,17 @@ class TestWindowProxyActions:
         app = PyWry(theme=ThemeMode.DARK)
         proxy = show_and_wait_ready(app, "<h1>Top</h1>", title="Always On Top")
 
-        # Set always on top
+        # Set always on top - use polling for async state changes
         proxy.set_always_on_top(True)
-        time.sleep(0.1)
-        assert proxy.is_always_on_top is True
+        assert wait_for_state(proxy, "is_always_on_top", True, timeout=3.0), (
+            "Window did not become always-on-top within timeout"
+        )
 
         # Disable
         proxy.set_always_on_top(False)
-        time.sleep(0.1)
-        assert proxy.is_always_on_top is False
+        assert wait_for_state(proxy, "is_always_on_top", False, timeout=3.0), (
+            "Window did not disable always-on-top within timeout"
+        )
         app.close()
 
     def test_set_decorations(self) -> None:
@@ -337,15 +363,17 @@ class TestWindowProxyWebview:
         app = PyWry(theme=ThemeMode.DARK)
         proxy = show_and_wait_ready(app, "<h1>Nav</h1>", title="Navigate Test")
 
-        # Get initial URL (tauri serves content via tauri:// scheme)
+        # Get initial URL (tauri serves content via tauri:// or http://tauri.localhost/)
         initial_url = proxy.url
-        assert initial_url.startswith("tauri://"), f"Unexpected initial URL: {initial_url}"
+        assert initial_url.startswith(("tauri://", "http://tauri.localhost/")), (
+            f"Unexpected initial URL: {initial_url}"
+        )
 
         # Navigate to about:blank
         proxy.navigate("about:blank")
         time.sleep(0.5)
 
-        # URL must have changed from the initial tauri:// URL
+        # URL must have changed from the initial tauri URL
         new_url = proxy.url
         assert new_url != initial_url, f"URL did not change: still {new_url}"
         assert new_url == "about:blank", f"Expected 'about:blank', got {new_url}"
