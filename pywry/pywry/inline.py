@@ -32,6 +32,7 @@ from .assets import (
     get_toast_notifications_js,
 )
 from .config import get_settings
+from .log import debug as log_debug, error as log_error, warn
 from .models import ThemeMode
 from .runtime import is_headless
 from .state_mixins import (
@@ -277,9 +278,7 @@ class _ServerState:  # pylint: disable=too-many-instance-attributes
             if widget_id in self.widgets:
                 self.widgets[widget_id]["html"] = html
 
-    def update_widget_callbacks(
-        self, widget_id: str, callbacks: dict[str, Any]
-    ) -> None:
+    def update_widget_callbacks(self, widget_id: str, callbacks: dict[str, Any]) -> None:
         """Update widget callbacks."""
         from .state import is_deploy_mode
 
@@ -1026,14 +1025,14 @@ async def _ws_sender_loop(
         while True:
             event = await event_queue.get()
             if PYWRY_DEBUG:
-                print(f"[SERVER] Sending event to {widget_id}: {event}")
+                log_debug(f"[SERVER] Sending event to {widget_id}: {event}")
             await websocket.send_json(event)
             event_queue.task_done()
     except asyncio.CancelledError:
         pass
     except Exception as e:
         if PYWRY_DEBUG:
-            print(f"[SERVER] Sender error for {widget_id}: {e}")
+            log_debug(f"[SERVER] Sender error for {widget_id}: {e}")
 
 
 def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
@@ -1042,7 +1041,7 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
 
     event_type = msg.get("type", "")
     if PYWRY_DEBUG:
-        print(f"[SERVER] Routing event: {event_type} for widget {widget_id[:8]}...")
+        log_debug(f"[SERVER] Routing event: {event_type} for widget {widget_id[:8]}...")
 
     # Handle disconnect message specially
     if event_type == "pywry:disconnect":
@@ -1056,18 +1055,18 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
         local_data = _state.local_widgets.get(widget_id, {})
         callbacks = local_data.get("callbacks", {})
         if PYWRY_DEBUG and not callbacks:
-            print(f"[SERVER] No callbacks in local_widgets for {widget_id[:8]}")
+            log_debug(f"[SERVER] No callbacks in local_widgets for {widget_id[:8]}")
     else:
         # Local mode
         if widget_id not in _state.widgets:
             if PYWRY_DEBUG:
-                print(f"[SERVER] Widget {widget_id} not in _state.widgets!")
+                log_debug(f"[SERVER] Widget {widget_id} not in _state.widgets!")
             return
         callbacks = _state.widgets[widget_id].get("callbacks", {})
 
     if event_type in callbacks:
         if PYWRY_DEBUG:
-            print(f"[SERVER] Found callback for {event_type}, queueing...")
+            log_debug(f"[SERVER] Found callback for {event_type}, queueing...")
         _state.callback_queue.put(
             (callbacks[event_type], msg.get("data", {}), event_type, widget_id)
         )
@@ -1088,7 +1087,7 @@ def _handle_widget_disconnect(  # pylint: disable=too-many-branches
     from .state import is_deploy_mode
 
     if PYWRY_DEBUG:
-        print(f"[SERVER] Widget disconnect: {widget_id}, reason: {reason}")
+        log_debug(f"[SERVER] Widget disconnect: {widget_id}, reason: {reason}")
 
     # Get callbacks based on mode
     if is_deploy_mode():
@@ -1272,9 +1271,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             return HTMLResponse(status_code=404)
 
         if PYWRY_DEBUG:
-            print(
-                f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}"
-            )
+            log_debug(f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}")
 
         # Use deploy-mode aware async method to check widget existence and get HTML
         html = await _state.get_widget_html_async(widget_id)
@@ -1282,7 +1279,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             return HTMLResponse(status_code=404)
 
         if PYWRY_DEBUG:
-            print(f"[SERVER] Serving HTML for {widget_id}, length: {len(html)}")
+            log_debug(f"[SERVER] Serving HTML for {widget_id}, length: {len(html)}")
 
         # Add headers to prevent browser caching
         return HTMLResponse(
@@ -1307,7 +1304,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         Note: Token is sent via Sec-WebSocket-Protocol header to avoid exposure in logs/URLs
         """
         if PYWRY_DEBUG:
-            print(f"[SERVER] WebSocket connection request for {widget_id}")
+            log_debug(f"[SERVER] WebSocket connection request for {widget_id}")
 
         # Security validation BEFORE accepting the connection
         server_settings = get_settings().server
@@ -1320,10 +1317,8 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             origin = websocket.headers.get("origin", "")
             if origin not in allowed_origins:
                 if PYWRY_DEBUG:
-                    print(
-                        f"[SERVER] WebSocket rejected: Origin '{origin}' not in allowed list"
-                    )
-                    print(f"[SERVER] Allowed origins: {allowed_origins}")
+                    log_debug(f"[SERVER] WebSocket rejected: Origin '{origin}' not in allowed list")
+                    log_debug(f"[SERVER] Allowed origins: {allowed_origins}")
                 await websocket.close(code=1008, reason="Origin not allowed")
                 return
 
@@ -1348,21 +1343,19 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             # If no token exists for this widget, reject - client needs to reload
             if not expected_token:
                 if PYWRY_DEBUG:
-                    print(f"[SERVER] No token found for widget: {widget_id}")
-                    print("[SERVER] Client should refresh page to get new token")
+                    log_debug(f"[SERVER] No token found for widget: {widget_id}")
+                    log_debug("[SERVER] Client should refresh page to get new token")
                 await websocket.close(code=4001, reason="Unknown widget - refresh page")
                 return
 
             # Validate token - REJECT invalid tokens (client should refresh page)
             if not token or token != expected_token:
                 if PYWRY_DEBUG:
-                    print(
-                        "[SERVER] WebSocket connection rejected: Invalid or missing token"
-                    )
-                    print(
+                    log_debug("[SERVER] WebSocket connection rejected: Invalid or missing token")
+                    log_debug(
                         f"[SERVER] Widget ID: {widget_id}, Expected token exists: {expected_token is not None}"
                     )
-                    print("[SERVER] Client should refresh page to get new token")
+                    log_debug("[SERVER] Client should refresh page to get new token")
                 await websocket.close(code=4001, reason="Invalid token - refresh page")
                 return
 
@@ -1374,7 +1367,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
 
         if widget_id in _state.connections:
             if PYWRY_DEBUG:
-                print(f"[SERVER] Closing existing connection for {widget_id}")
+                log_debug(f"[SERVER] Closing existing connection for {widget_id}")
             with suppress(Exception):
                 await _state.connections[widget_id].close(
                     code=1000, reason="New connection replaced old one"
@@ -1393,16 +1386,13 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
                 data = await websocket.receive_text()
                 msg = json.loads(data)
                 if PYWRY_DEBUG:
-                    print(f"[SERVER] Received from {widget_id}: {msg}")
+                    log_debug(f"[SERVER] Received from {widget_id}: {msg}")
                 _route_ws_message(widget_id, msg)
         except WebSocketDisconnect:
             if PYWRY_DEBUG:
-                print(f"[SERVER] WebSocket disconnected for {widget_id}")
+                log_debug(f"[SERVER] WebSocket disconnected for {widget_id}")
             # Only handle disconnect if this is still the active connection
-            if (
-                widget_id in _state.connections
-                and _state.connections[widget_id] == websocket
-            ):
+            if widget_id in _state.connections and _state.connections[widget_id] == websocket:
                 _handle_widget_disconnect(widget_id, "websocket_close")
         finally:
             sender.cancel()
@@ -1475,14 +1465,11 @@ def _invoke_callback(
         # Async callback - schedule on the server's event loop
         loop = _state.server_loop
         if loop is not None and loop.is_running():
-            future = asyncio.run_coroutine_threadsafe(
-                callback(data, event_type, widget_id), loop
-            )
-            # Don't block waiting for result - just fire and forget
-            # Errors will be logged by the coroutine itself
+            # Fire and forget - errors will be logged by the coroutine itself
+            asyncio.run_coroutine_threadsafe(callback(data, event_type, widget_id), loop)
         else:
             # No running loop - can't execute async callback
-            print(f"[PyWry] Cannot execute async callback: no running event loop")
+            warn("Cannot execute async callback: no running event loop")
     else:
         # Sync callback - call directly
         callback(data, event_type, widget_id)
@@ -1492,9 +1479,7 @@ def _process_callbacks() -> None:  # pylint: disable=too-many-branches
     """Background thread to process callbacks."""
     while True:
         try:
-            callback, data, event_type, widget_id = _state.callback_queue.get(
-                timeout=0.1
-            )
+            callback, data, event_type, widget_id = _state.callback_queue.get(timeout=0.1)
             try:
                 # Get the output widget for this widget if it exists
                 # In deploy mode, output is stored in local_widgets
@@ -1535,7 +1520,7 @@ def _process_callbacks() -> None:  # pylint: disable=too-many-branches
                 if output_widget is not None:
                     output_widget.append_stderr(f"[PyWry] Callback error: {e}\n")
                 else:
-                    print(f"[PyWry] Callback error: {e}")
+                    log_error(f"[PyWry] Callback error: {e}")
         except queue.Empty:
             pass
         except Exception:  # noqa: S110
@@ -1606,9 +1591,7 @@ def _make_server_request(
 
 
 #  pylint: disable=R0915
-def _start_server(
-    port: int | None = None, host: str | None = None
-) -> None:  # noqa: C901, PLR0915
+def _start_server(port: int | None = None, host: str | None = None) -> None:  # noqa: C901, PLR0915
     """Start the FastAPI server in a background thread.
 
     Parameters
@@ -1687,9 +1670,7 @@ def _start_server(
                     task.cancel()
                 # Give tasks a chance to handle cancellation
                 if pending:
-                    loop.run_until_complete(
-                        asyncio.gather(*pending, return_exceptions=True)
-                    )
+                    loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
             with suppress(RuntimeError):
                 loop.close()
 
@@ -2117,9 +2098,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     ) -> None:
         super().__init__()
         if not HAS_FASTAPI:
-            raise ImportError(
-                "fastapi and uvicorn required: pip install fastapi uvicorn"
-            )
+            raise ImportError("fastapi and uvicorn required: pip install fastapi uvicorn")
 
         # For browser_only mode, we don't need IPython (just the server + browser)
         self._browser_only = browser_only
@@ -2130,9 +2109,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         self._widget_id = widget_id or uuid.uuid4().hex
         # Generate token if not provided and token auth is required
-        self._token = (
-            token if token is not None else _generate_widget_token(self._widget_id)
-        )
+        self._token = token if token is not None else _generate_widget_token(self._widget_id)
         self._width = width
         self._height = height
         self._port = port or settings.port
@@ -2175,9 +2152,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         # Check if server is running in THIS process (internal server)
         # If so, we don't need to register via HTTP because we already updated _state.widgets directly
-        is_internal_server = (
-            _state.server_thread is not None and _state.server_thread.is_alive()
-        )
+        is_internal_server = _state.server_thread is not None and _state.server_thread.is_alive()
 
         # If server is already running AND NOT internal, register widget via HTTP
         # (This handles kernel restarts where the server process is still alive but state is lost)
@@ -2233,7 +2208,9 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
     @property
     def url(self) -> str:
         """Get the widget URL using configured prefix."""
-        return f"{self._protocol}://{self._host}:{self._port}{_state.widget_prefix}/{self._widget_id}"
+        return (
+            f"{self._protocol}://{self._host}:{self._port}{_state.widget_prefix}/{self._widget_id}"
+        )
 
     def open_in_browser(self) -> None:
         """Open the chart in a new browser tab."""
@@ -2624,9 +2601,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             payload["context"] = context
         self.emit("toolbar:request-state", payload)
 
-    def get_toolbar_value(
-        self, component_id: str, context: dict[str, Any] | None = None
-    ) -> None:
+    def get_toolbar_value(self, component_id: str, context: dict[str, Any] | None = None) -> None:
         """Request the current value of a specific toolbar component.
 
         The widget will emit a 'toolbar:state-response' event with the value.
@@ -2670,9 +2645,7 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
             {"componentId": component_id, "value": value, "toolbarId": toolbar_id},
         )
 
-    def set_toolbar_values(
-        self, values: dict[str, Any], toolbar_id: str | None = None
-    ) -> None:
+    def set_toolbar_values(self, values: dict[str, Any], toolbar_id: str | None = None) -> None:
         """Set multiple toolbar component values at once.
 
         Parameters
@@ -2820,9 +2793,7 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
         if plotly_js:
             head_parts.append(f"<script>{plotly_js}</script>")
         else:
-            head_parts.append(
-                '<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>'
-            )
+            head_parts.append('<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>')
 
     if include_aggrid:
         aggrid_js = get_aggrid_js()
@@ -3140,9 +3111,7 @@ def generate_plotly_html(
         # Content fragment for anywidget - return just the chart div
         # Caller (create_plotly_widget) will handle toolbar wrapping
         chart_div = '<div id="chart" class="pywry-plotly"></div>'
-        wrapped_content = (
-            wrap_content_with_toolbars(chart_div, toolbars) if toolbars else chart_div
-        )
+        wrapped_content = wrap_content_with_toolbars(chart_div, toolbars) if toolbars else chart_div
         return f"""{wrapped_content}
 {plotly_handlers_script}"""
 
@@ -3409,9 +3378,7 @@ def show_plotly(
     fig_dict = json.loads(figure.to_json())
 
     # Apply default PlotlyConfig if none provided (hides logo, etc.)
-    final_config: dict[str, Any] | PlotlyConfig = (
-        config if config is not None else PlotlyConfig()
-    )
+    final_config: dict[str, Any] | PlotlyConfig = config if config is not None else PlotlyConfig()
 
     # Handle PlotlyConfig Pydantic model or dict
     if hasattr(final_config, "model_dump"):
@@ -3521,9 +3488,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
             if aggrid_js
             else '<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@35.0.0/dist/ag-grid-community.min.js"></script>'
         ),
-        "defaults_script": (
-            f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else ""
-        ),
+        "defaults_script": (f"<script>{aggrid_defaults_js}</script>" if aggrid_defaults_js else ""),
         "style": f"<style>{aggrid_css}</style>" if aggrid_css else "",
         "pywry_style": f"<style>{pywry_css}</style>" if pywry_css else "",
         "toast_style": f"<style>{toast_css}</style>" if toast_css else "",
@@ -3618,9 +3583,7 @@ def generate_dataframe_html(
 
     assets = _build_aggrid_assets(aggrid_theme, theme_mode)
     # For system theme, default to dark AG Grid theme (JS will switch)
-    theme_class = (
-        f"ag-theme-{aggrid_theme}{'-dark' if theme in ('dark', 'system') else ''}"
-    )
+    theme_class = f"ag-theme-{aggrid_theme}{'-dark' if theme in ('dark', 'system') else ''}"
     widget_theme_class = f"pywry-theme-{theme}"
     widget_content = _build_grid_layout(theme_class, toolbars, header_html)
 
@@ -3973,9 +3936,7 @@ def show_dataframe(  # pylint: disable=too-many-arguments
     from .notebook import create_dataframe_widget
 
     # Convert "system" to "dark" for grid config (grid doesn't support system theme)
-    grid_theme: Literal["dark", "light"] = (
-        "dark" if theme in ("dark", "system") else "light"
-    )
+    grid_theme: Literal["dark", "light"] = "dark" if theme in ("dark", "system") else "light"
 
     # Use unified grid config builder
     config = build_grid_config(

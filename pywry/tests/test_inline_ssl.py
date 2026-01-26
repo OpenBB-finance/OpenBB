@@ -157,9 +157,7 @@ def test_https_server_configuration(ssl_certs):
             assert "8766" in widget.url
 
             # Internal helper includes auth token automatically
-            internal_resp = _make_server_request(
-                "GET", "/health", port=8766, host="127.0.0.1"
-            )
+            internal_resp = _make_server_request("GET", "/health", port=8766, host="127.0.0.1")
             assert internal_resp.status_code == 200
             assert internal_resp.json() == {"status": "ok"}
 
@@ -178,9 +176,7 @@ def test_client_verification_settings_proxy_override(ssl_certs):
         settings_server.ssl_ca_certs = None
 
         with (
-            patch.dict(
-                os.environ, {"HTTP_PROXY": "http://proxy.example.com"}, clear=True
-            ),
+            patch.dict(os.environ, {"HTTP_PROXY": "http://proxy.example.com"}, clear=True),
             patch(
                 "urllib.request.getproxies",
                 return_value={"http": "http://proxy.example.com"},
@@ -291,9 +287,7 @@ async def test_e2e_wss_callback_flow(  # noqa: PLR0915  # pylint: disable=too-ma
             token = _state.widget_tokens.get(wid)
             subprotocol = f"pywry.token.{token}" if token else None
             subprotocols = [subprotocol] if subprotocol else None
-            async with websockets.connect(
-                uri, ssl=ssl_ctx, subprotocols=subprotocols
-            ) as websocket:
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 # 4. Simulate browser sending 'pywry:ready'
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
@@ -508,9 +502,7 @@ async def test_e2e_wss_secret_reveal_base64_encoded(ssl_certs):
 
             si = toolbar.get_secret_inputs()[0]
 
-            async with websockets.connect(
-                uri, ssl=ssl_ctx, subprotocols=subprotocols
-            ) as websocket:
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 # Send ready event
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
@@ -589,9 +581,7 @@ async def test_e2e_wss_secret_input_submission(ssl_certs):
             si = toolbar.get_secret_inputs()[0]
             user_secret = "user-entered-wss-secret"
 
-            async with websockets.connect(
-                uri, ssl=ssl_ctx, subprotocols=subprotocols
-            ) as websocket:
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 # Send ready event
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
@@ -807,9 +797,7 @@ async def test_e2e_wss_custom_secret_handler_reveal(  # noqa: PLR0915  # pylint:
             subprotocol = f"pywry.token.{token}" if token else None
             subprotocols = [subprotocol] if subprotocol else None
 
-            async with websockets.connect(
-                uri, ssl=ssl_ctx, subprotocols=subprotocols
-            ) as websocket:
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 # Send ready
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
@@ -947,9 +935,7 @@ async def test_e2e_wss_custom_handler_with_context(  # noqa: PLR0915
             subprotocol = f"pywry.token.{token}" if token else None
             subprotocols = [subprotocol] if subprotocol else None
 
-            async with websockets.connect(
-                uri, ssl=ssl_ctx, subprotocols=subprotocols
-            ) as websocket:
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
                 await websocket.send('{"type": "pywry:ready", "data": {}}')
 
                 # Send reveal with extra context

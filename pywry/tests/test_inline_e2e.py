@@ -141,9 +141,9 @@ def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
                     for k, v in auth_header.items():
                         req.add_header(k, v)
                     try:
-                        with urllib.request.urlopen(
+                        with urllib.request.urlopen(  # noqa: S310
                             req, timeout=0.5
-                        ) as resp:  # noqa: S310
+                        ) as resp:
                             if resp.status == 200:
                                 return True
                     except Exception:
@@ -178,9 +178,7 @@ def http_get(url: str, timeout: float = 5.0, auth: bool = False) -> tuple[int, s
         return e.code, e.read().decode("utf-8")
 
 
-def http_post(
-    url: str, data: dict, timeout: float = 5.0, auth: bool = False
-) -> tuple[int, str]:
+def http_post(url: str, data: dict, timeout: float = 5.0, auth: bool = False) -> tuple[int, str]:
     """Make HTTP POST request with JSON body.
 
     Parameters
@@ -448,9 +446,7 @@ class TestShowFunction:
     @patch("pywry.inline.Output", MockOutput)
     @patch("pywry.inline.HAS_IPYTHON", True)
     @patch("IPython.display.display")
-    def test_show_creates_widget(
-        self, mock_ipy_display, server_port
-    ):  # pylint: disable=unused-argument
+    def test_show_creates_widget(self, mock_ipy_display, server_port):  # pylint: disable=unused-argument
         """E2E: show() should create widget accessible via HTTP."""
         widget = show(
             "<p>Hello World</p>",
@@ -464,18 +460,14 @@ class TestShowFunction:
         assert widget.widget_id in _state.widgets
 
         # E2E: Verify content is actually served via HTTP
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget.widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget.widget_id}")
         assert status == 200
         assert "Hello World" in html
 
     @patch("pywry.inline.Output", MockOutput)
     @patch("pywry.inline.HAS_IPYTHON", True)
     @patch("IPython.display.display")
-    def test_show_with_callbacks(
-        self, mock_ipy_display, server_port
-    ):  # pylint: disable=unused-argument
+    def test_show_with_callbacks(self, mock_ipy_display, server_port):  # pylint: disable=unused-argument
         """E2E: show() with callbacks should be accessible via HTTP."""
 
         def my_handler(data):
@@ -490,9 +482,7 @@ class TestShowFunction:
         assert "handler" in _state.widgets[widget.widget_id]["callbacks"]
 
         # E2E: Verify content is served
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget.widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget.widget_id}")
         assert status == 200
         assert "Content" in html
 
@@ -603,9 +593,7 @@ class TestContentTypes:
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "html-type-test"
-        _state.register_widget(
-            widget_id, "<html><body>Test</body></html>", callbacks={}
-        )
+        _state.register_widget(widget_id, "<html><body>Test</body></html>", callbacks={})
 
         url = f"http://127.0.0.1:{server_port}/widget/{widget_id}"
         with urllib.request.urlopen(url, timeout=5) as resp:  # noqa: S310
@@ -633,24 +621,18 @@ class TestPlotlyIntegration:
 
         # Use the LIBRARY function to generate HTML
         widget_id = "plotly-e2e-test"
-        html = generate_plotly_html(
-            figure_json, widget_id, title="E2E Plotly Test", theme="dark"
-        )
+        html = generate_plotly_html(figure_json, widget_id, title="E2E Plotly Test", theme="dark")
 
         # Register in state and serve (use register_widget for deploy mode compatibility)
         _state.register_widget(widget_id, html, callbacks={})
 
         # E2E: Fetch the widget via HTTP
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         # Verify the figure data is in the HTML
         assert "test-series-123" in response_html
-        assert (
-            "100" in response_html and "200" in response_html and "300" in response_html
-        )
+        assert "100" in response_html and "200" in response_html and "300" in response_html
         # Verify Plotly is loaded (either inline or CDN)
         assert "Plotly" in response_html or "plotly" in response_html
 
@@ -661,17 +643,13 @@ class TestPlotlyIntegration:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        figure_json = (
-            '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
-        )
+        figure_json = '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
         widget_id = "plotly-dark-test"
         html = generate_plotly_html(figure_json, widget_id, theme="dark")
 
         _state.register_widget(widget_id, html, callbacks={})
 
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         assert '<html class="dark">' in response_html
@@ -684,17 +662,13 @@ class TestPlotlyIntegration:
         _start_server(port=server_port, host="0.0.0.0")
         assert wait_for_server("127.0.0.1", server_port)
 
-        figure_json = (
-            '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
-        )
+        figure_json = '{"data": [{"type": "bar", "x": ["A", "B"], "y": [10, 20]}], "layout": {}}'
         widget_id = "plotly-light-test"
         html = generate_plotly_html(figure_json, widget_id, theme="light")
 
         _state.register_widget(widget_id, html, callbacks={})
 
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         assert "#ffffff" in response_html  # Light background
@@ -732,9 +706,7 @@ class TestDataFrameIntegration:
         _state.register_widget(widget_id, html, callbacks={})
 
         # E2E: Fetch the widget via HTTP
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         # Verify column names are in the HTML
@@ -760,9 +732,7 @@ class TestDataFrameIntegration:
 
         _state.register_widget(widget_id, html, callbacks={})
 
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         assert "1234.56" in response_html
@@ -782,9 +752,7 @@ class TestDataFrameIntegration:
 
         _state.register_widget(widget_id, html, callbacks={})
 
-        status, response_html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget_id}"
-        )
+        status, response_html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
 
         assert status == 200
         assert '<html class="dark">' in response_html
@@ -805,9 +773,7 @@ class TestErrorHandling:
         assert wait_for_server("127.0.0.1", server_port)
 
         widget_id = "survive-test"
-        _state.register_widget(
-            widget_id, "<html><body>Test</body></html>", callbacks={}
-        )
+        _state.register_widget(widget_id, "<html><body>Test</body></html>", callbacks={})
 
         # Make some requests
         http_get(f"http://127.0.0.1:{server_port}/widget/{widget_id}")
@@ -836,9 +802,7 @@ class TestToolbarRendering:
         toolbars = [
             {
                 "position": "bottom",
-                "items": [
-                    {"type": "button", "label": "MyButton", "event": "toolbar:click"}
-                ],
+                "items": [{"type": "button", "label": "MyButton", "event": "toolbar:click"}],
             }
         ]
 
@@ -907,18 +871,14 @@ class TestDOMStructure:
 
         assert status == 200
         # Check for classes using regex to tolerate single/double quotes
-        assert re.search(
-            r'class=["\']pywry-wrapper-top["\']', body
-        ), "Wrapper top class not found"
-        assert re.search(
-            r'class=["\']pywry-toolbar pywry-toolbar-top["\']', body
-        ), "Toolbar top class not found"
+        assert re.search(r'class=["\']pywry-wrapper-top["\']', body), "Wrapper top class not found"
+        assert re.search(r'class=["\']pywry-toolbar pywry-toolbar-top["\']', body), (
+            "Toolbar top class not found"
+        )
 
         # Structure check: Wrapper < Toolbar < Content
         wrapper_match = re.search(r'class=["\']pywry-wrapper-top["\']', body)
-        toolbar_match = re.search(
-            r'class=["\']pywry-toolbar pywry-toolbar-top["\']', body
-        )
+        toolbar_match = re.search(r'class=["\']pywry-toolbar pywry-toolbar-top["\']', body)
         content_match = re.search(r'class=["\']pywry-content["\']', body)
 
         assert wrapper_match and toolbar_match and content_match
@@ -949,9 +909,7 @@ class TestDOMStructure:
         assert status == 200
 
         wrapper_match = re.search(r'class=["\']pywry-wrapper-left["\']', body)
-        toolbar_match = re.search(
-            r'class=["\']pywry-toolbar pywry-toolbar-left["\']', body
-        )
+        toolbar_match = re.search(r'class=["\']pywry-toolbar pywry-toolbar-left["\']', body)
         content_match = re.search(r'class=["\']pywry-content["\']', body)
 
         assert wrapper_match, "Wrapper left class not found"
@@ -1095,9 +1053,7 @@ class TestSecretInputE2E:
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
         # Fetch the rendered HTML
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Secret value must NOT appear anywhere in HTML
@@ -1305,11 +1261,7 @@ class TestSecretInputE2E:
         secret_value = "copy-me-securely"
         toolbar = Toolbar(
             position="top",
-            items=[
-                SecretInput(
-                    event="settings:password", value=secret_value, show_copy=True
-                )
-            ],
+            items=[SecretInput(event="settings:password", value=secret_value, show_copy=True)],
         )
         toolbar.register_secrets()
 
@@ -1544,11 +1496,7 @@ class TestSecretInputE2E:
 
         toolbar = Toolbar(
             position="top",
-            items=[
-                SecretInput(
-                    event="api:credentials", value="default-creds", show_copy=True
-                )
-            ],
+            items=[SecretInput(event="api:credentials", value="default-creds", show_copy=True)],
         )
         toolbar.register_secrets()
 
@@ -1706,9 +1654,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Mask should be in HTML
@@ -1738,9 +1684,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Value should be empty (not mask)
@@ -1769,9 +1713,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Mask should be shown (value_exists=True)
@@ -1798,9 +1740,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Should have textarea creation
@@ -1830,9 +1770,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Input should be readonly
@@ -1924,9 +1862,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Should have Escape key handling
@@ -1954,9 +1890,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Should have Ctrl+Enter handling
@@ -1983,9 +1917,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Should have clearSecrets function
@@ -2015,9 +1947,7 @@ class TestSecretInputMaskAndEditE2E:
         ):
             widget = show("<div>Content</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(
-            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
-        )
+        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
 
         assert status == 200
         # Should have textarea class in script

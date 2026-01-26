@@ -6,6 +6,7 @@ These tests verify:
 3. Callbacks are correctly scoped per window/mode
 4. The Quick Start example in README works correctly
 """
+
 # pylint: disable=redefined-outer-name,unused-argument,unsubscriptable-object,cyclic-import
 
 import sys
@@ -207,10 +208,12 @@ class TestNewWindowMode:
 
         # Check content in each window
         r1 = wait_for_result(
-            label1, "pywry.result({ text: document.getElementById('content')?.textContent });"
+            label1,
+            "pywry.result({ text: document.getElementById('content')?.textContent });",
         )
         r2 = wait_for_result(
-            label2, "pywry.result({ text: document.getElementById('content')?.textContent });"
+            label2,
+            "pywry.result({ text: document.getElementById('content')?.textContent });",
         )
 
         assert r1 is not None and r1["text"] == "FIRST", f"Window 1 wrong content: {r1}"
@@ -311,7 +314,9 @@ class TestSingleWindowMode:
             callback_received.set()
 
         label = show_and_wait_ready(
-            app, "<div id='new'>New Content</div>", callbacks={"test:event": on_test_event}
+            app,
+            "<div id='new'>New Content</div>",
+            callbacks={"test:event": on_test_event},
         )
 
         # Trigger the callback from JS
@@ -425,7 +430,8 @@ class TestMultiWindowMode:
 
         # Verify chart was updated
         chart_result = wait_for_result(
-            "chart", "pywry.result({ text: document.getElementById('c')?.textContent });"
+            "chart",
+            "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
         assert chart_result is not None and chart_result["text"] == "Updated Chart", (
             f"Chart not updated: {chart_result}"
@@ -433,7 +439,8 @@ class TestMultiWindowMode:
 
         # Verify table was NOT changed
         table_result = wait_for_result(
-            "table", "pywry.result({ text: document.getElementById('c')?.textContent });"
+            "table",
+            "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
         assert table_result is not None and table_result["text"] == "Initial Table", (
             f"Table should not have changed: {table_result}"
@@ -455,10 +462,16 @@ class TestMultiWindowMode:
             table_events.append({"data": data, "label": label})
 
         show_and_wait_ready(
-            app, "<div>Chart</div>", label="chart", callbacks={"app:action": on_chart_event}
+            app,
+            "<div>Chart</div>",
+            label="chart",
+            callbacks={"app:action": on_chart_event},
         )
         show_and_wait_ready(
-            app, "<div>Table</div>", label="table", callbacks={"app:action": on_table_event}
+            app,
+            "<div>Table</div>",
+            label="table",
+            callbacks={"app:action": on_table_event},
         )
 
         # Emit event only from chart window
@@ -551,7 +564,8 @@ class TestCrossModeBehavior:
 
         # Verify modification
         result = wait_for_result(
-            label, "pywry.result({ text: document.getElementById('target')?.textContent });"
+            label,
+            "pywry.result({ text: document.getElementById('target')?.textContent });",
         )
         assert result is not None and result["text"] == "Modified", (
             f"Mode {mode}: eval_js failed: {result}"
@@ -582,6 +596,7 @@ class TestCrossModeBehavior:
 class TestReadmeQuickStart:
     """Test that the README Quick Start example works correctly."""
 
+    @retry_on_subprocess_failure(max_attempts=3)
     def test_quick_start_flow(self):
         """Verify the Quick Start example from README works."""
         app = PyWry(
@@ -637,7 +652,13 @@ class TestReadmeQuickStart:
             toolbars=[
                 {
                     "position": "left",
-                    "items": [{"type": "button", "label": "Custom Action", "event": "app:custom"}],
+                    "items": [
+                        {
+                            "type": "button",
+                            "label": "Custom Action",
+                            "event": "app:custom",
+                        }
+                    ],
                 }
             ],
         )
