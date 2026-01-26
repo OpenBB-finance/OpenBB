@@ -404,7 +404,9 @@ class TestSelect:
 
     def test_html_contains_options(self) -> None:
         """Test HTML contains option elements."""
-        sel = Select(event="view:change", options=[Option(label="Opt1"), Option(label="Opt2")])
+        sel = Select(
+            event="view:change", options=[Option(label="Opt1"), Option(label="Opt2")]
+        )
         html = sel.build_html()
         assert "pywry-dropdown-option" in html
         assert "Opt1" in html
@@ -705,7 +707,9 @@ class TestRangeInput:
 
     def test_custom_range(self) -> None:
         """Test custom range values."""
-        ri = RangeInput(event="filter:price", start=100, end=500, min=0, max=1000, step=10)
+        ri = RangeInput(
+            event="filter:price", start=100, end=500, min=0, max=1000, step=10
+        )
         assert ri.start == 100
         assert ri.end == 500
         assert ri.min == 0
@@ -824,7 +828,9 @@ class TestToolbar:
 
     def test_html_contains_position_class(self) -> None:
         """Test HTML contains position class."""
-        tb = Toolbar(position="bottom", items=[Button(label="Test", event="toolbar:click")])
+        tb = Toolbar(
+            position="bottom", items=[Button(label="Test", event="toolbar:click")]
+        )
         html = tb.build_html()
         assert "pywry-toolbar-bottom" in html
 
@@ -1004,7 +1010,9 @@ class TestHtmlSecurity:
 
     def test_description_escaped(self) -> None:
         """Test description tooltip is HTML escaped."""
-        btn = Button(label="Test", event="toolbar:click", description='">onclick="alert(1)')
+        btn = Button(
+            label="Test", event="toolbar:click", description='">onclick="alert(1)'
+        )
         html = btn.build_html()
         # The malicious onclick in description should be escaped to &quot;
         # Check that the data-tooltip attribute contains the escaped version
@@ -1029,13 +1037,17 @@ class TestStyleAttribute:
 
     def test_select_with_label_style(self) -> None:
         """Test select style on wrapper."""
-        sel = Select(label="Choose:", event="view:change", options=[], style="margin: 10px;")
+        sel = Select(
+            label="Choose:", event="view:change", options=[], style="margin: 10px;"
+        )
         html = sel.build_html()
         assert "margin: 10px;" in html
 
     def test_toolbar_style(self) -> None:
         """Test toolbar container style."""
-        tb = Toolbar(style="padding: 5px;", items=[Button(label="Test", event="toolbar:click")])
+        tb = Toolbar(
+            style="padding: 5px;", items=[Button(label="Test", event="toolbar:click")]
+        )
         html = tb.build_html()
         assert 'style="padding: 5px;"' in html
 
@@ -1700,7 +1712,9 @@ class TestToolbarContentWrapper:
             )
             html = toolbar.build_html()
             # Style should be on the content wrapper
-            assert 'class="pywry-toolbar-content" style="justify-content: center;"' in html
+            assert (
+                'class="pywry-toolbar-content" style="justify-content: center;"' in html
+            )
             # Outer div should NOT have style attribute
             assert f'class="pywry-toolbar pywry-toolbar-{position}"' in html
             assert f'pywry-toolbar-{position}" style=' not in html
@@ -2175,7 +2189,9 @@ class TestTabGroup:
 
     def test_html_contains_data_value(self) -> None:
         """Test HTML contains data-value on tab buttons."""
-        tg = TabGroup(event="view:change", options=[Option(label="Table", value="table")])
+        tg = TabGroup(
+            event="view:change", options=[Option(label="Table", value="table")]
+        )
         html = tg.build_html()
         assert 'data-value="table"' in html
 
@@ -2215,7 +2231,9 @@ class TestEventDataStructure:
 
     def test_button_emits_component_id_and_custom_data(self) -> None:
         """Button emits componentId plus any custom data payload."""
-        btn = Button(label="Export", event="export:csv", data={"format": "csv", "all": True})
+        btn = Button(
+            label="Export", event="export:csv", data={"format": "csv", "all": True}
+        )
         html = btn.build_html()
         # Button uses data-data attribute for custom payload
         assert 'data-data="' in html
@@ -2795,7 +2813,11 @@ class TestBuildToolbarsHtmlStructure:
         """Dict-based toolbar configs are converted to Toolbar objects."""
         html = build_toolbars_html(
             [
-                {"items": [{"type": "button", "label": "DictBtn", "event": "app:dict"}]},
+                {
+                    "items": [
+                        {"type": "button", "label": "DictBtn", "event": "app:dict"}
+                    ]
+                },
             ]
         )
         assert "DictBtn" in html
@@ -2843,7 +2865,9 @@ class TestWrapContentWithToolbars:
         """Bottom toolbar appears after content."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        toolbar = Toolbar(position="bottom", items=[Button(label="Bottom", event="app:bottom")])
+        toolbar = Toolbar(
+            position="bottom", items=[Button(label="Bottom", event="app:bottom")]
+        )
         html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[toolbar])
         # Bottom toolbar should come after pywry-content
         bottom_idx = html.index("Bottom")
@@ -2854,8 +2878,12 @@ class TestWrapContentWithToolbars:
         """Header/footer are outermost wrappers."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        header = Toolbar(position="header", items=[Button(label="Header", event="app:header")])
-        footer = Toolbar(position="footer", items=[Button(label="Footer", event="app:footer")])
+        header = Toolbar(
+            position="header", items=[Button(label="Header", event="app:header")]
+        )
+        footer = Toolbar(
+            position="footer", items=[Button(label="Footer", event="app:footer")]
+        )
         html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[header, footer])
         assert "pywry-wrapper-header" in html
         # Header first, footer last in document order
@@ -2869,7 +2897,9 @@ class TestWrapContentWithToolbars:
         from pywry.toolbar import wrap_content_with_toolbars
 
         left = Toolbar(position="left", items=[Button(label="Left", event="app:left")])
-        right = Toolbar(position="right", items=[Button(label="Right", event="app:right")])
+        right = Toolbar(
+            position="right", items=[Button(label="Right", event="app:right")]
+        )
         html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[left, right])
         assert "pywry-wrapper-left" in html
         # Left before content, right after
@@ -2882,7 +2912,9 @@ class TestWrapContentWithToolbars:
         """Inside toolbar uses wrapper-inside class."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        inside = Toolbar(position="inside", items=[Button(label="Inside", event="app:inside")])
+        inside = Toolbar(
+            position="inside", items=[Button(label="Inside", event="app:inside")]
+        )
         html = wrap_content_with_toolbars("<p>Content</p>", toolbars=[inside])
         assert "pywry-wrapper-inside" in html
 
@@ -2987,8 +3019,12 @@ class TestStackedToolbarsSamePosition:
         """Two top toolbars are rendered in order."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        toolbar1 = Toolbar(position="top", items=[Button(label="TopRow1", event="app:t1")])
-        toolbar2 = Toolbar(position="top", items=[Button(label="TopRow2", event="app:t2")])
+        toolbar1 = Toolbar(
+            position="top", items=[Button(label="TopRow1", event="app:t1")]
+        )
+        toolbar2 = Toolbar(
+            position="top", items=[Button(label="TopRow2", event="app:t2")]
+        )
         html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
 
         assert "TopRow1" in html
@@ -3016,8 +3052,12 @@ class TestStackedToolbarsSamePosition:
         """Two bottom toolbars are rendered after content in order."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        toolbar1 = Toolbar(position="bottom", items=[Button(label="Bot1", event="app:b1")])
-        toolbar2 = Toolbar(position="bottom", items=[Button(label="Bot2", event="app:b2")])
+        toolbar1 = Toolbar(
+            position="bottom", items=[Button(label="Bot1", event="app:b1")]
+        )
+        toolbar2 = Toolbar(
+            position="bottom", items=[Button(label="Bot2", event="app:b2")]
+        )
         html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
 
         # Both after content
@@ -3028,8 +3068,12 @@ class TestStackedToolbarsSamePosition:
         """Two right toolbars are rendered after content in order."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        toolbar1 = Toolbar(position="right", items=[Button(label="Right1", event="app:r1")])
-        toolbar2 = Toolbar(position="right", items=[Button(label="Right2", event="app:r2")])
+        toolbar1 = Toolbar(
+            position="right", items=[Button(label="Right1", event="app:r1")]
+        )
+        toolbar2 = Toolbar(
+            position="right", items=[Button(label="Right2", event="app:r2")]
+        )
         html = wrap_content_with_toolbars("<p>C</p>", toolbars=[toolbar1, toolbar2])
 
         # Both after content (right side)
@@ -3067,8 +3111,12 @@ class TestMixedPositionLayouts:
         from pywry.toolbar import wrap_content_with_toolbars
 
         top = Toolbar(position="top", items=[Button(label="TopNav", event="app:top")])
-        bottom = Toolbar(position="bottom", items=[Button(label="Status", event="app:status")])
-        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[top, bottom])
+        bottom = Toolbar(
+            position="bottom", items=[Button(label="Status", event="app:status")]
+        )
+        html = wrap_content_with_toolbars(
+            "<main>Content</main>", toolbars=[top, bottom]
+        )
 
         top_idx = html.index("TopNav")
         content_idx = html.index("<main>Content</main>")
@@ -3079,9 +3127,15 @@ class TestMixedPositionLayouts:
         """Left and right toolbars flank content."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        left = Toolbar(position="left", items=[Button(label="Sidebar", event="app:side")])
-        right = Toolbar(position="right", items=[Button(label="Panel", event="app:panel")])
-        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[left, right])
+        left = Toolbar(
+            position="left", items=[Button(label="Sidebar", event="app:side")]
+        )
+        right = Toolbar(
+            position="right", items=[Button(label="Panel", event="app:panel")]
+        )
+        html = wrap_content_with_toolbars(
+            "<main>Content</main>", toolbars=[left, right]
+        )
 
         left_idx = html.index("Sidebar")
         content_idx = html.index("<main>Content</main>")
@@ -3092,9 +3146,15 @@ class TestMixedPositionLayouts:
         """Header and footer wrap entire layout."""
         from pywry.toolbar import wrap_content_with_toolbars
 
-        header = Toolbar(position="header", items=[Button(label="Logo", event="app:logo")])
-        footer = Toolbar(position="footer", items=[Button(label="Copyright", event="app:copy")])
-        html = wrap_content_with_toolbars("<main>Content</main>", toolbars=[header, footer])
+        header = Toolbar(
+            position="header", items=[Button(label="Logo", event="app:logo")]
+        )
+        footer = Toolbar(
+            position="footer", items=[Button(label="Copyright", event="app:copy")]
+        )
+        html = wrap_content_with_toolbars(
+            "<main>Content</main>", toolbars=[header, footer]
+        )
 
         # Header first, footer last
         header_idx = html.index("Logo")
@@ -3196,7 +3256,9 @@ class TestComplexRealWorldLayouts:
         # Layout order
         assert html.index("Logo") < html.index("Home")  # Header before left
         assert html.index("Home") < html.index("Refresh")  # Left before top
-        assert html.index("Refresh") < html.index("Dashboard Content")  # Top before content
+        assert html.index("Refresh") < html.index(
+            "Dashboard Content"
+        )  # Top before content
 
     def test_editor_layout_with_inside_toolbar(self) -> None:
         """Editor: header + floating inside toolbar + content + bottom status."""
@@ -3223,7 +3285,9 @@ class TestComplexRealWorldLayouts:
                 items=[Button(label="Ln 1, Col 1", event="status:position")],
             ),
         ]
-        html = wrap_content_with_toolbars("<textarea>Editor</textarea>", toolbars=toolbars)
+        html = wrap_content_with_toolbars(
+            "<textarea>Editor</textarea>", toolbars=toolbars
+        )
 
         # All present
         assert "File" in html
@@ -3238,19 +3302,27 @@ class TestComplexRealWorldLayouts:
         from pywry.toolbar import wrap_content_with_toolbars
 
         toolbars = [
-            Toolbar(position="header", items=[Button(label="HEADER", event="app:header")]),
-            Toolbar(position="footer", items=[Button(label="FOOTER", event="app:footer")]),
+            Toolbar(
+                position="header", items=[Button(label="HEADER", event="app:header")]
+            ),
+            Toolbar(
+                position="footer", items=[Button(label="FOOTER", event="app:footer")]
+            ),
             Toolbar(position="left", items=[Button(label="LEFT", event="app:left")]),
             Toolbar(position="right", items=[Button(label="RIGHT", event="app:right")]),
             Toolbar(position="top", items=[Button(label="TOP", event="app:top")]),
-            Toolbar(position="bottom", items=[Button(label="BOTTOM", event="app:bottom")]),
+            Toolbar(
+                position="bottom", items=[Button(label="BOTTOM", event="app:bottom")]
+            ),
             Toolbar(
                 position="inside",
                 items=[Button(label="INSIDE", event="app:inside")],
                 style="position: absolute; top: 10px; left: 10px;",
             ),
         ]
-        html = wrap_content_with_toolbars("<canvas id='chart'></canvas>", toolbars=toolbars)
+        html = wrap_content_with_toolbars(
+            "<canvas id='chart'></canvas>", toolbars=toolbars
+        )
 
         # All wrappers present
         assert "pywry-wrapper-header" in html
@@ -3300,8 +3372,12 @@ class TestComplexRealWorldLayouts:
 
         # Verify inter-position order
         assert html.index("Left2") < html.index("Top1")  # Left before top
-        assert html.index("Top2") < html.index("<div>Content</div>")  # Top before content
-        assert html.index("<div>Content</div>") < html.index("Bot1")  # Content before bottom
+        assert html.index("Top2") < html.index(
+            "<div>Content</div>"
+        )  # Top before content
+        assert html.index("<div>Content</div>") < html.index(
+            "Bot1"
+        )  # Content before bottom
 
 
 class TestToolbarStackWithDifferentComponents:
@@ -3329,7 +3405,9 @@ class TestToolbarStackWithDifferentComponents:
             Toolbar(
                 position="left",
                 items=[
-                    RadioGroup(event="nav:section", options=["Home", "Settings", "Help"]),
+                    RadioGroup(
+                        event="nav:section", options=["Home", "Settings", "Help"]
+                    ),
                 ],
             ),
         ]
@@ -3420,7 +3498,10 @@ class TestToolbarPositionSpecificBehavior:
         html = toolbar.build_html()
 
         # Style should be on content div
-        assert 'class="pywry-toolbar-content" style="justify-content: center; gap: 10px;"' in html
+        assert (
+            'class="pywry-toolbar-content" style="justify-content: center; gap: 10px;"'
+            in html
+        )
 
     def test_each_position_has_correct_class(self) -> None:
         """Each position produces correct position class."""
@@ -4037,10 +4118,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def custom_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secret_store["value"]
@@ -4062,10 +4143,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def custom_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secret_store["value"]
@@ -4090,10 +4171,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def tracking_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is not None:
                 received_values.append(value)
@@ -4118,7 +4199,7 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             component_id: str,
             event: str,
             label: str | None = None,
-            **_metadata,
+            **metadata,
         ) -> str | None:
             received_metadata.append(
                 {
@@ -4157,12 +4238,12 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         from pywry.toolbar import _SECRET_HANDLERS, get_secret_handler
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "from-handler"
 
@@ -4198,9 +4279,9 @@ Fd00/yeH8Sf+UqD5dXvQmGZqqDJG2Z9Fw8peXmE=
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return vault.get(component_id)
@@ -4233,9 +4314,9 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return keyring.get(component_id)
@@ -4269,9 +4350,9 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secrets_manager.get(component_id)
@@ -4303,9 +4384,9 @@ line4: expires=2026-12-31"""
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return store.get(component_id)
@@ -4334,9 +4415,9 @@ line4: expires=2026-12-31"""
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return passwords.get(component_id)
@@ -4360,12 +4441,12 @@ line4: expires=2026-12-31"""
         """Test handler callable is excluded from serialization."""
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "secret"
 
@@ -4379,12 +4460,12 @@ line4: expires=2026-12-31"""
         """Test handler takes precedence over value for get operations."""
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "handler-value"
 
@@ -4492,7 +4573,9 @@ class TestSecretHandlerRegistration:
             items=[SecretInput(event="test:secret", value="my-secret-value")],
         )
 
-        registered = register_secret_handlers_for_toolbar(toolbar, mock_on, mock_dispatch)
+        registered = register_secret_handlers_for_toolbar(
+            toolbar, mock_on, mock_dispatch
+        )
 
         # Should have registered reveal and copy handlers
         assert "test:secret:reveal" in registered
@@ -4500,7 +4583,9 @@ class TestSecretHandlerRegistration:
 
         # Call the reveal handler
         si = toolbar.get_secret_inputs()[0]
-        registered_handlers["test:secret:reveal"]({"componentId": si.component_id})
+        registered_handlers["test:secret:reveal"](
+            {"componentId": si.component_id}, "test:secret:reveal", "test"
+        )
 
         # Should have dispatched response with base64-encoded value
         assert len(dispatched_events) == 1
@@ -4551,7 +4636,9 @@ class TestSecretHandlerRegistration:
 
         # Call handler
         si = toolbar.get_secret_inputs()[0]
-        registered_handlers["auth:api-key:reveal"]({"componentId": si.component_id})
+        registered_handlers["auth:api-key:reveal"](
+            {"componentId": si.component_id}, "auth:api-key:reveal", "test"
+        )
 
         # Should use custom handler's return value (base64 encoded for transit)
         _, data = dispatched_events[0]
@@ -4648,17 +4735,18 @@ class TestSecretInputMaskAndEditMode:
         assert "ta.style.minHeight" in html
 
     def test_textarea_resizable_both_directions(self) -> None:
-        """Textarea should be resizable in both directions."""
+        """Textarea should be resizable via CSS class."""
         si = SecretInput(event="settings:api-key")
         html = si.build_html()
-        assert "ta.style.resize='both'" in html
+        # Textarea gets pywry-secret-textarea class which has resize:both in CSS
+        assert "pywry-secret-textarea" in html
 
     def test_textarea_no_wrap(self) -> None:
-        """Textarea should not wrap lines."""
+        """Textarea should not wrap lines (via CSS class)."""
         si = SecretInput(event="settings:api-key")
         html = si.build_html()
-        assert "ta.style.whiteSpace='pre'" in html
-        assert "ta.style.overflowWrap='normal'" in html
+        # Textarea gets pywry-secret-textarea class which has white-space:pre in CSS
+        assert "pywry-secret-textarea" in html
 
     def test_edit_confirm_on_blur(self) -> None:
         """Blur event should confirm edit and transmit."""
@@ -5285,7 +5373,9 @@ class TestTickerItem:
     def test_update_payload_styles(self) -> None:
         """Test update_payload with styles."""
         ti = TickerItem(ticker="AAPL", text="Test")
-        _event, payload = ti.update_payload(styles={"color": "green", "fontWeight": "bold"})
+        _event, payload = ti.update_payload(
+            styles={"color": "green", "fontWeight": "bold"}
+        )
         assert payload["styles"]["color"] == "green"
         assert payload["styles"]["fontWeight"] == "bold"
 
@@ -5387,6 +5477,6 @@ class TestAllTypesDiscriminatorComplete:
         ]
         for item in items:
             assert item.component_id, f"{item.type} has no component_id"
-            assert item.component_id.startswith(item.type), (
-                f"{item.type} component_id doesn't start with type"
-            )
+            assert item.component_id.startswith(
+                item.type
+            ), f"{item.type} component_id doesn't start with type"

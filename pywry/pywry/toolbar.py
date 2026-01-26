@@ -209,6 +209,7 @@ ItemType = Literal[
     "radio",
     "div",
     "marquee",
+    "secret",
 ]
 
 
@@ -826,24 +827,19 @@ class SecretInput(ToolbarItem):
     def build_html(self) -> str:
         """Build secret input HTML with visibility toggle and copy button.
 
-        SECURITY: The actual secret value is NEVER included in the HTML.
         When a value exists, a fixed mask (••••••••••••) is shown.
         Show/copy buttons emit events to request the real secret from the backend.
         Values are base64 encoded in transit for obfuscation.
 
         Edit mode:
-        - Click on input or edit button to enter edit mode
+        - Click on edit button to enter edit mode
         - Switches to a resizable textarea (no wrapping, no formatting)
         - Confirm with blur or Ctrl+Enter
         - Cancel with Escape (restores mask)
         - Only transmits on confirm, not during typing
         """
         disabled_attr = " disabled" if self.disabled else ""
-
-        # Mask to show when value exists (12 bullet characters)
         mask_chars = "••••••••••••"
-
-        # Display value: mask if value exists, empty otherwise
         display_value = mask_chars if self.has_value else ""
         has_value_attr = ' data-has-value="true"' if self.has_value else ""
         masked_attr = ' data-masked="true"' if self.has_value else ""
@@ -930,9 +926,6 @@ class SecretInput(ToolbarItem):
             f"ta.focus();"
             f"}})(this)"
         )
-
-        # SECURITY: actual secret is NEVER in HTML - only mask or empty
-        # SECURITY: actual secret is NEVER in HTML - only mask or empty
         # Input is readonly - users must click Edit button to modify
         # Cursor style indicates non-editable, data-tooltip provides styled instruction
         input_html = (
@@ -942,10 +935,8 @@ class SecretInput(ToolbarItem):
             f'autocomplete="off" spellcheck="false"{has_value_attr} '
             f'readonly data-tooltip="Click Edit button to modify"{disabled_attr}>'
         )
-
         # Build action buttons container
         buttons_html = ""
-
         # Edit button - enters edit mode
         edit_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'
         edit_script = (
@@ -1069,7 +1060,7 @@ class SecretInput(ToolbarItem):
             The secret value, or None if not available.
         """
         if self.handler is not None:
-            return self.handler(
+            return self.handler(  # pylint: disable=not-callable
                 None,  # Get mode
                 component_id=self.component_id,
                 event=self.event,
@@ -1104,7 +1095,7 @@ class SecretInput(ToolbarItem):
 
         # If custom handler, call it with the value (set mode) and metadata
         if self.handler is not None:
-            self.handler(
+            self.handler(  # pylint: disable=not-callable
                 plain_value,
                 component_id=self.component_id,
                 event=self.event,
@@ -1146,7 +1137,7 @@ class SecretInput(ToolbarItem):
             The secret value, or None if not set.
         """
         if self.handler is not None:
-            return self.handler(
+            return self.handler(  # pylint: disable=not-callable
                 None,  # Get mode
                 component_id=self.component_id,
                 event=self.event,
@@ -1458,7 +1449,7 @@ class DateInput(ToolbarItem):
         attrs = [
             f'id="{self.component_id}"',
             f'data-event="{self.event}"',
-            'class="pywry-input pywry-date-input"',
+            'class="pywry-input pywry-input-date"',
         ]
         if self.value:
             attrs.append(f'value="{html.escape(self.value)}"')

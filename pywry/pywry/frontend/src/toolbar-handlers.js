@@ -339,7 +339,7 @@ function initToolbarHandlers(container, pywry) {
     });
 
     var inputDebounceTimers = {};
-    container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
+    container.querySelectorAll('.pywry-input-text, .pywry-input-number, .pywry-input-date').forEach(function(input) {
         input.addEventListener('input', function(e) {
             var eventName = input.getAttribute('data-event');
             var debounce = parseInt(input.getAttribute('data-debounce') || '0', 10);
@@ -364,7 +364,7 @@ function initToolbarHandlers(container, pywry) {
             }
         });
     });
-    container.querySelectorAll('.pywry-date-input').forEach(function(input) {
+    container.querySelectorAll('.pywry-input-date').forEach(function(input) {
         if (!input.value) {
             input.classList.add('pywry-date-empty');
         }
@@ -382,7 +382,7 @@ function initToolbarHandlers(container, pywry) {
             }
         });
     });
-    container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
+    container.querySelectorAll('.pywry-input-slider, .pywry-input-range').forEach(function(slider) {
         slider.addEventListener('input', function(e) {
             var eventName = slider.getAttribute('data-event');
             var value = parseFloat(slider.value);
