@@ -444,7 +444,8 @@ def test_secret_never_in_https_response(ssl_certs):
             assert secret_value not in resp.text
             # But password input should be present
             assert 'type="password"' in resp.text
-            assert 'value=""' in resp.text
+            # And should have masked value (bullets) when value exists
+            assert 'value="••••••••••••"' in resp.text
 
         finally:
             stop_server()
@@ -667,7 +668,7 @@ def test_secret_storage_isolation_https(ssl_certs):
             stop_server()
 
 
-def test_encode_decode_roundtrip_ssl(_ssl_certs):
+def test_encode_decode_roundtrip_ssl():
     """Test base64 encode/decode roundtrip works in SSL context."""
     from pywry.toolbar import decode_secret, encode_secret
 
@@ -721,7 +722,14 @@ async def test_e2e_wss_custom_secret_handler_reveal(  # noqa: PLR0915  # pylint:
         # Custom handler returns value from "external vault"
         vault_secret = "wss-vault-fetched-secret"
 
-        def custom_reveal_handler(_data: dict) -> str:
+        def custom_reveal_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
+        ) -> str:
             return vault_secret
 
         si = toolbar.get_secret_inputs()[0]
@@ -733,17 +741,23 @@ async def test_e2e_wss_custom_secret_handler_reveal(  # noqa: PLR0915  # pylint:
         widget_id = "wss_custom_handler_test"
         full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
 
-        # Callback that uses custom handler
-        def on_reveal(data, event_type, _wid):
+        # Async callback that uses custom handler
+        async def on_reveal(data, event_type, _wid):
             from pywry.toolbar import get_secret_handler
 
             handler = get_secret_handler(event_type)
+            component_id = data.get("componentId", "")
             if handler:
-                secret = handler(data)
+                secret = handler(
+                    None,
+                    component_id=component_id,
+                    event=event_type,
+                    label=None,
+                )
             else:
                 from pywry.toolbar import get_secret
 
-                secret = get_secret(data.get("componentId", ""))
+                secret = get_secret(component_id)
 
             from pywry.inline import _state
 
@@ -757,11 +771,10 @@ async def test_e2e_wss_custom_secret_handler_reveal(  # noqa: PLR0915  # pylint:
                     "encoded": True,
                 },
             }
-            # Broadcast to connected clients
-            _tasks = [
-                asyncio.create_task(ws.send(json.dumps(response)))
-                for ws in _state.connections.get(widget_id, set())
-            ]
+            # Send to the widget's websocket connection
+            ws = _state.connections.get(widget_id)
+            if ws:
+                await ws.send_json(response)
 
         widget = InlineWidget(
             full_html,
@@ -844,9 +857,23 @@ async def test_e2e_wss_custom_handler_with_context(  # noqa: PLR0915
         # Track what data the handler receives
         received_context = []
 
-        def context_tracking_handler(data: dict) -> str:
-            received_context.append(data.copy())
-            return f"response-for-{data.get('componentId', 'unknown')}"
+        def context_tracking_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
+        ) -> str:
+            received_context.append(
+                {
+                    "componentId": component_id,
+                    "event": event,
+                    "label": label,
+                    **metadata,
+                }
+            )
+            return f"response-for-{component_id}"
 
         si = toolbar.get_secret_inputs()[0]
         reveal_event = si.get_reveal_event()
@@ -856,11 +883,24 @@ async def test_e2e_wss_custom_handler_with_context(  # noqa: PLR0915
         widget_id = "wss_context_test"
         full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
 
-        def on_reveal(data, event_type, _wid):
+        async def on_reveal(data, event_type, _wid):
             from pywry.toolbar import get_secret_handler
 
             handler = get_secret_handler(event_type)
-            secret = handler(data) if handler else ""
+            component_id = data.get("componentId", "")
+            extra_field = data.get("extraField", "")
+            metadata = data.get("metadata", {})
+            if handler:
+                secret = handler(
+                    None,
+                    component_id=component_id,
+                    event=event_type,
+                    label=None,
+                    extraField=extra_field,
+                    metadata=metadata,
+                )
+            else:
+                secret = ""
             encoded = encode_secret(secret) if secret else ""
 
             response = {
@@ -871,10 +911,10 @@ async def test_e2e_wss_custom_handler_with_context(  # noqa: PLR0915
                     "encoded": True,
                 },
             }
-            _tasks = [
-                asyncio.create_task(ws.send(json.dumps(response)))
-                for ws in _state.connections.get(widget_id, set())
-            ]
+            # Send to the widget's websocket connection
+            ws = _state.connections.get(widget_id)
+            if ws:
+                await ws.send_json(response)
 
         widget = InlineWidget(
             full_html,

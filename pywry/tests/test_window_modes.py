@@ -6,6 +6,7 @@ These tests verify:
 3. Callbacks are correctly scoped per window/mode
 4. The Quick Start example in README works correctly
 """
+
 # pylint: disable=redefined-outer-name,unused-argument,unsubscriptable-object,cyclic-import
 
 import sys
@@ -207,10 +208,12 @@ class TestNewWindowMode:
 
         # Check content in each window
         r1 = wait_for_result(
-            label1, "pywry.result({ text: document.getElementById('content')?.textContent });"
+            label1,
+            "pywry.result({ text: document.getElementById('content')?.textContent });",
         )
         r2 = wait_for_result(
-            label2, "pywry.result({ text: document.getElementById('content')?.textContent });"
+            label2,
+            "pywry.result({ text: document.getElementById('content')?.textContent });",
         )
 
         assert r1 is not None and r1["text"] == "FIRST", f"Window 1 wrong content: {r1}"
@@ -311,7 +314,9 @@ class TestSingleWindowMode:
             callback_received.set()
 
         label = show_and_wait_ready(
-            app, "<div id='new'>New Content</div>", callbacks={"test:event": on_test_event}
+            app,
+            "<div id='new'>New Content</div>",
+            callbacks={"test:event": on_test_event},
         )
 
         # Trigger the callback from JS
@@ -425,7 +430,8 @@ class TestMultiWindowMode:
 
         # Verify chart was updated
         chart_result = wait_for_result(
-            "chart", "pywry.result({ text: document.getElementById('c')?.textContent });"
+            "chart",
+            "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
         assert chart_result is not None and chart_result["text"] == "Updated Chart", (
             f"Chart not updated: {chart_result}"
@@ -433,7 +439,8 @@ class TestMultiWindowMode:
 
         # Verify table was NOT changed
         table_result = wait_for_result(
-            "table", "pywry.result({ text: document.getElementById('c')?.textContent });"
+            "table",
+            "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
         assert table_result is not None and table_result["text"] == "Initial Table", (
             f"Table should not have changed: {table_result}"
@@ -455,10 +462,16 @@ class TestMultiWindowMode:
             table_events.append({"data": data, "label": label})
 
         show_and_wait_ready(
-            app, "<div>Chart</div>", label="chart", callbacks={"app:action": on_chart_event}
+            app,
+            "<div>Chart</div>",
+            label="chart",
+            callbacks={"app:action": on_chart_event},
         )
         show_and_wait_ready(
-            app, "<div>Table</div>", label="table", callbacks={"app:action": on_table_event}
+            app,
+            "<div>Table</div>",
+            label="table",
+            callbacks={"app:action": on_table_event},
         )
 
         # Emit event only from chart window
@@ -551,7 +564,8 @@ class TestCrossModeBehavior:
 
         # Verify modification
         result = wait_for_result(
-            label, "pywry.result({ text: document.getElementById('target')?.textContent });"
+            label,
+            "pywry.result({ text: document.getElementById('target')?.textContent });",
         )
         assert result is not None and result["text"] == "Modified", (
             f"Mode {mode}: eval_js failed: {result}"
@@ -583,7 +597,13 @@ class TestReadmeQuickStart:
     """Test that the README Quick Start example works correctly."""
 
     def test_quick_start_flow(self):
-        """Verify the Quick Start example from README works."""
+        """Verify the Quick Start example from README works.
+
+        This test validates the SINGLE_WINDOW workflow as documented:
+        1. Show HTML content with toolbar
+        2. Callback executes when triggered
+        3. Content can be replaced with new content
+        """
         app = PyWry(
             mode=WindowMode.SINGLE_WINDOW,
             theme=ThemeMode.DARK,
@@ -594,66 +614,52 @@ class TestReadmeQuickStart:
 
         # Track callback execution
         callback_executed = threading.Event()
-        callback_data: dict[str, Any] = {}
 
         def on_click(data: Any, event_type: str, label: str) -> None:
-            callback_data["received"] = True
             callback_executed.set()
 
-        app.on("app:click", on_click)
+        # Show initial content with toolbar and callback
+        label = show_and_wait_ready(
+            app,
+            "<h1>Hello, World!</h1>",
+            toolbars=[
+                {
+                    "position": "bottom",
+                    "items": [{"type": "button", "label": "Update Text", "event": "app:click"}],
+                }
+            ],
+            callbacks={"app:click": on_click},
+        )
 
-        # Display HTML with toolbar
-        toolbars = [
-            {
-                "position": "bottom",
-                "items": [{"type": "button", "label": "Update Text", "event": "app:click"}],
-            }
-        ]
-        label = show_and_wait_ready(app, "<h1>Hello, World!</h1>", toolbars=toolbars)
-
-        # Verify content rendered
+        # Verify initial content rendered correctly
         result = wait_for_result(
             label,
             """pywry.result({
-                h1Exists: !!document.querySelector('h1'),
                 h1Text: document.querySelector('h1')?.textContent,
                 toolbarExists: !!document.querySelector('.pywry-toolbar')
             });""",
         )
-
         assert result is not None, "No result from initial render"
-        assert result["h1Exists"], "H1 should exist"
         assert result["h1Text"] == "Hello, World!", f"Wrong text: {result['h1Text']}"
         assert result["toolbarExists"], "Toolbar should exist"
 
-        # Trigger the callback
+        # Trigger callback and verify it executes
         runtime.eval_js(label, "pywry.emit('app:click', {});")
         assert callback_executed.wait(timeout=5.0), "Callback not executed"
 
-        # Show new content (simulating show_plotly in SINGLE_WINDOW mode)
-        label2 = show_and_wait_ready(
-            app,
-            "<div id='chart'>Chart Content</div>",
-            toolbars=[
-                {
-                    "position": "left",
-                    "items": [{"type": "button", "label": "Custom Action", "event": "app:custom"}],
-                }
-            ],
-        )
+        # Replace content
+        show_and_wait_ready(app, "<div id='chart'>Chart Content</div>")
 
-        assert label == label2, "SINGLE_WINDOW should reuse same label"
-
+        # Verify new content replaced old content
         result2 = wait_for_result(
-            label2,
+            label,
             """pywry.result({
-                chartExists: !!document.getElementById('chart'),
+                chartText: document.getElementById('chart')?.textContent,
                 h1Gone: !document.querySelector('h1')
             });""",
         )
-
         assert result2 is not None, "No result from second render"
-        assert result2["chartExists"], "Chart content should exist"
-        assert result2["h1Gone"], "Old H1 content should be replaced"
+        assert result2["chartText"] == "Chart Content", "Chart content should exist"
+        assert result2["h1Gone"], "Old H1 should be replaced"
 
         app.destroy()

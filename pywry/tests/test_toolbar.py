@@ -4037,10 +4037,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def custom_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secret_store["value"]
@@ -4062,10 +4062,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def custom_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secret_store["value"]
@@ -4090,10 +4090,10 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         def tracking_handler(
             value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is not None:
                 received_values.append(value)
@@ -4118,7 +4118,7 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             component_id: str,
             event: str,
             label: str | None = None,
-            **_metadata,
+            **metadata,
         ) -> str | None:
             received_metadata.append(
                 {
@@ -4157,12 +4157,12 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
         from pywry.toolbar import _SECRET_HANDLERS, get_secret_handler
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "from-handler"
 
@@ -4198,9 +4198,9 @@ Fd00/yeH8Sf+UqD5dXvQmGZqqDJG2Z9Fw8peXmE=
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return vault.get(component_id)
@@ -4233,9 +4233,9 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return keyring.get(component_id)
@@ -4269,9 +4269,9 @@ QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return secrets_manager.get(component_id)
@@ -4303,9 +4303,9 @@ line4: expires=2026-12-31"""
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return store.get(component_id)
@@ -4334,9 +4334,9 @@ line4: expires=2026-12-31"""
             value: str | None,
             *,
             component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             if value is None:
                 return passwords.get(component_id)
@@ -4360,12 +4360,12 @@ line4: expires=2026-12-31"""
         """Test handler callable is excluded from serialization."""
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "secret"
 
@@ -4379,12 +4379,12 @@ line4: expires=2026-12-31"""
         """Test handler takes precedence over value for get operations."""
 
         def custom_handler(
-            _value: str | None,
+            value: str | None,
             *,
-            _component_id: str,
-            _event: str,
-            _label: str | None = None,
-            **_metadata,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **metadata,
         ) -> str | None:
             return "handler-value"
 
@@ -4500,7 +4500,9 @@ class TestSecretHandlerRegistration:
 
         # Call the reveal handler
         si = toolbar.get_secret_inputs()[0]
-        registered_handlers["test:secret:reveal"]({"componentId": si.component_id})
+        registered_handlers["test:secret:reveal"](
+            {"componentId": si.component_id}, "test:secret:reveal", "test"
+        )
 
         # Should have dispatched response with base64-encoded value
         assert len(dispatched_events) == 1
@@ -4551,7 +4553,9 @@ class TestSecretHandlerRegistration:
 
         # Call handler
         si = toolbar.get_secret_inputs()[0]
-        registered_handlers["auth:api-key:reveal"]({"componentId": si.component_id})
+        registered_handlers["auth:api-key:reveal"](
+            {"componentId": si.component_id}, "auth:api-key:reveal", "test"
+        )
 
         # Should use custom handler's return value (base64 encoded for transit)
         _, data = dispatched_events[0]
@@ -4648,17 +4652,18 @@ class TestSecretInputMaskAndEditMode:
         assert "ta.style.minHeight" in html
 
     def test_textarea_resizable_both_directions(self) -> None:
-        """Textarea should be resizable in both directions."""
+        """Textarea should be resizable via CSS class."""
         si = SecretInput(event="settings:api-key")
         html = si.build_html()
-        assert "ta.style.resize='both'" in html
+        # Textarea gets pywry-secret-textarea class which has resize:both in CSS
+        assert "pywry-secret-textarea" in html
 
     def test_textarea_no_wrap(self) -> None:
-        """Textarea should not wrap lines."""
+        """Textarea should not wrap lines (via CSS class)."""
         si = SecretInput(event="settings:api-key")
         html = si.build_html()
-        assert "ta.style.whiteSpace='pre'" in html
-        assert "ta.style.overflowWrap='normal'" in html
+        # Textarea gets pywry-secret-textarea class which has white-space:pre in CSS
+        assert "pywry-secret-textarea" in html
 
     def test_edit_confirm_on_blur(self) -> None:
         """Blur event should confirm edit and transmit."""

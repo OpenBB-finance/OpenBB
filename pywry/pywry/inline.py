@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import asyncio
+import inspect
 import io
 import json
 import os
@@ -31,6 +32,7 @@ from .assets import (
     get_toast_notifications_js,
 )
 from .config import get_settings
+from .log import debug as log_debug, error as log_error, warn
 from .models import ThemeMode
 from .runtime import is_headless
 from .state_mixins import (
@@ -1023,14 +1025,14 @@ async def _ws_sender_loop(
         while True:
             event = await event_queue.get()
             if PYWRY_DEBUG:
-                print(f"[SERVER] Sending event to {widget_id}: {event}")
+                log_debug(f"[SERVER] Sending event to {widget_id}: {event}")
             await websocket.send_json(event)
             event_queue.task_done()
     except asyncio.CancelledError:
         pass
     except Exception as e:
         if PYWRY_DEBUG:
-            print(f"[SERVER] Sender error for {widget_id}: {e}")
+            log_debug(f"[SERVER] Sender error for {widget_id}: {e}")
 
 
 def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
@@ -1039,7 +1041,7 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
 
     event_type = msg.get("type", "")
     if PYWRY_DEBUG:
-        print(f"[SERVER] Routing event: {event_type} for widget {widget_id[:8]}...")
+        log_debug(f"[SERVER] Routing event: {event_type} for widget {widget_id[:8]}...")
 
     # Handle disconnect message specially
     if event_type == "pywry:disconnect":
@@ -1053,18 +1055,18 @@ def _route_ws_message(widget_id: str, msg: dict[str, Any]) -> None:
         local_data = _state.local_widgets.get(widget_id, {})
         callbacks = local_data.get("callbacks", {})
         if PYWRY_DEBUG and not callbacks:
-            print(f"[SERVER] No callbacks in local_widgets for {widget_id[:8]}")
+            log_debug(f"[SERVER] No callbacks in local_widgets for {widget_id[:8]}")
     else:
         # Local mode
         if widget_id not in _state.widgets:
             if PYWRY_DEBUG:
-                print(f"[SERVER] Widget {widget_id} not in _state.widgets!")
+                log_debug(f"[SERVER] Widget {widget_id} not in _state.widgets!")
             return
         callbacks = _state.widgets[widget_id].get("callbacks", {})
 
     if event_type in callbacks:
         if PYWRY_DEBUG:
-            print(f"[SERVER] Found callback for {event_type}, queueing...")
+            log_debug(f"[SERVER] Found callback for {event_type}, queueing...")
         _state.callback_queue.put(
             (callbacks[event_type], msg.get("data", {}), event_type, widget_id)
         )
@@ -1085,7 +1087,7 @@ def _handle_widget_disconnect(  # pylint: disable=too-many-branches
     from .state import is_deploy_mode
 
     if PYWRY_DEBUG:
-        print(f"[SERVER] Widget disconnect: {widget_id}, reason: {reason}")
+        log_debug(f"[SERVER] Widget disconnect: {widget_id}, reason: {reason}")
 
     # Get callbacks based on mode
     if is_deploy_mode():
@@ -1269,7 +1271,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             return HTMLResponse(status_code=404)
 
         if PYWRY_DEBUG:
-            print(f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}")
+            log_debug(f"[SERVER] {_state.widget_prefix}/{widget_id} accessed at {time.time()}")
 
         # Use deploy-mode aware async method to check widget existence and get HTML
         html = await _state.get_widget_html_async(widget_id)
@@ -1277,7 +1279,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             return HTMLResponse(status_code=404)
 
         if PYWRY_DEBUG:
-            print(f"[SERVER] Serving HTML for {widget_id}, length: {len(html)}")
+            log_debug(f"[SERVER] Serving HTML for {widget_id}, length: {len(html)}")
 
         # Add headers to prevent browser caching
         return HTMLResponse(
@@ -1302,7 +1304,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
         Note: Token is sent via Sec-WebSocket-Protocol header to avoid exposure in logs/URLs
         """
         if PYWRY_DEBUG:
-            print(f"[SERVER] WebSocket connection request for {widget_id}")
+            log_debug(f"[SERVER] WebSocket connection request for {widget_id}")
 
         # Security validation BEFORE accepting the connection
         server_settings = get_settings().server
@@ -1315,8 +1317,8 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             origin = websocket.headers.get("origin", "")
             if origin not in allowed_origins:
                 if PYWRY_DEBUG:
-                    print(f"[SERVER] WebSocket rejected: Origin '{origin}' not in allowed list")
-                    print(f"[SERVER] Allowed origins: {allowed_origins}")
+                    log_debug(f"[SERVER] WebSocket rejected: Origin '{origin}' not in allowed list")
+                    log_debug(f"[SERVER] Allowed origins: {allowed_origins}")
                 await websocket.close(code=1008, reason="Origin not allowed")
                 return
 
@@ -1341,19 +1343,19 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
             # If no token exists for this widget, reject - client needs to reload
             if not expected_token:
                 if PYWRY_DEBUG:
-                    print(f"[SERVER] No token found for widget: {widget_id}")
-                    print("[SERVER] Client should refresh page to get new token")
+                    log_debug(f"[SERVER] No token found for widget: {widget_id}")
+                    log_debug("[SERVER] Client should refresh page to get new token")
                 await websocket.close(code=4001, reason="Unknown widget - refresh page")
                 return
 
             # Validate token - REJECT invalid tokens (client should refresh page)
             if not token or token != expected_token:
                 if PYWRY_DEBUG:
-                    print("[SERVER] WebSocket connection rejected: Invalid or missing token")
-                    print(
+                    log_debug("[SERVER] WebSocket connection rejected: Invalid or missing token")
+                    log_debug(
                         f"[SERVER] Widget ID: {widget_id}, Expected token exists: {expected_token is not None}"
                     )
-                    print("[SERVER] Client should refresh page to get new token")
+                    log_debug("[SERVER] Client should refresh page to get new token")
                 await websocket.close(code=4001, reason="Invalid token - refresh page")
                 return
 
@@ -1365,7 +1367,7 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
 
         if widget_id in _state.connections:
             if PYWRY_DEBUG:
-                print(f"[SERVER] Closing existing connection for {widget_id}")
+                log_debug(f"[SERVER] Closing existing connection for {widget_id}")
             with suppress(Exception):
                 await _state.connections[widget_id].close(
                     code=1000, reason="New connection replaced old one"
@@ -1384,11 +1386,11 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
                 data = await websocket.receive_text()
                 msg = json.loads(data)
                 if PYWRY_DEBUG:
-                    print(f"[SERVER] Received from {widget_id}: {msg}")
+                    log_debug(f"[SERVER] Received from {widget_id}: {msg}")
                 _route_ws_message(widget_id, msg)
         except WebSocketDisconnect:
             if PYWRY_DEBUG:
-                print(f"[SERVER] WebSocket disconnected for {widget_id}")
+                log_debug(f"[SERVER] WebSocket disconnected for {widget_id}")
             # Only handle disconnect if this is still the active connection
             if widget_id in _state.connections and _state.connections[widget_id] == websocket:
                 _handle_widget_disconnect(widget_id, "websocket_close")
@@ -1448,6 +1450,31 @@ def _get_app() -> FastAPI:  # noqa: C901, PLR0915  # pylint: disable=too-many-st
     return app
 
 
+def _invoke_callback(
+    callback: Any,
+    data: dict[str, Any],
+    event_type: str,
+    widget_id: str,
+) -> None:
+    """Invoke a callback, handling both sync and async functions.
+
+    For async callbacks, schedules execution via asyncio.run_coroutine_threadsafe
+    on the server's event loop.
+    """
+    if inspect.iscoroutinefunction(callback):
+        # Async callback - schedule on the server's event loop
+        loop = _state.server_loop
+        if loop is not None and loop.is_running():
+            # Fire and forget - errors will be logged by the coroutine itself
+            asyncio.run_coroutine_threadsafe(callback(data, event_type, widget_id), loop)
+        else:
+            # No running loop - can't execute async callback
+            warn("Cannot execute async callback: no running event loop")
+    else:
+        # Sync callback - call directly
+        callback(data, event_type, widget_id)
+
+
 def _process_callbacks() -> None:  # pylint: disable=too-many-branches
     """Background thread to process callbacks."""
     while True:
@@ -1473,7 +1500,7 @@ def _process_callbacks() -> None:  # pylint: disable=too-many-branches
                     try:
                         sys.stdout = captured_stdout
                         sys.stderr = captured_stderr
-                        callback(data, event_type, widget_id)
+                        _invoke_callback(callback, data, event_type, widget_id)
                     finally:
                         sys.stdout = old_stdout
                         sys.stderr = old_stderr
@@ -1488,12 +1515,12 @@ def _process_callbacks() -> None:  # pylint: disable=too-many-branches
                         output_widget.append_stderr(stderr_text)
                 else:
                     # No output widget - just call directly
-                    callback(data, event_type, widget_id)
+                    _invoke_callback(callback, data, event_type, widget_id)
             except Exception as e:
                 if output_widget is not None:
                     output_widget.append_stderr(f"[PyWry] Callback error: {e}\n")
                 else:
-                    print(f"[PyWry] Callback error: {e}")
+                    log_error(f"[PyWry] Callback error: {e}")
         except queue.Empty:
             pass
         except Exception:  # noqa: S110

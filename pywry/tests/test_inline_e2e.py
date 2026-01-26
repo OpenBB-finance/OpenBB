@@ -141,7 +141,9 @@ def wait_for_server(host: str, port: int, timeout: float = 5.0) -> bool:
                     for k, v in auth_header.items():
                         req.add_header(k, v)
                     try:
-                        with urllib.request.urlopen(req, timeout=0.5) as resp:  # noqa: S310
+                        with urllib.request.urlopen(  # noqa: S310
+                            req, timeout=0.5
+                        ) as resp:
                             if resp.status == 200:
                                 return True
                     except Exception:
@@ -1058,8 +1060,8 @@ class TestSecretInputE2E:
         assert secret_value not in html
         # But the input field should be present
         assert 'type="password"' in html
-        # And should have empty value attribute
-        assert 'value=""' in html
+        # And should have masked value (bullets) when value exists
+        assert 'value="••••••••••••"' in html
 
     def test_secret_stored_as_secretstr(self, server_port):
         """Secrets must be stored as SecretStr, not plain text."""
@@ -1743,10 +1745,8 @@ class TestSecretInputMaskAndEditE2E:
         assert status == 200
         # Should have textarea creation
         assert "createElement('textarea')" in html
-        # Should have resize='both'
-        assert "resize='both'" in html
-        # Should have no-wrap
-        assert "whiteSpace='pre'" in html
+        # Should have textarea class (resize handled via CSS)
+        assert "pywry-secret-textarea" in html
         # Should have edit button
         assert 'class="pywry-secret-btn pywry-secret-edit"' in html
 
