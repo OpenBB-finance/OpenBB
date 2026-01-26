@@ -277,8 +277,16 @@ class PyWry(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):  # pylint: dis
 
         # Check if we're in a notebook environment OR explicit BROWSER mode
         if should_use_inline_rendering() or is_browser_mode:
-            # Convert HtmlContent to string if needed
-            html_str = content.html if isinstance(content, HtmlContent) else content
+            # Convert HtmlContent to string if needed, preserving inline_css
+            if isinstance(content, HtmlContent):
+                html_str = content.html
+                # Prepend inline CSS as a style tag if present
+                if content.inline_css:
+                    html_str = (
+                        f'<style id="pywry-inline-css">{content.inline_css}</style>{html_str}'
+                    )
+            else:
+                html_str = content
 
             # Build callbacks dict from CallbackFunc to plain Callable
             plain_callbacks: dict[str, Any] | None = None

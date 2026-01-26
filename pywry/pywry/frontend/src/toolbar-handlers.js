@@ -2,8 +2,123 @@
  * PyWry Toolbar Handlers
  */
 
+var __pywryTooltipContainers = new WeakMap();
+
+function initTooltipManager(container) {
+    if (__pywryTooltipContainers.has(container)) return;
+    __pywryTooltipContainers.set(container, true);
+
+    var tooltip = null;
+    var currentTarget = null;
+    var hideTimeout = null;
+    var showTimeout = null;
+    var tooltipRoot = container;
+    var widgetEl = container.closest('.pywry-widget') || container.closest('.pywry-container') || container;
+    tooltipRoot = widgetEl;
+
+    function createTooltip() {
+        if (tooltip) return tooltip;
+        tooltip = document.createElement('div');
+        tooltip.id = 'pywry-tooltip-' + Math.random().toString(36).substr(2, 9);
+        tooltip.className = 'pywry-tooltip';
+        tooltipRoot.appendChild(tooltip);
+        return tooltip;
+    }
+
+    function showTooltip(target, text) {
+        if (!text) return;
+        createTooltip();
+
+        tooltip.textContent = text;
+        tooltip.classList.remove('visible', 'arrow-top', 'arrow-bottom');
+
+        var rect = target.getBoundingClientRect();
+        var containerRect = tooltipRoot.getBoundingClientRect();
+        var tooltipRect;
+
+        tooltip.style.left = '-9999px';
+        tooltip.style.top = '-9999px';
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+        tooltip.classList.add('visible');
+        tooltipRect = tooltip.getBoundingClientRect();
+
+        var gap = 8;
+        var arrowHeight = 6;
+        var spaceAbove = rect.top - containerRect.top;
+        var spaceBelow = containerRect.bottom - rect.bottom;
+        var tooltipHeight = tooltipRect.height + arrowHeight + gap;
+
+        var top, arrowClass;
+
+        if (spaceAbove >= tooltipHeight || spaceAbove > spaceBelow) {
+            top = rect.top - containerRect.top - tooltipRect.height - arrowHeight - gap;
+            arrowClass = 'arrow-bottom';
+        } else {
+            top = rect.bottom - containerRect.top + arrowHeight + gap;
+            arrowClass = 'arrow-top';
+        }
+        var left = rect.left - containerRect.left + (rect.width / 2) - (tooltipRect.width / 2);
+        var rightEdge = left + tooltipRect.width;
+        var containerWidth = containerRect.width;
+
+        if (left < 8) {
+            left = 8;
+        } else if (rightEdge > containerWidth - 8) {
+            left = containerWidth - tooltipRect.width - 8;
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.style.visibility = '';
+        tooltip.style.opacity = '';
+        tooltip.classList.add(arrowClass);
+        tooltip.classList.add('visible');
+
+        currentTarget = target;
+    }
+
+    function hideTooltip() {
+        clearTimeout(showTimeout);
+        if (tooltip) {
+            tooltip.classList.remove('visible');
+        }
+        currentTarget = null;
+    }
+
+    function handleMouseOver(e) {
+        var target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        if (target === currentTarget) return;
+
+        clearTimeout(hideTimeout);
+        clearTimeout(showTimeout);
+        var text = target.getAttribute('data-tooltip');
+        if (text) {
+            // Delay tooltip display by 500ms
+            showTimeout = setTimeout(function() {
+                showTooltip(target, text);
+            }, 500);
+        }
+    }
+
+    function handleMouseOut(e) {
+        var target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+
+        var relatedTarget = e.relatedTarget;
+        if (relatedTarget && target.contains(relatedTarget)) return;
+
+        currentTarget = null;
+        hideTimeout = setTimeout(hideTooltip, 100);
+    }
+    container.addEventListener('mouseover', handleMouseOver, false);
+    container.addEventListener('mouseout', handleMouseOut, false);
+    container.addEventListener('scroll', hideTooltip, true);
+}
+
 function initToolbarHandlers(container, pywry) {
-    // --- Dropdown (Select) handling ---
+    initTooltipManager(container);
     container.querySelectorAll('.pywry-dropdown').forEach(function(dropdown) {
         var selected = dropdown.querySelector('.pywry-dropdown-selected');
         var menu = dropdown.querySelector('.pywry-dropdown-menu');
@@ -11,10 +126,8 @@ function initToolbarHandlers(container, pywry) {
 
         if (!selected || !menu || !textEl) return;
 
-        // Toggle dropdown on click
         selected.addEventListener('click', function(e) {
             e.stopPropagation();
-            // Close all other dropdowns in this container first
             container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(other) {
                 if (other !== dropdown) {
                     other.classList.remove('pywry-open');
@@ -26,13 +139,10 @@ function initToolbarHandlers(container, pywry) {
             var isOpening = !dropdown.classList.contains('pywry-open');
             dropdown.classList.toggle('pywry-open');
 
-            // Position dropdown menu using fixed positioning to escape overflow:hidden
             if (isOpening) {
                 var rect = selected.getBoundingClientRect();
                 var menuHeight = menu.offsetHeight || 200;
                 var viewportHeight = window.innerHeight;
-
-                // Check if dropdown should open upward
                 var openUp = dropdown.classList.contains('pywry-dropdown-up') ||
                              (rect.bottom + menuHeight > viewportHeight && rect.top > menuHeight);
 
@@ -51,15 +161,25 @@ function initToolbarHandlers(container, pywry) {
                 menu.style.cssText = '';
             }
         });
-
-        // Handle option selection (single-select only)
         if (!dropdown.classList.contains('pywry-multiselect')) {
+            var selectSearchInput = dropdown.querySelector('.pywry-search-input');
+            if (selectSearchInput) {
+                selectSearchInput.addEventListener('input', function(e) {
+                    var query = e.target.value.toLowerCase();
+                    dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                        var text = opt.textContent.toLowerCase();
+                        opt.style.display = text.includes(query) ? '' : 'none';
+                    });
+                });
+                selectSearchInput.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+
             dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(option) {
                 option.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var value = option.getAttribute('data-value');
-
-                    // Update selected state
                     dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
                         opt.classList.remove('pywry-selected');
                     });
@@ -68,7 +188,12 @@ function initToolbarHandlers(container, pywry) {
                     dropdown.classList.remove('pywry-open');
                     menu.style.cssText = '';
 
-                    // Emit event
+                    if (selectSearchInput) {
+                        selectSearchInput.value = '';
+                        dropdown.querySelectorAll('.pywry-dropdown-option').forEach(function(opt) {
+                            opt.style.display = '';
+                        });
+                    }
                     var eventName = dropdown.getAttribute('data-event');
                     if (eventName && pywry) {
                         pywry.emit(eventName, { value: value, componentId: dropdown.id });
@@ -76,13 +201,10 @@ function initToolbarHandlers(container, pywry) {
                 });
             });
         }
-
-        // Handle multiselect
         if (dropdown.classList.contains('pywry-multiselect')) {
             var optionsContainer = dropdown.querySelector('.pywry-multiselect-options');
-            var searchInput = dropdown.querySelector('.pywry-multiselect-search');
+            var searchInput = dropdown.querySelector('.pywry-search-input');
 
-            // Helper to update display text and emit event
             function updateMultiSelectState(emit) {
                 var values = [];
                 var labels = [];
@@ -107,8 +229,6 @@ function initToolbarHandlers(container, pywry) {
                     }
                 }
             }
-
-            // Helper to reorder options (selected first)
             function reorderOptions() {
                 if (!optionsContainer) return;
                 var selectedOpts = [];
@@ -124,8 +244,6 @@ function initToolbarHandlers(container, pywry) {
                 selectedOpts.forEach(function(opt) { optionsContainer.appendChild(opt); });
                 unselectedOpts.forEach(function(opt) { optionsContainer.appendChild(opt); });
             }
-
-            // Search input handler
             if (searchInput) {
                 searchInput.addEventListener('input', function(e) {
                     var query = e.target.value.toLowerCase();
@@ -139,8 +257,6 @@ function initToolbarHandlers(container, pywry) {
                     e.stopPropagation();
                 });
             }
-
-            // Select All / None buttons
             dropdown.querySelectorAll('.pywry-multiselect-action').forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -162,20 +278,14 @@ function initToolbarHandlers(container, pywry) {
                     updateMultiSelectState(true);
                 });
             });
-
-            // Option click handler - use mousedown to capture before native checkbox toggle
             dropdown.querySelectorAll('.pywry-multiselect-option').forEach(function(msOption) {
                 msOption.addEventListener('click', function(e) {
                     e.stopPropagation();
                     var checkbox = msOption.querySelector('.pywry-multiselect-checkbox');
-
-                    // If clicking the label area (not the checkbox itself), toggle manually
                     if (checkbox && e.target !== checkbox) {
                         e.preventDefault();
                         checkbox.checked = !checkbox.checked;
                     }
-                    // If clicking the checkbox directly, let native behavior happen first
-                    // Use setTimeout to ensure we read the updated checkbox state
                     setTimeout(function() {
                         if (checkbox && checkbox.checked) {
                             msOption.classList.add('pywry-selected');
@@ -189,8 +299,6 @@ function initToolbarHandlers(container, pywry) {
             });
         }
     });
-
-    // --- Close dropdowns when clicking outside ---
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.pywry-dropdown')) {
             container.querySelectorAll('.pywry-dropdown.pywry-open').forEach(function(dropdown) {
@@ -200,8 +308,6 @@ function initToolbarHandlers(container, pywry) {
             });
         }
     });
-
-    // --- Button handling ---
     var buttons = container.querySelectorAll('.pywry-toolbar-button');
     buttons.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
@@ -220,7 +326,18 @@ function initToolbarHandlers(container, pywry) {
         });
     });
 
-    // --- Text/Number/Date Input handling (with debounce) ---
+    // Marquee click handlers (for clickable marquees)
+    container.querySelectorAll('.pywry-marquee.pywry-marquee-clickable').forEach(function(marquee) {
+        marquee.addEventListener('click', function(e) {
+            if (marquee.classList.contains('pywry-disabled')) return;
+            var eventName = marquee.getAttribute('data-event');
+            var text = marquee.getAttribute('data-text') || '';
+            if (eventName && pywry) {
+                pywry.emit(eventName, { value: text, componentId: marquee.id });
+            }
+        });
+    });
+
     var inputDebounceTimers = {};
     container.querySelectorAll('.pywry-text-input, .pywry-number-input, .pywry-date-input').forEach(function(input) {
         input.addEventListener('input', function(e) {
@@ -247,13 +364,28 @@ function initToolbarHandlers(container, pywry) {
             }
         });
     });
+    container.querySelectorAll('.pywry-date-input').forEach(function(input) {
+        if (!input.value) {
+            input.classList.add('pywry-date-empty');
+        }
 
-    // --- Slider/Range Input handling ---
+        input.addEventListener('change', function() {
+            if (input.value) {
+                input.classList.remove('pywry-date-empty');
+            } else {
+                input.classList.add('pywry-date-empty');
+            }
+
+            var eventName = input.getAttribute('data-event');
+            if (eventName && pywry) {
+                pywry.emit(eventName, { value: input.value, componentId: input.id });
+            }
+        });
+    });
     container.querySelectorAll('.pywry-slider-input, .pywry-range-input').forEach(function(slider) {
         slider.addEventListener('input', function(e) {
             var eventName = slider.getAttribute('data-event');
             var value = parseFloat(slider.value);
-            // Update display value if present
             var display = slider.parentElement && slider.parentElement.querySelector('.pywry-slider-value');
             if (display) display.textContent = value;
             if (eventName && pywry) {
@@ -261,8 +393,6 @@ function initToolbarHandlers(container, pywry) {
             }
         });
     });
-
-    // --- Collapsible Toolbar Handling ---
     container.querySelectorAll('.pywry-toolbar[data-collapsible="true"]').forEach(function(toolbar) {
         var componentId = toolbar.getAttribute('data-component-id');
         var storageKey = 'pywry-toolbar-collapsed-' + componentId;
@@ -289,8 +419,6 @@ function initToolbarHandlers(container, pywry) {
             }
         });
     });
-
-    // --- Resizable Toolbar Handling ---
     var resizeState = { active: false, toolbar: null, startX: 0, startY: 0, startWidth: 0, startHeight: 0, position: null };
     container.querySelectorAll('.pywry-toolbar[data-resizable="true"]').forEach(function(toolbar) {
         var componentId = toolbar.getAttribute('data-component-id');
@@ -344,9 +472,95 @@ function initToolbarHandlers(container, pywry) {
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     });
-
-    // --- Dropdown open direction: open upward for bottom/footer toolbars ---
     container.querySelectorAll('.pywry-toolbar-bottom .pywry-dropdown, .pywry-toolbar-footer .pywry-dropdown').forEach(function(dropdown) {
         dropdown.classList.add('pywry-dropdown-up');
     });
+
+    // toolbar:marquee-set-content - Update marquee content (handles duplicated spans)
+    // toolbar:marquee-set-item - Update individual items within a marquee
+    if (pywry && pywry.on) {
+        // Update entire marquee content
+        pywry.on('toolbar:marquee-set-content', function(data) {
+            var marquee = data.id ? document.getElementById(data.id) :
+                          data.selector ? container.querySelector(data.selector) : null;
+            if (!marquee || !marquee.classList.contains('pywry-marquee')) {
+                console.warn('[toolbar] toolbar:marquee-set-content - no marquee found for', data.id || data.selector);
+                return;
+            }
+            // Update all content spans (there are 2 for seamless scrolling)
+            var contentSpans = marquee.querySelectorAll('.pywry-marquee-content');
+            if (data.html !== undefined || data.text !== undefined) {
+                var newContent = data.html !== undefined ? data.html :
+                    (data.text ? data.text.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '');
+                contentSpans.forEach(function(span) {
+                    span.innerHTML = newContent;
+                });
+            }
+            // Update data-text attribute for click events
+            if (data.text !== undefined) {
+                marquee.setAttribute('data-text', data.text);
+            }
+            // Optionally update separator
+            if (data.separator !== undefined) {
+                var separators = marquee.querySelectorAll('.pywry-marquee-separator');
+                separators.forEach(function(sep) {
+                    sep.innerHTML = data.separator.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                });
+            }
+            // Optionally update speed
+            if (data.speed !== undefined) {
+                marquee.style.setProperty('--pywry-marquee-speed', data.speed + 's');
+            }
+            // Optionally pause/resume
+            if (data.paused !== undefined) {
+                var track = marquee.querySelector('.pywry-marquee-track');
+                if (track) {
+                    track.style.animationPlayState = data.paused ? 'paused' : 'running';
+                }
+            }
+        });
+
+        // Update individual ticker items within a marquee
+        pywry.on('toolbar:marquee-set-item', function(data) {
+            // data.ticker: the ticker symbol (matches data-ticker attribute)
+            // data.selector: alternative CSS selector to match elements
+            // data.text/html: new content
+            // data.styles: optional inline styles to apply
+            // data.class_add/class_remove: optional class modifications
+            var selector = data.ticker ? '[data-ticker="' + data.ticker + '"]' :
+                           data.selector ? data.selector : null;
+            if (!selector) {
+                console.warn('[toolbar] toolbar:marquee-set-item - no ticker or selector provided');
+                return;
+            }
+            var elements = container.querySelectorAll(selector);
+            if (!elements.length) {
+                console.warn('[toolbar] toolbar:marquee-set-item - no elements found for', selector);
+                return;
+            }
+            elements.forEach(function(el) {
+                // Update content
+                if (data.html !== undefined) {
+                    el.innerHTML = data.html;
+                } else if (data.text !== undefined) {
+                    el.textContent = data.text;
+                }
+                // Apply styles
+                if (data.styles) {
+                    Object.keys(data.styles).forEach(function(prop) {
+                        el.style[prop] = data.styles[prop];
+                    });
+                }
+                // Add/remove classes
+                if (data.class_add) {
+                    var adds = Array.isArray(data.class_add) ? data.class_add : [data.class_add];
+                    adds.forEach(function(c) { el.classList.add(c); });
+                }
+                if (data.class_remove) {
+                    var removes = Array.isArray(data.class_remove) ? data.class_remove : [data.class_remove];
+                    removes.forEach(function(c) { el.classList.remove(c); });
+                }
+            });
+        });
+    }
 }

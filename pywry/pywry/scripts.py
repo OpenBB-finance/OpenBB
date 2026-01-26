@@ -2,7 +2,20 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from .assets import get_toast_notifications_js
+
+
+_SRC_DIR = Path(__file__).parent / "frontend" / "src"
+
+
+def _get_tooltip_manager_js() -> str:
+    """Load the tooltip manager JavaScript from the single source file."""
+    tooltip_file = _SRC_DIR / "tooltip-manager.js"
+    if tooltip_file.exists():
+        return tooltip_file.read_text(encoding="utf-8")
+    return ""
 
 
 PYWRY_BRIDGE_JS = """
@@ -82,11 +95,20 @@ PYWRY_BRIDGE_JS = """
     };
 
     window.pywry._trigger = function(eventType, data) {
-        console.log('[PyWry] _trigger called:', eventType, data);
-        console.log('[PyWry] registered handlers:', Object.keys(this._handlers));
+        // Don't log data for secret-related events
+        var isSensitive = eventType.indexOf(':reveal') !== -1 ||
+                          eventType.indexOf(':copy') !== -1 ||
+                          eventType.indexOf('secret') !== -1 ||
+                          eventType.indexOf('password') !== -1 ||
+                          eventType.indexOf('api-key') !== -1 ||
+                          eventType.indexOf('token') !== -1;
+        if (window.PYWRY_DEBUG && !isSensitive) {
+            console.log('[PyWry] _trigger called:', eventType, data);
+        } else if (window.PYWRY_DEBUG) {
+            console.log('[PyWry] _trigger called:', eventType, '[REDACTED]');
+        }
         var handlers = this._handlers[eventType] || [];
         var wildcardHandlers = this._handlers['*'] || [];
-        console.log('[PyWry] found', handlers.length, 'handlers for', eventType);
         handlers.concat(wildcardHandlers).forEach(function(handler) {
             try {
                 handler(data, eventType);
@@ -97,7 +119,18 @@ PYWRY_BRIDGE_JS = """
     };
 
     window.pywry.dispatch = function(eventType, data) {
-        console.log('[PyWry] dispatch called:', eventType, data);
+        // Don't log data for secret-related events
+        var isSensitive = eventType.indexOf(':reveal') !== -1 ||
+                          eventType.indexOf(':copy') !== -1 ||
+                          eventType.indexOf('secret') !== -1 ||
+                          eventType.indexOf('password') !== -1 ||
+                          eventType.indexOf('api-key') !== -1 ||
+                          eventType.indexOf('token') !== -1;
+        if (window.PYWRY_DEBUG && !isSensitive) {
+            console.log('[PyWry] dispatch called:', eventType, data);
+        } else if (window.PYWRY_DEBUG) {
+            console.log('[PyWry] dispatch called:', eventType, '[REDACTED]');
+        }
         this._trigger(eventType, data);
     };
 
@@ -380,6 +413,9 @@ PYWRY_SYSTEM_EVENTS_JS = """
 })();
 """
 
+# TOOLTIP_MANAGER_JS is now loaded from frontend/src/tooltip-manager.js
+# via _get_tooltip_manager_js() to avoid duplication
+
 THEME_MANAGER_JS = """
 (function() {
     'use strict';
@@ -547,6 +583,11 @@ TOOLBAR_BRIDGE_JS = """
                     } else if (inputType === 'date') {
                         type = 'date';
                         value = el.value;
+                    } else if (el.classList.contains('pywry-input-secret')) {
+                        // SECURITY: Never expose secret values via state
+                        // Return has_value indicator instead
+                        type = 'secret';
+                        value = { has_value: el.dataset.hasValue === 'true' };
                     } else {
                         type = 'text';
                         value = el.value;
@@ -579,6 +620,10 @@ TOOLBAR_BRIDGE_JS = """
             return el.value;
         } else if (el.tagName === 'INPUT') {
             var inputType = el.type;
+            // SECURITY: Never expose secret values via state getter
+            if (el.classList.contains('pywry-input-secret')) {
+                return { has_value: el.dataset.hasValue === 'true' };
+            }
             if (inputType === 'range' || inputType === 'number') {
                 return parseFloat(el.value);
             }
@@ -596,6 +641,13 @@ TOOLBAR_BRIDGE_JS = """
     function setComponentValue(componentId, value, options) {
         var el = document.getElementById(componentId);
         if (!el) return false;
+
+        // SECURITY: Prevent setting secret values via state setter
+        // Secrets must be set via their event handler (with proper encoding)
+        if (el.classList && el.classList.contains('pywry-input-secret')) {
+            console.warn('[PyWry] Cannot set SecretInput value via toolbar:set-value. Use the event handler instead.');
+            return false;
+        }
 
         if (el.tagName === 'SELECT' || el.tagName === 'INPUT') {
             el.value = value;
@@ -681,6 +733,50 @@ TOOLBAR_BRIDGE_JS = """
 #   - pywry/frontend/src/plotly-defaults.js (single source of truth for Plotly events)
 #   - pywry/frontend/src/aggrid-defaults.js (single source of truth for AG Grid events)
 # These files are loaded via templates.py's build_plotly_script() and build_aggrid_script()
+
+
+# Script for cleaning up sensitive inputs on page unload
+_UNLOAD_CLEANUP_JS = """
+(function() {
+    'use strict';
+
+    // Clear all revealed secrets from DOM - called on unload
+    // Restores mask for inputs that had a value, clears others
+    var MASK_CHARS = '••••••••••••';
+
+    function clearSecrets() {
+        try {
+            var secretInputs = document.querySelectorAll('.pywry-input-secret, input[type="password"]');
+            for (var i = 0; i < secretInputs.length; i++) {
+                var inp = secretInputs[i];
+                inp.type = 'password';
+                // Restore mask if value existed, otherwise clear
+                if (inp.dataset && inp.dataset.hasValue === 'true') {
+                    inp.value = MASK_CHARS;
+                    inp.dataset.masked = 'true';
+                } else {
+                    inp.value = '';
+                }
+            }
+            if (window.pywry && window.pywry._revealedSecrets) {
+                window.pywry._revealedSecrets = {};
+            }
+        } catch (e) {
+            // Ignore errors during unload
+        }
+    }
+
+    // Page is being unloaded (close tab, refresh, navigate away)
+    window.addEventListener('beforeunload', function() {
+        clearSecrets();
+    });
+
+    // Fallback for mobile/Safari - fires when page is hidden
+    window.addEventListener('pagehide', function() {
+        clearSecrets();
+    });
+})();
+"""
 
 
 CLEANUP_JS = """
@@ -808,9 +904,11 @@ def build_init_script(
         PYWRY_BRIDGE_JS,
         PYWRY_SYSTEM_EVENTS_JS,
         get_toast_notifications_js(),  # Toast notification system
+        _get_tooltip_manager_js(),  # Tooltip system for data-tooltip attributes
         THEME_MANAGER_JS,
         EVENT_BRIDGE_JS,
         TOOLBAR_BRIDGE_JS,
+        _UNLOAD_CLEANUP_JS,  # SecretInput cleanup on page unload
         CLEANUP_JS,
     ]
 

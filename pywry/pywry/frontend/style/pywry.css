@@ -11,74 +11,32 @@ body {
     overflow: hidden;
 }
 
-/* Firefox/modern scrollbars using standard properties */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--pywry-scrollbar-thumb) var(--pywry-scrollbar-track, transparent);
-}
-
-/* WebKit scrollbars (Chrome, Safari, Edge, WebView2/Wry)
-   Using * selector with !important for maximum compatibility */
-*::-webkit-scrollbar {
-  -webkit-appearance: none !important;
-  width: 10px !important;
-  height: 10px !important;
-  background: #212124 !important;
-}
-
-*::-webkit-scrollbar-track {
-  -webkit-appearance: none !important;
-  background: transparent !important;
-  border-radius: 5px !important;
-}
-
-*::-webkit-scrollbar-thumb {
-  -webkit-appearance: none !important;
-  background: rgba(155, 155, 155, 0.5) !important;
-  border-radius: 5px !important;
-  border: 2px solid transparent !important;
-  background-clip: padding-box !important;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  -webkit-appearance: none !important;
-  background: rgba(175, 175, 175, 0.7) !important;
-  border: 2px solid transparent !important;
-  background-clip: padding-box !important;
-}
-
-*::-webkit-scrollbar-corner {
-  -webkit-appearance: none !important;
-  background: transparent !important;
-}
-
-.scroll-container::-webkit-scrollbar {
-    display: none;
-}
-
-body::-webkit-scrollbar {
-    display: none;
-}
-
-/* === NATIVE WINDOW ONLY: Custom scrollbar styles === */
+/* === CUSTOM SCROLLBAR STYLES (Native window only) === */
 /* Hide native scrollbar on scroll container - we'll use custom JS scrollbar */
 html.pywry-native .pywry-scroll-container {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
 }
+html.pywry-native .pywry-scroll-container::-webkit-scrollbar {
+    display: none;
+}
 /* Only reserve space for scrollbar when content overflows (but not for Plotly) */
-html.pywry-native .pywry-scroll-container.has-scrollbar-v:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
+html.pywry-native .pywry-scroll-container.has-scrollbar-v:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)),
+.pywry-custom-scrollbar .pywry-scroll-container.has-scrollbar-v:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
     padding-right: 18px; /* 4px margin + 10px track + 4px inner margin */
 }
-html.pywry-native .pywry-scroll-container.has-scrollbar-h:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
+html.pywry-native .pywry-scroll-container.has-scrollbar-h:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)),
+.pywry-custom-scrollbar .pywry-scroll-container.has-scrollbar-h:not(:has(.pywry-plotly)):not(:has(.js-plotly-plot)) {
     padding-bottom: 18px; /* 4px margin + 10px track + 4px inner margin */
 }
-html.pywry-native .pywry-scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome/Safari/WebKit */
+html.pywry-native .pywry-scroll-container::-webkit-scrollbar,
+.pywry-custom-scrollbar .pywry-scroll-container::-webkit-scrollbar {
+    display: none !important; /* Chrome/Safari/WebKit - must be !important to override base styles */
 }
 
-/* Custom scrollbar track - vertical (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scrollbar-track-v {
+/* Custom scrollbar track - vertical */
+html.pywry-native .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .pywry-scrollbar-track-v {
     position: absolute;
     right: 4px;
     top: 4px;
@@ -92,8 +50,9 @@ html.pywry-native .pywry-scrollbar-track-v {
     transition: opacity 0.2s ease;
 }
 
-/* Custom scrollbar track - horizontal (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scrollbar-track-h {
+/* Custom scrollbar track - horizontal */
+html.pywry-native .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .pywry-scrollbar-track-h {
     position: absolute;
     left: 4px;
     right: 4px;
@@ -107,29 +66,40 @@ html.pywry-native .pywry-scrollbar-track-h {
     transition: opacity 0.2s ease;
 }
 
-/* Avoid overlap in corner when both scrollbars present (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-v {
+/* Avoid overlap in corner when both scrollbars present */
+html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-v {
     bottom: 22px; /* 4px margin + 10px track + 4px gap + 4px */
 }
-html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-h {
+html.pywry-native .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .pywry-scroll-wrapper.has-both-scrollbars .pywry-scrollbar-track-h {
     right: 22px; /* 4px margin + 10px track + 4px gap + 4px */
 }
 
-/* Show scrollbar track on hover or when scrolling (NATIVE WINDOW ONLY) */
+/* Show scrollbar track on hover or when scrolling */
 html.pywry-native .pywry-scroll-wrapper:hover .pywry-scrollbar-track-v,
 html.pywry-native .pywry-scroll-wrapper:hover .pywry-scrollbar-track-h,
 html.pywry-native .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-v,
 html.pywry-native .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .pywry-scroll-wrapper:hover .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .pywry-scroll-wrapper:hover .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .pywry-scroll-wrapper.is-scrolling .pywry-scrollbar-track-h,
 /* AG Grid scrollbars - show on hover of grid */
 html.pywry-native .ag-root-wrapper:hover .pywry-scrollbar-track-v,
 html.pywry-native .ag-root-wrapper:hover .pywry-scrollbar-track-h,
 html.pywry-native .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-v,
-html.pywry-native .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-h {
+html.pywry-native .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .ag-root-wrapper:hover .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .ag-root-wrapper:hover .pywry-scrollbar-track-h,
+.pywry-custom-scrollbar .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-v,
+.pywry-custom-scrollbar .ag-root-wrapper.is-scrolling .pywry-scrollbar-track-h {
     opacity: 1;
 }
 
-/* Custom scrollbar thumb - vertical (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scrollbar-thumb-v {
+/* Custom scrollbar thumb - vertical */
+html.pywry-native .pywry-scrollbar-thumb-v,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-v {
     position: absolute;
     left: 1px;  /* Center: (8px internal - 6px thumb) / 2 = 1px */
     width: 6px;
@@ -140,8 +110,9 @@ html.pywry-native .pywry-scrollbar-thumb-v {
     transition: background 0.15s ease;
 }
 
-/* Custom scrollbar thumb - horizontal (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scrollbar-thumb-h {
+/* Custom scrollbar thumb - horizontal */
+html.pywry-native .pywry-scrollbar-thumb-h,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-h {
     position: absolute;
     top: 1px;  /* Center: (8px internal - 6px thumb) / 2 = 1px */
     height: 6px;
@@ -153,17 +124,22 @@ html.pywry-native .pywry-scrollbar-thumb-h {
 }
 
 html.pywry-native .pywry-scrollbar-thumb-v:hover,
-html.pywry-native .pywry-scrollbar-thumb-h:hover {
+html.pywry-native .pywry-scrollbar-thumb-h:hover,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-v:hover,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-h:hover {
     background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7));
 }
 
 html.pywry-native .pywry-scrollbar-thumb-v.is-dragging,
-html.pywry-native .pywry-scrollbar-thumb-h.is-dragging {
+html.pywry-native .pywry-scrollbar-thumb-h.is-dragging,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-v.is-dragging,
+.pywry-custom-scrollbar .pywry-scrollbar-thumb-h.is-dragging {
     background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7));
 }
 
-/* Scroll wrapper for custom scrollbar positioning (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scroll-wrapper {
+/* Scroll wrapper for custom scrollbar positioning */
+html.pywry-native .pywry-scroll-wrapper,
+.pywry-custom-scrollbar .pywry-scroll-wrapper {
     position: relative;
     display: flex;
     flex: 1 1 0%;
@@ -172,18 +148,56 @@ html.pywry-native .pywry-scroll-wrapper {
     overflow: hidden;
 }
 
-/* Scroll container takes full space minus scrollbar area (NATIVE WINDOW ONLY) */
-html.pywry-native .pywry-scroll-wrapper .pywry-scroll-container {
+/* Scroll container takes full space minus scrollbar area */
+html.pywry-native .pywry-scroll-wrapper .pywry-scroll-container,
+.pywry-custom-scrollbar .pywry-scroll-wrapper .pywry-scroll-container {
     flex: 1 1 0%;
     min-width: 0;
 }
 
-/* When scroll container has Plotly, ensure proper flex layout (NATIVE WINDOW ONLY) */
+/* When scroll container has Plotly, ensure proper flex layout */
 html.pywry-native .pywry-scroll-container:has(.pywry-plotly),
-html.pywry-native .pywry-scroll-container:has(.js-plotly-plot) {
+html.pywry-native .pywry-scroll-container:has(.js-plotly-plot),
+.pywry-custom-scrollbar .pywry-scroll-container:has(.pywry-plotly),
+.pywry-custom-scrollbar .pywry-scroll-container:has(.js-plotly-plot) {
     display: flex;
     flex-direction: column;
     overflow: hidden !important;
+}
+
+/* === NATIVE SCROLLBAR STYLES (AnyWidget / IFrame without custom scrollbar) === */
+/* Styled native scrollbars for widget contexts that don't use custom JS scrollbars */
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-scroll-container,
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-body-scroll {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5)) transparent;
+}
+
+/* WebKit native scrollbar styling */
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-scroll-container::-webkit-scrollbar,
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-body-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-scroll-container::-webkit-scrollbar-track,
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-body-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-scroll-container::-webkit-scrollbar-thumb,
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-body-scroll::-webkit-scrollbar-thumb {
+    background: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5));
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-scroll-container::-webkit-scrollbar-thumb:hover,
+.pywry-widget:not(.pywry-custom-scrollbar) .pywry-body-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7));
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 .pywry-widget,
@@ -250,12 +264,8 @@ html.dark,
     --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
     --pywry-text-primary: #ebebed;
     --pywry-text-secondary: #a0a0a0;
+    --pywry-text-muted: #707070;
     --pywry-border-color: #333;
-
-    /* ---- Scrollbar (Windows 11-like appearance) ---- */
-    --pywry-scrollbar-thumb: rgba(155, 155, 155, 0.5);
-    --pywry-scrollbar-thumb-hover: rgba(175, 175, 175, 0.7);
-    --pywry-scrollbar-track: transparent;
 
     /* ---- Focus ---- */
     --pywry-border-focus: #555;
@@ -269,10 +279,10 @@ html.dark,
     --pywry-btn-primary-bg: #e2e2e2;
     --pywry-btn-primary-text: #151518;
     --pywry-btn-primary-hover: #cccccc;
-    --pywry-btn-secondary-bg: rgba(54, 54, 63, 1);
+    --pywry-btn-secondary-bg: #3d3d42;
     --pywry-btn-secondary-text: #ebebed;
-    --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
-    --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
+    --pywry-btn-secondary-hover: #4a4a50;
+    --pywry-btn-secondary-border: rgba(90, 90, 100, 0.5);
 
     /* ---- Input Fixes ---- */
     --pywry-calendar-icon-filter: invert(1);
@@ -293,12 +303,8 @@ html.light,
     --pywry-bg-overlay: rgba(255, 255, 255, 0.8);
     --pywry-text-primary: #000000;
     --pywry-text-secondary: #666666;
+    --pywry-text-muted: #999999;
     --pywry-border-color: #ccc;
-
-    /* ---- Scrollbar (Windows 11-like appearance) ---- */
-    --pywry-scrollbar-thumb: rgba(100, 100, 100, 0.5);
-    --pywry-scrollbar-thumb-hover: rgba(80, 80, 80, 0.7);
-    --pywry-scrollbar-track: transparent;
 
     /* ---- Focus ---- */
     --pywry-border-focus: #999;
@@ -312,10 +318,10 @@ html.light,
     --pywry-btn-primary-bg: #2c2c32;
     --pywry-btn-primary-text: #ffffff;
     --pywry-btn-primary-hover: #1a1a1e;
-    --pywry-btn-secondary-bg: #ffffff;
+    --pywry-btn-secondary-bg: #d0d0d8;
     --pywry-btn-secondary-text: #2c2c32;
-    --pywry-btn-secondary-hover: #f3f3f6;
-    --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
+    --pywry-btn-secondary-hover: #c0c0c8;
+    --pywry-btn-secondary-border: rgba(180, 180, 190, 1);
 
     /* ---- Input Fixes ---- */
     --pywry-calendar-icon-filter: none;
@@ -336,12 +342,8 @@ html.light {
     --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
     --pywry-text-primary: #ebebed;
     --pywry-text-secondary: #a0a0a0;
+    --pywry-text-muted: #707070;
     --pywry-border-color: #333;
-
-    /* ---- Scrollbar (dark, Windows 11-like) ---- */
-    --pywry-scrollbar-thumb: rgba(155, 155, 155, 0.5);
-    --pywry-scrollbar-thumb-hover: rgba(175, 175, 175, 0.7);
-    --pywry-scrollbar-track: transparent;
 
     /* ---- Focus (dark) ---- */
     --pywry-border-focus: #555;
@@ -355,10 +357,10 @@ html.light {
     --pywry-btn-primary-bg: #e2e2e2;
     --pywry-btn-primary-text: #151518;
     --pywry-btn-primary-hover: #cccccc;
-    --pywry-btn-secondary-bg: rgba(54, 54, 63, 1);
+    --pywry-btn-secondary-bg: #3d3d42;
     --pywry-btn-secondary-text: #ebebed;
-    --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
-    --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
+    --pywry-btn-secondary-hover: #4a4a50;
+    --pywry-btn-secondary-border: rgba(90, 90, 100, 0.5);
 
     /* ---- Input Fixes (dark) ---- */
     --pywry-calendar-icon-filter: invert(1);
@@ -374,12 +376,8 @@ html.light {
         --pywry-bg-overlay: rgba(255, 255, 255, 0.8);
         --pywry-text-primary: #000000;
         --pywry-text-secondary: #666666;
+        --pywry-text-muted: #999999;
         --pywry-border-color: #ccc;
-
-        /* ---- Scrollbar (light, Windows 11-like) ---- */
-        --pywry-scrollbar-thumb: rgba(100, 100, 100, 0.5);
-        --pywry-scrollbar-thumb-hover: rgba(80, 80, 80, 0.7);
-        --pywry-scrollbar-track: transparent;
 
         /* ---- Focus (light) ---- */
         --pywry-border-focus: #999;
@@ -393,10 +391,10 @@ html.light {
         --pywry-btn-primary-bg: #2c2c32;
         --pywry-btn-primary-text: #ffffff;
         --pywry-btn-primary-hover: #1a1a1e;
-        --pywry-btn-secondary-bg: #f3f3f6;
+        --pywry-btn-secondary-bg: #d0d0d8;
         --pywry-btn-secondary-text: #2c2c32;
-        --pywry-btn-secondary-hover: #e3e3e6;
-        --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
+        --pywry-btn-secondary-hover: #c0c0c8;
+        --pywry-btn-secondary-border: rgba(180, 180, 190, 1);
 
         /* ---- Input Fixes (light) ---- */
         --pywry-calendar-icon-filter: none;
@@ -480,7 +478,7 @@ html.pywry-native #app {
     width: var(--pywry-widget-width);
     min-height: var(--pywry-widget-min-height);
     height: var(--pywry-widget-height);
-    overflow: visible;
+    overflow: hidden;
     border-radius: var(--pywry-radius);
     padding: 0;
     box-sizing: border-box;
@@ -910,7 +908,7 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
     top: 0;
     right: 0;
     bottom: 0;
-    width: 4px;
+    width: 2px;
     cursor: ew-resize;
 }
 
@@ -919,7 +917,7 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 4px;
+    width: 2px;
     cursor: ew-resize;
 }
 
@@ -932,9 +930,17 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
     cursor: nwse-resize;
 }
 
-/* Visual indicator on hover */
-.pywry-resize-handle:hover {
+/* Visual indicator - always show subtle, more visible on hover/active */
+.pywry-resize-handle {
     background: var(--pywry-border-color);
+    opacity: 0.5;
+    transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.pywry-resize-handle:hover,
+.pywry-resize-handle:active {
+    background: var(--pywry-accent);
+    opacity: 1;
 }
 
 .pywry-div {
@@ -957,6 +963,238 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
 .pywry-div[style] {
     padding: initial;
 }
+
+/* ============================================================================
+   MARQUEE COMPONENT - Scrolling text/content ticker
+   ============================================================================ */
+
+.pywry-marquee {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
+}
+
+/* Vertical marquee mask */
+.pywry-marquee.pywry-marquee-vertical {
+    flex-direction: column;
+    white-space: normal;
+    min-height: 100px;
+    max-height: 100%;
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+}
+
+/* Track container - holds duplicated content for seamless loop */
+.pywry-marquee-track {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pywry-marquee-gap, 50px);
+    animation: pywry-marquee-scroll-left var(--pywry-marquee-speed, 15s) linear infinite;
+    will-change: transform;
+}
+
+/* Vertical track layout */
+.pywry-marquee-vertical .pywry-marquee-track {
+    flex-direction: column;
+    display: flex;
+}
+
+/* Content spans */
+.pywry-marquee-content {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pywry-spacing-sm);
+    flex-shrink: 0;
+}
+
+/* Separator styling */
+.pywry-marquee-separator {
+    opacity: 0.5;
+    padding: 0 var(--pywry-spacing-sm);
+}
+
+/* Ticker item styling */
+.pywry-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pywry-spacing-xs);
+    padding: 0 var(--pywry-spacing-sm);
+    white-space: nowrap;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.pywry-ticker-item.stock-up,
+.pywry-ticker-item.ticker-up {
+    color: var(--pywry-success, #22c55e);
+}
+
+.pywry-ticker-item.stock-down,
+.pywry-ticker-item.ticker-down {
+    color: var(--pywry-danger, #ef4444);
+}
+
+.pywry-ticker-item.ticker-neutral {
+    color: var(--pywry-text-secondary, #888);
+}
+
+/* ---- Direction Animations ---- */
+
+/* Left scroll (default) - content moves right to left */
+.pywry-marquee-left .pywry-marquee-track {
+    animation-name: pywry-marquee-scroll-left;
+}
+
+/* Right scroll - content moves left to right */
+.pywry-marquee-right .pywry-marquee-track {
+    animation-name: pywry-marquee-scroll-right;
+}
+
+/* Up scroll - content moves bottom to top */
+.pywry-marquee-up .pywry-marquee-track {
+    animation-name: pywry-marquee-scroll-up;
+}
+
+/* Down scroll - content moves top to bottom */
+.pywry-marquee-down .pywry-marquee-track {
+    animation-name: pywry-marquee-scroll-down;
+}
+
+/* ---- Behavior Variants ---- */
+
+/* Alternate: bounce back and forth */
+.pywry-marquee-alternate .pywry-marquee-track {
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+/* Slide: play once and stop */
+.pywry-marquee-slide .pywry-marquee-track {
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+/* ---- Pause on Hover ---- */
+.pywry-marquee-pause:hover .pywry-marquee-track {
+    animation-play-state: paused;
+}
+
+/* ---- Clickable State ---- */
+.pywry-marquee-clickable {
+    cursor: pointer;
+}
+
+.pywry-marquee-clickable:hover {
+    opacity: 0.85;
+}
+
+.pywry-marquee-clickable:active {
+    opacity: 0.75;
+}
+
+/* ---- Disabled State ---- */
+.pywry-marquee.pywry-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.pywry-marquee.pywry-disabled .pywry-marquee-track {
+    animation-play-state: paused;
+}
+
+/* ---- Toolbar Integration ---- */
+
+/* Marquee in vertical toolbars defaults to vertical scroll */
+.pywry-toolbar-left .pywry-marquee,
+.pywry-toolbar-right .pywry-marquee {
+    flex-direction: column;
+    min-height: 100px;
+}
+
+/* ---- Keyframe Animations ---- */
+
+@keyframes pywry-marquee-scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes pywry-marquee-scroll-right {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes pywry-marquee-scroll-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes pywry-marquee-scroll-down {
+    0% {
+        transform: translateY(-50%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Reduced motion: respect user preference */
+@media (prefers-reduced-motion: reduce) {
+    .pywry-marquee-track {
+        animation: none;
+    }
+    /* Show only first content span when motion reduced */
+    .pywry-marquee-content[aria-hidden="true"] {
+        display: none;
+    }
+    .pywry-marquee-separator {
+        display: none;
+    }
+}
+
+/* ============================================================================
+   END MARQUEE COMPONENT
+   ============================================================================ */
 
 .pywry-btn {
     padding: var(--pywry-spacing-xs) var(--pywry-spacing-sm);
@@ -1051,20 +1289,22 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
     background-color: #b5702f;
 }
 
-/* Icon variant - ghost style, square aspect ratio */
+/* Icon variant - ghost style, square aspect ratio, dimmed by default */
 .pywry-btn.pywry-btn-icon {
     background-color: transparent;
-    color: var(--pywry-text-primary);
+    color: var(--pywry-text-muted);
     padding: var(--pywry-spacing-xs);
     min-width: auto;
     aspect-ratio: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: color var(--pywry-transition-fast);
 }
 
-.pywry-btn.pywry-btn-icon:hover {
-    color: var(--pywry-text-secondary);
+.pywry-btn.pywry-btn-icon:hover,
+.pywry-btn.pywry-btn-icon:focus {
+    color: var(--pywry-text-primary);
 }
 
 /* ---- Button Size Variants ---- */
@@ -1249,7 +1489,7 @@ html.light .pywry-select option {
 }
 
 .pywry-dropdown-option:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--pywry-bg-hover);
 }
 
 .pywry-dropdown-option.pywry-selected::before {
@@ -1308,6 +1548,71 @@ html.light .pywry-select option {
 
 .pywry-multiselect-search::placeholder {
     color: var(--pywry-text-secondary);
+}
+
+/* ---- Search Input with Icon ---- */
+.pywry-search-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.pywry-search-icon {
+    position: absolute;
+    left: var(--pywry-spacing-sm);
+    pointer-events: none;
+    color: var(--pywry-text-muted);
+    flex-shrink: 0;
+}
+
+.pywry-search-input {
+    width: 100%;
+    padding-left: calc(var(--pywry-spacing-sm) + 14px + var(--pywry-spacing-xs)) !important;
+    padding-right: var(--pywry-spacing-lg);
+    min-width: 120px;
+}
+
+/* Inline variant for dropdown headers */
+.pywry-search-inline {
+    flex: 1;
+}
+
+.pywry-search-inline .pywry-search-input {
+    padding: var(--pywry-spacing-xs) var(--pywry-spacing-sm);
+    padding-left: calc(var(--pywry-spacing-sm) + 14px + var(--pywry-spacing-xs)) !important;
+    background-color: var(--pywry-bg-secondary);
+    border: 1px solid var(--pywry-border-color);
+    border-radius: var(--pywry-radius-sm);
+    font-size: calc(var(--pywry-font-size) - 1px);
+    transition: border-color var(--pywry-transition-fast);
+}
+
+.pywry-search-inline .pywry-search-input:hover {
+    border-color: var(--pywry-border-focus);
+}
+
+.pywry-search-inline .pywry-search-input:focus {
+    outline: none;
+    border-color: var(--pywry-border-focus);
+}
+
+.pywry-search-inline .pywry-search-input::placeholder {
+    color: var(--pywry-text-secondary);
+}
+
+/* ---- Select Header (for searchable Select) ---- */
+.pywry-select-header {
+    display: flex;
+    align-items: center;
+    padding: var(--pywry-spacing-sm);
+    border-bottom: 1px solid var(--pywry-border-color);
+}
+
+.pywry-select-options {
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .pywry-multiselect-actions {
@@ -1407,6 +1712,155 @@ html.light .pywry-select option {
     padding-right: var(--pywry-spacing-lg);
 }
 
+/* SecretInput - password/token input with visibility toggle and copy */
+.pywry-secret-wrapper {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.pywry-input-secret {
+    min-width: 140px;
+    padding-left: var(--pywry-spacing-lg);
+    padding-right: 78px; /* Space for action buttons (edit + copy + toggle) */
+    cursor: default; /* Indicate non-editable state */
+}
+
+/* Readonly state - subtle visual indication */
+.pywry-input-secret[readonly] {
+    background: var(--pywry-bg-secondary);
+    cursor: default;
+}
+
+/* When revealed (type=text), show as read-only text */
+.pywry-input-secret[type="text"] {
+    cursor: text;
+    user-select: all;
+}
+
+/* Container for action buttons (edit, copy, toggle) */
+.pywry-secret-actions {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+}
+
+/* Show actions on wrapper hover or input focus */
+.pywry-secret-wrapper:hover .pywry-secret-actions,
+.pywry-secret-wrapper:focus-within .pywry-secret-actions {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Icon-style action buttons - dim to bright on hover */
+.pywry-secret-btn {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--pywry-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--pywry-radius-sm);
+    transition: color 0.15s ease;
+}
+
+.pywry-secret-btn:hover {
+    color: var(--pywry-text-primary);
+}
+
+.pywry-secret-btn:focus {
+    outline: none;
+    color: var(--pywry-text-primary);
+}
+
+.pywry-secret-btn svg {
+    display: block;
+}
+
+/* Copy button success state */
+.pywry-secret-copy.copied {
+    color: var(--pywry-success, #28a745);
+}
+
+/* Confirm button - green checkmark */
+.pywry-secret-confirm {
+    color: var(--pywry-success, #28a745);
+}
+
+.pywry-secret-confirm:hover {
+    color: var(--pywry-success, #28a745);
+    background: rgba(40, 167, 69, 0.15);
+}
+
+/* Cancel button - red X */
+.pywry-secret-cancel {
+    color: var(--pywry-danger, #dc3545);
+}
+
+.pywry-secret-cancel:hover {
+    color: var(--pywry-danger, #dc3545);
+    background: rgba(220, 53, 69, 0.15);
+}
+
+/* Edit mode actions - always visible, top-right corner */
+.pywry-secret-edit-actions {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    top: 4px;
+    transform: none;
+}
+
+/* SecretInput textarea - edit mode (inherits from .pywry-input, adds textarea-specific styles) */
+.pywry-secret-textarea {
+    resize: both;
+    overflow: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    min-width: 140px;
+    padding-right: 60px; /* Space for confirm/cancel buttons */
+}
+
+/* TextArea - multi-line resizable input */
+.pywry-textarea {
+    min-width: 200px;
+    /* Account for scrollbar width (10px) when constraining max width */
+    max-width: calc(100% - 10px);
+    min-height: 60px;
+    padding: var(--pywry-spacing-md);
+    line-height: 1.4;
+    font-family: inherit;
+    resize: both;
+    overflow: auto;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.pywry-textarea-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pywry-spacing-xs);
+    align-items: flex-start;
+    /* Constrain the group to available width */
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.pywry-textarea-group .pywry-input-label {
+    margin-bottom: 0;
+}
+
 .pywry-input-number {
     width: 80px;
     padding-left: var(--pywry-spacing-lg);
@@ -1485,13 +1939,56 @@ html.light .pywry-select option {
     color: var(--pywry-accent);
 }
 
-.pywry-input-date {
-    min-width: 140px;
+/* Date input wrapper for custom calendar button */
+.pywry-date-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
-/* Fix date picker icon color for dark mode */
-.pywry-input-date::-webkit-calendar-picker-indicator {
-    filter: var(--pywry-calendar-icon-filter, none);
+.pywry-input-date {
+    min-width: 120px;
+    padding-right: 24px;
+}
+
+/* Date input - match TextInput/NumberInput exactly */
+.pywry-date-input {
+    min-width: 130px;
+    cursor: pointer;
+    color-scheme: dark;
+    position: relative;
+}
+
+/* Empty date placeholder styling */
+.pywry-date-input.pywry-date-empty::-webkit-datetime-edit {
+    color: var(--pywry-text-secondary);
+    opacity: 0.6;
+}
+
+/* Hide the native calendar icon visually but keep it clickable on the right */
+.pywry-date-input::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 28px;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* Custom calendar icon using background SVG - theme-aware via currentColor encoding */
+.pywry-date-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 14px;
+    padding-right: 28px;
+}
+
+/* Light mode - darker icon */
+html.light .pywry-date-input {
+    color-scheme: light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
 }
 
 .pywry-input-range {
@@ -1973,42 +2470,79 @@ html.light .pywry-select option {
     -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
-    overflow: visible;
+    /* Must use clip to contain child scroll while allowing dropdowns to escape via fixed positioning */
+    overflow: clip;
 }
 
 /* Header and footer toolbars handle their own edge-to-edge styling */
 
-/* Left/Right wrapper - stacks horizontally, LEFT/RIGHT extend full height */
-.pywry-wrapper-left,
-.pywry-wrapper-right {
-    display: flex;
-    display: -webkit-flex;
-    align-items: stretch;
-    -webkit-align-items: stretch;
-    flex: 1 1 0%;
-    -webkit-flex: 1 1 0%;
-    min-height: 0;
-    min-width: 0;
-    overflow: visible;
-}
-
-/* Top/Bottom wrapper - innermost vertical, TOP/BOTTOM are inside LEFT/RIGHT */
-.pywry-wrapper-top,
-.pywry-wrapper-bottom {
+/* Body scroll wrapper - scrollable area between header and footer */
+.pywry-body-scroll {
     display: flex;
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
     align-items: stretch;
     -webkit-align-items: stretch;
-    justify-content: flex-start;
-    -webkit-justify-content: flex-start;
     flex: 1 1 0%;
     -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
-    /* No scrolling here - let .pywry-scroll-container handle it */
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+    /* No padding - body-scroll is a layout wrapper, not content container */
+    padding: 0;
+}
+
+/* Top/Bottom wrapper inside body-scroll - allow natural size for scrolling */
+.pywry-body-scroll > .pywry-wrapper-top {
+    flex: 0 0 auto !important;
+    -webkit-flex: 0 0 auto !important;
+}
+
+/* Left/Right wrapper - stacks horizontally, LEFT/RIGHT extend full height */
+.pywry-wrapper-left,
+.pywry-wrapper-right {
+    display: flex !important;
+    display: -webkit-flex !important;
+    flex-direction: row !important;
+    -webkit-flex-direction: row !important;
+    align-items: stretch !important;
+    -webkit-align-items: stretch !important;
+    flex: 1 1 0% !important;
+    -webkit-flex: 1 1 0% !important;
+    min-height: 0;
+    min-width: 0;
+    /* Must use clip to contain child scroll while allowing dropdowns to escape via fixed positioning */
+    overflow: clip;
+}
+
+/* Left/Right toolbars scroll independently */
+.pywry-wrapper-left > .pywry-toolbar-left,
+.pywry-wrapper-left > .pywry-toolbar-right {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: auto;
+}
+
+/* Top/Bottom wrapper - innermost vertical, TOP/BOTTOM are inside LEFT/RIGHT */
+.pywry-wrapper-top,
+.pywry-wrapper-bottom {
+    display: flex !important;
+    display: -webkit-flex !important;
+    flex-direction: column !important;
+    -webkit-flex-direction: column !important;
+    align-items: stretch !important;
+    -webkit-align-items: stretch !important;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    flex: 1 1 auto !important;
+    -webkit-flex: 1 1 auto !important;
+    min-height: 0;
+    min-width: 0;
+    /* Allow overflow to propagate to parent scroll container */
+    overflow: visible;
 }
 
 .pywry-wrapper-inside {
@@ -2017,7 +2551,7 @@ html.light .pywry-select option {
     -webkit-flex: 1 1 0%;
     min-height: 0;
     min-width: 0;
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     display: -webkit-flex;
     flex-direction: column;
@@ -2053,40 +2587,9 @@ html.light .pywry-select option {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: auto;
-    padding: 16px;
     box-sizing: border-box;
     min-height: 0;
     min-width: 0;
-}
-
-/* Force WebKit to show styled scrollbars on macOS */
-.pywry-scroll-container::-webkit-scrollbar {
-    -webkit-appearance: none !important;
-    width: 10px !important;
-    height: 10px !important;
-    background: var(--pywry-bg-secondary, #212124) !important;
-}
-
-.pywry-scroll-container::-webkit-scrollbar-track {
-    -webkit-appearance: none !important;
-    background: var(--pywry-bg-secondary, #212124) !important;
-    border-radius: 0 !important;
-}
-
-.pywry-scroll-container::-webkit-scrollbar-thumb {
-    -webkit-appearance: none !important;
-    background: var(--pywry-scrollbar-thumb, rgba(155, 155, 155, 0.5)) !important;
-    border-radius: 5px !important;
-    border: 2px solid var(--pywry-bg-secondary, #212124) !important;
-    background-clip: padding-box !important;
-}
-
-.pywry-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: var(--pywry-scrollbar-thumb-hover, rgba(175, 175, 175, 0.7)) !important;
-}
-
-.pywry-scroll-container::-webkit-scrollbar-corner {
-    background: var(--pywry-bg-secondary, #212124) !important;
 }
 
 /* No padding when content is empty - prevents premature scrollbar */
@@ -2359,6 +2862,86 @@ html.light .ag-filter-apply-panel button:hover,
 html.light .ag-standard-button:hover {
     border-color: var(--pywry-border-focus, #999) !important;
     background-color: var(--pywry-bg-hover, #e0e0e0) !important;
+}
+
+/* ==========================================================================
+   Tooltip System - JS-managed tooltip element
+   The actual tooltip is created and positioned by JavaScript (TOOLTIP_MANAGER_JS)
+   ========================================================================== */
+
+/* The tooltip element injected by JS - supports both ID and class selectors */
+#pywry-tooltip,
+.pywry-tooltip {
+    position: absolute;
+    padding: 6px 10px;
+    background: #3d3d42;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    white-space: nowrap;
+    border-radius: 4px;
+    border: 1px solid #555;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 999999;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease 0.5s, visibility 0s ease 0.5s;
+}
+
+#pywry-tooltip.visible,
+.pywry-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.15s ease 0.5s, visibility 0s ease 0s;
+}
+
+/* Tooltip arrow */
+#pywry-tooltip::before,
+.pywry-tooltip::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+}
+
+/* Arrow pointing down (tooltip above target) */
+#pywry-tooltip.arrow-bottom::before,
+.pywry-tooltip.arrow-bottom::before {
+    bottom: -12px;
+    border-top-color: #3d3d42;
+}
+
+/* Arrow pointing up (tooltip below target) */
+#pywry-tooltip.arrow-top::before,
+.pywry-tooltip.arrow-top::before {
+    top: -12px;
+    border-bottom-color: #3d3d42;
+}
+
+/* Light theme tooltip */
+html.light #pywry-tooltip,
+.pywry-theme-light #pywry-tooltip,
+html.light .pywry-tooltip,
+.pywry-theme-light .pywry-tooltip {
+    background: #5a5a5f;
+    border-color: #4a4a4f;
+}
+
+html.light #pywry-tooltip.arrow-bottom::before,
+.pywry-theme-light #pywry-tooltip.arrow-bottom::before,
+html.light .pywry-tooltip.arrow-bottom::before,
+.pywry-theme-light .pywry-tooltip.arrow-bottom::before {
+    border-top-color: #5a5a5f;
+}
+
+html.light #pywry-tooltip.arrow-top::before,
+.pywry-theme-light #pywry-tooltip.arrow-top::before,
+html.light .pywry-tooltip.arrow-top::before,
+.pywry-theme-light .pywry-tooltip.arrow-top::before {
+    border-bottom-color: #5a5a5f;
 }
 
 /*

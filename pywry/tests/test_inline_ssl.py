@@ -1,6 +1,7 @@
 """Tests for SSL/TLS support in PyWry inline widgets."""
 
 import asyncio
+import json
 import os
 import ssl
 
@@ -18,7 +19,12 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 
-from pywry.inline import InlineWidget, _get_pywry_bridge_js, _make_server_request, stop_server
+from pywry.inline import (
+    InlineWidget,
+    _get_pywry_bridge_js,
+    _make_server_request,
+    stop_server,
+)
 
 
 def _build_test_html(content: str, widget_id: str) -> str:
@@ -171,7 +177,10 @@ def test_client_verification_settings_proxy_override(ssl_certs):
 
         with (
             patch.dict(os.environ, {"HTTP_PROXY": "http://proxy.example.com"}, clear=True),
-            patch("urllib.request.getproxies", return_value={"http": "http://proxy.example.com"}),
+            patch(
+                "urllib.request.getproxies",
+                return_value={"http": "http://proxy.example.com"},
+            ),
         ):
             from pywry.inline import _get_verification_settings
 
@@ -352,4 +361,570 @@ def test_content_generation_https(ssl_certs):
             assert "<script>" in content
             assert "window.pywry" in content
         finally:
+            stop_server()
+
+
+# =============================================================================
+# SecretInput HTTPS/WSS E2E Security Tests
+# =============================================================================
+
+
+def _make_ssl_server_settings(settings_server, cert_path, key_path, port):
+    """Configure SSL server settings for testing."""
+    settings_server.ssl_certfile = cert_path
+    settings_server.ssl_keyfile = key_path
+    settings_server.ssl_ca_certs = cert_path
+    settings_server.port = port
+    settings_server.host = "127.0.0.1"
+    settings_server.ssl_keyfile_password = None
+    settings_server.widget_prefix = "/widget"
+    settings_server.limit_max_requests = None
+    settings_server.timeout_graceful_shutdown = None
+    settings_server.limit_concurrency = None
+    settings_server.access_log = False
+    settings_server.timeout_keep_alive = 5
+    settings_server.backlog = 2048
+
+    # CORS settings
+    settings_server.cors_origins = ["*"]
+    settings_server.cors_allow_credentials = True
+    settings_server.cors_allow_methods = ["*"]
+    settings_server.cors_allow_headers = ["*"]
+
+    # Security settings
+    settings_server.websocket_allowed_origins = []
+    settings_server.websocket_require_token = True
+    settings_server.internal_api_header = "X-PyWry-Token"
+    settings_server.internal_api_token = None
+    settings_server.strict_widget_auth = False
+
+
+def test_secret_never_in_https_response(ssl_certs):
+    """Secret values should never appear in HTTPS rendered HTML."""
+    from pywry.toolbar import SecretInput, Toolbar
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8770)
+
+        # Create toolbar with secret
+        secret_value = "https-secret-api-key-12345"
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="auth:api-key", value=secret_value)],
+        )
+
+        # Build HTML with toolbar
+        toolbar_html = toolbar.build_html()
+        full_html = f"""<!DOCTYPE html>
+<html>
+<head><title>Secret Test</title></head>
+<body>
+    {toolbar_html}
+    <div>Content</div>
+</body>
+</html>"""
+
+        widget_id = "secret_https_test"
+        widget = InlineWidget(
+            full_html,
+            port=8770,
+            widget_id=widget_id,
+            browser_only=True,
+        )
+
+        try:
+            # Fetch via HTTPS
+            resp = requests.get(widget.url, verify=cert_path, timeout=5.0)
+            assert resp.status_code == 200
+
+            # Secret must NOT appear in response
+            assert secret_value not in resp.text
+            # But password input should be present
+            assert 'type="password"' in resp.text
+            assert 'value=""' in resp.text
+
+        finally:
+            stop_server()
+
+
+@pytest.mark.asyncio
+async def test_e2e_wss_secret_reveal_base64_encoded(ssl_certs):
+    """Test secret reveal over WSS is base64 encoded for transit security."""
+    from pywry.inline import _state
+    from pywry.toolbar import SecretInput, Toolbar
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8771)
+
+        # Create toolbar with secret
+        secret_value = "wss-reveal-secret-value"
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="secure:api-key", value=secret_value)],
+        )
+        toolbar.register_secrets()
+
+        # Build HTML
+        toolbar_html = toolbar.build_html()
+        widget_id = "wss_reveal_test"
+        full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
+
+        # Callback to handle reveal request
+        callback_mock = MagicMock()
+
+        widget = InlineWidget(
+            full_html,
+            callbacks={"secure:api-key:reveal": callback_mock},
+            port=8771,
+            widget_id=widget_id,
+            browser_only=True,
+        )
+        wid = widget.widget_id
+
+        try:
+            # Create SSL context
+            ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ssl_ctx.load_verify_locations(cert_path)
+            ssl_ctx.check_hostname = False
+
+            # Connect via WSS
+            uri = f"wss://127.0.0.1:8771/ws/{wid}"
+            token = _state.widget_tokens.get(wid)
+            subprotocol = f"pywry.token.{token}" if token else None
+            subprotocols = [subprotocol] if subprotocol else None
+
+            si = toolbar.get_secret_inputs()[0]
+
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
+                # Send ready event
+                await websocket.send('{"type": "pywry:ready", "data": {}}')
+
+                # Simulate browser sending reveal request
+                reveal_msg = {
+                    "type": "secure:api-key:reveal",
+                    "data": {"componentId": si.component_id},
+                    "widgetId": wid,
+                }
+                await websocket.send(json.dumps(reveal_msg))
+
+                # Wait for callback to be triggered
+                start = asyncio.get_running_loop().time()
+                while asyncio.get_running_loop().time() - start < 2.0:
+                    if callback_mock.called:
+                        break
+                    await asyncio.sleep(0.1)
+
+                # Callback should have been called
+                assert callback_mock.called
+
+        finally:
+            stop_server()
+
+
+@pytest.mark.asyncio
+async def test_e2e_wss_secret_input_submission(ssl_certs):
+    """Test secret input submission over WSS with base64 encoding."""
+    from pywry.inline import _state
+    from pywry.toolbar import SecretInput, Toolbar, decode_secret, encode_secret
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8772)
+
+        # Create toolbar with empty secret
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="secure:password")],
+        )
+
+        # Build HTML
+        toolbar_html = toolbar.build_html()
+        widget_id = "wss_input_test"
+        full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
+
+        # Callback to capture submitted secret
+        received_data = []
+
+        def capture_secret(data, event_type, _wid):
+            received_data.append((event_type, data))
+
+        widget = InlineWidget(
+            full_html,
+            callbacks={"secure:password": capture_secret},
+            port=8772,
+            widget_id=widget_id,
+            browser_only=True,
+        )
+        wid = widget.widget_id
+
+        try:
+            # Create SSL context
+            ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ssl_ctx.load_verify_locations(cert_path)
+            ssl_ctx.check_hostname = False
+
+            # Connect via WSS
+            uri = f"wss://127.0.0.1:8772/ws/{wid}"
+            token = _state.widget_tokens.get(wid)
+            subprotocol = f"pywry.token.{token}" if token else None
+            subprotocols = [subprotocol] if subprotocol else None
+
+            si = toolbar.get_secret_inputs()[0]
+            user_secret = "user-entered-wss-secret"
+
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
+                # Send ready event
+                await websocket.send('{"type": "pywry:ready", "data": {}}')
+
+                # Simulate browser sending base64-encoded secret
+                encoded_secret = encode_secret(user_secret)
+                input_msg = {
+                    "type": "secure:password",
+                    "data": {
+                        "value": encoded_secret,
+                        "encoded": True,
+                        "componentId": si.component_id,
+                    },
+                    "widgetId": wid,
+                }
+                await websocket.send(json.dumps(input_msg))
+
+                # Wait for callback
+                start = asyncio.get_running_loop().time()
+                while asyncio.get_running_loop().time() - start < 2.0:
+                    if received_data:
+                        break
+                    await asyncio.sleep(0.1)
+
+                # Verify received data
+                assert len(received_data) == 1
+                event_type, data = received_data[0]
+                assert event_type == "secure:password"
+                assert data["encoded"] is True
+                assert data["value"] == encoded_secret
+
+                # Backend can decode it
+                decoded = decode_secret(data["value"])
+                assert decoded == user_secret
+
+        finally:
+            stop_server()
+
+
+def test_secret_storage_isolation_https(ssl_certs):
+    """Multiple secrets should be isolated in HTTPS mode."""
+    from pywry.toolbar import SecretInput, Toolbar, clear_secret, get_secret
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8773)
+
+        # Create toolbar with multiple secrets
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                SecretInput(event="auth:key1", value="secret-one"),
+                SecretInput(event="auth:key2", value="secret-two"),
+                SecretInput(event="auth:key3", value="secret-three"),
+            ],
+        )
+        toolbar.register_secrets()
+
+        secrets = toolbar.get_secret_inputs()
+
+        try:
+            # Each secret is stored independently
+            assert get_secret(secrets[0].component_id) == "secret-one"
+            assert get_secret(secrets[1].component_id) == "secret-two"
+            assert get_secret(secrets[2].component_id) == "secret-three"
+
+            # Build and verify HTML doesn't contain any secrets
+            toolbar_html = toolbar.build_html()
+            assert "secret-one" not in toolbar_html
+            assert "secret-two" not in toolbar_html
+            assert "secret-three" not in toolbar_html
+
+            # Clearing one doesn't affect others
+            clear_secret(secrets[1].component_id)
+            assert get_secret(secrets[0].component_id) == "secret-one"
+            assert get_secret(secrets[1].component_id) is None
+            assert get_secret(secrets[2].component_id) == "secret-three"
+
+        finally:
+            # Cleanup
+            for s in secrets:
+                clear_secret(s.component_id)
+            stop_server()
+
+
+def test_encode_decode_roundtrip_ssl(_ssl_certs):
+    """Test base64 encode/decode roundtrip works in SSL context."""
+    from pywry.toolbar import decode_secret, encode_secret
+
+    # Test various secret formats
+    test_secrets = [
+        "simple-api-key",
+        "with spaces and special!@#$%^&*()",
+        "unicode: émojis 🔐 日本語",
+        "very-long-" + "x" * 500,
+        "",  # empty
+    ]
+
+    for original in test_secrets:
+        encoded = encode_secret(original)
+        decoded = decode_secret(encoded)
+        assert decoded == original, f"Roundtrip failed for: {original[:30]}..."
+        # Encoded should not equal original (unless empty)
+        if original:
+            assert encoded != original
+
+
+@pytest.mark.asyncio
+async def test_e2e_wss_custom_secret_handler_reveal(  # noqa: PLR0915  # pylint: disable=too-many-statements
+    ssl_certs,
+):
+    """Custom secret handler should work correctly over WSS."""
+    from pywry.inline import _state
+    from pywry.toolbar import (
+        _SECRET_HANDLERS,
+        SecretInput,
+        Toolbar,
+        clear_secret,
+        decode_secret,
+        encode_secret,
+        set_secret_handler,
+    )
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8774)
+
+        # Create toolbar with secret in registry
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="vault:wss-secret", value="registry-value")],
+        )
+        toolbar.register_secrets()
+
+        # Custom handler returns value from "external vault"
+        vault_secret = "wss-vault-fetched-secret"
+
+        def custom_reveal_handler(_data: dict) -> str:
+            return vault_secret
+
+        si = toolbar.get_secret_inputs()[0]
+        reveal_event = si.get_reveal_event()
+        set_secret_handler(reveal_event, custom_reveal_handler)
+
+        # Build HTML
+        toolbar_html = toolbar.build_html()
+        widget_id = "wss_custom_handler_test"
+        full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
+
+        # Callback that uses custom handler
+        def on_reveal(data, event_type, _wid):
+            from pywry.toolbar import get_secret_handler
+
+            handler = get_secret_handler(event_type)
+            if handler:
+                secret = handler(data)
+            else:
+                from pywry.toolbar import get_secret
+
+                secret = get_secret(data.get("componentId", ""))
+
+            from pywry.inline import _state
+
+            # Emit response back via widget connections
+            encoded = encode_secret(secret) if secret else ""
+            response = {
+                "type": f"{event_type}-response",
+                "data": {
+                    "componentId": data.get("componentId", ""),
+                    "value": encoded,
+                    "encoded": True,
+                },
+            }
+            # Broadcast to connected clients
+            _tasks = [
+                asyncio.create_task(ws.send(json.dumps(response)))
+                for ws in _state.connections.get(widget_id, set())
+            ]
+
+        widget = InlineWidget(
+            full_html,
+            callbacks={reveal_event: on_reveal},
+            port=8774,
+            widget_id=widget_id,
+            browser_only=True,
+        )
+        wid = widget.widget_id
+
+        try:
+            # Create SSL context
+            ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ssl_ctx.load_verify_locations(cert_path)
+            ssl_ctx.check_hostname = False
+
+            # Connect via WSS
+            uri = f"wss://127.0.0.1:8774/ws/{wid}"
+            token = _state.widget_tokens.get(wid)
+            subprotocol = f"pywry.token.{token}" if token else None
+            subprotocols = [subprotocol] if subprotocol else None
+
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
+                # Send ready
+                await websocket.send('{"type": "pywry:ready", "data": {}}')
+
+                # Send reveal request
+                reveal_msg = {
+                    "type": reveal_event,
+                    "data": {"componentId": si.component_id},
+                    "widgetId": wid,
+                }
+                await websocket.send(json.dumps(reveal_msg))
+
+                # Wait for response
+                message = await asyncio.wait_for(websocket.recv(), timeout=2.0)
+                data = json.loads(message)
+
+                # Should get custom handler's value
+                assert data["type"] == f"{reveal_event}-response"
+                assert data["data"]["encoded"] is True
+
+                decoded = decode_secret(data["data"]["value"])
+                assert decoded == vault_secret
+                assert decoded != "registry-value"
+
+        finally:
+            _SECRET_HANDLERS.pop(reveal_event, None)
+            clear_secret(si.component_id)
+            stop_server()
+
+
+@pytest.mark.asyncio
+async def test_e2e_wss_custom_handler_with_context(  # noqa: PLR0915
+    ssl_certs,
+):
+    """Custom handler receives full context data over WSS."""
+    from pywry.inline import _state
+    from pywry.toolbar import (
+        _SECRET_HANDLERS,
+        SecretInput,
+        Toolbar,
+        clear_secret,
+        encode_secret,
+        set_secret_handler,
+    )
+
+    cert_path, key_path = ssl_certs
+
+    with patch("pywry.inline.get_settings") as mock_get_settings:
+        settings_root = mock_get_settings.return_value
+        _make_ssl_server_settings(settings_root.server, cert_path, key_path, 8775)
+
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="context:wss-test", value="test")],
+        )
+        toolbar.register_secrets()
+
+        # Track what data the handler receives
+        received_context = []
+
+        def context_tracking_handler(data: dict) -> str:
+            received_context.append(data.copy())
+            return f"response-for-{data.get('componentId', 'unknown')}"
+
+        si = toolbar.get_secret_inputs()[0]
+        reveal_event = si.get_reveal_event()
+        set_secret_handler(reveal_event, context_tracking_handler)
+
+        toolbar_html = toolbar.build_html()
+        widget_id = "wss_context_test"
+        full_html = _build_test_html(f"{toolbar_html}<div>Content</div>", widget_id)
+
+        def on_reveal(data, event_type, _wid):
+            from pywry.toolbar import get_secret_handler
+
+            handler = get_secret_handler(event_type)
+            secret = handler(data) if handler else ""
+            encoded = encode_secret(secret) if secret else ""
+
+            response = {
+                "type": f"{event_type}-response",
+                "data": {
+                    "componentId": data.get("componentId", ""),
+                    "value": encoded,
+                    "encoded": True,
+                },
+            }
+            _tasks = [
+                asyncio.create_task(ws.send(json.dumps(response)))
+                for ws in _state.connections.get(widget_id, set())
+            ]
+
+        widget = InlineWidget(
+            full_html,
+            callbacks={reveal_event: on_reveal},
+            port=8775,
+            widget_id=widget_id,
+            browser_only=True,
+        )
+        wid = widget.widget_id
+
+        try:
+            ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ssl_ctx.load_verify_locations(cert_path)
+            ssl_ctx.check_hostname = False
+
+            uri = f"wss://127.0.0.1:8775/ws/{wid}"
+            token = _state.widget_tokens.get(wid)
+            subprotocol = f"pywry.token.{token}" if token else None
+            subprotocols = [subprotocol] if subprotocol else None
+
+            async with websockets.connect(uri, ssl=ssl_ctx, subprotocols=subprotocols) as websocket:
+                await websocket.send('{"type": "pywry:ready", "data": {}}')
+
+                # Send reveal with extra context
+                reveal_msg = {
+                    "type": reveal_event,
+                    "data": {
+                        "componentId": si.component_id,
+                        "extraField": "extra-value",
+                        "metadata": {"source": "wss-test"},
+                    },
+                    "widgetId": wid,
+                }
+                await websocket.send(json.dumps(reveal_msg))
+
+                # Wait for callback to be processed
+                start = asyncio.get_running_loop().time()
+                while asyncio.get_running_loop().time() - start < 2.0:
+                    if received_context:
+                        break
+                    await asyncio.sleep(0.1)
+
+                # Verify handler received full context
+                assert len(received_context) == 1
+                ctx = received_context[0]
+                assert ctx["componentId"] == si.component_id
+                assert ctx["extraField"] == "extra-value"
+                assert ctx["metadata"]["source"] == "wss-test"
+
+        finally:
+            _SECRET_HANDLERS.pop(reveal_event, None)
+            clear_secret(si.component_id)
             stop_server()

@@ -3,6 +3,8 @@
 Tests build_html and related template functions.
 """
 
+# pylint: disable=too-many-lines
+
 import pytest
 
 from pywry.config import AssetSettings, PyWrySettings, SecuritySettings, ThemeSettings
@@ -914,3 +916,362 @@ class TestBuildHtmlWithToolbar:
         html = build_html(content, config, window_label="main", toolbars=toolbars)
         assert "pywry-wrapper-inside" in html
         assert "pywry-toolbar-inside" in html
+
+
+class TestBuildHtmlWithSecretInput:
+    """Tests for build_html with SecretInput in native window rendering.
+
+    These tests verify that SecretInput security is maintained when
+    rendering through the native window path (build_html in templates.py).
+    """
+
+    def test_secret_value_never_in_native_html(self):
+        """Secret value must NEVER appear in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        secret_value = "super-secret-api-key-12345"
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:api-key", value=secret_value)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Secret must NEVER be in HTML
+        assert secret_value not in html
+        # Mask should be shown instead
+        assert "••••••••••••" in html
+        assert 'data-has-value="true"' in html
+
+    def test_secret_mask_shown_in_native_html(self):
+        """Secret should show mask (••••) in native window when value exists."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:token", value="my-token")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        assert 'value="••••••••••••"' in html
+        assert 'type="password"' in html
+        assert "pywry-input-secret" in html
+
+    def test_secret_empty_when_no_value_native(self):
+        """Secret should be empty in native window when no value set."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:new-key", placeholder="Enter key")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Should have empty value, not mask
+        assert 'value=""' in html
+        assert 'data-has-value="true"' not in html
+
+    def test_secret_value_exists_flag_native(self):
+        """value_exists flag should work in native window rendering."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        # External storage scenario - no internal value but value_exists=True
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="vault:secret", value_exists=True)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Mask should be shown even without internal value
+        assert 'value="••••••••••••"' in html
+        assert 'data-has-value="true"' in html
+
+    def test_secret_edit_mode_in_native_html(self):
+        """Edit mode scripts should be present in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Edit mode textarea creation should be in HTML
+        assert "createElement('textarea')" in html
+        assert "pywry-secret-textarea" in html
+        # Input should be readonly
+        assert " readonly" in html
+        # Edit button should be present
+        assert "pywry-secret-edit" in html
+
+    def test_secret_reveal_copy_buttons_in_native_html(self):
+        """Reveal and copy buttons should be in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", show_toggle=True, show_copy=True)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        assert "pywry-secret-toggle" in html
+        assert "pywry-secret-copy" in html
+        # Reveal/copy use event-based flow
+        assert ":reveal" in html
+        assert ":copy" in html
+
+    def test_secret_base64_encoding_in_native_html(self):
+        """Base64 encoding should be used in native window scripts."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Base64 encoding functions should be in the scripts
+        assert "btoa" in html  # JavaScript base64 encode
+        assert "atob" in html  # JavaScript base64 decode
+        assert "encoded:true" in html
+
+    def test_secret_pem_certificate_never_in_native_html(self):
+        """PEM certificate must never appear in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        pem_cert = """-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0Gcert
+-----END CERTIFICATE-----"""
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="certs:ssl", value=pem_cert)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # PEM certificate must NEVER be in HTML
+        assert "-----BEGIN CERTIFICATE-----" not in html
+        assert "-----END CERTIFICATE-----" not in html
+        assert "MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0Gcert" not in html
+        # Only mask should appear
+        assert "••••••••••••" in html
+
+    def test_secret_json_service_account_never_in_native_html(self):
+        """JSON service account key must never appear in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        json_key = '{"type":"service_account","private_key":"secret"}'
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="gcp:key", value=json_key)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # JSON key must NEVER be in HTML (check key parts)
+        assert '"type":"service_account"' not in html
+        assert '"private_key":"secret"' not in html
+        assert "service_account" not in html
+        # Only mask should appear
+        assert "••••••••••••" in html
+
+
+class TestSecretInputBeforeUnloadBehavior:
+    """Tests for beforeUnload behavior to verify secrets are cleared on page unload.
+
+    These tests validate that:
+    1. clearSecrets function exists in generated HTML
+    2. beforeunload event listener is registered
+    3. pagehide event listener is registered (mobile/Safari fallback)
+    4. clearSecrets restores mask for inputs with values
+    5. clearSecrets clears revealed secrets tracking
+    6. Both inline and native window paths include unload handling
+    """
+
+    def test_clear_secrets_function_in_native_html(self):
+        """clearSecrets function should be in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # clearSecrets function should be present
+        assert "clearSecrets" in html
+
+    def test_beforeunload_listener_in_native_html(self):
+        """beforeunload event listener should be registered in native window HTML."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # beforeunload listener should be registered
+        assert "beforeunload" in html
+
+    def test_pagehide_listener_in_native_html(self):
+        """pagehide event listener should be registered (mobile/Safari fallback)."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # pagehide listener should be registered
+        assert "pagehide" in html
+
+    def test_clear_secrets_restores_mask_logic(self):
+        """clearSecrets should restore mask for inputs with data-has-value='true'."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Should have mask constant
+        assert "SECRET_MASK" in html or "••••••••••••" in html
+        # Should check data-has-value attribute
+        assert "hasValue" in html or "has-value" in html
+
+    def test_clear_secrets_clears_revealed_tracking(self):
+        """clearSecrets should clear _revealedSecrets tracking object."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Should have revealed secrets tracking
+        assert "_revealedSecrets" in html
+
+    def test_hide_button_clears_revealed_tracking(self):
+        """Hide button should clear _revealedSecrets entry when secret is hidden."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret", show_toggle=True)],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Hide should delete from revealed secrets
+        assert "delete window.pywry._revealedSecrets" in html
+
+    def test_input_type_reset_to_password_on_unload(self):
+        """clearSecrets should set input type back to 'password'."""
+        from pywry.toolbar import SecretInput
+
+        config = WindowConfig()
+        content = HtmlContent(html="<div>Content</div>")
+
+        toolbars = [
+            Toolbar(
+                position="top",
+                items=[SecretInput(event="auth:key", value="secret")],
+            )
+        ]
+
+        html = build_html(content, config, window_label="main", toolbars=toolbars)
+
+        # Should reset type to password (in clearSecrets or toggle script)
+        assert "type='password'" in html or 'type="password"' in html

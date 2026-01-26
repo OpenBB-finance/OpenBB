@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import BaseModel
 
 from ..callbacks import get_registry
-from ..log import debug, exception, warn
+from ..log import debug, exception, redact_sensitive_data, warn
 from ..models import GenericEvent
 
 
@@ -87,7 +87,10 @@ def register_commands(commands: Commands) -> None:
     @commands.command()
     async def pywry_result(body: ResultPayload) -> dict[str, Any]:
         """Handle result from JavaScript."""
-        debug(f"[IPC] pywry_result: label={body.window_label}, data={body.data}")
+        # Redact sensitive values in debug output
+        debug(
+            f"[IPC] pywry_result: label={body.window_label}, data={redact_sensitive_data(body.data)}"
+        )
         result = handle_pywry_result(body.window_label, body.data)
         debug(f"[IPC] pywry_result returning: {result}")
         return result
@@ -123,7 +126,8 @@ def send_event_to_parent(label: str, event_type: str, data: dict[str, Any]) -> N
         "event_type": event_type,
         "data": data,
     }
-    debug(f"[IPC] send_event_to_parent: {msg}")
+    # Redact sensitive values (e.g., SecretInput values) in debug output
+    debug(f"[IPC] send_event_to_parent: {redact_sensitive_data(msg)}")
     try:
         with _stdout_lock:
             sys.stdout.write(json.dumps(msg) + "\n")
@@ -149,7 +153,8 @@ def handle_pywry_result(label: str, data: dict[str, Any]) -> dict[str, Any]:
     dict of str to Any
         Response dict indicating success/failure.
     """
-    debug(f"Received result from window '{label}': {data}")
+    # Redact sensitive values in debug output
+    debug(f"Received result from window '{label}': {redact_sensitive_data(data)}")
 
     # Send to parent process
     send_event_to_parent(label, "pywry:result", data)

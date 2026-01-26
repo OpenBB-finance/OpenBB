@@ -19,6 +19,7 @@ Usage:
 
 AG Grid API Reference: https://www.ag-grid.com/javascript-data-grid/grid-options/
 """
+
 # pylint: disable=too-many-lines
 
 from __future__ import annotations
@@ -40,7 +41,10 @@ SERVER_SIDE_THRESHOLD = 10_000  # Recommend infinite row model above this
 # --- DateTime Serialization Helpers ---
 
 
-def _serialize_value(value: Any) -> Any:  # noqa: PLR0911  # pylint: disable=too-many-return-statements
+# pylint: disable=R0911,R0915
+def _serialize_value(  # noqa: PLR0911
+    value: Any,
+) -> Any:
     """Convert a single value to JSON-serializable format.
 
     Handles:
@@ -112,7 +116,10 @@ CellDataType = Literal[
     "text", "number", "boolean", "date", "dateString", "dateTimeString", "object"
 ]
 FilterType = Literal[
-    "agTextColumnFilter", "agNumberColumnFilter", "agDateColumnFilter", "agSetColumnFilter"
+    "agTextColumnFilter",
+    "agNumberColumnFilter",
+    "agDateColumnFilter",
+    "agSetColumnFilter",
 ]
 PinnedPosition = Literal["left", "right"]
 
@@ -698,7 +705,7 @@ def _build_number_col_def(col_def: dict[str, Any], col_type: str) -> None:
         col_def["cellDataType"] = False
 
 
-def build_column_defs(  # noqa: PLR0912, C901  # pylint: disable=too-many-branches
+def build_column_defs(  # noqa: C901, PLR0912  # pylint: disable=too-many-branches
     columns: list[str],
     column_defs: list[dict[str, Any] | ColDef] | None = None,
     column_groups: list[dict[str, Any]] | None = None,

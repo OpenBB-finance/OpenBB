@@ -109,7 +109,7 @@ def generate_session_token(
     return f"{payload}:{signature}"
 
 
-def validate_session_token(
+def validate_session_token(  # pylint: disable=no-else-return
     token: str,
     secret: str,
 ) -> tuple[bool, str | None, str | None]:
@@ -151,10 +151,10 @@ def validate_session_token(
 
         if not hmac.compare_digest(signature, expected_sig):
             return (False, None, "Invalid signature")
-
-        return (True, user_id, None)  # noqa: TRY300
     except (ValueError, IndexError) as e:
         return (False, None, f"Token parse error: {e}")
+    else:
+        return (True, user_id, None)
 
 
 def generate_widget_token(

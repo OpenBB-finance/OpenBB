@@ -327,16 +327,20 @@ function render({ model, el }) {
         const pending = (window.pywry._pending || []).filter(p => p.type === type);
         window.pywry._pending = (window.pywry._pending || []).filter(p => p.type !== type);
         pending.forEach(p => {
-            console.log('[PyWry] Flushing pending event:', type, p.data);
             callback(p.data);
         });
     };
     window.pywry._fire = function(type, data) {
-        console.log('[PyWry] window.pywry._fire:', type, data);
+        // Check for sensitive event types - don't log data
+        const isSensitive = type.includes(':reveal') || type.includes(':copy') ||
+                           type.includes('secret') || type.includes('password') ||
+                           type.includes('api-key') || type.includes('token');
+        if (window.PYWRY_DEBUG && !isSensitive) {
+            console.log('[PyWry] window.pywry._fire:', type, data);
+        }
         const handlers = window.pywry._handlers[type] || [];
         if (handlers.length === 0) {
             // Queue if no handlers yet (script may not have run)
-            console.log('[PyWry] No handlers for', type, '- queuing event');
             window.pywry._pending = window.pywry._pending || [];
             window.pywry._pending.push({type: type, data: data});
         } else {
@@ -851,7 +855,7 @@ if (!getAgGrid()) {{
 @lru_cache(maxsize=1)
 def _get_widget_esm() -> str:
     """Build the basic widget ESM with centralized toolbar handlers."""
-    from .assets import get_toast_notifications_js
+    from .assets import get_scrollbar_js, get_toast_notifications_js
 
     # Load centralized toolbar handlers (SINGLE SOURCE OF TRUTH)
     toolbar_handlers_js = _get_toolbar_handlers_js()
@@ -859,10 +863,13 @@ def _get_widget_esm() -> str:
     # Get toast notification system
     toast_js = get_toast_notifications_js() or ""
 
-    # Prepend toast JS to the widget ESM
-    esm_with_toast = toast_js + "\n\n" + _WIDGET_ESM
+    # Get custom scrollbar JS
+    scrollbar_js = get_scrollbar_js() or ""
 
-    return esm_with_toast.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
+    # Prepend toast JS and scrollbar JS to the widget ESM
+    esm_with_libs = toast_js + "\n\n" + scrollbar_js + "\n\n" + _WIDGET_ESM
+
+    return esm_with_libs.replace("__TOOLBAR_HANDLERS__", toolbar_handlers_js)
 
 
 # Basic widget ESM without Plotly
@@ -914,7 +921,7 @@ function render({ model, el }) {
     el.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
 
     const container = document.createElement('div');
-    container.className = 'pywry-widget';
+    container.className = 'pywry-widget pywry-custom-scrollbar';
     container.dataset.widgetId = 'pywry-' + Math.random().toString(36).substr(2, 9);
     container.classList.add(isDarkInitial ? 'pywry-theme-dark' : 'pywry-theme-light');
 
@@ -937,6 +944,12 @@ function render({ model, el }) {
     }
     applyTheme();
     el.appendChild(container);
+
+    // Initialize custom scrollbars for this widget container
+    if (typeof PYWRY_SCROLLBARS !== 'undefined' && PYWRY_SCROLLBARS.init) {
+        PYWRY_SCROLLBARS.init(container);
+        console.log('[PyWry Basic Widget] Custom scrollbars initialized');
+    }
 
     // Set toast container for this widget instance
     if (typeof PYWRY_TOAST !== 'undefined' && PYWRY_TOAST.setContainer) {
@@ -1427,7 +1440,11 @@ if HAS_ANYWIDGET:
             PyWryWidget
                 Configured widget with callbacks registered.
             """
-            from .toolbar import wrap_content_with_toolbars
+            from .toolbar import (
+                Toolbar,
+                register_secret_handlers_for_toolbar,
+                wrap_content_with_toolbars,
+            )
 
             # Always wrap content with proper container structure
             # This ensures consistent styling even without toolbars
@@ -1448,6 +1465,17 @@ if HAS_ANYWIDGET:
             if callbacks:
                 for event_type, handler in callbacks.items():
                     widget.on(event_type, handler)
+
+            # Register secret handlers for all SecretInputs in toolbars
+            # This enables reveal/copy functionality
+            if toolbars:
+                for toolbar_cfg in toolbars:
+                    if isinstance(toolbar_cfg, Toolbar):
+                        register_secret_handlers_for_toolbar(
+                            toolbar_cfg,
+                            widget.on,
+                            widget.emit,
+                        )
 
             return widget
 

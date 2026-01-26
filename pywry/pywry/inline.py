@@ -26,6 +26,7 @@ from .assets import (
     get_plotly_js,
     get_plotly_templates_js,
     get_pywry_css,
+    get_scrollbar_js,
     get_toast_css,
     get_toast_notifications_js,
 )
@@ -656,18 +657,46 @@ def _get_pywry_bridge_js(widget_id: str, widget_token: str | None = None) -> str
         }}
     }}
 
+    // Clear all revealed secrets from DOM - called on unload
+    // Restores mask for inputs that had a value, clears others
+    var SECRET_MASK = '••••••••••••';
+    function clearSecrets() {{
+        try {{
+            var secretInputs = document.querySelectorAll('.pywry-input-secret, input[type="password"]');
+            for (var i = 0; i < secretInputs.length; i++) {{
+                var inp = secretInputs[i];
+                inp.type = 'password';
+                // Restore mask if value existed, otherwise clear
+                if (inp.dataset && inp.dataset.hasValue === 'true') {{
+                    inp.value = SECRET_MASK;
+                    inp.dataset.masked = 'true';
+                }} else {{
+                    inp.value = '';
+                }}
+            }}
+            if (window.pywry && window.pywry._revealedSecrets) {{
+                window.pywry._revealedSecrets = {{}};
+            }}
+            if ({str(PYWRY_DEBUG).lower()}) {{
+                console.log('[PyWry] Secrets cleared from DOM');
+            }}
+        }} catch (e) {{
+            // Ignore errors during unload
+        }}
+    }}
+
     // Page is being unloaded (close tab, refresh, navigate away)
     window.addEventListener('beforeunload', function() {{
+        clearSecrets();
         sendDisconnect('beforeunload');
     }});
 
     // Fallback for mobile/Safari - fires when page is hidden
     window.addEventListener('pagehide', function() {{
+        clearSecrets();
         sendDisconnect('pagehide');
     }});
 
-    // Optional: detect when tab becomes hidden (not closing, just backgrounded)
-    // We don't disconnect here, but could add heartbeat logic in the future
     document.addEventListener('visibilitychange', function() {{
         if (document.visibilityState === 'hidden') {{
             if ({str(PYWRY_DEBUG).lower()}) {{
@@ -1534,7 +1563,8 @@ def _make_server_request(
     )
 
 
-def _start_server(port: int | None = None, host: str | None = None) -> None:  # noqa: C901, PLR0915  # pylint: disable=too-many-statements
+#  pylint: disable=R0915
+def _start_server(port: int | None = None, host: str | None = None) -> None:  # noqa: C901, PLR0915
     """Start the FastAPI server in a background thread.
 
     Parameters
@@ -2311,7 +2341,8 @@ class InlineWidget(GridStateMixin, PlotlyStateMixin, ToolbarStateMixin):
 
         return IFrame(url, width=self._width, height=self._height)._repr_html_()
 
-    def _repr_mimebundle_(self, **kwargs: Any) -> dict[str, str]:  # pylint: disable=unused-argument
+    # pylint: disable=unused-argument
+    def _repr_mimebundle_(self, **kwargs: Any) -> dict[str, str]:
         """Return mimebundle for rich display with Output widget."""
         # This is used when the object is returned by a cell
         from IPython.display import display as ipy_display
@@ -2697,11 +2728,13 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
     # Build head with optional libraries
     pywry_css = get_pywry_css()
     toast_css = get_toast_css()
+    scrollbar_js = get_scrollbar_js()
     head_parts = [
         '<meta charset="utf-8">',
         f"<title>{title}</title>",
         f"<style>{pywry_css}</style>" if pywry_css else "",
         f"<style>{toast_css}</style>" if toast_css else "",
+        f"<script>{scrollbar_js}</script>" if scrollbar_js else "",
         """<style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             html, body {
@@ -2776,7 +2809,7 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
     {toolbar_script}
 </head>
 <body>
-    <div class="pywry-widget {widget_theme_class}">
+    <div class="pywry-widget pywry-custom-scrollbar {widget_theme_class}">
         {content}
     </div>
     <script>
@@ -2808,6 +2841,19 @@ def show(  # pylint: disable=too-many-arguments,too-many-branches,too-many-state
         widget_id=widget_id,
         token=widget_token,
     )
+
+    # Register secret handlers for all SecretInputs in toolbars
+    # This enables reveal/copy functionality
+    if toolbars:
+        from .toolbar import register_secret_handlers_for_toolbar
+
+        for toolbar_cfg in toolbars:
+            if isinstance(toolbar_cfg, Toolbar):
+                register_secret_handlers_for_toolbar(
+                    toolbar_cfg,
+                    widget.on,
+                    widget.emit,
+                )
 
     # Display - either open in browser or show IFrame
     # Skip display entirely in headless mode (PYWRY_HEADLESS=1) for server deployments
@@ -3019,8 +3065,10 @@ def generate_plotly_html(
 
     pywry_css = get_pywry_css()
     toast_css = get_toast_css()
+    scrollbar_js = get_scrollbar_js()
     pywry_style = f"<style>{pywry_css}</style>" if pywry_css else ""
     toast_style = f"<style>{toast_css}</style>" if toast_css else ""
+    scrollbar_script = f"<script>{scrollbar_js}</script>" if scrollbar_js else ""
 
     # Determine widget theme class - "system" follows browser preferences
     if theme == "system":
@@ -3055,6 +3103,7 @@ def generate_plotly_html(
     {templates_script}
     {pywry_style}
     {toast_style}
+    {scrollbar_script}
     <style>
         html, body {{
             margin: 0;
@@ -3129,7 +3178,7 @@ def generate_plotly_html(
     </style>
 </head>
 <body>
-    <div class="pywry-widget {widget_theme_class}">
+    <div class="pywry-widget pywry-custom-scrollbar {widget_theme_class}">
         {widget_content}
     </div>
     {_get_pywry_bridge_js(widget_id, token)}
@@ -3404,6 +3453,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
     aggrid_css = all_css if all_css else get_aggrid_css(aggrid_theme, theme_mode)
     pywry_css = get_pywry_css()
     toast_css = get_toast_css()
+    scrollbar_js = get_scrollbar_js()
 
     return {
         "script": (
@@ -3415,6 +3465,7 @@ def _build_aggrid_assets(aggrid_theme: str, theme_mode: ThemeMode) -> dict[str, 
         "style": f"<style>{aggrid_css}</style>" if aggrid_css else "",
         "pywry_style": f"<style>{pywry_css}</style>" if pywry_css else "",
         "toast_style": f"<style>{toast_css}</style>" if toast_css else "",
+        "scrollbar_script": f"<script>{scrollbar_js}</script>" if scrollbar_js else "",
     }
 
 

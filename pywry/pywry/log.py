@@ -8,6 +8,8 @@ from __future__ import annotations
 import logging
 import sys
 
+from typing import Any
+
 
 class _LoggerHolder:
     """Holder for the global logger instance."""
@@ -136,3 +138,63 @@ def enable_debug() -> None:
     - Asset loading
     """
     set_level(logging.DEBUG)
+
+
+# Keys that should be redacted in log output for security
+_SENSITIVE_KEYS = frozenset(
+    {
+        "value",  # SecretInput, TextInput values
+        "secret",
+        "password",
+        "api_key",
+        "apiKey",
+        "token",
+        "auth",
+        "credential",
+        "key",
+    }
+)
+
+
+def redact_sensitive_data(
+    data: dict[str, Any] | list[Any] | str | None, max_depth: int = 5
+) -> dict[str, Any] | list[Any] | str | None:
+    """Redact sensitive values from data for safe logging.
+
+    Recursively traverses dicts/lists and replaces values for keys
+    that match sensitive patterns with "[REDACTED]".
+
+    Parameters
+    ----------
+    data : dict or list or str or None
+        The data to redact.
+    max_depth : int, optional
+        Maximum recursion depth to prevent infinite loops (default: 5).
+
+    Returns
+    -------
+    dict or list or str or None
+        A copy of the data with sensitive values redacted.
+    """
+    if max_depth <= 0:
+        return "[MAX_DEPTH]"
+
+    if data is None:
+        return None
+
+    if isinstance(data, dict):
+        result: dict[str, Any] = {}
+        for k, v in data.items():
+            key_lower = k.lower() if isinstance(k, str) else str(k).lower()
+            # Check if any sensitive key pattern is in the key name
+            if any(sensitive in key_lower for sensitive in _SENSITIVE_KEYS):
+                result[k] = "[REDACTED]"
+            else:
+                result[k] = redact_sensitive_data(v, max_depth - 1)
+        return result
+
+    if isinstance(data, list):
+        return [redact_sensitive_data(item, max_depth - 1) for item in data]
+
+    # For strings and other primitives, return as-is
+    return data

@@ -14,6 +14,8 @@ Tests cover:
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
 from pydantic import ValidationError
@@ -24,21 +26,30 @@ from pywry.toolbar import (
     Checkbox,
     DateInput,
     Div,
+    Marquee,
     MultiSelect,
     NumberInput,
     Option,
     RadioGroup,
     RangeInput,
+    SearchInput,
+    SecretInput,
     Select,
     SliderInput,
     TabGroup,
+    TextArea,
     TextInput,
+    TickerItem,
     Toggle,
     Toolbar,
     build_toolbar_html,
     build_toolbars_html,
     validate_event_format,
 )
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 # =============================================================================
@@ -243,17 +254,17 @@ class TestToolbarItemDescription:
         btn = Button(label="Test", event="toolbar:click", description="Click me")
         assert btn.description == "Click me"
 
-    def test_description_in_html_title(self) -> None:
-        """Test description becomes title attribute."""
+    def test_description_in_html_tooltip(self) -> None:
+        """Test description becomes data-tooltip attribute."""
         btn = Button(label="Test", event="toolbar:click", description="Tooltip text")
         html = btn.build_html()
-        assert 'title="Tooltip text"' in html
+        assert 'data-tooltip="Tooltip text"' in html
 
-    def test_no_title_when_no_description(self) -> None:
-        """Test no title attribute when description is empty."""
+    def test_no_tooltip_when_no_description(self) -> None:
+        """Test no data-tooltip attribute when description is empty."""
         btn = Button(label="Test", event="toolbar:click")
         html = btn.build_html()
-        assert "title=" not in html
+        assert "data-tooltip=" not in html
 
 
 class TestToolbarItemDisabled:
@@ -996,8 +1007,8 @@ class TestHtmlSecurity:
         btn = Button(label="Test", event="toolbar:click", description='">onclick="alert(1)')
         html = btn.build_html()
         # The malicious onclick in description should be escaped to &quot;
-        # Check that the title attribute contains the escaped version
-        assert 'title="&quot;&gt;onclick=&quot;alert(1)"' in html
+        # Check that the data-tooltip attribute contains the escaped version
+        assert 'data-tooltip="&quot;&gt;onclick=&quot;alert(1)"' in html
         # The raw injection attempt should not appear unescaped
         assert '">onclick="alert(1)"' not in html
 
@@ -1207,6 +1218,271 @@ class TestDivInToolbar:
         assert len(scripts) == 2
         assert "toolbar script" in scripts[0]
         assert "div script" in scripts[1]
+
+    def test_toolbar_with_marquee(self) -> None:
+        """Toolbar can contain Marquee component."""
+        toolbar = Toolbar(
+            position="header",
+            items=[
+                Marquee(
+                    event="ticker:click",
+                    text="Breaking news: Stock prices surge!",
+                    speed=20,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "pywry-marquee" in html
+        assert "Breaking news" in html
+
+    def test_toolbar_marquee_with_other_items(self) -> None:
+        """Toolbar can mix Marquee with other components."""
+        toolbar = Toolbar(
+            position="header",
+            items=[
+                Div(content="<strong>News:</strong>"),
+                Marquee(event="ticker:click", text="Headlines here", speed=15),
+                Button(label="⏸", event="ticker:pause", variant="icon"),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "pywry-marquee" in html
+        assert "pywry-btn" in html
+        assert "Headlines here" in html
+
+    def test_marquee_nested_in_div(self) -> None:
+        """Marquee can be nested inside Div."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                Div(
+                    class_name="ticker-container",
+                    children=[
+                        Marquee(
+                            event="ticker:click",
+                            text="Scrolling content",
+                        ),
+                    ],
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "ticker-container" in html
+        assert "pywry-marquee" in html
+
+    def test_toolbar_with_textarea(self) -> None:
+        """Toolbar TextArea integrates with toolbar layout and retains attributes."""
+        toolbar = Toolbar(
+            component_id="my-toolbar",
+            position="top",
+            items=[
+                TextArea(
+                    component_id="notes-area",
+                    label="Notes:",
+                    event="notes:update",
+                    placeholder="Enter notes...",
+                    rows=2,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify component is in toolbar
+        assert "pywry-textarea" in html
+        # Verify toolbar has its id
+        assert 'id="my-toolbar"' in html
+        # Verify textarea has its id
+        assert 'id="notes-area"' in html
+        # Verify textarea-specific attributes preserved
+        assert 'rows="2"' in html
+        assert 'placeholder="Enter notes..."' in html
+        # Verify event binding is in the oninput handler
+        assert "notes:update" in html
+        # Verify componentId is passed in emit
+        assert "componentId: 'notes-area'" in html
+
+    def test_toolbar_textarea_resize_behavior_preserved(self) -> None:
+        """TextArea resize attribute is preserved when in Toolbar."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                TextArea(
+                    event="notes:update",
+                    resize="vertical",
+                    min_height="50px",
+                    max_height="300px",
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "resize: vertical" in html
+        assert "min-height: 50px" in html
+        assert "max-height: 300px" in html
+
+    def test_toolbar_with_secret_input(self) -> None:
+        """Toolbar SecretInput maintains security features and attributes."""
+        toolbar = Toolbar(
+            component_id="settings-bar",
+            position="top",
+            items=[
+                SecretInput(
+                    component_id="api-key-input",
+                    label="API Key:",
+                    event="settings:api-key",
+                    placeholder="Enter key...",
+                    show_toggle=True,
+                    show_copy=True,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify component is in toolbar
+        assert "pywry-input-secret" in html
+        # Verify toolbar has its id
+        assert 'id="settings-bar"' in html
+        # Verify secret input has its id
+        assert 'id="api-key-input"' in html
+        # Verify password input type for security
+        assert 'type="password"' in html
+        # Verify event binding is in the JS handlers
+        assert "settings:api-key" in html
+        # Verify componentId is passed in emit (escaped in onclick handlers)
+        assert "componentId:'api-key-input'" in html or "componentId:" in html
+        # Verify toggle button is present
+        assert "pywry-secret-toggle" in html
+        # Verify copy button is present
+        assert "pywry-secret-copy" in html
+        # Verify autocomplete is disabled for security
+        assert 'autocomplete="off"' in html
+
+    def test_toolbar_secret_input_without_buttons(self) -> None:
+        """SecretInput can hide toggle and copy buttons in Toolbar."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                SecretInput(
+                    event="settings:key",
+                    show_toggle=False,
+                    show_copy=False,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify input exists
+        assert "pywry-input-secret" in html
+        # Verify toggle and copy buttons are NOT present
+        assert "pywry-secret-toggle" not in html
+        assert "pywry-secret-copy" not in html
+
+    def test_toolbar_with_search_input(self) -> None:
+        """Toolbar SearchInput has search-specific features and attributes."""
+        toolbar = Toolbar(
+            component_id="filter-bar",
+            position="top",
+            items=[
+                SearchInput(
+                    component_id="filter-input",
+                    label="Filter:",
+                    event="filter:search",
+                    placeholder="Type to filter...",
+                    debounce=200,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify component is in toolbar
+        assert "pywry-search-input" in html
+        # Verify toolbar has its id
+        assert 'id="filter-bar"' in html
+        # Verify search input has its id
+        assert 'id="filter-input"' in html
+        # Verify search icon present
+        assert "pywry-search-icon" in html
+        # Verify debounce value in script
+        assert "200" in html
+        # Verify event binding is in the oninput handler
+        assert "filter:search" in html
+        # Verify componentId is passed in emit
+        assert "componentId: 'filter-input'" in html
+        # Verify browser behaviors are disabled
+        assert 'spellcheck="false"' in html
+        assert 'autocomplete="off"' in html
+
+    def test_toolbar_search_input_browser_behaviors(self) -> None:
+        """SearchInput browser behavior attributes work in Toolbar."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                SearchInput(
+                    event="filter:search",
+                    spellcheck=True,
+                    autocomplete="on",
+                    autocorrect="on",
+                    autocapitalize="sentences",
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert 'spellcheck="true"' in html
+        assert 'autocomplete="on"' in html
+        assert 'autocorrect="on"' in html
+        assert 'autocapitalize="sentences"' in html
+
+    def test_toolbar_positions_components_in_order(self) -> None:
+        """Components appear in toolbar in the order specified."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                TextArea(event="notes:update", label="Notes:"),
+                SecretInput(event="settings:key", label="Key:"),
+                SearchInput(event="filter:search", label="Filter:"),
+                Marquee(event="ticker:click", text="News..."),
+            ],
+        )
+        html = toolbar.build_html()
+        # Verify order by checking position of key strings
+        notes_pos = html.find("Notes:")
+        key_pos = html.find("Key:")
+        filter_pos = html.find("Filter:")
+        marquee_pos = html.find("pywry-marquee")
+        assert notes_pos < key_pos < filter_pos < marquee_pos
+
+    def test_toolbar_header_position_with_marquee(self) -> None:
+        """Marquee in header position toolbar has correct styles."""
+        toolbar = Toolbar(
+            position="header",
+            items=[
+                Marquee(
+                    event="ticker:click",
+                    text="Breaking news...",
+                    speed=20,
+                    direction="left",
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "pywry-toolbar-header" in html
+        assert "pywry-marquee-horizontal" in html
+        assert "pywry-marquee-left" in html
+        # Speed is output as float: 20.0s
+        assert "--pywry-marquee-speed: 20.0s" in html
+
+    def test_toolbar_marquee_click_event_passthrough(self) -> None:
+        """Clickable Marquee in Toolbar has correct event data attributes."""
+        toolbar = Toolbar(
+            position="header",
+            items=[
+                Marquee(
+                    component_id="news-ticker",
+                    event="ticker:click",
+                    text="Click for details",
+                    clickable=True,
+                ),
+            ],
+        )
+        html = toolbar.build_html()
+        assert "pywry-marquee-clickable" in html
+        assert 'data-event="ticker:click"' in html
+        assert 'id="news-ticker"' in html
 
 
 # =============================================================================
@@ -1993,12 +2269,14 @@ class TestEventDataStructure:
         assert "componentId:" in html
 
     def test_date_input_emits_value_and_component_id(self) -> None:
-        """DateInput emits {value: <date_string>, componentId}."""
+        """DateInput uses data-event for event delegation."""
         di = DateInput(event="date:start", value="2025-01-01")
         html = di.build_html()
-        assert "pywry.emit" in html
-        assert "date:start" in html
-        assert "componentId:" in html
+        # DateInput uses data-event attribute for event delegation
+        assert 'data-event="date:start"' in html
+        assert 'value="2025-01-01"' in html
+        # Component ID is in the id attribute
+        assert f'id="{di.component_id}"' in html
 
     def test_slider_input_emits_value_and_component_id(self) -> None:
         """SliderInput emits {value: <number>, componentId}."""
@@ -2053,6 +2331,45 @@ class TestEventDataStructure:
         assert "view:tab" in html
         assert "this.dataset.value" in html
         assert "componentId:" in html
+
+    def test_textarea_emits_value_and_component_id(self) -> None:
+        """TextArea emits {value, componentId}."""
+        ta = TextArea(event="notes:update", component_id="notes-input")
+        html = ta.build_html()
+        assert "pywry.emit" in html
+        assert "notes:update" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_secret_input_emits_value_and_component_id(self) -> None:
+        """SecretInput emits {value, componentId}."""
+        si = SecretInput(event="settings:api-key", component_id="api-key-input")
+        html = si.build_html()
+        assert "pywry.emit" in html
+        assert "settings:api-key" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_search_input_emits_value_and_component_id(self) -> None:
+        """SearchInput emits {value, componentId}."""
+        si = SearchInput(event="filter:search", component_id="search-box")
+        html = si.build_html()
+        assert "pywry.emit" in html
+        assert "filter:search" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_marquee_clickable_emits_event(self) -> None:
+        """Clickable Marquee has data-event for click handling."""
+        m = Marquee(
+            event="ticker:click",
+            text="Click me",
+            clickable=True,
+            component_id="news-ticker",
+        )
+        html = m.build_html()
+        assert 'data-event="ticker:click"' in html
+        assert 'id="news-ticker"' in html
 
 
 # =============================================================================
@@ -2141,6 +2458,30 @@ class TestComponentIdInHtml:
         html = div.build_html()
         assert f'id="{div.component_id}"' in html
 
+    def test_textarea_has_id(self) -> None:
+        """TextArea HTML includes id attribute."""
+        ta = TextArea(event="notes:update")
+        html = ta.build_html()
+        assert f'id="{ta.component_id}"' in html
+
+    def test_secret_input_has_id(self) -> None:
+        """SecretInput HTML includes id attribute."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert f'id="{si.component_id}"' in html
+
+    def test_search_input_has_id(self) -> None:
+        """SearchInput HTML includes id attribute."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert f'id="{si.component_id}"' in html
+
+    def test_marquee_has_id(self) -> None:
+        """Marquee HTML includes id attribute."""
+        m = Marquee(event="ticker:click", text="Test")
+        html = m.build_html()
+        assert f'id="{m.component_id}"' in html
+
 
 # =============================================================================
 # All Types in Discriminator Tests (updated)
@@ -2158,6 +2499,9 @@ class TestAllTypesDiscriminator:
             Select(event="toolbar:select", options=[]),
             MultiSelect(event="toolbar:multiselect", options=[]),
             TextInput(event="toolbar:text"),
+            TextArea(event="toolbar:textarea"),
+            SecretInput(event="toolbar:secret"),
+            SearchInput(event="toolbar:search"),
             NumberInput(event="toolbar:number"),
             DateInput(event="toolbar:date"),
             SliderInput(event="toolbar:slider"),
@@ -2167,6 +2511,7 @@ class TestAllTypesDiscriminator:
             RadioGroup(event="toolbar:radio", options=[]),
             TabGroup(event="toolbar:tab", options=[]),
             Div(event="toolbar:div"),
+            Marquee(event="toolbar:marquee", text="Test"),
         ]
         for item in items:
             assert item.type not in all_types, f"Duplicate type: {item.type}"
@@ -2179,6 +2524,9 @@ class TestAllTypesDiscriminator:
             Select(event="toolbar:select", options=["A"]),
             MultiSelect(event="toolbar:multiselect", options=["A"]),
             TextInput(event="toolbar:text"),
+            TextArea(event="toolbar:textarea"),
+            SecretInput(event="toolbar:secret"),
+            SearchInput(event="toolbar:search"),
             NumberInput(event="toolbar:number"),
             DateInput(event="toolbar:date"),
             SliderInput(event="toolbar:slider"),
@@ -2188,6 +2536,7 @@ class TestAllTypesDiscriminator:
             RadioGroup(event="toolbar:radio", options=["A"]),
             TabGroup(event="toolbar:tab", options=["A"]),
             Div(event="toolbar:div", content="<p>Content</p>"),
+            Marquee(event="toolbar:marquee", text="Scrolling text"),
         ]
         for item in items:
             html = item.build_html()
@@ -3175,3 +3524,1869 @@ class TestToolbarIdPropagation:
         # Level 2 div has level1 as parent
         assert 'id="level2-div"' in html
         assert 'data-parent-id="level1-div"' in html
+
+
+# =============================================================================
+# TextArea Tests
+# =============================================================================
+
+
+class TestTextArea:
+    """Test the TextArea model (multi-line text input)."""
+
+    def test_type_is_textarea(self) -> None:
+        """Test type field is 'textarea'."""
+        ta = TextArea(event="notes:update")
+        assert ta.type == "textarea"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        ta = TextArea(event="notes:update")
+        assert ta.value == ""
+        assert ta.placeholder == ""
+        assert ta.debounce == 300
+        assert ta.rows == 3
+        assert ta.cols == 40
+        assert ta.resize == "both"
+
+    def test_custom_rows_cols(self) -> None:
+        """Test custom rows and cols."""
+        ta = TextArea(event="notes:update", rows=5, cols=80)
+        assert ta.rows == 5
+        assert ta.cols == 80
+
+    def test_resize_options(self) -> None:
+        """Test resize attribute options."""
+        for resize in ["both", "horizontal", "vertical", "none"]:
+            ta = TextArea(event="notes:update", resize=resize)  # type: ignore[arg-type]
+            assert ta.resize == resize
+
+    def test_min_max_height(self) -> None:
+        """Test min/max height constraints."""
+        ta = TextArea(event="notes:update", min_height="50px", max_height="500px")
+        assert ta.min_height == "50px"
+        assert ta.max_height == "500px"
+
+    def test_min_max_width(self) -> None:
+        """Test min/max width constraints."""
+        ta = TextArea(event="notes:update", min_width="100px", max_width="100%")
+        assert ta.min_width == "100px"
+        assert ta.max_width == "100%"
+
+    def test_html_contains_textarea(self) -> None:
+        """Test HTML contains textarea element."""
+        ta = TextArea(event="notes:update")
+        html = ta.build_html()
+        assert "<textarea" in html
+        assert "</textarea>" in html
+
+    def test_html_contains_rows_cols(self) -> None:
+        """Test HTML contains rows and cols attributes."""
+        ta = TextArea(event="notes:update", rows=5, cols=60)
+        html = ta.build_html()
+        assert 'rows="5"' in html
+        assert 'cols="60"' in html
+
+    def test_html_contains_placeholder(self) -> None:
+        """Test HTML contains placeholder."""
+        ta = TextArea(event="notes:update", placeholder="Enter notes...")
+        html = ta.build_html()
+        assert 'placeholder="Enter notes..."' in html
+
+    def test_html_contains_resize_style(self) -> None:
+        """Test HTML contains resize style."""
+        ta = TextArea(event="notes:update", resize="vertical")
+        html = ta.build_html()
+        assert "resize: vertical" in html
+
+    def test_html_contains_size_constraints(self) -> None:
+        """Test HTML contains size constraint styles."""
+        ta = TextArea(
+            event="notes:update",
+            min_height="50px",
+            max_height="300px",
+            min_width="200px",
+            max_width="100%",
+        )
+        html = ta.build_html()
+        assert "min-height: 50px" in html
+        assert "max-height: 300px" in html
+        assert "min-width: 200px" in html
+        assert "max-width: 100%" in html
+
+    def test_html_contains_textarea_class(self) -> None:
+        """Test HTML contains textarea CSS class."""
+        ta = TextArea(event="notes:update")
+        html = ta.build_html()
+        assert "pywry-textarea" in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML includes label."""
+        ta = TextArea(label="Notes:", event="notes:update")
+        html = ta.build_html()
+        assert "Notes:" in html
+        assert "pywry-input-label" in html
+
+    def test_html_contains_debounce(self) -> None:
+        """Test HTML contains debounce timeout."""
+        ta = TextArea(event="notes:update", debounce=500)
+        html = ta.build_html()
+        assert "500" in html
+        assert "setTimeout" in html
+
+    def test_html_contains_initial_value(self) -> None:
+        """Test HTML contains initial value."""
+        ta = TextArea(event="notes:update", value="Initial text")
+        html = ta.build_html()
+        assert "Initial text" in html
+
+    def test_html_escapes_value(self) -> None:
+        """Test HTML escapes value content."""
+        ta = TextArea(event="notes:update", value="<script>alert('xss')</script>")
+        html = ta.build_html()
+        assert "<script>" not in html
+        assert "&lt;script&gt;" in html
+
+    def test_html_has_id(self) -> None:
+        """Test HTML includes id attribute."""
+        ta = TextArea(event="notes:update")
+        html = ta.build_html()
+        assert f'id="{ta.component_id}"' in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML emit code includes value and componentId."""
+        ta = TextArea(event="notes:update")
+        html = ta.build_html()
+        assert "notes:update" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+
+# =============================================================================
+# SecretInput Tests
+# =============================================================================
+
+
+class TestSecretInput:  # pylint: disable=too-many-public-methods
+    """Test the SecretInput model (password/API key input)."""
+
+    def test_type_is_secret(self) -> None:
+        """Test type field is 'secret'."""
+        si = SecretInput(event="settings:api-key")
+        assert si.type == "secret"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        si = SecretInput(event="settings:api-key")
+        # Value is SecretStr - use get_secret_value() to access
+        assert si.value.get_secret_value() == ""
+        assert si.placeholder == ""
+        assert si.debounce == 300
+        assert si.show_toggle is True
+        assert si.show_copy is True
+
+    def test_custom_values(self) -> None:
+        """Test custom attribute values."""
+        si = SecretInput(
+            event="settings:api-key",
+            value="secret123",
+            placeholder="Enter API key...",
+            debounce=500,
+            show_toggle=False,
+            show_copy=False,
+        )
+        # Value is SecretStr - use get_secret_value() to access
+        assert si.value.get_secret_value() == "secret123"
+        assert si.placeholder == "Enter API key..."
+        assert si.debounce == 500
+        assert si.show_toggle is False
+        assert si.show_copy is False
+
+    def test_html_contains_password_input(self) -> None:
+        """Test HTML contains password input by default."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert 'type="password"' in html
+
+    def test_html_contains_secret_class(self) -> None:
+        """Test HTML contains secret input CSS class."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert "pywry-input-secret" in html
+
+    def test_html_contains_toggle_button(self) -> None:
+        """Test HTML contains visibility toggle button."""
+        si = SecretInput(event="settings:api-key", show_toggle=True)
+        html = si.build_html()
+        assert "pywry-secret-toggle" in html
+
+    def test_html_no_toggle_when_disabled(self) -> None:
+        """Test HTML excludes toggle when show_toggle=False."""
+        si = SecretInput(event="settings:api-key", show_toggle=False)
+        html = si.build_html()
+        assert "pywry-secret-toggle" not in html
+
+    def test_html_contains_copy_button(self) -> None:
+        """Test HTML contains copy button."""
+        si = SecretInput(event="settings:api-key", show_copy=True)
+        html = si.build_html()
+        assert "pywry-secret-copy" in html
+
+    def test_html_no_copy_when_disabled(self) -> None:
+        """Test HTML excludes copy when show_copy=False."""
+        si = SecretInput(event="settings:api-key", show_copy=False)
+        html = si.build_html()
+        assert "pywry-secret-copy" not in html
+
+    def test_html_contains_placeholder(self) -> None:
+        """Test HTML contains placeholder."""
+        si = SecretInput(event="settings:api-key", placeholder="API key...")
+        html = si.build_html()
+        assert 'placeholder="API key..."' in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML includes label."""
+        si = SecretInput(label="API Key:", event="settings:api-key")
+        html = si.build_html()
+        assert "API Key:" in html
+        assert "pywry-input-label" in html
+
+    def test_html_contains_wrapper(self) -> None:
+        """Test HTML contains secret wrapper element."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert "pywry-secret-wrapper" in html
+
+    def test_html_has_id(self) -> None:
+        """Test HTML includes id attribute."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert f'id="{si.component_id}"' in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML emit code includes value and componentId."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert "settings:api-key" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_value_is_secretstr_type(self) -> None:
+        """Test that value is stored as Pydantic SecretStr for security."""
+        from pydantic import SecretStr
+
+        si = SecretInput(event="settings:api-key", value="my-secret-key-123")
+        # Value should be SecretStr type
+        assert isinstance(si.value, SecretStr)
+        # SecretStr masks value in repr to prevent accidental logging
+        assert "my-secret-key-123" not in repr(si.value)
+        assert "**" in repr(si.value)
+        # Can still access actual value when needed
+        assert si.value.get_secret_value() == "my-secret-key-123"
+
+    def test_secretstr_not_exposed_in_model_repr(self) -> None:
+        """Test secret value is masked in model repr output."""
+        si = SecretInput(event="settings:api-key", value="super-secret-api-key")
+        model_repr = repr(si)
+        # The actual secret should not appear in the model representation
+        assert "super-secret-api-key" not in model_repr
+        # Should show masked version
+        assert "SecretStr" in model_repr
+
+    def test_secret_never_rendered_in_html(self) -> None:
+        """Test secret value is NEVER rendered in HTML for security."""
+        si = SecretInput(event="settings:api-key", value="super-secret-api-key")
+        html = si.build_html()
+        # The actual secret must NEVER appear in HTML
+        assert "super-secret-api-key" not in html
+        # HTML should have mask value when secret exists (not the actual secret)
+        assert (
+            'value="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"'
+            in html
+        )
+
+    def test_has_value_property(self) -> None:
+        """Test has_value property indicates if secret is set without exposing it."""
+        si_empty = SecretInput(event="settings:api-key")
+        assert si_empty.has_value is False
+
+        si_set = SecretInput(event="settings:api-key", value="my-secret")
+        assert si_set.has_value is True
+
+    def test_data_has_value_attribute_in_html(self) -> None:
+        """Test HTML includes data-has-value when secret is configured."""
+        si_empty = SecretInput(event="settings:api-key")
+        html_empty = si_empty.build_html()
+        assert "data-has-value" not in html_empty
+
+        si_set = SecretInput(event="settings:api-key", value="my-secret")
+        html_set = si_set.build_html()
+        assert 'data-has-value="true"' in html_set
+        # But the actual secret is still not exposed
+        assert "my-secret" not in html_set
+
+    def test_reveal_button_emits_event(self) -> None:
+        """Test show button emits reveal event to request secret from backend."""
+        si = SecretInput(event="settings:api-key", show_toggle=True)
+        html = si.build_html()
+        # Should emit reveal event instead of directly reading value
+        assert "settings:api-key:reveal" in html
+        assert "pywry.emit" in html
+
+    def test_copy_button_emits_event(self) -> None:
+        """Test copy button emits copy event to request secret from backend."""
+        si = SecretInput(event="settings:api-key", show_copy=True)
+        html = si.build_html()
+        # Should emit copy event instead of directly reading value
+        assert "settings:api-key:copy" in html
+        assert "pywry.emit" in html
+
+    def test_register_stores_secret_in_registry(self) -> None:
+        """Test register() stores secret in module registry."""
+        from pywry.toolbar import clear_secret, get_secret
+
+        si = SecretInput(event="settings:api-key", value="my-secret-123")
+        si.register()
+
+        # Secret should be retrievable from registry
+        assert get_secret(si.component_id) == "my-secret-123"
+
+        # Cleanup
+        clear_secret(si.component_id)
+        assert get_secret(si.component_id) is None
+
+    def test_update_secret_updates_registry(self) -> None:
+        """Test update_secret() updates both model and registry."""
+        from pywry.toolbar import clear_secret, get_secret
+
+        si = SecretInput(event="settings:api-key", value="initial")
+        si.register()
+        assert get_secret(si.component_id) == "initial"
+
+        # Update the secret
+        si.update_secret("updated-value")
+        assert get_secret(si.component_id) == "updated-value"
+        assert si.value.get_secret_value() == "updated-value"
+
+        # Cleanup
+        clear_secret(si.component_id)
+
+    def test_update_secret_with_base64_encoded_value(self) -> None:
+        """Test update_secret() correctly decodes base64-encoded values."""
+        from pywry.toolbar import clear_secret, encode_secret, get_secret
+
+        si = SecretInput(event="settings:api-key", value="initial")
+        si.register()
+
+        # Simulate receiving base64-encoded value from frontend
+        encoded_value = encode_secret("secret-from-frontend")
+        si.update_secret(encoded_value, encoded=True)
+
+        # Should decode and store the actual value
+        assert get_secret(si.component_id) == "secret-from-frontend"
+        assert si.value.get_secret_value() == "secret-from-frontend"
+
+        # Cleanup
+        clear_secret(si.component_id)
+
+    def test_encode_decode_secret_roundtrip(self) -> None:
+        """Test encode/decode secret functions work correctly."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        test_values = [
+            "simple-secret",
+            "with spaces and symbols!@#$%",
+            "unicode: 日本語 한국어 émojis 🔐",
+            "",  # empty string
+            "a" * 1000,  # long string
+        ]
+
+        for original in test_values:
+            encoded = encode_secret(original)
+            decoded = decode_secret(encoded)
+            assert decoded == original, f"Roundtrip failed for: {original[:50]}..."
+
+    def test_encode_decode_pem_certificate_roundtrip(self) -> None:
+        """Test encode/decode with PEM certificate format (multi-line, special chars)."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Simulate a typical PEM certificate
+        pem_cert = """-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0Gcert...base64data...
+Fd00/yeH8Sf+UqD5dXvQmGZqqDJG2Z9Fw8peXmE=
+-----END CERTIFICATE-----"""
+
+        encoded = encode_secret(pem_cert)
+        decoded = decode_secret(encoded)
+        assert decoded == pem_cert
+
+    def test_encode_decode_ssh_private_key_roundtrip(self) -> None:
+        """Test encode/decode with SSH private key format."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Simulate SSH private key with typical formatting
+        ssh_key = """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
+-----END OPENSSH PRIVATE KEY-----"""
+
+        encoded = encode_secret(ssh_key)
+        decoded = decode_secret(encoded)
+        assert decoded == ssh_key
+
+    def test_encode_decode_json_secret_roundtrip(self) -> None:
+        """Test encode/decode with JSON containing nested quotes and escapes."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # JSON with nested quotes (like service account key)
+        json_secret = """{
+  "type": "service_account",
+  "project_id": "my-project",
+  "private_key_id": "abc123",
+  "private_key": "-----BEGIN RSA PRIVATE KEY-----\\nMIIE...base64...\\n-----END RSA PRIVATE KEY-----\\n",
+  "client_email": "svc@my-project.iam.gserviceaccount.com",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth"
+}"""
+
+        encoded = encode_secret(json_secret)
+        decoded = decode_secret(encoded)
+        assert decoded == json_secret
+
+    def test_encode_decode_special_html_chars_roundtrip(self) -> None:
+        """Test encode/decode with characters that need HTML escaping."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Characters that could break HTML if not properly handled
+        html_chars = '<script>alert("xss")</script>&amp;"quotes\'apostrophes'
+
+        encoded = encode_secret(html_chars)
+        decoded = decode_secret(encoded)
+        assert decoded == html_chars
+
+    def test_encode_decode_url_special_chars_roundtrip(self) -> None:
+        """Test encode/decode with URL-special characters."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Characters that need URL encoding
+        url_chars = "secret?param=value&other=test#fragment+plus%percent"
+
+        encoded = encode_secret(url_chars)
+        decoded = decode_secret(encoded)
+        assert decoded == url_chars
+
+    def test_encode_decode_control_chars_roundtrip(self) -> None:
+        """Test encode/decode with control characters (tabs, newlines, etc)."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Various whitespace and control characters
+        control_chars = "line1\nline2\rline3\r\nline4\ttabbed"
+
+        encoded = encode_secret(control_chars)
+        decoded = decode_secret(encoded)
+        assert decoded == control_chars
+
+    def test_encode_decode_binary_like_chars_roundtrip(self) -> None:
+        """Test encode/decode with characters that might appear in binary data."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # Null bytes and other problematic characters (as they might appear in base64)
+        # Note: actual null bytes would be unusual in secrets, but testing edge cases
+        binary_like = "before\x00after\x01\x02\x03end"
+
+        encoded = encode_secret(binary_like)
+        decoded = decode_secret(encoded)
+        assert decoded == binary_like
+
+    def test_encode_decode_base64_within_secret_roundtrip(self) -> None:
+        """Test encode/decode when the secret itself is already base64."""
+        import base64
+
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # A secret that is itself base64 encoded (common for API tokens)
+        inner_data = "api_key:secret_value:12345"
+        base64_secret = base64.b64encode(inner_data.encode()).decode()
+
+        encoded = encode_secret(base64_secret)
+        decoded = decode_secret(encoded)
+        assert decoded == base64_secret
+
+    def test_encode_decode_oauth_token_roundtrip(self) -> None:
+        """Test encode/decode with typical OAuth/JWT token format."""
+        from pywry.toolbar import decode_secret, encode_secret
+
+        # JWT-like token with dots and base64 segments
+        jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+        encoded = encode_secret(jwt_token)
+        decoded = decode_secret(encoded)
+        assert decoded == jwt_token
+
+    def test_get_event_methods(self) -> None:
+        """Test event helper methods return correct event strings."""
+        si = SecretInput(event="settings:api-key")
+        assert si.get_reveal_event() == "settings:api-key:reveal"
+        assert si.get_reveal_response_event() == "settings:api-key:reveal-response"
+        assert si.get_copy_event() == "settings:api-key:copy"
+        assert si.get_copy_response_event() == "settings:api-key:copy-response"
+
+    def test_custom_handler_get_secret(self) -> None:
+        """Test custom handler is used for getting secrets."""
+        secret_store = {"value": "vault-secret-123"}
+
+        def custom_handler(
+            value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return secret_store["value"]
+            secret_store["value"] = value
+            return value
+
+        si = SecretInput(event="vault:api-key", handler=custom_handler)
+
+        # get_secret_value should use the handler
+        assert si.get_secret_value() == "vault-secret-123"
+
+        # Internal value should still be empty (handler is external)
+        assert si.value.get_secret_value() == ""
+
+    def test_custom_handler_set_secret(self) -> None:
+        """Test custom handler is used for setting secrets."""
+        secret_store = {"value": "initial"}
+
+        def custom_handler(
+            value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return secret_store["value"]
+            secret_store["value"] = value
+            return value
+
+        si = SecretInput(event="vault:api-key", handler=custom_handler)
+
+        # update_secret should call handler with the value
+        si.update_secret("new-secret-value")
+        assert secret_store["value"] == "new-secret-value"
+
+        # get_secret_value should return the new value
+        assert si.get_secret_value() == "new-secret-value"
+
+    def test_custom_handler_with_base64_decoding(self) -> None:
+        """Test custom handler receives decoded value when base64 encoded."""
+        from pywry.toolbar import encode_secret
+
+        received_values = []
+
+        def tracking_handler(
+            value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is not None:
+                received_values.append(value)
+            return value
+
+        si = SecretInput(event="vault:api-key", handler=tracking_handler)
+
+        # Simulate receiving base64-encoded value from frontend
+        encoded = encode_secret("decoded-secret")
+        si.update_secret(encoded, encoded=True)
+
+        # Handler should receive the decoded value
+        assert received_values == ["decoded-secret"]
+
+    def test_custom_handler_receives_metadata(self) -> None:
+        """Test custom handler receives component metadata."""
+        received_metadata = []
+
+        def metadata_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            event: str,
+            label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            received_metadata.append(
+                {
+                    "value": value,
+                    "component_id": component_id,
+                    "event": event,
+                    "label": label,
+                }
+            )
+            return "secret"
+
+        si = SecretInput(
+            event="vault:api-key",
+            label="My API Key",
+            handler=metadata_handler,
+        )
+
+        # Get operation
+        si.get_secret_value()
+
+        assert len(received_metadata) == 1
+        assert received_metadata[0]["value"] is None  # Get mode
+        assert received_metadata[0]["component_id"] == si.component_id
+        assert received_metadata[0]["event"] == "vault:api-key"
+        assert received_metadata[0]["label"] == "My API Key"
+
+        # Set operation
+        si.update_secret("new-value")
+
+        assert len(received_metadata) == 2
+        assert received_metadata[1]["value"] == "new-value"
+        assert received_metadata[1]["component_id"] == si.component_id
+
+    def test_custom_handler_register_sets_event_handlers(self) -> None:
+        """Test register() sets up reveal/copy event handlers."""
+        from pywry.toolbar import _SECRET_HANDLERS, get_secret_handler
+
+        def custom_handler(
+            _value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            return "from-handler"
+
+        si = SecretInput(event="vault:secret", handler=custom_handler)
+        si.register()
+
+        # Should have registered handlers for reveal and copy events
+        reveal_handler = get_secret_handler(si.get_reveal_event())
+        copy_handler = get_secret_handler(si.get_copy_event())
+
+        assert reveal_handler is not None
+        assert copy_handler is not None
+
+        # Handlers should return the handler's value
+        assert reveal_handler({}) == "from-handler"
+        assert copy_handler({}) == "from-handler"
+
+        # Cleanup
+        _SECRET_HANDLERS.pop(si.get_reveal_event(), None)
+        _SECRET_HANDLERS.pop(si.get_copy_event(), None)
+
+    def test_custom_handler_with_pem_certificate(self) -> None:
+        """Test custom handler correctly stores/retrieves PEM certificates."""
+        from pywry.toolbar import encode_secret
+
+        vault = {}
+        pem_cert = """-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAJC1HiIAZAiUMA0Gcert...base64data...
+Fd00/yeH8Sf+UqD5dXvQmGZqqDJG2Z9Fw8peXmE=
+-----END CERTIFICATE-----"""
+
+        def vault_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return vault.get(component_id)
+            vault[component_id] = value
+            return value
+
+        si = SecretInput(event="certs:ssl", handler=vault_handler)
+
+        # Store PEM certificate (simulating base64-encoded from frontend)
+        encoded = encode_secret(pem_cert)
+        si.update_secret(encoded, encoded=True)
+
+        # Retrieve should return exact PEM format
+        retrieved = si.get_secret_value()
+        assert retrieved == pem_cert
+        assert "-----BEGIN CERTIFICATE-----" in retrieved
+        assert "-----END CERTIFICATE-----" in retrieved
+
+    def test_custom_handler_with_ssh_key(self) -> None:
+        """Test custom handler correctly stores/retrieves SSH private keys."""
+        from pywry.toolbar import encode_secret
+
+        keyring = {}
+        ssh_key = """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACBbeWRKN3BwdzlmVVNZbHZhdVZlQWF3c3p4bGNKckt3PTAAAA...
+-----END OPENSSH PRIVATE KEY-----"""
+
+        def keyring_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return keyring.get(component_id)
+            keyring[component_id] = value
+            return value
+
+        si = SecretInput(event="keys:ssh", handler=keyring_handler)
+
+        # Store SSH key
+        encoded = encode_secret(ssh_key)
+        si.update_secret(encoded, encoded=True)
+
+        # Retrieve should preserve exact format
+        retrieved = si.get_secret_value()
+        assert retrieved == ssh_key
+        assert "-----BEGIN OPENSSH PRIVATE KEY-----" in retrieved
+
+    def test_custom_handler_with_json_service_account(self) -> None:
+        """Test custom handler correctly stores/retrieves JSON service accounts."""
+        from pywry.toolbar import encode_secret
+
+        secrets_manager = {}
+        json_key = """{
+  "type": "service_account",
+  "project_id": "my-project",
+  "private_key": "-----BEGIN RSA PRIVATE KEY-----\\nMIIE...\\n-----END RSA PRIVATE KEY-----\\n",
+  "client_email": "svc@my-project.iam.gserviceaccount.com"
+}"""
+
+        def secrets_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return secrets_manager.get(component_id)
+            secrets_manager[component_id] = value
+            return value
+
+        si = SecretInput(event="gcp:service-account", handler=secrets_handler)
+
+        # Store JSON key
+        encoded = encode_secret(json_key)
+        si.update_secret(encoded, encoded=True)
+
+        # Retrieve should preserve JSON structure
+        retrieved = si.get_secret_value()
+        assert retrieved == json_key
+        assert '"type": "service_account"' in retrieved
+
+    def test_custom_handler_with_multiline_api_key(self) -> None:
+        """Test custom handler correctly stores/retrieves multi-line secrets."""
+        from pywry.toolbar import encode_secret
+
+        store = {}
+        multiline_secret = """line1: api_key_part_1
+line2: api_key_part_2
+line3: signature=abc123==
+line4: expires=2026-12-31"""
+
+        def store_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return store.get(component_id)
+            store[component_id] = value
+            return value
+
+        si = SecretInput(event="auth:multiline", handler=store_handler)
+
+        # Store multi-line secret
+        encoded = encode_secret(multiline_secret)
+        si.update_secret(encoded, encoded=True)
+
+        # Retrieve should preserve all lines
+        retrieved = si.get_secret_value()
+        assert retrieved == multiline_secret
+        assert retrieved.count("\n") == 3
+
+    def test_custom_handler_with_unicode_password(self) -> None:
+        """Test custom handler correctly stores/retrieves unicode passwords."""
+        from pywry.toolbar import encode_secret
+
+        passwords = {}
+        unicode_password = "пароль_日本語_🔐_émoji_κωδικός"
+
+        def password_handler(
+            value: str | None,
+            *,
+            component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            if value is None:
+                return passwords.get(component_id)
+            passwords[component_id] = value
+            return value
+
+        si = SecretInput(event="auth:password", handler=password_handler)
+
+        # Store unicode password
+        encoded = encode_secret(unicode_password)
+        si.update_secret(encoded, encoded=True)
+
+        # Retrieve should preserve all unicode chars
+        retrieved = si.get_secret_value()
+        assert retrieved == unicode_password
+        assert "пароль" in retrieved
+        assert "日本語" in retrieved
+        assert "🔐" in retrieved
+
+    def test_custom_handler_not_in_model_dump(self) -> None:
+        """Test handler callable is excluded from serialization."""
+
+        def custom_handler(
+            _value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            return "secret"
+
+        si = SecretInput(event="vault:api-key", handler=custom_handler)
+        dumped = si.model_dump()
+
+        # handler should be excluded
+        assert "handler" not in dumped
+
+    def test_handler_with_value_precedence(self) -> None:
+        """Test handler takes precedence over value for get operations."""
+
+        def custom_handler(
+            _value: str | None,
+            *,
+            _component_id: str,
+            _event: str,
+            _label: str | None = None,
+            **_metadata,
+        ) -> str | None:
+            return "handler-value"
+
+        # Both value and handler provided
+        si = SecretInput(
+            event="vault:api-key",
+            value="internal-value",
+            handler=custom_handler,
+        )
+
+        # Handler should take precedence
+        assert si.get_secret_value() == "handler-value"
+
+
+class TestSecretInputToolbarIntegration:
+    """Test SecretInput integration with Toolbar."""
+
+    def test_toolbar_get_secret_inputs(self) -> None:
+        """Test Toolbar.get_secret_inputs() finds SecretInput items."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                Button(label="Save", event="settings:save"),
+                SecretInput(event="settings:api-key", value="secret1"),
+                TextInput(event="settings:name"),
+                SecretInput(event="settings:token", value="secret2"),
+            ],
+        )
+        secrets = toolbar.get_secret_inputs()
+        assert len(secrets) == 2
+        assert secrets[0].event == "settings:api-key"
+        assert secrets[1].event == "settings:token"
+
+    def test_toolbar_get_secret_inputs_nested_in_div(self) -> None:
+        """Test get_secret_inputs() finds secrets nested in Divs."""
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                Div(
+                    event="div:container",
+                    children=[
+                        SecretInput(event="nested:secret", value="nested-value"),
+                    ],
+                ),
+            ],
+        )
+        secrets = toolbar.get_secret_inputs()
+        assert len(secrets) == 1
+        assert secrets[0].event == "nested:secret"
+
+    def test_toolbar_register_secrets(self) -> None:
+        """Test Toolbar.register_secrets() registers all SecretInputs."""
+        from pywry.toolbar import clear_secret, get_secret
+
+        toolbar = Toolbar(
+            position="top",
+            items=[
+                SecretInput(event="settings:key1", value="value1"),
+                SecretInput(event="settings:key2", value="value2"),
+            ],
+        )
+        toolbar.register_secrets()
+
+        secrets = toolbar.get_secret_inputs()
+        assert get_secret(secrets[0].component_id) == "value1"
+        assert get_secret(secrets[1].component_id) == "value2"
+
+        # Cleanup
+        for si in secrets:
+            clear_secret(si.component_id)
+
+    def test_toolbar_get_secret_events(self) -> None:
+        """Test get_secret_events() returns event tuples."""
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="settings:api-key", value="test")],
+        )
+        events = toolbar.get_secret_events()
+        assert len(events) == 1
+        _component_id, reveal_event, copy_event = events[0]
+        assert reveal_event == "settings:api-key:reveal"
+        assert copy_event == "settings:api-key:copy"
+
+
+class TestSecretHandlerRegistration:
+    """Test automatic handler registration for secrets."""
+
+    def test_register_secret_handlers_for_toolbar(self) -> None:
+        """Test register_secret_handlers_for_toolbar creates handlers."""
+        from pywry.toolbar import clear_secret, register_secret_handlers_for_toolbar
+
+        dispatched_events: list[tuple[str, dict]] = []
+
+        def mock_dispatch(event: str, data: dict) -> None:
+            dispatched_events.append((event, data))
+
+        registered_handlers: dict[str, Callable] = {}
+
+        def mock_on(event: str, handler: Callable) -> bool:
+            registered_handlers[event] = handler
+            return True
+
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="test:secret", value="my-secret-value")],
+        )
+
+        registered = register_secret_handlers_for_toolbar(toolbar, mock_on, mock_dispatch)
+
+        # Should have registered reveal and copy handlers
+        assert "test:secret:reveal" in registered
+        assert "test:secret:copy" in registered
+
+        # Call the reveal handler
+        si = toolbar.get_secret_inputs()[0]
+        registered_handlers["test:secret:reveal"]({"componentId": si.component_id})
+
+        # Should have dispatched response with base64-encoded value
+        assert len(dispatched_events) == 1
+        event, data = dispatched_events[0]
+        assert event == "test:secret:reveal-response"
+        assert data["componentId"] == si.component_id
+        assert data["encoded"] is True  # Value is base64 encoded for transit
+        # Decode and verify the actual value
+        from pywry.toolbar import decode_secret
+
+        assert decode_secret(data["value"]) == "my-secret-value"
+
+        # Cleanup
+        clear_secret(si.component_id)
+
+    def test_custom_secret_handler_override(self) -> None:
+        """Test custom handler overrides default behavior."""
+        from pywry.toolbar import (
+            _SECRET_HANDLERS,
+            clear_secret,
+            register_secret_handlers_for_toolbar,
+            set_secret_handler,
+        )
+
+        dispatched_events: list[tuple[str, dict]] = []
+
+        def mock_dispatch(event: str, data: dict) -> None:
+            dispatched_events.append((event, data))
+
+        registered_handlers: dict[str, Callable] = {}
+
+        def mock_on(event: str, handler: Callable) -> bool:
+            registered_handlers[event] = handler
+            return True
+
+        toolbar = Toolbar(
+            position="top",
+            items=[SecretInput(event="auth:api-key", value="real-secret")],
+        )
+
+        # Set custom handler that returns different value
+        def custom_reveal(_data: dict) -> str:
+            return "custom-response"
+
+        set_secret_handler("auth:api-key:reveal", custom_reveal)
+
+        register_secret_handlers_for_toolbar(toolbar, mock_on, mock_dispatch)
+
+        # Call handler
+        si = toolbar.get_secret_inputs()[0]
+        registered_handlers["auth:api-key:reveal"]({"componentId": si.component_id})
+
+        # Should use custom handler's return value (base64 encoded for transit)
+        _, data = dispatched_events[0]
+        assert data["encoded"] is True
+        from pywry.toolbar import decode_secret
+
+        assert decode_secret(data["value"]) == "custom-response"
+
+        # Cleanup
+        clear_secret(si.component_id)
+        _SECRET_HANDLERS.pop("auth:api-key:reveal", None)
+
+
+class TestSecretInputMaskAndEditMode:
+    """Test SecretInput mask display and edit mode behavior."""
+
+    def test_mask_shown_when_value_exists(self) -> None:
+        """Input should show mask (••••) when value exists."""
+        si = SecretInput(event="settings:api-key", value="my-secret")
+        html = si.build_html()
+
+        # Mask should be in the value attribute
+        assert 'value="••••••••••••"' in html
+        # data-has-value should be true
+        assert 'data-has-value="true"' in html
+        # data-masked should be true
+        assert 'data-masked="true"' in html
+
+    def test_empty_when_no_value(self) -> None:
+        """Input should be empty when no value is set."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Value should be empty
+        assert 'value=""' in html
+        # data-has-value should not be present
+        assert 'data-has-value="true"' not in html
+        # data-masked should not be present
+        assert 'data-masked="true"' not in html
+
+    def test_value_exists_flag_overrides_internal_value(self) -> None:
+        """value_exists=True should show mask even with empty internal value."""
+        si = SecretInput(event="vault:key", value_exists=True)
+        html = si.build_html()
+
+        # Mask should be shown
+        assert 'value="••••••••••••"' in html
+        assert 'data-has-value="true"' in html
+
+    def test_value_exists_false_hides_mask(self) -> None:
+        """value_exists=False should hide mask even with internal value."""
+        si = SecretInput(event="vault:key", value="secret", value_exists=False)
+        html = si.build_html()
+
+        # Should show empty (value_exists overrides)
+        assert 'value=""' in html
+        assert 'data-has-value="true"' not in html
+
+    def test_input_is_readonly(self) -> None:
+        """Input should be readonly (edit via textarea only)."""
+        si = SecretInput(event="settings:api-key", value="secret")
+        html = si.build_html()
+        assert " readonly" in html
+
+    def test_edit_button_present(self) -> None:
+        """Edit button should always be present."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert 'class="pywry-secret-btn pywry-secret-edit"' in html
+        assert 'data-tooltip="Edit value"' in html
+
+    def test_textarea_creation_script_in_html(self) -> None:
+        """Edit mode should create a textarea element."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should have textarea creation in script
+        assert "createElement('textarea')" in html
+        # Textarea should have specific class
+        assert "pywry-secret-textarea" in html
+
+    def test_textarea_sizing_script(self) -> None:
+        """Textarea should start at same size as input."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should capture input dimensions
+        assert "getBoundingClientRect()" in html
+        # Should apply to textarea
+        assert "ta.style.width=rect.width" in html
+        assert "ta.style.height=rect.height" in html
+        # Should set min dimensions
+        assert "ta.style.minWidth" in html
+        assert "ta.style.minHeight" in html
+
+    def test_textarea_resizable_both_directions(self) -> None:
+        """Textarea should be resizable in both directions."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert "ta.style.resize='both'" in html
+
+    def test_textarea_no_wrap(self) -> None:
+        """Textarea should not wrap lines."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+        assert "ta.style.whiteSpace='pre'" in html
+        assert "ta.style.overflowWrap='normal'" in html
+
+    def test_edit_confirm_on_blur(self) -> None:
+        """Blur event should confirm edit and transmit."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should have blur handler
+        assert "ta.onblur=" in html
+        # Should emit event with encoded value
+        assert f"window.pywry.emit('{si.event}'" in html
+
+    def test_edit_confirm_on_ctrl_enter(self) -> None:
+        """Ctrl+Enter should confirm edit."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should have keydown handler
+        assert "ta.onkeydown=" in html
+        # Should check for Ctrl/Cmd+Enter
+        assert "e.key==='Enter'" in html
+        assert "e.ctrlKey||e.metaKey" in html
+
+    def test_edit_cancel_on_escape(self) -> None:
+        """Escape should cancel edit without transmitting."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should check for Escape
+        assert "e.key==='Escape'" in html
+        # Should set cancelled flag
+        assert "ta._cancelled=true" in html
+
+    def test_mask_restored_after_edit_with_value(self) -> None:
+        """Mask should be restored after confirming edit with a value."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # On blur, if value is non-empty, restore mask
+        assert "inp.value=val?'••••••••••••':''" in html
+        assert "inp.dataset.masked=val?'true':'false'" in html
+
+    def test_base64_encoding_in_edit_transmission(self) -> None:
+        """Value should be base64 encoded when transmitted."""
+        si = SecretInput(event="settings:api-key")
+        html = si.build_html()
+
+        # Should encode value
+        assert "btoa(unescape(encodeURIComponent(val)))" in html
+        # Should mark as encoded
+        assert "encoded:true" in html
+
+    def test_actual_secret_never_in_html(self) -> None:
+        """The actual secret value should never appear in HTML."""
+        secret_value = "super-secret-api-key-12345"
+        si = SecretInput(event="settings:api-key", value=secret_value)
+        html = si.build_html()
+
+        # Secret should NOT be in HTML
+        assert secret_value not in html
+        # Only mask should be present
+        assert "••••••••••••" in html
+
+    def test_has_value_property_with_internal_value(self) -> None:
+        """has_value should be True when internal value is set."""
+        si = SecretInput(event="settings:api-key", value="secret")
+        assert si.has_value is True
+
+    def test_has_value_property_without_value(self) -> None:
+        """has_value should be False when no value is set."""
+        si = SecretInput(event="settings:api-key")
+        assert si.has_value is False
+
+    def test_has_value_property_with_value_exists_override(self) -> None:
+        """value_exists should override has_value computation."""
+        # Override to True
+        si1 = SecretInput(event="vault:key", value_exists=True)
+        assert si1.has_value is True
+
+        # Override to False
+        si2 = SecretInput(event="vault:key", value="secret", value_exists=False)
+        assert si2.has_value is False
+
+
+class TestSecretInputRevealWithMask:
+    """Test reveal/toggle behavior with mask display."""
+
+    def test_reveal_replaces_mask_with_secret(self) -> None:
+        """Reveal should replace mask with actual secret."""
+        si = SecretInput(event="settings:api-key", value="my-secret")
+        html = si.build_html()
+
+        # Toggle script should set value from response
+        assert "inp.value=secret" in html
+        # Should set type to text
+        assert "inp.type='text'" in html
+        # Should clear masked flag
+        assert "inp.dataset.masked='false'" in html
+
+    def test_hide_restores_mask(self) -> None:
+        """Hide should restore mask when value exists."""
+        si = SecretInput(event="settings:api-key", value="my-secret")
+        html = si.build_html()
+
+        # Should restore mask on hide
+        assert "inp.value=inp.dataset.hasValue==='true'?MASK:''" in html
+        assert "inp.type='password'" in html
+
+    def test_revealed_secrets_tracking(self) -> None:
+        """Revealed secrets should be tracked for cleanup."""
+        si = SecretInput(event="settings:api-key", value="my-secret")
+        html = si.build_html()
+
+        # Should track revealed secrets
+        assert "window.pywry._revealedSecrets" in html
+        assert "window.pywry._revealedSecrets[cid]=true" in html
+
+    def test_revealed_secrets_cleanup_on_hide(self) -> None:
+        """Hidden secrets should be removed from tracking."""
+        si = SecretInput(event="settings:api-key", value="my-secret")
+        html = si.build_html()
+
+        # Should remove from tracking on hide
+        assert "delete window.pywry._revealedSecrets[cid]" in html
+
+
+class TestSecretInputStateProtection:
+    """Test that SecretInput is protected in toolbar state getter/setter."""
+
+    def test_state_getter_js_protects_secret(self) -> None:
+        """getToolbarState JS should return has_value, not the actual value."""
+        from pywry.scripts import TOOLBAR_BRIDGE_JS
+
+        js = TOOLBAR_BRIDGE_JS
+
+        # Should check for pywry-input-secret class
+        assert "pywry-input-secret" in js
+        # Should return has_value indicator instead of actual value
+        assert "has_value: el.dataset.hasValue" in js
+        # Type should be 'secret' for secret inputs
+        assert "type = 'secret'" in js
+
+    def test_component_value_getter_js_protects_secret(self) -> None:
+        """getComponentValue JS should return has_value for secrets."""
+        from pywry.scripts import TOOLBAR_BRIDGE_JS
+
+        js = TOOLBAR_BRIDGE_JS
+
+        # getComponentValue should also check for secret inputs
+        assert "// SECURITY: Never expose secret values via state getter" in js
+
+    def test_set_value_js_blocks_secret(self) -> None:
+        """setComponentValue JS should block setting secret values."""
+        from pywry.scripts import TOOLBAR_BRIDGE_JS
+
+        js = TOOLBAR_BRIDGE_JS
+
+        # Should check for secret input and warn
+        assert "Cannot set SecretInput value via toolbar:set-value" in js
+        # Should return false for secret inputs
+        assert "return false" in js
+
+
+# =============================================================================
+# SearchInput Tests
+# =============================================================================
+
+
+class TestSearchInput:
+    """Test the SearchInput model (search field with icon)."""
+
+    def test_type_is_search(self) -> None:
+        """Test type field is 'search'."""
+        si = SearchInput(event="filter:search")
+        assert si.type == "search"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        si = SearchInput(event="filter:search")
+        assert si.value == ""
+        assert si.placeholder == "Search..."
+        assert si.debounce == 300
+        assert si.spellcheck is False
+        assert si.autocomplete == "off"
+        assert si.autocorrect == "off"
+        assert si.autocapitalize == "off"
+
+    def test_custom_placeholder(self) -> None:
+        """Test custom placeholder."""
+        si = SearchInput(event="filter:search", placeholder="Find items...")
+        assert si.placeholder == "Find items..."
+
+    def test_browser_behavior_controls(self) -> None:
+        """Test browser behavior control attributes."""
+        si = SearchInput(
+            event="filter:search",
+            spellcheck=True,
+            autocomplete="on",
+            autocorrect="on",
+            autocapitalize="words",
+        )
+        assert si.spellcheck is True
+        assert si.autocomplete == "on"
+        assert si.autocorrect == "on"
+        assert si.autocapitalize == "words"
+
+    def test_html_contains_text_input(self) -> None:
+        """Test HTML contains text input (not search type for styling)."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert 'type="text"' in html
+
+    def test_html_contains_search_class(self) -> None:
+        """Test HTML contains search input CSS class."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert "pywry-search-input" in html
+
+    def test_html_contains_search_icon(self) -> None:
+        """Test HTML contains search icon SVG."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert "pywry-search-icon" in html
+        assert "<svg" in html
+
+    def test_html_contains_wrapper(self) -> None:
+        """Test HTML contains search wrapper."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert "pywry-search-wrapper" in html
+
+    def test_html_contains_placeholder(self) -> None:
+        """Test HTML contains placeholder."""
+        si = SearchInput(event="filter:search", placeholder="Type to filter...")
+        html = si.build_html()
+        assert 'placeholder="Type to filter..."' in html
+
+    def test_html_contains_browser_attributes(self) -> None:
+        """Test HTML contains browser behavior attributes."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert 'spellcheck="false"' in html
+        assert 'autocomplete="off"' in html
+        assert 'autocorrect="off"' in html
+        assert 'autocapitalize="off"' in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML includes label."""
+        si = SearchInput(label="Filter:", event="filter:search")
+        html = si.build_html()
+        assert "Filter:" in html
+        assert "pywry-input-label" in html
+
+    def test_html_has_id(self) -> None:
+        """Test HTML includes id attribute."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert f'id="{si.component_id}"' in html
+
+    def test_html_emits_event_with_value_and_component_id(self) -> None:
+        """Test HTML emit code includes value and componentId."""
+        si = SearchInput(event="filter:search")
+        html = si.build_html()
+        assert "filter:search" in html
+        assert "value:" in html
+        assert "componentId:" in html
+
+    def test_build_inline_html(self) -> None:
+        """Test build_inline_html produces search input for embedding."""
+        si = SearchInput(event="filter:search", placeholder="Search options...")
+        html = si.build_inline_html()
+        assert "pywry-search-wrapper" in html
+        assert "pywry-search-inline" in html
+        assert "pywry-search-icon" in html
+        assert 'placeholder="Search options..."' in html
+
+
+# =============================================================================
+# Marquee Tests
+# =============================================================================
+
+
+class TestMarquee:  # pylint: disable=too-many-public-methods
+    """Test the Marquee model (scrolling ticker)."""
+
+    def test_type_is_marquee(self) -> None:
+        """Test type field is 'marquee'."""
+        m = Marquee(event="ticker:click", text="News update")
+        assert m.type == "marquee"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        m = Marquee(event="ticker:click", text="Test")
+        assert m.speed == 15.0
+        assert m.direction == "left"
+        assert m.behavior == "scroll"
+        assert m.pause_on_hover is True
+        assert m.gap == 50
+        assert m.clickable is False
+        assert m.separator == ""
+
+    def test_custom_values(self) -> None:
+        """Test custom attribute values."""
+        m = Marquee(
+            event="ticker:click",
+            text="Breaking news!",
+            speed=20.0,
+            direction="right",
+            behavior="alternate",
+            pause_on_hover=False,
+            gap=100,
+            clickable=True,
+            separator=" • ",
+        )
+        assert m.speed == 20.0
+        assert m.direction == "right"
+        assert m.behavior == "alternate"
+        assert m.pause_on_hover is False
+        assert m.gap == 100
+        assert m.clickable is True
+        assert m.separator == " • "
+
+    def test_direction_options(self) -> None:
+        """Test all direction options."""
+        for direction in ["left", "right", "up", "down"]:
+            m = Marquee(event="ticker:click", text="Test", direction=direction)  # type: ignore[arg-type]
+            assert m.direction == direction
+
+    def test_behavior_options(self) -> None:
+        """Test all behavior options."""
+        for behavior in ["scroll", "alternate", "slide"]:
+            m = Marquee(event="ticker:click", text="Test", behavior=behavior)  # type: ignore[arg-type]
+            assert m.behavior == behavior
+
+    def test_speed_validation_min(self) -> None:
+        """Test speed has minimum of 1 second."""
+        with pytest.raises(ValidationError):
+            Marquee(event="ticker:click", text="Test", speed=0.5)
+
+    def test_speed_validation_max(self) -> None:
+        """Test speed has maximum of 300 seconds."""
+        with pytest.raises(ValidationError):
+            Marquee(event="ticker:click", text="Test", speed=400)
+
+    def test_gap_validation_min(self) -> None:
+        """Test gap has minimum of 0."""
+        m = Marquee(event="ticker:click", text="Test", gap=0)
+        assert m.gap == 0
+
+    def test_gap_validation_max(self) -> None:
+        """Test gap has maximum of 500."""
+        with pytest.raises(ValidationError):
+            Marquee(event="ticker:click", text="Test", gap=600)
+
+    def test_html_contains_marquee_class(self) -> None:
+        """Test HTML contains marquee CSS class."""
+        m = Marquee(event="ticker:click", text="Test")
+        html = m.build_html()
+        assert "pywry-marquee" in html
+
+    def test_html_contains_direction_class(self) -> None:
+        """Test HTML contains direction-specific class."""
+        m = Marquee(event="ticker:click", text="Test", direction="right")
+        html = m.build_html()
+        assert "pywry-marquee-right" in html
+
+    def test_html_contains_behavior_class(self) -> None:
+        """Test HTML contains behavior-specific class."""
+        m = Marquee(event="ticker:click", text="Test", behavior="alternate")
+        html = m.build_html()
+        assert "pywry-marquee-alternate" in html
+
+    def test_html_contains_horizontal_class(self) -> None:
+        """Test HTML contains horizontal class for left/right."""
+        m = Marquee(event="ticker:click", text="Test", direction="left")
+        html = m.build_html()
+        assert "pywry-marquee-horizontal" in html
+
+    def test_html_contains_vertical_class(self) -> None:
+        """Test HTML contains vertical class for up/down."""
+        m = Marquee(event="ticker:click", text="Test", direction="up")
+        html = m.build_html()
+        assert "pywry-marquee-vertical" in html
+
+    def test_html_contains_pause_class(self) -> None:
+        """Test HTML contains pause class when pause_on_hover is True."""
+        m = Marquee(event="ticker:click", text="Test", pause_on_hover=True)
+        html = m.build_html()
+        assert "pywry-marquee-pause" in html
+
+    def test_html_no_pause_class_when_disabled(self) -> None:
+        """Test HTML excludes pause class when pause_on_hover is False."""
+        m = Marquee(event="ticker:click", text="Test", pause_on_hover=False)
+        html = m.build_html()
+        assert "pywry-marquee-pause" not in html
+
+    def test_html_contains_track(self) -> None:
+        """Test HTML contains marquee track element."""
+        m = Marquee(event="ticker:click", text="Test")
+        html = m.build_html()
+        assert "pywry-marquee-track" in html
+
+    def test_html_contains_duplicated_content(self) -> None:
+        """Test HTML contains duplicated content for seamless scrolling."""
+        m = Marquee(event="ticker:click", text="Test")
+        html = m.build_html()
+        # Should have two content spans
+        assert html.count("pywry-marquee-content") == 2
+
+    def test_html_contains_text_content(self) -> None:
+        """Test HTML contains text content."""
+        m = Marquee(event="ticker:click", text="Breaking news!")
+        html = m.build_html()
+        assert "Breaking news!" in html
+
+    def test_html_contains_css_custom_properties(self) -> None:
+        """Test HTML contains CSS custom properties for speed and gap."""
+        m = Marquee(event="ticker:click", text="Test", speed=25, gap=75)
+        html = m.build_html()
+        # Speed is output as float value
+        assert "--pywry-marquee-speed: 25.0s" in html
+        assert "--pywry-marquee-gap: 75px" in html
+
+    def test_html_contains_separator(self) -> None:
+        """Test HTML contains separator when specified."""
+        m = Marquee(event="ticker:click", text="Test", separator=" • ")
+        html = m.build_html()
+        assert "pywry-marquee-separator" in html
+        assert " • " in html
+
+    def test_html_clickable_attributes(self) -> None:
+        """Test HTML contains clickable attributes when enabled."""
+        m = Marquee(event="ticker:click", text="Click me", clickable=True)
+        html = m.build_html()
+        assert "pywry-marquee-clickable" in html
+        assert 'data-event="ticker:click"' in html
+
+    def test_html_has_id(self) -> None:
+        """Test HTML includes id attribute."""
+        m = Marquee(event="ticker:click", text="Test")
+        html = m.build_html()
+        assert f'id="{m.component_id}"' in html
+
+    def test_html_with_label(self) -> None:
+        """Test HTML includes label."""
+        m = Marquee(label="News:", event="ticker:click", text="Breaking news")
+        html = m.build_html()
+        assert "News:" in html
+        assert "pywry-input-label" in html
+
+    def test_allows_html_content(self) -> None:
+        """Test marquee allows simple HTML in text content."""
+        m = Marquee(event="ticker:click", text="<b>Bold</b> and <em>italic</em>")
+        html = m.build_html()
+        assert "<b>Bold</b>" in html
+        assert "<em>italic</em>" in html
+
+    def test_nested_children(self) -> None:
+        """Test marquee with nested toolbar items."""
+        m = Marquee(
+            event="ticker:click",
+            children=[
+                Button(label="Alert", event="alert:click", variant="ghost"),
+                Div(content="<span>Update available</span>"),
+            ],
+        )
+        html = m.build_html()
+        assert "Alert" in html
+        assert "Update available" in html
+
+    def test_update_payload_text(self) -> None:
+        """Test update_payload returns correct event and payload for text."""
+        m = Marquee(event="ticker:click", text="Initial", component_id="news-ticker")
+        event, payload = m.update_payload(text="Updated content")
+        assert event == "toolbar:marquee-set-content"
+        assert payload["id"] == "news-ticker"
+        assert payload["text"] == "Updated content"
+
+    def test_update_payload_speed(self) -> None:
+        """Test update_payload includes speed when specified."""
+        m = Marquee(event="ticker:click", text="Test", component_id="ticker")
+        event, payload = m.update_payload(speed=10.0)
+        assert event == "toolbar:marquee-set-content"
+        assert payload["speed"] == 10.0
+
+    def test_update_payload_paused(self) -> None:
+        """Test update_payload includes paused state when specified."""
+        m = Marquee(event="ticker:click", text="Test", component_id="ticker")
+        event, payload = m.update_payload(paused=True)
+        assert event == "toolbar:marquee-set-content"
+        assert payload["paused"] is True
+
+    def test_update_payload_multiple_fields(self) -> None:
+        """Test update_payload with multiple fields."""
+        m = Marquee(event="ticker:click", text="Test", component_id="ticker")
+        _event, payload = m.update_payload(
+            text="New text", speed=8.0, paused=False, separator=" | "
+        )
+        assert payload["text"] == "New text"
+        assert payload["speed"] == 8.0
+        assert payload["paused"] is False
+        assert payload["separator"] == " | "
+
+
+# =============================================================================
+# TickerItem Tests
+# =============================================================================
+
+
+class TestTickerItem:
+    """Test the TickerItem model (individual marquee item)."""
+
+    def test_ticker_required(self) -> None:
+        """Test ticker is a required field."""
+        with pytest.raises(ValidationError):
+            TickerItem()  # type: ignore[call-arg]
+
+    def test_creates_with_ticker(self) -> None:
+        """Test creates with just ticker."""
+        ti = TickerItem(ticker="AAPL")
+        assert ti.ticker == "AAPL"
+
+    def test_default_values(self) -> None:
+        """Test default values."""
+        ti = TickerItem(ticker="AAPL")
+        assert ti.text == ""
+        assert ti.html == ""
+        assert ti.class_name == ""
+        assert ti.style == ""
+
+    def test_custom_values(self) -> None:
+        """Test custom attribute values."""
+        ti = TickerItem(
+            ticker="AAPL",
+            text="AAPL $185.50",
+            class_name="stock-up",
+            style="color: green;",
+        )
+        assert ti.text == "AAPL $185.50"
+        assert ti.class_name == "stock-up"
+        assert ti.style == "color: green;"
+
+    def test_html_content(self) -> None:
+        """Test HTML content instead of text."""
+        ti = TickerItem(ticker="AAPL", html="<b>AAPL</b> <span>$185.50</span>")
+        assert ti.html == "<b>AAPL</b> <span>$185.50</span>"
+
+    def test_build_html_contains_span(self) -> None:
+        """Test build_html produces span element."""
+        ti = TickerItem(ticker="AAPL", text="AAPL $185.50")
+        html = ti.build_html()
+        assert "<span" in html
+        assert "</span>" in html
+
+    def test_build_html_contains_ticker_class(self) -> None:
+        """Test build_html contains ticker item class."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        html = ti.build_html()
+        assert "pywry-ticker-item" in html
+
+    def test_build_html_contains_data_ticker(self) -> None:
+        """Test build_html contains data-ticker attribute."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        html = ti.build_html()
+        assert 'data-ticker="AAPL"' in html
+
+    def test_build_html_contains_custom_class(self) -> None:
+        """Test build_html includes custom class."""
+        ti = TickerItem(ticker="AAPL", text="Test", class_name="stock-up")
+        html = ti.build_html()
+        assert "pywry-ticker-item" in html
+        assert "stock-up" in html
+
+    def test_build_html_contains_style(self) -> None:
+        """Test build_html includes custom style."""
+        ti = TickerItem(ticker="AAPL", text="Test", style="color: green;")
+        html = ti.build_html()
+        assert 'style="color: green;"' in html
+
+    def test_build_html_uses_text_content(self) -> None:
+        """Test build_html uses text content when html is empty."""
+        ti = TickerItem(ticker="AAPL", text="AAPL $185.50")
+        html = ti.build_html()
+        assert "AAPL $185.50" in html
+
+    def test_build_html_uses_html_content(self) -> None:
+        """Test build_html uses html content when provided."""
+        ti = TickerItem(ticker="AAPL", text="plain", html="<b>AAPL</b> $185.50")
+        html = ti.build_html()
+        assert "<b>AAPL</b>" in html
+
+    def test_build_html_escapes_text(self) -> None:
+        """Test build_html escapes text content."""
+        ti = TickerItem(ticker="TEST", text="<script>alert('xss')</script>")
+        html = ti.build_html()
+        assert "<script>" not in html
+        assert "&lt;script&gt;" in html
+
+    def test_build_html_escapes_ticker(self) -> None:
+        """Test build_html escapes ticker attribute."""
+        ti = TickerItem(ticker='A"B', text="Test")
+        html = ti.build_html()
+        assert 'data-ticker="A&quot;B"' in html
+
+    def test_update_payload_text(self) -> None:
+        """Test update_payload returns correct event and payload for text."""
+        ti = TickerItem(ticker="AAPL", text="Initial")
+        event, payload = ti.update_payload(text="AAPL $186.25")
+        assert event == "toolbar:marquee-set-item"
+        assert payload["ticker"] == "AAPL"
+        assert payload["text"] == "AAPL $186.25"
+
+    def test_update_payload_class_add(self) -> None:
+        """Test update_payload with class_add."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        _event, payload = ti.update_payload(class_add="stock-up")
+        assert payload["class_add"] == "stock-up"
+
+    def test_update_payload_class_remove(self) -> None:
+        """Test update_payload with class_remove."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        _event, payload = ti.update_payload(class_remove="stock-down")
+        assert payload["class_remove"] == "stock-down"
+
+    def test_update_payload_styles(self) -> None:
+        """Test update_payload with styles."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        _event, payload = ti.update_payload(styles={"color": "green", "fontWeight": "bold"})
+        assert payload["styles"]["color"] == "green"
+        assert payload["styles"]["fontWeight"] == "bold"
+
+    def test_update_payload_multiple_fields(self) -> None:
+        """Test update_payload with multiple fields."""
+        ti = TickerItem(ticker="AAPL", text="Test")
+        _event, payload = ti.update_payload(
+            text="AAPL $190.00 ▲",
+            class_add=["stock-up", "highlight"],
+            class_remove="stock-down",
+            styles={"color": "#22c55e"},
+        )
+        assert payload["text"] == "AAPL $190.00 ▲"
+        assert payload["class_add"] == ["stock-up", "highlight"]
+        assert payload["class_remove"] == "stock-down"
+        assert payload["styles"]["color"] == "#22c55e"
+
+
+# =============================================================================
+# Updated AllTypesDiscriminator Tests
+# =============================================================================
+
+
+class TestAllTypesDiscriminatorComplete:
+    """Test that all toolbar item types including new ones are properly handled."""
+
+    def test_all_item_types_have_unique_type(self) -> None:
+        """All item types have unique type field values."""
+        all_types = set()
+        items = [
+            Button(label="Test", event="toolbar:click"),
+            Select(event="toolbar:select", options=[]),
+            MultiSelect(event="toolbar:multiselect", options=[]),
+            TextInput(event="toolbar:text"),
+            TextArea(event="toolbar:textarea"),
+            SecretInput(event="toolbar:secret"),
+            SearchInput(event="toolbar:search"),
+            NumberInput(event="toolbar:number"),
+            DateInput(event="toolbar:date"),
+            SliderInput(event="toolbar:slider"),
+            RangeInput(event="toolbar:range"),
+            Toggle(event="toolbar:toggle"),
+            Checkbox(event="toolbar:checkbox"),
+            RadioGroup(event="toolbar:radio", options=[]),
+            TabGroup(event="toolbar:tab", options=[]),
+            Div(event="toolbar:div"),
+            Marquee(event="toolbar:marquee", text="Test"),
+        ]
+        for item in items:
+            assert item.type not in all_types, f"Duplicate type: {item.type}"
+            all_types.add(item.type)
+
+    def test_all_types_build_valid_html(self) -> None:
+        """All item types produce non-empty HTML."""
+        items = [
+            Button(label="Test", event="toolbar:click"),
+            Select(event="toolbar:select", options=["A"]),
+            MultiSelect(event="toolbar:multiselect", options=["A"]),
+            TextInput(event="toolbar:text"),
+            TextArea(event="toolbar:textarea"),
+            SecretInput(event="toolbar:secret"),
+            SearchInput(event="toolbar:search"),
+            NumberInput(event="toolbar:number"),
+            DateInput(event="toolbar:date"),
+            SliderInput(event="toolbar:slider"),
+            RangeInput(event="toolbar:range"),
+            Toggle(event="toolbar:toggle"),
+            Checkbox(label="Check", event="toolbar:checkbox"),
+            RadioGroup(event="toolbar:radio", options=["A"]),
+            TabGroup(event="toolbar:tab", options=["A"]),
+            Div(event="toolbar:div", content="<p>Content</p>"),
+            Marquee(event="toolbar:marquee", text="Scrolling text"),
+        ]
+        for item in items:
+            html = item.build_html()
+            assert html, f"{item.type} produced empty HTML"
+            assert len(html) > 10, f"{item.type} HTML too short"
+
+    def test_all_types_have_component_id(self) -> None:
+        """All item types auto-generate component IDs."""
+        items = [
+            Button(label="Test", event="toolbar:click"),
+            Select(event="toolbar:select", options=[]),
+            MultiSelect(event="toolbar:multiselect", options=[]),
+            TextInput(event="toolbar:text"),
+            TextArea(event="toolbar:textarea"),
+            SecretInput(event="toolbar:secret"),
+            SearchInput(event="toolbar:search"),
+            NumberInput(event="toolbar:number"),
+            DateInput(event="toolbar:date"),
+            SliderInput(event="toolbar:slider"),
+            RangeInput(event="toolbar:range"),
+            Toggle(event="toolbar:toggle"),
+            Checkbox(event="toolbar:checkbox"),
+            RadioGroup(event="toolbar:radio", options=[]),
+            TabGroup(event="toolbar:tab", options=[]),
+            Div(event="toolbar:div"),
+            Marquee(event="toolbar:marquee", text="Test"),
+        ]
+        for item in items:
+            assert item.component_id, f"{item.type} has no component_id"
+            assert item.component_id.startswith(item.type), (
+                f"{item.type} component_id doesn't start with type"
+            )

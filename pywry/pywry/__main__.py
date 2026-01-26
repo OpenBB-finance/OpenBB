@@ -5,7 +5,7 @@ and receiving commands via stdin JSON IPC.
 """
 
 # pylint: disable=C0413,C0415,C0103
-# flake8: noqa: N806,E402
+# flake8: noqa: N806
 
 import sys
 
@@ -134,12 +134,12 @@ if sys.platform == "win32":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
-from anyio import create_task_group
-from anyio.from_thread import start_blocking_portal
-from pytauri import Commands, Manager, RunEvent, WebviewUrl, WindowEvent
-from pytauri.webview import WebviewWindowBuilder
-from pytauri_plugins import dialog as dialog_plugin, fs as fs_plugin
-from pytauri_wheel.lib import builder_factory, context_factory
+from anyio import create_task_group  # noqa: E402
+from anyio.from_thread import start_blocking_portal  # noqa: E402
+from pytauri import Commands, Manager, RunEvent, WebviewUrl, WindowEvent  # noqa: E402
+from pytauri.webview import WebviewWindowBuilder  # noqa: E402
+from pytauri_plugins import dialog as dialog_plugin, fs as fs_plugin  # noqa: E402
+from pytauri_wheel.lib import builder_factory, context_factory  # noqa: E402
 
 
 # Debug mode controlled by environment variable

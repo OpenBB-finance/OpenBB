@@ -12,12 +12,16 @@ import uuid
 from functools import lru_cache
 from typing import TYPE_CHECKING
 
-from .base import (  # noqa: TC001
-    ConnectionRouter,
-    EventBus,
-    SessionStore,
-    WidgetStore,
-)
+
+if TYPE_CHECKING:
+    from .base import (
+        ConnectionRouter,
+        EventBus,
+        SessionStore,
+        WidgetStore,
+    )
+
+# pylint: disable=wrong-import-position
 from .memory import (
     MemoryConnectionRouter,
     MemoryEventBus,
@@ -25,6 +29,9 @@ from .memory import (
     MemoryWidgetStore,
 )
 from .types import StateBackend
+
+
+# pylint: enable=wrong-import-position
 
 
 class _WorkerIdHolder:

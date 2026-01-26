@@ -116,13 +116,32 @@ def get_pywry_css() -> str:
     return ""
 
 
-def clear_css_cache() -> None:
-    """Clear the cached CSS content.
+@lru_cache(maxsize=1)
+def get_scrollbar_js() -> str:
+    """Get the custom scrollbar JavaScript content.
 
-    Call this after modifying pywry.css during development
-    to force a reload of the CSS on the next request.
+    This provides macOS-style overlay scrollbars that work in both
+    native windows and widget/iframe contexts.
+
+    Returns
+    -------
+    str
+        The scrollbar JavaScript content, or empty if not found.
+    """
+    js_file = SRC_DIR / "scrollbar.js"
+    if js_file.exists():
+        return js_file.read_text(encoding="utf-8")
+    return ""
+
+
+def clear_css_cache() -> None:
+    """Clear the cached CSS and JS content.
+
+    Call this after modifying pywry.css or scrollbar.js during development
+    to force a reload on the next request.
     """
     get_pywry_css.cache_clear()
+    get_scrollbar_js.cache_clear()
     get_toast_css.cache_clear()
     get_aggrid_css.cache_clear()
 
