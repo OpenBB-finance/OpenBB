@@ -32,7 +32,7 @@ def gather_metadata(sub_path: str):
     Parameters
     ----------
     sub_path : str
-        The path to the sub packages.
+        The path to the subpackages.
     """
     for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
         pyproject_toml = toml.load(path)
@@ -54,7 +54,7 @@ def build():
     # need to pop these from the dependencies
     DEPENDENCIES.pop("openbb-core", None)
 
-    # add the sub packages
+    # add the subpackages
     for package_name, path in SUB_PACKAGES.items():
         POETRY_DICT["packages"].append({"include": package_name, "from": f"./{path}"})
 
