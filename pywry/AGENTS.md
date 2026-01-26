@@ -29,13 +29,19 @@ Built on [PyTauri](https://pypi.org/project/pytauri/) (which uses Rust's [Tauri]
 
 - **Five Window Modes**: `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`, `NOTEBOOK`, `BROWSER`
 - **Notebook Support**: Automatic inline rendering via anywidget or IFrame in Jupyter/Colab
-- **Toolbar System**: Pydantic-based toolbar components with bidirectional state management
+- **Toolbar System**: 18 declarative Pydantic components with 7 layout positions — automatic nested flexbox structure
+- **Two-Way Events**: Python ↔ JavaScript communication with pre-wired Plotly/AgGrid events and utility events for DOM manipulation
+- **Theming & CSS**: Light/dark modes, 60+ CSS variables, component ID targeting, and dynamic styling via events (`pywry:set-style`, `pywry:inject-css`)
+- **Security**: Scoped token auth enabled by default, CSP headers, internal API protection, production presets available
+- **AgGrid Tables**: Best-in-class Pandas → AgGrid conversion with pre-wired events, context menus, and practical defaults
+- **Plotly Charts**: Plotly rendering with pre-wired plot events for Dash-like interactivity
+- **Toast Notifications**: Built-in alert system with positioning (info, success, warning, error, confirm)
+- **Marquee Ticker**: Scrolling text/content with dynamic updates
+- **Secrets Handling**: Secure password inputs — values stored server-side, never rendered in HTML
 - **Hot Reload**: CSS injection and JS refresh with scroll preservation
 - **Bundled Libraries**: Plotly.js 3.3.1 and AgGrid 35.0.0 (offline capable)
 - **Native File Dialogs**: Tauri-powered save/open dialogs and filesystem access
 - **Configuration System**: TOML files, pyproject.toml, and environment variables
-- **Dynamic Theming**: Light, Dark, and System modes
-- **Event System**: Bidirectional Python ↔ JavaScript communication
 - **CLI Tools**: Configuration management and project initialization
 - **Deploy Mode**: Horizontal scaling with Redis-backed state for multi-worker deployments
 - **Authentication & RBAC**: JWT-based authentication with role-based access control
@@ -69,7 +75,7 @@ PyWry automatically selects the appropriate rendering path based on environment:
 
 | Environment | Rendering Path | Module | Return Type |
 |-------------|----------------|--------|-------------|
-| Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `str` (window label) |
+| Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `NativeWindowHandle` |
 | Jupyter/VS Code with anywidget | Notebook Widget | `pywry.widget` | `PyWryWidget` |
 | Jupyter/VS Code without anywidget | Inline IFrame | `pywry.inline` | `InlineWidget` |
 | Headless / Server / SSH | Browser Mode | `pywry.window_manager.modes.browser` | `InlineWidget` |
@@ -165,9 +171,9 @@ from pywry import HtmlContent, WindowConfig
 
 # Toolbar components
 from pywry import (
-    Toolbar, Button, Select, MultiSelect, TextInput, NumberInput,
-    DateInput, SliderInput, RangeInput, Toggle, Checkbox, RadioGroup,
-    TabGroup, Div, Option, ToolbarItem
+    Toolbar, Button, Select, MultiSelect, TextInput, TextArea, SearchInput,
+    SecretInput, NumberInput, DateInput, SliderInput, RangeInput, Toggle,
+    Checkbox, RadioGroup, TabGroup, Div, Marquee, TickerItem, Option, ToolbarItem
 )
 
 # Plotly configuration (for customizing modebar, icons, buttons)
@@ -194,8 +200,11 @@ from pywry.widget_protocol import BaseWidget, NativeWindowHandle, is_base_widget
 # Window manager
 from pywry import BrowserMode, get_lifecycle
 
-# Settings
-from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings, HotReloadSettings, TimeoutSettings, AssetSettings, LogSettings
+# Settings (exported from pywry)
+from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, HotReloadSettings, TimeoutSettings, AssetSettings, LogSettings
+
+# Settings (require full path import)
+from pywry.config import ServerSettings, DeploySettings
 
 # Asset loading
 from pywry import AssetLoader, get_asset_loader
@@ -203,7 +212,8 @@ from pywry import AssetLoader, get_asset_loader
 # Callback registry
 from pywry import CallbackFunc, WidgetType, get_registry
 
-# Runtime (alternative for sending events in native mode)
+# Runtime (for low-level PyTauri access in native mode)
+# Note: runtime is importable from pywry but not in __all__
 from pywry import runtime
 
 # State management (for deploy mode / horizontal scaling)
@@ -221,9 +231,6 @@ from pywry.state import (
     UserSession,
     StateBackend,
 )
-
-# Deploy settings (for programmatic configuration)
-from pywry.config import DeploySettings
 ```
 
 ### PyWry Class
@@ -243,35 +250,247 @@ PyWry(
 ### Display Methods
 
 ```python
-# Show HTML content
-widget = app.show(
+# Show HTML content - returns NativeWindowHandle (native) or widget (notebook)
+handle = app.show(
     content,                    # str or HtmlContent
     title=None,
+    width=None,                 # int for pixels, str for CSS (e.g., "60%")
+    height=None,
     callbacks=None,             # Dict of event handlers {"event:name": handler}
     include_plotly=False,
     include_aggrid=False,
+    aggrid_theme="alpine",
+    label=None,
+    watch=None,                 # Enable hot reload file watching
     toolbars=None,              # List of Toolbar objects
 )
 
 # Show Plotly figure
-widget = app.show_plotly(
+handle = app.show_plotly(
     figure,                     # Plotly Figure or dict
     title=None,
+    width=None,
+    height=None,
     callbacks=None,
+    label=None,
+    inline_css=None,
+    on_click=None,              # Click callback (notebook mode)
+    on_hover=None,              # Hover callback (notebook mode)
+    on_select=None,             # Selection callback (notebook mode)
     toolbars=None,
+    config=None,                # PlotlyConfig or dict
 )
 
 # Show DataFrame as AgGrid
-widget = app.show_dataframe(
+handle = app.show_dataframe(
     data,                       # pandas DataFrame or dict
     title=None,
+    width=None,
+    height=None,
     callbacks=None,
+    label=None,
     column_defs=None,           # List of ColDef objects
     aggrid_theme="alpine",
     grid_options=None,
     toolbars=None,
+    inline_css=None,
+    on_cell_click=None,         # Cell click callback (notebook mode)
+    on_row_selected=None,       # Row selection callback (notebook mode)
+    server_side=False,          # Use server-side mode for large datasets
 )
 ```
+
+### HtmlContent Model
+
+Pass structured content with custom CSS/JS files and data:
+
+```python
+from pywry import HtmlContent
+
+content = HtmlContent(
+    body="<div id='app'></div>",       # HTML body content
+    json_data={"items": [1, 2, 3]},    # Accessible as window.json_data in JS
+    css_files=["style.css"],            # CSS files to include
+    script_files=["app.js"],            # JS files to include
+    inline_css="body { padding: 20px; }", # Inline CSS
+    init_script="initApp()",            # JS to run after DOM ready
+    watch=True,                         # Enable hot reload for these files
+)
+app.show(content, title="Custom App")
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `body` | `str` | HTML content |
+| `json_data` | `dict` | Data accessible as `window.json_data` |
+| `css_files` | `list[str]` | CSS file paths to include |
+| `script_files` | `list[str]` | JS file paths to include |
+| `inline_css` | `str` | Inline CSS styles |
+| `init_script` | `str` | JavaScript to run after DOM ready |
+| `watch` | `bool` | Enable hot reload for included files |
+
+### PlotlyConfig
+
+Customize chart behavior and modebar:
+
+```python
+from pywry import PlotlyConfig, ModeBarButton, SvgIcon
+
+config = PlotlyConfig(
+    responsive=True,
+    display_mode_bar=True,             # True, False, or "hover"
+    scroll_zoom=False,
+    mode_bar_buttons_to_remove=["lasso2d", "select2d"],
+    mode_bar_buttons_to_add=[
+        ModeBarButton(
+            name="custom",
+            title="Custom Action",
+            icon=SvgIcon(path="M10 10 L90 90", width=100, height=100),
+            click="function(gd) { window.pywry.emit('app:custom', {}); }"
+        )
+    ],
+)
+app.show_plotly(fig, config=config)
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `responsive` | `bool` | Resize chart with container |
+| `display_mode_bar` | `bool \| str` | Show modebar (True, False, "hover") |
+| `scroll_zoom` | `bool` | Enable scroll to zoom |
+| `mode_bar_buttons_to_add` | `list` | Custom `ModeBarButton` objects |
+| `mode_bar_buttons_to_remove` | `list[str]` | Remove default buttons by name |
+
+### ColDef and GridOptions
+
+Configure AgGrid columns and behavior:
+
+```python
+from pywry.grid import ColDef, DefaultColDef, GridOptions, RowSelection
+
+# Column definitions
+col_defs = [
+    ColDef(field="name", header_name="Name", pinned="left", width=150),
+    ColDef(field="age", header_name="Age", filter="agNumberColumnFilter", sortable=True),
+    ColDef(field="email", header_name="Email", editable=True),
+]
+
+# Default column settings
+default_col_def = DefaultColDef(
+    sortable=True,
+    filter=True,
+    resizable=True,
+    flex=1,
+)
+
+# Grid options
+grid_options = GridOptions(
+    default_col_def=default_col_def,
+    row_selection=RowSelection(mode="multiple", enable_click_selection=True),
+    pagination=True,
+    pagination_page_size=50,
+)
+
+app.show_dataframe(df, column_defs=col_defs, grid_options=grid_options)
+```
+
+**ColDef Key Properties:**
+| Property | Type | Description |
+|----------|------|-------------|
+| `field` | `str` | DataFrame column name |
+| `header_name` | `str` | Display header |
+| `pinned` | `str` | Pin column: "left", "right", None |
+| `width` | `int` | Column width in pixels |
+| `flex` | `int` | Flex grow factor |
+| `filter` | `str \| bool` | Filter type or True for default |
+| `sortable` | `bool` | Enable column sorting |
+| `editable` | `bool` | Enable cell editing |
+| `value_formatter` | `str` | JS formatter function |
+| `cell_renderer` | `str` | JS renderer function |
+
+### Server-Side AgGrid (Large Datasets)
+
+For datasets >10K rows, use server-side mode with pagination callbacks:
+
+```python
+import pandas as pd
+from pywry import PyWry
+
+app = PyWry()
+df = pd.DataFrame(...)  # Large dataset
+
+def on_page_request(data, event_type, label):
+    """Handle pagination requests from AgGrid."""
+    start = data["startRow"]
+    end = data["endRow"]
+    
+    # Slice your data based on request
+    page_data = df.iloc[start:end].to_dict("records")
+    
+    # Send page response
+    app.emit("grid:page-response", {
+        "gridId": data["gridId"],
+        "rows": page_data,
+        "totalRows": len(df),
+        "isLastPage": end >= len(df),
+    }, label)
+
+app.show_dataframe(
+    df.head(100),  # Initial data (first page)
+    server_side=True,
+    callbacks={"grid:request-page": on_page_request}
+)
+```
+
+### Hot Reload
+
+Enable live updates during development:
+
+```python
+# Method 1: Constructor
+app = PyWry(hot_reload=True)
+
+# Method 2: HtmlContent with watch
+content = HtmlContent(body="<h1>Hi</h1>", css_files=["style.css"], watch=True)
+app.show(content, watch=["style.css", "app.js"])
+
+# Method 3: Toggle at runtime
+app.enable_hot_reload()
+app.refresh_css(label)  # Manual CSS reload
+app.disable_hot_reload()
+```
+
+**Hot Reload Behavior:**
+| File Type | Behavior |
+|-----------|----------|
+| `.css` | Injected without refresh (styles update instantly) |
+| `.js`, `.html` | Full refresh with scroll position preservation |
+
+### Multiple Charts/Grids (ID Targeting)
+
+When a window has multiple charts or grids, use IDs to target specific ones:
+
+```python
+# Target specific chart with chart_id
+widget.update_layout({"title": "Updated"}, chart_id="sales-chart")
+widget.reset_zoom(chart_id="revenue-chart")
+
+# Target specific grid with grid_id
+widget.update_data(new_rows, grid_id="users-grid")
+widget.update_cell("row1", "status", "Active", grid_id="orders-grid")
+
+# Register handlers for specific components (compound event ID)
+app.on("plotly:click:sales-chart", handle_sales_click)
+app.on("grid:row-selected:users-grid", handle_user_selection)
+```
+
+**ID Hierarchy:**
+| ID Type | Scope | Example |
+|---------|-------|---------|
+| `label` | Window/Widget | `"pywry-abc123"` |
+| `chartId` | Plotly chart | `"sales-chart"` |
+| `gridId` | AgGrid table | `"users-grid"` |
+| `componentId` | Toolbar item | `"export-btn"` |
 
 ### Event Handler Signature
 
@@ -288,24 +507,68 @@ def handler(data: dict, event_type: str, label: str) -> None:
 ### Sending Events to JavaScript
 
 ```python
-# All modes return a widget with emit() method
-widget = app.show("<h1>Hello</h1>")
-widget.emit("app:response", {"key": "value"})
+# All modes return a handle/widget with emit() method
+handle = app.show("<h1>Hello</h1>")
+handle.emit("app:response", {"key": "value"})
+
+# Alternative: use app.emit() with window label
+app.emit("app:response", {"key": "value"}, handle.label)
 ```
 
-> **Low-level alternative:** `runtime.emit_event(widget.label, ...)` for direct access in native windows.
+> **Low-level alternative:** For direct access to PyTauri runtime in native mode, use `from pywry import runtime` then `runtime.emit_event(handle.label, ...)`.
+
+### Widget Methods (Plotly/AgGrid)
+
+Widgets returned by `show_plotly()` and `show_dataframe()` have convenience methods:
+
+**Plotly Widget Methods:**
+```python
+widget = app.show_plotly(fig)
+widget.update_figure(new_fig, chart_id=None)        # Replace entire figure
+widget.update_layout({"title": "New Title"})        # Update layout properties
+widget.update_traces({"marker.color": "red"}, [0])  # Update specific traces
+widget.reset_zoom(chart_id=None)                    # Reset zoom/pan
+widget.request_plotly_state(chart_id=None)          # Request current state -> plotly:state-response
+```
+
+**AgGrid Widget Methods:**
+```python
+widget = app.show_dataframe(df)
+widget.update_data(rows, grid_id=None)              # Replace row data
+widget.update_columns(col_defs, grid_id=None)       # Replace column definitions
+widget.update_cell(row_id, col_id, value)           # Update single cell
+widget.update_grid(data=None, columns=None)         # Combined update
+widget.request_grid_state(grid_id=None)             # Request state -> grid:state-response
+widget.restore_state(state, grid_id=None)           # Restore saved state
+widget.reset_state(grid_id=None, hard=False)        # Reset to initial state
+```
 
 ### Other Methods
 
 | Method | Description |
 |--------|-------------|
+| `emit(event_type, data, label=None)` | Send event to JavaScript in window(s) |
+| `alert(message, alert_type, ...)` | Show toast notification |
+| `on(event_type, handler, ...)` | Register event handler |
+| `on_grid(event_type, handler, ...)` | Register grid-specific event handler |
+| `on_chart(event_type, handler, ...)` | Register chart-specific event handler |
+| `on_toolbar(event_type, handler, ...)` | Register toolbar-specific event handler |
+| `on_html(event_type, handler, ...)` | Register HTML element event handler |
+| `on_window(event_type, handler, ...)` | Register window lifecycle event handler |
 | `eval_js(script, label=None)` | Execute JavaScript in window(s) |
 | `update_content(html, label=None)` | Update window HTML content |
+| `show_window(label)` | Show a hidden window |
+| `hide_window(label)` | Hide a window (keeps it alive) |
 | `close(label=None)` | Close specific or all windows |
-| `destroy()` | Close all windows and cleanup |
+| `get_labels()` | Get list of all active window labels |
+| `is_open(label=None)` | Check if window(s) are open |
+| `refresh(label=None)` | Refresh window content |
+| `refresh_css(label=None)` | Hot-reload CSS without page refresh |
 | `enable_hot_reload()` | Enable hot reload |
 | `disable_hot_reload()` | Disable hot reload |
-| `refresh_css(label=None)` | Hot-reload CSS without page refresh |
+| `block(label=None)` | Block until window(s) close |
+| `destroy()` | Close all windows and cleanup |
+| `get_lifecycle()` | Get WindowLifecycle manager |
 
 ---
 
@@ -329,7 +592,8 @@ Events follow the format `namespace:event-name`:
 | `pywry:*` | System events (initialization, results) |
 | `plotly:*` | Plotly chart events |
 | `grid:*` | AgGrid table events |
-| `toolbar:*` | Toolbar state events |
+
+> **Note:** The `toolbar:` namespace is NOT reserved. Toolbar state response events use `toolbar:state-response` by convention.
 
 ### Pre-Registered Events
 
@@ -338,9 +602,23 @@ Events follow the format `namespace:event-name`:
 | Event | Trigger | Key Payload Fields |
 |-------|---------|-------------------|
 | `plotly:click` | User clicks a data point | `chartId`, `points`, `widget_type: "chart"` |
-| `plotly:hover` | User hovers over a point | `chartId`, `points` |
-| `plotly:selected` | User selects with box/lasso | `chartId`, `points`, `range` |
-| `plotly:relayout` | User zooms, pans, or resizes | `chartId`, `relayout_data` |
+| `plotly:hover` | User hovers over a point | `chartId`, `points`, `widget_type` |
+| `plotly:selected` | User selects with box/lasso | `chartId`, `points`, `range`, `lassoPoints` |
+| `plotly:relayout` | User zooms, pans, or resizes | `chartId`, `relayout_data`, `widget_type` |
+| `plotly:state-response` | Response to state request | `chartId`, `layout`, `data` |
+
+**Plotly Events (Python → JS):**
+
+| Event | Description | Key Payload Fields |
+|-------|-------------|-------------------|
+| `plotly:update-figure` | Replace entire figure | `figure`, `chartId?`, `config?` |
+| `plotly:update-layout` | Update layout properties | `layout`, `chartId?` |
+| `plotly:update-traces` | Update trace data | `update`, `indices`, `chartId?` |
+| `plotly:reset-zoom` | Reset chart zoom | `chartId?` |
+| `plotly:request-state` | Request current chart state | `chartId?` |
+| `plotly:export-data` | Request trace data export | `chartId?` |
+
+> **Note:** `plotly:export-data` triggers `plotly:export-response` (JS → Python) with payload `{ data: [{ traceIndex, name, x, y, type }, ...] }`.
 
 **AgGrid Events (JS → Python):**
 
@@ -349,19 +627,51 @@ Events follow the format `namespace:event-name`:
 | `grid:row-selected` | Row selection changes | `gridId`, `rows`, `widget_type: "grid"` |
 | `grid:cell-click` | User clicks a cell | `gridId`, `rowIndex`, `colId`, `value`, `data` |
 | `grid:cell-edit` | User edits a cell | `gridId`, `rowIndex`, `rowId`, `colId`, `oldValue`, `newValue`, `data` |
-| `grid:filter-changed` | Filter applied | `gridId`, `filterModel` |
+| `grid:filter-changed` | Filter applied | `gridId`, `filterModel`, `widget_type` |
+| `grid:data-truncated` | Client-side dataset truncated | `gridId`, `displayedRows`, `truncatedRows`, `message` |
+| `grid:mode` | Grid mode info (server-side) | `gridId`, `mode`, `serverSide`, `totalRows`, `blockSize` |
+| `grid:request-page` | Server-side requests data block | `gridId`, `startRow`, `endRow`, `sortModel`, `filterModel` |
+| `grid:state-response` | Response to state request | `gridId`, `columnState`, `filterModel`, `sortModel` |
 
-**System Events:**
+**AgGrid Events (Python → JS):**
 
-| Event | Direction | Description |
-|-------|-----------|-------------|
-| `pywry:ready` | JS → Python | Window/widget initialized |
-| `pywry:update-theme` | Python → JS | Update theme dynamically |
-| `pywry:inject-css` | Python → JS | Inject CSS dynamically |
-| `pywry:set-style` | Python → JS | Update element styles |
-| `pywry:set-content` | Python → JS | Update element innerHTML/textContent |
-| `pywry:download` | Python → JS | Trigger file download |
-| `pywry:alert` | Python → JS | Show toast notification |
+| Event | Description | Key Payload Fields |
+|-------|-------------|-------------------|
+| `grid:page-response` | Respond to page request | `gridId`, `rows`, `totalRows`, `isLastPage` |
+| `grid:update-data` | Update row data | `data`, `gridId?`, `strategy?` |
+| `grid:update-columns` | Update column definitions | `columnDefs`, `gridId?` |
+| `grid:update-cell` | Update single cell | `rowId`, `colId`, `value`, `gridId?` |
+| `grid:update-grid` | Combined update (data+columns+state) | `data?`, `columnDefs?`, `restoreState?`, `gridId?` |
+| `grid:request-state` | Request grid state | `gridId?`, `context?` |
+| `grid:restore-state` | Restore saved state | `state`, `gridId?` |
+| `grid:reset-state` | Reset state | `gridId?`, `hard?` |
+| `grid:update-theme` | Change grid theme | `theme`, `gridId?` |
+| `grid:show-notification` | Show grid notification | `message`, `duration?`, `gridId?` |
+
+**System Events (JS → Python):**
+
+| Event | Trigger | Key Payload Fields |
+|-------|---------|-------------------|
+| `pywry:ready` | Window/widget initialized | `{}` |
+| `pywry:result` | Data via `window.pywry.result()` | `any` |
+| `pywry:content-request` | Request content (load/reload) | `widget_type`, `window_label`, `reason` |
+| `pywry:disconnect` | Widget disconnected (inline mode) | `{}` |
+
+**System Events (Python → JS):**
+
+| Event | Description | Key Payload Fields |
+|-------|-------------|-------------------|
+| `pywry:update-theme` | Update theme | `theme` |
+| `pywry:inject-css` | Inject CSS | `css`, `id?` |
+| `pywry:remove-css` | Remove injected CSS | `id` |
+| `pywry:set-style` | Update element styles | `id?`, `selector?`, `styles` |
+| `pywry:set-content` | Update element content | `id?`, `selector?`, `html?`, `text?` |
+| `pywry:update-html` | Replace widget HTML | `html` |
+| `pywry:download` | Trigger file download | `content`, `filename`, `mimeType?` |
+| `pywry:download-csv` | Trigger CSV download (widget mode) | `csv`, `filename` |
+| `pywry:navigate` | Navigate to URL | `url` |
+| `pywry:alert` | Show toast notification | `message`, `type?`, `title?`, `duration?` |
+| `pywry:refresh` | Refresh window content | `{}` |
 
 ### Toast Notifications (`pywry:alert`)
 
@@ -429,6 +739,40 @@ window.__PYWRY_PLOTLY_DIV__   // Plotly chart container
 window.__PYWRY_GRID_API__     // AgGrid API
 ```
 
+### Native File Dialogs (Desktop Mode Only)
+
+In native desktop windows, access Tauri's file system APIs:
+
+```javascript
+// Save file dialog
+const path = await window.__TAURI__.dialog.save({
+    defaultPath: "export.csv",
+    filters: [{ name: "CSV", extensions: ["csv"] }]
+});
+if (path) {
+    await window.__TAURI__.fs.writeTextFile(path, csvContent);
+}
+
+// Open file dialog
+const selected = await window.__TAURI__.dialog.open({
+    multiple: false,
+    filters: [{ name: "JSON", extensions: ["json"] }]
+});
+if (selected) {
+    const content = await window.__TAURI__.fs.readTextFile(selected);
+    window.pywry.emit("app:file-loaded", { path: selected, content });
+}
+
+// Confirmation dialog
+const confirmed = await window.__TAURI__.dialog.confirm("Delete this item?", {
+    title: "Confirm Delete",
+    okLabel: "Delete",
+    cancelLabel: "Cancel"
+});
+```
+
+> **Note:** File dialogs are only available in native desktop mode. For notebook/browser mode, use `pywry:download` event for downloads.
+
 ---
 
 ## Toolbar System
@@ -441,6 +785,9 @@ window.__PYWRY_GRID_API__     // AgGrid API
 | `Select` | `{ value: str, componentId }` |
 | `MultiSelect` | `{ values: [str, ...], componentId }` |
 | `TextInput` | `{ value: str, componentId }` |
+| `TextArea` | `{ value: str, componentId }` |
+| `SearchInput` | `{ value: str, componentId }` |
+| `SecretInput` | `{ value, componentId, encoded }` + `{event}:reveal`, `{event}:copy` |
 | `NumberInput` | `{ value: number, componentId }` |
 | `DateInput` | `{ value: "YYYY-MM-DD", componentId }` |
 | `SliderInput` | `{ value: number, componentId }` |
@@ -450,18 +797,24 @@ window.__PYWRY_GRID_API__     // AgGrid API
 | `RadioGroup` | `{ value: str, componentId }` |
 | `TabGroup` | `{ value: str, componentId }` |
 | `Div` | Container (no events) |
+| `Marquee` | `{ value, componentId }` when clickable |
+| `TickerItem` | Helper for Marquee (not a ToolbarItem) |
 
 ### Toolbar Positions
 
+PyWry automatically creates nested flexbox wrappers based on which toolbars are present:
+
 | Position | Description |
 |----------|-------------|
-| `"header"` | Full-width bar at very top |
-| `"footer"` | Full-width bar at very bottom |
-| `"left"` | Vertical bar on left |
-| `"right"` | Vertical bar on right |
-| `"top"` | Horizontal bar above content |
-| `"bottom"` | Horizontal bar below content |
-| `"inside"` | Floating overlay in content |
+| `"header"` | Full-width bar at very top (outermost) |
+| `"footer"` | Full-width bar at very bottom (outermost) |
+| `"left"` | Vertical bar on left, full height |
+| `"right"` | Vertical bar on right, full height |
+| `"top"` | Horizontal bar above content (inside left/right) |
+| `"bottom"` | Horizontal bar below content (inside left/right) |
+| `"inside"` | Floating overlay at top-right of content |
+
+> **Note:** Layout wrappers (`.pywry-wrapper-*`) are created dynamically. If you only use `top` and `bottom`, no left/right wrappers are generated.
 
 ### Example
 
@@ -497,6 +850,127 @@ widget = app.show(
     toolbars=[toolbar],
     callbacks={"app:export": on_export}
 )
+```
+
+### Common Component Properties
+
+All toolbar items share these properties:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `event` | `str` | `"toolbar:input"` | Event name in `namespace:event-name` format |
+| `component_id` | `str` | auto-generated | Unique ID (format: `{type}-{uuid8}`) |
+| `label` | `str` | `""` | Label text displayed next to control |
+| `description` | `str` | `""` | Tooltip text on hover |
+| `disabled` | `bool` | `False` | Whether control is disabled |
+| `style` | `str` | `""` | Inline CSS styles |
+
+### Component Parameters Quick Reference
+
+**Button:**
+```python
+Button(label="Save", event="app:save", data={"key": "val"}, variant="primary")
+# Variants: primary|secondary|neutral|ghost|outline|danger|warning|icon
+```
+
+**Select / MultiSelect:**
+```python
+Select(label="Theme:", event="theme:change", options=[Option(label="Dark", value="dark")], selected="dark")
+MultiSelect(label="Cols:", event="cols:change", options=["A", "B", "C"], selected=["A"])
+# Shorthand: strings auto-convert to Option(label=s, value=s)
+```
+
+**TextInput / TextArea / SearchInput:**
+```python
+TextInput(label="Name:", event="form:name", placeholder="Enter name", debounce_ms=300)
+TextArea(label="Notes:", event="form:notes", rows=4, resizable=True)
+SearchInput(label="Search:", event="search:query", placeholder="Type to search...")
+```
+
+**SecretInput:**
+```python
+SecretInput(label="API Key:", event="secret:key", placeholder="Enter key")
+# Emits: {event} with {value, encoded}, plus {event}:reveal and {event}:copy
+```
+
+**NumberInput:**
+```python
+NumberInput(label="Qty:", event="form:qty", min_value=0, max_value=100, step=1, value=10)
+```
+
+**DateInput:**
+```python
+DateInput(label="Date:", event="form:date", value="2024-01-01", min_date="2020-01-01")
+```
+
+**SliderInput / RangeInput:**
+```python
+SliderInput(label="Volume:", event="audio:volume", min_value=0, max_value=100, value=50, show_value=True)
+RangeInput(label="Price:", event="filter:price", min_value=0, max_value=1000, start=100, end=500)
+```
+
+**Toggle / Checkbox:**
+```python
+Toggle(label="Dark Mode:", event="theme:toggle", value=True)
+Checkbox(label="Accept Terms", event="form:terms", value=False)
+```
+
+**RadioGroup / TabGroup:**
+```python
+RadioGroup(label="Size:", event="form:size", options=["S", "M", "L"], selected="M", layout="horizontal")
+TabGroup(event="view:tab", options=[Option(label="Chart", value="chart"), Option(label="Table", value="table")])
+```
+
+**Div (Container):**
+```python
+Div(children=[Button(...), Select(...)], class_name="my-group", style="gap: 8px;")
+```
+
+**Marquee / TickerItem:**
+```python
+Marquee(
+    event="ticker:click",
+    items=[
+        TickerItem(ticker="AAPL", text="$150.25", styles={"color": "green"}),
+        TickerItem(ticker="MSFT", text="$380.00"),
+    ],
+    speed=50,
+    separator=" | ",
+)
+# Update dynamically via toolbar:marquee-set-item event
+```
+
+### Toolbar Container Options
+
+```python
+Toolbar(
+    position="top",              # header|footer|left|right|top|bottom|inside
+    items=[...],
+    component_id="main-toolbar", # For state management
+    collapsible=False,           # Allow collapse/expand
+    collapsed=False,             # Initial collapsed state
+    resizable=False,             # Allow drag-to-resize
+    min_width=None,              # Min size for resizable
+    max_width=None,              # Max size for resizable
+)
+```
+
+### Toolbar State Management
+
+```python
+# Request current toolbar state
+app.emit("toolbar:request-state", {"context": "save"}, label)
+
+# Handle state response
+def on_state(data, event_type, label):
+    values = data["components"]  # {componentId: value, ...}
+app.on("toolbar:state-response", on_state)
+
+# Set single component value
+app.emit("toolbar:set-value", {"componentId": "my-select", "value": "option2"}, label)
+
+# Set multiple values
+app.emit("toolbar:set-values", {"values": {"select-1": "A", "toggle-1": True}}, label)
 ```
 
 ---
@@ -545,6 +1019,28 @@ level = "WARNING"
 state_backend = "redis"
 redis_url = "redis://localhost:6379/0"
 redis_prefix = "pywry:"
+```
+
+### Server Settings (for Notebook/Browser Mode)
+
+| Setting | Env Var | Default | Description |
+|---------|---------|---------|-------------|
+| `host` | `PYWRY_SERVER__HOST` | `127.0.0.1` | Server bind address |
+| `port` | `PYWRY_SERVER__PORT` | `8765` | Server port |
+| `ssl_certfile` | `PYWRY_SERVER__SSL_CERTFILE` | `None` | SSL certificate path |
+| `ssl_keyfile` | `PYWRY_SERVER__SSL_KEYFILE` | `None` | SSL key path |
+| `cors_origins` | `PYWRY_SERVER__CORS_ORIGINS` | `["*"]` | Allowed CORS origins |
+| `workers` | `PYWRY_SERVER__WORKERS` | `1` | Number of workers |
+| `reload` | `PYWRY_SERVER__RELOAD` | `False` | Enable auto-reload (dev) |
+
+```toml
+# Example: Production server config
+[server]
+host = "0.0.0.0"
+port = 443
+ssl_certfile = "/path/to/cert.pem"
+ssl_keyfile = "/path/to/key.pem"
+cors_origins = ["https://myapp.com"]
 ```
 
 ---
@@ -630,6 +1126,87 @@ PYWRY_DEPLOY__DEFAULT_ROLE=viewer
 | `CallbackRegistry` | `callbacks.py` | Singleton managing event callbacks |
 | `HotReloadManager` | `hot_reload.py` | File watching and CSS injection |
 | `AssetLoader` | `asset_loader.py` | CSS/JS file loading with caching |
+
+### NativeWindowHandle (Desktop Mode)
+
+In native desktop mode, `show()` returns a `NativeWindowHandle` that provides full window control:
+
+**Core Methods:**
+```python
+handle = app.show("<h1>Hello</h1>", title="My Window")
+
+# Event communication
+handle.emit("app:update", {"key": "value"})   # Send event to JS
+handle.on("app:click", callback)              # Register event handler
+handle.eval_js("console.log('Hello')")        # Execute JavaScript
+
+# Content
+handle.update("<h1>New Content</h1>")         # Replace HTML content
+
+# Window visibility
+handle.close()                                 # Close and destroy
+handle.hide()                                  # Hide (keep alive)
+handle.show_window()                          # Show hidden window
+
+# Window properties (via proxy)
+handle.set_title("New Title")
+handle.set_size(1280, 720)
+handle.set_min_size(400, 300)
+handle.set_max_size(1920, 1080)
+handle.set_always_on_top(True)
+handle.set_decorations(False)                 # Remove title bar
+handle.set_background_color(30, 30, 30)       # RGBA
+
+# Window actions
+handle.maximize()
+handle.minimize()
+handle.center()
+
+# Developer tools
+handle.open_devtools()
+handle.close_devtools()
+handle.set_zoom(1.5)                          # 150% zoom
+```
+
+**Properties:**
+```python
+handle.label        # str: Window identifier
+handle.resources    # WindowResources: Metadata (content, config, created_at, etc.)
+handle.proxy        # WindowProxy: Full WebviewWindow API access
+```
+
+**WindowProxy (Advanced):**
+```python
+proxy = handle.proxy
+
+# State queries
+proxy.is_maximized      # bool
+proxy.is_minimized      # bool
+proxy.is_fullscreen     # bool
+proxy.is_focused        # bool
+proxy.is_decorated      # bool
+proxy.is_resizable      # bool
+proxy.is_visible        # bool
+
+# Position & Size
+proxy.inner_size        # PhysicalSize(width, height)
+proxy.outer_size        # PhysicalSize(width, height)
+proxy.inner_position    # PhysicalPosition(x, y)
+proxy.outer_position    # PhysicalPosition(x, y)
+proxy.scale_factor      # float (e.g., 1.0, 1.5, 2.0 for HiDPI)
+
+# Monitor info
+proxy.current_monitor   # Monitor or None
+proxy.primary_monitor   # Monitor or None
+proxy.available_monitors  # list[Monitor]
+
+# Actions
+proxy.set_fullscreen(True)
+proxy.set_resizable(False)
+proxy.set_visible_on_all_workspaces(True)
+proxy.navigate("https://example.com")
+proxy.reload()
+```
 
 ### Widget Classes
 
@@ -762,20 +1339,48 @@ Events include `widget_type` for identification:
 
 ## CSS Theming
 
+PyWry provides 60+ CSS variables for comprehensive customization, plus component ID targeting for precise styling.
+
 ### Theme Classes
 
 | Selector | Description |
 |----------|-------------|
-| `html.dark` / `html.light` | Document root theme |
-| `.pywry-theme-dark` / `.pywry-theme-light` | Widget container theme |
+| `html.dark` / `html.light` | Document root theme (native windows) |
+| `.pywry-theme-dark` / `.pywry-theme-light` | Widget container theme (notebooks) |
+| `html.pywry-native` | Added to `<html>` in native window mode |
+
+### Dynamic Styling via Events
+
+```python
+# Update element styles from Python
+app.emit("pywry:set-style", {"id": "my-btn", "styles": {"backgroundColor": "green"}}, label)
+
+# Inject CSS dynamically
+app.emit("pywry:inject-css", {"css": "#title { color: blue; }", "id": "custom-styles"}, label)
+
+# Remove injected CSS
+app.emit("pywry:remove-css", {"id": "custom-styles"}, label)
+```
+
+### Component ID Targeting
+
+Every toolbar component has a `component_id` (default: `{type}-{8-char-random}`):
+
+```python
+Button(label="Save", event="app:save", component_id="save-btn")  # Custom ID
+```
+
+Target in CSS: `#save-btn { background: green; }` or `[data-event="app:save"] { ... }`
 
 ### Key CSS Variables
 
 ```css
 :root {
   --pywry-bg-primary: #212124;
-  --pywry-bg-secondary: #1e1e1e;
+  --pywry-bg-secondary: rgba(21, 21, 24, 1);
+  --pywry-bg-tertiary: rgba(31, 30, 35, 1);
   --pywry-text-primary: #ebebed;
+  --pywry-text-secondary: #a0a0a0;
   --pywry-accent: #0078d4;
   --pywry-border-color: #333;
   --pywry-radius: 4px;
@@ -859,6 +1464,55 @@ PYWRY_LOG__LEVEL=DEBUG  # Enable debug logging
 ---
 
 ## Quick Examples
+
+### REPL vs Script Usage
+
+**In a REPL (IPython, Jupyter, Python shell):** Windows stay open because the Python process keeps running. You can interact with handles directly.
+
+```python
+# IPython / Python REPL
+>>> from pywry import PyWry
+>>> app = PyWry()
+>>> handle = app.show("<h1>Hello</h1>")  # Window opens, stays open
+>>> handle.set_title("Updated Title")    # Interact with window
+>>> handle.emit("app:update", {"x": 1})  # Send events
+>>> handle.close()                        # Close when done
+```
+
+**In a script:** The script exits immediately after `show()`, closing the window. Use `app.block()` to keep it open:
+
+```python
+# my_script.py
+from pywry import PyWry
+
+app = PyWry()
+handle = app.show("<h1>Hello</h1>")
+
+# Without this, the script exits and window closes immediately
+app.block()  # Blocks until user closes the window
+```
+
+**With callbacks (scripts):** Use `block()` after setting up handlers:
+
+```python
+# interactive_script.py
+from pywry import PyWry, Toolbar, Button
+
+app = PyWry()
+
+def on_click(data, event_type, label):
+    print(f"Button clicked: {data}")
+    app.close(label)  # Close window to unblock
+
+handle = app.show(
+    "<h1>Click the button</h1>",
+    toolbars=[Toolbar(position="top", items=[Button(label="Click Me", event="app:click")])],
+    callbacks={"app:click": on_click}
+)
+
+app.block()  # Wait for window to close
+print("Window closed, script continues...")
+```
 
 ### Basic Window
 

@@ -19,6 +19,30 @@ Built on [PyTauri](https://pypi.org/project/pytauri/) (which uses Rust's [Tauri]
 
 Its unified API lets you build fast and use anywhere. Batteries included.
 
+<a id="features"></a>
+<details>
+<summary><strong>Features at a Glance</strong></summary>
+
+| Feature | What It Does |
+|---------|--------------|
+| **Native Windows** | Lightweight OS webview windows (not Electron) |
+| **Jupyter Widgets** | Works in notebooks with anywidget |
+| **Browser Mode** | Deploy to web with FastAPI + WebSocket |
+| **Toolbar System** | 18 declarative Pydantic components with 7 layout positions — automatic nested flexbox structure |
+| **Two-Way Events** | Python ↔ JavaScript communication with pre-wired Plotly/AgGrid events and utility events for DOM manipulation |
+| **Marquee Ticker** | Scrolling text/content with dynamic updates |
+| **AgGrid Tables** | Best-in-class Pandas → AgGrid conversion, with pre-wired grid events, context menus, and practical default gridOptions |
+| **Plotly Charts** | Plotly rendering with pre-wired plot events for Dash-like functionality when combined with Toolbar components |
+| **Toast Notifications** | Built-in alert system with positioning |
+| **Theming & CSS** | Light/dark modes, 60+ CSS variables, component ID targeting, and dynamic styling via events (`pywry:set-style`, `pywry:inject-css`) |
+| **Secrets Handling** | Secure password inputs — values stored server-side, never rendered in HTML, configurable getter and setter methods |
+| **Security** | Scoped token auth enabled by default, CSP headers, internal API protection, production presets available |
+| **Configuration** | TOML files, env vars, security presets |
+| **Hot Reload** | Live CSS/JS updates during development |
+| **Deploy Mode** | Redis backend for horizontal scaling |
+
+</details>
+
 ## Installation
 
 Install in a virtual environment with a version of Python between 3.10 and 3.14.
@@ -170,7 +194,7 @@ label = app.show_plotly(
 | [Rendering Paths](#rendering-paths) | Native Window, Notebook, IFrame, Browser modes |
 | ↳ [Native Window](#rendering-paths) ・ [Notebook Widget](#rendering-paths) ・ [Inline IFrame](#rendering-paths) ・ [Browser Mode](#rendering-paths) | |
 | [Core API](#core-api) | PyWry class, imports, display & event methods |
-| ↳ [Imports](#core-api) ・ [PyWry Class](#core-api) ・ [Display Methods](#core-api) ・ [Event Methods](#core-api) | |
+| ↳ [Imports](#core-api) ・ [PyWry Class](#core-api) ・ [Display Methods](#core-api) ・ [Widget Types](#widget-types) ・ [Event Methods](#core-api) | |
 | [HtmlContent Model](#htmlcontent-model) | Advanced content configuration |
 | [WindowConfig Model](#windowconfig-model) | Window property configuration |
 | [Configuration System](#configuration-system) | TOML files, environment variables, presets |
@@ -184,7 +208,7 @@ label = app.show_plotly(
 | [Event System](#event-system) | Bidirectional Python ↔ JS communication |
 | ↳ [Event Naming](#event-system) ・ [Handler Signature](#event-system) ・ [Toast Notifications](#toast-notifications-pywryalert) ・ [Utility Events](#utility-events-python-to-js) | |
 | [Pre-Registered Events](#pre-registered-events-built-in) | Built-in system, Plotly, and AgGrid events |
-| [Toolbar System](#toolbar-system) | All 14 toolbar components with examples |
+| [Toolbar System](#toolbar-system) | All 18 toolbar components with examples |
 | ↳ [Positions & Layout](#toolbar-system) ・ [Component Reference](#toolbar-system) ・ [State Management](#toolbar-system) | |
 | [CSS Selectors and Theming](#css-selectors-and-theming) | Styling with CSS variables and classes |
 | ↳ [Theme Classes](#css-selectors-and-theming) ・ [Layout Classes](#css-selectors-and-theming) ・ [Toast Classes](#toast-notification-classes) ・ [CSS Variables](#css-selectors-and-theming) | |
@@ -212,7 +236,7 @@ label = app.show_plotly(
 | Section | Description |
 |---------|-------------|
 | [Plotly Integration](#plotly-integration) | Charts with custom modebar buttons |
-| [AgGrid Integration](#ag-grid-integration) | DataFrames with column definitions |
+| [AgGrid Integration](#aggrid-integration) | DataFrames with column definitions |
 
 ---
 
@@ -229,7 +253,7 @@ PyWry automatically selects the appropriate rendering path based on your environ
 
 | Environment | Rendering Path | Module | Return Type |
 |-------------|----------------|--------|-------------|
-| Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `str` (window label) |
+| Desktop (script/terminal) | Native Window | `pywry.app.PyWry` | `NativeWindowHandle` |
 | Jupyter/VS Code with anywidget | Notebook Widget | `pywry.widget` | `PyWryWidget` |
 | Jupyter/VS Code without anywidget | Inline IFrame | `pywry.inline` | `InlineWidget` |
 | Headless / Server / SSH | Browser Mode | `pywry.window_manager.modes.browser` | `InlineWidget` |
@@ -313,7 +337,6 @@ Uses PyTauri/Tauri to create native OS windows with WebView2 (Windows), WebKit (
 
 ```python
 from pywry import PyWry, WindowMode, ThemeMode
-from pywry import runtime  # For sending events to JS
 
 app = PyWry(
     mode=WindowMode.SINGLE_WINDOW,  # or NEW_WINDOW, MULTI_WINDOW
@@ -323,14 +346,15 @@ app = PyWry(
     height=720,
 )
 
-# Display content - returns window label (str)
-label = app.show("<h1 id='greeting'>Hello</h1>")
+# Display content - returns NativeWindowHandle (implements BaseWidget protocol)
+handle = app.show("<h1 id='greeting'>Hello</h1>")
 
 # Update content using built-in utility event
-app.emit("pywry:set-content", {"id": "greeting", "text": "Hello from Python!"}, label)
+# NativeWindowHandle has emit() method and .label property
+handle.emit("pywry:set-content", {"id": "greeting", "text": "Hello from Python!"})
 ```
 
-> **Note:** For low-level access, you can also use `runtime.emit_event(widget.label, ...)` directly.
+> **Note:** For low-level access to the PyTauri runtime, use `from pywry import runtime` and call `runtime.emit_event(handle.label, ...)` directly. The `runtime` module is not re-exported in `__all__` but is importable from the pywry package.
 
 **Window Modes:**
 
@@ -401,7 +425,7 @@ Browser mode starts a FastAPI server and opens the widget URL in the browser. Us
 <details>
 <summary>Click to expand</summary>
 
-**In this section:** [Imports](#imports) · [PyWry Class](#pywry-class) · [Display Methods](#display-methods) · [Event Methods](#event-methods) · [Other Methods](#other-methods)
+**In this section:** [Imports](#imports) · [PyWry Class](#pywry-class) · [Display Methods](#display-methods) · [Widget Types](#widget-types) · [Event Methods](#event-methods) · [Other Methods](#other-methods) · [Window Management](#window-management)
 
 ---
 
@@ -419,9 +443,9 @@ from pywry import HtmlContent, WindowConfig
 
 # Toolbar components
 from pywry import (
-    Toolbar, Button, Select, MultiSelect, TextInput, NumberInput,
-    DateInput, SliderInput, RangeInput, Toggle, Checkbox, RadioGroup,
-    TabGroup, Div, Option, ToolbarItem
+    Toolbar, Button, Select, MultiSelect, TextInput, TextArea, SearchInput,
+    SecretInput, NumberInput, DateInput, SliderInput, RangeInput, Toggle,
+    Checkbox, RadioGroup, TabGroup, Div, Marquee, TickerItem, Option, ToolbarItem
 )
 
 # Plotly configuration (for customizing modebar, icons, buttons)
@@ -448,8 +472,11 @@ from pywry.widget_protocol import BaseWidget, NativeWindowHandle, is_base_widget
 # Window manager
 from pywry import BrowserMode, get_lifecycle
 
-# Settings
-from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, ServerSettings, HotReloadSettings, TimeoutSettings, AssetSettings, LogSettings
+# Settings (exported from pywry)
+from pywry import PyWrySettings, SecuritySettings, WindowSettings, ThemeSettings, HotReloadSettings, TimeoutSettings, AssetSettings, LogSettings
+
+# Settings (require full path import)
+from pywry.config import ServerSettings, DeploySettings
 
 # Asset loading
 from pywry import AssetLoader, get_asset_loader
@@ -472,9 +499,6 @@ from pywry.state import (
     UserSession,
     StateBackend,
 )
-
-# Deploy settings (for programmatic configuration)
-from pywry.config import DeploySettings
 ```
 
 ### PyWry Class
@@ -503,42 +527,51 @@ PyWry(
 
 ### Display Methods
 
-**`show(content, ...) -> str | BaseWidget`**
+**`show(content, ...) -> NativeWindowHandle | BaseWidget`**
 
 ```python
-label = app.show(
+handle = app.show(
     content,                    # str or HtmlContent
     title=None,                 # Window title override
-    width=None,                 # Window width override
+    width=None,                 # Window width override (int for pixels, str for CSS like "60%")
     height=None,                # Window height override
     callbacks=None,             # Dict of event handlers {"event:name": handler}
     include_plotly=False,       # Include Plotly.js
     include_aggrid=False,       # Include AgGrid
+    aggrid_theme="alpine",      # quartz, alpine, balham, material
     label=None,                 # Window label (auto-generated if None)
     watch=None,                 # Enable file watching for hot reload
     toolbars=None,              # List of Toolbar objects
 )
 ```
 
-**`show_plotly(figure, ...) -> str | BaseWidget`**
+**`show_plotly(figure, ...) -> NativeWindowHandle | BaseWidget`**
 
 ```python
-label = app.show_plotly(
+handle = app.show_plotly(
     figure,                     # Plotly Figure or dict
     title=None,
+    width=None,
+    height=None,
     callbacks=None,
     label=None,
     inline_css=None,
+    on_click=None,              # Click callback (notebook mode)
+    on_hover=None,              # Hover callback (notebook mode)
+    on_select=None,             # Selection callback (notebook mode)
     toolbars=None,
+    config=None,                # PlotlyConfig or dict
 )
 ```
 
-**`show_dataframe(data, ...) -> str | BaseWidget`**
+**`show_dataframe(data, ...) -> NativeWindowHandle | BaseWidget`**
 
 ```python
-label = app.show_dataframe(
+handle = app.show_dataframe(
     data,                       # pandas DataFrame or dict
     title=None,
+    width=None,
+    height=None,
     callbacks=None,
     label=None,
     column_defs=None,           # List of ColDef objects
@@ -546,6 +579,9 @@ label = app.show_dataframe(
     grid_options=None,          # GridOptions dict
     toolbars=None,
     inline_css=None,
+    on_cell_click=None,         # Cell click callback (notebook mode)
+    on_row_selected=None,       # Row selection callback (notebook mode)
+    server_side=False,          # Use server-side mode for large datasets (>10K rows)
 )
 ```
 
@@ -565,6 +601,12 @@ def my_handler(data: dict, event_type: str, label: str) -> None:
 
 **Sending Events to JavaScript:**
 
+> **Which `emit()` to use?**
+> - **Native mode** (`NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`): `show_*()` returns a string label → use `app.emit(event, data, label)`
+> - **Notebook/Browser mode** (`NOTEBOOK`, `BROWSER`): `show_*()` returns a widget → use `widget.emit(event, data)`
+>
+> The `callbacks={}` parameter in `show_*()` works identically in all modes.
+
 ```python
 from pywry import PyWry
 
@@ -582,17 +624,481 @@ app.emit("pywry:set-content", {"id": "title", "text": "Updated!"}, label)
 
 | Method | Description |
 |--------|-------------|
+| `emit(event_type, data, label=None)` | Send event to JavaScript in window(s) |
+| `alert(message, alert_type, ...)` | Show toast notification |
+| `on(event_type, handler, ...)` | Register event handler |
+| `on_grid(event_type, handler, ...)` | Register grid-specific event handler |
+| `on_chart(event_type, handler, ...)` | Register chart-specific event handler |
+| `on_toolbar(event_type, handler, ...)` | Register toolbar-specific event handler |
+| `on_html(event_type, handler, ...)` | Register HTML element event handler |
+| `on_window(event_type, handler, ...)` | Register window lifecycle event handler |
 | `eval_js(script, label=None)` | Execute JavaScript in window(s) |
 | `update_content(html, label=None)` | Update window HTML content |
-| `close(label=None)` | Close specific or all windows |
-| `destroy()` | Close all windows and cleanup |
+| `refresh(label=None)` | Refresh window content |
+| `refresh_css(label=None)` | Hot-reload CSS without page refresh |
 | `enable_hot_reload()` | Enable hot reload |
 | `disable_hot_reload()` | Disable hot reload |
-| `refresh_css(label=None)` | Hot-reload CSS without page refresh |
+| `get_lifecycle()` | Get WindowLifecycle manager |
+
+### Widget Types
+
+All `show_*()` methods return a widget object that implements the `BaseWidget` protocol. The specific type depends on the rendering environment:
+
+| Type | Environment | Description |
+|------|-------------|-------------|
+| [NativeWindowHandle](#nativewindowhandle) | Desktop/Terminal | Handle for native OS windows |
+| [WindowProxy](#windowproxy) | via `handle.proxy` | Full WebviewWindow API access |
+| [PyWryWidget](#pywrywidget) | Jupyter with anywidget | anywidget-based notebook widget |
+| [InlineWidget](#inlinewidget) | Jupyter fallback / Browser | FastAPI server + IFrame widget |
+
+All widget types share a common API defined by the `BaseWidget` protocol:
+
+| Method | Description |
+|--------|-------------|
+| `emit(event_type, data)` | Send event from Python → JavaScript |
+| `on(event_type, callback)` | Register callback for JS → Python events |
+| `update(html)` | Update widget HTML content |
+| `display()` | Display widget (notebooks only) |
+| `label` | Property: unique widget/window identifier |
+
+#### NativeWindowHandle
+
+Handle for native desktop windows. Returned by `show_*()` methods when running in desktop/terminal mode. Wraps native window resources and provides the same API as notebook widgets.
+
+<details>
+<summary><strong>Usage Example</strong></summary>
+
+```python
+from pywry import PyWry
+
+app = PyWry()
+handle = app.show("<h1>Hello</h1>", title="My Window")
+
+# BaseWidget protocol methods
+handle.emit("update", {"value": 42})        # Send event to JS
+handle.on("click", my_handler)              # Register callback
+handle.update("<h1>New content</h1>")       # Update HTML
+print(handle.label)                         # Window label identifier
+
+# Window control methods
+handle.close()                              # Close/destroy window
+handle.hide()                               # Hide (keep alive)
+handle.show_window()                        # Show hidden window
+handle.eval_js("console.log('Hi')")         # Execute JavaScript
+
+# Window state methods
+handle.maximize()                           # Maximize window
+handle.minimize()                           # Minimize window
+handle.center()                             # Center on screen
+handle.set_title("New Title")               # Change title
+handle.set_size(1024, 768)                  # Resize window
+
+# Advanced: WindowProxy access
+handle.proxy.set_always_on_top(True)        # Full WebviewWindow API
+handle.proxy.open_devtools()                # Open developer tools
+handle.proxy.set_zoom(1.5)                  # Set zoom level
+
+# Metadata access
+print(handle.resources.created_at)          # Window creation time
+print(handle.resources.config.title)        # Window configuration
+```
+
+</details>
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `str` | Window label identifier |
+| `resources` | `WindowResources` | Window metadata (config, creation time, watched files) |
+| `proxy` | `WindowProxy` | Full WebviewWindow API access |
+
+**Window Control Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `close()` | Close and destroy the window |
+| `hide()` | Hide window without destroying |
+| `show_window()` | Show a hidden window |
+| `eval_js(script)` | Execute JavaScript in window |
+| `maximize()` | Maximize window |
+| `minimize()` | Minimize window |
+| `center()` | Center window on screen |
+| `set_title(title)` | Set window title |
+| `set_size(width, height)` | Set window dimensions |
+
+#### WindowProxy
+
+Full WebviewWindow API access for native windows. Accessed via `handle.proxy` property on `NativeWindowHandle`. Provides direct IPC to the pytauri subprocess for complete window control.
+
+```python
+proxy = handle.proxy  # Get WindowProxy from NativeWindowHandle
+
+# State queries
+print(proxy.is_maximized)       # bool
+print(proxy.is_fullscreen)      # bool
+print(proxy.title)              # str
+print(proxy.scale_factor)       # float
+
+# Window actions
+proxy.maximize()
+proxy.center()
+proxy.set_always_on_top(True)
+
+# Appearance
+proxy.set_background_color((30, 30, 30, 255))  # RGBA tuple
+proxy.set_theme(Theme.DARK)
+proxy.set_decorations(False)
+
+# Webview operations
+proxy.navigate("https://example.com")
+proxy.set_zoom(1.5)
+proxy.open_devtools()
+```
+
+<details>
+<summary><strong>State Properties (Read-Only)</strong></summary>
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `str` | Window label |
+| `title` | `str` | Window title |
+| `url` | `str` | Current URL |
+| `theme` | `Theme` | Current theme |
+| `scale_factor` | `float` | Display scale factor |
+| `inner_position` | `PhysicalPosition` | Inner position (x, y) |
+| `outer_position` | `PhysicalPosition` | Outer position (x, y) |
+| `inner_size` | `PhysicalSize` | Inner dimensions (width, height) |
+| `outer_size` | `PhysicalSize` | Outer dimensions (width, height) |
+| `cursor_position` | `PhysicalPosition` | Cursor position relative to window |
+| `current_monitor` | `Monitor \| None` | Current monitor info |
+| `primary_monitor` | `Monitor \| None` | Primary monitor info |
+| `available_monitors` | `list[Monitor]` | All available monitors |
+
+</details>
+
+<details>
+<summary><strong>Boolean State Properties</strong></summary>
+
+| Property | Description |
+|----------|-------------|
+| `is_fullscreen` | Window is in fullscreen mode |
+| `is_minimized` | Window is minimized |
+| `is_maximized` | Window is maximized |
+| `is_focused` | Window has focus |
+| `is_decorated` | Window has decorations (title bar, borders) |
+| `is_resizable` | Window can be resized |
+| `is_enabled` | Window is enabled |
+| `is_visible` | Window is visible |
+| `is_closable` | Window can be closed |
+| `is_maximizable` | Window can be maximized |
+| `is_minimizable` | Window can be minimized |
+| `is_always_on_top` | Window stays above others |
+| `is_devtools_open` | DevTools is open |
+
+</details>
+
+<details>
+<summary><strong>Window Actions (No Parameters)</strong></summary>
+
+| Method | Description |
+|--------|-------------|
+| `show()` | Show the window |
+| `hide()` | Hide the window |
+| `close()` | Close the window |
+| `destroy()` | Destroy the window |
+| `maximize()` | Maximize the window |
+| `unmaximize()` | Restore from maximized |
+| `minimize()` | Minimize the window |
+| `unminimize()` | Restore from minimized |
+| `center()` | Center window on screen |
+| `set_focus()` | Set focus to window |
+| `reload()` | Reload the webview |
+| `print_page()` | Print the page |
+| `open_devtools()` | Open DevTools |
+| `close_devtools()` | Close DevTools |
+| `clear_all_browsing_data()` | Clear all browsing data |
+| `start_dragging()` | Start window dragging |
+
+</details>
+
+<details>
+<summary><strong>Window Actions (With Parameters)</strong></summary>
+
+| Method | Parameters | Description | Platform |
+|--------|------------|-------------|----------|
+| `request_user_attention(type)` | `UserAttentionType \| None` | Flash/bounce window | All |
+| `set_title(title)` | `str` | Set window title | All |
+| `set_size(size)` | `SizeType` | Set window size | All |
+| `set_min_size(size)` | `SizeType \| None` | Set minimum size | All |
+| `set_max_size(size)` | `SizeType \| None` | Set maximum size | All |
+| `set_position(pos)` | `PositionType` | Set window position | All |
+| `set_fullscreen(enable)` | `bool` | Toggle fullscreen | All |
+| `set_decorations(enable)` | `bool` | Toggle decorations | All |
+| `set_always_on_top(enable)` | `bool` | Toggle always-on-top | All |
+| `set_resizable(enable)` | `bool` | Toggle resizable | All |
+| `set_enabled(enable)` | `bool` | Toggle enabled | Windows |
+| `set_closable(enable)` | `bool` | Toggle closable | macOS |
+| `set_maximizable(enable)` | `bool` | Toggle maximizable | macOS |
+| `set_minimizable(enable)` | `bool` | Toggle minimizable | macOS |
+| `set_visible_on_all_workspaces(enable)` | `bool` | Toggle multi-workspace visibility | macOS, Linux |
+| `set_skip_taskbar(skip)` | `bool` | Toggle taskbar visibility | Windows, Linux |
+| `set_cursor_icon(icon)` | `CursorIcon` | Set cursor icon | All |
+| `set_cursor_position(pos)` | `PositionType` | Set cursor position | All |
+| `set_cursor_visible(visible)` | `bool` | Toggle cursor visibility | All |
+| `set_cursor_grab(grab)` | `bool` | Toggle cursor grab | All |
+| `set_icon(icon)` | `bytes \| None` | Set window icon (PNG bytes) | Windows, Linux |
+| `set_shadow(enable)` | `bool` | Toggle window shadow | Windows, macOS |
+| `set_title_bar_style(style)` | `TitleBarStyle` | Set title bar style | macOS |
+| `set_theme(theme)` | `Theme \| None` | Set window theme | All |
+
+</details>
+
+<details>
+<summary><strong>Webview Operations</strong></summary>
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `eval(script)` | `str` | Execute JavaScript (fire-and-forget) |
+| `eval_with_result(script, timeout)` | `str`, `float` | Execute JavaScript and return result |
+| `navigate(url)` | `str` | Navigate to URL |
+| `set_zoom(scale)` | `float` | Set zoom level |
+| `set_background_color(color)` | `Color` | Set background color (r, g, b, a) |
+
+</details>
+
+<details>
+<summary><strong>Visual Effects & Progress (Platform-Specific)</strong></summary>
+
+| Method | Parameters | Description | Platform |
+|--------|------------|-------------|----------|
+| `set_effects(effects)` | `Effects` | Set window visual effects | Windows, macOS |
+| `set_progress_bar(state)` | `ProgressBarState` | Set progress indicator | Windows (taskbar), macOS (dock) |
+| `set_badge_count(count)` | `int \| None` | Set badge count | macOS (dock), Linux (some DEs) |
+| `set_overlay_icon(icon)` | `bytes \| None` | Set overlay icon on taskbar | Windows only |
+
+**EffectState Values (for `Effects.effects` list):**
+
+| Value | Platform | Description |
+|-------|----------|-------------|
+| `BLUR` | Windows | Standard blur effect |
+| `ACRYLIC` | Windows | Acrylic blur (Windows 10+) |
+| `MICA` | Windows | Mica material (Windows 11+) |
+| `MICA_DARK` | Windows | Mica dark variant |
+| `MICA_LIGHT` | Windows | Mica light variant |
+| `TABBED` | Windows | Tabbed Mica variant |
+| `TABBED_DARK` | Windows | Tabbed dark variant |
+| `TABBED_LIGHT` | Windows | Tabbed light variant |
+| `UNDER_WINDOW_BACKGROUND` | macOS | Behind window vibrancy |
+| `CONTENT_BACKGROUND` | macOS | Content area vibrancy |
+| `SIDEBAR` | macOS | Sidebar vibrancy |
+| `HEADER_VIEW` | macOS | Header vibrancy |
+| `SHEET` | macOS | Sheet vibrancy |
+| `WINDOW_BACKGROUND` | macOS | Window background vibrancy |
+| `HUD_WINDOW` | macOS | HUD overlay vibrancy |
+| `FULLSCREEN_UI` | macOS | Fullscreen UI vibrancy |
+| `TOOLTIP` | macOS | Tooltip vibrancy |
+| `MENU` | macOS | Menu vibrancy |
+| `POPOVER` | macOS | Popover vibrancy |
+| `SELECTION` | macOS | Selection vibrancy |
+
+**ProgressBarState Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `progress` | `float \| None` | Progress value (0.0 - 1.0), or None for indeterminate |
+| `status` | `ProgressBarStatus` | Status indicator: `NONE`, `NORMAL`, `INDETERMINATE`, `PAUSED`, `ERROR` |
+
+</details>
+
+<details>
+<summary><strong>Cookie Management</strong></summary>
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `cookies()` | — | Get all cookies |
+| `set_cookie(cookie)` | `Cookie` | Set a cookie |
+| `delete_cookie(name)` | `str` | Delete cookie by name |
+
+</details>
+
+#### PyWryWidget
+
+> **Requires:** `pip install 'pywry[notebook]'` (installs anywidget)
+
+anywidget-based notebook widget. Returned by `show_*()` methods when running in Jupyter with anywidget installed. Provides real-time bidirectional communication via traitlet sync. **Best performance for notebooks.**
+
+If anywidget is not installed, PyWry automatically falls back to [InlineWidget](#inlinewidget).
+
+<details>
+<summary><strong>Usage Example</strong></summary>
+
+```python
+from pywry import PyWry
+
+app = PyWry()
+widget = app.show("<h1>Hello</h1>")
+
+# BaseWidget protocol methods
+widget.emit("update", {"value": 42})
+widget.on("click", my_handler)
+widget.update("<h1>New content</h1>")
+widget.display()  # Show in notebook cell
+
+# Access widget properties
+print(widget.label)   # Widget ID
+print(widget.content) # Current HTML content
+print(widget.theme)   # 'dark' or 'light'
+```
+
+</details>
+
+**Traitlet Properties (synced with frontend):**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `content` | `str` | `""` | HTML content to render |
+| `theme` | `str` | `"dark"` | Color theme |
+| `width` | `str` | `"100%"` | Widget width (CSS value) |
+| `height` | `str` | `"500px"` | Widget height (CSS value) |
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `emit(event_type, data)` | Send event to JavaScript |
+| `on(event_type, callback)` | Register event callback |
+| `update(html)` | Update HTML content |
+| `set_content(content)` | Alias for `update()` |
+| `display()` | Display widget in notebook cell |
+| `from_html(content, callbacks, ...)` | Class method to create widget from HTML |
+
+**Factory Method:**
+
+```python
+# Create widget directly with callbacks
+widget = PyWryWidget.from_html(
+    content="<h1>Hello</h1>",
+    callbacks={"button:click": my_handler},
+    theme="dark",
+    width="100%",
+    height="500px",
+    toolbars=[...],  # Optional toolbar configs
+)
+```
+
+#### InlineWidget
+
+FastAPI + IFrame widget. Returned when anywidget is not available or in browser mode. Uses FastAPI server with WebSocket communication.
+
+<details>
+<summary><strong>Usage Example</strong></summary>
+
+```python
+from pywry import PyWry
+
+app = PyWry()
+widget = app.show("<h1>Hello</h1>")
+
+# BaseWidget protocol methods
+widget.emit("update", {"value": 42})
+widget.on("click", my_handler)
+widget.update("<h1>New content</h1>")
+widget.display()  # Show IFrame in notebook
+
+# Widget properties
+print(widget.label)      # Widget ID
+print(widget.widget_id)  # Same as label
+print(widget.url)        # http://localhost:8765/widget/{id}
+
+# Open in browser
+widget.open_in_browser()
+
+# Toast notifications
+widget.alert("Success!", alert_type="success")
+```
+
+</details>
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `widget_id` | `str` | Unique widget identifier |
+| `label` | `str` | Alias for `widget_id` (BaseWidget protocol) |
+| `url` | `str` | Full URL to access widget |
+| `output` | `Output` | IPython Output widget for callback messages |
+
+**Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `emit(event_type, data)` | Send event to JavaScript |
+| `send(event_type, data)` | Alias for `emit()` |
+| `on(event_type, callback)` | Register event callback |
+| `update(html)` | Update HTML content |
+| `update_html(html)` | Alias for `update()` |
+| `display()` | Display IFrame and output widget in notebook |
+| `open_in_browser()` | Open widget URL in system browser |
+| `alert(message, ...)` | Show toast notification |
+
+<details>
+<summary><strong>Toast Notifications</strong></summary>
+
+```python
+# Basic alerts
+widget.alert("Operation complete", alert_type="success")
+widget.alert("Something went wrong", alert_type="error")
+widget.alert("Please confirm", alert_type="warning")
+
+# With options
+widget.alert(
+    message="File saved successfully",
+    alert_type="success",
+    title="Save Complete",
+    duration=5000,           # Auto-dismiss after 5 seconds
+    position="bottom-right", # top-right, top-left, bottom-right, bottom-left
+)
+
+# Confirmation dialog
+widget.alert(
+    message="Delete this item?",
+    alert_type="confirm",
+    callback_event="confirm:delete",  # Emits event with user response
+)
+```
+
+</details>
+
+<details>
+<summary><strong>Constructor Parameters</strong></summary>
+
+```python
+InlineWidget(
+    html: str,                        # HTML content to render
+    callbacks: dict | None = None,    # Event callbacks
+    width: str = "100%",              # Widget width
+    height: int = 500,                # Widget height in pixels
+    port: int | None = None,          # Server port (default from settings)
+    widget_id: str | None = None,     # Custom widget ID
+    headers: dict | None = None,      # Custom HTTP headers
+    auth: Any | None = None,          # Authentication config
+    browser_only: bool = False,       # Skip IPython requirement
+    token: str | None = None,         # Widget access token
+)
+```
+
+</details>
+
+Used as fallback when anywidget unavailable, or for browser mode deployment.
 
 ### Window Management
 
-PyWry provides fine-grained control over window visibility and lifecycle. Windows can be shown, hidden, and closed independently.
+> **See also:** [Managing Multiple Windows/Widgets](#managing-multiple-windowswidgets) for comprehensive coverage of both native windows and notebook widgets, including return types, widget properties, and lifecycle management.
+
+PyWry provides fine-grained control over window visibility and lifecycle through [NativeWindowHandle](#nativewindowhandle) methods and `PyWry` app methods. Windows can be shown, hidden, and closed independently.
+
+**App-Level Methods (operate on labels):**
 
 | Method | Description |
 |--------|-------------|
@@ -602,6 +1108,19 @@ PyWry provides fine-grained control over window visibility and lifecycle. Window
 | `close()` | Close/destroy all windows |
 | `get_labels()` | Get list of currently visible window labels |
 | `block(label=None)` | Block until specific window or all windows close |
+
+**Handle-Level Methods (via NativeWindowHandle):**
+
+You can also control windows directly through the [NativeWindowHandle](#nativewindowhandle) returned by `show_*()`:
+
+```python
+handle = app.show("<h1>Hello</h1>")
+handle.hide()         # Same as app.hide_window(handle.label)
+handle.show_window()  # Same as app.show_window(handle.label)
+handle.close()        # Same as app.close(handle.label)
+```
+
+See [NativeWindowHandle](#nativewindowhandle) for the full API including `maximize()`, `minimize()`, `center()`, `set_title()`, and `proxy` access.
 
 **Window Lifecycle:**
 
@@ -1309,6 +1828,8 @@ label = app.show(
 
 PyWry automatically hooks into Plotly and AgGrid event systems. These **pre-registered events** are emitted automatically when users interact with charts and grids — **no JavaScript required**.
 
+**In this section:** [What "Pre-Registered" Means](#what-pre-registered-means) · [Understanding IDs](#understanding-ids-label-vs-chartidgrididcomponentid) · [System Events](#system-events-pywry) · [Toast Notifications](#toast-notifications-pywryalert) · [Plotly Events](#plotly-events-plotly) · [AgGrid Events](#aggrid-events-grid) · [Toolbar Events](#toolbar-events-toolbar)
+
 ### What "Pre-Registered" Means
 
 When you create a Plotly chart or AgGrid table, PyWry injects JavaScript that:
@@ -1345,7 +1866,8 @@ These are internal events for window/widget lifecycle and utility operations.
 |-------|---------|-------------|
 | `pywry:ready` | `{}` | Window/widget has finished initializing |
 | `pywry:result` | `any` | Data sent via `window.pywry.result(data)` |
-| `pywry:disconnect` | `{}` | Widget disconnected (browser closed, tab closed) |
+| `pywry:content-request` | `{ widget_type, window_label, reason }` | Window requests content (initial load or reload) |
+| `pywry:disconnect` | `{}` | Widget disconnected (inline/browser mode only) |
 
 #### Utility Events (Python → JS)
 
@@ -1355,13 +1877,15 @@ These events trigger built-in browser behaviors. They are handled automatically 
 |-------|---------|-------------|
 | `pywry:update-theme` | `{ theme: str }` | Update theme dynamically (e.g., `"plotly_dark"`, `"plotly_white"`) |
 | `pywry:inject-css` | `{ css: str, id?: str }` | Inject CSS dynamically; optional `id` for replacing existing styles |
+| `pywry:remove-css` | `{ id: str }` | Remove a previously injected CSS style element by ID |
 | `pywry:set-style` | `{ id?: str, selector?: str, styles: {} }` | Update inline styles on element(s) by id or CSS selector |
 | `pywry:set-content` | `{ id?: str, selector?: str, html?: str, text?: str }` | Update innerHTML or textContent on element(s) |
-| `pywry:download` | `{ content: str, filename: str, mimeType?: str }` | Trigger a file download (IFrame/browser mode only) |
+| `pywry:update-html` | `{ html: str }` | Replace entire widget/window HTML content |
+| `pywry:download` | `{ content: str, filename: str, mimeType?: str }` | Trigger a file download |
 | `pywry:download-csv` | `{ csv: str, filename: str }` | Trigger a CSV file download (Jupyter widget mode) |
 | `pywry:navigate` | `{ url: str }` | Navigate to a URL (SPA-style navigation) |
 | `pywry:alert` | `{ message, type?, title?, duration?, position? }` | Show a toast notification (info, success, warning, error, confirm) |
-| `pywry:update-html` | `{ html: str }` | Replace widget content (triggers page reload) |
+| `pywry:refresh` | `{}` | Request fresh content from Python (triggers content re-send) |
 
 **Example: DOM Manipulation Without Custom JavaScript**
 
@@ -1668,6 +2192,9 @@ Use these to update the chart programmatically. These methods support optional `
 | `plotly:update-traces` | `widget.update_traces({...}, indices)` | `{ update: {...}, indices: [int, ...] or null }` |
 | `plotly:reset-zoom` | `widget.reset_zoom()` | `{}` |
 | `plotly:request-state` | `widget.request_plotly_state(chart_id=...)` | `{ chartId? }` |
+| `plotly:export-data` | `app.emit("plotly:export-data", {chartId?}, label)` | `{ chartId? }` |
+
+> **Note:** `plotly:export-data` triggers `plotly:export-response` (JS → Python) with payload `{ data: [{ traceIndex, name, x, y, type }, ...] }` containing extracted trace data.
 
 ### AgGrid Events (`grid:*`)
 
@@ -1728,13 +2255,16 @@ Use these to update the grid programmatically. These methods support optional `g
 
 | Event | Method | Payload |
 |-------|--------|---------|
-| `grid:update-data` | `widget.update_data(rows, grid_id=...)` | `{ data: [...], gridId? }` |
+| `grid:page-response` | (server-side callback) | `{ gridId, rows: [...], totalRows, isLastPage, requestId }` |
+| `grid:update-data` | `widget.update_data(rows, grid_id=...)` | `{ data: [...], gridId?, strategy? }` |
 | `grid:update-columns` | `widget.update_columns(col_defs, grid_id=...)` | `{ columnDefs: [...], gridId? }` |
 | `grid:update-cell` | `widget.update_cell(row_id, col, value, grid_id=...)` | `{ rowId, colId, value, gridId? }` |
-| `grid:update-options` | `widget.update_grid(options, grid_id=...)` | `{ options: {...}, gridId? }` |
-| `grid:request-state` | `widget.request_grid_state(grid_id=...)` | `{ gridId? }` |
+| `grid:update-grid` | `widget.update_grid(options, grid_id=...)` | `{ data?, columnDefs?, restoreState?, gridId? }` |
+| `grid:request-state` | `widget.request_grid_state(grid_id=...)` | `{ gridId?, context? }` |
 | `grid:restore-state` | `widget.restore_state(state, grid_id=...)` | `{ state: {...}, gridId? }` |
 | `grid:reset-state` | `widget.reset_state(grid_id=...)` | `{ gridId?, hard?: bool }` |
+| `grid:update-theme` | `widget.update_theme(theme, grid_id=...)` | `{ theme, gridId? }` |
+| `grid:show-notification` | (internal) | `{ message, duration?, gridId? }` |
 
 ### Toolbar Events (`toolbar:*`)
 
@@ -1759,6 +2289,13 @@ These events are emitted automatically when users interact with toolbar chrome:
 | `toolbar:set-value` | Python → JS | `{ componentId, value, toolbarId? }` | Set single component value |
 | `toolbar:set-values` | Python → JS | `{ values: { id: value, ... }, toolbarId? }` | Set multiple component values |
 
+#### Marquee Events
+
+| Event | Direction | Payload | Description |
+|-------|-----------|---------|-------------|
+| `toolbar:marquee-set-content` | Python → JS | `{ id, text?, html?, speed?, paused?, separator? }` | Update marquee content or settings |
+| `toolbar:marquee-set-item` | Python → JS | `{ ticker, text?, html?, styles?, class_add?, class_remove? }` | Update individual ticker item by `data-ticker` |
+
 > **Note:** Toolbar *components* (Button, Select, etc.) emit their own custom events that you define via the `event` parameter. All component events automatically include `componentId` in their payload. See the Toolbar System section.
 
 ---
@@ -1769,6 +2306,8 @@ Custom events are events **you define** for your application. Unlike pre-registe
 
 1. Use toolbar components (which emit events automatically), or
 2. Write JavaScript that calls `window.pywry.emit()`
+
+**In this section:** [Event Direction Overview](#event-direction-overview) · [JS → Python](#js--python-receiving-events-from-javascript) · [Python → JS](#python--js-sending-events-to-javascript) · [Two-Way Communication](#complete-two-way-communication-example)
 
 ### Event Direction Overview
 
@@ -2047,6 +2586,9 @@ from pywry import (
     Select,            # Single-select dropdown
     MultiSelect,       # Multi-select dropdown with checkboxes
     TextInput,         # Text input with debounce
+    TextArea,          # Multi-line text area with resize
+    SearchInput,       # Search input with magnifying glass icon
+    SecretInput,       # Password/secret input with visibility toggle
     NumberInput,       # Numeric input with min/max/step
     DateInput,         # Date picker (YYYY-MM-DD)
     SliderInput,       # Single-value slider
@@ -2056,6 +2598,8 @@ from pywry import (
     RadioGroup,        # Radio button group
     TabGroup,          # Tab-style selection
     Div,               # Container for custom HTML/nested items
+    Marquee,           # Scrolling text/content ticker
+    TickerItem,        # Helper for updatable items within Marquee
     Option,            # Option for Select/MultiSelect/RadioGroup/TabGroup
 )
 ```
@@ -2184,6 +2728,20 @@ All toolbar items share these properties:
 
 ### Component Reference
 
+PyWry provides **18 toolbar components** for building interactive UIs. Expand the details below for each component's full documentation.
+
+| Input Components | Selection Components | Container/Display |
+|------------------|---------------------|-------------------|
+| Button | Select | Div |
+| TextInput | MultiSelect | Marquee |
+| TextArea | RadioGroup | TickerItem |
+| SearchInput | TabGroup | Option |
+| SecretInput | Toggle | |
+| NumberInput | Checkbox | |
+| DateInput | | |
+| SliderInput | | |
+| RangeInput | | |
+
 <details>
 <summary><strong>Button</strong> — Clickable button with optional data payload</summary>
 
@@ -2265,6 +2823,277 @@ TextInput(
 ```
 
 **Emits:** `{ value: str, componentId: str }` after debounce delay.
+
+</details>
+
+<details>
+<summary><strong>TextArea</strong> — Multi-line text area with resize</summary>
+
+```python
+TextArea(
+    label="Notes:",
+    event="notes:update",
+    value="",                   # Initial text content
+    placeholder="Enter notes...",
+    debounce=300,               # Delay in ms before emitting (default: 300)
+    rows=3,                     # Initial visible text rows (default: 3)
+    cols=40,                    # Initial visible columns (default: 40)
+    resize="vertical",          # both|horizontal|vertical|none (default: both)
+    min_height="50px",          # Minimum height CSS value
+    max_height="500px",         # Maximum height CSS value
+)
+```
+
+The textarea is resizable by default. Use `resize` to control behavior.
+
+**Emits:** `{ value: str, componentId: str }` after debounce delay.
+
+</details>
+
+<details>
+<summary><strong>SearchInput</strong> — Search input with magnifying glass icon</summary>
+
+```python
+SearchInput(
+    label="Filter:",
+    event="filter:search",
+    value="",                   # Current search text
+    placeholder="Search...",    # Default placeholder
+    debounce=300,               # Delay in ms before emitting (default: 300)
+    spellcheck=False,           # Browser spell checking (default: False)
+    autocomplete="off",         # Browser autocomplete (default: "off")
+)
+```
+
+Includes a theme-aware magnifying glass icon on the left. Browser behaviors (spellcheck, autocomplete, autocorrect, autocapitalize) are disabled by default for cleaner search/filter UX.
+
+**Emits:** `{ value: str, componentId: str }` after debounce delay.
+
+</details>
+
+<details>
+<summary><strong>SecretInput</strong> — Password/secret input with visibility toggle</summary>
+
+**In this section:** [Security Model](#security-model) · [How It Works](#how-it-works-full-chain) · [Default Behavior](#default-behavior-no-handler) · [Pre-populated Value](#pre-populated-value-from-database) · [Custom Handler](#custom-handler-external-vault-database-etc) · [Events Emitted](#events-emitted) · [Utility Functions](#utility-functions)
+
+```python
+SecretInput(
+    label="API Key:",
+    event="settings:api_key",
+    value="my-secret",          # Stored as SecretStr (NEVER rendered in HTML)
+    placeholder="Enter key...",
+    show_toggle=True,           # Show visibility toggle button (default: True)
+    show_copy=True,             # Show copy to clipboard button (default: True)
+    value_exists=None,          # Override has_value detection (for external vaults)
+    handler=my_handler,         # Optional custom handler for external storage
+)
+```
+
+#### Security Model
+
+**The secret value is NEVER rendered in HTML.** When a value exists, the input displays a fixed mask (`••••••••••••`). The show/copy buttons emit events that request the secret from the Python backend — secrets are only transmitted on explicit user action and never embedded in the DOM.
+
+Values are base64-encoded in transit for obfuscation (not encryption — use HTTPS for security).
+
+#### How It Works (Full Chain)
+
+<details>
+<summary><strong>Event Flow Diagram</strong></summary>
+
+**1. Initialization — Setting a value:**
+
+When you create a `SecretInput` with a `value`, it's stored as a Pydantic `SecretStr` and registered in an internal `_SECRET_REGISTRY` keyed by `component_id`. The HTML only contains a mask.
+
+```python
+# Value stored internally, mask shown in UI
+SecretInput(label="API Key:", event="key:change", value="sk-abc123")
+```
+
+**2. User clicks Show (👁) button:**
+
+```
+Frontend                                        Backend
+────────                                        ───────
+    │                                               │
+    ├─── emit("{event}:reveal", {componentId}) ────►│
+    │                                               │ Looks up secret
+    │                                               │ from registry/handler
+    │                                               │
+    │◄── emit("{event}:reveal-response") ───────────┤
+    │         {value: "base64...", encoded: true}   │
+    │                                               │
+    └─── Decode & display in input                  │
+```
+
+**3. User clicks Copy (📋) button:**
+
+Same flow as reveal, but copies to clipboard instead of displaying.
+
+**4. User edits the value:**
+
+Clicking the Edit (✏) button opens a textarea. On confirm (blur or Ctrl+Enter), the new value is base64-encoded and emitted:
+
+```python
+# Backend receives: {value: "c2stbmV3a2V5MTIz", encoded: True, componentId: "secret-a1b2c3d4"}
+```
+
+</details>
+
+#### Default Behavior (No Handler)
+
+Without a custom `handler`, SecretInput uses an internal in-memory registry:
+
+```python
+from pywry.toolbar import register_secret, get_secret, clear_secret
+
+# Automatic on render:
+register_secret("secret-a1b2c3d4", SecretStr("my-value"))
+
+# On reveal/copy:
+value = get_secret("secret-a1b2c3d4")  # Returns "my-value"
+```
+
+The reveal/copy events are automatically handled by PyWry's callback system.
+
+#### Pre-populated Value from Database
+
+To display a SecretInput with a value that exists externally (database, vault, env var), use `value_exists=True` to show the mask without providing the actual secret:
+
+```python
+SecretInput(
+    label="Database Password:",
+    event="db:password",
+    value_exists=True,  # Shows mask, handler provides actual value on reveal
+    handler=db_password_handler,
+)
+```
+
+When `value_exists=True`:
+- The mask (••••••••••••) is displayed
+- No secret is stored in Python memory
+- Your `handler` must provide the value on reveal/copy
+
+#### Custom Handler (External Vault, Database, etc.)
+
+The `handler` is called for **both** get and set operations:
+
+```python
+def handler(
+    value: str | None,      # None = get, string = set
+    *,
+    component_id: str,      # Unique ID like "secret-a1b2c3d4"
+    event: str,             # Event name like "settings:api_key"
+    label: str | None,      # Label text if provided
+    **metadata,             # Additional context
+) -> str | None:
+    """Return secret on get, store and return on set."""
+```
+
+<details>
+<summary><strong>Database Handler Example</strong></summary>
+
+```python
+from pywry import PyWry, Toolbar, SecretInput
+import database  # Your database module
+
+app = PyWry()
+
+def api_key_handler(
+    value: str | None,
+    *,
+    component_id: str,
+    event: str,
+    label: str | None = None,
+    **metadata,
+) -> str | None:
+    """Fetch from or store to database."""
+    user_id = get_current_user_id()
+    
+    if value is None:
+        # GET: User clicked show/copy — fetch from database
+        row = database.query(
+            "SELECT api_key FROM user_settings WHERE user_id = ?",
+            user_id
+        )
+        return row["api_key"] if row else None
+    else:
+        # SET: User edited the value — store to database
+        database.execute(
+            "INSERT OR REPLACE INTO user_settings (user_id, api_key) VALUES (?, ?)",
+            user_id, value
+        )
+        return value
+
+# Check if user already has a key set
+has_existing_key = database.query(
+    "SELECT 1 FROM user_settings WHERE user_id = ?", user_id
+) is not None
+
+toolbar = Toolbar(
+    position="top",
+    items=[
+        SecretInput(
+            label="API Key:",
+            event="settings:api_key",
+            value_exists=has_existing_key,  # Show mask if key exists
+            handler=api_key_handler,
+        ),
+    ],
+)
+
+app.show("<h1>Settings</h1>", toolbars=[toolbar])
+```
+
+</details>
+
+<details>
+<summary><strong>Environment Variable Example</strong></summary>
+
+```python
+import os
+
+def env_handler(value: str | None, *, component_id: str, **_) -> str | None:
+    """Read from environment, warn on write attempts."""
+    if value is None:
+        return os.environ.get("MY_API_KEY")
+    else:
+        print("Warning: Cannot write to environment variables at runtime")
+        return None
+
+SecretInput(
+    label="API Key (from env):",
+    event="env:api_key",
+    value_exists="MY_API_KEY" in os.environ,
+    handler=env_handler,
+    disabled=True,  # Read-only since we can't write to env
+)
+```
+
+</details>
+
+#### Events Emitted
+
+| Event | Direction | Payload | Description |
+|-------|-----------|---------|-------------|
+| `{event}` | JS → Python | `{ value, componentId, encoded: true }` | User edited value (base64) |
+| `{event}:reveal` | JS → Python | `{ componentId }` | User clicked show button |
+| `{event}:reveal-response` | Python → JS | `{ componentId, value, encoded: true }` | Backend response with secret |
+| `{event}:copy` | JS → Python | `{ componentId }` | User clicked copy button |
+| `{event}:copy-response` | Python → JS | `{ componentId, value, encoded: true }` | Backend response for clipboard |
+
+#### Utility Functions
+
+```python
+from pywry.toolbar import (
+    register_secret,    # Store secret: register_secret(component_id, SecretStr("..."))
+    get_secret,         # Retrieve secret: get_secret(component_id) -> str | None
+    clear_secret,       # Remove secret: clear_secret(component_id)
+    encode_secret,      # Base64 encode: encode_secret("value") -> "dmFsdWU="
+    decode_secret,      # Base64 decode: decode_secret("dmFsdWU=") -> "value"
+    set_secret_handler, # Set custom handler for specific event
+    get_secret_handler, # Get custom handler for event
+)
+```
 
 </details>
 
@@ -2442,6 +3271,357 @@ Div(
 Container for grouping items or injecting custom HTML. Supports unlimited nesting.
 
 **Emits:** No automatic events (children emit their own events).
+
+</details>
+
+<details>
+<summary><strong>Marquee</strong> — Scrolling text/content ticker</summary>
+
+**In this section:** [Content Types](#content-types) · [Behavior & Direction](#behavior--direction-options) · [Dynamic Updates](#dynamic-updates-python--js) · [Events](#events)
+
+```python
+Marquee(
+    text="Breaking News: Stock prices are up 5% today!",
+    event="ticker:click",           # Emitted when clicked (if clickable=True)
+    speed=15,                       # Seconds per scroll cycle (default: 15, lower = faster)
+    direction="left",               # left|right|up|down (default: left)
+    behavior="scroll",              # scroll|alternate|slide (default: scroll)
+    pause_on_hover=True,            # Pause animation on hover (default: True)
+    gap=50,                         # Gap in pixels between repeated content (default: 50)
+    clickable=False,                # Emit event when clicked (default: False)
+    separator=" • ",                # Optional separator between repeated content
+    children=[...],                 # Nested toolbar items (alternative to text)
+)
+```
+
+Uses pure CSS animations for smooth, performant scrolling. Content is automatically duplicated internally to create seamless looping without any JavaScript animation.
+
+#### Content Types
+
+| Type | Parameter | Use Case |
+|------|-----------|----------|
+| **Plain Text** | `text="..."` | Simple scrolling text, auto-escaped |
+| **HTML Content** | `text="<b>...</b>"` | Rich text (detected by `<` and `>` chars) |
+| **Nested Components** | `children=[...]` | Toolbar items (Button, Div, etc.) |
+
+#### Behavior & Direction Options
+
+| Behavior | Description |
+|----------|-------------|
+| `"scroll"` | Continuous seamless loop (default) |
+| `"alternate"` | Bounces back and forth |
+| `"slide"` | Scrolls once and stops |
+
+| Direction | Description |
+|-----------|-------------|
+| `"left"` | Content moves right → left (default) |
+| `"right"` | Content moves left → right |
+| `"up"` | Content moves bottom → top |
+| `"down"` | Content moves top → bottom |
+
+<details>
+<summary><strong>How Seamless Scrolling Works</strong></summary>
+
+Marquee automatically duplicates content for seamless looping:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                        Marquee Container                       │
+│ ┌────────────────────────────────────────────────────────────┐ │
+│ │ [Content A] [sep] [Content A] [sep] [Content A] [sep] ...  │ │
+│ │     ▲                  ▲                                   │ │
+│ │   Copy 1             Copy 2 (duplicate for seamless loop)  │ │
+│ └────────────────────────────────────────────────────────────┘ │
+│                  ◄──────────────────────────                   │
+│                     Animation scrolls left                     │
+└────────────────────────────────────────────────────────────────┘
+```
+
+When you update content via `toolbar:marquee-set-content`, **both copies are updated** automatically to maintain the seamless effect.
+
+</details>
+
+#### Dynamic Updates (Python → JS)
+
+```python
+# Update text content
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "text": "New scrolling text!"
+})
+
+# Change speed and pause
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "speed": 10,      # seconds per cycle
+    "paused": False   # or True to pause
+})
+```
+
+<details>
+<summary><strong>All Update Options</strong></summary>
+
+```python
+# Update with plain text (auto-escaped)
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "text": "New scrolling text!"
+})
+
+# Update with HTML content
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "html": "<b>Breaking:</b> Market update"
+})
+
+# Change animation speed
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "speed": 10  # Faster: 10 seconds per cycle
+})
+
+# Pause/resume animation
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "paused": True  # or False to resume
+})
+
+# Update separator
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "separator": " ★ "
+})
+
+# Combine multiple updates
+widget.emit("toolbar:marquee-set-content", {
+    "id": marquee.component_id,
+    "text": "Alert: System maintenance",
+    "speed": 8,
+    "separator": " ⚠️ "
+})
+
+# Alternative: Use Python helper method
+event, data = marquee.update_payload(text="Breaking news!", speed=10)
+widget.emit(event, data)  # event = "toolbar:marquee-set-content"
+```
+
+</details>
+
+#### Events
+
+| Event | Direction | Payload |
+|-------|-----------|---------|
+| `{event}` | JS → Python | `{ value, componentId }` — when clicked |
+| `toolbar:marquee-set-content` | Python → JS | `{ id, text?, html?, speed?, paused?, separator? }` |
+| `toolbar:marquee-set-item` | Python → JS | `{ ticker, text?, html?, styles?, class_add?, class_remove? }` |
+
+<details>
+<summary><strong>CSS Classes & Custom Properties</strong></summary>
+
+| Class | Description |
+|-------|-------------|
+| `.pywry-marquee` | Base marquee container |
+| `.pywry-marquee-left` / `-right` / `-up` / `-down` | Direction modifier |
+| `.pywry-marquee-scroll` / `-alternate` / `-slide` | Behavior modifier |
+| `.pywry-marquee-horizontal` / `-vertical` | Axis modifier |
+| `.pywry-marquee-pause` | Added when `pause_on_hover=True` |
+| `.pywry-marquee-clickable` | Added when `clickable=True` |
+| `.pywry-marquee-track` | Inner scrolling track |
+| `.pywry-marquee-content` | Content wrapper (duplicated) |
+| `.pywry-marquee-separator` | Separator between copies |
+
+```css
+/* Control via CSS or inline style */
+--pywry-marquee-speed: 15s;   /* Animation duration */
+--pywry-marquee-gap: 50px;    /* Gap between content copies */
+```
+
+</details>
+
+<details>
+<summary><strong>Complete Example: News Ticker</strong></summary>
+
+```python
+from pywry import PyWry, Toolbar, Marquee
+
+app = PyWry()
+
+# Create marquee with initial content
+news_ticker = Marquee(
+    text="Loading latest news...",
+    speed=20,
+    pause_on_hover=True,
+    component_id="news-ticker",  # Explicit ID for targeting
+)
+
+toolbar = Toolbar(position="header", items=[news_ticker])
+
+widget = app.show("<h1>Dashboard</h1>", toolbars=[toolbar])
+
+# Later, update from Python (e.g., after API call)
+def update_news(headlines: list[str]):
+    widget.emit("toolbar:marquee-set-content", {
+        "id": "news-ticker",
+        "text": " • ".join(headlines),
+        "speed": 25  # Slow down for more content
+    })
+
+update_news(["Market up 2%", "Tech earnings beat", "Fed holds rates"])
+```
+
+</details>
+
+</details>
+
+<details>
+<summary><strong>TickerItem</strong> — Helper for updatable items within Marquee</summary>
+
+TickerItem creates individually-updatable spans within a Marquee. Each item has a `data-ticker` attribute that allows targeting specific items for dynamic updates without replacing the entire content.
+
+**In this section:** [Basic Usage](#basic-usage-1) · [Parameters](#tickeritem-parameters) · [Dynamic Updates](#dynamic-updates) · [Update Payload Options](#update-payload-options)
+
+#### Basic Usage
+
+```python
+from pywry import Marquee, TickerItem
+
+items = [
+    TickerItem(ticker="AAPL", text="AAPL $185.50", class_name="stock-up"),
+    TickerItem(ticker="GOOGL", text="GOOGL $142.20"),
+    TickerItem(ticker="MSFT", text="MSFT $415.80"),
+]
+
+marquee = Marquee(
+    text=" • ".join(item.build_html() for item in items),
+    speed=20,
+)
+```
+
+**Generated HTML:** `<span data-ticker="AAPL" class="pywry-ticker-item stock-up">AAPL $185.50</span>`
+
+<details>
+<summary><strong>How It Works</strong></summary>
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           Marquee Container                             │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │ [AAPL $185] • [GOOGL $142] • [MSFT $415] │ [AAPL $185] • [...]    │  │
+│  │      ▲             ▲             ▲       │      ▲                 │  │
+│  │  data-ticker   data-ticker   data-ticker │  (duplicate copy)      │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+   widget.emit("toolbar:marquee-set-item", {ticker: "AAPL", text: "$186"})
+                                    │
+                                    ▼
+              Updates ALL elements with data-ticker="AAPL"
+                  (both copies for seamless scrolling)
+```
+
+</details>
+
+#### TickerItem Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `ticker` | `str` | **Required.** Unique ID for targeting updates |
+| `text` | `str` | Plain text content (auto-escaped) |
+| `html` | `str` | HTML content (alternative to text) |
+| `class_name` | `str` | Additional CSS classes |
+| `style` | `str` | Inline CSS styles |
+
+#### Dynamic Updates
+
+```python
+# Update individual item
+widget.emit("toolbar:marquee-set-item", {
+    "ticker": "AAPL",
+    "text": "AAPL $186.25 ▲",
+    "styles": {"color": "#22c55e"}
+})
+
+# Or use helper method
+event, data = items[0].update_payload(
+    text="AAPL $186.25 ▲",
+    styles={"color": "#22c55e"},
+    class_add="stock-up",
+    class_remove="stock-down"
+)
+widget.emit(event, data)
+```
+
+#### Update Payload Options
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `ticker` | `str` | **Required.** Target elements with `data-ticker="{ticker}"` |
+| `selector` | `str` | Alternative: CSS selector to match elements |
+| `text` | `str` | New plain text content |
+| `html` | `str` | New HTML content (overrides text) |
+| `styles` | `dict` | Inline styles to apply (camelCase keys) |
+| `class_add` | `str \| list` | CSS class(es) to add |
+| `class_remove` | `str \| list` | CSS class(es) to remove |
+
+<details>
+<summary><strong>Complete Example: Real-Time Stock Ticker</strong></summary>
+
+```python
+from pywry import PyWry, Toolbar, Marquee, TickerItem
+import random
+
+app = PyWry()
+
+# Define stocks with initial prices
+stocks = {
+    "AAPL": {"price": 185.50, "item": None},
+    "GOOGL": {"price": 142.20, "item": None},
+    "MSFT": {"price": 415.80, "item": None},
+    "AMZN": {"price": 178.25, "item": None},
+}
+
+# Create TickerItems
+for symbol, data in stocks.items():
+    data["item"] = TickerItem(
+        ticker=symbol,
+        text=f"{symbol} ${data['price']:.2f}",
+    )
+
+# Build marquee
+stock_ticker = Marquee(
+    text=" • ".join(data["item"].build_html() for data in stocks.values()),
+    speed=25,
+    pause_on_hover=True,
+)
+
+toolbar = Toolbar(position="header", items=[stock_ticker])
+
+def simulate_price_update(data, event_type, label):
+    """Simulate random price changes."""
+    for symbol, stock in stocks.items():
+        change = random.uniform(-2, 2)
+        new_price = stock["price"] + change
+        stock["price"] = new_price
+        
+        arrow = "▲" if change >= 0 else "▼"
+        color = "#22c55e" if change >= 0 else "#ef4444"
+        
+        widget.emit("toolbar:marquee-set-item", {
+            "ticker": symbol,
+            "text": f"{symbol} ${new_price:.2f} {arrow}",
+            "styles": {"color": color},
+        })
+
+widget = app.show(
+    '<button onclick="window.pywry.emit(\'stock:update\', {})">Update</button>',
+    toolbars=[toolbar],
+    callbacks={"stock:update": simulate_price_update},
+)
+```
+
+</details>
+
+**Note:** TickerItem is NOT a ToolbarItem — it's a content helper. Updates target ALL matching `data-ticker` elements (both duplicated copies).
 
 </details>
 
@@ -3202,8 +4382,7 @@ Layout wrappers create the nested flexbox structure for toolbar positioning. The
 
 | Selector | Description |
 |----------|-------------|
-| `.pywry-btn` | Base button with primary styling |
-| `.pywry-btn-primary` | Primary button (default) - accent background |
+| `.pywry-btn` | Base button with primary styling (default variant) |
 | `.pywry-btn-secondary` | Secondary button - subtle gray background |
 | `.pywry-btn-neutral` | Neutral button - blue accent, always visible |
 | `.pywry-btn-ghost` | Ghost button - transparent, text only |
@@ -3522,31 +4701,33 @@ Customize these variables via `inline_css` or a custom theme CSS file:
 :root {
   /* ---- Color Palette (Dark Theme Default) ---- */
   --pywry-bg-primary: #212124;
-  --pywry-bg-secondary: #1e1e1e;
+  --pywry-bg-secondary: rgba(21, 21, 24, 1);
+  --pywry-bg-tertiary: rgba(31, 30, 35, 1);
+  --pywry-bg-quartary: rgba(36, 36, 42, 1);
   --pywry-bg-hover: rgba(255, 255, 255, 0.08);
   --pywry-bg-overlay: rgba(30, 30, 30, 0.8);
   --pywry-text-primary: #ebebed;
   --pywry-text-secondary: #a0a0a0;
+  --pywry-text-muted: #707070;
   --pywry-border-color: #333;
-
-  /* ---- Scrollbar Colors ---- */
-  --pywry-scrollbar-thumb: #555;
-  --pywry-scrollbar-thumb-hover: #777;
-  --pywry-scrollbar-track: transparent;
 
   /* ---- Accent Colors ---- */
   --pywry-accent: #0078d4;
   --pywry-accent-hover: #106ebe;
-  --pywry-accent-text: #ffffff;
+  --pywry-text-accent: rgb(51, 187, 255);
+
+  /* ---- Scrollbar Colors (optional - has fallbacks) ---- */
+  --pywry-scrollbar-thumb: rgba(155, 155, 155, 0.5);       /* default fallback */
+  --pywry-scrollbar-thumb-hover: rgba(175, 175, 175, 0.7); /* default fallback */
 
   /* ---- Button Colors ---- */
   --pywry-btn-primary-bg: #e2e2e2;
   --pywry-btn-primary-text: #151518;
   --pywry-btn-primary-hover: #cccccc;
-  --pywry-btn-secondary-bg: rgba(54, 54, 63, 1);
+  --pywry-btn-secondary-bg: #3d3d42;
   --pywry-btn-secondary-text: #ebebed;
-  --pywry-btn-secondary-hover: rgba(42, 42, 48, 1);
-  --pywry-btn-secondary-border: rgba(70, 70, 79, 0.5);
+  --pywry-btn-secondary-hover: #4a4a50;
+  --pywry-btn-secondary-border: rgba(90, 90, 100, 0.5);
   --pywry-btn-neutral-bg: rgb(0, 136, 204);
   --pywry-btn-neutral-text: #ffffff;
   --pywry-btn-neutral-hover: rgb(0, 115, 173);
@@ -3589,11 +4770,11 @@ html.light, .pywry-theme-light {
   --pywry-bg-primary: #f5f5f5;
   --pywry-bg-secondary: #ffffff;
   --pywry-bg-hover: rgba(0, 0, 0, 0.06);
+  --pywry-bg-overlay: rgba(255, 255, 255, 0.8);
   --pywry-text-primary: #000000;
   --pywry-text-secondary: #666666;
+  --pywry-text-muted: #999999;
   --pywry-border-color: #ccc;
-  --pywry-scrollbar-thumb: #bbb;
-  --pywry-scrollbar-thumb-hover: #999;
   --pywry-border-focus: #999;
   --pywry-tab-bg: #e8e8ec;
   --pywry-tab-active-bg: #ffffff;
@@ -3601,10 +4782,10 @@ html.light, .pywry-theme-light {
   --pywry-btn-primary-bg: #2c2c32;
   --pywry-btn-primary-text: #ffffff;
   --pywry-btn-primary-hover: #1a1a1e;
-  --pywry-btn-secondary-bg: #ffffff;
+  --pywry-btn-secondary-bg: #d0d0d8;
   --pywry-btn-secondary-text: #2c2c32;
-  --pywry-btn-secondary-hover: #f3f3f6;
-  --pywry-btn-secondary-border: rgba(215, 215, 222, 1);
+  --pywry-btn-secondary-hover: #c0c0c8;
+  --pywry-btn-secondary-border: rgba(180, 180, 190, 1);
 }
 ```
 
@@ -4019,6 +5200,8 @@ if (isDesktop) {
 
 PyWry can display content in multiple ways, and each has its own management model. This section explains how to create, control, and clean up your display contexts.
 
+**In this section:** [Window vs. Widget](#what-is-a-window-vs-a-widget) · [WindowMode Options](#windowmode-options) · [Return Types](#return-types-by-mode) · [Native Window Management](#native-window-management) · [Widget Management](#widget-management-notebookbrowser) · [Storing References](#storing-references-for-later-control) · [Non-Blocking Scripts](#non-blocking-scripts-with-block) · [Graceful Shutdown](#graceful-shutdown-with-stop_server) · [Instance Methods](#summary-pywry-instance-methods) · [Widget Methods](#summary-widget-methods-notebookbrowser)
+
 ### What is a Window vs. a Widget?
 
 | Term | What It Is | When You Get It |
@@ -4271,8 +5454,8 @@ app = PyWry(mode=WindowMode.BROWSER)
 
 def cleanup(signum, frame):
     print("Shutting down...")
-    app.close()      # Close all windows
-    stop_server()    # Stop the inline server, release port
+    app.close()               # Close all windows
+    stop_server(timeout=5.0)  # Stop inline server with 5s timeout (default)
     exit(0)
 
 signal.signal(signal.SIGINT, cleanup)
@@ -4883,6 +6066,8 @@ Use this for load balancer health checks or monitoring.
 
 PyWry implements a multi-layer security model for WebSocket connections and internal API endpoints.
 
+> **Security Defaults:** Per-widget token authentication and internal API protection are **enabled by default**. For production deployments, also configure HTTPS, restrict CORS origins, and consider using CSP `strict()` preset.
+
 #### Security Model Overview
 
 | Layer | Setting | Purpose |
@@ -5373,6 +6558,8 @@ admin_users = [                 # Users with admin privileges
 
 PyWry provides a CLI for **configuration management only**. Entry point: `pywry`
 
+**In this section:** [Show Configuration](#show-configuration) · [Initialize Configuration](#initialize-configuration) · [Example: Show Sources](#example-show-sources)
+
 ### Show Configuration
 
 ```bash
@@ -5426,6 +6613,8 @@ Configuration sources (in priority order):
 <details>
 <summary>Click to expand</summary>
 
+**In this section:** [Enable Debug Logging](#enable-debug-logging) · [Standard Python Logging](#standard-python-logging) · [Environment Variable](#environment-variable)
+
 ### Enable Debug Logging
 
 ```python
@@ -5459,6 +6648,8 @@ export PYWRY_LOG__LEVEL=DEBUG
 
 <details>
 <summary>Click to expand</summary>
+
+**In this section:** [Prerequisites](#prerequisites) · [Setup](#setup) · [Run Tests](#run-tests) · [Lint and Format](#lint-and-format) · [Project Structure](#project-structure)
 
 ### Prerequisites
 
@@ -5590,6 +6781,8 @@ pywry/
 <summary>Click to expand</summary>
 
 PyWry bundles Plotly.js 3.3.1 for offline charting with full event integration. Display figures with `show_plotly()` and handle chart events in Python.
+
+**In this section:** [Basic Usage](#basic-usage) · [Plotly Templates](#plotly-templates) · [Theme Coordination](#theme-coordination) · [User Templates](#user-templates) · [JavaScript Access](#javascript-access) · [PlotlyConfig](#plotlyconfig) · [ModeBarButton](#modebarbutton) · [SvgIcon](#svgicon) · [PlotlyIconName](#plotlyiconname) · [Pre-built Buttons](#pre-built-buttons) · [StandardButton](#standardbutton) · [Accessing Plotly API](#accessing-plotly-api-javascript)
 
 ### Basic Usage
 
@@ -5839,6 +7032,8 @@ Plotly.update(window.__PYWRY_PLOTLY_DIV__, {}, {
 <summary>Click to expand</summary>
 
 PyWry bundles AgGrid 35.0.0 for high-performance data tables. Display DataFrames with `show_dataframe()` and handle grid events in Python.
+
+**In this section:** [Basic Usage](#basic-usage-1) · [Import Grid Models](#import-grid-models) · [Column Definitions](#column-definitions) · [ColDef Properties](#coldef-properties) · [Row Selection](#row-selection) · [Grid Options](#grid-options) · [Available Grid Models](#available-grid-models) · [Accessing AgGrid API](#accessing-aggrid-api-javascript)
 
 ### Basic Usage
 
