@@ -110,11 +110,12 @@ toolbar = Toolbar(
     position="top",
     items=[Button(label="Update Text", event="app:click")]
 )
-label = app.show(
+handle = app.show(
     "<h1 text>Hello, World!</h1>",
     toolbars=[toolbar],
     callbacks={"app:click": on_click},
 )
+label = handle.label
 ```
 
 ### DataFrame -> AgGrid
@@ -132,10 +133,11 @@ def on_select(data, event_type, label):
     names = ", ".join(row["name"] for row in data["rows"])
     app.emit("pywry:alert", {"message": f"Selected: {names}" if names else "None selected"}, label)
 
-label = app.show_dataframe(
+handle = app.show_dataframe(
     df,
     callbacks={"grid:row-selected": on_select},
 )
+label = handle.label
 ```
 
 ### Plotly Chart
@@ -167,7 +169,7 @@ def on_reset(data, event_type, label):
     """Reset the chart zoom."""
     app.emit("plotly:reset-zoom", {}, label)
 
-label = app.show_plotly(
+handle = app.show_plotly(
     fig,
     toolbars=[Toolbar(position="top", items=[Button(label="Reset Zoom", event="app:reset")])],
     callbacks={
@@ -175,6 +177,7 @@ label = app.show_plotly(
         "app:reset": on_reset,
     },
 )
+label = handle.label
 ```
 
 ---
