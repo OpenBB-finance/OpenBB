@@ -40,7 +40,7 @@ def get_packages(path: Path, plugin_key: str) -> dict[str, Any]:
 
 
 def write(filename: str, data: Any):
-    """Write to json."""
+    """Write to JSON."""
     with open(Path(THIS_DIR, "..", "extensions", f"{filename}.json"), "w") as json_file:
         dump(data, json_file, indent=4)
 
