@@ -26,10 +26,6 @@ router.include_router(price_router)
             description="Search for 'EUR' currency pair using 'intrinio' as provider.",
             parameters={"provider": "intrinio", "query": "EUR"},
         ),
-        APIEx(
-            description="Search for terms  using 'polygon' as provider.",
-            parameters={"provider": "polygon", "query": "EUR"},
-        ),
     ],
 )
 async def search(

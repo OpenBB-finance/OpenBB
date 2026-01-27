@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from unittest.mock import MagicMock, patch
 
 import pytest
+from fastapi import Query as FastAPIQuery
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -42,7 +43,7 @@ def create_mock_extra_params():
     class EquityHistorical:
         """Mock ExtraParams dataclass."""
 
-        sort: str = "desc"
+        sort: FastAPIQuery = FastAPIQuery(default="desc", title="mock_provider")
 
     return EquityHistorical()
 
@@ -99,28 +100,72 @@ def query_instance():
 
 def test_filter_extra_params(query):
     """Test filter_extra_params."""
-    extra_params = create_mock_extra_params()
-    extra_params = query.filter_extra_params(extra_params, "fmp")
 
-    assert isinstance(extra_params, dict)
-    assert len(extra_params) == 0
+    @dataclass
+    class MockExtraFields:
+        """Mock extra fields with same structure as extra_params."""
+
+        sort: FastAPIQuery = FastAPIQuery(default="desc", title="mock_provider")
+
+    # Mock the provider_interface.params property
+    mock_provider_interface = MagicMock()
+    mock_provider_interface.params = {"EquityHistorical": {"extra": MockExtraFields}}
+
+    original_pi = query.provider_interface
+    query.provider_interface = mock_provider_interface
+    try:
+        extra_params = create_mock_extra_params()
+        extra_params = query.filter_extra_params(extra_params, "fmp")
+
+        assert isinstance(extra_params, dict)
+        # "sort" has default "desc" and value is also "desc", so it's not filtered
+        # Also fmp is not in providers (only polygon), so it won't be included
+        assert len(extra_params) == 0
+    finally:
+        query.provider_interface = original_pi
 
 
 def test_filter_extra_params_wrong_param(query):
-    """Test filter_extra_params."""
+    """Test filter_extra_params filters out params not supported by provider."""
 
     @dataclass
     class EquityHistorical:
         """Mock ExtraParams dataclass."""
 
-        sort: str = "desc"
-        limit: int = 4
+        # sort is only for polygon, not fmp - should be filtered out with warning
+        sort: FastAPIQuery = FastAPIQuery(default="desc", title="mock_provider")
+        # limit is for fmp - should be included if value differs from default
+        limit: FastAPIQuery = FastAPIQuery(default=4, title="fmp")
 
-    extra_params = EquityHistorical()
+    @dataclass
+    class MockExtraFields:
+        """Mock extra fields with same structure as extra_params."""
 
-    extra = query.filter_extra_params(extra_params, "fmp")
-    assert isinstance(extra, dict)
-    assert len(extra) == 0
+        sort: FastAPIQuery = FastAPIQuery(default="desc", title="mock_provider")
+        limit: FastAPIQuery = FastAPIQuery(default=4, title="fmp")
+
+    # Mock the provider_interface.params property
+    mock_provider_interface = MagicMock()
+    mock_provider_interface.params = {"EquityHistorical": {"extra": MockExtraFields}}
+
+    original_pi = query.provider_interface
+    query.provider_interface = mock_provider_interface
+    try:
+        # Create with non-default values to trigger filtering
+        extra_params = EquityHistorical(
+            sort=FastAPIQuery(
+                default="asc", title="mock_provider"
+            ),  # non-default value
+            limit=FastAPIQuery(default=10, title="fmp"),  # non-default value
+        )
+        extra = query.filter_extra_params(extra_params, "fmp")
+        assert isinstance(extra, dict)
+        # Only limit should be included (fmp provider)
+        # sort should be filtered out with warning (polygon only)
+        assert "limit" in extra
+        assert "sort" not in extra
+    finally:
+        query.provider_interface = original_pi
 
 
 @pytest.mark.asyncio

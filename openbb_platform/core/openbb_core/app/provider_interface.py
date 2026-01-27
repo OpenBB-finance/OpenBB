@@ -529,7 +529,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         -------
         @dataclass
         class CompanyNews(ProviderChoices):
-            provider: Literal["benzinga", "polygon"]
+            provider: Literal["provider_a", "provider_b"]
         """
         result: dict = {}
 
