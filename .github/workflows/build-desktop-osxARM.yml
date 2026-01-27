@@ -25,7 +25,7 @@ jobs:
         working-directory: desktop
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Import Code Signing Certificate
         uses: apple-actions/import-codesign-certs@v3
@@ -38,7 +38,7 @@ jobs:
           p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
 
       - name: Setup Cargo Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
@@ -48,7 +48,7 @@ jobs:
             macos-arm-cargo-registry-
 
       - name: Setup Node Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: macos-arm-node-${{ hashFiles('desktop/**/package-lock.json') }}
@@ -56,7 +56,7 @@ jobs:
             macos-arm-node-
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
 
@@ -104,7 +104,7 @@ jobs:
           for file in *.app.tar.gz.sig; do mv "$file" "Open-Data-Platform_${VERSION}_aarch64.app.tar.gz.sig"; done
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: macos-arm-artifacts
           path: |

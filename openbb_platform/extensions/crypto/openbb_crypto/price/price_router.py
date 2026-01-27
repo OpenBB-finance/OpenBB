@@ -29,14 +29,6 @@ router = Router(prefix="/price")
             },
         ),
         APIEx(
-            parameters={
-                "symbol": "BTCUSD,ETHUSD",
-                "start_date": "2024-01-01",
-                "end_date": "2024-01-31",
-                "provider": "polygon",
-            },
-        ),
-        APIEx(
             description="Get monthly historical prices from Yahoo Finance for Ethereum.",
             parameters={
                 "symbol": "ETH-USD",
