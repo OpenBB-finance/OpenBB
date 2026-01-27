@@ -126,7 +126,7 @@ class FMPYieldCurveFetcher(
         flattened_data = flattened_data.sort_values(
             by=["date", "maturity"]
         ).reset_index(drop=True)
-        flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
+        flattened_data["date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
         records = flattened_data.to_dict(orient="records")
 
         return [FMPYieldCurveData.model_validate(d) for d in records]

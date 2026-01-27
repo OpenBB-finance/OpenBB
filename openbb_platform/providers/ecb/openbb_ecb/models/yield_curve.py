@@ -155,14 +155,14 @@ class ECBYieldCurveFetcher(
         flattened_data = flattened_data.rename(columns={"index": "date"}).sort_values(
             "date"
         )
-        flattened_data.loc[:, "maturity"] = Categorical(
+        flattened_data["maturity"] = Categorical(
             flattened_data.maturity, categories=MATURITIES, ordered=True
         )
         flattened_data = flattened_data.sort_values(
             by=["date", "maturity"]
         ).reset_index(drop=True)
-        flattened_data.date = flattened_data.date.dt.strftime("%Y-%m-%d")
-        flattened_data.rate = flattened_data.rate.astype(float).div(100)
+        flattened_data["date"] = flattened_data.date.dt.strftime("%Y-%m-%d")
+        flattened_data["rate"] = flattened_data.rate.astype(float).div(100)
         records = flattened_data.to_dict(orient="records")
 
         return [ECBYieldCurveData.model_validate(d) for d in records]

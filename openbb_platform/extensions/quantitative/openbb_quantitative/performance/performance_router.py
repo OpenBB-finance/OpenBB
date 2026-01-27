@@ -265,7 +265,7 @@ def sortino_ratio(
     )
 
     if adjusted:
-        results = results.applymap(lambda x: x / sqrt(2) if isinstance(x, float) else x)
+        results = results.map(lambda x: x / sqrt(2) if isinstance(x, float) else x)
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)

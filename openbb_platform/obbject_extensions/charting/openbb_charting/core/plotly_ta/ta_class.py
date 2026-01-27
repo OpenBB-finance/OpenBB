@@ -192,7 +192,7 @@ class PlotlyTA(PltTA):
             indicators = ChartIndicators.from_dict(indicators or {})
 
         # Apply to_datetime to the index in a way that handles daylight savings.
-        df_stock.loc[:, "date"] = df_stock.index  # type: ignore
+        df_stock["date"] = df_stock.index  # type: ignore
         df_stock["date"] = df_stock["date"].apply(pd.to_datetime)
         df_stock.index = df_stock["date"]  # type: ignore
         df_stock.drop(columns=["date"], inplace=True)

@@ -231,11 +231,9 @@ class EconDbYieldCurveFetcher(
             flattened_data = flattened_data.sort_values(
                 by=["date", "maturity"]
             ).reset_index(drop=True)
-            flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime(
-                "%Y-%m-%d"
-            )
+            flattened_data["date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
             new_df = flattened_data.copy()
-            new_df.loc[:, "country"] = country
+            new_df["country"] = country
 
             def convert_duration(x):
                 """Convert the duration to a decimal representation of years."""
@@ -246,7 +244,7 @@ class EconDbYieldCurveFetcher(
                     return int(unit)
                 return int(unit) / 12
 
-            new_df.loc[:, "maturity_years"] = new_df.maturity.apply(convert_duration)
+            new_df["maturity_years"] = new_df.maturity.apply(convert_duration)
 
             new_df = new_df.replace({nan: None})
             records = [

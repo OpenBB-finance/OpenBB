@@ -148,9 +148,9 @@ class FredTipsYieldsFetcher(
                 "series_id"
             )
 
-            df.loc[:, "due"] = df.title.apply(
-                lambda x: x.split("Due ")[-1].strip()
-            ).apply(to_datetime)
+            df["due"] = df.title.apply(lambda x: x.split("Due ")[-1].strip()).apply(
+                to_datetime
+            )
             df = df[["due", "observation_start", "observation_end", "title"]]
             return df.sort_values(by="due").reset_index()  # type: ignore
 
@@ -195,13 +195,13 @@ class FredTipsYieldsFetcher(
             fetcher = FredSeriesFetcher()
             res = await fetcher.fetch_data(params=params, credentials=credentials)
             df = DataFrame([d.model_dump() for d in res.result])  # type: ignore
-            meta = res.metadata  # type: ignore
+            meta: dict = res.metadata or {}  # type: ignore
         except Exception as e:
             raise OpenBBError(e) from e
 
         for k, v in title_map.items():
             if k in meta:
-                meta[k]["title"] = v  # type: ignore
+                meta[k]["title"] = v
 
         # We flatten the data and format the output with the metadata.
 
