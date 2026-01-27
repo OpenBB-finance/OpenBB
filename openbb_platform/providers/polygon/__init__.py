@@ -1,1 +1,0 @@
-"""Polygon Provider init."""

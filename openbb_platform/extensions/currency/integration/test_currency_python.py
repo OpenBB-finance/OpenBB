@@ -22,12 +22,6 @@ def obb(pytestconfig):
     [
         (
             {
-                "provider": "polygon",
-                "query": "eur",
-            }
-        ),
-        (
-            {
                 "provider": "fmp",
                 "query": "eur",
             }
@@ -68,28 +62,6 @@ def test_currency_search(params, obb):
                 "symbol": "EURUSD,USDJPY",
                 "start_date": None,
                 "end_date": None,
-            }
-        ),
-        (
-            {
-                "interval": "1m",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-10",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
             }
         ),
         (
@@ -158,14 +130,6 @@ def test_currency_reference_rates(params, obb):
         (
             {
                 "provider": "fmp",
-                "base": "USD,XAU",
-                "counter_currencies": "EUR,JPY,GBP",
-                "quote_type": "indirect",
-            }
-        ),
-        (
-            {
-                "provider": "polygon",
                 "base": "USD,XAU",
                 "counter_currencies": "EUR,JPY,GBP",
                 "quote_type": "indirect",
