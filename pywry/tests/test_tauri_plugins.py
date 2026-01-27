@@ -6,9 +6,9 @@ Tests verify:
 - File save dialog functionality works
 - Plugin capabilities are correctly configured
 """
+
 # pylint: disable=unsubscriptable-object
 
-import threading
 import time
 
 from collections.abc import Callable
@@ -20,8 +20,10 @@ import pytest
 
 from pywry import runtime
 from pywry.app import PyWry
-from pywry.callbacks import get_registry
 from pywry.models import ThemeMode
+
+# Import shared test utilities from tests.conftest
+from tests.conftest import ReadyWaiter, show_and_wait_ready, wait_for_result
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -47,6 +49,9 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
         return wrapper  # type: ignore[return-value]
 
     return decorator
+
+
+# Note: cleanup_runtime fixture is now in conftest.py and auto-used
 
 
 # =============================================================================
@@ -138,75 +143,6 @@ class TestMainModulePluginRegistration:
 # =============================================================================
 # Integration Tests - JS API Availability
 # =============================================================================
-
-
-@pytest.fixture(autouse=True)
-def cleanup_runtime():
-    """Ensure runtime is fresh for each test."""
-    from pywry.window_manager import get_lifecycle
-
-    runtime.stop()
-    cleanup_delay = 0.5
-    time.sleep(cleanup_delay)
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-    yield
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(cleanup_delay)
-
-
-class ReadyWaiter:
-    """Helper to wait for window ready event."""
-
-    def __init__(self, timeout: float = 10.0):
-        """Initialize waiter with timeout."""
-        self.timeout = timeout
-        self._ready = threading.Event()
-
-    def on_ready(self, _data: Any) -> None:
-        """Handle ready event."""
-        self._ready.set()
-
-    def wait(self) -> bool:
-        """Wait for ready event."""
-        return self._ready.wait(timeout=self.timeout)
-
-
-def show_and_wait_ready(app: PyWry, content: str, timeout: float = 10.0, **kwargs) -> str:
-    """Show content and wait for window to be ready."""
-    waiter = ReadyWaiter(timeout=timeout)
-    callbacks = kwargs.pop("callbacks", {}) or {}
-    callbacks["pywry:ready"] = waiter.on_ready
-    widget = app.show(content, callbacks=callbacks, **kwargs)
-    # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
-    label = widget.label if hasattr(widget, "label") else widget
-    if not waiter.wait():
-        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
-    return label
-
-
-def wait_for_result(label: str, script: str, timeout: float = 5.0) -> dict[str, Any] | None:
-    """Execute JS and wait for pywry.result() callback."""
-    registry = get_registry()
-    result: dict[str, Any] = {"received": False, "data": None}
-
-    def on_result(data: Any) -> None:
-        result["received"] = True
-        result["data"] = data
-
-    result["received"] = False
-    registry.register(label, "pywry:result", on_result)
-    runtime.eval_js(label, script)
-
-    start = time.time()
-    while not result["received"] and (time.time() - start) < timeout:
-        time.sleep(0.05)
-
-    registry.unregister(label, "pywry:result", on_result)
-    return result["data"]
 
 
 @pytest.mark.e2e

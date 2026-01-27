@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import os
 import sys
-import threading
 import time
 
 from typing import Any
@@ -25,42 +24,11 @@ from pywry.models import ThemeMode, WindowMode
 from pywry.types import PhysicalPosition, PhysicalSize
 from pywry.window_proxy import WindowProxy
 
-
-@pytest.fixture(autouse=True)
-def cleanup_runtime():
-    """Ensure runtime is fresh for each test - STOP before AND after."""
-    from pywry.window_manager import get_lifecycle
-
-    runtime.stop()
-    time.sleep(0.5)
-
-    # Clear any stale callbacks and window lifecycle state
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-
-    yield
-
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(0.5)
+# Import shared test utilities from tests.conftest
+from tests.conftest import ReadyWaiter
 
 
-class ReadyWaiter:
-    """Helper to wait for window ready event."""
-
-    def __init__(self, timeout: float = 10.0):
-        self.timeout = timeout
-        self._ready = threading.Event()
-
-    def on_ready(self, _data: Any) -> None:
-        """Callback for pywry:ready event."""
-        self._ready.set()
-
-    def wait(self) -> bool:
-        """Wait for window to be ready."""
-        return self._ready.wait(timeout=self.timeout)
+# Note: cleanup_runtime fixture is now in conftest.py and auto-used
 
 
 def wait_for_state(

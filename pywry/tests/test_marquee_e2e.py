@@ -15,58 +15,17 @@ from unittest.mock import patch
 
 import pytest
 
-from pywry import runtime
 from pywry.app import PyWry
 from pywry.callbacks import get_registry
 from pywry.inline import HAS_FASTAPI, _start_server, _state, show, stop_server
 from pywry.models import ThemeMode
 from pywry.toolbar import Button, Marquee, TickerItem, Toolbar
 
-
-# =============================================================================
-# Native Window E2E Tests
-# =============================================================================
+# Import shared test utilities from tests.conftest
+from tests.conftest import show_and_wait_ready, wait_for_result
 
 
-@pytest.fixture(autouse=True)
-def cleanup_runtime():
-    """Ensure runtime is fresh for each native window test."""
-    from pywry.window_manager import get_lifecycle
-
-    runtime.stop()
-    time.sleep(0.3)
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-
-    yield
-
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(0.3)
-
-
-def wait_for_result(label: str, js_code: str, timeout: float = 5.0) -> dict | None:
-    """Execute JS that calls pywry.result() and wait for the result."""
-    from pywry.callbacks import get_registry
-
-    registry = get_registry()
-    result_holder = {"value": None}
-
-    def on_result(data):
-        result_holder["value"] = data
-
-    registry.register(label, "pywry:result", on_result)
-
-    app = PyWry()
-    app.eval_js(js_code, label=label)
-
-    start = time.time()
-    while result_holder["value"] is None and (time.time() - start) < timeout:
-        time.sleep(0.1)
-
-    return result_holder["value"]
+# Note: cleanup_runtime fixture is now in conftest.py and auto-used
 
 
 class TestMarqueeNativeWindowRendering:
@@ -85,8 +44,6 @@ class TestMarqueeNativeWindowRendering:
             component_id="news-ticker",
         )
         toolbar = Toolbar(position="header", items=[marquee])
-
-        from tests.test_e2e import show_and_wait_ready
 
         label = show_and_wait_ready(app, "<div>Marquee Test</div>", toolbars=[toolbar])
 

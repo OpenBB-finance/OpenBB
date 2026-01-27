@@ -2,20 +2,25 @@
 
 # pylint: disable=too-many-lines
 
-import threading
 import time
 
 from collections.abc import Callable
 from functools import wraps
 from typing import Any, TypeVar
 
-import pytest
-
 from pywry import runtime
 from pywry.app import PyWry
 from pywry.callbacks import get_registry
 from pywry.models import HtmlContent, ThemeMode, WindowMode
 from pywry.toolbar import Button, Toolbar
+
+# Import shared test utilities from tests.conftest
+from tests.conftest import (
+    show_and_wait_ready,
+    show_dataframe_and_wait_ready,
+    show_plotly_and_wait_ready,
+    wait_for_result,
+)
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -49,151 +54,7 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
     return decorator
 
 
-@pytest.fixture(autouse=True)
-def cleanup_runtime():
-    """Ensure runtime is fresh for each test - STOP before AND after."""
-    from pywry.window_manager import get_lifecycle
-
-    runtime.stop()
-    cleanup_delay = 0.5
-    time.sleep(cleanup_delay)
-
-    # Clear any stale callbacks and window lifecycle state
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-
-    yield
-
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(0.5)
-
-
-class ReadyWaiter:
-    """Helper to wait for window ready event. Must be created BEFORE show()."""
-
-    def __init__(self, timeout: float = 10.0):
-        self.timeout = timeout
-        self._ready = threading.Event()
-
-    def on_ready(self, _data: Any) -> None:
-        """Callback for pywry:ready event."""
-        self._ready.set()
-
-    def wait(self) -> bool:
-        """Wait for window to be ready. Call AFTER show()."""
-        return self._ready.wait(timeout=self.timeout)
-
-
-def show_and_wait_ready(
-    app: PyWry,
-    content: str | HtmlContent,
-    timeout: float = 10.0,
-    **kwargs: Any,
-) -> str:
-    """Show content and wait for window to be ready.
-
-    This registers the ready callback BEFORE calling show().
-    """
-    waiter = ReadyWaiter(timeout=timeout)
-
-    # Merge callbacks if provided
-    callbacks = kwargs.pop("callbacks", {}) or {}
-    callbacks["pywry:ready"] = waiter.on_ready
-
-    widget = app.show(content, callbacks=callbacks, **kwargs)
-    # Extract label from NativeWidget (app.show now returns NativeWidget, not str)
-    label = widget.label if hasattr(widget, "label") else widget
-
-    if not waiter.wait():
-        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
-
-    return label
-
-
-def show_dataframe_and_wait_ready(
-    app: PyWry,
-    data: Any,
-    timeout: float = 10.0,
-    **kwargs: Any,
-) -> str:
-    """Show dataframe and wait for window to be ready."""
-    waiter = ReadyWaiter(timeout=timeout)
-    callbacks = kwargs.pop("callbacks", {}) or {}
-    callbacks["pywry:ready"] = waiter.on_ready
-    widget = app.show_dataframe(data, callbacks=callbacks, **kwargs)
-    # Extract label from NativeWidget
-    label = widget.label if hasattr(widget, "label") else widget
-    if not waiter.wait():
-        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
-    return label
-
-
-def show_plotly_and_wait_ready(
-    app: PyWry,
-    figure: Any,
-    timeout: float = 10.0,
-    **kwargs: Any,
-) -> str:
-    """Show plotly figure and wait for window to be ready."""
-    waiter = ReadyWaiter(timeout=timeout)
-    callbacks = kwargs.pop("callbacks", {}) or {}
-    callbacks["pywry:ready"] = waiter.on_ready
-    widget = app.show_plotly(figure, callbacks=callbacks, **kwargs)
-    # Extract label from NativeWidget
-    label = widget.label if hasattr(widget, "label") else widget
-    if not waiter.wait():
-        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
-    return label
-
-
-def wait_for_result(
-    label: str, script: str, timeout: float = 5.0, retries: int = 3
-) -> dict[str, Any] | None:
-    """Execute JS and wait for pywry.result() callback.
-
-    Parameters
-    ----------
-    label : str
-        Window label to execute script in.
-    script : str
-        JavaScript to execute.
-    timeout : float, optional
-        Timeout per attempt in seconds.
-    retries : int, optional
-        Number of retry attempts for race conditions (macOS).
-    """
-    registry = get_registry()
-
-    result: dict[str, Any] = {"received": False, "data": None}
-
-    def on_result(data: Any) -> None:
-        result["received"] = True
-        result["data"] = data
-
-    for attempt in range(retries):
-        result["received"] = False
-        result["data"] = None
-
-        registry.register(label, "pywry:result", on_result)
-        runtime.eval_js(label, script)
-
-        start = time.time()
-        while not result["received"] and (time.time() - start) < timeout:
-            time.sleep(0.05)
-
-        registry.unregister(label, "pywry:result", on_result)
-
-        if result["received"] and result["data"]:
-            return result["data"]
-
-        # Retry after brief delay (helps with macOS race conditions)
-        if attempt < retries - 1:
-            time.sleep(0.5)
-
-    return result["data"]
+# Note: cleanup_runtime fixture is now in conftest.py and auto-used
 
 
 # pylint: disable=unsubscriptable-object

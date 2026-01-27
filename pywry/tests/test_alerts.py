@@ -8,12 +8,11 @@ Tests cover:
 - E2E tests for native window alerts
 - E2E tests for inline notebook alerts
 """
+
 # pylint: disable=too-many-lines,unsubscriptable-object
 
 from __future__ import annotations
 
-import sys
-import threading
 import time
 
 from collections.abc import Callable
@@ -21,6 +20,9 @@ from functools import wraps
 from typing import Any, TypeVar
 
 import pytest
+
+# Import shared test utilities from tests.conftest
+from tests.conftest import show_and_wait_ready, wait_for_result
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -58,31 +60,7 @@ def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Ca
     return decorator
 
 
-@pytest.fixture(autouse=True)
-def cleanup_runtime():
-    """Ensure runtime is fresh for each test - STOP before AND after."""
-    from pywry import runtime
-    from pywry.callbacks import get_registry
-    from pywry.window_manager import get_lifecycle
-
-    # STOP runtime first to ensure clean state (prevents race conditions from previous test)
-    runtime.stop()
-    # Windows WebView2 needs more time to release resources
-    cleanup_delay = 0.5 if sys.platform == "win32" else 0.2
-    time.sleep(cleanup_delay)
-
-    # Clear any stale callbacks and window lifecycle state
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-
-    yield
-
-    # Cleanup after test
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(0.1)
+# Note: cleanup_runtime fixture is now in conftest.py and auto-used
 
 
 # =============================================================================
@@ -612,87 +590,6 @@ class TestEmittingWidgetAlertMethod:
 # =============================================================================
 # E2E Native Window Alert Tests
 # =============================================================================
-
-
-@pytest.fixture(autouse=True)
-def cleanup_runtime_e2e():
-    """Clean up runtime for E2E tests."""
-    from pywry import runtime
-    from pywry.callbacks import get_registry
-    from pywry.window_manager import get_lifecycle
-
-    # Stop runtime first
-    runtime.stop()
-    cleanup_delay = 0.5 if sys.platform == "win32" else 0.2
-    time.sleep(cleanup_delay)
-
-    # Clear state
-    registry = get_registry()
-    registry.clear()
-    get_lifecycle().clear()
-
-    yield
-
-    # Cleanup after test
-    runtime.stop()
-    registry.clear()
-    get_lifecycle().clear()
-    time.sleep(0.1)
-
-
-class ReadyWaiter:
-    """Helper to wait for window ready event."""
-
-    def __init__(self, timeout: float = 10.0) -> None:
-        """Initialize the waiter."""
-        self.timeout = timeout
-        self._ready = threading.Event()
-
-    def on_ready(self, _data: Any) -> None:
-        """Handle ready event."""
-        self._ready.set()
-
-    def wait(self) -> bool:
-        """Wait for ready event."""
-        return self._ready.wait(timeout=self.timeout)
-
-
-def show_and_wait_ready(app: Any, content: str, timeout: float = 10.0, **kwargs: Any) -> str:
-    """Show content and wait for window to be ready."""
-    waiter = ReadyWaiter(timeout=timeout)
-    callbacks = kwargs.pop("callbacks", {}) or {}
-    callbacks["pywry:ready"] = waiter.on_ready
-
-    widget = app.show(content, callbacks=callbacks, **kwargs)
-    label = widget.label if hasattr(widget, "label") else widget
-
-    if not waiter.wait():
-        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
-
-    return label
-
-
-def wait_for_result(label: str, script: str, timeout: float = 5.0) -> dict[str, Any] | None:
-    """Execute JS and wait for pywry.result() callback."""
-    from pywry import runtime
-    from pywry.callbacks import get_registry
-
-    registry = get_registry()
-    result: dict[str, Any] = {"received": False, "data": None}
-
-    def on_result(data: Any) -> None:
-        result["received"] = True
-        result["data"] = data
-
-    registry.register(label, "pywry:result", on_result)
-    runtime.eval_js(label, script)
-
-    start = time.time()
-    while not result["received"] and (time.time() - start) < timeout:
-        time.sleep(0.05)
-
-    registry.unregister(label, "pywry:result", on_result)
-    return result["data"]
 
 
 class TestNativeWindowAlertE2E:

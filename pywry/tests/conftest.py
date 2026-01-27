@@ -5,9 +5,11 @@ from __future__ import annotations
 import contextlib
 import os
 import sys
+import threading
+import time
 
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 
@@ -20,6 +22,218 @@ if TYPE_CHECKING:
 pywry_path = Path(__file__).parent.parent / "pywry"
 if str(pywry_path) not in sys.path:
     sys.path.insert(0, str(pywry_path.parent))
+
+
+# =============================================================================
+# Core Runtime Management - SINGLE SOURCE OF TRUTH
+# =============================================================================
+
+
+@pytest.fixture(autouse=True)
+def cleanup_runtime():
+    """Ensure runtime is completely fresh for each test.
+
+    This is the SINGLE cleanup fixture used across ALL test files.
+    It handles:
+    - Stopping the runtime process
+    - Clearing callback registry
+    - Clearing window lifecycle state
+    - Proper timing to avoid race conditions
+    """
+    from pywry import runtime
+    from pywry.callbacks import get_registry
+    from pywry.window_manager import get_lifecycle
+
+    # Pre-test cleanup
+    runtime.stop()
+    time.sleep(0.5)  # Allow subprocess to fully terminate
+
+    registry = get_registry()
+    registry.clear()
+    get_lifecycle().clear()
+
+    yield
+
+    # Post-test cleanup
+    runtime.stop()
+    time.sleep(0.3)  # Brief delay before next test
+    registry.clear()
+    get_lifecycle().clear()
+
+
+# =============================================================================
+# Shared Test Helpers - SINGLE SOURCE OF TRUTH
+# =============================================================================
+
+
+class ReadyWaiter:
+    """Helper to wait for window ready event. Must be created BEFORE show()."""
+
+    def __init__(self, timeout: float = 10.0):
+        self.timeout = timeout
+        self._ready = threading.Event()
+
+    def on_ready(self, _data: Any, _event_type: str = "", _widget_id: str = "") -> None:
+        """Callback for pywry:ready event. Accepts 1-3 args for compatibility."""
+        self._ready.set()
+
+    def wait(self) -> bool:
+        """Wait for window to be ready. Call AFTER show()."""
+        return self._ready.wait(timeout=self.timeout)
+
+
+def show_and_wait_ready(
+    app: Any,
+    content: Any,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show content and wait for window to be ready.
+
+    This registers the ready callback BEFORE calling show() to avoid race conditions.
+
+    Parameters
+    ----------
+    app : PyWry
+        The PyWry application instance.
+    content : str | HtmlContent
+        HTML content to display.
+    timeout : float
+        Maximum time to wait for window ready.
+    **kwargs
+        Additional arguments passed to app.show().
+
+    Returns
+    -------
+    str
+        The window label.
+
+    Raises
+    ------
+    TimeoutError
+        If window doesn't become ready within timeout.
+    """
+    waiter = ReadyWaiter(timeout=timeout)
+
+    # Merge callbacks if provided
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+
+    widget = app.show(content, callbacks=callbacks, **kwargs)
+    label = widget.label if hasattr(widget, "label") else str(widget)
+
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+
+    return label
+
+
+def show_plotly_and_wait_ready(
+    app: Any,
+    figure: Any,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show Plotly figure and wait for window to be ready."""
+    waiter = ReadyWaiter(timeout=timeout)
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+
+    widget = app.show_plotly(figure, callbacks=callbacks, **kwargs)
+    label = widget.label if hasattr(widget, "label") else str(widget)
+
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+
+    return label
+
+
+def show_dataframe_and_wait_ready(
+    app: Any,
+    data: Any,
+    timeout: float = 10.0,
+    **kwargs: Any,
+) -> str:
+    """Show DataFrame and wait for window to be ready."""
+    waiter = ReadyWaiter(timeout=timeout)
+    callbacks = kwargs.pop("callbacks", {}) or {}
+    callbacks["pywry:ready"] = waiter.on_ready
+
+    widget = app.show_dataframe(data, callbacks=callbacks, **kwargs)
+    label = widget.label if hasattr(widget, "label") else str(widget)
+
+    if not waiter.wait():
+        raise TimeoutError(f"Window '{label}' did not become ready within {timeout}s")
+
+    return label
+
+
+def wait_for_result(
+    label: str,
+    script: str,
+    timeout: float = 5.0,
+    retries: int = 3,
+) -> dict[str, Any] | None:
+    """Execute JS and wait for pywry.result() callback.
+
+    This is the SINGLE implementation used across all test files.
+    Includes retry logic for race conditions (especially on macOS).
+
+    Parameters
+    ----------
+    label : str
+        Window label to execute script in.
+    script : str
+        JavaScript to execute. Must call pywry.result({...}).
+    timeout : float
+        Timeout per attempt in seconds.
+    retries : int
+        Number of retry attempts.
+
+    Returns
+    -------
+    dict | None
+        The result data, or None if timeout/no result.
+    """
+    from pywry import runtime
+    from pywry.callbacks import get_registry
+
+    registry = get_registry()
+    result: dict[str, Any] = {"received": False, "data": None}
+    event = threading.Event()
+
+    def on_result(data: Any, _event_type: str = "", _widget_id: str = "") -> None:
+        """Handle result. Accepts 1-3 args for compatibility."""
+        result["received"] = True
+        result["data"] = data
+        event.set()
+
+    for attempt in range(retries):
+        result["received"] = False
+        result["data"] = None
+        event.clear()
+
+        registry.register(label, "pywry:result", on_result)
+
+        try:
+            runtime.eval_js(label, script)
+
+            # Use event.wait() instead of busy loop
+            if event.wait(timeout=timeout) and result["data"] is not None:
+                return result["data"]
+        finally:
+            registry.unregister(label, "pywry:result", on_result)
+
+        # Retry after brief delay
+        if attempt < retries - 1:
+            time.sleep(0.3)
+
+    return result["data"]
+
+
+# =============================================================================
+# Simple Fixtures
+# =============================================================================
 
 
 @pytest.fixture
@@ -264,7 +478,11 @@ def redis_container_with_acl() -> Generator[dict, None, None]:
             "admin": {"username": "admin", "password": "admin123", "role": "admin"},
             "editor": {"username": "editor", "password": "editor123", "role": "editor"},
             "viewer": {"username": "viewer", "password": "viewer123", "role": "viewer"},
-            "blocked": {"username": "blocked", "password": "blocked123", "role": "blocked"},
+            "blocked": {
+                "username": "blocked",
+                "password": "blocked123",
+                "role": "blocked",
+            },
         }
 
         def make_url(username: str, password: str) -> str:
