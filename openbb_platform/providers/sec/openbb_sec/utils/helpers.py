@@ -168,7 +168,8 @@ async def cik_map(cik: str | int, use_cache: bool = True) -> str:
 
 def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> list:
     """Get a list of schema files from the SEC website."""
-    from io import StringIO  # pylint: disable=import-outside-toplevel  # noqa
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
     from pandas import read_html
 
     results: list = []

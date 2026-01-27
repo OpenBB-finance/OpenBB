@@ -1,5 +1,7 @@
 """Econometrics Router."""
 
+# pylint: disable=too-many-lines
+
 from itertools import combinations
 from typing import Any, Literal
 
