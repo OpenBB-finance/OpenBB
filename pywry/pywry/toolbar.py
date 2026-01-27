@@ -2177,6 +2177,7 @@ class Marquee(ToolbarItem):
             - "scroll" (default): Continuous loop, content re-enters seamlessly
             - "alternate": Bounces back and forth between edges
             - "slide": Scrolls once and stops at the end
+            - "static": No scrolling, content stays in place (for dynamic updates)
         pause_on_hover: Pause animation when mouse hovers over marquee. Default: True.
         gap: Gap in pixels between repeated content for seamless looping. Default: 50.
         clickable: Whether clicking the marquee emits an event. Default: False.
@@ -2231,7 +2232,7 @@ class Marquee(ToolbarItem):
         description="Duration in seconds for one scroll cycle (lower = faster)",
     )
     direction: Literal["left", "right", "up", "down"] = "left"
-    behavior: Literal["scroll", "alternate", "slide"] = "scroll"
+    behavior: Literal["scroll", "alternate", "slide", "static"] = "scroll"
     pause_on_hover: bool = True
     gap: int = Field(
         default=50,
@@ -2243,6 +2244,10 @@ class Marquee(ToolbarItem):
     separator: str = Field(
         default="",
         description="Optional separator between repeated content (e.g., ' • ')",
+    )
+    items: list[str] | None = Field(
+        default=None,
+        description="List of content items to cycle through (for static behavior with auto-cycling)",
     )
     # Forward reference to support nested toolbar items
     children: list[Any] | None = Field(
@@ -2359,6 +2364,15 @@ class Marquee(ToolbarItem):
         ]
         if parent_id:
             attrs.append(f'data-parent-id="{parent_id}"')
+
+        # Static behavior with items: add data for auto-cycling
+        if self.behavior == "static" and self.items:
+            import json
+
+            items_json = html.escape(json.dumps(self.items), quote=True)
+            attrs.append(f'data-items="{items_json}"')
+            attrs.append(f'data-speed="{self.speed}"')
+
         title_attr = self._build_title_attr()
         if title_attr:
             attrs.append(title_attr.strip())
@@ -2375,17 +2389,26 @@ class Marquee(ToolbarItem):
         if self.separator:
             separator_html = f'<span class="pywry-marquee-separator" aria-hidden="true">{html.escape(self.separator)}</span>'
 
-        # For seamless continuous scroll, duplicate content
-        marquee_html = (
-            f"<div {' '.join(attrs)}>"
-            f'<div class="pywry-marquee-track">'
-            f'<span class="pywry-marquee-content">{inner_content}</span>'
-            f"{separator_html}"
-            f'<span class="pywry-marquee-content" aria-hidden="true">{inner_content}</span>'
-            f"{separator_html}"
-            f"</div>"
-            f"</div>"
-        )
+        content_with_separator = f"{inner_content}{separator_html}"
+
+        # Static behavior: single content span, no duplicate needed for loop
+        if self.behavior == "static":
+            marquee_html = (
+                f"<div {' '.join(attrs)}>"
+                f'<div class="pywry-marquee-track">'
+                f'<span class="pywry-marquee-content">{content_with_separator}</span>'
+                f"</div>"
+                f"</div>"
+            )
+        else:
+            marquee_html = (
+                f"<div {' '.join(attrs)}>"
+                f'<div class="pywry-marquee-track">'
+                f'<span class="pywry-marquee-content">{content_with_separator}</span>'
+                f'<span class="pywry-marquee-content" aria-hidden="true">{content_with_separator}</span>'
+                f"</div>"
+                f"</div>"
+            )
 
         if not self.label:
             return marquee_html

@@ -28,9 +28,7 @@ from pywry.models import ThemeMode, WindowMode
 F = TypeVar("F", bound=Callable[..., Any])
 
 
-def retry_on_subprocess_failure(
-    max_attempts: int = 3, delay: float = 1.0
-) -> Callable[[F], F]:
+def retry_on_subprocess_failure(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:
     """Retry decorator for tests that may fail due to transient subprocess issues.
 
     On failure, this decorator:
@@ -161,9 +159,7 @@ def wait_for_result(
         result["data"] = None
         event = threading.Event()
 
-        def on_result(
-            data: Any, event_type: str, lbl: str, ev: threading.Event = event
-        ) -> None:
+        def on_result(data: Any, event_type: str, lbl: str, ev: threading.Event = event) -> None:
             result["received"] = True
             result["data"] = data
             ev.set()
@@ -221,9 +217,7 @@ class TestNewWindowMode:
         )
 
         assert r1 is not None and r1["text"] == "FIRST", f"Window 1 wrong content: {r1}"
-        assert (
-            r2 is not None and r2["text"] == "SECOND"
-        ), f"Window 2 wrong content: {r2}"
+        assert r2 is not None and r2["text"] == "SECOND", f"Window 2 wrong content: {r2}"
 
         app.destroy()
 
@@ -276,9 +270,7 @@ class TestSingleWindowMode:
         label2 = show_and_wait_ready(app, "<div>Second</div>")
         label3 = show_and_wait_ready(app, "<div>Third</div>")
 
-        assert (
-            label1 == label2 == label3
-        ), f"Labels should be same: {label1}, {label2}, {label3}"
+        assert label1 == label2 == label3, f"Labels should be same: {label1}, {label2}, {label3}"
 
         app.destroy()
 
@@ -301,9 +293,7 @@ class TestSingleWindowMode:
         assert result is not None, "No result received"
         assert not result["hasFirst"], "Old content should be gone"
         assert result["hasSecond"], "New content should exist"
-        assert (
-            result["secondText"] == "SECOND"
-        ), f"Wrong content: {result['secondText']}"
+        assert result["secondText"] == "SECOND", f"Wrong content: {result['secondText']}"
 
         app.destroy()
 
@@ -359,9 +349,7 @@ class TestSingleWindowMode:
             elapsed += poll_interval
 
         # Verify subprocess is still running before attempting reopen
-        assert (
-            runtime.is_running()
-        ), "Runtime should still be running after window close"
+        assert runtime.is_running(), "Runtime should still be running after window close"
 
         # Show new content - this should reopen the window
         # Don't use show_and_wait_ready here because the callback-based ready
@@ -379,9 +367,7 @@ class TestSingleWindowMode:
             time.sleep(poll_interval)
             elapsed += poll_interval
         else:
-            raise AssertionError(
-                f"Window '{label2}' did not reopen within {max_open_wait}s"
-            )
+            raise AssertionError(f"Window '{label2}' did not reopen within {max_open_wait}s")
 
         # Same label, window reopened with new content
         assert label1 == label2, f"Label should be same: {label1} vs {label2}"
@@ -392,9 +378,7 @@ class TestSingleWindowMode:
         result = wait_for_result(
             label2, "pywry.result({ text: document.querySelector('h1')?.textContent });"
         )
-        assert (
-            result is not None and result["text"] == "Second Content"
-        ), f"Wrong content: {result}"
+        assert result is not None and result["text"] == "Second Content", f"Wrong content: {result}"
 
         app.destroy()
 
@@ -462,18 +446,18 @@ class TestMultiWindowMode:
             "chart",
             "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
-        assert (
-            chart_result is not None and chart_result["text"] == "Updated Chart"
-        ), f"Chart not updated: {chart_result}"
+        assert chart_result is not None and chart_result["text"] == "Updated Chart", (
+            f"Chart not updated: {chart_result}"
+        )
 
         # Verify table was NOT changed
         table_result = wait_for_result(
             "table",
             "pywry.result({ text: document.getElementById('c')?.textContent });",
         )
-        assert (
-            table_result is not None and table_result["text"] == "Initial Table"
-        ), f"Table should not have changed: {table_result}"
+        assert table_result is not None and table_result["text"] == "Initial Table", (
+            f"Table should not have changed: {table_result}"
+        )
 
         app.destroy()
 
@@ -530,9 +514,7 @@ class TestMultiWindowMode:
 
         # Table should still respond
         result = wait_for_result("table", "pywry.result({ alive: true });")
-        assert (
-            result is not None and result["alive"]
-        ), "Table window should still be open"
+        assert result is not None and result["alive"], "Table window should still be open"
 
         app.destroy()
 
@@ -598,9 +580,9 @@ class TestCrossModeBehavior:
             label,
             "pywry.result({ text: document.getElementById('target')?.textContent });",
         )
-        assert (
-            result is not None and result["text"] == "Modified"
-        ), f"Mode {mode}: eval_js failed: {result}"
+        assert result is not None and result["text"] == "Modified", (
+            f"Mode {mode}: eval_js failed: {result}"
+        )
 
         app.destroy()
 
@@ -656,9 +638,7 @@ class TestReadmeQuickStart:
             toolbars=[
                 {
                     "position": "bottom",
-                    "items": [
-                        {"type": "button", "label": "Update Text", "event": "app:click"}
-                    ],
+                    "items": [{"type": "button", "label": "Update Text", "event": "app:click"}],
                 }
             ],
             callbacks={"app:click": on_click},

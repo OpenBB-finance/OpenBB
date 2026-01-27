@@ -338,6 +338,30 @@ function initToolbarHandlers(container, pywry) {
         });
     });
 
+    // Static marquee auto-cycling (when items are provided)
+    container.querySelectorAll('.pywry-marquee.pywry-marquee-static[data-items]').forEach(function(marquee) {
+        try {
+            var items = JSON.parse(marquee.getAttribute('data-items'));
+            var speed = parseFloat(marquee.getAttribute('data-speed')) || 5;
+            if (!Array.isArray(items) || items.length === 0) return;
+
+            var currentIndex = 0;
+            var contentSpan = marquee.querySelector('.pywry-marquee-content');
+            if (!contentSpan) return;
+
+            // Set initial content
+            contentSpan.innerHTML = items[0];
+
+            // Auto-cycle through items
+            setInterval(function() {
+                currentIndex = (currentIndex + 1) % items.length;
+                contentSpan.innerHTML = items[currentIndex];
+            }, speed * 1000);
+        } catch (err) {
+            console.warn('[toolbar] Failed to initialize static marquee auto-cycle:', err);
+        }
+    });
+
     var inputDebounceTimers = {};
     container.querySelectorAll('.pywry-input-text, .pywry-input-number, .pywry-input-date').forEach(function(input) {
         input.addEventListener('input', function(e) {

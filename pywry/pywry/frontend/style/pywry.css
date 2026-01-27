@@ -1014,11 +1014,10 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
     );
 }
 
-/* Track container - holds duplicated content for seamless loop */
+/* Track container - natural width, just holds content */
 .pywry-marquee-track {
     display: inline-flex;
     align-items: center;
-    gap: var(--pywry-marquee-gap, 50px);
     animation: pywry-marquee-scroll-left var(--pywry-marquee-speed, 15s) linear infinite;
     will-change: transform;
 }
@@ -1026,15 +1025,15 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
 /* Vertical track layout */
 .pywry-marquee-vertical .pywry-marquee-track {
     flex-direction: column;
-    display: flex;
+    display: inline-flex;
 }
 
-/* Content spans */
 .pywry-marquee-content {
     display: inline-flex;
     align-items: center;
     gap: var(--pywry-spacing-sm);
     flex-shrink: 0;
+    padding-right: 100vw;  /* Push duplicate completely off-screen */
 }
 
 /* Separator styling */
@@ -1101,6 +1100,21 @@ html.pywry-native body:not([style*="flex"]) .pywry-container {
 .pywry-marquee-slide .pywry-marquee-track {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+}
+
+/* Static: no animation, content stays in place */
+.pywry-marquee-static .pywry-marquee-track {
+    animation: none;
+}
+
+.pywry-marquee-static .pywry-marquee-content {
+    padding-right: 0;
+}
+
+/* Static mode: no edge fade masks */
+.pywry-marquee.pywry-marquee-static {
+    mask-image: none;
+    -webkit-mask-image: none;
 }
 
 /* ---- Pause on Hover ---- */
@@ -2495,10 +2509,11 @@ html.light .pywry-input-date {
     padding: 0;
 }
 
-/* Top/Bottom wrapper inside body-scroll - allow natural size for scrolling */
+/* Top/Bottom wrapper inside body-scroll - fill height but allow overflow for scrolling */
 .pywry-body-scroll > .pywry-wrapper-top {
-    flex: 0 0 auto !important;
-    -webkit-flex: 0 0 auto !important;
+    flex: 1 1 auto !important;
+    -webkit-flex: 1 1 auto !important;
+    min-height: 100%;
 }
 
 /* Left/Right wrapper - stacks horizontally, LEFT/RIGHT extend full height */

@@ -143,7 +143,9 @@ class TestMarqueeNativeWindowRendering:
         assert result is not None, "Result not received"
         assert "AAPL" in result["textContent"], f"Content: {result['textContent']}"
         assert "GOOGL" in result["textContent"], f"Content: {result['textContent']}"
-        assert result["hasDuplicate"], "Should have duplicated content for seamless scroll"
+        assert result[
+            "hasDuplicate"
+        ], "Should have duplicated content for seamless scroll"
         app.close()
 
     def test_marquee_css_custom_properties(self):
@@ -160,7 +162,9 @@ class TestMarqueeNativeWindowRendering:
 
         from tests.test_e2e import show_and_wait_ready
 
-        label = show_and_wait_ready(app, "<div>CSS Props Test</div>", toolbars=[toolbar])
+        label = show_and_wait_ready(
+            app, "<div>CSS Props Test</div>", toolbars=[toolbar]
+        )
 
         result = wait_for_result(
             label,
@@ -267,7 +271,9 @@ class TestMarqueeNativeWindowRendering:
 
         from tests.test_e2e import show_and_wait_ready
 
-        label = show_and_wait_ready(app, "<div>TickerItem Test</div>", toolbars=[toolbar])
+        label = show_and_wait_ready(
+            app, "<div>TickerItem Test</div>", toolbars=[toolbar]
+        )
 
         result = wait_for_result(
             label,
@@ -286,7 +292,9 @@ class TestMarqueeNativeWindowRendering:
 
         assert result is not None, "Result not received"
         # Each content span is duplicated, so we should have 6 ticker items (3 * 2)
-        assert result["count"] >= 3, f"Expected at least 3 ticker items, got {result['count']}"
+        assert (
+            result["count"] >= 3
+        ), f"Expected at least 3 ticker items, got {result['count']}"
         assert "AAPL" in result["tickers"], f"AAPL not found: {result['tickers']}"
         assert "GOOGL" in result["tickers"], f"GOOGL not found: {result['tickers']}"
         assert result["hasUpClass"], "ticker-up class not found"
@@ -318,7 +326,9 @@ class TestMarqueeNativeWindowRendering:
 
         from tests.test_e2e import show_and_wait_ready
 
-        label = show_and_wait_ready(app, "<div>Update Test</div>", toolbars=[toolbar, toolbar2])
+        label = show_and_wait_ready(
+            app, "<div>Update Test</div>", toolbars=[toolbar, toolbar2]
+        )
         get_registry().register(label, "update:trigger", on_update)
 
         # Click the update button
@@ -343,7 +353,9 @@ class TestMarqueeNativeWindowRendering:
         )
 
         assert result is not None, "Result not received"
-        assert "Updated content" in result["text"], f"Content not updated: {result['text']}"
+        assert (
+            "Updated content" in result["text"]
+        ), f"Content not updated: {result['text']}"
         app.close()
 
 
@@ -447,9 +459,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Inline Marquee</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Inline Marquee</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee" in html
@@ -479,7 +495,9 @@ class TestMarqueeInlineRendering:
         ):
             widget = show("<div>CSS Test</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "--pywry-marquee-speed: 30" in html
@@ -504,9 +522,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Direction Test</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Direction Test</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee-vertical" in html
@@ -530,9 +552,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Behavior Test</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Behavior Test</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee-alternate" in html
@@ -558,7 +584,9 @@ class TestMarqueeInlineRendering:
         ):
             widget = show("<div>Click Test</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee-clickable" in html
@@ -587,9 +615,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Ticker Items</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Ticker Items</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-ticker-item" in html
@@ -616,9 +648,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Separator Test</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Separator Test</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee-separator" in html
@@ -644,7 +680,9 @@ class TestMarqueeInlineRendering:
         ):
             widget = show("<div>Pause Test</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "pywry-marquee-pause" in html
@@ -667,9 +705,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>No Pause Test</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>No Pause Test</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         # Check the marquee element itself doesn't have the pause class
@@ -700,7 +742,9 @@ class TestMarqueeInlineRendering:
         ):
             widget = show("<div>Label Test</div>", toolbars=[toolbar], port=server_port)
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         assert "News:" in html
@@ -723,9 +767,13 @@ class TestMarqueeInlineRendering:
             patch("pywry.inline.Output", MockOutput),
             patch("pywry.inline.HAS_IPYTHON", True),
         ):
-            widget = show("<div>Handler Test</div>", toolbars=[toolbar], port=server_port)
+            widget = show(
+                "<div>Handler Test</div>", toolbars=[toolbar], port=server_port
+            )
 
-        status, html = http_get(f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}")
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
 
         assert status == 200
         # Check that marquee update handlers are present in the JS
@@ -799,3 +847,214 @@ class TestTickerItemUpdatePayload:
         _event, payload = item.update_payload(styles={"color": "#22c55e"})
 
         assert payload["styles"]["color"] == "#22c55e"
+
+
+@pytest.mark.skipif(not HAS_FASTAPI, reason="FastAPI not installed")
+class TestMarqueeStaticBehavior:
+    """Test static marquee behavior with auto-cycling items."""
+
+    @pytest.fixture(autouse=True)
+    def server_setup(self, server_port):
+        """Setup server for each test."""
+        _start_server(port=server_port, host="0.0.0.0")
+        assert wait_for_server("127.0.0.1", server_port)
+        yield
+        stop_server()
+
+    def test_static_marquee_has_correct_class(self, server_port):
+        """Static marquee has pywry-marquee-static class."""
+        marquee = Marquee(
+            text="Static content",
+            behavior="static",
+            component_id="static-ticker",
+        )
+        toolbar = Toolbar(position="header", items=[marquee])
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output", MockOutput),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show(
+                "<div>Static Test</div>", toolbars=[toolbar], port=server_port
+            )
+
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
+
+        assert status == 200
+        assert "pywry-marquee-static" in html
+
+    def test_static_marquee_single_content_span(self, server_port):
+        """Static marquee renders single content span (no duplicate for animation)."""
+        marquee = Marquee(
+            text="Single span",
+            behavior="static",
+            component_id="single-span-ticker",
+        )
+        toolbar = Toolbar(position="header", items=[marquee])
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output", MockOutput),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show(
+                "<div>Single Span Test</div>", toolbars=[toolbar], port=server_port
+            )
+
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
+
+        assert status == 200
+        # Static marquee should not have duplicate content span (used for seamless animation loop)
+        # Check that there's no content span with aria-hidden="true" within our marquee
+        assert 'pywry-marquee-content" aria-hidden="true"' not in html
+
+    def test_static_marquee_with_items_has_data_attributes(self, server_port):
+        """Static marquee with items has data-items and data-speed attributes."""
+        items = ["News item 1", "News item 2", "News item 3"]
+        marquee = Marquee(
+            text=items[0],
+            items=items,
+            speed=5,
+            behavior="static",
+            component_id="items-ticker",
+        )
+        toolbar = Toolbar(position="header", items=[marquee])
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output", MockOutput),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show("<div>Items Test</div>", toolbars=[toolbar], port=server_port)
+
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
+
+        assert status == 200
+        assert "data-items=" in html
+        assert "data-speed=" in html
+        assert "News item 1" in html
+        assert "News item 2" in html
+        assert "News item 3" in html
+
+    def test_static_marquee_items_json_escaped(self, server_port):
+        """Static marquee items are properly JSON-escaped in data attribute."""
+        items = ['Item with "quotes"', "Item with <html>"]
+        marquee = Marquee(
+            text=items[0],
+            items=items,
+            speed=3,
+            behavior="static",
+            component_id="escape-ticker",
+        )
+        toolbar = Toolbar(position="header", items=[marquee])
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output", MockOutput),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show(
+                "<div>Escape Test</div>", toolbars=[toolbar], port=server_port
+            )
+
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
+
+        assert status == 200
+        # HTML should be valid (not break due to unescaped quotes/brackets)
+        assert 'id="escape-ticker"' in html
+        assert "data-items=" in html
+
+    def test_static_marquee_without_items_no_data_attributes(self, server_port):
+        """Static marquee without items list has no data-items attribute."""
+        marquee = Marquee(
+            text="Just text, no cycling",
+            behavior="static",
+            component_id="noitems-ticker",
+        )
+        toolbar = Toolbar(position="header", items=[marquee])
+
+        with (
+            patch("IPython.display.display"),
+            patch("IPython.display.IFrame"),
+            patch("pywry.inline.Output", MockOutput),
+            patch("pywry.inline.HAS_IPYTHON", True),
+        ):
+            widget = show(
+                "<div>No Items Test</div>", toolbars=[toolbar], port=server_port
+            )
+
+        status, html = http_get(
+            f"http://127.0.0.1:{server_port}/widget/{widget._widget_id}"
+        )
+
+        assert status == 200
+        assert 'id="noitems-ticker"' in html
+        # Should not have data-items attribute when items is not provided
+        assert "data-items=" not in html.split('id="noitems-ticker"')[1].split(">")[0]
+
+
+class TestMarqueeStaticBuildHtml:
+    """Unit tests for static marquee HTML generation."""
+
+    def test_static_behavior_accepted(self):
+        """Static is a valid behavior option."""
+        marquee = Marquee(
+            text="Test",
+            behavior="static",
+            component_id="static-test",
+        )
+        html = marquee.build_html()
+
+        assert "pywry-marquee-static" in html
+
+    def test_items_field_accepted(self):
+        """Items list field is accepted."""
+        marquee = Marquee(
+            text="First item",
+            items=["First item", "Second item", "Third item"],
+            behavior="static",
+            component_id="items-test",
+        )
+        html = marquee.build_html()
+
+        assert "data-items=" in html
+        assert "data-speed=" in html
+
+    def test_items_only_added_for_static_behavior(self):
+        """Items data attribute only added when behavior is static."""
+        marquee = Marquee(
+            text="Scrolling",
+            items=["Item 1", "Item 2"],
+            behavior="scroll",  # Not static
+            component_id="scroll-items-test",
+        )
+        html = marquee.build_html()
+
+        # Items should NOT be in data attributes for scrolling marquee
+        assert "data-items=" not in html
+
+    def test_speed_in_data_attribute_for_static_items(self):
+        """Speed value is included in data-speed for static with items."""
+        marquee = Marquee(
+            text="Test",
+            items=["A", "B"],
+            speed=7.5,
+            behavior="static",
+            component_id="speed-test",
+        )
+        html = marquee.build_html()
+
+        assert 'data-speed="7.5"' in html
