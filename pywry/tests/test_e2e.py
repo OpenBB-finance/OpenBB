@@ -15,6 +15,7 @@ from pywry import runtime
 from pywry.app import PyWry
 from pywry.callbacks import get_registry
 from pywry.models import HtmlContent, ThemeMode, WindowMode
+from pywry.toolbar import Button, Toolbar
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -521,22 +522,24 @@ class TestToolbarIntegration:
         # Event tracking
         events = {"clicked": False}
 
-        def on_click(data):
+        def on_click(data: dict, event_type: str, widget_id: str) -> None:  # pylint: disable=unused-argument
             events["clicked"] = True
             events["data"] = data
 
-        registry = get_registry()
-        # Pre-register because we can't reliably predict label for single window until shown
-        # But show() returns label, so we can register after show() IF we click after show()
-
         toolbars = [
-            {
-                "position": "top",
-                "items": [{"type": "button", "label": "ClickMe", "event": "custom:click"}],
-            }
+            Toolbar(
+                position="top",
+                items=[Button(label="ClickMe", event="custom:click")],
+            )
         ]
-        label = show_and_wait_ready(app, "<div>HTML</div>", toolbars=toolbars)
-        registry.register(label, "custom:click", on_click)
+
+        # Pass callback directly to show() - this is how PyWry events work
+        label = show_and_wait_ready(
+            app,
+            "<div>HTML</div>",
+            toolbars=toolbars,
+            callbacks={"custom:click": on_click},
+        )
 
         # Trigger click via JS
         app.eval_js("document.querySelector('.pywry-btn').click()", label=label)
@@ -555,19 +558,24 @@ class TestToolbarIntegration:
 
         events = {"clicked": False}
 
-        def on_click(data):  # pylint: disable=unused-argument
+        def on_click(data: dict, event_type: str, widget_id: str) -> None:  # pylint: disable=unused-argument
             events["clicked"] = True
 
         toolbars = [
-            {
-                "position": "bottom",
-                "items": [{"type": "button", "label": "PlotBtn", "event": "plot:click"}],
-            }
+            Toolbar(
+                position="bottom",
+                items=[Button(label="PlotBtn", event="plot:click")],
+            )
         ]
         figure = {"data": [{"x": [1], "y": [2], "type": "bar"}]}
 
-        label = show_plotly_and_wait_ready(app, figure, toolbars=toolbars)
-        get_registry().register(label, "plot:click", on_click)
+        # Pass callback directly to show_plotly()
+        label = show_plotly_and_wait_ready(
+            app,
+            figure,
+            toolbars=toolbars,
+            callbacks={"plot:click": on_click},
+        )
 
         # Verify toolbar rendered (check for toolbar class, not wrapper)
         result = wait_for_result(
@@ -592,20 +600,24 @@ class TestToolbarIntegration:
 
         events = {"clicked": False}
 
-        def on_click(data):  # pylint: disable=unused-argument
+        def on_click(data: dict, event_type: str, widget_id: str) -> None:  # pylint: disable=unused-argument
             events["clicked"] = True
 
         toolbars = [
-            {
-                "position": "left",
-                "items": [{"type": "button", "label": "GridBtn", "event": "data:click"}],
-            }
+            Toolbar(
+                position="left",
+                items=[Button(label="GridBtn", event="data:click")],
+            )
         ]
         data = [{"x": 1}]
 
-        # Using left position to test layout variation
-        label = show_dataframe_and_wait_ready(app, data, toolbars=toolbars)
-        get_registry().register(label, "data:click", on_click)
+        # Pass callback directly to show_dataframe()
+        label = show_dataframe_and_wait_ready(
+            app,
+            data,
+            toolbars=toolbars,
+            callbacks={"data:click": on_click},
+        )
 
         # Verify structure (left position)
         result = wait_for_result(
