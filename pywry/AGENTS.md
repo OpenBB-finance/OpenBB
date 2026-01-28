@@ -308,7 +308,7 @@ Pass structured content with custom CSS/JS files and data:
 from pywry import HtmlContent
 
 content = HtmlContent(
-    body="<div id='app'></div>",       # HTML body content
+    html="<div id='app'></div>",       # HTML content
     json_data={"items": [1, 2, 3]},    # Accessible as window.json_data in JS
     css_files=["style.css"],            # CSS files to include
     script_files=["app.js"],            # JS files to include
@@ -321,7 +321,7 @@ app.show(content, title="Custom App")
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `body` | `str` | HTML content |
+| `html` | `str` | HTML content |
 | `json_data` | `dict` | Data accessible as `window.json_data` |
 | `css_files` | `list[str]` | CSS file paths to include |
 | `script_files` | `list[str]` | JS file paths to include |
@@ -451,8 +451,8 @@ Enable live updates during development:
 app = PyWry(hot_reload=True)
 
 # Method 2: HtmlContent with watch
-content = HtmlContent(body="<h1>Hi</h1>", css_files=["style.css"], watch=True)
-app.show(content, watch=["style.css", "app.js"])
+content = HtmlContent(html="<h1>Hi</h1>", css_files=["style.css"], watch=True)
+app.show(content, watch=True)
 
 # Method 3: Toggle at runtime
 app.enable_hot_reload()

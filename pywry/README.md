@@ -115,7 +115,6 @@ handle = app.show(
     toolbars=[toolbar],
     callbacks={"app:click": on_click},
 )
-label = handle.label
 ```
 
 ### DataFrame -> AgGrid
@@ -137,7 +136,6 @@ handle = app.show_dataframe(
     df,
     callbacks={"grid:row-selected": on_select},
 )
-label = handle.label
 ```
 
 ### Plotly Chart
@@ -177,7 +175,6 @@ handle = app.show_plotly(
         "app:reset": on_reset,
     },
 )
-label = handle.label
 ```
 
 ---
@@ -295,8 +292,8 @@ PyWry automatically selects the appropriate rendering path based on your environ
             │  │ HTML/JS/CSS│  │  │ any-  │ │Falls│  │  MODE   │
             │  └────────────┘  │  │widget │ │back │  │         │
             │                  │  │ avail?│ │     │  │ FastAPI │
-            │  Returns: label  │  └───┬───┘ └──┬──┘  │ Server  │
-            │  (str)           │      │        │     │         │
+            │  Returns: Native │  └───┬───┘ └──┬──┘  │ Server  │
+            │  WindowHandle    │      │        │     │         │
             └──────────────────┘      ▼        │     │Opens in │
                       │         ┌─────────┐    │     │ Browser │
                       │         │NOTEBOOK │    │     └────┬────┘
@@ -406,12 +403,8 @@ from pywry import PyWry, WindowMode
 
 app = PyWry(mode=WindowMode.BROWSER)
 
-# Opens in default browser, returns widget_id
-widget_id = app.show("<h1>Hello from Browser</h1>")
-
-# Works with Plotly and DataFrames too
-app.show_plotly(fig)
-app.show_dataframe(df)
+# Opens in default browser, returns InlineWidget
+widget = app.show("<h1>Hello from Browser</h1>")
 
 # Block until browser tab is closed
 app.block()
@@ -605,7 +598,7 @@ def my_handler(data: dict, event_type: str, label: str) -> None:
 **Sending Events to JavaScript:**
 
 > **Which `emit()` to use?**
-> - **Native mode** (`NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`): `show_*()` returns a string label → use `app.emit(event, data, label)`
+> - **Native mode** (`NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW`): `show_*()` returns a `NativeWindowHandle` → use `handle.emit(event, data)` or `app.emit(event, data, handle.label)`
 > - **Notebook/Browser mode** (`NOTEBOOK`, `BROWSER`): `show_*()` returns a widget → use `widget.emit(event, data)`
 >
 > The `callbacks={}` parameter in `show_*()` works identically in all modes.
@@ -614,10 +607,11 @@ def my_handler(data: dict, event_type: str, label: str) -> None:
 from pywry import PyWry
 
 app = PyWry()
-label = app.show("<h1 id='title'>Hello</h1>")
+handle = app.show("<h1 id='title'>Hello</h1>")
 
-# For native mode: use app.emit() with built-in utility events
-app.emit("pywry:set-content", {"id": "title", "text": "Updated!"}, label)
+# For native mode: use handle.emit() or app.emit() with handle.label
+handle.emit("pywry:set-content", {"id": "title", "text": "Updated!"})
+# Or: app.emit("pywry:set-content", {"id": "title", "text": "Updated!"}, handle.label)
 
 # For notebook mode: show_*() returns a widget with .emit()
 # widget.emit("pywry:set-content", {"id": "title", "text": "Updated!"})
@@ -1659,7 +1653,7 @@ def on_action2(data, event_type):
 def on_action3(data):
     print(str(data))
 
-label = app.show(
+handle = app.show(
     '<div id="log" style="padding:20px;">Click a button...</div>',
     toolbars=[Toolbar(position="top", items=[
         Button(label="Action 1", event="app:action1"),
@@ -1680,7 +1674,7 @@ label = app.show(
 
 | Mode | `callbacks={}` | `app.on()` | `widget.on()` | Returns |
 |------|----------------|------------|---------------|---------|
-| Native Window | ✅ | ✅ | ❌ | `str` (label) |
+| Native Window | ✅ | ✅ | ✅ | `NativeWindowHandle` |
 | Notebook (anywidget) | ✅ | ❌ | ✅ | `PyWryWidget` |
 | Browser Mode | ✅ | ❌ | ✅ | `InlineWidget` |
 
@@ -1705,8 +1699,8 @@ def on_export(data, event_type, label):
     csv_content = px.data.iris().to_csv(index=False)
     print(f"Exporting {len(csv_content)} bytes...")
 
-# Works in ALL modes (native returns str, notebook returns widget)
-label = app.show_plotly(
+# Works in ALL modes (native returns NativeWindowHandle, notebook returns widget)
+handle = app.show_plotly(
     fig,
     toolbars=[Toolbar(position="top", items=[Button(label="Export CSV", event="app:export")])],
     callbacks={
@@ -1744,7 +1738,7 @@ app.on("plotly:click", on_click, label="my-chart")
 app.on("app:zoom-reset", on_zoom_reset, label="my-chart")
 
 # Use the SAME label when showing content
-label = app.show_plotly(
+handle = app.show_plotly(
     fig,
     title="Click points to select them",
     toolbars=[Toolbar(position="top", items=[Button(label="Reset Zoom", event="app:zoom-reset")])],
@@ -1779,7 +1773,7 @@ def on_theme_toggle(data, event_type, label):
     app.emit("pywry:update-theme", {"theme": "plotly_dark"}, label)
 
 # Using callbacks={} is recommended for most cases
-label = app.show_plotly(
+handle = app.show_plotly(
     fig,
     title="Click points to annotate",
     toolbars=[Toolbar(position="top", items=[Button(label="Dark Mode", event="app:theme")])],
@@ -1789,8 +1783,8 @@ label = app.show_plotly(
     }
 )
 
-# widget.on() can add additional handlers after show()
-# widget.on("plotly:hover", on_hover)
+# handle.on() can add additional handlers after show()
+# handle.on("plotly:hover", on_hover)
 ```
 
 ### Wildcard Handlers
@@ -1807,7 +1801,7 @@ def log_event(data, event_type, label):
     print(f"[{event_type}] {data}")
 
 # Show content with toolbar buttons
-label = app.show(
+handle = app.show(
     '<div id="log" style="padding:20px; font-family:monospace;">Click a button above...</div>',
     toolbars=[
         Toolbar(position="top", items=[
@@ -1823,7 +1817,7 @@ label = app.show(
 )
 ```
 
-> **Note:** For true wildcard logging in native mode, use `app.on("*", handler)` but be aware that events firing before `widget` is assigned (like `window:ready`) will need a guard check.
+> **Note:** For true wildcard logging in native mode, use `app.on("*", handler)` but be aware that events firing before `handle` is assigned (like `window:ready`) will need a guard check.
 
 ---
 
@@ -1915,48 +1909,48 @@ html = """
 </div>
 """
 
-label = app.show(html, title="DOM Manipulation Demo")
+handle = app.show(html, title="DOM Manipulation Demo")
 
 # Update the status badge style
-app.emit("pywry:set-style", {
+handle.emit("pywry:set-style", {
     "id": "status-badge",
     "styles": {"backgroundColor": "green", "color": "white"}
-}, label)
+})
 
 time.sleep(1)
 # Update all rows with a highlight (by CSS selector)
-app.emit("pywry:set-style", {
+handle.emit("pywry:set-style", {
     "selector": ".data-row",
     "styles": {"borderColor": "#3b82f6", "borderWidth": "2px"}  # Blue border
-}, label)
+})
 
 time.sleep(1)
 # Update content by ID (with HTML)
-app.emit("pywry:set-content", {
+handle.emit("pywry:set-content", {
     "id": "values-display",
     "html": "<strong>Updated!</strong> 42 items loaded"
-}, label)
+})
 time.sleep(1)
 # Update all status-text elements (plain text, safer)
-app.emit("pywry:set-content", {
+handle.emit("pywry:set-content", {
     "selector": ".status-text",
     "text": "Complete"
-}, label)
+})
 
 # Update the badge text
-app.emit("pywry:set-content", {
+handle.emit("pywry:set-content", {
     "id": "status-badge",
     "text": "Ready"
-}, label)
+})
 time.sleep(1)
 # Inject custom CSS dynamically
-app.emit("pywry:inject-css", {
+handle.emit("pywry:inject-css", {
     "css": "#title { color: #2563eb; }",
     "id": "my-styles"
-}, label)
+})
 time.sleep(2)
 
-app.close(label)
+handle.close()
 ```
 
 > **Note:** For notebook mode, use `widget.emit("pywry:...", {...})` on the returned widget instead.
@@ -2025,7 +2019,7 @@ def handle_confirm_response(data, event_type, label):
     else:
         app.alert("Deletion cancelled", alert_type="info", label=label)
 
-label = app.show(
+handle = app.show(
     "<h1>Alert Demo</h1><p>Click the toolbar buttons to see different alert types.</p>",
     title="Toast Notifications",
     toolbars=[toolbar],
@@ -2046,13 +2040,13 @@ label = app.show(
 
 ```python
 # Same as app.alert() but with explicit event emission
-app.emit("pywry:alert", {
+handle.emit("pywry:alert", {
     "message": "Processing complete",
     "type": "success",
     "title": "Done",
     "duration": 4000,  # Override auto-dismiss time (ms)
     "position": "bottom-right"  # top-right, top-left, bottom-right, bottom-left
-}, label)
+})
 ```
 
 #### Toast Positions
@@ -2068,8 +2062,8 @@ Toasts can be positioned in any corner of the widget container:
 
 ```python
 # Position toast in different corners
-app.emit("pywry:alert", {"message": "Top right", "position": "top-right"}, label)
-app.emit("pywry:alert", {"message": "Bottom left", "position": "bottom-left"}, label)
+handle.emit("pywry:alert", {"message": "Top right", "position": "top-right"})
+handle.emit("pywry:alert", {"message": "Bottom left", "position": "bottom-left"})
 ```
 
 #### Multiple Toasts and Stacking
@@ -2078,9 +2072,9 @@ Multiple toasts stack vertically in their position container. New toasts appear 
 
 ```python
 # Show multiple toasts - they stack
-app.alert("First message", alert_type="info", label=label)
-app.alert("Second message", alert_type="success", label=label)
-app.alert("Third message", alert_type="warning", label=label)
+app.alert("First message", alert_type="info", label=handle.label)
+app.alert("Second message", alert_type="success", label=handle.label)
+app.alert("Third message", alert_type="warning", label=handle.label)
 ```
 
 #### Keyboard Shortcuts
@@ -2181,7 +2175,7 @@ def on_chart_click(data, event_type, label):
         "layout": {"title": f"Clicked: ({point['x']:.2f}, {point['y']:.2f})"}
     }, label)
 
-label = app.show_plotly(fig, title="Click any point", callbacks={"plotly:click": on_chart_click})
+handle = app.show_plotly(fig, title="Click any point", callbacks={"plotly:click": on_chart_click})
 ```
 
 #### Events from Python → JavaScript (Update Chart)
@@ -2246,7 +2240,7 @@ def on_row_select(data, event_type, label):
     names = ", ".join(row["name"] for row in rows)
     print(f"Selected: {names}" if names else "No selection")
 
-label = app.show_dataframe(
+handle = app.show_dataframe(
     df,
     callbacks={"grid:row-selected": on_row_select}
 )
@@ -2361,7 +2355,7 @@ def on_theme_change(data_evt, event_type, label):
     theme = "plotly_dark" if data_evt["value"] == "dark" else "plotly_white"
     app.emit("pywry:update-theme", {"theme": theme}, label)
 
-label = app.show(
+handle = app.show(
     "<h1>Dashboard</h1><p>Select a theme or export data.</p>",
     toolbars=[toolbar],
     callbacks={
@@ -2426,7 +2420,7 @@ toolbar = Toolbar(
     ]
 )
 
-label = app.show(
+handle = app.show(
     "<h1>Data Export</h1><p>Click a button to download.</p>",
     toolbars=[toolbar],
     callbacks={"app:export": on_action}
@@ -2451,7 +2445,7 @@ def on_action(data, event_type, label):
         "text": f"Received {received}, doubled = {doubled}"
     }, label)
 
-label = app.show("""
+handle = app.show("""
 <button onclick="window.pywry.emit('app:my-action', {value: 42})">
     Click Me
 </button>
@@ -2469,10 +2463,10 @@ To update the browser UI from Python, use `app.emit()` for native mode or `widge
 from pywry import PyWry
 
 app = PyWry()
-label = app.show("<div id='msg'>Hello</div>")
+handle = app.show("<div id='msg'>Hello</div>")
 
 # Update content without any custom JavaScript
-app.emit("pywry:set-content", {"id": "msg", "text": "Updated!"}, label)
+handle.emit("pywry:set-content", {"id": "msg", "text": "Updated!"})
 
 # Notebook mode: widget.emit() on the returned widget
 # widget.emit("pywry:set-content", {"id": "msg", "text": "Updated!"})
@@ -2484,7 +2478,7 @@ app.emit("pywry:set-content", {"id": "msg", "text": "Updated!"}, label)
 from pywry import PyWry
 
 app = PyWry()
-label = app.show("""
+handle = app.show("""
 <div id='msg'>Hello</div>
 <script>
 window.pywry.on('app:update-message', function(data) {
@@ -2494,7 +2488,7 @@ window.pywry.on('app:update-message', function(data) {
 """)
 
 # Now your custom event has a handler
-app.emit("app:update-message", {"text": "Updated!"}, label)
+handle.emit("app:update-message", {"text": "Updated!"})
 ```
 
 ### Complete Two-Way Communication Example
@@ -2510,7 +2504,7 @@ def handle_request(data, event_type, label):
     # Use app.emit() to send response back to JavaScript
     app.emit("app:response", result, label)
 
-label = app.show("""
+handle = app.show("""
 <button onclick="requestData()">Fetch Data</button>
 <div id="result">Click the button to fetch data...</div>
 <script>
@@ -2573,7 +2567,7 @@ toolbar = Toolbar(
     ],
 )
 
-label = app.show(
+handle = app.show(
     '<h1 id="heading">Current View: Table</h1><div id="status" style="padding:8px;">Ready</div>',
     toolbars=[toolbar],
     callbacks={"app:save": on_save, "view:change": on_view_change},
@@ -3824,7 +3818,6 @@ app = PyWry()
 # State to display current values
 component_values = {}
 current_theme = "dark"  # Track current theme
-components_label = None  # Will hold the window label
 
 def make_handler(name):
     """Create a handler that updates the display with the component's value."""
@@ -4128,7 +4121,7 @@ components_footer = Toolbar(
 # No custom HTML or custom JS needed - all interactions use built-in pywry events!
 components_html = ""
 
-components_label = app.show(
+components_handle = app.show(
     components_html,
     title="All Components Demo",
     toolbars=[
@@ -4193,14 +4186,14 @@ toolbar = Toolbar(
     items=[Select(event="app:mode", options=["A", "B", "C"], selected="A")]
 )
 
-label = app.show(
+handle = app.show(
     '<div id="state">Click refresh to see state...</div>',
     toolbars=[toolbar],
     callbacks={"toolbar:state-response": on_state}
 )
 
 # Request toolbar state
-app.emit("toolbar:request-state", {"toolbarId": "my-toolbar"}, label)
+handle.emit("toolbar:request-state", {"toolbarId": "my-toolbar"})
 ```
 
 **Response payload:**
@@ -4238,7 +4231,7 @@ toolbar = Toolbar(
     ]
 )
 
-label = app.show(
+handle = app.show(
     '<div id="status">Adjust settings above...</div>',
     toolbars=[toolbar],
     callbacks={"app:reset": on_reset}
@@ -4808,7 +4801,7 @@ def on_click(data, event_type, label):
         "styles": {"backgroundColor": "#22c55e", "color": "#fff"}
     }, label)
 
-label = app.show(
+handle = app.show(
     '<div id="status" style="padding:20px;">Click the button to change its color</div>',
     toolbars=[Toolbar(position="top", items=[
         Button(label="Click Me", event="app:click", component_id="my-btn")
@@ -4994,7 +4987,7 @@ def handle_request(data, event_type, label):
     """Send response back to JavaScript."""
     app.emit("app:response", {"items": [1, 2, 3]}, label)
 
-label = app.show("""
+handle = app.show("""
 <button onclick="requestData()">Fetch Data</button>
 <div id="result">Click the button...</div>
 <script>
@@ -5018,26 +5011,26 @@ from pywry import PyWry
 app = PyWry()
 
 # Create a window first
-label = app.show("""
+handle = app.show("""
 <div id="message">Hello</div>
 <div id="counter">0</div>
 <span class="count">initial</span>
 """)
 
 # Theme switching (updates Plotly templates, AgGrid themes, and CSS classes)
-app.emit("pywry:update-theme", {"theme": "light"}, label)
+handle.emit("pywry:update-theme", {"theme": "light"})
 
 # Inject CSS dynamically (with optional id for replacement)
-app.emit("pywry:inject-css", {"css": ".status { color: green; }", "id": "status-css"}, label)
+handle.emit("pywry:inject-css", {"css": ".status { color: green; }", "id": "status-css"})
 
 # Update element styles by id
-app.emit("pywry:set-style", {"id": "counter", "styles": {"fontSize": "24px", "fontWeight": "bold"}}, label)
+handle.emit("pywry:set-style", {"id": "counter", "styles": {"fontSize": "24px", "fontWeight": "bold"}})
 
 # Update element content by id
-app.emit("pywry:set-content", {"id": "message", "html": "<strong>Success!</strong>"}, label)
+handle.emit("pywry:set-content", {"id": "message", "html": "<strong>Success!</strong>"})
 
 # Update element content by CSS selector
-app.emit("pywry:set-content", {"selector": ".count", "text": "42"}, label)
+handle.emit("pywry:set-content", {"selector": ".count", "text": "42"})
 ```
 
 See [Utility Events (Python → JS)](#utility-events-python-to-js) for complete documentation.
@@ -5153,7 +5146,7 @@ def on_button_click(data, event_type, label):
     print(f'Received click #{count}')
     app.emit('custom:update', {'message': f'Hello from Python! Count: {count}'}, label)
 
-label = app.show('''
+handle = app.show('''
 <div id="output">Click the button...</div>
 <button onclick="sendToPython()">Send to Python</button>
 <script>
@@ -5169,7 +5162,7 @@ function sendToPython() {
 ''', callbacks={'custom:button-click': on_button_click})
 ```
 
-> **Note:** The `window.pywry` bridge is automatically initialized by PyWry. Use `window.pywry.on()` to listen for events from Python, and `window.pywry.emit()` to send events to Python. Native mode returns a string label - use `app.emit()` to send events. Notebook mode returns a widget with `.emit()`.
+> **Note:** The `window.pywry` bridge is automatically initialized by PyWry. Use `window.pywry.on()` to listen for events from Python, and `window.pywry.emit()` to send events to Python. Native mode returns a `NativeWindowHandle` - use `handle.emit()` or `app.emit(event, data, handle.label)`. Notebook mode returns a widget with `.emit()`.
 
 ### Environment Detection
 
@@ -5244,17 +5237,17 @@ The `show_*()` methods return widget objects that provide a unified API:
 
 | Mode | `show_*()` Returns | Control Via |
 |------|-------------------|-------------|
-| `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW` | `str` (label) | `app.emit(event, data, label)`, `app.close(label)` |
+| `NEW_WINDOW`, `SINGLE_WINDOW`, `MULTI_WINDOW` | `NativeWindowHandle` | `handle.emit(...)`, `handle.close()`, or `app.emit(event, data, handle.label)` |
 | `NOTEBOOK`, `BROWSER` | `BaseWidget` (PyWryWidget/InlineWidget) | `widget.emit(...)`, `widget.on(...)`, `widget.update(...)` |
 
-**Native mode:** use `app.emit(event, data, label)` to send events to JavaScript.
+**Native mode:** use `handle.emit(event, data)` or `app.emit(event, data, handle.label)` to send events to JavaScript.
 **Notebook mode:** use `widget.emit(event, data)` on the returned widget.
 
 ---
 
 ### Native Window Management
 
-In native modes, `show_*()` returns a **string label** that identifies the window:
+In native modes, `show_*()` returns a `NativeWindowHandle` that provides access to the window:
 
 ```python
 from pywry import PyWry, WindowMode
@@ -5266,16 +5259,16 @@ app = PyWry(mode=WindowMode.MULTI_WINDOW)
 fig = px.scatter(px.data.iris(), x="sepal_width", y="sepal_length")
 df = pd.DataFrame({"name": ["Alice", "Bob"], "age": [30, 25]})
 
-# Each show_*() returns a unique window label (str)
-label1 = app.show_plotly(fig, title="Chart 1")
-label2 = app.show_dataframe(df, title="Data")
-label3 = app.show("<h1 id='heading'>Custom</h1>", title="Custom")
+# Each show_*() returns a NativeWindowHandle
+handle1 = app.show_plotly(fig, title="Chart 1")
+handle2 = app.show_dataframe(df, title="Data")
+handle3 = app.show("<h1 id='heading'>Custom</h1>", title="Custom")
 
-# Send built-in events using app.emit() with the label
-app.emit("pywry:set-content", {"id": "heading", "text": "Updated!"}, label3)
+# Send built-in events using handle.emit() or app.emit() with handle.label
+handle3.emit("pywry:set-content", {"id": "heading", "text": "Updated!"})
 
-# Close a specific window by label
-app.close(label1)
+# Close a specific window
+handle1.close()
 ```
 
 #### Querying Windows
@@ -5285,8 +5278,8 @@ app.close(label1)
 labels = app.get_labels()  # ["pywry-a1b2c3", "pywry-d4e5f6", "pywry-g7h8i9"]
 
 # Check if a specific window is still open
-if app.is_open(label1):
-    print(f"Window {label1} is still open")
+if app.is_open(handle1.label):
+    print(f"Window {handle1.label} is still open")
 
 # Check if ANY window is open
 if app.is_open():
@@ -5296,14 +5289,14 @@ if app.is_open():
 #### Controlling Windows
 
 ```python
-# Update content using built-in utility event
-app.emit("pywry:set-content", {"id": "heading", "text": "Hello!"}, label1)
+# Update content using handle.emit() (recommended)
+handle1.emit("pywry:set-content", {"id": "heading", "text": "Hello!"})
 
 # Refresh a specific window (full page reload)
-app.refresh(label1)
+app.refresh(handle1.label)
 
 # Close a specific window
-app.close(label1)
+handle1.close()  # or app.close(handle1.label)
 
 # Close ALL windows
 app.close()  # No label = close all
@@ -5411,10 +5404,10 @@ windows["sidebar"] = app.show_dataframe(df, title="Data Panel")
 
 # Later: send events to specific windows
 def refresh_main():
-    app.emit("plotly:update-figure", {"figure": new_fig_dict}, label=windows["main"])
+    windows["main"].emit("plotly:update-figure", {"figure": new_fig_dict})
 
 def close_sidebar():
-    app.close(windows["sidebar"])
+    windows["sidebar"].close()
     del windows["sidebar"]
 ```
 
@@ -5482,9 +5475,9 @@ Methods available on the `PyWry` app instance:
 
 | Method | Description |
 |--------|-------------|
-| `app.show(html, ...)` | Show HTML content, returns label or widget |
-| `app.show_plotly(fig, ...)` | Show Plotly figure, returns label or widget |
-| `app.show_dataframe(df, ...)` | Show DataFrame as AgGrid, returns label or widget |
+| `app.show(html, ...)` | Show HTML content, returns `NativeWindowHandle` or widget |
+| `app.show_plotly(fig, ...)` | Show Plotly figure, returns `NativeWindowHandle` or widget |
+| `app.show_dataframe(df, ...)` | Show DataFrame as AgGrid, returns `NativeWindowHandle` or widget |
 | `app.get_labels()` | Get list of all active window labels |
 | `app.is_open(label=None)` | Check if window(s) are open |
 | `app.emit(event, data, label=None)` | Send event to window(s) |
@@ -6926,7 +6919,7 @@ def on_export(data, event_type, label):
         "mimeType": "text/csv"
     }, label)
 
-label = app.show_plotly(fig, config=config, callbacks={"app:export": on_export})
+handle = app.show_plotly(fig, config=config, callbacks={"app:export": on_export})
 ```
 
 ### SvgIcon
