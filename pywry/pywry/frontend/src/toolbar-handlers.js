@@ -13,7 +13,16 @@ function initTooltipManager(container) {
     var hideTimeout = null;
     var showTimeout = null;
     var tooltipRoot = container;
-    var widgetEl = container.closest('.pywry-widget') || container.closest('.pywry-container') || container;
+    // Handle document vs Element - document doesn't have .closest()
+    var widgetEl;
+    if (container === document || container.nodeType === 9) {
+        // container is document - find widget element or use body
+        widgetEl = document.querySelector('.pywry-widget') || document.querySelector('.pywry-container') || document.body;
+    } else if (typeof container.closest === 'function') {
+        widgetEl = container.closest('.pywry-widget') || container.closest('.pywry-container') || container;
+    } else {
+        widgetEl = container;
+    }
     tooltipRoot = widgetEl;
 
     function createTooltip() {
