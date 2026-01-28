@@ -1,104 +1,142 @@
 """Utilities for standardizing country inputs across providers using ISO 3166 standards.
 
-This module provides country type handling using pydantic-extra-types for ISO compliance.
-Providers can customize serialization via field_serializer to match their API requirements.
+This module provides a Country type that inherits from str for type checker compatibility
+while providing full access to ISO 3166 country data via pycountry.
+
+Providers can access alpha_2, alpha_3, name, and numeric properties as needed.
 
 References:
     - ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
-    - pydantic-extra-types: https://docs.pydantic.dev/latest/api/pydantic_extra_types_country/
+    - pycountry: https://github.com/pycountry/pycountry
 """
 
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import BeforeValidator, PlainSerializer
-from pydantic_extra_types.country import CountryAlpha2, CountryShortName
+import pycountry
 
-def _normalize_country_input(value: Any) -> str:
-    """
-    Normalize country input to a format pydantic-extra-types can handle.
+
+class Country(str):
+    """Country string type with full ISO 3166 model access.
+
+    Inherits from str (storing alpha_2 code) for type checker compatibility
+    while providing access to the full pycountry object for alpha_2, alpha_3,
+    name, and numeric properties.
 
     Accepts:
-    - ISO 3166-1 alpha-2 codes (e.g., "US", "us")
-    - Full country names (e.g., "United States")
-    - lower_snake_case names (e.g., "united_states")
+        - ISO 3166-1 alpha-2 codes (e.g., "US", "us")
+        - ISO 3166-1 alpha-3 codes (e.g., "USA", "usa")
+        - Full country names (e.g., "United States")
+        - lower_snake_case names (e.g., "united_states")
 
-    Parameters
-    ----------
-    value : Any
-        The input country value.
-
-    Returns
-    -------
-    str
-        Normalized country string for pydantic validation.
+    Examples
+    --------
+    >>> c = Country("united_states")
+    >>> str(c)
+    'US'
+    >>> c.alpha_2
+    'US'
+    >>> c.alpha_3
+    'USA'
+    >>> c.name
+    'United States'
     """
-    if value is None:
-        return value
 
-    val = str(value).strip()
+    _country: Any  # pycountry country object
 
-    # If it's a 2-letter code, uppercase it for CountryAlpha2
-    if len(val) == 2:
-        return val.upper()
+    def __new__(cls, value: Any) -> "Country":
+        """Create a new Country instance.
 
-    # Convert lower_snake_case to Title Case (e.g., "united_states" -> "United States")
-    if "_" in val:
-        val = val.replace("_", " ").title()
+        Parameters
+        ----------
+        value : Any
+            Country input (alpha-2, alpha-3, name, or lower_snake_case).
 
-    # Try to match as a country name
-    return val.title() if val.islower() else val
+        Returns
+        -------
+        Country
+            A Country instance storing the alpha_2 code as its string value.
 
+        Raises
+        ------
+        ValueError
+            If the country cannot be resolved.
+        """
+        if isinstance(value, Country):
+            country_obj = value._country
+        else:
+            country_obj = cls._lookup_country(value)
 
-def _resolve_country_to_alpha2(value: Any) -> CountryAlpha2:
-    """
-    Resolve various country input formats to CountryAlpha2.
+        # Create str instance with the alpha_2 code
+        instance = super().__new__(cls, country_obj.alpha_2)
+        # Store the pycountry object
+        instance._country = country_obj
+        return instance
 
-    Parameters
-    ----------
-    value : Any
-        Country input (code, name, or lower_snake_case).
+    @staticmethod
+    def _lookup_country(value: Any) -> Any:
+        """Look up a country from various input formats.
 
-    Returns
-    -------
-    CountryAlpha2
-        Validated ISO 3166-1 alpha-2 country object.
+        Parameters
+        ----------
+        value : Any
+            Country input to look up.
 
-    Raises
-    ------
-    ValueError
-        If the country cannot be resolved.
-    """
-    if value is None:
-        return value
+        Returns
+        -------
+        pycountry.db.Country
+            The pycountry country object.
 
-    if isinstance(value, CountryAlpha2):
-        return value
+        Raises
+        ------
+        ValueError
+            If the country cannot be found.
+        """
+        val = str(value).strip()
 
-    normalized = _normalize_country_input(value)
+        # Convert lower_snake_case to space-separated (e.g., "united_states" -> "united states")
+        if "_" in val:
+            val = val.replace("_", " ")
 
-    # Try as alpha-2 code first
-    if len(normalized) == 2:
         try:
-            return CountryAlpha2._validate(normalized, None)
-        except ValueError:
-            pass
+            return pycountry.countries.lookup(val)
+        except LookupError as e:
+            raise ValueError(
+                f"Invalid country: '{value}'. "
+                "Accepts ISO 3166-1 alpha-2 codes (e.g., 'US'), "
+                "alpha-3 codes (e.g., 'USA'), "
+                "or country names (e.g., 'United States', 'united_states')."
+            ) from e
 
-    # Try as country name
-    try:
-        country_name = CountryShortName._validate(normalized, None)
-        return CountryAlpha2._validate(country_name.alpha2, None)
-    except ValueError as e:
-        raise ValueError(
-            f"Invalid country: '{value}'. "
-            "Accepts ISO 3166-1 alpha-2 codes (e.g., 'US') "
-            "or country names (e.g., 'United States', 'united_states')."
-        ) from e
+    @property
+    def alpha_2(self) -> str:
+        """ISO 3166-1 alpha-2 code (e.g., 'US')."""
+        return self._country.alpha_2
+
+    @property
+    def alpha_3(self) -> str:
+        """ISO 3166-1 alpha-3 code (e.g., 'USA')."""
+        return self._country.alpha_3
+
+    @property
+    def name(self) -> str:
+        """Full country name (e.g., 'United States')."""
+        return self._country.name
+
+    @property
+    def numeric(self) -> str | None:
+        """ISO 3166-1 numeric code (e.g., '840'), if available."""
+        return getattr(self._country, "numeric", None)
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: Any) -> Any:
+        """Return the Pydantic core schema for validation."""
+        from pydantic_core import core_schema
+
+        return core_schema.no_info_after_validator_function(
+            cls,
+            core_schema.str_schema(),
+        )
 
 
-# Type alias for country fields that accept flexible input
-# Serializes to lowercase alpha-2 code by default
-CountryParam = Annotated[
-    CountryAlpha2,
-    BeforeValidator(_resolve_country_to_alpha2),
-    PlainSerializer(lambda x: str(x).lower() if x else None, return_type=str),
-]
+# Backwards-compatible alias
+CountryParam = Country
