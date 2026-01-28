@@ -26,10 +26,10 @@ jobs:
     env:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Cache vcpkg
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.VCPKG_ROOT }}
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('desktop/**/vcpkg.json') }}
@@ -118,7 +118,7 @@ jobs:
           Get-ChildItem -Path "${{ github.workspace }}/desktop/src-tauri/*.dll"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
 
@@ -129,7 +129,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
@@ -139,7 +139,7 @@ jobs:
             windows-x64-cargo-registry-
 
       - name: Cache cargo build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: desktop/target
           key: windows-x64-cargo-build-${{ hashFiles('desktop/**/Cargo.lock') }}
@@ -250,7 +250,7 @@ jobs:
             --password $env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: windows-x64-artifacts
           path: ${{ github.workspace }}/desktop/signed-installer/

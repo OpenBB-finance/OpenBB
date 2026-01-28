@@ -122,32 +122,6 @@ def test_etf_search(params, obb):
         ),
         (
             {
-                "sort": "desc",
-                "limit": "49999",
-                "adjustment": "unadjusted",
-                "provider": "polygon",
-                "symbol": "SPY",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-03",
-                "interval": "1m",
-                "extended_hours": False,
-            }
-        ),
-        (
-            {
-                "sort": "desc",
-                "limit": "49999",
-                "adjustment": "splits_only",
-                "provider": "polygon",
-                "symbol": "SPY",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-                "extended_hours": False,
-            }
-        ),
-        (
-            {
                 "extended_hours": False,
                 "include_actions": False,
                 "adjustment": "splits_and_dividends",

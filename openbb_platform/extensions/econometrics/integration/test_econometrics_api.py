@@ -39,7 +39,7 @@ def get_equity_data():
         return data["equity_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "intrinio", "polygon"])  # noqa: S311
+    provider = random.choice(["fmp", "yfinance"])  # noqa: S311
 
     data["equity_data"] = request_data("equity", symbol=symbol, provider=provider)
     return data["equity_data"]
