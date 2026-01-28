@@ -160,7 +160,9 @@ async def get_vx_current(
         expirations.append(f"{current_year}-{new_month}")
 
     df.symbol = expirations
-    df = df.rename(columns={"symbol": "expiration", "last_price": "price"})
+    df = df.rename(columns={"symbol": "expiration", "last_price": "price"}).dropna(
+        how="any"
+    )
 
     return df
 
@@ -261,8 +263,8 @@ async def get_vx_by_date(
     nearest_dates = []
     for date_ in dates_list:
         nearest_date = df.index.asof(date_)
-        if isna(nearest_date):  # type: ignore
-            differences = abs(df.index - date_)
+        if isna(nearest_date):
+            differences = abs(df.index - date_)  # type: ignore
             min_diff_index = differences.argmin()
             nearest_date = df.index[min_diff_index]
         nearest_dates.append(nearest_date)
@@ -318,6 +320,10 @@ async def get_vx_by_date(
         categories=sorted(output.symbol.unique().tolist()),
         ordered=True,
     )
-    output = output.sort_values(by=["date", "symbol"]).reset_index(drop=True)
+    output = (
+        output.sort_values(by=["date", "symbol"])
+        .reset_index(drop=True)
+        .dropna(how="any")
+    )
 
     return output

@@ -455,39 +455,6 @@ PortCountries = Literal[
 ]
 
 
-FSI_PRESETS = [
-    "fsi_core",
-    "fsi_core_underlying",
-    "fsi_other",
-    "fsi_encouraged_set",
-    "fsi_balance_sheets",
-    "fsi_all",
-]
-
-IRFCL_HEADLINE = "RAF_USD,RAFA_USD,RAFAFX_USD,RAOFA_USD,RAPFA_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RACFA_USD,RAMDCD_USD,RAMFIFC_USD,RAMSR_USD"
-
-RESERVE_ASSETS_AND_OTHER_FX_ASSETS = "RAF_USD,RAFA_USD,RAFAFX_USD,RAFAFXS_USD,RAFAFXSI_USD,RAFAFXCD_USD,RAFAFXCDN_USD,RAFAFXCDBI_USD,RAFAFXCDBIA_USD,RAFAFXCDBO_USD,RAFAFXCDBOA_USD,RAFAIMF_USD,RAFASDR_USD,RAFAGOLD_USD,RAFAGOLDV_OZT,RAFAO_USD,RAFAOF_USD,RAFAOL_USD,RAFAOO_USD,RAOFA_USD,RAOFAS_USD,RAOFAD_USD,RAOFAL_USD,RAOFAF_USD,RAOFAG_USD"
-
-PREDETERMINED_DRAINS_ON_FX_ASSETS = "RAPFA_USD,RAPFALSD_USD,RAPFALSD_1M_USD,RAPFALSD_1M_3M_USD,RAPFALSD_3M_1Y_USD,RAPFALSDOP_USD,RAPFALSDOP_1M_USD,RAPFALSDOP_1M_3M_USD,RAPFALSDOP_3M_1Y_USD,RAPFALSDOI_USD,RAPFALSDOI_1M_USD,RAPFALSDOI_1M_3M_USD,RAPFALSDOI_3M_1Y_USD,RAPFALSDIP_USD,RAPFALSDIP_1M_USD,RAPFALSDIP_1M_3M_USD,RAPFALSDIP_3M_1Y_USD,RAPFALSDII_USD,RAPFALSDII_1M_USD,RAPFALSDII_1M_3M_USD,RAPFALSDII_3M_1Y_USD,RAPFAFFS_USD,RAPFAFFS_1M_USD,RAPFAFFS_1M_3M_USD,RAPFAFFS_3M_1Y_USD,RAPFAFFL_USD,RAPFAFFL_1M_USD,RAPFAFFL_1M_3M_USD,RAPFAFFL_3M_1Y_USD,RAPFAO_USD,RAPFAO_1M_USD,RAPFAO_1M_3M_USD,RAPFAO_3M_1Y_USD,RAPFAOOR_USD,RAPFAOOR_1M_USD,RAPFAOOR_1M_3M_USD,RAPFAOOR_3M_1Y_USD,RAPFAOIRR_USD,RAPFAOIRR_1M_USD,RAPFAOIRR_1M_3M_USD,RAPFAOIRR_3M_1Y_USD,RAPFAOOC_USD,RAPFAOOC_1M_USD,RAPFAOOC_1M_3M_USD,RAPFAOOC_3M_1Y_USD,RAPFAOIC_USD,RAPFAOIC_1M_USD,RAPFAOIC_1M_3M_USD,RAPFAOIC_3M_1Y_USD,RAPFAOOP_USD,RAPFAOOP_1M_USD,RAPFAOOP_1M_3M_USD,RAPFAOOP_3M_1Y_USD,RAPFAOIR_USD,RAPFAOIR_1M_USD,RAPFAOIR_1M_3M_USD,RAPFAOIR_3M_1Y_USD,RAFA_RAPFA_RO"
-
-CONTINGENT_DRAINS_FX_ASSETS = "RACFA_USD,RACFAL_USD,RACFAL_1M_USD,RACFAL_1M_3M_USD,RACFAL_3M_1Y_USD,RACFALG_USD,RACFALG_1M_USD,RACFALG_1M_3M_USD,RACFALO_USD,RACFALO_1M_USD,RACFALO_1M_3M_USD,RACFALO_3M_1Y_USD,RACFAS_USD,RACFACB_USD,RACFACB_1M_USD,RACFACB_1M_3M_USD,RACFACB_3M_1Y_USD,RACFACBA_USD,RACFACBA_1M_USD,RACFACBA_1M_3M_USD,RACFACBA_3M_1Y_USD,RACFACBAOI_USD,RACFACBAOI_1M_USD,RACFACBAOI_1M_3M_USD,RACFACBAON_USD,RACFACBAON_1M_USD,RACFACBAON_1M_3M_USD,RACFACBAON_3M_1Y_USD,RACFACBABIS_USD,RACFACBAIMF_1M_USD,RACFACBAIMF_1M_3M_USD,RACFACBAIMF_3M_1Y_USD,RACFACBAIMF_USD,RACFACBFIR_USD,RACFACBFIR_1M_USD,RACFACBFIR_1M_3M_USD,RACFACBFIR_3M_1Y_USD,RACFACBFIO_USD,RACFACBFIO_1M_USD,RACFACBFIO_1M_3M_USD,RACFACBFIO_3M_1Y_USD,RACFACT_USD,RACFACT_1M_USD,RACFACT_1M_3M_USD,RACFACT_3M_1Y_USD,RACFACTA_USD,RACFACTA_1M_USD,RACFACTA_1M_3M_USD,RACFACTA_3M_1Y_USD,RACFACTAOI_USD,RACFACTAOI_1M_USD,RACFACTAOI_1M_3M_USD,RACFACTAOI_3M_1Y_USD,RACFACTAON_USD,RACFACTAON_1M_USD,RACFACTAON_1M_3M_USD,RACFACTAON_3M_1Y_USD,RACFACTABIS_USD,RACFACTABIS_1M_USD,RACFACTABIS_1M_3M_USD,RACFACTABIS_3M_1Y_USD,RACFACTAIMF_USD,RACFACTAIMF_1M_USD,RACFACTFIR_USD,RACFACTFIR_1M_USD,RACFACTFIR_1M_3M_USD,RACFACTFIR_3M_1Y_USD,RACFACTFIO_USD,RACFACTFIO_1M_USD,RACFACTFIO_1M_3M_USD,RACFACTFIO_3M_1Y_USD,RACFAPPS_USD,RACFAPPS_1M_USD,RACFAPPS_1M_3M_USD,RACFAPPS_3M_1Y_USD,RACFAPPSBP_USD,RACFAPPSBP_1M_USD,RACFAPPSBP_1M_3M_USD,RACFAPPSBP_3M_1Y_USD,RACFAPPSWC_USD,RACFAPPSWC_1M_USD,RACFAPPSWC_1M_3M_USD,RACFAPPSWC_3M_1Y_USD,RACFAPPL_USD,RACFAPPL_1M_USD,RACFAPPL_1M_3M_USD,RACFAPPL_3M_1Y_USD,RACFAPPLBC_USD,RACFAPPLBC_1M_USD,RACFAPPLBC_1M_3M_USD,RACFAPPLBC_3M_1Y_USD,RACFAPPLWP_USD,RACFAPPLWP_1M_USD,RACFAPPLWP_1M_3M_USD,RACFAPPLWP_3M_1Y_USD,RACFAMPAS_USD,RACFAMPAS_1M_USD,RACFAMPAS_1M_3M_USD,RACFAMPAS_3M_1Y_USD,RACFAMPAL_USD,RACFAMPAL_1M_USD,RACFAMPAL_1M_3M_USD,RACFAMPAL_3M_1Y_USD,RACFAMPBS_USD,RACFAMPBS_1M_USD,RACFAMPBS_1M_3M_USD,RACFAMPBS_3M_1Y_USD,RACFAMPBL_USD,RACFAMPBL_1M_USD,RACFAMPBL_1M_3M_USD,RACFAMPBL_3M_1Y_USD,RACFAMPCS_USD,RACFAMPCS_1M_USD,RACFAMPCS_1M_3M_USD,RACFAMPCS_3M_1Y_USD,RACFAMPCL_USD,RACFAMPCL_1M_USD,RACFAMPCL_1M_3M_USD,RACFAMPCL_3M_1Y_USD,RACFAMPDS_USD,RACFAMPDS_1M_USD,RACFAMPDS_1M_3M_USD,RACFAMPDS_3M_1Y_USD,RACFAMPDL_USD,RACFAMPDL_1M_USD,RACFAMPDL_1M_3M_USD,RACFAMPDL_3M_1Y_USD,RACFAMPES_USD,RACFAMPES_1M_USD,RACFAMPES_1M_3M_USD,RACFAMPES_3M_1Y_USD,RACFAMPEL_USD,RACFAMPEL_1M_USD,RACFAMPEL_1M_3M_USD,RACFAMPEL_3M_1Y_USD,RACFAMPFS_USD,RACFAMPFS_1M_USD,RACFAMPFS_1M_3M_USD,RACFAMPFS_3M_1Y_USD,RACFAMPFL_USD,RACFAMPFL_1M_USD,RACFAMPFL_1M_3M_USD,RACFAMPFL_3M_1Y_USD"
-
-IRFCL_MEMORANDUM_ITEMS = "RAMDCD_USD,RAMFIFC_USD,RAMPA_USD,RAMFFS_USD,RAMPAOA_USD,RAMSR_USD,RAMSRLRI_USD,RAMSRLRN_USD,RAMSRBRI_USD,RAMSRBAN_USD,RAMFDA_USD,RAMFDAF_USD,RAMFDAU_USD,RAMFDAW_USD,RAMFDAP_USD,RAMFDAO_USD,RAMFFL_USD,RAMPPS_USD,RAMPPSBP_USD,RAMPPSWC_USD,RAMPPL_USD,RAMPPLBP_USD,RAMPPLWC_USD,RAMCR_USD,RAMCRISDR_USD,RAMCRIC_USD_USD,RAMCRIC_EUR_USD,RAMCRIC_CNY_USD,RAMCRIC_JPY_USD,RAMCRIC_GBP_USD,RAMCROSDR_USD"
-
-IRFCL_TABLES = {
-    "reserve_assets_and_other_fx_assets": RESERVE_ASSETS_AND_OTHER_FX_ASSETS,
-    "predetermined_drains_on_fx_assets": PREDETERMINED_DRAINS_ON_FX_ASSETS,
-    "contingent_drains_fx_assets": CONTINGENT_DRAINS_FX_ASSETS,
-    "memorandum_items": IRFCL_MEMORANDUM_ITEMS,
-}
-
-IRFCL_PRESET = {
-    "irfcl_top_lines": IRFCL_HEADLINE,
-    **IRFCL_TABLES,
-    "gold_reserves": "RAFAGOLD_USD,RAFAGOLDV_OZT",
-    "derivative_assets": "RAMFDA_USD",
-}
-
 FREQUENCY_DICT = {
     "month": "M",
     "quarter": "Q",
@@ -553,25 +520,143 @@ REF_SECTOR_MAP = {
     "AllSectorsIncludingAllSectors": "All Sectors Including All Sectors",
 }
 
+PRESENTATION_TABLES: dict[str, str] = {
+    "bop_standard": "BOP::H_BOP_BOP_AGG_STANDARD_PRESENTATION",
+    "bop_analytic": "BOP::H_BOP_BOP_AGG_ANALYTIC_PRESENTATION",
+    "bop_international_transactions": "BOP_AGG::H_BOP_AGG_SUMMARY_OF_INTERNATIONAL_TRANSACTIONS",
+    "bop_global_discrepancies": "BOP_AGG::H_BOP_AGG_GLOBAL_DISCREPANCIES",
+    "bop_global_discrepancies_percent": "BOP_AGG::H_BOP_AGG_GLOBAL_DISCREPANCIES_PERCENTAGE",
+    "dip": "DIP::H_DIP_INDICATOR",
+    "iip_aggregated": "IIP::H_BOP_IIP_AGG",
+    "iip_currency_composition": "IIPCC::H_BOP_IIPCC_CURRENCY_COMPOSITION",
+    "eer": "EER::H_EER_INDICATOR_HIERARCHY",
+    "irfcl_reserve_assets": "IRFCL::H_CL_IRFCL_INDICATOR_DEFAULT_PUB:CL_IRFCL_DEFAULT_INDICATOR_PUB2_1",
+    "irfcl_predetermined_drains": "IRFCL::H_CL_IRFCL_INDICATOR_DEFAULT_PUB:CL_IRFCL_DEFAULT_INDICATOR_PUB2_29",
+    "irfcl_contingent_drains": "IRFCL::H_CL_IRFCL_INDICATOR_DEFAULT_PUB:CL_IRFCL_DEFAULT_INDICATOR_PUB2_91",
+    "irfcl_memorandum": "IRFCL::H_CL_IRFCL_INDICATOR_DEFAULT_PUB:CL_IRFCL_DEFAULT_INDICATOR_PUB2_273",
+    "fsi_core_and_additional": "FSIC::H_FSIC_INDICATOR",
+    "fsi_indicators_and_underlying": "FSIC::H_FSIC_FSD",
+    "fsi_concentration_distribution_measures": "FSICDM::H_FSI_FSICDM_CDM",
+    "mfs_monetary_aggs": "MFS_MA::H_CL_MFS_MA_INDICATOR_5SR",
+    "mfs_central_bank": "MFS_CBS::H_CL_MFS_CBS_SRFS_1SG_VIEW",
+    "mfs_other_depository_corps": "MFS_ODC::H_CL_MFS_ODC_SRFS_2SG_VIEW",
+    "mfs_depository_corps": "MFS_DC::H_CL_MFS_DCS_SRFS_3SG_VIEW",
+    "mfs_other_financial_corps": "MFS_OFC::H_CL_MFS_OFC_SRFS_4SG_VIEW",
+    "mfs_financial_corps": "MFS_FC::H_CL_MFS_FCS_SRFS_5SG_VIEW",
+    "gfs_balance": "GFS_BS::H_GFS_BS",
+    "gfs_operations": "GFS_SOO::H_GFS_SOO",
+    "gfs_expenditures": "GFS_COFOG::H_GFS_COFOG",
+    "gfs_stocks_and_flows": "GFS_SFCP::H_GFS_SFCP",
+    "gfs_sources_and_uses": "GFS_SSUC::H_GFS_SSUC",
+    "qgfs_balance": "QGFS::H_QGFS_BALANCE",
+    "qgfs_operations": "QGFS::H_QGFS_STATGO",
+    "qgfs_sources_and_uses": "QGFS::H_QGFS_GSUC",
+    "gdp_annual_expenditure": "ANEA::H_NEA_GDP_BY_EXPENDITURE",
+    "gdp_quarterly_expenditure": "QNEA::H_NEA_GDP_BY_EXPENDITURE",
+    "cpi": "CPI::H_CPI_BY_COMPONENT",
+    "fas_indicator_by_country": "FAS::H_FAS_INDICATOR_BY_COUNTRY",
+    "fas_data_by_country": "FAS::H_FAS_BY_COUNTRY",
+    "isora_indicators_by_topic": "ISORA_LATEST_DATA_PUB::H_CL_INDICATORS_BY_TOPIC",
+}
 
-def load_symbols(dataset: str) -> dict:
-    """Load IMF symbol list."""
-    # pylint: disable=import-outside-toplevel
-    import json  # noqa
-    from json.decoder import JSONDecodeError
-    from pathlib import Path
-    from openbb_core.app.model.abstract.error import OpenBBError
+table_dataflow_map: dict[str, list[str]] = {
+    "bop": [
+        "bop_standard",
+        "bop_analytic",
+        "bop_international_transactions",
+        "bop_global_discrepancies",
+        "bop_global_discrepancies_percent",
+    ],
+    "dip": ["dip"],
+    "iip": ["iip_aggregated", "iip_currency_composition"],
+    "eer": ["eer"],
+    "irfcl": [
+        "irfcl_reserve_assets",
+        "irfcl_predetermined_drains",
+        "irfcl_contingent_drains",
+        "irfcl_memorandum",
+    ],
+    "fsi": [
+        "fsi_core_and_additional",
+        "fsi_indicators_and_underlying",
+        "fsi_concentration_distribution_measures",
+    ],
+    "mfs": [
+        "mfs_monetary_aggs",
+        "mfs_central_bank",
+        "mfs_other_depository_corps",
+        "mfs_depository_corps",
+        "mfs_other_financial_corps",
+        "mfs_financial_corps",
+    ],
+    "gfs": [
+        "gfs_balance",
+        "gfs_operations",
+        "gfs_expenditures",
+        "gfs_stocks_and_flows",
+        "gfs_sources_and_uses",
+    ],
+    "qgfs": ["qgfs_balance", "qgfs_operations", "qgfs_sources_and_uses"],
+    "gdp": ["gdp_annual_expenditure", "gdp_quarterly_expenditure"],
+    "cpi": ["cpi"],
+    "fas": ["fas_indicator_by_country", "fas_data_by_country"],
+    "isora": ["isora_indicators_by_topic"],
+}
 
-    try:
-        symbols_file = Path(__file__).parents[1].joinpath("assets", "imf_symbols.json")
-        with symbols_file.open(encoding="utf-8") as file:
-            symbols = json.load(file)
-    except (FileNotFoundError, JSONDecodeError) as e:
-        raise OpenBBError(
-            f"Failed to load IMF symbols from the static file: {e}"
-        ) from e
+table_dataflow_choices: list[dict[str, str]] = [
+    {"label": "Balance of Payments", "value": "bop"},
+    {"label": "Direct Investment Position", "value": "dip"},
+    {"label": "Effective Exchange Rates", "value": "eer"},
+    {"label": "International Investment Position", "value": "iip"},
+    {
+        "label": "International Reserves and Foreign Currency Liquidity",
+        "value": "irfcl",
+    },
+    {"label": "Financial Soundness Indicators", "value": "fsi"},
+    {"label": "Monetary and Financial Statistics", "value": "mfs"},
+    {"label": "Government Finance Statistics", "value": "gfs"},
+    {"label": "Quarterly Government Finance Statistics", "value": "qgfs"},
+    {"label": "Gross Domestic Product", "value": "gdp"},
+    {"label": "Consumer Price Index", "value": "cpi"},
+    {"label": "Financial Access Survey", "value": "fas"},
+    {"label": "ISORA Indicators", "value": "isora"},
+]
 
-    if dataset == "all":
-        return symbols
-
-    return {k: v for k, v in symbols.items() if v["dataset"] == dataset}
+table_name_map: dict[str, str] = {
+    "bop_standard": "Standard Presentation",
+    "bop_analytic": "Analytic Presentation",
+    "bop_international_transactions": "Summary of International Transactions",
+    "bop_global_discrepancies": "Global Discrepancies",
+    "bop_global_discrepancies_percent": "Global Discrepancies Percentage",
+    "dip": "Direct Investment Position",
+    "iip_aggregated": "Aggregated International Investment Position",
+    "iip_currency_composition": "Currency Composition of International Investment Position",
+    "eer": "Effective Exchange Rates",
+    "irfcl_reserve_assets": "Reserve Assets",
+    "irfcl_predetermined_drains": "Predetermined Drains",
+    "irfcl_contingent_drains": "Contingent Drains",
+    "irfcl_memorandum": "Memorandum Items",
+    "fsi_core_and_additional": "Core and Additional Financial Soundness Indicators",
+    "fsi_indicators_and_underlying": "Financial Soundness Indicators and Underlying Data",
+    "fsi_concentration_distribution_measures": "Concentration and Distribution Measures",
+    "mfs_monetary_aggs": "Monetary Aggregates",
+    "mfs_central_bank": "Central Bank",
+    "mfs_other_depository_corps": "Other Depository Corporations",
+    "mfs_depository_corps": "Depository Corporations",
+    "mfs_financial_corps": "Financial Corporations",
+    "mfs_other_financial_corps": "Other Financial Corporations",
+    "gfs_balance": "Government Balance Sheet",
+    "gfs_operations": "Statement of Government Operations",
+    "gfs_expenditures": "Expenditures by Function (COFOG)",
+    "gfs_stocks_and_flows": "Stocks and Flows of Central Government",
+    "gfs_sources_and_uses": "Sources and Uses of Central Government Funds",
+    "qgfs_balance": "Quarterly Government Finance Statistics Balance Sheet",
+    "qgfs_operations": "Quarterly Government Finance Statistics Statement of Operations",
+    "qgfs_sources_and_uses": "Quarterly Government Finance Statistics Sources and Uses of Funds",
+    "gdp_annual_expenditure": "Annual GDP by Expenditure",
+    "gdp_quarterly_expenditure": "Quarterly GDP by Expenditure",
+    "cpi": "Consumer Price Index by Component",
+    "fas_indicator_by_country": "Financial Access Survey Indicators by Country",
+    "fas_data_by_country": "Financial Access Survey Data by Country",
+    "isora_indicators_by_topic": "ISORA Indicators by Topic",
+}

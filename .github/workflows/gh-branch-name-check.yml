@@ -19,11 +19,11 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get branch names.
         id: branch-names
-        uses: tj-actions/branch-names@v8
+        uses: tj-actions/branch-names@v9
 
       - name: Show Output result for source-branch and target-branch
         run: |

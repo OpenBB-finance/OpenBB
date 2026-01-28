@@ -43,9 +43,13 @@
           "paramName": "year",
           "label": "Calendar Year",
           "description": "Calendar year for the filings.",
-          "value": 2025,
+          "value": 2026,
           "type": "number",
           "options": [
+            {
+              "label": "2026",
+              "value": 2026
+            },
             {
               "label": "2025",
               "value": 2025

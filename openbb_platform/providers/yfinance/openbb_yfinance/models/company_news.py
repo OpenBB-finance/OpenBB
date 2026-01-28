@@ -50,57 +50,97 @@ class YFinanceCompanyNewsFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: YFinanceCompanyNewsQueryParams,
-        credentials: dict[str, str] | None,
-        **kwargs: Any,
+        query,
+        credentials=None,
+        **kwargs,
     ) -> list[dict]:
-        """Extract data."""
+        """Extract the raw data from YFinance and normalize to CompanyNewsData schema."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from curl_adapter import CurlCffiAdapter
+        import asyncio
+        from warnings import warn
+
         from openbb_core.provider.utils.errors import EmptyDataError
-        from openbb_core.provider.utils.helpers import get_requests_session
         from yfinance import Ticker
 
-        results: list = []
-        symbols = query.symbol.split(",")  # type: ignore
-        session = get_requests_session()
-        session.mount("https://", CurlCffiAdapter())
-        session.mount("http://", CurlCffiAdapter())
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
+        results: list[dict] = []
 
-        async def get_one(symbol):
-            data = Ticker(symbol, session=session).get_news(
-                count=query.limit,
-                tab="all",
-            )
-            for d in data:
-                new_content: dict = {}
-                content = d.get("content")
-                if not content:
-                    continue
-                if thumbnail := content.get("thumbnail"):
-                    images = thumbnail.get("resolutions")
-                    if images:
-                        new_content["images"] = [
-                            {k: str(v) for k, v in img.items()} for img in images
-                        ]
-                new_content["url"] = content.get("canonicalUrl", {}).get("url")
-                new_content["source"] = content.get("provider", {}).get("displayName")
-                new_content["title"] = content.get("title")
-                new_content["date"] = content.get("pubDate")
-                description = content.get("description")
-                summary = content.get("summary")
+        def _normalize_news_item(item: dict, sym: str) -> dict | None:
+            """Flatten the response."""
+            if not isinstance(item, dict):
+                return None
 
-                if description:
-                    new_content["text"] = description
-                elif summary:
-                    new_content["text"] = summary
+            content = item.get("content")
+            if not isinstance(content, dict):
+                return None
 
-                results.append(new_content)
+            title = content.get("title") or content.get("summary")
+            # Prefer clickThroughUrl; fallback to canonicalUrl; fallback to previewUrl
+            url = None
+            ctu = content.get("clickThroughUrl")
+            if isinstance(ctu, dict):
+                url = ctu.get("url")
+            if not url:
+                can = content.get("canonicalUrl")
+                if isinstance(can, dict):
+                    url = can.get("url")
+            if not url:
+                url = content.get("previewUrl")
 
-        tasks = [get_one(symbol) for symbol in symbols]
+            date = content.get("pubDate") or content.get("displayTime")
 
-        await asyncio.gather(*tasks)
+            # Optional fields
+            provider = content.get("provider")
+            source = provider.get("displayName") if isinstance(provider, dict) else None
+            summary = content.get("summary") or content.get("description") or ""
+
+            # If CompanyNewsData requires these, don't emit invalid items
+            if not (sym and title and url and date):
+                return None
+
+            # CompanyNewsData typically includes: symbol, title, url, date, summary/text
+            # We include both "summary" and "text" to be resilient across schema variants.
+            normalized: dict[str, Any] = {
+                "symbol": sym,
+                "title": title,
+                "url": url,
+                "date": date,
+                "source": source,
+            }
+            # Only add if non-empty to avoid weird validation rules
+            if summary:
+                normalized["summary"] = summary
+                normalized["text"] = summary
+
+            # Keep an id if present (harmless if the model ignores it)
+            if item.get("id"):
+                normalized["id"] = item["id"]
+            elif content.get("id"):
+                normalized["id"] = content["id"]
+
+            return normalized
+
+        def _fetch_news(sym: str) -> list[dict]:
+            """Fetch the data in a worker thread."""
+            raw = Ticker(sym).get_news() or []
+            out: list[dict] = []
+            for item in raw:
+                norm = _normalize_news_item(item, sym)
+                if norm:
+                    out.append(norm)
+            return out
+
+        async def get_one(sym: str) -> None:
+            """Get the data for one ticker symbol."""
+            try:
+                items = await asyncio.to_thread(_fetch_news, sym)
+            except Exception as e:
+                warn(f"Error getting news for {sym}: {e}")
+                return
+            if items:
+                results.extend(items)
+
+        await asyncio.gather(*(get_one(sym) for sym in symbols))
 
         if not results:
             raise EmptyDataError("No data was returned for the given symbol(s)")

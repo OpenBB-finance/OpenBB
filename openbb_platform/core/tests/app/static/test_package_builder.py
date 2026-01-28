@@ -518,7 +518,8 @@ def test_build_command_method_with_dependency(method_definition):
         )
 
     assert "def dependency(" in output
-    assert "dep: Annotated[\n            MockDep," in output
+    assert "dep: Annotated[" in output
+    assert "MockDep" in output
     assert "get_mock_dep" in output
     assert "dep=dep," in output
 

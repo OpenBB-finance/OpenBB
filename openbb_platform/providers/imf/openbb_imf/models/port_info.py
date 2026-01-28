@@ -38,19 +38,27 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
                 "style": {"popupWidth": 350},
             }
         },
+        "port_code": {
+            "x-widget_config": {
+                "description": "Dummy parameter for widget grouping.",
+            }
+        },
     }
 
     continent: PortContinents | None = Field(
         default=None,
         description="Filter by continent. This parameter is ignored when a `country` is provided.",
     )
-
     country: PortCountries | None = Field(
         default=None,
         description="Country to focus on. Enter as a 3-letter ISO country code."
         + " This parameter supersedes `continent` if both are provided.",
     )
-
+    port_code: str | None = Field(
+        default=None,
+        exclude=True,
+        description="This is a dummy parameter to allow grouping in OpenBB Workspace widgets.",
+    )
     limit: int | None = Field(
         default=None,
         description="Limit the number of results returned."
@@ -72,7 +80,8 @@ class ImfPortInfoData(PortInfoData):
                 "$.gridData": {
                     "h": 25,
                     "w": 25,
-                }
+                },
+                "$.description": "General information and statistics about global ports.",
             }
         },
     )
@@ -91,6 +100,16 @@ class ImfPortInfoData(PortInfoData):
     port_code: str = Field(
         description="Unique ID assigned to the port.",
         title="Port ID",
+        json_schema_extra={
+            "x-widget_config": {
+                "description": "Unique ID assigned to the port. Click on a value to change the widget group value.",
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupByParamName": "port_code",
+                },
+            }
+        },
     )
     continent: str = Field(
         description="Continent where the port is located.",

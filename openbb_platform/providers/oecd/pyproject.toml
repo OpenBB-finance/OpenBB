@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-oecd"
-version = "1.5.0"
+version = "1.5.1"
 description = "OECD extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,9 +9,8 @@ packages = [{ include = "openbb_oecd" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-openbb-core = "^1.5.1"
-urllib3 = ">1.26.16"
-defusedxml = "^0.8.0rc2"
+openbb-core = "^1.5.8"
+defusedxml = ">=0.7.1"
 
 [build-system]
 requires = ["poetry-core"]

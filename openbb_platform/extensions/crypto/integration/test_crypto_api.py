@@ -62,28 +62,6 @@ def test_crypto_search(params, headers):
         ),
         (
             {
-                "interval": "1m",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "BTCUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "BTCUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "provider": "yfinance",
                 "symbol": "BTCUSD",

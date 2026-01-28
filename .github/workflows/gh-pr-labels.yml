@@ -11,12 +11,12 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      # - uses: mheap/github-action-required-labels@v1
+      # - uses: mheap/github-action-required-labels@v5
       #   with:
       #     mode: minimum
       #     count: 1
       #     labels: "guides, bug, build, docker, docs, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests, dependencies, release"
-      - uses: mheap/github-action-required-labels@v1
+      - uses: mheap/github-action-required-labels@v5
         with:
           mode: exactly
           count: 0

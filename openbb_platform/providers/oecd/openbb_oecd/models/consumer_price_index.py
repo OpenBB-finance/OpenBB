@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from typing import Any, Literal
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -54,7 +54,7 @@ expenditure_dict_rev = {
 }
 expenditure_dict = {v: k for k, v in expenditure_dict_rev.items()}
 expenditures = tuple(expenditure_dict.keys()) + ("all",)
-ExpenditureChoices = Literal[
+expenditure_choices = [
     "total",
     "all",
     "actual_rentals",
@@ -87,6 +87,8 @@ ExpenditureChoices = Literal[
     "water_supply_other_services",
 ]
 
+transform_choices = ["index", "yoy", "period"]
+
 
 class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     """OECD CPI Query.
@@ -99,20 +101,22 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
             "multiple_items_allowed": True,
             "choices": CountriesList,
         },
+        "transform": {
+            "choices": transform_choices,
+        },
+        "expenditure": {
+            "choices": expenditure_choices,
+        },
     }
 
-    country: str = Field(
-        description="Country to get CPI for.  This is the list of OECD supported countries",
-        default="united_states",
-    )
-    expenditure: ExpenditureChoices = Field(
+    expenditure: str = Field(
         description="Expenditure component of CPI.",
         default="total",
-        json_schema_extra={"choices": list(expenditures)},
     )
 
     @field_validator("country", mode="before", check_fields=False)
-    def validate_country(cls, c: str):  # pylint: disable=E0213
+    @classmethod
+    def validate_country(cls, c: str):
         """Validate country."""
         result: list = []
         values = c.replace(" ", "_").split(",")
@@ -120,6 +124,16 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
             check_item(v.lower(), CountriesList)
             result.append(v.lower())
         return ",".join(result)
+
+    @field_validator("expenditure", mode="before", check_fields=False)
+    @classmethod
+    def validate_expenditure(cls, v):
+        """Validate expenditure."""
+        if v.lower() not in expenditure_choices:
+            raise ValueError(
+                f"Expenditure '{v}' is not a valid choice. Valid choices:\n\n{expenditure_choices}"
+            )
+        return v
 
 
 class OECDCPIData(ConsumerPriceIndexData):
@@ -156,7 +170,7 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
         from openbb_oecd.utils import helpers  # noqa
 
         methodology = "HICP" if query.harmonized is True else "N"
-        query.units = "mom" if query.transform == "period" else query.transform
+        unit = "mom" if query.transform == "period" else query.transform
         query.frequency = (
             "monthly"
             if query.harmonized is True and query.frequency == "quarter"
@@ -167,7 +181,7 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
             "index": "IX",
             "yoy": "PA",
             "mom": "PC",
-        }[query.units]
+        }[unit]
         expenditure = (
             "" if query.expenditure == "all" else expenditure_dict[query.expenditure]
         )

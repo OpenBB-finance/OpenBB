@@ -29,10 +29,6 @@ router = Router(prefix="/price")
                 "provider": "fmp",
             },
         ),
-        APIEx(
-            description="Get data with different granularity.",
-            parameters={"symbol": "EURUSD", "provider": "polygon", "interval": "15m"},
-        ),
     ],
 )
 async def historical(

@@ -32,7 +32,6 @@ async def quote(
 
 @router.command(
     model="EquityNBBO",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "polygon"})],
 )
 async def nbbo(
     cc: CommandContext,
