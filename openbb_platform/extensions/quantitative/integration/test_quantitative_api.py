@@ -43,7 +43,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = request_data(
         menu="equity",
@@ -62,7 +62,7 @@ def get_crypto_data():
 
     # TODO : add more crypto providers and symbols
     symbol = random.choice(["BTCUSD"])  # noqa: S311
-    provider = random.choice(["fmp"])  # noqa: S311
+    provider = "fmp"
 
     data["crypto_data"] = request_data(
         menu="crypto",

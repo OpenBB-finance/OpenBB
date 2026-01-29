@@ -133,7 +133,7 @@ class DeribitOptionsChainsFetcher(
         symbols_dict: dict[str, str] = {}
 
         try:
-            symbols_dict = await get_options_symbols(query.symbol)
+            symbols_dict = await get_options_symbols(query.symbol)  # type: ignore
         except OpenBBError as e:
             raise OpenBBError(e) from e
 
@@ -268,14 +268,14 @@ class DeribitOptionsChainsFetcher(
                 "high",
                 "low",
             ] and query.symbol.upper() in ["BTC", "ETH"]:
-                df.loc[:, col] = df[col].astype(float).multiply(df.index_price).round(2)
+                df[col] = (df[col].astype(float) * df["index_price"]).round(2)
             elif col in ["price_change", "mark_iv", "bid_iv", "ask_iv"]:
-                df.loc[:, col] = df[col].astype(float).divide(100)
+                df[col] = df[col].astype(float) / 100
 
         df = df.replace({nan: None})
         df = df.sort_values(["expiration", "strike", "option_type"])
         df = df.reset_index(drop=True)
-        df.loc[:, "contract_size"] = 1
+        df["contract_size"] = 1
         results = df.to_dict(orient="list")
 
         return DeribitOptionsChainsData.model_validate(results)

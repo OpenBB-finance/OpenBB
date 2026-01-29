@@ -70,11 +70,11 @@ class FREDYieldCurveFetcher(
         series_ids = ",".join(list(YIELD_CURVES[query.yield_curve_type]))
         fetcher = FredSeriesFetcher()
         data = await fetcher.fetch_data(
-            {"symbol": series_ids}, {"fred_api_key": api_key}
+            {"symbol": series_ids}, {"fred_api_key": api_key}  # type: ignore
         )
         if not data:
             raise EmptyDataError("The request was returned empty.")
-        results = [d.model_dump() for d in data.result]
+        results = [d.model_dump() for d in data.result]  # type: ignore
 
         return results
 
@@ -88,7 +88,7 @@ class FREDYieldCurveFetcher(
 
         df = DataFrame(data).set_index("date").sort_index()
         df.index = df.index.astype(str)
-        dates = query.date.split(",") if query.date else [df.index.max()]
+        dates = query.date.split(",") if query.date else [df.index.max()]  # type: ignore
         df.index = DatetimeIndex(df.index)
         dates_list = DatetimeIndex(dates)
         maturity_dict = YIELD_CURVES[query.yield_curve_type]
@@ -117,7 +117,7 @@ class FREDYieldCurveFetcher(
         flattened_data = flattened_data.sort_values(
             by=["date", "maturity"]
         ).reset_index(drop=True)
-        flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
+        flattened_data["date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
         records = flattened_data.to_dict(orient="records")
 
         return [FREDYieldCurveData.model_validate(d) for d in records]

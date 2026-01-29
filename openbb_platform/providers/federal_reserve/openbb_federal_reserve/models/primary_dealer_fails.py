@@ -123,8 +123,8 @@ class FederalReservePrimaryDealerFailsFetcher(
             raise EmptyDataError("No data returned from the Federal Reserve API.")
 
         df = DataFrame(data)
-        df.loc[:, "title"] = df.keyid.map(FAILS_SERIES_TO_TITLE)
-        df.value = df.value.astype(int)
+        df["title"] = df.keyid.map(FAILS_SERIES_TO_TITLE)
+        df["value"] = df.value.astype(int)
         new_df = df.pivot(index="asofdate", columns="title", values="value").copy()
         new_data = new_df.copy()
         combined_df = DataFrame()
@@ -163,15 +163,15 @@ class FederalReservePrimaryDealerFailsFetcher(
 
         new_data = new_data.T.unstack().reset_index()
         new_data.columns = ["date", "title", "value"]
-        new_data.loc[:, "symbol"] = new_data.title.map(
+        new_data["symbol"] = new_data.title.map(
             {v: k for k, v in FAILS_SERIES_TO_TITLE.items()}
         ).replace({NA: "--"})
         new_data = new_data.dropna()
 
         if query.unit == "value":
-            new_data.value = new_data.value.astype(int)
+            new_data["value"] = new_data.value.astype(int)
 
-        new_data.date = to_datetime(new_data.date).dt.date
+        new_data["date"] = to_datetime(new_data.date).dt.date
 
         if query.start_date:
             new_data = new_data[new_data.date >= query.start_date]

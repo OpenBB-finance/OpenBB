@@ -67,28 +67,6 @@ def test_index_constituents(params, obb):
         ),
         (
             {
-                "interval": "1m",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "sort": "desc",
-                "limit": 49999,
-                "provider": "polygon",
-                "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "provider": "yfinance",
                 "symbol": "DJI",

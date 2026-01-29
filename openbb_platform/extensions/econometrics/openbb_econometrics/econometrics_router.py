@@ -1,15 +1,75 @@
 """计量经济学路由器。"""
 
+# pylint: disable=too-many-lines
+
 from itertools import combinations
-from typing import Literal
+from typing import Any, Literal
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
-from pydantic import PositiveInt
+from pydantic import BaseModel, PositiveInt, model_serializer
 
 router = Router(prefix="", description="计量经济学分析工具。")
+
+
+class OLSRegressionResults(BaseModel):
+    """OLS Regression Results that serializes statsmodels objects."""
+
+    model: Any
+    results: Any
+
+    class Config:
+        """Pydantic config."""
+
+        arbitrary_types_allowed = True
+
+    @model_serializer
+    def serialize_model(self) -> dict:
+        """Serialize statsmodels objects to a dictionary."""
+        results = self.results
+        conf_int = results.conf_int()
+        conf_int_dict = (
+            conf_int.to_dict()
+            if hasattr(conf_int, "to_dict")
+            else conf_int.to_dict("index")
+        )
+        return {
+            "params": (
+                results.params.to_dict()
+                if hasattr(results.params, "to_dict")
+                else dict(results.params)
+            ),
+            "rsquared": float(results.rsquared),
+            "rsquared_adj": float(results.rsquared_adj),
+            "fvalue": float(results.fvalue) if results.fvalue is not None else None,
+            "f_pvalue": (
+                float(results.f_pvalue) if results.f_pvalue is not None else None
+            ),
+            "aic": float(results.aic),
+            "bic": float(results.bic),
+            "llf": float(results.llf),
+            "nobs": int(results.nobs),
+            "df_model": float(results.df_model),
+            "df_resid": float(results.df_resid),
+            "pvalues": (
+                results.pvalues.to_dict()
+                if hasattr(results.pvalues, "to_dict")
+                else dict(results.pvalues)
+            ),
+            "tvalues": (
+                results.tvalues.to_dict()
+                if hasattr(results.tvalues, "to_dict")
+                else dict(results.tvalues)
+            ),
+            "bse": (
+                results.bse.to_dict()
+                if hasattr(results.bse, "to_dict")
+                else dict(results.bse)
+            ),
+            "conf_int": conf_int_dict,
+        }
 
 
 @router.command(
@@ -77,7 +137,6 @@ def correlation_matrix(
 
 @router.command(
     methods=["POST"],
-    include_in_schema=False,
     examples=[
         PythonEx(
             description="执行普通最小二乘法 (OLS) 回归。",
@@ -133,7 +192,7 @@ def ols_regression(
     y = get_target_column(basemodel_to_df(data), y_column)
     model = sm.OLS(y, X)
     results = model.fit()
-    return OBBject(results={"model": model, "results": results})
+    return OBBject(results=OLSRegressionResults(model=model, results=results))
 
 
 @router.command(
@@ -915,19 +974,24 @@ def panel_fmac(
 
 @router.command(
     methods=["POST"],
-    include_in_schema=False,
     examples=[
         PythonEx(
             description="计算方差膨胀因子。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501  pylint: disable= C0301
-                'obb.econometrics.variance_inflation_factor(data=stock_data, column="close")',
+                'obb.econometrics.variance_inflation_factor(data=stock_data, columns=["open", "high", "low", "close"])',  # noqa: E501  pylint: disable= C0301
             ],
+        ),
+        APIEx(
+            parameters={
+                "columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
         ),
     ],
 )
 def variance_inflation_factor(
-    data: list[Data], columns: list | None = None
+    data: list[Data], columns: list[str] | None = None
 ) -> OBBject[list[Data]]:
     """计算 VIF（方差膨胀因子），用于检验共线性。
 
@@ -974,7 +1038,7 @@ def variance_inflation_factor(
     df = add_constant(dataset if columns is None else dataset[columns])
 
     # Remove date and string type because VIF doesn't work for these types
-    df = df.select_dtypes(exclude=["object", "datetime", "timedelta"])
+    df = df.select_dtypes(exclude=["object", "datetime", "timedelta"])  # type: ignore
 
     # Calculate the VIF values
     vif_values: dict = {}

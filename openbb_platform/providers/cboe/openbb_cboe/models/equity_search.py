@@ -78,4 +78,15 @@ class CboeEquitySearchFetcher(
         query: CboeEquitySearchQueryParams, data: dict, **kwargs: Any
     ) -> list[CboeEquitySearchData]:
         """Transform the data to the standard format."""
-        return [CboeEquitySearchData.model_validate(d) for d in data["results"]]
+        from math import isnan  # pylint: disable=import-outside-toplevel
+
+        def clean_nan(d: dict) -> dict:
+            """Replace nan values with None for Pydantic validation."""
+            return {
+                k: None if isinstance(v, float) and isnan(v) else v
+                for k, v in d.items()
+            }
+
+        return [
+            CboeEquitySearchData.model_validate(clean_nan(d)) for d in data["results"]
+        ]
