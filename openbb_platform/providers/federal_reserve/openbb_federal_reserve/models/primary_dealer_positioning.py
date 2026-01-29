@@ -65,6 +65,10 @@ class FederalReservePrimaryDealerPositioningData(PrimaryDealerPositioningData):
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e6,
+            "x-widget_config": {
+                "prefix": "$",
+                "suffix": "M"
+            }
         },
     )
     name: str = Field(

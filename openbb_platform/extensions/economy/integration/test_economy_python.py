@@ -1115,28 +1115,8 @@ def test_economy_direction_of_trade(params, obb):
         (
             {
                 "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
                 "year": 2022,
                 "document_type": "minutes",
-                "pdf_only": True,
-                "as_choices": True,
             }
         ),
     ],
@@ -1148,8 +1128,8 @@ def test_economy_fomc_documents(params, obb):
 
     result = obb.economy.fomc_documents(**params)
     assert result
-    assert isinstance(result, (list, dict))
-    assert len(result) > 0
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(

@@ -302,7 +302,7 @@ def _get_endpoints(  # pylint: disable=R0917
 async def fetch_data(url: str) -> dict:
     """Fetch the JSON response from the API."""
     try:
-        response = await amake_request(url)
+        response = await amake_request(url, timeout=30)
     except Exception as e:  # pylint: disable=broad-except
         raise e from e
     return response  # type: ignore

@@ -23,6 +23,9 @@ from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
+from openbb_federal_reserve.models.svensson_yield_curve import (
+    FederalReserveSvenssonFetcher,
+)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -41,6 +44,7 @@ federal_reserve_provider = Provider(
         "PrimaryDealerFails": FederalReservePrimaryDealerFailsFetcher,
         "PrimaryDealerPositioning": FederalReservePrimaryDealerPositioningFetcher,
         "SOFR": FederalReserveSOFRFetcher,
+        "SvenssonYieldCurve": FederalReserveSvenssonFetcher,
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "YieldCurve": FederalReserveYieldCurveFetcher,
     },

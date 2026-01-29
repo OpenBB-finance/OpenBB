@@ -26,6 +26,9 @@ from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
+from openbb_federal_reserve.models.svensson_yield_curve import (
+    FederalReserveSvenssonFetcher,
+)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -81,6 +84,16 @@ def test_federal_reserve_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": "2024-05-13,2020-05-09"}
 
     fetcher = FederalReserveYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_svensson_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve Svensson fetcher."""
+    params = {}
+
+    fetcher = FederalReserveSvenssonFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
