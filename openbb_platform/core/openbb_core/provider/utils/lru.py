@@ -10,7 +10,7 @@ from typing import Any
 
 
 def ttl_cache(maxsize: int = 128, typed: bool = False, ttl: int = -1):
-    """Decorated function that caches a function's return value each ttl seconds."""
+    """Cache a function's return value each ttl seconds."""
     if ttl <= 0:
         ttl = 65536
 
