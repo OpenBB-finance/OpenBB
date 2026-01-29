@@ -19,7 +19,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @pytest.mark.skip(reason="Not implemented in Python Interface.")
 @pytest.mark.parametrize(
     "params",
-    [{}],
+    [{"params": {}}],
 )
 @pytest.mark.integration
 def test_federal_reserve_fomc_documents_download(params, obb):
@@ -46,7 +46,7 @@ def test_federal_reserve_fomc_documents_download(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_federal_reserve_fomc_documents_choices(headers, params):
+def test_federal_reserve_fomc_documents_choices(params, obb):
     """Test federal_reserve_fomc_documents_choices endpoint."""
 
     result = obb.federal_reserve.fomc_documents_choices(**params)
