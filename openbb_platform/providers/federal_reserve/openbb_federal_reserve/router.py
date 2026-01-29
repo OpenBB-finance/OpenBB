@@ -59,7 +59,8 @@ async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
             "federalreserve.gov",
         }:
             raise OpenBBError(
-                "Invalid URL provided for download. Must be from federalreserve.gov -> " + url
+                "Invalid URL provided for download. Must be from federalreserve.gov -> "
+                + url
             )
 
         is_pdf = url.lower().endswith(".pdf")
