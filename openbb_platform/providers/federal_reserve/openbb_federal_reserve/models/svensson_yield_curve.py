@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument,too-many-lines
 
 from datetime import date as dateType
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -203,10 +203,12 @@ class FederalReserveSvenssonQueryParams(QueryParams):
         if "all" in series_list:
             return "all"
 
+        valid_options = get_args(SERIES_TYPE)
+
         for series in series_list:
-            if series not in SERIES_TYPE.__args__:
+            if series not in valid_options:
                 raise ValueError(
-                    f"Invalid series_type: {series} -> Valid options are: {SERIES_TYPE.__args__}"
+                    f"Invalid series_type: {series} -> Valid options are: {valid_options}"
                 )
 
         return ",".join(series_list)
