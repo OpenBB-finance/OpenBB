@@ -22,7 +22,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     [{}],
 )
 @pytest.mark.integration
-def federal_reserve_fomc_documents_download(params, obb):
+def test_federal_reserve_fomc_documents_download(params, obb):
     """Test federal_reserve_fomc_documents_download endpoint."""
     params = {
         "url": [
@@ -46,7 +46,7 @@ def federal_reserve_fomc_documents_download(params, obb):
     ],
 )
 @pytest.mark.integration
-def federal_reserve_fomc_documents_choices(headers, params):
+def test_federal_reserve_fomc_documents_choices(headers, params):
     """Test federal_reserve_fomc_documents_choices endpoint."""
 
     result = obb.federal_reserve.fomc_documents_choices(**params)

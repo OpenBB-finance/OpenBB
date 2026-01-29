@@ -20,12 +20,8 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@pytest.mark.parametrize(
-    "params",
-    [{}],
-)
 @pytest.mark.integration
-def federal_reserve_fomc_documents_download(params, headers):
+def test_federal_reserve_fomc_documents_download(headers):
     """Test the federal reserve fomc documents download endpoint."""
     params = {
         "url": [
@@ -49,7 +45,7 @@ def federal_reserve_fomc_documents_download(params, headers):
     ],
 )
 @pytest.mark.integration
-def federal_reserve_fomc_documents_choices(headers, params):
+def test_federal_reserve_fomc_documents_choices(headers, params):
     """Test the federal reserve fomc documents choices endpoint."""
     url = (
         "http://localhost:8000/api/v1/federal_reserve/fomc_documents_choices?"
