@@ -1,4 +1,4 @@
-"""Charting settings."""
+"""绘图设置。"""
 
 import importlib
 from pathlib import Path
@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 
 # pylint: disable=too-many-instance-attributes
 class ChartingSettings:
-    """Charting settings."""
+    """绘图设置。"""
 
     def __init__(
         self,
         user_settings: Optional["UserSettings"] = None,
         system_settings: Optional["SystemSettings"] = None,
     ):
-        """Initialize charting settings."""
+        """初始化绘图设置。"""
         user_settings_module = importlib.import_module(
             "openbb_core.app.model.user_settings", "UserSettings"
         )
@@ -39,17 +39,17 @@ class ChartingSettings:
             else user_settings.preferences.data_directory
         )
 
-        # System
+        # 系统
         self.logging_suppress: bool = system_settings.logging_suppress
         self.version: str = system_settings.version
         self.python_version: str = system_settings.python_version
         self.test_mode = system_settings.test_mode
         self.debug_mode: bool = system_settings.debug_mode or Env().DEBUG_MODE
         self.headless: bool = system_settings.headless
-        # User
+        # 用户
         self.user_data_directory: str = user_data_directory
         self.user_exports_directory = user_settings.preferences.export_directory
         self.user_styles_directory = user_settings.preferences.user_styles_directory
-        # Theme
+        # 主题
         self.chart_style: str = user_settings.preferences.chart_style
         self.table_style = user_settings.preferences.table_style

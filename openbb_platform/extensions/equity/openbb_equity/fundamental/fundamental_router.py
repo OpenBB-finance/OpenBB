@@ -1,5 +1,5 @@
 # pylint: disable=W0613:unused-argument
-"""Fundamental Analysis Router."""
+"""基本面分析路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -35,7 +35,7 @@ async def balance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the balance sheet for a given company."""
+    """获取给定公司的资产负债表。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -52,7 +52,7 @@ async def balance_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the growth of a company's balance sheet items over time."""
+    """获取公司资产负债表项目随时间的增长情况。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -76,7 +76,7 @@ async def cash(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the cash flow statement for a given company."""
+    """获取给定公司的现金流量表。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -85,7 +85,7 @@ async def cash(
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
         APIEx(
-            description="Get AAPL balance sheet with a limit of 10 items.",
+            description="获取 AAPL 资产负债表，限制为 10 个项目。",
             parameters={
                 "symbol": "AAPL",
                 "period": "annual",
@@ -95,7 +95,7 @@ async def cash(
             },
         ),
         APIEx(
-            description="Get reported income statement",
+            description="获取报告的损益表",
             parameters={
                 "symbol": "AAPL",
                 "statement_type": "income",
@@ -103,7 +103,7 @@ async def cash(
             },
         ),
         APIEx(
-            description="Get reported cash flow statement",
+            description="获取报告的现金流量表",
             parameters={
                 "symbol": "AAPL",
                 "statement_type": "cash",
@@ -118,7 +118,7 @@ async def reported_financials(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get financial statements as reported by the company."""
+    """获取公司报告的财务报表。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -135,7 +135,7 @@ async def cash_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the growth of a company's cash flow statement items over time."""
+    """获取公司现金流量表项目随时间的增长情况。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -149,7 +149,7 @@ async def dividends(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical dividend data for a given company."""
+    """获取给定公司的历史股息数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -163,7 +163,7 @@ async def historical_eps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical earnings per share data for a given company."""
+    """获取给定公司的每股收益历史数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -177,7 +177,7 @@ async def employee_count(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical employee count data for a given company."""
+    """获取给定公司的历史员工人数数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -191,7 +191,7 @@ async def search_attributes(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search Intrinio data tags to search in latest or historical attributes."""
+    """搜索 Intrinio 数据标签以在最新或历史属性中进行搜索。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -207,7 +207,7 @@ async def latest_attributes(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the latest value of a data tag from Intrinio."""
+    """从 Intrinio 获取数据标签的最新值。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -223,7 +223,7 @@ async def historical_attributes(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the historical values of a data tag from Intrinio."""
+    """从 Intrinio 获取数据标签的历史值。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -247,7 +247,7 @@ async def income(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the income statement for a given company."""
+    """获取给定公司的损益表。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -271,7 +271,7 @@ async def income_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the growth of a company's income statement items over time."""
+    """获取公司损益表项目随时间的增长情况。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -295,7 +295,7 @@ async def metrics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get fundamental metrics for a given company."""
+    """获取给定公司的基本面指标。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -309,7 +309,7 @@ async def management(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get executive management team data for a given company."""
+    """获取给定公司的高管管理团队数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -323,7 +323,7 @@ async def management_compensation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get executive management team compensation for a given company over time."""
+    """获取给定公司高管管理团队随时间的薪酬。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -347,7 +347,7 @@ async def ratios(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get an extensive set of financial and accounting ratios for a given company over time."""
+    """获取给定公司随时间推移的广泛财务和会计比率集。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -370,7 +370,7 @@ async def revenue_per_geography(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the geographic breakdown of revenue for a given company over time."""
+    """获取给定公司随时间推移的收入地理细分。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -393,7 +393,7 @@ async def revenue_per_segment(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the revenue breakdown by business segment for a given company over time."""
+    """获取给定公司随时间推移的业务部门收入细分。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -410,7 +410,7 @@ async def filings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get public company filings."""
+    """获取上市公司申报文件。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -424,7 +424,7 @@ async def historical_splits(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical stock splits for a given company."""
+    """获取给定公司的历史股票拆分。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -442,7 +442,7 @@ async def transcript(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get earnings call transcripts for a given company."""
+    """获取给定公司的收益电话会议记录。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -459,7 +459,7 @@ async def trailing_dividend_yield(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the 1 year trailing dividend yield for a given company over time."""
+    """获取给定公司随时间推移的 1 年滚动股息率。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -468,7 +468,7 @@ async def trailing_dividend_yield(
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "sec"}),
         APIEx(
-            description="Get the Management Discussion & Analysis section by calendar year and period.",
+            description="按日历年和期间获取管理层讨论与分析部分。",
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
@@ -477,7 +477,7 @@ async def trailing_dividend_yield(
             },
         ),
         APIEx(
-            description="Setting 'include_tables' to True will attempt to extract all tables in valid Markdown.",
+            description="将 'include_tables' 设置为 True 将尝试提取有效 Markdown 中的所有表格。",
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
@@ -487,8 +487,8 @@ async def trailing_dividend_yield(
             },
         ),
         APIEx(
-            description="Setting 'raw_html' to True will bypass extraction and return the raw HTML file, as is."
-            + " Use this for custom parsing or to access the entire HTML filing.",
+            description="将 'raw_html' 设置为 True 将绕过提取并按原样返回原始 HTML 文件。"
+            + " 将此用于自定义解析或访问整个 HTML 申报文件。",
             parameters={
                 "symbol": "AAPL",
                 "calendar_year": 2020,
@@ -514,7 +514,7 @@ async def management_discussion_analysis(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the Management Discussion & Analysis section from the financial statements for a given company."""
+    """从给定公司的财务报表中获取管理层讨论与分析部分。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -531,5 +531,5 @@ async def esg_score(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get ESG (Environmental, Social, and Governance) scores from company disclosures."""
+    """从公司披露中获取 ESG（环境、社会和治理）评分。"""
     return await OBBject.from_query(Query(**locals()))

@@ -1,4 +1,4 @@
-"""Ownership Router."""
+"""所有权路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
@@ -29,7 +29,7 @@ async def major_holders(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get data about major holders for a given company over time."""
+    """获取给定公司的主要持有者随时间变化的数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -48,7 +48,7 @@ async def institutional(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Net statistics on institutional ownership for a given company, reported on 13-F filings."""
+    """在 13-F 申报文件中报告的给定公司机构所有权的净统计数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -65,7 +65,7 @@ async def insider_trading(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get data about trading by a company's management team and board of directors."""
+    """获取有关公司管理团队和董事会交易的数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -79,7 +79,7 @@ async def share_statistics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get data about share float for a given company."""
+    """获取给定公司的流通股数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -88,11 +88,11 @@ async def share_statistics(
     examples=[
         APIEx(parameters={"symbol": "NVDA", "provider": "sec"}),
         APIEx(
-            description="Enter a date (calendar quarter ending) for a specific report.",
+            description="输入特定报告的日期（日历季度末）。",
             parameters={"symbol": "BRK-A", "date": "2016-09-30", "provider": "sec"},
         ),
         PythonEx(
-            description="Example finding Michael Burry's filings.",
+            description="查找 Michael Burry 申报文件的示例。",
             code=[
                 'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
                 "# Use the `limit` parameter to return N number of reports from the most recent.",
@@ -107,14 +107,12 @@ async def form_13f(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the form 13F.
-
-    The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
-    that is required to be filed by all institutional investment managers with at least
-    $100 million in assets under management.
-    Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
-    Most funds wait until the end of this period in order to conceal
-    their investment strategy from competitors and the public.
+    """获取 13F 表格。
+    
+    证券交易委员会 (SEC) 的 13F 表格是季度报告，
+    要求所有管理资产至少为 1 亿美元的机构投资经理提交。
+    经理需要在日历季度最后一天后的 45 天内提交 13F 表格。
+    大多数基金会等到此期间结束时才提交，以向竞争对手和公众隐瞒其投资策略。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -132,7 +130,5 @@ async def government_trades(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Obtain government transaction data, including data from the Senate
-    and the House of Representatives.
-    """
+    """获取政府交易数据，包括来自参议院和众议院的数据。"""
     return await OBBject.from_query(Query(**locals()))

@@ -1,4 +1,4 @@
-"""Equity Info Standard Model."""
+"""股票信息标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,130 +12,130 @@ from pydantic import Field, field_validator
 
 
 class EquityInfoQueryParams(QueryParams):
-    """Equity Info Query."""
+    """股票信息查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EquityInfoData(Data):
-    """Equity Info Data."""
+    """股票信息数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str | None = Field(default=None, description="Common name of the company.")
+    name: str | None = Field(default=None, description="公司的通用名称。")
     cik: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )
     cusip: str | None = Field(
-        default=None, description="CUSIP identifier for the company."
+        default=None, description="公司的 CUSIP 标识符。"
     )
     isin: str | None = Field(
-        default=None, description="International Securities Identification Number."
+        default=None, description="国际证券识别码。"
     )
     lei: str | None = Field(
-        default=None, description="Legal Entity Identifier assigned to the company."
+        default=None, description="分配给公司的法人实体标识符。"
     )
     legal_name: str | None = Field(
-        default=None, description="Official legal name of the company."
+        default=None, description="公司的正式法定名称。"
     )
     stock_exchange: str | None = Field(
-        default=None, description="Stock exchange where the company is traded."
+        default=None, description="公司交易的证券交易所。"
     )
     sic: int | None = Field(
         default=None,
-        description="Standard Industrial Classification code for the company.",
+        description="公司的标准行业分类代码。",
     )
     short_description: str | None = Field(
-        default=None, description="Short description of the company."
+        default=None, description="公司简介。"
     )
     long_description: str | None = Field(
-        default=None, description="Long description of the company."
+        default=None, description="公司详细描述。"
     )
     ceo: str | None = Field(
-        default=None, description="Chief Executive Officer of the company."
+        default=None, description="公司首席执行官。"
     )
     company_url: str | None = Field(
-        default=None, description="URL of the company's website."
+        default=None, description="公司网站的 URL。"
     )
     business_address: str | None = Field(
-        default=None, description="Address of the company's headquarters."
+        default=None, description="公司总部地址。"
     )
     mailing_address: str | None = Field(
-        default=None, description="Mailing address of the company."
+        default=None, description="公司的邮寄地址。"
     )
     business_phone_no: str | None = Field(
-        default=None, description="Phone number of the company's headquarters."
+        default=None, description="公司总部的电话号码。"
     )
     hq_address1: str | None = Field(
-        default=None, description="Address of the company's headquarters."
+        default=None, description="公司总部地址。"
     )
     hq_address2: str | None = Field(
-        default=None, description="Address of the company's headquarters."
+        default=None, description="公司总部地址。"
     )
     hq_address_city: str | None = Field(
-        default=None, description="City of the company's headquarters."
+        default=None, description="公司总部所在城市。"
     )
     hq_address_postal_code: str | None = Field(
-        default=None, description="Zip code of the company's headquarters."
+        default=None, description="公司总部的邮政编码。"
     )
     hq_state: str | None = Field(
-        default=None, description="State of the company's headquarters."
+        default=None, description="公司总部所在的州。"
     )
     hq_country: str | None = Field(
-        default=None, description="Country of the company's headquarters."
+        default=None, description="公司总部所在的国家。"
     )
     inc_state: str | None = Field(
-        default=None, description="State in which the company is incorporated."
+        default=None, description="公司注册成立的州。"
     )
     inc_country: str | None = Field(
-        default=None, description="Country in which the company is incorporated."
+        default=None, description="公司注册成立的国家。"
     )
     employees: int | None = Field(
-        default=None, description="Number of employees working for the company."
+        default=None, description="公司员工人数。"
     )
     entity_legal_form: str | None = Field(
-        default=None, description="Legal form of the company."
+        default=None, description="公司的法律形式。"
     )
     entity_status: str | None = Field(
-        default=None, description="Status of the company."
+        default=None, description="公司状态。"
     )
     latest_filing_date: dateType | None = Field(
-        default=None, description="Date of the company's latest filing."
+        default=None, description="公司最新备案的日期。"
     )
     irs_number: str | None = Field(
-        default=None, description="IRS number assigned to the company."
+        default=None, description="分配给公司的 IRS 编号。"
     )
     sector: str | None = Field(
-        default=None, description="Sector in which the company operates."
+        default=None, description="公司经营的部门。"
     )
     industry_category: str | None = Field(
-        default=None, description="Category of industry in which the company operates."
+        default=None, description="公司经营的行业类别。"
     )
     industry_group: str | None = Field(
-        default=None, description="Group of industry in which the company operates."
+        default=None, description="公司经营的行业组。"
     )
     template: str | None = Field(
         default=None,
-        description="Template used to standardize the company's financial statements.",
+        description="用于标准化公司财务报表的模板。",
     )
     standardized_active: bool | None = Field(
-        default=None, description="Whether the company is active or not."
+        default=None, description="公司是否活跃。"
     )
     first_fundamental_date: dateType | None = Field(
-        default=None, description="Date of the company's first fundamental."
+        default=None, description="公司首次基本面的日期。"
     )
     last_fundamental_date: dateType | None = Field(
-        default=None, description="Date of the company's last fundamental."
+        default=None, description="公司最后一次基本面的日期。"
     )
     first_stock_price_date: dateType | None = Field(
-        default=None, description="Date of the company's first stock price."
+        default=None, description="公司首次股价的日期。"
     )
     last_stock_price_date: dateType | None = Field(
-        default=None, description="Date of the company's last stock price."
+        default=None, description="公司最后一次股价的日期。"
     )

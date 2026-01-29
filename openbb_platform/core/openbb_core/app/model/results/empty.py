@@ -1,7 +1,7 @@
-"""Empty results."""
+"""空结果。"""
 
 from openbb_core.app.model.abstract.results import Results
 
 
 class Empty(Results):
-    """Empty results."""
+    """空结果。"""

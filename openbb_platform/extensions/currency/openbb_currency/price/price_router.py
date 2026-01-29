@@ -1,4 +1,4 @@
-"""Price router for Currency."""
+"""货币的价格路由器。"""
 
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
@@ -21,7 +21,7 @@ router = Router(prefix="/price")
     examples=[
         APIEx(parameters={"symbol": "EURUSD", "provider": "fmp"}),
         APIEx(
-            description="Filter historical data with specific start and end date.",
+            description="使用特定开始和结束日期筛选历史数据。",
             parameters={
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
@@ -30,7 +30,7 @@ router = Router(prefix="/price")
             },
         ),
         APIEx(
-            description="Get data with different granularity.",
+            description="获取不同粒度的数据。",
             parameters={"symbol": "EURUSD", "provider": "polygon", "interval": "15m"},
         ),
     ],
@@ -42,12 +42,11 @@ async def historical(
     extra_params: ExtraParams,
 ) -> OBBject:
     """
-    Currency Historical Price. Currency historical data.
+    货币历史价格。货币历史数据。
 
-    Currency historical prices refer to the past exchange rates of one currency against
-    another over a specific period.
-    This data provides insight into the fluctuations and trends in the foreign exchange market,
-    helping analysts, traders, and economists understand currency performance,
-    evaluate economic health, and make predictions about future movements.
+    货币历史价格是指一种货币兑另一种货币在特定时期内的过去汇率。
+    此数据提供了对外汇市场波动和趋势的洞察，
+    帮助分析师、交易员和经济学家了解货币表现，
+    评估经济健康状况，并对未来走势做出预测。
     """
     return await OBBject.from_query(Query(**locals()))

@@ -1,4 +1,4 @@
-"""Views for the Currency Extension."""
+"""货币扩展的视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 
 
 class CurrencyViews:
-    """Currency Views."""
+    """货币视图。"""
 
     @staticmethod
     def currency_price_historical(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Currency Price Historical Chart."""
+        """货币价格历史图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 

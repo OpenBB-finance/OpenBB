@@ -1,4 +1,4 @@
-"""App loader module."""
+"""应用程序加载器模块。"""
 
 from fastapi import APIRouter, FastAPI
 from fastapi.exceptions import ResponseValidationError
@@ -10,20 +10,20 @@ from pydantic import ValidationError
 
 
 class AppLoader:
-    """App loader."""
+    """应用程序加载器。"""
 
     @staticmethod
     def add_routers(app: FastAPI, routers: list[APIRouter | None], prefix: str):
-        """Add routers."""
+        """添加路由器。"""
         for router in routers:
             if router:
                 app.include_router(router=router, prefix=prefix)
 
     @staticmethod
     def add_openapi_tags(app: FastAPI):
-        """Add openapi tags."""
+        """添加 OpenAPI 标签。"""
         main_router = RouterLoader.from_extensions()
-        # Add tag data for each router in the main router
+        # 为主路由器中的每个路由器添加标签数据
         app.openapi_tags = [
             {
                 "name": r,
@@ -34,7 +34,7 @@ class AppLoader:
 
     @staticmethod
     def add_exception_handlers(app: FastAPI):
-        """Add exception handlers."""
+        """添加异常处理程序。"""
         app.exception_handlers[Exception] = ExceptionHandlers.exception
         app.exception_handlers[ValidationError] = ExceptionHandlers.validation
         app.exception_handlers[ResponseValidationError] = ExceptionHandlers.validation

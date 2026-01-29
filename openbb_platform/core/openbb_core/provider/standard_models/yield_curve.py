@@ -1,4 +1,4 @@
-"""Yield Curve Standard Model."""
+"""收益率曲线标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,18 +12,18 @@ from pydantic import Field, computed_field, field_validator
 
 
 class YieldCurveQueryParams(QueryParams):
-    """Yield Curve Query."""
+    """收益率曲线查询。"""
 
     date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " By default is the current data.",
+        + " 默认是当前数据。",
     )
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def _validate_date(cls, v):
-        """Validate the date."""
+        """验证日期。"""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
@@ -44,21 +44,21 @@ class YieldCurveQueryParams(QueryParams):
 
 
 class YieldCurveData(Data):
-    """Yield Curve Data."""
+    """收益率曲线数据。"""
 
     date: dateType | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("date", ""),
     )
-    maturity: str = Field(description="Maturity length of the security.")
+    maturity: str = Field(description="证券的到期时长。")
 
     @computed_field(  # type: ignore
-        description="Maturity length, in years, as a decimal.",
+        description="到期时长，以年为单位，表示为小数。",
         return_type=float | None,
     )
     @property
     def maturity_years(self) -> float | None:
-        """Get the maturity in years as a decimal."""
+        """获取以年为单位的到期时长小数。"""
         if "_" not in self.maturity:  # pylint: disable=E1135
             return None
 

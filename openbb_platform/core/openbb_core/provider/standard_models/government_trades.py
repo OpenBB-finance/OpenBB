@@ -1,4 +1,4 @@
-"""Government Trades Standard Model."""
+"""政府交易标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,13 +13,13 @@ from pydantic import Field, field_validator
 
 
 class GovernmentTradesQueryParams(QueryParams):
-    """Government Trades Query."""
+    """政府交易查询。"""
 
     symbol: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
     chamber: Literal["house", "senate", "all"] = Field(
-        default="all", description="Government Chamber."
+        default="all", description="政府议院。"
     )
     limit: int | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
@@ -28,20 +28,20 @@ class GovernmentTradesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper() if v else None
 
 
 class GovernmentTradesData(Data):
-    """Government Trades data."""
+    """政府交易数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     transaction_date: dateType | None = Field(
-        default=None, description="Date of Transaction."
+        default=None, description="交易日期。"
     )
     representative: str | None = Field(
-        default=None, description="Name of Representative."
+        default=None, description="代表姓名。"
     )

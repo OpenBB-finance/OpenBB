@@ -1,4 +1,4 @@
-"""ETF Historical NAV model."""
+"""ETF 历史 NAV 模型。"""
 
 from datetime import date as dateType
 
@@ -12,19 +12,19 @@ from pydantic import Field, field_validator
 
 
 class EtfHistoricalNavQueryParams(QueryParams):
-    """ETF Historical NAV Query."""
+    """ETF 历史 NAV 查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol")
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EtfHistoricalNavData(Data):
-    """ETF Historical NAV Data."""
+    """ETF 历史 NAV 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    nav: float = Field(description="The net asset value on the date.")
+    nav: float = Field(description="该日期的资产净值。")

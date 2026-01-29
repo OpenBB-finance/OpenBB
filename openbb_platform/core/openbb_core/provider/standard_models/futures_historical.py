@@ -1,4 +1,4 @@
-"""Futures Historical Price Standard Model."""
+"""期货历史价格标准模型。"""
 
 from datetime import date, datetime
 
@@ -13,7 +13,7 @@ from pydantic import Field, field_validator
 
 
 class FuturesHistoricalQueryParams(QueryParams):
-    """Futures Historical Price Query."""
+    """期货历史价格查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: date | None = Field(
@@ -26,18 +26,18 @@ class FuturesHistoricalQueryParams(QueryParams):
     )
     expiration: str | None = Field(
         default=None,
-        description="Future expiry date with format YYYY-MM",
+        description="YYYY-MM 格式的期货到期日期。",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class FuturesHistoricalData(Data):
-    """Futures Historical Price Data."""
+    """期货历史价格数据。"""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -49,5 +49,5 @@ class FuturesHistoricalData(Data):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         return parser.isoparse(str(v))

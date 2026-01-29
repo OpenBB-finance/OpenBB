@@ -1,4 +1,4 @@
-"""Unusual Options Standard Model."""
+"""异常期权标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -10,25 +10,25 @@ from pydantic import Field, field_validator
 
 
 class OptionsUnusualQueryParams(QueryParams):
-    """Unusual Options Query."""
+    """异常期权查询。"""
 
     symbol: str | None = Field(
         default=None,
-        description=QUERY_DESCRIPTIONS.get("symbol", "") + " (the underlying symbol)",
+        description=QUERY_DESCRIPTIONS.get("symbol", "") + "（标的股票代码）",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper() if v else None
 
 
 class OptionsUnusualData(Data):
-    """Unusual Options Data."""
+    """异常期权数据。"""
 
     underlying_symbol: str | None = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", "") + " (the underlying symbol)",
+        description=DATA_DESCRIPTIONS.get("symbol", "") + "（标的股票代码）",
         default=None,
     )
-    contract_symbol: str = Field(description="Contract symbol for the option.")
+    contract_symbol: str = Field(description="期权合约代码。")

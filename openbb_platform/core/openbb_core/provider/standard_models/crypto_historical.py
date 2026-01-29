@@ -1,4 +1,4 @@
-"""Crypto Historical Price Standard Model."""
+"""加密货币历史价格标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -16,7 +16,7 @@ from pydantic import Field, field_validator
 
 
 class CryptoHistoricalQueryParams(QueryParams):
-    """Crypto Historical Price Query."""
+    """加密货币历史价格查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -31,12 +31,12 @@ class CryptoHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def _to_upper(cls, v):
-        """Convert field to uppercase and remove '-'."""
+        """将字段转换为大写并删除 '-'。"""
         return str(v).upper()
 
 
 class CryptoHistoricalData(Data):
-    """Crypto Historical Price Data."""
+    """加密货币历史价格数据。"""
 
     date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: float | None = Field(
@@ -59,7 +59,7 @@ class CryptoHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         if ":" in str(v):
             return parser.isoparse(str(v))
         return parser.parse(str(v)).date()

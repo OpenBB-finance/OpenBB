@@ -1,4 +1,4 @@
-"""World News Standard Model."""
+"""世界新闻标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -17,27 +17,27 @@ from pydantic import Field, NonNegativeInt, field_validator
 
 
 class WorldNewsQueryParams(QueryParams):
-    """World News Query."""
+    """世界新闻查询。"""
 
     start_date: dateType | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", "")
-        + " The default is 2 weeks ago.",
+        + " 默认为 2 周前。",
     )
     end_date: dateType | None = Field(
         default=None,
-        description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
+        description=QUERY_DESCRIPTIONS.get("end_date", "") + " 默认为今天。",
     )
     limit: NonNegativeInt | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", "")
-        + " The number of articles to return.",
+        + " 要返回的文章数量。",
     )
 
     @field_validator("start_date", mode="before")
     @classmethod
     def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate start date if empty."""
+        """如果起始日期为空，则进行填充。"""
         if not v:
             now = datetime.now().date()
             v = now - relativedelta(weeks=2)
@@ -46,25 +46,25 @@ class WorldNewsQueryParams(QueryParams):
     @field_validator("end_date", mode="before")
     @classmethod
     def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
-        """Populate end date if empty."""
+        """如果结束日期为空，则进行填充。"""
         if not v:
             v = datetime.now().date()
         return v
 
 
 class WorldNewsData(Data):
-    """World News Data."""
+    """世界新闻数据。"""
 
     date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
+        description=DATA_DESCRIPTIONS.get("date", "") + " 发布日期。"
     )
-    title: str = Field(description="Title of the article.")
-    author: str | None = Field(default=None, description="Author of the article.")
+    title: str = Field(description="文章标题。")
+    author: str | None = Field(default=None, description="文章作者。")
     excerpt: str | None = Field(
-        default=None, description="Excerpt of the article text."
+        default=None, description="文章正文摘录。"
     )
-    body: str | None = Field(default=None, description="Body of the article text.")
+    body: str | None = Field(default=None, description="文章正文。")
     images: Any | None = Field(
-        default=None, description="Images associated with the article."
+        default=None, description="与文章相关的图片。"
     )
-    url: str | None = Field(default=None, description="URL to the article.")
+    url: str | None = Field(default=None, description="文章 URL。")

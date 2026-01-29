@@ -1,4 +1,4 @@
-"""Shorts Router."""
+"""空头路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -26,7 +26,7 @@ async def fails_to_deliver(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get reported Fail-to-deliver (FTD) data."""
+    """获取报告的未交付 (FTD) 数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -40,7 +40,7 @@ async def short_volume(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get reported Fail-to-deliver (FTD) data."""
+    """获取报告的未交付 (FTD) 数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -54,5 +54,5 @@ async def short_interest(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get reported short volume and days to cover data."""
+    """获取报告的空头成交量和回补天数数据。"""
     return await OBBject.from_query(Query(**locals()))

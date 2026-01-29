@@ -125,12 +125,12 @@ class BaseController(metaclass=ABCMeta):
         """Check if command path is valid."""
         path = self.PATH
         if path[0] != "/":
-            raise ValueError("Path must begin with a '/' character.")
+            raise ValueError("路径必须以 '/' 字符开头。")
         if path[-1] != "/":
-            raise ValueError("Path must end with a '/' character.")
+            raise ValueError("路径必须以 '/' 字符结尾。")
         if not re.match("^[a-z/]*$", path):
             raise ValueError(
-                "Path must only contain lowercase letters and '/' characters."
+                "路径只能包含小写字母和 '/' 字符。"
             )
 
     def load_class(self, class_ins, *args, **kwargs):
@@ -158,7 +158,7 @@ class BaseController(metaclass=ABCMeta):
     @abstractmethod
     def print_help(self) -> None:
         """Print help placeholder."""
-        raise NotImplementedError("Must override print_help.")
+        raise NotImplementedError("必须覆盖 print_help。")
 
     def parse_input(self, an_input: str) -> list:
         """Parse controller input."""
@@ -224,7 +224,7 @@ class BaseController(metaclass=ABCMeta):
             getattr(
                 self,
                 "call_" + known_args.cmd,
-                lambda _: "Command not recognized!",
+                lambda _: "命令无法识别！",
             )(other_args)
 
         if (
@@ -289,7 +289,7 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="record",
-            description="Start recording session into .openbb routine file",
+            description="开始将会话记录到 .openbb 例程文件",
         )
         parser.add_argument(
             "-n",
@@ -298,7 +298,7 @@ class BaseController(metaclass=ABCMeta):
             dest="name",
             type=str,
             default="",
-            help="Routine title name to be saved - only use characters, digits and whitespaces.",
+            help="要保存的例程标题名称 - 仅使用字符、数字和空格。",
             nargs="+",
         )
         parser.add_argument(
@@ -306,15 +306,15 @@ class BaseController(metaclass=ABCMeta):
             "--description",
             type=str,
             dest="description",
-            help="The description of the routine",
-            default=f"Routine recorded at {datetime.now().strftime('%H:%M')} from the OpenBB Platform CLI",
+            help="例程的描述",
+            default=f"于 {datetime.now().strftime('%H:%M')} 从 OpenBB Platform CLI 记录的例程",
             nargs="+",
         )
         parser.add_argument(
             "--tag1",
             type=str,
             dest="tag1",
-            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
+            help=f"与例程关联的标签。选择：{', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
@@ -322,7 +322,7 @@ class BaseController(metaclass=ABCMeta):
             "--tag2",
             type=str,
             dest="tag2",
-            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
+            help=f"与例程关联的标签。选择：{', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
@@ -330,7 +330,7 @@ class BaseController(metaclass=ABCMeta):
             "--tag3",
             type=str,
             dest="tag3",
-            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
+            help=f"与例程关联的标签。选择：{', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
@@ -339,7 +339,7 @@ class BaseController(metaclass=ABCMeta):
             "--public",
             dest="public",
             action="store_true",
-            help="Whether the routine should be public or not",
+            help="例程是否应公开",
             default=False,
         )
 
@@ -351,7 +351,7 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             if not ns_parser.name:
                 session.console.print(
-                    "[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]"
+                    "[red]使用 '-n' 标志设置例程标题。例如 'record -n Morning routine'[/red]"
                 )
                 return
 
@@ -362,7 +362,7 @@ class BaseController(metaclass=ABCMeta):
             )
             if tag1 and tag1 not in SCRIPT_TAGS:
                 session.console.print(
-                    f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                    f"[red]参数 'tag1' 必须是以下之一 {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
 
@@ -373,7 +373,7 @@ class BaseController(metaclass=ABCMeta):
             )
             if tag2 and tag2 not in SCRIPT_TAGS:
                 session.console.print(
-                    f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                    f"[red]参数 'tag2' 必须是以下之一 {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
 
@@ -384,7 +384,7 @@ class BaseController(metaclass=ABCMeta):
             )
             if tag3 and tag3 not in SCRIPT_TAGS:
                 session.console.print(
-                    f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                    f"[red]参数 'tag3' 必须是以下之一 {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
 
@@ -393,7 +393,7 @@ class BaseController(metaclass=ABCMeta):
             pattern = re.compile(r"^[a-zA-Z0-9\s]+$")
             if not pattern.match(title):
                 session.console.print(
-                    f"[red]Title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/]"
+                    f"[red]标题 '{title}' 格式无效。请仅使用数字、字符和空格。[/]"
                 )
                 return
 
@@ -417,10 +417,10 @@ class BaseController(metaclass=ABCMeta):
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
             session.console.print(
-                f"[green]The routine '{title}' is successfully being recorded.[/green]"
+                f"[green]例程 '{title}' 正在成功记录。[/green]"
             )
             session.console.print(
-                "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
+                "\n[yellow]完成后记得运行 'stop' 命令！\n[/yellow]"
             )
 
     def call_stop(self, other_args) -> None:
@@ -429,7 +429,7 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="stop",
-            description="Stop recording session into .openbb routine file",
+            description="停止将会话记录到 .openbb 例程文件",
         )
         # This is only for auto-completion purposes
         _, _ = self.parse_simple_args(parser, other_args)
@@ -440,11 +440,11 @@ class BaseController(metaclass=ABCMeta):
 
             if not RECORD_SESSION:
                 session.console.print(
-                    "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
+                    "[red]没有正在记录的会话。请使用 'record' 命令开始一个会话[/red]\n"
                 )
             elif len(SESSION_RECORDED) < 5:
                 session.console.print(
-                    "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
+                    "[red]停止记录会话前至少运行 4 个命令。[/red]\n"
                 )
             else:
                 current_user = session.user
@@ -460,11 +460,11 @@ class BaseController(metaclass=ABCMeta):
                 # If file already exists, add a timestamp to the name
                 if os.path.isfile(routine_file):
                     i = session.console.input(
-                        "A local routine with the same name already exists, do you want to override it? (y/n): "
+                        "同名的本地例程已存在，是否覆盖？(y/n): "
                     )
                     session.console.print("")
                     while i.lower() not in ["y", "yes", "n", "no"]:
-                        i = session.console.input("Select 'y' or 'n' to proceed: ")
+                        i = session.console.input("选择 'y' 或 'n' 以继续： ")
                         session.console.print("")
 
                     if i.lower() in ["n", "no"]:
@@ -478,7 +478,7 @@ class BaseController(metaclass=ABCMeta):
                             new_name,
                         )
                         session.console.print(
-                            f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
+                            f"[yellow]例程名称已更新为 '{new_name}'[/yellow]\n"
                         )
 
                 # Writing to file
@@ -499,7 +499,7 @@ class BaseController(metaclass=ABCMeta):
                     file1.writelines(lines)
 
                 session.console.print(
-                    f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                    f"[green]您的例程已记录并保存至：{routine_file}[/green]\n"
                 )
 
                 # Clear session to be recorded again
@@ -512,21 +512,21 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="results",
-            description="Process results command. This command displays a registry of "
-            "'OBBjects' where all execution results are stored. "
-            "It is organized as a stack, with the most recent result at index 0.",
+            description="处理结果命令。此命令显示存储了所有执行结果的已注册 "
+            "'OBBjects'。 "
+            "它组织为一个堆栈，最近的结果位于索引 0。",
         )
-        parser.add_argument("--index", dest="index", help="Index of the result.")
-        parser.add_argument("--key", dest="key", help="Key of the result.")
+        parser.add_argument("--index", dest="index", help="结果的索引。")
+        parser.add_argument("--key", dest="key", help="结果的键。")
         parser.add_argument(
-            "--chart", action="store_true", dest="chart", help="Display chart."
+            "--chart", action="store_true", dest="chart", help="显示图表。"
         )
         parser.add_argument(
             "--export",
             default="",
             type=check_file_type_saved(["csv", "json", "xlsx", "png", "jpg"]),
             dest="export",
-            help="Export raw data into csv, json, xlsx and figure into png or jpg.",
+            help="将原始数据导出为 csv, json, xlsx，将图表导出为 png 或 jpg。",
             nargs="+",
         )
         parser.add_argument(
@@ -534,7 +534,7 @@ class BaseController(metaclass=ABCMeta):
             dest="sheet_name",
             default=None,
             nargs="+",
-            help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+            help="保存数据的 Excel 工作表名称。仅对 .xlsx 文件有效。",
         )
 
         ns_parser, unknown_args = self.parse_simple_args(
@@ -554,7 +554,7 @@ class BaseController(metaclass=ABCMeta):
                         title="OBBject Results",
                     )
                 else:
-                    session.console.print("[info]No results found.[/info]")
+                    session.console.print("[info]未找到结果。[/info]")
             elif ns_parser.index:
                 try:
                     index = int(ns_parser.index)
@@ -569,11 +569,11 @@ class BaseController(metaclass=ABCMeta):
                         )
                     else:
                         session.console.print(
-                            f"[info]No result found at index {index}.[/info]"
+                            f"[info]在索引 {index} 处未找到结果。[/info]"
                         )
                 except ValueError:
                     session.console.print(
-                        f"[red]Index must be an integer, not '{ns_parser.index}'.[/red]"
+                        f"[red]索引必须是整数，而不是 '{ns_parser.index}'。[/red]"
                     )
             elif ns_parser.key:
                 obbject = session.obbject_registry.get(ns_parser.key)
@@ -587,7 +587,7 @@ class BaseController(metaclass=ABCMeta):
                     )
                 else:
                     session.console.print(
-                        f"[info]No result found with key '{ns_parser.key}'.[/info]"
+                        f"[info]未找到键为 '{ns_parser.key}' 的结果。[/info]"
                     )
 
     @staticmethod
@@ -615,7 +615,7 @@ class BaseController(metaclass=ABCMeta):
             List of unknown arguments
         """
         parser.add_argument(
-            "-h", "--help", action="store_true", help="show this help message"
+            "-h", "--help", action="store_true", help="显示此帮助信息"
         )
 
         if session.settings.USE_CLEAR_AFTER_CMD:
@@ -635,7 +635,7 @@ class BaseController(metaclass=ABCMeta):
 
         if l_unknown_args and not unknown_args:
             session.console.print(
-                f"The following args couldn't be interpreted: {l_unknown_args}\n"
+                f"无法解释以下参数：{l_unknown_args}\n"
             )
         return ns_parser, l_unknown_args
 
@@ -671,23 +671,23 @@ class BaseController(metaclass=ABCMeta):
             Namespace with parsed arguments
         """
         parser.add_argument(
-            "-h", "--help", action="store_true", help="show this help message"
+            "-h", "--help", action="store_true", help="显示此帮助信息"
         )
 
         if export_allowed != "no_export":
             choices_export = []
-            help_export = "Does not export!"
+            help_export = "不导出！"
 
             if export_allowed == "raw_data_only":
                 choices_export = ["csv", "json", "xlsx"]
-                help_export = "Export raw data into csv, json or xlsx."
+                help_export = "将原始数据导出为 csv, json 或 xlsx。"
             elif export_allowed == "figures_only":
                 choices_export = ["png", "jpg"]
-                help_export = "Export figure into png or jpg."
+                help_export = "将图表导出为 png 或 jpg。"
             else:
                 choices_export = ["csv", "json", "xlsx", "png", "jpg"]
                 help_export = (
-                    "Export raw data into csv, json, xlsx and figure into png or jpg."
+                    "将原始数据导出为 csv, json, xlsx，将图表导出为 png 或 jpg。"
                 )
 
             parser.add_argument(
@@ -709,7 +709,7 @@ class BaseController(metaclass=ABCMeta):
                     dest="sheet_name",
                     default=None,
                     nargs="+",
-                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                    help="保存数据的 Excel 工作表名称。仅对 .xlsx 文件有效。",
                 )
 
         if raw:
@@ -718,7 +718,7 @@ class BaseController(metaclass=ABCMeta):
                 dest="raw",
                 action="store_true",
                 default=False,
-                help="Flag to display raw data",
+                help="显示原始数据标志",
             )
         if limit > 0:
             parser.add_argument(
@@ -726,7 +726,7 @@ class BaseController(metaclass=ABCMeta):
                 "--limit",
                 dest="limit",
                 default=limit,
-                help="Number of entries to show in data.",
+                help="数据显示条目数。",
                 type=check_positive,
             )
 
@@ -735,13 +735,13 @@ class BaseController(metaclass=ABCMeta):
             dest="register_obbject",
             action="store_false",
             default=True,
-            help="Flag to store data in the OBBject registry, True by default.",
+            help="将数据存储在 OBBject 注册表中的标志，默认为 True。",
         )
         parser.add_argument(
             "--register_key",
             dest="register_key",
             default="",
-            help="Key to reference data in the OBBject registry.",
+            help="在 OBBject 注册表中引用数据的键。",
             type=validate_register_key,
         )
 
@@ -797,7 +797,7 @@ class BaseController(metaclass=ABCMeta):
 
         if l_unknown_args:
             session.console.print(
-                f"The following args couldn't be interpreted: {l_unknown_args}"
+                f"无法解释以下参数：{l_unknown_args}"
             )
         return ns_parser
 

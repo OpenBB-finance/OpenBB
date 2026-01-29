@@ -1,4 +1,4 @@
-"""Economic Calendar Standard Model."""
+"""经济日历标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field
 
 
 class EconomicCalendarQueryParams(QueryParams):
-    """Economic Calendar Query."""
+    """经济日历查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -28,32 +28,32 @@ class EconomicCalendarQueryParams(QueryParams):
 
 
 class EconomicCalendarData(Data):
-    """Economic Calendar Data."""
+    """经济日历数据。"""
 
     date: datetime | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    country: str | None = Field(default=None, description="Country of event.")
-    category: str | None = Field(default=None, description="Category of event.")
-    event: str | None = Field(default=None, description="Event name.")
+    country: str | None = Field(default=None, description="事件所在国家。")
+    category: str | None = Field(default=None, description="事件类别。")
+    event: str | None = Field(default=None, description="事件名称。")
     importance: str | None = Field(
-        default=None, description="The importance level for the event."
+        default=None, description="事件的重要性级别。"
     )
-    source: str | None = Field(default=None, description="Source of the data.")
-    currency: str | None = Field(default=None, description="Currency of the data.")
-    unit: str | None = Field(default=None, description="Unit of the data.")
+    source: str | None = Field(default=None, description="数据来源。")
+    currency: str | None = Field(default=None, description="数据货币。")
+    unit: str | None = Field(default=None, description="数据单位。")
     consensus: str | float | None = Field(
         default=None,
-        description="Average forecast among a representative group of economists.",
+        description="代表性经济学家小组的平均预测。",
     )
     previous: str | float | None = Field(
         default=None,
-        description="Value for the previous period after the revision (if revision is applicable).",
+        description="修订后的上一期数值（如果适用）。",
     )
     revised: str | float | None = Field(
         default=None,
-        description="Revised previous value, if applicable.",
+        description="修订后的前值（如果适用）。",
     )
     actual: str | float | None = Field(
-        default=None, description="Latest released value."
+        default=None, description="最新发布值。"
     )

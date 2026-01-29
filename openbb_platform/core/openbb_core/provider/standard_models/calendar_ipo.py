@@ -1,4 +1,4 @@
-"""IPO Calendar Standard Model."""
+"""IPO 日历标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CalendarIpoQueryParams(QueryParams):
-    """IPO Calendar Query."""
+    """IPO 日历查询。"""
 
     symbol: str | None = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""), default=None
@@ -29,13 +29,13 @@ class CalendarIpoQueryParams(QueryParams):
 
 
 class CalendarIpoData(Data):
-    """IPO Calendar Data."""
+    """IPO 日历数据。"""
 
     symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
     ipo_date: dateType | None = Field(
-        description="The date of the IPO, when the stock first trades on a major exchange.",
+        description="IPO 日期，即股票首次在主要交易所交易的日期。",
         default=None,
     )

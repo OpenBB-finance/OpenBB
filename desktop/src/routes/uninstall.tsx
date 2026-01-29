@@ -58,8 +58,8 @@ export default function Uninstall() {
 
   const handleUninstall = async () => {
     const confirmed = await confirm(
-      'This action cannot be undone.\n\nClick OK to continue.',
-      { title: 'Confirm Uninstall', kind: 'warning' }
+      '此操作无法撤销。\n\n点击“确定”继续。',
+      { title: '确认卸载', kind: 'warning' }
     );
 
     if (!confirmed) return;
@@ -68,29 +68,29 @@ export default function Uninstall() {
     setShowProgressDialog(true);
 
     try {
-      setUninstallProgress("Starting uninstallation...");
-      
-      await invoke('uninstall_application', { 
-        removeUserData, 
-        removeSettings 
+      setUninstallProgress("正在开始卸载...");
+
+      await invoke('uninstall_application', {
+        removeUserData,
+        removeSettings
       });
-      
+
       // Show final progress message
-      setUninstallProgress("Uninstallation complete! Closing application...");
-      
+      setUninstallProgress("卸载完成！正在关闭应用程序...");
+
       // Give user time to see the completion message before closing
       setTimeout(() => {
         setShowProgressDialog(false);
         invoke('app.exit');
       }, 2000);
-      
+
     } catch (error) {
       console.error('Uninstallation error:', error);
       setIsUninstalling(false);
       setShowProgressDialog(false);
       await confirm(
-        `An error occurred during uninstallation: ${error}`,
-        { title: 'Uninstallation Error', kind: 'error' }
+        `卸载过程中发生错误：${error}`,
+        { title: '卸载错误', kind: 'error' }
       );
     }
   };
@@ -104,8 +104,8 @@ export default function Uninstall() {
       <div className="relative bg-theme-secondary rounded-lg border border-theme-modal shadow-lg max-w-[90vw] w-full max-h-[90vh] overflow-y-auto">
         <div className="p-5 flex flex-col">
           <div className="flex flex-1 justify-between items-center">
-            <h1 className="body-xl-bold mb-2 relative bottom-2 text-theme-primary">Uninstall Application & Data</h1>
-                    {/* Close button */}
+            <h1 className="body-xl-bold mb-2 relative bottom-2 text-theme-primary">卸载应用程序和数据</h1>
+            {/* Close button */}
             <Button
               onClick={handleCloseModal}
               disabled={isUninstalling}
@@ -118,11 +118,11 @@ export default function Uninstall() {
             </Button>
           </div>
           <p className="mb-4 body-sm-regular text-theme-secondary">
-            Remove the application, environments, and associated files from your system.< br />
-            To uninstall only the UI application, please use your system's standard application removal process.
+            从系统中移除应用程序、环境及相关文件。< br />
+            如果只想卸载 UI 应用程序，请使用系统的标准程序卸载流程。
           </p>
           <p className="mb-3 body-sm-regular text-theme-primary ml-1 mt-2">
-            Please select the components you wish to remove. <span className="body-sm-bold">This action cannot be undone.</span>
+            请选择要移除的组件。<span className="body-sm-bold">此操作无法撤销。</span>
           </p>
           <div className="pt-1 pb-3">
 
@@ -138,8 +138,8 @@ export default function Uninstall() {
                     readOnly
                   />
                   <label className="form-check-label" htmlFor="removeCondaEnv">
-                    <strong className="text-red-500">Remove Conda and Environments</strong>
-                    <span className="ml-2 text-xs align-middle bg-red-100 text-red-600 px-2 py-0.5 rounded">Required</span>
+                    <strong className="text-red-500">移除 Conda 和环境</strong>
+                    <span className="ml-2 text-xs align-middle bg-red-100 text-red-600 px-2 py-0.5 rounded">必需</span>
                     <p className="body-xs-regular text-theme-muted mb-0 mt-1">
                       <code>{installationDirectory}</code>
                     </p>
@@ -159,7 +159,7 @@ export default function Uninstall() {
                     disabled={isUninstalling}
                   />
                   <label className="form-check-label" htmlFor="removeUserData">
-                    <strong className="text-theme-primary">Remove user data</strong>
+                    <strong className="text-theme-primary">移除用户数据</strong>
                     <p className="body-xs-regular text-theme-muted mb-0 mt-1">
                       <code>{userDataDirectory}</code>
                     </p>
@@ -179,7 +179,7 @@ export default function Uninstall() {
                     disabled={isUninstalling}
                   />
                   <label className="form-check-label" htmlFor="removeSettings">
-                    <strong className="text-theme-primary">Remove application settings</strong>
+                    <strong className="text-theme-primary">移除应用程序设置</strong>
                     <p className="body-xs-regular text-theme-muted mb-0 mt-1">
                       <code>{settingsDirectory}</code>
                     </p>
@@ -198,7 +198,7 @@ export default function Uninstall() {
               onClick={handleCloseModal}
               disabled={isUninstalling}
             >
-              Cancel
+              取消
             </Button>
             <Button
               className="button-danger shadow-md px-2 py-1"
@@ -207,7 +207,7 @@ export default function Uninstall() {
               onClick={handleUninstall}
               disabled={isUninstalling}
             >
-              {isUninstalling ? "Uninstalling..." : "Uninstall"}
+              {isUninstalling ? "正在卸载..." : "卸载"}
             </Button>
           </div>
         </div>
@@ -219,14 +219,14 @@ export default function Uninstall() {
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center p-4 rounded-lg w-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-accent mr-3" />
-                  <span className="text-theme-primary body-sm-regular">{uninstallProgress || "Processing..."}</span>
+                  <span className="text-theme-primary body-sm-regular">{uninstallProgress || "正在处理..."}</span>
                 </div>
               </div>
             </div>
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 

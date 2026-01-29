@@ -1,4 +1,4 @@
-"""Crypto Search Standard Model."""
+"""加密货币搜索标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,13 +7,13 @@ from pydantic import Field
 
 
 class CryptoSearchQueryParams(QueryParams):
-    """Crypto Search Query."""
+    """加密货币搜索查询。"""
 
-    query: str | None = Field(description="Search query.", default=None)
+    query: str | None = Field(description="搜索查询。", default=None)
 
 
 class CryptoSearchData(Data):
-    """Crypto Search Data."""
+    """加密货币搜索数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (Crypto)")
-    name: str | None = Field(description="Name of the crypto.", default=None)
+    name: str | None = Field(description="加密货币名称。", default=None)

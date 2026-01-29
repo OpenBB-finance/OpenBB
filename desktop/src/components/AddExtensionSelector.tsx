@@ -22,28 +22,28 @@ interface ExtensionCategory {
 const categories: ExtensionCategory[] = [
   {
     id: "conda",
-    name: "Conda Packages",
-    description: "Specify Conda packages to install in the environment, optionally with a channel (e.g., conda-forge, <channel-name>) and version specifiers.",
+    name: "Conda 包",
+    description: "指定要在环境中安装的 Conda 包，可选音频道（例如 conda-forge、<频道名称>）和版本规范。",
   },
   {
     id: "extras",
-    name: "PyPI Packages",
-    description: "Packages from PyPI to be installed (pip) in the environment. Use version specifiers as needed (e.g., package==1.2.3 or package>=1.2.3).",
+    name: "PyPI 包",
+    description: "要在环境中安装 (pip) 的 PyPI 软件包。根据需要使用版本规范（例如 package==1.2.3 或 package>=1.2.3）。",
   },
   {
     id: "provider",
-    name: "Data Providers",
-    description: "Data providers supplying data through the OpenBB provider interface.",
+    name: "数据提供商",
+    description: "通过 OpenBB 提供商接口提供数据的提供商。",
   },
   {
     id: "router",
-    name: "Routers",
-    description: "API paths and endpoints implementing the OpenBB command interface.",
+    name: "路由器 (Routers)",
+    description: "实现 OpenBB 命令接口的 API 路径和端点。",
   },
   {
     id: "other-openbb",
-    name: "Others",
-    description: "Additional OpenBB extensions, including OBBject extensions, that enhance the functionality of the OpenBB platform.",
+    name: "其他",
+    description: "增强 OpenBB 平台功能的其他 OpenBB 扩展，包括 OBBject 扩展。",
   },
 ];
 
@@ -61,8 +61,8 @@ export const PythonVersionSelector = ({
   };
 
   return (
-		<div className="w-full" data-testid="python-version-selector">
-			<div className="flex flex-row gap-8 pr-20">
+    <div className="w-full" data-testid="python-version-selector">
+      <div className="flex flex-row gap-8 pr-20">
         {["3.10", "3.11", "3.12", "3.13"].map((version) => (
           <label
             key={version}
@@ -77,17 +77,16 @@ export const PythonVersionSelector = ({
               className="sr-only"
             />
             <span
-              className={`relative flex items-center justify-center h-5 w-5 rounded-full border-2 ${
-                selectedVersion === version
-                  ? "border-theme-radio"
-                  : "border-theme"
-              }`}
+              className={`relative flex items-center justify-center h-5 w-5 rounded-full border-2 ${selectedVersion === version
+                ? "border-theme-radio"
+                : "border-theme"
+                }`}
             >
               {selectedVersion === version && (
                 <span className="h-1.5 w-1.5 rounded-full bg-theme-neutral" />
               )}
             </span>
-						<span className={`body-md-regular ${selectedVersion === version ? "text-theme-neutral" : "text-theme-secondary"}`}>{version}</span>
+            <span className={`body-md-regular ${selectedVersion === version ? "text-theme-neutral" : "text-theme-secondary"}`}>{version}</span>
           </label>
         ))}
       </div>
@@ -151,21 +150,21 @@ export const AddExtensionSelector = ({
     {
       id: "openbb-mcp-server",
       name: "OpenBB MCP Server",
-      description: "Convert OpenBB routes, endpoints, and FastAPI instances to run over the Model Context Protocol (MCP).",
+      description: "将 OpenBB 路由、端点和 FastAPI 实例转换为在模型上下文协议 (MCP) 上运行。",
       category: "other-openbb",
       credentials: [],
     },
     {
       id: "pywry",
       name: "PyWry",
-      description: "PyWry is a Python wrapper of the Tauri Window builder.",
+      description: "PyWry 是 Tauri 窗口工具的 Python 包装器。",
       category: "other-openbb",
       credentials: [],
     },
     {
       id: "openbb-cli",
       name: "OpenBB CLI",
-      description: "Command line interface for OpenBB",
+      description: "OpenBB 的命令行界面 (CLI)。",
       category: "other-openbb",
       credentials: [],
     },
@@ -282,7 +281,7 @@ export const AddExtensionSelector = ({
           ...providers.map((item) => ({
             id: item.packageName,
             name: item.reprName || item.packageName,
-            description: item.description || "No description available",
+            description: item.description || "无可用说明",
             category: "provider",
             credentials: item.credentials || [],
             instructions: item.instructions || null,
@@ -290,7 +289,7 @@ export const AddExtensionSelector = ({
           ...routers.map((item) => ({
             id: item.packageName,
             name: item.reprName || item.packageName,
-            description: item.description || "No description available",
+            description: item.description || "无可用说明",
             category: "router",
             credentials: item.credentials || [],
             instructions: item.instructions || null,
@@ -298,7 +297,7 @@ export const AddExtensionSelector = ({
           ...obbjects.map((item) => ({
             id: item.packageName,
             name: item.reprName || item.packageName,
-            description: item.description || "No description available",
+            description: item.description || "无可用说明",
             category: "other-openbb",
             credentials: item.credentials || [],
             instructions: item.instructions || null,
@@ -310,7 +309,7 @@ export const AddExtensionSelector = ({
       } catch (err) {
         console.error("Error fetching extensions:", err);
         setError(
-          "Failed to load extensions. Please try again or continue without extensions.",
+          "加载扩展失败。请重试，或在不安装扩展的情况下继续。",
         );
       } finally {
         setLoading(false);
@@ -412,22 +411,22 @@ export const AddExtensionSelector = ({
       console.log("Extension installation completed successfully");
     } catch (error) {
       console.error("Installation failed:", error);
-      setError(`Installation failed: ${error}`);
+      setError(`安装失败: ${error}`);
     } finally {
       // Always reset the installing state
       setIsInstalling(false);
     }
   };
 
-	const getCheckboxState = (categoryId: string) => {
-		const categoryExtensions = getExtensionsByCategory(categoryId);
-		const totalCount = categoryExtensions.length;
-		const selectedCount = countSelectedInCategory(categoryId);
+  const getCheckboxState = (categoryId: string) => {
+    const categoryExtensions = getExtensionsByCategory(categoryId);
+    const totalCount = categoryExtensions.length;
+    const selectedCount = countSelectedInCategory(categoryId);
 
-		if (selectedCount === 0) return 'checked';
-		if (selectedCount === totalCount) return 'indeterminate';
-		return 'indeterminate';
-	};
+    if (selectedCount === 0) return 'checked';
+    if (selectedCount === totalCount) return 'indeterminate';
+    return 'indeterminate';
+  };
 
   // Update the useEffect to use the new hasMatchingExtensions
   useEffect(() => {
@@ -448,14 +447,14 @@ export const AddExtensionSelector = ({
         {loading ? (
           <div className="flex justify-center items-center p-8 text-theme-primary">
             <div className="animate-spin rounded-full h-8 w-8 border-theme-color" />
-            <span className="ml-2 body-xs-regular text-theme-primary">Loading extensions...</span>
+            <span className="ml-2 body-xs-regular text-theme-primary">正在加载扩展...</span>
           </div>
         ) : (
           <>
             <div className="mt-2">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="body-lg-bold text-theme-primary mb-1">Install Extensions</h2>
-                <Tooltip content="Close" className="tooltip-theme">
+                <h2 className="body-lg-bold text-theme-primary mb-1">安装扩展</h2>
+                <Tooltip content="关闭" className="tooltip-theme">
                   <Button
                     onClick={onCancel}
                     variant="ghost"
@@ -510,7 +509,7 @@ export const AddExtensionSelector = ({
                   <input
                     id="extension-search"
                     type="text"
-                    placeholder="Search extensions..."
+                    placeholder="搜索扩展..."
                     value={localSearchQuery}
                     onChange={(e) => setLocalSearchQuery(e.target.value)}
                     className="!pl-[30px] w-full text-xs p-2 bg-theme-secondary rounded overflow-hidden text-ellipsis whitespace-nowrap"
@@ -539,7 +538,7 @@ export const AddExtensionSelector = ({
                       {(category.id === "provider" || category.id === "router" || category.id === "other-openbb") && (
                         <div className="mt-2 divide-y">
                           <Tooltip
-                            content="Deselect all extensions in this category"
+                            content="取消选择此分类中的所有扩展"
                             className="tooltip tooltip-theme"
                           >
                             <input
@@ -559,7 +558,7 @@ export const AddExtensionSelector = ({
                           </Tooltip>
                           {/* Select All Button */}
                           <Tooltip
-                            content="Select all extensions in this category."
+                            content="全选此分类中的所有扩展。"
                             className="tooltip tooltip-theme"
                           >
                             <Button
@@ -568,286 +567,286 @@ export const AddExtensionSelector = ({
                               className="button-ghost ml-0 body-sm-medium relative -top-0.5"
                               size="xs"
                             >
-                              Select All
+                              全选
                             </Button>
                           </Tooltip>
                         </div>
                       )}
                       {/* Conda packages input */}
                       {category.id === "conda" && (
-                      <div className="space-y-4 p-1">
-                        <div className="flex items-end gap-4">
-                        <div className="flex-1">
-                          <label htmlFor="conda-channel" className="body-sm-bold text-theme-secondary mb-1 block">
-                          Channel
-                          </label>
-                          <input
-                          id="conda-channel"
-                          type="text"
-                          placeholder="conda-forge"
-                          className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
-                          value={condaChannel}
-                          spellCheck="false"
-                          onChange={(e) => setCondaChannel(e.target.value)}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <label htmlFor="conda-package" className="body-sm-bold text-theme-secondary mb-1 block">
-                          Package
-                          </label>
-                          <input
-                          id="conda-package"
-                          type="text"
-                          placeholder="Conda Package Name"
-                          className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
-                          value={condaPackage}
-                          onChange={(e) => setCondaPackage(e.target.value)}
-                          spellCheck="false"
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" && condaPackage.trim()) {
-                            e.preventDefault();
-                            addCondaPackage();
-                            }
-                          }}
-                          />
-                        </div>
-                        <Button
-                          type="button"
-                          onClick={addCondaPackage}
-                          disabled={!condaPackage.trim()}
-                          variant="primary"
-                          size="sm"
-                          className="button-primary"
-                        >
-                          Add
-                        </Button>
-                        </div>
-                        {condaPackages.length === 0 && (
-                          <div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
-                            <div className="body-sm-regular text-theme-muted">No Conda packages added.</div>
-                          </div>
-                        )}
-                        {condaPackages.length > 0 && (
-                        <div className="pt-4">
-                          <div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
-                          {condaPackages.map((pkg) => (
-                            <div
-                            key={pkg}
-                            className="flex items-center justify-between bg-theme-quartary rounded-sm px-3 py-3"
-                            >
-                            <span className="body-sm-regular text-theme-primary">{pkg}</span>
-                            <Tooltip content={`Remove ${pkg}`} className="tooltip tooltip-theme">
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                onClick={() => removeCondaPackage(pkg)}
-                                className="button-ghost h-5 w-5 p-0"
-                                aria-label={`Remove ${pkg}`}
-                              >
-                                <CustomIcon id="close" className="h-4 w-4 text-theme" />
-                              </Button>
-                            </Tooltip>
+                        <div className="space-y-4 p-1">
+                          <div className="flex items-end gap-4">
+                            <div className="flex-1">
+                              <label htmlFor="conda-channel" className="body-sm-bold text-theme-secondary mb-1 block">
+                                频道 (Channel)
+                              </label>
+                              <input
+                                id="conda-channel"
+                                type="text"
+                                placeholder="conda-forge"
+                                className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
+                                value={condaChannel}
+                                spellCheck="false"
+                                onChange={(e) => setCondaChannel(e.target.value)}
+                              />
                             </div>
-                          ))}
+                            <div className="flex-1">
+                              <label htmlFor="conda-package" className="body-sm-bold text-theme-secondary mb-1 block">
+                                软件包
+                              </label>
+                              <input
+                                id="conda-package"
+                                type="text"
+                                placeholder="Conda 软件包名称"
+                                className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
+                                value={condaPackage}
+                                onChange={(e) => setCondaPackage(e.target.value)}
+                                spellCheck="false"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" && condaPackage.trim()) {
+                                    e.preventDefault();
+                                    addCondaPackage();
+                                  }
+                                }}
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              onClick={addCondaPackage}
+                              disabled={!condaPackage.trim()}
+                              variant="primary"
+                              size="sm"
+                              className="button-primary"
+                            >
+                              添加
+                            </Button>
                           </div>
+                          {condaPackages.length === 0 && (
+                            <div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
+                              <div className="body-sm-regular text-theme-muted">未添加 Conda 包。</div>
+                            </div>
+                          )}
+                          {condaPackages.length > 0 && (
+                            <div className="pt-4">
+                              <div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
+                                {condaPackages.map((pkg) => (
+                                  <div
+                                    key={pkg}
+                                    className="flex items-center justify-between bg-theme-quartary rounded-sm px-3 py-3"
+                                  >
+                                    <span className="body-sm-regular text-theme-primary">{pkg}</span>
+                                    <Tooltip content={`移除 ${pkg}`} className="tooltip tooltip-theme">
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        onClick={() => removeCondaPackage(pkg)}
+                                        className="button-ghost h-5 w-5 p-0"
+                                        aria-label={`移除 ${pkg}`}
+                                      >
+                                        <CustomIcon id="close" className="h-4 w-4 text-theme" />
+                                      </Button>
+                                    </Tooltip>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                        )}
-                      </div>
                       )}
                       {/* Custom package input for extras category */}
                       {category.id === "extras" && (
-                      <div className="space-y-4 p-1">
-                        <div className="flex items-end gap-4">
-                          <div className="flex-1">
-                            <label htmlFor="custom-package" className="body-sm-bold text-theme-secondary mb-1 block">
-                              Package
-                            </label>
-                            <input
-                              id="custom-package"
-                              type="text"
-                              placeholder="PyPI Package Name"
-                              className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
-                              value={customPackage}
-                              onChange={(e) => setCustomPackage(e.target.value)}
-                              spellCheck="false"
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" && customPackage.trim()) {
-                                  e.preventDefault();
-                                  addCustomPackage();
-                                }
-                              }}
-                            />
+                        <div className="space-y-4 p-1">
+                          <div className="flex items-end gap-4">
+                            <div className="flex-1">
+                              <label htmlFor="custom-package" className="body-sm-bold text-theme-secondary mb-1 block">
+                                软件包
+                              </label>
+                              <input
+                                id="custom-package"
+                                type="text"
+                                placeholder="PyPI 软件包名称"
+                                className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
+                                value={customPackage}
+                                onChange={(e) => setCustomPackage(e.target.value)}
+                                spellCheck="false"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" && customPackage.trim()) {
+                                    e.preventDefault();
+                                    addCustomPackage();
+                                  }
+                                }}
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              onClick={addCustomPackage}
+                              disabled={!customPackage.trim()}
+                              variant="primary"
+                              size="sm"
+                              className="button-primary"
+                            >
+                              添加
+                            </Button>
                           </div>
-                          <Button
-                            type="button"
-                            onClick={addCustomPackage}
-                            disabled={!customPackage.trim()}
-                            variant="primary"
-                            size="sm"
-                            className="button-primary"
-                          >
-                            Add
-                          </Button>
+                          {customPackages.length === 0 && (
+                            <div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
+                              <div className="body-sm-regular text-theme-muted">未添加 PyPI 包。</div>
+                            </div>
+                          )}
+                          {customPackages.length > 0 && (
+                            <div className="pt-4">
+                              <div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
+                                {customPackages.map((pkg) => (
+                                  <div
+                                    key={pkg}
+                                    className="flex items-center justify-between bg-theme-quartary rounded-sm p-3"
+                                  >
+                                    <span className="body-sm-regular text-theme-primary">{pkg}</span>
+                                    <Tooltip content={`移除 ${pkg}`} className="tooltip tooltip-theme">
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        onClick={() => removeCustomPackage(pkg)}
+                                        className="button-ghost h-5 w-5 p-0"
+                                        aria-label={`移除 ${pkg}`}
+                                      >
+                                        <CustomIcon id="close" className="h-4 w-4 text-theme" />
+                                      </Button>
+                                    </Tooltip>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                        {customPackages.length === 0 && (
-                        <div className="w-full min-h-[65px] bg-theme-quartary flex items-center justify-center rounded-sm shadow-sm border border-theme-modal">
-                        <div className="body-sm-regular text-theme-muted">No PyPI packages added.</div>
-                        </div>
-                        )}
-                        {customPackages.length > 0 && (
-                          <div className="pt-4">
-                            <div className="flex flex-col space-y-2 max-h-64 overflow-y-auto pr-1">
-                              {customPackages.map((pkg) => (
+                      )}
+                      {categoryExtensions.length === 0 ? (
+                        category.id !== "conda" && category.id !== "extras" && (
+                          <div className="p-3 body-xs-regular text-theme-muted bg-theme-quartary rounded-sm shadow-sm border border-theme-modal w-full min-h-[65px] flex items-center justify-center">
+                            {localSearchQuery.trim()
+                              ? "此分类中没有匹配搜索的内容。"
+                              : "此分类中没有可用扩展。如果已安装，它们将不会出现在这里。"}
+                          </div>
+                        )
+                      ) : (
+                        <div>
+                          <div className="overflow-y-auto">
+                            <div className="flex flex-col space-y-2 max-h-[calc(100vh-32rem)] min-h-[100px] mr-2">
+                              {categoryExtensions.map((extension) => (
                                 <div
-                                  key={pkg}
-                                  className="flex items-center justify-between bg-theme-quartary rounded-sm p-3"
+                                  key={extension.id}
+                                  className="flex items-start justify-between p-2 rounded-sm bg-theme-quartary text-theme-primary relative border border-theme-modal"
                                 >
-                                  <span className="body-sm-regular text-theme-primary">{pkg}</span>
-                                  <Tooltip content={`Remove ${pkg}`} className="tooltip tooltip-theme">
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      onClick={() => removeCustomPackage(pkg)}
-                                      className="button-ghost h-5 w-5 p-0"
-                                      aria-label={`Remove ${pkg}`}
-                                    >
-                                      <CustomIcon id="close" className="h-4 w-4 text-theme" />
-                                    </Button>
-                                  </Tooltip>
+                                  <input
+                                    type="checkbox"
+                                    id={`ext-${extension.id}`}
+                                    checked={selectedExtensions.includes(
+                                      extension.id,
+                                    )}
+                                    onChange={() => toggleExtension(extension.id)}
+                                    className="checkbox mt-1 h-4 w-4 text-theme-accent"
+                                  />
+                                  <div className="ml-3 w-full">
+                                    <div className="flex flex-wrap items-center justify-start gap-4 w-full">
+                                      <label
+                                        htmlFor={`ext-${extension.id}`}
+                                        className="text-theme-primary body-md-regular cursor-pointer"
+                                      >
+                                        {extension.id}
+                                      </label>
+                                      {extension.credentials &&
+                                        extension.credentials.length > 0 && (
+                                          <div className="relative inline-block group">
+                                            <span
+                                              className="px-2 py-0.5 bg-theme-accent text-theme-accent body-xs-medium rounded-full"
+                                              title="需要 API 密钥"
+                                            >
+                                              {extension.credentials.join(", ")}
+                                            </span>
+                                          </div>
+                                        )}
+                                    </div>
+                                    <p className="text-theme-secondary body-sm-regular mt-2">
+                                      {extension.description}
+                                    </p>
+                                    {extension.instructions && (
+                                      <div className="bg-theme-primary p-2 mt-2 body-xs-regular text-theme-secondary rounded-sm shadow-sm">
+                                        <details>
+                                          <summary className="cursor-pointer text-theme-primary body-xs-medium">
+                                            设置说明
+                                          </summary>
+                                          <div className="mt-2 p-2">
+                                            <ReactMarkdown
+                                              className="markdown-content whitespace-pre-line"
+                                              components={{
+                                                img: ({ ...props }) => (
+                                                  <img
+                                                    {...props}
+                                                    className="max-w-full h-auto border border-theme rounded-md"
+                                                    style={{
+                                                      maxHeight: "300px",
+                                                    }}
+                                                    loading="lazy"
+                                                    alt={
+                                                      props.alt ||
+                                                      "Setup instruction image"
+                                                    }
+                                                  />
+                                                ),
+                                                a: ({ ...props }) => (
+                                                  <a
+                                                    {...props}
+                                                    className="text-blue-500 underline"
+                                                    target="_blank"
+                                                    rel="noreferrer noopener"
+                                                  />
+                                                ),
+                                                p: ({ ...props }) => (
+                                                  <p
+                                                    {...props}
+                                                    className="my-2 text-theme-secondary"
+                                                  />
+                                                ),
+                                                code: ({ ...props }) => (
+                                                  <code
+                                                    {...props}
+                                                    className="bg-theme-tertiary px-1 py-0.5 rounded text-theme-primary"
+                                                  />
+                                                ),
+                                                div: ({ ...props }) => (
+                                                  <div {...props} />
+                                                ),
+                                              }}
+                                            >
+                                              {extension.instructions}
+                                            </ReactMarkdown>
+                                          </div>
+                                        </details>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               ))}
                             </div>
                           </div>
-                        )}
-                      </div>
-                      )}
-                      {categoryExtensions.length === 0 ? (
-                      category.id !== "conda" && category.id !== "extras" && (
-                        <div className="p-3 body-xs-regular text-theme-muted bg-theme-quartary rounded-sm shadow-sm border border-theme-modal w-full min-h-[65px] flex items-center justify-center">
-                        {localSearchQuery.trim()
-                          ? "No extensions in this category match the search."
-                          : "No extensions available in this category. If they are already installed, they will not appear here."}
                         </div>
-                      )
-                      ) : (
-                      <div>
-                        <div className="overflow-y-auto">
-                          <div className="flex flex-col space-y-2 max-h-[calc(100vh-32rem)] min-h-[100px] mr-2">
-                          {categoryExtensions.map((extension) => (
-                          <div
-                            key={extension.id}
-                            className="flex items-start justify-between p-2 rounded-sm bg-theme-quartary text-theme-primary relative border border-theme-modal"
-                          >
-                            <input
-                            type="checkbox"
-                            id={`ext-${extension.id}`}
-                            checked={selectedExtensions.includes(
-                              extension.id,
-                            )}
-                            onChange={() => toggleExtension(extension.id)}
-                            className="checkbox mt-1 h-4 w-4 text-theme-accent"
-                            />
-                            <div className="ml-3 w-full">
-                            <div className="flex flex-wrap items-center justify-start gap-4 w-full">
-                              <label
-                              htmlFor={`ext-${extension.id}`}
-                              className="text-theme-primary body-md-regular cursor-pointer"
-                              >
-                              {extension.id}
-                              </label>
-                              {extension.credentials &&
-                              extension.credentials.length > 0 && (
-                                <div className="relative inline-block group">
-                                <span
-                                  className="px-2 py-0.5 bg-theme-accent text-theme-accent body-xs-medium rounded-full"
-                                  title="API key required"
-                                >
-                                  {extension.credentials.join(", ")}
-                                </span>
-                                </div>
-                              )}
-                            </div>
-                            <p className="text-theme-secondary body-sm-regular mt-2">
-                              {extension.description}
-                            </p>
-                            {extension.instructions && (
-                              <div className="bg-theme-primary p-2 mt-2 body-xs-regular text-theme-secondary rounded-sm shadow-sm">
-                                <details>
-                                  <summary className="cursor-pointer text-theme-primary body-xs-medium">
-                                  Setup instructions
-                                  </summary>
-                                  <div className="mt-2 p-2">
-                                    <ReactMarkdown
-                                      className="markdown-content whitespace-pre-line"
-                                      components={{
-                                        img: ({ ...props }) => (
-                                          <img
-                                            {...props}
-                                            className="max-w-full h-auto border border-theme rounded-md"
-                                            style={{
-                                              maxHeight: "300px",
-                                            }}
-                                            loading="lazy"
-                                            alt={
-                                              props.alt ||
-                                              "Setup instruction image"
-                                            }
-                                          />
-                                        ),
-                                        a: ({ ...props }) => (
-                                          <a
-                                            {...props}
-                                            className="text-blue-500 underline"
-                                            target="_blank"
-                                            rel="noreferrer noopener"
-                                          />
-                                        ),
-                                        p: ({ ...props }) => (
-                                          <p
-                                            {...props}
-                                            className="my-2 text-theme-secondary"
-                                          />
-                                        ),
-                                        code: ({ ...props }) => (
-                                          <code
-                                            {...props}
-                                            className="bg-theme-tertiary px-1 py-0.5 rounded text-theme-primary"
-                                          />
-                                        ),
-                                        div: ({ ...props }) => (
-                                          <div {...props} />
-                                        ),
-                                      }}
-                                    >
-                                      {extension.instructions}
-                                    </ReactMarkdown>
-                                  </div>
-                                </details>
-                              </div>
-                            )}
-                            </div>
-                          </div>
-                          ))}
-                        </div>
-                        </div>
-                      </div>
                       )}
                     </div>
-                    </div>
-                  );
-                  })}
-                </div>
+                  </div>
+                );
+              })}
+            </div>
 
             {/* Global Summary and Install button */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 ml-5">
                 <span className="text-xs text-theme-muted flex items-center">
-                  {condaPackages.length} Conda + {customPackages.length} PyPI + {selectedExtensions.length} OpenBB extensions selected
+                  {condaPackages.length} 个 Conda + {customPackages.length} 个 PyPI + {selectedExtensions.length} 个 OpenBB 扩展已选择
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <Tooltip
-                  content="Cancel and go back."
+                  content="取消并返回。"
                   className="tooltip-theme"
                 >
                   <Button
@@ -857,11 +856,11 @@ export const AddExtensionSelector = ({
                     className="button-outline shadow-md"
                     disabled={isInstalling}
                   >
-                    Cancel
+                    取消
                   </Button>
                 </Tooltip>
                 <Tooltip
-                  content="Install the selected extensions."
+                  content="安装所选扩展。"
                   className="tooltip-theme"
                 >
                   <Button
@@ -878,7 +877,7 @@ export const AddExtensionSelector = ({
                       )
                     }
                   >
-                    {isInstalling ? "Installing..." : "Install"}
+                    {isInstalling ? "正在安装..." : "安装"}
                   </Button>
                 </Tooltip>
               </div>
@@ -886,26 +885,26 @@ export const AddExtensionSelector = ({
           </>
         )}
         {error && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-theme-secondary border-red-800 rounded-lg shadow-lg max-w-2xl w-full p-6">
-            <h2 className="text-red-600 text-lg font-bold mb-2">Extension Error</h2>
-            <div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border-red-800 bg-red-900/30 text-red-300 rounded-md text-xs font-mono">
-              <div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
-                {error}
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="bg-theme-secondary border-red-800 rounded-lg shadow-lg max-w-2xl w-full p-6">
+              <h2 className="text-red-600 text-lg font-bold mb-2">扩展错误</h2>
+              <div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border-red-800 bg-red-900/30 text-red-300 rounded-md text-xs font-mono">
+                <div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
+                  {error}
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  onClick={() => setError(null)}
+                  variant="outline"
+                  size="sm"
+                  className="button-outline shadow-sm"
+                >
+                  <span className="body-xs-bold text-theme">关闭</span>
+                </Button>
               </div>
             </div>
-            <div className="flex justify-end">
-              <Button
-              onClick={() => setError(null)}
-              variant="outline"
-              size="sm"
-              className="button-outline shadow-sm"
-              >
-              <span className="body-xs-bold text-theme">Dismiss</span>
-              </Button>
-            </div>
           </div>
-        </div>
         )}
       </div>
     </div>

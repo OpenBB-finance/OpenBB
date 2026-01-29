@@ -1,4 +1,4 @@
-"""Company News Standard Model."""
+"""公司新闻标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -16,7 +16,7 @@ from pydantic import Field, NonNegativeInt, field_validator
 
 
 class CompanyNewsQueryParams(QueryParams):
-    """Company news Query."""
+    """公司新闻查询。"""
 
     symbol: str | None = Field(
         default=None,
@@ -36,26 +36,26 @@ class CompanyNewsQueryParams(QueryParams):
     @field_validator("symbol", mode="before")
     @classmethod
     def symbols_validate(cls, v):
-        """Validate the symbols."""
+        """验证代码。"""
         return v.upper() if v else None
 
 
 class CompanyNewsData(Data):
-    """Company News Data."""
+    """公司新闻数据。"""
 
     date: datetime = Field(
-        description=DATA_DESCRIPTIONS.get("date", "") + " The date of publication."
+        description=DATA_DESCRIPTIONS.get("date", "") + " 发布日期。"
     )
-    title: str = Field(description="Title of the article.")
-    author: str | None = Field(default=None, description="Author of the article.")
+    title: str = Field(description="文章标题。")
+    author: str | None = Field(default=None, description="文章作者。")
     excerpt: str | None = Field(
-        default=None, description="Excerpt of the article text."
+        default=None, description="文章文本摘录。"
     )
-    body: str | None = Field(default=None, description="Body of the article text.")
+    body: str | None = Field(default=None, description="文章正文。")
     images: Any | None = Field(
-        default=None, description="Images associated with the article."
+        default=None, description="与文章相关的图片。"
     )
-    url: str = Field(description="URL to the article.")
+    url: str = Field(description="文章的 URL。")
     symbols: str | None = Field(
-        default=None, description="Symbols associated with the article."
+        default=None, description="与文章相关的代码。"
     )

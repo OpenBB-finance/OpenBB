@@ -1,4 +1,4 @@
-"""Economic Indicators Standard Model."""
+"""经济指标标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class EconomicIndicatorsQueryParams(QueryParams):
-    """Economic Indicators Query."""
+    """经济指标查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     country: str | None = Field(
@@ -30,19 +30,19 @@ class EconomicIndicatorsQueryParams(QueryParams):
 
 
 class EconomicIndicatorsData(Data):
-    """Economic Indicators Data."""
+    """经济指标数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     symbol_root: str | None = Field(
-        default=None, description="The root symbol for the indicator (e.g. GDP)."
+        default=None, description="指标的根符号（例如 GDP）。"
     )
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     country: str | None = Field(
-        default=None, description="The country represented by the data."
+        default=None, description="数据代表的国家。"
     )
     value: int | float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("value", "")

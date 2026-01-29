@@ -1,4 +1,4 @@
-"""Extension Loader."""
+"""扩展加载器。"""
 
 from enum import Enum
 from functools import lru_cache
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class OpenBBGroups(Enum):
-    """OpenBB Extension Groups."""
+    """OpenBB 扩展组。"""
 
     core = "openbb_core_extension"
     provider = "openbb_provider_extension"
@@ -23,7 +23,7 @@ class OpenBBGroups(Enum):
 
     @staticmethod
     def groups() -> list[str]:
-        """Return the OpenBBGroups."""
+        """返回 OpenBBGroups。"""
         return [
             OpenBBGroups.core.value,
             OpenBBGroups.provider.value,
@@ -32,12 +32,12 @@ class OpenBBGroups(Enum):
 
 
 class ExtensionLoader(metaclass=SingletonMeta):
-    """Extension loader class."""
+    """扩展加载器类。"""
 
     def __init__(
         self,
     ) -> None:
-        """Initialize the extension loader."""
+        """初始化扩展加载器。"""
         self._obbject_entry_points: EntryPoints = self._sorted_entry_points(
             group=OpenBBGroups.obbject.value
         )
@@ -55,11 +55,11 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @property
     def on_command_output_callbacks(self) -> dict[str, list[Extension]]:
-        """Return the on command output callbacks."""
+        """返回命令输出回调。"""
         return self._on_command_output_callbacks
 
     def _register_command_output_callbacks(self) -> None:
-        """Register extensions that act on command output."""
+        """注册在命令输出上起作用的扩展。"""
         for ext in self.obbject_objects.values():
             if ext.on_command_output:
                 paths = ext.command_output_paths or ["*"]
@@ -70,22 +70,22 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @property
     def obbject_entry_points(self) -> EntryPoints:
-        """Return the obbject entry points."""
+        """返回 obbject 入口点。"""
         return self._obbject_entry_points
 
     @property
     def core_entry_points(self) -> EntryPoints:
-        """Return the core entry points."""
+        """返回核心入口点。"""
         return self._core_entry_points
 
     @property
     def provider_entry_points(self) -> EntryPoints:
-        """Return the provider entry points."""
+        """返回提供者入口点。"""
         return self._provider_entry_points
 
     @property
     def entry_points(self) -> list[EntryPoints]:
-        """Return the entry points."""
+        """返回入口点。"""
         return [
             self._core_entry_points,
             self._provider_entry_points,
@@ -96,25 +96,25 @@ class ExtensionLoader(metaclass=SingletonMeta):
     def _get_entry_point(
         entry_points_: EntryPoints, ext_name: str
     ) -> EntryPoint | None:
-        """Given an extension name and a list of entry points, return the corresponding entry point."""
+        """给定扩展名称和入口点列表，返回相应的入口点。"""
         return next((ep for ep in entry_points_ if ep.name == ext_name), None)
 
     def get_obbject_entry_point(self, ext_name: str) -> EntryPoint | None:
-        """Given an extension name, return the corresponding entry point."""
+        """给定扩展名称，返回相应的入口点。"""
         return self._get_entry_point(self._obbject_entry_points, ext_name)
 
     def get_core_entry_point(self, ext_name: str) -> EntryPoint | None:
-        """Given an extension name, return the corresponding entry point."""
+        """给定扩展名称，返回相应的入口点。"""
         return self._get_entry_point(self._core_entry_points, ext_name)
 
     def get_provider_entry_point(self, ext_name: str) -> EntryPoint | None:
-        """Given an extension name, return the corresponding entry point."""
+        """给定扩展名称，返回相应的入口点。"""
         return self._get_entry_point(self._provider_entry_points, ext_name)
 
     @property
     @lru_cache
     def obbject_objects(self) -> dict[str, Extension]:
-        """Return a dict of obbject extension objects."""
+        """返回 obbject 扩展对象的字典。"""
         self._obbject_objects = self._load_entry_points(
             self._obbject_entry_points, OpenBBGroups.obbject
         )
@@ -123,7 +123,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
     @property
     @lru_cache
     def core_objects(self) -> dict[str, "Router"]:
-        """Return a dict of core extension objects."""
+        """返回核心扩展对象的字典。"""
         self._core_objects = self._load_entry_points(
             self._core_entry_points, OpenBBGroups.core
         )
@@ -132,7 +132,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
     @property
     @lru_cache
     def provider_objects(self) -> dict[str, "Provider"]:
-        """Return a dict of provider extension objects."""
+        """返回提供者扩展对象的字典。"""
         self._provider_objects = self._load_entry_points(
             self._provider_entry_points, OpenBBGroups.provider
         )
@@ -140,19 +140,19 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @staticmethod
     def _sorted_entry_points(group: str) -> EntryPoints:
-        """Return a sorted dictionary of entry points."""
+        """返回入口点的排序字典。"""
         return sorted(entry_points(group=group))  # type: ignore
 
     def _load_entry_points(
         self, entry_points_: EntryPoints, group: OpenBBGroups
     ) -> dict[str, Any]:
-        """Return a dict of objects matching the entry points."""
+        """返回与入口点匹配的对象字典。"""
 
         def load_obbject(eps: EntryPoints) -> dict[str, Extension]:
             """
-            Return a dictionary of obbject objects.
+            返回 obbject 对象的字典。
 
-            Keys are entry point names and values are instances of the Extension class.
+            键是入口点名称，值是 Extension 类的实例。
             """
             return {
                 ep.name: entry
@@ -161,7 +161,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
             }
 
         def load_core(eps: EntryPoints) -> dict[str, "Router"]:
-            """Return a dictionary of core objects."""
+            """返回核心对象的字典。"""
             # pylint: disable=import-outside-toplevel
             from openbb_core.app.router import Router
 
@@ -179,9 +179,9 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
         def load_provider(eps: EntryPoints) -> dict[str, "Provider"]:
             """
-            Return a dictionary of provider objects.
+            返回提供者对象的字典。
 
-            Keys are entry point names and values are instances of the Provider class.
+            键是入口点名称，值是 Provider 类的实例。
             """
             # pylint: disable=import-outside-toplevel
             from openbb_core.provider.abstract.provider import Provider

@@ -1,4 +1,4 @@
-"""Nominal GDP Standard Model."""
+"""名义 GDP 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class GdpNominalQueryParams(QueryParams):
-    """Nominal GDP Query."""
+    """名义 GDP 查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -23,12 +23,12 @@ class GdpNominalQueryParams(QueryParams):
 
 
 class GdpNominalData(Data):
-    """Nominal GDP Data."""
+    """名义 GDP 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     country: str = Field(
-        default=None, description="The country represented by the GDP value."
+        default=None, description="由 GDP 值代表的国家。"
     )
     value: int | float = Field(
-        description="GDP value for the country and date.",
+        description="该国家和日期的 GDP 值。",
     )

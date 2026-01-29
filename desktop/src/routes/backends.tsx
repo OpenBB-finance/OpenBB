@@ -133,11 +133,11 @@ interface AutoStartToggleProps {
 	onCancel?: () => void;
 	onSubmit?: () => void;
 	isUpdate?: boolean;
-    formData?: {
-        name?: string;
-        command?: string;
-        environment?: string;
-    };
+	formData?: {
+		name?: string;
+		command?: string;
+		environment?: string;
+	};
 }
 
 interface FormActionsProps {
@@ -189,9 +189,9 @@ interface BackendListPanelProps {
 	environments: Environment[];
 	isEnvLoading: boolean;
 	onStatusUpdate?: (id: string, updates: Partial<BackendService>) => void;
-    onGenerateCertificate: () => void;
-    searchQuery: string;
-    onSearchChange: (query: string) => void;
+	onGenerateCertificate: () => void;
+	searchQuery: string;
+	onSearchChange: (query: string) => void;
 }
 
 // ============== COMPONENTS ==============
@@ -231,7 +231,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> =
 				<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-dark-2 w-full max-w-md px-5 py-3">
 					<div className="flex justify-between items-center mb-7">
 						<h2 className="body-lg-bold text-theme-primary">
-							Delete Backend
+							删除后端
 						</h2>
 						<Button
 							onClick={onCancel}
@@ -243,10 +243,10 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> =
 						</Button>
 					</div>
 					<p className="mb-1 body-md-medium text-theme-primary flex justify-start">
-						Are you sure you want to remove this backend?
+						确定要移除此后端吗？
 					</p>
 					<p className="mb-5 body-md-medium text-theme-primary flex justify-start">
-						This action cannot be undone.
+						此操作无法撤销。
 					</p>
 					<div className="flex justify-end gap-2">
 						<Button
@@ -255,7 +255,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> =
 							className="button-outline px-2 py-1"
 							size="sm"
 						>
-							<span className="body-xs-medium">Cancel</span>
+							<span className="body-xs-medium">取消</span>
 						</Button>
 						<Button
 							variant="danger"
@@ -267,10 +267,10 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> =
 							{isLoading ? (
 								<div className="flex items-center">
 									<div className="animate-spin h-4 w-4 border-b-2 border-theme-accent rounded-full mr-2" />
-									<span className="body-xs-medium">Deleting...</span>
+									<span className="body-xs-medium">正在删除...</span>
 								</div>
 							) : (
-								<span className="body-xs-medium">Delete</span>
+								<span className="body-xs-medium">删除</span>
 							)}
 						</Button>
 					</div>
@@ -306,15 +306,15 @@ const CertificateGenerationModal: React.FC<
 
 	const handleGenerate = async () => {
 		if (!commonName) {
-			setError("Common Name is required.");
+			setError("通用名称是必填项。");
 			return;
 		}
 		if (!orgName) {
-			setError("Organization Name is required.");
+			setError("组织名称是必填项。");
 			return;
 		}
 		if (!outputDir) {
-			setError("Output directory is required.");
+			setError("输出目录是必填项。");
 			return;
 		}
 
@@ -333,9 +333,9 @@ const CertificateGenerationModal: React.FC<
 				password: password || null,
 				installInTrustStore: addToTrustStore,
 			});
-			setSuccessMessage("Certificate generated successfully!");
+			setSuccessMessage("证书生成成功！");
 		} catch (err) {
-			setError(`Failed to generate certificate: ${err}`);
+			setError(`生成证书失败: ${err}`);
 		} finally {
 			setIsLoading(false);
 		}
@@ -346,10 +346,10 @@ const CertificateGenerationModal: React.FC<
 			<div className="bg-theme-secondary rounded-lg p-5 max-h-[95vh] w-full max-w-xl overflow-y-auto">
 				<div className="flex justify-between items-center mb-3">
 					<h2 className="body-lg-bold">
-						Generate Self-Signed Certificate
+						生成自签名证书
 					</h2>
 					<Tooltip
-						content="Cancel and go back."
+						content="取消并返回。"
 						className="tooltip-theme"
 					>
 						<Button
@@ -364,12 +364,12 @@ const CertificateGenerationModal: React.FC<
 				</div>
 				<div className="bg-theme-primary rounded-sm pb-3 pt-2 pl-5 shadow-md">
 					<span className="body-xs-regular text-theme-secondary">
-						Fill in the details below to generate files via OpenSSL.
+						填写以下详细信息以通过 OpenSSL 生成文件。
 						<div className="mt-1 ml-5">
 							<ul className="list-disc list-inside">
-								<li>Certificate (.pem)</li>
-								<li>Private Key (.key)</li>
-								<li>PKCS#12 Bundle (.p12)</li>
+								<li>证书 (.pem)</li>
+								<li>私钥 (.key)</li>
+								<li>PKCS#12 捆绑包 (.p12)</li>
 							</ul>
 						</div>
 					</span>
@@ -390,7 +390,7 @@ const CertificateGenerationModal: React.FC<
 							onClick={async () => await openPath(outputDir)}
 							className="button-secondary"
 						>
-							Open Folder
+							打开文件夹
 						</Button>
 					</div>
 				)}
@@ -399,8 +399,8 @@ const CertificateGenerationModal: React.FC<
 					<div className="flex justify-between gap-5">
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Common Name <span className="text-red-400">*</span>
-								<span className="body-xs-regular text-theme-muted ml-1">(IP address or domain)</span>
+								通用名称 <span className="text-red-400">*</span>
+								<span className="body-xs-regular text-theme-muted ml-1">(IP 地址或域名)</span>
 							</label>
 							<input
 								type="text"
@@ -415,7 +415,7 @@ const CertificateGenerationModal: React.FC<
 						</div>
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Organization Name <span className="text-red-400">*</span>
+								组织名称 <span className="text-red-400">*</span>
 							</label>
 							<input
 								type="text"
@@ -432,8 +432,8 @@ const CertificateGenerationModal: React.FC<
 					<div className="flex justify-between gap-5">
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Alternative Names
-								<span className="body-xs-regular text-theme-muted ml-1">(comma-separated)</span>
+								备用名称
+								<span className="body-xs-regular text-theme-muted ml-1">(以逗号分隔)</span>
 							</label>
 							<input
 								type="text"
@@ -445,7 +445,7 @@ const CertificateGenerationModal: React.FC<
 						</div>
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Password <span className="body-xs-regular text-theme-muted ml-1">(optional)</span>
+								密码 <span className="body-xs-regular text-theme-muted ml-1">(可选)</span>
 							</label>
 							<input
 								type="password"
@@ -458,7 +458,7 @@ const CertificateGenerationModal: React.FC<
 					<div className="flex justify-between gap-5">
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Days Valid
+								有效天数
 							</label>
 							<div className="relative flex items-center">
 								<input
@@ -489,21 +489,21 @@ const CertificateGenerationModal: React.FC<
 						</div>
 						<div className="flex-1">
 							<label className="block body-sm-medium mb-1 text-theme-primary">
-								Output Directory <span className="text-red-400">*</span>
+								输出目录 <span className="text-red-400">*</span>
 							</label>
 							<div className="flex justify-between w-full items-center">
 								<input
 									type="text"
 									value={outputDir}
 									onChange={(e) => setOutputDir(e.target.value)}
-									placeholder="Select directory"
+									placeholder="选择目录"
 									className="body-xs-regular text-theme-secondary w-full p-2 focus:ring-0 focus:outline-none rounded-md shadow-md bg-theme-secondary focus-within:border-theme-accent"
 									style={{
 										borderColor: !outputDir.trim() ? '#ef444475' : ''
 									}}
 								/>
 								<Tooltip
-									content="Select output directory"
+									content="选择输出目录"
 									className="tooltip-theme"
 								>
 									<Button
@@ -531,7 +531,7 @@ const CertificateGenerationModal: React.FC<
 							htmlFor="trust-store-checkbox"
 							className="body-sm-regular text-theme-primary cursor-pointer"
 						>
-							Add to user key chain (trust store)
+							添加到用户密钥链（信任存储）
 						</label>
 						<div className="flex justify-end space-x-2 -mt-7">
 							<Button
@@ -544,10 +544,10 @@ const CertificateGenerationModal: React.FC<
 								{isLoading ? (
 									<div className="flex items-center">
 										<div className="animate-spin h-4 w-4 border-b-2 border-theme-accent rounded-full mr-2" />
-										<span className="body-xs-medium">Generating...</span>
+										<span className="body-xs-medium">正在生成...</span>
 									</div>
 								) : (
-									<span className="body-sm-medium">Generate</span>
+									<span className="body-sm-medium">生成</span>
 								)}
 							</Button>
 						</div>
@@ -561,44 +561,44 @@ const CertificateGenerationModal: React.FC<
  * BackendServiceItem - Item in the backend list with actions
  */
 const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
-    ({
-        backend,
-        onSelect,
-        onStartStop,
-        onDelete,
-        isSelected,
-        isProcessing,
-        onViewLogs,
-        environments,
-        isEnvLoading,
+	({
+		backend,
+		onSelect,
+		onStartStop,
+		onDelete,
+		isSelected,
+		isProcessing,
+		onViewLogs,
+		environments,
+		isEnvLoading,
 		onStatusUpdate,
-    }) => {
-        const isRunning = backend.status === "running";
-        const canDelete = !isRunning && !isProcessing;
+	}) => {
+		const isRunning = backend.status === "running";
+		const canDelete = !isRunning && !isProcessing;
 
-        // Form data state
-        const [formData, setFormData] = useState<BackendFormData>({
-            id: backend.id,
-            name: backend.name,
-            command: backend.command,
-            host: backend.host,
-            port: backend.port,
-            pid: backend.pid,
-            environment: backend.environment,
-            envFile: backend.envFile || "",
-            envVars: backend.envVars,
-            autoStart: backend.auto_start ?? backend.autoStart ?? false,
-            status: backend.status,
-            working_directory: backend.working_directory,
-            apiUrl: backend.apiUrl || ""
-        });
-        const [formError, setFormError] = useState<string | null>(null);
+		// Form data state
+		const [formData, setFormData] = useState<BackendFormData>({
+			id: backend.id,
+			name: backend.name,
+			command: backend.command,
+			host: backend.host,
+			port: backend.port,
+			pid: backend.pid,
+			environment: backend.environment,
+			envFile: backend.envFile || "",
+			envVars: backend.envVars,
+			autoStart: backend.auto_start ?? backend.autoStart ?? false,
+			status: backend.status,
+			working_directory: backend.working_directory,
+			apiUrl: backend.apiUrl || ""
+		});
+		const [formError, setFormError] = useState<string | null>(null);
 
-        // Runtime state for URL and PID detection
-        const [apiUrl, setApiUrl] = useState<string>(backend.apiUrl || backend.url || "");
-        const [copied, setCopied] = useState(false);
-        const [extractedPid, setExtractedPid] = useState<number | undefined>(backend.pid);
-        const [urlConfirmed, setUrlConfirmed] = useState<boolean>(!!backend.apiUrl);
+		// Runtime state for URL and PID detection
+		const [apiUrl, setApiUrl] = useState<string>(backend.apiUrl || backend.url || "");
+		const [copied, setCopied] = useState(false);
+		const [extractedPid, setExtractedPid] = useState<number | undefined>(backend.pid);
+		const [urlConfirmed, setUrlConfirmed] = useState<boolean>(!!backend.apiUrl);
 
 		useEffect(() => {
 			const handleKeyDown = (event: KeyboardEvent) => {
@@ -610,62 +610,62 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 			return () => window.removeEventListener("keydown", handleKeyDown);
 		}, [isSelected, onSelect]);
 
-        // Display text - show command when not running or URL not confirmed, otherwise show URL
-        const displayText = (isRunning && urlConfirmed && apiUrl) ? apiUrl : backend.command;
-        const isUrlDisplay = isRunning && urlConfirmed && apiUrl;
+		// Display text - show command when not running or URL not confirmed, otherwise show URL
+		const displayText = (isRunning && urlConfirmed && apiUrl) ? apiUrl : backend.command;
+		const isUrlDisplay = isRunning && urlConfirmed && apiUrl;
 
-        // Helper function to clean ANSI escape codes from a string
-        const cleanAnsiCodes = (str: string) => {
-            return str.replace(/\u001b\[[0-9;]*m/g, "");
-        };
+		// Helper function to clean ANSI escape codes from a string
+		const cleanAnsiCodes = (str: string) => {
+			return str.replace(/\u001b\[[0-9;]*m/g, "");
+		};
 
-        const copyToClipboard = (e: React.MouseEvent) => {
-            e.stopPropagation();
-            navigator.clipboard
-                .writeText(displayText)
-                .then(() => {
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 1500);
-                })
-                .catch((err) => console.error("Failed to copy text:", err));
-        };
+		const copyToClipboard = (e: React.MouseEvent) => {
+			e.stopPropagation();
+			navigator.clipboard
+				.writeText(displayText)
+				.then(() => {
+					setCopied(true);
+					setTimeout(() => setCopied(false), 1500);
+				})
+				.catch((err) => console.error("Failed to copy text:", err));
+		};
 
-        // Initialize state based on backend status and existing data
-        useEffect(() => {
-            if (backend.status === "running") {
-                // If backend is running and has a URL, confirm it immediately
-                if (backend.apiUrl) {
-                    setApiUrl(backend.apiUrl);
-                    setUrlConfirmed(true);
-                }
-                // If backend has a PID, use it
-                if (backend.pid) {
-                    setExtractedPid(backend.pid);
-                }
-            } else {
-                // Reset state when backend is stopped
-                setUrlConfirmed(false);
-                setExtractedPid(undefined);
-                setApiUrl("");
-            }
-        }, [backend.status, backend.apiUrl, backend.pid]);
+		// Initialize state based on backend status and existing data
+		useEffect(() => {
+			if (backend.status === "running") {
+				// If backend is running and has a URL, confirm it immediately
+				if (backend.apiUrl) {
+					setApiUrl(backend.apiUrl);
+					setUrlConfirmed(true);
+				}
+				// If backend has a PID, use it
+				if (backend.pid) {
+					setExtractedPid(backend.pid);
+				}
+			} else {
+				// Reset state when backend is stopped
+				setUrlConfirmed(false);
+				setExtractedPid(undefined);
+				setApiUrl("");
+			}
+		}, [backend.status, backend.apiUrl, backend.pid]);
 
 		const tracebackBuffer = useRef<string | null>(null);
 		const tracebackTimeout = useRef<NodeJS.Timeout | null>(null);
-        // Monitor logs to extract PID and URL for newly started backends
+		// Monitor logs to extract PID and URL for newly started backends
 		useEffect(() => {
-            if (backend.status === "running" && backend.id && !urlConfirmed) {
-                console.log(`Setting up log listener for backend ${backend.id}`);
-                const processId = `backend-${backend.id}`;
+			if (backend.status === "running" && backend.id && !urlConfirmed) {
+				console.log(`Setting up log listener for backend ${backend.id}`);
+				const processId = `backend-${backend.id}`;
 
-                const logListenerPromise = listen<{
-                    processId: string;
-                    output: string;
-                    timestamp: number;
-                }>("process-output", async (event) => {
-                    const { processId: eventProcessId, output } = event.payload;
-                    if (eventProcessId === processId) {
-                        const cleanOutput = cleanAnsiCodes(output);
+				const logListenerPromise = listen<{
+					processId: string;
+					output: string;
+					timestamp: number;
+				}>("process-output", async (event) => {
+					const { processId: eventProcessId, output } = event.payload;
+					if (eventProcessId === processId) {
+						const cleanOutput = cleanAnsiCodes(output);
 						if (cleanOutput.includes("ERROR:") || cleanOutput.includes("address already in use")) {
 							console.error(`Backend ${backend.id} error detected: ${cleanOutput}`);
 							// Set URL confirmed to stop the spinner
@@ -720,14 +720,14 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 								// Reset timeout on every new line
 								if (tracebackTimeout.current) clearTimeout(tracebackTimeout.current);
 								tracebackTimeout.current = setTimeout(async () => {
-									setFormError("Backend failed to start. See logs for details.");
+									setFormError("后端启动失败。请查看日志了解详情。");
 									setUrlConfirmed(true);
 									await invoke("stop_backend_service", { id: backend.id }).catch(console.error);
 									await invoke("update_backend_service", {
 										backend: {
 											...backend,
 											status: "error",
-											error: tracebackBuffer.current?.trim()  || "",
+											error: tracebackBuffer.current?.trim() || "",
 										}
 									}).catch(console.error);
 
@@ -748,7 +748,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 							// Set a timeout in case traceback is short
 							if (tracebackTimeout.current) clearTimeout(tracebackTimeout.current);
 							tracebackTimeout.current = setTimeout(async () => {
-								setFormError("Backend failed to start. See logs for details.");
+								setFormError("后端启动失败。请查看日志了解详情。");
 								setUrlConfirmed(true);
 								await invoke("stop_backend_service", { id: backend.id }).catch(console.error);
 								await invoke("update_backend_service", {
@@ -770,25 +770,25 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 							return;
 						}
 
-                        // Extract PID from server startup message
-                        if (cleanOutput.includes("Started server process")) {
-                            const pidMatch = cleanOutput.match(/\[(\d+)\]/);
-                            if (pidMatch?.[1]) {
-                                const pid = Number.parseInt(pidMatch[1], 10);
-                                console.log(`Found PID: ${pid}`);
-                                setExtractedPid(pid);
+						// Extract PID from server startup message
+						if (cleanOutput.includes("Started server process")) {
+							const pidMatch = cleanOutput.match(/\[(\d+)\]/);
+							if (pidMatch?.[1]) {
+								const pid = Number.parseInt(pidMatch[1], 10);
+								console.log(`Found PID: ${pid}`);
+								setExtractedPid(pid);
 
-                                // Update backend with PID immediately
-                                invoke("update_backend_service", {
-                                    backend: {
-                                        ...backend,
-                                        pid
-                                    }
-                                }).catch(console.error);
-                            }
-                        }
-                    }
-                });
+								// Update backend with PID immediately
+								invoke("update_backend_service", {
+									backend: {
+										...backend,
+										pid
+									}
+								}).catch(console.error);
+							}
+						}
+					}
+				});
 
 				return () => {
 					if (tracebackTimeout.current) {
@@ -797,93 +797,93 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 					}
 					logListenerPromise.then((unlisten) => unlisten()).catch(console.error);
 				};
-            }
-        }, [backend.status, backend.id, urlConfirmed, onStatusUpdate]);
+			}
+		}, [backend.status, backend.id, urlConfirmed, onStatusUpdate]);
 
-        // Failsafe: Stop spinner after 45 seconds if URL is never confirmed
-        useEffect(() => {
-            if (isRunning && !urlConfirmed) {
-                const failsafeTimeout = setTimeout(() => {
-                    console.log(`Failsafe: Setting urlConfirmed to true for backend ${backend.id} after 30s`);
-                    setUrlConfirmed(true);
-                }, 45000);
+		// Failsafe: Stop spinner after 45 seconds if URL is never confirmed
+		useEffect(() => {
+			if (isRunning && !urlConfirmed) {
+				const failsafeTimeout = setTimeout(() => {
+					console.log(`Failsafe: Setting urlConfirmed to true for backend ${backend.id} after 30s`);
+					setUrlConfirmed(true);
+				}, 45000);
 
-                return () => clearTimeout(failsafeTimeout);
-            }
-        }, [isRunning, urlConfirmed, backend.id]);
+				return () => clearTimeout(failsafeTimeout);
+			}
+		}, [isRunning, urlConfirmed, backend.id]);
 
-        const handleFormSubmit = () => {
+		const handleFormSubmit = () => {
 			if (!formData.name || !formData.name.trim()) {
-				setFormError("Backend Name is required");
+				setFormError("后端名称是必填项");
 				return;
 			}
 
 			if (!formData.command || !formData.command.trim()) {
-				setFormError("Executable is required");
+				setFormError("可执行文件是必填项");
 				return;
 			}
 
 			if (!formData.environment) {
-				setFormError("Environment selection is required");
+				setFormError("环境选择是必填项");
 				return;
 			}
 
-            const backendToSave = {
-                id: backend.id,
-                environment: formData.environment,
-                name: formData.name,
-                command: formData.command,
-                host: formData.host,
-                port: formData.port,
-                apiUrl: apiUrl || formData.apiUrl || "",
+			const backendToSave = {
+				id: backend.id,
+				environment: formData.environment,
+				name: formData.name,
+				command: formData.command,
+				host: formData.host,
+				port: formData.port,
+				apiUrl: apiUrl || formData.apiUrl || "",
 				envFile: formData.envFile || "",
 				envVars: formData.envVars,
-                working_directory: formData.working_directory,
-                auto_start: formData.autoStart ?? false,
-                status: backend.status,
-                pid: extractedPid || formData.pid,
-            };
+				working_directory: formData.working_directory,
+				auto_start: formData.autoStart ?? false,
+				status: backend.status,
+				pid: extractedPid || formData.pid,
+			};
 
-            invoke("update_backend_service", { backend: backendToSave })
-                .then(() => {
-                    window.location.reload();
-                })
-                .catch((err) => {
-                    console.error("Failed to update backend:", err);
-                    setFormError(`Failed to update backend: ${err}`);
-                });
-        };
+			invoke("update_backend_service", { backend: backendToSave })
+				.then(() => {
+					window.location.reload();
+				})
+				.catch((err) => {
+					console.error("Failed to update backend:", err);
+					setFormError(`更新后端失败: ${err}`);
+				});
+		};
 
 		useEffect(() => {
-            console.log(`Backend ${backend.id} status updated to: ${backend.status}`);
-        }, [backend.status]);
+			console.log(`Backend ${backend.id} status updated to: ${backend.status}`);
+		}, [backend.status]);
 
-        return (
-            <li className="bg-theme-tertiary border border-theme-modal rounded-md px-3 pt-3 pb-3 mb-5 shadow-md group">
-                <div className="w-full">
-                    <div className="flex justify-between items-center">
+		return (
+			<li className="bg-theme-tertiary border border-theme-modal rounded-md px-3 pt-3 pb-3 mb-5 shadow-md group">
+				<div className="w-full">
+					<div className="flex justify-between items-center">
 						{/* Backend name and status indicator */}
-                        <div className="body-md-bold flex items-center">
-                            <div className="text-theme-primary">
-                                {backend.name}
-                            </div>
-                            <div className="flex items-center flex-wrap gap-1">
-                                <span className="body-sm-medium px-2 py-0.5 rounded-full bg-theme-tag text-theme ml-3 shadow-md">
-                                    {backend.environment}
-                                </span>
-                                {backend.autoStart && (
-                                    <span className="body-xs-regular px-1.5 py-0.5 rounded-full bg-green-500/40 text-theme-secondary border-theme-accent ml-2 shadow-md">
-                                        Auto-Start
-                                    </span>
-                                )}
-                            </div>
-                        </div>
+						<div className="body-md-bold flex items-center">
+							<div className="text-theme-primary">
+								{backend.name}
+							</div>
+							<div className="flex items-center flex-wrap gap-1">
+								<span className="body-sm-medium px-2 py-0.5 rounded-full bg-theme-tag text-theme ml-3 shadow-md">
+									{backend.environment}
+								</span>
+								{backend.autoStart && (
+									<span className="body-xs-regular px-1.5 py-0.5 rounded-full bg-green-500/40 text-theme-secondary border-theme-accent ml-2 shadow-md">
+										自动启动
+									</span>
+								)}
+							</div>
+						</div>
 						{/* Action Buttons */}
 						<div className="flex items-center">
 							{/* Delete Button - Only shown when backend is stopped and on hover */}
 							{canDelete && (
 								<Tooltip
-									content="Remove the backend configuration."
+									content="移除后端配置。"
 									className="tooltip-theme"
 								>
 									<Button
@@ -902,7 +902,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 							)}
 
 							<Tooltip
-								content={isSelected ? "Hide Configuration" : "Show backend configuration panel."}
+								content={isSelected ? "隐藏配置" : "显示后端配置面板。"}
 								className="tooltip-theme"
 							>
 								<Button
@@ -919,7 +919,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 							</Tooltip>
 
 							{/* View logs button */}
-							<Tooltip content="View the console logs for this backend." className="tooltip-theme">
+							<Tooltip content="查看此后端的控制台日志。" className="tooltip-theme">
 								<Button
 									onClick={(e) => {
 										e.stopPropagation();
@@ -929,13 +929,13 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 									size="xs"
 									className="button-outline py-1 px-2 mr-2 ml-1"
 								>
-									<span className="body-xs-medium">Logs</span>
+									<span className="body-xs-medium">日志</span>
 								</Button>
 							</Tooltip>
 
 							{/* Start/Stop button */}
 							<Tooltip
-								content={isRunning ? "Stop Backend" : "Start Backend"}
+								content={isRunning ? "停止后端" : "启动后端"}
 								className="tooltip-theme"
 							>
 								<Button
@@ -953,58 +953,58 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 											<div className="animate-spin h-4 w-4 border-2 accent-color border-t-transparent rounded-full mr-1" />
 											<span className="body-xs-medium whitespace-nowrap">
 												{backend.status === "starting"
-													? "Starting..."
-													: "Stopping..."}
+													? "正在启动..."
+													: "正在停止..."}
 											</span>
 										</div>
 									) : isRunning ? (
-										<span>Stop</span>
+										<span>停止</span>
 									) : (
-										<span>Start</span>
+										<span>启动</span>
 									)}
 								</Button>
 							</Tooltip>
 						</div>
-                    </div>
+					</div>
 
-                    {/* Backend details */}
-                    <div className="flex flex-col pt-3">
-                        {backend.status === "error" && backend.error && (
-                            <div className="border border-red-500 rounded m-2 mb-5 overflow-hidden p-2 relative">
-                                <div className="p-2 bg-theme-primary text-red-500 body-xs-regular whitespace-pre-wrap overflow-auto max-h-40">
-                                    {backend.error}
-							</div>
-							<Tooltip
-								content="Dismiss error."
-								className="tooltip-theme"
-							>
-								<Button
-									onClick={() => {
-										// Clear the error by updating the backend status
-										if (onStatusUpdate) {
-											onStatusUpdate(backend.id, {
-												status: "stopped",
-												error: undefined
-											});
-										}
-										// Also update the backend in the database
-										invoke("update_backend_service", {
-											backend: {
-												...backend,
-												status: "stopped",
-												error: undefined
-											}
-										}).catch(console.error);
-									}}
-									variant="ghost"
-									className="button-ghost absolute top-1 right-1 p-1"
-									size="icon"
+					{/* Backend details */}
+					<div className="flex flex-col pt-3">
+						{backend.status === "error" && backend.error && (
+							<div className="border border-red-500 rounded m-2 mb-5 overflow-hidden p-2 relative">
+								<div className="p-2 bg-theme-primary text-red-500 body-xs-regular whitespace-pre-wrap overflow-auto max-h-40">
+									{backend.error}
+								</div>
+								<Tooltip
+									content="忽略错误。"
+									className="tooltip-theme"
 								>
-									<CustomIcon id="close" className="h-4 w-4" />
-								</Button>
-							</Tooltip>
-                        </div>
-                        )}
+									<Button
+										onClick={() => {
+											// Clear the error by updating the backend status
+											if (onStatusUpdate) {
+												onStatusUpdate(backend.id, {
+													status: "stopped",
+													error: undefined
+												});
+											}
+											// Also update the backend in the database
+											invoke("update_backend_service", {
+												backend: {
+													...backend,
+													status: "stopped",
+													error: undefined
+												}
+											}).catch(console.error);
+										}}
+										variant="ghost"
+										className="button-ghost absolute top-1 right-1 p-1"
+										size="icon"
+									>
+										<CustomIcon id="close" className="h-4 w-4" />
+									</Button>
+								</Tooltip>
+							</div>
+						)}
 
 						{/* Copyable URL/command display */}
 						<div
@@ -1013,65 +1013,65 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 							<span className="body-xs-bold text-theme-secondary pr-1">{displayText}</span>
 							{copied ? (
 								<Tooltip
-									content={`${isUrlDisplay ? 'URL' : 'Command'} copied to clipboard.`}
+									content={`${isUrlDisplay ? 'URL' : '命令'}已复制到剪贴板。`}
 									className="tooltip-theme"
 								>
-								<Button
-									variant="ghost"
-									className="flex items-center justify-center w-8 h-8 p-0"
-									aria-label="success icon"
+									<Button
+										variant="ghost"
+										className="flex items-center justify-center w-8 h-8 p-0"
+										aria-label="success icon"
+									>
+										<CustomIcon
+											id="success"
+											className="h-6 w-6 text-green-500"
+										/>
+									</Button>
+								</Tooltip>
+							) : (
+								<Tooltip
+									content={`点击复制${isUrlDisplay ? ' URL' : '命令'}`}
+									className="tooltip-theme"
 								>
-									<CustomIcon
-										id="success"
-										className="h-6 w-6 text-green-500"
-									/>
-								</Button>
-							</Tooltip>
-						) : (
-							<Tooltip
-								content={`Click to copy ${isUrlDisplay ? 'URL' : 'command'}`}
-								className="tooltip-theme"
-							>
-								<Button
-									variant="ghost"
-									onClick={copyToClipboard}
-									className="button-ghost flex items-center justify-center w-5 h-5 p-1 ml-1"
-									aria-label="copy icon"
-									size="lg"
-								>
-									<CopyIcon
-										className="h-4 w-4"
-									/>
-								</Button>
-							</Tooltip>
-						)}
+									<Button
+										variant="ghost"
+										onClick={copyToClipboard}
+										className="button-ghost flex items-center justify-center w-5 h-5 p-1 ml-1"
+										aria-label="copy icon"
+										size="lg"
+									>
+										<CopyIcon
+											className="h-4 w-4"
+										/>
+									</Button>
+								</Tooltip>
+							)}
 						</div>
 
 						{(extractedPid && isRunning) || (isRunning && !urlConfirmed) ? (
-						<div className="flex flex-col">
-							{isRunning && !urlConfirmed && (
-							<div className="body-xs-regular text-theme-secondary mt-1 flex items-center">
-								<div className="animate-spin h-3 w-3 border-b-2 accent-color rounded-full mr-1" />
-								<span>Waiting for service to initialize...</span>
+							<div className="flex flex-col">
+								{isRunning && !urlConfirmed && (
+									<div className="body-xs-regular text-theme-secondary mt-1 flex items-center">
+										<div className="animate-spin h-3 w-3 border-b-2 accent-color rounded-full mr-1" />
+										<span>正在等待服务初始化...</span>
+									</div>
+								)}
+								{extractedPid && isRunning && (
+									<div className="body-xs-regular text-theme-secondary mt-1">
+										<span className="body-xs-bold">进程 ID:</span> {extractedPid}
+									</div>
+								)}
 							</div>
-							)}
-							{extractedPid && isRunning && (
-							<div className="body-xs-regular text-theme-secondary mt-1">
-								<span className="body-xs-bold">Process ID:</span> {extractedPid}
-							</div>
-							)}
-						</div>
 						) : null}
 
-                        {/* Backend Configuration Panel*/}
-                        {isSelected && (
+						{/* Backend Configuration Panel*/}
+						{isSelected && (
 							<div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center overflow-auto" role="dialog">
 								<div className="bg-theme-secondary border border-theme-modal rounded-lg px-5 pt-3 pb-5 max-h-[90vh] w-full max-w-xl overflow-y-auto">
 									{/* Header */}
 									<div className="flex justify-between items-center mb-2">
-										<p className="body-lg-medium text-theme-primary">Backend Configuration</p>
+										<p className="body-lg-medium text-theme-primary">后端配置</p>
 										<Tooltip
-											content="Cancel and go back."
+											content="取消并返回。"
 											className="tooltip-theme"
 										>
 											<Button
@@ -1082,7 +1082,7 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 													onSelect(null);
 												}}
 												className="button-ghost"
-												title="Close details"
+												title="关闭详情"
 												size="icon"
 											>
 												<CustomIcon
@@ -1091,14 +1091,14 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 												/>
 											</Button>
 										</Tooltip>
-                                    </div>
+									</div>
 
-                                    <div className="flex-1 space-y-1">
-                                        {formError && (
-                                            <div className="p-3 border-red-500/50 rounded text-red-500 body-xs-regular">
-                                                <p>{formError}</p>
-                                            </div>
-                                        )}
+									<div className="flex-1 space-y-1">
+										{formError && (
+											<div className="p-3 border-red-500/50 rounded text-red-500 body-xs-regular">
+												<p>{formError}</p>
+											</div>
+										)}
 										<div>
 											<EnvironmentSelector
 												environments={environments}
@@ -1107,31 +1107,31 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 												loading={isEnvLoading}
 											/>
 										</div>
-                                        <BasicFormFields
-                                            formData={{
-                                                name: formData.name,
-                                                command: formData.command,
-                                                working_directory: formData.working_directory,
-                                                envFile: formData.envFile,
-                                                envVars: formData.envVars,
-                                                host: formData.host ?? undefined,
-                                                port: formData.port ?? undefined,
-                                                apiUrl: formData.apiUrl,
-                                                autoStart: formData.autoStart ?? false,
-                                                pid: extractedPid,
-                                            }}
-                                            onUpdate={(updates) => setFormData(prev => ({ ...prev, ...updates }))}
-                                            onDirectorySelect={() => {
-                                                invoke<string>("select_directory", {
-                                                    prompt: "Select Working Directory for Backend",
-                                                })
-                                                    .then((directory) => setFormData(prev => ({
-                                                        ...prev,
-                                                        working_directory: directory,
-                                                    })))
-                                                    .catch((err) => console.error("Failed to select working directory:", err));
-                                            }}
-                                        />
+										<BasicFormFields
+											formData={{
+												name: formData.name,
+												command: formData.command,
+												working_directory: formData.working_directory,
+												envFile: formData.envFile,
+												envVars: formData.envVars,
+												host: formData.host ?? undefined,
+												port: formData.port ?? undefined,
+												apiUrl: formData.apiUrl,
+												autoStart: formData.autoStart ?? false,
+												pid: extractedPid,
+											}}
+											onUpdate={(updates) => setFormData(prev => ({ ...prev, ...updates }))}
+											onDirectorySelect={() => {
+												invoke<string>("select_directory", {
+													prompt: "选择后端的运行目录",
+												})
+													.then((directory) => setFormData(prev => ({
+														...prev,
+														working_directory: directory,
+													})))
+													.catch((err) => console.error("Failed to select working directory:", err));
+											}}
+										/>
 										<div className="pt-3">
 											<AutoStartToggle
 												autoStart={formData.autoStart}
@@ -1145,114 +1145,114 @@ const BackendServiceItem: React.FC<BackendServiceItemProps> = React.memo(
 												formData={formData}
 											/>
 										</div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </li>
-        );
-    }
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
+			</li>
+		);
+	}
 );
 
 BackendServiceItem.displayName = "BackendServiceItem";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const selectStyles = {
-  container: (provided: any) => ({
-    ...provided,
-    width: '100%',
-	cursor: 'pointer'
-  }),
-  control: (provided: any, state: any) => ({
-    ...provided,
-    backgroundColor: 'var(--bg-theme-secondary)',
-    color: 'var(--text-primary)',
-    borderColor: state.isFocused
-      ? 'var(--border-accent)'
-      : 'var(--border-color)',
-    boxShadow: 'none',
-    minHeight: '1.9rem',
-    fontSize: '0.875rem',
-    borderRadius: '0.375rem',
-    padding: '0 0.25rem',
-	width: '100%',
-    '&:hover': {
-      borderColor: 'var(--border-accent)',
-    },
-  }),
-  menu: (provided: any) => ({
-    ...provided,
-	backgroundColor: 'var(--dropdown-bg)',
-	marginTop: 0,
-	borderRadius: '4px',
-	padding: '2px',
-	boxShadow: '0 2 10 0 rgba(0, 0, 0, 0.4)',
-	zIndex: 100,
-	borderColor: 'var(--button-secondary-bg)'
-  }),
-  menuPortal: (provided: any) => ({
-    ...provided,
-    backgroundColor: 'var(--dropdown-bg)',
-    opacity: 1,
-	marginTop: 5,
-    zIndex: 99999,
-  }),
-  option: (provided: any) => ({
-    ...provided,
-    backgroundColor: 'var(--dropdown-bg)',
-    color: 'var(--text-primary)',
-    cursor: 'pointer',
-    fontSize: '0.825rem',
-    padding: '0.1rem 0.75rem',
-    opacity: 1,
-    ':active': {
-      backgroundColor: 'var(--dropdown-bg)',
-    },
-  }),
-  singleValue: (provided: any) => ({
-    ...provided,
-    fontSize: '0.875rem',
-	color: 'var(--text-primary)',
-  }),
-  input: (provided: any) => ({
-    ...provided,
-    color: 'var(--text-primary)',
-    fontSize: '0.875rem',
-	cursor: 'pointer',
-  }),
-  placeholder: (provided: any) => ({
-    ...provided,
-    color: 'var(--text-muted)',
-    fontSize: '0.875rem',
-  }),
-  dropdownIndicator: (provided: any) => ({
-    ...provided,
-    color: 'var(--text-muted)',
-    padding: '0 4px',
-	cursor: 'pointer',
-    '&:hover': { color: 'var(--text-primary)' },
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
+	container: (provided: any) => ({
+		...provided,
+		width: '100%',
+		cursor: 'pointer'
+	}),
+	control: (provided: any, state: any) => ({
+		...provided,
+		backgroundColor: 'var(--bg-theme-secondary)',
+		color: 'var(--text-primary)',
+		borderColor: state.isFocused
+			? 'var(--border-accent)'
+			: 'var(--border-color)',
+		boxShadow: 'none',
+		minHeight: '1.9rem',
+		fontSize: '0.875rem',
+		borderRadius: '0.375rem',
+		padding: '0 0.25rem',
+		width: '100%',
+		'&:hover': {
+			borderColor: 'var(--border-accent)',
+		},
+	}),
+	menu: (provided: any) => ({
+		...provided,
+		backgroundColor: 'var(--dropdown-bg)',
+		marginTop: 0,
+		borderRadius: '4px',
+		padding: '2px',
+		boxShadow: '0 2 10 0 rgba(0, 0, 0, 0.4)',
+		zIndex: 100,
+		borderColor: 'var(--button-secondary-bg)'
+	}),
+	menuPortal: (provided: any) => ({
+		...provided,
+		backgroundColor: 'var(--dropdown-bg)',
+		opacity: 1,
+		marginTop: 5,
+		zIndex: 99999,
+	}),
+	option: (provided: any) => ({
+		...provided,
+		backgroundColor: 'var(--dropdown-bg)',
+		color: 'var(--text-primary)',
+		cursor: 'pointer',
+		fontSize: '0.825rem',
+		padding: '0.1rem 0.75rem',
+		opacity: 1,
+		':active': {
+			backgroundColor: 'var(--dropdown-bg)',
+		},
+	}),
+	singleValue: (provided: any) => ({
+		...provided,
+		fontSize: '0.875rem',
+		color: 'var(--text-primary)',
+	}),
+	input: (provided: any) => ({
+		...provided,
+		color: 'var(--text-primary)',
+		fontSize: '0.875rem',
+		cursor: 'pointer',
+	}),
+	placeholder: (provided: any) => ({
+		...provided,
+		color: 'var(--text-muted)',
+		fontSize: '0.875rem',
+	}),
+	dropdownIndicator: (provided: any) => ({
+		...provided,
+		color: 'var(--text-muted)',
+		padding: '0 4px',
+		cursor: 'pointer',
+		'&:hover': { color: 'var(--text-primary)' },
+	}),
+	indicatorSeparator: () => ({
+		display: 'none',
+	}),
 };
 
 const CustomOption = (props: any) => {
-  const { isSelected, children } = props;
-  return (
-    <components.Option {...props}>
-      <div className="flex flex-row items-start">
-        {isSelected ? (
-          <CustomIcon id="check" className="w-4 h-4 text-theme-primary mr-2" />
-        ) : (
-          <span className="w-4 h-4 mr-2" />
-        )}
-        <span>{children}</span>
-      </div>
-    </components.Option>
-  );
+	const { isSelected, children } = props;
+	return (
+		<components.Option {...props}>
+			<div className="flex flex-row items-start">
+				{isSelected ? (
+					<CustomIcon id="check" className="w-4 h-4 text-theme-primary mr-2" />
+				) : (
+					<span className="w-4 h-4 mr-2" />
+				)}
+				<span>{children}</span>
+			</div>
+		</components.Option>
+	);
 };
 /* eslint-enable @typescript-eslint/no-explicit-any */
 /**
@@ -1266,17 +1266,17 @@ const EnvironmentSelector: React.FC<EnvironmentSelectorProps> = React.memo(
 					htmlFor="environment-select"
 					className="body-sm-bold mb-1 text-theme-secondary"
 				>
-					Environment <span className="text-red-400">*</span>
+					环境 <span className="text-red-400">*</span>
 				</label>
 				{loading && environments.length === 0 ? (
 					<div className="flex items-center">
 						<div className="animate-spin rounded-full h-4 w-4 border-b-2 accent-color" />
 						<span className="body-xs-regular text-theme-primary">
-							Loading environments...
+							正在加载环境...
 						</span>
 					</div>
 				) : environments.length === 0 ? (
-					<div className="body-xs-regular text-theme-primary">No environments found</div>
+					<div className="body-xs-regular text-theme-primary">未发现环境</div>
 				) : (
 					<Select
 						id="environment-select"
@@ -1285,8 +1285,8 @@ const EnvironmentSelector: React.FC<EnvironmentSelectorProps> = React.memo(
 						menuPortalTarget={document.body}
 						options={environments.map(env => ({ value: env.name, label: env.name }))}
 						value={environments
-						.map(env => ({ value: env.name, label: env.name }))
-						.find(option => option.value === selectedEnv) || null}
+							.map(env => ({ value: env.name, label: env.name }))
+							.find(option => option.value === selectedEnv) || null}
 						onChange={option => onChange(option ? option.value : "")}
 						components={{ Option: CustomOption }}
 					/>
@@ -1300,80 +1300,80 @@ EnvironmentSelector.displayName = "EnvironmentSelector";
 
 
 const validateCommandInput = (command: string): { isValid: boolean; error?: string } => {
-    if (!command.trim()) {
-        return { isValid: false, error: "Command cannot be empty" };
-    }
+	if (!command.trim()) {
+		return { isValid: false, error: "命令不能为空" };
+	}
 
-    // Check for dangerous characters and patterns
-    const dangerousPatterns = [
+	// Check for dangerous characters and patterns
+	const dangerousPatterns = [
 		// Bash/Zsh specific patterns
-        /\.\./,
-        /rm\s+-/,
-        /sudo/,
-        /chmod/,
-        /chown/,
-        /curl.*\|/,
-        /wget.*\|/,
+		/\.\./,
+		/rm\s+-/,
+		/sudo/,
+		/chmod/,
+		/chown/,
+		/curl.*\|/,
+		/wget.*\|/,
 		/apt.*/,
 		/yum.*/,
 		/dnf.*/,
-        /eval/,
-        /exec/,
+		/eval/,
+		/exec/,
 		/mkfs/,
 		/echo/,
 		/grep/,
 		// PowerShell specific patterns
-        /Invoke-Expression/i,
-        /IEX\s+/i,
-        /Invoke-Command/i,
-        /Start-Process/i,
-        /New-Object.*Net\.WebClient/i,
-        /DownloadString/i,
-        /DownloadFile/i,
-        /powershell.*-c/i,
-        /pwsh.*-c/i,
-        /Remove-Item/i,
-        /rm\s+/i,
-        /del\s+/i,
-        /Delete-Item/i,
-        /Clear-Content/i,
-        /Remove-ItemProperty/i,
-        // CMD specific patterns
-        /cmd.*\/c/i,
-        /cmd.*\/k/i,
-        /call\s+/i,
-        /start\s+/i,
-        /for\s+.*\s+in\s+.*do/i,
-        /if\s+.*\s+then/i,
-        /goto\s+/i,
-        /echo\s+.*>\s*/i,
-        /del\s+.*\*/i,
-        /erase\s+/i,
-        /rd\s+/i,
-        /rmdir\s+/i,
-        /deltree\s+/i,
-        /format\s+/i,
-        /fdisk\s+/i,
-    ];
+		/Invoke-Expression/i,
+		/IEX\s+/i,
+		/Invoke-Command/i,
+		/Start-Process/i,
+		/New-Object.*Net\.WebClient/i,
+		/DownloadString/i,
+		/DownloadFile/i,
+		/powershell.*-c/i,
+		/pwsh.*-c/i,
+		/Remove-Item/i,
+		/rm\s+/i,
+		/del\s+/i,
+		/Delete-Item/i,
+		/Clear-Content/i,
+		/Remove-ItemProperty/i,
+		// CMD specific patterns
+		/cmd.*\/c/i,
+		/cmd.*\/k/i,
+		/call\s+/i,
+		/start\s+/i,
+		/for\s+.*\s+in\s+.*do/i,
+		/if\s+.*\s+then/i,
+		/goto\s+/i,
+		/echo\s+.*>\s*/i,
+		/del\s+.*\*/i,
+		/erase\s+/i,
+		/rd\s+/i,
+		/rmdir\s+/i,
+		/deltree\s+/i,
+		/format\s+/i,
+		/fdisk\s+/i,
+	];
 
-    for (const pattern of dangerousPatterns) {
-        if (pattern.test(command)) {
-            return {
-                isValid: false,
-                error: "Command contains potentially dangerous characters or patterns."
-            };
-        }
-    }
+	for (const pattern of dangerousPatterns) {
+		if (pattern.test(command)) {
+			return {
+				isValid: false,
+				error: "命令包含潜在的危险字符或模式。"
+			};
+		}
+	}
 
-    const allowedCharsPattern = /^[a-zA-Z0-9\s.\-_/:'",[\]{}]+$/;
-    if (!allowedCharsPattern.test(command)) {
-        return {
-            isValid: false,
-            error: "Command containls invalid characters."
-        };
-    }
+	const allowedCharsPattern = /^[a-zA-Z0-9\s.\-_/:'",[\]{}]+$/;
+	if (!allowedCharsPattern.test(command)) {
+		return {
+			isValid: false,
+			error: "命令包含无效字符。"
+		};
+	}
 
-    return { isValid: true };
+	return { isValid: true };
 };
 
 
@@ -1381,20 +1381,20 @@ const validateCommandInput = (command: string): { isValid: boolean; error?: stri
  * BasicFormFields - Common form fields for backend configuration
  */
 const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
-    ({ formData, onUpdate, onDirectorySelect }) => {
+	({ formData, onUpdate, onDirectorySelect }) => {
 		const [envVarsText, setEnvVarsText] = useState(
 			Object.entries(formData.envVars || {})
 				.map(([key, value]) => `${key}=${value}`)
 				.join("\n")
 		);
 
-        const [commandError, setCommandError] = useState<string | null>(null);
+		const [commandError, setCommandError] = useState<string | null>(null);
 
-        const handleCommandChange = (value: string) => {
-            const validation = validateCommandInput(value);
-            setCommandError(validation.isValid ? null : validation.error || null);
-            onUpdate({ command: value });
-        };
+		const handleCommandChange = (value: string) => {
+			const validation = validateCommandInput(value);
+			setCommandError(validation.isValid ? null : validation.error || null);
+			onUpdate({ command: value });
+		};
 
 		useEffect(() => {
 			const propVars = formData.envVars || {};
@@ -1420,98 +1420,97 @@ const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
 			}
 		}, [formData.envVars, envVarsText]);
 
-        // --- Working Directory State and Validation ---
-        const [currentWorkingDir, setCurrentWorkingDir] = useState<string | null>(
-            formData.working_directory || null
-        );
-        const [workingDirInput, setWorkingDirInput] = useState(formData.working_directory || "");
-        const [workingDirValid, setWorkingDirValid] = useState(true);
-        const [checkingDirectory, setCheckingDirectory] = useState(false);
+		// --- Working Directory State and Validation ---
+		const [currentWorkingDir, setCurrentWorkingDir] = useState<string | null>(
+			formData.working_directory || null
+		);
+		const [workingDirInput, setWorkingDirInput] = useState(formData.working_directory || "");
+		const [workingDirValid, setWorkingDirValid] = useState(true);
+		const [checkingDirectory, setCheckingDirectory] = useState(false);
 		const [envFileValid, setEnvFileValid] = useState<boolean | undefined>(undefined);
 
-        useEffect(() => {
-            if (formData.working_directory !== currentWorkingDir) {
-                setCurrentWorkingDir(formData.working_directory || null);
-                setWorkingDirInput(formData.working_directory || "");
-            }
-        }, [formData.working_directory]);
+		useEffect(() => {
+			if (formData.working_directory !== currentWorkingDir) {
+				setCurrentWorkingDir(formData.working_directory || null);
+				setWorkingDirInput(formData.working_directory || "");
+			}
+		}, [formData.working_directory]);
 
-        // Validate directory when input changes
-        useEffect(() => {
-            const validateDirectory = async () => {
-                if (!workingDirInput.trim()) {
-                    setWorkingDirValid(true);
-                    return;
-                }
-                setCheckingDirectory(true);
-                try {
-                    const exists = await invoke<boolean>("check_directory_exists", {
-                        path: workingDirInput.trim()
-                    });
-                    setWorkingDirValid(exists);
-                } catch (err) {
-                    console.error("Error checking directory:", err);
-                    setWorkingDirValid(false);
-                } finally {
-                    setCheckingDirectory(false);
-                }
-            };
-            const timeoutId = setTimeout(validateDirectory, 500); // Debounce validation
-            return () => clearTimeout(timeoutId);
-        }, [workingDirInput]);
+		// Validate directory when input changes
+		useEffect(() => {
+			const validateDirectory = async () => {
+				if (!workingDirInput.trim()) {
+					setWorkingDirValid(true);
+					return;
+				}
+				setCheckingDirectory(true);
+				try {
+					const exists = await invoke<boolean>("check_directory_exists", {
+						path: workingDirInput.trim()
+					});
+					setWorkingDirValid(exists);
+				} catch (err) {
+					console.error("Error checking directory:", err);
+					setWorkingDirValid(false);
+				} finally {
+					setCheckingDirectory(false);
+				}
+			};
+			const timeoutId = setTimeout(validateDirectory, 500); // Debounce validation
+			return () => clearTimeout(timeoutId);
+		}, [workingDirInput]);
 
-        // Handle directory input submission
-        const handleDirectoryInputSubmit = () => {
-            if (workingDirValid && workingDirInput.trim()) {
-                setCurrentWorkingDir(workingDirInput.trim());
-                onUpdate({ working_directory: workingDirInput.trim() });
-            }
-        };
+		// Handle directory input submission
+		const handleDirectoryInputSubmit = () => {
+			if (workingDirValid && workingDirInput.trim()) {
+				setCurrentWorkingDir(workingDirInput.trim());
+				onUpdate({ working_directory: workingDirInput.trim() });
+			}
+		};
 
-        // Handle Enter key press in input
-        const handleDirectoryInputKeyPress = (e: React.KeyboardEvent) => {
-            if (e.key === "Enter") {
-                handleDirectoryInputSubmit();
-            }
-        };
+		// Handle Enter key press in input
+		const handleDirectoryInputKeyPress = (e: React.KeyboardEvent) => {
+			if (e.key === "Enter") {
+				handleDirectoryInputSubmit();
+			}
+		};
 
-        return (
-            <div className="flex-1">
-                <div>
-                    <label
-                        htmlFor="name-input"
-                        className="body-sm-medium mb-2 text-theme-primary"
-                    >
-                        Backend Name <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                        id="name-input"
-                        type="text"
-                        value={formData.name || ""}
-                        onChange={(e) => onUpdate({ name: e.target.value })}
-                        placeholder="My Backend Service"
+		return (
+			<div className="flex-1">
+				<div>
+					<label
+						htmlFor="name-input"
+						className="body-sm-medium mb-2 text-theme-primary"
+					>
+						后端名称 <span className="text-red-400">*</span>
+					</label>
+					<input
+						id="name-input"
+						type="text"
+						value={formData.name || ""}
+						onChange={(e) => onUpdate({ name: e.target.value })}
+						placeholder="我的后端服务"
 						className="body-xs-regular mt-1 text-theme-secondary w-full rounded-md shadow-md bg-theme-secondary focus:ring-0 focus:outline-none border-1"
 						style={{
 							borderColor: !formData.name.trim() ? '#ef444475' : ''
 						}}
-                        autoCorrect="off"
-                        autoCapitalize="off"
-                        spellCheck="false"
-                        required
-                    />
-                </div>
+						autoCorrect="off"
+						autoCapitalize="off"
+						spellCheck="false"
+						required
+					/>
+				</div>
 
-                <div>
-                    <label
-                        htmlFor="command-input"
-                        className="body-sm-medium mb-2 mt-2 text-theme-primary flex items-center gap-1"
-                    >
-                        <span>Executable</span><span className="text-red-400 mr-1">*</span>
-                        <HelpIcon tooltip="Command line executable - i.e. 'python script.py'. Include any arguments or flags needed to run the script." />
-                    </label>
-					<div className={`rounded-md ${
-                            commandError ? 'border border-red-500/50' : 'border border-theme-accent'
-                        }`}>
+				<div>
+					<label
+						htmlFor="command-input"
+						className="body-sm-medium mb-2 mt-2 text-theme-primary flex items-center gap-1"
+					>
+						<span>可执行文件</span><span className="text-red-400 mr-1">*</span>
+						<HelpIcon tooltip="命令行可执行文件 - 例如 'python script.py'。包含运行脚本所需的任何参数或标志。" />
+					</label>
+					<div className={`rounded-md ${commandError ? 'border border-red-500/50' : 'border border-theme-accent'
+						}`}>
 						<input
 							id="command-input"
 							type="text"
@@ -1524,19 +1523,19 @@ const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
 							spellCheck="false"
 						/>
 					</div>
-                    {commandError && (
-                        <span className="body-xs-medium text-red-500 mt-1 block">{commandError}</span>
-                    )}
-                </div>
+					{commandError && (
+						<span className="body-xs-medium text-red-500 mt-1 block">{commandError}</span>
+					)}
+				</div>
 
-                {/* Working Directory Selection */}
-                <div className="flex flex-col gap-2 mb-2">
+				{/* Working Directory Selection */}
+				<div className="flex flex-col gap-2 mb-2">
 					<label
 						htmlFor="working-dir-input"
 						className="body-sm-medium text-theme-primary flex items-center gap-2 mt-1"
 					>
-						<span>Working Directory</span>
-						<HelpIcon tooltip="The directory from where the executable will be run. Defaults to the installation directory + '/backends'" />
+						<span>工作目录</span>
+						<HelpIcon tooltip="运行可执行文件的目录。默认为安装目录 + '/backends'" />
 					</label>
 					<div className="flex items-center">
 						<input
@@ -1546,40 +1545,40 @@ const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
 							onChange={e => setWorkingDirInput(e.target.value)}
 							onBlur={handleDirectoryInputSubmit}
 							onKeyDown={handleDirectoryInputKeyPress}
-							placeholder="Select or enter path (defaults to '{installation_directory}/backends')"
+							placeholder="选择或输入路径 (默认为 '{installation_directory}/backends')"
 							className="body-xs-regular text-theme-secondary w-full bg-transparent border border-theme-accent rounded-md focus:ring-0 focus:outline-none"
 							autoCorrect="off"
 							autoCapitalize="off"
 							spellCheck="false"
 						/>
 						<Tooltip
-								content="Select working directory"
-								className="tooltip-theme"
+							content="选择工作目录"
+							className="tooltip-theme"
+						>
+							<Button
+								onClick={async () => { onDirectorySelect() }}
+								variant="ghost"
+								size="icon"
+								className="button-ghost"
+								type="button"
 							>
-								<Button
-									onClick={async () => {onDirectorySelect()}}
-									variant="ghost"
-									size="icon"
-									className="button-ghost"
-									type="button"
-								>
-									<FolderIcon className="ml-3 h-6 w-6" />
-								</Button>
-							</Tooltip>
+								<FolderIcon className="ml-3 h-6 w-6" />
+							</Button>
+						</Tooltip>
 					</div>
 					{checkingDirectory && (
-						<span className="body-xs-medium text-theme-muted mt-1">Checking directory...</span>
+						<span className="body-xs-medium text-theme-muted mt-1">正在检查目录...</span>
 					)}
 					{!workingDirValid && (
-						<span className="body-xs-medium text-red-500 ml-3">Directory does not exist.</span>
+						<span className="body-xs-medium text-red-500 ml-3">目录不存在。</span>
 					)}
 				</div>
 				<label
 					htmlFor="env-file-input"
 					className="body-sm-medium text-theme-primary flex items-center gap-2"
 				>
-					<span>Environment File</span>
-					<HelpIcon tooltip="Add a `.env` file to export environment variables." />
+					<span>环境文件 (.env)</span>
+					<HelpIcon tooltip="添加 `.env` 文件以导出环境变量。" />
 				</label>
 				<div className="flex items-center border-none mt-2">
 					<input
@@ -1601,50 +1600,50 @@ const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
 								setEnvFileValid(undefined);
 							}
 						}}
-						placeholder="Select or enter path to .env file"
+						placeholder="选择或输入 .env 文件路径"
 						className="body-xs-regular text-theme-secondary w-full bg-transparent border border-theme-accent focus:ring-0 focus:outline-none"
 						autoCorrect="off"
 						autoCapitalize="off"
 						spellCheck="false"
 					/>
-						<Tooltip
-							content="Select .env file"
-							className="tooltip-theme"
-						>
-							<Button
-								onClick={async () => {
-									const file = await invoke<string>("select_file", { filter: ".env" });
-									if (file) {
-										onUpdate({ envFile: file });
-										try {
-											const exists = await invoke<boolean>("check_file_exists", { path: file });
-											setEnvFileValid(exists);
-										} catch {
-											setEnvFileValid(false);
-										}
+					<Tooltip
+						content="选择 .env 文件"
+						className="tooltip-theme"
+					>
+						<Button
+							onClick={async () => {
+								const file = await invoke<string>("select_file", { filter: ".env" });
+								if (file) {
+									onUpdate({ envFile: file });
+									try {
+										const exists = await invoke<boolean>("check_file_exists", { path: file });
+										setEnvFileValid(exists);
+									} catch {
+										setEnvFileValid(false);
 									}
-								}}
-								variant="ghost"
-								size="icon"
-								className="button-ghost"
-								type="button"
-							>
-								<FileIcon className="h-5 w-5 ml-3" />
-							</Button>
-						</Tooltip>
+								}
+							}}
+							variant="ghost"
+							size="icon"
+							className="button-ghost"
+							type="button"
+						>
+							<FileIcon className="h-5 w-5 ml-3" />
+						</Button>
+					</Tooltip>
 				</div>
 				{envFileValid === false && formData.envFile && formData.envFile.trim() !== "" && (
-					<span className="text-xs text-red-500 ml-3">File does not exist.</span>
+					<span className="text-xs text-red-500 ml-3">文件不存在。</span>
 				)}
 				{/* Environment Variables */}
 				<div className="flex flex-col">
 					<label className="body-sm-medium mb-2 mt-2 text-theme-primary flex items-center gap-2">
-						<span>Environment Variables</span>
-						<HelpIcon tooltip="Equivalent to an `.env` file. Each line will be split on the first '='. Variables are exported after loading the optional environment file." />
+						<span>环境变量</span>
+						<HelpIcon tooltip="等同于 `.env` 文件。每行将在第一个 '=' 处拆分。变量在加载可选环境文件后导出。" />
 					</label>
 					<div className="flex flex-col">
 						<textarea
-							placeholder={"KEY=VALUE\nANOTHER_KEY=ANOTHER_VALUE"}
+							placeholder={"键=值\n另一个键=另一个值"}
 							value={envVarsText}
 							onChange={(e) => {
 								const newText = e.target.value;
@@ -1676,84 +1675,84 @@ const BasicFormFields: React.FC<BasicFormFieldsProps> = React.memo(
 						/>
 					</div>
 				</div>
-            </div>
-        );
-    }
+			</div>
+		);
+	}
 );
 /**
  * AutoStartToggle - Toggle for auto-starting backends with action buttons
  */
 const AutoStartToggle: React.FC<AutoStartToggleProps> = React.memo(
-    ({ autoStart, onChange, onCancel, onSubmit, isUpdate, formData }) => {
-        // Check if command is valid (same validation as FormActions)
-        const commandValidation = formData?.command ? validateCommandInput(formData.command) : { isValid: false };
-        const isFormValid = formData?.name?.trim() &&
-                           formData?.command?.trim() &&
-                           formData?.environment?.trim() &&
-                           commandValidation.isValid;
+	({ autoStart, onChange, onCancel, onSubmit, isUpdate, formData }) => {
+		// Check if command is valid (same validation as FormActions)
+		const commandValidation = formData?.command ? validateCommandInput(formData.command) : { isValid: false };
+		const isFormValid = formData?.name?.trim() &&
+			formData?.command?.trim() &&
+			formData?.environment?.trim() &&
+			commandValidation.isValid;
 
-        return (
-            <div className="flex justify-between items-right">
-                <div>
-                    <label
-                        htmlFor="auto-start-toggle"
-                        className="flex items-center cursor-pointer w-full relative top-3"
-                    >
-                        <Tooltip
-                            content="Automatically start this backend service on application launch. To start on system boot, select 'Start at Login' from the Tray Icon menu."
-                            className="tooltip-theme"
-                        >
-                            <div className="flex items-center">
-                                <input
-                                    id="auto-start-toggle"
-                                    type="checkbox"
-                                    checked={autoStart}
-                                    onChange={() => onChange(!autoStart)}
-                                    className="checkbox mr-2 ml-1"
-                                />
-                                <span className="body-sm-medium text-theme-primary">
-                                    Start Automatically
-                                </span>
-                            </div>
-                        </Tooltip>
-                    </label>
-                </div>
-                {onCancel && onSubmit && (
-                    <div className="flex justify-end gap-2">
-                        <Tooltip
-                            content="Cancel changes"
-                            className="tooltip-theme"
-                        >
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={onCancel}
-                                className="button-outline shadow-sm"
-                                size="sm"
-                            >
-                                <span className="text-xs-bold">Cancel</span>
-                            </Button>
-                        </Tooltip>
-                        <Tooltip
-                            content={isUpdate ? "Save changes" : "Create new backend"}
-                            className="tooltip-theme"
-                        >
-                            <Button
-                                type="button"
-                                variant="primary"
-                                onClick={onSubmit}
-                                className="button-primary shadow-sm"
-                                size="sm"
-                                disabled={!isFormValid}
-                            >
-                                <span className="body-xs-bold">{isUpdate ? "Save" : "Create"}</span>
-                            </Button>
-                        </Tooltip>
-                    </div>
-                )}
-            </div>
-        );
-    },
+		return (
+			<div className="flex justify-between items-right">
+				<div>
+					<label
+						htmlFor="auto-start-toggle"
+						className="flex items-center cursor-pointer w-full relative top-3"
+					>
+						<Tooltip
+							content="在应用程序启动时自动启动此后端服务。要在系统启动时启动，请从托盘图标菜单中选择 '在登录时启动'。"
+							className="tooltip-theme"
+						>
+							<div className="flex items-center">
+								<input
+									id="auto-start-toggle"
+									type="checkbox"
+									checked={autoStart}
+									onChange={() => onChange(!autoStart)}
+									className="checkbox mr-2 ml-1"
+								/>
+								<span className="body-sm-medium text-theme-primary">
+									自动启动
+								</span>
+							</div>
+						</Tooltip>
+					</label>
+				</div>
+				{onCancel && onSubmit && (
+					<div className="flex justify-end gap-2">
+						<Tooltip
+							content="取消更改"
+							className="tooltip-theme"
+						>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={onCancel}
+								className="button-outline shadow-sm"
+								size="sm"
+							>
+								<span className="text-xs-bold">取消</span>
+							</Button>
+						</Tooltip>
+						<Tooltip
+							content={isUpdate ? "保存更改" : "创建新后端"}
+							className="tooltip-theme"
+						>
+							<Button
+								type="button"
+								variant="primary"
+								onClick={onSubmit}
+								className="button-primary shadow-sm"
+								size="sm"
+								disabled={!isFormValid}
+							>
+								<span className="body-xs-bold">{isUpdate ? "保存" : "创建"}</span>
+							</Button>
+						</Tooltip>
+					</div>
+				)}
+			</div>
+		);
+	},
 );
 
 AutoStartToggle.displayName = "AutoStartToggle";
@@ -1762,51 +1761,51 @@ AutoStartToggle.displayName = "AutoStartToggle";
  * FormActions - Submit/Cancel buttons for forms with proper update/create state handling
  */
 const FormActions: React.FC<FormActionsProps> = React.memo(
-    ({ onCancel, onSubmit, isUpdate, formData }) => {
-        // Check if required fields are filled
+	({ onCancel, onSubmit, isUpdate, formData }) => {
+		// Check if required fields are filled
 		const commandValidation = formData?.command ? validateCommandInput(formData.command) : { isValid: false };
-        const isFormValid = formData?.name?.trim() &&
-                           formData?.command?.trim() &&
-                           formData?.environment?.trim() &&
-						   commandValidation.isValid;
+		const isFormValid = formData?.name?.trim() &&
+			formData?.command?.trim() &&
+			formData?.environment?.trim() &&
+			commandValidation.isValid;
 
-        return (
-            <div
-                className="flex justify-end gap-2"
-                style={{ marginTop: "-15px" }}
-            >
-                <Tooltip
-                    content="Cancel changes"
-                    className="tooltip-theme"
-                >
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={onCancel}
-                        className="button-outline shadow-sm"
-                        size="sm"
-                    >
-                        <span className="body-xs-medium">Cancel</span>
-                    </Button>
-                </Tooltip>
-                <Tooltip
-                    content={isUpdate ? "Save changes" : "Create new backend"}
-                    className="tooltip-theme"
-                >
-                    <Button
-                        type="button"
-                        variant="primary"
-                        onClick={onSubmit}
-                        className="button-primary shadow-sm"
-                        size="sm"
-                        disabled={!isFormValid}
-                    >
-                        <span className="body-xs-medium">{isUpdate ? "Save" : "Create"}</span>
-                    </Button>
-                </Tooltip>
-            </div>
-        );
-    },
+		return (
+			<div
+				className="flex justify-end gap-2"
+				style={{ marginTop: "-15px" }}
+			>
+				<Tooltip
+					content="取消更改"
+					className="tooltip-theme"
+				>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={onCancel}
+						className="button-outline shadow-sm"
+						size="sm"
+					>
+						<span className="body-xs-medium">取消</span>
+					</Button>
+				</Tooltip>
+				<Tooltip
+					content={isUpdate ? "保存更改" : "创建新后端"}
+					className="tooltip-theme"
+				>
+					<Button
+						type="button"
+						variant="primary"
+						onClick={onSubmit}
+						className="button-primary shadow-sm"
+						size="sm"
+						disabled={!isFormValid}
+					>
+						<span className="body-xs-medium">{isUpdate ? "保存" : "创建"}</span>
+					</Button>
+				</Tooltip>
+			</div>
+		);
+	},
 );
 
 FormActions.displayName = "FormActions";
@@ -1858,7 +1857,7 @@ const BackendForm: React.FC<BackendFormProps> = React.memo(
 							onUpdate={(updates) => onUpdateForm(updates)}
 							onDirectorySelect={() => {
 								invoke<string>("select_directory", {
-									prompt: "Select Working Directory for Backend",
+									prompt: "为后端选择工作目录",
 								})
 									.then((directory) =>
 										onUpdateForm({ working_directory: directory }),
@@ -1900,271 +1899,271 @@ const openDocumentation = async () => {
 };
 
 const BackendListPanel = memo(
-    ({
-        backends,
-        selectedBackend,
-        processingId,
-        loading,
-        deleteError,
-        onCreate,
-        onClearDeleteError,
-        onSelect,
-        onStartStop,
-        onDelete,
-        onEdit,
-        onViewLogs,
-        onStatusUpdate,
-        environments,
-        isEnvLoading,
-        onGenerateCertificate,
-        searchQuery,
-        onSearchChange,
-    }: BackendListPanelProps) => {
-        // Filter backends based on search query
-        const filteredBackends = backends.filter(backend => {
-            if (!searchQuery.trim()) return true;
+	({
+		backends,
+		selectedBackend,
+		processingId,
+		loading,
+		deleteError,
+		onCreate,
+		onClearDeleteError,
+		onSelect,
+		onStartStop,
+		onDelete,
+		onEdit,
+		onViewLogs,
+		onStatusUpdate,
+		environments,
+		isEnvLoading,
+		onGenerateCertificate,
+		searchQuery,
+		onSearchChange,
+	}: BackendListPanelProps) => {
+		// Filter backends based on search query
+		const filteredBackends = backends.filter(backend => {
+			if (!searchQuery.trim()) return true;
 
-            const query = searchQuery.toLowerCase();
-            return (
-                backend.name.toLowerCase().includes(query) ||
-                backend.command.toLowerCase().includes(query) ||
-                backend.environment.toLowerCase().includes(query) ||
-                (backend.apiUrl && backend.apiUrl.toLowerCase().includes(query)) ||
-                (backend.url && backend.url.toLowerCase().includes(query))
-            );
-        });
+			const query = searchQuery.toLowerCase();
+			return (
+				backend.name.toLowerCase().includes(query) ||
+				backend.command.toLowerCase().includes(query) ||
+				backend.environment.toLowerCase().includes(query) ||
+				(backend.apiUrl && backend.apiUrl.toLowerCase().includes(query)) ||
+				(backend.url && backend.url.toLowerCase().includes(query))
+			);
+		});
 
-        const [hasScrollbar, setHasScrollbar] = useState(false);
-        const scrollContainerRef = useRef<HTMLDivElement>(null);
+		const [hasScrollbar, setHasScrollbar] = useState(false);
+		const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-        // Check for scrollbar when content changes
-        useEffect(() => {
-            const checkScrollbar = () => {
-                const container = scrollContainerRef.current;
-                if (container) {
-                    const hasVerticalScrollbar = container.scrollHeight > container.clientHeight;
-                    setHasScrollbar(hasVerticalScrollbar);
-                }
-            };
+		// Check for scrollbar when content changes
+		useEffect(() => {
+			const checkScrollbar = () => {
+				const container = scrollContainerRef.current;
+				if (container) {
+					const hasVerticalScrollbar = container.scrollHeight > container.clientHeight;
+					setHasScrollbar(hasVerticalScrollbar);
+				}
+			};
 
-            checkScrollbar();
+			checkScrollbar();
 
-            // Use ResizeObserver to detect changes in content size
-            const container = scrollContainerRef.current;
-            if (container) {
-                const resizeObserver = new ResizeObserver(checkScrollbar);
-                resizeObserver.observe(container);
+			// Use ResizeObserver to detect changes in content size
+			const container = scrollContainerRef.current;
+			if (container) {
+				const resizeObserver = new ResizeObserver(checkScrollbar);
+				resizeObserver.observe(container);
 
-                return () => resizeObserver.disconnect();
-            }
-        }, [filteredBackends]);
+				return () => resizeObserver.disconnect();
+			}
+		}, [filteredBackends]);
 
-        return (
-            <div className="w-full overflow-hidden">
-                <div className="flex-1 overflow-y-auto">
-                    <>
-                        {loading && backends.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-4">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-accent mb-3" />
-                                <p className="body-xs-regular text-theme-secondary">Loading backend services...</p>
-                            </div>
-                        ) : !loading && backends.length > 0 ? (
-                            // Show header and backends list only when backends exist
-                            <div>
-                                <div className="mb-3 mt-2">
-                                    <div className="flex justify-between items-center">
-                                        {/* Search Box */}
-                                        <div className="mt-5 w-[250px] shrink-0">
-                                            <div className="relative">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search Backends..."
-                                                    value={searchQuery || ""}
-                                                    spellCheck={false}
-                                                    onChange={(e) => onSearchChange(e.target.value)}
-                                                    className="border border-theme text-xs !pl-6 shadow-sm w-full"
-                                                />
-                                                {searchQuery ? (
-                                                    <Tooltip
-                                                        content="Clear search query"
-                                                        className="tooltip tooltip-theme"
-                                                    >
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => onSearchChange("")}
-                                                            className="absolute left-1 top-1/2 -translate-y-1/2 text-theme-muted"
-                                                        >
-                                                            <CustomIcon id="close" className="h-4 w-4" />
-                                                        </button>
-                                                    </Tooltip>
-                                                ) : (
-                                                    <span className="absolute left-1 top-1/2 -translate-y-1/2 text-theme-muted">
-                                                        <CustomIcon id="search" className="h-4 w-4 ml-0.5" />
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-2 justify-end relative top-2">
-                                            <Tooltip
-                                                content="Create a new backend service"
-                                                className="tooltip-theme"
-                                            >
-                                                <Button
-                                                    onClick={onCreate}
-                                                    variant="secondary"
-                                                    className="button-neutral shadow-sm"
-                                                    size="sm"
-                                                >
-                                                    <span className="body-xs-medium text-theme-primary whitespace-nowrap justify-center">New Backend</span>
-                                                </Button>
-                                            </Tooltip>
-                                            <Tooltip
-                                                content="Generate a self-signed certificate using OpenSSL."
-                                                className="tooltip-theme"
-                                            >
-                                                <Button
-                                                    onClick={onGenerateCertificate}
-                                                    variant="secondary"
-                                                    className="button button-secondary shadow-sm"
-                                                    size="sm"
-                                                >
-                                                    <span className="body-xs-medium text-theme-primary whitespace-nowrap">Generate Certificate </span>
-                                                </Button>
-                                            </Tooltip>
-                                            <Tooltip
-                                                content="Open the documentation for this screen."
-                                                className="tooltip-theme"
-                                            >
-                                                <Button
-                                                    onClick={openDocumentation}
-                                                    variant="secondary"
-                                                    className="button-secondary shadow-sm px-2 py-2 group"
-                                                    size="sm"
-                                                    data-testid="documentation-button"
-                                                >
-                                                    <DocumentationIcon className="h-4 w-4 text-[var(--ghost-icon)] group-hover:text-[var(--ghost-icon-hover)]" />
-                                                </Button>
-                                            </Tooltip>
-                                        </div>
-                                    </div>
-                                </div>
+		return (
+			<div className="w-full overflow-hidden">
+				<div className="flex-1 overflow-y-auto">
+					<>
+						{loading && backends.length === 0 ? (
+							<div className="flex flex-col items-center justify-center p-4">
+								<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-accent mb-3" />
+								<p className="body-xs-regular text-theme-secondary">正在加载后端服务...</p>
+							</div>
+						) : !loading && backends.length > 0 ? (
+							// Show header and backends list only when backends exist
+							<div>
+								<div className="mb-3 mt-2">
+									<div className="flex justify-between items-center">
+										{/* Search Box */}
+										<div className="mt-5 w-[250px] shrink-0">
+											<div className="relative">
+												<input
+													type="text"
+													placeholder="搜索后端..."
+													value={searchQuery || ""}
+													spellCheck={false}
+													onChange={(e) => onSearchChange(e.target.value)}
+													className="border border-theme text-xs !pl-6 shadow-sm w-full"
+												/>
+												{searchQuery ? (
+													<Tooltip
+														content="清除搜索内容"
+														className="tooltip tooltip-theme"
+													>
+														<button
+															type="button"
+															onClick={() => onSearchChange("")}
+															className="absolute left-1 top-1/2 -translate-y-1/2 text-theme-muted"
+														>
+															<CustomIcon id="close" className="h-4 w-4" />
+														</button>
+													</Tooltip>
+												) : (
+													<span className="absolute left-1 top-1/2 -translate-y-1/2 text-theme-muted">
+														<CustomIcon id="search" className="h-4 w-4 ml-0.5" />
+													</span>
+												)}
+											</div>
+										</div>
+										<div className="flex items-center gap-2 justify-end relative top-2">
+											<Tooltip
+												content="创建新的后端服务"
+												className="tooltip-theme"
+											>
+												<Button
+													onClick={onCreate}
+													variant="secondary"
+													className="button-neutral shadow-sm"
+													size="sm"
+												>
+													<span className="body-xs-medium text-theme-primary whitespace-nowrap justify-center">新建后端</span>
+												</Button>
+											</Tooltip>
+											<Tooltip
+												content="使用 OpenSSL 生成自签名证书。"
+												className="tooltip-theme"
+											>
+												<Button
+													onClick={onGenerateCertificate}
+													variant="secondary"
+													className="button button-secondary shadow-sm"
+													size="sm"
+												>
+													<span className="body-xs-medium text-theme-primary whitespace-nowrap">生成证书 </span>
+												</Button>
+											</Tooltip>
+											<Tooltip
+												content="打开此页面的文档。"
+												className="tooltip-theme"
+											>
+												<Button
+													onClick={openDocumentation}
+													variant="secondary"
+													className="button-secondary shadow-sm px-2 py-2 group"
+													size="sm"
+													data-testid="documentation-button"
+												>
+													<DocumentationIcon className="h-4 w-4 text-[var(--ghost-icon)] group-hover:text-[var(--ghost-icon-hover)]" />
+												</Button>
+											</Tooltip>
+										</div>
+									</div>
+								</div>
 
-                                {/* Show filtered results or "no results found" message */}
-                                {filteredBackends.length === 0 && searchQuery.trim() ? (
-                                    <div className="flex flex-col items-center justify-center mt-4">
-                                        <div className="text-center">
-                                            <CustomIcon
-                                                id="search"
-                                                className="h-12 w-12 text-theme-muted mb-2 mx-auto"
-                                            />
-                                            <h3 className="body-md-bold text-theme-secondary mb-2">
-                                                No backends found
-                                            </h3>
-                                            <p className="body-sm-regular text-theme-muted mb-4">
-                                                No backend services match your search for "{searchQuery}"
-                                            </p>
-                                            <Button
-                                                onClick={() => onSearchChange("")}
-                                                variant="outline"
-                                                size="sm"
-                                                className="button-outline"
-                                            >
-                                                <span className="body-xs-medium">Clear Search</span>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col justify-between">
-                                        <div
-                                            ref={scrollContainerRef}
-                                            className={`overflow-y-auto max-h-[calc(100vh-13rem)] ${hasScrollbar ? 'pr-2' : ''}`}
-                                        >
-                                            <div className={`flex-1 gap-0 ${hasScrollbar ? 'mr-2' : ''}`}>
-                                                <ul>
-                                                    {filteredBackends.map((backend) => (
-                                                        <BackendServiceItem
-                                                            key={backend.id}
-                                                            backend={backend}
-                                                            onSelect={onSelect}
-                                                            onStartStop={onStartStop}
-                                                            onDelete={onDelete}
-                                                            isSelected={selectedBackend === backend.id}
-                                                            isProcessing={processingId === backend.id}
-                                                            onEdit={onEdit}
-                                                            onViewLogs={onViewLogs}
-                                                            environments={environments}
-                                                            isEnvLoading={isEnvLoading}
-                                                            onStatusUpdate={onStatusUpdate}
-                                                        />
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        ) : backends.length === 0 && !loading ? (
-                            // Empty state - no header section - ONLY show when definitely done loading
-                            <div className="flex flex-col items-center justify-center p-8 mt-8">
-                                <div className="text-center">
-                                    <CustomIcon
-                                        id="server"
-                                        className="h-16 w-16 text-theme-primary mb-4 mx-auto"
-                                    />
-                                    <h3 className="body-lg-bold text-theme-secondary mb-2">
-                                        No backend services found
-                                    </h3>
-                                    <p className="body-sm-regular text-theme-muted mb-6">
-                                        Create your first backend service to get started with running server applications.
-                                    </p>
-                                    <Tooltip content="Create your first backend service">
-                                        <Button
-                                            onClick={onCreate}
-                                            variant="neutral"
-                                            className="button-neutral shadow-sm"
-                                            size="md"
-                                        >
-                                            <span className=" text-nowrap">Create First Backend</span>
-                                        </Button>
-                                    </Tooltip>
-                                </div>
-                            </div>
-                        ) : null}
+								{/* Show filtered results or "no results found" message */}
+								{filteredBackends.length === 0 && searchQuery.trim() ? (
+									<div className="flex flex-col items-center justify-center mt-4">
+										<div className="text-center">
+											<CustomIcon
+												id="search"
+												className="h-12 w-12 text-theme-muted mb-2 mx-auto"
+											/>
+											<h3 className="body-md-bold text-theme-secondary mb-2">
+												未找到后端
+											</h3>
+											<p className="body-sm-regular text-theme-muted mb-4">
+												没有后端服务匹配您对 "{searchQuery}" 的搜索
+											</p>
+											<Button
+												onClick={() => onSearchChange("")}
+												variant="outline"
+												size="sm"
+												className="button-outline"
+											>
+												<span className="body-xs-medium">清除搜索</span>
+											</Button>
+										</div>
+									</div>
+								) : (
+									<div className="flex flex-col justify-between">
+										<div
+											ref={scrollContainerRef}
+											className={`overflow-y-auto max-h-[calc(100vh-13rem)] ${hasScrollbar ? 'pr-2' : ''}`}
+										>
+											<div className={`flex-1 gap-0 ${hasScrollbar ? 'mr-2' : ''}`}>
+												<ul>
+													{filteredBackends.map((backend) => (
+														<BackendServiceItem
+															key={backend.id}
+															backend={backend}
+															onSelect={onSelect}
+															onStartStop={onStartStop}
+															onDelete={onDelete}
+															isSelected={selectedBackend === backend.id}
+															isProcessing={processingId === backend.id}
+															onEdit={onEdit}
+															onViewLogs={onViewLogs}
+															environments={environments}
+															isEnvLoading={isEnvLoading}
+															onStatusUpdate={onStatusUpdate}
+														/>
+													))}
+												</ul>
+											</div>
+										</div>
+									</div>
+								)}
+							</div>
+						) : backends.length === 0 && !loading ? (
+							// Empty state - no header section - ONLY show when definitely done loading
+							<div className="flex flex-col items-center justify-center p-8 mt-8">
+								<div className="text-center">
+									<CustomIcon
+										id="server"
+										className="h-16 w-16 text-theme-primary mb-4 mx-auto"
+									/>
+									<h3 className="body-lg-bold text-theme-secondary mb-2">
+										未找到后端服务
+									</h3>
+									<p className="body-sm-regular text-theme-muted mb-6">
+										创建您的第一个后端服务，开始运行服务器应用程序。
+									</p>
+									<Tooltip content="创建您的第一个后端服务">
+										<Button
+											onClick={onCreate}
+											variant="neutral"
+											className="button-neutral shadow-sm"
+											size="md"
+										>
+											<span className=" text-nowrap">创建第一个后端</span>
+										</Button>
+									</Tooltip>
+								</div>
+							</div>
+						) : null}
 
-                        {deleteError && (
-                            <div className="p-3 bg-theme-secondary border border-red-500 rounded text-red-500 body-xs-regular">
-                                <p className="mb-2">{deleteError}</p>
-                                <Button
-                                    onClick={onClearDeleteError}
-                                    variant="secondary"
-                                    className="button-secondary shadow-sm"
-                                >
-                                    <span className="body-xs-medium">Dismiss</span>
-                                </Button>
-                            </div>
-                        )}
-                    </>
-                </div>
-            </div>
-        );
-    }
+						{deleteError && (
+							<div className="p-3 bg-theme-secondary border border-red-500 rounded text-red-500 body-xs-regular">
+								<p className="mb-2">{deleteError}</p>
+								<Button
+									onClick={onClearDeleteError}
+									variant="secondary"
+									className="button-secondary shadow-sm"
+								>
+									<span className="body-xs-medium">关闭</span>
+								</Button>
+							</div>
+						)}
+					</>
+				</div>
+			</div>
+		);
+	}
 );
 
 BackendListPanel.displayName = "BackendListPanel";
 
 
 function loadEnvironmentsFromCache(): Environment[] {
-    const cached = localStorage.getItem("env-extensions-cache");
-    if (!cached) return [];
-    try {
-        const cache = JSON.parse(cached);
-        return Object.keys(cache).map((name) => ({
-            name,
+	const cached = localStorage.getItem("env-extensions-cache");
+	if (!cached) return [];
+	try {
+		const cache = JSON.parse(cached);
+		return Object.keys(cache).map((name) => ({
+			name,
 			path: cache[name].path || "",
-        }));
-    } catch {
-        return [];
-    }
+		}));
+	} catch {
+		return [];
+	}
 }
 
 
@@ -2230,24 +2229,24 @@ export default function BackendsPage() {
 						) {
 							localStorage.setItem("platform-api-run-once", "true");
 							setToastContent({
-								title: "Connect Backend with OpenBB Workspace",
+								title: "将后端连接到 OpenBB Workspace",
 								content: (
 									<ol className="list-decimal list-inside">
-										<li>Sign in to your OpenBB Workspace account.</li>
-										<li>Go to the "Apps" tab in the top menu.</li>
-										<li>Click on "Connect backend".</li>
+										<li>登录您的 OpenBB Workspace 账户。</li>
+										<li>转到顶部菜单中的 '应用' 选项卡。</li>
+										<li>点击 '连接后端'。</li>
 										<li>
-											Fill in the connection form with the following details:
+											在连接表单中填写以下详细信息:
 											<ul className="list-disc list-inside ml-4">
-												<li>Name: OpenBB Platform</li>
+												<li>名称: OpenBB Platform</li>
 												<li>URL: {finalUrl}</li>
 											</ul>
 										</li>
-										<li>Click "Test".</li>
-										<li>Click "Add" to finalize the integration.</li>
+										<li>点击 '测试'。</li>
+										<li>点击 '添加' 以完成集成。</li>
 									</ol>
 								),
-								buttonText: "Check Documentation",
+								buttonText: "查看文档",
 							});
 							setShowToast(true);
 						}
@@ -2257,26 +2256,26 @@ export default function BackendsPage() {
 						) {
 							localStorage.setItem("platform-mcp-run-once", "true");
 							setToastContent({
-								title: "Connect MCP with OpenBB Workspace",
+								title: "将 MCP 连接到 OpenBB Workspace",
 								content: (
 									<ol className="list-decimal list-inside">
-										<li>Sign in to your OpenBB Workspace account.</li>
-										<li>Go to the Chat on the right side.</li>
-										<li>Click on "MCP Tools" button above the chat input.</li>
-										<li>Click on "+" in the top-right to open the configuration panel.</li>
-										<li>Click on "Add Server".</li>
+										<li>登录您的 OpenBB Workspace 账户。</li>
+										<li>转到右侧的聊天界面。</li>
+										<li>点击聊天输入框上方的 'MCP 工具' 按钮。</li>
+										<li>右上角点击 '+' 以打开配置面板。</li>
+										<li>点击 '添加服务器'。</li>
 										<li>
-											Fill in the connection form with the following details:
+											在连接表单中填写以下详细信息:
 											<ul className="list-disc list-inside ml-4">
-												<li>Name: OpenBB MCP</li>
+												<li>名称: OpenBB MCP</li>
 												<li>URL: {finalUrl}</li>
 											</ul>
 										</li>
-										<li>Check the box "Local Server".</li>
-										<li>Click "Add" to finalize the integration.</li>
+										<li>勾选 '本地服务器' 选框。</li>
+										<li>点击 '添加' 以完成集成。</li>
 									</ol>
 								),
-								buttonText: "Check Documentation",
+								buttonText: "查看文档",
 							});
 							setShowToast(true);
 						}
@@ -2337,7 +2336,7 @@ export default function BackendsPage() {
 
 				console.error("Failed to fetch backends:", err);
 				setError(
-					`Failed to load backend services: ${err instanceof Error ? err.message : String(err)}`,
+					`加载后端服务失败: ${err instanceof Error ? err.message : String(err)}`,
 				);
 			})
 			.finally(() => {
@@ -2384,7 +2383,7 @@ export default function BackendsPage() {
 			} catch (err) {
 				console.error("Failed to fetch initial data:", err);
 				setError(
-					`Failed to load initial data: ${err instanceof Error ? err.message : String(err)}`
+					`加载初始数据失败: ${err instanceof Error ? err.message : String(err)}`,
 				);
 			} finally {
 				if (isMounted.current) {
@@ -2440,7 +2439,7 @@ export default function BackendsPage() {
 				fetchBackends();
 			} catch (err) {
 				console.error(`Failed to delete backend ${id}:`, err);
-				setDeleteError(`Failed to delete backend: ${err}`);
+				setDeleteError(`删除后端失败: ${err}`);
 			} finally {
 				setIsDeleting(false);
 			}
@@ -2469,7 +2468,7 @@ export default function BackendsPage() {
 										return {
 											...b,
 											status: "error",
-											error: `Dangerous command detected: ${commandValidation.error}`,
+											error: `检测到危险命令: ${commandValidation.error}`,
 										};
 									}
 									return b;
@@ -2481,11 +2480,11 @@ export default function BackendsPage() {
 								backend: {
 									...backend,
 									status: "error",
-									error: `Dangerous command detected: ${commandValidation.error}`,
+									error: `检测到危险命令: ${commandValidation.error}`,
 								}
 							});
 
-							setError(`Cannot start backend: ${commandValidation.error}`);
+							setError(`无法启动后端: ${commandValidation.error}`);
 							return; // Exit early, don't start the backend
 						}
 					}
@@ -2513,7 +2512,7 @@ export default function BackendsPage() {
 				fetchBackends();
 			} catch (err) {
 				console.error(`Failed to ${action} backend ${id}:`, err);
-				setError(`Failed to ${action} backend service: ${err}`);
+				setError(`${action === "start" ? "启动" : "停止"}后端服务失败: ${err}`);
 
 				// If there's an error, revert the status by fetching fresh data
 				fetchBackends();
@@ -2542,7 +2541,7 @@ export default function BackendsPage() {
 				b.id === id ? { ...b, ...updates } : b
 			)
 		);
-	    if (updates.status === "error") {
+		if (updates.status === "error") {
 			setProcessingId(null); // Clear any processing state
 			setSelectedBackend(null); // Ensure no backend is selected
 		}
@@ -2575,10 +2574,10 @@ export default function BackendsPage() {
 						{/* Header */}
 						<div className="flex justify-between items-center mb-2">
 							<p className="body-lg-medium text-theme-primary">
-								Create New Backend
+								创建新后端
 							</p>
 							<Tooltip
-								content="Cancel and go back."
+								content="取消并返回。"
 								className="tooltip-theme"
 							>
 								<Button
@@ -2631,7 +2630,7 @@ export default function BackendsPage() {
 												err,
 											);
 											setFormError(
-												`Failed to ${isEditing ? "update" : "create"} backend: ${err}`,
+												`${isEditing ? "更新" : "创建"}后端失败: ${err}`,
 											);
 										});
 								}}
@@ -2650,7 +2649,7 @@ export default function BackendsPage() {
 								}}
 								onSelectWorkingDirectory={() => {
 									invoke<string>("select_directory", {
-										prompt: "Select Working Directory for Backend",
+										prompt: "选择后端的当前工作目录",
 									})
 										.then((directory) =>
 											setFormData((prev) => ({
@@ -2703,7 +2702,7 @@ export default function BackendsPage() {
 							onStatusUpdate={handleStatusUpdate}
 							onGenerateCertificate={() => setIsGeneratingCert(true)}
 							searchQuery={searchQuery}
-                            onSearchChange={setSearchQuery}
+							onSearchChange={setSearchQuery}
 						/>
 					</div>
 				</div>
@@ -2723,7 +2722,7 @@ export default function BackendsPage() {
 					onClose={() => setIsGeneratingCert(false)}
 					onDirectorySelect={(callback) => {
 						invoke<string>("select_directory", {
-							prompt: "Select Output Directory",
+							prompt: "选择输出目录",
 						})
 							.then((directory) => callback(directory))
 							.catch((err) =>

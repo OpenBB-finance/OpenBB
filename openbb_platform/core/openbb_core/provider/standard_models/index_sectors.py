@@ -1,4 +1,4 @@
-"""Index Sectors Standard Model."""
+"""指数行业标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,19 +7,19 @@ from pydantic import Field, field_validator
 
 
 class IndexSectorsQueryParams(QueryParams):
-    """Index Sectors Query."""
+    """指数行业查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol")
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class IndexSectorsData(Data):
-    """Index Sectors Data."""
+    """指数行业数据。"""
 
-    sector: str = Field(description="The sector name.")
-    weight: float = Field(description="The weight of the sector in the index.")
+    sector: str = Field(description="行业名称。")
+    weight: float = Field(description="该行业在指数中的权重。")

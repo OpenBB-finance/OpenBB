@@ -1,4 +1,4 @@
-"""Views for the technical Extension."""
+"""技术分析扩展的视图。"""
 
 # pylint: disable=too-many-locals,use-dict-literal
 
@@ -12,46 +12,46 @@ if TYPE_CHECKING:
 
 
 class TechnicalViews:
-    """Technical Views."""
+    """技术分析视图。"""
 
     @staticmethod
     def technical_sma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Plot simple moving average chart."""
+        """绘制简单移动平均线图表。"""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "sma"
         return _ta_ma(**kwargs)
 
     @staticmethod
     def technical_ema(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Exponential moving average chart."""
+        """指数移动平均线图表。"""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "ema"
         return _ta_ma(**kwargs)
 
     @staticmethod
     def technical_hma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Hull moving average chart."""
+        """赫尔移动平均线图表。"""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "hma"
         return _ta_ma(**kwargs)
 
     @staticmethod
     def technical_wma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Weighted moving average chart."""
+        """加权移动平均线图表。"""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "wma"
         return _ta_ma(**kwargs)
 
     @staticmethod
     def technical_zlma(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Zero lag moving average chart."""
+        """零滞后移动平均线图表。"""
         if "ma_type" not in kwargs:
             kwargs["ma_type"] = "zlma"
         return _ta_ma(**kwargs)
 
     @staticmethod
     def technical_aroon(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Technical Aroon Chart."""
+        """技术指标阿隆图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
         from openbb_core.app.utils import basemodel_to_df
@@ -96,7 +96,7 @@ class TechnicalViews:
 
     @staticmethod
     def technical_macd(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Plot moving average convergence divergence chart."""
+        """绘制移动平均收敛散度图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
         from openbb_core.app.utils import basemodel_to_df
@@ -139,7 +139,7 @@ class TechnicalViews:
 
     @staticmethod
     def technical_adx(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Average directional movement index chart."""
+        """平均趋向指数图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
         from openbb_core.app.utils import basemodel_to_df
@@ -179,7 +179,7 @@ class TechnicalViews:
 
     @staticmethod
     def technical_rsi(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Relative strength index chart."""
+        """相对强弱指数图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
         from openbb_core.app.utils import basemodel_to_df
@@ -219,7 +219,7 @@ class TechnicalViews:
 
     @staticmethod
     def technical_cones(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Volatility Cones Chart."""
+        """波动率锥形图。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.chart_style import ChartStyle
         from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -332,7 +332,7 @@ class TechnicalViews:
     def technical_relative_rotation(
         **kwargs: Any,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Relative Rotation Chart."""
+        """相对旋转图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts import relative_rotation  # noqa
         from openbb_charting.core.chart_style import ChartStyle  # noqa
@@ -412,7 +412,7 @@ class TechnicalViews:
 
 
 def _ta_ma(**kwargs):
-    """Plot moving average helper."""
+    """绘制移动平均线辅助函数。"""
     # pylint: disable=import-outside-toplevel
     from openbb_charting.core.chart_style import ChartStyle
     from openbb_charting.core.openbb_figure import OpenBBFigure

@@ -1,5 +1,5 @@
 # pylint: disable=W0613:unused-argument
-"""SEC Router."""
+"""SEC 路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
@@ -27,7 +27,7 @@ router = Router(prefix="/sec")
     ],
     openapi_extra={
         "widget_config": {
-            "description": "Get a list of all the documents associated with a filing, and their direct URLs.",
+            "description": "获取与申报相关的所有文档及其直接 URL 的列表。",
             "gridData": {
                 "w": 30,
                 "h": 10,
@@ -43,7 +43,7 @@ async def filing_headers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Download the index headers, and cover page if available, for any SEC filing."""
+    """下载任何 SEC 申报文件的索引标头和封面（如果可用）。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -60,7 +60,7 @@ async def filing_headers(
     openapi_extra={
         "widget_config": {
             "name": "Open HTML",
-            "description": "Open a HTM/HTML document from the SEC website.",
+            "description": "打开来自 SEC 网站的 HTM/HTML 文档。",
             "gridData": {
                 "w": 40,
                 "h": 25,
@@ -79,7 +79,7 @@ async def htm_file(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Download a raw HTML object from the SEC website."""
+    """从 SEC 网站下载原始 HTML 对象。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -93,7 +93,7 @@ async def cik_map(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Map a ticker symbol to a CIK number."""
+    """将股票代码映射到 CIK 编号。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -110,7 +110,7 @@ async def institutions_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search SEC-regulated institutions by name and return a list of results with CIK numbers."""
+    """按名称搜索受 SEC 监管的机构，并返回包含 CIK 编号的结果列表。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -119,7 +119,7 @@ async def institutions_search(
     examples=[
         APIEx(parameters={"provider": "sec"}),
         PythonEx(
-            description="Get a list of schema files.",
+            description="获取架构文件列表。",
             code=[
                 "data = obb.regulators.sec.schema_files().results",
                 "data.files[0]",
@@ -148,7 +148,7 @@ async def schema_files(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use tool for navigating the directory of SEC XML schema files by year."""
+    """用于按年份导航 SEC XML 架构文件目录的工具。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -162,7 +162,7 @@ async def symbol_map(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Map a CIK number to a ticker symbol, leading 0s can be omitted or included."""
+    """将 CIK 编号映射到股票代码，可以省略或包含前导 0。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -176,7 +176,7 @@ async def rss_litigation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501 pylint: disable=C0301
+    """获取 RSS 源，提供有关委员会在联邦法院提起的民事诉讼的诉公发布链接。"""  # noqa: E501 pylint: disable=C0301
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -193,5 +193,5 @@ async def sic_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results."""
+    """搜索行业标题、报告办公室和 SIC 代码。空查询字符串返回所有结果。"""
     return await OBBject.from_query(Query(**locals()))

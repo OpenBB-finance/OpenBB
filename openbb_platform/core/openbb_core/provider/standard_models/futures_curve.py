@@ -1,4 +1,4 @@
-"""Futures Curve Standard Model."""
+"""期货曲线标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class FuturesCurveQueryParams(QueryParams):
-    """Futures Curve Query."""
+    """期货曲线查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType | str | None = Field(
@@ -23,13 +23,13 @@ class FuturesCurveQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def _validate_date(cls, v):
-        """Validate the date."""
+        """验证日期。"""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
@@ -49,14 +49,14 @@ class FuturesCurveQueryParams(QueryParams):
 
 
 class FuturesCurveData(Data):
-    """Futures Curve Data."""
+    """期货曲线数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    expiration: str = Field(description="Futures expiration month.")
+    expiration: str = Field(description="期货到期月份。")
     price: float = Field(
         default=None,
-        description="The price of the futures contract.",
+        description="期货合约的价格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )

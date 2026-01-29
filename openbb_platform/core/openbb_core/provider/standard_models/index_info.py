@@ -1,4 +1,4 @@
-"""Index Info Standard Model."""
+"""指数信息标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -10,31 +10,31 @@ from pydantic import Field, field_validator
 
 
 class IndexInfoQueryParams(QueryParams):
-    """Index Info Query."""
+    """指数信息查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol")
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class IndexInfoData(Data):
-    """Index Info Data."""
+    """指数信息数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str = Field(description="The name of the index.")
+    name: str = Field(description="指数名称。")
     description: str | None = Field(
-        description="The short description of the index.", default=None
+        description="指数的简短描述。", default=None
     )
     methodology: str | None = Field(
-        description="URL to the methodology document.", default=None
+        description="编制方案文档的 URL。", default=None
     )
     factsheet: str | None = Field(
-        description="URL to the factsheet document.", default=None
+        description="概览文档 (Factsheet) 的 URL。", default=None
     )
     num_constituents: int | None = Field(
-        description="The number of constituents in the index.", default=None
+        description="指数中的成份股数量。", default=None
     )

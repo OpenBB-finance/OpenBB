@@ -1,6 +1,6 @@
-"""OpenBB Platform API.
+"""OpenBB 平台 API。
 
-Launch script and widgets builder for the OpenBB Workspace Custom Backend.
+OpenBB Workspace 自定义后端的启动脚本和挂件构建器。
 """
 
 import json
@@ -85,7 +85,7 @@ if not dont_filter and os.path.exists(WIDGET_SETTINGS):
 
 
 def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
-    """Check for data-processing Platform extensions and add them to the widget exclude filter."""
+    """检查数据处理平台扩展并将它们添加到挂件排除过滤器中。"""
     to_check_for = ["econometrics", "quantitative", "technical"]
     openapi_tags = fastapi_app.openapi_tags or []
     tags: list = []
@@ -123,7 +123,7 @@ APPS_PATH = (
 
 @app.get("/")
 async def root():
-    """Serve the landing page HTML content."""
+    """提供着陆页 HTML 内容。"""
     html_path = Path(__file__).parent / "assets" / "landing_page.html"
     with open(html_path, encoding="utf-8") as f:
         html_content = f.read()
@@ -138,7 +138,7 @@ if not has_root_widgets:
     # we can leave it alone. Otherwise, use our endpoint to serve and/or generate.
     @app.get("/widgets.json")
     async def get_widgets():
-        """Widgets configuration file for the OpenBB Workspace."""
+        """OpenBB Workspace 的挂件配置文件。"""
         # This allows us to serve an edited widgets.json file without reloading the server.
         global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
         if FIRST_RUN is True:
@@ -164,7 +164,7 @@ else:
     else:
         # Fallback mechanism
         async def get_widgets():
-            """Return the generated widgets.json"""
+            """返回生成的 widgets.json"""
             return JSONResponse(content=widgets_json, headers=obb_headers)
 
 
@@ -175,7 +175,7 @@ if not has_root_apps:
 
     @app.get("/apps.json")
     async def get_apps_json():
-        """Get the apps.json file."""
+        """获取 apps.json 文件。"""
         new_templates: list = []
         default_templates: list = []
         widgets = await get_widgets()
@@ -249,7 +249,7 @@ if AGENTS_PATH:
 
     @app.get("/agents.json")
     async def get_agents():
-        """Get the agents.json file."""
+        """获取 agents.json 文件。"""
         if os.path.exists(AGENTS_PATH):
             with open(AGENTS_PATH, encoding="utf-8") as f:
                 agents = json.load(f)
@@ -264,7 +264,7 @@ if not has_root_agents and has_additional_agents(app):
 
     @app.get("/agents.json")
     async def get_agents_json():  # type: ignore
-        """Get the agents.json file."""
+        """获取 agents.json 文件。"""
         new_agents: dict = {}
         additional_agents = await get_additional_agents(app)
         if additional_agents:
@@ -277,12 +277,12 @@ else:
 
     @app.get("/agents.json")
     async def get_agents_json():
-        """Get an empty agents.json file."""
+        """获取空的 agents.json 文件。"""
         return {}
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
-    """Main function."""
+    """主函数。"""
     host = _kwargs.pop("host", os.getenv("OPENBB_API_HOST", "127.0.0.1"))
     if not host:
         logger.info(
@@ -328,7 +328,7 @@ def launch_api(**_kwargs):  # noqa PRL0912
 
 
 def main():
-    """Launch the API."""
+    """启动 API。"""
     launch_api(**kwargs)
 
 

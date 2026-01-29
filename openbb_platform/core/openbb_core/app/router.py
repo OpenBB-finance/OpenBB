@@ -1,4 +1,4 @@
-"""OpenBB Router."""
+"""OpenBB 路由器。"""
 
 import traceback
 import warnings
@@ -34,33 +34,33 @@ P = ParamSpec("P")
 
 
 class OpenBBErrorResponse(BaseModel):
-    """OpenBB Error Response."""
+    """OpenBB 错误响应。"""
 
     detail: str
     error_kind: str
 
 
 class Router:
-    """OpenBB Router Class."""
+    """OpenBB 路由器类。"""
 
     @property
     def api_router(self) -> APIRouter:
-        """API Router."""
+        """API 路由器。"""
         return self._api_router
 
     @property
     def prefix(self) -> str:
-        """Prefix."""
+        """前缀。"""
         return self._api_router.prefix
 
     @property
     def description(self) -> str | None:
-        """Description."""
+        """描述。"""
         return self._description
 
     @property
     def routers(self) -> dict[str, "Router"]:
-        """Routers nested within the Router, i.e. sub-routers."""
+        """嵌套在路由器中的路由器，即子路由器。"""
         return self._routers
 
     def __init__(
@@ -68,10 +68,10 @@ class Router:
         prefix: str = "",
         description: str | None = None,
     ) -> None:
-        """Initialize Router."""
+        """初始化路由器。"""
         self._api_router = APIRouter(
             prefix=prefix,
-            responses={404: {"description": "Not found"}},
+            responses={404: {"description": "未找到"}},
         )
         self._description = description
         self._routers: dict[str, Router] = {}
@@ -89,7 +89,7 @@ class Router:
         func: Callable[P, OBBject] | None = None,
         **kwargs,
     ) -> Callable | None:
-        """Command decorator for routes."""
+        """路由的命令装饰器。"""
         if func is None:
             return lambda f: self.command(f, **kwargs)
 
@@ -138,25 +138,25 @@ class Router:
                 "responses",
                 {
                     204: {
-                        "description": "Empty response",
+                        "description": "空响应",
                     },
                     400: {
                         "model": OpenBBErrorResponse,
-                        "description": "No Results Found",
+                        "description": "未找到结果",
                     },
-                    404: {"description": "Not found"},
+                    404: {"description": "未找到"},
                     500: {
                         "model": OpenBBErrorResponse,
-                        "description": "Internal Error",
+                        "description": "内部错误",
                     },
                     502: {
                         "model": OpenBBErrorResponse,
-                        "description": "Unauthorized",
+                        "description": "未授权",
                     },
                 },
             )
 
-            # For custom deprecation
+            # 对于自定义弃用
             if kwargs.get("deprecated", False):
                 deprecation: OpenBBDeprecationWarning = kwargs.pop("deprecation")
 
@@ -175,7 +175,7 @@ class Router:
         router: "Router",
         prefix: str = "",
     ):
-        """Include router."""
+        """包含路由器。"""
         tags = [prefix.strip("/")] if prefix else None
         self._api_router.include_router(
             router=router.api_router,
@@ -186,26 +186,26 @@ class Router:
         self._routers[name.strip("/")] = router
 
     def get_attr(self, path: str, attr: str) -> Any:
-        """Get router attribute from path.
-
+        """从路径获取路由器属性。
+        
         Parameters
         ----------
         path : str
-            Path to the router or nested router.
-            E.g. "/equity" or "/equity/price".
+            路由器或嵌套路由器的路径。
+            例如："/equity" 或 "/equity/price"。
         attr : str
-            Attribute to get.
+            要获取的属性。
 
         Returns
         -------
         Any
-            Attribute value.
+            属性值。
         """
         return self._search_attr(self, path, attr)
 
     @staticmethod
     def _search_attr(router: "Router", path: str, attr: str) -> Any:
-        """Recursively search router attribute from path."""
+        """从路径递归搜索路由器属性。"""
         path = path.strip("/")
         first = path.split("/")[0]
         if first in router.routers:
@@ -216,7 +216,7 @@ class Router:
 
     @classmethod
     def from_fastapi(cls, api_router: APIRouter) -> "Router":
-        """Create an OpenBB Router from a FastAPI APIRouter."""
+        """从 FastAPI APIRouter 创建 OpenBB 路由器。"""
         description = getattr(api_router, "description", None)
         instance = cls(prefix=api_router.prefix, description=description)
         instance._api_router = api_router  # type: ignore[attr-defined]
@@ -225,13 +225,13 @@ class Router:
 
 
 class SignatureInspector:
-    """Inspect function signature."""
+    """检查函数签名。"""
 
     @classmethod
     def complete(
         cls, func: Callable[P, OBBject], model: str
     ) -> Callable[P, OBBject] | None:
-        """Complete function signature."""
+        """完成函数签名。"""
         if isclass(return_type := func.__annotations__["return"]) and not issubclass(
             return_type, OBBject
         ):
@@ -297,7 +297,7 @@ class SignatureInspector:
 
     @staticmethod
     def polish_return_schema(func: Callable[P, OBBject]) -> Callable[P, OBBject]:
-        """Polish API schemas by filling `__doc__` and `__name__`."""
+        """通过填充 `__doc__` 和 `__name__` 来完善 API 架构。"""
         return_type = func.__annotations__["return"]
         is_list = False
 
@@ -322,7 +322,7 @@ class SignatureInspector:
     def validate_signature(
         func: Callable[P, OBBject], expected: dict[str, type]
     ) -> None:
-        """Validate function signature before binding to model."""
+        """在绑定到模型之前验证函数签名。"""
         for k, v in expected.items():
             if k not in func.__annotations__:
                 raise AttributeError(
@@ -338,7 +338,7 @@ class SignatureInspector:
     def inject_dependency(
         func: Callable[P, OBBject], arg: str, callable_: Any
     ) -> Callable[P, OBBject]:
-        """Annotate function with dependency injection."""
+        """使用依赖注入注释函数。"""
         func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
         return func
 
@@ -346,13 +346,13 @@ class SignatureInspector:
     def inject_return_annotation(
         func: Callable[P, OBBject], annotation: type[OBBject]
     ) -> Callable[P, OBBject]:
-        """Annotate function with return annotation."""
+        """使用返回注释注释函数。"""
         func.__annotations__["return"] = annotation
         return func
 
     @staticmethod
     def get_description(func: Callable) -> str:
-        """Get description from docstring."""
+        """从文档字符串获取描述。"""
         doc = func.__doc__
         if doc:
             description = doc.split("    Parameters\n    ----------")[0]
@@ -365,7 +365,7 @@ class SignatureInspector:
 
     @staticmethod
     def get_operation_id(func: Callable, sep: str = "_") -> str:
-        """Get operation id."""
+        """获取操作 ID。"""
         operation_id = [
             t.replace("_router", "").replace("openbb_", "")
             for t in func.__module__.split(".") + [func.__name__]
@@ -375,12 +375,12 @@ class SignatureInspector:
 
 
 class CommandMap:
-    """Matching Routes with Commands."""
+    """将路由与命令匹配。"""
 
     def __init__(
         self, router: Router | None = None, coverage_sep: str | None = None
     ) -> None:
-        """Initialize CommandMap."""
+        """初始化 CommandMap。"""
         self._router = router or RouterLoader.from_extensions()
         self._map = self.get_command_map(router=self._router)
         self._provider_coverage: dict[str, list[str]] = {}
@@ -390,12 +390,12 @@ class CommandMap:
 
     @property
     def map(self) -> dict[str, Callable]:
-        """Get command map."""
+        """获取命令映射。"""
         return self._map
 
     @property
     def provider_coverage(self) -> dict[str, list[str]]:
-        """Get provider coverage."""
+        """获取提供者覆盖范围。"""
         if not self._provider_coverage:
             self._provider_coverage = self.get_provider_coverage(
                 router=self._router, sep=self._coverage_sep
@@ -404,7 +404,7 @@ class CommandMap:
 
     @property
     def command_coverage(self) -> dict[str, list[str]]:
-        """Get command coverage."""
+        """获取命令覆盖范围。"""
         if not self._command_coverage:
             self._command_coverage = self.get_command_coverage(
                 router=self._router, sep=self._coverage_sep
@@ -413,7 +413,7 @@ class CommandMap:
 
     @property
     def commands_model(self) -> dict[str, str]:
-        """Get commands model."""
+        """获取命令模型。"""
         if not self._commands_model:
             self._commands_model = self.get_commands_model(
                 router=self._router, sep=self._coverage_sep
@@ -424,7 +424,7 @@ class CommandMap:
     def get_command_map(
         router: Router,
     ) -> dict[str, Callable]:
-        """Get command map."""
+        """获取命令映射。"""
         api_router = router.api_router
         command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
         return command_map
@@ -433,7 +433,7 @@ class CommandMap:
     def get_provider_coverage(
         router: Router, sep: str | None = None
     ) -> dict[str, list[str]]:
-        """Get provider coverage."""
+        """获取提供者覆盖范围。"""
         api_router = router.api_router
 
         mapping = ProviderInterface().map
@@ -464,7 +464,7 @@ class CommandMap:
     def get_command_coverage(
         router: Router, sep: str | None = None
     ) -> dict[str, list[str]]:
-        """Get command coverage."""
+        """获取命令覆盖范围。"""
         api_router = router.api_router
 
         mapping = ProviderInterface().map
@@ -488,7 +488,7 @@ class CommandMap:
 
     @staticmethod
     def get_commands_model(router: Router, sep: str | None = None) -> dict[str, str]:
-        """Get commands model."""
+        """获取命令模型。"""
         api_router = router.api_router
 
         coverage_map: dict[Any, Any] = {}
@@ -504,28 +504,28 @@ class CommandMap:
         return coverage_map
 
     def get_command(self, route: str) -> Callable | None:
-        """Get command from route."""
+        """从路由获取命令。"""
         return self._map.get(route, None)
 
 
 class LoadingError(Exception):
-    """Error loading extension."""
+    """加载扩展出错。"""
 
 
 class RouterLoader:
-    """Router Loader."""
+    """路由器加载器。"""
 
     @staticmethod
     @lru_cache
     def from_extensions() -> Router:
-        """Load routes from extensions."""
+        """从扩展加载路由。"""
         router = Router()
 
         for name, entry in ExtensionLoader().core_objects.items():  # type: ignore[attr-defined]
             try:
                 router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:
-                msg = f"Error loading extension: {name}\n"
+                msg = f"加载扩展出错：{name}\n"
                 if Env().DEBUG_MODE:
                     traceback.print_exception(type(e), e, e.__traceback__)
                     raise LoadingError(msg + f"\033[91m{e}\033[0m") from e

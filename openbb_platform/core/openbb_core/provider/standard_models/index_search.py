@@ -1,4 +1,4 @@
-"""Index Search Standard Model."""
+"""指数搜索标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,16 +7,16 @@ from pydantic import Field
 
 
 class IndexSearchQueryParams(QueryParams):
-    """Index Search Query."""
+    """指数搜索查询。"""
 
-    query: str = Field(description="Search query.", default="")
+    query: str = Field(description="搜索查询。", default="")
     is_symbol: bool = Field(
-        description="Whether to search by ticker symbol.", default=False
+        description="是否按股票代码搜索。", default=False
     )
 
 
 class IndexSearchData(Data):
-    """Index Search Data."""
+    """指数搜索数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str = Field(description="Name of the index.")
+    name: str = Field(description="指数名称。")

@@ -1,4 +1,4 @@
-"""Treasury Prices Standard Model."""
+"""国债价格标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,92 +9,88 @@ from pydantic import Field
 
 
 class TreasuryPricesQueryParams(QueryParams):
-    """Treasury Prices Query."""
+    """國債價格查詢。"""
 
     date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " Defaults to the last business day.",
+        + " 默認為最後一個營業日。",
         default=None,
     )
 
 
 class TreasuryPricesData(Data):
-    """Treasury Prices Data."""
+    """國債價格數據。"""
 
     issuer_name: str | None = Field(
         default=None,
-        description="Name of the issuing entity.",
+        description="發行實體名稱。",
     )
     cusip: str | None = Field(
         default=None,
-        description="CUSIP of the security.",
+        description="證券的 CUSIP。",
     )
     isin: str | None = Field(
         default=None,
-        description="ISIN of the security.",
+        description="證券的 ISIN。",
     )
     security_type: str | None = Field(
         default=None,
-        description="The type of Treasury security - i.e., Bill, Note, Bond, TIPS, FRN.",
+        description="國債證券類型 - 即短期國債 (Bill)、中期國債 (Note)、長期國債 (Bond)、抗通膨債券 (TIPS)、浮動利率債券 (FRN)。",
     )
     issue_date: dateType | None = Field(
         default=None,
-        description="The original issue date of the security.",
+        description="證券的原始發行日期。",
     )
     maturity_date: dateType | None = Field(
         default=None,
-        description="The maturity date of the security.",
+        description="證券的到期日期。",
     )
     call_date: dateType | None = Field(
-        description="The call date of the security.", default=None
+        description="證券的贖回日期。", default=None
     )
     bid: float | None = Field(
         default=None,
-        description="The bid price of the security.",
+        description="證券的買入價。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     offer: float | None = Field(
         default=None,
-        description="The offer price of the security.",
+        description="證券的賣出價。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     eod_price: float | None = Field(
         default=None,
-        description="The end-of-day price of the security.",
+        description="證券的收盤價格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     last_traded_date: dateType | None = Field(
-        description="The last trade date of the security.", default=None
+        description="證券的最後交易日期。", default=None
     )
     total_trades: int | None = Field(
         default=None,
-        description="Total number of trades on the last traded date.",
+        description="最後交易日的交易總數。",
     )
     last_price: float | None = Field(
         default=None,
-        description="The last price of the security.",
+        description="證券的最後成交價。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     highest_price: float | None = Field(
         default=None,
-        description="The highest price for the bond on the last traded date.",
+        description="最後交易日該債券的最高價格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     lowest_price: float | None = Field(
         default=None,
-        description="The lowest price for the bond on the last traded date.",
+        description="最後交易日該債券的最低價格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     rate: float | None = Field(
-        description="The annualized interest rate or coupon of the security.",
+        description="證券的年化利率或票息。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ytm: float | None = Field(
         default=None,
-        description="Yield to maturity (YTM) is the rate of return anticipated on a bond"
-        + " if it is held until the maturity date. It takes into account"
-        + " the current market price, par value, coupon rate and time to maturity. It is assumed that all"
-        + " coupons are reinvested at the same rate.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

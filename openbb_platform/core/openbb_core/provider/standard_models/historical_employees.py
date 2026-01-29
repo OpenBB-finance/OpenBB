@@ -1,4 +1,4 @@
-"""Historical Employees Standard Model."""
+"""历史员工人数标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class HistoricalEmployeesQueryParams(QueryParams):
-    """Historical Employees Query."""
+    """历史员工人数查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -25,15 +25,15 @@ class HistoricalEmployeesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class HistoricalEmployeesData(Data):
-    """Historical Employees Data."""
+    """历史员工人数数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    employees: int = Field(description="Reported number of employees.")
+    employees: int = Field(description="报告的员工人数。")

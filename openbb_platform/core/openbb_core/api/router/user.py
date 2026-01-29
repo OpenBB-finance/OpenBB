@@ -1,4 +1,4 @@
-"""OpenBB Platform API Account Router."""
+"""OpenBB 平台 API 账户路由器。"""
 
 from typing import Annotated
 
@@ -15,5 +15,5 @@ user_settings_hook = get_user_settings
 async def read_user_settings(
     user_settings: Annotated[UserSettings, Depends(get_user_settings)],
 ):
-    """Read current user settings."""
+    """读取当前用户设置。"""
     return user_settings

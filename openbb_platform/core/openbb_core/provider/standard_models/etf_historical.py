@@ -1,4 +1,4 @@
-"""ETF Historical Price Standard Model."""
+"""ETF 历史价格标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -16,7 +16,7 @@ from pydantic import Field, NonNegativeInt, PositiveFloat, field_validator
 
 
 class EtfHistoricalQueryParams(QueryParams):
-    """ETF Historical Price Query."""
+    """ETF 历史价格查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
     start_date: dateType | None = Field(
@@ -31,12 +31,12 @@ class EtfHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase and remove '-'."""
+        """将字段转换为大写并删除 '-'。"""
         return v.upper()
 
 
 class EtfHistoricalData(Data):
-    """ETF Historical Price Data."""
+    """ETF 历史价格数据。"""
 
     date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -49,7 +49,7 @@ class EtfHistoricalData(Data):
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         if ":" in str(v):
             return parser.isoparse(str(v))
         return parser.parse(str(v)).date()

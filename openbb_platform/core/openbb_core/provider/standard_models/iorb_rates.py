@@ -1,4 +1,4 @@
-"""IORB Standard Model."""
+"""IORB 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class IORBQueryParams(QueryParams):
-    """IORB Query."""
+    """IORB 查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,7 +25,7 @@ class IORBQueryParams(QueryParams):
 
 
 class IORBData(Data):
-    """IORB Data."""
+    """IORB 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="IORB rate.")
+    rate: float | None = Field(description="IORB 利率。")

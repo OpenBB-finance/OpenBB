@@ -1,4 +1,4 @@
-"""TIPS (Treasury Inflation-Protected Securities) Yields Standard Model."""
+"""TIPS (通胀保值国债) 收益率标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class TipsYieldsQueryParams(QueryParams):
-    """TIPS Yields Query."""
+    """TIPS 收益率查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,7 +25,7 @@ class TipsYieldsQueryParams(QueryParams):
 
 
 class TipsYieldsData(Data):
-    """TIPS Yields Data."""
+    """TIPS 收益率数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
@@ -34,14 +34,14 @@ class TipsYieldsData(Data):
     )
     due: dateType | None = Field(
         default=None,
-        description="The due date (maturation date) of the security.",
+        description="证券的到期日（成熟日期）。",
     )
     name: str | None = Field(
         default=None,
-        description="The name of the security.",
+        description="证券名称。",
     )
     value: float = Field(
         default=None,
-        description="The yield value.",
+        description="收益率数值。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

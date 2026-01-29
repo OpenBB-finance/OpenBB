@@ -1,4 +1,4 @@
-"""Primray Dealer Positioning Standard Model."""
+"""一级交易商持仓标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class PrimaryDealerPositioningQueryParams(QueryParams):
-    """Primary Dealer Positioning Query."""
+    """一级交易商持仓查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -25,7 +25,7 @@ class PrimaryDealerPositioningQueryParams(QueryParams):
 
 
 class PrimaryDealerPositioningData(Data):
-    """Primary Dealer Positioning Data."""
+    """一级交易商持仓数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

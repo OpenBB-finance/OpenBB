@@ -3,7 +3,7 @@ import {
 	createRootRoute,
 	useRouter,
 } from "@tanstack/react-router";
-{/*import { invoke } from "@tauri-apps/api/core";*/}
+{/*import { invoke } from "@tauri-apps/api/core";*/ }
 import { useEffect, useState } from "react";
 {/*import { useEffect, useState } from "react";
 import { ThemeToggleButton } from "../components/Icon";*/}
@@ -29,47 +29,47 @@ interface NavLinkProps {
 }
 
 function NavLink({ to, search, children, selectedTab, setSelectedTab }: NavLinkProps & { selectedTab: string, setSelectedTab: (tab: string) => void }) {
-    const { isCreatingEnvironment } = useEnvironmentCreation();
-    const router = useRouter();
-    const currentPath = router.state.location.pathname;
-    const isCurrentPage = currentPath === to;
-    const isActive = selectedTab === to;
+	const { isCreatingEnvironment } = useEnvironmentCreation();
+	const router = useRouter();
+	const currentPath = router.state.location.pathname;
+	const isCurrentPage = currentPath === to;
+	const isActive = selectedTab === to;
 
-    if (isCreatingEnvironment && !isCurrentPage) {
-        return (
-            <div
-                className="px-4 py-2 rounded-t-lg text-theme-muted cursor-not-allowed opacity-50"
-                role="tab"
-                aria-selected={isActive}
-                tabIndex={-1}
-            >
-                {children}
-            </div>
-        );
-    }
+	if (isCreatingEnvironment && !isCurrentPage) {
+		return (
+			<div
+				className="px-4 py-2 rounded-t-lg text-theme-muted cursor-not-allowed opacity-50"
+				role="tab"
+				aria-selected={isActive}
+				tabIndex={-1}
+			>
+				{children}
+			</div>
+		);
+	}
 
-    const handleNavigation = async (e: React.MouseEvent) => {
-        e.preventDefault();
-        setSelectedTab(to); // update tab selection immediately
-        router.navigate({ to, search });
-    };
+	const handleNavigation = async (e: React.MouseEvent) => {
+		e.preventDefault();
+		setSelectedTab(to); // update tab selection immediately
+		router.navigate({ to, search });
+	};
 
-    const baseClassName = "mr-4 pb-1";
-    const activeClassName = "body-sm-medium border-b-2 tab-border-active text-theme-accent";
-    const inactiveClassName = "body-sm-regular text-theme-muted";
+	const baseClassName = "mr-4 pb-1";
+	const activeClassName = "body-sm-medium border-b-2 tab-border-active text-theme-accent";
+	const inactiveClassName = "body-sm-regular text-theme-muted";
 
-    return (
-        <button
-            onClick={handleNavigation}
-            className={`${baseClassName} ${isActive ? activeClassName : inactiveClassName}`}
-            role="tab"
-            aria-selected={isActive}
-            tabIndex={isActive ? 0 : -1}
-            type="button"
-        >
-            {children}
-        </button>
-    );
+	return (
+		<button
+			onClick={handleNavigation}
+			className={`${baseClassName} ${isActive ? activeClassName : inactiveClassName}`}
+			role="tab"
+			aria-selected={isActive}
+			tabIndex={isActive ? 0 : -1}
+			type="button"
+		>
+			{children}
+		</button>
+	);
 }
 
 
@@ -98,8 +98,8 @@ function Root() {
 	}, []);
 
 	const router = useRouter();
-    const currentPath = router.state.location.pathname;
-    const [selectedTab, setSelectedTab] = useState(currentPath);
+	const currentPath = router.state.location.pathname;
+	const [selectedTab, setSelectedTab] = useState(currentPath);
 	const isJupyterLogsView = currentPath === "/jupyter-logs";
 	const isBackendLogsView = currentPath === "/backend-logs";
 	const isLogsView = isJupyterLogsView || isBackendLogsView;
@@ -107,9 +107,9 @@ function Root() {
 	const isInstallationProgress = currentPath === "/installation-progress";
 	const shouldHideNav = isJupyterLogsView || isBackendLogsView || isInstallingSetup || isInstallationProgress;
 
-    useEffect(() => {
-        setSelectedTab(currentPath); // sync with route changes (e.g. browser nav)
-    }, [currentPath]);
+	useEffect(() => {
+		setSelectedTab(currentPath); // sync with route changes (e.g. browser nav)
+	}, [currentPath]);
 
 	// Set up theme state and persistence
 	{/*const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -206,8 +206,8 @@ function Root() {
 		localStorage.setItem("theme", "dark");
 	}, [currentPath]);*/}
 
-    return (
-        <div className="h-screen bg-theme-primary overflow-hidden transition-colors flex flex-col">
+	return (
+		<div className="h-screen bg-theme-primary overflow-hidden transition-colors flex flex-col">
 			<header className={`bg-theme-primary px-5 mt-2 ${isLogsView ? "logs-page-header" : ""}`}>
 				{/*<div className="flex gap-2 relative top-2 left-[85vw] -mb-7 pt-2 px-2">
 					<ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
@@ -234,25 +234,25 @@ function Root() {
 						role="tablist"
 						aria-orientation="horizontal"
 					>
-						<NavLink to="/backends" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Backends</NavLink>
-						<NavLink to="/environments" search={{ directory: undefined, userDataDir: undefined }} selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Environments</NavLink>
-						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API Keys</NavLink>
+						<NavLink to="/backends" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>后端</NavLink>
+						<NavLink to="/environments" search={{ directory: undefined, userDataDir: undefined }} selectedTab={selectedTab} setSelectedTab={setSelectedTab}>环境</NavLink>
+						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API 密钥</NavLink>
 					</nav>
 				)}
 			</div>
-            <div className="bg-theme-secondary flex flex-1 min-h-0">
-                <main className={`flex-1 flex flex-col ${isLogsView ? "pl-5" : "px-5"}`}>
-                    <Outlet />
-                </main>
-            </div>
+			<div className="bg-theme-secondary flex flex-1 min-h-0">
+				<main className={`flex-1 flex flex-col ${isLogsView ? "pl-5" : "px-5"}`}>
+					<Outlet />
+				</main>
+			</div>
 
-            <footer className="w-full bg-theme-secondary">
-                <div className="container mx-auto text-center">
-                    <p className="body-sm-regular text-theme-muted mb-1 mt-1">Copyright © 2025 OpenBB Inc.</p>
-                </div>
-            </footer>
-        </div>
-    );
+			<footer className="w-full bg-theme-secondary">
+				<div className="container mx-auto text-center">
+					<p className="body-sm-regular text-theme-muted mb-1 mt-1">Copyright © 2025 OpenBB Inc.</p>
+				</div>
+			</footer>
+		</div>
+	);
 }
 
 export function RootWithProvider() {

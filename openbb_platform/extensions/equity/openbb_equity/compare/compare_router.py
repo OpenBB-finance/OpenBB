@@ -1,5 +1,5 @@
 # pylint: disable=W0613:unused-argument
-"""Comparison Analysis Router."""
+"""比较分析路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -25,10 +25,9 @@ async def peers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the closest peers for a given company.
+    """获取给定公司的最接近的同行。
 
-    Peers consist of companies trading on the same exchange, operating within the same sector
-    and with comparable market capitalizations.
+    同行由在同一交易所交易、在同一行业运营且市值相当的公司组成。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -38,11 +37,11 @@ async def peers(
     examples=[
         APIEx(parameters={"provider": "finviz"}),
         APIEx(
-            description="Group by sector and analyze valuation.",
+            description="按部门分组并分析估值。",
             parameters={"group": "sector", "metric": "valuation", "provider": "finviz"},
         ),
         APIEx(
-            description="Group by industry and analyze performance.",
+            description="按行业分组并分析表现。",
             parameters={
                 "group": "industry",
                 "metric": "performance",
@@ -50,7 +49,7 @@ async def peers(
             },
         ),
         APIEx(
-            description="Group by country and analyze valuation.",
+            description="按国家分组并分析估值。",
             parameters={
                 "group": "country",
                 "metric": "valuation",
@@ -65,10 +64,10 @@ async def groups(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get company data grouped by sector, industry or country and display either performance or valuation metrics.
+    """获取按部门、行业或国家/地区分组的公司数据，并显示绩效或估值指标。
 
-    Valuation metrics include price to earnings, price to book, price to sales ratios and price to cash flow.
-    Performance metrics include the stock price change for different time periods.
+    估值指标包括市盈率、市净率、市销率和价格现金流比率。
+    绩效指标包括不同时间段的股价变化。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -100,5 +99,5 @@ async def company_facts(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Compare reported company facts and fundamental data points."""
+    """比较报告的公司事实和基本面数据点。"""
     return await OBBject.from_query(Query(**locals()))

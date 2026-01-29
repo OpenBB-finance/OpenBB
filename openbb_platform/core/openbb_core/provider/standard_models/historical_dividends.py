@@ -1,4 +1,4 @@
-"""Historical Dividends Standard Model."""
+"""历史股息标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class HistoricalDividendsQueryParams(QueryParams):
-    """Historical Dividends Query."""
+    """历史股息查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -25,17 +25,17 @@ class HistoricalDividendsQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class HistoricalDividendsData(Data):
-    """Historical Dividends Data."""
+    """历史股息数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     ex_dividend_date: dateType = Field(
-        description="The ex-dividend date - the date on which the stock begins trading without rights to the dividend."
+        description="除权除息日——股票开始在没有股息权的情况下交易的日期。"
     )
-    amount: float = Field(description="The dividend amount per share.")
+    amount: float = Field(description="每股股息金额。")

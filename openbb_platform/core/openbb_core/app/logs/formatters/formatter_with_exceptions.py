@@ -1,4 +1,4 @@
-"""Logging Formatter that includes formatting of Exceptions."""
+"""包含异常格式化的日志格式化程序。"""
 
 import logging
 
@@ -6,7 +6,7 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
 class FormatterWithExceptions(logging.Formatter):
-    """Logging Formatter that includes formatting of Exceptions."""
+    """包含异常格式化的日志格式化程序。"""
 
     DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
     LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
@@ -16,7 +16,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def calculate_level_name(record: logging.LogRecord) -> str:
-        """Calculate the level name of the log record."""
+        """计算日志记录的级别名称。"""
         if record.exc_text:
             level_name = "X"
         elif record.levelname:
@@ -28,7 +28,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def extract_log_extra(record: logging.LogRecord):
-        """Extract extra log information from the record."""
+        """从记录中提取额外的日志信息。"""
         log_extra = dict()
 
         if hasattr(record, "func_name_override"):
@@ -42,7 +42,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_ipv4(text: str) -> str:
-        """Mock IPv4 addresses in the text."""
+        """文本中的 Mock IPv4 地址。"""
         # pylint: disable=import-outside-toplevel
         import re
 
@@ -54,7 +54,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_email(text: str) -> str:
-        """Mock email addresses in the text."""
+        """文本中的 Mock 电子邮件地址。"""
         # pylint: disable=import-outside-toplevel
         import re
 
@@ -66,7 +66,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_password(text: str) -> str:
-        """Mock passwords in the text."""
+        """文本中的 Mock 密码。"""
         # pylint: disable=import-outside-toplevel
         import re
 
@@ -77,7 +77,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_flair(text: str) -> str:
-        """Mock flair in the text."""
+        """文本中的 Mock flair。"""
         # pylint: disable=import-outside-toplevel
         import re
 
@@ -89,7 +89,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_home_directory(text: str) -> str:
-        """Mock home directory in the text."""
+        """文本中的 Mock 主目录。"""
         # pylint: disable=import-outside-toplevel
         from pathlib import Path
 
@@ -102,7 +102,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def filter_special_tags(text: str) -> str:
-        """Filter special tags in the text."""
+        """过滤文本中的特殊标签。"""
         text_filtered = text.replace("\n", " MOCKING_BREAKLINE ")
         text_filtered = text_filtered.replace("'Traceback", "Traceback")
 
@@ -110,7 +110,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @classmethod
     def filter_piis(cls, text: str) -> str:
-        """Filter Personally Identifiable Information in the text."""
+        """过滤文本中的个人身份信息。"""
         text_filtered = cls.mock_ipv4(text=text)
         text_filtered = cls.mock_email(text=text_filtered)
         text_filtered = cls.mock_password(text=text_filtered)
@@ -121,7 +121,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @classmethod
     def filter_log_line(cls, text: str):
-        """Filter log line."""
+        """过滤日志行。"""
         text_filtered = cls.filter_special_tags(text=text)
         text_filtered = cls.filter_piis(text=text_filtered)
 
@@ -134,7 +134,7 @@ class FormatterWithExceptions(logging.Formatter):
         style="%",
         validate=True,
     ) -> None:
-        """Initialize the FormatterWithExceptions."""
+        """初始化 FormatterWithExceptions。"""
         super().__init__(
             fmt=self.LOGFORMAT,
             datefmt=self.DATEFORMAT,
@@ -145,7 +145,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @property
     def settings(self) -> LoggingSettings:
-        """Get the settings."""
+        """获取设置。"""
         # pylint: disable=import-outside-toplevel
         from copy import deepcopy
 
@@ -153,37 +153,37 @@ class FormatterWithExceptions(logging.Formatter):
 
     @settings.setter
     def settings(self, settings: LoggingSettings) -> None:
-        """Set the settings."""
+        """设置设置。"""
         self.__settings = settings
 
     # OVERRIDE
     def formatException(self, ei) -> str:
-        """Define the Exception formatting handler.
+        """定义异常格式化处理程序。
 
         Parameters
         ----------
         ei : logging._SysExcInfoType
-            Exception to be logged
+            要记录的异常
         Returns
         ----------
         str
-            Formatted exception
+            格式化的异常
         """
         result = super().formatException(ei)
         return repr(result)
 
     # OVERRIDE
     def format(self, record: logging.LogRecord) -> str:
-        """Define the Log formatter.
+        """定义日志格式化程序。
 
         Parameters
         ----------
         record : logging.LogRecord
-            Logging record
+            日志记录
         Returns
         ----------
         str
-            Formatted_log message
+            格式化的日志消息
         """
         level_name = self.calculate_level_name(record=record)
         log_prefix_content = {

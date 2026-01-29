@@ -1,4 +1,4 @@
-"""Equity Short Interest Standard Model."""
+"""股票卖空利息标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,68 +12,57 @@ from pydantic import Field
 
 
 class ShortInterestQueryParams(QueryParams):
-    """Equity Short Interest Query."""
+    """股票卖空利息查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
 
 class ShortInterestData(Data):
-    """Equity Short Interest Data."""
+    """股票卖空利息数据。"""
 
     settlement_date: dateType = Field(
         description=(
-            "The mid-month short interest report is based on short positions held by "
-            "members on the settlement date of the 15th of each month. If the 15th falls "
-            "on a weekend or another non-settlement date, the designated settlement date "
-            "will be the previous business day on which transactions settled. The "
-            "end-of-month short interest report is based on short positions held on the "
-            "last business day of the month on which transactions settle. Once the short "
-            "position reports are received, the short interest data is compiled for each "
-            "equity security and provided for publication on the 7th business day after "
-            "the reporting settlement date."
+            "月中卖空利息报告基于成员在每月 15 日结算日持有的卖空头寸。"
+            "如果 15 日是周末或其他非结算日，则指定的结算日将是交易结算的前一个工作日。"
+            "月底卖空利息报告基于交易结算月最后一个工作日持有的卖空头寸。"
+            "一旦收到卖空头寸报告，就会汇编每只股票的卖空利息数据，"
+            "并在报告结算日后的第 7 个工作日公布。"
         )
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    issue_name: str = Field(description="Unique identifier of the issue.")
-    market_class: str = Field(description="Primary listing market.")
+    issue_name: str = Field(description="发行的唯一标识符。")
+    market_class: str = Field(description="主要上市市场。")
     current_short_position: float = Field(
         description=(
-            "The total number of shares in the issue that are reflected on the books "
-            "and records of the reporting firms as short as defined by Rule 200 of "
-            "Regulation SHO as of the current cycle’s designated settlement date."
+            "截至当前周期指定结算日，报告公司账簿和记录中反映的发行股票总数，"
+            "根据 SHO 条例第 200 条定义为卖空。"
         )
     )
     previous_short_position: float = Field(
         description=(
-            "The total number of shares in the issue that are reflected on the books "
-            "and records of the reporting firms as short as defined by Rule 200 of "
-            "Regulation SHO as of the previous cycle’s designated settlement date."
+            "截至上一周期指定结算日，报告公司账簿和记录中反映的发行股票总数，"
+            "根据 SHO 条例第 200 条定义为卖空。"
         )
     )
     avg_daily_volume: float = Field(
         description=(
-            "Total Volume or Adjusted Volume in case of splits / Total trade days "
-            "between (previous settlement date + 1) to (current settlement date). The "
-            "NULL values are translated as zero."
+            "总成交量或拆分情况下的调整成交量 / （上一结算日 + 1）至（当前结算日）之间的总交易天数。"
+            "NULL 值转换为零。"
         )
     )
 
     days_to_cover: float = Field(
         description=(
-            "The number of days of average share volume it would require to buy all of "
-            "the shares that were sold short during the reporting cycle. Formula: Short "
-            "Interest / Average Daily Share Volume, Rounded to Hundredths. 1.00 will be "
-            "displayed for any values equal or less than 1 (i.e., Average Daily Share is "
-            "equal to or greater than Short Interest). N/A will be displayed If the days "
-            "to cover is Zero (i.e., Average Daily Share Volume is Zero)."
+            "购买报告周期内所有卖空股票所需的平均每日成交量的天数。公式：卖空利息 / 平均每日成交量，四舍五入到百分位。"
+            "任何等于或小于 1 的值（即平均每日成交量等于或大于卖空利息）都将显示为 1.00。"
+            "如果回补天数为零（即平均每日成交量为零），将显示 N/A。"
         )
     )
     change: float = Field(
         description=(
-            "Change in Shares Short from Previous Cycle: Difference in short interest "
-            "between the current cycle and the previous cycle."
+            "较上一周期卖空股票的变化：当前周期与上一周期卖空利息的差额。"
         )
     )
     change_pct: float = Field(
-        description="Change in Shares Short from Previous Cycle as a percent."
+        description="较上一周期卖空股票变化的百分比。"
     )

@@ -1,4 +1,4 @@
-"""Equity Search Standard Model."""
+"""股票搜索标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,18 +7,18 @@ from pydantic import Field
 
 
 class EquitySearchQueryParams(QueryParams):
-    """Equity Search Query."""
+    """股票搜索查询。"""
 
-    query: str = Field(description="Search query.", default="")
+    query: str = Field(description="搜索查询。", default="")
     is_symbol: bool = Field(
-        description="Whether to search by ticker symbol.", default=False
+        description="是否按股票代码搜索。", default=False
     )
 
 
 class EquitySearchData(Data):
-    """Equity Search Data."""
+    """股票搜索数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    name: str | None = Field(default=None, description="Name of the company.")
+    name: str | None = Field(default=None, description="公司名称。")

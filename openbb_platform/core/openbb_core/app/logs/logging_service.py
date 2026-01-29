@@ -1,4 +1,4 @@
-"""Logging Service Module."""
+"""日志服务模块。"""
 
 import json
 import logging
@@ -20,44 +20,44 @@ from pydantic_core import to_jsonable_python
 
 
 class DummyProvider(BaseModel):
-    """Dummy Provider for error handling with logs."""
+    """用于处理错误的带有日志的虚拟提供者。"""
 
     provider: str = "not_passed_to_kwargs"
 
 
 class LoggingService(metaclass=SingletonMeta):
-    """Logging Service class responsible for managing logging settings and handling logs.
+    """日志服务类负责管理日志设置和处理日志。
 
     Attributes
     ----------
     _user_settings : Optional[UserSettings]
-        User Settings object.
+        用户设置对象。
     _system_settings : Optional[SystemSettings]
-        System Settings object.
+        系统设置对象。
     _logging_settings : LoggingSettings
-        LoggingSettings object containing the current logging settings.
+        包含当前日志设置的 LoggingSettings 对象。
     _handlers_manager : HandlersManager
-        HandlersManager object managing logging handlers.
+        管理日志处理程序的 HandlersManager 对象。
 
     Methods
     -------
     __init__(system_settings, user_settings)
-        Logging Manager Constructor.
+        日志管理器构造函数。
 
     log(user_settings, system_settings, route, func, kwargs, exec_info or None, custom_headers or None)
-        Log command output and relevant information.
+        记录命令输出和相关信息。
 
     logging_settings
-        Property to access the current logging settings.
+        访问当前日志设置的属性。
 
     logging_settings.setter(value)
-        Setter method to update the logging settings.
+        更新日志设置的 Setter 方法。
 
     _setup_handlers()
-        Setup Logging Handlers.
+        设置日志处理程序。
 
     _log_startup(route or None, custom_headers or None)
-        Log startup information.
+        记录启动信息。
     """
 
     _logger = logging.getLogger("openbb.logging_service")
@@ -67,16 +67,16 @@ class LoggingService(metaclass=SingletonMeta):
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> None:
-        """Define the Logging Service Constructor.
+        """定义日志服务构造函数。
 
-        Sets up the logging settings and handlers and then logs the startup information.
+        设置日志设置和处理程序，然后记录启动信息。
 
         Parameters
         ----------
         system_settings : SystemSettings
-            System Settings, by default None
+            系统设置，默认为 None
         user_settings : UserSettings
-            User Settings, by default None
+            用户设置，默认为 None
         """
         if system_settings.logging_suppress is True:
             return
@@ -94,23 +94,23 @@ class LoggingService(metaclass=SingletonMeta):
 
     @property
     def logging_settings(self) -> LoggingSettings:
-        """Define the Current logging settings.
+        """定义当前日志设置。
 
         Returns
         -------
         LoggingSettings
-            LoggingSettings object containing the current logging settings.
+            包含当前日志设置的 LoggingSettings 对象。
         """
         return self._logging_settings
 
     @logging_settings.setter
     def logging_settings(self, value: tuple[SystemSettings, UserSettings]) -> None:
-        """Define the Setter for updating the logging settings.
+        """定义用于更新日志设置的 Setter。
 
         Parameters
         ----------
         value : Tuple[SystemSettings, UserSettings]
-            Tuple containing updated SystemSettings and UserSettings.
+            包含更新后的 SystemSettings 和 UserSettings 的元组。
         Returns
         -------
         None
@@ -122,12 +122,12 @@ class LoggingService(metaclass=SingletonMeta):
         )
 
     def _setup_handlers(self) -> HandlersManager:
-        """Set up Logging Handlers.
+        """设置日志处理程序。
 
         Returns
         -------
         HandlersManager
-            Handlers Manager object.
+            Handlers Manager 对象。
         """
         handlers_manager = HandlersManager(
             self._logger, settings=self._logging_settings
@@ -151,13 +151,13 @@ class LoggingService(metaclass=SingletonMeta):
         custom_headers: dict[str, Any] | None = None,
     ) -> None:
         """
-        Log startup information.
+        记录启动信息。
         Parameters
         ----------
         route : Optional[str]
-            Route for the command, by default None
+            命令的路由，默认为 None
         custom_headers : Optional[Dict[str, Any]]
-            Custom headers to include in the log, by default None
+            要包含在日志中的自定义标头，默认为 None
         Returns
         -------
         None
@@ -209,27 +209,27 @@ class LoggingService(metaclass=SingletonMeta):
         ),
         custom_headers: dict[str, Any] | None = None,
     ) -> None:
-        """Log command output and relevant information.
+        """记录命令输出和相关信息。
 
         Parameters
         ----------
         user_settings : UserSettings
-            User Settings object.
+            用户设置对象。
         system_settings : SystemSettings
-            System Settings object.
+            系统设置对象。
         route : str
-            Route for the command.
+            命令的路由。
         func : Callable
-            Callable representing the executed function.
+            表示已执行函数的可调用对象。
         kwargs : Dict[str, Any]
-            Keyword arguments passed to the function.
+            传递给函数的关键字参数。
         exec_info : Union[
             Tuple[Type[BaseException], BaseException, TracebackType],
             Tuple[None, None, None],
         ]
-            Exception information, by default None
+            异常信息，默认为 None
         custom_headers : Optional[Dict[str, Any]]
-            Custom headers to include in the log, by default None
+            要包含在日志中的自定义标头，默认为 None
         Returns
         -------
         None
@@ -246,7 +246,7 @@ class LoggingService(metaclass=SingletonMeta):
             if "login" in route:
                 self._log_startup(route, custom_headers)
             else:
-                # Remove CommandContext if any
+                # 移除 CommandContext（如果有）
                 kwargs.pop("cc", None)
 
                 passed_model = kwargs.get("provider_choices", DummyProvider())
@@ -256,12 +256,12 @@ class LoggingService(metaclass=SingletonMeta):
                     else "not_passed_to_kwargs"
                 )
 
-                # Truncate kwargs if too long
+                # 如果 kwargs 太长，则截断
                 kwargs = {k: str(v)[:300] for k, v in kwargs.items()}
-                # Get execution info
+                # 获取执行信息
                 error = None if all(i is None for i in exec_info) else str(exec_info[1])
 
-                # Construct message
+                # 构造消息
                 message_label = "ERROR" if error else "CMD"
                 log_message = json.dumps(
                     {

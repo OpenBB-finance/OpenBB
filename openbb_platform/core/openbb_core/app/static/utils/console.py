@@ -1,16 +1,16 @@
-"""Console module."""
+"""控制台模块。"""
 
 from openbb_core.env import Env
 
 
 class Console:
-    """Console to be used by builder and linters."""
+    """构建器和 linter 使用的控制台。"""
 
     def __init__(self, verbose: bool):
-        """Initialize the console."""
+        """初始化控制台。"""
         self.verbose = verbose
 
     def log(self, message: str, **kwargs):
-        """Console log method."""
+        """控制台日志方法。"""
         if self.verbose or Env().DEBUG_MODE:
             print(message, **kwargs)  # noqa: T201

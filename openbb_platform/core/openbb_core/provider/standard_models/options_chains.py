@@ -1,4 +1,4 @@
-"""Options Chains Standard Model."""
+"""期权链标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,55 +15,55 @@ from pydantic import Field, field_validator, model_serializer
 
 
 class OptionsChainsQueryParams(QueryParams):
-    """Options Chains Query."""
+    """期权链查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Return the symbol in uppercase."""
+        """以大写形式返回股票代码。"""
         return v.upper()
 
 
 class OptionsChainsData(OptionsChainsProperties):
-    """Options Chains Data.
+    """期权链数据。
 
-    Note: The attached properties and methods are available only when working with an instance of this class,
-    initialized with validated provider data. The items below bind to the `results` object in the function's output.
+    注意：所附带的属性和方法仅在使用该类的实例时可用，
+    该实例已使用经过验证的提供商数据初始化。下面的项绑定到函数输出中的 `results` 对象。
 
-    Properties
+    属性
     ----------
     dataframe: DataFrame
-        Return all data as a Pandas DataFrame, with additional computed columns (Breakeven, GEX, DEX) if available.
+        返回所有数据作为 Pandas DataFrame，包含额外的计算列（Breakeven, GEX, DEX，如有）。
     expirations: List[str]
-        Return a list of unique expiration dates, as strings.
+        以字符串列表形式返回唯一的到期日。
     strikes: List[float]
-        Return a list of unique strike prices.
+        返回唯一的执行价列表。
     has_iv: bool
-        Return True if the data contains implied volatility.
+        如果数据包含隐含波动率，则返回 True。
     has_greeks: bool
-        Return True if the data contains greeks.
+        如果数据包含希腊字母值，则返回 True。
     total_oi: Dict
-        Return open interest stats as a nested dictionary with keys: total, expiration, strike.
-        Both, "expiration" and "strike", contain a list of records with fields: Calls, Puts, Total, Net Percent, PCR.
+        将持仓量统计信息作为嵌套字典返回，包含键：total、expiration、strike。
+        "expiration" 和 "strike" 都包含一系列记录，字段包括：Calls、Puts、Total、Net Percent、PCR。
     total_volume: Dict
-        Return volume stats as a nested dictionary with keys: total, expiration, strike.
-        Both, "expiration" and "strike", contain a list of records with fields: Calls, Puts, Total, Net Percent, PCR.
+        将成交量统计信息作为嵌套字典返回，包含键：total、expiration、strike。
+        "expiration" 和 "strike" 都包含一系列记录，字段包括：Calls、Puts、Total、Net Percent、PCR。
     total_dex: Dict
-        Return Delta Dollars (DEX), if available, as a nested dictionary with keys: total, expiration, strike.
-        Both, "expiration" and "strike", contain a list of records with fields: Calls, Puts, Total, Net Percent, PCR.
+        如果可用，将 Delta Dollars (DEX) 作为嵌套字典返回，包含键：total、expiration、strike。
+        "expiration" 和 "strike" 都包含一系列记录，字段包括：Calls、Puts、Total、Net Percent、PCR。
     total_gex: Dict
-        Return Gamma Exposure (GEX), if available, as a nested dictionary with keys: total, expiration, strike.
-        Both, "expiration" and "strike", contain a list of records with fields: Calls, Puts, Total, Net Percent, PCR.
+        如果可用，将 Gamma Exposure (GEX) 作为嵌套字典返回，包含键：total、expiration、strike。
+        "expiration" 和 "strike" 都包含一系列记录，字段包括：Calls、Puts、Total、Net Percent、PCR。
     last_price: float
-        Manually set the underlying price by assigning a float value to this property.
-        Certain provider/symbol combinations may not return the underlying price,
-        and it may be necessary, or desirable, to set it post-initialization.
-        This property can be used to override the underlying price returned by the provider.
-        It is not set automatically, and this property will return None if it is not set.
+        通过为此属性分配浮点值来手动设置标的价格。
+        某些提供商/股票代码组合可能不会返回标的价格，
+        在初始化后设置它可能是必要或理想的。
+        此属性可用于覆盖提供商返回的标的价格。
+        它不会自动设置，如果未设置，此属性将返回 None。
 
-    Methods
+    方法
     -------
     filter_data(
         date: Optional[Union[str, int]] = None,
@@ -75,38 +75,38 @@ class OptionsChainsData(OptionsChainsProperties):
         stat: Optional[Literal["open_interest", "volume", "dex", "gex"]] = None,
         by: Literal["expiration", "strike"] = "expiration",
     ) -> DataFrame:
-        Return statistics by strike or expiration; or, the filtered chains data.
+        按执行价或到期日返回统计信息；或者，返回过滤后的期权链数据。
     skew(
         date: Optional[Union[int, str]] = None, underlying_price: Optional[float] = None)
     -> DataFrame:
-        Return skewness of the options, either vertical or horizontal, by nearest DTE.
+        按最近的 DTE 返回期权的偏度，垂直或水平。
     straddle(
         days: Optional[int] = None, strike: Optional[float] = None, underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a straddle, by nearest DTE. Use a negative strike price for short options.
+        按最近的 DTE 计算跨式期权的成本。卖出期权请使用负的执行价。
     strangle(
         days: Optional[int] = None, moneyness: Optional[float] = None, underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a strangle, by nearest DTE and % moneyness.
-        Use a negative value for moneyness for short options.
+        按最近的 DTE 和虚值百分比计算勒式期权的成本。
+        卖出期权的虚值百分比请使用负值。
     synthetic_long(
         days: Optional[int] = None, strike: Optional[float] = None, underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a synthetic long position, by nearest DTE and strike price.
+        按最近的 DTE 和执行价计算合成做多头寸的成本。
     synthetic_short(
         days: Optional[int] = None, strike: Optional[float] = None, underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a synthetic short position, by nearest DTE and strike price.
+        按最近的 DTE 和执行价计算合成做空头寸的成本。
     vertical_call(
         days: Optional[int] = None, sold: Optional[float] = None, bought: Optional[float] = None,
         underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a vertical call spread, by nearest DTE and strike price to sold and bought levels.
+        按最近的 DTE 以及卖出和买入层级的执行价计算垂直看涨价差的成本。
     vertical_put(
         days: Optional[int] = None, sold: Optional[float] = None, bought: Optional[float] = None,
         underlying_price: Optional[float] = None
     ) -> DataFrame:
-        Calculates the cost of a vertical put spread, by nearest DTE and strike price to sold and bought levels.
+        按最近的 DTE 以及卖出和买入层级的执行价计算垂直看跌价差的成本。
     strategies(
         days: Optional[int] = None,
         straddle_strike: Optional[float] = None,
@@ -117,101 +117,101 @@ class OptionsChainsData(OptionsChainsProperties):
         vertical_puts: Optional[List[tuple]] = None,
         underlying_price: Optional[float] = None,
     ) -> DataFrame:
-        Method for combining multiple strategies and parameters in a single DataFrame.
-        To get all expirations, set days to -1.
+        在单个 DataFrame 中组合多种策略和参数的方法。
+        要获取所有到期日，请将 days 设置为 -1。
 
-    Raises
+    异常
     ------
     OpenBBError
-        OpenBBError will raise when accessing properties and methods if required, specific, data was not found.
+    如果未找到所需的特定数据，访问属性和方法时将引发 OpenBBError。
     """
 
     underlying_symbol: list[str | None] = Field(
         default_factory=list,
-        description="Underlying symbol for the option.",
+        description="期权的标的股票代码。",
     )
     underlying_price: list[float | None] = Field(
         default_factory=list,
-        description="Price of the underlying stock.",
+        description="标的股票的价格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    contract_symbol: list[str] = Field(description="Contract symbol for the option.")
+    contract_symbol: list[str] = Field(description="期权合约代码。")
     eod_date: list[dateType | None] = Field(
         default_factory=list,
-        description="Date for which the options chains are returned.",
+        description="返回期权链的日期。",
     )
-    expiration: list[dateType] = Field(description="Expiration date of the contract.")
+    expiration: list[dateType] = Field(description="合约到期日。")
     dte: list[int | None] = Field(
-        default_factory=list, description="Days to expiration of the contract."
+        default_factory=list, description="合约距离到期天数。"
     )
     strike: list[float] = Field(
-        description="Strike price of the contract.",
+        description="合约执行价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    option_type: list[str] = Field(description="Call or Put.")
+    option_type: list[str] = Field(description="看涨期权或看跌期权 (Call or Put)。")
     contract_size: list[int | float | None] = Field(
-        default_factory=list, description="Number of underlying units per contract."
+        default_factory=list, description="每张合约对应的标的单位数量。"
     )
     open_interest: list[int | float | None] = Field(
-        default_factory=list, description="Open interest on the contract."
+        default_factory=list, description="合约持仓量。"
     )
     volume: list[int | float | None] = Field(
         default_factory=list, description=DATA_DESCRIPTIONS.get("volume", "")
     )
     theoretical_price: list[float | None] = Field(
         default_factory=list,
-        description="Theoretical value of the option.",
+        description="期权理论价值。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     last_trade_price: list[float | None] = Field(
         default_factory=list,
-        description="Last trade price of the option.",
+        description="期权最新成交价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     last_trade_size: list[int | float | None] = Field(
-        default_factory=list, description="Last trade size of the option."
+        default_factory=list, description="期权最新成交规模。"
     )
     last_trade_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The timestamp of the last trade.",
+        description="最新成交的时间戳。",
     )
     tick: list[str | None] = Field(
         default_factory=list,
-        description="Whether the last tick was up or down in price.",
+        description="上一价格跳动是向上还是向下。",
     )
     bid: list[float | None] = Field(
         default_factory=list,
-        description="Current bid price for the option.",
+        description="期权当前买入价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     bid_size: list[int | float | None] = Field(
-        default_factory=list, description="Bid size for the option."
+        default_factory=list, description="期权买入规模。"
     )
     bid_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The timestamp of the bid price.",
+        description="买入价的时间戳。",
     )
     bid_exchange: list[str | None] = Field(
-        default_factory=list, description="The exchange of the bid price."
+        default_factory=list, description="买入价所属交易所。"
     )
     ask: list[float | None] = Field(
         default_factory=list,
-        description="Current ask price for the option.",
+        description="期权当前卖出价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     ask_size: list[int | float | None] = Field(
-        default_factory=list, description="Ask size for the option."
+        default_factory=list, description="期权卖出规模。"
     )
     ask_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The timestamp of the ask price.",
+        description="卖出价的时间戳。",
     )
     ask_exchange: list[str | None] = Field(
-        default_factory=list, description="The exchange of the ask price."
+        default_factory=list, description="卖出价所属交易所。"
     )
     mark: list[float | None] = Field(
         default_factory=list,
-        description="The mid-price between the latest bid and ask.",
+        description="最新买卖报价的中点价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     open: list[float | None] = Field(
@@ -221,12 +221,12 @@ class OptionsChainsData(OptionsChainsProperties):
     )
     open_bid: list[float | None] = Field(
         default_factory=list,
-        description="The opening bid price for the option that day.",
+        description="该期权当日开盘买入价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     open_ask: list[float | None] = Field(
         default_factory=list,
-        description="The opening ask price for the option that day.",
+        description="该期权当日开盘卖出价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     high: list[float | None] = Field(
@@ -236,12 +236,12 @@ class OptionsChainsData(OptionsChainsProperties):
     )
     bid_high: list[float | None] = Field(
         default_factory=list,
-        description="The highest bid price for the option that day.",
+        description="该期权当日最高买入价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     ask_high: list[float | None] = Field(
         default_factory=list,
-        description="The highest ask price for the option that day.",
+        description="该期权当日最高卖出价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     low: list[float | None] = Field(
@@ -251,12 +251,12 @@ class OptionsChainsData(OptionsChainsProperties):
     )
     bid_low: list[float | None] = Field(
         default_factory=list,
-        description="The lowest bid price for the option that day.",
+        description="该期权当日最低买入价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     ask_low: list[float | None] = Field(
         default_factory=list,
-        description="The lowest ask price for the option that day.",
+        description="该期权当日最低卖出价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     close: list[float | None] = Field(
@@ -266,36 +266,36 @@ class OptionsChainsData(OptionsChainsProperties):
     )
     close_size: list[int | float | None] = Field(
         default_factory=list,
-        description="The closing trade size for the option that day.",
+        description="该期权当日收盘成交规模。",
     )
     close_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The time of the closing price for the option that day.",
+        description="该期权当日收盘价的时间。",
     )
     close_bid: list[float | None] = Field(
         default_factory=list,
-        description="The closing bid price for the option that day.",
+        description="该期权当日收盘买入价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     close_bid_size: list[int | float | None] = Field(
         default_factory=list,
-        description="The closing bid size for the option that day.",
+        description="该期权当日收盘买入规模。",
     )
     close_bid_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The time of the bid closing price for the option that day.",
+        description="该期权当日收盘买入价的时间。",
     )
     close_ask: list[float | None] = Field(
         default_factory=list,
-        description="The closing ask price for the option that day.",
+        description="该期权当日收盘卖出价。",
     )
     close_ask_size: list[int | float | None] = Field(
         default_factory=list,
-        description="The closing ask size for the option that day.",
+        description="该期权当日收盘卖出规模。",
     )
     close_ask_time: list[datetime | None] = Field(
         default_factory=list,
-        description="The time of the ask closing price for the option that day.",
+        description="该期权当日收盘卖出价的时间。",
     )
     prev_close: list[float | None] = Field(
         default_factory=list,
@@ -303,48 +303,48 @@ class OptionsChainsData(OptionsChainsProperties):
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     change: list[float | None] = Field(
-        default_factory=list, description="The change in the price of the option."
+        default_factory=list, description="期权价格的变化。"
     )
     change_percent: list[float | None] = Field(
         default_factory=list,
-        description="Change, in normalized percentage points, of the option.",
+        description="期权的价格百分比变化。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     implied_volatility: list[float | None] = Field(
         default_factory=list,
-        description="Implied volatility of the option.",
+        description="期权隐含波动率。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
     delta: list[float | None] = Field(
         default_factory=list,
-        description="Delta of the option.",
+        description="期权 Delta 值。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
     gamma: list[float | None] = Field(
         default_factory=list,
-        description="Gamma of the option.",
+        description="期权 Gamma 值。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
     theta: list[float | None] = Field(
         default_factory=list,
-        description="Theta of the option.",
+        description="期权 Theta 值。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
     vega: list[float | None] = Field(
         default_factory=list,
-        description="Vega of the option.",
+        description="期权 Vega 值。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
     rho: list[float | None] = Field(
         default_factory=list,
-        description="Rho of the option.",
+        description="期权 Rho 值。",
         json_schema_extra={"x-unit_measurement": "decimal"},
     )
 
     @field_validator("expiration", mode="before", check_fields=False)
     @classmethod
     def _date_validate(cls, v):
-        """Return the datetime object from the date string."""
+        """从日期字符串返回 datetime 对象。"""
         if isinstance(v[0], datetime):
             return [datetime.strftime(d, "%Y-%m-%d") if d else None for d in v]
         if isinstance(v[0], str):
@@ -353,7 +353,7 @@ class OptionsChainsData(OptionsChainsProperties):
 
     @model_serializer
     def model_serialize(self):
-        """Return the serialized data."""
+        """返回序列化后的数据。"""
         data: dict = {}
         for field in self.model_fields:
             value = getattr(self, field)

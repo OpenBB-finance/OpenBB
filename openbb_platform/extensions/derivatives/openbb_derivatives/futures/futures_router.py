@@ -1,4 +1,4 @@
-"""Futures Router."""
+"""期货路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -20,11 +20,11 @@ router = Router(prefix="/futures")
     examples=[
         APIEx(parameters={"symbol": "ES", "provider": "yfinance"}),
         APIEx(
-            description="Enter multiple symbols.",
+            description="输入多个代码。",
             parameters={"symbol": "ES,NQ", "provider": "yfinance"},
         ),
         APIEx(
-            description='Enter expiration dates as "YYYY-MM".',
+            description='输入到期日期为 "YYYY-MM"。',
             parameters={
                 "symbol": "ES",
                 "provider": "yfinance",
@@ -39,7 +39,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical futures prices."""
+    """期货历史价格。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -58,7 +58,7 @@ async def curve(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Futures Term Structure, current or historical."""
+    """期货期限结构，当前或历史。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -74,7 +74,7 @@ async def instruments(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get reference data for available futures instruments by provider."""
+    """按提供商获取可用期货工具的参考数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -93,5 +93,5 @@ async def info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get current trading statistics by futures contract symbol."""
+    """按期货合约代码获取当前交易统计数据。"""
     return await OBBject.from_query(Query(**locals()))

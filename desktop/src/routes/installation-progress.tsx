@@ -21,11 +21,11 @@ type InstallationPhase =
 	| "cancelled";
 
 interface ExtensionSource {
-  packageName: string;
-  reprName?: string;
-  description?: string;
-  credentials?: string[] | [];
-  instructions?: string | null;
+	packageName: string;
+	reprName?: string;
+	description?: string;
+	credentials?: string[] | [];
+	instructions?: string | null;
 }
 
 // Helper function to check if an error is just a FutureWarning
@@ -124,27 +124,27 @@ const ExtensionSelector = ({
 	const categories: ExtensionCategory[] = [
 		{
 			id: "provider",
-			name: "Data Providers",
+			name: "数据提供商",
 			description:
-				"Data providers implementing the OpenBB provider interface.",
+				"通过 OpenBB 提供商接口提供数据的提供商。",
 		},
 		{
 			id: "router",
-			name: "Routers",
+			name: "路由器 (Routers)",
 			description:
-				"API paths and endpoints implementing the OpenBB command interface.",
+				"实现 OpenBB 命令接口的 API 路径和端点。",
 		},
 		{
 			id: "other-openbb",
-			name: "Others",
+			name: "其他",
 			description:
-				"Additional OpenBB extensions, including OBBject extensions, that enhance the functionality of the OpenBB platform.",
+				"增强 OpenBB 平台功能的其他 OpenBB 扩展，包括 OBBject 扩展。",
 		},
 		{
 			id: "extras",
-			name: "PyPI Packages",
+			name: "PyPI 软件包",
 			description:
-				"Add other Python packages to the environment.",
+				"向环境中添加其他 Python 软件包。",
 		},
 	];
 
@@ -152,7 +152,7 @@ const ExtensionSelector = ({
 		{
 			id: "openbb-cli",
 			name: "OpenBB CLI",
-			description: "Command line interface for OpenBB",
+			description: "OpenBB 的命令行界面",
 			category: "other-openbb",
 			credentials: [],
 		},
@@ -205,7 +205,7 @@ const ExtensionSelector = ({
 					...providers.map((item: ExtensionSource) => ({
 						id: item.packageName,
 						name: item.reprName || item.packageName,
-						description: item.description || "No description available",
+						description: item.description || "无可用说明",
 						category: "provider",
 						credentials: item.credentials || [],
 						instructions: item.instructions || null,
@@ -213,7 +213,7 @@ const ExtensionSelector = ({
 					...routers.map((item: ExtensionSource) => ({
 						id: item.packageName,
 						name: item.reprName || item.packageName,
-						description: item.description || "No description available",
+						description: item.description || "无可用说明",
 						category: "router",
 						credentials: item.credentials || [],
 						instructions: item.instructions || null,
@@ -221,7 +221,7 @@ const ExtensionSelector = ({
 					...obbjects.map((item: ExtensionSource) => ({
 						id: item.packageName,
 						name: item.reprName || item.packageName,
-						description: item.description || "No description available",
+						description: item.description || "无可用说明",
 						category: "other-openbb",
 						credentials: item.credentials || [],
 						instructions: item.instructions || null,
@@ -257,7 +257,7 @@ const ExtensionSelector = ({
 			} catch (err) {
 				console.error("Error fetching extensions:", err);
 				setError(
-					"Failed to load extensions. Please try again or continue without extensions.",
+					"获取扩展列表失败。请重试，或在不安装扩展的情况下继续。",
 				);
 			} finally {
 				setLoading(false);
@@ -380,7 +380,7 @@ const ExtensionSelector = ({
 				<div className="flex justify-center items-center p-8 text-theme-primary">
 					<div className="animate-spin rounded-full h-8 w-8 border-theme-color" />
 					<span className="ml-2 body-xs-regular text-theme-primary">
-						Loading extensions...
+						正在获取扩展列表...
 					</span>
 				</div>
 			) : (
@@ -397,10 +397,9 @@ const ExtensionSelector = ({
 										type="button"
 										className={`py-1 text-theme transition-colors
                         					${idx === 0 ? "pl-0" : "px-0"}
-                        					${
-												activeCategoryTab === category.id
-													? "body-sm-bold border-b tab-border-active text-theme-accent relative -bottom-0.5"
-													: "body-sm-medium text-theme-muted relative -bottom-0.5 "
+                        					${activeCategoryTab === category.id
+												? "body-sm-bold border-b tab-border-active text-theme-accent relative -bottom-0.5"
+												: "body-sm-medium text-theme-muted relative -bottom-0.5 "
 											}
                         					focus:outline-none
                       					`}
@@ -432,7 +431,7 @@ const ExtensionSelector = ({
 									<input
 										id="extension-search"
 										type="text"
-										placeholder="Search extensions..."
+										placeholder="搜索扩展..."
 										value={searchQuery}
 										onChange={(e) => onSearchQueryChange(e.target.value)}
 										className="!pl-[30px] w-full text-xs p-2 bg-theme-secondary rounded overflow-hidden text-ellipsis whitespace-nowrap"
@@ -443,7 +442,7 @@ const ExtensionSelector = ({
 							</div>
 							<div className="mt-3 flex items-center">
 								<Tooltip
-									content="Deselect all extensions in this category"
+									content="取消选择此分类中的所有扩展"
 									className="tooltip tooltip-theme"
 								>
 									<input
@@ -464,7 +463,7 @@ const ExtensionSelector = ({
 								{/* Horizontal line inside the checkbox when checked */}
 								{/* Select All Button */}
 								<Tooltip
-									content="Select all extensions in this category."
+									content="选择此分类中的所有扩展。"
 									className="tooltip tooltip-theme"
 								>
 									<Button
@@ -473,7 +472,7 @@ const ExtensionSelector = ({
 										className="button-ghost ml-0 body-sm-medium relative -top-0.5"
 										size="xs"
 									>
-										Select All
+										全选
 									</Button>
 								</Tooltip>
 							</div>
@@ -499,12 +498,12 @@ const ExtensionSelector = ({
 															htmlFor="custom-package"
 															className="body-sm-bold text-theme-secondary mb-1 block"
 														>
-															Package
+															软件包
 														</label>
 														<input
 															id="custom-package"
 															type="text"
-															placeholder="PyPI Package Name"
+															placeholder="PyPI 软件包名称"
 															className="form-input text-sm border-theme-accent rounded p-1 w-full body-sm-regular text-theme-primary shadow-md"
 															value={customPackage}
 															onChange={(e) => setCustomPackage(e.target.value)}
@@ -528,13 +527,13 @@ const ExtensionSelector = ({
 														size="sm"
 														className="button-primary"
 													>
-														Add
+														添加
 													</Button>
 												</div>
 												{customPackages.length === 0 && (
 													<div className="w-full bg-theme-quartary flex flex-1 h-full items-center justify-center rounded-sm shadow-sm border border-theme-modal">
 														<div className="body-sm-regular text-theme-muted">
-															No PyPI packages added.
+															未添加 PyPI 软件包。
 														</div>
 													</div>
 												)}
@@ -550,7 +549,7 @@ const ExtensionSelector = ({
 																		{pkg}
 																	</span>
 																	<Tooltip
-																		content={`Remove ${pkg}`}
+																		content={`移除 ${pkg}`}
 																		className="tooltip tooltip-theme"
 																	>
 																		<Button
@@ -558,7 +557,7 @@ const ExtensionSelector = ({
 																			variant="ghost"
 																			onClick={() => removeCustomPackage(pkg)}
 																			className="button-ghost h-5 w-5 p-0"
-																			aria-label={`Remove ${pkg}`}
+																			aria-label={`移除 ${pkg}`}
 																		>
 																			<CustomIcon
 																				id="close"
@@ -577,8 +576,8 @@ const ExtensionSelector = ({
 											category.id !== "extras" && (
 												<div className="p-3 body-xs-regular text-theme-muted bg-theme-quartary rounded-sm shadow-sm border border-theme-modal w-full min-h-[65px] flex items-center justify-center">
 													{searchQuery.trim()
-														? "No extensions in this category match the search."
-														: "No extensions available in this category. If they have already been installed, they will not appear here."}
+														? "此分类中没有匹配搜索的扩展。"
+														: "此分类中没有可用扩展。如果已安装，它们将不会出现在这里。"}
 												</div>
 											)
 										) : (
@@ -612,7 +611,7 @@ const ExtensionSelector = ({
 																		<div className="relative inline-block group">
 																			<span
 																				className="px-2 py-0.5 bg-theme-accent text-theme-accent body-xs-medium rounded-full"
-																				title="API key required"
+																				title="需要 API 密钥"
 																			>
 																				{extension.credentials.join(", ")}
 																			</span>
@@ -626,7 +625,7 @@ const ExtensionSelector = ({
 																<div className="bg-theme-primary p-2 mt-2 body-xs-regular text-theme-secondary rounded-sm shadow-sm">
 																	<details>
 																		<summary className="cursor-pointer text-theme-primary body-xs-medium">
-																			Setup instructions
+																			设置说明
 																		</summary>
 																		<div className="mt-2 p-2">
 																			<ReactMarkdown
@@ -642,7 +641,7 @@ const ExtensionSelector = ({
 																							loading="lazy"
 																							alt={
 																								props.alt ||
-																								"Setup instruction image"
+																								"设置说明图片"
 																							}
 																						/>
 																					),
@@ -694,8 +693,8 @@ const ExtensionSelector = ({
 					<div className="flex items-center justify-between flex-shrink-0 mt-3 pt-4 border-t border-theme-accent">
 						<div className="flex items-center gap-2">
 							<span className="body-xs-regular text-theme-muted flex items-center mb-5">
-								{customPackages.length} PyPI + {selectedExtensions.length}{" "}
-								OpenBB extensions selected
+								{customPackages.length} 个 PyPI + {selectedExtensions.length}{" "}
+								个 OpenBB 扩展已选择
 							</span>
 						</div>
 					</div>
@@ -705,7 +704,7 @@ const ExtensionSelector = ({
 				<div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
 					<div className="bg-theme-secondary border-red-800 rounded-lg shadow-lg max-w-2xl w-full p-6">
 						<h2 className="text-red-600 text-lg font-bold mb-2">
-							Extension Error
+							扩展错误
 						</h2>
 						<div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border-red-800 bg-red-900/30 text-red-300 rounded-md text-xs font-mono">
 							<div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
@@ -719,7 +718,7 @@ const ExtensionSelector = ({
 								size="sm"
 								className="button-outline shadow-md"
 							>
-								<span className="body-xs-bold text-theme">Dismiss</span>
+								<span className="body-xs-bold text-theme">关闭</span>
 							</Button>
 						</div>
 					</div>
@@ -738,7 +737,7 @@ export default function InstallationProgress() {
 
 	// Track the current installation phase
 	const [phase, setPhase] = useState<InstallationPhase>("preparing");
-	const [message, setMessage] = useState("Preparing installation");
+	const [message, setMessage] = useState("正在准备安装");
 	const [ellipsis, setEllipsis] = useState("");
 	const [isComplete, setIsComplete] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -834,7 +833,7 @@ export default function InstallationProgress() {
 									"Miniforge installation finished, moving to Python version selection",
 								);
 								setPhase("version_select");
-								setMessage("Select Python version");
+								setMessage("选择 Python 版本");
 
 								// Pause status checks until version is selected and Next is clicked
 								if (statusCheckIntervalRef.current) {
@@ -853,7 +852,7 @@ export default function InstallationProgress() {
 									"Python environment setup completed, moving to extension selection",
 								);
 								setPhase("extension_select");
-								setMessage("Select extensions to install");
+								setMessage("选择要安装的扩展");
 
 								// Pause status checks until extensions are selected
 								if (statusCheckIntervalRef.current) {
@@ -866,13 +865,13 @@ export default function InstallationProgress() {
 
 							if (step.includes("download")) {
 								setPhase("downloading");
-								setMessage(payload.message || "Downloading Miniforge");
+								setMessage(payload.message || "正在下载 Miniforge");
 							} else if (step.includes("install")) {
 								setPhase("installing");
-								setMessage(payload.message || "Installing Miniforge");
+								setMessage(payload.message || "正在安装 Miniforge");
 							} else if (step.includes("config")) {
 								setPhase("configuring");
-								setMessage(payload.message || "Configuring OpenBB environment");
+								setMessage(payload.message || "正在配置 OpenBB 环境");
 							} else if (step.includes("complete")) {
 								const fullProcessComplete =
 									message.includes("Installation completed successfully") ||
@@ -883,7 +882,7 @@ export default function InstallationProgress() {
 								if (fullProcessComplete) {
 									setPhase("complete");
 									setMessage(
-										payload.message || "Installation completed successfully",
+										payload.message || "安装成功完成",
 									);
 									setIsComplete(true);
 									if (ellipsisTimerRef.current) {
@@ -898,7 +897,7 @@ export default function InstallationProgress() {
 									console.log(
 										"Sub-component completion detected, not marking as fully complete",
 									);
-									setMessage(payload.message || "Installation in progress");
+									setMessage(payload.message || "安装进行中");
 								}
 							}
 						},
@@ -911,7 +910,7 @@ export default function InstallationProgress() {
 
 				// Start with downloading phase
 				setPhase("downloading");
-				setMessage("Downloading Miniforge");
+				setMessage("正在下载 Miniforge");
 
 				// Set up status check interval
 				if (statusCheckIntervalRef.current) {
@@ -951,7 +950,7 @@ export default function InstallationProgress() {
 							"No version selection event detected, moving to version selection now",
 						);
 						setPhase("version_select");
-						setMessage("Select Python version");
+						setMessage("选择 Python 版本");
 
 						// Pause status checks until version is selected
 						if (statusCheckIntervalRef.current) {
@@ -991,7 +990,7 @@ export default function InstallationProgress() {
 					// Don't update the UI if we're cancelling
 					if (isCancelling) return;
 
-					setError(`Installation failed: ${errorMsg}`);
+					setError(`安装失败: ${errorMsg}`);
 					setPhase("failed");
 				}
 			} catch (error) {
@@ -1008,7 +1007,7 @@ export default function InstallationProgress() {
 				if (isCancelling) return;
 
 				console.error("Installation failed:", error);
-				setError(`Installation failed: ${error}`);
+				setError(`安装失败: ${error}`);
 				setPhase("failed");
 			}
 		};
@@ -1066,7 +1065,7 @@ export default function InstallationProgress() {
 
 				if (fullProcessComplete) {
 					setPhase("complete");
-					setMessage(status.message || "Installation completed successfully");
+					setMessage(status.message || "安装成功完成");
 					setIsComplete(true);
 
 					// Clear interval since installation is complete
@@ -1083,13 +1082,13 @@ export default function InstallationProgress() {
 				}
 			} else if (status.isConfiguring) {
 				setPhase("configuring");
-				setMessage(status.message || "Configuring OpenBB environment");
+				setMessage(status.message || "正在配置 OpenBB 环境");
 			} else if (status.isInstalling) {
 				setPhase("installing");
-				setMessage(status.message || "Installing Miniforge");
+				setMessage(status.message || "正在安装 Miniforge");
 			} else if (status.isDownloading) {
 				setPhase("downloading");
-				setMessage(status.message || "Downloading Miniforge");
+				setMessage(status.message || "正在下载 Miniforge");
 			}
 		} catch (error) {
 			console.error("Failed to check installation status:", error);
@@ -1104,7 +1103,7 @@ export default function InstallationProgress() {
 	const handleVersionNext = async () => {
 		if (selectedVersion) {
 			setPhase("configuring");
-			setMessage(`Configuring OpenBB with Python ${selectedVersion}`);
+			setMessage(`正在使用 Python ${selectedVersion} 配置 OpenBB`);
 
 			try {
 				// Call the backend to continue installation
@@ -1115,9 +1114,9 @@ export default function InstallationProgress() {
 
 				// After Python environment setup, show extension selection
 				setPhase("extension_select");
-				setMessage("Select extensions to install");
+				setMessage("选择要安装的扩展");
 
-			// Don't resume status checks until extensions are selected
+				// Don't resume status checks until extensions are selected
 			} catch (error) {
 				console.error("Failed to set up Python environment:", error);
 				setError(`Failed to set up Python ${selectedVersion}: ${error}`);
@@ -1132,13 +1131,13 @@ export default function InstallationProgress() {
 		if (allPackages.length === 0) {
 			// If no extensions selected, just mark as complete
 			setPhase("complete");
-			setMessage("Installation completed successfully");
+			setMessage("安装成功完成");
 			setIsComplete(true);
 			return;
 		}
 
 		setPhase("configuring");
-		setMessage(`Installing ${allPackages.length} extensions`);
+		setMessage(`正在安装 ${allPackages.length} 个扩展`);
 
 		try {
 			// Call the backend to install the selected extensions
@@ -1147,7 +1146,7 @@ export default function InstallationProgress() {
 				environment: "openbb",
 				directory: directory,
 			});
-		    await invoke("execute_in_environment", {
+			await invoke("execute_in_environment", {
 				command: "openbb-build",
 				environment: "openbb",
 				directory: directory,
@@ -1159,18 +1158,18 @@ export default function InstallationProgress() {
 
 			// After extensions are installed, mark as complete
 			setPhase("complete");
-			setMessage("Installation completed successfully");
+			setMessage("安装成功完成");
 			setIsComplete(true);
 		} catch (err) {
 			const errMsg = String(err);
 			// Use the isFutureWarningOnly helper function to check if this is just a warning
 			if (!isFutureWarningOnly(errMsg)) {
-				setError(`Failed to install extensions: ${errMsg}`);
+				setError(`安装扩展失败: ${errMsg}`);
 				setPhase("failed");
 			} else {
 				// Only warnings (e.g. FutureWarning), treat as success
 				setPhase("complete");
-				setMessage("Installation completed successfully");
+				setMessage("安装成功完成");
 				setIsComplete(true);
 			}
 		}
@@ -1181,7 +1180,7 @@ export default function InstallationProgress() {
 		setSelectedExtensions([]);
 		setCustomPackages([]);
 		setPhase("complete");
-		setMessage("Installation completed successfully");
+		setMessage("安装成功完成");
 		setIsComplete(true);
 	};
 
@@ -1198,9 +1197,9 @@ export default function InstallationProgress() {
 
 		try {
 			await invoke("update_openbb_settings", {
-			condaDir: directory,
-			environment: "openbb",
-		});
+				condaDir: directory,
+				environment: "openbb",
+			});
 		} catch (error) {
 			console.error("Failed to update OpenBB settings:", error);
 			// Proceed to app even if this fails
@@ -1222,7 +1221,7 @@ export default function InstallationProgress() {
 			// Set cancelling state to prevent UI updates from the installation process
 			setIsCancelling(true);
 			setPhase("cancelling");
-			setMessage("Cancelling installation");
+			setMessage("正在取消安装");
 
 			console.log("Cancelling installation at:", new Date().toISOString());
 
@@ -1239,7 +1238,7 @@ export default function InstallationProgress() {
 
 			// Update UI to show cancelled state
 			setPhase("cancelled");
-			setMessage("Installation cancelled");
+			setMessage("安装已取消");
 			setError(null);
 			setIsCancelling(false);
 
@@ -1253,7 +1252,7 @@ export default function InstallationProgress() {
 	const handleCancelExtensionInstall = () => {
 		// Stop the current installation process and return to extension selection
 		setPhase("extension_select");
-		setMessage("Select extensions to install");
+		setMessage("选择要安装的扩展");
 		setError(null); // Clear any error state
 		setIsCancelling(false);
 	};
@@ -1267,17 +1266,17 @@ export default function InstallationProgress() {
 				|| message.includes("Initializing")
 				|| message.includes("OpenBB package")
 			) && !error && (
-				<div>
-					<p className="text-theme-secondary body-xs-regular">
-						STEP <span className="text-theme-accent">2</span> OF <span className="text-theme-accent">3</span>
-					</p>
-				</div>
-			)}
+					<div>
+						<p className="text-theme-secondary body-xs-regular">
+							第 <span className="text-theme-accent">2</span> 步，共 <span className="text-theme-accent">3</span> 步
+						</p>
+					</div>
+				)}
 
-			{(phase === "extension_select" || (phase ==="configuring" && message.includes("extensions"))) && !error && (
+			{(phase === "extension_select" || (phase === "configuring" && message.includes("extensions"))) && !error && (
 				<div>
 					<p className="text-theme-secondary body-xs-regular">
-						STEP <span className="text-theme-accent">3</span> OF <span className="text-theme-accent">3</span>
+						第 <span className="text-theme-accent">3</span> 步，共 <span className="text-theme-accent">3</span> 步
 					</p>
 				</div>
 			)}
@@ -1285,22 +1284,22 @@ export default function InstallationProgress() {
 			{(message.includes("Miniforge") || message.includes("architecture") || message.includes("Conda")) && !isComplete && !error && (
 				<div>
 					<p className="text-theme-secondary body-xs-regular">
-						STEP <span className="text-theme-accent">1</span> OF <span className="text-theme-accent">3</span>
+						第 <span className="text-theme-accent">1</span> 步，共 <span className="text-theme-accent">3</span> 步
 					</p>
 				</div>
 			)}
-          	<h1 className="body-xl-bold mb-5 text-theme-primary">Installation & Setup</h1>
+			<h1 className="body-xl-bold mb-5 text-theme-primary">安装与设置</h1>
 
-			{(phase !== "extension_select" &&phase !== "cancelled") && (
+			{(phase !== "extension_select" && phase !== "cancelled") && (
 				<div>
 					<div className="justify-left flex items-left body-sm-regular text-theme-primary">
-						<p>Initial installation includes the following components:</p><br />
+						<p>初始安装包括以下组件：</p><br />
 					</div>
 					<div className="ml-2 body-sm-regular justify-left flex items-left pb-7">
 						<ul className="list-disc list-inside mt-1 mb-1 ml-3">
-							<li>Miniforge (Python environment manager)</li>
-							<li>OpenBB environment with core libraries & dependencies</li>
-							<li>iPython & Jupyter Lab</li>
+							<li>Miniforge (Python 环境管理器)</li>
+							<li>包含核心库和依赖项的 OpenBB 环境</li>
+							<li>iPython 和 Jupyter Lab</li>
 						</ul>
 					</div>
 				</div>
@@ -1309,11 +1308,11 @@ export default function InstallationProgress() {
 			{phase === "extension_select" && !error && (
 				<div>
 					<div className="flex items-center justify-between gap-4">
-				<div className="flex-1">
-					<p className="mb-5 body-md-regular text-theme-secondary">
-						Select OpenBB extensions to install, and add additional PyPI packages.
-					</p>
-				</div>
+						<div className="flex-1">
+							<p className="mb-5 body-md-regular text-theme-secondary">
+								选择要安装的 OpenBB 扩展，或添加其他 PyPI 包。
+							</p>
+						</div>
 					</div>
 				</div>
 			)}
@@ -1321,9 +1320,8 @@ export default function InstallationProgress() {
 			{/* Progress bar */}
 
 			<div
-				className={`rounded-sm shadow-sm bg-theme-tertiary border border-theme-modal pr-2 pl-4 ${
-					phase === "extension_select" ? "flex-1 flex flex-col min-h-0" : "overflow-y-hidden"
-				}`}
+				className={`rounded-sm shadow-sm bg-theme-tertiary border border-theme-modal pr-2 pl-4 ${phase === "extension_select" ? "flex-1 flex flex-col min-h-0" : "overflow-y-hidden"
+					}`}
 			>
 				{/* Python version selector */}
 				{phase === "version_select" && !error && (
@@ -1342,7 +1340,7 @@ export default function InstallationProgress() {
 							onClick={handleCancelExtensionInstall}
 							className="button-outline px-2 py-1"
 						>
-							Back to Extensions
+							返回扩展选择
 						</Button>
 					)}
 				{phase === "extension_select" && !error && (
@@ -1382,7 +1380,7 @@ export default function InstallationProgress() {
 											disabled={isCancelling}
 											className="button-danger px-2 py-1"
 										>
-											{isCancelling ? "Cancelling..." : "Cancel"}
+											{isCancelling ? "正在取消..." : "取消"}
 										</Button>
 									)}
 							</div>
@@ -1392,71 +1390,70 @@ export default function InstallationProgress() {
 				{/* Cancelled state message */}
 				{phase === "cancelled" && (
 					<div className="pt-5 px-2 pb-5 bg-theme-tertiary text-theme-primary rounded-md">
-						<p className="font-semibold">Installation cancelled</p>
+						<p className="font-semibold">安装已取消</p>
 						<p className="mt-2 body-sm-regular text-theme-secondary">
-							The installation process has been cancelled and any partial files
-							have been cleaned up.
+							安装过程已取消，部分安装文件已清理。
 						</p>
 					</div>
 				)}
 
 				{/* Success message */}
-                {isComplete && !error && (
-                    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
-                        <div className="flex-1 bg-theme-secondary border border-theme-modal rounded-lg shadow-lg min-w-[60vw] max-w-[50vw] w-full pt-3 mb-5 max-h-[95vh]">
-                            <div className="flex justify-between items-center mb-2">
-                                <h2 className="text-theme-primary body-md-bold pl-4">
-                                    Installation completed successfully!
-                                </h2>
-                                <Button
-                                    variant="ghost"
-                                    onClick={handleContinue}
+				{isComplete && !error && (
+					<div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
+						<div className="flex-1 bg-theme-secondary border border-theme-modal rounded-lg shadow-lg min-w-[60vw] max-w-[50vw] w-full pt-3 mb-5 max-h-[95vh]">
+							<div className="flex justify-between items-center mb-2">
+								<h2 className="text-theme-primary body-md-bold pl-4">
+									安装成功！
+								</h2>
+								<Button
+									variant="ghost"
+									onClick={handleContinue}
 									size="sm"
-                                    className="button-ghost"
-                                    aria-label="Close"
-                                >
-                                    <CustomIcon id="close" className="h-6 w-6" />
-                                </Button>
-                            </div>
-                            <div className="mb-6 px-4">
-                                <p className="text-theme-secondary body-sm-regular mb-3">
-                                    OpenBB has been installed to: {directory}
-                                </p>
-                                {selectedVersion && (
-                                    <p className="text-theme-secondary body-sm-regular mb-1">
-                                        <span className="font-bold">Python version:</span> <span>{selectedVersion}</span>
-                                    </p>
-                                )}
-                                {selectedExtensions.length > 0 && (
-                                    <div className="text-theme-secondary">
-                                        <span className="body-sm-bold">Extensions:</span>
-                                        <div className="mt-2 min-h-0 max-h-[40vh] overflow-y-auto">
-                                            <div className="text-theme-primary body-xs-regular bg-theme-primary p-2 rounded-sm shadow-sm">
-                                                {selectedExtensions.join(", ")}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            <div className="flex justify-end pt-5 items-center">
-                                <Button
-                                    className="button-primary shadow-md"
-                                    onClick={handleContinue}
-                                    size="sm"
-                                    variant="primary"
-                                    disabled={isContinuing}
-                                >
-									Done
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-				</div>
-                )}
+									className="button-ghost"
+									aria-label="关闭"
+								>
+									<CustomIcon id="close" className="h-6 w-6" />
+								</Button>
+							</div>
+							<div className="mb-6 px-4">
+								<p className="text-theme-secondary body-sm-regular mb-3">
+									OpenBB 已安装到：{directory}
+								</p>
+								{selectedVersion && (
+									<p className="text-theme-secondary body-sm-regular mb-1">
+										<span className="font-bold">Python 版本：</span> <span>{selectedVersion}</span>
+									</p>
+								)}
+								{selectedExtensions.length > 0 && (
+									<div className="text-theme-secondary">
+										<span className="body-sm-bold">扩展：</span>
+										<div className="mt-2 min-h-0 max-h-[40vh] overflow-y-auto">
+											<div className="text-theme-primary body-xs-regular bg-theme-primary p-2 rounded-sm shadow-sm">
+												{selectedExtensions.join(", ")}
+											</div>
+										</div>
+									</div>
+								)}
+								<div className="flex justify-end pt-5 items-center">
+									<Button
+										className="button-primary shadow-md"
+										onClick={handleContinue}
+										size="sm"
+										variant="primary"
+										disabled={isContinuing}
+									>
+										完成
+									</Button>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
 
 				{/* Error message */}
 				{error && phase !== "cancelled" && phase !== "cancelling" && (
 					<div className="mt-4 mb-4 p-4 bg-red-900/30 text-red-300 rounded-md">
-						<p className="body-md-bold">Installation failed</p>
+						<p className="body-md-bold">安装失败</p>
 						<p className="mt-2 body-sm-regular overflow-auto max-h-40">{error}</p>
 						<div className="mt-4 flex gap-2 justify-end">
 							<Button
@@ -1465,7 +1462,7 @@ export default function InstallationProgress() {
 								className="button-danger px-2 py-1"
 								size="sm"
 							>
-								Try Again
+								重试
 							</Button>
 							<Button
 								variant="secondary"
@@ -1473,51 +1470,51 @@ export default function InstallationProgress() {
 								className="button-secondary px-2 py-1"
 								size="sm"
 							>
-								Continue Anyway
+								仍然继续
 							</Button>
 						</div>
 					</div>
 				)}
 			</div>
-		{phase === "version_select" && !error && (
-			<div className="flex justify-end gap-2 mt-7">
-				<Button
-					variant="outline"
-					size="sm"
-					className="button-outline px-2 py-1"
-					onClick={handleCancel}
-				>
-					Cancel
-				</Button>
-				<Button
-					variant="neutral"
-					size="sm"
-					className="button-neutral px-2 py-1 mr-1"
-					onClick={handleVersionNext}
-				>
-					Next Step
-				</Button>
-			</div>
-		)}
-		{phase === "cancelled" && !isComplete && (
-			<div className="mt-3 flex justify-end">
-				<Button
-					className="mt-4 button-primary whitespace-nowrap px-2 py-1"
-					variant="primary"
-					onClick={() => navigate({ to: "/setup" })}
-					size="sm"
-				>
-					Return to Setup
-				</Button>
-			</div>
-		)}
+			{phase === "version_select" && !error && (
+				<div className="flex justify-end gap-2 mt-7">
+					<Button
+						variant="outline"
+						size="sm"
+						className="button-outline px-2 py-1"
+						onClick={handleCancel}
+					>
+						取消
+					</Button>
+					<Button
+						variant="neutral"
+						size="sm"
+						className="button-neutral px-2 py-1 mr-1"
+						onClick={handleVersionNext}
+					>
+						下一步
+					</Button>
+				</div>
+			)}
+			{phase === "cancelled" && !isComplete && (
+				<div className="mt-3 flex justify-end">
+					<Button
+						className="mt-4 button-primary whitespace-nowrap px-2 py-1"
+						variant="primary"
+						onClick={() => navigate({ to: "/setup" })}
+						size="sm"
+					>
+						返回设置
+					</Button>
+				</div>
+			)}
 			{phase === "extension_select" && !error && (
 				<div className="pt-5">
 					{/* Install/Skip Buttons */}
 					<div className="flex items-center justify-end gap-4">
 						{/* Skip and Install buttons */}
 						<Tooltip
-							content="Skip and install later."
+							content="跳过，稍后再安装。"
 							className="tooltip-theme"
 						>
 							<Button
@@ -1526,11 +1523,11 @@ export default function InstallationProgress() {
 								size="sm"
 								className="button-outline shadow-md px-2 py-1"
 							>
-								Skip
+								跳过
 							</Button>
 						</Tooltip>
 						<Tooltip
-							content="Install the selected extensions."
+							content="安装所选扩展。"
 							className="tooltip-theme"
 						>
 							<Button
@@ -1542,7 +1539,7 @@ export default function InstallationProgress() {
 									selectedExtensions.length === 0 && customPackages.length === 0
 								}
 							>
-								Install
+								安装
 							</Button>
 						</Tooltip>
 					</div>

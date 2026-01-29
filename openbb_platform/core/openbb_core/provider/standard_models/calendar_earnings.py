@@ -1,4 +1,4 @@
-"""Earnings Calendar Standard Model."""
+"""财报日历标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CalendarEarningsQueryParams(QueryParams):
-    """Earnings Calendar Query."""
+    """财报日历查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -23,16 +23,16 @@ class CalendarEarningsQueryParams(QueryParams):
 
 
 class CalendarEarningsData(Data):
-    """Earnings Calendar Data."""
+    """财报日历数据。"""
 
-    report_date: dateType = Field(description="The date of the earnings report.")
+    report_date: dateType = Field(description="财报发布日期。")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str | None = Field(description="Name of the entity.", default=None)
+    name: str | None = Field(description="实体名称。", default=None)
     eps_previous: float | None = Field(
         default=None,
-        description="The earnings-per-share from the same previously reported period.",
+        description="上一个报告期的每股收益。",
     )
     eps_consensus: float | None = Field(
         default=None,
-        description="The analyst conesus earnings-per-share estimate.",
+        description="分析师一致预期的每股收益。",
     )

@@ -1,4 +1,4 @@
-"""Equity Historical Price Standard Model."""
+"""股票历史价格标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class EquityHistoricalQueryParams(QueryParams):
-    """Equity Historical Price Query."""
+    """股票历史价格查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -30,12 +30,12 @@ class EquityHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EquityHistoricalData(Data):
-    """Equity Historical Price Data."""
+    """股票历史价格数据。"""
 
     date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -52,7 +52,7 @@ class EquityHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         # pylint: disable=import-outside-toplevel
         from dateutil import parser
 

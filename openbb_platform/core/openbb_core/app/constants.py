@@ -1,4 +1,4 @@
-"""Constants for the OpenBB Platform."""
+"""OpenBB 平台的常量。"""
 
 from pathlib import Path
 

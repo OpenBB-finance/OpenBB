@@ -1,4 +1,4 @@
-"""Mortgage Indices Standard Model."""
+"""抵押贷款指数标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class MortgageIndicesQueryParams(QueryParams):
-    """Mortgage Indices Query."""
+    """抵押贷款指数查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,7 +27,7 @@ class MortgageIndicesQueryParams(QueryParams):
 
 
 class MortgageIndicesData(Data):
-    """Mortgage Indices Data."""
+    """抵押贷款指数数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
@@ -36,9 +36,9 @@ class MortgageIndicesData(Data):
     )
     name: str | None = Field(
         default=None,
-        description="Name of the index.",
+        description="指数名称。",
     )
     rate: float = Field(
-        description="Mortgage rate.",
+        description="抵押贷款利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

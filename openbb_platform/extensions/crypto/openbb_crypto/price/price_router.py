@@ -1,5 +1,5 @@
 # pylint: disable=W0613:unused-argument
-"""Crypto Price Router."""
+"""加密货币价格路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -37,7 +37,7 @@ router = Router(prefix="/price")
             },
         ),
         APIEx(
-            description="Get monthly historical prices from Yahoo Finance for Ethereum.",
+            description="从 Yahoo Finance 获取以太坊的月度历史价格。",
             parameters={
                 "symbol": "ETH-USD",
                 "interval": "1m",
@@ -54,5 +54,5 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical price data for cryptocurrency pair(s) within a provider."""
+    """获取提供商内加密货币对的历史价格数据。"""
     return await OBBject.from_query(Query(**locals()))

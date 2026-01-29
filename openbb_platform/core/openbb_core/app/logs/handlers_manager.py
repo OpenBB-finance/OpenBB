@@ -1,4 +1,4 @@
-"""Handlers Manager."""
+"""处理程序管理器。"""
 
 import logging
 import sys
@@ -13,17 +13,17 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
 class HandlersManager:
-    """Handlers Manager."""
+    """处理程序管理器。"""
 
     def __init__(self, logger: logging.Logger, settings: LoggingSettings):
-        """Initialize the HandlersManager."""
+        """初始化处理程序管理器。"""
         self._logger = logger
         self._handlers = settings.handler_list
         self._settings = settings
 
     def setup(self):
-        """Set the logger handlers and settings."""
-        # Disable propagation to root logger to avoid duplicate logs
+        """设置记录器处理程序和设置。"""
+        # 禁用传播到根记录器以避免重复日志
         self._logger.propagate = False
         self._logger.setLevel(self._settings.verbosity)
 
@@ -37,38 +37,38 @@ class HandlersManager:
             elif handler_type == "file" and not self._settings.logging_suppress:
                 self._add_file_handler()
             else:
-                self._logger.debug("Unknown log handler.")
+                self._logger.debug("未知的日志处理程序。")
 
     def _add_stdout_handler(self):
-        """Add a stdout handler."""
+        """添加 stdout 处理程序。"""
         handler = logging.StreamHandler(sys.stdout)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
 
     def _add_stderr_handler(self):
-        """Add a stderr handler."""
+        """添加 stderr 处理程序。"""
         handler = logging.StreamHandler(sys.stderr)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
 
     def _add_noop_handler(self):
-        """Add a null handler."""
+        """添加空处理程序。"""
         handler = logging.NullHandler()
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
 
     def _add_file_handler(self):
-        """Add a file handler."""
+        """添加文件处理程序。"""
         handler = PathTrackingFileHandler(settings=self._settings)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
 
     def update_handlers(self, settings: LoggingSettings):
-        """Update the handlers with new settings."""
+        """使用新设置更新处理程序。"""
         logger = self._logger
         for hdlr in logger.handlers:
             if (

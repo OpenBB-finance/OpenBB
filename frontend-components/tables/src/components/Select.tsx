@@ -10,8 +10,8 @@ import clsx from "clsx";
 const Select = ({
   value,
   onChange,
-  label = "Select",
-  placeholder = "Select a fruit…",
+  label = "选择",
+  placeholder = "选择...",
   groups,
   labelType = "col",
 }: {

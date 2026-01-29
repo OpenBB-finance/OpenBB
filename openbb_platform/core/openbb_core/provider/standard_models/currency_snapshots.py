@@ -1,4 +1,4 @@
-"""Currency Snapshots Standard Model."""
+"""货币快照标准模型。"""
 
 from typing import Literal
 
@@ -9,52 +9,48 @@ from pydantic import Field, field_validator
 
 
 class CurrencySnapshotsQueryParams(QueryParams):
-    """Currency Snapshots Query Params."""
+    """货币快照查询参数。"""
 
-    base: str = Field(description="The base currency symbol.", default="usd")
+    base: str = Field(description="基础货币符号。", default="usd")
     quote_type: Literal["direct", "indirect"] = Field(
-        description="Whether the quote is direct or indirect."
-        + " Selecting 'direct' will return the exchange rate"
-        + " as the amount of domestic currency required to buy one unit"
-        + " of the foreign currency."
-        + " Selecting 'indirect' (default) will return the exchange rate"
-        + " as the amount of foreign currency required to buy one unit"
-        + " of the domestic currency.",
+        description="报价是直接还是间接。"
+        + " 选择 'direct' 将返回汇率"
+        + " 即购买一单位外币所需的本国货币数量。"
+        + " 选择 'indirect' (默认) 将返回汇率"
+        + " 即购买一单位本国货币所需的外币数量。",
         default="indirect",
     )
     counter_currencies: str | list[str] | None = Field(
-        description="An optional list of counter currency symbols to filter for."
-        + " None returns all.",
+        description="可选的计价货币符号列表，用于筛选。"
+        + " None 返回所有。",
         default=None,
     )
 
     @field_validator("base", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v):
-        """Convert the base currency to uppercase."""
+        """将基础货币转换为大写。"""
         return v.upper()
 
     @field_validator("counter_currencies", mode="before", check_fields=False)
     @classmethod
     def convert_string(cls, v):
-        """Convert the counter currencies to an upper case string list."""
+        """将计价货币转换为大写字符串列表。"""
         if v is not None:
             return ",".join(v).upper() if isinstance(v, list) else v.upper()
         return None
 
 
 class CurrencySnapshotsData(Data):
-    """Currency Snapshots Data."""
+    """货币快照数据。"""
 
-    base_currency: str = Field(description="The base, or domestic, currency.")
-    counter_currency: str = Field(description="The counter, or foreign, currency.")
+    base_currency: str = Field(description="基础货币或本国货币。")
+    counter_currency: str = Field(description="计价货币或外币。")
     last_rate: float = Field(
-        description="The exchange rate, relative to the base currency."
-        + " Rates are expressed as the amount of foreign currency"
-        + " received from selling one unit of the base currency,"
-        + " or the quantity of foreign currency required to purchase"
-        + " one unit of the domestic currency."
-        + " To inverse the perspective, set the 'quote_type' parameter as 'direct'.",
+        description="相对于基础货币的汇率。"
+        + " 汇率表示为出售一单位基础货币收到的外币数量，"
+        + " 或购买一单位本国货币所需的外币数量。"
+        + " 要反转视角，请将 'quote_type' 参数设置为 'direct'。",
     )
     open: float | None = Field(
         description=DATA_DESCRIPTIONS.get("open", ""),

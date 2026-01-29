@@ -1,4 +1,4 @@
-"""FRED Search Model."""
+"""FRED 搜索模型。"""
 
 from datetime import (
     date as dateType,
@@ -11,91 +11,91 @@ from pydantic import Field
 
 
 class SearchQueryParams(QueryParams):
-    """FRED Search Query Params."""
+    """FRED 搜索查询参数。"""
 
-    query: str | None = Field(default=None, description="The search word(s).")
+    query: str | None = Field(default=None, description="搜索词。")
 
 
 class SearchData(Data):
-    """FRED Search Data."""
+    """FRED 搜索数据。"""
 
     release_id: str | None = Field(
         default=None,
-        description="The release ID for queries.",
+        description="用于查询的发布 ID。",
     )
     series_id: str | None = Field(
         default=None,
-        description="The series ID for the item in the release.",
+        description="发布项目中条目的系列 ID。",
     )
     series_group: str | None = Field(
         default=None,
-        description="The series group ID of the series. This value is used to query for regional data.",
+        description="系列的系列组 ID。此值用于查询区域数据。",
     )
     region_type: str | None = Field(
         default=None,
-        description="The region type of the series.",
+        description="系列的区域类型。",
     )
     name: str | None = Field(
         default=None,
-        description="The name of the release.",
+        description="发布项目的名称。",
     )
     title: str | None = Field(
         default=None,
-        description="The title of the series.",
+        description="系列的标题。",
     )
     observation_start: dateType | None = Field(
-        default=None, description="The date of the first observation in the series."
+        default=None, description="系列中第一次观测的日期。"
     )
     observation_end: dateType | None = Field(
-        default=None, description="The date of the last observation in the series."
+        default=None, description="系列中最后一次观测的日期。"
     )
     frequency: str | None = Field(
         default=None,
-        description="The frequency of the data.",
+        description="数据的频率。",
     )
     frequency_short: str | None = Field(
         default=None,
-        description="Short form of the data frequency.",
+        description="数据频率的简写。",
     )
     units: str | None = Field(
         default=None,
-        description="The units of the data.",
+        description="数据的单位。",
     )
     units_short: str | None = Field(
         default=None,
-        description="Short form of the data units.",
+        description="数据单位的简写。",
     )
     seasonal_adjustment: str | None = Field(
         default=None,
-        description="The seasonal adjustment of the data.",
+        description="数据的季节性调整。",
     )
     seasonal_adjustment_short: str | None = Field(
         default=None,
-        description="Short form of the data seasonal adjustment.",
+        description="数据季节性调整的简写。",
     )
     last_updated: datetime | None = Field(
         default=None,
-        description="The datetime of the last update to the data.",
+        description="数据最后更新的日期时间。",
     )
     popularity: int | None = Field(
         default=None,
-        description="Popularity of the series",
+        description="系列的受欢迎程度",
     )
     group_popularity: int | None = Field(
         default=None,
-        description="Group popularity of the release",
+        description="发布项目的组受欢迎程度项",
     )
     realtime_start: dateType | None = Field(
         default=None,
-        description="The realtime start date of the series.",
+        description="系列的实时开始日期。",
     )
     realtime_end: dateType | None = Field(
         default=None,
-        description="The realtime end date of the series.",
+        description="系列的实时结束日期。",
     )
-    notes: str | None = Field(default=None, description="Description of the release.")
+    notes: str | None = Field(default=None, description="发布项目的描述。")
     press_release: bool | None = Field(
-        description="If the release is a press release.",
+        description="发布项目是否为新闻发布。",
         default=None,
     )
-    url: str | None = Field(default=None, description="URL to the release.")
+    url: str | None = Field(default=None, description="发布项目的 URL。")

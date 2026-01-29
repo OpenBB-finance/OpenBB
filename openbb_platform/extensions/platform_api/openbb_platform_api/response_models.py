@@ -1,4 +1,4 @@
-"""OpenBB Workspace Response Models."""
+"""OpenBB Workspace 响应模型。"""
 
 from typing import Any
 
@@ -8,23 +8,23 @@ from pydantic import ConfigDict, Field, model_validator
 
 class MetricResponseModel(Data):
     """
-    Metric Widget Response Model.
+    指标挂件响应模型。
 
-    Supply a label, value, and optional delta.
+    提供标签、值和可选的 delta。
 
     Fields
     ------
     label : str
-        The label to display in the metric widget.
+        在指标挂件中显示的标签。
     value : int, float, or str
-        The value to display in the metric widget.
+        在指标挂件中显示的值。
     delta : int, float, or str
-        The, optional, delta value to display in the metric widget.
+        在指标挂件中显示的（可选）delta 值。
 
     Returns
     -------
     object
-        Object with the label, value, and optional delta value.
+        具有标签、值和可选 delta 值的对象。
     """
 
     model_config = ConfigDict(
@@ -56,28 +56,28 @@ class MetricResponseModel(Data):
 
 class PdfResponseModel(Data):
     """
-    PDF Widget Response Model.
+    PDF 挂件响应模型。
 
-    Supply the url or content, and an optional filename.
+    提供 url 或内容，以及可选的文件名。
 
     Fields
     ------
     filename : str
-        The filename of the PDF content.
+        PDF 内容的文件名。
     content : bytes
-        The PDF content to display in the PDF widget.
+        在 PDF 挂件中显示的 PDF 内容。
     url : str
-        The URL reference to the PDF
+        PDF 的 URL 引用
 
     Returns
     -------
     object
-        Object with the PDF content serialized as a Base64 encoded string.
+        具有序列化为 Base64 编码字符串的 PDF 内容的对象。
 
     Raises
     ------
     ValueError
-        If neither 'content' or 'url_reference' is provided, or an invalid URL reference is provided.
+        如果未提供 'content' 或 'url_reference'，或者提供了无效的 URL 引用。
     """
 
     model_config = ConfigDict(
@@ -117,7 +117,7 @@ class PdfResponseModel(Data):
     @model_validator(mode="after")
     @classmethod
     def validate_model(cls, values) -> "PdfResponseModel":
-        """Validate the PDF content."""
+        """验证 PDF 内容。"""
         # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
@@ -150,22 +150,22 @@ class PdfResponseModel(Data):
 
 
 class OmniWidgetResponseModel(Data):
-    """Omni Widget Response Model.
+    """Omni 挂件响应模型。
 
-    Supply the content, and optionally the `parse_as` field.
+    提供内容，以及可选的 `parse_as` 字段。
 
     Fields
     ------
     content : Any
-        The content to display in the Omni widget.
+        在 Omni 挂件中显示的内容。
     parse_as : Optional[str]
-        The type of content to parse as. One of "table", "chart", or "text".
-        Attempts to set this automatically based on the content type, but can be overridden.
+        要解析为的内容类型。 "table"、"chart" 或 "text" 之一。
+        尝试根据内容类型自动设置此属性，但可以覆盖。
 
     Returns
     -------
     object
-        Object that conforms to the validated output requirements of the API.
+        符合 API 验证输出要求的对象。
 
     Example
     -------
@@ -202,7 +202,7 @@ class OmniWidgetResponseModel(Data):
     @model_validator(mode="after")
     @classmethod
     def validate_model(cls, values) -> "OmniWidgetResponseModel":
-        """Validate the Omni widget content."""
+        """验证 Omni 挂件内容。"""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
         import re

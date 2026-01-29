@@ -1,4 +1,4 @@
-"""Index Snapshots Standard Model."""
+"""指数快照标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,20 +7,20 @@ from pydantic import Field
 
 
 class IndexSnapshotsQueryParams(QueryParams):
-    """Index Snapshots Query."""
+    """指数快照查询。"""
 
     region: str = Field(
-        default="us", description="The region of focus for the data - i.e., us, eu."
+        default="us", description="数据的关注区域——例如：us（美国）、eu（欧洲）。"
     )
 
 
 class IndexSnapshotsData(Data):
-    """Index Snapshots Data."""
+    """指数快照数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str | None = Field(default=None, description="Name of the index.")
-    currency: str | None = Field(default=None, description="Currency of the index.")
-    price: float | None = Field(default=None, description="Current price of the index.")
+    name: str | None = Field(default=None, description="指数名称。")
+    currency: str | None = Field(default=None, description="指数的计价货币。")
+    price: float | None = Field(default=None, description="指数的当前价格。")
     open: float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
@@ -40,9 +40,9 @@ class IndexSnapshotsData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("prev_close", "")
     )
     change: float | None = Field(
-        default=None, description="Change in value of the index."
+        default=None, description="指数值的变化。"
     )
     change_percent: float | None = Field(
         default=None,
-        description="Change, in normalized percentage points, of the index.",
+        description="指数的变化百分比。",
     )

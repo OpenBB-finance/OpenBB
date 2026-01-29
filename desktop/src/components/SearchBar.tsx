@@ -43,7 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search logs..."
+              placeholder="搜索日志..."
               spellCheck={false}
               autoComplete="off"
               autoCorrect="off"
@@ -57,7 +57,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </div>
         <div className="search-controls flex items-center">
           <Tooltip
-            content={caseSensitive ? "Case sensitive search (enabled)" : "Case sensitive search (disabled)"}
+            content={caseSensitive ? "区分大小写搜索（已启用）" : "区分大小写搜索（已禁用）"}
             className="tooltip-theme"
           >
             <Button
@@ -69,9 +69,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {caseSensitive ? 'Aa' : 'aa'}
             </Button>
           </Tooltip>
-          
+
           <Tooltip
-            content="Previous match (Shift+Enter)"
+            content="上一个匹配项 (Shift+Enter)"
             className="tooltip-theme"
           >
             <Button
@@ -90,7 +90,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </span>
 
           <Tooltip
-            content="Next match (Enter)"
+            content="下一个匹配项 (Enter)"
             className="tooltip-theme"
           >
             <Button
@@ -104,9 +104,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </Button>
           </Tooltip>
 
-          
+
           <Tooltip
-            content="Close search (Escape)"
+            content="关闭搜索 (Escape)"
             className="tooltip-theme"
           >
             <Button
@@ -117,9 +117,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className="button-outline px-1 py-1 ml-2"
               size="icon"
               variant="outline"
-              aria-label="close search"
+              aria-label="关闭搜索"
             >
-              <CustomIcon id="close" className="body-lg-regular w-5 h-5"/>
+              <CustomIcon id="close" className="body-lg-regular w-5 h-5" />
             </Button>
           </Tooltip>
         </div>

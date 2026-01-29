@@ -1,4 +1,4 @@
-"""Company Events Calendar Standard Model."""
+"""公司事件日历标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CalendarEventsQueryParams(QueryParams):
-    """Company Events Calendar Query."""
+    """公司事件日历查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -23,9 +23,9 @@ class CalendarEventsQueryParams(QueryParams):
 
 
 class CalendarEventsData(Data):
-    """Company Events Calendar Data."""
+    """公司事件日历数据。"""
 
     date: dateType = Field(
-        description=DATA_DESCRIPTIONS.get("date", "") + " The date of the event."
+        description=DATA_DESCRIPTIONS.get("date", "") + " 事件日期。"
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

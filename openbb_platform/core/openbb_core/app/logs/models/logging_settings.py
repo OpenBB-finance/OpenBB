@@ -1,4 +1,4 @@
-"""Logging settings."""
+"""日志设置。"""
 
 from pathlib import Path
 
@@ -9,14 +9,14 @@ from openbb_core.app.model.user_settings import UserSettings
 
 # pylint: disable=too-many-instance-attributes
 class LoggingSettings:
-    """Logging settings."""
+    """日志设置。"""
 
     def __init__(
         self,
         user_settings: UserSettings | None = None,
         system_settings: SystemSettings | None = None,
     ):
-        """Initialize the logging settings."""
+        """初始化日志设置。"""
         user_settings = user_settings if user_settings is not None else UserSettings()
         system_settings = (
             system_settings if system_settings is not None else SystemSettings()

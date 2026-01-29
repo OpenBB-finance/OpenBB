@@ -1,4 +1,4 @@
-"""NonFarm Payrolls Standard Model."""
+"""非农就业人数标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,17 +12,17 @@ from pydantic import Field
 
 
 class NonFarmPayrollsQueryParams(QueryParams):
-    """NonFarm Payrolls Query."""
+    """非农就业人数查询。"""
 
     date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " Default is the latest report.",
+        + " 默认是最新报告。",
     )
 
 
 class NonFarmPayrollsData(Data):
-    """NonFarm Payrolls Data."""
+    """非农就业人数数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

@@ -1,4 +1,4 @@
-"""Revenue By Business Line Standard Model."""
+"""按业务线划分的收入标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,35 +9,35 @@ from pydantic import Field, field_validator
 
 
 class RevenueBusinessLineQueryParams(QueryParams):
-    """Revenue By Business Line Query."""
+    """按业务线划分的收入查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class RevenueBusinessLineData(Data):
-    """Revenue By Business Line Data."""
+    """按业务线划分的收入数据。"""
 
-    period_ending: dateType = Field(description="The end date of the reporting period.")
+    period_ending: dateType = Field(description="报告期的截止日期。")
     fiscal_period: str | None = Field(
-        default=None, description="The fiscal period of the reporting period."
+        default=None, description="财务报告的分期。"
     )
     fiscal_year: int | None = Field(
-        default=None, description="The fiscal year of the reporting period."
+        default=None, description="财务报告的年度。"
     )
     filing_date: dateType | None = Field(
-        default=None, description="The filing date of the report."
+        default=None, description="报告的申报日期。"
     )
     business_line: str | None = Field(
         default=None,
-        description="The business line represented by the revenue data.",
+        description="收入数据代表的业务线。",
     )
     revenue: int | float = Field(
-        description="The total revenue attributed to the business line.",
+        description="归属于该业务线的总收入。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )

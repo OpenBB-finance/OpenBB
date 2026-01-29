@@ -1,4 +1,4 @@
-"""Coverage module."""
+"""覆盖模块。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -21,29 +21,29 @@ class Coverage:  # noqa: D205, D400
     """
 
     def __init__(self, app: "BaseApp"):
-        """Initialize coverage."""
+        """初始化覆盖。"""
         self._app = app
         self._command_map = CommandMap(coverage_sep=".")
         self._provider_interface = ProviderInterface()
         self._reference_loader = ReferenceLoader()
 
     def __repr__(self) -> str:
-        """Return docstring."""
+        """返回文档字符串。"""
         return self.__doc__ or ""
 
     @property
     def providers(self) -> dict[str, list[str]]:
-        """Return providers coverage."""
+        """返回提供者覆盖范围。"""
         return self._command_map.provider_coverage
 
     @property
     def commands(self) -> dict[str, list[str]]:
-        """Return commands coverage."""
+        """返回命令覆盖范围。"""
         return self._command_map.command_coverage
 
     @property
     def command_model(self) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
-        """Return command to model mapping."""
+        """返回命令到模型的映射。"""
         return {
             command: self._provider_interface.map[value]
             for command, value in self._command_map.commands_model.items()
@@ -51,11 +51,11 @@ class Coverage:  # noqa: D205, D400
 
     @property
     def reference(self) -> dict[str, dict]:
-        """Return reference data."""
+        """返回参考数据。"""
         return self._reference_loader.reference
 
     def command_schemas(self, filter_by_provider: str | None = None):
-        """Return route schema for a command."""
+        """返回命令的路由架构。"""
         return get_route_schema_map(
             self._app, self._command_map.commands_model, filter_by_provider
         )

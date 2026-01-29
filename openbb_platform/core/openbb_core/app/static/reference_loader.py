@@ -1,4 +1,4 @@
-"""ReferenceLoader class for loading reference data from a file."""
+"""用于从文件加载参考数据的 ReferenceLoader 类。"""
 
 import json
 from pathlib import Path
@@ -7,18 +7,18 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 
 class ReferenceLoader(metaclass=SingletonMeta):
-    """ReferenceLoader class for loading the `reference.json` file."""
+    """用于加载 `reference.json` 文件的 ReferenceLoader 类。"""
 
     def __init__(self, directory: Path | None = None):
         """
-        Initialize the ReferenceLoader with a specific directory.
+        使用特定目录初始化 ReferenceLoader。
 
-        If no directory is provided, a default directory will be used.
+        如果未提供目录，则将使用默认目录。
 
         Attributes
         ----------
         directory : Optional[Path]
-            The directory from which to load the assets where the reference file lives.
+            参考文件所在的资产加载目录。
         """
 
         reference_path = (
@@ -35,17 +35,17 @@ class ReferenceLoader(metaclass=SingletonMeta):
 
     @property
     def reference(self) -> dict[str, dict]:
-        """Get the reference data."""
+        """获取参考数据。"""
         return self._reference
 
     def _get_default_directory(self) -> Path:
-        """Get the default directory for loading references."""
+        """获取加载参考的默认目录。"""
         default_path = Path(__file__).parents[3].resolve() / "openbb" / "assets"
 
         return default_path
 
     def _load(self, file_path: Path):
-        """Load the reference data from a file."""
+        """从文件中加载参考数据。"""
         try:
             with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)

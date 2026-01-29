@@ -1,5 +1,5 @@
 # pylint: disable=W0613:unused-argument
-"""Commodity Futures Trading Commission (CFTC) Router."""
+"""商品期货交易委员会 (CFTC) 路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -28,9 +28,9 @@ async def cot_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the current Commitment of Traders Reports.
+    """获取当前的交易者持仓报告。
 
-    Search a list of the current Commitment of Traders Reports series information.
+    搜索当前的交易者持仓报告系列信息列表。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -40,19 +40,19 @@ async def cot_search(
     examples=[
         APIEx(parameters={"provider": "ctfc"}),
         APIEx(
-            description="Get the latest report for all items classified as, GOLD.",
+            description="获取所有分类为 GOLD 的项目的最新报告。",
             parameters={"id": "gold", "provider": "cftc"},
         ),
         APIEx(
-            description="Enter the entire history for a single CFTC Market Contract Code.",
+            description="输入单个 CFTC 市场合约代码的完整历史记录。",
             parameters={"id": "088691", "provider": "cftc"},
         ),
         APIEx(
-            description="Get the report for futures only.",
+            description="仅获取期货报告。",
             parameters={"id": "088691", "futures_only": True, "provider": "cftc"},
         ),
         APIEx(
-            description="Get the most recent Commodity Index Traders Supplemental Report.",
+            description="获取最新的商品指数交易者补充报告。",
             parameters={"id": "all", "report_type": "supplemental", "provider": "cftc"},
         ),
     ],
@@ -63,5 +63,5 @@ async def cot(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Commitment of Traders Reports."""
+    """获取交易者持仓报告。"""
     return await OBBject.from_query(Query(**locals()))

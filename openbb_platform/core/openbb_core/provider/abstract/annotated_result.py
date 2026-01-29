@@ -1,4 +1,4 @@
-"""Annotated result."""
+"""带注释的结果。"""
 
 from typing import Generic, TypeVar
 
@@ -8,13 +8,13 @@ T = TypeVar("T")
 
 
 class AnnotatedResult(BaseModel, Generic[T]):
-    """Annotated result allows fetchers to return metadata along with the data."""
+    """带注释的结果允许 fetcher 将元数据与数据一起返回。"""
 
     result: T | None = Field(
         default=None,
-        description="Serializable results.",
+        description="可序列化的结果。",
     )
     metadata: dict | None = Field(
         default=None,
-        description="Metadata.",
+        description="元数据。",
     )

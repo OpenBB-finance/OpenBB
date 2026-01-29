@@ -1,4 +1,4 @@
-"""Bond Reference Standard Model."""
+"""债券参考标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -10,80 +10,80 @@ from pydantic import Field, field_validator
 
 
 class BondReferenceQueryParams(QueryParams):
-    """Bond Reference Query."""
+    """债券参考查询。"""
 
     country: str | None = Field(
         default=None,
-        description="The country to get data. Matches partial name.",
+        description="获取数据的国家。匹配部分名称。",
     )
     issuer_name: str | None = Field(
         default=None,
-        description="Name of the issuer.  Returns partial matches and is case insensitive.",
+        description="发行人名称。返回部分匹配项，不区分大小写。",
     )
     isin: list | str | None = Field(
         default=None,
-        description="International Securities Identification Number(s) of the bond(s).",
+        description="债券的国际证券识别编码 (ISIN)。",
     )
     lei: str | None = Field(
         default=None,
-        description="Legal Entity Identifier of the issuing entity.",
+        description="发行实体的法人识别编码 (LEI)。",
     )
     currency: list | str | None = Field(
         default=None,
-        description="Currency of the bond. Formatted as the 3-letter ISO 4217 code (e.g. GBP, EUR, USD).",
+        description="债券货币。格式为 3 字母 ISO 4217 代码（例如 GBP、EUR、USD）。",
     )
     coupon_min: float | None = Field(
         default=None,
-        description="Minimum coupon rate of the bond.",
+        description="债券的最低票面利率。",
     )
     coupon_max: float | None = Field(
         default=None,
-        description="Maximum coupon rate of the bond.",
+        description="债券的最高票面利率。",
     )
     issued_amount_min: int | None = Field(
         default=None,
-        description="Minimum issued amount of the bond.",
+        description="债券的最低发行金额。",
     )
     issued_amount_max: str | None = Field(
         default=None,
-        description="Maximum issued amount of the bond.",
+        description="债券的最高发行金额。",
     )
     maturity_date_min: dateType | None = Field(
         default=None,
-        description="Minimum maturity date of the bond.",
+        description="债券的最早到期日。",
     )
     maturity_date_max: dateType | None = Field(
         default=None,
-        description="Maximum maturity date of the bond.",
+        description="债券的最晚到期日。",
     )
 
     @field_validator("isin", "currency", "lei", mode="before", check_fields=False)
     @classmethod
     def validate_upper_case(cls, v):
-        """Convert the field to uppercase and convert a list to a query string."""
+        """将字段转换为大写并将列表转换为查询字符串。"""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
 
 
 class BondReferenceData(Data):
-    """Bond Reference Search Data."""
+    """债券参考搜索数据。"""
 
     isin: str | None = Field(
         default=None,
-        description="International Securities Identification Number of the bond.",
+        description="债券的国际证券识别编码 (ISIN)。",
     )
     lei: str | None = Field(
         default=None,
-        description="Legal Entity Identifier of the issuing entity.",
+        description="发行实体的法人识别编码 (LEI)。",
     )
-    figi: str | None = Field(default=None, description="FIGI of the bond.")
+    figi: str | None = Field(default=None, description="债券的 FIGI。")
     cusip: str | None = Field(
         default=None,
-        description="CUSIP of the bond.",
+        description="债券的 CUSIP。",
     )
     coupon_rate: float | None = Field(
         default=None,
-        description="Coupon rate of the bond.",
+        description="债券的票面利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

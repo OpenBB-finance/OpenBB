@@ -1,4 +1,4 @@
-"""Personal Consumption Expenditures Standard Model."""
+"""个人消费支出 (PCE) 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,17 +12,17 @@ from pydantic import Field
 
 
 class PersonalConsumptionExpendituresQueryParams(QueryParams):
-    """Personal Consumption Expenditures Query."""
+    """个人消费支出 (PCE) 查询。"""
 
     date: dateType | str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " Default is the latest report.",
+        + " 默认是最新报告。",
     )
 
 
 class PersonalConsumptionExpendituresData(Data):
-    """Personal Consumption Expenditures Data."""
+    """个人消费支出 (PCE) 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

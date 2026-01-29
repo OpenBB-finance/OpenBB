@@ -1,4 +1,4 @@
-"""Key Metrics Standard Model."""
+"""关键指标标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,33 +12,33 @@ from pydantic import Field, field_validator
 
 
 class KeyMetricsQueryParams(QueryParams):
-    """Key Metrics Query."""
+    """关键指标查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class KeyMetricsData(Data):
-    """Key Metrics Data."""
+    """关键指标数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     period_ending: dateType | None = Field(
-        default=None, description="End date of the reporting period."
+        default=None, description="报告期截止日期。"
     )
     fiscal_year: int | None = Field(
-        default=None, description="Fiscal year for the fiscal period, if available."
+        default=None, description="财政期间所属的财政年度（如有）。"
     )
     fiscal_period: str | None = Field(
-        default=None, description="Fiscal period for the data, if available."
+        default=None, description="数据的财政期间（如有）。"
     )
     currency: str | None = Field(
         default=None,
-        description="Currency in which the data is reported.",
+        description="报告数据所用的货币。",
     )
     market_cap: int | float | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("market_cap", "")

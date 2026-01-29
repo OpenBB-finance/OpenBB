@@ -1,4 +1,4 @@
-"""Bond Indices Standard Model."""
+"""债券指数标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class BondIndicesQueryParams(QueryParams):
-    """Bond Indices Query."""
+    """债券指数查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,7 +27,7 @@ class BondIndicesQueryParams(QueryParams):
     )
     index_type: Literal["yield", "yield_to_worst", "total_return", "oas"] = Field(
         default="yield",
-        description="The type of series. OAS is the option-adjusted spread. Default is yield.",
+        description="系列类型。OAS 是期权调整利差。默认为收益率 (yield)。",
         json_schema_extra={
             "choices": ["yield", "yield_to_worst", "total_return", "oas"]
         },
@@ -36,16 +36,16 @@ class BondIndicesQueryParams(QueryParams):
     @field_validator("index_type", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class BondIndicesData(Data):
-    """Bond Indices Data."""
+    """债券指数数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    value: float = Field(description="Index values.")
+    value: float = Field(description="指数值。")

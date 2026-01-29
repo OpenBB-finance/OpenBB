@@ -15,8 +15,8 @@ HIST_FILE_PROMPT = SETTINGS_DIRECTORY / ".cli.his"
 
 DEFAULT_ROUTINES_URL = "https://openbb-cms.directus.app/items/Routines"
 TIMEOUT = 30
-CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
-CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
+CONNECTION_ERROR_MSG = "[red]连接错误。[/red]"
+CONNECTION_TIMEOUT_MSG = "[red]连接超时。[/red]"
 SCRIPT_TAGS = [
     "stocks",
     "crypto",

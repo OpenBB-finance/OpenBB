@@ -216,23 +216,23 @@ class CLIController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_info("\nConfigure CLI")
+        mt.add_info("\n配置 CLI")
         mt.add_menu(
             "settings",
-            description="enable and disable feature flags, preferences and settings",
+            description="启用或禁用功能标志、首选项和设置",
         )
         mt.add_raw("\n")
-        mt.add_info("Record and execute your own .openbb routine scripts")
-        mt.add_cmd("record", description="start recording current session")
+        mt.add_info("记录并执行您自己的 .openbb 例程脚本")
+        mt.add_cmd("record", description="开始记录当前会话")
         mt.add_cmd(
-            "stop", description="stop session recording and convert to .openbb routine"
+            "stop", description="停止会话记录并转换为 .openbb 例程"
         )
         mt.add_cmd(
             "exe",
-            description="execute .openbb routine scripts (use exe --example for an example)",
+            description="执行 .openbb 例程脚本 (使用 exe --example 查看示例)",
         )
         mt.add_raw("\n")
-        mt.add_info("Retrieve data from different asset classes and providers")
+        mt.add_info("从不同的资产类别和提供商检索数据")
 
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
@@ -249,7 +249,7 @@ class CLIController(BaseController):
                 mt.add_cmd(router)
 
         if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
-            mt.add_info("\nAnalyze and process previously obtained data")
+            mt.add_info("\n分析和处理之前获取的数据")
 
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
@@ -268,7 +268,7 @@ class CLIController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
-            mt.add_info("\nCached Results")
+            mt.add_info("\n缓存结果")
             for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
@@ -295,20 +295,20 @@ class CLIController(BaseController):
 
         if not other_args:
             session.console.print(
-                "[info]Provide a path to the routine you wish to execute. For an example, please use "
-                "`exe --example`.\n[/info]"
+                "[info]提供您希望执行的例程路径。例如，请使用 "
+                "`exe --example`。\n[/info]"
             )
             return
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
-            description="Execute automated routine script. For an example, please use `exe --example`.",
+            description="执行自动化例程脚本。例如，请使用 `exe --example`。",
         )
         parser.add_argument(
             "--file",
             "-f",
-            help="The path or .openbb file to run.",
+            help="要运行的路径或 .openbb 文件。",
             dest="file",
             required="-h" not in other_args
             and "--help" not in other_args
@@ -322,20 +322,20 @@ class CLIController(BaseController):
         parser.add_argument(
             "-i",
             "--input",
-            help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+            help="选择要在例程中替换的多个输入，以逗号分隔。例如 GME,AMC,BTC-USD",
             dest="routine_args",
             type=str,
         )
         parser.add_argument(
             "-e",
             "--example",
-            help="Run an example script to understand how routines can be used.",
+            help="运行示例脚本以了解如何使用例程。",
             dest="example",
             action="store_true",
             default=False,
         )
         parser.add_argument(
-            "--url", help="URL to run openbb script from.", dest="url", type=str
+            "--url", help="从中运行 openbb 脚本的 URL。", dest="url", type=str
         )
         if other_args and "-" not in other_args[0][0]:
             if other_args[0].startswith("my.") or other_args[0].startswith("http"):
@@ -347,7 +347,7 @@ class CLIController(BaseController):
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
                 session.console.print(  # TODO: Point to docs when ready
-                    "[info]Executing an example, please visit our docs to learn how to create your own script.[/info]\n"
+                    "[info]正在执行示例，请访问我们的文档以了解如何创建您自己的脚本。[/info]\n"
                 )
                 time.sleep(3)
             elif ns_parser.url:
@@ -366,7 +366,7 @@ class CLIController(BaseController):
                 response = requests.get(final_url, timeout=10)
                 if response.status_code != 200:
                     session.console.print(
-                        "[red]Could not find the requested script.[/red]"
+                        "[red]找不到请求的脚本。[/red]"
                     )
                     return
                 routine_text = response.json()["script"]
@@ -447,18 +447,18 @@ class CLIController(BaseController):
                     # Check if the directory exists
                     if os.path.isdir(export_path):
                         session.console.print(
-                            f"Export data to be saved in the selected folder: '{export_path}'"
+                            f"导出数据将保存到选定文件夹：'{export_path}'"
                         )
                     else:
                         os.makedirs(export_path)
                         session.console.print(
-                            f"[green]Folder '{export_path}' successfully created.[/green]"
+                            f"[green]文件夹 '{export_path}' 已创建成功。[/green]"
                         )
                     self.queue = self.queue[1:]
 
             except FileNotFoundError:
                 session.console.print(
-                    f"[red]File '{routine_path}' doesn't exist.[/red]"
+                    f"[red]文件 '{routine_path}' 不存在。[/red]"
                 )
                 return
 
@@ -484,12 +484,12 @@ def handle_job_cmds(jobs_cmds: list[str] | None) -> list[str] | None:
     # Check if the directory exists
     if os.path.isdir(export_path):
         session.console.print(
-            f"Export data to be saved in the selected folder: '{export_path}'"
+            f"导出数据将保存到选定文件夹：'{export_path}'"
         )
     else:
         os.makedirs(export_path)
         session.console.print(
-            f"[green]Folder '{export_path}' successfully created.[/green]"
+            f"[green]文件夹 '{export_path}' 已创建成功。[/green]"
         )
     return jobs_cmds
 
@@ -583,7 +583,7 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
 
         except SystemExit:
             session.console.print(
-                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]\n",
+                f"[red]命令 '{an_input}' 在 / 菜单中不存在。[/red]\n",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -604,7 +604,7 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
                         continue
                     an_input = candidate_input
 
-                session.console.print(f"[green]Replacing by '{an_input}'.[/green]")
+                session.console.print(f"[green]替换为 '{an_input}'。[/green]")
                 t_controller.queue.insert(0, an_input)
 
 
@@ -644,7 +644,7 @@ def run_scripts(  # pylint: disable=R0917
         Whether to log tests to txt files
     """
     if not path.exists():
-        session.console.print(f"File '{path}' doesn't exist. Launching base CLI.\n")
+        session.console.print(f"文件 '{path}' 不存在。正在启动基础 CLI。\n")
         if not test_mode:
             run_cli()
 
@@ -755,7 +755,7 @@ def run_routine(file: str, routines_args: str | None = None):
         )
     else:
         session.console.print(
-            f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
+            f"未找到例程，请将您的 `.openbb` 文件放入：{user_routine_path}。"
         )
 
 

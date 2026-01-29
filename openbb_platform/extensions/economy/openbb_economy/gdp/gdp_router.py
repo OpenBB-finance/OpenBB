@@ -1,4 +1,4 @@
-"""Economy GDP Router."""
+"""经济 GDP 路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -36,7 +36,7 @@ async def forecast(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Forecasted GDP Data."""
+    """获取 GDP 预测数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -60,7 +60,7 @@ async def nominal(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Nominal GDP Data."""
+    """获取名义 GDP 数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -79,5 +79,5 @@ async def real(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Real GDP Data."""
+    """获取实际 GDP 数据。"""
     return await OBBject.from_query(Query(**locals()))

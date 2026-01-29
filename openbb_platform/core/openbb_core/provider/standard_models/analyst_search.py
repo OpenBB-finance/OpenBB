@@ -1,4 +1,4 @@
-"""Analyst Search Standard Model."""
+"""分析师搜索标准模型。"""
 
 from datetime import (
     datetime,
@@ -10,39 +10,39 @@ from pydantic import Field
 
 
 class AnalystSearchQueryParams(QueryParams):
-    """Analyst Search Query."""
+    """分析师搜索查询。"""
 
     analyst_name: str | None = Field(
         default=None,
-        description="Analyst names to return."
-        + " Omitting will return all available analysts.",
+        description="要返回的分析师姓名。"
+        + " 省略将返回所有可用分析师。",
     )
     firm_name: str | None = Field(
         default=None,
-        description="Firm names to return."
-        + " Omitting will return all available firms.",
+        description="要返回的公司名称。"
+        + " 省略将返回所有可用公司。",
     )
 
 
 class AnalystSearchData(Data):
-    """Analyst Search data."""
+    """分析师搜索数据。"""
 
     last_updated: datetime | None = Field(
         default=None,
-        description="Date of the last update.",
+        description="最后更新日期。",
     )
     firm_name: str | None = Field(
         default=None,
-        description="Firm name of the analyst.",
+        description="分析师所在公司名称。",
     )
     name_first: str | None = Field(
         default=None,
-        description="Analyst first name.",
+        description="分析师名字。",
     )
     name_last: str | None = Field(
         default=None,
-        description="Analyst last name.",
+        description="分析师姓氏。",
     )
     name_full: str = Field(
-        description="Analyst full name.",
+        description="分析师全名。",
     )

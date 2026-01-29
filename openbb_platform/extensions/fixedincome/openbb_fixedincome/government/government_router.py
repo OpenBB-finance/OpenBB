@@ -1,4 +1,4 @@
-"""Fixed Income Government Router."""
+"""固定收益政府路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -44,7 +44,7 @@ async def yield_curve(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Get yield curve data by country and date."""
+    """按国家和日期获取收益率曲线数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -58,7 +58,7 @@ async def treasury_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Government Treasury Rates."""
+    """政府国债利率。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -82,7 +82,7 @@ async def treasury_auctions(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Government Treasury Auctions."""
+    """政府国债拍卖。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -99,7 +99,7 @@ async def treasury_prices(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Government Treasury Prices by date."""
+    """按日期的政府国债价格。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -116,5 +116,5 @@ async def tips_yields(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get current Treasury inflation-protected securities yields."""
+    """获取当前的通货膨胀保值债券 (TIPS) 收益率。"""
     return await OBBject.from_query(Query(**locals()))

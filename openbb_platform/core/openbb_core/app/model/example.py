@@ -1,4 +1,4 @@
-"""Example class to represent endpoint examples."""
+"""用于表示端点示例的示例类。"""
 
 from abc import abstractmethod
 from datetime import date, datetime, timedelta
@@ -16,7 +16,7 @@ QUOTE_TYPES = {str, date}
 
 
 class Example(BaseModel):
-    """Example model."""
+    """示例模型。"""
 
     scope: str
 
@@ -24,44 +24,44 @@ class Example(BaseModel):
 
     @abstractmethod
     def to_python(self, **kwargs) -> str:
-        """Return a Python code representation of the example."""
+        """返回示例的 Python 代码表示。"""
 
 
 class APIEx(Example):
-    """API Example model."""
+    """API 示例模型。"""
 
     scope: Literal["api"] = "api"
     description: str | None = Field(
-        default=None, description="Optional description unless more than 3 parameters"
+        default=None, description="可选描述，除非参数超过 3 个"
     )
     parameters: dict[str, str | int | float | bool | list[str] | list[dict[str, Any]]]
 
     @computed_field  # type: ignore[misc]
     @property
     def provider(self) -> str | None:
-        """Return the provider from the parameters."""
+        """从参数中返回提供者。"""
         return self.parameters.get("provider")  # type: ignore
 
     @model_validator(mode="before")
     @classmethod
     def validate_model(cls, values: dict) -> dict:
-        """Validate model."""
+        """验证模型。"""
         parameters = values.get("parameters", {})
         provider = parameters.pop("provider", None)
 
         if provider and not isinstance(provider, str):
-            raise ValueError("Provider must be a string.")
+            raise ValueError("提供者必须是字符串。")
 
         if len(parameters) > 3 and not values.get("description"):
             raise ValueError(
-                "Description is required when there are more than 3 parameters."
+                "当参数超过 3 个时，描述是必需的。"
             )
 
         return values
 
     @staticmethod
     def _unpack_type(type_: type) -> set:
-        """Unpack types from types, example Union[List[str], int] -> {typing._GenericAlias, int}."""
+        """从 types 中解包类型，例如 Union[List[str], int] -> {typing._GenericAlias, int}。"""
         if (
             hasattr(type_, "__args__")
             and type(type_) is not _GenericAlias  # pylint: disable=C0123
@@ -71,7 +71,7 @@ class APIEx(Example):
 
     @staticmethod
     def _shift(i: int) -> float:
-        """Return a transformation of the integer."""
+        """返回整数的变换。"""
         return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
@@ -81,23 +81,23 @@ class APIEx(Example):
         sample: dict[str, Any] | None = None,
         multiindex: dict[str, Any] | None = None,
     ) -> list[dict]:
-        """Generate mock data from a sample.
+        """从样本生成模拟数据。
 
         Parameters
         ----------
         dataset : str
-            The type of data to return:
-            - 'timeseries': Time series data
-            - 'panel': Panel data (multiindex)
+            要返回的数据类型：
+            - 'timeseries': 时间序列数据
+            - 'panel': 面板数据（多级索引）
 
         size : int
-            The size of the data to return, default is 5.
+            要返回的数据大小，默认为 5。
         sample : Optional[Dict[str, Any]], optional
-            A sample of the data to return, by default None.
+            要返回的数据样本，默认为 None。
         multiindex_names : Optional[List[str]], optional
-            The names of the multiindex, by default None.
+            多级索引的名称，默认为 None。
 
-        Timeseries default sample:
+        Timeseries 默认样本:
         {
             "date": "2023-01-01",
             "open": 110.0,
@@ -107,7 +107,7 @@ class APIEx(Example):
             "volume": 10000,
         }
 
-        Panel default sample:
+        Panel 默认样本:
         {
             "portfolio_value": 100000,
             "risk_free_rate": 0.02,
@@ -117,7 +117,7 @@ class APIEx(Example):
         Returns
         -------
         List[Dict]
-            A list of dictionaries with the mock data.
+            包含模拟数据的字典列表。
         """
         if dataset == "timeseries":
             sample = sample or {
@@ -155,7 +155,7 @@ class APIEx(Example):
                 "is_multiindex": True,
                 "multiindex_names": str(multiindex_names),
             }
-            # Iterate over the number of items to create and add them to the result
+            # 迭代要创建的项目数并将它们添加到结果中
             result = []
             for i in range(1, size + 1):
                 item[idx_1] = f"{idx_1}_{i}"
@@ -168,10 +168,10 @@ class APIEx(Example):
                             item[k] = round(v * APIEx._shift(i + j), 2)
                     result.append(item.copy())
             return result
-        raise ValueError(f"Dataset '{dataset}' not found.")
+        raise ValueError(f"未找到数据集 '{dataset}'。")
 
     def to_python(self, **kwargs) -> str:
-        """Return a Python code representation of the example."""
+        """返回示例的 Python 代码表示。"""
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
         param_types: dict[str, type] = kwargs.get("param_types", {})
@@ -197,14 +197,14 @@ class APIEx(Example):
 
 
 class PythonEx(Example):
-    """Python Example model."""
+    """Python 示例模型。"""
 
     scope: Literal["python"] = "python"
     description: str
     code: list[str]
 
     def to_python(self, **kwargs) -> str:
-        """Return a Python code representation of the example."""
+        """返回示例的 Python 代码表示。"""
         indentation = kwargs.get("indentation", "")
         prompt = kwargs.get("prompt", "")
 
@@ -222,7 +222,7 @@ def filter_list(
     examples: list[Example],
     providers: list[str],
 ) -> list[Example]:
-    """Filter list of examples."""
+    """过滤示例列表。"""
     return [
         e
         for e in examples

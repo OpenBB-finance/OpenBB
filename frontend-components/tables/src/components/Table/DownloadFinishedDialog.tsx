@@ -28,7 +28,7 @@ export default function DownloadFinishedDialog({
           <CloseIcon className="w-6 h-6" />
         </DialogPrimitive.Close>
         <DialogPrimitive.Title className="_modal-title">
-          Success
+          成功
         </DialogPrimitive.Title>
         <div
           id="popup_title"
@@ -45,7 +45,7 @@ export default function DownloadFinishedDialog({
           >
             <div>
               <label htmlFor="title_text">
-                <b>{window.title}</b> has been downloaded to
+                <b>{window.title}</b> 已下载至
                 <br />
                 <br />
                 <a
@@ -70,7 +70,7 @@ export default function DownloadFinishedDialog({
               }}
               onClick={close}
             >
-              Close
+              关闭
             </button>
           </div>
         </div>

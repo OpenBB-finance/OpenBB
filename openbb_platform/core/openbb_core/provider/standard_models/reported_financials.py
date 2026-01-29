@@ -1,4 +1,4 @@
-"""Reported Financials."""
+"""申报财务数据。"""
 
 from datetime import date as dateType
 
@@ -11,7 +11,7 @@ from pydantic import Field, field_validator, model_validator
 
 
 class ReportedFinancialsQueryParams(QueryParams):
-    """Reported Financials Query Params."""
+    """申报财务数据查询参数。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: str = Field(
@@ -19,48 +19,48 @@ class ReportedFinancialsQueryParams(QueryParams):
     )
     statement_type: str = Field(
         default="balance",
-        description="The type of financial statement - i.e, balance, income, cash.",
+        description="财务报表类型 - 即资产负债表 (balance)、利润表 (income)、现金流量表 (cash)。",
     )
     limit: int | None = Field(
         default=100,
         description=(
             QUERY_DESCRIPTIONS.get("limit", "")
-            + " Although the response object contains multiple results,"
-            + " because of the variance in the fields, year-to-year and quarter-to-quarter,"
-            + " it is recommended to view results in small chunks."
+            + " 虽然响应对象包含多个结果，"
+            + " 但由于字段、年度和季度之间存在差异，"
+            + " 建议分块查看结果。"
         ),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
     @field_validator("period", "statement_type", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class ReportedFinancialsData(Data):
-    """Reported Financials Data."""
+    """申报财务数据。"""
 
     period_ending: dateType = Field(
-        description="The ending date of the reporting period."
+        description="报告期的截止日期。"
     )
     fiscal_period: str = Field(
-        description="The fiscal period of the report (e.g. FY, Q1, etc.)."
+        description="报告的财政期间（例如 FY、Q1 等）。"
     )
     fiscal_year: int | None = Field(
-        description="The fiscal year of the fiscal period.", default=None
+        description="财政期间所属的财政年度。", default=None
     )
 
     @model_validator(mode="before")
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
-        """Check for zero values and replace with None."""
+        """检查零值并将其替换为 None。"""
         return (
             {k: None if v == 0 else v for k, v in values.items()}
             if isinstance(values, dict)

@@ -1,4 +1,4 @@
-"""Cash Flow Statement Standard Model."""
+"""现金流量表标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,7 +9,7 @@ from pydantic import Field, NonNegativeInt, field_validator
 
 
 class CashFlowStatementQueryParams(QueryParams):
-    """Cash Flow Statement Query."""
+    """现金流量表查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: NonNegativeInt | None = Field(
@@ -19,17 +19,17 @@ class CashFlowStatementQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class CashFlowStatementData(Data):
-    """Cash Flow Statement Data."""
+    """现金流量表数据。"""
 
-    period_ending: dateType = Field(description="The end date of the reporting period.")
+    period_ending: dateType = Field(description="报告期的结束日期。")
     fiscal_period: str | None = Field(
-        description="The fiscal period of the report.", default=None
+        description="报告的会计期间。", default=None
     )
     fiscal_year: int | None = Field(
-        description="The fiscal year of the fiscal period.", default=None
+        description="会计期间的会计年度。", default=None
     )

@@ -1,4 +1,4 @@
-"""Selected Treasury Bill Standard Model."""
+"""精选短期国债标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class SelectedTreasuryBillQueryParams(QueryParams):
-    """Selected Treasury Bill Query."""
+    """精选短期国债查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,18 +27,18 @@ class SelectedTreasuryBillQueryParams(QueryParams):
     )
     maturity: Literal["3m", "6m"] | None = Field(
         default="3m",
-        description="The maturity",
+        description="到期期限。",
     )
 
     @field_validator("maturity", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class SelectedTreasuryBillData(Data):
-    """Selected Treasury Bill Data."""
+    """精选短期国债数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="SelectedTreasuryBill Rate.")
+    rate: float | None = Field(description="精选短期国债利率。")

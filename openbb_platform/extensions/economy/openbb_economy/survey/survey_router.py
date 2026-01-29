@@ -1,4 +1,4 @@
-"""Economy Survey Router."""
+"""经济调查路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -28,7 +28,7 @@ async def bls_series(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get time series data for one, or more, BLS series IDs."""
+    """获取一个或多个 BLS 系列 ID 的时间序列数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -42,7 +42,7 @@ async def bls_series(
             }
         ),
         APIEx(
-            description="Use semi-colon to separate multiple queries as an & operator.",
+            description="使用分号将多个查询作为 & 运算符分隔。",
             parameters={
                 "provider": "bls",
                 "category": "cpi",
@@ -57,7 +57,7 @@ async def bls_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search BLS surveys by category and keyword or phrase to identify BLS series IDs."""
+    """按类别和关键字或短语搜索 BLS 调查，以识别 BLS 系列 ID。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -74,7 +74,7 @@ async def sloos(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Senior Loan Officers Opinion Survey."""
+    """获取高级信贷员意见调查。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -90,7 +90,7 @@ async def university_of_michigan(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys."""
+    """获取密歇根大学消费者信心和通胀预期调查。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -106,7 +106,7 @@ async def economic_conditions_chicago(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get The Survey Of Economic Conditions For The Chicago Region."""
+    """获取芝加哥地区经济状况调查。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -129,7 +129,7 @@ async def manufacturing_outlook_texas(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get The Manufacturing Outlook Survey For The Texas Region."""
+    """获取德克萨斯地区制造业展望调查。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -158,20 +158,20 @@ async def manufacturing_outlook_ny(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the Empire State Manufacturing Survey.
+    """获取帝国州制造业调查。
 
-    It is a monthly survey of manufacturers in New York State conducted by the Federal Reserve Bank of New York.
+    这是纽约联邦储备银行对纽约州制造商进行的月度调查。
 
-    Participants from across the state in a variety of industries respond to a questionnaire
-    and report the change in a variety of indicators from the previous month.
+    来自全州各行各业的参与者回答问卷
+    并报告各种指标与上个月相比的变化。
 
-    Respondents also state the likely direction of these same indicators six months ahead.
-    April 2002 is the first report, although survey data date back to July 2001.
+    受访者还说明了未来六个月这些相同指标的可能方向。
+    2002 年 4 月是第一份报告，尽管调查数据可追溯至 2001 年 7 月。
 
-    The survey is sent on the first day of each month to the same pool of about 200
-    manufacturing executives in New York State, typically the president or CEO.
+    调查于每月的最后一天发送给同一组约 200 名
+    纽约州的制造业高管，通常是总裁或首席执行官。
 
-    About 100 responses are received. Most are completed by the tenth, although surveys are accepted until the fifteenth.
+    收到了大约 100 份回复。大多数在第十天之前完成，尽管调查接受至第十五天。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -194,5 +194,5 @@ async def nonfarm_payrolls(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Nonfarm Payrolls Survey."""
+    """获取非农就业人数调查。"""
     return await OBBject.from_query(Query(**locals()))

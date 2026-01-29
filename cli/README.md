@@ -1,41 +1,41 @@
-# OpenBB Platform CLI
+# OpenBB Platform CLI (命令行界面)
 
-[![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
-[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBB)
+[![下载量](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
+[![最新版本](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBB)
 
-| OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
+| OpenBB 致力于通过构建面向所有人、随处可用的开源基础设施来打造投资研究的未来。 |
 | :---------------------------------------------------------------------------------------------------------------------------------------------: |
-|              ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png)               |
-|                                                 Check our website at [openbb.co](www.openbb.co)                                                 |
+|              ![OpenBB Logo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png)               |
+|                                                 访问我们的网站：[openbb.co](https://www.openbb.co)                                                 |
 
-## Overview
+## 概览 (Overview)
 
-The OpenBB Platform CLI is a command line interface that wraps [OpenBB Platform](https://docs.openbb.co/platform).
+OpenBB Platform CLI 是一个封装了 [OpenBB Platform](https://docs.openbb.co/platform) 的命令行界面。
 
-It offers a convenient way to interact with the OpenBB Platform and its extensions, as well as automated data collection via OpenBB Routine Scripts.
+它提供了一种便捷的方式与其核心平台及扩展进行交互，并通过 OpenBB 常规脚本 (Routine Scripts) 实现自动化的数据收集。
 
-Find the most complete documentation, examples, and usage guides for the OpenBB Platform CLI [here](https://docs.openbb.co/cli).
+您可以在 [此处](https://docs.openbb.co/cli) 找到最完整的 OpenBB Platform CLI 文档、示例和使用指南。
 
-## Installation
+## 安装 (Installation)
 
-The command below provides access to all the available OpenBB extensions behind the OpenBB Platform, find the complete list [here](https://my.openbb.co/app/platform/extensions).
+以下命令可让您访问 OpenBB Platform 下所有可用的扩展，完整列表请见 [此处](https://my.openbb.co/app/platform/extensions)。
 
 ```bash
 pip install openbb-cli
 ```
 
-> Note: Find the most complete installation hints and tips [here](https://docs.openbb.co/cli/installation).
+> 注意：最完整的安装提示和方案请参考 [此处](https://docs.openbb.co/cli/installation)。
 
-After the installation is complete, you can deploy the OpenBB Platform CLI by running the following command:
+安装完成后，您可以通过运行以下命令来启动 OpenBB Platform CLI：
 
 ```bash
 openbb
 ```
 
-Which should result in the following output:
+启动后应看到如下输出：
 
-![image](https://github.com/OpenBB-finance/OpenBB/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
+![界面图示](https://github.com/OpenBB-finance/OpenBB/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
 
-## Documentation
+## 文档 (Documentation)
 
-View the user documentation for this package [here](https://docs.openbb.co/cli)
+查看此软件包的相关用户文档：[请点击此处](https://docs.openbb.co/cli)

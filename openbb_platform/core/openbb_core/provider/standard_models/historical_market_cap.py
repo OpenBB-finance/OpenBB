@@ -1,4 +1,4 @@
-"""Historical Market Cap Model."""
+"""历史市值模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class HistoricalMarketCapQueryParams(QueryParams):
-    """Historical Market Cap Query."""
+    """历史市值查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -25,16 +25,16 @@ class HistoricalMarketCapQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class HistoricalMarketCapData(Data):
-    """Historical Market Cap Data."""
+    """历史市值数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     market_cap: int | float = Field(
-        description="Market capitalization of the security.",
+        description="证券的市值。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )

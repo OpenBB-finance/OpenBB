@@ -1,4 +1,4 @@
-"""Discovery Filings Standard Model."""
+"""发现备案标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, NonNegativeInt
 
 
 class DiscoveryFilingsQueryParams(QueryParams):
-    """Discovery Filings Query."""
+    """发现备案查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -28,7 +28,7 @@ class DiscoveryFilingsQueryParams(QueryParams):
     form_type: str | None = Field(
         default=None,
         description=(
-            "Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
+            "按表单类型过滤。访问 https://www.sec.gov/forms 获取支持的表单类型列表。"
         ),
     )
     limit: NonNegativeInt | None = Field(
@@ -37,7 +37,7 @@ class DiscoveryFilingsQueryParams(QueryParams):
 
 
 class DiscoveryFilingsData(Data):
-    """Discovery Filings Data."""
+    """发现备案数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
@@ -45,5 +45,5 @@ class DiscoveryFilingsData(Data):
     accepted_date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("accepted_date", "")
     )
-    form_type: str = Field(description="The form type of the filing")
-    link: str = Field(description="URL to the filing page on the SEC site.")
+    form_type: str = Field(description="备案的表单类型")
+    link: str = Field(description="SEC 网站上备案页面的 URL。")

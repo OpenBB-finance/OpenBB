@@ -1,4 +1,4 @@
-"""Management Discussion & Analysis Standard Model."""
+"""管理层讨论与分析 (MD&A) 标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,36 +13,36 @@ from pydantic import Field, field_validator
 
 
 class ManagementDiscussionAnalysisQueryParams(QueryParams):
-    """Management Discussion & Analysis Query Parameters."""
+    """管理层讨论与分析 (MD&A) 查询属性。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     calendar_year: int | None = Field(
         default=None,
-        description="Calendar year of the report. By default, is the current year."
-        + " If the calendar period is not provided, but the calendar year is, it will return the annual report.",
+        description="报告的日历年度。默认是当前年份。"
+        + " 如果未提供日历期间，但提供了日历年度，它将返回年度报告。",
     )
     calendar_period: Literal["Q1", "Q2", "Q3", "Q4"] | None = Field(
         default=None,
-        description="Calendar period of the report. By default, is the most recent report available for the symbol."
-        + " If no calendar year and no calendar period are provided, it will return the most recent report.",
+        description="报告的日历期间。默认是该股票代码可用的最新报告。"
+        + " 如果未提供日历年度和日历期间，则会返回最新报告。",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class ManagementDiscussionAnalysisData(Data):
-    """Management Discussion & Analysis Data."""
+    """管理层讨论与分析 (MD&A) 数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    calendar_year: int = Field(description="The calendar year of the report.")
-    calendar_period: int = Field(description="The calendar period of the report.")
+    calendar_year: int = Field(description="报告的日历年度。")
+    calendar_period: int = Field(description="报告的日历期间。")
     period_ending: dateType | None = Field(
-        description="The end date of the reporting period.", default=None
+        description="报告期截止日期。", default=None
     )
     content: str = Field(
-        description="The content of the management discussion and analysis."
+        description="管理层讨论与分析的内容。"
     )

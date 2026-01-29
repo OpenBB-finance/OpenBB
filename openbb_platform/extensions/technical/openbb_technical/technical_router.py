@@ -1,4 +1,4 @@
-"""Technical Analysis Router."""
+"""技术分析路由器。"""
 
 # pylint: disable=too-many-lines,unused-import,too-many-arguments,too-many-positional-arguments
 
@@ -29,15 +29,14 @@ from openbb_technical.relative_rotation import (
 )
 
 # TODO: Split this into multiple files
-router = Router(prefix="", description="Technical Analysis tools.")
+router = Router(prefix="", description="技术分析工具。")
 
 
 @router.command(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Calculate the Relative Strength Ratio and Relative Strength Momentum"
-            + " for a group of symbols against a benchmark.",
+            description="计算一组代码相对于基准的相对强度比率和相对强度动量。",
             code=[
                 "stock_data = obb.equity.price.historical("
                 + "symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')",
@@ -47,8 +46,7 @@ router = Router(prefix="", description="Technical Analysis tools.")
             ],
         ),
         PythonEx(
-            description="When the assets are not traded 252 days per year,"
-            + "adjust the momentum and volatility periods accordingly.",
+            description="当资产不是每年 252 天交易时，相应地调整势头和波动率周期。",
             code=[
                 "crypto_data = obb.crypto.price.historical("
                 + " symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')",
@@ -68,82 +66,82 @@ async def relative_rotation(
     trading_periods: int | None = 252,
     chart_params: dict[str, Any] | None = None,
 ) -> OBBject[RelativeRotationData]:
-    """Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
+    """计算一组代码相对于基准的相对强度比率和相对强度动量。
 
     Parameters
     ----------
     data : list[Data]
-        The data to be used for the relative rotation calculations.
-        This should be the multi-symbol output from the 'equity.price.historical' endpoint, or similar.
-        Or a pivot table with the 'date' column as the index, the symbols as the columns, and the 'study' as the values.
-        It is recommended to use the 'equity.price.historical' endpoint to get the data, and feed the results as-is.
+        用于相对旋转计算的数据。
+        这应该是 'equity.price.historical' 端点的多代码输出，或类似输出。
+        或者是透视表，其中 'date' 列为索引，代码为列，'study' 为值。
+        建议使用 'equity.price.historical' 端点获取数据，并将结果按原样输入。
     benchmark : str
-        The symbol to be used as the benchmark.
+        用作基准的代码。
     study : Literal[price, volume, volatility]
-        The data point for the calculations. If 'price', the closing price will be used.
-        If 'volatility', the standard deviation of the closing price will be used.
-        If 'data' is supplied as a pivot table,
-        the 'study' will assume the values are the closing price and 'volume' will be ignored.
+        用于计算的数据点。如果为 'price'，将使用收盘价。
+        如果为 'volatility'，将使用收盘价的标准差。
+        如果 'data' 以透视表形式提供，
+        'study' 将假定值为收盘价，'volume' 将被忽略。
     long_period : int, optional
-        The length of the long period for momentum calculation, by default 252.
-        Adjust this value when supplying a time series with an interval that is not daily.
-        For example, if the data is monthly, the long period should be 12.
+        用于动量计算的长周期长度，默认为 252。
+        当提供非每日间隔的时间序列时，请调整此值。
+        例如，如果数据是月度的，则长周期应为 12。
     short_period : int, optional
-        The length of the short period for momentum calculation, by default 21.
-        Adjust this value when supplying a time series with an interval that is not daily.
+        用于动量计算的短周期长度，默认为 21。
+        当提供非每日间隔的时间序列时，请调整此值。
     window : int, optional
-        The length of window for the standard deviation calculation, by default 21.
-        Adjust this value when supplying a time series with an interval that is not daily.
+        用于标准差计算的窗口长度，默认为 21。
+        当提供非每日间隔的时间序列时，请调整此值。
     trading_periods : int, optional
-        The number of trading periods per year, for the standard deviation calculation, by default 252.
-        Adjust this value when supplying a time series with an interval that is not daily.
+        每年交易周期数，用于标准差计算，默认为 252。
+        当提供非每日间隔的时间序列时，请调整此值。
     chart_params : dict[str, Any], optional
-        Additional parameters to pass when `chart=True` and the `openbb-charting` extension is installed.
-        Parameters can be passed again to redraw the chart using the charting.to_chart() method of the response.
+        当 `chart=True` 且安装了 `openbb-charting` 扩展时传递的其他参数。
+        可以再次传递参数以使用响应的 charting.to_chart() 方法重绘图表。
 
         ChartParams
         -----------
         date : str, optional
-            A target end date within the data to use for the chart, by default is the last date in the data.
+            数据中用于图表的目标结束日期，默认为数据中的最后日期。
         show_tails : bool
-            Show the tails on the chart, by default True.
+            在图表上显示尾部，默认为 True。
         tail_periods : int
-            Number of periods to show in the tails, by default 16.
+            尾部显示的周期数，默认为 16。
         tail_interval : Literal[day, week, month]
-            Interval to show the tails, by default 'week'.
+            显示尾部的间隔，默认为 'week'。
         title : str, optional
-            Title of the chart.
+            图表的标题。
 
     Returns
     -------
     OBBject[RelativeRotationData]
         results : RelativeRotationData
             symbols : list[str]:
-                The symbols that are being compared against the benchmark.
+                正在与基准进行比较的代码。
             benchmark : str
-                The benchmark symbol.
+                基准代码。
             study : Literal[price, volume, volatility]
-                The data point for the selected.
+                所选的数据点。
             long_period : int
-                The length of the long period for momentum calculation, as entered by the user.
+                用户输入的用于动量计算的长周期长度。
             short_period : int
-                The length of the short period for momentum calculation, as entered by the user.
+                用户输入的用于动量计算的短周期长度。
             window : int
-                The length of window for the standard deviation calculation.
+                用于标准差计算的窗口长度。
             trading_periods : int
-                The number of trading periods per year, for the standard deviation calculation.
+                每年交易周期数，用于标准差计算。
             start_date : str
-                The start date of the data after adjusting the length of the data for the calculations.
+                调整计算数据长度后的数据开始日期。
             end_date : str
-                The end date of the data.
+                数据结束日期。
             symbols_data : list[Data]
-                The data representing the selected 'study' for each symbol.
+                代表每个代码所选 'study' 的数据。
             benchmark_data : list[Data]
-                The data representing the selected 'study' for the benchmark.
+                代表基准所选 'study' 的数据。
             rs_ratios : list[Data]
-                The normalized relative strength ratios data.
+                归一化相对强度比率数据。
             rs_momentum : list[Data]
-                The normalized relative strength momentum data.
+                归一化相对强度动量数据。
     """
     params = RelativeRotationQueryParams(
         data=data,
@@ -167,7 +165,7 @@ async def relative_rotation(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the Average True Range.",
+            description="获取平均真实波幅。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "atr_data = obb.technical.atr(data=stock_data.results)",
@@ -184,35 +182,35 @@ def atr(
     drift: NonNegativeInt = 1,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Average True Range.
+    """计算平均真实波幅。
 
-    Used to measure volatility, especially volatility caused by gaps or limit moves.
-    The ATR metric helps understand how much the values in your data change on average,
-    giving insights into the stability or unpredictability during a certain period.
-    It's particularly useful for spotting trends of increase or decrease in variations,
-    without getting into technical trading details.
-    The method considers not just the day-to-day changes but also accounts for any
-    sudden jumps or drops, ensuring you get a comprehensive view of movement.
+    用于衡量波动性，尤其是由缺口或限价移动引起的波动性。
+    ATR 指标有助于了解您的数据中的值平均变化多少，
+    从而深入了解特定时期的稳定性或不可预测性。
+    它对于发现变动幅度增加或减少的趋势特别有用，
+    而无需通过技术交易细节。
+    该方法不仅考虑日常变化，还考虑任何
+    突然跳升或下降，确保您获得全面的运动视图。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to apply the indicator to.
+        应用指标的数据列表。
     index : str, optional
-        Index column name, by default "date"
+        索引列名，默认为 "date"
     length : PositiveInt, optional
-        It's period, by default 14
+        周期，默认为 14
     mamode : Literal["rma", "ema", "sma", "wma"], optional
-        Moving average mode, by default "rma"
+        移动平均模式，默认为 "rma"
     drift : NonNegativeInt, optional
-        The difference period, by default 1
+        差分周期，默认为 1
     offset : int, optional
-        How many periods to offset the result, by default 0
+        结果偏移多少个周期，默认为 0
 
     Returns
     -------
     OBBject[list[Data]]
-        list of data with the indicator applied.
+        应用了指标的数据列表。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -235,7 +233,7 @@ def atr(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the Bollinger Band Width.",
+            description="获取布林带带宽。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "fib_data = obb.technical.fib(data=stock_data.results, period=120)",
@@ -252,27 +250,27 @@ def fib(
     start_date: str | None = None,
     end_date: str | None = None,
 ) -> OBBject[list[Data]]:
-    """Create Fibonacci Retracement Levels.
+    """创建斐波那契回撤水平。
 
-    This method draws from a classic technique to pinpoint significant price levels
-    that often indicate where the market might find support or resistance.
-    It's a tool used to gauge potential turning points in the data by applying a
-    mathematical approach rooted in nature's patterns. Is used to get insights into
-    where prices could head next, based on historical movements.
+    这种方法利用经典技术来确定重要的价格水平，
+    这通常表明市场可能会在哪里找到支撑或阻力。
+    它是一种工具，通过应用植根于自然模式的数学方法
+    来衡量数据中的潜在转折点。用于深入了解
+    根据历史变动，价格接下来可能会走向何方。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to apply the indicator to.
+        应用指标的数据列表。
     index : str, optional
-        Index column name, by default "date"
+        索引列名，默认为 "date"
     period : PositiveInt, optional
-        Period to calculate the indicator, by default 120
+        计算指标的周期，默认为 120
 
     Returns
     -------
     OBBject[list[Data]]
-        list of data with the indicator applied.
+        应用了指标的数据列表。
     """
     df = basemodel_to_df(data, index=index)
 
@@ -306,7 +304,7 @@ def fib(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the On Balance Volume (OBV).",
+            description="获取能量潮指标 (OBV)。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "obv_data = obb.technical.obv(data=stock_data.results, offset=0)",
@@ -320,30 +318,30 @@ def obv(
     index: str = "date",
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the On Balance Volume (OBV).
+    """计算能量潮指标 (OBV)。
 
-    Is a cumulative total of the up and down volume. When the close is higher than the
-    previous close, the volume is added to the running total, and when the close is
-    lower than the previous close, the volume is subtracted from the running total.
+    它是上涨和下跌成交量的累计总和。当收盘价高于
+    前一收盘价时，成交量被加到累计总和中；当收盘价
+    低于前一收盘价时，成交量从累计总和中减去。
 
-    To interpret the OBV, look for the OBV to move with the price or precede price moves.
-    If the price moves before the OBV, then it is a non-confirmed move. A series of rising peaks,
-    or falling troughs, in the OBV indicates a strong trend. If the OBV is flat, then the market
-    is not trending.
+    要解释 OBV，请观察 OBV 是否随价格移动或先于价格移动。
+    如果价格先于 OBV 移动，则这是一个未确认的移动。一系列上升的峰值，
+    或下降的谷底，在 OBV 中表明这一强劲趋势。如果 OBV 持平，则市场
+    没有趋势。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to apply the indicator to.
+        应用指标的数据列表。
     index : str, optional
-        Index column name, by default "date"
+        索引列名，默认为 "date"
     offset : int, optional
-        How many periods to offset the result, by default 0.
+        结果偏移多少个周期，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        list of data with the indicator applied.
+        应用了指标的数据列表。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -363,7 +361,7 @@ def obv(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform the Fisher Transform.",
+            description="执行费舍尔变换。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)",
@@ -378,13 +376,13 @@ def fisher(
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
 ) -> OBBject[list[Data]]:
-    """Perform the Fisher Transform.
+    """执行费舍尔变换。
 
-    A technical indicator created by John F. Ehlers that converts prices into a Gaussian
-    normal distribution. The indicator highlights when prices have moved to an extreme,
-    based on recent prices.
-    This may help in spotting turning points in the price of an asset. It also helps
-    show the trend and isolate the price waves within a trend.
+    由 John F. Ehlers 创建的技术指标，将价格转换为高斯
+    正态分布。该指标突出显示价格何时变动到极端，
+    基于近期价格。
+    这可能有助于发现资产价格的转折点。它也有助于
+    显示趋势并在趋势中隔离价格波浪。
 
     Parameters
     ----------
@@ -421,7 +419,7 @@ def fisher(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the Accumulation/Distribution Oscillator.",
+            description="获取累积/派发震荡指标。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)",
@@ -437,32 +435,32 @@ def adosc(
     slow: PositiveInt = 10,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Accumulation/Distribution Oscillator.
+    """计算累积/派发震荡指标。
 
-    Also known as the Chaikin Oscillator.
+    也称为 Chaikin 震荡指标。
 
-    Essentially a momentum indicator, but of the Accumulation-Distribution line
-    rather than merely price. It looks at both the strength of price moves and the
-    underlying buying and selling pressure during a given time period. The oscillator
-    reading above zero indicates net buying pressure, while one below zero registers
-    net selling pressure. Divergence between the indicator and pure price moves are
-    the most common signals from the indicator, and often flag market turning points.
+    本质上是一种动量指标，但针对积累-分布线
+    而不仅仅是价格。它既观察价格变动的强度，也观察
+    给定时间段内的基本买入和卖出压力。震荡指标
+    读数高于零表示净买入压力，而低于零则表示
+    净卖出压力。指标与纯价格变动之间的背离是
+    该指标最常见的信号，通常标志着市场转折点。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     fast : PositiveInt, optional
-        Number of periods to be used for the fast calculation, by default 3.
+        用于快速计算的周期数，默认为 3。
     slow : PositiveInt, optional
-        Number of periods to be used for the slow calculation, by default 10.
+        用于慢速计算的周期数，默认为 10。
     offset : int, optional
-        Offset to be used for the calculation, by default 0.
+        用于计算的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -483,7 +481,7 @@ def adosc(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the Chande Momentum Oscillator.",
+            description="获取钱德动量摆动指标。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",  # noqa: E501
@@ -501,42 +499,41 @@ def bbands(
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Bollinger Bands.
+    """计算布林带。
 
-    Consist of three lines. The middle band is a simple moving average (generally 20
-    periods) of the typical price (TP). The upper and lower bands are F standard
-    deviations (generally 2) above and below the middle band.
-    The bands widen and narrow when the volatility of the price is higher or lower,
-    respectively.
+    由三条线组成。中间带是典型价格 (TP) 的简单移动平均线（通常为 20
+    个周期）。上下带是中间带上下 F 个标准
+    差（通常为 2）。
+    当价格波动率较高或较低时，波段分别变宽和变窄。
 
-    Bollinger Bands do not, in themselves, generate buy or sell signals;
-    they are an indicator of overbought or oversold conditions. When the price is near the
-    upper or lower band it indicates that a reversal may be imminent. The middle band
-    becomes a support or resistance level. The upper and lower bands can also be
-    interpreted as price targets. When the price bounces off of the lower band and crosses
-    the middle band, then the upper band becomes the price target.
+    布林带本身并不产生买入或卖出信号；
+    它们是指示超买或超卖情况的指标。当价格接近
+    上带或下带时，表明可能即将发生反转。中间带
+    成为支撑或阻力水平。上带和下带也可以
+    解释为价格目标。当价格从下带反弹并穿过
+    中间带时，上带成为价格目标。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods to be used for the calculation, by default 50.
+        用于计算的周期数，默认为 50。
     std : NonNegativeFloat, optional
-        Standard deviation to be used for the calculation, by default 2.
+        用于计算的标准差，默认为 2。
     mamode : Literal["sma", "ema", "wma", "rma"], optional
-        Moving average mode to be used for the calculation, by default "sma".
+        用于计算的移动平均模式，默认为 "sma"。
     offset : int, optional
-        Offset to be used for the calculation, by default 0.
+        用于计算的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -582,32 +579,31 @@ def zlma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the zero lag exponential moving average (ZLEMA).
+    """计算零滞后指数移动平均线 (ZLEMA)。
 
-    Created by John Ehlers and Ric Way. The idea is do a
-    regular exponential moving average (EMA) calculation but
-    on a de-lagged data instead of doing it on the regular data.
-    Data is de-lagged by removing the data from "lag" days ago
-    thus removing (or attempting to) the cumulative effect of
-    the moving average.
+    由 John Ehlers 和 Ric Way 创建。其想法是进行
+    常规指数移动平均 (EMA) 计算，但在
+    去滞后数据上进行，而不是在常规数据上进行。
+    数据通过移除“滞后”天前的数据进行去滞后，
+    从而消除（或试图消除）移动平均线的累积效应。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods to be used for the calculation, by default 50.
+        用于计算的周期数，默认为 50。
     offset : int, optional
-        Offset to be used for the calculation, by default 0.
+        用于计算的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -650,35 +646,35 @@ def aroon(
     length: int = 25,
     scalar: float = 100,
 ) -> OBBject[list[Data]]:
-    """Calculate the Aroon Indicator.
+    """计算阿隆指标。
 
-    The word aroon is Sanskrit for "dawn's early light." The Aroon
-    indicator attempts to show when a new trend is dawning. The indicator consists
-    of two lines (Up and Down) that measure how long it has been since the highest
-    high/lowest low has occurred within an n period range.
+    词语 aroon 在梵语中意为“黎明的曙光”。阿隆
+    指标试图显示新趋势何时出现。该指标由
+    两条线（上升和下降）组成，衡量自 n 周期范围内出现最高高点/最低低点以来
+    经过了多长时间。
 
-    When the Aroon Up is staying between 70 and 100 then it indicates an upward trend.
-    When the Aroon Down is staying between 70 and 100 then it indicates an downward trend.
-    A strong upward trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
-    Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
-    the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
-    the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+    当阿隆上升线保持在 70 和 100 之间时，表明呈上升趋势。
+    当阿隆下降线保持在 70 和 100 之间时，表明呈下降趋势。
+    当阿隆上升线高于 70 而阿隆下降线低于 30 时，表明呈强劲上升趋势。
+    同样，当阿隆下降线高于 70 而阿隆上升线低于 30 时，表明呈强劲下降趋势。
+    还要寻找交叉点。当阿隆下降线向上穿过
+    阿隆上升线时，表明上升趋势减弱（反之亦然）。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index: str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods to be used for the calculation, by default 25.
+        用于计算的周期数，默认为 25。
     scalar : float, optional
-        Scalar to be used for the calculation, by default 100.
+        用于计算的标量，默认为 100。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -715,33 +711,33 @@ def sma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Simple Moving Average (SMA).
+    """计算简单移动平均线 (SMA)。
 
-    Moving Averages are used to smooth the data in an array to
-    help eliminate noise and identify trends. The Simple Moving Average is literally
-    the simplest form of a moving average. Each output value is the average of the
-    previous n values. In a Simple Moving Average, each value in the time period carries
-    equal weight, and values outside of the time period are not included in the average.
-    This makes it less responsive to recent changes in the data, which can be useful for
-    filtering out those changes.
+    移动平均线用于平滑数组中的数据，以
+    帮助消除噪音并识别趋势。简单移动平均线实际上是
+    移动平均线的最简单形式。每个输出值是
+    前 n 个值的平均值。在简单移动平均线中，时间段内的每个值具有
+    相等的权重，时间段之外的值不包括在平均值中。
+    这使其对数据的近期变化反应较慢，这对于
+    过滤掉这些变化很有用。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods to be used for the calculation, by default 50.
+        用于计算的周期数，默认为 50。
     offset : int, optional
-        Offset from the current period, by default 0.
+        距当前周期的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -786,33 +782,33 @@ def demark(
     asint: bool = True,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Demark sequential indicator.
+    """计算 Demark 顺序指标。
 
-    This indicator offers a strategic way to spot potential reversals in market trends.
-    It's designed to highlight moments when the current trend may be running out of steam,
-    suggesting a possible shift in direction. By focusing on specific patterns in price movements, it provides
-    valuable insights for making informed decisions on future changes and identifies trend exhaustion points
-    with precision.
+    该指标提供了一种识别市场趋势潜在逆转的战略方法。
+    如同该指标旨在突出当前趋势可能耗尽动力的时刻，
+    表明方向可能发生转变。通过关注价格变动中的特定模式，它提供了
+    对未来变化做出明智决策的宝贵见解，并识别趋势衰竭点
+    具有精确性。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     target : str, optional
-        Target column name, by default "close".
+        目标列名，默认为 "close"。
     show_all : bool, optional
-        Show 1 - 13. If set to False, show 6 - 9
+        显示 1 - 13。如果设置为 False，显示 6 - 9。
     asint : bool, optional
-        If True, fill NAs with 0 and change type to int, by default True.
+        如果为 True，用 0 填充 NA 并将类型更改为 int，默认为 True。
     offset : int, optional
-        How many periods to offset the result
+        结果偏移多少个周期
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data, with fields: [{index}, {target}, "up", "down"]
+        计算后的数据，字段为：[{index}, {target}, "up", "down"]
     """
     # pylint: disable=import-outside-toplevel
     import pandas_ta as ta  # noqa
@@ -847,30 +843,30 @@ def vwap(
     anchor: str = "D",
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Volume Weighted Average Price (VWAP).
+    """计算成交量加权平均价格 (VWAP)。
 
-    Measures the average typical price by volume.
-    It is typically used with intraday charts to identify general direction.
-    It helps to understand the true average price factoring in the volume of transactions,
-    and serves as a benchmark for assessing the market's direction over short periods, such as a single trading day.
+    衡量按成交量加权的平均典型价格。
+    它通常用于日内图表以识别总体方向。
+    它有助于了解考虑交易量的真实平均价格，
+    并作为评估市场在短期内（如单个交易日）方向的基准。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     anchor : str, optional
-        Anchor period to use for the calculation, by default "D".
-        See Timeseries Offset Aliases below for additional options:
+        用于计算的锚定周期，默认为 "D"。
+        有关其他选项，请参见下面的时间序列偏移别名：
         https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
     offset : int, optional
-        Offset from the current period, by default 0.
+        距当前周期的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -917,36 +913,36 @@ def macd(
     slow: int = 26,
     signal: int = 9,
 ) -> OBBject[list[Data]]:
-    """Calculate the Moving Average Convergence Divergence (MACD).
+    """计算移动平均收敛散度 (MACD)。
 
-    Difference between two Exponential Moving Averages. The Signal line is an
-    Exponential Moving Average of the MACD.
+    两条指数移动平均线之间的差异。信号线是
+    MACD 的指数移动平均线。
 
-    The MACD signals trend changes and indicates the start of new trend direction.
-    High values indicate overbought conditions, low values indicate oversold conditions.
-    Divergence with the price indicates an end to the current trend, especially if the
-    MACD is at extreme high or low values. When the MACD line crosses above the
-    signal line a buy signal is generated. When the MACD crosses below the signal line a
-    sell signal is generated. To confirm the signal, the MACD should be above zero for a buy,
-    and below zero for a sell.
+    MACD 发出趋势变化信号并指示新趋势方向的开始。
+    高值表示超买情况，低值表示超卖情况。
+    与价格的背离表明当前趋势结束，特别是如果
+    MACD 处于极高或极低值。当 MACD 线上穿
+    信号线时，产生买入信号。当 MACD 下穿信号线时，产生
+    卖出信号。为了确认信号，MACD 应高于零为买入，
+    低于零为卖出。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     target : str
-        Target column name.
+        目标列名。
     fast : int, optional
-        Number of periods for the fast EMA, by default 12.
+        快速 EMA 的周期数，默认为 12。
     slow : int, optional
-        Number of periods for the slow EMA, by default 26.
+        慢速 EMA 的周期数，默认为 26。
     signal : int, optional
-        Number of periods for the signal EMA, by default 9.
+        信号 EMA 的周期数，默认为 9。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -989,30 +985,30 @@ def hma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Hull Moving Average (HMA).
+    """计算赫尔移动平均线 (HMA)。
 
-    Solves the age old dilemma of making a moving average more responsive to current
-    price activity whilst maintaining curve smoothness.
-    In fact the HMA almost eliminates lag altogether and manages to improve smoothing
-    at the same time.
+    解决了使移动平均线对当前
+    价格活动更敏感同时保持曲线平滑的古老困境。
+    事实上，HMA 几乎完全消除了滞后，并设法同时改善平滑度
+    。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods for the HMA, by default 50.
+        HMA 的周期数，默认为 50。
     offset : int, optional
-        Offset of the HMA, by default 0.
+        HMA 的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1062,31 +1058,31 @@ def donchian(
     upper_length: PositiveInt = 20,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Donchian Channels.
+    """计算唐奇安通道。
 
-    Three lines generated by moving average calculations that comprise an indicator
-    formed by upper and lower bands around a midrange or median band. The upper band
-    marks the highest price of a security over N periods while the lower band
-    marks the lowest price of a security over N periods. The area
-    between the upper and lower bands represents the Donchian Channel.
+    由移动平均线计算生成的三条线组成的指标，
+    由围绕中程或中位带的上下带形成。上带
+    标记证券在 N 个周期内的最高价格，而下带
+    标记证券在 N 个周期内的最低价格。
+    上下带之间的区域代表唐奇安通道。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     lower_length : PositiveInt, optional
-        Number of periods for the lower band, by default 20.
+        下带的周期数，默认为 20。
     upper_length : PositiveInt, optional
-        Number of periods for the upper band, by default 20.
+        上带的周期数，默认为 20。
     offset : int, optional
-        Offset of the Donchian Channel, by default 0.
+        唐奇安通道的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1128,35 +1124,35 @@ def ichimoku(
     offset: PositiveInt = 26,
     lookahead: bool = False,
 ) -> OBBject[list[Data]]:
-    """Calculate the Ichimoku Cloud.
+    """计算一目均衡图 (Ichimoku Cloud)。
 
-    Also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and
-    resistance, identifies trend direction, gauges momentum and provides trading
-    signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
-    one look, chartists can identify the trend and look for potential signals within
-    that trend.
+    也被称为 Ichimoku Kinko Hyo，是一种多功能指标，定义了支撑和
+    阻力，识别趋势方向，衡量动量并提供交易
+    信号。Ichimoku Kinko Hyo 翻译为“一瞥均衡图”。通过
+    一瞥，图表分析师可以识别趋势并在该趋势内寻找潜在信号
+    。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     conversion : PositiveInt, optional
-        Number of periods for the conversion line, by default 9.
+        转换线的周期数，默认为 9。
     base : PositiveInt, optional
-        Number of periods for the base line, by default 26.
+        基准线的周期数，默认为 26。
     lagging : PositiveInt, optional
-        Number of periods for the lagging span, by default 52.
+        滞后跨度的周期数，默认为 52。
     offset : PositiveInt, optional
-        Number of periods for the offset, by default 26.
+        偏移的周期数，默认为 26。
     lookahead : bool, optional
-        drops the Chikou Span Column to prevent potential data leak
+        删除 Chikou Span 列以防止潜在的数据泄漏
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     validate_data(data, [conversion, base, lagging])
     df = basemodel_to_df(data, index=index)
@@ -1196,27 +1192,27 @@ def clenow(
     target: str = "close",
     period: PositiveInt = 90,
 ) -> OBBject[list[Data]]:
-    """Calculate the Clenow Volatility Adjusted Momentum.
+    """计算 Clenow 波动率调整动量。
 
-    The Clenow Volatility Adjusted Momentum is a sophisticated approach to understanding market momentum with a twist.
-    It adjusts for volatility, offering a clearer picture of true momentum by considering how price movements are
-    influenced by their volatility over a set period. It helps in identifying stronger, more reliable trends.
+    Clenow 波动率调整动量是一种理解市场动量的复杂方法。
+    它调整了波动率，通过考虑价格变动在设定时期内受其波动率的影响，
+    提供了真实动量的更清晰图景。它有助于识别更强、更可靠的趋势。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     target : str, optional
-        Target column name, by default "close".
+        目标列名，默认为 "close"。
     period : PositiveInt, optional
-        Number of periods for the momentum, by default 90.
+        动量的周期数，默认为 90。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1257,34 +1253,32 @@ def clenow(
     ],
 )
 def ad(data: list[Data], index: str = "date", offset: int = 0) -> OBBject[list[Data]]:
-    """Calculate the Accumulation/Distribution Line.
+    """计算累积/派发线。
 
-    Similar to the On Balance Volume (OBV).
-    Sums the volume times +1/-1 based on whether the close is higher than the previous
-    close. The Accumulation/Distribution indicator, however multiplies the volume by the
-    close location value (CLV). The CLV is based on the movement of the issue within a
-    single bar and can be +1, -1 or zero.
+    类似于能量潮指标 (OBV)。
+    根据收盘价是否高于前一收盘价，将成交量乘以 +1/-1 求和。
+    然而，累积/派发指标将成交量乘以
+    收盘位置值 (CLV)。CLV 基于单根柱线内的变动，
+    可以是 +1、-1 或零。
 
-
-    The Accumulation/Distribution Line is interpreted by looking for a divergence in
-    the direction of the indicator relative to price. If the Accumulation/Distribution
-    Line is trending upward it indicates that the price may follow. Also, if the
-    Accumulation/Distribution Line becomes flat while the price is still rising (or falling)
-    then it signals an impending flattening of the price.
+    通过观察指标相对于价格的方向背离来解释累积/派发线。
+    如果累积/派发线呈上升趋势，则表明价格可能会随之上升。
+    此外，如果累积/派发线变平而价格仍在上升（或下降），
+    则表明价格即将变平。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     offset : int, optional
-        Offset of the AD, by default 0.
+        AD 的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1320,29 +1314,29 @@ def adx(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[list[Data]]:
-    """Calculate the Average Directional Index (ADX).
+    """计算平均趋向指数 (ADX)。
 
-    The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
-    The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
-    a high number to be a strong trend, and a low number, a weak trend.
+    ADX 是趋向指标 (DX) 的 Welles Wilder 风格的移动平均线。
+    值的范围从 0 到 100，但很少超过 60。要解释 ADX，请将
+    高数值视为强趋势，低数值视为弱趋势。
 
     Parameters
     ----------
     data : list[Data]
-        list of data to be used for the calculation.
+        要用于计算的数据列表。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        Number of periods for the ADX, by default 50.
+        ADX 的周期数，默认为 50。
     scalar : float, optional
-        Scalar value for the ADX, by default 100.0.
+        ADX 的标量值，默认为 100.0。
     drift : int, optional
-        Drift value for the ADX, by default 1.
+        ADX 的漂移值，默认为 1。
 
     Returns
     -------
     OBBject[list[Data]]
-        The calculated data.
+        计算后的数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1381,30 +1375,30 @@ def wma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Weighted Moving Average (WMA).
+    """计算加权移动平均线 (WMA)。
 
-    A Weighted Moving Average puts more weight on recent data and less on past data.
-    This is done by multiplying each bar's price by a weighting factor. Because of its
-    unique calculation, WMA will follow prices more closely than a corresponding Simple
-    Moving Average.
+    加权移动平均线对近期数据赋予更多权重，对过去数据赋予较少权重。
+    这是通过将每个柱线的价格乘以一个加权因子来完成的。由于其
+    独特的计算方式，WMA 将比相应的简单
+    移动平均线更紧密地跟随价格。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the calculation.
+        用于计算的数据。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : int, optional
-        The length of the WMA, by default 50.
+        WMA 的长度，默认为 50。
     offset : int, optional
-        The offset of the WMA, by default 0.
+        WMA 的偏移量，默认为 0。
 
     Returns
     -------
     OBBject[list[Data]]
-        The WMA data.
+        WMA 数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1447,29 +1441,29 @@ def cci(
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
 ) -> OBBject[list[Data]]:
-    """Calculate the Commodity Channel Index (CCI).
+    """计算顺势指标 (CCI)。
 
-    The CCI is designed to detect beginning and ending market trends.
-    The range of 100 to -100 is the normal trading range. CCI values outside of this
-    range indicate overbought or oversold conditions. You can also look for price
-    divergence in the CCI. If the price is making new highs, and the CCI is not,
-    then a price correction is likely.
+    CCI 旨在检测市场趋势的开始和结束。
+    100 到 -100 的范围是正常的交易范围。此范围之外的 CCI 值
+    表示超买或超卖情况。您还可以在 CCI 中寻找价格
+    背离。如果价格创出新高，而 CCI 没有，
+    那么价格回调是可能的。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the CCI calculation.
+        用于 CCI 计算的数据。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     length : PositiveInt, optional
-        The length of the CCI, by default 14.
+        CCI 的长度，默认为 14。
     scalar : PositiveFloat, optional
-        The scalar of the CCI, by default 0.015.
+        CCI 的标量，默认为 0.015。
 
     Returns
     -------
     OBBject[list[Data]]
-        The CCI data.
+        CCI 数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1507,33 +1501,33 @@ def rsi(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[list[Data]]:
-    """Calculate the Relative Strength Index (RSI).
+    """计算相对强弱指数 (RSI)。
 
-    RSI calculates a ratio of the recent upward price movements to the absolute price
-    movement. The RSI ranges from 0 to 100.
-    The RSI is interpreted as an overbought/oversold indicator when
-    the value is over 70/below 30. You can also look for divergence with price. If
-    the price is making new highs/lows, and the RSI is not, it indicates a reversal.
+    RSI 计算近期价格上涨变动与绝对价格
+    变动的比率。RSI 范围从 0 到 100。
+    当值超过 70/低于 30 时，RSI 被解释为超买/超卖指标。
+    您也可以寻找与价格的背离。如果
+    价格创出新高/新低，而 RSI 没有，这表明反转。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the RSI calculation.
+        用于 RSI 计算的数据。
     target : str
-        Target column name.
+        目标列名。
     index : str, optional
-        Index column name to use with `data`, by default "date"
+        用于 `data` 的索引列名，默认为 "date"
     length : int, optional
-        The length of the RSI, by default 14
+        RSI 的长度，默认为 14
     scalar : float, optional
-        The scalar to use for the RSI, by default 100.0
+        用于 RSI 的标量，默认为 100.0
     drift : int, optional
-        The drift to use for the RSI, by default 1
+        用于 RSI 的漂移，默认为 1
 
     Returns
     -------
     OBBject[list[Data]]
-        The RSI data.
+        RSI 数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1577,32 +1571,32 @@ def stoch(
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
 ) -> OBBject[list[Data]]:
-    """Calculate the Stochastic Oscillator.
+    """计算随机震荡指标。
 
-    The Stochastic Oscillator measures where the close is in relation
-    to the recent trading range. The values range from zero to 100. %D values over 75
-    indicate an overbought condition; values under 25 indicate an oversold condition.
-    When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses
-    below, it is a sell signal. The Raw %K is generally considered too erratic to use
-    for crossover signals.
+    随机震荡指标衡量收盘价相对于
+    近期交易范围的位置。值的范围从零到 100。%D 值超过 75
+    表示超买情况；值低于 25 表示超卖情况。
+    当快速 %D 上穿慢速 %D 时，为买入信号；当其
+    下穿时，为卖出信号。原始 %K 通常被认为太不稳定，不适合用于
+    交叉信号。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the Stochastic Oscillator calculation.
+        用于随机震荡指标计算的数据。
     index : str, optional
-        Index column name to use with `data`, by default "date".
+        用于 `data` 的索引列名，默认为 "date"。
     fast_k_period : NonNegativeInt, optional
-        The fast %K period, by default 14.
+        快速 %K 周期，默认为 14。
     slow_d_period : NonNegativeInt, optional
-        The slow %D period, by default 3.
+        慢速 %D 周期，默认为 3。
     slow_k_period : NonNegativeInt, optional
-        The slow %K period, by default 3.
+        慢速 %K 周期，默认为 3。
 
     Returns
     -------
     OBBject[list[Data]]
-        The Stochastic Oscillator data.
+        随机震荡指标数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1646,33 +1640,33 @@ def kc(
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Keltner Channels.
+    """计算凯尔特纳通道。
 
-    Keltner Channels are volatility-based bands that are placed
-    on either side of an asset's price and can aid in determining
-    the direction of a trend.The Keltner channel uses the average
-    true range (ATR) or volatility, with breaks above or below the top
-    and bottom barriers signaling a continuation.
+    凯尔特纳通道是基于波动率的带状线，位于
+    资产价格的两侧，有助于确定
+    趋势的方向。凯尔特纳通道使用平均
+    真实波幅 (ATR) 或波动率，突破顶部
+    和底部障碍之上或之下并不表示持续。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the Keltner Channels calculation.
+        用于凯尔特纳通道计算的数据。
     index : str, optional
-        Index column name to use with `data`, by default "date"
+        用于 `data` 的索引列名，默认为 "date"
     length : PositiveInt, optional
-        The length of the Keltner Channels, by default 20
+        凯尔特纳通道的长度，默认为 20
     scalar : PositiveFloat, optional
-        The scalar to use for the Keltner Channels, by default 20
+        用于凯尔特纳通道的标量，默认为 20
     mamode : Literal["ema", "sma", "wma", "hma", "zlma"], optional
-        The moving average mode to use for the Keltner Channels, by default "ema"
+        用于凯尔特纳通道的移动平均模式，默认为 "ema"
     offset : NonNegativeInt, optional
-        The offset to use for the Keltner Channels, by default 0
+        用于凯尔特纳通道的偏移量，默认为 0
 
     Returns
     -------
     OBBject[list[Data]]
-        The Keltner Channels data.
+        凯尔特纳通道数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1711,27 +1705,27 @@ def kc(
 def cg(
     data: list[Data], index: str = "date", length: PositiveInt = 14
 ) -> OBBject[list[Data]]:
-    """Calculate the Center of Gravity.
+    """计算重心指标。
 
-    The Center of Gravity indicator, in short, is used to anticipate future price movements
-    and to trade on price reversals as soon as they happen. However, just like other oscillators,
-    the COG indicator returns the best results in range-bound markets and should be avoided when
-    the price is trending. Traders who use it will be able to closely speculate the upcoming
-    price change of the asset.
+    简而言之，重心指标用于预测未来的价格变动，
+    并在价格反转发生后立即进行交易。然而，就像其他震荡指标一样，
+    COG 指标在区间震荡市场中产生最佳结果，当
+    价格趋于平稳时应避免使用。使用它的交易者将能够密切推测资产
+    即将发生的价格变化。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the COG calculation.
+        用于 COG 计算的数据。
     index : str, optional
-        Index column name to use with `data`, by default "date"
+        用于 `data` 的索引列名，默认为 "date"
     length : PositiveInt, optional
-        The length of the COG, by default 14
+        COG 的长度，默认为 14
 
     Returns
     -------
     OBBject[list[Data]]
-        The COG data.
+        COG 数据。
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
@@ -1777,63 +1771,63 @@ def cones(
     is_crypto: bool = False,
     trading_periods: int | None = None,
 ) -> OBBject[list[Data]]:
-    """Calculate the realized volatility quantiles over rolling windows of time.
+    """计算随时间滚动窗口的已实现波动率分位数。
 
-    The cones indicator is designed to map out the ebb and flow of price movements through a detailed analysis of
-    volatility quantiles. By examining the range of volatility within specific time frames, it offers a nuanced view of
-    market behavior, highlighting periods of stability and turbulence.
+    锥体指标旨在通过对波动率分位数的详细分析来绘制
+    价格变动的起伏。通过检查特定时间框架内的波动率范围，它提供了
+    市场行为的细致视图，突出显示稳定和动荡时期。
 
-    The model for calculating volatility is selectable and can be one of the following:
-    - Standard deviation
-    - Parkinson
-    - Garman-Klass
-    - Hodges-Tompkins
-    - Rogers-Satchell
-    - Yang-Zhang
+    计算波动率的模型是可选的，可以是以下之一：
+    - 标准差 (Standard deviation)
+    - 帕金森 (Parkinson)
+    - 加曼-克拉斯 (Garman-Klass)
+    - 霍奇斯-汤普金斯 (Hodges-Tompkins)
+    - 罗杰斯-萨切尔 (Rogers-Satchell)
+    - 杨-张 (Yang-Zhang)
 
-    Read more about it in the model parameter description.
+    有关更多信息，请阅读模型参数说明。
 
     Parameters
     ----------
     data : list[Data]
-        The data to use for the calculation.
+        用于计算的数据。
     index : str, optional
-        Index column name to use with `data`, by default "date"
+        用于 `data` 的索引列名，默认为 "date"
     lower_q : float, optional
-        The lower quantile value for calculations
+        用于计算的下分位数
     upper_q : float, optional
-        The upper quantile value for calculations
+        用于计算的上分位数
     model : Literal["std", "parkinson", "garman_klass", "hodges_tompkins", "rogers_satchell", "yang_zhang"], optional
-        The model used to calculate realized volatility
+        用于计算已实现波动率的模型
 
-            Standard deviation measures how widely returns are dispersed from the average return.
-            It is the most common (and biased) estimator of volatility.
+            标准差衡量回报从平均回报分散的程度。
+            它是最常见（且有偏差）的波动率估计量。
 
-            Parkinson volatility uses the high and low price of the day rather than just close to close prices.
-            It is useful for capturing large price movements during the day.
+            帕金森波动率使用当天的最高价和最低价，而不仅仅是收盘价到收盘价。
+            它对于捕捉当天的价格大幅波动很有用。
 
-            Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
-            As markets are most active during the opening and closing of a trading session;
-            it makes volatility estimation more accurate.
+            加曼-克拉斯波动率通过考虑开盘价和收盘价扩展了帕金森波动率。
+            由于市场在交易时段的开盘和收盘期间最为活跃，
+            它使波动率估计更加准确。
 
-            Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
-            It produces unbiased estimates and a substantial gain in efficiency.
+            霍奇斯-汤普金斯波动率是对使用重叠数据样本进行估计的偏差校正。
+            它产生无偏估计并显着提高效率。
 
-            Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.
-            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term,
-            mean return not equal to zero.
+            罗杰斯-萨切尔是衡量平均回报不等于零的波动率的估计量。
+            与帕金森和加曼-克拉斯估计量不同，罗杰斯-萨切尔包含漂移项，
+            平均回报不等于零。
 
-            Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
-            It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
+            杨-张波动率是隔夜（收盘到开盘波动率）的组合。
+            它是罗杰斯-萨切尔波动率和开盘到收盘波动率的加权平均值。
     is_crypto : bool, optional
-        Whether the data is crypto or not. If True, volatility is calculated for 365 days instead of 252
+        数据是否为加密货币。如果为 True，则波动率计算为 365 天而不是 252 天。
     trading_periods : Optional[int] [default: 252]
-        Number of trading periods in a year.
+        一年中的交易周期数。
 
     Returns
     -------
     OBBject[list[Data]]
-        The cones data.
+        锥体数据。
     """
     if lower_q > upper_q:
         lower_q, upper_q = upper_q, lower_q
@@ -1872,12 +1866,12 @@ def ema(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[list[Data]]:
-    """Calculate the Exponential Moving Average (EMA).
+    """计算指数移动平均线 (EMA)。
 
-    EMA is a cumulative calculation, including all data. Past values have
-    a diminishing contribution to the average, while more recent values have a greater
-    contribution. This method allows the moving average to be more responsive to changes
-    in the data.
+    EMA 是一种累积计算，包括所有数据。过去的值对平均值的
+    贡献递减，而最近的值有更大的
+    贡献。这种方法使移动平均线对数据变化
+    更敏感。
 
     Parameters
     ----------

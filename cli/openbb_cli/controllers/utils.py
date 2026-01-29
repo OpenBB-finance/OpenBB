@@ -55,7 +55,7 @@ def remove_file(path: Path) -> bool:
         return True
     except Exception:
         session.console.print(
-            f"\n[bold red]Failed to remove {path}\nPlease delete this manually![/bold red]"
+            f"\n[bold red]无法移除 {path}\n请手动删除！[/bold red]"
         )
         return False
 
@@ -63,15 +63,15 @@ def remove_file(path: Path) -> bool:
 def print_goodbye():
     """Print a goodbye message when quitting the terminal."""
     text = """
-[param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
+[param]感谢您使用 OpenBB Platform CLI 并参与此旅程。[/param]
 
-To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+要保持关注，请注册我们的通讯：[cmds]https://openbb.co/newsletter.[/]
 
-Please feel free to check out our other products:
+请随时查看我们的其他产品：
 
 [bold]OpenBB Workspace[/]:    [cmds]https://openbb.co[/cmds]
-[bold]ODP Desktop Application:[/]      [cmds]https://docs.openbb.co/odp/[/cmds]
-[bold]ODP Python Package:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
+[bold]ODP 桌面应用程序:[/]      [cmds]https://docs.openbb.co/odp/[/cmds]
+[bold]ODP Python 包:[/]     [cmds]https://docs.openbb.co/platform[/cmds]
 """
     session.console.print(text)
 
@@ -98,7 +98,7 @@ def welcome_message():
     Prints first welcome message, help and a notification if updates are available.
     """
     session.console.print(
-        f"\nWelcome to OpenBB Platform CLI v{session.settings.VERSION}"
+        f"\n欢迎使用 OpenBB Platform CLI v{session.settings.VERSION}"
     )
 
 
@@ -107,7 +107,7 @@ def reset(queue: list[str] | None = None):
 
     Allows for checking code without quitting.
     """
-    session.console.print("resetting...")
+    session.console.print("正在重置...")
     debug = session.settings.DEBUG_MODE
     dev = session.settings.DEV_BACKEND
 
@@ -126,7 +126,7 @@ def reset(queue: list[str] | None = None):
         main(debug, dev, queue_list, module="")  # type: ignore
 
     except Exception as e:
-        session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
+        session.console.print(f"很遗憾，无法重置：{e}\n")
         print_goodbye()
 
 
@@ -337,7 +337,7 @@ def print_rich_table(  # noqa: PLR0912
         if isinstance(_headers, pd.Index):
             output = list(_headers)
         if len(output) != len(df.columns):
-            raise ValueError("Length of headers does not match length of DataFrame.")
+            raise ValueError("表头长度与 DataFrame 长度不匹配。")
         return output  # type: ignore
 
     if session.settings.USE_INTERACTIVE_DF:
@@ -415,7 +415,7 @@ def print_rich_table(  # noqa: PLR0912
         if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
             raise (
                 ValueError(
-                    "Length of floatfmt list does not match length of DataFrame columns."
+                    "floatfmt 列表长度与 DataFrame 列长度不匹配。"
                 )
             )
         if isinstance(floatfmt, str):
@@ -447,19 +447,19 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_columns:
         session.console.print(
-            f"[yellow]\nAllowed number of columns exceeded ({session.settings.ALLOWED_NUMBER_OF_COLUMNS}).\n"
-            f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
+            f"[yellow]\n超过允许的列数 ({session.settings.ALLOWED_NUMBER_OF_COLUMNS})。\n"
+            f"以下列已从输出中移除：{', '.join(trimmed_columns)}。\n[/yellow]"
         )
 
     if exceeds_allowed_rows:
         session.console.print(
-            f"[yellow]\nAllowed number of rows exceeded ({session.settings.ALLOWED_NUMBER_OF_ROWS}).\n"
-            f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
+            f"[yellow]\n超过允许的行数 ({session.settings.ALLOWED_NUMBER_OF_ROWS})。\n"
+            f"{trimmed_rows_count} 行已从输出中移除。\n[/yellow]"
         )
 
     if exceeds_allowed_columns or exceeds_allowed_rows:
         session.console.print(
-            "Use the `--export` flag to analyse the full output on a file."
+            "使用 `--export` 标志在文件中分析完整输出。"
         )
 
 
@@ -467,7 +467,7 @@ def check_non_negative(value) -> int:
     """Argparse type to check non negative int."""
     new_value = int(value)
     if new_value < 0:
-        raise argparse.ArgumentTypeError(f"{value} is negative")
+        raise argparse.ArgumentTypeError(f"{value} 为负数")
     return new_value
 
 
@@ -475,7 +475,7 @@ def check_positive(value) -> int:
     """Argparse type to check positive int."""
     new_value = int(value)
     if new_value <= 0:
-        raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
+        raise argparse.ArgumentTypeError(f"{value} 是无效的正整数值")
     return new_value
 
 
@@ -483,7 +483,7 @@ def validate_register_key(value: str) -> str:
     """Validate the register key to ensure it does not contain the reserved word 'OBB'."""
     if "OBB" in value:
         raise argparse.ArgumentTypeError(
-            "The register key cannot contain the reserved word 'OBB'."
+            "注册键不能包含保留字 'OBB'。"
         )
     return str(value)
 
@@ -603,7 +603,7 @@ def check_file_type_saved(valid_types: list[str] | None = None):
                 valid_filenames.append(filename)
             else:
                 session.console.print(
-                    f"[red]Filename '{filename}' provided is not valid!\nPlease use one of the following file types:"
+                    f"[red]提供的文件名 '{filename}' 无效！\n请使用以下文件类型之一："
                     f"{','.join(valid_types)}[/red]\n"
                 )
         return ",".join(valid_filenames)
@@ -696,7 +696,7 @@ def ask_file_overwrite(file_path: Path) -> tuple[bool, bool]:
     if session.settings.TEST_MODE:
         return False, True
     if file_path.exists():
-        overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
+        overwrite = input("\n文件已存在。覆盖？[y/n]: ").lower()
         if overwrite == "y":
             file_path.unlink(missing_ok=True)
             # File exists and user wants to overwrite
@@ -735,7 +735,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
             overwrite_option = "n"
             if sheet_name in reader.sheet_names:
                 overwrite_option = input(
-                    "\nSheet already exists. Overwrite/Append/New? [o/a/n]: "
+                    "\n工作表已存在。覆盖/追加/新建？[o/a/n]: "
                 ).lower()
                 start_row = 0
                 if overwrite_option == "a":

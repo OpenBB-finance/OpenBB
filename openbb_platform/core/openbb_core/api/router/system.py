@@ -1,4 +1,4 @@
-"""System router."""
+"""系统路由器。"""
 
 from typing import Annotated
 
@@ -13,5 +13,5 @@ router = APIRouter(prefix="/system", tags=["System"])
 async def get_system_model(
     system_settings: Annotated[SystemSettings, Depends(get_system_settings)],
 ):
-    """Get system model."""
+    """获取系统模型。"""
     return system_settings

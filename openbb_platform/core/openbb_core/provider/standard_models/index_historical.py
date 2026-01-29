@@ -1,4 +1,4 @@
-"""Index Historical Standard Model."""
+"""指数历史数据标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -16,7 +16,7 @@ from pydantic import Field, field_validator
 
 
 class IndexHistoricalQueryParams(QueryParams):
-    """Index Historical Query."""
+    """指数历史数据查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: dateType | None = Field(
@@ -29,12 +29,12 @@ class IndexHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class IndexHistoricalData(Data):
-    """Index Historical Data."""
+    """指数历史数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
@@ -59,7 +59,7 @@ class IndexHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         if ":" in str(v):
             return parser.isoparse(str(v))
         return parser.parse(str(v)).date()

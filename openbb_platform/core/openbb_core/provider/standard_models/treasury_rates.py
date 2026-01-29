@@ -1,4 +1,4 @@
-"""Treasury Rates Standard Model."""
+"""国债收益率标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class TreasuryRatesQueryParams(QueryParams):
-    """Treasury Rates Query."""
+    """國債收益率查詢。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,71 +25,71 @@ class TreasuryRatesQueryParams(QueryParams):
 
 
 class TreasuryRatesData(Data):
-    """Treasury Rates Data. All fields are expressed as a normalized percent - 1% = 0.01."""
+    """國債收益率數據。所有字段均以歸一化的百分比表示 - 1% = 0.01。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     week_4: float | None = Field(
         default=None,
-        description="4 week Treasury bills rate (secondary market).",
+        description="4 週國庫券利率（次級市場）。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     month_1: float | None = Field(
-        description="1 month Treasury rate.",
+        description="1 個月國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     month_2: float | None = Field(
-        description="2 month Treasury rate.",
+        description="2 個月國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     month_3: float | None = Field(
-        description="3 month Treasury rate.",
+        description="3 個月國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     month_6: float | None = Field(
-        description="6 month Treasury rate.",
+        description="6 個月國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_1: float | None = Field(
-        description="1 year Treasury rate.",
+        description="1 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_2: float | None = Field(
-        description="2 year Treasury rate.",
+        description="2 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_3: float | None = Field(
-        description="3 year Treasury rate.",
+        description="3 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_5: float | None = Field(
-        description="5 year Treasury rate.",
+        description="5 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_7: float | None = Field(
-        description="7 year Treasury rate.",
+        description="7 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_10: float | None = Field(
-        description="10 year Treasury rate.",
+        description="10 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_20: float | None = Field(
-        description="20 year Treasury rate.",
+        description="20 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_30: float | None = Field(
-        description="30 year Treasury rate.",
+        description="30 年期國債收益率。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

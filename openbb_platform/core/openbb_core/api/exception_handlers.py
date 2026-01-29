@@ -1,4 +1,4 @@
-"""Exception handlers module."""
+"""异常处理程序模块。"""
 
 # pylint: disable=unused-argument
 
@@ -18,11 +18,11 @@ logger = logging.getLogger("uvicorn.error")
 
 
 class ExceptionHandlers:
-    """Exception handlers."""
+    """异常处理程序。"""
 
     @staticmethod
     async def _handle(exception: Exception, status_code: int, detail: Any):
-        """Exception handler."""
+        """异常处理程序。"""
         if Env().DEBUG_MODE:
             raise exception
         logger.error(exception)
@@ -35,7 +35,7 @@ class ExceptionHandlers:
 
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
-        """Exception handler for Base Exception."""
+        """基本异常的异常处理程序。"""
         errors = error.errors if hasattr(error, "errors") else error
 
         if errors:
@@ -45,7 +45,7 @@ class ExceptionHandlers:
                     status_code=422,
                     detail=errors.args,
                 )
-            # Required parameters are missing and is not handled by ValidationError.
+            # 缺少必需的参数，并且 ValidationError 未处理。
             if isinstance(errors, Iterable):
                 for err in errors:
                     if err.get("type") == "missing":
@@ -57,19 +57,19 @@ class ExceptionHandlers:
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=500,
-            detail=f"Unexpected Error -> {error.__class__.__name__} -> {error}",
+            detail=f"意外错误 -> {error.__class__.__name__} -> {error}",
         )
 
     @staticmethod
     async def validation(
         request: Request, error: ValidationError | ResponseValidationError
     ):
-        """Exception handler for ValidationError."""
-        # Some validation is performed at Fetcher level.
-        # So we check if the validation error comes from a QueryParams class.
-        # And that it is in the request query params.
-        # If yes, we update the error location with query.
-        # If not, we handle it as a base Exception error.
+        """ValidationError 的异常处理程序。"""
+        # 一些验证是在 Fetcher 级别执行的。
+        # 所以我们检查验证错误是否来自 QueryParams 类。
+        # 并且它在请求查询参数中。
+        # 如果是，我们使用查询更新错误位置。
+        # 如果不是，我们将其作为基本异常错误处理。
         query_params = dict(request.query_params)
         if isinstance(error, ResponseValidationError):
             detail = [
@@ -112,7 +112,7 @@ class ExceptionHandlers:
 
     @staticmethod
     async def openbb(_: Request, error: OpenBBError):
-        """Exception handler for OpenBBError."""
+        """OpenBBError 的异常处理程序。"""
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=400,
@@ -121,12 +121,12 @@ class ExceptionHandlers:
 
     @staticmethod
     async def empty_data(_: Request, error: EmptyDataError):
-        """Exception handler for EmptyDataError."""
+        """EmptyDataError 的异常处理程序。"""
         return Response(status_code=204)
 
     @staticmethod
     async def unauthorized(_: Request, error: UnauthorizedError):
-        """Exception handler for OpenBBError."""
+        """OpenBBError 的异常处理程序。"""
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=502,

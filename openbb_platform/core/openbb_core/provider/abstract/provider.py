@@ -1,10 +1,10 @@
-"""Provider Abstract Class."""
+"""Provider 抽象类。"""
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 
 
 class Provider:
-    """Serves as provider extension entry point and must be created by each provider."""
+    """充当提供者扩展入口点，必须由每个提供者创建。"""
 
     # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
@@ -18,26 +18,26 @@ class Provider:
         deprecated_credentials: dict[str, str | None] | None = None,
         instructions: str | None = None,
     ) -> None:
-        """Initialize the provider.
+        """初始化提供者。
 
         Parameters
         ----------
         name : str
-            Name of the provider.
+            提供者名称。
         description : str
-            Description of the provider.
+            提供者描述。
         website : Optional[str]
-            Website of the provider, by default None.
+            提供者网站，默认为 None。
         credentials : Optional[List[str]]
-            List of required credentials, by default None.
+            所需凭据列表，默认为 None。
         fetcher_dict : Optional[Dict[str, Type[Fetcher]]]
-            Dictionary of fetchers, by default None.
+            fetcher 字典，默认为 None。
         repr_name: Optional[str]
-            Full name of the provider, by default None.
+            提供者全名，默认为 None。
         deprecated_credentials: Optional[Dict[str, Optional[str]]]
-            Map of deprecated credentials to its current name, by default None.
+            已弃用凭据到当前名称的映射，默认为 None。
         instructions: Optional[str]
-            Instructions on how to setup the provider. For example, how to get an API key.
+            如何设置提供者的说明。例如，如何获取 API 密钥。
         """
         self.name = name
         self.description = description

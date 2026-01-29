@@ -1,4 +1,4 @@
-"""Views for the crypto Extension."""
+"""crypto 扩展及其视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 
 
 class CryptoViews:
-    """Crypto Views."""
+    """Crypto 视图。"""
 
     @staticmethod
     def crypto_price_historical(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Crypto Price Historical Chart."""
+        """加密货币价格历史图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 

@@ -1,4 +1,4 @@
-"""Charting Class implementation."""
+"""绘图类实现。"""
 
 # pylint: disable=too-many-arguments,unused-argument,too-many-positional-arguments
 
@@ -33,30 +33,30 @@ if TYPE_CHECKING:
 
 
 class Charting:
-    """Charting extension.
+    """绘图扩展。
 
     Methods
     -------
     show
-        Display chart and save it to the OBBject.
+        显示图表并将其保存到 OBBject 中。
     to_chart
-        Redraw the chart and save it to the OBBject, with an optional entry point for Data.
+        重绘图表并将其保存到 OBBject 中，带有可选的数据入口点。
     functions
-        Return a list of Platform commands with charting functions.
+        返回带有绘图功能的平台命令列表。
     get_params
-        Return the charting parameters for the function the OBBject was created from.
+        返回创建 OBBject 的函数的绘图参数。
     indicators
-        Return the list of the available technical indicators to use with the `to_chart` method and OHLC+V data.
+        返回可用于 `to_chart` 方法和 OHLC+V 数据的可用技术指标列表。
     table
-        Display an interactive table.
+        显示交互式表格。
     create_line_chart
-        Create a line chart from external data.
+        从外部数据创建折线图。
     create_bar_chart
-        Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
+        从外部数据创建一个条形图，在单个 x 轴上具有一个或多个 y 轴值。
     create_correlation_matrix
-        Create a correlation matrix from external data.
+        从外部数据创建相关矩阵。
     toggle_chart_style
-        Toggle the chart style, of an existing chart, between light and dark mode.
+        在明亮和黑暗模式之间切换现有图表的图表样式。
     """
 
     _extension_views: ClassVar[list[type]] = [
@@ -66,7 +66,7 @@ class Charting:
     _format = "plotly"  # the charts computed by this extension will be in plotly format
 
     def __init__(self, obbject):
-        """Initialize Charting extension."""
+        """初始化绘图扩展。"""
         # pylint: disable=import-outside-toplevel
         import importlib  # noqa
 
@@ -85,9 +85,9 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """Return an instance of the IndicatorsParams class, containing all available indicators and their parameters.
+        """返回 IndicatorsParams 类的一个实例，其中包含所有可用的指标及其参数。
 
-        Without assigning to a variable, it will print the the information to the console.
+        如果不分配给变量，它将把信息打印到控制台。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.query_params import IndicatorsParams
@@ -96,7 +96,7 @@ class Charting:
 
     @classmethod
     def functions(cls) -> list[str]:
-        """Return a list of the available functions."""
+        """返回可用函数的列表。"""
         functions: list[str] = []
         for view in cls._extension_views:
             functions.extend(get_charting_functions_list(view))
@@ -104,7 +104,7 @@ class Charting:
         return functions
 
     def _get_functions(self) -> dict[str, Callable]:
-        """Return a dict with the available functions."""
+        """返回包含可用函数的字典。"""
         functions: dict[str, Callable] = {}
         for view in self._extension_views:
             functions.update(get_charting_functions(view))
@@ -112,7 +112,7 @@ class Charting:
         return functions
 
     def _handle_backend(self) -> "Backend":
-        """Create and start the backend."""
+        """创建并启动后端。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.backend import create_backend, get_backend
 
@@ -122,7 +122,7 @@ class Charting:
         return backend  # type: ignore
 
     def _get_chart_function(self, route: str) -> Callable:
-        """Given a route, it returns the chart function. The module must contain the given route."""
+        """给定路由，返回图表函数。模块必须包含给定的路由。"""
         if route is None:
             raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
@@ -133,10 +133,10 @@ class Charting:
         return self._functions[adjusted_route]
 
     def get_params(self) -> Union["ChartParams", None]:
-        """Return the ChartQueryParams class for the function the OBBject was created from.
+        """返回创建 OBBject 的函数的 ChartQueryParams 类。
 
-        Without assigning to a variable, it will print the docstring to the console.
-        If the class is not defined, the help for the function will be returned.
+        如果不分配给变量，它将把文档字符串打印到控制台。
+        如果未定义该类，将返回该函数的帮助信息。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.query_params import ChartParams
@@ -160,7 +160,7 @@ class Charting:
     def _prepare_data_as_df(
         self, data: Union["DataFrame", "Series"] | None
     ) -> tuple["DataFrame", bool]:
-        """Convert supplied data to a DataFrame."""
+        """将提供的数据转换为 DataFrame。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
         from pandas import DataFrame, Series
@@ -212,47 +212,47 @@ class Charting:
         render: bool = True,
         **kwargs,
     ) -> Union["OpenBBFigure", "Figure", None]:
-        """Create a line chart from external data and render a chart or return the OpenBBFigure.
+        """从外部数据创建折线图并渲染图表或返回 OpenBBFigure。
 
         Parameters
         ----------
         data : Union[Data, DataFrame, Series]
-            Data to be plotted (OHLCV data).
+            要绘制的数据 (OHLCV 数据)。
         index : Optional[str], optional
-            Index column, by default None
+            索引列，默认为 None
         target : Optional[str], optional
-            Target column to be plotted, by default None
+            要绘制的目标列，默认为 None
         title : Optional[str], optional
-            Chart title, by default None
+            图表标题，默认为 None
         x : Optional[str], optional
-            X-axis column, by default None
+            X 轴列，默认为 None
         xtitle : Optional[str], optional
-            X-axis title, by default None
+            X 轴标题，默认为 None
         y : Optional[Union[str, List[str]]], optional
-            Y-axis column(s), by default None
-            If None are supplied, the layout is optimized for the contents of data.
-            Where many units/scales are present,
-            it will attempt to divide based on the range of values.
+            Y 轴列，默认为 None
+            如果未提供，则针对数据内容优化布局。
+            当存在许多单位/刻度时，
+            它将尝试根据值的范围进行分割。
         ytitle : Optional[str], optional
-            Y-axis title, by default None
+            Y 轴标题，默认为 None
         y2 : Optional[Union[str, List[str]]], optional
-            Y2-axis column(s), by default None
+            Y2 轴列，默认为 None
         y2title : Optional[str], optional
-            Y2-axis title, by default None
+            Y2 轴标题，默认为 None
         layout_kwargs : Optional[dict], optional
-            Additional Plotly Layout parameters for `fig.update_layout`, by default None
+            用于 `fig.update_layout` 的其他 Plotly 布局参数，默认为 None
         scatter_kwargs : Optional[dict], optional
-            Additional Plotly parameters applied on creation of each scatter plot, by default None
+            创建每个散点图时应用的其他 Plotly 参数，默认为 None
         normalize : bool, optional
-            Normalize the data with Z-Score Standardization, by default False
+            使用 Z-Score 标准化对数据进行标准化，默认为 False
         returns : bool, optional
-            Convert the data to cumulative returns, by default False
+            将数据转换为累积收益率，默认为 False
         same_axis: bool, optional
-            If True, forces all data onto the same Y-axis, by default False
+            如果为 True，强制所有数据位于同一 Y 轴上，默认为 False
         render: bool, optional
-            If True, the chart will be rendered, by default True
+            如果为 True，将渲染图表，默认为 True
         **kwargs: Dict[str, Any]
-            Extra parameters to be passed to `figure.show()`
+            要传递给 `figure.show()` 的额外参数
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import line_chart
@@ -309,36 +309,36 @@ class Charting:
         render: bool = True,
         **kwargs,
     ) -> Union["OpenBBFigure", "Figure", None]:
-        """Create a bar chart on a single x-axis with one or more values for the y-axis.
+        """在单个 x 轴上创建一个具有一个或多个 y 轴值的条形图。
 
         Parameters
         ----------
         data : Union[list, dict, DataFrame, List[DataFrame], Series, List[Series], ndarray, Data]
-            Data to plot.
+            要绘制的数据。
         x : str
-            The x-axis column name.
+            x 轴列名。
         y : Union[str, List[str]]
-            The y-axis column name(s).
+            y 轴列名。
         barmode : Literal["group", "stack", "relative", "overlay"], optional
-            The bar mode, by default "group".
+            条形图模式，默认为 "group"。
         xtype : Literal["category", "multicategory", "date", "log", "linear"], optional
-            The x-axis type, by default "category".
+            x 轴类型，默认为 "category"。
         title : str, optional
-            The title of the chart, by default None.
+            图表标题，默认为 None。
         xtitle : str, optional
-            The x-axis title, by default None.
+            x 轴标题，默认为 None。
         ytitle : str, optional
-            The y-axis title, by default None.
+            y 轴标题，默认为 None。
         colors: List[str], optional
-            Manually set the colors to cycle through for each column in 'y', by default None.
+            手动设置 'y' 中每一列循环使用的颜色，默认为 None。
         bar_kwargs : Dict[str, Any], optional
-            Additional keyword arguments to apply with figure.add_bar(), by default None.
+            与 figure.add_bar() 一起应用的其他关键字参数，默认为 None。
         layout_kwargs : Dict[str, Any], optional
-            Additional keyword arguments to apply with figure.update_layout(), by default None.
+            与 figure.update_layout() 一起应用的其他关键字参数，默认为 None。
         Returns
         -------
         OpenBBFigure
-            The OpenBBFigure object.
+            OpenBBFigure 对象。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import bar_chart
@@ -376,33 +376,33 @@ class Charting:
         layout_kwargs: dict[str, Any] | None = None,
         theme: Literal["dark", "light"] | None = None,
     ) -> Union["OpenBBFigure", "Figure"]:
-        """Create a 3D surface chart.
+        """创建 3D 曲面图。
 
         Parameters
         ----------
         X : pd.Series
-            The x-axis data.
+            x 轴数据。
         Y : pd.Series
-            The y-axis data.
+            y 轴数据。
         Z : pd.Series
-            The z-axis data.
+            z 轴数据。
         xtitle : str, optional
-            The title for the x-axis, by default "DTE".
+            x 轴标题，默认为 "DTE"。
         ytitle : str, optional
-            The title for the y-axis, by default "Strike".
+            y 轴标题，默认为 "Strike"。
         ztitle : str, optional
-            The title for the z-axis, by default "IV".
+            z 轴标题，默认为 "IV"。
         colorscale : Union[str, list], optional
-            The colorscale to use for the surface, by default None.
+            用于曲面的色标，默认为 None。
         title : str, optional
-            The title of the chart, by default None.
+            图表标题，默认为 None。
         layout_kwargs : Optional[dict[str, Any]], optional
-            Additional keyword arguments to apply with figure.update_layout(), by default None.
+            与 figure.update_layout() 一起应用的其他关键字参数，默认为 None。
 
         Returns
         -------
         OpenBBFigure
-            The OpenBBFigure object.
+            OpenBBFigure 对象。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import surface3d
@@ -433,28 +433,28 @@ class Charting:
         title: str = "Asset Correlation Matrix",
         layout_kwargs: dict[str, Any] | None = None,
     ):
-        """Create a correlation matrix from external data.
+        """从外部数据创建相关矩阵。
 
         Parameters
         ----------
         data : Union[list[Data], DataFrame]
-            Input dataset.
+            输入数据集。
         method : Literal["pearson", "kendall", "spearman"]
-            Method to use for correlation calculation. Default is "pearson".
-                pearson : standard correlation coefficient
-                kendall : Kendall Tau correlation coefficient
-                spearman : Spearman rank correlation
+            用于相关计算的方法。默认为 "pearson"。
+                pearson : 标准相关系数
+                kendall : Kendall Tau 相关系数
+                spearman : Spearman 等级相关
         colorscale : str
-            Plotly colorscale to use for the heatmap. Default is "RdBu".
+            用于热图的 Plotly 色标。默认为 "RdBu"。
         title : str
-            Title of the chart. Default is "Asset Correlation Matrix".
+            图表标题。默认为 "Asset Correlation Matrix"。
         layout_kwargs : Dict[str, Any]
-            Additional keyword arguments to apply with figure.update_layout(), by default None.
+            与 figure.update_layout() 一起应用的其他关键字参数，默认为 None。
 
         Returns
         -------
         OpenBBFigure
-            The OpenBBFigure object.
+            OpenBBFigure 对象。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.correlation_matrix import correlation_matrix
@@ -471,7 +471,7 @@ class Charting:
         return fig
 
     def show(self, render: bool = True, **kwargs):
-        """Display chart and save it to the OBBject."""
+        """显示图表并将其保存到 OBBject。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.openbb_figure import OpenBBFigure
 
@@ -576,34 +576,33 @@ class Charting:
         render: bool = True,
         **kwargs,
     ):
-        """Create an OpenBBFigure with user customizations (if any) and save it to the OBBject.
+        """创建带有用户自定义设置（如果有）的 OpenBBFigure 并将其保存到 OBBject 中。
 
-        This function is used to populate, or re-populate, the OBBject with a chart using the data within
-        the OBBject or external data supplied via the `data` parameter.
-        This function modifies the original OBBject by overwriting the existing chart.
+        此函数用于使用 OBBject 中的数据或通过 `data` 参数提供的外部数据填充或重新填充 OBBject 的图表。
+        此函数通过覆盖现有图表来修改原始 OBBject。
 
         Parameters
         ----------
         data : Union[Data, DataFrame, Series]
-            Data to be plotted.
+            要绘制的数据。
         indicators : Dict[str, Dict[str, Any]], optional
-            Indicators to be plotted, by default None
+            要绘制的指标，默认为 None
         symbol : str, optional
-            Symbol to be plotted. This is used for labels and titles, by default ""
+            要绘制的符号。用于标签和标题，默认为 ""
         candles : bool, optional
-            If True, candles will be plotted, by default True
+            如果为 True，将绘制蜡烛图，默认为 True
         volume : bool, optional
-            If True, volume will be plotted, by default True
+            如果为 True，将绘制成交量，默认为 True
         volume_ticks_x : int, optional
-            Volume ticks, by default 7
+            成交量刻度，默认为 7
         render : bool, optional
-            If True, the chart will be rendered, by default True
+            如果为 True，将渲染图表，默认为 True
         kwargs: Dict[str, Any]
-            Extra parameters to be passed to the chart constructor.
+            要传递给图表构造函数的额外参数。
 
         Examples
         --------
-        Plotting a time series with TA indicators
+        绘制带有 TA 指标的时间序列
 
         >>> from openbb import obb
         >>> res = obb.equity.price.historical("AAPL")
@@ -618,7 +617,7 @@ class Charting:
         >>> )
         >>> res.charting.to_chart(**{"indicators": indicators})
 
-        Get all the available indicators
+        获取所有可用指标
 
         >>> res = obb.equity.price.historical("AAPL")
         >>> indicators = res.charting.indicators()
@@ -665,7 +664,7 @@ class Charting:
                 ) from e
 
     def _set_chart_style(self, figure: "Figure"):
-        """Set the user preference for light or dark mode."""
+        """设置浅色或深色模式的用户首选项。"""
         style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
         paper_bgcolor = "white" if style == "light" else "black"
@@ -680,7 +679,7 @@ class Charting:
         return figure
 
     def toggle_chart_style(self):
-        """Toggle the chart style between light and dark mode."""
+        """在浅色和深色模式之间切换图表样式。"""
         if not hasattr(self._obbject.chart, "fig"):
             raise ValueError(
                 "Error: No chart has been created. Please create a chart first."
@@ -697,7 +696,7 @@ class Charting:
 
     @staticmethod
     def _convert_to_string(x):
-        """Sanitize the data for the table."""
+        """清理表格数据。"""
         # pylint: disable=import-outside-toplevel
         from numpy import isnan
 
@@ -726,15 +725,15 @@ class Charting:
         data: Union["DataFrame", "Series"] | None = None,
         title: str = "",
     ):
-        """Display an interactive table.
+        """显示交互式表格。
 
         Parameters
         ----------
         data : Optional[Union[DataFrame, Series]], optional
-            Data to be plotted, by default None.
-            If no data is provided the OBBject results will be used.
+            要绘制的数据，默认为 None。
+            如果未提供数据，将使用 OBBject 结果。
         title : str, optional
-            Title of the table, by default "".
+            表格标题，默认为 ""。
         """
         # pylint: disable=import-outside-toplevel
         from pandas import RangeIndex
@@ -774,7 +773,7 @@ class Charting:
         width: int | None = None,
         height: int | None = None,
     ):
-        """Return the URL of the chart."""
+        """返回图表的 URL。"""
         try:
             self._backend.send_url(url=url, title=title, width=width, height=height)
         except Exception as e:  # pylint: disable=W0718

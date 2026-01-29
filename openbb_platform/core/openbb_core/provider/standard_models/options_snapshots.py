@@ -1,4 +1,4 @@
-"""Options Snapshots Standard Model."""
+"""期权快照标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -12,48 +12,48 @@ from pydantic import Field
 
 
 class OptionsSnapshotsQueryParams(QueryParams):
-    """Options Snapshots Query."""
+    """期权快照查询。"""
 
 
 class OptionsSnapshotsData(Data):
-    """Options Snapshots Data."""
+    """期权快照数据。"""
 
     underlying_symbol: list[str] = Field(
-        description="Ticker symbol of the underlying asset."
+        description="标的资产的股票代码。"
     )
-    contract_symbol: list[str] = Field(description="Symbol of the options contract.")
+    contract_symbol: list[str] = Field(description="期权合约代码。")
     expiration: list[dateType] = Field(
-        description="Expiration date of the options contract."
+        description="期权合约到期日。"
     )
     dte: list[int | None] = Field(
         default_factory=list,
-        description="Number of days to expiration of the options contract.",
+        description="期权合约距离到期天数。",
     )
     strike: list[float] = Field(
-        description="Strike price of the options contract.",
+        description="期权合约执行价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    option_type: list[str] = Field(description="The type of option.")
+    option_type: list[str] = Field(description="期权类型。")
     volume: list[int | None] = Field(
         default_factory=list,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )
     open_interest: list[int | None] = Field(
         default_factory=list,
-        description="Open interest at the time.",
+        description="当时的持仓量。",
     )
     last_price: list[float | None] = Field(
         default_factory=list,
-        description="Last trade price at the time.",
+        description="当时的最新成交价。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     last_size: list[int | None] = Field(
         default_factory=list,
-        description="Lot size of the last trade.",
+        description="最新成交的批量大小。",
     )
     last_timestamp: list[datetime | None] = Field(
         default_factory=list,
-        description="Timestamp of the last price.",
+        description="最新价格的时间戳。",
     )
     open: list[float | None] = Field(
         default_factory=list,

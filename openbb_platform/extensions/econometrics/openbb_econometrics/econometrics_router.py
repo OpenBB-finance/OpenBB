@@ -1,4 +1,4 @@
-"""Econometrics Router."""
+"""计量经济学路由器。"""
 
 from itertools import combinations
 from typing import Literal
@@ -9,14 +9,14 @@ from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
 
-router = Router(prefix="", description="Econometrics analysis tools.")
+router = Router(prefix="", description="计量经济学分析工具。")
 
 
 @router.command(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the correlation matrix of a dataset.",
+            description="获取数据集的相关矩阵。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.econometrics.correlation_matrix(data=stock_data)",
@@ -28,27 +28,27 @@ router = Router(prefix="", description="Econometrics analysis tools.")
 def correlation_matrix(
     data: list[Data], method: Literal["pearson", "kendall", "spearman"] = "pearson"
 ) -> OBBject[list[Data]]:
-    """Get the correlation matrix of an input dataset.
+    """获取输入数据集的相关矩阵。
 
-    The correlation matrix provides a view of how different variables in your dataset relate to one another.
-    By quantifying the degree to which variables move in relation to each other, this matrix can help identify patterns,
-    trends, and potential areas for deeper analysis. The correlation score ranges from -1 to 1, with -1 indicating a
-    perfect negative correlation, 0 indicating no correlation, and 1 indicating a perfect positive correlation.
+    相关矩阵提供了数据集不同变量之间关系的视图。
+    通过量化变量之间相互变动的程度，该矩阵有助于识别模式、
+    趋势和进行更深入分析的潜在领域。相关系数的范围从 -1 到 1，
+    其中 -1 表示完全负相关，0 表示无相关，1 表示完全正相关。
 
     Parameters
     ----------
     data : list[Data]
-        Input dataset.
+        输入数据集。
     method : Literal["pearson", "kendall", "spearman"]
-        Method to use for correlation calculation. Default is "pearson".
-            pearson : standard correlation coefficient
-            kendall : Kendall Tau correlation coefficient
-            spearman : Spearman rank correlation
+        用于计算相关性的方法。默认为 "pearson"。
+            pearson : 标准相关系数
+            kendall : Kendall Tau 相关系数
+            spearman : Spearman 秩相关
 
     Returns
     -------
     OBBject[list[Data]]
-        Correlation matrix.
+        相关矩阵。
     """
     # pylint: disable=import-outside-toplevel
     import numpy as np
@@ -80,7 +80,7 @@ def correlation_matrix(
     include_in_schema=False,
     examples=[
         PythonEx(
-            description="Perform Ordinary Least Squares (OLS) regression.",
+            description="执行普通最小二乘法 (OLS) 回归。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
@@ -100,26 +100,26 @@ def ols_regression(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Perform Ordinary Least Squares (OLS) regression.
+    """执行普通最小二乘法 (OLS) 回归。
 
-    OLS regression is a fundamental statistical method to explore and model the relationship between a
-    dependent variable and one or more independent variables. By fitting the best possible linear equation to the data,
-    it helps uncover how changes in the independent variables are associated with changes in the dependent variable.
-    This returns the model and results objects from statsmodels library.
+    OLS 回归是一种基本的统计方法，用于探索和建模因变量
+    与一个或多个自变量之间的关系。通过将最佳线性方程拟合到数据，
+    它有助于揭示自变量的变化如何与因变量的变化相关联。
+    这将返回 statsmodels 库中的模型和结果对象。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the results being model and results objects.
+        带有作为模型和结果对象的 OBBject。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -140,7 +140,7 @@ def ols_regression(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform Ordinary Least Squares (OLS) regression and return the summary.",
+            description="执行普通最小二乘法 (OLS) 回归并返回摘要。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501  pylint: disable=line-too-long
                 'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501  pylint: disable=line-too-long
@@ -160,23 +160,23 @@ def ols_regression_summary(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[Data]:
-    """Perform Ordinary Least Squares (OLS) regression.
+    """执行普通最小二乘法 (OLS) 回归。
 
-    This returns the summary object from statsmodels.
+    这将返回 statsmodels 中的摘要对象。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[Data]
-        OBBject with the results being summary object.
+        OBBject，结果为摘要对象。
     """
     # pylint: disable=import-outside-toplevel
     import re  # noqa
@@ -234,7 +234,7 @@ def ols_regression_summary(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform Durbin-Watson test for autocorrelation.",
+            description="执行杜宾-沃森 (Durbin-Watson) 自相关检验。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
@@ -254,29 +254,29 @@ def autocorrelation(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[Data]:
-    """Perform Durbin-Watson test for autocorrelation.
+    """执行杜宾-沃森 (Durbin-Watson) 自相关检验。
 
-    The Durbin-Watson test is a widely used method for detecting the presence of autocorrelation in the residuals
-    from a statistical or econometric model. Autocorrelation occurs when past values in the data series influence
-    future values, which can be a critical issue in time-series analysis, affecting the reliability of
-    model predictions. The test provides a statistic that ranges from 0 to 4, where a value around 2 suggests
-    no autocorrelation, values towards 0 indicate positive autocorrelation, and values towards 4 suggest
-    negative autocorrelation. Understanding the degree of autocorrelation helps in refining models to better capture
-    the underlying dynamics of the data, ensuring more accurate and trustworthy results.
+    杜宾-沃森检验是一种广泛用于检测统计或计量经济模型残差中是否存在自相关的方法。
+    当数据系列中的过去值影响未来值时，就会发生自相关，
+    这可能是时间序列分析中的一个关键问题，会影响模型预测的可靠性。
+    该检验提供一个范围从 0 到 4 的统计量，其中约 2 的值表明
+    无自相关，接近 0 的值表明正自相关，接近 4 的值表明
+    负自相关。了解自相关程度有助于改进模型以更好地捕捉
+    数据的潜在动态，确保更准确和值得信赖的结果。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the results being the score from the test.
+        OBBject，结果为检验得分。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -297,7 +297,7 @@ def autocorrelation(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.",
+            description="对残差自相关执行布罗施-戈弗雷 (Breusch-Godfrey) 拉格朗日乘数检验。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501  pylint: disable=line-too-long
@@ -318,26 +318,26 @@ def residual_autocorrelation(
     x_columns: list[str],
     lags: PositiveInt = 1,
 ) -> OBBject[Data]:
-    """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
+    """对残差自相关执行布罗施-戈弗雷 (Breusch-Godfrey) 拉格朗日乘数检验。
 
-    The Breusch-Godfrey Lagrange Multiplier test is a sophisticated tool for uncovering autocorrelation within the
-    residuals of a regression model. Autocorrelation in residuals can indicate that a model fails to capture some
-    aspect of the underlying data structure, possibly leading to biased or inefficient estimates.
-    By specifying the number of lags, you can control the depth of the test to check for autocorrelation,
-    allowing for a tailored analysis that matches the specific characteristics of your data.
-    This test is particularly valuable in econometrics and time-series analysis, where understanding the independence
-    of errors is crucial for model validity.
+    布罗施-戈弗雷拉格朗日乘数检验是一种用于揭示回归模型残差内自相关的复杂工具。
+    残差中的自相关可能表明模型未能捕捉到底层数据结构的某些方面，
+    可能导致有偏或低效的估计。
+    通过指定滞后数，您可以控制检查自相关的检验深度，
+    允许进行与数据特定特征相匹配的定制分析。
+    此检验在计量经济学和时间序列分析中特别有价值，其中理解误差的独立性
+    对于模型有效性至关重要。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
     lags: PositiveInt
-        Number of lags to use in the test.
+        用于检验的滞后数。
 
     Returns
     -------
@@ -377,7 +377,7 @@ def residual_autocorrelation(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform co-integration test between two timeseries.",
+            description="执行两个时间序列之间的协整检验。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
@@ -389,30 +389,30 @@ def cointegration(
     data: list[Data],
     columns: list[str],
 ) -> OBBject[Data]:
-    """Show co-integration between two timeseries using the two step Engle-Granger test.
+    """使用两步恩格尔-格兰杰 (Engle-Granger) 检验显示两个时间序列之间的协整关系。
 
-    The two-step Engle-Granger test is a method designed to detect co-integration between two time series.
-    Co-integration is a statistical property indicating that two or more time series move together over the long term,
-    even if they are individually non-stationary. This concept is crucial in economics and finance, where identifying
-    pairs or groups of assets that share a common stochastic trend can inform long-term investment strategies
-    and risk management practices. The Engle-Granger test first checks for a stable, long-term relationship by
-    regressing one time series on the other and then tests the residuals for stationarity.
-    If the residuals are found to be stationary, it suggests that despite any short-term deviations,
-    the series are bound by an equilibrium relationship over time.
+    两步恩格尔-格兰杰检验是一种旨在检测两个时间序列之间协整关系的方法。
+    协整是一种统计属性，表明两个或多个时间序列在长期内一起移动，
+    即使它们单独是非平稳的。这个概念在经济学和金融学中至关重要，识别
+    共享共同随机趋势的资产对或组可以为长期投资策略
+    和风险管理实践提供信息。恩格尔-格兰杰检验首先通过
+    通过将一个时间序列对另一个进行回归来检查稳定的长期关系，然后测试残差的平稳性。
+    如果发现残差是平稳的，则表明尽管有任何短期偏差，
+    这些系列随时间推移受均衡关系约束。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     columns: list[str]
-        Data columns to check cointegration
+        要检查协整的数据列。
     maxlag: PositiveInt
-        Number of lags to use in the test.
+        用于检验的滞后数。
 
     Returns
     -------
     OBBject[Data]
-        OBBject with the results being the score from the test.
+        OBBject，结果为检验得分。
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import basemodel_to_df, get_target_columns  # noqa
@@ -447,14 +447,14 @@ def cointegration(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform Granger causality test to determine if X 'causes' y.",
+            description="执行格兰杰因果关系检验以确定 X 是否“导致” y。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
             ],
         ),
         APIEx(
-            description="Example with mock data.",
+            description="模拟数据示例。",
             parameters={
                 "y_column": "close",
                 "x_column": "open",
@@ -470,31 +470,31 @@ def causality(
     x_column: str,
     lag: PositiveInt = 3,
 ) -> OBBject[Data]:
-    """Perform Granger causality test to determine if X 'causes' y.
+    """执行格兰杰因果关系检验以确定 X 是否“导致” y。
 
-    The Granger causality test is a statistical hypothesis test to determine if one time series is useful in
-    forecasting another. While 'causality' in this context does not imply a cause-and-effect relationship in
-    the philosophical sense, it does test whether changes in one variable are systematically followed by changes
-    in another variable, suggesting a predictive relationship. By specifying a lag, you set the number of periods to
-    look back in the time series to assess this relationship. This test is particularly useful in economic and
-    financial data analysis, where understanding the lead-lag relationship between indicators can inform investment
-    decisions and policy making.
+    格兰杰因果关系检验是一种统计假设检验，用于确定一个时间序列是否有助于
+    预测另一个。虽然在这种背景下的“因果关系”并不意味着哲学意义上的
+    因果关系，但它确实检验了一个变量的变化是否系统地跟随着
+    另一个变量的变化，表明存在预测关系。通过指定滞后，您可以设置
+    在时间序列中回顾的周期数以评估此关系。此检验在经济和
+    金融数据分析中特别有用，理解指标之间的超前-滞后关系可以为投资
+    决策和政策制定提供信息。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_column: str
-        Columns to use as exogenous variables.
+        用作外生变量的列。
     lag: PositiveInt
-        Number of lags to use in the test.
+        用于检验的滞后数。
 
     Returns
     -------
     OBBject[Data]
-        OBBject with the results being the score from the test.
+        OBBject，结果为检验得分。
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import basemodel_to_df, get_target_column
@@ -523,7 +523,7 @@ def causality(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Perform Augmented Dickey-Fuller (ADF) unit root test.",
+            description="执行增强迪基-福勒 (ADF) 单位根检验。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.unit_root(data=stock_data, column="close")',
@@ -543,31 +543,31 @@ def unit_root(
     column: str,
     regression: Literal["c", "ct", "ctt"] = "c",
 ) -> OBBject[Data]:
-    """Perform Augmented Dickey-Fuller (ADF) unit root test.
+    """执行增强迪基-福勒 (ADF) 单位根检验。
 
-    The ADF test is a popular method for testing the presence of a unit root in a time series.
-    A unit root indicates that the series may be non-stationary, meaning its statistical properties such as mean,
-    variance, and autocorrelation can change over time. The presence of a unit root suggests that the time series might
-    be influenced by a random walk process, making it unpredictable and challenging for modeling and forecasting.
-    The 'regression' parameter allows you to specify the model used in the test: 'c' for a constant term,
-    'ct' for a constant and trend term, and 'ctt' for a constant, linear, and quadratic trend.
-    This flexibility helps tailor the test to the specific characteristics of your data, providing a more accurate
-    assessment of its stationarity.
+    ADF 检验是一种用于测试时间序列中是否存在单位根的流行方法。
+    单位根表明序列可能是非平稳的，这意味着其统计属性（如均值、
+    方差和自相关）可能会随时间变化。单位根的存在表明时间序列可能
+    受随机游走过程影响，使其不可预测且难以建模和预测。
+    'regression' 参数允许您指定测试中使用的模型：'c' 表示常数项，
+    'ct' 表示常数和趋势项，'ctt' 表示常数、线性和二次趋势。
+    这种灵活性有助于根据数据的特定特征定制测试，提供更准确的
+    平稳性评估。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     column: str
-        Data columns to check unit root
+        要检查单位根的数据列。
     regression: Literal["c", "ct", "ctt"]
-        Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
-        constant, trend, and trend-squared.
+        测试中使用的回归类型。"c" 表示仅常数，"ct" 表示常数和趋势，"ctt" 表示
+        常数、趋势和趋势的平方。
 
     Returns
     -------
     OBBject[Data]
-        OBBject with the results being the score from the test.
+        OBBject，结果为检验得分。
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import basemodel_to_df, get_target_column
@@ -602,26 +602,25 @@ def panel_random_effects(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Perform One-way Random Effects model for panel data.
+    """对面版数据执行单向随机效应模型。
 
-    One-way Random Effects model to panel data is offering a nuanced approach to analyzing data that spans across both
-    time and entities (such as individuals, companies, countries, etc.). By acknowledging and modeling the random
-    variation that exists within these entities, this method provides insights into the general patterns that
-    emerge across the dataset.
+    面板数据的单向随机效应模型为分析跨越时间和实体（如个人、公司、国家等）的数据提供了一种细致的方法。
+    通过承认和建模这些实体内部存在的随机变化，该方法提供了对数据集出现的
+    一般模式的见解。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -658,26 +657,26 @@ def panel_between(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Perform a Between estimator regression on panel data.
+    """对面板数据执行组间估计量回归。
 
-    The Between estimator for regression analysis on panel data is focusing on the differences between entities
-    (such as individuals, companies, or countries) over time. By aggregating the data for each entity and analyzing the
-    average outcomes, this method provides insights into the overall impact of explanatory variables (x_columns) on
-    the dependent variable (y_column) across all entities.
+    面板数据回归分析的组间估计量侧重于实体（如个人、公司或国家）
+    随时间推移的差异。通过聚合每个实体的数据并分析平均结果，
+    该方法提供了有关解释变量 (x_columns) 对所有实体的因变量 (y_column)
+    的总体影响的见解。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -712,27 +711,26 @@ def panel_pooled(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Perform a Pooled coefficient estimator regression on panel data.
+    """对面板数据执行混合系数估计量回归。
 
-    The Pooled coefficient estimator for regression analysis on panel data is treating the data as a large
-    cross-section without distinguishing between variations across time or entities
-    (such as individuals, companies, or countries). By assuming that the explanatory variables (x_columns) have a
-    uniform effect on the dependent variable (y_column) across all entities and time periods, this method simplifies
-    the analysis and provides a generalized view of the relationships within the data.
+    面板数据回归分析的混合系数估计量将数据视为大型横截面，
+    而不区分时间或实体（如个人、公司或国家）的变化。
+    通过假设解释变量 (x_columns) 对所有实体和时间段的因变量 (y_column)
+    具有统一的影响，该方法简化了分析并提供了数据内关系的广义视图。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -767,26 +765,26 @@ def panel_fixed(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """One- and two-way fixed effects estimator for panel data.
+    """面板数据的一种和两种固定效应估计量。
 
-    The Fixed Effects estimator to panel data is enabling a focused analysis on the unique characteristics of entities
-    (such as individuals, companies, or countries) and/or time periods. By controlling for entity-specific and/or
-    time-specific influences, this method isolates the effect of explanatory variables (x_columns) on the dependent
-    variable (y_column), under the assumption that these entity or time effects capture unobserved heterogeneity.
+    面板数据的固定效应估计量能够专注于实体（如个人、公司或国家）
+    和/或时间段的独特特征。通过控制实体特定和/或时间特定的影响，
+    该方法隔离了解释变量 (x_columns) 对因变量 (y_column) 的影响，
+    假设这些实体或时间效应捕捉到了未观察到的异质性。
 
     Parameters
     ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -821,26 +819,28 @@ def panel_first_difference(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Perform a first-difference estimate for panel data.
+    """对面板数据执行一阶差分估计。
 
-    The First-Difference estimator for panel data analysis is focusing on the changes between consecutive observations
-    for each entity (such as individuals, companies, or countries). By differencing the data, this method effectively
-    removes entity-specific effects that are constant over time, allowing for the examination of the impact of changes
-    in explanatory variables (x_columns) on the change in the dependent variable (y_column).
+    面板数据分析的一阶差分估计量侧重于每个实体（如个人、公司或国家）
+    连续观察值之间的变化。通过对数据进行差分，该方法有效地
+    消除了随时间不变的实体特定效应，允许检查解释变量 (x_columns)
+    的变化对因变量 (y_column) 变化的影响。
 
     Parameters
     ----------
+    Parameters
+    ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     from linearmodels.panel import FirstDifferenceOLS
@@ -874,27 +874,28 @@ def panel_fmac(
     y_column: str,
     x_columns: list[str],
 ) -> OBBject[dict]:
-    """Fama-MacBeth estimator for panel data.
+    """面板数据的 Fama-MacBeth 估计量。
 
-    The Fama-MacBeth estimator, a two-step procedure renowned for its application in finance to estimate the risk
-    premiums and evaluate the capital asset pricing model. By first estimating cross-sectional regressions for each
-    time period and then averaging the regression coefficients over time, this method provides insights into the
-    relationship between the dependent variable (y_column) and explanatory variables (x_columns) across different
-    entities (such as individuals, companies, or countries).
+    Fama-MacBeth 估计量是一种两步过程，因其在金融领域用于估计风险溢价
+    和评估资本资产定价模型而闻名。通过首先估计每个时间段的横截面回归，
+    然后随时间平均回归系数，该方法提供了有关不同实体（如个人、公司或国家）
+    之间因变量 (y_column) 和解释变量 (x_columns) 之间关系的见解。
 
     Parameters
     ----------
+    Parameters
+    ----------
     data: list[Data]
-        Input dataset.
+        输入数据集。
     y_column: str
-        Target column.
+        目标列。
     x_columns: list[str]
-        list of columns to use as exogenous variables.
+        用作外生变量的列列表。
 
     Returns
     -------
     OBBject[dict]
-        OBBject with the fit model returned
+        OBBject，返回拟合模型。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
@@ -917,7 +918,7 @@ def panel_fmac(
     include_in_schema=False,
     examples=[
         PythonEx(
-            description="Calculate the variance inflation factor.",
+            description="计算方差膨胀因子。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance').to_df()",  # noqa: E501  pylint: disable= C0301
                 'obb.econometrics.variance_inflation_factor(data=stock_data, column="close")',
@@ -928,35 +929,34 @@ def panel_fmac(
 def variance_inflation_factor(
     data: list[Data], columns: list | None = None
 ) -> OBBject[list[Data]]:
-    """Calculate VIF (variance inflation factor), which tests for collinearity.
+    """计算 VIF（方差膨胀因子），用于检验共线性。
 
-    It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
-    root of the variance inflation factor indicates how much larger the standard error increases compared to if
-    that variable had 0 correlation to other predictor variables in the model.
+    它量化了普通最小二乘回归分析中多重共线性的严重程度。
+    方差膨胀因子的平方根表明，与如果该变量与模型中其他预测变量的相关性为 0 相比，
+    标准误差增加了多少。
 
-    It is defined as:
+    其定义为：
 
     $ VIF_i = 1 / (1 - R_i^2) $
-    where $ R_i $ is the coefficient of determination of the regression equation with the column i being the result
-    from the i:th series being the exogenous variable.
+    其中 $ R_i $ 是回归方程的决定系数，第 i 列作为外生变量的结果。
 
-    A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a
-    value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable.
-    In order to improve the results one can often remove a column with high VIF.
+    VIF 超过 5 表明存在高共线性和相关性。超过 10 的值表明会导致问题，
+    而值为 1 表明无相关性。因此，1 到 5 之间的 VIF 值通常被认为是可接受的。
+    为了改善结果，通常可以删除具有高 VIF 的列。
 
-    For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor
+    有关更多信息，请参阅：https://en.wikipedia.org/wiki/Variance_inflation_factor
 
     Parameters
     ----------
     dataset: list[Data]
-        Dataset to calculate VIF on
+        要计算 VIF 的数据集
     columns: Optional[list]
-        The columns to calculate to test for collinearity
+        要计算以测试共线性的列
 
     Returns
     -------
     OBBject[list[Data]]
-        The resulting VIF values for the selected columns
+        所选列的结果 VIF 值
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import (

@@ -1,4 +1,4 @@
-"""User service."""
+"""用户服务。"""
 
 import json
 from collections.abc import MutableMapping
@@ -12,7 +12,7 @@ from openbb_core.app.model.user_settings import UserSettings
 
 
 class UserService(metaclass=SingletonMeta):
-    """User service."""
+    """用户服务。"""
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
@@ -21,12 +21,12 @@ class UserService(metaclass=SingletonMeta):
         self,
         default_user_settings: UserSettings | None = None,
     ):
-        """Initialize user service."""
+        """初始化用户服务。"""
         self._default_user_settings = default_user_settings or self.read_from_file()
 
     @classmethod
     def read_from_file(cls, path: Path | None = None) -> UserSettings:
-        """Read user settings from json into UserSettings."""
+        """从 json 读取用户设置到 UserSettings 中。"""
         path = path or cls.USER_SETTINGS_PATH
 
         return (
@@ -41,7 +41,7 @@ class UserService(metaclass=SingletonMeta):
         user_settings: UserSettings,
         path: Path | None = None,
     ) -> None:
-        """Write user settings to json."""
+        """将用户设置写入 json。"""
         path = path or cls.USER_SETTINGS_PATH
         user_settings_json = user_settings.model_dump_json(
             indent=4, include=cls.USER_SETTINGS_ALLOWED_FIELD_SET, exclude_defaults=True
@@ -50,10 +50,10 @@ class UserService(metaclass=SingletonMeta):
 
     @staticmethod
     def _merge_dicts(list_of_dicts: list[dict[str, Any]]) -> dict[str, Any]:
-        """Merge a list of dictionaries."""
+        """合并字典列表。"""
 
         def recursive_merge(d1: dict, d2: dict) -> dict:
-            """Recursively merge dict d2 into dict d1 if d2 is value is not None."""
+            """如果 d2 的值不是 None，则递归地将 dict d2 合并到 dict d1 中。"""
             for k, v in d1.items():
                 if k in d2 and all(isinstance(e, MutableMapping) for e in (v, d2[k])):
                     d2[k] = recursive_merge(v, d2[k])
@@ -69,10 +69,10 @@ class UserService(metaclass=SingletonMeta):
 
     @property
     def default_user_settings(self) -> UserSettings:
-        """Return default user settings."""
+        """返回默认用户设置。"""
         return self._default_user_settings
 
     @default_user_settings.setter
     def default_user_settings(self, default_user_settings: UserSettings) -> None:
-        """Set default user settings."""
+        """设置默认用户设置。"""
         self._default_user_settings = default_user_settings

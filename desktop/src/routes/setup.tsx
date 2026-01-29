@@ -7,15 +7,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {FolderIcon} from "~/components/Icon";
+import { FolderIcon } from "~/components/Icon";
 
 // Define form schema using Zod
 const formSchema = z.object({
-  installDir: z.string().min(1, "Installation directory is required").refine(value => !/\s/.test(value), {
-    message: "Path cannot contain spaces",
+  installDir: z.string().min(1, "必须填写安装目录").refine(value => !/\s/.test(value), {
+    message: "路径不能包含空格",
   }),
-  userDataDir: z.string().min(1, "User data directory is required").refine(value => !/\s/.test(value), {
-    message: "Path cannot contain spaces",
+  userDataDir: z.string().min(1, "必须填写用户数据目录").refine(value => !/\s/.test(value), {
+    message: "路径不能包含空格",
   }),
 });
 
@@ -68,7 +68,7 @@ export default function Setup() {
         }
       } catch (error) {
         console.error("Failed to get home directory:", error);
-        setErrorMessage(`Unable to determine home directory: ${error}`);
+        setErrorMessage(`无法确定主目录: ${error}`);
       }
     }
 
@@ -95,8 +95,8 @@ export default function Setup() {
       if (directoryExists) {
         // Use Tauri dialog confirm instead of modal
         const confirmed = await confirm(
-          "Target destination already exists.\n\nDo you want to overwrite?\n\n",
-          { title: "Overwrite Installation Directory?", kind: "warning" }
+          "目标位置已存在。\n\n是否覆盖？\n\n",
+          { title: "覆盖安装目录？", kind: "warning" }
         );
         if (!confirmed) {
           isSubmittingRef.current = false;
@@ -108,7 +108,7 @@ export default function Setup() {
       await proceedWithInstallation(data);
     } catch (error) {
       console.error("Failed to check directory existence:", error);
-      setErrorMessage(`Failed to check directory existence: ${error}`);
+      setErrorMessage(`检查目录是否存在失败: ${error}`);
       isSubmittingRef.current = false;
     }
   }
@@ -132,7 +132,7 @@ export default function Setup() {
       });
     } catch (error) {
       console.error("Failed to set up installation directories:", error);
-      setErrorMessage(`Installation setup failed: ${error}`);
+      setErrorMessage(`安装设置失败: ${error}`);
       isSubmittingRef.current = false;
     } finally {
       setIsLoading(false);
@@ -143,7 +143,7 @@ export default function Setup() {
   async function browseDirectory(field: keyof FormValues, title: string) {
     try {
       const selectedDir = await invoke<string>("select_directory", {
-        prompt: `Select ${title}`,
+        prompt: `选择 ${title}`,
       });
 
       if (selectedDir) {
@@ -154,7 +154,7 @@ export default function Setup() {
       if (String(error).includes("User canceled")) {
         console.log("User canceled directory selection");
       } else {
-        setErrorMessage(`Failed to select directory: ${error}`);
+        setErrorMessage(`选择目录失败: ${error}`);
       }
     }
   }
@@ -163,17 +163,17 @@ export default function Setup() {
     <div>
       <FormProvider {...methods}>
         <div className="flex flex-col bg-theme-secondary">
-					<p className="text-theme-secondary body-xs-regular mt-6">
-						STEP <span className="text-theme-accent">1</span> OF <span className="text-theme-accent">3</span>
-					</p>
-          <h1 className="body-xl-bold mb-2 text-theme-primary">Installation & Setup</h1>
+          <p className="text-theme-secondary body-xs-regular mt-6">
+            第 <span className="text-theme-accent">1</span> 步，共 <span className="text-theme-accent">3</span> 步
+          </p>
+          <h1 className="body-xl-bold mb-2 text-theme-primary">安装与设置</h1>
           <p className="mb-4 body-sm-regular text-theme-secondary">
-            This application uses an isolated Miniforge installation for environment management and dependency solving.<br />
-            Existing Conda executables, environments, and global packages will be unaffected.
+            本程序使用独立的 Miniforge 进行环境管理和依赖解决。<br />
+            现有的 Conda 可执行文件、环境和全局包将不受影响。
             <br />
           </p>
           <p className="mb-5 body-sm-regular text-theme-primary mt-1">
-            Please select the directories where Conda, OpenBB, and its user data will be stored.
+            请选择 Conda、OpenBB 及其用户数据的存储目录。
           </p>
 
           {errorMessage && (
@@ -185,25 +185,25 @@ export default function Setup() {
             {/* Installation Directory Input */}
             <div className="rounded-sm bg-theme-primary shadow-md px-5 pt-5 pb-5">
               <div className="space-y-3">
-              <label htmlFor="installDir" className="text-theme-secondary body-md-medium">
-                Installation Directory
-              </label>
+                <label htmlFor="installDir" className="text-theme-secondary body-md-medium">
+                  安装目录
+                </label>
                 <div className="flex w-full gap-2">
                   <input
                     id="installDir"
-                    placeholder={defaultHome || "Select directory..."}
+                    placeholder={defaultHome || "选择目录..."}
                     value={installDir}
                     onChange={(e) => setValue("installDir", e.target.value, { shouldValidate: true })}
                     name="installDir"
                     className="directory-input flex-1 text-theme-secondary"
                   />
                   <Tooltip
-                    content="Browse for installation directory."
+                    content="浏览安装目录。"
                     className="tooltip tooltip-theme"
                   >
                     <Button
                       type="button"
-                      onClick={() => browseDirectory("installDir", "Installation Directory")}
+                      onClick={() => browseDirectory("installDir", "安装目录")}
                       size="icon"
                       className="button-ghost ml-2"
                       variant="ghost"
@@ -220,32 +220,32 @@ export default function Setup() {
                 </p>
               )}
               <p className="body-xs-regular text-theme-muted mt-3">
-                Where Miniforge, environments, and other application files will be installed.
+                Miniforge、环境和其他应用程序文件将安装在此处。
               </p>
             </div>
 
             {/* User Data Directory Input */}
-              <div className="rounded-md bg-theme-primary shadow-md px-5 pt-4 pb-4">
-                <div className="space-y-3">
-                  <label htmlFor="userDataDir" className="text-theme-secondary body-md-medium">
-                    User Data Directory
-                  </label>
+            <div className="rounded-md bg-theme-primary shadow-md px-5 pt-4 pb-4">
+              <div className="space-y-3">
+                <label htmlFor="userDataDir" className="text-theme-secondary body-md-medium">
+                  用户数据目录
+                </label>
                 <div className="flex w-full gap-2">
                   <input
                     id="userDataDir"
-                    placeholder="Select user data directory..."
+                    placeholder="选择用户数据目录..."
                     value={userDataDir}
                     onChange={(e) => setValue("userDataDir", e.target.value, { shouldValidate: true })}
                     name="userDataDir"
                     className="directory-input flex-1"
                   />
                   <Tooltip
-                    content="Browse for user data directory."
+                    content="浏览用户数据目录。"
                     className="tooltip tooltip-theme"
                   >
                     <Button
                       type="button"
-                      onClick={() => browseDirectory("userDataDir", "User Data Directory")}
+                      onClick={() => browseDirectory("userDataDir", "用户数据目录")}
                       size="icon"
                       className="button-ghost"
                       variant="ghost"
@@ -262,40 +262,40 @@ export default function Setup() {
                 </p>
               )}
               <p className="body-xs-regular text-theme-muted mt-3">
-                Where OpenBBUserData files and cache will be stored.
+                OpenBB 用户数据文件和缓存将存储在此处。
               </p>
             </div>
           </form>
-          </div>
-          <div className="flex justify-between items-center bg-theme-secondary mb-5">
-            <div className="mt-4">
+        </div>
+        <div className="flex justify-between items-center bg-theme-secondary mb-5">
+          <div className="mt-4">
             <p className="body-xs-medium text-theme-muted text-left pt-5">
-              Expect the initial installation to take a few minutes, and between 1-2 GB of disk space.
+              预计首次安装将耗时几分钟，并占用 1-2 GB 磁盘空间。
               <br />
-              By continuing, you explicitly agree to the terms and conditions of the {" "}
+              继续操作即表示您明确同意 {" "}
               <a
                 href="https://raw.githubusercontent.com/conda-forge/miniforge/refs/heads/main/LICENSE"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-theme-accent"
               >
-                Miniforge License
+                Miniforge 许可证
               </a>
-              .
+              。
             </p>
-            </div>
+          </div>
           {/* Form Actions - Outside the form containers */}
           <div className="flex flex-row gap-2 justify-end mt-5 ml-2">
             <Tooltip
-              content="Cancel the installation and quit the application."
+              content="取消安装并退出应用程序。"
               className="tooltip tooltip-theme"
             >
               <Button
                 type="button"
                 onClick={async () => {
                   const confirmed = await confirm(
-                    "Are you sure you want to quit the installation?",
-                    { title: "Quit Installation", kind: "warning" }
+                    "确定要退出安装吗？",
+                    { title: "退出安装", kind: "warning" }
                   );
                   if (confirmed) {
                     // Quit the application
@@ -307,21 +307,21 @@ export default function Setup() {
                 size="sm"
                 className="button-outline px-2 py-1 shadow-md"
               >
-                Cancel
+                取消
               </Button>
             </Tooltip>
             <Tooltip
-              content="Begin the installation process by installing Miniforge and setting up the environment. "
+              content="开始安装 Miniforge 并配置环境。"
               className="tooltip tooltip-theme"
             >
-              <Button 
-                onClick={handleSubmit(onSubmit)} 
-                disabled={isLoading} 
-                variant="neutral" 
-                size="sm" 
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                disabled={isLoading}
+                variant="neutral"
+                size="sm"
                 className="button-neutral shadow-md px-2 py-1 whitespace-nowrap"
               >
-                {isLoading ? "Setting up..." : "Begin Installation"}
+                {isLoading ? "正在设置..." : "开始安装"}
               </Button>
             </Tooltip>
           </div>

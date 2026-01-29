@@ -1,4 +1,4 @@
-"""Disc router for ETFs."""
+"""ETF 发现路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -29,7 +29,7 @@ async def gainers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top ETF gainers."""
+    """获取 ETF 涨幅榜。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -46,7 +46,7 @@ async def losers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top ETF losers."""
+    """获取 ETF 跌幅榜。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -63,5 +63,5 @@ async def active(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the most active ETFs."""
+    """获取最活跃的 ETF。"""
     return await OBBject.from_query(Query(**locals()))

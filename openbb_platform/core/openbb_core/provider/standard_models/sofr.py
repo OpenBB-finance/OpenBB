@@ -1,4 +1,4 @@
-"""Secured Overnight Financing Rate Standard Model."""
+"""担保隔夜融资利率 (SOFR) 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class SOFRQueryParams(QueryParams):
-    """Secured Overnight Financing Rate Query."""
+    """担保隔夜融资利率 (SOFR) 查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,37 +25,37 @@ class SOFRQueryParams(QueryParams):
 
 
 class SOFRData(Data):
-    """SOFR Data."""
+    """担保隔夜融资利率 (SOFR) 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: float = Field(
-        description="Effective federal funds rate.",
+        description="隔夜担保融资利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_1: float | None = Field(
         default=None,
-        description="1st percentile of the distribution.",
+        description="分布的第 1 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_25: float | None = Field(
         default=None,
-        description="25th percentile of the distribution.",
+        description="分布的第 25 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_75: float | None = Field(
         default=None,
-        description="75th percentile of the distribution.",
+        description="分布的第 75 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_99: float | None = Field(
         default=None,
-        description="99th percentile of the distribution.",
+        description="分布的第 99 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", "")
-        + "The notional volume of transactions (Billions of $).",
+        + "名义成交量（单位：十亿美元）。",
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e9,

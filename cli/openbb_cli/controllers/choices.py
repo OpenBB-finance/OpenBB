@@ -49,23 +49,23 @@ def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
     _ = other_args
 
     parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
+        "-h", "--help", action="store_true", help="显示此帮助信息"
     )
 
     if export_allowed != "no_export":
         choices_export = []
-        help_export = "Does not export!"
+        help_export = "不导出！"
 
         if export_allowed == "raw_data_only":
             choices_export = ["csv", "json", "xlsx"]
-            help_export = "Export raw data into csv, json or xlsx."
+            help_export = "将原始数据导出为 csv, json 或 xlsx。"
         elif export_allowed == "figures_only":
             choices_export = ["png", "jpg"]
-            help_export = "Export figure into png or jpg."
+            help_export = "将图表导出为 png 或 jpg。"
         else:
             choices_export = ["csv", "json", "xlsx", "png", "jpg"]
             help_export = (
-                "Export raw data into csv, json, xlsx and figure into png or jpg."
+                "将原始数据导出为 csv, json, xlsx，将图表导出为 png 或 jpg。"
             )
 
         parser.add_argument(
@@ -83,7 +83,7 @@ def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
             dest="raw",
             action="store_true",
             default=False,
-            help="Flag to display raw data",
+            help="显示原始数据标志",
         )
     if limit > 0:
         parser.add_argument(
@@ -91,7 +91,7 @@ def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
             "--limit",
             dest="limit",
             default=limit,
-            help="Number of entries to show in data.",
+            help="数据显示条目数。",
             type=check_positive,
         )
 
@@ -100,13 +100,13 @@ def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
         dest="register_obbject",
         action="store_false",
         default=True,
-        help="Flag to store data in the OBBject registry, True by default.",
+        help="将数据存储在 OBBject 注册表中的标志，默认为 True。",
     )
     parser.add_argument(
         "--register_key",
         dest="register_key",
         default="",
-        help="Key to reference data in the OBBject registry.",
+        help="在 OBBject 注册表中引用数据的键。",
         type=validate_register_key,
     )
 
@@ -125,7 +125,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: list[str]) -> t
         List of arguments to parse
     """
     parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
+        "-h", "--help", action="store_true", help="显示此帮助信息"
     )
     _ = other_args
     return None, None
@@ -147,7 +147,7 @@ def __get_command_func(controller, command: str):
     """
     if command not in controller.CHOICES_COMMANDS:
         raise AttributeError(
-            f"The following command is not inside `CHOICES_COMMANDS` : '{command}'"
+            f"以下命令不在 `CHOICES_COMMANDS` 中：'{command}'"
         )
 
     command = f"call_{command}"
@@ -268,7 +268,7 @@ def _get_argument_parser(
 
     if not contains_functions_to_patch(command_func=command_func):
         raise AssertionError(
-            f"One of these functions should be inside `call_{command}`:\n"
+            f"以下函数之一应在 `call_{command}` 中：\n"
             " - parse_simple_args\n"
             " - parse_known_args_and_warn\n"
         )
@@ -287,7 +287,7 @@ def _get_argument_parser(
 
         if call_count != 1:
             raise AssertionError(
-                f"One of these functions should be called once inside `call_{command}`:\n"
+                f"以下函数之一应在 `call_{command}` 中被调用一次：\n"
                 " - parse_simple_args\n"
                 " - parse_known_args_and_warn\n"
             )

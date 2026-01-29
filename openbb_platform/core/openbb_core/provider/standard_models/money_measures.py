@@ -1,4 +1,4 @@
-"""Money Measures Standard Model."""
+"""货币供应量标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class MoneyMeasuresQueryParams(QueryParams):
-    """Treasury Rates Query."""
+    """货币供应量查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -23,29 +23,29 @@ class MoneyMeasuresQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     adjusted: bool | None = Field(
-        default=True, description="Whether to return seasonally adjusted data."
+        default=True, description="是否返回季节性调整后的数据。"
     )
 
 
 class MoneyMeasuresData(Data):
-    """Money Measures Data."""
+    """货币供应量数据。"""
 
     month: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    M1: float = Field(description="Value of the M1 money supply in billions.")
-    M2: float = Field(description="Value of the M2 money supply in billions.")
+    M1: float = Field(description="M1 货币供应量（单位：十亿）。")
+    M2: float = Field(description="M2 货币供应量（单位：十亿）。")
     currency: float | None = Field(
-        description="Value of currency in circulation in billions.", default=None
+        description="流通中货币价值（单位：十亿）。", default=None
     )
     demand_deposits: float | None = Field(
-        description="Value of demand deposits in billions.", default=None
+        description="活期存款价值（单位：十亿）。", default=None
     )
     retail_money_market_funds: float | None = Field(
-        description="Value of retail money market funds in billions.", default=None
+        description="零售货币市场基金价值（单位：十亿）。", default=None
     )
     other_liquid_deposits: float | None = Field(
-        description="Value of other liquid deposits in billions.", default=None
+        description="其他流动性存款价值（单位：十亿）。", default=None
     )
     small_denomination_time_deposits: float | None = Field(
-        description="Value of small denomination time deposits in billions.",
+        description="小额定期存款价值（单位：十亿）。",
         default=None,
     )

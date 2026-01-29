@@ -1,4 +1,4 @@
-"""Insider Trading Standard Model."""
+"""内幕交易标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -17,7 +17,7 @@ from pydantic import Field, field_validator
 
 
 class InsiderTradingQueryParams(QueryParams):
-    """Insider Trading Query."""
+    """内幕交易查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: int | None = Field(
@@ -28,67 +28,67 @@ class InsiderTradingQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class InsiderTradingData(Data):
-    """Insider Trading Data."""
+    """内幕交易数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     company_cik: str | None = Field(
         default=None,
-        description="CIK number of the company.",
+        description="公司的 CIK 编号。",
         coerce_numbers_to_str=True,
     )
     filing_date: dateType | datetime | None = Field(
-        default=None, description="Filing date of the trade."
+        default=None, description="交易申报日期。"
     )
     transaction_date: dateType | None = Field(
-        default=None, description="Date of the transaction."
+        default=None, description="交易日期。"
     )
     owner_cik: int | str | None = Field(
-        default=None, description="Reporting individual's CIK."
+        default=None, description="报告个人的 CIK。"
     )
     owner_name: str | None = Field(
-        default=None, description="Name of the reporting individual."
+        default=None, description="报告个人的姓名。"
     )
     owner_title: str | None = Field(
-        default=None, description="The title held by the reporting individual."
+        default=None, description="报告个人拥有的职位。"
     )
     ownership_type: str | None = Field(
-        default=None, description="Type of ownership, e.g., direct or indirect."
+        default=None, description="所有权类型，例如：直接或间接。"
     )
     transaction_type: str | None = Field(
-        default=None, description="Type of transaction being reported."
+        default=None, description="正在报告的交易类型。"
     )
     acquisition_or_disposition: str | None = Field(
-        default=None, description="Acquisition or disposition of the shares."
+        default=None, description="股票的取得或处置。"
     )
     security_type: str | None = Field(
-        default=None, description="The type of security transacted."
+        default=None, description="交易的证券类型。"
     )
     securities_owned: float | None = Field(
         default=None,
-        description="Number of securities owned by the reporting individual.",
+        description="报告个人拥有的证券数量。",
     )
     securities_transacted: float | None = Field(
         default=None,
-        description="Number of securities transacted by the reporting individual.",
+        description="报告个人交易的证券数量。",
     )
     transaction_price: float | None = Field(
-        default=None, description="The price of the transaction."
+        default=None, description="交易价格。"
     )
-    filing_url: str | None = Field(default=None, description="Link to the filing.")
+    filing_url: str | None = Field(default=None, description="申报文件链接。")
 
     @field_validator(
         "filing_date", "transaction_date", mode="before", check_fields=False
     )
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
+        """返回格式化的日期时间。"""
         if v:
             filing_date = parser.isoparse(str(v))
             if filing_date.time() == time(0, 0):

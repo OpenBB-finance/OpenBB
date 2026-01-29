@@ -1,4 +1,4 @@
-"""Disc router for Equities."""
+"""股票发现路由器。"""
 
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
@@ -28,7 +28,7 @@ async def gainers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top price gainers in the stock market."""
+    """获取股票涨幅榜。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -45,7 +45,7 @@ async def losers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top price losers in the stock market."""
+    """获取股票跌幅榜。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -62,7 +62,7 @@ async def active(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the most actively traded stocks based on volume."""
+    """获取基于交易量的最活跃交易股票。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -79,7 +79,7 @@ async def undervalued_large_caps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get potentially undervalued large cap stocks."""
+    """获取潜在被低估的大盘股。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -96,7 +96,7 @@ async def undervalued_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get potentially undervalued growth stocks."""
+    """获取潜在被低估的成长股。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -113,7 +113,7 @@ async def aggressive_small_caps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get top small cap stocks based on earnings growth."""
+    """获取基于盈利增长的顶级小盘股。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -130,7 +130,7 @@ async def growth_tech(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get top tech stocks based on revenue and earnings growth."""
+    """获取基于收入和盈利增长的顶级科技股。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -144,10 +144,10 @@ async def top_retail(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Track over $30B USD/day of individual investors trades.
+    """追踪个人投资者每天超过 300 亿美元的交易。
 
-    It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
-    ADRs, and ETPs.
+    它提供了超过 9,500 只在美国交易的股票、
+    ADR 和 ETP 的零售活动和情绪的每日视图。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -157,7 +157,7 @@ async def top_retail(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get filings for the year 2023, limited to 100 results",
+            description="获取 2023 年的申报文件，限制为 100 个结果",
             parameters={
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
@@ -173,12 +173,12 @@ async def filings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
+    """获取向 EDGAR 数据库报告的 SEC 申报文件的 URL，例如 10-K、10-Q、8-K 等。
 
-    SEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
-    Foreign Investment Disclosures and others. The annual 10-K report is required to be
-    filed annually and includes the company's financial statements, management discussion and analysis,
-    and audited financial statements.
+    SEC 申报文件包括表格 10-K、表格 10-Q、表格 8-K、代理声明、表格 3、4 和 5、附表 13、表格 114、
+    外国投资披露等。年度 10-K 报告需要
+    每年提交，其中包括公司的财务报表、管理层讨论与分析
+    以及经审计的财务报表。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -196,5 +196,5 @@ async def latest_financial_reports(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the newest quarterly, annual, and current reports for all companies."""
+    """获取所有公司的最新季度、年度和当前报告。"""
     return await OBBject.from_query(Query(**locals()))

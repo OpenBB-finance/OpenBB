@@ -62,7 +62,7 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
   const applications = [
     {
       name: 'Jupyter',
-      description: 'Start a Jupyter Lab session.',
+      description: '启动 Jupyter Lab 会话。',
       icon: <CustomIcon id="jupyter-logo" className="w-8 h-8" />,
       action: () => {
         if (jupyterStatus === 'running') {
@@ -77,7 +77,7 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
     },
     {
       name: 'Python',
-      description: 'Start a Python session.',
+      description: '启动 Python 会话。',
       icon: <CustomIcon id="python" className="w-8 h-8" />,
       action: () => startPythonSession(env.name),
       disabled: !env.name || !installDir || isUpdatingEnvironment,
@@ -85,7 +85,7 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
     },
     {
       name: 'IPython',
-      description: 'Start an interactive IPython session.',
+      description: '启动交互式 IPython 会话。',
       icon: <CustomIcon id="ipy" className="w-9 h-9 -py-2 -mr-1" />,
       action: () => startIPythonSession(env.name),
       disabled: !env.name || !installDir || !hasIPythonSupport(env.name) || isUpdatingEnvironment,
@@ -93,15 +93,15 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
     },
     {
       name: 'OpenBB CLI',
-      description: 'Start an OpenBB CLI session.',
+      description: '启动 OpenBB CLI 会话。',
       icon: <GamestonkIcon className="w-8 h-8" />,
       action: () => startCliSession(env.name),
       disabled: !env.name || !installDir || !hasCliSupport(env.name) || isUpdatingEnvironment,
       condition: hasCliSupport(env.name),
     },
     {
-      name: 'System Shell',
-      description: 'Open the default system shell in the environment.',
+      name: '系统 Shell',
+      description: '在环境中打开默认系统 Shell。',
       icon: <CustomIcon id="terminal" className="w-9 h-9 -mr-1" />,
       action: () => openSystemTerminal(env.name),
       disabled: !env.name || !installDir || isUpdatingEnvironment,
@@ -111,7 +111,7 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
 
   return (
     <div>
-      <Tooltip content="Open applications" className="tooltip-theme">
+      <Tooltip content="打开应用程序" className="tooltip-theme">
         <Button
           onClick={toggleModal}
           variant="secondary"
@@ -120,7 +120,7 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
           type="button"
         >
           <span className="body-xs-medium">
-            Applications
+            应用程序
           </span>
         </Button>
       </Tooltip>
@@ -132,9 +132,9 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="body-lg-bold text-theme-primary">
-                Applications
+                应用程序
               </h2>
-              <Tooltip content="Close" className="tooltip-theme">
+              <Tooltip content="关闭" className="tooltip-theme">
                 <Button
                   onClick={toggleModal}
                   variant="ghost"
@@ -172,11 +172,11 @@ export const EnvironmentActions: React.FC<EnvironmentActionsProps> = ({
                       {app.name === 'Jupyter' && (app.status === 'starting' || app.status === 'stopping') ? (
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-theme-accent" />
                       ) : app.name === 'Jupyter' && app.status === 'running' ? (
-                        'Open'
-                      ) : app.name === 'System Shell' ? (
-                        'Open'
+                        '打开'
+                      ) : app.name === '系统 Shell' ? (
+                        '打开'
                       ) : (
-                        'Start'
+                        '启动'
                       )}
                     </Button>
                   </li>

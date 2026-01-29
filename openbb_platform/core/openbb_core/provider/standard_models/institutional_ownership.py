@@ -1,4 +1,4 @@
-"""Institutional Ownership Standard Model."""
+"""机构持股标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,19 +12,19 @@ from pydantic import Field, field_validator
 
 
 class InstitutionalOwnershipQueryParams(QueryParams):
-    """Institutional Ownership Query."""
+    """机构持股查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class InstitutionalOwnershipData(Data):
-    """Institutional Ownership Data."""
+    """机构持股数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str | None = Field(

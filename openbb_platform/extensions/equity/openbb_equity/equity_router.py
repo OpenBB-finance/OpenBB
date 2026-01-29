@@ -1,4 +1,4 @@
-"""Equity Router."""
+"""股票路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -21,7 +21,7 @@ from openbb_equity.ownership.ownership_router import router as ownership_router
 from openbb_equity.price.price_router import router as price_router
 from openbb_equity.shorts.shorts_router import router as shorts_router
 
-router = Router(prefix="", description="Equity market data.")
+router = Router(prefix="", description="股票市场数据。")
 router.include_router(calendar_router)
 router.include_router(compare_router)
 router.include_router(estimates_router)
@@ -55,7 +55,7 @@ async def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search for stock symbol, CIK, LEI, or company name."""
+    """搜索股票代码、CIK、LEI 或公司名称。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -68,9 +68,9 @@ async def screener(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Screen for companies meeting various criteria.
+    """根据各种标准筛选公司。
 
-    These criteria include market cap, price, beta, volume, and dividend yield.
+    这些标准包括市值、价格、贝塔值、成交量和股息率。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -85,7 +85,7 @@ async def profile(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get general information about a company. This includes company name, industry, sector and price data."""
+    """获取有关公司的常规信息。这包括公司名称、行业、板块和价格数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -98,7 +98,7 @@ async def market_snapshots(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get an updated equity market snapshot. This includes price data for thousands of stocks."""
+    """获取最新的股票市场快照。这包括数千只股票的价格数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -112,5 +112,5 @@ async def historical_market_cap(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the historical market cap of a ticker symbol."""
+    """获取股票代码的历史市值。"""
     return await OBBject.from_query(Query(**locals()))

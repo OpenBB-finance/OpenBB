@@ -1,4 +1,4 @@
-"""Earnings Call Transcript Standard Model."""
+"""财报电话会议成绩单标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,28 +13,28 @@ from pydantic import Field, field_validator
 
 
 class EarningsCallTranscriptQueryParams(QueryParams):
-    """Earnings Call Transcript rating Query."""
+    """财报电话会议成绩单查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     year: int | None = Field(
-        default=None, description="Year of the earnings call transcript."
+        default=None, description="财报电话会议成绩单的年份。"
     )
     quarter: Literal[1, 2, 3, 4] | None = Field(
-        default=None, description="Quarterly period of the earnings call transcript."
+        default=None, description="财报电话会议成绩单的季度周期。"
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EarningsCallTranscriptData(Data):
-    """Earnings Call Transcript Data."""
+    """财报电话会议成绩单数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    year: int = Field(description="Year of the earnings call transcript.")
-    quarter: str = Field(description="Quarter of the earnings call transcript.")
+    year: int = Field(description="财报电话会议成绩单的年份。")
+    quarter: str = Field(description="财报电话会议成绩单的季度。")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    content: str = Field(description="Content of the earnings call transcript.")
+    content: str = Field(description="财报电话会议成绩单的内容。")

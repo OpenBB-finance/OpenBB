@@ -1,4 +1,4 @@
-"""Short Volume Standard Model."""
+"""卖空成交量标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,13 +12,13 @@ from pydantic import Field
 
 
 class ShortVolumeQueryParams(QueryParams):
-    """Short Volume Query."""
+    """卖空成交量查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
 
 
 class ShortVolumeData(Data):
-    """Short Volume Data."""
+    """卖空成交量数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
@@ -26,23 +26,22 @@ class ShortVolumeData(Data):
 
     market: str | None = Field(
         default=None,
-        description="Reporting Facility ID. N=NYSE TRF, Q=NASDAQ TRF Carteret, B=NASDAQ TRY Chicago, D=FINRA ADF",
+        description="报告机构 ID。N=NYSE TRF, Q=NASDAQ TRF Carteret, B=NASDAQ TRY Chicago, D=FINRA ADF",
     )
 
     short_volume: int | None = Field(
         default=None,
         description=(
-            "Aggregate reported share volume of executed short sale "
-            "and short sale exempt trades during regular trading hours"
+            "常规交易时段内卖空成交以及卖空豁免成交的累计报告股份量"
         ),
     )
 
     short_exempt_volume: int | None = Field(
         default=None,
-        description="Aggregate reported share volume of executed short sale exempt trades during regular trading hours",
+        description="常规交易时段内卖空豁免成交的累计报告股份量",
     )
 
     total_volume: int | None = Field(
         default=None,
-        description="Aggregate reported share volume of executed trades during regular trading hours",
+        description="常规交易时段内的累计报告股份成交量",
     )

@@ -1,4 +1,4 @@
-"""Views for the Derivatives Extension."""
+"""衍生品扩展的视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -7,13 +7,13 @@ if TYPE_CHECKING:
 
 
 class DerivativesViews:
-    """Derivatives Views."""
+    """衍生品视图。"""
 
     @staticmethod
     def derivatives_futures_historical(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Get Derivatives Price Historical Chart."""
+        """获取衍生品历史价格图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 
@@ -25,36 +25,34 @@ class DerivativesViews:
     def derivatives_futures_curve(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Futures curve chart. All parameters are optional, and are kwargs.
-        Parameters can be directly accessed from the function end point by
-        entering as a nested dictionary to the 'chart_params' key.
+        """期货曲线图。所有参数都是可选的，并且是 kwargs。
+        参数可以通过输入嵌套字典到 'chart_params' 键，直接从函数端点访问。
 
-        From the API, `chart_params` must be passed as a JSON in the request body with `extra_params`.
+        从 API 中，`chart_params` 必须作为 JSON 在请求体中与 `extra_params` 一起传递。
 
-        If using the chart post-request, the parameters are passed directly
-        as `key=value` pairs in the `charting.to_chart` or `charting.show` methods.
+        如果在请求后使用图表，参数直接作为 `key=value` 对传递给 `charting.to_chart` 或 `charting.show` 方法。
 
         Parameters
         ----------
         data : Optional[Union[List[Data], DataFrame]]
-            Data for the chart. Required fields are: 'expiration' and 'price'.
-            Multiple dates will be plotted on the same chart.
-            If not supplied, the original OBBject.results will be used.
-            If a DataFrame is supplied, flat data is expected, without a set index.
+            图表数据。必填字段为：'expiration' 和 'price'。
+            多个日期将绘制在同一图表上。
+            如果未提供，将使用原始 OBBject.results。
+            如果提供了 DataFrame，则预期为扁平数据，没有设置索引。
         title: Optional[str]
-            Title for the chart. If not supplied, a default title will be used.
+            图表标题。如果未提供，将使用默认标题。
         colors: Optional[List[str]]
-            List of colors to use for the chart. If not supplied, the default colorway will be used.
-            Colors should be in hex format, or named Plotly colors. Invalid colors will raise a Plotly error.
+            用于图表的颜色列表。如果未提供，将使用默认配色方案。
+            颜色应为十六进制格式或命名的 Plotly 颜色。无效颜色将引发 Plotly 错误。
         layout_kwargs: Optional[Dict[str, Any]]
-            Additional layout parameters for the chart, passed directly to `figure.update_layout` before output.
-            See Plotly documentation for available options.
+            图表的其他布局参数，直接传递给 `figure.update_layout` 以在输出前使用。
+            有关可用选项，请参阅 Plotly 文档。
 
         Returns
         -------
         Tuple[OpenBBFigure, Dict[str, Any]]
-            Tuple with the OpenBBFigure object, and the JSON-serialized content.
-            If using the API, only the JSON content will be returned.
+            包含 OpenBBFigure 对象和 JSON 序列化内容的元组。
+            如果使用 API，则仅返回 JSON 内容。
 
         Examples
         --------
@@ -64,7 +62,7 @@ class DerivativesViews:
         data.show()
         ```
 
-        Redraw the chart, from the same data, with a custom colorway and title:
+        使用自定义配色方案和标题从相同数据重绘图表：
 
         ```python
         data.charting.to_chart(colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024")
@@ -96,13 +94,13 @@ class DerivativesViews:
             )
 
         if df.empty:
-            raise OpenBBError("Error: No data to plot.")
+            raise OpenBBError("错误: 没有要绘制的数据。")
 
         if "expiration" not in df.columns:
-            raise OpenBBError("Expiration field not found in the data.")
+            raise OpenBBError("在数据中未找到 expiration 字段。")
 
         if "price" not in df.columns:
-            raise ValueError("Price field not found in the data.")
+            raise ValueError("在数据中未找到 price 字段。")
 
         provider = kwargs.get("provider", "")
 
@@ -238,22 +236,21 @@ class DerivativesViews:
     def derivatives_options_surface(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Options surface chart. All parameters are optional, and are kwargs.
+        """期权曲面图。所有参数都是可选的，并且是 kwargs。
 
-        Data filtering is done by the POST request function.
+        数据过滤由 POST 请求函数完成。
 
-        It is not recommended to redraw this chart with the `to_chart` method,
-        instead, POST a new request with the desired parameters to the
-        `/derivatives/options/surface` endpoint.
+        不建议使用 `to_chart` 方法重绘此图表，
+        相反，请使用所需的参数向 `/derivatives/options/surface` 端点发布新请求。
 
-        Exposed parameters are:
+        公开的参数有：
 
-        - `title`: The title of the chart.
-        - `xtitle`: Title for the x-axis.
-        - `ytitle`: Title for the y-axis.
-        - `ztitle`: Title for the z-axis.
-        - `colorscale`: The colorscale to use for the chart.
-        - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
+        - `title`: 图表的标题。
+        - `xtitle`: x 轴的标题。
+        - `ytitle`: y 轴的标题。
+        - `ztitle`: z 轴的标题。
+        - `colorscale`: 用于图表的色标。
+        - `layout_kwargs`: 在输出前传递给 `fig.update_layout` 的附加字典。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import surface3d

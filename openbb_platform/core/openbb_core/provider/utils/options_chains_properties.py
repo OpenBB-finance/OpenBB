@@ -1,4 +1,4 @@
-"""Options Chains Properties."""
+"""期权链属性。"""
 
 # pylint: disable=too-many-lines, too-many-arguments, too-many-locals, too-many-statements, too-many-positional-arguments
 
@@ -14,38 +14,38 @@ if TYPE_CHECKING:
 
 
 class OptionsChainsProperties(Data):
-    """Base Class For OptionsChainsData.
+    """OptionsChainsData 的基类。
 
-    Note: This class is not intended to be initialized directly and requires a validated instance of OptionsChainsData.
+    注意：此类不打算直接初始化，并且需要 OptionsChainsData 的已验证实例。
     """
 
     @property
     def last_price(self):
-        """The manually-set price of the underlying asset."""
+        """手动设置的标的资产价格。"""
         if hasattr(self, "_last_price"):
             return self._last_price
         return None
 
     @last_price.setter
     def last_price(self, price: float):
-        """Manually set the price of the underlying asset.
+        """手动设置标的资产的价格。
 
-        Use this property to override the underlying price returned by the provider.
+        使用此属性覆盖提供者返回的标的价格。
 
-        Deleting the property will revert to the provider's underlying price.
+        删除该属性将恢复为提供者的标的价格。
         """
         self._last_price = price
 
     @last_price.deleter
     def last_price(self):
-        """Delete the last price property."""
+        """删除 last price 属性。"""
         if hasattr(self, "_last_price"):
             del self._last_price
 
     @cached_property
     def dataframe(self) -> "DataFrame":
-        """Return all data as a Pandas DataFrame,
-        with additional computed columns (Breakeven, GEX, DEX) if available.
+        """返回所有数据作为 Pandas DataFrame，
+        如果可用，则带有额外的计算列（Breakeven, GEX, DEX）。
         """
         # pylint: disable=import-outside-toplevel
         from numpy import nan
@@ -60,9 +60,9 @@ class OptionsChainsProperties(Data):
 
         if "underlying_price" not in chains_data.columns and not self.last_price:
             raise OpenBBError(
-                "'underlying_price' was not returned in the provider data."
-                + "\n\n Please set the 'last_price' property and try again."
-                + "\n\n Note: This error does not impact the standard OBBject `to_df()` method."
+                "'underlying_price' 未在提供者数据中返回。"
+                + "\n\n 请设置 'last_price' 属性并重试。"
+                + "\n\n 注意：此错误不影响标准 OBBject `to_df()` 方法。"
             )
 
         # Add the underlying price to the DataFrame, or override the existing price.
@@ -70,7 +70,7 @@ class OptionsChainsProperties(Data):
             chains_data.loc[:, "underlying_price"] = self.last_price
 
         if chains_data.empty:
-            raise OpenBBError("Error: No validated data was found.")
+            raise OpenBBError("错误：未找到已验证的数据。")
 
         if "dte" not in chains_data.columns and "eod_date" in chains_data.columns:
             _date = to_datetime(chains_data.eod_date)
@@ -169,62 +169,62 @@ class OptionsChainsProperties(Data):
 
     @property
     def expirations(self) -> list[str]:
-        """Return a list of unique expiration dates, as strings."""
+        """返回唯一到期日期的列表，作为字符串。"""
         return sorted([d.strftime("%Y-%m-%d") for d in list(set(self.expiration))])  # type: ignore
 
     @property
     def strikes(self) -> list[float]:
-        """Return a list of unique strike prices."""
+        """返回唯一行权价的列表。"""
         return sorted(list(set(self.strike)))  # type: ignore
 
     @property
     def has_iv(self) -> bool:
-        """Return True if the data contains implied volatility."""
+        """如果数据包含隐含波动率，则返回 True。"""
         return any([self.implied_volatility])  # type: ignore
 
     @property
     def has_greeks(self) -> bool:
-        """Return True if the data contains greeks."""
+        """如果数据包含希腊字母，则返回 True。"""
         return any([self.delta, self.gamma, self.theta, self.vega, self.rho])  # type: ignore
 
     @property
     def total_oi(self) -> dict:
-        """Return open interest stats as a nested dictionary with keys: total, expiration, strike.
+        """返回作为嵌套字典的未平仓合约统计信息，键为：total, expiration, strike。
 
-        Both, "expiration" and "strike", contain a list of records with fields:
-        Calls, Puts, Total, Net Percent, PCR.
+        "expiration" 和 "strike" 都包含记录列表，字段为：
+        Calls, Puts, Total, Net Percent, PCR。
         """
         return self._get_stat("open_interest")
 
     @property
     def total_volume(self) -> dict:
-        """Return volume stats as a nested dictionary with keys: total, expiration, strike.
+        """返回作为嵌套字典的成交量统计信息，键为：total, expiration, strike。
 
-        Both, "expiration" and "strike", contain a list of records with fields:
-        Calls, Puts, Total, Net Percent, PCR.
+        "expiration" 和 "strike" 都包含记录列表，字段为：
+        Calls, Puts, Total, Net Percent, PCR。
         """
         return self._get_stat("volume")
 
     @property
     def total_dex(self) -> dict:
-        """Return Delta Dollars (DEX) as a nested dictionary with keys: total, expiration, strike.
+        """返回 Delta Dollars (DEX) 作为嵌套字典，键为：total, expiration, strike。
 
-        Both, "expiration" and "strike", contain a list of records with fields:
-        Calls, Puts, Total, Net Percent, PCR.
+        "expiration" 和 "strike" 都包含记录列表，字段为：
+        Calls, Puts, Total, Net Percent, PCR。
         """
         if not self.has_greeks:
-            raise OpenBBError("Greeks are not available.")
+            raise OpenBBError("希腊字母不可用。")
         return self._get_stat("DEX")
 
     @property
     def total_gex(self) -> dict:
-        """Return Gamma Exposure stats as a nested dictionary with keys: total, expiration, strike.
+        """返回 Gamma 敞口统计信息作为嵌套字典，键为：total, expiration, strike。
 
-        Both, "expiration" and "strike", contain a list of records with fields:
-        Calls, Puts, Total, Net Percent, PCR.
+        "expiration" 和 "strike" 都包含记录列表，字段为：
+        Calls, Puts, Total, Net Percent, PCR。
         """
         if not self.has_greeks:
-            raise OpenBBError("Greeks are not available.")
+            raise OpenBBError("希腊字母不可用。")
         return self._get_stat("GEX")
 
     @staticmethod
@@ -233,9 +233,9 @@ class OptionsChainsProperties(Data):
         option_type: Literal["call", "put"],
         bid_ask: Literal["bid", "ask"],
     ) -> str:
-        """Select the bid or ask price for the given option type.
-        This method is not intended to be called directly,
-        it identifies the price column where the name may vary by provider.
+        """选择给定选项类型的买入或卖出价格。
+        此方法不打算直接调用，
+           它识别价格列，名称可能因提供者而异。
 
         Parameters
         ----------
@@ -291,7 +291,7 @@ class OptionsChainsProperties(Data):
         stat: Literal["open_interest", "volume", "dex", "gex"] | None = None,
         by: Literal["expiration", "strike"] = "expiration",
     ) -> "DataFrame":
-        """Return statistics by strike or expiration; or, the filtered chains data.
+        """返回按行权价或到期日统计的数据；或者，过滤后的链数据。
 
         Parameters
         ----------
@@ -329,7 +329,7 @@ class OptionsChainsProperties(Data):
         by = "strike" if date is not None else by
         if stat is not None:
             if stat not in stats:
-                raise OpenBBError(f"Error: stat must be one of {stats}")
+                raise OpenBBError(f"错误：stat 必须是 {stats} 之一")
             if stat in ["volume", "open_interest"]:
                 return DataFrame(self._get_stat(stat, moneyness=moneyness, date=date)[by]).replace({nan: None})  # type: ignore
             if (
@@ -338,9 +338,9 @@ class OptionsChainsProperties(Data):
                 and "underlying_price" not in self.dataframe.columns
             ):
                 raise OpenBBError(
-                    f"Error: '{stat}' could not be generated because"
-                    + " the underlying price was not returned by the provider."
-                    + " Set manually with 'underlying_price' property."
+                    f"错误：无法生成 '{stat}'，因为"
+                    + " 提供者未返回标的资产价格。"
+                    + " 用 'underlying_price' 属性手动设置。"
                 )
             df = DataFrame(self._get_stat(_stat, moneyness=moneyness, date=date)[by])  # type: ignore
             return df.replace({nan: None})
@@ -365,7 +365,7 @@ class OptionsChainsProperties(Data):
 
         if column is not None:
             if column not in df.columns:
-                raise OpenBBError(f"Error: column '{column}' not found in data")
+                raise OpenBBError(f"错误：数据中未找到列 '{column}'")
             df = DataFrame(df[df[column].notnull()])
             if value_min is not None and value_max is not None:
                 df = DataFrame(
@@ -800,7 +800,7 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Calculate the cost of a strangle by DTE and % moneyness. Use a negative value for moneyness for short options.
+        按 DTE 和 OTM 百分比计算宽跨式期权的成本。对空头期权使用负的 moneyness 值。
 
         Parameters
         ----------
@@ -845,7 +845,7 @@ class OptionsChainsProperties(Data):
 
         if underlying_price is None and not hasattr(chains, "underlying_price"):
             raise OpenBBError(
-                "Error: underlying_price must be provided if underlying_price is not available"
+                "错误：如果 underlying_price 不可用，则必须提供 underlying_price"
             )
 
         underlying_price = (
@@ -872,7 +872,7 @@ class OptionsChainsProperties(Data):
 
         if call_premium.empty or put_premium.empty:
             raise OpenBBError(
-                "Error: No premium data found for the selected strikes."
+                "错误：未找到所选行权价的溢价数据。"
                 f" Call: {call_strike_estimate}, Put: {put_strike_estimate}"
             )
         put_premium = put_premium.values[0]
@@ -941,8 +941,8 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Calculate the vertical call spread for the target DTE.
-        A bull call spread is when the sold strike is above the bought strike.
+        计算目标 DTE 的垂直看涨价差。
+        牛市看涨价差是指卖出行权价高于买入行权价。
 
         Parameters
         ----------
@@ -973,7 +973,7 @@ class OptionsChainsProperties(Data):
 
         if not hasattr(chains, "underlying_price") and underlying_price is None:
             raise OpenBBError(
-                "Error: underlying_price must be provided if underlying_price is not available"
+                "错误：如果 underlying_price 不可用，则必须提供 underlying_price"
             )
 
         if days is None:
@@ -1076,8 +1076,8 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Calculate the vertical put spread for the target DTE.
-        A bear put spread is when the bought strike is above the sold strike.
+        计算目标 DTE 的垂直看跌价差。
+        熊市看跌价差是指买入行权价高于卖出行权价。
 
         Parameters
         ----------
@@ -1108,7 +1108,7 @@ class OptionsChainsProperties(Data):
 
         if not hasattr(chains, "underlying_price") and underlying_price is None:
             raise OpenBBError(
-                "Error: underlying_price must be provided if underlying_price is not available"
+                "错误：如果 underlying_price 不可用，则必须提供 underlying_price"
             )
 
         if days is None:
@@ -1205,8 +1205,8 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Calculate the cost of a synthetic long position at a given strike.
-        It is expressed as the difference between a bought call and a sold put.
+        计算给定行权价的合成多头头寸的成本。
+        它表示为买入看涨期权和卖出看跌期权之间的差额。
 
         Parameters
         -----------
@@ -1232,7 +1232,7 @@ class OptionsChainsProperties(Data):
 
         if not hasattr(chains, "underlying_price") and underlying_price is None:
             raise OpenBBError(
-                "Error: underlying_price must be provided if underlying_price is not available"
+                "错误：如果 underlying_price 不可用，则必须提供 underlying_price"
             )
 
         if days is None:
@@ -1258,7 +1258,7 @@ class OptionsChainsProperties(Data):
 
         if call_premium.empty or put_premium.empty:
             raise OpenBBError(
-                f"Error: No premium data found for the selected strikes. Call: {bought}, Put: {sold}"
+                f"错误：未找到所选行权价的溢价数据。看涨: {bought}, 看跌: {sold}"
             )
 
         put_premium = put_premium.values[0] * (-1)
@@ -1308,8 +1308,8 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Calculate the cost of a synthetic short position at a given strike.
-        It is expressed as the difference between a sold call and a purchased put.
+        计算给定行权价的合成空头头寸的成本。
+        它表示为卖出看涨期权和买入看跌期权之间的差额。
 
         Parameters
         -----------
@@ -1335,7 +1335,7 @@ class OptionsChainsProperties(Data):
 
         if not hasattr(chains, "underlying_price") and underlying_price is None:
             raise OpenBBError(
-                "Error: underlying_price must be provided if underlying_price is not available"
+                "错误：如果 underlying_price 不可用，则必须提供 underlying_price"
             )
 
         if days is None:
@@ -1361,7 +1361,7 @@ class OptionsChainsProperties(Data):
 
         if call_premium.empty or put_premium.empty:
             raise OpenBBError(
-                f"Error: No premium data found for the selected strikes. Call: {bought}, Put: {sold}"
+                f"错误：未找到所选行权价的溢价数据。看涨: {bought}, 看跌: {sold}"
             )
 
         put_premium = put_premium.values[0]
@@ -1417,20 +1417,20 @@ class OptionsChainsProperties(Data):
         underlying_price: float | None = None,
     ) -> "DataFrame":
         """
-        Get options strategies for all, or a list of, DTE(s).
-        Currently supports straddles, strangles, synthetic long and shorts, and vertical spreads.
+        获取所有或列表 DTE(s) 的期权策略。
+        目前支持跨式、宽跨式、合成多头和空头以及垂直价差。
 
-        Multiple strategies, expirations, and % moneyness can be returned.
+        可以返回多种策略、到期日和 OTM 百分比。
 
-        A negative value for `straddle_strike` or `strangle_moneyness` returns short options.
+        `straddle_strike` 或 `strangle_moneyness` 的负值返回空头期权。
 
-        A synthetic long/short position is a bought/sold call and sold/bought put at the same strike.
+        合成多头/空头头寸是指在同一行权价买入/卖出看涨期权和卖出/买入看跌期权。
 
-        A sold call strike that is lower than the bought strike,
-        or a sold put strike that is higher than the bought strike,
-        is a bearish vertical spread.
+        卖出看涨期权行权价低于买入行权价，
+        或卖出看跌期权行权价高于买入行权价，
+        是看跌垂直价差。
 
-        The default state returns a long straddle for each expiry.
+        默认状态下返回每个到期日的多头跨式期权。
 
         Parameters
         ----------
@@ -1470,7 +1470,7 @@ class OptionsChainsProperties(Data):
             return [x] if not isinstance(x, list) else x
 
         def split_into_tuples(x):
-            """Split a list into paired tuples."""
+            """将列表拆分为成对的元组。"""
             if x is None:
                 return None
             if isinstance(x, tuple):

@@ -1,4 +1,4 @@
-"""House Price Index Standard Model."""
+"""房价指数标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class HousePriceIndexQueryParams(QueryParams):
-    """House Price Index Query."""
+    """房价指数查询。"""
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
@@ -25,8 +25,8 @@ class HousePriceIndexQueryParams(QueryParams):
         json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
     transform: Literal["index", "yoy", "period"] = Field(
-        description="Transformation of the CPI data. Period represents the change since previous."
-        + " Defaults to change from one year ago (yoy).",
+        description="CPI 数据的转换。Period 代表与上一期相比的变化。"
+        + " 默认从一年前开始变化 (yoy)。",
         default="index",
         json_schema_extra={"choices": ["index", "yoy", "period"]},
     )
@@ -39,7 +39,7 @@ class HousePriceIndexQueryParams(QueryParams):
 
 
 class HousePriceIndexData(Data):
-    """House Price Index Data."""
+    """房价指数数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
@@ -50,5 +50,5 @@ class HousePriceIndexData(Data):
     )
     value: float | None = Field(
         default=None,
-        description="Share price index value.",
+        description="房价指数值。",
     )

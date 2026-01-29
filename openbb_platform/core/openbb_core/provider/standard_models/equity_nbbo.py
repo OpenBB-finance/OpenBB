@@ -1,4 +1,4 @@
-"""Equity NBBO Standard Model."""
+"""股票 NBBO 标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,7 +7,7 @@ from pydantic import Field, field_validator
 
 
 class EquityNBBOQueryParams(QueryParams):
-    """Equity NBBO Query."""
+    """股票 NBBO 查询。"""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -16,32 +16,32 @@ class EquityNBBOQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EquityNBBOData(Data):
-    """Equity NBBO Data."""
+    """股票 NBBO 数据。"""
 
     ask_exchange: str = Field(
-        description="The exchange ID for the ask.",
+        description="卖出交易所 ID。",
     )
     ask: float = Field(
-        description="The last ask price.",
+        description="最新卖出价。",
     )
     ask_size: int = Field(
         description="""
-        The ask size. This represents the number of round lot orders at the given ask price.
-        The normal round lot size is 100 shares.
-        An ask size of 2 means there are 200 shares available to purchase at the given ask price.
+        卖出数量。代表给定卖出价下的整手订单数量。
+        正常的整手大小为 100 股。
+        卖出数量为 2 意味着在给定卖出价下有 200 股可供购买。
         """,
     )
     bid_size: int = Field(
-        description="The bid size in round lots.",
+        description="以整手为单位的买入数量。",
     )
     bid: float = Field(
-        description="The last bid price.",
+        description="最新买入价。",
     )
     bid_exchange: str = Field(
-        description="The exchange ID for the bid.",
+        description="买入交易所 ID。",
     )

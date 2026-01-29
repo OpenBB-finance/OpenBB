@@ -1,4 +1,4 @@
-"""SONIA Standard Model."""
+"""SONIA (英镑隔夜指数平均值) 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class SONIAQueryParams(QueryParams):
-    """SONIA Query."""
+    """SONIA (英镑隔夜指数平均值) 查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,7 +25,7 @@ class SONIAQueryParams(QueryParams):
 
 
 class SONIAData(Data):
-    """SONIA Data."""
+    """SONIA (英镑隔夜指数平均值) 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="SONIA rate.")
+    rate: float | None = Field(description="SONIA 利率。")

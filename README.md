@@ -1,23 +1,23 @@
 <br />
-<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-light.svg?raw=true#gh-light-mode-only" alt="Open Data Platform by OpenBB logo" width="600">
-<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-dark.svg?raw=true#gh-dark-mode-only" alt="Open Data Platform by OpenBB logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-light.svg?raw=true#gh-light-mode-only" alt="OpenBB 开放数据平台图标" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-dark.svg?raw=true#gh-dark-mode-only" alt="OpenBB 开放数据平台图标" width="600">
 <br />
 <br />
 
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://x.com/openbb_finance)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=关注%20%40openbb_finance)](https://x.com/openbb_finance)
 [![Discord Shield](https://img.shields.io/discord/831165782750789672)](https://discord.com/invite/xPHTuHCmuV)
-[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBB)
+[![在 Dev Containers 中打开](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBB)
 <a href="https://codespaces.new/OpenBB-finance/OpenBB">
   <img src="https://github.com/codespaces/badge.svg" height="20" />
 </a>
 <a target="_blank" href="https://colab.research.google.com/github/OpenBB-finance/OpenBB/blob/develop/examples/googleColab.ipynb">
-  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="在 Colab 中打开"/>
 </a>
-[![PyPI](https://img.shields.io/pypi/v/openbb?color=blue&label=PyPI%20Package)](https://pypi.org/project/openbb/)
+[![PyPI](https://img.shields.io/pypi/v/openbb?color=blue&label=PyPI%20软件包)](https://pypi.org/project/openbb/)
 
-Open Data Platform by OpenBB (ODP) is the open-source toolset that helps data engineers integrate proprietary, licensed, and public data sources into downstream applications like AI copilots and research dashboards.
+OpenBB 开放数据平台 (ODP) 是一个开源工具集，旨在帮助数据工程师将专有数据、授权数据和公共数据源整合到下游应用中，如 AI 助手、金融研究控制面板等。
 
-ODP operates as the "connect once, consume everywhere" infrastructure layer that consolidates and exposes data to multiple surfaces at once: Python environments for quants, OpenBB Workspace and Excel for analysts, MCP servers for AI agents, and REST APIs for other applications.
+ODP 作为“一次连接，随处使用”的基础设施层，将数据整合并同时暴露给多个平台：面向量化人员的 Python 环境、面向量析师的 OpenBB Workspace 和 Excel、面向 AI 代理的 MCP 服务器，以及面向其他应用程序的 REST API。
 
 <a href="https://pro.openbb.co">
   <div align="center">
@@ -25,7 +25,7 @@ ODP operates as the "connect once, consume everywhere" infrastructure layer that
   </div>
 </a>
 
-Get started with: `pip install openbb`
+快速开始：`pip install openbb`
 
 ```python
 from openbb import obb
@@ -33,160 +33,158 @@ output = obb.equity.price.historical("AAPL")
 df = output.to_dataframe()
 ```
 
-Data integrations available can be found here: <https://docs.openbb.co/python/reference>
+可用的数据集成可以在此处找到：<https://docs.openbb.co/python/reference>
 
 ---
 
 ## OpenBB Workspace
 
-While the Open Data Platform provides the open-source data integration foundation, **OpenBB Workspace** offers the enterprise UI for analysts to visualize datasets and leverage AI agents. The platform's "connect once, consume everywhere" architecture enables seamless integration between the two.
+虽然开放数据平台提供了开源数据集成的基础，但 **OpenBB Workspace** 为分析师提供了可视化的企业级 UI，并可利用 AI 代理。平台的“一次连接，随处使用”架构实现了两者之间的无缝集成。
 
-You can find OpenBB Workspace at <https://pro.openbb.co>.
+您可以访问 <https://pro.openbb.co> 体验 OpenBB Workspace。
 <a href="https://pro.openbb.co">
   <div align="center">
   <img src="https://openbb-cms.directus.app/assets/f69b6aaf-0821-4bc8-a43c-715e03a924ef.png" alt="Logo" width="1000">
   </div>
 </a>
 
-Data integration:
+数据集成：
 
-- You can learn more about adding data to the OpenBB workspace from the [docs](https://docs.openbb.co/workspace) or [this open source repository](https://github.com/OpenBB-finance/backends-for-openbb).
+- 您可以从 [文档](https://docs.openbb.co/workspace) 或 [此开源仓库](https://github.com/OpenBB-finance/backends-for-openbb) 了解更多关于向 OpenBB Workspace 添加数据的信息。
 
-AI Agents integration:
+AI 代理集成：
 
-- You can learn more about adding AI agents to the OpenBB workspace from [this open source repository](https://github.com/OpenBB-finance/agents-for-openbb).
+- 您可以从 [此开源仓库](https://github.com/OpenBB-finance/agents-for-openbb) 了解更多关于向 OpenBB Workspace 添加 AI 代理的信息。
 
-### Integrating Open Data Platform to the OpenBB Workspace
+### 将开放数据平台集成到 OpenBB Workspace
 
-Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
+在 Python (3.9.21 - 3.12) 环境中通过几个简单的步骤将此库连接到 OpenBB Workspace。
 
-#### Run an ODP backend
+#### 运行 ODP 后端
 
-- Install the packages.
+- 安装软件包。
 
 ```sh
 pip install "openbb[all]"
 ```
 
-- Start the API server over localhost.
+- 在本地启动 API 服务。
 
 ```sh
 openbb-api
 ```
 
-This will launch a FastAPI server, via Uvicorn, at `127.0.0.1:6900`.
+这将通过 Uvicorn 在 `127.0.0.1:6900` 启动一个 FastAPI 服务器。
 
-You can check that it works by going to <http://127.0.0.1:6900>.
+您可以通过访问 <http://127.0.0.1:6900> 检查其是否运行正常。
 
-#### Integrate the ODP Backend to OpenBB Workspace
+#### 将 ODP 后端集成到 OpenBB Workspace
 
-Sign-in to the [OpenBB Workspace](https://pro.openbb.co/), and follow the following steps:
+登录 [OpenBB Workspace](https://pro.openbb.co/)，并按照以下步骤操作：
 
-![CleanShot 2025-05-17 at 09 51 56@2x](https://github.com/user-attachments/assets/75cffb4a-5e95-470a-b9d0-6ffd4067e069)
+![操作指南图示](https://github.com/user-attachments/assets/75cffb4a-5e95-470a-b9d0-6ffd4067e069)
 
-1. Go to the "Apps" tab
-2. Click on "Connect backend"
-3. Fill in the form with:
-   Name: Open Data Platform
-   URL: <http://127.0.0.1:6900>
-4. Click on "Test". You should get a "Test successful" with the number of apps found.
-5. Click on "Add".
+1. 前往 "Apps" 选项卡
+2. 点击 "Connect backend" (连接后端)
+3. 填写表单：
+   名称：Open Data Platform
+   URL：<http://127.0.0.1:6900>
+4. 点击 "Test" (测试)。您应该会看到 "Test successful" (测试成功) 并显示找到的应用数量。
+5. 点击 "Add" (添加)。
 
-That's it.
+完成。
 
 ---
 
-<!-- TABLE OF CONTENTS -->
+<!-- 目录 -->
 <details closed="closed">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <summary><h2 style="display: inline-block">目录</h2></summary>
   <ol>
-    <li><a href="#1-installation">Installation</a></li>
-    <li><a href="#2-contributing">Contributing</a></li>
-    <li><a href="#3-license">License</a></li>
-    <li><a href="#4-disclaimer">Disclaimer</a></li>
-    <li><a href="#5-contacts">Contacts</a></li>
-    <li><a href="#6-star-history">Star History</a></li>
-    <li><a href="#7-contributors">Contributors</a></li>
+    <li><a href="#1-安装">安装</a></li>
+    <li><a href="#2-贡献">贡献</a></li>
+    <li><a href="#3-许可">许可</a></li>
+    <li><a href="#4-免责声明">免责声明</a></li>
+    <li><a href="#5-联系方式">联系方式</a></li>
+    <li><a href="#6-关注度历史">Star History</a></li>
+    <li><a href="#7-贡献者">贡献者</a></li>
   </ol>
 </details>
 
-## 1. Installation
+## 1. 安装
 
-The ODP Python Package can be installed from [PyPI package](https://pypi.org/project/openbb/) by running `pip install openbb`
+ODP Python 软件包可以通过 [PyPI](https://pypi.org/project/openbb/) 安装，运行命令：`pip install openbb`
 
-or by cloning the repository directly with `git clone https://github.com/OpenBB-finance/OpenBB.git`.
+或者直接通过克隆仓库安装：`git clone https://github.com/OpenBB-finance/OpenBB.git`。
 
-Please find more about the installation process, in the [OpenBB Documentation](https://docs.openbb.co/python/installation).
+有关安装过程的更多详细信息，请参阅 [OpenBB 文档](https://docs.openbb.co/python/installation)。
 
-### ODP CLI installation
+### ODP CLI 安装
 
-The ODP CLI is a command-line interface that allows you to access the ODP directly from your command line.
+ODP CLI 是一个命令行界面，允许您直接从终端访问 ODP。
 
-It can be installed by running `pip install openbb-cli`
+可以通过运行 `pip install openbb-cli` 安装，
 
-or by cloning the repository directly with  `git clone https://github.com/OpenBB-finance/OpenBB.git`.
+或者直接通过克隆仓库安装：`git clone https://github.com/OpenBB-finance/OpenBB.git`。
 
-Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/cli/installation).
+有关安装过程的更多详细信息，请参阅 [OpenBB 文档](https://docs.openbb.co/cli/installation)。
 
-## 2. Contributing
+## 2. 贡献
 
-There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
+参与此项目主要有三种方式（希望你已经给项目点过星了 ⭐️）：
 
-### Become a Contributor
+### 成为贡献者
 
-- More information on our [Developer Documentation](https://docs.openbb.co/python/developer).
+- 更多信息请访问我们的 [开发者文档](https://docs.openbb.co/python/developer)。
 
-### Create a GitHub ticket
+### 创建 GitHub 工单 (Ticket)
 
-Before creating a ticket make sure the one you are creating doesn't exist already [among the existing issues](https://github.com/OpenBB-finance/OpenBB/issues)
+在创建工单之前，请确保 [现有的 issue](https://github.com/OpenBB-finance/OpenBB/issues) 中尚不存在相同的问题。
 
-- [Report bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
-- [Suggest improvement](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
-- [Request a feature](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
+- [报告 Bug](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
+- [建议改进](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
+- [功能请求](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
-### Provide feedback
+### 提供反馈
 
-We are most active on [our Discord](https://openbb.co/discord), but feel free to reach out to us in any of [our social media](https://openbb.co/links) for feedback.
+我们在 [Discord](https://openbb.co/discord) 上最为活跃，但也可以随时通过我们的任何 [社交媒体](https://openbb.co/links) 联系我们并提供反馈。
 
-## 3. License
+## 3. 许可
 
-Distributed under the AGPLv3 License. See
-[LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE) for more information.
+基于 AGPLv3 许可证分发。更多信息请参阅 [LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE)。
 
-## 4. Disclaimer
+## 4. 免责声明
 
-Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
-amount, and may not be suitable for all investors.
+金融工具交易涉及高风险，包括损失部分或全部投资金额的风险，可能并不适合所有投资者。
 
-Before deciding to trade in a financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed.
+在决定交易金融工具之前，您应该充分了解与金融市场交易相关的风险和成本，仔细考虑您的投资目标、经验水平和风险偏好，并在需要时寻求专业建议。
 
-The data contained in the Open Data Platform is not necessarily accurate.
+开放数据平台中的数据不一定准确。
 
-OpenBB and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
+OpenBB 以及本网站所含数据的任何提供商对于因您的交易或您对所显示信息的依赖而导致的任何损失或损害概不负责。
 
-All names, logos, and brands of third parties that may be referenced in our sites, products or documentation are trademarks of their respective owners. Unless otherwise specified, OpenBB and its products and services are not endorsed by, sponsored by, or affiliated with these third parties.
+我们网站、产品或文档中可能引用的所有第三方名称、徽标和品牌均为其各自所有者的商标。除非另有说明，OpenBB 及其产品和服务不受这些第三方的支持、赞助或关联。
 
-Our use of these names, logos, and brands is for identification purposes only, and does not imply any such endorsement, sponsorship, or affiliation.
+我们使用这些名称、徽标和品牌仅用于识别目的，并不暗示任何此类背书、赞助或关联。
 
-## 5. Contacts
+## 5. 联系方式
 
-If you have any questions about the platform or anything OpenBB, feel free to email us at `support@openbb.co`
+如果您对平台或 OpenBB 有任何疑问，请随时发送电子邮件至 `support@openbb.co`
 
-If you want to say hi, or are interested in partnering with us, feel free to reach us at `hello@openbb.co`
+如果您想打个招呼或有兴趣与我们合作，请随时通过 `hello@openbb.co` 与我们联系。
 
-Any of our social media platforms: [openbb.co/links](https://openbb.co/links)
+我们的社交媒体平台：[openbb.co/links](https://openbb.co/links)
 
 ## 6. Star History
 
-This is a proxy of our growth and that we are just getting started.
+这是我们成长的一个缩影，我们才刚刚开始。
 
-But for more metrics important to us check [openbb.co/open](https://openbb.co/open).
+更多对我们重要的指标请访问 [openbb.co/open](https://openbb.co/open)。
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBB&type=Date&theme=dark)](https://api.star-history.com/svg?repos=openbb-finance/OpenBB&type=Date&theme=dark)
 
-## 7. Contributors
+## 7. 贡献者
 
-OpenBB wouldn't be OpenBB without you. If we are going to disrupt financial industry, every contribution counts. Thank you for being part of this journey.
+如果没有你们，OpenBB 就不可能存在。如果我们要颠覆金融行业，每一次贡献都至关重要。感谢您成为这段旅程的一部分。
 
 <a href="https://github.com/OpenBB-finance/OpenBB/graphs/contributors">
    <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBB" width="800"/>

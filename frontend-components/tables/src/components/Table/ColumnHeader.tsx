@@ -92,9 +92,9 @@ function Filter({
               Math.max(acc, parseInt(value, 10)),
             -Infinity,
           )}
-          placeholder={"Start year"}
+          placeholder={"开始年份"}
           className="_input"
-          title="Start year"
+          title="开始年份"
         />
         <input
           type={dateType}
@@ -115,9 +115,9 @@ function Filter({
               Math.max(acc, parseInt(value, 10)),
             -Infinity,
           )}
-          placeholder={"End year"}
+          placeholder={"结束年份"}
           className="_input"
-          title="End year"
+          title="结束年份"
         />
       </div>
     );
@@ -133,9 +133,9 @@ function Filter({
             const value = new Date(e.target.value).getTime();
             column.setFilterValue((old: [string, string]) => [value, old?.[1]]);
           }}
-          placeholder={"Start date"}
+          placeholder={"开始日期"}
           className="_input"
-          title="Start date"
+          title="开始日期"
         />
         <input
           type={dateType}
@@ -144,9 +144,9 @@ function Filter({
             const value = new Date(e.target.value).getTime();
             column.setFilterValue((old: [string, string]) => [old?.[0], value]);
           }}
-          placeholder={"End date"}
+          placeholder={"结束日期"}
           className="_input"
-          title="End date"
+          title="结束日期"
         />
       </div>
     );
@@ -164,9 +164,9 @@ function Filter({
               old?.[1],
             ])
           }
-          placeholder={"Min"}
+          placeholder={"最小值"}
           className="_input p-0.5"
-          title="Min"
+          title="最小值"
         />
         <input
           type="number"
@@ -177,9 +177,9 @@ function Filter({
               e.target.value,
             ])
           }
-          placeholder={"Max"}
+          placeholder={"最大值"}
           className="_input p-0.5"
-          title="Max"
+          title="最大值"
         />
       </div>
     );
@@ -191,9 +191,9 @@ function Filter({
           type="text"
           value={(columnFilterValue ?? "") as string}
           onChange={(e) => column.setFilterValue(e.target.value)}
-          placeholder={"Search..."}
+          placeholder={"搜索..."}
           className="_input"
-          title="Search"
+          title="搜索"
         />
       </div>
     );
@@ -229,154 +229,154 @@ const DraggableColumnHeader: FC<{
   lockFirstColumn,
   setLockFirstColumn,
 }) => {
-  const { getState, setColumnOrder } = table;
-  const { columnOrder } = getState();
-  const { column } = header;
+    const { getState, setColumnOrder } = table;
+    const { columnOrder } = getState();
+    const { column } = header;
 
-  const [, dropRef] = useDrop({
-    accept: "column",
-    drop: (draggedColumn: any) => {
-      const newColumnOrder = reorderColumn(
-        draggedColumn.id,
-        column.id,
-        columnOrder,
-      );
-      setColumnOrder(newColumnOrder);
-    },
-  });
+    const [, dropRef] = useDrop({
+      accept: "column",
+      drop: (draggedColumn: any) => {
+        const newColumnOrder = reorderColumn(
+          draggedColumn.id,
+          column.id,
+          columnOrder,
+        );
+        setColumnOrder(newColumnOrder);
+      },
+    });
 
-  const [{ isDragging }, dragRef, previewRef] = useDrag({
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-    item: () => column,
-    type: "column",
-  });
+    const [{ isDragging }, dragRef, previewRef] = useDrag({
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      item: () => column,
+      type: "column",
+    });
 
-  const renderField = () => (
-    <div ref={previewRef} className="flex gap-1 flex-col">
-      {header.isPlaceholder ? null : (
-        <>
-          <div className="font-bold uppercase text-grey-700 dark:text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
-            <div
-              onClick={column.getToggleSortingHandler()}
-              className={clsx("flex gap-1", {
-                "cursor-pointer select-none": column.getCanSort(),
-              })}
-            >
-              {flexRender(column.columnDef.header, header.getContext())}
-              {column.getCanSort() && (
-                <div className="flex flex-col gap-0.5 items-center justify-center">
-                  <button
-                    className={clsx({
-                      "text-[#669DCB]": column.getIsSorted() === "asc",
-                      "text-grey-600": column.getIsSorted() !== "asc",
-                    })}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="6"
-                      height="4"
-                      fill="none"
-                      viewBox="0 0 11 5"
+    const renderField = () => (
+      <div ref={previewRef} className="flex gap-1 flex-col">
+        {header.isPlaceholder ? null : (
+          <>
+            <div className="font-bold uppercase text-grey-700 dark:text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
+              <div
+                onClick={column.getToggleSortingHandler()}
+                className={clsx("flex gap-1", {
+                  "cursor-pointer select-none": column.getCanSort(),
+                })}
+              >
+                {flexRender(column.columnDef.header, header.getContext())}
+                {column.getCanSort() && (
+                  <div className="flex flex-col gap-0.5 items-center justify-center">
+                    <button
+                      className={clsx({
+                        "text-[#669DCB]": column.getIsSorted() === "asc",
+                        "text-grey-600": column.getIsSorted() !== "asc",
+                      })}
                     >
-                      <path fill="currentColor" d="M10.333 5l-5-5-5 5" />
-                    </svg>
-                  </button>
-                  <button
-                    className={clsx({
-                      "text-[#669DCB]": header.column.getIsSorted() === "desc",
-                      "text-grey-600": header.column.getIsSorted() !== "desc",
-                    })}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="6"
-                      height="4"
-                      fill="none"
-                      viewBox="0 0 11 5"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="6"
+                        height="4"
+                        fill="none"
+                        viewBox="0 0 11 5"
+                      >
+                        <path fill="currentColor" d="M10.333 5l-5-5-5 5" />
+                      </svg>
+                    </button>
+                    <button
+                      className={clsx({
+                        "text-[#669DCB]": header.column.getIsSorted() === "desc",
+                        "text-grey-600": header.column.getIsSorted() !== "desc",
+                      })}
                     >
-                      <path fill="currentColor" d="M.333 0l5 5 5-5" />
-                    </svg>
-                  </button>
-                </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="6"
+                        height="4"
+                        fill="none"
+                        viewBox="0 0 11 5"
+                      >
+                        <path fill="currentColor" d="M.333 0l5 5 5-5" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+              {advanced && column.id !== "select" && (
+                <button
+                  ref={dragRef}
+                  className="text-grey-600 hover:text-grey-800 dark:hover:text-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="11"
+                    fill="none"
+                    viewBox="0 0 17 16"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
+                    />
+                  </svg>
+                </button>
               )}
             </div>
-            {advanced && column.id !== "select" && (
-              <button
-                ref={dragRef}
-                className="text-grey-600 hover:text-grey-800 dark:hover:text-white"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="11"
-                  fill="none"
-                  viewBox="0 0 17 16"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
-          {advanced && column.getCanFilter() ? (
-            <div>
-              <Filter
-                column={column}
-                table={table}
-                numberOfColumns={columnOrder?.length ?? 0}
-              />
-            </div>
-          ) : null}
-        </>
-      )}
-    </div>
-  );
-
-  return (
-    <th
-      className={clsx("h-[70px] p-4 sticky", {
-        "left-0 z-50 bg-white dark:bg-grey-900": idx === 0 && lockFirstColumn,
-      })}
-      colSpan={header.colSpan}
-      style={{ width: header.getSize() + 10, opacity: isDragging ? 0.5 : 1 }}
-      ref={dropRef}
-    >
-      {idx === 0 ? (
-        <ContextMenuPrimitive.Root>
-          <ContextMenuPrimitive.Trigger asChild>
-            {renderField()}
-          </ContextMenuPrimitive.Trigger>
-          <ContextMenuPrimitive.Portal>
-            <ContextMenuPrimitive.Content className="bg-white text-black dark:text-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 rounded-md shadow-lg p-2 z-50 text-xs">
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => {
-                    setLockFirstColumn(!lockFirstColumn);
-                  }}
-                  className="hover:bg-grey-300 dark:hover:bg-grey-800 rounded-md p-2"
-                >
-                  {lockFirstColumn ? "Unlock" : "Lock"} first column
-                </button>
+            {advanced && column.getCanFilter() ? (
+              <div>
+                <Filter
+                  column={column}
+                  table={table}
+                  numberOfColumns={columnOrder?.length ?? 0}
+                />
               </div>
-            </ContextMenuPrimitive.Content>
-          </ContextMenuPrimitive.Portal>
-        </ContextMenuPrimitive.Root>
-      ) : (
-        renderField()
-      )}
-      <button
-        className="resizer bg-grey-300/20 dark:hover:bg-white absolute top-0 right-0 w-0.5 h-full"
-        onMouseDown={header.getResizeHandler()}
-        onTouchStart={header.getResizeHandler()}
-      />
-    </th>
-  );
-};
+            ) : null}
+          </>
+        )}
+      </div>
+    );
+
+    return (
+      <th
+        className={clsx("h-[70px] p-4 sticky", {
+          "left-0 z-50 bg-white dark:bg-grey-900": idx === 0 && lockFirstColumn,
+        })}
+        colSpan={header.colSpan}
+        style={{ width: header.getSize() + 10, opacity: isDragging ? 0.5 : 1 }}
+        ref={dropRef}
+      >
+        {idx === 0 ? (
+          <ContextMenuPrimitive.Root>
+            <ContextMenuPrimitive.Trigger asChild>
+              {renderField()}
+            </ContextMenuPrimitive.Trigger>
+            <ContextMenuPrimitive.Portal>
+              <ContextMenuPrimitive.Content className="bg-white text-black dark:text-white dark:bg-grey-900 border border-grey-200 dark:border-grey-800 rounded-md shadow-lg p-2 z-50 text-xs">
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => {
+                      setLockFirstColumn(!lockFirstColumn);
+                    }}
+                    className="hover:bg-grey-300 dark:hover:bg-grey-800 rounded-md p-2"
+                  >
+                    {lockFirstColumn ? "解锁" : "锁定"}首列
+                  </button>
+                </div>
+              </ContextMenuPrimitive.Content>
+            </ContextMenuPrimitive.Portal>
+          </ContextMenuPrimitive.Root>
+        ) : (
+          renderField()
+        )}
+        <button
+          className="resizer bg-grey-300/20 dark:hover:bg-white absolute top-0 right-0 w-0.5 h-full"
+          onMouseDown={header.getResizeHandler()}
+          onTouchStart={header.getResizeHandler()}
+        />
+      </th>
+    );
+  };
 
 export default DraggableColumnHeader;

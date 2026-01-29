@@ -1,4 +1,4 @@
-"""The OpenBB Platform System Settings."""
+"""OpenBB 平台系统设置。"""
 
 import json
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
@@ -20,14 +20,14 @@ from pydantic import ConfigDict, Field, field_validator, model_validator
 
 
 class SystemSettings(Tagged):
-    """System settings model."""
+    """系统设置模型。"""
 
-    # System section
+    # 系统部分
     os: str = str(pl.system())
     python_version: str = str(pl.python_version())
     platform: str = str(pl.platform())
 
-    # OpenBB section
+    # OpenBB 部分
     version: str = VERSION
     core: str = CORE_VERSION
     home_directory: str = str(HOME_DIRECTORY)
@@ -35,7 +35,7 @@ class SystemSettings(Tagged):
     user_settings_path: str = str(USER_SETTINGS_PATH)
     system_settings_path: str = str(SYSTEM_SETTINGS_PATH)
 
-    # Logging section
+    # 日志部分
     logging_app_name: Literal["platform"] = "platform"
     logging_commit_hash: str | None = None
     logging_frequency: Literal["D", "H", "M", "S"] = "H"
@@ -45,13 +45,13 @@ class SystemSettings(Tagged):
     logging_sub_app: Literal["python", "api", "pro", "cli"] = "python"
     logging_suppress: bool = True
 
-    # API section
+    # API 部分
     api_settings: APISettings = Field(default_factory=APISettings)
 
-    # Python section
+    # Python 部分
     python_settings: PythonSettings = Field(default_factory=PythonSettings)
 
-    # Others
+    # 其他
     debug_mode: bool = False
     test_mode: bool = False
     headless: bool = False
@@ -61,23 +61,23 @@ class SystemSettings(Tagged):
     model_config = ConfigDict(validate_assignment=True, frozen=True)
 
     def __repr__(self) -> str:
-        """Return a string representation of the model."""
+        """返回模型的字符串表示形式。"""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
     @staticmethod
     def create_json(path: Path, template: dict | None = None) -> None:
-        """Create an empty JSON file."""
+        """创建一个空的 JSON 文件。"""
         path.write_text(json.dumps(obj=template or {}, indent=4), encoding="utf-8")
 
-    # TODO: Figure out why this works only opposite to what the docs say
+    # TODO: 弄清楚为什么它的工作方式与文档相反
     # https://docs.pydantic.dev/latest/concepts/validators/#model-validators
-    # based on docs first argument should be self, but it works only with cls
+    # 基于文档，第一个参数应该是 self，但它只在 cls 时有效
     @model_validator(mode="after")  # type: ignore
     @classmethod
     def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
-        """Create the OpenBB directory if it doesn't exist."""
+        """如果不存在，则创建 OpenBB 目录。"""
         obb_dir = Path(values.openbb_directory).resolve()
         user_settings = Path(values.user_settings_path).resolve()
         system_settings = Path(values.system_settings_path).resolve()
@@ -97,8 +97,8 @@ class SystemSettings(Tagged):
     @field_validator("logging_handlers")
     @classmethod
     def validate_logging_handlers(cls, v):
-        """Validate the logging handlers."""
+        """验证日志处理程序。"""
         for value in v:
             if value not in ["stdout", "stderr", "noop", "file"]:
-                raise ValueError("Invalid logging handler")
+                raise ValueError("无效的日志处理程序")
         return v

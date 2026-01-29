@@ -1,4 +1,4 @@
-"""The OBBject."""
+"""OBBject。"""
 
 # pylint: disable=too-many-branches, too-many-locals, too-many-statements
 
@@ -34,7 +34,7 @@ T = TypeVar("T")
 
 
 class OBBject(Tagged, Generic[T]):
-    """OpenBB object."""
+    """OpenBB 对象。"""
 
     accessors: ClassVar[set[str]] = set()
     _user_settings: ClassVar[BaseModel | None] = None
@@ -42,23 +42,23 @@ class OBBject(Tagged, Generic[T]):
 
     results: T | None = Field(
         default=None,
-        description="Serializable results.",
+        description="可序列化的结果。",
     )
     provider: str | None = Field(  # type: ignore
         default=None,
-        description="Provider name.",
+        description="提供者名称。",
     )
     warnings: list[Warning_] | None = Field(
         default=None,
-        description="List of warnings.",
+        description="警告列表。",
     )
     chart: Chart | None = Field(
         default=None,
-        description="Chart object.",
+        description="图表对象。",
     )
     extra: dict[str, Any] = Field(
         default_factory=dict,
-        description="Extra info.",
+        description="额外信息。",
     )
     _route: str | None = PrivateAttr(
         default=None,
@@ -71,7 +71,7 @@ class OBBject(Tagged, Generic[T]):
     )
 
     def __repr__(self) -> str:
-        """Human readable representation of the object."""
+        """对象的人类可读表示。"""
         items = [
             f"{k}: {v}"[:83] + ("..." if len(f"{k}: {v}") > 83 else "")
             for k, v in self.model_dump().items()
@@ -84,10 +84,9 @@ class OBBject(Tagged, Generic[T]):
         sort_by: str | None = None,
         ascending: bool | None = None,
     ) -> "DataFrame":
-        """Alias for `to_dataframe`.
+        """`to_dataframe` 的别名。
 
-        Supports converting creating Pandas DataFrames from the following
-        serializable data formats:
+        支持从以下可序列化数据格式创建 Pandas DataFrame：
 
         - List[BaseModel]
         - List[Dict]
@@ -99,22 +98,22 @@ class OBBject(Tagged, Generic[T]):
         - Dict[str, List]
         - Dict[str, BaseModel]
 
-        Other supported formats:
+        其他支持的格式：
         - str
 
         Parameters
         ----------
         index : Optional[str]
-            Column name to use as index.
+            用作索引的列名。
         sort_by : Optional[str]
-            Column name to sort by.
+            要排序的列名。
         ascending: Optional[bool]
-            Sort by ascending for each column specified in `sort_by`.
+            按 `sort_by` 中指定的每一列升序或降序排序。
 
         Returns
         -------
         DataFrame
-            Pandas DataFrame.
+            Pandas DataFrame 数据框。
         """
         return self.to_dataframe(index=index, sort_by=sort_by, ascending=ascending)
 
@@ -124,10 +123,9 @@ class OBBject(Tagged, Generic[T]):
         sort_by: str | None = None,
         ascending: bool | None = None,
     ) -> "DataFrame":
-        """Convert results field to Pandas DataFrame.
+        """将结果字段转换为 Pandas DataFrame。
 
-        Supports converting creating Pandas DataFrames from the following
-        serializable data formats:
+        支持从以下可序列化数据格式创建 Pandas DataFrame：
 
         - List[BaseModel]
         - List[Dict]
@@ -139,22 +137,22 @@ class OBBject(Tagged, Generic[T]):
         - Dict[str, List]
         - Dict[str, BaseModel]
 
-        Other supported formats:
+        其他支持的格式：
         - str
 
         Parameters
         ----------
         index : Optional[str]
-            Column name to use as index.
+            用作索引的列名。
         sort_by : Optional[str]
-            Column name to sort by.
+            要排序的列名。
         ascending: Optional[bool]
-            Sort by ascending for each column specified in `sort_by`.
+            按 `sort_by` 中指定的每一列升序排序。
 
         Returns
         -------
         DataFrame
-            Pandas DataFrame.
+            Pandas DataFrame。
         """
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, Series, concat  # noqa
@@ -166,7 +164,7 @@ class OBBject(Tagged, Generic[T]):
             )
 
         if self.results is None or not self.results:
-            raise OpenBBError("Results not found.")
+            raise OpenBBError("未找到结果。")
 
         if isinstance(self.results, DataFrame):
             return self.results
@@ -250,7 +248,7 @@ class OBBject(Tagged, Generic[T]):
                         df = DataFrame([res])
 
             if df is None:
-                raise OpenBBError("Unsupported data format.")
+                raise OpenBBError("不支持的数据格式。")
 
             # Set index, if any
             if index is not None and index in df.columns:
@@ -273,30 +271,30 @@ class OBBject(Tagged, Generic[T]):
             raise e
         except ValueError as ve:
             raise OpenBBError(
-                f"ValueError: {ve}. Ensure the data format matches the expected format."
+                f"ValueError: {ve}。请确保数据格式符合预期格式。"
             ) from ve
         except TypeError as te:
             raise OpenBBError(
-                f"TypeError: {te}. Check the data types in your results."
+                f"TypeError: {te}。请检查结果中的数据类型。"
             ) from te
         except Exception as ex:
-            raise OpenBBError(f"An unexpected error occurred: {ex}") from ex
+            raise OpenBBError(f"发生意外错误: {ex}") from ex
 
         return df
 
     def to_polars(self) -> "PolarsDataFrame":  # type: ignore
-        """Convert results field to polars dataframe."""
+        """将结果字段转换为 polars dataframe。"""
         try:
             from polars import from_pandas  # type: ignore # pylint: disable=import-outside-toplevel
         except ImportError as exc:
             raise ImportError(
-                "Please install polars: `pip install polars pyarrow`  to use this method."
+                "请安装 polars: `pip install polars pyarrow` 以使用此方法。"
             ) from exc
 
         return from_pandas(self.to_dataframe(index=None))
 
     def to_numpy(self) -> "ndarray":
-        """Convert results field to numpy array."""
+        """将结果字段转换为 numpy array。"""
         return self.to_dataframe(index=None).to_numpy()
 
     def to_dict(
@@ -305,17 +303,17 @@ class OBBject(Tagged, Generic[T]):
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
     ) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:
-        """Convert results field to a dictionary using any of Pandas `to_dict` options.
+        """使用 Pandas `to_dict` 选项将结果字段转换为字典。
 
         Parameters
         ----------
         orient : Literal["dict", "list", "series", "split", "tight", "records", "index"]
-            Value to pass to `.to_dict()` method
+            传递给 `.to_dict()` 方法的值
 
         Returns
         -------
         Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
-            Dictionary of lists or list of dictionaries if orient is "records".
+            如果 orient 为 "records"，则为列表字典或字典列表。
         """
         df = self.to_dataframe(index=None)
         if (
@@ -335,12 +333,12 @@ class OBBject(Tagged, Generic[T]):
         return results
 
     def to_llm(self) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:
-        """Convert results field to an LLM compatible output.
+        """将结果字段转换为 LLM 兼容的输出。
 
         Returns
         -------
         Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
-            Dictionary of lists or list of dictionaries if orient is "records".
+            如果 orient 为 "records"，则为列表字典或字典列表。
         """
         df = self.to_dataframe(index=None)
 
@@ -353,26 +351,26 @@ class OBBject(Tagged, Generic[T]):
         return results  # type: ignore
 
     def show(self, **kwargs: Any) -> None:
-        """Display chart."""
+        """显示图表。"""
         # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
-            raise OpenBBError("Chart not found.")
+            raise OpenBBError("未找到图表。")
         show_function: Callable = getattr(self.chart.fig, "show")
         show_function(**kwargs)
 
     @classmethod
     async def from_query(cls, query: "Query") -> "OBBject":
-        """Create OBBject from query.
+        """从查询创建 OBBject。
 
         Parameters
         ----------
         query : Query
-            Initialized query object.
+            初始化的查询对象。
 
         Returns
         -------
         OBBject[ResultsType]
-            OBBject with results.
+            带有结果的 OBBject。
         """
         results = await query.execute()
         if isinstance(results, AnnotatedResult):

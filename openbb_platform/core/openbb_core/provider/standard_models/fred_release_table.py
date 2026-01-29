@@ -1,4 +1,4 @@
-"""FRED Release Table Standard Model."""
+"""FRED 发布表标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,14 +12,14 @@ from pydantic import Field, field_validator
 
 
 class ReleaseTableQueryParams(QueryParams):
-    """FRED Release Table Query."""
+    """FRED 发布表查询。"""
 
     release_id: str = Field(
-        description="The ID of the release." + " Use `fred_search` to find releases.",
+        description="发布的 ID。" + " 使用 `fred_search` 寻找发布项目。",
     )
     element_id: str | None = Field(
         default=None,
-        description="The element ID of a specific table in the release.",
+        description="发布项目中特定表格的元素 ID。",
     )
     date: None | dateType | str = Field(
         default=None,
@@ -29,7 +29,7 @@ class ReleaseTableQueryParams(QueryParams):
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def _validate_date(cls, v):
-        """Validate the date."""
+        """验证日期。"""
         # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
@@ -49,34 +49,34 @@ class ReleaseTableQueryParams(QueryParams):
 
 
 class ReleaseTableData(Data):
-    """FRED Release Table Data."""
+    """FRED 发布表数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     level: int | None = Field(
         default=None,
-        description="The indentation level of the element.",
+        description="元素的缩进级别。",
     )
     element_type: str | None = Field(
         default=None,
-        description="The type of the element.",
+        description="元素类型。",
     )
     line: int | None = Field(
         default=None,
-        description="The line number of the element.",
+        description="元素的行号。",
     )
     element_id: str | None = Field(
         default=None,
-        description="The element id in the parent/child relationship.",
+        description="父/子关系中的元素 ID。",
     )
     parent_id: str | None = Field(
         default=None,
-        description="The parent id in the parent/child relationship.",
+        description="父/子关系中的父 ID。",
     )
     children: str | None = Field(
         default=None,
-        description="The element_id of each child, as a comma-separated string.",
+        description="每个子元素的 element_id，以逗号分隔的字符串。",
     )
     symbol: str | None = Field(
         default=None,
@@ -84,9 +84,9 @@ class ReleaseTableData(Data):
     )
     name: str | None = Field(
         default=None,
-        description="The name of the series.",
+        description="系列的名称。",
     )
     value: float | None = Field(
         default=None,
-        description="The reported value of the series.",
+        description="系列的报告值。",
     )

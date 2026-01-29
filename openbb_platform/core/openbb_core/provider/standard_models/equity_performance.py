@@ -1,4 +1,4 @@
-"""Equity Performance Standard Model."""
+"""股票表现标准模型。"""
 
 from typing import Literal
 
@@ -9,40 +9,40 @@ from pydantic import Field, field_validator
 
 
 class EquityPerformanceQueryParams(QueryParams):
-    """Equity Performance Query."""
+    """股票表现查询。"""
 
     sort: Literal["asc", "desc"] = Field(
         default="desc",
-        description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
+        description="排序顺序。可能的值：'asc'，'desc'。默认值：'desc'。",
     )
 
     @field_validator("sort", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class EquityPerformanceData(Data):
-    """Equity Performance Data."""
+    """股票表现数据。"""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
     name: str | None = Field(
         default=None,
-        description="Name of the entity.",
+        description="实体名称。",
     )
     price: float = Field(
-        description="Last price.",
+        description="最新价格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     change: float = Field(
-        description="Change in price.",
+        description="价格变化。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     percent_change: float = Field(
-        description="Percent change.",
+        description="百分比变化。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: int | float | None = Field(

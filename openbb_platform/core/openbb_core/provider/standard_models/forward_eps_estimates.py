@@ -1,4 +1,4 @@
-"""Forward EPS Estimates Standard Model."""
+"""远期 EPS 预测标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class ForwardEpsEstimatesQueryParams(QueryParams):
-    """Forward EPS Estimates Query Parameters."""
+    """远期 EPS 预测查询参数。"""
 
     symbol: str | None = Field(
         default=None,
@@ -22,44 +22,44 @@ class ForwardEpsEstimatesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper() if v else None
 
 
 class ForwardEpsEstimatesData(Data):
-    """Forward EPS Estimates Data."""
+    """远期 EPS 预测数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str | None = Field(default=None, description="Name of the entity.")
+    name: str | None = Field(default=None, description="实体名称。")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     fiscal_year: int | None = Field(
-        default=None, description="Fiscal year for the estimate."
+        default=None, description="预测的财政年度。"
     )
     fiscal_period: str | None = Field(
-        default=None, description="Fiscal quarter for the estimate."
+        default=None, description="预测的财政季度。"
     )
     calendar_year: int | None = Field(
-        default=None, description="Calendar year for the estimate."
+        default=None, description="预测的日历年度。"
     )
     calendar_period: str | None = Field(
-        default=None, description="Calendar quarter for the estimate."
+        default=None, description="预测的日历季度。"
     )
     low_estimate: float | None = Field(
-        default=None, description="Estimated EPS low for the period."
+        default=None, description="该期间的 EPS 最低预测值。"
     )
     high_estimate: float | None = Field(
-        default=None, description="Estimated EPS high for the period."
+        default=None, description="该期间的 EPS 最高预测值。"
     )
     mean: float | None = Field(
-        default=None, description="Estimated EPS mean for the period."
+        default=None, description="该期间的 EPS 平均预测值。"
     )
     median: float | None = Field(
-        default=None, description="Estimated EPS median for the period."
+        default=None, description="该期间的 EPS 中位数预测值。"
     )
     standard_deviation: float | None = Field(
-        default=None, description="Estimated EPS standard deviation for the period."
+        default=None, description="该期间的 EPS 预测值标准差。"
     )
     number_of_analysts: int | None = Field(
         default=None,
-        description="Number of analysts providing estimates for the period.",
+        description="提供该期间预测的分析师数量。",
     )

@@ -1,4 +1,4 @@
-"""Economy shipping router."""
+"""经济航运路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -29,7 +29,7 @@ async def port_info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get general metadata and statistics for all ports from a given provider."""
+    """获取给定提供商所有港口的一般元数据和统计信息。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -37,19 +37,19 @@ async def port_info(
     model="PortVolume",
     examples=[
         APIEx(
-            description="Get average dwelling times and TEU volumes from the top ports.",
+            description="获取主要港口的平均停留时间和 TEU 吞吐量。",
             parameters={"provider": "econdb"},
         ),
         APIEx(
-            description="Get daily port calls and estimated trading volumes for specific ports"
-            + " Get the list of available ports with `openbb shipping port_info`",
+            description="获取特定港口的每日停靠次数和预计交易量。"
+            + " 使用 `openbb shipping port_info` 获取可用港口列表",
             parameters={
                 "provider": "imf",
                 "port_code": "rotterdam,singapore",
             },
         ),
         APIEx(
-            description="Get data for all ports in a specific country. Use the 3-letter ISO country code.",
+            description="获取特定国家/地区所有港口的数据。使用 3 个字母的 ISO 国家代码。",
             parameters={
                 "provider": "imf",
                 "country": "GBR",
@@ -63,7 +63,7 @@ async def port_volume(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Daily port calls and estimates of trading volumes for ports around the world."""
+    """世界各地港口的每日停靠次数和预计交易量。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -79,7 +79,7 @@ async def chokepoint_info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get general metadata and statistics for all maritime chokepoint locations from a given provider."""
+    """从给定提供商获取所有海上咽喉要道的一般元数据和统计信息。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -101,5 +101,5 @@ async def chokepoint_volume(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Daily transit calls and estimates of transit trade volumes for shipping lane chokepoints around the world."""
+    """世界各地航运咽喉要道的每日过境呼叫和预计过境贸易量。"""
     return await OBBject.from_query(Query(**locals()))

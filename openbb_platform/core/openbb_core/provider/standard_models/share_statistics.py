@@ -1,4 +1,4 @@
-"""Share Statistics Standard Model."""
+"""股票统计标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,19 +15,19 @@ from pydantic import Field, field_validator
 
 
 class ShareStatisticsQueryParams(QueryParams):
-    """Share Statistics Query."""
+    """股票统计查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class ShareStatisticsData(Data):
-    """Share Statistics Data."""
+    """股票统计数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType | datetime | None = Field(
@@ -35,13 +35,13 @@ class ShareStatisticsData(Data):
     )
     free_float: float | None = Field(
         default=None,
-        description="Percentage of unrestricted shares of a publicly-traded company.",
+        description="上市公司的自由流通股百分率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     float_shares: int | float | None = Field(
         default=None,
-        description="Number of shares available for trading by the general public.",
+        description="公众可交易的股票数量（流通股数）。",
     )
     outstanding_shares: int | float | None = Field(
-        default=None, description="Total number of shares of a publicly-traded company."
+        default=None, description="上市公司的股票总数（总股本）。"
     )

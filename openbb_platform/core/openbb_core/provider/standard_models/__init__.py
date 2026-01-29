@@ -1,1 +1,1 @@
-"""Standard models for OpenBB Provider."""
+"""OpenBB 提供商标准模型。"""

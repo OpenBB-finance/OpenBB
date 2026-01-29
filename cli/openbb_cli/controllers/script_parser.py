@@ -193,9 +193,9 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                 numdollars = len(re.findall(r"\$", line))
                 if numdollars > 1:
                     session.console.print(
-                        f"The variable {VAR_NAME} should not be declared as "
-                        f"{'$' * numdollars}{VAR_NAME}. Instead it will be "
-                        f"converted into ${VAR_NAME}."
+                        f"变量 {VAR_NAME} 不应声明为 "
+                        f"{'$' * numdollars}{VAR_NAME}。它将被"
+                        f"转换为 ${VAR_NAME}。"
                     )
 
             else:
@@ -218,8 +218,8 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
             # Check whether the foreach loop has started or not
             if not foreach_loop_found:
                 return (
-                    "[red]The script has a foreach loop that terminates before it gets started. "
-                    "Add the keyword 'foreach' to explicitly start loop[/red]",
+                    "[red]脚本包含一个在开始前就终止的 foreach 循环。 "
+                    "添加关键字 'foreach' 以显式启动循环[/red]",
                     "",
                 )
             foreach_loop_found = False
@@ -260,7 +260,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                         templine = templine.replace(match[0], values)
                                 else:
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                        f"[red]当前例程脚本未给出变量 {VAR_NAME}。[/red]",
                                         "",
                                     )
 
@@ -276,9 +276,9 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 # We use <= because we are using 0 index based lists
                                 if length_variable <= int(VAR_SLICE):
                                     return (
-                                        f"[red]Variable {VAR_NAME} only has "
-                                        f"{length_variable} elements and there "
-                                        f"was an attempt to access it with index {VAR_SLICE}.[/red]",
+                                        f"[red]变量 {VAR_NAME} 只有 "
+                                        f"{length_variable} 个元素，但尝试 "
+                                        f"使用索引 {VAR_SLICE} 访问它。[/red]",
                                         "",
                                     )
                                 templine = templine.replace(
@@ -287,7 +287,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 )
                             else:
                                 return (
-                                    f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                    f"[red]当前例程脚本未给出变量 {VAR_NAME}。[/red]",
                                     "",
                                 )
 
@@ -326,7 +326,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 )
                             else:
                                 return (
-                                    f"[red]The foreach loop cannot run with input: {match[0]}.[/red]",
+                                    f"[red]foreach 循环无法使用输入运行：{match[0]}。[/red]",
                                     "",
                                 )
 
@@ -337,17 +337,17 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 if VAR_SLICE.startswith("-"):
                                     if not VAR_SLICE[1:].isdigit():
                                         return (
-                                            f"[red]Index '{VAR_SLICE}' is not a value[/red]",
+                                            f"[red]索引 '{VAR_SLICE}' 不是有效值[/red]",
                                             "",
                                         )
                                     if int(VAR_SLICE) < 0:
                                         return (
-                                            f"[red]Negative index on {VAR_NAME} is not allowed[/red]",
+                                            f"[red]不允许对 {VAR_NAME} 使用负索引[/red]",
                                             "",
                                         )
                                 if not VAR_SLICE.isdigit():
                                     return (
-                                        f"[red]Index '{VAR_SLICE}' is not a value[/red]",
+                                        f"[red]索引 '{VAR_SLICE}' 不是有效值[/red]",
                                         "",
                                     )
 
@@ -378,7 +378,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                     )
                                 else:
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                        f"[red]当前例程脚本未给出变量 {VAR_NAME}。[/red]",
                                         "",
                                     )
 
@@ -387,8 +387,8 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     # If this flags ends in True it means that the script routine has a foreach loop that never terminates
     if foreach_loop_found:
         return (
-            "[red]The script has a foreach loop that doesn't terminate. "
-            "Add the keyword 'end' to explicitly terminate loop[/red]",
+            "[red]脚本包含一个未终止的 foreach 循环。 "
+            "添加关键字 'end' 以显式终止循环[/red]",
             "",
         )
 
@@ -432,9 +432,9 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             varused_inside = True
                         elif "$$" in foreach_line_loop:
                             return (
-                                "[red]The script has a foreach loop that iterates through "
-                                f"{','.join(foreach_loop)} with variable $${varname} "
-                                "but another var name is being utilized instead[/red]",
+                                "[red]脚本包含一个 foreach 循环，该循环 "
+                                f"遍历 {','.join(foreach_loop)}，变量为 $${varname}， "
+                                "但实际上使用了另一个变量名[/red]",
                                 "",
                             )
                         else:
@@ -442,7 +442,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
 
                 if not varused_inside:
                     session.console.print(
-                        f"The variable {varname} was used in foreach header but it wasn't used inside the loop."
+                        f"变量 {varname} 在 foreach 头部中使用，但在循环内部未使用。"
                     )
                     varused_inside = False
 

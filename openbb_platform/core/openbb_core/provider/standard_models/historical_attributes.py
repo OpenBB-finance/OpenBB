@@ -1,4 +1,4 @@
-"""Historical Attributes Standard Model."""
+"""历史属性标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,10 +13,10 @@ from pydantic import Field, field_validator
 
 
 class HistoricalAttributesQueryParams(QueryParams):
-    """Historical Attributes Query."""
+    """历史属性查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
-    tag: str = Field(description="Intrinio data tag ID or code.")
+    tag: str = Field(description="Intrinio 数据标签 ID 或代码。")
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
@@ -28,16 +28,16 @@ class HistoricalAttributesQueryParams(QueryParams):
     )
     limit: int | None = Field(default=1000, description=QUERY_DESCRIPTIONS.get("limit"))
     tag_type: str | None = Field(
-        default=None, description="Filter by type, when applicable."
+        default=None, description="过滤类型（如适用）。"
     )
     sort: Literal["asc", "desc"] | None = Field(
-        default="desc", description="Sort order."
+        default="desc", description="排序顺序。"
     )
 
     @field_validator("tag", mode="before", check_fields=False)
     @classmethod
     def multiple_tags(cls, v: str | list[str] | set[str]):
-        """Accept a comma-separated string or list of tags."""
+        """接受以逗号分隔的字符串或标签列表。"""
         if isinstance(v, str):
             return v.lower()
         return ",".join([tag.lower() for tag in list(v)])
@@ -45,20 +45,20 @@ class HistoricalAttributesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
     @field_validator("frequency", "sort", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class HistoricalAttributesData(Data):
-    """Historical Attributes Data."""
+    """历史属性数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol"))
-    tag: str | None = Field(default=None, description="Tag name for the fetched data.")
-    value: float | None = Field(default=None, description="The value of the data.")
+    tag: str | None = Field(default=None, description="获取数据的标签名称。")
+    value: float | None = Field(default=None, description="数据值。")

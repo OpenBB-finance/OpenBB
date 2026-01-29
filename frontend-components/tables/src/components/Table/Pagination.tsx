@@ -4,7 +4,7 @@ import { DEFAULT_ROWS_PER_PAGE } from ".";
 
 export function validatePageSize(pageSize: any) {
   if (typeof pageSize !== "number") {
-    if (typeof pageSize === "string" && pageSize.includes("All")) {
+    if (typeof pageSize === "string" && pageSize.includes("全部")) {
       return pageSize;
     }
     return DEFAULT_ROWS_PER_PAGE;
@@ -33,16 +33,16 @@ export default function Pagination({
         onChange={(value) => {
           const newValue = validatePageSize(value);
           setCurrentPage(newValue);
-          if (newValue.toString().includes("All")) table.setPageSize(totalRows);
+          if (newValue.toString().includes("全部")) table.setPageSize(totalRows);
           else table.setPageSize(newValue);
         }}
         labelType="row"
-        label="Rows per page"
-        placeholder="Select rows per page"
+        label="每页行数"
+        placeholder="选择每页行数"
         groups={[
           {
-            label: "Rows per page", // TODO: generate number automatically
-            items: [10, 20, 30, 40, 50, `All (${totalRows})`].map(
+            label: "每页行数", // TODO: generate number automatically
+            items: [10, 20, 30, 40, 50, `全部 (${totalRows})`].map(
               (pageSize) => ({
                 label: `${pageSize}`,
                 value: pageSize,
@@ -53,7 +53,7 @@ export default function Pagination({
       />
       <span className="flex items-center gap-1">
         <strong>{table.getState().pagination.pageIndex + 1}</strong>
-        of
+        共
         <strong>{table.getPageCount()}</strong>
       </span>
       {/*<span className="flex items-center gap-1">

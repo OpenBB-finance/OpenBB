@@ -1,4 +1,4 @@
-"""The Commodity router."""
+"""商品路由器。"""
 
 # pylint: disable=unused-argument,unused-import
 # flake8: noqa: F401
@@ -21,7 +21,7 @@ from openbb_core.app.service.system_service import SystemService
 
 from openbb_commodity.price.price_router import router as price_router
 
-router = Router(prefix="", description="Commodity market data.")
+router = Router(prefix="", description="商品市场数据。")
 router.include_router(price_router)
 api_prefix = SystemService().system_settings.api_settings.prefix
 
@@ -30,11 +30,11 @@ api_prefix = SystemService().system_settings.api_settings.prefix
     model="PetroleumStatusReport",
     examples=[
         APIEx(
-            description="Get the EIA's Weekly Petroleum Status Report.",
+            description="获取 EIA 的每周石油状况报告。",
             parameters={"provider": "eia"},
         ),
         APIEx(
-            description="Select the category of data, and filter for a specific table within the report.",
+            description="选择数据类别，并筛选报告中的特定表格。",
             parameters={
                 "category": "weekly_estimates",
                 "table": "imports",
@@ -49,7 +49,7 @@ async def petroleum_status_report(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """EIA Weekly Petroleum Status Report."""
+    """EIA 每周石油状况报告。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -57,11 +57,11 @@ async def petroleum_status_report(
     model="ShortTermEnergyOutlook",
     examples=[
         APIEx(
-            description="Get the EIA's Short Term Energy Outlook.",
+            description="获取 EIA 的短期能源展望。",
             parameters={"provider": "eia"},
         ),
         APIEx(
-            description="Select the specific table of data from the STEO. Table 03d is World Crude Oil Production.",
+            description="从 STEO 中选择特定的数据表。表 03d 是世界原油产量。",
             parameters={
                 "table": "03d",
                 "provider": "eia",
@@ -75,9 +75,9 @@ async def short_term_energy_outlook(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Monthly short term (18 month) projections using EIA's STEO model.
+    """使用 EIA 的 STEO 模型进行每月短期（18 个月）预测。
 
-    Source: www.eia.gov/steo/
+    来源: www.eia.gov/steo/
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -86,20 +86,20 @@ async def short_term_energy_outlook(
     model="CommodityPsdData",
     examples=[
         APIEx(
-            description="Get the World Crop Production Summary table.",
+            description="获取世界作物产量摘要表。",
             parameters={
                 "provider": "government_us",
             },
         ),
         APIEx(
-            description="Get the current Corn World Trade table from the PDS report.",
+            description="从 PDS 报告中获取当前玉米世界贸易表。",
             parameters={
                 "provider": "government_us",
                 "report_id": "corn_world_trade",
             },
         ),
         APIEx(
-            description="Get all attributes for Coffee globally, for a single year.",
+            description="获取某一年全球咖啡的所有属性。",
             parameters={
                 "provider": "government_us",
                 "commodity": "coffee",
@@ -108,7 +108,7 @@ async def short_term_energy_outlook(
             },
         ),
         APIEx(
-            description="Compare Brazil coffee exports versus the world from 2010 to present.",
+            description="比较巴西咖啡出口量与世界咖啡出口量（2010 年至今）。",
             parameters={
                 "provider": "government_us",
                 "commodity": "coffee",
@@ -119,7 +119,7 @@ async def short_term_energy_outlook(
             },
         ),
         APIEx(
-            description="Get historical production of corn in the US from 2020.",
+            description="获取美国自 2020 年以来的玉米历史产量。",
             parameters={
                 "provider": "government_us",
                 "commodity": "corn",
@@ -129,7 +129,7 @@ async def short_term_energy_outlook(
             },
         ),
         APIEx(
-            description="Get regional aggregates for wheat beginning and ending stocks from 2020.",
+            description="获取自 2020 年以来小麦期初和期末库存的地区总量。",
             parameters={
                 "provider": "government_us",
                 "commodity": "wheat",
@@ -147,7 +147,7 @@ async def psd_data(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get data tables and historical time series from the USDA FAS Production, Supply, and Distribution (PSD) Reports."""
+    """从 USDA FAS 生产、供应和分销 (PSD) 报告中获取数据表和历史时间序列。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -156,7 +156,7 @@ async def psd_data(
     no_validate=True,
     widget_config={
         "name": "USDA FAS Commodity Production Supply & Distribution Reports",
-        "description": "Monthly publications released by the USDA Foreign Agriculture Service.",
+        "description": "USDA 外国农业局发布的月度出版物。",
         "type": "pdf",
         "refetchInterval": False,
         "gridData": {
@@ -177,7 +177,7 @@ async def psd_data(
             }
         ),
         APIEx(
-            description="Get the PSD report for coffee for March 2023.",
+            description="获取 2023 年 3 月的咖啡 PSD 报告。",
             parameters={
                 "provider": "government_us",
                 "commodity": "coffee",
@@ -193,10 +193,10 @@ async def psd_report(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Agriculture commodity production, supply, and distribution PDF reports (World Agricultural Outlook).
+    """农产品生产、供应和分销 PDF 报告（世界农业展望）。
 
-    This command returns only the results portion of the OBBject response.
-    It contains a dictionary where the PDF content is base64 encoded under the 'content' key.
+    此命令仅返回 OBBject 响应的结果部分。
+    它包含一个字典，其中 PDF 内容在“content”键下进行 base64 编码。
     """
     response = await OBBject.from_query(Query(**locals()))
     return response.model_dump().get("results", {})
@@ -208,13 +208,13 @@ async def psd_report(
     widget_config={"exclude": True},
     examples=[
         APIEx(
-            description="Get weather bulletins for the current year.",
+            description="获取当前年份的天气公报。",
             parameters={
                 "provider": "government_us",
             },
         ),
         APIEx(
-            description="Get weather bulletins for May 2023, week 2.",
+            description="获取 2023 年 5 月第 2 周的天气公报。",
             parameters={
                 "provider": "government_us",
                 "year": 2023,
@@ -223,7 +223,7 @@ async def psd_report(
             },
         ),
         PythonEx(
-            description="Get URLs for comparing versus 1 year ago and download the base64-encoded PDF content to memory.",
+            description="获取与 1 年前进行比较的 URL，并将 base64 编码的 PDF 内容下载到内存中。",
             code=[
                 "from datetime import datetime",
                 "urls = []",
@@ -241,13 +241,13 @@ async def weather_bulletins(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get current and historical weather bulletins with their PDF links.
+    """获取当前和历史天气公报及其 PDF 链接。
 
-    This command returns only the results portion of the OBBject response.
-    It contains a list of dictionaries where each dictionary has 'label' and 'value' keys.
+    此命令仅返回 OBBject 响应的结果部分。
+    它包含一个字典列表，其中每个字典都有 'label' 和 'value' 键。
 
-    Use this endpoint to programmatically access the list of available weather bulletins.
-    Suitable for dropdown selections in a UI.
+    使用此端点以编程方式访问可用天气公报的列表。
+    适用于 UI 中的下拉选择。
     """
     response = await OBBject.from_query(Query(**locals()))
     return response.model_dump().get("results", {})
@@ -259,7 +259,7 @@ async def weather_bulletins(
     no_validate=True,
     widget_config={
         "name": "USDA Weather & Crop Bulletin",
-        "description": "Weekly Weather and Crop Bulletin from the USDA.",
+        "description": "USDA 每周天气和作物公报。",
         "type": "multi_file_viewer",
         "refetchInterval": False,
         "gridData": {
@@ -358,10 +358,10 @@ async def weather_bulletins_download(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Download one, or more, weather bulletin documents.
+    """下载一份或多份天气公报文档。
 
-    This command returns only the results portion of the OBBject response.
-    It contains a list of dictionaries where the base64 encoded content of the document is under the 'content' key.
+    此命令仅返回 OBBject 响应的结果部分。
+    它包含一个字典列表，其中文档的 base64 编码内容在 'content' 键下。
     """
     response = await OBBject.from_query(Query(**locals()))
     return response.model_dump().get("results", {})

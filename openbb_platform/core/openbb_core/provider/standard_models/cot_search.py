@@ -1,4 +1,4 @@
-"""Commitment of Traders Reports Search Standard Model."""
+"""交易者持仓报告搜索标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,23 +7,23 @@ from pydantic import Field
 
 
 class CotSearchQueryParams(QueryParams):
-    """Commitment of Traders Reports Search Query."""
+    """交易者持仓报告搜索查询。"""
 
-    query: str = Field(description="Search query.", default="")
+    query: str = Field(description="搜索查询。", default="")
 
 
 class CotSearchData(Data):
-    """Commitment of Traders Reports Search Data."""
+    """交易者持仓报告搜索数据。"""
 
-    code: str = Field(description="CFTC market contract code of the report.")
-    name: str = Field(description="Name of the underlying asset.")
+    code: str = Field(description="报告的 CFTC 市场合约代码。")
+    name: str = Field(description="标的资产名称。")
     category: str | None = Field(
-        default=None, description="Category of the underlying asset."
+        default=None, description="标的资产类别。"
     )
     subcategory: str | None = Field(
-        default=None, description="Subcategory of the underlying asset."
+        default=None, description="标的资产子类别。"
     )
-    units: str | None = Field(default=None, description="The units for one contract.")
+    units: str | None = Field(default=None, description="一份合约的单位。")
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )

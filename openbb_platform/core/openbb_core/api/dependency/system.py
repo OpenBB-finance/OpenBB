@@ -1,4 +1,4 @@
-"""System dependency."""
+"""系统依赖项。"""
 
 from typing import Annotated
 
@@ -9,7 +9,7 @@ from openbb_core.app.service.system_service import SystemService
 
 
 async def get_system_service() -> SystemService:
-    """Get system service."""
+    """获取系统服务。"""
     return SystemService()
 
 
@@ -17,5 +17,5 @@ async def get_system_settings(
     _: Annotated[None, Depends(AuthService().auth_hook)],
     system_service: Annotated[SystemService, Depends(get_system_service)],
 ) -> SystemSettings:
-    """Get system settings."""
+    """获取系统设置。"""
     return system_service.system_settings

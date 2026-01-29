@@ -1,4 +1,4 @@
-"""Quantitative Analysis Router."""
+"""量化分析路由器。"""
 
 from typing import Literal
 
@@ -22,7 +22,7 @@ from openbb_quantitative.performance.performance_router import (
 from openbb_quantitative.rolling.rolling_router import router as rolling_router
 from openbb_quantitative.stats.stats_router import router as stats_router
 
-router = Router(prefix="", description="Quantitative analysis tools.")
+router = Router(prefix="", description="量化分析工具。")
 router.include_router(rolling_router)
 router.include_router(stats_router)
 router.include_router(performance_router)
@@ -32,7 +32,7 @@ router.include_router(performance_router)
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get Normality Statistics.",
+            description="获取正态性统计信息。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.normality(data=stock_data, target='close')",
@@ -42,25 +42,25 @@ router.include_router(performance_router)
     ],
 )
 def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
-    """Get Normality Statistics.
+    """获取正态性统计信息。
 
-    - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
-    - **Skewness**: whether the skewness of a sample differs from the normal distribution.
-    - **Jarque-Bera**: whether the sample data has the skewness and kurtosis matching a normal distribution.
-    - **Shapiro-Wilk**: whether a random sample comes from a normal distribution.
-    - **Kolmogorov-Smirnov**: whether two underlying one-dimensional probability distributions differ.
+    - **Kurtosis**: 样本的峰度是否不同于正态分布。
+    - **Skewness**: 样本的偏度是否不同于正态分布。
+    - **Jarque-Bera**: 样本数据的偏度和峰度是否与正态分布匹配。
+    - **Shapiro-Wilk**: 随机样本是否来自正态分布。
+    - **Kolmogorov-Smirnov**: 两个潜在的一维概率分布是否不同。
 
     Parameters
     ----------
     data : list[Data]
-        Time series data.
+        时间序列数据。
     target : str
-        Target column name.
+        目标列名。
 
     Returns
     -------
     OBBject[NormalityModel]
-        Normality tests summary. See qa_models.NormalityModel for details.
+        正态性检验摘要。详见 qa_models.NormalityModel。
     """
     # pylint: disable=import-outside-toplevel
     from scipy import stats  # noqa
@@ -93,7 +93,7 @@ def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get Capital Asset Pricing Model (CAPM).",
+            description="获取资本资产定价模型 (CAPM)。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.capm(data=stock_data, target='close')",
@@ -105,23 +105,23 @@ def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
     ],
 )
 def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
-    """Get Capital Asset Pricing Model (CAPM).
+    """获取资本资产定价模型 (CAPM)。
 
-    CAPM offers a streamlined way to assess the expected return on an investment while accounting for its risk relative
-    to the market. It's a cornerstone of modern financial theory that helps investors understand the trade-off between
-    risk and return, guiding more informed investment choices.
+    CAPM 提供了一种简化的方法来评估投资的预期回报，同时考虑其相对于
+    市场的风险。它是现代金融理论的基石，帮助投资者了解风险与回报之间的
+    权衡，从而指导更明智的投资选择。
 
     Parameters
     ----------
     data : list[Data]
-        Time series data.
+        时间序列数据。
     target : str
-        Target column name.
+        目标列名。
 
     Returns
     -------
     OBBject[CAPMModel]
-        CAPM model summary.
+        CAPM 模型摘要。
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm  # noqa
@@ -165,7 +165,7 @@ def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get Unit Root Test.",
+            description="获取单位根检验。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.unitroot_test(data=stock_data, target='close')",
@@ -180,31 +180,31 @@ def unitroot_test(
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
     kpss_reg: Literal["c", "ct"] = "c",
 ) -> OBBject[UnitRootModel]:
-    """Get Unit Root Test.
+    """获取单位根检验。
 
-    This function applies two renowned tests to assess whether your data series is stationary or if it contains a unit
-    root, indicating it may be influenced by time-based trends or seasonality. The Augmented Dickey-Fuller (ADF) test
-    helps identify the presence of a unit root, suggesting that the series could be non-stationary and potentially
-    unpredictable over time. On the other hand, the Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test checks for the
-    stationarity of the series, where failing to reject the null hypothesis indicates a stable, stationary series.
-    Together, these tests provide a comprehensive view of your data's time series properties, essential for
-    accurate modeling and forecasting.
+    此函数应用两种著名检验来评估您的数据系列是否平稳，或是否包含单位根，
+    表明它可能受基于时间的趋势或季节性影响。增强迪基-福勒 (ADF) 检验
+    有助于识别单位根的存在，表明该系列可能是非平稳的，并且可能
+    随时间推移不可预测。另一方面，Kwiatkowski-Phillips-Schmidt-Shin (KPSS) 检验检查
+    系列的平稳性，如果无法拒绝原假设，则表明是一个稳定的平稳系列。
+    这些检验共同提供了您的数据时间序列属性的全面视图，对于
+    准确建模和预测至关重要。
 
     Parameters
     ----------
     data : list[Data]
-        Time series data.
+        时间序列数据。
     target : str
-        Target column name.
+        目标列名。
     fuller_reg : Literal["c", "ct", "ctt", "nc", "c"]
-        Regression type for ADF test.
+        ADF 检验的回归类型。
     kpss_reg : Literal["c", "ct"]
-        Regression type for KPSS test.
+        KPSS 检验的回归类型。
 
     Returns
     -------
     OBBject[UnitRootModel]
-        Unit root tests summary.
+        单位根检验摘要。
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import (  # noqa
@@ -240,7 +240,7 @@ def unitroot_test(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get Summary Statistics.",
+            description="获取摘要统计信息。",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.summary(data=stock_data, target='close')",
@@ -250,26 +250,26 @@ def unitroot_test(
     ],
 )
 def summary(data: list[Data], target: str) -> OBBject[SummaryModel]:
-    """Get Summary Statistics.
+    """获取摘要统计信息。
 
-    The summary that offers a snapshot of its central tendencies, variability, and distribution.
-    This command calculates essential statistics, including mean, standard deviation, variance,
-    and specific percentiles, to provide a detailed profile of your target column. B
-    y examining these metrics, you gain insights into the data's overall behavior, helping to identify patterns,
-    outliers, or anomalies. The summary table is an invaluable tool for initial data exploration,
-    ensuring you have a solid foundation for further analysis or reporting.
+    提供中心趋势、变异性和分布快照的摘要。
+    此命令计算基本统计数据，包括均值、标准差、方差
+    和特定百分位数，从而提供目标列的详细资料。
+    通过检查这些指标，您可以深入了解数据的整体行为，帮助识别模式、
+    异常值或反常现象。摘要表是初始数据探索的宝贵工具，
+    确保您为进一步分析或报告奠定坚实基础。
 
     Parameters
     ----------
     data : list[Data]
-        Time series data.
+        时间序列数据。
     target : str
-        Target column name.
+        目标列名。
 
     Returns
     -------
     OBBject[SummaryModel]
-        Summary table.
+        摘要表。
     """
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.utils import (

@@ -1,4 +1,4 @@
-"""Decorators for the OpenBB Platform static assets."""
+"""OpenBB Platform 静态资产的装饰器。"""
 
 from collections.abc import Callable
 from functools import wraps
@@ -28,10 +28,10 @@ def validate(
     func: Callable[P, R] | None = None,
     **dec_kwargs,
 ) -> Any:
-    """Validate function calls."""
+    """验证函数调用。"""
 
     def decorated(f: Callable[P, R]):
-        """Use for decorating functions."""
+        """用于装饰函数。"""
 
         @wraps(f)
         def wrapper(*f_args, **f_kwargs):
@@ -43,7 +43,7 @@ def validate(
 
 
 def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
-    """Handle exceptions, attempting to focus on the last call from the traceback."""
+    """处理异常，试图专注于回溯中的最后一次调用。"""
 
     @wraps(func)
     def wrapper(*f_args, **f_kwargs):
@@ -61,7 +61,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
 
             if isinstance(e, ValidationError):
                 error_list: list = []
-                validation_error = f"{e.error_count()} validations error(s)"
+                validation_error = f"{e.error_count()} 个验证错误"
                 for err in e.errors(include_url=False):
                     loc = ".".join(
                         [

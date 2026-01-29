@@ -1,4 +1,4 @@
-"""PROJECTION Standard Model."""
+"""预测标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,23 +9,23 @@ from pydantic import Field
 
 
 class PROJECTIONQueryParams(QueryParams):
-    """PROJECTION Query."""
+    """预测查询。"""
 
 
 class PROJECTIONData(Data):
-    """PROJECTION Data."""
+    """预测数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    range_high: float | None = Field(description="High projection of rates.")
+    range_high: float | None = Field(description="利率的高预测值。")
     central_tendency_high: float | None = Field(
-        description="Central tendency of high projection of rates."
+        description="利率高预测值的集中趋势。"
     )
-    median: float | None = Field(description="Median projection of rates.")
-    range_midpoint: float | None = Field(description="Midpoint projection of rates.")
+    median: float | None = Field(description="利率的中位数预测值。")
+    range_midpoint: float | None = Field(description="利率的中点预测值。")
     central_tendency_midpoint: float | None = Field(
-        description="Central tendency of midpoint projection of rates."
+        description="利率中点预测值的集中趋势。"
     )
-    range_low: float | None = Field(description="Low projection of rates.")
+    range_low: float | None = Field(description="利率的低预测值。")
     central_tendency_low: float | None = Field(
-        description="Central tendency of low projection of rates."
+        description="利率低预测值的集中趋势。"
     )

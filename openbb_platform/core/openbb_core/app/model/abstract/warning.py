@@ -1,4 +1,4 @@
-"""Module for warnings."""
+"""警告模块。"""
 
 from warnings import WarningMessage
 
@@ -6,14 +6,14 @@ from pydantic import BaseModel
 
 
 class Warning_(BaseModel):
-    """Model for Warning."""
+    """警告模型。"""
 
     category: str
     message: str
 
 
 def cast_warning(w: WarningMessage) -> Warning_:
-    """Cast a warning to a pydantic model."""
+    """将警告转换为 pydantic 模型。"""
     return Warning_(
         category=w.category.__name__,
         message=str(w.message),
@@ -21,4 +21,4 @@ def cast_warning(w: WarningMessage) -> Warning_:
 
 
 class OpenBBWarning(Warning):
-    """Base class for OpenBB warnings."""
+    """OpenBB 警告的基类。"""

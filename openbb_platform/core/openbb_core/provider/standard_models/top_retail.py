@@ -1,4 +1,4 @@
-"""Top Retail Standard Model."""
+"""热门零售交易标的标准模型。"""
 
 from datetime import date as DateType
 
@@ -12,17 +12,17 @@ from pydantic import Field
 
 
 class TopRetailQueryParams(QueryParams):
-    """Top Retail Search Query."""
+    """热门零售交易标的搜索查询。"""
 
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=5)
 
 
 class TopRetailData(Data):
-    """Top Retail Search Data."""
+    """热门零售交易标的搜索数据。"""
 
     date: DateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    activity: float = Field(description="Activity of the symbol.")
+    activity: float = Field(description="代码的活跃度。")
     sentiment: float = Field(
-        description="Sentiment of the symbol. 1 is bullish, -1 is bearish."
+        description="代码的情绪。1 为看涨，-1 为看跌。"
     )

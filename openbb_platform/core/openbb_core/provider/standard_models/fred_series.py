@@ -1,4 +1,4 @@
-"""FRED Series Standard Model."""
+"""FRED 系列标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class SeriesQueryParams(QueryParams):
-    """FRED Series Query."""
+    """FRED 系列查询。"""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -30,11 +30,11 @@ class SeriesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class SeriesData(Data):
-    """FRED Series Data."""
+    """FRED 系列数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

@@ -1,4 +1,4 @@
-"""Composite Leading Indicator Standard Model."""
+"""综合领先指标标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CompositeLeadingIndicatorQueryParams(QueryParams):
-    """Composite Leading Indicator Query."""
+    """综合领先指标查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -23,12 +23,12 @@ class CompositeLeadingIndicatorQueryParams(QueryParams):
 
 
 class CompositeLeadingIndicatorData(Data):
-    """Composite Leading Indicator Data."""
+    """综合领先指标数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     value: float = Field(
         default=None,
-        description="CLI value",
+        description="CLI 值",
         json_schema_extra={"x-unit_measurement": "index"},
     )
-    country: str = Field(description="Country for the CLI value.")
+    country: str = Field(description="CLI 值的国家。")

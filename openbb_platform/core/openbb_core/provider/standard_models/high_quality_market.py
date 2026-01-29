@@ -1,4 +1,4 @@
-"""High Quality Market Corporate Bond Standard Model."""
+"""高质量市场企业债标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class HighQualityMarketCorporateBondQueryParams(QueryParams):
-    """High Quality Market Corporate Bond Query."""
+    """高质量市场企业债查询。"""
 
     date: dateType | str | None = Field(
         default=None,
@@ -23,11 +23,11 @@ class HighQualityMarketCorporateBondQueryParams(QueryParams):
 
 
 class HighQualityMarketCorporateBondData(Data):
-    """High Quality Market Corporate Bond Data."""
+    """高质量市场企业债数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: float = Field(
-        description="Interest rate.",
+        description="利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    maturity: str = Field(description="Maturity.")
+    maturity: str = Field(description="到期期限。")

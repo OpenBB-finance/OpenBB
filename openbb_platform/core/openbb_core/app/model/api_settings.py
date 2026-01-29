@@ -1,10 +1,10 @@
-"""FastAPI configuration settings model."""
+"""FastAPI 配置设置模型。"""
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
 class Cors(BaseModel):
-    """Cors model for FastAPI configuration."""
+    """FastAPI 配置的 Cors 模型。"""
 
     model_config = ConfigDict(frozen=True)
 
@@ -14,22 +14,22 @@ class Cors(BaseModel):
 
 
 class Servers(BaseModel):
-    """Servers model for FastAPI configuration."""
+    """FastAPI 配置的 Servers 模型。"""
 
     model_config = ConfigDict(frozen=True)
 
     url: str = ""
-    description: str = "Local OpenBB development server"
+    description: str = "本地 OpenBB 开发服务器"
 
 
 class APISettings(BaseModel):
-    """Settings model for FastAPI configuration."""
+    """FastAPI 配置的设置模型。"""
 
     model_config = ConfigDict(frozen=True)
 
     version: str = "1"
     title: str = "OpenBB Platform API"
-    description: str = "Investment research for everyone, anywhere."
+    description: str = "为每个人，在任何地方提供投资研究。"
     terms_of_service: str = "http://example.com/terms/"
     contact_name: str = "OpenBB Team"
     contact_url: str = "https://openbb.co"
@@ -39,17 +39,17 @@ class APISettings(BaseModel):
     servers: list[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
     custom_headers: dict[str, str] | None = Field(
-        default=None, description="Custom headers and respective default value."
+        default=None, description="自定义标头及其各自的默认值。"
     )
 
     @computed_field  # type: ignore[misc]
     @property
     def prefix(self) -> str:
-        """Return the API prefix."""
+        """返回 API 前缀。"""
         return f"/api/v{self.version}"
 
     def __repr__(self) -> str:
-        """Return a string representation of the model."""
+        """返回模型的字符串表示形式。"""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )

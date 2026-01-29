@@ -1,4 +1,4 @@
-"""Credentials model and its utilities."""
+"""凭据模型及其工具。"""
 
 import json
 import os
@@ -23,10 +23,10 @@ from pydantic.functional_serializers import PlainSerializer
 
 
 class LoadingError(Exception):
-    """Error loading extension."""
+    """加载扩展出错。"""
 
 
-# @model_serializer blocks model_dump with pydantic parameters (include, exclude)
+# @model_serializer 阻止带有 pydantic 参数（include, exclude）的 model_dump
 OBBSecretStr = Annotated[
     SecretStr,
     PlainSerializer(
@@ -36,14 +36,14 @@ OBBSecretStr = Annotated[
 
 
 class CredentialsLoader:
-    """Here we create the Credentials model."""
+    """在此处创建凭据模型。"""
 
     credentials: dict[str, list[str]] = {}
     env = Env()
 
     @staticmethod
     def _normalize_credential_map(raw: dict | None) -> dict[str, object]:
-        """Lower-case keys and drop empty overrides so env values can win."""
+        """小写键并删除空覆盖，以便环境值可以胜出。"""
         if not raw:
             return {}
         normalized: dict[str, object] = {}
@@ -58,7 +58,7 @@ class CredentialsLoader:
         return normalized
 
     def format_credentials(self, additional: dict) -> dict[str, tuple[object, None]]:
-        """Prepare credentials map to be used in the Credentials model."""
+        """准备用于凭据模型的凭据映射。"""
         formatted: dict[str, tuple[object, None]] = {}
         additional_data = dict(additional)
 
@@ -66,7 +66,7 @@ class CredentialsLoader:
             for c_name in c_list:
                 if c_name in formatted:
                     warnings.warn(
-                        message=f"Skipping '{c_name}', credential already in use.",
+                        message=f"跳过 '{c_name}'，凭据已在使用。",
                         category=OpenBBWarning,
                     )
                     continue
@@ -92,18 +92,18 @@ class CredentialsLoader:
         return dict(sorted(formatted.items()))
 
     def from_obbject(self) -> None:
-        """Load credentials from OBBject extensions."""
+        """从 OBBject 扩展加载凭据。"""
         for ext_name, ext in ExtensionLoader().obbject_objects.items():  # type: ignore[attr-defined]
             try:
                 if ext_name in self.credentials:
                     warnings.warn(
-                        message=f"Skipping '{ext_name}', name already in user.",
+                        message=f"跳过 '{ext_name}'，名称已在使用。",
                         category=OpenBBWarning,
                     )
                     continue
                 self.credentials[ext_name] = ext.credentials
             except Exception as e:
-                msg = f"Error loading extension: {ext_name}\n"
+                msg = f"加载扩展出错：{ext_name}\n"
                 if Env().DEBUG_MODE:
                     traceback.print_exception(type(e), e, e.__traceback__)
                     raise LoadingError(msg + f"\033[91m{e}\033[0m") from e
@@ -113,11 +113,11 @@ class CredentialsLoader:
                 )
 
     def from_providers(self) -> None:
-        """Load credentials from providers."""
+        """从提供者加载凭据。"""
         self.credentials = ProviderInterface().credentials
 
     def load(self) -> BaseModel:
-        """Load credentials from providers."""
+        """从提供者加载凭据。"""
         self.from_providers()
         self.from_obbject()
         path = Path(USER_SETTINGS_PATH)
@@ -173,7 +173,7 @@ _Credentials = CredentialsLoader().load()
 
 
 class Credentials(_Credentials):  # type: ignore
-    """Credentials model used to store provider credentials."""
+    """用于存储提供者凭据的凭据模型。"""
 
     model_config = ConfigDict(extra="allow")
     _env_defaults: ClassVar[dict[str, object]] = getattr(
@@ -191,7 +191,7 @@ class Credentials(_Credentials):  # type: ignore
         return False
 
     def model_post_init(self, __context) -> None:
-        """Set unset credentials from environment variables."""
+        """设置未从环境变量设置的凭据。"""
         super().model_post_init(__context)
         for key, secret in self._env_defaults.items():
             if key not in self.model_fields:
@@ -201,7 +201,7 @@ class Credentials(_Credentials):  # type: ignore
                 setattr(self, key, secret)
 
     def __repr__(self) -> str:
-        """Define the string representation of the credentials."""
+        """定义凭据的字符串表示形式。"""
         return (
             self.__class__.__name__
             + "\n\n"
@@ -209,7 +209,7 @@ class Credentials(_Credentials):  # type: ignore
         )
 
     def show(self):
-        """Unmask credentials and print them."""
+        """取消屏蔽凭据并打印它们。"""
         print(  # noqa: T201
             self.__class__.__name__
             + "\n\n"
@@ -219,5 +219,5 @@ class Credentials(_Credentials):  # type: ignore
         )
 
     def update(self, incoming: "Credentials"):
-        """Update current credentials."""
+        """更新当前凭据。"""
         self.__dict__.update(incoming.model_dump(exclude_none=True))

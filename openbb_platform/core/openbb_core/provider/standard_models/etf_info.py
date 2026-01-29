@@ -1,4 +1,4 @@
-"""ETF Info Standard Model."""
+"""ETF 信息标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,28 +12,28 @@ from pydantic import Field, field_validator
 
 
 class EtfInfoQueryParams(QueryParams):
-    """ETF Info Query."""
+    """ETF 信息查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
     @field_validator("symbol")
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class EtfInfoData(Data):
-    """ETF Info Data."""
+    """ETF 信息数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)")
-    name: str | None = Field(description="Name of the ETF.")
-    issuer: str | None = Field(default=None, description="Issuer of the ETF.")
-    domicile: str | None = Field(default=None, description="Domicile of the ETF.")
-    website: str | None = Field(default=None, description="Website of the ETF.")
+    name: str | None = Field(description="ETF 名称。")
+    issuer: str | None = Field(default=None, description="ETF 发行人。")
+    domicile: str | None = Field(default=None, description="ETF 注册地。")
+    website: str | None = Field(default=None, description="ETF 网站。")
     description: str | None = Field(
-        default=None, description="Description of the fund."
+        default=None, description="基金描述。"
     )
     inception_date: dateType | None = Field(
-        default=None, description="Inception date of the ETF."
+        default=None, description="ETF 成立日期。"
     )

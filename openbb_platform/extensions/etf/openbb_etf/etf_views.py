@@ -1,4 +1,4 @@
-"""Views for the ETF Extension."""
+"""ETF 扩展的视图。"""
 
 # pylint: disable=unused-argument
 
@@ -12,13 +12,13 @@ if TYPE_CHECKING:
 
 
 class EtfViews:
-    """Etf Views."""
+    """ETF 视图。"""
 
     @staticmethod
     def etf_historical(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Etf Price Historical Chart."""
+        """ETF 历史价格图表。"""
         # pylint: disable=import-outside-toplevel
 
         from openbb_charting.charts.price_historical import price_historical
@@ -29,7 +29,7 @@ class EtfViews:
     def etf_price_performance(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Etf Price Performance Chart."""
+        """ETF 价格表现图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
 
@@ -39,7 +39,7 @@ class EtfViews:
     def etf_holdings(
         **kwargs,
     ) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:
-        """Equity Compare Groups Chart."""
+        """ETF 持仓图表。"""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
@@ -54,19 +54,19 @@ class EtfViews:
             data = basemodel_to_df(kwargs["obbject_item"], index=None)  # type: ignore
 
         if "weight" not in data.columns:
-            raise OpenBBError("No 'weight' column found in the data.")
+            raise OpenBBError("数据中未找到 'weight' 列。")
 
         orientation = kwargs.get("orientation", "h")
         limit = kwargs.get("limit", 20)
         symbol = kwargs["standard_params"].get("symbol")  # type: ignore
-        title = kwargs.get("title", f"Top {limit} {symbol} Holdings")
+        title = kwargs.get("title", f"前 {limit} {symbol} 持仓")
         layout_kwargs = kwargs.get("layout_kwargs", {})
 
         data = data.sort_values("weight", ascending=False)
         limit = min(limit, len(data))  # type: ignore
         target = data.head(limit)[["symbol", "weight"]].set_index("symbol")
         target = target.multiply(100)
-        axis_title = "Weight (%)"
+        axis_title = "权重 (%)"
 
         fig = bar_chart(
             target.reset_index(),

@@ -1,4 +1,4 @@
-"""Bond Trades Standard Model."""
+"""债券交易标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -16,25 +16,25 @@ from pydantic import Field, field_validator
 
 
 class BondTradesQueryParams(QueryParams):
-    """Bond Trades Query."""
+    """债券交易查询。"""
 
     country: str | None = Field(
         default=None,
-        description="The country to get data. Matches partial name.",
+        description="获取数据的国家。匹配部分名称。",
     )
     isin: str | None = Field(
         default=None,
-        description="ISIN of the bond.",
+        description="债券的 ISIN。",
     )
     issuer_type: Literal["government", "corporate", "municipal"] | None = Field(
         default=None,
-        description="Type of bond issuer.",
+        description="债券发行人类型。",
     )
     notional_currency: str | None = Field(
         default=None,
         description="""
-            Currency of the bond, which might differ from the currency of the trade.
-            Formatted as the 3-letter ISO 4217 code (e.g. GBP, EUR, USD).
+            债券货币，可能与交易货币不同。
+            格式为 3 字母 ISO 4217 代码（例如 GBP、EUR、USD）。
         """,
     )
     start_date: dateType | str | None = Field(
@@ -55,39 +55,39 @@ class BondTradesQueryParams(QueryParams):
     @field_validator("isin", "notional_currency", mode="before", check_fields=False)
     @classmethod
     def validate_upper_case(cls, v):
-        """Enforce upper case for fields."""
+        """强制字段为大写。"""
         return v.upper() if v else None
 
 
 class BondTradesData(Data):
-    """Bond Trades Data."""
+    """债券交易数据。"""
 
     trade_date: dateType | datetime | None = Field(
         default=None,
-        description="Date of the transaction.",
+        description="交易日期。",
     )
     isin: str | None = Field(
         default=None,
-        description="ISIN of the bond.",
+        description="债券的 ISIN。",
     )
-    figi: str | None = Field(default=None, description="FIGI of the bond.")
+    figi: str | None = Field(default=None, description="债券的 FIGI。")
     cusip: str | None = Field(
         default=None,
-        description="CUSIP of the bond.",
+        description="债券的 CUSIP。",
     )
     price: float | None = Field(
         default=None,
-        description="Price of the bond.",
+        description="债券价格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     current_yield: float | None = Field(
         default=None,
-        description="Current yield of the bond.",
+        description="债券的当前收益率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     coupon_rate: float | None = Field(
         default=None,
-        description="Coupon rate of the bond.",
+        description="债券的票面利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: int | None = Field(

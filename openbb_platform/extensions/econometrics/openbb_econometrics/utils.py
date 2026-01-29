@@ -1,4 +1,4 @@
-"""Utility functions for the econometrics extension of the OpenBB platform."""
+"""OpenBB 平台计量经济学扩展的实用函数。"""
 
 import warnings
 from typing import TYPE_CHECKING
@@ -10,57 +10,57 @@ if TYPE_CHECKING:
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: "Series", independent_series: "Series"
 ) -> tuple[float, float, float, "Series", float, float]:
-    """Estimate long-run and short-run cointegration relationship for series y and x.
+    """估计序列 y 和 x 的长期和短期协整关系。
+    
+    然后对协整应用两步恩格尔-格兰杰 (Engle & Granger) 检验。
 
-    Then apply the two-step Engle & Granger test for cointegration.
-
-    Uses a 2-step process to first estimate coefficients for the long-run relationship
+    使用两步过程首先估计长期关系的系数
         y_t = c + gamma * x_t + z_t
 
-    and then the short-term relationship,
+    然后是短期关系，
         y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
 
-    with z the found residuals of the first equation.
+    其中 z 是第一个方程的残差。
 
-    Then tests cointegration by Dickey-Fuller phi=1 vs phi < 1 in
+    然后在以下方程中通过 Dickey-Fuller phi=1 vs phi < 1 检验协整
         z_t = phi * z_(t-1) + eta_t
 
-    If this implies phi < 1, the z series is stationary is concluded to be
-    stationary, and thus the series y and x are concluded to be cointegrated.
+    如果这意味着 phi < 1，则得出结论 z 序列是平稳的
+    是平稳的，因此得出结论序列 y 和 x 是协整的。
 
     Parameters
     ----------
     dependent_series : pd.Series
-        The first time series of the pair to analyse.
+        要分析的一对中的第一个时间序列。
     independent_series : pd.Series
-        The second time series of the pair to analyse.
+        要分析的一对中的第二个时间序列。
 
     Returns
     -------
     Tuple[float, float, float, pd.Series, float, float]
         c : float
-            The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-            describes the static shift of y with respect to gamma * x.
+            长期关系 y_t = c + gamma * x_t + z_t 中的常数项。这
+            描述了 y 相对于 gamma * x 的静态偏移。
 
         gamma : float
-            The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-            describes the ratio between the const-shifted y and x.
+            长期关系 y_t = c + gamma * x_t + z_t 中的 gamma 项。这
+            描述了常数偏移后的 y 和 x 之间的比率。
 
         alpha : float
-            The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
-            gives an indication of the strength of the error correction toward the long-run mean.
+            短期关系 y_t - y_(t-1) = alpha * z_(t-1) + epsilon 中的 alpha 项。这
+            给出了向长期均值误差修正强度的指示。
 
         z : pd.Series
-            Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
-            the value of the error correction term.
+            来自长期关系 y_t = c + gamma * x_t + z_t 的残差 z_t 序列，表示
+            误差修正项的值。
 
         dfstat : float
-            The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
-            negative value implies the existence of stronger cointegration.
+            第二个方程中 phi = 1 vs phi < 1 的 Dickey Fuller 检验统计量。更
+            负的值意味着存在更强的协整。
 
         pvalue : float
-            The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
-            stronger rejection of no-cointegration, thus stronger evidence of cointegration.
+            对应于 Dickey Fuller 检验统计量的 p 值。较低的值意味着
+            更强烈地拒绝无协整，即协整的证据更强。
 
     """
     # pylint: disable=import-outside-toplevel
@@ -92,7 +92,7 @@ def get_engle_granger_two_step_cointegration_test(
 
 
 def mock_multi_index_data():
-    """Create a mock multi-index dataframe for testing purposes."""
+    """创建一个用于测试目的的模拟多重索引数据框。"""
     # pylint: disable=import-outside-toplevel
     from numpy import random
     from pandas import DataFrame, MultiIndex

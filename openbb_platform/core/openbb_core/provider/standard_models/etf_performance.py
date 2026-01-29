@@ -1,4 +1,4 @@
-"""ETF Performance Standard Model."""
+"""ETF 表现标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,11 +13,11 @@ from pydantic import Field, field_validator
 
 
 class ETFPerformanceQueryParams(QueryParams):
-    """ETF Performance Query."""
+    """ETF 表现查询。"""
 
     sort: Literal["asc", "desc"] = Field(
         default="desc",
-        description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
+        description="排序顺序。可能的值：'asc'，'desc'。默认值：'desc'。",
     )
     limit: int = Field(
         default=10,
@@ -27,27 +27,27 @@ class ETFPerformanceQueryParams(QueryParams):
     @field_validator("sort", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class ETFPerformanceData(Data):
-    """ETF Performance Data."""
+    """ETF 表现数据。"""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
     name: str = Field(
-        description="Name of the entity.",
+        description="实体名称。",
     )
     last_price: float = Field(
-        description="Last price.",
+        description="最新价格。",
     )
     percent_change: float = Field(
-        description="Percent change.",
+        description="百分比变化。",
     )
     net_change: float = Field(
-        description="Net change.",
+        description="净变化。",
     )
     volume: float = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""),

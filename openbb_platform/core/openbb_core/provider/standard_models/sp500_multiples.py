@@ -1,4 +1,4 @@
-"""SP500 Multiples Standard Model."""
+"""标普 500 指数倍数标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -52,10 +52,10 @@ SERIES_NAME = Literal[
 
 
 class SP500MultiplesQueryParams(QueryParams):
-    """SP500 Multiples Query."""
+    """标普 500 指数倍数查询。"""
 
     series_name: SERIES_NAME | str = Field(
-        description="The name of the series. Defaults to 'pe_month'.",
+        description="序列名称。默认为 'pe_month'。",
         default="pe_month",
     )
     start_date: dateType | None = Field(
@@ -67,12 +67,12 @@ class SP500MultiplesQueryParams(QueryParams):
 
 
 class SP500MultiplesData(Data):
-    """SP500 Multiples Data."""
+    """标普 500 指数倍数数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     name: str = Field(
-        description="Name of the series.",
+        description="序列名称。",
     )
     value: int | float = Field(
-        description="Value of the series.",
+        description="序列分值。",
     )

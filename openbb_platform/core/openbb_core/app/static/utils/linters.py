@@ -1,4 +1,4 @@
-"""Linters for the package."""
+"""包的 Linter。"""
 
 import shutil
 import subprocess
@@ -12,16 +12,16 @@ from openbb_core.env import Env
 
 
 class Linters:
-    """Run the linters for the Platform."""
+    """为平台运行 Linter。"""
 
     def __init__(self, directory: Path, verbose: bool = False) -> None:
-        """Initialize the linters."""
+        """初始化 Linter。"""
         self.directory = directory
         self.verbose = verbose
         self.console = Console(verbose)
 
     def print_separator(self, symbol: str, length: int = 122):
-        """Print a separator."""
+        """打印分隔符。"""
         self.console.log(symbol * length)
 
     def run(
@@ -29,7 +29,7 @@ class Linters:
         linter: Literal["black", "ruff"],
         flags: list[str] | None = None,
     ):
-        """Run linter with flags."""
+        """使用标志运行 linter。"""
         if shutil.which(linter):
             self.console.log(f"\n* {linter}")
             self.print_separator("^")
@@ -43,17 +43,17 @@ class Linters:
 
             self.print_separator("-")
         else:
-            self.console.log(f"\n* {linter} not found")
+            self.console.log(f"\n* 未找到 {linter}")
 
     def black(self):
-        """Run black."""
+        """运行 black。"""
         flags = ["--line-length", "122"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--quiet")
         self.run(linter="black", flags=flags)
 
     def ruff(self):
-        """Run ruff."""
+        """运行 ruff。"""
         self.black()
         flags = ["check", "--fix"]
         if not self.verbose and not Env().DEBUG_MODE:

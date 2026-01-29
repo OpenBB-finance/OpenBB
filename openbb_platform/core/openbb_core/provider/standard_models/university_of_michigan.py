@@ -1,4 +1,4 @@
-"""University Of Michigan Survey Standard Model."""
+"""密歇根大学调查标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class UofMichiganQueryParams(QueryParams):
-    """University Of Michigan Survey Query."""
+    """密歇根大学调查查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,16 +27,15 @@ class UofMichiganQueryParams(QueryParams):
 
 
 class UofMichiganData(Data):
-    """University Of Michigan Survey Data."""
+    """密歇根大学调查数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     consumer_sentiment: float | None = Field(
         default=None,
-        description="Index of the results of the University of Michigan's monthly Survey of Consumers,"
-        + " which is used to estimate future spending and saving.  (1966:Q1=100).",
+        description="密歇根大学每月消费者调查结果指数，用于评估未来的支出和储蓄。（1966:Q1=100）。",
     )
     inflation_expectation: float | None = Field(
         default=None,
-        description="Median expected price change next 12 months, Surveys of Consumers.",
+        description="消费者调查中对未来 12 个月价格变化的预期中位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

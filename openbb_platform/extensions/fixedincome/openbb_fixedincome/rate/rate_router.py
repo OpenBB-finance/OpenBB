@@ -1,4 +1,4 @@
-"""Fixed Income Rate Router."""
+"""固定收益利率路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -21,7 +21,7 @@ router = Router(prefix="/rate")
     examples=[
         APIEx(parameters={"provider": "fred"}),
         APIEx(
-            description="The change from one year ago is applied with the transform parameter.",
+            description="使用 transform 参数应用一年前的变化。",
             parameters={"maturity": "all", "transform": "pc1", "provider": "fred"},
         ),
     ],
@@ -32,11 +32,11 @@ async def ameribor(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """AMERIBOR.
+    """AMERIBOR。
 
-    AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
-    short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
-    American Financial Exchange (AFX).
+    AMERIBOR（美国银行间同业拆借利率的缩写）是一种基准利率，反映了
+    短期银行间借款的真实成本。该利率基于在
+    美国金融交易所 (AFX) 进行的隔夜无抵押贷款交易。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -54,11 +54,10 @@ async def sonia(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Sterling Overnight Index Average.
+    """英镑隔夜指数平均值。
 
-    SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
-    transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
-    financial institutions and other institutional investors.
+    SONIA（英镑隔夜指数平均值）是一个重要的利率基准。SONIA 基于实际
+    交易，反映了银行从其他金融机构和其他机构投资者借入隔夜英镑所支付的平均利率。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -75,10 +74,10 @@ async def sofr(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Secured Overnight Financing Rate.
+    """有担保隔夜融资利率。
 
-    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-    borrowing cash overnight collateralizing by Treasury securities.
+    有担保隔夜融资利率 (SOFR) 是衡量以国债作为抵押
+    隔夜借入现金成本的广泛指标。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -93,11 +92,11 @@ async def iorb(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Interest on Reserve Balances.
+    """准备金余额利息。
 
-    Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
-    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-    United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+    获取准备金余额利率数据。银行利率是一个国家的中央银行向其
+    国内银行收取的借款利率。中央银行收取的利率旨在稳定经济。在
+    美国，联邦储备系统理事会设定银行利率，也称为贴现率。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -115,10 +114,10 @@ async def effr(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Fed Funds Rate.
+    """联邦基金利率。
 
-    Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy.
+    获取有效联邦基金利率数据。银行利率是一个国家的中央银行向其
+    国内银行收取的借款利率。中央银行收取的利率旨在稳定经济。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -136,12 +135,11 @@ async def effr_forecast(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Fed Funds Rate Projections.
+    """联邦基金利率预测。
 
-    The projections for the federal funds rate are the value of the midpoint of the
-    projected appropriate target range for the federal funds rate or the projected
-    appropriate target level for the federal funds rate at the end of the specified
-    calendar year or over the longer run.
+    联邦基金利率的预测是
+    联邦基金利率的预计适当目标范围的中值，或
+    在指定日历年末或长期内联邦基金利率的预计适当目标水平。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -159,12 +157,12 @@ async def estr(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Euro Short-Term Rate.
+    """欧元短期利率。
 
-    The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
-    the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
-    the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
-    executed at arm's length and thus reflect market rates in an unbiased way.
+    欧元短期利率 (€STR) 反映了位于欧元区的银行的批发欧元无抵押隔夜借款成本。
+    €STR 在每个 TARGET2 工作日发布，基于在
+    前一个 TARGET2 工作日（报告日期 “T”）进行和结算的交易，到期日为 T+1，这些交易被视为
+    按公平原则执行，因此以公正的方式反映市场利率。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -182,14 +180,14 @@ async def ecb(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """European Central Bank Interest Rates.
+    """欧洲中央银行利率。
 
-    The Governing Council of the ECB sets the key interest rates for the euro area:
+    欧洲央行管理委员会设定欧元区的关键利率：
 
-    - The interest rate on the main refinancing operations (MRO), which provide
-    the bulk of liquidity to the banking system.
-    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
-    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+    - 主要再融资操作 (MRO) 的利率，为银行系统提供
+    大量流动性。
+    - 存款便利利率，银行可利用该利率在欧元系统进行隔夜存款。
+    - 边际贷款便利利率，为银行提供来自欧元系统的隔夜信贷。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -213,12 +211,12 @@ async def dpcredit(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Discount Window Primary Credit Rate.
+    """贴现窗口一级信贷利率。
 
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
-    The rates central banks charge are set to stabilize the economy.
-    In the United States, the Federal Reserve System's Board of Governors set the bank rate,
-    also known as the discount rate.
+    银行利率是一个国家的中央银行向其国内银行收取的借款利率。
+    中央银行收取的利率旨在稳定经济。
+    在美国，联邦储备系统理事会设定银行利率，
+    也称为贴现率。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -233,10 +231,10 @@ async def overnight_bank_funding(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Overnight Bank Funding.
+    """隔夜银行融资。
 
-    For the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of
-    overnight federal funds transactions and Eurodollar transactions reported in the
-    FR 2420 Report of Selected Money Market Rates.
+    对于美国，隔夜银行融资利率 (OBFR) 计算为
+    FR 2420 选定货币市场利率报告中报告的隔夜联邦基金交易和欧洲美元交易的
+    成交量加权中值。
     """
     return await OBBject.from_query(Query(**locals()))

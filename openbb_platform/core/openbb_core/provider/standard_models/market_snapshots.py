@@ -1,4 +1,4 @@
-"""Market Snapshots Standard Model."""
+"""市场快照标准模型。"""
 
 from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,18 +7,18 @@ from pydantic import Field
 
 
 class MarketSnapshotsQueryParams(QueryParams):
-    """Market Snapshots Query."""
+    """市场快照查询。"""
 
 
 class MarketSnapshotsData(Data):
-    """Market Snapshots Data."""
+    """市场快照数据。"""
 
     exchange: str | None = Field(
-        description="Exchange the security is listed on.", default=None
+        description="证券上市的交易所。", default=None
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str | None = Field(
-        description="Name of the company, fund, or security.", default=None
+        description="公司、基金或证券的名称。", default=None
     )
     open: float | None = Field(
         description=DATA_DESCRIPTIONS.get("open", ""),
@@ -44,11 +44,11 @@ class MarketSnapshotsData(Data):
         default=None,
     )
     change: float | None = Field(
-        description="The change in price from the previous close.",
+        description="较前一收盘价的价格变化。",
         default=None,
     )
     change_percent: float | None = Field(
-        description="The change in price from the previous close, as a normalized percent.",
+        description="较前一收盘价的价格百分比变化。",
         default=None,
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

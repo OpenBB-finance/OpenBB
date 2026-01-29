@@ -1,4 +1,4 @@
-"""Survey Of Economic Conditions - Chicago - Standard Model."""
+"""芝加哥经济状况调查标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class SurveyOfEconomicConditionsChicagoQueryParams(QueryParams):
-    """Survey Of Economic Conditions - Chicago - Query."""
+    """芝加哥经济状况调查查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,29 +27,29 @@ class SurveyOfEconomicConditionsChicagoQueryParams(QueryParams):
 
 
 class SurveyOfEconomicConditionsChicagoData(Data):
-    """Survey Of Economic Conditions - Chicago - Data."""
+    """芝加哥经济状况调查数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    activity_index: float | None = Field(default=None, description="Activity Index.")
+    activity_index: float | None = Field(default=None, description="活动指数。")
     one_year_outlook: float | None = Field(
-        default=None, description="One Year Outlook Index."
+        default=None, description="一年展望指数。"
     )
     manufacturing_activity: float | None = Field(
-        default=None, description="Manufacturing Activity Index."
+        default=None, description="制造业活动指数。"
     )
     non_manufacturing_activity: float | None = Field(
-        default=None, description="Non-Manufacturing Activity Index."
+        default=None, description="非制造业活动指数。"
     )
     capital_expenditures_expectations: float | None = Field(
-        default=None, description="Capital Expenditures Expectations Index."
+        default=None, description="资本支出预期指数。"
     )
     hiring_expectations: float | None = Field(
-        default=None, description="Hiring Expectations Index."
+        default=None, description="招聘预期指数。"
     )
     current_hiring: float | None = Field(
-        default=None, description="Current Hiring Index."
+        default=None, description="当前招聘指数。"
     )
-    labor_costs: float | None = Field(default=None, description="Labor Costs Index.")
+    labor_costs: float | None = Field(default=None, description="劳动力成本指数。")
     non_labor_costs: float | None = Field(
-        default=None, description="Non-Labor Costs Index."
+        default=None, description="非劳动力成本指数。"
     )

@@ -1,4 +1,4 @@
-"""Script to build the OpenBB platform static assets."""
+"""用于构建 OpenBB 平台静态资产的脚本。"""
 
 # flake8: noqa: S603
 # pylint: disable=import-outside-toplevel,unused-import
@@ -16,10 +16,10 @@ logger.addHandler(handler)
 
 
 def main():
-    """Build the OpenBB platform static assets."""
+    """构建 OpenBB 平台静态资产。"""
     try:
-        logger.info("Attempting to import the OpenBB package...\n")
-        # Try importing openbb in a subprocess and capture output
+        logger.info("正在尝试导入 OpenBB 包...\n")
+        # 尝试在子进程中导入 openbb 并捕获输出
         result = subprocess.run(
             [sys.executable, "-c", "import openbb"],
             capture_output=True,
@@ -47,21 +47,21 @@ def main():
 
     except (ModuleNotFoundError, subprocess.CalledProcessError) as exc:
         logger.info(
-            "The OpenBB build package"
-            "may have been uninstalled or corrupted. "
-            "Try `pip uninstall openbb` and reinstalling `openbb-core` in the environment.\n"
+            "OpenBB 构建包"
+            "可能已卸载或损坏。"
+            "尝试 `pip uninstall openbb` 并在环境中重新安装 `openbb-core`。\n"
         )
         raise exc from None
 
     if not building_found:
-        logger.info("Did not build on import, triggering rebuild...\n")
+        logger.info("导入时未构建，正在触重建...\n")
         try:
             import openbb  # noqa
 
             openbb.build()
         except Exception as e:  # pylint: disable=broad-except
             raise RuntimeError(  # noqa
-                "Failed to build the OpenBB platform static assets. \n"
+                "未能构建 OpenBB 平台静态资产。\n"
                 f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # type:ignore  # pylint: disable=E1101
                 f"{e.__traceback__.tb_lineno}"  # type:ignore
                 if hasattr(e, "__traceback__")
@@ -78,7 +78,7 @@ def main():
                     e.__traceback__,  # type:ignore
                     "tb_lineno",
                 )
-                else f"Failed to build the OpenBB platform static assets. \n{e}"
+                else f"未能构建 OpenBB 平台静态资产。\n{e}"
             ) from e
     sys.exit(0)
 

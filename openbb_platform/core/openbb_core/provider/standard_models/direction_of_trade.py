@@ -1,4 +1,4 @@
-"""Direction Of Trade Standard Model."""
+"""贸易方向标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class DirectionOfTradeQueryParams(QueryParams):
-    """Direction Of Trade Query."""
+    """贸易方向查询。"""
 
     __json_schema_extra__ = {
         "direction": {
@@ -27,16 +27,16 @@ class DirectionOfTradeQueryParams(QueryParams):
     country: str | None = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("country", "")
-        + " None is an equiavlent to 'all'. If 'all' is used, the counterpart field cannot be 'all'.",
+        + " None 等同于 'all'。如果使用了 'all'，则对应方字段不能为 'all'。",
     )
     counterpart: str | None = Field(
         default=None,
-        description="Counterpart country to the trade. None is an equiavlent to 'all'."
-        + " If 'all' is used, the country field cannot be 'all'.",
+        description="贸易对应国家。None 等同于 'all'。"
+        + " 如果使用了 'all'，则国家字段不能为 'all'。",
     )
     direction: Literal["exports", "imports", "balance", "all"] = Field(
         default="balance",
-        description="Trade direction. Use 'all' to get all data for this dimension.",
+        description="贸易方向。使用 'all' 获取此维度的所有数据。",
     )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -50,16 +50,16 @@ class DirectionOfTradeQueryParams(QueryParams):
 
 
 class DirectionOfTradeData(Data):
-    """Direction Of Trade Data."""
+    """贸易方向数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     country: str = Field(description=DATA_DESCRIPTIONS.get("country", ""))
-    counterpart: str = Field(description="Counterpart country or region to the trade.")
+    counterpart: str = Field(description="贸易对应国家或地区。")
     title: str | None = Field(
-        default=None, description="Title corresponding to the symbol."
+        default=None, description="符号对应的标题。"
     )
-    value: float = Field(description="Trade value.")
-    scale: str | None = Field(default=None, description="Scale of the value.")
+    value: float = Field(description="贸易值。")
+    scale: str | None = Field(default=None, description="值的缩放比例。")

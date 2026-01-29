@@ -1,4 +1,4 @@
-"""Port information and metadata."""
+"""港口信息与元数据。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -6,10 +6,10 @@ from pydantic import Field
 
 
 class PortInfoQueryParams(QueryParams):
-    """Port Information Query."""
+    """港口信息查询。"""
 
 
 class PortInfoData(Data):
-    """Port Information Data."""
+    """港口信息数据。"""
 
-    port_code: str = Field(description="Unique ID assigned to the port by the source.")
+    port_code: str = Field(description="由来源方分配给该港口的唯一 ID。")

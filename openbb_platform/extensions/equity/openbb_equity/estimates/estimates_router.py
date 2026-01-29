@@ -1,4 +1,4 @@
-"""Estimates Router."""
+"""估计路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -21,7 +21,7 @@ router = Router(prefix="/estimates")
     examples=[
         APIEx(parameters={"provider": "benzinga"}),
         APIEx(
-            description="Get price targets for Microsoft using 'benzinga' as provider.",
+            description="使用 'benzinga' 作为提供商获取 Microsoft 的价格目标。",
             parameters={
                 "start_date": "2020-01-01",
                 "end_date": "2024-02-16",
@@ -39,7 +39,7 @@ async def price_target(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get analyst price targets by company."""
+    """获取按公司划分的分析师价格目标。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -55,7 +55,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical analyst estimates for earnings and revenue."""
+    """获取收益和收入的历史分析师估计。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -72,7 +72,7 @@ async def consensus(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get consensus price target and recommendation."""
+    """获取一致的价格目标和建议。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -89,7 +89,7 @@ async def analyst_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search for specific analysts and get their forecast track record."""
+    """搜索特定分析师并获取他们的预测记录。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -112,7 +112,7 @@ async def forward_sales(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get forward sales estimates."""
+    """获取远期销售额估计。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -142,7 +142,7 @@ async def forward_ebitda(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get forward EBITDA estimates."""
+    """获取远期 EBITDA 估计。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -165,7 +165,7 @@ async def forward_eps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get forward EPS estimates."""
+    """获取远期每股收益 (EPS) 估计。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -187,5 +187,5 @@ async def forward_pe(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get forward PE estimates."""
+    """获取远期市盈率 (PE) 估计。"""
     return await OBBject.from_query(Query(**locals()))

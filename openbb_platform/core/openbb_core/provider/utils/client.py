@@ -1,4 +1,4 @@
-"""Aiohttp client."""
+"""Aiohttp 客户端。"""
 
 # pylint: disable=protected-access,invalid-overridden-method
 import asyncio
@@ -13,7 +13,7 @@ FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
 
 
 def obfuscate(params: CIMultiDict[str] | MultiDict[str]) -> dict[str, Any]:
-    """Obfuscate sensitive information."""
+    """混淆敏感信息。"""
     # pylint: disable=import-outside-toplevel
     import re
 
@@ -24,7 +24,7 @@ def obfuscate(params: CIMultiDict[str] | MultiDict[str]) -> dict[str, Any]:
 
 
 def get_user_agent() -> str:
-    """Get a not very random user agent."""
+    """获取一个不太随机的用户代理。"""
     user_agent_strings = [
         "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
@@ -39,10 +39,10 @@ def get_user_agent() -> str:
 
 
 class ClientResponse(aiohttp.ClientResponse):
-    """Client response class."""
+    """客户端响应类。"""
 
     def __init__(self, *args, **kwargs):
-        """Initialize the response."""
+        """初始化响应。"""
         kwargs["request_info"] = self.obfuscate_request_info(kwargs["request_info"])
         super().__init__(*args, **kwargs)
 
@@ -50,7 +50,7 @@ class ClientResponse(aiohttp.ClientResponse):
     def obfuscate_request_info(
         cls, request_info: aiohttp.RequestInfo
     ) -> aiohttp.RequestInfo:
-        """Remove sensitive information from request info."""
+        """从请求信息中删除敏感信息。"""
         query = obfuscate(request_info.url.query.copy())
         headers = CIMultiDictProxy(CIMultiDict(obfuscate(request_info.headers.copy())))
         url = request_info.url.with_query(query)
@@ -58,18 +58,18 @@ class ClientResponse(aiohttp.ClientResponse):
         return aiohttp.RequestInfo(url, request_info.method, headers, url)
 
     async def json(self, **kwargs) -> dict | list:
-        """Return the json response."""
+        """返回 json 响应。"""
         return await super().json(**kwargs)
 
 
 class ClientSession(aiohttp.ClientSession):
-    """Client session."""
+    """客户端会话。"""
 
     _response_class: type[ClientResponse]
     _session: "ClientSession"
 
     def __init__(self, *args, **kwargs):
-        """Initialize the session."""
+        """初始化会话。"""
         kwargs["connector"] = kwargs.get(
             "connector", aiohttp.TCPConnector(ttl_dns_cache=300)
         )
@@ -80,25 +80,25 @@ class ClientSession(aiohttp.ClientSession):
 
     # pylint: disable=unused-argument
     def __del__(self, _warnings: Any = warnings) -> None:
-        """Close the session."""
+        """关闭会话。"""
         if not self.closed:
             asyncio.create_task(self.close())
 
     async def get(self, url: str, **kwargs) -> ClientResponse:  # type: ignore
-        """Send GET request."""
+        """发送 GET 请求。"""
         return await self.request("GET", url, **kwargs)
 
     async def post(self, url: str, **kwargs) -> ClientResponse:  # type: ignore
-        """Send POST request."""
+        """发送 POST 请求。"""
         return await self.request("POST", url, **kwargs)
 
     async def get_json(self, url: str, **kwargs) -> dict | list:
-        """Send GET request and return json."""
+        """发送 GET 请求并返回 json。"""
         response = await self.request("GET", url, **kwargs)
         return await response.json()
 
     async def get_one(self, url: str, **kwargs) -> dict[str, Any]:
-        """Send GET request and return first item in json if list."""
+        """发送 GET 请求；如果是列表，则返回 json 中的第一项。"""
         response = await self.request("GET", url, **kwargs)
         data = await response.json()
 
@@ -108,7 +108,7 @@ class ClientSession(aiohttp.ClientSession):
         return data
 
     async def request(self, *args, raise_for_status: bool = False, **kwargs) -> ClientResponse:  # type: ignore
-        """Send request."""
+        """发送请求。"""
         # pylint: disable=import-outside-toplevel
         import zlib
 

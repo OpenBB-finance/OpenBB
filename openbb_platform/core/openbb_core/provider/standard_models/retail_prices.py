@@ -1,4 +1,4 @@
-"""Retail Prices Standard Model."""
+"""零售价格标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,11 +12,11 @@ from pydantic import Field
 
 
 class RetailPricesQueryParams(QueryParams):
-    """Retail Prices Query."""
+    """零售价格查询。"""
 
     item: str | None = Field(
         default=None,
-        description="The item or basket of items to query.",
+        description="待查询的项目或项目篮子。",
     )
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
@@ -31,7 +31,7 @@ class RetailPricesQueryParams(QueryParams):
 
 
 class RetailPricesData(Data):
-    """Retail Prices Data."""
+    """零售价格数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
@@ -46,9 +46,9 @@ class RetailPricesData(Data):
     )
     description: str = Field(
         default=None,
-        description="Description of the item.",
+        description="项目描述。",
     )
     value: float | None = Field(
         default=None,
-        description="Price, or change in price, per unit.",
+        description="每单位的价格或价格变动。",
     )

@@ -1,4 +1,4 @@
-"""AMERIBOR Standard Model."""
+"""AMERIBOR 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class AmeriborQueryParams(QueryParams):
-    """AMERIBOR Query."""
+    """AMERIBOR 查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,18 +25,18 @@ class AmeriborQueryParams(QueryParams):
 
 
 class AmeriborData(Data):
-    """AMERIBOR Data."""
+    """AMERIBOR 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    maturity: str = Field(description="Maturity length of the item.")
+    maturity: str = Field(description="项目的到期长度。")
     rate: float = Field(
-        description="Interest rate.",
+        description="利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     title: str | None = Field(
         default=None,
-        description="Title of the series.",
+        description="系列的标题。",
     )

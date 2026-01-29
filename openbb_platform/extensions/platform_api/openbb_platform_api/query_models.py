@@ -1,4 +1,4 @@
-"""OpenBB Workspace Query Models."""
+"""OpenBB Workspace 查询模型。"""
 
 from typing import Any
 
@@ -8,7 +8,7 @@ from pydantic.alias_generators import to_snake
 
 
 class OmniWidgetInput(Data):
-    """Input for OmniWidget."""
+    """OmniWidget 的输入。"""
 
     model_config = ConfigDict(
         extra="allow",
@@ -37,7 +37,7 @@ class OmniWidgetInput(Data):
     @field_validator("prompt", mode="before")
     @classmethod
     def _validate_prompt(cls, v):
-        """Validate and parse the prompt field."""
+        """验证并解析提示字段。"""
         # pylint: disable=import-outside-toplevel
         import json
         import re

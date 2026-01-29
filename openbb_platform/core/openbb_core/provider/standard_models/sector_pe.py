@@ -1,4 +1,4 @@
-"""Sector P/E Ratio Standard Model."""
+"""板块市盈率标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,17 +9,17 @@ from pydantic import Field
 
 
 class SectorPEQueryParams(QueryParams):
-    """Sector P/E Ratio Query."""
+    """板块市盈率查询。"""
 
 
 class SectorPEData(Data):
-    """Sector P/E Ratio Data."""
+    """板块市盈率数据。"""
 
     date: dateType | None = Field(
         description=DATA_DESCRIPTIONS.get("date", ""), default=None
     )
     exchange: str | None = Field(
-        default=None, description="The exchange where the data is from."
+        default=None, description="数据的来源交易所。"
     )
-    sector: str = Field(description="The name of the sector.")
-    pe: float = Field(description="The P/E ratio of the sector.")
+    sector: str = Field(description="板块名称。")
+    pe: float = Field(description="板块市盈率。")

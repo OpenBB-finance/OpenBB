@@ -1,4 +1,4 @@
-"""Forecast GDP Standard Model."""
+"""GDP 预测标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class GdpForecastQueryParams(QueryParams):
-    """Forecast GDP Query."""
+    """GDP 预测查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -23,10 +23,10 @@ class GdpForecastQueryParams(QueryParams):
 
 
 class GdpForecastData(Data):
-    """Forecast GDP Data."""
+    """GDP 预测数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     country: str = Field(description=DATA_DESCRIPTIONS.get("country"))
     value: int | float = Field(
-        description="Forecasted GDP value for the country and date."
+        description="该国家和日期的 GDP 预测值。"
     )

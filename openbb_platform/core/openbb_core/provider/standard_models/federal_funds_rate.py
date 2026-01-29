@@ -1,4 +1,4 @@
-"""Federal Funds Rate Standard Model."""
+"""联邦基金利率标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class FederalFundsRateQueryParams(QueryParams):
-    """Federal Funds Rate Query."""
+    """联邦基金利率查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,47 +25,47 @@ class FederalFundsRateQueryParams(QueryParams):
 
 
 class FederalFundsRateData(Data):
-    """Federal Funds Rate Data."""
+    """联邦基金利率数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: float = Field(
-        description="Effective federal funds rate.",
+        description="有效联邦基金利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     target_range_upper: float | None = Field(
         default=None,
-        description="Upper bound of the target range.",
+        description="目标范围的上限。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     target_range_lower: float | None = Field(
         default=None,
-        description="Lower bound of the target range.",
+        description="目标范围的下限。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_1: float | None = Field(
         default=None,
-        description="1st percentile of the distribution.",
+        description="分布的第 1 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_25: float | None = Field(
         default=None,
-        description="25th percentile of the distribution.",
+        description="分布的第 25 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_75: float | None = Field(
         default=None,
-        description="75th percentile of the distribution.",
+        description="分布的第 75 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     percentile_99: float | None = Field(
         default=None,
-        description="99th percentile of the distribution.",
+        description="分布的第 99 百分位数。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: float | None = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("volume", "")
-        + "The notional volume of transactions (Billions of $).",
+        + "名义交易量（十亿美元）。",
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e9,

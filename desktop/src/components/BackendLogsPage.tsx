@@ -27,10 +27,10 @@ const BackendLogsPage: React.FC = () => {
   // Find all matches in the logs
   const searchMatches = useMemo(() => {
     if (!searchTerm) return [];
-    
+
     const matches: { logIndex: number; startIndex: number; endIndex: number }[] = [];
     const searchRegex = new RegExp(
-      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 
+      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
       caseSensitive ? 'g' : 'gi'
     );
 
@@ -63,7 +63,7 @@ const BackendLogsPage: React.FC = () => {
         m => m.logIndex === logIndex && m.startIndex === match.startIndex
       );
       const isCurrentMatch = globalMatchIndex === currentMatchIndex;
-      
+
       highlightedContent += content.slice(lastIndex, match.startIndex);
       highlightedContent += `<span class="${isCurrentMatch ? 'search-highlight-current' : 'search-highlight'}">${content.slice(match.startIndex, match.endIndex)}</span>`;
       lastIndex = match.endIndex;
@@ -76,11 +76,11 @@ const BackendLogsPage: React.FC = () => {
   // Scroll to current match
   const scrollToMatch = (matchIndex: number) => {
     if (matchIndex < 0 || matchIndex >= searchMatches.length || !logContainerRef.current) return;
-    
+
     const match = searchMatches[matchIndex];
     const logElements = logContainerRef.current.querySelectorAll('[data-log-index]');
     const targetElement = logElements[match.logIndex] as HTMLElement;
-    
+
     if (targetElement) {
       requestAnimationFrame(() => {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -148,12 +148,12 @@ const BackendLogsPage: React.FC = () => {
 
   useEffect(() => {
     if (!backendId) {
-      setError('No backend ID provided');
+      setError('未提供后端 ID');
       setLoading(false);
       return;
     }
     const processId = `backend-${backendId}`;
-    invoke("register_process_monitoring", { processId }).catch(() => {});
+    invoke("register_process_monitoring", { processId }).catch(() => { });
     const fetchInitialLogs = async () => {
       try {
         setLoading(true);
@@ -165,7 +165,7 @@ const BackendLogsPage: React.FC = () => {
         }
         setLoading(false);
       } catch (err) {
-        setError(`Failed to load logs: ${err}`);
+        setError(`加载日志失败: ${err}`);
         setLoading(false);
       }
     };
@@ -177,7 +177,7 @@ const BackendLogsPage: React.FC = () => {
       }
     });
     return () => {
-      unsubscribe.then(fn => fn()).catch(() => {});
+      unsubscribe.then(fn => fn()).catch(() => { });
     };
   }, [backendId]);
 
@@ -197,7 +197,7 @@ const BackendLogsPage: React.FC = () => {
       {!searchVisible && (
         <div className="search-help-container opacity-0 hover:opacity-100 transition-opacity hover:cursor-default">
           <div className="body-xs-regular text-theme-muted items-center justify-center">
-            Press Ctrl+F (Cmd+F) to search
+            按 Ctrl+F (Cmd+F) 进行搜索
           </div>
         </div>
       )}
@@ -218,7 +218,7 @@ const BackendLogsPage: React.FC = () => {
 
       <div className="jupyter-logs-content-section flex-grow flex flex-col">
         <div
-          ref={logContainerRef} 
+          ref={logContainerRef}
           className="jupyter-logs-content w-full flex-grow overflow-auto bg-theme-secondary font-mono text-xs whitespace-pre-wrap"
         >
           {loading && logs.length === 0 ? (
@@ -228,12 +228,12 @@ const BackendLogsPage: React.FC = () => {
           ) : error ? (
             <div className="text-red-500 py-2 px-2">{error}</div>
           ) : logs.length === 0 ? (
-            <div className="text-theme-secondary">No logs available for this backend. Try starting a backend service first.</div>
+            <div className="text-theme-secondary">此后端没有可用日志。请尝试先启动后端服务。</div>
           ) : (
             <div>
               {logs.map((log, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="py-0.5"
                   data-log-index={index}
                   dangerouslySetInnerHTML={{

@@ -1,4 +1,4 @@
-"""Commands: generates the command map."""
+"""Commands：生成命令映射。"""
 
 import inspect
 from collections.abc import Callable
@@ -38,7 +38,7 @@ router = APIRouter(prefix="")
 
 
 def build_new_annotation_map(sig: Signature) -> dict[str, Any]:
-    """Build new annotation map."""
+    """构建新的注释映射。"""
     annotation_map = {}
     parameter_list = sig.parameters.values()
 
@@ -51,7 +51,7 @@ def build_new_annotation_map(sig: Signature) -> dict[str, Any]:
 
 
 def build_new_signature(path: str, func: Callable) -> Signature:
-    """Build new function signature."""
+    """构建新的函数签名。"""
     sig = signature(func)
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
@@ -64,25 +64,25 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             and parameter.annotation == CommandContext
             or parameter.name in ["kwargs", "args", "*", "**", "**kwargs", "*args"]
         ):
-            # We do not add kwargs into the finished API signature.
-            # Kwargs will be passed to every function that accepts them,
-            # but we won't force the endpoint to take them.
-            # We read the original signature in the wrapper to
-            # determine if kwargs can be passed to the locals.
+            # 我们不会将 kwargs 添加到完成的 API 签名中。
+            # Kwargs 将传递给每个接受它们的函数，
+            # 但我们不会强制端点接受它们。
+            # 我们在包装器中读取原始签名以
+            # 确定 kwargs 是否可以传递给局部变量。
             continue
 
-        # These are path parameters or dependency injections.
+        # 这些是路径参数或依赖注入。
         if parameter.kind == Parameter.VAR_KEYWORD:
-            # We track VAR_KEYWORD parameter to insert the any additional
-            # parameters we need to add before it and avoid a SyntaxError
+            # 我们跟踪 VAR_KEYWORD 参数以在我们通过它之前插入任何额外的
+            # 参数，并避免 SyntaxError
             var_kw_pos = pos
 
         if get_origin(parameter.annotation) is Annotated:
-            # Get the metadata from Annotated
+            # 从 Annotated 获取元数据
             metadata = get_args(parameter.annotation)[1:]
-            # Check if any metadata item is a Depends instance
+            # 检查是否有任何元数据项是 Depends 实例
             if any(isinstance(m, DependsParam) for m in metadata):
-                # Insert at var_kw_pos with include_in_schema=False
+                # 在 var_kw_pos 处插入，include_in_schema=False
                 new_parameter_list.insert(
                     var_kw_pos,
                     Parameter(
@@ -151,11 +151,11 @@ def build_new_signature(path: str, func: Callable) -> Signature:
 
 def validate_output(c_out: OBBject) -> OBBject:
     """
-    Validate OBBject object.
+    验证 OBBject 对象。
 
-    Checks against the OBBject schema and removes fields that contain the
-    `exclude_from_api` extra `pydantic.Field` kwarg.
-    Note that the modification to the `OBBject` object is done in-place.
+    根据 OBBject 架构进行检查，并删除包含
+    `exclude_from_api` 额外 `pydantic.Field` kwarg 的字段。
+    请注意，对 `OBBject` 对象的修改是就地完成的。
 
     Parameters
     ----------
@@ -176,7 +176,7 @@ def validate_output(c_out: OBBject) -> OBBject:
         field = getattr(type(c_out), "model_fields", {}).get(key, None)
         json_schema_extra = field.json_schema_extra if field else None
 
-        # case where 1st layer field needs to be excluded
+        # 第一层字段需要被排除的情况
         if (
             json_schema_extra
             and isinstance(json_schema_extra, dict)
@@ -184,7 +184,7 @@ def validate_output(c_out: OBBject) -> OBBject:
         ):
             delattr(c_out, key)
 
-        # if it's a model with nested fields
+        # 如果它是具有嵌套字段的模型
         elif is_model(type_):
             for field_name, field in type_.model_fields.items():
                 extra = getattr(field, "json_schema_extra", None)
@@ -195,11 +195,11 @@ def validate_output(c_out: OBBject) -> OBBject:
                 ):
                     delattr(value, field_name)
 
-                # if it's a yet a nested model we need to go deeper in the recursion
+                # 如果它是一个嵌套模型，我们需要深入递归
                 elif is_model(getattr(field, "annotation", None)):
                     exclude_fields_from_api(field_name, getattr(value, field_name))
 
-    # Let a non-OBBject object pass through without validation
+    # 让非 OBBject 对象通过而不进行验证
     if not isinstance(c_out, OBBject):
         return c_out
 
@@ -213,7 +213,7 @@ def build_api_wrapper(
     command_runner: CommandRunner,
     route: APIRoute,
 ) -> Callable:
-    """Build API wrapper for a command."""
+    """为命令构建 API 包装器。"""
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
     original_signature = signature(func)
@@ -277,13 +277,13 @@ def build_api_wrapper(
         kwargs["standard_params"] = standard_params
         kwargs["extra_params"] = extra_params
 
-        # We need to insert dependency objects that are
-        # Added at the Router level and may not be part
-        # of the function signature.
+        # 我们需要插入那些已在
+        # 路由器级别添加的对象，这些对象可能不是
+        # 函数签名的一部分。
         dependencies = route.dependencies or []
         dep_names: list = []
-        # Only inject the dependency if the endpoint
-        # accepts undefined arguments.
+        # 仅当端点接受未定义参数时
+        # 才注入依赖项。
         if has_var_kwargs and "kwargs" not in kwargs:
             kwargs["kwargs"] = {}
 
@@ -306,7 +306,7 @@ def build_api_wrapper(
         output = await execute(*args, **kwargs)
 
         if isinstance(output, OBBject):
-            # This is where we check for `on_command_output` extensions
+            # 这是我们检查 `on_command_output` 扩展的地方
             mutated_output = getattr(output, "_extension_modified", False)
             results_only = getattr(output, "_results_only", False)
             try:
@@ -343,7 +343,7 @@ def build_api_wrapper(
 
 
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
-    """Add command map to the API router."""
+    """将命令映射添加到 API 路由器。"""
     plugins_router = RouterLoader.from_extensions()
 
     for route in plugins_router.api_router.routes:

@@ -1,4 +1,4 @@
-"""Balance of Payments Model."""
+"""国际收支模型。"""
 
 from datetime import (
     date as dateType,
@@ -10,11 +10,11 @@ from pydantic import Field
 
 
 class BalanceOfPaymentsQueryParams(QueryParams):
-    """Balance Of Payments Query."""
+    """国际收支查询。"""
 
 
 class BP6BopUsdData(Data):
-    """OECD BP6 Balance of Payments Items, in USD."""
+    """OECD BP6 国际收支项目，以美元计。"""
 
     period: dateType = Field(
         default=None,
@@ -93,7 +93,7 @@ class BP6BopUsdData(Data):
 
 
 class ECBMain(Data):
-    """ECB Main Balance of Payments Items."""
+    """ECB 主要国际收支项目。"""
 
     period: dateType = Field(
         default=None,
@@ -145,7 +145,7 @@ class ECBMain(Data):
 
 
 class ECBSummary(Data):
-    """ECB Summary Balance of Payments Items."""
+    """ECB 国际收支概要项目。"""
 
     period: dateType = Field(
         default=None,
@@ -201,7 +201,7 @@ class ECBSummary(Data):
 
 
 class ECBServices(Data):
-    """ECB Services Balance of Payments Items."""
+    """ECB 国际收支服务项目。"""
 
     period: dateType = Field(
         default=None,
@@ -252,7 +252,7 @@ class ECBServices(Data):
 
 
 class ECBInvestmentIncome(Data):
-    """ECB Investment Income Balance of Payments Items."""
+    """ECB 国际收支投资收益项目。"""
 
     period: dateType = Field(
         default=None,
@@ -308,7 +308,7 @@ class ECBInvestmentIncome(Data):
 
 
 class ECBDirectInvestment(Data):
-    """ECB Direct Investment Balance of Payments Items."""
+    """ECB 国际收支直接投资项目。"""
 
     period: dateType = Field(
         default=None,
@@ -354,7 +354,7 @@ class ECBDirectInvestment(Data):
 
 
 class ECBPortfolioInvestment(Data):
-    """ECB Portfolio Investment Balance of Payments Items."""
+    """ECB 国际收支证券投资项目。"""
 
     period: dateType = Field(
         default=None,
@@ -421,7 +421,7 @@ class ECBPortfolioInvestment(Data):
 
 
 class ECBOtherInvestment(Data):
-    """ECB Other Investment Balance of Payments Items."""
+    """ECB 国际收支其他投资项目。"""
 
     period: dateType = Field(
         default=None,
@@ -481,7 +481,7 @@ class ECBOtherInvestment(Data):
 
 
 class ECBCountry(Data):
-    """ECB Balance of Payments Items by Country."""
+    """ECB 各国国际收支项目。"""
 
     period: dateType = Field(
         default=None,

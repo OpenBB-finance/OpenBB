@@ -1,4 +1,4 @@
-"""LBMA Fixing Standard Model."""
+"""LBMA 定盘价标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -14,13 +14,13 @@ from pydantic import Field
 
 class LbmaFixingQueryParams(QueryParams):
     """
-    LBMA Fixing Query.
+    LBMA 定盘价查询。
 
-    Source: https://www.lbma.org.uk/prices-and-data/precious-metal-prices#/table
+    数据来源: https://www.lbma.org.uk/prices-and-data/precious-metal-prices#/table
     """
 
     asset: Literal["gold", "silver"] = Field(
-        description="The metal to get price fixing rates for.",
+        description="获取定盘价利率的金属。",
         default="gold",
     )
     start_date: dateType | None = Field(
@@ -34,42 +34,42 @@ class LbmaFixingQueryParams(QueryParams):
 
 
 class LbmaFixingData(Data):
-    """LBMA Fixing Data.  Historical fixing prices in USD, GBP and EUR."""
+    """LBMA 定盘价数据。以美元、英镑和欧元计价的历史定盘价。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     usd_am: float | None = Field(
         default=None,
-        description="AM fixing price in USD.",
+        description="以美元计价的上午定盘价。",
     )
     usd_pm: float | None = Field(
         default=None,
-        description="PM fixing price in USD.",
+        description="以美元计价的下午定盘价。",
     )
     gbp_am: float | None = Field(
         default=None,
-        description="AM fixing price in GBP.",
+        description="以英镑计价的上午定盘价。",
     )
     gbp_pm: float | None = Field(
         default=None,
-        description="PM fixing price in GBP.",
+        description="以英镑计价的下午定盘价。",
     )
     euro_am: float | None = Field(
         default=None,
-        description="AM fixing price in EUR.",
+        description="以欧元计价的上午定盘价。",
     )
     euro_pm: float | None = Field(
         default=None,
-        description="PM fixing price in EUR.",
+        description="以欧元计价的下午定盘价。",
     )
     usd: float | None = Field(
         default=None,
-        description="Daily fixing price in USD.",
+        description="以美元计价的每日定盘价。",
     )
     gbp: float | None = Field(
         default=None,
-        description="Daily fixing price in GBP.",
+        description="以英镑计价的每日定盘价。",
     )
     eur: float | None = Field(
         default=None,
-        description="Daily fixing price in EUR.",
+        description="以欧元计价的每日定盘价。",
     )

@@ -1,4 +1,4 @@
-"""Version script for the OpenBB Platform."""
+"""OpenBB Platform 的版本脚本。"""
 
 from importlib.metadata import (
     PackageNotFoundError,
@@ -10,7 +10,7 @@ PACKAGE = "openbb"
 
 
 def get_package_version(package: str):
-    """Retrieve the version of a package from installed pip packages."""
+    """从已安装的 pip 包中检索包的版本。"""
     is_nightly = False
     try:
         version = pkg_version(package)
@@ -31,7 +31,7 @@ def get_package_version(package: str):
 
 
 def is_git_repo(path: Path):
-    """Check if the given directory is a git repository."""
+    """检查给定目录是否为 git 仓库。"""
     # pylint: disable=import-outside-toplevel
     import shutil
     import subprocess
@@ -53,7 +53,7 @@ def is_git_repo(path: Path):
 
 
 def get_major_minor(version: str) -> tuple[int, int]:
-    """Retrieve the major and minor version from a version string."""
+    """从版本字符串中检索主版本号和次版本号。"""
     parts = version.split(".")
     return (int(parts[0]), int(parts[1]))
 

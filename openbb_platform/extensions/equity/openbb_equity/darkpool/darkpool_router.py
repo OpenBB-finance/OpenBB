@@ -1,4 +1,4 @@
-"""Dark Pool Router."""
+"""暗池路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -21,7 +21,7 @@ router = Router(prefix="/darkpool")
     examples=[
         APIEx(parameters={"provider": "finra"}),
         APIEx(
-            description="Get OTC data for a symbol",
+            description="获取股票的 OTC 数据",
             parameters={"symbol": "AAPL", "provider": "finra"},
         ),
     ],
@@ -32,9 +32,8 @@ async def otc(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the weekly aggregate trade data for Over The Counter deals.
+    """获取场外交易的每周汇总交易数据。
 
-    ATS and non-ATS trading data for each ATS/firm
-    with trade reporting obligations under FINRA rules.
+    每个根据 FINRA 规则有交易报告义务的 ATS/公司的 ATS 和非 ATS 交易数据。
     """
     return await OBBject.from_query(Query(**locals()))

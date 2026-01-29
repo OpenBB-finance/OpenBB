@@ -1,4 +1,4 @@
-"""Central Bank Holdings Standard Model."""
+"""央行持仓标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class CentralBankHoldingsQueryParams(QueryParams):
-    """Central Bank Holdings Query."""
+    """央行持仓查询。"""
 
     date: dateType | None = Field(
         default=None,
@@ -23,6 +23,6 @@ class CentralBankHoldingsQueryParams(QueryParams):
 
 
 class CentralBankHoldingsData(Data):
-    """Central Bank Holdings Data."""
+    """央行持仓数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

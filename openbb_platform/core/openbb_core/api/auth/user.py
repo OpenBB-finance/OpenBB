@@ -1,4 +1,4 @@
-"""User authentication."""
+"""用户身份验证。"""
 
 import secrets
 from typing import Annotated
@@ -15,7 +15,7 @@ security = HTTPBasic() if Env().API_AUTH else lambda: None
 async def authenticate_user(
     credentials: Annotated[HTTPBasicCredentials | None, Depends(security)],
 ):
-    """Authenticate the user."""
+    """验证用户身份。"""
     if credentials:
         username = Env().API_USERNAME
         password = Env().API_PASSWORD
@@ -38,13 +38,13 @@ async def authenticate_user(
         if not (is_correct_username and is_correct_password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
+                detail="电子邮件或密码不正确",
                 headers={"WWW-Authenticate": "Basic"},
             )
 
 
 async def get_user_service() -> UserService:
-    """Get user service."""
+    """获取用户服务。"""
     return UserService()
 
 
@@ -52,5 +52,5 @@ async def get_user_settings(
     _: Annotated[None, Depends(authenticate_user)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
-    """Get user settings."""
+    """获取用户设置。"""
     return user_service.read_from_file()

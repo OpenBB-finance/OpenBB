@@ -1,4 +1,4 @@
-"""Provider registry map."""
+"""提供者注册表映射。"""
 
 from copy import deepcopy
 from inspect import getfile, isclass
@@ -18,10 +18,10 @@ SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
 
 
 class RegistryMap:
-    """Class to store information about providers in the registry."""
+    """在注册表中存储有关提供者信息的类。"""
 
     def __init__(self, registry: Registry | None = None) -> None:
-        """Initialize Registry Map."""
+        """初始化注册表映射。"""
         self._registry = registry or RegistryLoader.from_extensions()
         self._credentials = self._get_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
@@ -30,46 +30,46 @@ class RegistryMap:
 
     @property
     def registry(self) -> Registry:
-        """Get the registry."""
+        """获取注册表。"""
         return self._registry
 
     @property
     def available_providers(self) -> list[str]:
-        """Get list of available providers."""
+        """获取可用提供者列表。"""
         return self._available_providers
 
     @property
     def credentials(self) -> dict[str, list[str]]:
-        """Get map of providers to credentials."""
+        """获取提供者到凭据的映射。"""
         return self._credentials
 
     @property
     def standard_extra(self) -> MapType:
-        """Get standard extra map."""
+        """获取标准额外映射。"""
         return self._standard_extra
 
     @property
     def original_models(self) -> MapType:
-        """Get original models."""
+        """获取原始模型。"""
         return self._original_models
 
     @property
     def models(self) -> list[str]:
-        """Get available models."""
+        """获取可用模型。"""
         return self._models
 
     def _get_credentials(self, registry: Registry) -> dict[str, list[str]]:
-        """Get map of providers to credentials."""
+        """获取提供者到凭据的映射。"""
         return {
             name: provider.credentials for name, provider in registry.providers.items()
         }
 
     def _get_available_providers(self, registry: Registry) -> list[str]:
-        """Get list of available providers."""
+        """获取可用提供者列表。"""
         return sorted(list(registry.providers.keys()))
 
     def _get_maps(self, registry: Registry) -> tuple[MapType, dict[str, dict]]:
-        """Generate map for the provider package."""
+        """为提供者包生成映射。"""
         standard_extra: MapType = {}
         original_models: dict[str, dict] = {}
 
@@ -111,7 +111,7 @@ class RegistryMap:
         fetcher: Fetcher,
         model_map: dict,
     ):
-        """Merge json schema extra for different providers."""
+        """合并用于不同提供者的 json schema extra。"""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
         standard_fields = model_map["openbb"]["QueryParams"]["fields"]
         extra_fields = model_map[provider]["QueryParams"]["fields"]
@@ -131,19 +131,19 @@ class RegistryMap:
                 model_field.json_schema_extra[provider] = properties
 
     def _get_models(self, map_: MapType) -> list[str]:
-        """Get available models."""
+        """获取可用模型。"""
         return list(map_.keys())
 
     @staticmethod
     def _get_results_type(fetcher: Fetcher) -> Any:
-        """Extract return info from fetcher."""
+        """从获取器中提取返回信息。"""
         return get_origin(getattr(fetcher, "return_type", None))
 
     @staticmethod
     def _extract_info(
         fetcher: Fetcher, type_: Literal["query_params", "data"]
     ) -> tuple:
-        """Extract info (fields and docstring) from fetcher query params or data."""
+        """从获取器查询参数或数据中提取信息（字段和文档字符串）。"""
         model: BaseModel = RegistryMap._get_model(fetcher, type_)
         standard_info: dict[str, Any] = {"fields": {}, "docstring": None}
         extra_info: dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
@@ -184,24 +184,24 @@ class RegistryMap:
     def _get_model(
         fetcher: Fetcher, type_: Literal["query_params", "data"]
     ) -> BaseModel:
-        """Get model from fetcher."""
+        """从获取器获取模型。"""
         model = getattr(fetcher, f"{type_}_type")
         RegistryMap._validate(model, type_)
         return model
 
     @staticmethod
     def _validate(model: Any, type_: Literal["query_params", "data"]) -> None:
-        """Validate model."""
+        """验证模型。"""
         parent_model = QueryParams if type_ == "query_params" else Data
         if not isclass(model) or not issubclass(model, parent_model):
             model_str = str(model).replace("<", "<'").replace(">", "'>")
             raise ValueError(
-                f"'{model_str}' must be a subclass of '{parent_model.__name__}'.\n"
-                "If you are returning a nested type, try specifying"
-                f" `{type_}_type = <'your_{type_}_type'>` in the fetcher."
+                f"'{model_str}' 必须是 '{parent_model.__name__}' 的子类。\n"
+                "如果您返回嵌套类型，请尝试在 fetcher 中指定"
+                f" `{type_}_type = <'your_{type_}_type'>`。"
             )
 
     @staticmethod
     def _get_class_family(class_) -> tuple:
-        """Return the class family starting with the class itself until `object`."""
+        """返回从类本身开始直到 `object` 的类族。"""
         return getattr(class_, "__mro__", ())

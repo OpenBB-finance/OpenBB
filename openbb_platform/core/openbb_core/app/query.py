@@ -1,4 +1,4 @@
-"""Query class."""
+"""查询类。"""
 
 import warnings
 from dataclasses import asdict
@@ -15,7 +15,7 @@ from openbb_core.app.provider_interface import (
 
 
 class Query:
-    """Query class."""
+    """查询类。"""
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class Query:
         standard_params: StandardParams,
         extra_params: ExtraParams,
     ) -> None:
-        """Initialize Query class."""
+        """初始化查询类。"""
         self.cc = cc
         original = asdict(provider_choices)
         self.provider = original.get("provider")
@@ -38,7 +38,7 @@ class Query:
         extra_params: ExtraParams,
         provider_name: str,
     ) -> dict[str, Any]:
-        """Filter extra params based on the provider and warn if not supported."""
+        """根据提供者过滤额外参数，如果不支持则发出警告。"""
         original = asdict(extra_params)
         filtered = {}
 
@@ -49,22 +49,22 @@ class Query:
             f = fields[k]
             providers = f.title.split(",") if hasattr(f, "title") else []
 
-            # We only filter/warn if the value is not the default, because fastapi
-            # Depends always sends the default value, even if it's not in the request.
+            # 我们仅在值不是默认值时进行过滤/警告，因为 fastapi
+            # Depends 总是发送默认值，即使它不在请求中。
             if v != f.default:
                 if provider_name in providers:
                     filtered[k] = v
                 else:
                     available = ", ".join(providers)
                     warnings.warn(
-                        message=f"Parameter '{k}' is not supported by {provider_name}. Available for: {available}.",
+                        message=f"参数 '{k}' 不被 {provider_name} 支持。可用于：{available}。",
                         category=OpenBBWarning,
                     )
 
         return filtered
 
     async def execute(self) -> Any:
-        """Execute the query."""
+        """执行查询。"""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
             self.filter_extra_params(self.extra_params, self.provider) if self.extra_params else {}  # type: ignore

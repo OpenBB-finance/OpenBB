@@ -1,4 +1,4 @@
-"""Available Indices Standard Model."""
+"""可用指数标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -9,13 +9,13 @@ from pydantic import Field
 
 
 class AvailableIndicesQueryParams(QueryParams):
-    """Available Indices Query."""
+    """可用指数查询。"""
 
 
 class AvailableIndicesData(Data):
-    """Available Indices Data.
-
-    Returns the list of available indices from a provider.
+    """可用指数数据。
+    
+    返回提供者提供的可用指数列表。
     """
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
@@ -23,8 +23,8 @@ class AvailableIndicesData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("name", "")
     )
     exchange: str | None = Field(
-        default=None, description="Stock exchange where the index is listed."
+        default=None, description="指数上市的证券交易所。"
     )
     currency: str | None = Field(
-        default=None, description="Currency the index is traded in."
+        default=None, description="指数交易的货币。"
     )

@@ -38,7 +38,7 @@ export default function FilterColumns({
     <DropdownMenuPrimitive.Root open={open}>
       {onlyIconTrigger ? (
         <DropdownMenuPrimitive.Trigger
-          title="Filter columns"
+          title="筛选列"
           onClick={() => setOpen(!open)}
         >
           <svg
@@ -66,7 +66,7 @@ export default function FilterColumns({
             className="bg-white text-black dark:bg-grey-900 dark:text-white whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
             aria-label={label}
           >
-            <span>Filter columns</span>
+            <span>筛选列</span>
             <ChevronDownIcon
               className={clsx({
                 "transform rotate-180 duration-200 transition": open,
@@ -83,7 +83,7 @@ export default function FilterColumns({
         >
           <DropdownMenuPrimitive.Item>
             <button className="_btn w-full" onClick={clearFilters}>
-              Clear Filters
+              清除筛选
             </button>
           </DropdownMenuPrimitive.Item>
           <DropdownMenuPrimitive.Item>
@@ -93,7 +93,7 @@ export default function FilterColumns({
                 checked={table.getIsAllColumnsVisible()}
                 onChange={table.getToggleAllColumnsVisibilityHandler()}
               />
-              Toggle All
+              全选/取消全选
             </label>
           </DropdownMenuPrimitive.Item>
           {table

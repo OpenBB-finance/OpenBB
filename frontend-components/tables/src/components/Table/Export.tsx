@@ -36,11 +36,11 @@ export default function Export({
         onChange={(value) => {
           setType(value);
         }}
-        label="Type"
-        placeholder="Select type"
+        label="类型"
+        placeholder="选择类型"
         groups={[
           {
-            label: "Type",
+            label: "类型",
             items: EXPORT_TYPES.map((type) => ({
               label: type,
               value: type,
@@ -49,7 +49,7 @@ export default function Export({
         ]}
       />
       <button onClick={onExport} className="_btn">
-        Export
+        导出
       </button>
     </div>
   );

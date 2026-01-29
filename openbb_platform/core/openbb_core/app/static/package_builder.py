@@ -1,4 +1,4 @@
-"""Package Builder Class."""
+"""包构建器类。"""
 
 # pylint: disable=too-many-lines,too-many-locals,too-many-nested-blocks,too-many-statements,too-many-branches,too-many-positional-arguments,protected-access
 import builtins
@@ -89,19 +89,19 @@ TAB = "    "
 
 
 def create_indent(n: int) -> str:
-    """Create n indentation space."""
+    """创建 n 个缩进空格。"""
     return TAB * n
 
 
 class FileLock:
-    """Simple cross-platform file lock wrapper used only for this module."""
+    """仅用于此模块的简单跨平台文件锁包装器。"""
 
     def __init__(self, file_obj):
-        """Initialize the file lock."""
+        """初始化文件锁。"""
         self._file = file_obj
 
     def acquire(self, blocking: bool = True) -> None:
-        """Acquire the file lock."""
+        """获取文件锁。"""
         if _HAS_FCNTL:
             flags = fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB)
             fcntl.flock(self._file.fileno(), flags)
@@ -109,7 +109,7 @@ class FileLock:
 
             mode = msvcrt.LK_LOCK if blocking else msvcrt.LK_NBLCK  # type: ignore # pylint: disable=E0601
             try:
-                # lock 1 byte at file start; file.seek(0) to ensure position
+                # 在文件开始处锁定 1 字节；file.seek(0) 以确保位置
                 self._file.seek(0)
                 msvcrt.locking(self._file.fileno(), mode, 1)  # type: ignore
             except OSError as exc:  # pragma: no cover - platform specific
@@ -117,7 +117,7 @@ class FileLock:
                 raise BlockingIOError from exc
 
     def release(self) -> None:
-        """Release the file lock."""
+        """释放文件锁。"""
         try:
             if _HAS_FCNTL:
                 fcntl.flock(self._file.fileno(), fcntl.LOCK_UN)
@@ -126,19 +126,19 @@ class FileLock:
                     self._file.seek(0)
                     msvcrt.locking(self._file.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore
                 except OSError:
-                    # If unlocking fails on Windows, ignore - file will be closed soon
+                    # 如果在 Windows 上解锁失败，请忽略 - 文件将很快关闭
                     pass
         except Exception:  # pylint: disable=broad-except  # noqa
             pass
 
 
 class PackageBuilder:
-    """Build the extension package for the Platform."""
+    """构建平台的扩展包。"""
 
     def __init__(
         self, directory: Path | None = None, lint: bool = True, verbose: bool = False
     ) -> None:
-        """Initialize the package builder."""
+        """初始化包构建器。"""
         self.directory = directory or Path(__file__).parent
         self.lint = lint
         self.verbose = verbose
@@ -148,7 +148,7 @@ class PackageBuilder:
         self._lock_path = self.directory / ".build.lock"
 
     def auto_build(self) -> None:
-        """Trigger build if there are differences between built and installed extensions."""
+        """如果构建的扩展与安装的扩展之间存在差异，则触发构建。"""
         if Env().AUTO_BUILD:
             reference = PackageBuilder._read(
                 self.directory / "assets" / "reference.json"
@@ -157,38 +157,38 @@ class PackageBuilder:
             add, remove = PackageBuilder._diff(ext_map)
             if add:
                 a = ", ".join(sorted(add))
-                print(f"Extensions to add: {a}")  # noqa: T201
+                print(f"要添加的扩展：{a}")  # noqa: T201
 
             if remove:
                 r = ", ".join(sorted(remove))
-                print(f"Extensions to remove: {r}")  # noqa: T201
+                print(f"要移除的扩展：{r}")  # noqa: T201
 
             if add or remove:
-                print("\nBuilding...")  # noqa: T201
+                print("\n正在构建...")  # noqa: T201
                 self.build()
 
     def build(
         self,
         modules: str | list[str] | None = None,
     ) -> None:
-        """Build the extensions for the Platform."""
+        """构建平台的扩展。"""
         self._lock_path.touch(exist_ok=True)
 
-        # Open lock file and acquire exclusive lock
+        # 打开锁定文件并获取独占锁
         with open(self._lock_path, "w", encoding="utf-8") as lock_file:
             file_lock = FileLock(lock_file)
             try:
-                # Get exclusive lock on file
+                # 获取文件的独占锁
                 file_lock.acquire(blocking=False)
 
-                # Write PID to lock file for debugging
+                # 将 PID 写入锁定文件以进行调试
                 lock_file.seek(0)
                 lock_file.truncate()
                 lock_file.write(str(os.getpid()))
                 lock_file.flush()
 
-                # Actual build steps
-                self.console.log("\nBuilding extensions package...\n")
+                # 实际构建步骤
+                self.console.log("\n正在构建扩展包...\n")
                 self._clean(modules)
                 ext_map = self._get_extension_map()
                 self._save_modules(modules, ext_map)
@@ -198,15 +198,15 @@ class PackageBuilder:
                     self._run_linters()
             except BlockingIOError:
                 raise RuntimeError(  # noqa # pylint: disable=W0707
-                    f"Another build process is running and has locked {self._lock_path}"
+                    f"另一个构建进程正在运行并已锁定 {self._lock_path}"
                 )
             finally:
-                # Release the file lock, suppressing any exceptions during cleanup
+                # 释放文件锁，在清理过程中抑制任何异常
                 with contextlib.suppress(Exception):
                     file_lock.release()
 
     def _clean(self, modules: str | list[str] | None = None) -> None:
-        """Delete the assets and package folder or modules before building."""
+        """在构建之前删除 assets 和 package 文件夹或模块。"""
         shutil.rmtree(self.directory / "assets", ignore_errors=True)
         if modules:
             for module in modules:
@@ -217,7 +217,7 @@ class PackageBuilder:
             shutil.rmtree(self.directory / "package", ignore_errors=True)
 
     def _get_extension_map(self) -> dict[str, list[str]]:
-        """Get map of extensions available at build time."""
+        """获取构建时可用的扩展映射。"""
         el = ExtensionLoader()
         og = OpenBBGroups.groups()
         ext_map: dict[str, list[str]] = {}
@@ -233,11 +233,11 @@ class PackageBuilder:
         modules: str | list[str] | None = None,
         ext_map: dict[str, list[str]] | None = None,
     ):
-        """Save the modules."""
-        self.console.log("\nWriting modules...")
+        """保存模块。"""
+        self.console.log("\n正在写入模块...")
 
         if not self.path_list:
-            self.console.log("\nThere is nothing to write.")
+            self.console.log("\n没有内容可写入。")
             return
 
         MAX_LEN = max([len(path) for path in self.path_list if path != "/"])
@@ -250,9 +250,9 @@ class PackageBuilder:
 
         for path in _path_list:
             route = PathHandler.get_route(path, self.route_map)
-            # Only create a module if this path doesn't have a direct route
-            # This prevents creating sub-router modules for paths like /empty/also_empty
-            # when the actual route is /empty/also_empty/{param}
+            # 仅当此路径没有直接路由时才创建模块
+            # 这可以防止为类似 /empty/also_empty 的路径创建子路由器模块
+            # 当实际路由是 /empty/also_empty/{param} 时
             if route is None:
                 code = ModuleBuilder.build(path, ext_map)
                 name = PathHandler.build_module_name(path)
@@ -260,15 +260,15 @@ class PackageBuilder:
                 self._write(code, name)
 
     def _save_package(self):
-        """Save the package."""
-        self.console.log("\nWriting package __init__...")
+        """保存包。"""
+        self.console.log("\n正在写入包 __init__...")
         code = '""" Autogenerated OpenBB module."""\n'
         code += "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###"
         self._write(code=code, name="__init__")
 
     def _save_reference_file(self, ext_map: dict[str, list[str]] | None = None):
-        """Save the reference.json file."""
-        self.console.log("\nWriting reference file...")
+        """保存 reference.json 文件。"""
+        self.console.log("\n正在写入参考文件...")
         code = dumps(
             obj={
                 "openbb": VERSION.replace("dev", ""),
@@ -286,8 +286,8 @@ class PackageBuilder:
         self._write(code=code, name="reference", extension="json", folder="assets")
 
     def _run_linters(self):
-        """Run the linters."""
-        self.console.log("\nRunning linters...")
+        """运行 linters。"""
+        self.console.log("\n正在运行 linters...")
         linters = Linters(self.directory / "package", self.verbose)
         linters.black()
         linters.ruff()
@@ -295,7 +295,7 @@ class PackageBuilder:
     def _write(
         self, code: str, name: str, extension: str = "py", folder: str = "package"
     ) -> None:
-        """Write the module to the package."""
+        """将模块写入包。"""
         package_folder = self.directory / folder
         package_path = package_folder / f"{name}.{extension}"
         package_folder.mkdir(exist_ok=True)
@@ -306,7 +306,7 @@ class PackageBuilder:
 
     @staticmethod
     def _read(path: Path) -> dict:
-        """Get content from folder."""
+        """从文件夹获取内容。"""
         try:
             with open(Path(path)) as fp:
                 content = load(fp)
@@ -317,7 +317,7 @@ class PackageBuilder:
 
     @staticmethod
     def _diff(ext_map: dict[str, list[str]]) -> tuple[set[str], set[str]]:
-        """Check differences between built and installed extensions.
+        """检查已构建和已安装扩展之间的差异。
 
         Parameters
         ----------
@@ -342,8 +342,8 @@ class PackageBuilder:
         Returns
         -------
         Tuple[Set[str], Set[str]]
-            First element: set of installed extensions that are not in the package.
-            Second element: set of extensions in the package that are not installed.
+            第一个元素：已安装但不在包中的扩展集。
+            第二个元素：在包中但未安装的扩展集。
         """
         add: set[str] = set()
         remove: set[str] = set()
@@ -362,11 +362,11 @@ class PackageBuilder:
 
 
 class ModuleBuilder:
-    """Build the module for the Platform."""
+    """构建平台的模块。"""
 
     @staticmethod
     def build(path: str, ext_map: dict[str, list[str]] | None = None) -> str:
-        """Build the module."""
+        """构建模块。"""
         code = f'"""Autogenerated OpenBB {path} Module."""\n\n'
         code += "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n#  pylint: disable=R0917,C0103,C0415\n\n"
         code += ImportDefinition.build(path)
@@ -376,11 +376,11 @@ class ModuleBuilder:
 
 
 class ImportDefinition:
-    """Build the import definition for the Platform."""
+    """构建平台的导入定义。"""
 
     @staticmethod
     def _sanitize_type_name(type_name: str) -> str:
-        """Normalize a raw type name extracted from annotations."""
+        """标准化从注释中提取的原始类型名称。"""
         sanitized = type_name.strip().replace('"', "").replace("'", "")
         sanitized = sanitized.replace("typing.", "").replace("typing_extensions.", "")
         sanitized = sanitized.split("[", 1)[0]
@@ -389,24 +389,24 @@ class ImportDefinition:
 
     @staticmethod
     def filter_hint_type_list(hint_type_list: list[type]) -> list[type]:
-        """Filter the hint type list."""
+        """过滤提示类型列表。"""
         new_hint_type_list = []
         primitive_types = {int, float, str, bool, list, dict, tuple, set}
 
         for hint_type in hint_type_list:
-            # Skip primitive types and empty types
-            # Check for _empty first (doesn't require hashing)
+            # 跳过原始类型和空类型
+            # 首先检查 _empty（不需要哈希）
             if hint_type == _empty:
                 continue
 
-            # Skip Depends objects (they're not types we need to import)
+            # 跳过 Depends 对象（它们不是我们需要导入的类型）
             if (
                 hasattr(hint_type, "__class__")
                 and "Depends" in hint_type.__class__.__name__
             ):
                 continue
 
-            # Skip Annotated types that contain Depends in their metadata
+            # 跳过在其元数据中包含 Depends 的 Annotated 类型
             if isinstance(hint_type, _AnnotatedAlias):
                 has_depends = False
                 if hasattr(hint_type, "__metadata__"):
@@ -420,21 +420,21 @@ class ImportDefinition:
                 if has_depends:
                     continue
 
-            # Now safe to check against primitive_types set
+            # 现在可以安全地检查 primitive_types 集合
             try:
                 if hint_type in primitive_types:
                     continue
             except TypeError:
-                # If somehow we still get an unhashable type, skip it
+                # 如果我们仍然得到一个不可哈希的类型，跳过它
                 continue
 
-            # Only include types that have a module and are not builtins
+            # 仅包含具有模块且不是内置函数的类型
             if (
                 hasattr(hint_type, "__module__") and hint_type.__module__ != "builtins"
             ) or (isinstance(hint_type, str)):
                 new_hint_type_list.append(hint_type)
 
-        # Deduplicate without using set() to handle unhashable types
+        # 去重而不使用 set() 以处理不可哈希的类型
         deduplicated: list = []
         for hint_type in new_hint_type_list:
             is_duplicate = False
@@ -444,7 +444,7 @@ class ImportDefinition:
                         is_duplicate = True
                         break
                 except TypeError:
-                    # If comparison fails, compare by identity
+                    # 如果比较失败，则按身份比较
                     if id(hint_type) == id(existing):
                         is_duplicate = True
                         break
@@ -456,7 +456,7 @@ class ImportDefinition:
 
     @classmethod
     def get_function_hint_type_list(cls, route) -> list[type]:
-        """Get the hint type list from the function."""
+        """从函数获取提示类型列表。"""
 
         no_validate = (getattr(route, "openapi_extra", None) or {}).get("no_validate")
 
@@ -475,12 +475,12 @@ class ImportDefinition:
         for parameter in parameter_map.values():
             hint_type_list.append(parameter.annotation)
 
-            # Extract dependencies from Annotated metadata
+            # 从 Annotated 元数据中提取依赖项
             if isinstance(parameter.annotation, _AnnotatedAlias):
                 for meta in parameter.annotation.__metadata__:
-                    # Check if this is a Depends object
+                    # 检查此是否为 Depends 对象
                     if hasattr(meta, "dependency"):
-                        # Add the dependency function to hint_type_list
+                        # 将依赖函数添加到 hint_type_list
                         hint_type_list.append(meta.dependency)
 
         if return_type:
@@ -499,7 +499,7 @@ class ImportDefinition:
 
     @classmethod
     def get_path_hint_type_list(cls, path: str) -> list[type]:
-        """Get the hint type list from the path."""
+        """从路径获取提示类型列表。"""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         child_path_list = PathHandler.get_child_path_list(
@@ -528,14 +528,14 @@ class ImportDefinition:
 
     @classmethod
     def build(cls, path: str) -> str:
-        """Build the import definition."""
+        """构建导入定义。"""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
 
-        # These imports were not detected before build, so we add them manually and
-        # ruff --fix the resulting code to remove unused imports.
-        # TODO: Find a better way to handle this. This is a temporary solution.
+        # 这些导入在构建之前未检测到，因此我们手动添加它们，并
+        # 运行 ruff --fix 以删除未使用的导入。
+        # TODO: 找到更好的方法来处理此问题。这是一个临时解决方案。
         code += "\nimport openbb_core.provider"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nimport pandas"
@@ -568,7 +568,7 @@ class ImportDefinition:
         for module in module_list:
             code += f"import {module}\n"
 
-        # Group types by module and capture the return types for the imports.
+        # 按模块对类型进行分组并捕获导入的返回类型。
         module_types: dict = {}
         for hint_type in hint_type_list:
             if hasattr(hint_type, "__module__") and hint_type.__module__ != "builtins":
@@ -626,7 +626,7 @@ class ImportDefinition:
 
                 module_types[module].add(sanitized_name)
 
-        # Generate from-import statements for modules with specific types
+        # 为具有特定类型的模块生成 from-import 语句
         for module, types in sorted(module_types.items()):
             if module == "types":
                 continue
@@ -666,11 +666,11 @@ class ImportDefinition:
 
 
 class ClassDefinition:
-    """Build the class definition for the Platform."""
+    """构建平台的类定义。"""
 
     @staticmethod
     def build(path: str, ext_map: dict[str, list[str]] | None = None) -> str:
-        """Build the class definition."""
+        """构建类定义。"""
         class_name = PathHandler.build_module_class(path=path)
         code = f"class {class_name}(Container):\n"
         route_map = PathHandler.build_route_map()
@@ -728,7 +728,7 @@ class ClassDefinition:
                 continue
 
             if has_subroutes:
-                # This is a sub-router path - create a property
+                # 这是一个子路由器路径 - 创建一个属性
                 doc += "    /" if path else "    /"
                 doc += c.split("/")[-1] + "\n"
                 methods += MethodDefinition.build_class_loader_method(path=c)
@@ -761,12 +761,12 @@ class ClassDefinition:
 
 
 class MethodDefinition:
-    """Build the method definition for the Platform."""
+    """构建平台的方法定义。"""
 
-    # These are types we want to expand.
-    # For example, start_date is always a 'date', but we also accept 'str' as input.
-    # Be careful, if the type is not coercible by pydantic to the original type, you
-    # will need to add some conversion code in the input filter.
+    # 这些是我们想要扩展的类型。
+    # 例如，start_date 始终是 'date'，但也接受 'str' 作为输入。
+    # 小心，如果 pydantic 无法将类型强制转换为原始类型，您
+    # 需要在输入过滤器中添加一些转换代码。
     TYPE_EXPANSION = {
         "data": DataProcessingSupportedTypes,
         "start_date": str,
@@ -922,7 +922,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_class_loader_method(path: str) -> str:
-        """Build the class loader method."""
+        """构建类加载器方法。"""
         module_name = PathHandler.build_module_name(path=path)
         class_name = PathHandler.build_module_class(path=path)
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
@@ -940,7 +940,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_type(field: FieldInfo) -> type:
-        """Get the type of the field."""
+        """获取字段的类型。"""
         field_type = getattr(
             field, "annotation", getattr(field, "type", Parameter.empty)
         )
@@ -954,7 +954,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_default(field: FieldInfo):
-        """Get the default value of the field."""
+        """获取字段的默认值。"""
         # First check if field has a default attribute at all
         if not hasattr(field, "default"):
             return Parameter.empty
@@ -974,7 +974,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_extra(field: FieldInfo) -> dict:
-        """Get json schema extra."""
+        """获取 json 架构额外信息。"""
         field_default = getattr(field, "default", None)
         if field_default:
             # Getting json_schema_extra without changing the original dict
@@ -985,14 +985,14 @@ class MethodDefinition:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        """Check if the annotation is an annotated dataclass."""
+        """检查注释是否为带注释的数据类。"""
         return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
     @staticmethod
     def is_data_processing_function(path: str) -> bool:
-        """Check if the function is a data processing function."""
+        """检查函数是否为数据处理函数。"""
         route = PathHandler.build_route_map().get(path)
         if not route:
             return False
@@ -1002,12 +1002,12 @@ class MethodDefinition:
 
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
-        """Check if the function is deprecated."""
+        """检查函数是否已弃用。"""
         return getattr(PathHandler.build_route_map()[path], "deprecated", False)
 
     @staticmethod
     def get_deprecation_message(path: str) -> str:
-        """Get the deprecation message."""
+        """获取弃用消息。"""
         return getattr(PathHandler.build_route_map()[path], "summary", "")
 
     @staticmethod
@@ -1016,7 +1016,7 @@ class MethodDefinition:
         var_kw: list[str] | None = None,
         for_docstring: bool = False,
     ) -> "OrderedDict[str, Parameter]":
-        """Reorder the params based on context.
+        """根据上下文重新排序参数。
 
         For function signatures: provider is placed last (before VAR_KEYWORD)
         For docstrings: provider is placed first
@@ -1044,7 +1044,7 @@ class MethodDefinition:
     def format_params(
         path: str, parameter_map: dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
-        """Format the params."""
+        """格式化参数。"""
 
         parameter_map.pop("cc", None)
 
@@ -1059,7 +1059,7 @@ class MethodDefinition:
                 annotation=Annotated[
                     bool,
                     Query(
-                        description="Whether to create a chart or not, by default False.",
+                        description="是否创建图表，默认为 False。",
                     ),
                 ],
                 default=False,
@@ -1077,7 +1077,7 @@ class MethodDefinition:
                     annotation=Annotated[
                         str,
                         OpenBBField(
-                            description=f"Path parameter: {name}",
+                            description=f"路径参数：{name}",
                         ),
                     ],
                     default=Parameter.empty,  # Path params are always required
@@ -1213,9 +1213,9 @@ class MethodDefinition:
                         Optional[MethodDefinition.get_type(field)],  # noqa
                         OpenBBField(
                             description=(
-                                "The provider to use, by default None. "
-                                "If None, the priority list configured in the settings is used. "
-                                f"Default priority: {', '.join(default_priority)}."
+                                "要使用的提供者，默认为 None。"
+                                "如果为 None，则使用设置中配置的优先级列表。"
+                                f"默认优先级：{', '.join(default_priority)}。"
                             ),
                         ),
                     ],
@@ -1333,7 +1333,7 @@ class MethodDefinition:
     def add_field_custom_annotations(
         od: OrderedDict[str, Parameter], model_name: str | None = None
     ):
-        """Add the field custom description and choices to the param signature as annotations."""
+        """将字段自定义描述和选择作为注释添加到参数签名中。"""
         if not model_name:
             return
 
@@ -1451,10 +1451,10 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
-        """Convert function params to string representations."""
+        """将函数参数转换为字符串表示形式。"""
 
         def get_type_repr(type_hint: Any) -> str:
-            """Get the string representation of a type hint."""
+            """获取类型提示的字符串表示形式。"""
             if isinstance(type_hint, type):
                 return type_hint.__name__
 
@@ -1464,7 +1464,7 @@ class MethodDefinition:
             return s
 
         def stringify_param(param: Parameter) -> str:
-            """Format a parameter as a string."""
+            """将参数格式化为字符串。"""
             if not (
                 isinstance(param.annotation, _AnnotatedAlias)
                 and any(
@@ -1538,7 +1538,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_returns(return_type: type) -> str:
-        """Build the function returns."""
+        """构建函数返回值。"""
         if return_type == _empty:
             func_returns = "Any"
         elif isinstance(return_type, str):
@@ -1558,7 +1558,7 @@ class MethodDefinition:
         path: str,
         model_name: str | None = None,
     ) -> str:
-        """Build the command method signature."""
+        """构建命令方法签名。"""
 
         MethodDefinition.add_field_custom_annotations(
             od=formatted_params, model_name=model_name
@@ -1602,7 +1602,7 @@ class MethodDefinition:
         model_name: str | None = None,
         examples: list[Example] | None = None,
     ):
-        """Build the command method docstring."""
+        """构建命令方法文档字符串。"""
         doc = func.__doc__
         doc = DocstringGenerator.generate(
             path=path,
@@ -1636,7 +1636,7 @@ class MethodDefinition:
         func: Callable,
         formatted_params: OrderedDict[str, Parameter] | None = None,
     ):
-        """Build the command method implementation."""
+        """构建命令方法实现。"""
         if formatted_params is None:
             formatted_params = OrderedDict()
 
@@ -1795,7 +1795,7 @@ class MethodDefinition:
         extra: dict | None = None,
         original_type: type | None = None,
     ) -> object:
-        """Expand the original field type."""
+        """展开原始字段类型。"""
         if extra and any(
             (
                 v.get("multiple_items_allowed")
@@ -1820,7 +1820,7 @@ class MethodDefinition:
         model_name: str | None = None,
         examples: list[Example] | None = None,
     ) -> str:
-        """Build the command method."""
+        """构建命令方法。"""
         path_parts = [p for p in path.split("/") if p and not p.startswith("{")]
         func_name = path_parts[-1] if path_parts else func.__name__
         sig = signature(func)
@@ -1938,7 +1938,7 @@ class MethodDefinition:
 
 
 class DocstringGenerator:
-    """Dynamically generate docstrings for the commands."""
+    """动态生成命令的文档字符串。"""
 
     provider_interface = ProviderInterface()
 
@@ -1948,19 +1948,19 @@ class DocstringGenerator:
         is_required: bool,
         target: Literal["docstring", "website"] = "docstring",
     ) -> str:
-        """Get the implicit data type of a defined Pydantic field.
+        """获取已定义的 Pydantic 字段的隐式数据类型。
         Parameters
         ----------
         field_type : Any
-            Typing object containing the field type.
+            包含字段类型的 Typing 对象。
         is_required : bool
-            Flag to indicate if the field is required.
+            指示字段是否必需的标志。
         target : Literal["docstring", "website"]
-            Target to return type for. Defaults to "docstring".
+            返回类型的目标。默认为 "docstring"。
         Returns
         -------
         str
-            String representation of the field type.
+            字段类型的字符串表示形式。
         """
         is_optional = not is_required
 
@@ -2039,22 +2039,22 @@ class DocstringGenerator:
         results_type: str,
         providers: str | None,
     ) -> str:
-        """Get the command output description."""
+        """获取命令输出描述。"""
         available_providers = providers or "Optional[str]"
         indent = 2
 
         obbject_description = (
             f"{create_indent(indent)}OBBject\n"
             f"{create_indent(indent + 1)}results : {results_type}\n"
-            f"{create_indent(indent + 2)}Serializable results.\n"
+            f"{create_indent(indent + 2)}可序列化的结果。\n"
             f"{create_indent(indent + 1)}provider : {available_providers}\n"
-            f"{create_indent(indent + 2)}Provider name.\n"
+            f"{create_indent(indent + 2)}提供者名称。\n"
             f"{create_indent(indent + 1)}warnings : Optional[list[Warning_]]\n"
-            f"{create_indent(indent + 2)}List of warnings.\n"
+            f"{create_indent(indent + 2)}警告列表。\n"
             f"{create_indent(indent + 1)}chart : Optional[Chart]\n"
-            f"{create_indent(indent + 2)}Chart object.\n"
+            f"{create_indent(indent + 2)}图表对象。\n"
             f"{create_indent(indent + 1)}extra : dict[str, Any]\n"
-            f"{create_indent(indent + 2)}Extra info.\n"
+            f"{create_indent(indent + 2)}额外信息。\n"
         )
 
         obbject_description = obbject_description.replace("NoneType", "None")
@@ -2068,7 +2068,7 @@ class DocstringGenerator:
         examples: list[Example] | None,
         target: Literal["docstring", "website"] = "docstring",
     ) -> str:
-        """Get the example section from the examples."""
+        """从示例中获取示例部分。"""
         if examples:
             if target == "docstring":
                 prompt = ">>> "
@@ -2102,11 +2102,11 @@ class DocstringGenerator:
         results_type: str,
         sections: list[str],
     ) -> str:
-        """Create the docstring for model."""
+        """为模型创建文档字符串。"""
         docstring: str = "\n"
 
         def format_type(type_: str, char_limit: int | None = None) -> str:
-            """Format type in docstrings."""
+            """在文档字符串中格式化类型。"""
             type_str = str(type_)
 
             # Apply the standard formatting first
@@ -2197,7 +2197,7 @@ class DocstringGenerator:
             return type_str
 
         def format_schema_description(description: str) -> str:
-            """Format description in docstrings."""
+            """格式化文档字符串中的解释。"""
             description = (
                 description.replace("\n", f"\n{create_indent(2)}")
                 if "\n        " not in description
@@ -2207,7 +2207,7 @@ class DocstringGenerator:
             return description
 
         def format_description(description: str) -> str:
-            """Format description in docstrings with proper indentation for provider choices."""
+            """格式化文档字符串中的描述，并为提供商选择提供适当的缩进。"""
             # Base indent for description content (called with create_indent(3) prefix)
             base_indent = create_indent(3)  # 12 spaces
 
@@ -2380,7 +2380,7 @@ class DocstringGenerator:
             return main_description
 
         def get_param_info(parameter: Parameter | None) -> tuple[str, str]:
-            """Get the parameter info."""
+            """获取参数信息。"""
             if not parameter:
                 return "", ""
             annotation = getattr(parameter, "_annotation", None)
@@ -2880,19 +2880,19 @@ class DocstringGenerator:
 
     @classmethod
     def _get_generic_types(cls, type_: type, items: list) -> list[str]:
-        """Unpack generic types recursively.
+        """递归地解包泛型类型。
 
         Parameters
         ----------
         type_ : type
-            Type to unpack.
+            要解包的类型。
         items : list
-            List to store the unpacked types.
+            用于存储解包类型的列表。
 
         Returns
         -------
         List[str]
-            List of unpacked type names.
+            解包后的类型名称列表。
 
         Examples
         --------
@@ -2913,19 +2913,19 @@ class DocstringGenerator:
 
     @staticmethod
     def _get_repr(items: list[str], model: str) -> str:
-        """Get the string representation of the types list with the model name.
+        """获取带有模型名称的类型列表的字符串表示形式。
 
         Parameters
         ----------
         items : List[str]
-            List of type names.
+            类型名称列表。
         model : str
-            Model name to access the model providers.
+            用于访问模型提供程序的模型名称。
 
         Returns
         -------
         str
-            String representation of the unpacked types list.
+            解包后的类型列表的字符串表示形式。
 
         Examples
         --------
@@ -2940,11 +2940,11 @@ class DocstringGenerator:
 
 
 class PathHandler:
-    """Handle the paths for the Platform."""
+    """处理平台的路径。"""
 
     @staticmethod
     def get_router_dependencies(path: str) -> list:
-        """Collect APIRouter dependencies for the path and its parents."""
+        """收集路径及其父级的 APIRouter 依赖项。"""
         router = RouterLoader.from_extensions()
         segments = [
             segment
@@ -2976,7 +2976,7 @@ class PathHandler:
 
     @staticmethod
     def build_route_map() -> dict[str, BaseRoute]:
-        """Build the route map."""
+        """建立路线图。"""
         router = RouterLoader.from_extensions()
         route_map = {
             route.path: route
@@ -2989,7 +2989,7 @@ class PathHandler:
         # Also include routes directly registered on _api_router instances
         # We need to traverse the router tree to find all _api_router instances
         def collect_api_router_routes(router_obj, collected_routes):
-            """Recursively collect routes from _api_router instances."""
+            """递归地从 _api_router 实例收集路由。"""
             if hasattr(router_obj, "_api_router"):
                 for inner_route in router_obj._api_router.routes:  # type: ignore  # pylint: disable=W0212
                     if (
@@ -3016,7 +3016,7 @@ class PathHandler:
 
     @staticmethod
     def build_path_list(route_map: dict[str, BaseRoute]) -> list[str]:
-        """Build the path list."""
+        """构建路径列表。"""
         path_list = []
         for route_path in route_map:
             if route_path not in path_list:
@@ -3048,17 +3048,17 @@ class PathHandler:
 
     @staticmethod
     def get_route(path: str, route_map: dict[str, BaseRoute]):
-        """Get the route from the path."""
+        """从路径获取路由。"""
         return route_map.get(path)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: list[str]) -> list[str]:
-        """Get the child path list.
+        """获取子路径列表。
 
-        This returns both sub-router paths AND direct route paths that are children of the given path.
-        For example, for path="/empty", it returns both:
-        - "/empty/sub_router" (a sub-router in path_list)
-        - "/empty/also_empty/{param}" (a direct route from route_map)
+        这将返回作为给定路径子项的子路由器路径和直接路由路径。
+        例如，对于 path="/empty"，它返回以下两者：
+        - "/empty/sub_router"（path_list 中的子路由器）
+        - "/empty/also_empty/{param}"（route_map 中的直接路由）
         """
         direct_children = []
         base_depth = path.count("/") if path else 0
@@ -3106,38 +3106,38 @@ class PathHandler:
 
     @staticmethod
     def clean_path(path: str) -> str:
-        """Clean the path."""
+        """清理路径。"""
         if path.startswith("/"):
             path = path[1:]
         return path.replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
-        """Build the module name."""
+        """构建模块名称。"""
         if not path:
             return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
-        """Build the module class."""
+        """构建模块类。"""
         if not path:
             return "Extensions"
         return f"ROUTER_{cls.clean_path(path=path)}"
 
     @staticmethod
     def extract_path_parameters(path: str) -> list[str]:
-        """Extract path parameters from a route path.
+        """从路由路径中提取路径参数。
 
         Parameters
         ----------
         path : str
-            The route path (e.g., "/users/{user_id}/posts/{post_id}")
+            路由路径（例如，"/users/{user_id}/posts/{post_id}"）
 
         Returns
         -------
         list[str]
-            List of path parameter names (e.g., ["user_id", "post_id"])
+            路径参数名称列表（例如，["user_id", "post_id"]）
         """
         # Match parameters in curly braces
         pattern = r"\{(\w+)\}"
@@ -3145,7 +3145,7 @@ class PathHandler:
 
     @staticmethod
     def get_router_description(path: str) -> str:
-        """Return the description for a router path."""
+        """返回路由器路径的描述。"""
         router = RouterLoader.from_extensions()
         description = router.get_attr(path or "/", "description")
         if description:
@@ -3155,7 +3155,7 @@ class PathHandler:
 
 
 class ReferenceGenerator:
-    """Generate the reference for the Platform."""
+    """生成平台参考。"""
 
     REFERENCE_FIELDS = [
         "deprecated",
@@ -3177,24 +3177,23 @@ class ReferenceGenerator:
         func: Callable,
         examples: list[Example] | None,
     ) -> str:
-        """Get the examples for the given standard model or function.
+        """获取给定标准模型 or 函数的示例。
 
-        For a given standard model or function, the examples are fetched from the
-        list of Example objects and formatted into a string.
+        对于给定的标准模型或函数，示例是从 Example 对象列表中提取并格式化为字符串。
 
         Parameters
         ----------
         path : str
-            Path of the router.
+            路由器的路径。
         func : Callable
-            Router endpoint function.
+            路由端点函数。
         examples : Optional[List[Example]]
-            List of Examples (APIEx or PythonEx type) for the endpoint.
+            端点的示例列表（APIEx 或 PythonEx 类型）。
 
         Returns
         -------
         str:
-            Formatted string containing the examples for the endpoint.
+            包含端点示例的格式化字符串。
         """
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -3214,17 +3213,17 @@ class ReferenceGenerator:
 
     @classmethod
     def _get_provider_parameter_info(cls, model: str) -> dict[str, Any]:
-        """Get the name, type, description, default value and optionality information for the provider parameter.
+        """获取提供者参数的名称、类型、描述、默认值和可选性信息。
 
         Parameters
         ----------
         model : str
-            Standard model to access the model providers.
+            用于访问模型提供程序的标准模型。
 
         Returns
         -------
         Dict[str, Any]
-            Dictionary of the provider parameter information
+            提供者参数信息字典
         """
         pi_model_provider = cls.pi.model_providers[model]
         provider_params_field = pi_model_provider.__dataclass_fields__["provider"]
@@ -3240,9 +3239,9 @@ class ReferenceGenerator:
             else []
         )
         description = (
-            "The provider to use, by default None. "
-            "If None, the priority list configured in the settings is used. "
-            f"Default priority: {', '.join(default_priority)}."
+            "要使用的提供者，默认为 None。 "
+            "如果为 None，则使用设置中配置的优先级列表。 "
+            f"默认优先级：{', '.join(default_priority)}。"
         )
 
         provider_parameter_info = {
@@ -3259,7 +3258,7 @@ class ReferenceGenerator:
     def _get_provider_field_params(
         cls, model: str, params_type: str, provider: str = "openbb"
     ) -> list[dict[str, Any]]:
-        """Get the fields of the given parameter type for the given provider of the standard_model."""
+        """获取 standard_model 给定提供者的给定参数类型的字段。"""
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
         model_map = cls.pi.map[model]
@@ -3405,46 +3404,45 @@ class ReferenceGenerator:
         model: str,
         providers: str,
     ) -> list[dict[str, str]]:
-        """Get the fields of the OBBject returns object for the given standard_model.
+        """获取给定 standard_model 的 OBBject 返回对象的字段。
 
         Parameters
         ----------
         model : str
-            Standard model of the returned object.
+            返回对象的标准模型。
         providers : str
-            Available providers for the model.
+            该模型的可用提供程序。
 
         Returns
         -------
         List[Dict[str, str]]
-            List of dictionaries containing the field name, type, description, default
-            and optionality of each field.
+            包含每个字段的字段名称、类型、描述、默认值和可选性的字典列表。
         """
         obbject_list = [
             {
                 "name": "results",
                 "type": model,
-                "description": "Serializable results.",
+                "description": "可序列化结果。",
             },
             {
                 "name": "provider",
                 "type": providers if providers else "str",
-                "description": "Provider name.",
+                "description": "提供者名称。",
             },
             {
                 "name": "warnings",
                 "type": "Optional[list[Warning_]]",
-                "description": "List of warnings.",
+                "description": "警告列表。",
             },
             {
                 "name": "chart",
                 "type": "Optional[Chart]",
-                "description": "Chart object.",
+                "description": "图表对象。",
             },
             {
                 "name": "extra",
                 "type": "dict[str, Any]",
-                "description": "Extra info.",
+                "description": "额外信息。",
             },
         ]
 
@@ -3454,18 +3452,17 @@ class ReferenceGenerator:
     def _get_post_method_parameters_info(
         docstring: str,
     ) -> list[dict[str, bool | str]]:
-        """Get the parameters for the POST method endpoints.
+        """获取 POST 方法端点的参数。
 
         Parameters
         ----------
         docstring : str
-            Router endpoint function's docstring
+            路由器端点函数的文档字符串
 
         Returns
         -------
         List[Dict[str, str]]
-            List of dictionaries containing the name, type, description, default
-            and optionality of each parameter.
+            包含每个参数的名称、类型、描述、默认值和可选性的字典列表。
         """
         parameters_list: list = []
 
@@ -3530,17 +3527,17 @@ class ReferenceGenerator:
 
     @staticmethod
     def _clean_string_values(value: Any) -> Any:
-        """Convert double quotes in string values to single quotes and fix type references.
+        """将字符串值中的双引号转换为单引号并修复类型引用。
 
         Parameters
         ----------
         value : Any
-            The value to clean
+            要清理的值
 
         Returns
         -------
         Any
-            The cleaned value
+            清理后的值
         """
         if isinstance(value, str):
             # Fix fully qualified Data type references
@@ -3601,7 +3598,7 @@ class ReferenceGenerator:
 
     @staticmethod
     def _get_function_signature_info(func: Callable) -> list[dict[str, Any]]:
-        """Extract parameter information directly from function signature."""
+        """直接从函数签名中提取参数信息。"""
         params_info = []
         sig = signature(func)
 
@@ -3721,18 +3718,17 @@ class ReferenceGenerator:
 
     @staticmethod
     def _get_post_method_returns_info(docstring: str) -> dict:
-        """Get the returns information for the POST method endpoints.
+        """获取 POST 方法端点的返回信息。
 
         Parameters
         ----------
         docstring: str
-            Router endpoint function's docstring
+            路由器端点函数的文档字符串
 
         Returns
         -------
         List[Dict[str, str]]
-            Single element list having a dictionary containing the name, type,
-            description of the return value
+            包含包含返回值名称、类型、描述的字典的单元素列表
         """
         returns_dict: dict = {}
         # This pattern captures the model name inside "OBBject[]" and its description
@@ -3764,7 +3760,7 @@ class ReferenceGenerator:
     def get_paths(  # noqa: PLR0912
         cls, route_map: dict[str, BaseRoute]
     ) -> dict[str, dict[str, Any]]:
-        """Get path reference data.
+        """获取路径参考数据。
 
         The reference data is a dictionary containing the description, parameters,
         returns and examples for each endpoint. This is currently useful for
@@ -3773,8 +3769,7 @@ class ReferenceGenerator:
         Returns
         -------
         Dict[str, Dict[str, Any]]
-            Dictionary containing the description, parameters, returns and
-            examples for each endpoint.
+            包含每个端点的描述、参数、返回值和示例的字典。
         """
         reference: dict[str, dict] = {}
 

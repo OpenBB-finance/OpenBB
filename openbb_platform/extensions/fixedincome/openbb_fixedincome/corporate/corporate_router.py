@@ -1,4 +1,4 @@
-"""Fixed Income Corporate Router."""
+"""固定收益公司路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -29,12 +29,12 @@ async def hqm(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """High Quality Market Corporate Bond.
+    """高质量市场公司债券。
 
-    The HQM yield curve represents the high quality corporate bond market, i.e.,
-    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.
-    These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
-    that is the market-weighted average (MWA) quality of high quality bonds.
+    HQM 收益率曲线代表高质量公司债券市场，即
+    评级为 AAA、AA 或 A 的公司债券。HQM 曲线包含两个回归项。
+    这些项是调整因子，将 AAA、AA 和 A 债券混合成一条单一的 HQM 收益率曲线，
+    即高质量债券的市场加权平均 (MWA) 质量。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -52,12 +52,12 @@ async def spot_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Spot Rates.
+    """即期利率。
 
-    The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.
-    This is a zero coupon bond.
-    Because each spot rate pertains to a single cashflow, it is the relevant interest rate
-    concept for discounting a pension liability at the same maturity.
+    任何期限的即期利率是指在该期限提供单次付款的债券的收益率。
+    这是一种零息债券。
+    由于每个即期利率都与单个现金流有关，因此它是
+    贴现相同期限养老金负债的相关利率概念。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -75,12 +75,12 @@ async def commercial_paper(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Commercial Paper.
+    """商业票据。
 
-    Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.
-    Maturities range up to 270 days but average about 30 days.
-    Many companies use CP to raise cash needed for current transactions,
-    and many find it to be a lower-cost alternative to bank loans.
+    商业票据 (CP) 由主要由公司发行的短期本票组成。
+    期限最长可达 270 天，但平均约为 30 天。
+    许多公司使用 CP 筹集当前交易所需的现金，
+    许多公司发现这是银行贷款的低成本替代方案。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -92,5 +92,5 @@ async def bond_prices(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Corporate Bond Prices."""
+    """公司债券价格。"""
     return await OBBject.from_query(Query(**locals()))

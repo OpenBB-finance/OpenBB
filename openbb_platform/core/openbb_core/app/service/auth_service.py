@@ -1,4 +1,4 @@
-"""Auth service."""
+"""认证服务。"""
 
 import logging
 from collections.abc import Awaitable, Callable
@@ -22,14 +22,14 @@ logger = logging.getLogger("uvicorn.error")
 
 
 class AuthServiceError(Exception):
-    """Authentication service error."""
+    """认证服务错误。"""
 
 
 class AuthService(metaclass=SingletonMeta):
-    """Auth service."""
+    """认证服务。"""
 
     def __init__(self, ext_name: str | None = EXT_NAME) -> None:
-        """Initialize AuthService."""
+        """初始化 AuthService。"""
         if not self._load_extension(ext_name):
             self._router = default_router
             self._auth_hook = default_auth_hook
@@ -37,40 +37,40 @@ class AuthService(metaclass=SingletonMeta):
 
     @property
     def router(self) -> APIRouter:
-        """Get router."""
+        """获取路由器。"""
         return self._router
 
     @property
     def auth_hook(self) -> Callable[..., Awaitable[None]]:
-        """Get general authentication hook."""
+        """获取通用认证钩子。"""
         return self._auth_hook
 
     @property
     def user_settings_hook(self) -> Callable[..., Awaitable[UserSettings]]:
-        """Get user settings hook."""
+        """获取用户设置钩子。"""
         return self._user_settings_hook
 
     @staticmethod
     def _is_installed(ext_name: str) -> bool:
-        """Check if auth_extension is installed."""
+        """检查是否安装了 auth_extension。"""
         extension = ExtensionLoader().get_core_entry_point(ext_name) or False
         return extension and ext_name == extension.name  # type: ignore
 
     @staticmethod
     def _get_entry_mod(ext_name: str) -> ModuleType:
-        """Get the module of the given auth_extension."""
+        """获取给定 auth_extension 的模块。"""
         extension = ExtensionLoader().get_core_entry_point(ext_name)
         if not extension:
-            raise AuthServiceError(f"Extension '{ext_name}' is not installed.")
+            raise AuthServiceError(f"未安装扩展 '{ext_name}'。")
         return import_module(extension.module)
 
     def _load_extension(self, ext_name: str | None) -> bool:
-        """Load auth extension."""
+        """加载认证扩展。"""
         if ext_name and self._is_installed(ext_name):
             entry_mod = self._get_entry_mod(ext_name)
             self._router = entry_mod.router
             self._auth_hook = entry_mod.auth_hook
             self._user_settings_hook = entry_mod.user_settings_hook
-            logger.info("Loaded auth_extension: %s", ext_name)
+            logger.info("已加载 auth_extension：%s", ext_name)
             return True
         return False

@@ -1,4 +1,4 @@
-"""Commodity Production Supply & Demand Data Standard Model."""
+"""商品供需平衡数据标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -6,34 +6,34 @@ from pydantic import Field
 
 
 class CommodityPsdDataQueryParams(QueryParams):
-    """Commodity Production Supply & Demand Data Query."""
+    """商品供需平衡数据查询。"""
 
 
 class CommodityPsdData(Data):
-    """Commodity Production Supply & Demand Data."""
+    """商品供需平衡数据。"""
 
-    region: str | None = Field(default=None, description="Region group category.")
+    region: str | None = Field(default=None, description="区域组类别。")
     country: str | None = Field(
         default=None,
-        description="Country or area name.",
+        description="国家或地区名称。",
     )
     commodity: str | None = Field(
         default=None,
-        description="Commodity name.",
+        description="商品名称。",
     )
     attribute: str | None = Field(
         default=None,
-        description="Name of the row value.",
+        description="行值名称。",
     )
     marketing_year: str | None = Field(
         default=None,
-        description="Marketing year for the commodity.",
+        description="商品的市场年度。",
     )
     value: float | int | None = Field(
         default=None,
-        description="Value for the commodity attribute in the given marketing year.",
+        description="给定市场年度中商品属性的值。",
     )
     unit: str | None = Field(
         default=None,
-        description="Unit of measurement for the value.",
+        description="值的计量单位。",
     )

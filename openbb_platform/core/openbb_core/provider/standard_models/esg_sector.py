@@ -1,38 +1,38 @@
-"""ESG Sector Standard Model."""
+"""ESG 行业标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 
 
 class ESGSectorQueryParams(QueryParams):
-    """ESG Sector Query.
+    """ESG 行业查询。
 
-    Parameter
+    参数
     ---------
     year : int
-        The year to get ESG information for
+        获取 ESG 信息的年份
     """
 
     year: int
 
 
 class ESGSectorData(Data):
-    """ESG Sector Data.
+    """ESG 行业数据。
 
-    Returns
+    返回
     -------
     year : int
-        The year of the ESG Sector.
+        ESG 行业的年份。
     sector : str
-        The sector of the ESG Sector.
+        ESG 行业的行业。
     environmental_score : float
-        The environmental score of the ESG Sector.
+        ESG 行业的环境评分。
     social_score : float
-        The social score of the ESG Sector.
+        ESG 行业的社会评分。
     governance_score : float
-        The governance score of the ESG Sector.
+        ESG 行业的治理评分。
     esg_score : float
-        The ESG score of the ESG Sector.
+        ESG 行业的 ESG 评分。
     """
 
     year: int

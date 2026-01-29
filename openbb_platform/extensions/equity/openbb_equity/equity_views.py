@@ -1,4 +1,4 @@
-"""Views for the Equity Extension."""
+"""股票扩展的视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 
 
 class EquityViews:
-    """Equity Views."""
+    """股票视图。"""
 
     @staticmethod
     def equity_price_historical(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Equity Price Historical Chart."""
+        """股票历史价格图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_historical import price_historical
 
@@ -25,7 +25,7 @@ class EquityViews:
     def equity_price_performance(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Equity Price Performance Chart."""
+        """股票价格表现图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.price_performance import price_performance
 
@@ -35,13 +35,13 @@ class EquityViews:
     def equity_historical_market_cap(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Equity Historical Market Cap Chart."""
+        """股票历史市值图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import line_chart
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
-        title = kwargs.pop("title", "Historical Market Cap")
+        title = kwargs.pop("title", "历史市值")
 
         data = DataFrame()
 
@@ -59,7 +59,7 @@ class EquityViews:
             data = data.set_index("date")
 
         if data.empty:
-            raise ValueError("Data is empty")
+            raise ValueError("数据为空")
 
         df = data.pivot(columns="symbol", values="market_cap")
 
@@ -68,7 +68,7 @@ class EquityViews:
         if "hovertemplate" not in scatter_kwargs:
             scatter_kwargs["hovertemplate"] = "%{y}"
 
-        ytital = kwargs.pop("ytitle", "Market Cap ($)")
+        ytital = kwargs.pop("ytitle", "市值 ($)")
         y = kwargs.pop("y", df.columns.tolist())
 
         fig = line_chart(

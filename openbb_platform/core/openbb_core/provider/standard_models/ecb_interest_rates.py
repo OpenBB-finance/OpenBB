@@ -1,4 +1,4 @@
-"""European Central Bank Interest Rates Standard Model."""
+"""欧洲央行利率标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class EuropeanCentralBankInterestRatesParams(QueryParams):
-    """European Central Bank Interest Rates Query."""
+    """欧洲央行利率查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,18 +27,18 @@ class EuropeanCentralBankInterestRatesParams(QueryParams):
     )
     interest_rate_type: Literal["deposit", "lending", "refinancing"] = Field(
         default="lending",
-        description="The type of interest rate.",
+        description="利率类型。",
     )
 
     @field_validator("interest_rate_type", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class EuropeanCentralBankInterestRatesData(Data):
-    """European Central Bank Interest Rates Data."""
+    """欧洲央行利率数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="European Central Bank Interest Rate.")
+    rate: float | None = Field(description="欧洲央行利率。")

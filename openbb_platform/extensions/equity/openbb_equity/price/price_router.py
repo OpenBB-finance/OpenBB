@@ -1,4 +1,4 @@
-"""Price Router."""
+"""价格路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -26,7 +26,7 @@ async def quote(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the latest quote for a given stock. Quote includes price, volume, and other data."""
+    """获取给定股票的最新报价。报价包括价格、成交量和其他数据。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -40,7 +40,7 @@ async def nbbo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the National Best Bid and Offer for a given stock."""
+    """获取给定股票的全国最佳买入和卖出价。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -57,7 +57,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical price data for a given stock. This includes open, high, low, close, and volume."""
+    """获取给定股票的历史价格数据。这包括开盘价、最高价、最低价、收盘价和成交量。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -71,5 +71,5 @@ async def performance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get price performance data for a given stock. This includes price changes for different time periods."""
+    """获取给定股票的价格表现数据。这包括不同时间段的价格变化。"""
     return await OBBject.from_query(Query(**locals()))

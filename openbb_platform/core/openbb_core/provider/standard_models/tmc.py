@@ -1,4 +1,4 @@
-"""Treasury Constant Maturity Model."""
+"""固定到期期限国债收益率 (TMC) 标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class TreasuryConstantMaturityQueryParams(QueryParams):
-    """Treasury Constant Maturity Query."""
+    """固定到期期限国债收益率查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,18 +27,18 @@ class TreasuryConstantMaturityQueryParams(QueryParams):
     )
     maturity: Literal["3m", "2y"] | None = Field(
         default="3m",
-        description="The maturity",
+        description="到期期限。",
     )
 
     @field_validator("maturity", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class TreasuryConstantMaturityData(Data):
-    """Treasury Constant Maturity Data."""
+    """固定到期期限国债收益率数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="TreasuryConstantMaturity Rate.")
+    rate: float | None = Field(description="固定到期期限国债收益率。")

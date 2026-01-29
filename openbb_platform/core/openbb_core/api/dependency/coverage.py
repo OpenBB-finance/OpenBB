@@ -1,4 +1,4 @@
-"""Coverage dependency."""
+"""覆盖率依赖项。"""
 
 from typing import Annotated
 
@@ -11,12 +11,12 @@ from openbb_core.app.service.auth_service import AuthService
 async def get_command_map(
     _: Annotated[None, Depends(AuthService().auth_hook)],
 ) -> CommandMap:
-    """Get command map."""
+    """获取命令映射。"""
     return CommandMap()
 
 
 async def get_provider_interface(
     _: Annotated[None, Depends(AuthService().auth_hook)],
 ) -> ProviderInterface:
-    """Get provider interface."""
+    """获取提供者接口。"""
     return ProviderInterface()

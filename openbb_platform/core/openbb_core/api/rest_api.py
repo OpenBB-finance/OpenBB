@@ -1,4 +1,4 @@
-"""REST API for the OpenBB Platform."""
+"""OpenBB 平台的 REST API。"""
 
 import logging
 from contextlib import asynccontextmanager
@@ -20,20 +20,20 @@ system = SystemService().system_settings
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    """Startup event."""
+    """启动事件。"""
     auth = "ENABLED" if Env().API_AUTH else "DISABLED"
     banner = rf"""
 
                    ███╗
   █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
   ███╔══════════███║  ███╔══════════███║
-  █████████████████║  █████████████████║       Authentication: {auth}
+  █████████████████║  █████████████████║       身份验证: {auth}
   ╚═════════════███║  ███╔═════════════╝
      ██████████████║  ██████████████╗
      ███╔═══════███║  ███╔═══════███║
      ██████████████║  ██████████████║
      ╚═════════════╝  ╚═════════════╝
-Investment research for everyone, anywhere.
+无处不在的投资研究，惠及每一个人。
 
     https://my.openbb.co/app/platform
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # pylint: disable=import-outside-toplevel
     import uvicorn
 
-    # This initializes the OpenBB environment variables so they can be read before uvicorn is run.
+    # 这将初始化 OpenBB 环境变量，以便在运行 uvicorn 之前读取它们。
     Env()
     uvicorn_kwargs = system.python_settings.model_dump().get("uvicorn", {})
     uvicorn_reload = uvicorn_kwargs.pop("reload", None)

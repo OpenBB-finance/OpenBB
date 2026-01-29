@@ -1,4 +1,4 @@
-"""Charting Extension Query Params."""
+"""绘图扩展查询参数。"""
 
 # pylint: disable=unused-variable,unused-argument
 
@@ -14,7 +14,7 @@ MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
 
 
 def _get_type_name(t):
-    """Get the type name of a type hint."""
+    """获取类型提示的类型名称。"""
     if hasattr(t, "__origin__"):
         if hasattr(t.__origin__, "__name__"):
             return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
@@ -30,15 +30,15 @@ def _get_type_name(t):
 
 
 class BaseQueryParams(QueryParams):
-    """Base Query Parmams Base Model."""
+    """基本查询参数基本模型。"""
 
     def __init__(self, **data):
-        """Initialize the BaseQueryParams."""
+        """初始化基本查询参数。"""
         super().__init__(**data)
         self.__doc__ = self.__repr__()
 
     def __repr__(self):
-        """Return the string representation of the model."""
+        """返回模型的字符串表示形式。"""
         fields = self.__class__.model_fields
         repr_str = (
             "\n"
@@ -70,7 +70,7 @@ class ChartQueryParams(BaseQueryParams):
 
 
 class EquityPricePerformanceChartQueryParams(ChartQueryParams):
-    """Equity Price Performance Chart Query Params."""
+    """股票价格表现图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -92,11 +92,11 @@ class EquityPricePerformanceChartQueryParams(ChartQueryParams):
 
 
 class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams):
-    """ETF Price Performance Chart Query Params."""
+    """ETF 价格表现图表查询参数。"""
 
 
 class EtfHoldingsChartQueryParams(ChartQueryParams):
-    """ETF Holdings Chart Query Params."""
+    """ETF 持仓图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -117,7 +117,7 @@ class EtfHoldingsChartQueryParams(ChartQueryParams):
 
 
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
-    """Equity Historical Price Chart Query Params."""
+    """股票历史价格图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -171,7 +171,7 @@ class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
 
 
 class EconomyFredSeriesChartQueryParams(ChartQueryParams):
-    """FRED Series Chart Query Params."""
+    """FRED 系列图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -219,7 +219,7 @@ class EconomyFredSeriesChartQueryParams(ChartQueryParams):
 
 
 class TechnicalConesChartQueryParams(ChartQueryParams):
-    """Technical Cones Chart Query Params."""
+    """技术锥体图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -232,7 +232,7 @@ class TechnicalConesChartQueryParams(ChartQueryParams):
 
 
 class MAQueryParams(ChartQueryParams):
-    """Moving Average Query Params."""
+    """移动平均查询参数。"""
 
     target: str = Field(
         default="close",
@@ -263,7 +263,7 @@ class MAQueryParams(ChartQueryParams):
 
 
 class FixedincomeGovernmentYieldCurve(ChartQueryParams):
-    """Fixed Income Government Yield Curve Chart Query Params."""
+    """固定收益政府收益率曲线图表查询参数。"""
 
     title: str | None = Field(
         default=None,
@@ -280,27 +280,27 @@ class FixedincomeGovernmentYieldCurve(ChartQueryParams):
 
 
 class TechnicalSMAChartQueryParams(MAQueryParams):
-    """Technical SMA Chart Query Params."""
+    """技术 SMA 图表查询参数。"""
 
 
 class TechnicalEMAChartQueryParams(MAQueryParams):
-    """Technical EMA Chart Query Params."""
+    """技术 EMA 图表查询参数。"""
 
 
 class TechnicalHMAChartQueryParams(MAQueryParams):
-    """Technical HMA Chart Query Params."""
+    """技术 HMA 图表查询参数。"""
 
 
 class TechnicalWMAChartQueryParams(MAQueryParams):
-    """Technical WMA Chart Query Params."""
+    """技术 WMA 图表查询参数。"""
 
 
 class TechnicalZLMAChartQueryParams(MAQueryParams):
-    """Technical ZLMA Chart Query Params."""
+    """技术 ZLMA 图表查询参数。"""
 
 
 class TechnicalADXChartQueryParams(ChartQueryParams):
-    """Technical ADX Chart Query Params."""
+    """技术 ADX 图表查询参数。"""
 
     length: int | None = Field(
         default=50,
@@ -317,7 +317,7 @@ class TechnicalADXChartQueryParams(ChartQueryParams):
 
 
 class TechnicalArooonChartQueryParams(ChartQueryParams):
-    """Technical Aroon Chart Query Params."""
+    """技术 Aroon 图表查询参数。"""
 
     length: int | None = Field(
         default=25,
@@ -330,7 +330,7 @@ class TechnicalArooonChartQueryParams(ChartQueryParams):
 
 
 class TechnicalMACDChartQueryParams(ChartQueryParams):
-    """Technical MACD Chart Query Params."""
+    """技术 MACD 图表查询参数。"""
 
     fast: int | None = Field(
         default=12,
@@ -351,7 +351,7 @@ class TechnicalMACDChartQueryParams(ChartQueryParams):
 
 
 class TechnicalRSIChartQueryParams(ChartQueryParams):
-    """Technical RSI Chart Query Params."""
+    """技术 RSI 图表查询参数。"""
 
     length: int | None = Field(
         default=14,
@@ -368,7 +368,7 @@ class TechnicalRSIChartQueryParams(ChartQueryParams):
 
 
 class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
-    """Technical Relative Rotation Chart Query Params."""
+    """技术相对旋转图表查询参数。"""
 
     date: str | None = Field(
         default=None,
@@ -393,7 +393,7 @@ class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
 
 
 class ChartParams:
-    """Chart Query Params."""
+    """图表查询参数。"""
 
     crypto_price_historical = EquityPriceHistoricalChartQueryParams
     derivatives_futures_historical = EquityPriceHistoricalChartQueryParams
@@ -419,11 +419,11 @@ class ChartParams:
 
 
 class IndicatorsQueryParams(BaseQueryParams):
-    """Indicators Query Params."""
+    """指标查询参数。"""
 
 
 class MAIndicatorsQueryParams(IndicatorsQueryParams):
-    """Moving Average Indicators Query Params."""
+    """移动平均指标查询参数。"""
 
     length: int | list[int] = Field(
         default=50,
@@ -437,27 +437,27 @@ class MAIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class SMAIndicatorsQueryParams(MAIndicatorsQueryParams):
-    """Simple Moving Average Indicators Query Params."""
+    """简单移动平均指标查询参数。"""
 
 
 class EMAIndicatorsQueryParams(MAIndicatorsQueryParams):
-    """Exponential Moving Average Indicators Query Params."""
+    """指数移动平均指标查询参数。"""
 
 
 class HMAIndicatorsQueryParams(MAIndicatorsQueryParams):
-    """Hull Moving Average Indicators Query Params."""
+    """赫尔移动平均指标查询参数。"""
 
 
 class WMAIndicatorsQueryParams(MAIndicatorsQueryParams):
-    """Weighted Moving Average Indicators Query Params."""
+    """加权移动平均指标查询参数。"""
 
 
 class ZLMAIndicatorsQueryParams(MAIndicatorsQueryParams):
-    """Zero-Lag Moving Average Indicators Query Params."""
+    """零滞后移动平均指标查询参数。"""
 
 
 class ADIndicatorsQueryParams(IndicatorsQueryParams):
-    """Accumulation/Distribution Indicators Query Params."""
+    """累积/派发指标查询参数。"""
 
     offset: int = Field(
         default=0,
@@ -466,7 +466,7 @@ class ADIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
-    """Accumulation/Distribution Oscillator Indicators Query Params."""
+    """累积/派发震荡指标查询参数。"""
 
     fast: int = Field(
         default=3,
@@ -483,7 +483,7 @@ class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class ADXIndicatorsQueryParams(IndicatorsQueryParams):
-    """Average Directional Index Indicators Query Params."""
+    """平均趋向指数指标查询参数。"""
 
     length: int = Field(
         default=50,
@@ -500,7 +500,7 @@ class ADXIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class AroonIndicatorsQueryParams(IndicatorsQueryParams):
-    """Aroon Indicators Query Params."""
+    """Aroon 指标查询参数。"""
 
     length: int = Field(
         default=25,
@@ -513,7 +513,7 @@ class AroonIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class ATRIndicatorsQueryParams(IndicatorsQueryParams):
-    """Average True Range Indicators Query Params."""
+    """平均真实范围指标查询参数。"""
 
     length: int = Field(
         default=14,
@@ -534,7 +534,7 @@ class ATRIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class CCIIndicatorsQueryParams(IndicatorsQueryParams):
-    """Commodity Channel Index Indicators Query Params."""
+    """商品通道指数指标查询参数。"""
 
     length: int = Field(
         default=14,
@@ -547,7 +547,7 @@ class CCIIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class DonchianIndicatorsQueryParams(IndicatorsQueryParams):
-    """Donchian Channel Indicators Query Params."""
+    """唐奇安通道指标查询参数。"""
 
     lower: int | None = Field(
         default=20,
@@ -564,7 +564,7 @@ class DonchianIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class FisherIndicatorsQueryParams(IndicatorsQueryParams):
-    """Fisher Transform Indicators Query Params."""
+    """费舍尔变换指标查询参数。"""
 
     length: int = Field(
         default=14,
@@ -577,7 +577,7 @@ class FisherIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class KCIndicatorsQueryParams(IndicatorsQueryParams):
-    """Keltner Channel Indicators Query Params."""
+    """凯尔特纳通道指标查询参数。"""
 
     length: int = Field(
         default=20,
@@ -598,7 +598,7 @@ class KCIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class MACDIndicatorsQueryParams(IndicatorsQueryParams):
-    """MACD Indicators Query Params."""
+    """MACD 指标查询参数。"""
 
     fast: int | None = Field(
         default=12,
@@ -619,7 +619,7 @@ class MACDIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class OBVIndicatorsQueryParams(IndicatorsQueryParams):
-    """On Balance Volume Indicators Query Params."""
+    """能量潮指标查询参数。"""
 
     offset: int = Field(
         default=0,
@@ -628,7 +628,7 @@ class OBVIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class RSIIndicatorsQueryParams(IndicatorsQueryParams):
-    """RSI Indicators Query Params."""
+    """RSI 指标查询参数。"""
 
     length: int = Field(
         default=14,
@@ -645,7 +645,7 @@ class RSIIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class StochIndicatorsQueryParams(IndicatorsQueryParams):
-    """Stochastic Oscillator Indicators Query Params."""
+    """随机震荡指标查询参数。"""
 
     fast_k: int = Field(
         default=14,
@@ -662,7 +662,7 @@ class StochIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class FibIndicatorsQueryParams(IndicatorsQueryParams):
-    """Fibonacci Retracement Indicators Query Params."""
+    """斐波那契回撤指标查询参数。"""
 
     period: int = Field(
         default=120,
@@ -679,7 +679,7 @@ class FibIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class ClenowIndicatorsQueryParams(IndicatorsQueryParams):
-    """Clenow Volatility Adjusted Momentum Indicators Query Params."""
+    """Clenow 波动率调整动量指标查询参数。"""
 
     period: int = Field(
         default=90,
@@ -688,7 +688,7 @@ class ClenowIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class DemarkIndicatorsQueryParams(IndicatorsQueryParams):
-    """Demark Indicators Query Params."""
+    """Demark 指标查询参数。"""
 
     show_all: bool = Field(
         default=False,
@@ -701,7 +701,7 @@ class DemarkIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class IchimokuIndicatorsQueryParams(IndicatorsQueryParams):
-    """Ichimoku Cloud Indicators Query Params."""
+    """一目均衡表指标查询参数。"""
 
     conversion: int = Field(
         default=9,
@@ -726,7 +726,7 @@ class IchimokuIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class SRLinesIndicatorsQueryParams(IndicatorsQueryParams):
-    """Support and Resistance Lines Indicators Query Params."""
+    """支撑线和阻力线指标查询参数。"""
 
     show: bool = Field(
         default=True,
@@ -735,7 +735,7 @@ class SRLinesIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class IndicatorsParams(QueryParams):
-    """Indicators Query Params."""
+    """指标查询参数。"""
 
     sma: SMAIndicatorsQueryParams = Field(
         default=SMAIndicatorsQueryParams(),
@@ -831,7 +831,7 @@ class IndicatorsParams(QueryParams):
     )
 
     def __repr__(self):
-        """Return the string representation of the model."""
+        """返回模型的字符串表示形式。"""
         fields = self.__class__.model_fields
         repr_str = "\n" + "\n".join(
             [
@@ -844,7 +844,7 @@ class IndicatorsParams(QueryParams):
     @model_validator(mode="before")
     @classmethod
     def validate_model(cls, values):
-        """Validate the model."""
+        """验证模型。"""
         indicators = list(ChartIndicators.get_available_indicators())
         for k, v in values.items():
             if k not in indicators:

@@ -35,7 +35,7 @@ class Registry:
         if isinstance(arg, str):
             return self._get_by_key(arg)
 
-        raise ValueError("Couldn't get the `OBBject` with the provided argument.")
+        raise ValueError("无法使用提供的参数获取 'OBBject'。")
 
     def _get_by_key(self, key: str) -> OBBject | None:
         """Return the obbject with key."""

@@ -1,4 +1,4 @@
-"""OpenBB Platform."""
+"""OpenBB 平台。"""
 
 # flake8: noqa
 
@@ -20,18 +20,18 @@ def build(
     lint: bool = True,
     verbose: bool = False,
 ) -> None:
-    """Build extension modules.
+    """构建扩展模块。
 
     Parameters
     ----------
     modules : Optional[List[str]], optional
-        The modules to rebuild, by default None
-        For example: "/news" or ["/news", "/crypto"]
-        If None, all modules are rebuilt.
+        要重建的模块，默认为 None
+        例如："/news" 或 ["/news", "/crypto"]
+        如果是 None，则重建所有模块。
     lint : bool, optional
-        Whether to lint the code, by default True
+        是否对代码进行 lint，默认为 True
     verbose : bool, optional
-        Enable/disable verbose mode
+        启用/禁用详细模式
     """
     _PackageBuilder(_this_dir, lint, verbose).build(modules)
 
@@ -46,5 +46,5 @@ try:
     obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
     sdk = obb
 except (ImportError, ModuleNotFoundError):
-    print("Failed to import extensions. Are any installed?")
+    print("无法导入扩展。是否已安装任何扩展？")
     obb = sdk = _create_app()  # type: ignore

@@ -1,4 +1,4 @@
-"""Defaults model."""
+"""默认值模型。"""
 
 from typing import Any
 from warnings import warn
@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class Defaults(BaseModel):
-    """Defaults."""
+    """默认值。"""
 
     model_config = ConfigDict(validate_assignment=True, populate_by_name=True)
 
@@ -18,7 +18,7 @@ class Defaults(BaseModel):
     )
 
     def __repr__(self) -> str:
-        """Return string representation."""
+        """返回字符串表示形式。"""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
@@ -26,7 +26,7 @@ class Defaults(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def validate_before(cls, values: dict) -> dict:
-        """Validate model (before)."""
+        """验证模型（之前）。"""
         key = "commands"
         if "routes" in values:
             if not values.get("routes"):
@@ -34,8 +34,8 @@ class Defaults(BaseModel):
             show_warnings = values.get("preferences", {}).get("show_warnings")
             if show_warnings is False or show_warnings in ["False", "false"]:
                 warn(
-                    message="The 'routes' key is deprecated within 'defaults' of 'user_settings.json'."
-                    + " Suppress this warning by updating the key to 'commands'.",
+                    message="'user_settings.json' 中 'defaults' 内的 'routes' 键已弃用。"
+                    + " 通过将键更新为 'commands' 来抑制此警告。",
                     category=OpenBBWarning,
                 )
                 key = "routes"
@@ -51,6 +51,6 @@ class Defaults(BaseModel):
         return new_values
 
     def update(self, incoming: "Defaults"):
-        """Update current defaults."""
+        """更新当前默认值。"""
         incoming_commands = incoming.model_dump(exclude_none=True).get("commands", {})
         self.__dict__["commands"].update(incoming_commands)

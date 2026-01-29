@@ -1,4 +1,4 @@
-"""Futures Info Standard Model."""
+"""期货信息标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,12 +7,12 @@ from pydantic import Field
 
 
 class FuturesInfoQueryParams(QueryParams):
-    """Futures Info Query."""
+    """期货信息查询。"""
 
     # leaving this empty to let the provider create custom symbol docstrings.
 
 
 class FuturesInfoData(Data):
-    """Futures Instruments Data."""
+    """期货信息数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

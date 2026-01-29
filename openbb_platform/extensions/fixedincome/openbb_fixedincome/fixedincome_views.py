@@ -1,4 +1,4 @@
-"""Views for the Fixed Income Extension."""
+"""固定收益扩展的视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -11,13 +11,13 @@ if TYPE_CHECKING:
 
 
 class FixedIncomeViews:
-    """FixedIncome Views."""
+    """固定收益视图。"""
 
     @staticmethod
     def fixedincome_government_yield_curve(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Government Yield Curve Chart."""
+        """政府债券收益率曲线图。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.helpers import (
             duration_sorter,
@@ -41,16 +41,16 @@ class FixedIncomeViews:
             df = DataFrame([d.model_dump() for d in kwargs["obbject_item"]])  # type: ignore
 
         if df.empty:
-            raise ValueError("Error: No data to plot.")
+            raise ValueError("错误：没有数据可绘制。")
 
         if "maturity" not in df.columns:
-            raise ValueError("Error: Maturity column not found in the data.")
+            raise ValueError("错误：在数据中未找到 'maturity' 列。")
 
         if "rate" not in df.columns:
-            raise ValueError("Error: Rate column not found in the data.")
+            raise ValueError("错误：在数据中未找到 'rate' 列。")
 
         if "date" not in df.columns:
-            raise ValueError("Error: Date column not found in the data.")
+            raise ValueError("错误：在数据中未找到 'date' 列。")
 
         provider = kwargs.get("provider")
         df["date"] = df["date"].astype(str)
@@ -72,7 +72,7 @@ class FixedIncomeViews:
         def create_fig(
             figure, dataframe, dates, color_count, country: str | None = None
         ):
-            """Create a scatter for each date in the data."""
+            """为数据中的每个日期创建一个散点图。"""
             for date in dates:
                 color = colors[color_count % len(colors)]
                 plot_df = dataframe[dataframe["date"] == date].copy()

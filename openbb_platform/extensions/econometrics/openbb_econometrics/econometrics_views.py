@@ -1,4 +1,4 @@
-"""Views for the Econometrics Extension."""
+"""计量经济学扩展的视图。"""
 
 from typing import TYPE_CHECKING, Any
 
@@ -9,29 +9,29 @@ if TYPE_CHECKING:
 
 
 class EconometricsViews:
-    """Econometrics Views."""
+    """计量经济学视图。"""
 
     @staticmethod
     def econometrics_correlation_matrix(  # noqa: PLR0912
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Correlation Matrix Chart.
+        """相关矩阵图表。
 
         Parameters
         ----------
         data : Union[list[Data], DataFrame]
-            Input dataset.
+            输入数据集。
         method : Literal["pearson", "kendall", "spearman"]
-            Method to use for correlation calculation. Default is "pearson".
-                pearson : standard correlation coefficient
-                kendall : Kendall Tau correlation coefficient
-                spearman : Spearman rank correlation
+            用于计算相关性的方法。默认为 "pearson"。
+                pearson : 标准相关系数
+                kendall : Kendall Tau 相关系数
+                spearman : Spearman 秩相关
         colorscale : str
-            Plotly colorscale to use for the heatmap. Default is "RdBu".
+            用于热图的 Plotly 色标。默认为 "RdBu"。
         title : str
-            Title of the chart. Default is "Asset Correlation Matrix".
+            图表的标题。默认为 "Asset Correlation Matrix"。
         layout_kwargs : Dict[str, Any]
-            Additional keyword arguments to apply with figure.update_layout(), by default None.
+            应用于 figure.update_layout() 的其他关键字参数，默认为 None。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.correlation_matrix import correlation_matrix

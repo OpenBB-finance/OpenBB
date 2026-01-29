@@ -1,4 +1,4 @@
-"""Port Volume Standard Model."""
+"""港口吞吐量标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class PortVolumeQueryParams(QueryParams):
-    """Port Volume Query."""
+    """港口吞吐量查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -23,11 +23,11 @@ class PortVolumeQueryParams(QueryParams):
 
 
 class PortVolumeData(Data):
-    """Port Volume Data."""
+    """港口吞吐量数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    port_code: str | None = Field(default=None, description="Port code.")
-    port_name: str | None = Field(default=None, description="Port name.")
+    port_code: str | None = Field(default=None, description="港口代码。")
+    port_name: str | None = Field(default=None, description="港口名称。")
     country: str | None = Field(
-        default=None, description="Country where the port is located."
+        default=None, description="港口所属国家。"
     )

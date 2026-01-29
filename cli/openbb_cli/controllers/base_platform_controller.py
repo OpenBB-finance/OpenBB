@@ -47,7 +47,7 @@ class PlatformController(BaseController):
         self._name = name
 
         if not (platform_target or translators):
-            raise ValueError("Either platform_target or translators must be provided.")
+            raise ValueError("必须提供 platform_target 或 translators。")
 
         self._translated_target = (
             ArgparseClassProcessor(
@@ -185,7 +185,7 @@ class PlatformController(BaseController):
                             ):
                                 session.obbject_registry.remove()
                                 session.console.print(
-                                    "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
+                                    "[yellow]已达到最大 OBBject 数量。最早的条目已被移除。[yellow]"
                                 )
 
                             # use the obbject to store the command so we can display it later on results
@@ -204,8 +204,8 @@ class PlatformController(BaseController):
                                     )
                                 else:
                                     session.console.print(
-                                        f"[yellow]Key `{ns_parser.register_key}` already exists in the registry."
-                                        "The `OBBject` was kept without the key.[/yellow]"
+                                        f"[yellow]键 `{ns_parser.register_key}` 已存在于注册表中。"
+                                        "OBBject 被保留但没有键。[/yellow]"
                                     )
 
                             if store_obbject:
@@ -225,7 +225,7 @@ class PlatformController(BaseController):
                                     and register_result
                                 ):
                                     session.console.print(
-                                        "Added `OBBject` to cached results."
+                                        "已将 `OBBject` 添加到缓存结果。"
                                     )
 
                             # making the dataframe available either for printing or exporting
@@ -268,7 +268,7 @@ class PlatformController(BaseController):
                             figure=fig,
                         )
                     elif export and df.empty:
-                        session.console.print("[yellow]No data to export.[/yellow]")
+                        session.console.print("[yellow]没有要导出的数据。[/yellow]")
 
                 except Exception as e:
                     session.console.print(f"[red]{e}[/]\n")
@@ -367,7 +367,7 @@ class PlatformController(BaseController):
                 )
 
         if session.obbject_registry.obbjects:
-            mt.add_info("\nCached Results")
+            mt.add_info("\n缓存结果")
             for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:

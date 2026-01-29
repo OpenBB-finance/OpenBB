@@ -1,4 +1,4 @@
-"""ESG Risk Rating Standard Model."""
+"""ESG 风险评级标准模型。"""
 
 from typing import Literal
 
@@ -12,34 +12,34 @@ from pydantic import Field, field_validator
 
 
 class ESGRiskRatingQueryParams(QueryParams):
-    """ESG Risk Rating Query."""
+    """ESG 风险评级查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class ESGRiskRatingData(Data):
-    """ESG Risk Rating Data."""
+    """ESG 风险评级数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
-    company_name: str = Field(description="Company name of the company.")
-    industry: str = Field(description="Industry of the company.")
-    year: int = Field(description="Year of the ESG risk rating.")
+    company_name: str = Field(description="公司名称。")
+    industry: str = Field(description="公司所属行业。")
+    year: int = Field(description="ESG 风险评级的年份。")
     esg_risk_rating: Literal[
         "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"
-    ] = Field(description="ESG risk rating of the company.")
-    industry_rank: str = Field(description="Industry rank of the company.")
+    ] = Field(description="公司的 ESG 风险评级。")
+    industry_rank: str = Field(description="公司的行业排名。")
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str | list[str] | set[str]):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)])

@@ -1,4 +1,4 @@
-"""Commercial Paper Standard Model."""
+"""商业票据标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class CommercialPaperParams(QueryParams):
-    """Commercial Paper Query."""
+    """商业票据查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,18 +27,18 @@ class CommercialPaperParams(QueryParams):
 
 
 class CommercialPaperData(Data):
-    """Commercial Paper Data."""
+    """商业票据数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    maturity: str = Field(description="Maturity length of the item.")
+    maturity: str = Field(description="项目的到期长度。")
     rate: float = Field(
-        description="Interest rate.",
+        description="利率。",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     title: str | None = Field(
         default=None,
-        description="Title of the series.",
+        description="系列的标题。",
     )

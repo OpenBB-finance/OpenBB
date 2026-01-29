@@ -8,7 +8,7 @@ from openbb_cli.utils.utils import change_logging_sub_app, reset_logging_sub_app
 
 def main():
     """Use the main entry point for the OpenBB Platform CLI."""
-    print("Loading...\n")  # noqa: T201
+    print("正在加载...\n")  # noqa: T201
 
     # pylint: disable=import-outside-toplevel
     from openbb_cli.config.setup import bootstrap

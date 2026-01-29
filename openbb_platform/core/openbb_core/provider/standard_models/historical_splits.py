@@ -1,4 +1,4 @@
-"""Historical Splits Standard Model."""
+"""历史拆股标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,30 +12,30 @@ from pydantic import Field, field_validator
 
 
 class HistoricalSplitsQueryParams(QueryParams):
-    """Historical Splits Query."""
+    """历史拆股查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class HistoricalSplitsData(Data):
-    """Historical Splits Data."""
+    """历史拆股数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     numerator: float | None = Field(
         default=None,
-        description="Numerator of the split.",
+        description="拆股分子。",
     )
     denominator: float | None = Field(
         default=None,
-        description="Denominator of the split.",
+        description="拆股分母。",
     )
     split_ratio: str | None = Field(
         default=None,
-        description="Split ratio.",
+        description="拆分比例。",
     )

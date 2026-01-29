@@ -1,4 +1,4 @@
-"""Short Term Energy Outlook Standard Model."""
+"""短期能源展望 (STEO) 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class ShortTermEnergyOutlookQueryParams(QueryParams):
-    """Short Term Energy Outlook Query."""
+    """短期能源展望 (STEO) 查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -25,14 +25,14 @@ class ShortTermEnergyOutlookQueryParams(QueryParams):
 
 
 class ShortTermEnergyOutlookData(Data):
-    """Short Term Energy Outlook Data."""
+    """短期能源展望 (STEO) 数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    table: str | None = Field(default=None, description="Table name for the data.")
+    table: str | None = Field(default=None, description="数据表名称。")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     order: int | None = Field(
-        default=None, description="Presented order of the data, relative to the table."
+        default=None, description="数据在表中的呈现顺序。"
     )
-    title: str | None = Field(default=None, description="Title of the data.")
-    value: int | float = Field(description="Value of the data.")
-    unit: str | None = Field(default=None, description="Unit or scale of the data.")
+    title: str | None = Field(default=None, description="数据标题。")
+    value: int | float = Field(description="数据值。")
+    unit: str | None = Field(default=None, description="数据的单位或比例。")

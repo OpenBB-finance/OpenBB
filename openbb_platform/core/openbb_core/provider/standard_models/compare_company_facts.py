@@ -1,4 +1,4 @@
-"""Compare Company Facts Model."""
+"""比较公司事实模型。"""
 
 from datetime import date as dateType
 
@@ -12,43 +12,43 @@ from pydantic import Field
 
 
 class CompareCompanyFactsQueryParams(QueryParams):
-    """Compare Company Facts Query."""
+    """比较公司事实查询。"""
 
     symbol: str | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
     )
     fact: str = Field(
         default="",
-        description="The fact to lookup, typically a GAAP-reporting measure. Choices vary by provider.",
+        description="要查找的事实，通常是 GAAP 报告度量。选择因提供商而异。",
     )
 
 
 class CompareCompanyFactsData(Data):
-    """Compare Company Facts Data."""
+    """比较公司事实数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    name: str | None = Field(default=None, description="Name of the entity.")
+    name: str | None = Field(default=None, description="实体名称。")
     value: float = Field(
-        description="The reported value of the fact or concept.",
+        description="事实或概念的报告值。",
     )
     reported_date: dateType | None = Field(
-        default=None, description="The date when the report was filed."
+        default=None, description="报告的备案日期。"
     )
     period_beginning: dateType | None = Field(
         default=None,
-        description="The start date of the reporting period.",
+        description="报告期的开始日期。",
     )
     period_ending: dateType | None = Field(
         default=None,
-        description="The end date of the reporting period.",
+        description="报告期的结束日期。",
     )
     fiscal_year: int | None = Field(
         default=None,
-        description="The fiscal year.",
+        description="会计年度。",
     )
     fiscal_period: str | None = Field(
         default=None,
-        description="The fiscal period of the fiscal year.",
+        description="会计年度的会计期间。",
     )

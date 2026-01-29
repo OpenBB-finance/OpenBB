@@ -1,4 +1,4 @@
-"""Utility functions for the OpenBB Core app."""
+"""OpenBB Core 应用程序的实用函数。"""
 
 import ast
 import json
@@ -21,7 +21,7 @@ def basemodel_to_df(
     data: list[Data] | Data,
     index: str | None = None,
 ) -> "DataFrame":
-    """Convert list of BaseModel to a Pandas DataFrame."""
+    """将 BaseModel 列表转换为 Pandas DataFrame。"""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, to_datetime
 
@@ -42,7 +42,7 @@ def basemodel_to_df(
         df = df.set_index(col_names)
         df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
 
-    # If the date column contains dates only, convert them to a date to avoid encoding time data.
+    # 如果日期列仅包含日期，则将其转换为日期以避免对时间数据进行编码。
     if "date" in df.columns:
         df["date"] = df["date"].apply(to_datetime)
         if all(t.time() == time(0, 0) for t in df["date"]):
@@ -61,7 +61,7 @@ def basemodel_to_df(
 def df_to_basemodel(
     df: Union["DataFrame", "Series"], index: bool = False
 ) -> list[Data]:
-    """Convert from a Pandas DataFrame to list of BaseModel."""
+    """从 Pandas DataFrame 转换为 BaseModel 列表。"""
     # pylint: disable=import-outside-toplevel
     from pandas import MultiIndex, Series, to_datetime
 
@@ -72,13 +72,13 @@ def df_to_basemodel(
     if isinstance(df, Series):
         df = df.to_frame()
 
-    # Check if df has multiindex.  If so, add the index names to the df and a boolean column
+    # 检查 df 是否具有 multiindex。如果是，则将索引名称添加到 df 和一个布尔列
     if isinstance(df.index, MultiIndex):
         df["is_multiindex"] = True
         df["multiindex_names"] = str(df.index.names)
         df = df.reset_index()
 
-    # Converting to JSON will add T00:00:00.000 to all dates with no time element unless we format it as a string first.
+    # 转换为 JSON 将向所有没有时间元素的日期添加 T00:00:00.000，除非我们先将其格式化为字符串。
     if "date" in df.columns:
         df["date"] = df["date"].apply(to_datetime)
         if all(t.time() == time(0, 0) for t in df["date"]):
@@ -90,7 +90,7 @@ def df_to_basemodel(
 
 
 def list_to_basemodel(data_list: list) -> list[Data]:
-    """Convert a list to a list of BaseModel."""
+    """将列表转换为 BaseModel 列表。"""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, Series
 
@@ -103,32 +103,32 @@ def list_to_basemodel(data_list: list) -> list[Data]:
         elif isinstance(item, (DataFrame, Series)):
             base_models.extend(df_to_basemodel(item))
         else:
-            raise ValueError(f"Unsupported list item type: {type(item)}")
+            raise ValueError(f"不支持的列表项类型：{type(item)}")
     return base_models
 
 
 def dict_to_basemodel(data_dict: dict) -> Data:
-    """Convert a dictionary to BaseModel."""
+    """将字典转换为 BaseModel。"""
     try:
         return Data(**data_dict)
     except ValidationError as e:
         raise ValueError(
-            f"Validation error when converting dict to BaseModel: {e}"
+            f"将 dict 转换为 BaseModel 时发生验证错误：{e}"
         ) from e
 
 
 def ndarray_to_basemodel(array: "ndarray") -> list[Data]:
-    """Convert a NumPy array to list of BaseModel."""
-    # Assuming a 2D array where rows are records
+    """将 NumPy 数组转换为 BaseModel 列表。"""
+    # 假设一个 2D 数组，其中行是记录
     if array.ndim != 2:
-        raise ValueError("Only 2D arrays are supported.")
+        raise ValueError("仅支持 2D 数组。")
     return [
         Data(**{f"column_{i}": value for i, value in enumerate(row)}) for row in array
     ]
 
 
 def convert_to_basemodel(data) -> Data | list[Data]:
-    """Dispatch function to convert different types to BaseModel."""
+    """将不同类型转换为 BaseModel 的分派函数。"""
     # pylint: disable=import-outside-toplevel
     from numpy import ndarray
     from pandas import DataFrame, Series
@@ -143,21 +143,21 @@ def convert_to_basemodel(data) -> Data | list[Data]:
         return df_to_basemodel(data)
     if isinstance(data, ndarray):
         return ndarray_to_basemodel(data)
-    raise ValueError(f"Unsupported data type: {type(data)}")
+    raise ValueError(f"不支持的数据类型：{type(data)}")
 
 
 def get_target_column(df: "DataFrame", target: str) -> "Series":
-    """Get target column from time series data."""
+    """从时间序列数据中获取目标列。"""
     if target not in df.columns:
         choices = ", ".join(df.columns)
         raise ValueError(
-            f"Target column '{target}' not found in data. Choose from {choices}"
+            f"在数据中未找到目标列 '{target}'。请从 {choices} 中选择"
         )
     return df[target]
 
 
 def get_target_columns(df: "DataFrame", target_columns: list[str]) -> "DataFrame":
-    """Get target columns from time series data."""
+    """从时间序列数据中获取目标列。"""
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
 
@@ -168,7 +168,7 @@ def get_target_columns(df: "DataFrame", target_columns: list[str]) -> "DataFrame
 
 
 def get_user_cache_directory() -> str:
-    """Get user cache directory."""
+    """获取用户缓存目录。"""
     file = SystemSettings().model_dump()["user_settings_path"]
 
     with open(file) as settings_file:
@@ -187,7 +187,7 @@ def get_user_cache_directory() -> str:
 
 
 def check_single_item(value: str | None, message: str | None = None) -> str | None:
-    """Check that string contains a single item."""
+    """检查字符串是否包含单个项目。"""
     if value and isinstance(value, str) and ("," in value or ";" in value):
-        raise OpenBBError(message if message else "multiple items not allowed")
+        raise OpenBBError(message if message else "不允许多个项目")
     return value

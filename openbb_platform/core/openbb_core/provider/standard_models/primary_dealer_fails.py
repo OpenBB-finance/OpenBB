@@ -1,4 +1,4 @@
-"""Primray Dealer Fails Standard Model."""
+"""一级交易商交易失败标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class PrimaryDealerFailsQueryParams(QueryParams):
-    """Primary Dealer Fails Query."""
+    """一级交易商交易失败查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -25,7 +25,7 @@ class PrimaryDealerFailsQueryParams(QueryParams):
 
 
 class PrimaryDealerFailsData(Data):
-    """Primary Dealer Fails Data."""
+    """一级交易商交易失败数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

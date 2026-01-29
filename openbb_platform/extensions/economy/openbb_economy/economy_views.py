@@ -1,4 +1,4 @@
-"""Views for the Economy Extension."""
+"""经济扩展的视图。"""
 
 # flake8: noqa: PLR0912
 # pylint: disable=too-many-branches
@@ -13,13 +13,13 @@ if TYPE_CHECKING:
 
 
 class EconomyViews:
-    """economy Views."""
+    """经济视图。"""
 
     @staticmethod
     def economy_fred_series(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """FRED Series Chart."""
+        """FRED 系列图表。"""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import bar_chart
         from openbb_charting.charts.helpers import (
@@ -46,7 +46,7 @@ class EconomyViews:
 
         if provider != "fred":
             raise RuntimeError(
-                f"This charting method does not support {provider}. Supported providers: fred."
+                f"此图表方法不支持 {provider}. 支持的提供商: fred."
             )
 
         columns = basemodel_to_df(kwargs["obbject_item"], index=None).columns.to_list()  # type: ignore
@@ -70,8 +70,8 @@ class EconomyViews:
             for data_col in data_cols:
                 if data_col not in columns:
                     raise RuntimeError(
-                        f"Column '{data_col}' was not found in the original data."
-                        + " External data injection is not supported unless `allow_unsafe = True`."
+                        f"在原始数据中未找到列 '{data_col}'。"
+                        + " 除非 `allow_unsafe = True`，否则不支持外部数据注入。"
                     )
 
         # Align the data so each column has the same index and length.
@@ -80,8 +80,8 @@ class EconomyViews:
 
         if df_ta.empty or len(df_ta) < 2:
             raise ValueError(
-                "No data is left after dropping NaN values. Try setting `dropnan = False`,"
-                + " or use the `frequency` parameter on request."
+                "删除 NaN 值后没有剩余数据。尝试设置 `dropnan = False`，"
+                + " 或在请求中使用 `frequency` 参数。"
             )
 
         columns = df_ta.columns.to_list()
@@ -110,10 +110,10 @@ class EconomyViews:
 
         if len(y_units) > 2 and has_params is False and allow_unsafe is False:
             raise RuntimeError(
-                "This method supports up to 2 y-axis units."
-                + " Please use the 'transform' parameter, in the data request,"
-                + " to compare all series on the same scale, or set `normalize = True`."
-                + " Override this error by setting `allow_unsafe = True`."
+                "此方法最多支持 2 个 y 轴单位。"
+                + " 请在数据请求中使用 'transform' 参数，"
+                + " 以相同的比例比较所有序列，或设置 `normalize = True`。"
+                + " 通过设置 `allow_unsafe = True` 覆盖此错误。"
             )
 
         y1_units = y_units[0] if y_units else None
@@ -168,7 +168,7 @@ class EconomyViews:
 
                 return fig, content  # type: ignore
             except Exception as _:
-                warn("Bar chart failed. Attempting line chart.")
+                warn("条形图失败。尝试折线图。")
 
         # Create the figure object with subplots.
         fig = OpenBBFigure().create_subplots(
@@ -318,32 +318,32 @@ class EconomyViews:
     def economy_survey_bls_series(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Economy Survey BLS Series Chart.
+        """经济调查 BLS 系列图表。
 
         Parameters
         ----------
         data: Optional[Union[DataFrame, List[Data]]]
-            Filtered subset of the parent results.
+            父级结果的筛选子集。
         target_symbol: Optional[str]
-            The target symbol(s) to plot. Plot multiple symbols by separating them with a comma. Max 10 symbols.
+            要绘制的目标代码。通过用逗号分隔来绘制多个代码。最多 10 个代码。
         target_col: Optional[str]
-            The target column to plot. Default is 'value'.
+            要绘制的目标列。默认值为 'value'。
         plot_type: Literal["line", "bar"]
-            The type of plot to display. Default is 'line', unless the data is significantly small.
+            要显示的图表类型。默认值为 'line'，除非数据非常小。
         normalize: bool
-            Normalize the data before displaying. Default is False.
+            在显示之前归一化数据。默认值为 False。
         title: Optional[str]
-            The title of the chart.
+            图表的标题。
         xtitle: Optional[str]
-            The title of the x-axis.
+            x 轴的标题。
         ytitle: Optional[str]
-            The title of the y-axis.
+            y 轴的标题。
         bar_kwargs: Optional[dict]
-            Additional keyword arguments applied to `fig.add_bar`.
+            应用于 `fig.add_bar` 的其他关键字参数。
         scatter_kwargs: Optional[dict]
-            Additional keyword arguments applied to `fig.add_scatter`.
+            应用于 `fig.add_scatter` 的其他关键字参数。
         layout_kwargs: Optional[dict]
-            Additional keyword arguments applied to `fig.update_layout`.
+            应用于 `fig.update_layout` 的其他关键字参数。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.generic_charts import bar_chart, line_chart
@@ -357,7 +357,7 @@ class EconomyViews:
 
         if provider != "bls":
             raise RuntimeError(
-                f"This charting method does not support {provider}. Supported providers: bls."
+                f"此图表方法不支持 {provider}. 支持的提供商: bls."
             )
 
         _data = (
@@ -373,15 +373,15 @@ class EconomyViews:
             try:
                 df = basemodel_to_df(_data, index=None)  # type: ignore
             except Exception as e:
-                raise RuntimeError("Unable to process supplied data.") from e
+                raise RuntimeError("无法处理提供的数据。") from e
 
         if df.empty or len(df) < 2:
-            raise RuntimeError("No data found to plot.")
+            raise RuntimeError("未找到要绘制的数据。")
 
         cols = df.columns.to_list()
         target_col = kwargs.get("target_col", "value")
         if target_col not in cols:
-            raise RuntimeError(f"Column '{target_col}' not found in the data.")
+            raise RuntimeError(f"数据中未找到列 '{target_col}'。")
 
         new_df = df.pivot(columns="symbol", values=target_col, index="date")
         target_symbols = kwargs.get("target_symbol", "").split(",")[:10]  # type: ignore
@@ -519,14 +519,14 @@ class EconomyViews:
     def economy_shipping_chokepoint_info(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Maritime Chokepoint Info Chart."""
+        """海上咽喉要道信息图表。"""
         # pylint: disable=import-outside-toplevel
 
         provider = kwargs.get("provider")
 
         if provider != "imf":
             raise RuntimeError(
-                f"This charting method does not support {provider}. Supported providers: imf."
+                f"此图表方法不支持 {provider}. 支持的提供商: imf."
             )
 
         try:
@@ -534,7 +534,7 @@ class EconomyViews:
                 plot_chokepoint_annual_avg_vessels,
             )
         except Exception as e:
-            raise RuntimeError("Unable to import the required module.") from e
+            raise RuntimeError("无法导入所需的模块。") from e
 
         theme = (
             kwargs.get("extra_params", {}).get("theme")
@@ -560,14 +560,14 @@ class EconomyViews:
     def economy_shipping_port_info(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
-        """Port Info Chart."""
+        """港口信息图表。"""
         # pylint: disable=import-outside-toplevel
 
         provider = kwargs.get("provider")
 
         if provider != "imf":
             raise RuntimeError(
-                f"This charting method does not support {provider}. Supported providers: imf."
+                f"此图表方法不支持 {provider}. 支持的提供商: imf."
             )
 
         try:
@@ -575,7 +575,7 @@ class EconomyViews:
                 plot_port_info_map,
             )
         except Exception as e:
-            raise RuntimeError("Unable to import the required module.") from e
+            raise RuntimeError("无法导入所需的模块。") from e
 
         data = (
             kwargs.pop("data", None)

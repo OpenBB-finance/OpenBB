@@ -12,7 +12,7 @@ interface ApiKey {
 }
 
 type UserCredentialsResult = {
-  credentials?: Record<string, string | null | undefined>;
+	credentials?: Record<string, string | null | undefined>;
 };
 
 export default function ApiKeysPage() {
@@ -123,7 +123,7 @@ export default function ApiKeysPage() {
 				}
 			} else {
 				throw new Error(
-					"Unsupported file format. Please use .json or .env files.",
+					"文件格式不支持。请使用 .json 或 .env 文件。",
 				);
 			}
 
@@ -132,12 +132,12 @@ export default function ApiKeysPage() {
 				setSelectedKeys(new Set(newKeys.map((k) => k.key))); // Pre-select all
 				setIsImportConfirmModalOpen(true);
 			} else {
-				setError("No new keys found in the imported file.");
+				setError("在导入的文件中未发现密钥。");
 			}
 		} catch (err) {
 			console.error("Error parsing file:", err);
 			setError(
-				`Error parsing file: ${err instanceof Error ? err.message : String(err)}`,
+				`解析文件出错: ${err instanceof Error ? err.message : String(err)}`,
 			);
 		}
 	};
@@ -153,7 +153,7 @@ export default function ApiKeysPage() {
 			})
 			.catch((err) => {
 				console.error("Failed to copy text: ", err);
-				setError("Failed to copy to clipboard");
+				setError("复制到剪贴板失败");
 			});
 	};
 
@@ -167,7 +167,7 @@ export default function ApiKeysPage() {
 			})
 			.catch((err) => {
 				console.error("Failed to copy text: ", err);
-				setError("Failed to copy to clipboard");
+				setError("复制到剪贴板失败");
 			});
 	};
 
@@ -192,7 +192,7 @@ export default function ApiKeysPage() {
 			setApiKeys(formattedKeys);
 		} catch (err) {
 			console.error("Failed to load API keys:", err);
-			setError(`Failed to load API keys: ${err}`);
+			setError(`加载 API 密钥失败: ${err}`);
 		} finally {
 			setLoading(false);
 		}
@@ -214,7 +214,7 @@ export default function ApiKeysPage() {
 
 	const handleSaveKey = async () => {
 		if (!newKey.key.trim()) {
-			setError("API Key Name is required.");
+			setError("API 密钥名称是必填项。");
 			return;
 		}
 
@@ -226,7 +226,7 @@ export default function ApiKeysPage() {
 		} else {
 			// Add new key - check for duplicates only when adding
 			if (apiKeys.some((k) => k.key.toLowerCase() === newKey.key.toLowerCase())) {
-				setError("An API key with this name already exists.");
+				setError("已存在同名 API 密钥。");
 				return;
 			}
 			updatedKeys = [{ ...newKey, required: false }, ...apiKeys];
@@ -334,7 +334,7 @@ export default function ApiKeysPage() {
 				// Validate: All keys must have names
 				const emptyKeys = keysToSave.filter((k) => k.key.trim() === "");
 				if (emptyKeys.length > 0) {
-					setError("All API keys must have names");
+					setError("所有 API 密钥必须有名称");
 					return;
 				}
 
@@ -342,7 +342,7 @@ export default function ApiKeysPage() {
 				const keyNames = keysToSave.map((k) => k.key);
 				const uniqueKeys = new Set(keyNames);
 				if (uniqueKeys.size !== keyNames.length) {
-					setError("Duplicate key names are not allowed");
+					setError("不允许重复的密钥名称");
 					return;
 				}
 			}
@@ -364,7 +364,7 @@ export default function ApiKeysPage() {
 			setApiKeys(keysToSave);
 		} catch (err) {
 			console.error("Failed to save API keys:", err);
-			setError(`Failed to save API keys: ${err}`);
+			setError(`保存 API 密钥失败: ${err}`);
 		}
 	};
 
@@ -374,7 +374,7 @@ export default function ApiKeysPage() {
 			await invoke("open_credentials_file", { fileName: "user_settings.json" });
 		} catch (err) {
 			console.error("Failed to open user settings file:", err);
-			setError(`Failed to open user settings file: ${err}`);
+			setError(`打开用户设置文件失败: ${err}`);
 		}
 	};
 
@@ -386,7 +386,7 @@ export default function ApiKeysPage() {
 			});
 		} catch (err) {
 			console.error("Failed to open system settings file:", err);
-			setError(`Failed to open system settings file: ${err}`);
+			setError(`打开系统设置文件失败: ${err}`);
 		}
 	};
 
@@ -396,7 +396,7 @@ export default function ApiKeysPage() {
 			await invoke("open_credentials_file", { fileName: ".env" });
 		} catch (err) {
 			console.error("Failed to open environment variables file:", err);
-			setError(`Failed to open environment variables file: ${err}`);
+			setError(`打开环境变量文件失败: ${err}`);
 		}
 	};
 
@@ -406,7 +406,7 @@ export default function ApiKeysPage() {
 			await invoke("open_credentials_file", { fileName: ".condarc" });
 		} catch (err) {
 			console.error("Failed to open Conda configuration file:", err);
-			setError(`Failed to open Conda configuration file: ${err}`);
+			setError(`打开 Conda 配置文件失败: ${err}`);
 		}
 	};
 
@@ -416,7 +416,7 @@ export default function ApiKeysPage() {
 			await invoke("open_credentials_file", { fileName: "mcp_settings.json" });
 		} catch (err) {
 			console.error("Failed to open MCP settings file:", err);
-			setError(`Failed to open MCP settings file: ${err}`);
+			setError(`打开 MCP 设置文件失败: ${err}`);
 		}
 	};
 
@@ -429,7 +429,7 @@ export default function ApiKeysPage() {
 			});
 		} catch (err) {
 			console.error("Failed to open documentation:", err);
-			setError(`Failed to open documentation: ${err}`);
+			setError(`打开文档失败: ${err}`);
 		}
 	};
 
@@ -444,7 +444,7 @@ export default function ApiKeysPage() {
 			if (extension === "json" || extension === "env") {
 				await parseImportedFile(file);
 			} else {
-				setError("Unsupported file format. Please use .json or .env files.");
+				setError("文件格式不支持。请使用 .json 或 .env 文件。");
 			}
 
 			// Clear the input so the same file can be selected again if needed
@@ -547,7 +547,7 @@ export default function ApiKeysPage() {
 										<div className="relative">
 											<input
 												type="text"
-												placeholder="Search API Keys..."
+												placeholder="搜索 API 密钥..."
 												value={searchQuery}
 												spellCheck={false}
 												onChange={(e) => setSearchQuery(e.target.value)}
@@ -555,7 +555,7 @@ export default function ApiKeysPage() {
 											/>
 											{searchQuery ? (
 												<Tooltip
-													content="Clear search query"
+													content="清除搜索内容"
 													className="tooltip tooltip-theme"
 												>
 													<button
@@ -577,7 +577,7 @@ export default function ApiKeysPage() {
 									{/* Action buttons including Save */}
 									<div className="flex items-center gap-2">
 										<Tooltip
-											content="Add a new API key."
+											content="添加新 API 密钥。"
 											className="tooltip tooltip-theme"
 										>
 											<Button
@@ -591,11 +591,11 @@ export default function ApiKeysPage() {
 												size="sm"
 												className="button-neutral shadow-sm px-2 py-1"
 											>
-												Add New Key
+												添加密钥
 											</Button>
 										</Tooltip>
 										<Tooltip
-											content="Import API keys from a .env or JSON file. Saved only after clicking 'Save API Keys'."
+											content="从 .env 或 JSON 文件导入 API 密钥。点击后保存。"
 											className="tooltip tooltip-theme"
 										>
 											<Button
@@ -604,7 +604,7 @@ export default function ApiKeysPage() {
 												className="button-secondary shadow-sm px-2 py-1"
 												size="sm"
 											>
-												<span className="body-xs-medium whitespace-nowrap">Import Keys</span>
+												<span className="body-xs-medium whitespace-nowrap">导入密钥</span>
 											</Button>
 										</Tooltip>
 										<input
@@ -615,7 +615,7 @@ export default function ApiKeysPage() {
 											className="hidden"
 										/>
 										<Tooltip
-											content="View OpenBB Platform configuration and environment files."
+											content="查看 OpenBB 平台配置和环境文件。"
 											className="tooltip tooltip-theme"
 										>
 											<Button
@@ -630,7 +630,7 @@ export default function ApiKeysPage() {
 										</Tooltip>
 
 										<Tooltip
-											content="Open the documentation for this screen."
+											content="打开此页面的文档。"
 											className="tooltip-theme"
 										>
 											<Button
@@ -653,8 +653,8 @@ export default function ApiKeysPage() {
 										ref={headerRef}
 										className="pl-2 flex items-center py-1 mb-3 rounded-sm body-xs-bold text-theme-muted bg-theme-quartary"
 									>
-										<div className="w-2/5 pr-2">Name</div>
-										<div className="w-2/5 pr-2">Value</div>
+										<div className="w-2/5 pr-2">名称</div>
+										<div className="w-2/5 pr-2">值</div>
 										<div className="flex flex-1 items-center justify-end gap-2 pl-2 mr-2" />
 									</div>
 								)}
@@ -685,53 +685,53 @@ export default function ApiKeysPage() {
 																? visibleKeys.has(apiKey.key)
 																	? apiKey.value
 																	: "********************"
-																: "Undefined"}
+																: "未定义"}
 														</div>
 														{/* Action Buttons */}
-															<div className="flex flex-1 items-center justify-end gap-2 pl-2 mr-2 opacity-0 group group-hover:opacity-100">
-																<Tooltip content="Edit API key" className="tooltip tooltip-theme">
-																	<Button
-																		onClick={() => handleEditKey(originalIndex)}
-																		variant="ghost"
-																		size="icon"
-																		className="button-ghost"
-																	>
-																		<CustomIcon id="edit" className="h-4 w-4" />
-																	</Button>
-																</Tooltip>
-																<Tooltip content={visibleKeys.has(apiKey.key) ? "Hide API key" : "Show API key"} className="tooltip tooltip-theme">
-																	<Button
-																		variant="ghost"
-																		onClick={() => toggleKeyVisibility(apiKey.key)}
-																		disabled={!apiKey.value.trim()}
-																		className="button-ghost"
-																		size="icon"
-																	>
+														<div className="flex flex-1 items-center justify-end gap-2 pl-2 mr-2 opacity-0 group group-hover:opacity-100">
+															<Tooltip content="编辑 API 密钥" className="tooltip tooltip-theme">
+																<Button
+																	onClick={() => handleEditKey(originalIndex)}
+																	variant="ghost"
+																	size="icon"
+																	className="button-ghost"
+																>
+																	<CustomIcon id="edit" className="h-4 w-4" />
+																</Button>
+															</Tooltip>
+															<Tooltip content={visibleKeys.has(apiKey.key) ? "隐藏 API 密钥" : "显示 API 密钥"} className="tooltip tooltip-theme">
+																<Button
+																	variant="ghost"
+																	onClick={() => toggleKeyVisibility(apiKey.key)}
+																	disabled={!apiKey.value.trim()}
+																	className="button-ghost"
+																	size="icon"
+																>
+																	<CustomIcon
+																		id={visibleKeys.has(apiKey.key) ? "eye-off" : "eye"}
+																		className="h-4 w-4"
+																	/>
+																</Button>
+															</Tooltip>
+															<Tooltip content={apiKey.value.trim() ? "复制到剪贴板" : "没有可复制的值"} className="tooltip tooltip-theme">
+																<Button
+																	variant="ghost"
+																	onClick={() => copyToClipboard(apiKey.value, apiKey.key)}
+																	disabled={!apiKey.value.trim()}
+																	className="button-ghost"
+																	size="icon"
+																>
+																	{copiedKey === apiKey.key ? (
 																		<CustomIcon
-																			id={visibleKeys.has(apiKey.key) ? "eye-off" : "eye"}
-																			className="h-4 w-4"
+																			id="success"
+																			className="h-4 w-4 text-green-500"
 																		/>
-																	</Button>
-																</Tooltip>
-																<Tooltip content={apiKey.value.trim() ? "Copy to clipboard" : "No value to copy"} className="tooltip tooltip-theme">
-																	<Button
-																		variant="ghost"
-																		onClick={() => copyToClipboard(apiKey.value, apiKey.key)}
-																		disabled={!apiKey.value.trim()}
-																		className="button-ghost"
-																		size="icon"
-																	>
-																		{copiedKey === apiKey.key ? (
-																			<CustomIcon
-																				id="success"
-																				className="h-4 w-4 text-green-500"
-																			/>
-																		) : (
-																			<CopyIcon className="h-4 w-4" />
-																		)}
-																	</Button>
-																</Tooltip>
-															</div>
+																	) : (
+																		<CopyIcon className="h-4 w-4" />
+																	)}
+																</Button>
+															</Tooltip>
+														</div>
 													</div>
 												);
 											})}
@@ -752,10 +752,10 @@ export default function ApiKeysPage() {
 								{/* Modal Header */}
 								<div className="flex items-center justify-between mb-5">
 									<h2 className="body-lg-bold font-bold text-theme-primary">
-										{modalMode === 'edit' ? 'Edit API Key' : 'Add API Key'}
+										{modalMode === 'edit' ? '编辑 API 密钥' : '添加 API 密钥'}
 									</h2>
 									<Tooltip
-										content="Cancel and close"
+										content="取消并关闭"
 										className="tooltip tooltip-theme"
 									>
 										<button
@@ -775,7 +775,7 @@ export default function ApiKeysPage() {
 								<div className="flex flex-col space-y-4">
 									<div className="flex flex-col gap-1">
 										<label htmlFor="modal-key-name" className="body-sm-medium text-theme-secondary">
-											Name
+											名称
 										</label>
 										<input
 											id="modal-key-name"
@@ -792,10 +792,10 @@ export default function ApiKeysPage() {
 									<div className="flex flex-col gap-1">
 										<div className="flex justify-between items-center">
 											<label htmlFor="modal-key-value" className="body-sm-medium text-theme-secondary">
-												Value
+												值
 											</label>
 											<div className="flex items-center relative top-9 right-1">
-												<Tooltip content={isModalValueVisible ? "Hide value" : "Show value"} className="tooltip tooltip-theme">
+												<Tooltip content={isModalValueVisible ? "隐藏值" : "显示值"} className="tooltip tooltip-theme">
 													<Button
 														type="button"
 														variant="ghost"
@@ -809,7 +809,7 @@ export default function ApiKeysPage() {
 														/>
 													</Button>
 												</Tooltip>
-												<Tooltip content={newKey.value.trim() ? "Copy to clipboard" : "No value to copy"} className="tooltip tooltip-theme">
+												<Tooltip content={newKey.value.trim() ? "复制到剪贴板" : "没有可复制的值"} className="tooltip tooltip-theme">
 													<Button
 														type="button"
 														onClick={copyModalValueToClipboard}
@@ -833,7 +833,7 @@ export default function ApiKeysPage() {
 										{isModalValueVisible ? (
 											<textarea
 												id="modal-key-value"
-												placeholder="Enter your API key"
+												placeholder="输入您的 API 密钥"
 												value={newKey.value}
 												spellCheck={false}
 												onChange={(e) =>
@@ -844,17 +844,17 @@ export default function ApiKeysPage() {
 											/>
 										) : (
 											<div className="border border-theme-accent shadow-sm w-full rounded-md">
-											<input
-												id="modal-key-value"
-												type="password"
-												placeholder="Enter your API key"
-												value={newKey.value}
-												spellCheck={false}
-												onChange={(e) =>
-													setNewKey({ ...newKey, value: e.target.value })
-												}
-												className="text-input *:body-xs-regular border-none p-1 h-10 min-w-[21rem] !pr-12"
-											/>
+												<input
+													id="modal-key-value"
+													type="password"
+													placeholder="输入您的 API 密钥"
+													value={newKey.value}
+													spellCheck={false}
+													onChange={(e) =>
+														setNewKey({ ...newKey, value: e.target.value })
+													}
+													className="text-input *:body-xs-regular border-none p-1 h-10 min-w-[21rem] !pr-12"
+												/>
 											</div>
 										)}
 									</div>
@@ -870,7 +870,7 @@ export default function ApiKeysPage() {
 												size="sm"
 												className="button-danger px-2 py-1"
 											>
-												Delete
+												删除
 											</Button>
 										)}
 									</div>
@@ -884,7 +884,7 @@ export default function ApiKeysPage() {
 											size="sm"
 											className="button-outline px-2 py-1"
 										>
-											Cancel
+											取消
 										</Button>
 										<Button
 											onClick={handleSaveKey}
@@ -893,7 +893,7 @@ export default function ApiKeysPage() {
 											className="button-primary px-2 py-1"
 											disabled={!newKey.key.trim()}
 										>
-											{modalMode === 'edit' ? 'Save' : 'Add'}
+											{modalMode === 'edit' ? '保存' : '添加'}
 										</Button>
 									</div>
 								</div>
@@ -913,10 +913,10 @@ export default function ApiKeysPage() {
 										className="h-12 w-12 text-theme-muted mb-2 mx-auto"
 									/>
 									<h3 className="body-md-bold text-theme-secondary mb-2">
-										No API keys found
+										未发现 API 密钥
 									</h3>
 									<p className="body-sm-regular text-theme-muted mb-4">
-										No API keys match your search for "{searchQuery}"
+										没有匹配您搜索内容 "{searchQuery}" 的 API 密钥
 									</p>
 									<Button
 										onClick={() => setSearchQuery("")}
@@ -924,13 +924,13 @@ export default function ApiKeysPage() {
 										size="sm"
 										className="button-outline"
 									>
-										<span className="body-xs-medium">Clear Search</span>
+										<span className="body-xs-medium">清除搜索</span>
 									</Button>
 								</div>
 							</div>
 						) : (
 							<div className="flex-1 w-full justify-center bg-theme-primary mb-4 rounded-sm flex flex-col items-center">
-								<p className="text-theme-muted body-sm-regular">No API keys added</p>
+								<p className="text-theme-muted body-sm-regular">未添加 API 密钥</p>
 							</div>
 						)}
 					</>
@@ -943,10 +943,10 @@ export default function ApiKeysPage() {
 					<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-md w-full max-w-xs px-5 pb-5 pt-3">
 						<div className="flex items-center justify-between mb-6">
 							<h2 className="body-lg-bold font-bold text-theme-primary">
-								Configuration Files
+								配置文件
 							</h2>
 							<Tooltip
-								content="Cancel and go back."
+								content="取消并返回。"
 								className="tooltip tooltip-theme"
 							>
 								<button
@@ -983,9 +983,8 @@ export default function ApiKeysPage() {
 										className="sr-only text-theme-accent"
 									/>
 									<span
-										className={`relative flex items-center justify-center h-4 w-4 rounded-full border-2 ${
-											selectedSettingsFile === option.value ? 'border-theme-radio' : 'border-theme'
-										}`}
+										className={`relative flex items-center justify-center h-4 w-4 rounded-full border-2 ${selectedSettingsFile === option.value ? 'border-theme-radio' : 'border-theme'
+											}`}
 									>
 										{selectedSettingsFile === option.value && (
 											<span className="block h-2 w-2 rounded-full bg-theme-neutral" />
@@ -994,7 +993,7 @@ export default function ApiKeysPage() {
 									<span className="body-sm-medium text-theme-secondary">{option.label}</span>
 								</label>
 							))}
-							</div>
+						</div>
 
 						{/* Action Buttons */}
 						<div className="flex justify-end">
@@ -1027,7 +1026,7 @@ export default function ApiKeysPage() {
 								className="button-primary shadow-sm px-2 py-1"
 								size="sm"
 							>
-								Open File
+								打开文件
 							</Button>
 						</div>
 					</div>
@@ -1040,10 +1039,10 @@ export default function ApiKeysPage() {
 					<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-md w-full max-w-[90vw] px-5 pb-5 pt-3">
 						<div className="flex items-center justify-between mb-4">
 							<h2 className="body-lg-bold font-bold text-theme-primary">
-								Confirm Import
+								确认导入
 							</h2>
 							<Tooltip
-								content="Cancel and close"
+								content="取消并关闭"
 								className="tooltip tooltip-theme"
 							>
 								<button
@@ -1068,8 +1067,8 @@ export default function ApiKeysPage() {
 												className="checkbox checkbox-theme h-4 w-4"
 											/>
 										</th>
-										<th className="p-2 body-sm-regular text-theme-secondary">Key</th>
-										<th className="p-2 body-sm-regular text-theme-secondary">Value</th>
+										<th className="p-2 body-sm-regular text-theme-secondary">键</th>
+										<th className="p-2 body-sm-regular text-theme-secondary">值</th>
 										<th className="p-2 w-10"></th>
 									</tr>
 								</thead>
@@ -1089,7 +1088,7 @@ export default function ApiKeysPage() {
 												{importVisibleKeys.has(key.key) ? key.value : "********************"}
 											</td>
 											<td className="p-2">
-												<Tooltip content={importVisibleKeys.has(key.key) ? "Hide" : "Show"} className="tooltip tooltip-theme">
+												<Tooltip content={importVisibleKeys.has(key.key) ? "隐藏" : "显示"} className="tooltip tooltip-theme">
 													<Button
 														variant="ghost"
 														size="icon"
@@ -1116,7 +1115,7 @@ export default function ApiKeysPage() {
 								size="sm"
 								className="button-outline px-2 py-1"
 							>
-								Cancel
+								取消
 							</Button>
 							<Button
 								onClick={handleConfirmImport}
@@ -1124,7 +1123,7 @@ export default function ApiKeysPage() {
 								size="sm"
 								className="button-primary px-2 py-1"
 							>
-								Import Selected ({selectedKeys.size})
+								导入已选 ({selectedKeys.size})
 							</Button>
 						</div>
 					</div>

@@ -1,4 +1,4 @@
-"""Path Tracking File Handler."""
+"""路径跟踪文件处理程序。"""
 
 # IMPORTATION STANDARD
 from copy import deepcopy
@@ -19,11 +19,11 @@ TMP_FOLDER_NAME = "tmp"
 
 
 class PathTrackingFileHandler(TimedRotatingFileHandler):
-    """Path Tracking File Handler."""
+    """路径跟踪文件处理程序。"""
 
     @staticmethod
     def build_log_file_path(settings: LoggingSettings) -> Path:
-        """Build the log file path."""
+        """构建日志文件路径。"""
         app_name = settings.app_name
         directory = settings.user_logs_directory
         session_id = settings.session_id
@@ -32,7 +32,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         return path
 
     def clean_expired_files(self, before_timestamp: float):
-        """Remove expired files from logs directory."""
+        """从日志目录中删除过期文件。"""
         logs_dir = self.settings.user_logs_directory
         archives_directory = logs_dir / ARCHIVES_FOLDER_NAME
         tmp_directory = logs_dir / TMP_FOLDER_NAME
@@ -55,12 +55,12 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
     @property
     def settings(self) -> LoggingSettings:
-        """Get the settings."""
+        """获取设置。"""
         return deepcopy(self.__settings)
 
     @settings.setter
     def settings(self, settings: LoggingSettings) -> None:
-        """Set the settings."""
+        """设置设置。"""
         self.__settings = settings
 
     # OVERRIDE
@@ -70,7 +70,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         *args,
         **kwargs,
     ) -> None:
-        """Initialize the PathTrackingFileHandler."""
+        """初始化 PathTrackingFileHandler。"""
         # SETUP PARENT CLASS
         filename = str(self.build_log_file_path(settings=settings))
         frequency = settings.frequency

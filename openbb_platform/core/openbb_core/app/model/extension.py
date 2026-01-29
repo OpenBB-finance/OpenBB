@@ -1,4 +1,4 @@
-"""Extension class for OBBject extensions."""
+"""OBBject 扩展的 Extension 类。"""
 
 import warnings
 from collections.abc import Callable
@@ -6,9 +6,9 @@ from collections.abc import Callable
 
 class Extension:
     """
-    Serves as OBBject extension entry point and must be created by each extension package.
+    充当 OBBject 扩展入口点，并且必须由每个扩展包创建。
 
-    See https://docs.openbb.co/developer/extension_types/obbject for more information.
+    有关更多信息，请参阅 https://docs.openbb.co/developer/extension_types/obbject。
     """
 
     # pylint: disable=R0917
@@ -22,24 +22,24 @@ class Extension:
         immutable: bool = True,
         results_only: bool = False,
     ) -> None:
-        """Initialize the extension.
+        """初始化扩展。
 
         Parameters
         ----------
         name : str
-            Name of the extension.
+            扩展名称。
         credentials : list[str], optional
-            List of required credentials, by default None
+            所需要的凭据列表，默认为 None
         description: Optional[str]
-            Extension description.
+            扩展描述。
         on_command_output : bool, optional
-            Whether the extension acts on command output, by default False
+            扩展是否有命令输出，默认为 False
         command_output_paths : list[str], optional
-            List of endpoint paths the extension acts on, where None means all, by default None.
+            扩展作用的端点路径列表，其中 None 表示全部，默认为 None。
         immutable : bool, optional
-            Whether the function output is immutable, by default True.
+            函数输出是否不可变，默认为 True。
         results_only : bool, optional
-            Whether the extension returns only the results instead of the OBBject, by default False.
+            扩展是否仅返回结果而不是 OBBject，默认为 False。
         """
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.service.system_service import SystemService
@@ -52,33 +52,33 @@ class Extension:
         self.immutable = immutable
         self.results_only = results_only
 
-        # This must be explicitly enabled.
+        # 必须显式启用此功能。
         if self.on_command_output is False and (
             self.command_output_paths
             or self.results_only is True
             or self.immutable is False
         ):
             raise ValueError(
-                "OBBject Extension Error -> 'on_command_output' must be set as True when"
-                + " 'command_output_paths', 'results_only' or 'immutable' is set.",
+                "OBBject Extension Error -> 当设置了 'command_output_paths'、'results_only' 或 'immutable' 时，"
+                + "必须将 'on_command_output' 设置为 True。",
             )
 
-        # The user must explicitly enable OBBject extensions that act on command output.
+        # 用户必须显式启用作用于命令输出的 OBBject 扩展。
         if (
             self.on_command_output
             and not SystemService().system_settings.allow_on_command_output
         ):
             raise RuntimeError(
                 "OBBject Extension Error -> \n\n"
-                + "An OBBject extension that acts on command output is installed "
-                + "but has not been enabled in `system_settings.json`.\n\n"
-                + "Set `allow_on_command_output` to True to enable it.\n"
-                + "Or, set the environment variable `OPENBB_ALLOW_ON_COMMAND_OUTPUT` to True."
-                + "\n\nProceed with caution as this may have security implications.\n\n"
-                + "Ensure the extension is installed from a trusted source.\n\n",
+                + "已安装作用于命令输出的 OBBject 扩展，"
+                + "但尚未在 `system_settings.json` 中启用。\n\n"
+                + "将 `allow_on_command_output` 设置为 True 以启用它。\n"
+                + "或者，将环境变量 `OPENBB_ALLOW_ON_COMMAND_OUTPUT` 设置为 True。"
+                + "\n\n请谨慎操作，因为这可能会产生安全隐患。\n\n"
+                + "确保扩展是从受信任的来源安装的。\n\n",
             )
 
-        # The user must explicitly enable OBBject extensions that modify output.
+        # 用户必须显式启用修改输出的 OBBject 扩展。
         if (
             self.on_command_output
             and self.immutable is False
@@ -86,17 +86,17 @@ class Extension:
         ):
             raise RuntimeError(
                 "OBBject Extension Error -> \n\n"
-                + "An OBBject extension that modifies the output is installed "
-                + "but has not been enabled in `system_settings.json`.\n\n"
-                + "Set `allow_mutable_extensions` to True to enable it.\n"
-                + "Or, set the environment variable `OPENBB_ALLOW_MUTABLE_EXTENSIONS` to True."
-                + "\n\nProceed with caution as this may have security implications.\n\n"
-                + "Ensure the extension is installed from a trusted source.\n\n",
+                + "已安装修改输出的 OBBject 扩展，"
+                + "但尚未在 `system_settings.json` 中启用。\n\n"
+                + "将 `allow_mutable_extensions` 设置为 True 以启用它。\n"
+                + "或者，将环境变量 `OPENBB_ALLOW_MUTABLE_EXTENSIONS` 设置为 True。"
+                + "\n\n请谨慎操作，因为这可能会产生安全隐患。\n\n"
+                + "确保扩展是从受信任的来源安装的。\n\n",
             )
 
     @property
     def obbject_accessor(self) -> Callable:
-        """Extend an OBBject, inspired by pandas."""
+        """扩展 OBBject，灵感来自 pandas。"""
         # pylint: disable=import-outside-toplevel
 
         from openbb_core.app.model.obbject import OBBject
@@ -105,14 +105,13 @@ class Extension:
 
     @staticmethod
     def register_accessor(name, cls) -> Callable:
-        """Register a custom accessor."""
+        """注册自定义访问器。"""
 
         def decorator(accessor):
             if hasattr(cls, name):
                 warnings.warn(
-                    f"registration of accessor '{repr(accessor)}' under name "
-                    f"'{repr(name)}' for type '{repr(cls)}' is overriding a preexisting "
-                    f"attribute with the same name.",
+                    f"在名称 '{repr(name)}' 下为类型 '{repr(cls)}' 注册访问器 '{repr(accessor)}' "
+                    f"正在覆盖具有相同名称的预先存在的属性。",
                     UserWarning,
                 )
             setattr(cls, name, CachedAccessor(name, accessor))
@@ -124,15 +123,15 @@ class Extension:
 
 
 class CachedAccessor:
-    """CachedAccessor."""
+    """CachedAccessor。"""
 
     def __init__(self, name: str, accessor) -> None:
-        """Initialize the cached accessor."""
+        """初始化缓存访问器。"""
         self._name = name
         self._accessor = accessor
 
     def __get__(self, obj, cls):
-        """Get the cached accessor."""
+        """获取缓存访问器。"""
         if obj is None:
             return self._accessor
         accessor_obj = self._accessor(obj)

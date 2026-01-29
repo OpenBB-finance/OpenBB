@@ -1,4 +1,4 @@
-"""Forward PE Estimates Standard Model."""
+"""远期 PE 预测标准模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -10,7 +10,7 @@ from pydantic import Field, field_validator
 
 
 class ForwardPeEstimatesQueryParams(QueryParams):
-    """Forward PE Estimates Query Parameters."""
+    """远期 PE 预测查询参数。"""
 
     symbol: str | None = Field(
         default=None,
@@ -20,32 +20,32 @@ class ForwardPeEstimatesQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper() if v else None
 
 
 class ForwardPeEstimatesData(Data):
-    """Forward PE Estimates Data."""
+    """远期 PE 预测数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: str | None = Field(default=None, description="Name of the entity.")
+    name: str | None = Field(default=None, description="实体名称。")
     year1: float | None = Field(
         default=None,
-        description="Estimated PE ratio for the next fiscal year.",
+        description="下一财政年度的预测 PE 比率。",
     )
     year2: float | None = Field(
         default=None,
-        description="Estimated PE ratio two fiscal years from now.",
+        description="两个财政年度后的预测 PE 比率。",
     )
     year3: float | None = Field(
         default=None,
-        description="Estimated PE ratio three fiscal years from now.",
+        description="三个财政年度后的预测 PE 比率。",
     )
     year4: float | None = Field(
         default=None,
-        description="Estimated PE ratio four fiscal years from now.",
+        description="四个财政年度后的预测 PE 比率。",
     )
     year5: float | None = Field(
         default=None,
-        description="Estimated PE ratio five fiscal years from now.",
+        description="五个财政年度后的预测 PE 比率。",
     )

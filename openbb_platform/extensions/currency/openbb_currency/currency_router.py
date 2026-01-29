@@ -1,4 +1,4 @@
-"""The Currency router."""
+"""货币路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_currency.price.price_router import router as price_router
 
-router = Router(prefix="", description="Foreign exchange (FX) market data.")
+router = Router(prefix="", description="外汇 (FX) 市场数据。")
 router.include_router(price_router)
 
 
@@ -23,11 +23,11 @@ router.include_router(price_router)
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Search for 'EUR' currency pair using 'intrinio' as provider.",
+            description="使用 'intrinio' 作为提供商搜索 'EUR' 货币对。",
             parameters={"provider": "intrinio", "query": "EUR"},
         ),
         APIEx(
-            description="Search for terms  using 'polygon' as provider.",
+            description="使用 'polygon' 作为提供商搜索术语。",
             parameters={"provider": "polygon", "query": "EUR"},
         ),
     ],
@@ -38,15 +38,14 @@ async def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Currency Search.
+    """货币搜索。
 
-    Search available currency pairs.
-    Currency pairs are the national currencies from two countries coupled for trading on
-    the foreign exchange (FX) marketplace.
-    Both currencies will have exchange rates on which the trade will have its position basis.
-    All trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.
-    (ref: Investopedia)
-    Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
+    搜索可用货币对。
+    货币对是来自两个国家的货币，在外汇市场 (FX) 上配对交易。
+    两种货币都有汇率，交易将以此为基础。
+    外汇市场内的所有交易，无论是卖出、买入还是交易，都将通过货币对进行。
+    (参考: Investopedia)
+    主要货币对包括 EUR/USD, USD/JPY, GBP/USD 等。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -61,15 +60,15 @@ async def reference_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get current, official, currency reference rates.
+    """获取当前的官方货币参考汇率。
 
-    Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
-    serving as a benchmark for the value of currencies around the world.
-    These rates are used as a standard to facilitate international trade and financial transactions,
-    ensuring consistency and reliability in currency conversion.
-    They are typically updated on a daily basis and reflect the market conditions at a specific time.
-    Central banks and financial institutions often use these rates to guide their own exchange rates,
-    impacting global trade, loans, and investments.
+    外汇参考汇率是由主要金融机构或监管机构设定的汇率，
+    作为世界各地货币价值的基准。
+    这些汇率用作促进国际贸易和金融交易的标准，
+    确保货币转换的一致性和可靠性。
+    它们通常每天更新，反映特定时间的市场状况。
+    中央银行和金融机构通常使用这些汇率来指导自己的汇率，
+    影响全球贸易、贷款和投资。
     """
     return await OBBject.from_query(Query(**locals()))
 
@@ -79,7 +78,7 @@ async def reference_rates(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.",
+            description="使用 'fmp' 作为提供商获取从 USD 和 XAU 到 EUR, JPY 和 GBP 的汇率。",
             parameters={
                 "provider": "fmp",
                 "base": "USD,XAU",
@@ -95,5 +94,5 @@ async def snapshots(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency."""
+    """从基础货币的间接或直接角度查看货币汇率快照。"""
     return await OBBject.from_query(Query(**locals()))

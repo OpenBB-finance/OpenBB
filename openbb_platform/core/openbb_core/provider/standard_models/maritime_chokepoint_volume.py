@@ -1,4 +1,4 @@
-"""Maritime chokepoint transit calls and trade volume estimates time series."""
+"""海上咽喉点过境呼叫和贸易额估算时间序列。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class MaritimeChokePointVolumeQueryParams(QueryParams):
-    """MaritimeChokepointVolume Query."""
+    """海上咽喉点运量查询。"""
 
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -23,6 +23,6 @@ class MaritimeChokePointVolumeQueryParams(QueryParams):
 
 
 class MaritimeChokePointVolumeData(Data):
-    """MaritimeChokepointVolume Data."""
+    """海上咽喉点运量数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

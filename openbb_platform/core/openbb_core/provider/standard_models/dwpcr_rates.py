@@ -1,4 +1,4 @@
-"""Discount Window Primary Credit Rate Standard Model."""
+"""贴现窗口一级信贷利率标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class DiscountWindowPrimaryCreditRateParams(QueryParams):
-    """Discount Window Primary Credit Rate Query."""
+    """贴现窗口一级信贷利率查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,7 +27,7 @@ class DiscountWindowPrimaryCreditRateParams(QueryParams):
 
 
 class DiscountWindowPrimaryCreditRateData(Data):
-    """Discount Window Primary Credit Rate Data."""
+    """贴现窗口一级信贷利率数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="Discount Window Primary Credit Rate.")
+    rate: float | None = Field(description="贴现窗口一级信贷利率。")

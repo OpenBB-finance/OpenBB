@@ -1,4 +1,4 @@
-"""Commodity Spot Prices Standard Model."""
+"""商品现货价格标准模型。"""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class CommoditySpotPricesQueryParams(QueryParams):
-    """Commodity Spot Prices Query."""
+    """商品现货价格查询。"""
 
     start_date: dateType | None = Field(
         default=None,
@@ -27,7 +27,7 @@ class CommoditySpotPricesQueryParams(QueryParams):
 
 
 class CommoditySpotPricesData(Data):
-    """Commodity Spot Prices Data."""
+    """商品现货价格数据。"""
 
     date: dateType = Field(
         description=DATA_DESCRIPTIONS.get("date", ""),
@@ -38,13 +38,13 @@ class CommoditySpotPricesData(Data):
     )
     commodity: str | None = Field(
         default=None,
-        description="Commodity name.",
+        description="商品名称。",
     )
     price: float = Field(
-        description="Price of the commodity.",
+        description="商品价格。",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
     unit: str | None = Field(
         default=None,
-        description="Unit of the commodity price.",
+        description="商品价格单位。",
     )

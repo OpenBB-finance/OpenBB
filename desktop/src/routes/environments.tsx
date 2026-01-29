@@ -47,7 +47,7 @@ const openDocumentation = async () => {
 		// Open documentation URL in a new window
 		await invoke("open_url_in_window", {
 			url: "https://docs.openbb.co/desktop/environments",
-			title: "Open Data Platform Documentation",
+			title: "OpenBB 开源数据平台文档",
 		});
 	} catch (err) {
 		console.error("Failed to open documentation:", err);
@@ -104,15 +104,15 @@ function EnvironmentActionButtons({
 	handleRequirementsFileSelect: () => void;
 }) {
 	const handleUpdateAndReload = () => {
-        localStorage.removeItem("env-extensions-cache");
-        window.location.reload();
-    };
+		localStorage.removeItem("env-extensions-cache");
+		window.location.reload();
+	};
 
 	return (
 		<div className="flex items-center justify-center">
 			<div className="flex items-center gap-2">
 				<Tooltip
-					content="Create a new Conda environment."
+					content="新建 Conda 环境。"
 					className="tooltip-theme"
 				>
 					<Button
@@ -121,11 +121,11 @@ function EnvironmentActionButtons({
 						className="button-neutral shadow-sm px-2 py-1"
 						size="sm"
 					>
-						<span className="body-xs-medium text-theme-primary whitespace-nowrap justify-center">New Environment</span>
+						<span className="body-xs-medium text-theme-primary whitespace-nowrap justify-center">新环境</span>
 					</Button>
 				</Tooltip>
 				<Tooltip
-					content="Create an environment from a YAML, pyproject.toml, or requirements.txt file."
+					content="从 YAML、pyproject.toml 或 requirements.txt 文件创建环境。"
 					className="tooltip-theme"
 				>
 					<Button
@@ -134,11 +134,11 @@ function EnvironmentActionButtons({
 						className="button button-secondary shadow-sm px-2 py-1"
 						size="sm"
 					>
-						<span className="body-xs-medium text-theme-primary whitespace-nowrap">Import Environment</span>
+						<span className="body-xs-medium text-theme-primary whitespace-nowrap">导入环境</span>
 					</Button>
 				</Tooltip>
 				<Tooltip
-					content="Refresh the list of environments and extensions."
+					content="刷新环境和扩展列表。"
 					className="tooltip-theme"
 				>
 					<Button
@@ -151,7 +151,7 @@ function EnvironmentActionButtons({
 					</Button>
 				</Tooltip>
 				<Tooltip
-					content="Open the documentation for this screen."
+					content="打开此页面的文档。"
 					className="tooltip-theme"
 				>
 					<Button
@@ -169,65 +169,65 @@ function EnvironmentActionButtons({
 }
 
 function ExtensionRow({
-    ext,
-    updatingExtension,
-    installExtensionsLoading,
-    handleUpdateExtension,
-    setExtensionToRemove,
-    setShowRemoveConfirmation,
+	ext,
+	updatingExtension,
+	installExtensionsLoading,
+	handleUpdateExtension,
+	setExtensionToRemove,
+	setShowRemoveConfirmation,
 }: {
-    ext: Extension;
-    updatingExtension: string | null;
-    installExtensionsLoading: boolean;
-    handleUpdateExtension: (packageName: string) => void;
-    setExtensionToRemove: (extension: Extension | null) => void;
-    setShowRemoveConfirmation: (show: boolean) => void;
+	ext: Extension;
+	updatingExtension: string | null;
+	installExtensionsLoading: boolean;
+	handleUpdateExtension: (packageName: string) => void;
+	setExtensionToRemove: (extension: Extension | null) => void;
+	setShowRemoveConfirmation: (show: boolean) => void;
 }) {
-    return (
-        <div className="ext-row flex justify-between items-center p-2 pl-2 border border-theme-modal rounded-sm relative mb-2 bg-theme-quartary shadow-sm">
-            <div className="flex items-baseline whitespace-nowrap gap-2">
-                <h5 className="body-sm text-theme leading-none">
-                    {ext.package}
-                </h5>
-                <p className="body-xs-regular text-theme-secondary leading-none">
-                    {ext.version || "unknown"}
-                </p>
-            </div>
-            <div className="ext-actions flex gap-2 items-center">
-                <Tooltip content="Update the extension to the latest version." className="tooltip-theme">
-                    <Button
-                        onClick={() => handleUpdateExtension(ext.package)}
-                        disabled={!!updatingExtension || installExtensionsLoading}
-                        variant="ghost"
-                        size="icon"
-                        className="button-ghost"
-                    >
-                        {updatingExtension === ext.package ? (
-                            <div className="flex items-center justify-center w-4 h-4">
-                                <div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-blue-500 rounded-full" />
-                            </div>
-                        ) : (
-                            <RefreshIcon className="h-4 w-4" />
-                        )}
-                    </Button>
-                </Tooltip>
-                <Tooltip content="Remove extension from the environment." className="tooltip-theme">
-                    <Button
-                        onClick={() => {
-                            setExtensionToRemove(ext);
-                            setShowRemoveConfirmation(true);
-                        }}
-                        disabled={installExtensionsLoading}
-                        variant="ghost"
-                        size="icon"
-                        className="button-ghost"
-                    >
-                        <CustomIcon id="bin" className="h-4 w-4" />
-                    </Button>
-                </Tooltip>
-            </div>
-        </div>
-    );
+	return (
+		<div className="ext-row flex justify-between items-center p-2 pl-2 border border-theme-modal rounded-sm relative mb-2 bg-theme-quartary shadow-sm">
+			<div className="flex items-baseline whitespace-nowrap gap-2">
+				<h5 className="body-sm text-theme leading-none">
+					{ext.package}
+				</h5>
+				<p className="body-xs-regular text-theme-secondary leading-none">
+					{ext.version || "unknown"}
+				</p>
+			</div>
+			<div className="ext-actions flex gap-2 items-center">
+				<Tooltip content="将扩展更新到最新版本。" className="tooltip-theme">
+					<Button
+						onClick={() => handleUpdateExtension(ext.package)}
+						disabled={!!updatingExtension || installExtensionsLoading}
+						variant="ghost"
+						size="icon"
+						className="button-ghost"
+					>
+						{updatingExtension === ext.package ? (
+							<div className="flex items-center justify-center w-4 h-4">
+								<div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-blue-500 rounded-full" />
+							</div>
+						) : (
+							<RefreshIcon className="h-4 w-4" />
+						)}
+					</Button>
+				</Tooltip>
+				<Tooltip content="从环境中移除扩展。" className="tooltip-theme">
+					<Button
+						onClick={() => {
+							setExtensionToRemove(ext);
+							setShowRemoveConfirmation(true);
+						}}
+						disabled={installExtensionsLoading}
+						variant="ghost"
+						size="icon"
+						className="button-ghost"
+					>
+						<CustomIcon id="bin" className="h-4 w-4" />
+					</Button>
+				</Tooltip>
+			</div>
+		</div>
+	);
 }
 
 export default function EnvironmentsPage() {
@@ -323,18 +323,18 @@ export default function EnvironmentsPage() {
 	);
 	const [workingDirInput, setWorkingDirInput] = useState("");
 	const [workingDirValid, setWorkingDirValid] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
+	const [searchQuery, setSearchQuery] = useState("");
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const [hasScrollbar, setHasScrollbar] = useState(false);
 	const filteredEnvironments = useMemo(() => {
-        if (!searchQuery.trim()) return environments;
+		if (!searchQuery.trim()) return environments;
 
-        const query = searchQuery.toLowerCase();
-        return environments.filter(env =>
-            env.name.toLowerCase().includes(query) ||
-            env.pythonVersion.toLowerCase().includes(query) ||
-            env.path.toLowerCase().includes(query)
-        );
+		const query = searchQuery.toLowerCase();
+		return environments.filter(env =>
+			env.name.toLowerCase().includes(query) ||
+			env.pythonVersion.toLowerCase().includes(query) ||
+			env.path.toLowerCase().includes(query)
+		);
 	}, [environments, searchQuery]);
 
 	// Validate directory when input changes
@@ -428,7 +428,7 @@ export default function EnvironmentsPage() {
 			hasLoadedEnvironments.current = true;
 		} catch (err) {
 			console.error("Failed to load environments:", err);
-			setEnvironmentsError(`Failed to load environments: ${err}`);
+			setEnvironmentsError(`加载环境失败: ${err}`);
 			setEnvironmentsLoading(false);
 		}
 	}, [installDir]);
@@ -436,7 +436,7 @@ export default function EnvironmentsPage() {
 	const selectWorkingDirectory = async () => {
 		try {
 			const selectedDir = await invoke<string>("select_directory", {
-				prompt: "Select working directory",
+				prompt: "选择工作目录",
 			});
 
 			if (selectedDir) {
@@ -574,7 +574,7 @@ export default function EnvironmentsPage() {
 			// Validate file type by extension
 			if (!["txt", "toml", "yml", "yaml"].includes(fileExt || "")) {
 				setRequirementsError(
-					"Only requirements.txt, pyproject.toml, or YAML files are supported",
+					"仅支持 requirements.txt, pyproject.toml 或 YAML 文件",
 				);
 				return;
 			}
@@ -659,7 +659,7 @@ export default function EnvironmentsPage() {
 				if (errorMsg.includes("Warning:")) {
 					setRequirementsWarning(errorMsg);
 				} else {
-					setRequirementsError(`Failed to create environment: ${errorMsg}`);
+					setRequirementsError(`创建环境失败: ${errorMsg}`);
 				}
 			}
 		} finally {
@@ -676,7 +676,7 @@ export default function EnvironmentsPage() {
 					} catch (cleanupErr) {
 						console.error("Failed cleaning up cancelled environment:", cleanupErr);
 						setRequirementsError(
-							`Installation was cancelled, but cleanup failed. You may need to manually remove the directory for '${envNameSnapshot}'.`,
+							`安装已取消，但清理失败。您可能需要手动删除 '${envNameSnapshot}' 目录。`,
 						);
 					}
 				}
@@ -708,7 +708,7 @@ export default function EnvironmentsPage() {
 					// Only show error if application is installed but directory is missing
 					if (state.is_installed) {
 						setEnvironmentsError(
-							"Installation directory not found. Please reinstall the application.",
+							"未找到安装目录。请重新安装应用程序。",
 						);
 					}
 					// If not installed, don't show error - this is expected during first-time installation
@@ -731,7 +731,7 @@ export default function EnvironmentsPage() {
 				}
 			} catch (err) {
 				console.error("Failed to get installation state:", err);
-				setEnvironmentsError(`Failed to get installation information: ${err}`);
+				setEnvironmentsError(`获取安装信息失败: ${err}`);
 			}
 		};
 
@@ -751,7 +751,7 @@ export default function EnvironmentsPage() {
 
 	const updateEnvironment = async (envName: string) => {
 		if (!installDir) {
-			setUpdateEnvironmentError("Installation directory not found");
+			setUpdateEnvironmentError("未找到安装目录");
 			return;
 		}
 
@@ -767,7 +767,7 @@ export default function EnvironmentsPage() {
 			await refreshEnvironmentUIState(envName);
 		} catch (err) {
 			console.error(`Failed to update environment ${envName}:`, err);
-			setUpdateEnvironmentError(`Failed to update environment: ${err}`);
+			setUpdateEnvironmentError(`更新环境失败: ${err}`);
 		} finally {
 			sessionStorage.removeItem(`updating-env-${envName}`);
 			setIsUpdatingEnvironment((prev) => {
@@ -1088,7 +1088,7 @@ end tell
 				}
 			} catch (err) {
 				console.error(`Error refreshing UI state for ${envName}:`, err);
-				setExtensionsError(`Failed to refresh extensions: ${err}`);
+				setExtensionsError(`刷新扩展失败: ${err}`);
 			} finally {
 				setExtensionsLoading(false);
 			}
@@ -1297,7 +1297,7 @@ end tell
 	// Remove environment
 	const removeEnvironment = async (envName: string) => {
 		if (!installDir) {
-			setRemoveEnvironmentError("Installation directory not found");
+			setRemoveEnvironmentError("未找到安装目录");
 			return;
 		}
 
@@ -1350,7 +1350,7 @@ end tell
 			deletedEnvironments.current.delete(envName);
 		} catch (err) {
 			console.error(`Failed to remove environment ${envName}:`, err);
-			setRemoveEnvironmentError(`Failed to remove environment: ${err}`);
+			setRemoveEnvironmentError(`移除环境失败: ${err}`);
 		} finally {
 			setEnvironmentToRemove(null);
 			setIsRemoving(false);
@@ -1360,7 +1360,7 @@ end tell
 	// Install extensions for an existing environment
 	const handleInstallExtensions = async (newExtensions: string[]) => {
 		if (!installDir || !activeEnv) {
-			setExtensionsError("Missing directory or environment information");
+			setExtensionsError("缺少目录或环境信息");
 			return;
 		}
 
@@ -1432,7 +1432,7 @@ end tell
 		envName: string,
 	) => {
 		if (!installDir) {
-			setExtensionRemoveError("Missing directory information");
+			setExtensionRemoveError("缺少目录信息");
 			return;
 		}
 
@@ -1451,7 +1451,7 @@ end tell
 			await refreshEnvironmentUIState(envName);
 		} catch (err) {
 			console.error(`Failed to remove extension ${packageName}:`, err);
-			setExtensionRemoveError(`Failed to remove extension: ${err}`);
+			setExtensionRemoveError(`移除扩展失败: ${err}`);
 			await refreshEnvironmentUIState(envName);
 		} finally {
 			setIsRemovingExtension(false);
@@ -1460,7 +1460,7 @@ end tell
 
 	const handleUpdateExtension = async (packageName: string) => {
 		if (!installDir || !activeEnv) {
-			setUpdateExtensionError("Missing directory or environment information");
+			setUpdateExtensionError("缺少目录或环境信息");
 			return;
 		}
 
@@ -1510,7 +1510,7 @@ end tell
 	const createEnvironment = async (extensions: string[] = []) => {
 		if (!installDir) {
 			setCreateEnvironmentError(
-				"Installation directory not found. Please complete the OpenBB installation process first by going to the Setup page.",
+				"未找到安装目录。请先前往设置页面完成 OpenBB 安装过程。",
 			);
 			return;
 		}
@@ -1580,7 +1580,7 @@ end tell
 				} catch (extErr) {
 					const errorMsg = String(extErr);
 					console.error("Error installing extensions:", errorMsg);
-					creationWarningRef.current = `Environment '${envNameSnapshot}' created, but some packages failed to install. You can try adding them again from the extensions manager.\n\nDetails: ${extractStderr(
+					creationWarningRef.current = `环境 '${envNameSnapshot}' 已创建，但部分包安装失败。您可以尝试从扩展管理器重新添加它们。\n\n详情：${extractStderr(
 						errorMsg,
 					)}`;
 				}
@@ -1873,17 +1873,17 @@ end tell
 	useEffect(() => {
 		return () => {
 
-				const activeServerNames = Array.from(activeServers.current);
-				if (activeServerNames.length > 0) {
-					console.log("Keeping Jupyter servers running while navigating away:", activeServerNames);
-					// Store active servers in sessionStorage to track across page navigation
-					try {
-						sessionStorage.setItem('active-jupyter-servers', JSON.stringify(activeServerNames));
-					} catch (err) {
-						console.error("Failed to save active server list to sessionStorage:", err);
-					}
+			const activeServerNames = Array.from(activeServers.current);
+			if (activeServerNames.length > 0) {
+				console.log("Keeping Jupyter servers running while navigating away:", activeServerNames);
+				// Store active servers in sessionStorage to track across page navigation
+				try {
+					sessionStorage.setItem('active-jupyter-servers', JSON.stringify(activeServerNames));
+				} catch (err) {
+					console.error("Failed to save active server list to sessionStorage:", err);
 				}
-			};
+			}
+		};
 	}, []);
 
 	// Start or open Jupyter server
@@ -2256,50 +2256,49 @@ end tell
 					<div className="bg-theme-secondary mb-5">
 						<div className="flex flex-col w-full">
 							<div className="flex items-center">
-							<label
-								htmlFor="current-working-dir"
-								className="body-sm-regular text-theme-secondary whitespace-nowrap"
-							>
-								Current Working Directory:
-							</label>
+								<label
+									htmlFor="current-working-dir"
+									className="body-sm-regular text-theme-secondary whitespace-nowrap"
+								>
+									当前工作目录：
+								</label>
 								<div className="flex-1 bg-theme-secondary rounded-md ml-2 body-xs-regular">
 									<input
-									type="text"
-									id="current-working-dir"
-									value={workingDirInput}
-									onChange={(e) => setWorkingDirInput(e.target.value)}
-									onKeyDown={handleDirectoryInputKeyPress}
-									onBlur={handleDirectoryInputSubmit}
-									placeholder="Enter directory path or select a folder..."
-									className={`directory-input w-full py-2 rounded border cursor-text body-xs-regular ${
-										!workingDirValid ? "border-red-500" : "border-theme-outline"
-									} text-theme-secondary placeholder-muted shadow-sm`}
+										type="text"
+										id="current-working-dir"
+										value={workingDirInput}
+										onChange={(e) => setWorkingDirInput(e.target.value)}
+										onKeyDown={handleDirectoryInputKeyPress}
+										onBlur={handleDirectoryInputSubmit}
+										placeholder="输入目录路径或选择文件夹..."
+										className={`directory-input w-full py-2 rounded border cursor-text body-xs-regular ${!workingDirValid ? "border-red-500" : "border-theme-outline"
+											} text-theme-secondary placeholder-muted shadow-sm`}
 									/>
 								</div>
 								<Tooltip
-									content="Browse for directory."
+									content="浏览目录。"
 									className="tooltip-theme"
 								>
 									<Button
-									onClick={selectWorkingDirectory}
-									variant="ghost"
-									size="icon"
-									className="button-ghost"
-									type="button"
+										onClick={selectWorkingDirectory}
+										variant="ghost"
+										size="icon"
+										className="button-ghost"
+										type="button"
 									>
-									<FolderIcon className="h-5 w-5 ml-4 mr-1.5" />
+										<FolderIcon className="h-5 w-5 ml-4 mr-1.5" />
 									</Button>
 								</Tooltip>
 							</div>
 							{!workingDirValid && workingDirInput.trim() && (
-							<p className="text-red-500 text-xs mt-1">
-								Directory does not exist or is not accessible.
-							</p>
+								<p className="text-red-500 text-xs mt-1">
+									目录不存在或无法访问。
+								</p>
 							)}
 							{workingDirValid && workingDirInput.trim() && workingDirInput !== currentWorkingDir && (
-							<p className="text-theme-muted text-xs mt-1">
-								Press Enter or click outside to apply changes.
-							</p>
+								<p className="text-theme-muted text-xs mt-1">
+									按回车或点击外部以应用更改。
+								</p>
 							)}
 						</div>
 					</div>
@@ -2309,7 +2308,7 @@ end tell
 								<div className="relative body-xs-regular">
 									<input
 										type="text"
-										placeholder="Search Environments..."
+										placeholder="搜索环境..."
 										value={searchQuery}
 										spellCheck={false}
 										onChange={(e) => setSearchQuery(e.target.value)}
@@ -2317,7 +2316,7 @@ end tell
 									/>
 									{searchQuery ? (
 										<Tooltip
-											content="Clear search query"
+											content="清除搜索内容"
 											className="tooltip tooltip-theme"
 										>
 											<button
@@ -2349,7 +2348,7 @@ end tell
 					{creationWarning && (
 						<div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
 							<div className="bg-theme-secondary border border-yellow-400/25 rounded-lg shadow-md max-w-2xl w-full pt-6 px-5 pb-4">
-								<h2 className="text-yellow-300 body-lg-bold mb-2">Creation Warning</h2>
+								<h2 className="text-yellow-300 body-lg-bold mb-2">新建环境警告</h2>
 								<div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border border-yellow-800 bg-yellow-900/30 text-yellow-300 rounded-md text-xs font-mono">
 									<div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
 										{creationWarning}
@@ -2394,7 +2393,7 @@ end tell
 								size="sm"
 								className="button-secondary"
 							>
-								<span className="body-xs-medium">Retry</span>
+								<span className="body-xs-medium">重试</span>
 							</Button>
 						</div>
 					)}
@@ -2404,7 +2403,7 @@ end tell
 							<div className="flex items-center space-x-2">
 								<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500" />
 								<span className="body-xs-regular text-theme-primary">
-									Loading environments...
+									正在加载环境...
 								</span>
 							</div>
 						</div>
@@ -2425,9 +2424,8 @@ end tell
 												className="w-full"
 											>
 
-												<div className={`bg-theme-tertiary border border-theme-modal rounded-md relative w-full pl-2 pt-3 pb-3 mb-5 shadow-md group ${
-													isUpdatingEnvironment.has(env.name) ? 'pointer-events-none' : ''
-												}`}>
+												<div className={`bg-theme-tertiary border border-theme-modal rounded-md relative w-full pl-2 pt-3 pb-3 mb-5 shadow-md group ${isUpdatingEnvironment.has(env.name) ? 'pointer-events-none' : ''
+													}`}>
 													<div className="flex justify-between items-center">
 														{/* LEFT: Clickable area for extensions modal */}
 														<div
@@ -2443,7 +2441,7 @@ end tell
 														<div className="flex items-center gap-2 pr-2">
 															<div className="flex flex-row items-center gap-2">
 																<Tooltip
-																	content="Update all added extensions."
+																	content="更新所有已添加的扩展。"
 																	className="tooltip-theme"
 																>
 																	<Button
@@ -2461,7 +2459,7 @@ end tell
 																		)}
 																	</Button>
 																</Tooltip>
-																<Tooltip content="Remove Environment" className="tooltip-theme">
+																<Tooltip content="移除环境" className="tooltip-theme">
 																	<Button
 																		onClick={(e) => {
 																			e.stopPropagation();
@@ -2481,7 +2479,7 @@ end tell
 															<div className="flex flex-row items-center justify-end gap-2 mr-1">
 																{jupyterStatus[env.name] === "running" && (
 																	<>
-																		<Tooltip content="Stop Jupyter Server" className="tooltip-theme">
+																		<Tooltip content="停止 Jupyter 服务器" className="tooltip-theme">
 																			<Button
 																				onClick={(e) => { e.preventDefault(); e.stopPropagation(); stopJupyterServer(env.name); }}
 																				variant="danger"
@@ -2489,13 +2487,13 @@ end tell
 																				className="button-danger text-nowrap px-2 py-1 h-6"
 																				aria-label="Stop Jupyter Server"
 																			>
-																				Stop Jupyter
+																				停止 Jupyter
 																			</Button>
 																		</Tooltip>
 																	</>
 																)}
 																{hasJupyterSupport(env.name) && (
-																	<Tooltip content="View Jupyter Server Logs" className="tooltip-theme">
+																	<Tooltip content="查看 Jupyter 服务器日志" className="tooltip-theme">
 																		<Button
 																			onClick={(e) => { e.preventDefault(); e.stopPropagation(); viewJupyterLogs(env.name); }}
 																			variant="outline"
@@ -2503,7 +2501,7 @@ end tell
 																			className="px-2 py-1 shadow-sm button-outline"
 																			aria-label="View Jupyter Server Logs"
 																		>
-																			Logs
+																			日志
 																		</Button>
 																	</Tooltip>
 																)}
@@ -2523,7 +2521,7 @@ end tell
 																	openJupyterWindow={openJupyterWindow}
 																	jupyterUrl={jupyterUrlRef.current[env.name]}
 																/>
-																<Tooltip content="Manage environment extensions." className="tooltip-theme">
+																<Tooltip content="管理环境扩展。" className="tooltip-theme">
 																	<Button
 																		onClick={(e) => { e.stopPropagation(); showExtensions(env.name); }}
 																		variant="secondary"
@@ -2531,7 +2529,7 @@ end tell
 																		className="button-secondary px-2 py-1 shadow-sm"
 																		aria-label="Manage Extensions"
 																	>
-																		Extensions
+																		扩展
 																	</Button>
 																</Tooltip>
 															</div>
@@ -2544,9 +2542,9 @@ end tell
 																{/* Modal Header */}
 																<div className="flex items-center justify-between mb-4">
 																	<h2 className="body-lg-bold text-theme-primary">
-																		Manage Extensions - {env.name}
+																		管理扩展 - {env.name}
 																	</h2>
-																	<Tooltip content="Close extensions panel" className="tooltip-theme">
+																	<Tooltip content="关闭扩展面板" className="tooltip-theme">
 																		<Button
 																			onClick={() => {
 																				setShowExtensionsForEnv(null);
@@ -2591,21 +2589,21 @@ end tell
 																					<input
 																						id="extension-search"
 																						type="text"
-																						placeholder="Search Extensions..."
+																						placeholder="搜索扩展..."
 																						value={extensionSearchQuery}
 																						onChange={(e) => setExtensionSearchQuery(e.target.value)}
 																						className="!pl-[30px]"
 																						disabled={!env.name || extensionsLoading}
 																					/>
 																				</div>
-																				<Tooltip content="Install additional packages in the environment." className="tooltip-theme">
+																				<Tooltip content="在环境中安装其他包。" className="tooltip-theme">
 																					<Button
 																						onClick={() => setActiveTab("add")}
 																						variant="primary"
 																						size="xs"
 																						className="button-primary shadow-s px-2 py-1"
 																					>
-																						Add Extension
+																						添加扩展
 																					</Button>
 																				</Tooltip>
 																			</div>
@@ -2626,7 +2624,7 @@ end tell
 																							size="sm"
 																							className="button-outline"
 																						>
-																							<span className="body-xs-medium">Dismiss</span>
+																							<span className="body-xs-medium">关闭</span>
 																						</Button>
 																						<Button
 																							onClick={() => {
@@ -2652,7 +2650,7 @@ end tell
 																							size="sm"
 																							className="button-primary"
 																						>
-																							<span className="body-xs-medium text-theme">Retry</span>
+																							<span className="body-xs-medium text-theme">重试</span>
 																						</Button>
 																					</div>
 																				</div>
@@ -2665,7 +2663,7 @@ end tell
 																						size="sm"
 																						className="button-outline"
 																					>
-																						<span className="body-xs-medium">Dismiss</span>
+																						<span className="body-xs-medium">关闭</span>
 																					</Button>
 																				</div>
 																			) : updateExtensionError ? (
@@ -2677,13 +2675,12 @@ end tell
 																						size="sm"
 																						className="button-outline"
 																					>
-																						<span className="body-xs-medium">Dismiss</span>
+																						<span className="body-xs-medium">关闭</span>
 																					</Button>
 																				</div>
 																			) : (
 																				<div className="pl-0 pr-3 mb-3 w-full">
 																					{(() => {
-																						const filteredExtensions = getFilteredExtensions();
 																						return filteredExtensions.length > 0 ? (
 																							<div className="max-h-[60vh] overflow-y-auto -mr-2 pr-2">
 																								{filteredExtensions.map((ext) => (
@@ -2701,13 +2698,13 @@ end tell
 																						) : extensions.length > 0 ? (
 																							<div className="text-center p-6">
 																								<p className="body-xs-regular text-theme-primary mt-1">
-																									No extensions match your search
+																									没有匹配搜索的扩展
 																								</p>
 																							</div>
 																						) : (
 																							<div className="text-center p-6">
 																								<p className="body-xs-regular text-theme-primary mt-1">
-																									No extensions installed. Click "Add Extensions" to get started.
+																									未安装任何扩展。点击“添加扩展”开始使用。
 																								</p>
 																							</div>
 																						);
@@ -2723,30 +2720,30 @@ end tell
 												</div>
 											</li>
 										))}
-									{filteredEnvironments.length === 0 && !environmentsError && !environmentsLoading && (
-										<div className="flex flex-col items-center justify-center">
-											<div className="text-center">
-												<CustomIcon
-													id="search"
-													className="h-12 w-12 text-theme-muted mb-2 mx-auto"
-												/>
-												<h3 className="body-md-bold text-theme-secondary mb-2">
-													No environments found
-												</h3>
-												<p className="body-sm-regular text-theme-muted mb-4">
-													No environments match your search for "{searchQuery}"
-												</p>
-												<Button
-													onClick={() => setSearchQuery("")}
-													variant="outline"
-													size="sm"
-													className="button-outline"
-												>
-													<span className="body-xs-medium">Clear Search</span>
-												</Button>
+										{filteredEnvironments.length === 0 && !environmentsError && !environmentsLoading && (
+											<div className="flex flex-col items-center justify-center">
+												<div className="text-center">
+													<CustomIcon
+														id="search"
+														className="h-12 w-12 text-theme-muted mb-2 mx-auto"
+													/>
+													<h3 className="body-md-bold text-theme-secondary mb-2">
+														未发现环境
+													</h3>
+													<p className="body-sm-regular text-theme-muted mb-4">
+														搜索“{searchQuery}”没有匹配的环境
+													</p>
+													<Button
+														onClick={() => setSearchQuery("")}
+														variant="outline"
+														size="sm"
+														className="button-outline"
+													>
+														<span className="body-xs-medium">重置搜索</span>
+													</Button>
+												</div>
 											</div>
-										</div>
-									)}
+										)}
 									</ul>
 								</div>
 							</div>
@@ -2754,7 +2751,7 @@ end tell
 							{updateEnvironmentError && (
 								<div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
 									<div className="bg-theme-secondary border border-red-800 rounded-lg shadow-md max-w-2xl w-full p-6">
-										<h2 className="text-red-600 text-lg font-bold mb-2">Update Environment Error</h2>
+										<h2 className="text-red-600 text-lg font-bold mb-2">更新环境错误</h2>
 										<div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border border-red-800 bg-red-900/30 text-red-300 rounded-md text-xs font-mono">
 											<div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
 												{extractStderr(updateEnvironmentError)}
@@ -2767,7 +2764,7 @@ end tell
 												size="sm"
 												className="button-outline"
 											>
-												<span className="body-xs-medium">Dismiss</span>
+												<span className="body-xs-medium">关闭</span>
 											</Button>
 										</div>
 									</div>
@@ -2783,7 +2780,7 @@ end tell
 										size="sm"
 										className="button-outline"
 									>
-										<span className="body-xs-medium">Dismiss</span>
+										<span className="body-xs-medium">关闭</span>
 									</Button>
 								</div>
 							)}
@@ -2796,7 +2793,7 @@ end tell
 						<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-lg w-[400px] pl-4 pr-2 pt-2 pb-5">
 							<div className="flex items-center justify-between mb-4">
 								<h2 className="body-md-bold text-theme">
-									Delete Extension
+									删除扩展
 								</h2>
 								<Button
 									variant="ghost"
@@ -2812,13 +2809,13 @@ end tell
 								</Button>
 							</div>
 							<p className="mt-3 mb-7 body-sm-regular text-theme">
-								Are you sure you want to remove{" "}
+								您确定要移除{" "}
 								<span className="font-bold">
 									{extensionToRemove.install_method === "conda"
 										? extensionToRemove.package.split(":")[1]
 										: extensionToRemove.package}
 								</span>{" "}
-								from <span className="font-bold">{activeEnv}</span>?
+								从环境 <span className="font-bold">{activeEnv}</span> 吗？
 							</p>
 							<div className="flex justify-center">
 								<Button
@@ -2837,10 +2834,10 @@ end tell
 									{isRemovingExtension ? (
 										<div className="flex items-center">
 											<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-contrast mr-2" />
-											<span className="body-xs-medium">Removing...</span>
+											<span className="body-xs-medium">移除中...</span>
 										</div>
 									) : (
-										<span className="body-xs-medium">Remove Extension</span>
+										<span className="body-xs-medium">确认移除扩展</span>
 									)}
 								</Button>
 							</div>
@@ -2853,7 +2850,7 @@ end tell
 						<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-lg max-w-[75vw] p-5">
 							<div className="flex items-center justify-between mb-7">
 								<h2 className="body-lg-bold text-theme-primary">
-									Delete Environment
+									删除环境
 								</h2>
 								<Button
 									onClick={() => {
@@ -2868,10 +2865,10 @@ end tell
 								</Button>
 							</div>
 							<p className="mb-2 body-md-medium text-theme-primary flex justify-start">
-								Are you sure you want to remove, {environmentToRemove}?
+								您确定要删除环境 {environmentToRemove} 吗？
 							</p>
 							<p className="mb-7 body-md-medium text-theme-primary flex justify-start">
-								This action cannot be undone.
+								此操作无法撤销。
 							</p>
 							<div className="flex justify-end gap-2">
 								<Button
@@ -2885,7 +2882,7 @@ end tell
 									className="button-outline px-2 py-1"
 									size="sm"
 								>
-									<span className="body-xs-medium">Cancel</span>
+									<span className="body-xs-medium">取消</span>
 								</Button>
 								<Button
 									variant="danger"
@@ -2906,11 +2903,11 @@ end tell
 										<div className="flex items-center">
 											<div className="bg-theme-primary border border-theme-accent rounded-lg shadow-dark-2 w-full max-w-md p-5">
 												<div className="animate-spin h-4 w-4 border-b-2 border-theme rounded-full mr-2" />
-												<span className="body-xs-medium">Removing...</span>
+												<span className="body-xs-medium">移除中...</span>
 											</div>
 										</div>
 									) : (
-										<span className="body-xs-medium">Delete</span>
+										<span className="body-xs-medium">确认删除</span>
 									)}
 								</Button>
 							</div>
@@ -2924,10 +2921,10 @@ end tell
 						<div className="bg-theme-secondary border border-theme-modal rounded-lg shadow-md p-8 max-w-xs w-full flex flex-col items-center">
 							<div className="flex flex-col items-center">
 								<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-theme-accent mb-4" />
-								<span className="body-md-bold text-theme-primary mb-2">Removing environment...</span>
+								<span className="body-md-bold text-theme-primary mb-2">正在移除环境...</span>
 								{removeEnvironmentError && (
 									<div className="w-full p-3 bg-red-900/30 text-red-300 rounded-md mt-4">
-										<h4 className="text-sm font-medium text-theme mb-2">Removal Error</h4>
+										<h4 className="text-sm font-medium text-theme mb-2">移除失败</h4>
 										<div className="mt-1 bg-red-900/20 p-2 rounded overflow-auto max-h-32 text-xs font-mono whitespace-pre-wrap text-red-200">
 											{extractStderr(removeEnvironmentError)}
 										</div>
@@ -2944,10 +2941,10 @@ end tell
 					<div className="flex flex-col p-6 bg-theme-secondary rounded-lg border border-theme-modal shadow-lg max-w-[90vw] w-full max-h-[90vh]">
 						<div className="flex items-center justify-between mb-4">
 							<p className="body-lg-bold text-theme-primary">
-								Create Environment from {requirementsFileName}
+								从 {requirementsFileName} 创建环境
 							</p>
 							<Tooltip
-								content="Cancel and go back."
+								content="取消并返回。"
 								className="tooltip-theme"
 							>
 								<Button
@@ -2971,133 +2968,131 @@ end tell
 						</div>
 
 						<div className="flex flex-col flex-1 overflow-y-auto pr-2">
-						{requirementsError && (
-							<div className="mb-4 p-3 bg-red-900/30 text-red-300 rounded-md">
-								<p className="text-theme-secondary mt-1 mb-2 font-mono whitespace-pre-wrap overflow-auto max-h-[60px]">
-									{extractStderr(requirementsError)}
-								</p>
-							</div>
-						)}
+							{requirementsError && (
+								<div className="mb-4 p-3 bg-red-900/30 text-red-300 rounded-md">
+									<p className="text-theme-secondary mt-1 mb-2 font-mono whitespace-pre-wrap overflow-auto max-h-[60px]">
+										{extractStderr(requirementsError)}
+									</p>
+								</div>
+							)}
 
-						{requirementsWarning && (
-							<div className="mb-4 p-3 bg-yellow-900/30 text-yellow-300 rounded-md">
-								<p className="text-theme-secondary mt-1 mb-2 font-mono whitespace-pre-wrap overflow-auto max-h-60">
-									{extractStderr(requirementsWarning)}
-								</p>
-							</div>
-						)}
+							{requirementsWarning && (
+								<div className="mb-4 p-3 bg-yellow-900/30 text-yellow-300 rounded-md">
+									<p className="text-theme-secondary mt-1 mb-2 font-mono whitespace-pre-wrap overflow-auto max-h-60">
+										{extractStderr(requirementsWarning)}
+									</p>
+								</div>
+							)}
 
-						{creationLoading ? (
-							<div className="flex flex-col items-center justify-center">
-								<div className="flex justify-center mb-1">
-									<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-theme-accent" />
-								</div>
-								<p className="text-theme-muted body-sm-regular mt-1 text-center mb-4">
-									Creating environment from requirements file...
-								</p>
-								{/* Log viewer */}
-								{requirementsLogs.length > 0 && (
-									<div className="w-full p-2 border border-theme-accent rounded-md bg-theme-secondary mb-4">
-										<pre className="body-xs-regular text-theme-secondary whitespace-pre-wrap overflow-auto max-h-[50vh]">
-											{requirementsLogs.join("\n")}
-										</pre>
+							{creationLoading ? (
+								<div className="flex flex-col items-center justify-center">
+									<div className="flex justify-center mb-1">
+										<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-theme-accent" />
 									</div>
-								)}
-								<div className="flex justify-center w-full">
-									<Button
-										onClick={() => handleAbortInstallation("requirements")}
-										variant="danger"
-										className="button-danger"
-										disabled={isCancellingCreation}
-										size="sm"
-									>
-										{isCancellingCreation ? (
-											<span className="flex items-center">
-												<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-contrast mr-2" />
-												Cleanup will continue in the background...
-											</span>
-										) : (
-											<span className="body-xs-bold text-theme">Cancel Installation</span>
-										)}
-									</Button>
-								</div>
-							</div>
-						) : requirementsComplete ? (
-							<div>
-								{requirementsLogs.length > 0 && (
-									<div className="w-full p-2 border border-theme-accent rounded-md bg-theme-secondary">
-										<pre className="text-xs text-theme-secondary whitespace-pre-wrap overflow-auto max-h-[50vh]">
-											{requirementsLogs.join("\n")}
-										</pre>
-									</div>
-								)}
-								<div className="flex justify-center mt-6">
-									<Button
-										onClick={() => {
-											setCreatingFromRequirements(false);
-											setRequirementsFileName(null);
-											setRequirementsEnvName("");
-											setRequirementsError(null);
-											setRequirementsLogs([]);
-											setRequirementsComplete(false);
-											setRequirementsWarning(null);
-										}}
-										variant="primary"
-										className="button-primary px-2 py-1"
-										size="sm"
-									>
-										Done
-									</Button>
-								</div>
-							</div>
-						) : (
-							<div className="flex flex-col h-full">
-								<div className="flex-1">
-									<div className="mb-2">
-										<label
-											htmlFor="requirements-env-name"
-											className="text-theme-secondary body-md-bold"
+									<p className="text-theme-muted body-sm-regular mt-1 text-center mb-4">
+										正在从需求文件创建环境...
+									</p>
+									{/* Log viewer */}
+									{requirementsLogs.length > 0 && (
+										<div className="w-full p-2 border border-theme-accent rounded-md bg-theme-secondary mb-4">
+											<pre className="body-xs-regular text-theme-secondary whitespace-pre-wrap overflow-auto max-h-[50vh]">
+												{requirementsLogs.join("\n")}
+											</pre>
+										</div>
+									)}
+									<div className="flex justify-center w-full">
+										<Button
+											onClick={() => handleAbortInstallation("requirements")}
+											variant="danger"
+											className="button-danger"
+											disabled={isCancellingCreation}
+											size="sm"
 										>
-											Environment Name
-										</label>
-										<input
-											type="text"
-											id="requirements-env-name"
-											value={requirementsEnvName}
-											onChange={(e) => setRequirementsEnvName(e.target.value)}
-											placeholder="my-environment"
-											spellCheck="false"
-											className={`w-full p-2 border rounded-md bg-theme-secondary text-theme-primary mt-2 ${
-												requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
+											{isCancellingCreation ? (
+												<span className="flex items-center">
+													<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-contrast mr-2" />
+													清理将在后台进行...
+												</span>
+											) : (
+												<span className="body-xs-bold text-theme">取消安装</span>
+											)}
+										</Button>
+									</div>
+								</div>
+							) : requirementsComplete ? (
+								<div>
+									{requirementsLogs.length > 0 && (
+										<div className="w-full p-2 border border-theme-accent rounded-md bg-theme-secondary">
+											<pre className="text-xs text-theme-secondary whitespace-pre-wrap overflow-auto max-h-[50vh]">
+												{requirementsLogs.join("\n")}
+											</pre>
+										</div>
+									)}
+									<div className="flex justify-center mt-6">
+										<Button
+											onClick={() => {
+												setCreatingFromRequirements(false);
+												setRequirementsFileName(null);
+												setRequirementsEnvName("");
+												setRequirementsError(null);
+												setRequirementsLogs([]);
+												setRequirementsComplete(false);
+												setRequirementsWarning(null);
+											}}
+											variant="primary"
+											className="button-primary px-2 py-1"
+											size="sm"
+										>
+											完成
+										</Button>
+									</div>
+								</div>
+							) : (
+								<div className="flex flex-col h-full">
+									<div className="flex-1">
+										<div className="mb-2">
+											<label
+												htmlFor="requirements-env-name"
+												className="text-theme-secondary body-md-bold"
+											>
+												环境名称
+											</label>
+											<input
+												type="text"
+												id="requirements-env-name"
+												value={requirementsEnvName}
+												onChange={(e) => setRequirementsEnvName(e.target.value)}
+												placeholder="我的环境"
+												spellCheck="false"
+												className={`w-full p-2 border rounded-md bg-theme-secondary text-theme-primary mt-2 ${requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
 													? "border-red-500 focus:border-red-500"
 													: "border-theme"
-											}`}
-										/>
-										<p className={`text-xs mt-1 ml-1 ${
-											requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
+													}`}
+											/>
+											<p className={`text-xs mt-1 ml-1 ${requirementsEnvName.trim() !== "" && !/^[a-z0-9-]+$/.test(requirementsEnvName)
 												? "text-red-500"
 												: "text-theme-muted"
-											}`}>
-											Use lowercase letters, numbers, and hyphens. No spaces.
-										</p>
+												}`}>
+												请使用小写字母、数字和连字符。不含空格。
+											</p>
+										</div>
+									</div>
+									<div className="flex justify-end mt-2 items-center">
+										<Button
+											onClick={createEnvironmentFromRequirements}
+											variant="primary"
+											disabled={
+												!/^[a-z0-9-]+$/.test(requirementsEnvName) ||
+												!requirementsEnvName.trim()
+											}
+											className="button-primary px-2 py-1"
+											size="sm"
+										>
+											创建环境
+										</Button>
 									</div>
 								</div>
-								<div className="flex justify-end mt-2 items-center">
-									<Button
-										onClick={createEnvironmentFromRequirements}
-										variant="primary"
-										disabled={
-											!/^[a-z0-9-]+$/.test(requirementsEnvName) ||
-											!requirementsEnvName.trim()
-										}
-										className="button-primary px-2 py-1"
-										size="sm"
-									>
-										Create Environment
-									</Button>
-								</div>
-							</div>
-						)}
+							)}
 						</div>
 					</div>
 				</div>
@@ -3110,21 +3105,21 @@ end tell
 							{(createStep === "name") && (
 								<div>
 									<p className="text-theme-secondary body-sm-medium">
-										STEP <span className="text-theme-accent">1</span> OF <span className="text-theme-accent">3</span>
+										步骤 <span className="text-theme-accent">1</span> / <span className="text-theme-accent">3</span>
 									</p>
 								</div>
 							)}
 							{(createStep === "python") && (
 								<div>
 									<p className="text-theme-secondary body-sm-medium">
-										STEP <span className="text-theme-accent">2</span> OF <span className="text-theme-accent">3</span>
+										步骤 <span className="text-theme-accent">2</span> / <span className="text-theme-accent">3</span>
 									</p>
 								</div>
 							)}
 							{createStep !== "extensions" && (
 								<div className="flex items-center justify-end mr-2">
 									<Tooltip
-										content="Cancel and go back."
+										content="取消并返回。"
 										className="tooltip-theme"
 									>
 										<Button
@@ -3144,74 +3139,72 @@ end tell
 						<div className="flex-grow overflow-y-auto mb-2 pr-1">
 							{/* Name input step */}
 							{createStep === "name" && (
-							<div>
-								<div className="px-1">
-									<p className="body-md-bold text-theme-secondary mb-2">
-										Environment Name
-									</p>
-									<input
-										type="text"
-										id="env-name-modal"
-										value={newEnvName}
-										onChange={(e) => setNewEnvName(e.target.value)}
-										placeholder="my-environment"
-										spellCheck="false"
-										className={`w-full p-2 text-theme rounded-md border ${
-											newEnvNameInvalid ? "!border-red-500 focus:!border-red-500" : "border-theme-accent"
-										} shadow-md`}
-									/>
-									<p className={`body-xs-regular mt-2 ml-2 ${
-										newEnvNameInvalid ? "text-red-500" : "text-theme-muted"
-									}`}>
-										Do not use whitespaces. Only lowercase letters, numbers, and hyphens.
-									</p>
+								<div>
+									<div className="px-1">
+										<p className="body-md-bold text-theme-secondary mb-2">
+											环境名称
+										</p>
+										<input
+											type="text"
+											id="env-name-modal"
+											value={newEnvName}
+											onChange={(e) => setNewEnvName(e.target.value)}
+											placeholder="我的环境"
+											spellCheck="false"
+											className={`w-full p-2 text-theme rounded-md border ${newEnvNameInvalid ? "!border-red-500 focus:!border-red-500" : "border-theme-accent"
+												} shadow-md`}
+										/>
+										<p className={`body-xs-regular mt-2 ml-2 ${newEnvNameInvalid ? "text-red-500" : "text-theme-muted"
+											}`}>
+											请勿使用空格。仅限小写字母、数字和连字符。
+										</p>
+									</div>
+									<div className="flex justify-end gap-2 mt-5">
+										<Button
+											onClick={() => setCreateStep("python")}
+											variant="primary"
+											size="sm"
+											className="button-primary px-2 py-1"
+											disabled={newEnvNameInvalid || !newEnvName.trim()}
+										>
+											下一步
+										</Button>
+									</div>
 								</div>
-								<div className="flex justify-end gap-2 mt-5">
-									<Button
-										onClick={() => setCreateStep("python")}
-										variant="primary"
-										size="sm"
-										className="button-primary px-2 py-1"
-										disabled={newEnvNameInvalid || !newEnvName.trim()}
-									>
-										Next
-									</Button>
-								</div>
-							</div>
 							)}
 
 							{/* Python version selection */}
 							{createStep === "python" && (
-							<div>
-								<div className="pt-1 pb-5 bg-theme-tertiary rounded-md">
-									<p className="pl-2 body-md-bold text-theme-secondary">
-										Python Version
-									</p>
-									<div className="flex flex-col mt-5 px-5">
-										<PythonVersionSelector
-											onSelectVersion={setNewEnvPython}
-										/>
+								<div>
+									<div className="pt-1 pb-5 bg-theme-tertiary rounded-md">
+										<p className="pl-2 body-md-bold text-theme-secondary">
+											Python 版本
+										</p>
+										<div className="flex flex-col mt-5 px-5">
+											<PythonVersionSelector
+												onSelectVersion={setNewEnvPython}
+											/>
+										</div>
+									</div>
+									<div className="flex gap-2 justify-end mt-7">
+										<Button
+											className="button-outline px-2 py-1"
+											variant="outline"
+											onClick={() => setCreateStep("name")}
+											size="sm"
+										>
+											上一步
+										</Button>
+										<Button
+											className="button-primary px-2 py-1"
+											variant="primary"
+											onClick={() => setCreateStep("extensions")}
+											size="sm"
+										>
+											下一步
+										</Button>
 									</div>
 								</div>
-								<div className="flex gap-2 justify-end mt-7">
-									<Button
-									className="button-outline px-2 py-1"
-									variant="outline"
-									onClick={() => setCreateStep("name")}
-									size="sm"
-									>
-									Back
-									</Button>
-									<Button
-									className="button-primary px-2 py-1"
-									variant="primary"
-									onClick={() => setCreateStep("extensions")}
-									size="sm"
-									>
-									Next
-									</Button>
-								</div>
-							</div>
 							)}
 
 							{/* Extensions selection */}
@@ -3221,7 +3214,7 @@ end tell
 										<div className="bg-theme-secondary w-full h-full rounded-md flex flex-col items-center">
 											<div className="w-full flex justify-center">
 												<p className="text-theme-muted body-xs-regular text-center mb-2">
-													This may take several minutes..
+													这可能需要几分钟..
 												</p>
 												<div className="flex justify-center ml-5">
 													<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-theme-accent" />
@@ -3248,10 +3241,10 @@ end tell
 													{isCancellingCreation ? (
 														<span className="flex items-center">
 															<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-contrast mr-2" />
-															Cleanup will continue in the background...
+															清除将在后台继续...
 														</span>
 													) : (
-														<span> Cancel</span>
+														<span> 取消</span>
 													)}
 												</Button>
 											</div>
@@ -3259,7 +3252,7 @@ end tell
 									) : createEnvironmentError ? (
 										<div>
 											<h3 className="text-theme-primary body-xs-medium mt-1 mb-4">
-												Environment Creation Error
+												环境创建错误
 											</h3>
 											<div className="p-3 bg-theme-secondary border border-red-500 rounded-md">
 												<p className="text-theme-secondary body-xs-regular mt-1 mb-2 font-mono whitespace-pre-wrap overflow-auto max-h-[50vh]">
@@ -3272,7 +3265,7 @@ end tell
 														size="sm"
 														className="button-outline px-2 py-1"
 													>
-														Dismiss
+														关闭
 													</Button>
 													<Button
 														onClick={() => createEnvironment([])}
@@ -3280,7 +3273,7 @@ end tell
 														size="sm"
 														className="button-primary px-2 py-1"
 													>
-														Retry
+														重试
 													</Button>
 												</div>
 											</div>
@@ -3288,23 +3281,23 @@ end tell
 									) : creationComplete ? (
 										<div className="relative bottom-1">
 											<div className="flex justify-between">
-											<span className="text-theme-primary body-md-medium">
-												Environment Created Successfully!
-											</span>
-											<span className="text-theme-primary justify-between items-end">
-												<Button
-													onClick={() => {
-														setIsCreateModalOpen(false);
-														setCreationLogs([]);
-														setCreateStep("name");
-													}}
-													variant="ghost"
-													className="button-ghost"
-													size="icon"
-												>
-													<CustomIcon id="close" className="h-6 w-6" />
-												</Button>
-											</span>
+												<span className="text-theme-primary body-md-medium">
+													环境创建成功！
+												</span>
+												<span className="text-theme-primary justify-between items-end">
+													<Button
+														onClick={() => {
+															setIsCreateModalOpen(false);
+															setCreationLogs([]);
+															setCreateStep("name");
+														}}
+														variant="ghost"
+														className="button-ghost"
+														size="icon"
+													>
+														<CustomIcon id="close" className="h-6 w-6" />
+													</Button>
+												</span>
 											</div>
 
 											{/* Log viewer */}
@@ -3328,7 +3321,7 @@ end tell
 													className="button-primary px-2 py-1"
 													size="sm"
 												>
-													Done
+													完成
 												</Button>
 											</div>
 										</div>
@@ -3352,7 +3345,7 @@ end tell
 					<div className="p-6 max-w-2xl w-full">
 						{extensionsError ? (
 							<div>
-								<h2 className="text-red-600 text-lg font-bold mb-2">Extension Installation Error</h2>
+								<h2 className="text-red-600 text-lg font-bold mb-2">扩展安装错误</h2>
 								<div className="mb-4 mt-4 pl-5 pt-1 pr-1 pb-1 border border-red-800 bg-red-900/30 text-red-300 rounded-md text-xs font-mono">
 									<div className="whitespace-pre-wrap overflow-auto max-h-60 mt-0.5 mb-0.5">
 										{extractStderr(extensionsError)}
@@ -3368,7 +3361,7 @@ end tell
 										size="sm"
 										className="button-outline px-2 py-1"
 									>
-										Dismiss
+										关闭
 									</Button>
 								</div>
 							</div>
@@ -3376,7 +3369,7 @@ end tell
 							<div className="flex flex-col items-center bg-theme-secondary rounded-lg p-4 border border-theme-accent">
 								<div className="flex items-center justify-center p-4 mb-4">
 									<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-accent mr-3" />
-									<span className="text-theme body-sm-regular">Installing extensions...</span>
+									<span className="text-theme body-sm-regular">正在安装扩展...</span>
 								</div>
 								<Button
 									onClick={handleCancelExtensionInstall}
@@ -3384,7 +3377,7 @@ end tell
 									className="button-danger px-2 py-1"
 									size="sm"
 								>
-									Cancel Installation
+									取消安装
 								</Button>
 							</div>
 						)}
@@ -3392,17 +3385,17 @@ end tell
 				</div>
 			)}
 			{!environmentsLoading && environments.length === 0 && installDir && !installExtensionsLoading ? (
-			<div className="text-center m-2 p-4">
-				<p className="text-theme-primary body-md-strong">No environments found. <br /><br /><span className="text-theme-primary">Create a new environment to get started.</span></p>
-				<div className="flex justify-center mt-5">
-					<EnvironmentActionButtons
-						showCreateEnvironment={showCreateEnvironment}
-						handleRequirementsFileSelect={
-							handleRequirementsFileSelect
-						}
-					/>
+				<div className="text-center m-2 p-4">
+					<p className="text-theme-primary body-md-strong">未发现环境。<br /><br /><span className="text-theme-primary">创建一个新环境以开始。</span></p>
+					<div className="flex justify-center mt-5">
+						<EnvironmentActionButtons
+							showCreateEnvironment={showCreateEnvironment}
+							handleRequirementsFileSelect={
+								handleRequirementsFileSelect
+							}
+						/>
+					</div>
 				</div>
-			</div>
 			) : null}
 		</div>
 	);

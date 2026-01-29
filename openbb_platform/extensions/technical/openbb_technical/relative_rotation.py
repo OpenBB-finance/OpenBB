@@ -1,4 +1,4 @@
-"""Relative Rotation Model."""
+"""相对旋转模型。"""
 
 # pylint: disable=too-many-arguments, too-many-instance-attributes, protected-access
 # pylint: disable=too-many-locals, too-few-public-methods, unused-argument
@@ -15,38 +15,38 @@ if TYPE_CHECKING:
 
 
 def absolute_maximum_scale(data: "Series") -> "Series":
-    """Absolute Maximum Scale Normaliztion Method."""
+    """绝对最大值缩放归一化方法。"""
     return data / data.abs().max()
 
 
 def min_max_scaling(data: "Series") -> "Series":
-    """Min/Max ScalingNormalization Method."""
+    """最小/最大缩放归一化方法。"""
     return (data - data.min()) / (data.max() - data.min())
 
 
 def z_score_standardization(data: "Series") -> "Series":
-    """Z-Score Standardization Method."""
+    """Z-Score 标准化方法。"""
     return (data - data.mean()) / data.std()
 
 
 def normalize(data: "DataFrame", method: Literal["z", "m", "a"] = "z") -> "DataFrame":
     """
-    Normalize a Pandas DataFrame based on method.
+    根据方法归一化 Pandas DataFrame。
 
     Parameters
     ----------
     data: "DataFrame"
-        Pandas DataFrame with any number of columns to be normalized.
+        具有任意数量列的 Pandas DataFrame，需要进行归一化。
     method: Literal["z", "m", "a"]
-        Normalization method.
-            z: Z-Score Standardization
-            m: Min/Max Scaling
-            a: Absolute Maximum Scale
+        归一化方法。
+            z: Z-Score 标准化
+            m: 最小/最大缩放
+            a: 绝对最大值缩放
 
     Returns
     -------
     DataFrame
-        Normalized DataFrame.
+        归一化后的 DataFrame。
     """
     methods = {
         "z": z_score_standardization,
@@ -68,23 +68,23 @@ def standard_deviation(
     trading_periods: int = 252,
 ) -> "DataFrame":
     """
-    Measures how widely returns are dispersed from the average return.
+    衡量回报从平均回报分散的程度。
 
-    It is the most common (and biased) estimator of volatility.
+    它是最常见（且有偏差）的波动率估计量。
 
     Parameters
     ----------
     data : pd.DataFrame
-        Dataframe of OHLC prices.
+        OHLC 价格数据框。
     window : int [default: 21]
-        Length of window to calculate over.
+        用于计算的窗口长度。
     trading_periods : Optional[int] [default: 252]
-        Number of trading periods in a year.
+        即每年的交易周期数。
 
     Returns
     -------
     pd.DataFrame : results
-        Dataframe with results.
+        包含结果的数据框。
     """
     # pylint: disable=import-outside-toplevel
     from numpy import log, sqrt
@@ -110,25 +110,25 @@ def calculate_momentum(
     data: "Series", long_period: int = 252, short_period: int = 21
 ) -> "Series":
     """
-    Momentum is calculated as the log trailing 12-month return minus trailing one-month return.
+    动量计算为对数过去 12 个月回报减去过去一个月回报。
 
-    Higher values indicate larger, positive momentum exposure.
+    较高的值表示较大的正动量敞口。
 
     Momentum = ln(1 + r12) - ln(1 + r1)
 
     Parameters
     ----------
     data: "Series"
-        Time series data to calculate the momentum for.
+        用于计算动量的时间序列数据。
     long_period: Optional[int]
-        Long period to base the calculation on. Default is one standard trading year.
+        计算基础的长周期。默认为一个标准交易年。
     short_period: Optional[int]
-        Short period to subtract from the long period. Default is one trading month.
+        从长周期中减去的短周期。默认为一个交易月。
 
     Returns
     -------
     Series
-        Pandas Series with the calculated momentum.
+        包含计算动量的 Pandas Series。
     """
     # pylint: disable=import-outside-toplevel
     from numpy import log
@@ -146,23 +146,23 @@ def get_momentum(
     data: "DataFrame", long_period: int = 252, short_period: int = 21
 ) -> "DataFrame":
     """
-    Calculate the Relative-Strength Momentum Indicator.
+    计算相对强度动量指标。
 
-    Takes the Relative Strength Ratio as the input.
+    以相对强度比率作为输入。
 
     Parameters
     ----------
     data: "DataFrame"
-        Indexed time series data formatted with each column representing a ticker.
+        格式化的索引时间序列数据，每列代表一个股票代码。
     long_period: Optional[int]
-        Long period to base the calculation on. Default is one standard trading year.
+        计算基础的长周期。默认为一个标准交易年。
     short_period: Optional[int]
-        Short period to subtract from the long period. Default is one trading month.
+        从长周期中减去的短周期。默认为一个交易月。
 
     Returns
     -------
     DataFrame
-        Pandas DataFrame with the calculated historical momentum factor exposure score.
+        包含计算出的历史动量因子敞口分数的 Pandas DataFrame。
     """
     # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
@@ -179,23 +179,22 @@ def calculate_relative_strength_ratio(
     symbols_data: "DataFrame",
     benchmark_data: "DataFrame",
 ) -> "DataFrame":
-    """Calculate the Relative Strength Ratio for each ticker (column) in a DataFrame against the benchmark.
+    """计算 DataFrame 中每个股票代码（列）相对于基准的相对强度比率。
 
-    Symbols data and benchmark data should have the same index,
-    and each column should represent a ticker.
+    股票代码数据和基准数据应具有相同的索引，
+    并且每列应代表一个股票代码。
 
     Parameters
     ----------
     symbols_data: "DataFrame"
-        Pandas DataFrame with the symbols data to compare against the benchmark.
+        包含要与基准进行比较的股票代码数据的 Pandas DataFrame。
     benchmark_data: "DataFrame"
-        Pandas DataFrame with the benchmark data.
+        包含基准数据的 Pandas DataFrame。
 
     Returns
     -------
     DataFrame
-        Pandas DataFrame with the calculated relative strength
-        ratio for each ticker joined with the benchmark values.
+        包含每个股票代码的计算相对强度比率与基准值连接的 Pandas DataFrame。
     """
     return (
         symbols_data.div(benchmark_data.iloc[:, 0], axis=0)
@@ -212,24 +211,24 @@ def process_data(
     short_period: int = 21,
     normalize_method: Literal["z", "m", "a"] = "z",
 ) -> tuple["DataFrame", "DataFrame"]:
-    """Process the raw data into normalized indicator values.
+    """将原始数据处理为归一化指标值。
 
     Parameters
     ----------
     symbols_data: "DataFrame"
-        Indexed time series data formatted with each column representing a ticker.
+        格式化的索引时间序列数据，每列代表一个股票代码。
     benchmark_data: "DataFrame"
-        Indexed time series data of the benchmark symbol.
+        基准代码的索引时间序列数据。
     long_period: Optional[int]
-        Long period to base the calculation on. Default is one standard trading year.
+        计算基础的长周期。默认为一个标准交易年。
     short_period: Optional[int]
-        Short period to subtract from the long period. Default is one trading month.
+        从长周期中减去的短周期。默认为一个交易月。
     normalize_method: Literal["z", "m", "a"]
 
     Returns
     -------
     Tuple[DataFrame, DataFrame]
-        Tuple of Pandas DataFrames with the normalized ratio and momentum indicator values.
+        包含归一化比率和动量指标值的 Pandas DataFrame 元组。
     """
     ratio_data = calculate_relative_strength_ratio(symbols_data, benchmark_data)
     momentum_data = get_momentum(ratio_data, long_period, short_period)
@@ -240,7 +239,7 @@ def process_data(
 
 
 class RelativeRotation:
-    """Relative Rotation Class."""
+    """相对旋转类。"""
 
     def __init__(  # pylint: disable=R0917
         self,
@@ -322,7 +321,7 @@ class RelativeRotation:
         self.benchmark_data = df_to_basemodel(self.benchmark_data.reset_index())  # type: ignore
 
     def _process_data(self):
-        """Process the data."""
+        """处理数据。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import df_to_basemodel
         from pandas import to_datetime
@@ -355,7 +354,7 @@ class RelativeRotation:
 
 
 def _get_type_name(t):
-    """Get the type name of a type hint."""
+    """获取类型提示的类型名称。"""
     if hasattr(t, "__origin__"):
         if hasattr(t.__origin__, "__name__"):
             return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
@@ -371,7 +370,7 @@ def _get_type_name(t):
 
 
 class RelativeRotationQueryParams(QueryParams):
-    """Relative Rotation Query Parameters."""
+    """相对旋转查询参数。"""
 
     data: list[Data] = Field(
         description="The data to be used for the relative rotation calculations."
@@ -434,13 +433,13 @@ class RelativeRotationQueryParams(QueryParams):
     @field_validator("benchmark", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v):
-        """Convert the benchmark symbol to uppercase."""
+        """将基准代码转换为大写。"""
         return v.upper()
 
     @field_validator("data", mode="before", check_fields=False)
     @classmethod
     def convert_data(cls, v):
-        """Validate the data format."""
+        """验证数据格式。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.obbject import OBBject
         from openbb_core.app.utils import convert_to_basemodel, df_to_basemodel
@@ -457,7 +456,7 @@ class RelativeRotationQueryParams(QueryParams):
         return v
 
     def __init__(self, **data):
-        """Initialize the class."""
+        """初始化类。"""
         super().__init__(**data)
         fields = self.__class__.model_fields
         doc_str = (
@@ -478,7 +477,7 @@ class RelativeRotationQueryParams(QueryParams):
 
 
 class RelativeRotationData(Data):
-    """Relative Rotation Data Model."""
+    """相对旋转数据模型。"""
 
     symbols: list[str] = Field(
         description="The symbols that are being compared against the benchmark."
@@ -522,7 +521,7 @@ class RelativeRotationData(Data):
     )
 
     def __init__(self, **data):
-        """Initialize the class."""
+        """初始化类。"""
         super().__init__(**data)
         fields = self.__class__.model_fields
         doc_str = (
@@ -545,11 +544,11 @@ class RelativeRotationData(Data):
 class RelativeRotationFetcher(
     Fetcher[RelativeRotationQueryParams, RelativeRotationData]
 ):
-    """Relative Rotation Fetcher."""
+    """相对旋转获取器。"""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> RelativeRotationQueryParams:
-        """Transform the query parameters."""
+        """转换查询参数。"""
         return RelativeRotationQueryParams.model_validate(**params)
 
     @staticmethod
@@ -558,7 +557,7 @@ class RelativeRotationFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract the data."""
+        """提取数据。"""
         return RelativeRotation(
             query.data,
             query.benchmark,
@@ -575,5 +574,5 @@ class RelativeRotationFetcher(
         data: dict,
         **kwargs: Any,
     ) -> RelativeRotationData:
-        """Transform the data."""
+        """转换数据。"""
         return RelativeRotationData.model_validate(data)

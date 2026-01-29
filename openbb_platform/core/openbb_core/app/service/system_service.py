@@ -1,4 +1,4 @@
-"""System service."""
+"""系统服务。"""
 
 import hashlib
 import json
@@ -10,7 +10,7 @@ from openbb_core.app.model.system_settings import SystemSettings
 
 
 class SystemService(metaclass=SingletonMeta):
-    """System service."""
+    """系统服务。"""
 
     SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
     SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {
@@ -31,7 +31,7 @@ class SystemService(metaclass=SingletonMeta):
         self,
         **kwargs,
     ):
-        """Initialize system service."""
+        """初始化系统服务。"""
         self._system_settings = self._read_from_file(
             path=self.SYSTEM_SETTINGS_PATH, **kwargs
         )
@@ -48,7 +48,7 @@ class SystemService(metaclass=SingletonMeta):
 
     @classmethod
     def _read_from_file(cls, path: Path | None = None, **kwargs) -> SystemSettings:
-        """Read default system settings."""
+        """读取默认系统设置。"""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         if path.exists():
@@ -81,7 +81,7 @@ class SystemService(metaclass=SingletonMeta):
         system_settings: SystemSettings,
         path: Path | None = None,
     ) -> None:
-        """Write default system settings."""
+        """写入默认系统设置。"""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         system_settings_json = system_settings.model_dump_json(
@@ -94,16 +94,16 @@ class SystemService(metaclass=SingletonMeta):
 
     @property
     def system_settings(self) -> SystemSettings:
-        """Get system settings."""
+        """获取系统设置。"""
         return self._system_settings
 
     @system_settings.setter
     def system_settings(self, system_settings: SystemSettings) -> None:
-        """Set system settings."""
+        """设置系统设置。"""
         self._system_settings = system_settings
 
     def refresh_system_settings(self) -> SystemSettings:
-        """Refresh system settings."""
+        """刷新系统设置。"""
         self._system_settings = self._read_from_file()
 
         return self._system_settings

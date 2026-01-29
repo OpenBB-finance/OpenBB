@@ -48,7 +48,7 @@ class SettingsController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("settings/")
-        mt.add_info("Feature Flags")
+        mt.add_info("功能标志")
         for k, f in self._COMMANDS.items():
             if f.get("group") == SettingGroups.feature_flags:
                 mt.add_setting(
@@ -57,7 +57,7 @@ class SettingsController(BaseController):
                     description=f["description"],
                 )
         mt.add_raw("\n")
-        mt.add_info("Preferences")
+        mt.add_info("首选项")
         for k, f in self._COMMANDS.items():
             if f.get("group") == SettingGroups.preferences:
                 mt.add_cmd(
@@ -121,11 +121,11 @@ class SettingsController(BaseController):
                         session.style.apply(ns_parser.value)
                     session.settings.set_item(field_name, ns_parser.value)
                     session.console.print(
-                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
+                        f"[info]当前值：[/info] {getattr(session.settings, field_name)}"
                     )
                 elif not other_args:
                     session.console.print(
-                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
+                        f"[info]当前值：[/info] {getattr(session.settings, field_name)}"
                     )
 
         action = None
@@ -134,7 +134,7 @@ class SettingsController(BaseController):
         elif action_type == "set":
             action = _set
         else:
-            raise ValueError(f"Action type '{action_type}' not allowed.")
+            raise ValueError(f"动作类型 '{action_type}' 不允许。")
 
         bound_method = update_wrapper(
             wrapper=partial(MethodType(action, self), field=field), wrapped=action

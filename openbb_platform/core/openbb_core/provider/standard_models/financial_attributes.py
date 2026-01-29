@@ -1,4 +1,4 @@
-"""Financial Attributes Standard Model."""
+"""财务属性标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,7 +13,7 @@ from pydantic import Field, field_validator
 
 
 class FinancialAttributesQueryParams(QueryParams):
-    """Financial Attributes Query."""
+    """财务属性查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
     tag: str = Field(description=QUERY_DESCRIPTIONS.get("tag"))
@@ -22,7 +22,7 @@ class FinancialAttributesQueryParams(QueryParams):
     )
     limit: int | None = Field(default=1000, description=QUERY_DESCRIPTIONS.get("limit"))
     type: str | None = Field(
-        default=None, description="Filter by type, when applicable."
+        default=None, description="过滤类型（如适用）。"
     )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -31,18 +31,18 @@ class FinancialAttributesQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
     sort: Literal["asc", "desc"] | None = Field(
-        default="desc", description="Sort order."
+        default="desc", description="排序顺序。"
     )
 
     @field_validator("period", "sort", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: str | None) -> str | None:
-        """Convert field to lowercase."""
+        """将字段转换为小写。"""
         return v.lower() if v else v
 
 
 class FinancialAttributesData(Data):
-    """Financial Attributes Data."""
+    """财务属性数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    value: float | None = Field(default=None, description="The value of the data.")
+    value: float | None = Field(default=None, description="数据值。")

@@ -1,4 +1,4 @@
-"""Coverage API router helper functions."""
+"""覆盖率 API 路由器辅助函数。"""
 
 from collections.abc import Callable
 from inspect import _empty, signature
@@ -14,10 +14,10 @@ provider_interface = ProviderInterface()
 
 
 def get_route_callable(app: "BaseApp", route: str) -> Callable:
-    """Get the callable for a route."""
-    # TODO: Add return typing Optional[Callable] to this function. First need to
-    # figure how to do that starting from "BaseApp" and account for the possibility
-    # of a route not existing. Then remove the type: ignore from the function.
+    """获取路由的可调用对象。"""
+    # TODO: 将返回类型 Optional[Callable] 添加到此函数。首先需要
+    # 弄清楚如何从 "BaseApp" 开始执行此操作，并考虑
+    # 路由不存在的可能性。然后从函数中删除 type: ignore。
 
     split_route = route.replace(".", "/").split("/")[1:]
 
@@ -30,7 +30,7 @@ def get_route_callable(app: "BaseApp", route: str) -> Callable:
 
 
 def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, Field]]:  # type: ignore
-    """Convert a command signature to pydantic fields."""
+    """将命令签名转换为 pydantic 字段。"""
     return_callable = get_route_callable(app, route)
     sig = signature(return_callable)
 
@@ -54,7 +54,7 @@ def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, Fiel
 
 
 def dataclass_to_fields(model_name: str) -> dict[str, tuple[Any, Field]]:  # type: ignore
-    """Convert a dataclass to pydantic fields."""
+    """将数据类转换为 pydantic 字段。"""
     dataclass = provider_interface.params[model_name]["extra"]
     fields = {}
     for name, field in dataclass.__dataclass_fields__.items():
@@ -74,7 +74,7 @@ def create_combined_model(
     *field_sets: dict[str, tuple[Any, Field]],  # type: ignore
     filter_by_provider: str | None = None,
 ) -> type[BaseModel]:
-    """Create a combined pydantic model."""
+    """创建一个组合的 pydantic 模型。"""
     combined_fields = {}
     for fields in field_sets:
         for name, (type_annotation, field) in fields.items():
@@ -100,7 +100,7 @@ def get_route_schema_map(
     command_model_map: dict[str, str],
     filter_by_provider: str | None = None,
 ) -> dict[str, dict[str, Any]]:
-    """Get the route schema map."""
+    """获取路由模式映射。"""
     route_schema_map = {}
     for route, model in command_model_map.items():
         input_model = create_combined_model(

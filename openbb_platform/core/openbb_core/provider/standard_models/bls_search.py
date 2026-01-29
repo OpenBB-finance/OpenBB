@@ -1,4 +1,4 @@
-"""BLS Search Model."""
+"""BLS 搜索模型。"""
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -7,17 +7,17 @@ from pydantic import Field
 
 
 class SearchQueryParams(QueryParams):
-    """BLS Search Query Params."""
+    """BLS 搜索查询参数。"""
 
     query: str = Field(
         default="",
-        description="The search word(s). Use semi-colon to separate multiple queries as an & operator.",
+        description="搜索词。使用分号分隔多个查询作为 & 运算符。",
     )
 
 
 class SearchData(Data):
-    """BLS Search Data."""
+    """BLS 搜索数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    title: str | None = Field(default=None, description="The title of the series.")
-    survey_name: str | None = Field(default=None, description="The name of the survey.")
+    title: str | None = Field(default=None, description="系列标题。")
+    survey_name: str | None = Field(default=None, description="调查名称。")

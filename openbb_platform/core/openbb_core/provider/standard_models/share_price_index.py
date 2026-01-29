@@ -1,4 +1,4 @@
-"""Share Price Index Standard Model."""
+"""股票价格指数标准模型。"""
 
 from datetime import date as dateType
 from typing import Literal
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class SharePriceIndexQueryParams(QueryParams):
-    """Share Price Index Query."""
+    """股票价格指数查询。"""
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
@@ -33,7 +33,7 @@ class SharePriceIndexQueryParams(QueryParams):
 
 
 class SharePriceIndexData(Data):
-    """Share Price Index Data."""
+    """股票价格指数数据。"""
 
     date: dateType | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
@@ -44,5 +44,5 @@ class SharePriceIndexData(Data):
     )
     value: float | None = Field(
         default=None,
-        description="Share price index value.",
+        description="股票价格指数值。",
     )

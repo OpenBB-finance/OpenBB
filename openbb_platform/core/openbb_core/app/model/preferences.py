@@ -1,4 +1,4 @@
-"""Preferences for the OpenBB platform."""
+"""OpenBB 平台的偏好设置。"""
 
 from pathlib import Path
 from typing import Literal
@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 
 class Preferences(BaseModel):
-    """Preferences for the OpenBB platform."""
+    """OpenBB 平台的偏好设置。"""
 
     cache_directory: str = str(Path.home() / "OpenBBUserData" / "cache")
     chart_style: Literal["dark", "light"] = "dark"
@@ -18,7 +18,7 @@ class Preferences(BaseModel):
         "OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
     ] = Field(
         default="OBBject",
-        description="Python default output type.",
+        description="Python 默认输出类型。",
         validate_default=True,
     )
     request_timeout: PositiveInt = 60
@@ -29,7 +29,7 @@ class Preferences(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
-        """Return a string representation of the model."""
+        """返回模型的字符串表示形式。"""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )

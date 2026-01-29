@@ -1,4 +1,4 @@
-"""Calendar Router."""
+"""日历路由器。"""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -22,10 +22,10 @@ router = Router(prefix="/calendar")
         APIEx(parameters={"provider": "intrinio"}),
         APIEx(parameters={"limit": 100, "provider": "nasdaq"}),
         APIEx(
-            description="Get all IPOs available.", parameters={"provider": "intrinio"}
+            description="获取所有可用的 IPO。", parameters={"provider": "intrinio"}
         ),
         APIEx(
-            description="Get IPOs for specific dates.",
+            description="获取特定日期的 IPO。",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
@@ -40,7 +40,7 @@ async def ipo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming initial public offerings (IPOs)."""
+    """获取历史和即将到来的首次公开募股 (IPO)。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -49,7 +49,7 @@ async def ipo(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get dividend calendar for specific dates.",
+            description="获取特定日期的股息日历。",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
@@ -64,7 +64,7 @@ async def dividend(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates."""
+    """获取历史和即将到来的股息支付。包括股息金额、除息日和支付日。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -73,7 +73,7 @@ async def dividend(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get stock splits calendar for specific dates.",
+            description="获取特定日期的股票拆分日历。",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
@@ -88,7 +88,7 @@ async def splits(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming stock split operations."""
+    """获取历史和即将到来的股票拆分操作。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -97,7 +97,7 @@ async def splits(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get company events calendar for specific dates.",
+            description="获取特定日期的公司事件日历。",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
@@ -112,7 +112,7 @@ async def events(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming company events, such as Investor Day, Conference Call, Earnings Release."""
+    """获取历史和即将到来的公司事件，例如投资者日、电话会议、收益发布。"""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -121,7 +121,7 @@ async def events(
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Get earnings calendar for specific dates.",
+            description="获取特定日期的收益日历。",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
@@ -136,5 +136,5 @@ async def earnings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data."""
+    """获取历史和即将到来的公司收益发布。包括每股收益 (EPS) 和收入数据。"""
     return await OBBject.from_query(Query(**locals()))

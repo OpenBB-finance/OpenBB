@@ -1,4 +1,4 @@
-"""Country Interest Rates Standard Model."""
+"""国家利率标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CountryInterestRatesQueryParams(QueryParams):
-    """Country Interest Rates Query."""
+    """国家利率查询。"""
 
     country: str = Field(
         default="united_states",
@@ -27,15 +27,15 @@ class CountryInterestRatesQueryParams(QueryParams):
 
 
 class CountryInterestRatesData(Data):
-    """Country Interest Rates Data."""
+    """国家利率数据。"""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date"))
     value: float = Field(
         default=None,
-        description="The interest rate value.",
+        description="利率值。",
         json_schema_extra={"x-unit_measurment": "percent", "x-frontend_multiply": 100},
     )
     country: str | None = Field(
         default=None,
-        description="Country for which the interest rate is given.",
+        description="给出利率的国家。",
     )

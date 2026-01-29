@@ -1,4 +1,4 @@
-"""Provider helpers."""
+"""提供者助手。"""
 
 import asyncio
 import os
@@ -33,7 +33,7 @@ D = TypeVar("D", bound="Data")
 
 
 def check_item(item: str, allowed: list[str], threshold: float = 0.75) -> None:
-    """Check if an item is in a list of allowed items and raise an error if not.
+    """检查项目是否在允许的项目列表中，如果不在则引发错误。
 
     Parameters
     ----------
@@ -55,12 +55,12 @@ def check_item(item: str, allowed: list[str], threshold: float = 0.75) -> None:
         )
         similar, score = max(similarities, key=lambda x: x[1])
         if score > threshold:
-            raise ValueError(f"'{item}' is not available. Did you mean '{similar}'?")
-        raise ValueError(f"'{item}' is not available.")
+            raise ValueError(f"'{item}' 不可用。你是说 '{similar}' 吗？")
+        raise ValueError(f"'{item}' 不可用。")
 
 
 def get_querystring(items: dict, exclude: list[str]) -> str:
-    """Turn a dictionary into a querystring, excluding the keys in the exclude list.
+    """将字典转换为查询字符串，排除排除列表中的键。
 
     Parameters
     ----------
@@ -145,7 +145,7 @@ def get_python_request_settings() -> dict:
 
 
 def get_requests_session(**kwargs) -> "Session":
-    """Get a requests session object with the applied user settings or environment variables."""
+    """获取已应用用户设置或环境变量的 requests session 对象。"""
     # pylint: disable=import-outside-toplevel
     import requests
 
@@ -223,7 +223,7 @@ def get_requests_session(**kwargs) -> "Session":
 
 
 async def get_async_requests_session(**kwargs) -> ClientSession:
-    """Get an aiohttp session object with the applied user settings or environment variables."""
+    """获取已应用用户设置或环境变量的 aiohttp session 对象。"""
     # pylint: disable=import-outside-toplevel
     import aiohttp  # noqa
     import atexit
@@ -329,7 +329,7 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
     _session: ClientSession = ClientSession(**conn_kwargs)
 
     def at_exit(session):
-        """Close the session at exit if it was orphaned."""
+        """如果会话被孤立，则在退出时关闭会话。"""
         if not session.closed:
             run_async(session.close)
 
@@ -349,7 +349,7 @@ async def amake_request(
     **kwargs,
 ) -> dict | list[dict]:
     """
-    Abstract helper to make requests from a url with potential headers and params.
+    从带有潜在标题和参数的 URL 发出请求的抽象助手。
 
     Parameters
     ----------
@@ -371,7 +371,7 @@ async def amake_request(
         Response json
     """
     if method.upper() not in ["GET", "POST"]:
-        raise ValueError("Method must be GET or POST")
+        raise ValueError("方法必须是 GET 或 POST")
 
     kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
 
@@ -397,7 +397,7 @@ async def amake_requests(
     ) = None,
     **kwargs,
 ):
-    """Make multiple requests asynchronously.
+    """异步发出多个请求。
 
     Parameters
     ----------
@@ -462,7 +462,7 @@ async def amake_requests(
 
 
 def combine_certificates(cert: str, bundle: str | None = None) -> str:
-    """Combine a certificate and a bundle into a single certificate file. Use the default bundle if none is provided."""
+    """将证书和捆绑包合并为单个证书文件。如果未提供，则使用默认捆绑包。"""
     # pylint: disable=import-outside-toplevel
     import atexit  # noqa
     import certifi
@@ -471,7 +471,7 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
     from warnings import warn
 
     if not Path(cert).exists():
-        raise FileNotFoundError(f"Certificate file '{cert}' not found")
+        raise FileNotFoundError(f"未找到证书文件 '{cert}'")
 
     if cert.split(".")[0].endswith("_combined"):
         return cert
@@ -500,7 +500,7 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
         return combined_cert
     except Exception as e:  # pylint: disable=broad-except
         warn(
-            f"An error occurred while handling the certificates file -> {e.__class__.__name__}: {e}"
+            f"处理证书文件时出错 -> {e.__class__.__name__}: {e}"
         )
         return cert
 
@@ -508,7 +508,7 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
 def make_request(
     url: str, method: str = "GET", timeout: int = 10, **kwargs
 ) -> "Response":
-    """Abstract helper to make requests from a url with potential headers and params.
+    """从带有潜在标题和参数的 URL 发出请求的抽象助手。
 
     Parameters
     ----------
@@ -562,11 +562,11 @@ def make_request(
             timeout=timeout,
             **kwargs,
         )
-    raise ValueError("Method must be GET or POST")
+    raise ValueError("方法必须是 GET 或 POST")
 
 
 def to_snake_case(string: str) -> str:
-    """Convert a string to snake case."""
+    """将字符串转换为蛇形命名。"""
     import re  # pylint: disable=import-outside-toplevel
 
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
@@ -581,7 +581,7 @@ def to_snake_case(string: str) -> str:
 async def maybe_coroutine(
     func: Callable[P, T | Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
-    """Check if a function is a coroutine and run it accordingly."""
+    """检查函数是否为协程并据此运行它。"""
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -591,7 +591,7 @@ async def maybe_coroutine(
 def run_async(
     func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
-    """Run a coroutine function in a blocking context."""
+    """在阻塞上下文中运行协程函数。"""
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -605,7 +605,7 @@ def run_async(
 def filter_by_dates(
     data: list[D], start_date: date | None = None, end_date: date | None = None
 ) -> list[D]:
-    """Filter data by dates."""
+    """按日期过滤数据。"""
     if start_date is None and end_date is None:
         return data
 
@@ -626,7 +626,7 @@ def filter_by_dates(
 
 
 def safe_fromtimestamp(timestamp: float | int, tz: timezone | None = None) -> datetime:
-    """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
+    """`datetime.fromtimestamp` 的替代方案，支持 Windows 平台上的负时间戳。"""
     if os.name == "nt" and timestamp < 0:
         return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)
     return datetime.fromtimestamp(timestamp, tz)

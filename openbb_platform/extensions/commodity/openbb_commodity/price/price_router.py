@@ -1,4 +1,4 @@
-"""Price Router."""
+"""价格路由器。"""
 
 # pylint: disable=unused-argument
 
@@ -29,5 +29,5 @@ async def spot(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Commodity Spot Prices."""
+    """商品现货价格。"""
     return await OBBject.from_query(Query(**locals()))

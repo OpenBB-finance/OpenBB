@@ -1,4 +1,4 @@
-"""Financial Ratios Standard Model."""
+"""财务比率标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 
 
 class FinancialRatiosQueryParams(QueryParams):
-    """Financial Ratios Query."""
+    """财务比率查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: int | None = Field(
@@ -22,12 +22,12 @@ class FinancialRatiosQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class FinancialRatiosData(Data):
-    """Financial Ratios Standard Model."""
+    """财务比率数据。"""
 
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
@@ -36,6 +36,6 @@ class FinancialRatiosData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     fiscal_period: str | None = Field(
-        default=None, description="Period of the financial ratios."
+        default=None, description="财务比率所属期间。"
     )
-    fiscal_year: int | None = Field(default=None, description="Fiscal year.")
+    fiscal_year: int | None = Field(default=None, description="财政年度。")

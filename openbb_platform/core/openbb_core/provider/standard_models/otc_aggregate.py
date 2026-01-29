@@ -1,4 +1,4 @@
-"""OTC Aggregate Standard Model."""
+"""场外交易 (OTC) 汇总标准模型。"""
 
 from datetime import date as dateType
 
@@ -9,7 +9,7 @@ from pydantic import Field
 
 
 class OTCAggregateQueryParams(QueryParams):
-    """OTC Aggregate Query."""
+    """场外交易 (OTC) 汇总查询。"""
 
     symbol: str | None = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -18,14 +18,14 @@ class OTCAggregateQueryParams(QueryParams):
 
 
 class OTCAggregateData(Data):
-    """OTC Aggregate Data."""
+    """场外交易 (OTC) 汇总数据。"""
 
     update_date: dateType = Field(
-        description="Most recent date on which total trades is updated based on data received from each ATS/OTC."
+        description="根据从每个 ATS/OTC 接收到的数据更新总交易笔数的最近日期。"
     )
     share_quantity: float = Field(
-        description="Aggregate weekly total number of shares reported by each ATS for the Symbol."
+        description="由每个 ATS 报告的该股票每周累计成交量。"
     )
     trade_quantity: float = Field(
-        description="Aggregate weekly total number of trades reported by each ATS for the Symbol"
+        description="由每个 ATS 报告的该股票每周累计成交笔数"
     )

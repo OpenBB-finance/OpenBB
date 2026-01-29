@@ -1,4 +1,4 @@
-"""Historical EPS Standard Model."""
+"""历史 EPS 标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,25 +12,25 @@ from pydantic import Field, field_validator
 
 
 class HistoricalEpsQueryParams(QueryParams):
-    """Historical EPS Query."""
+    """历史 EPS 查询。"""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert field to uppercase."""
+        """将字段转换为大写。"""
         return v.upper()
 
 
 class HistoricalEpsData(Data):
-    """Historical EPS Data."""
+    """历史 EPS 数据。"""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     eps_actual: int | float | None = Field(
-        default=None, description="Actual EPS from the earnings date."
+        default=None, description="业绩公告日的实际 EPS。"
     )
     eps_estimated: int | float | None = Field(
-        default=None, description="Estimated EPS for the earnings date."
+        default=None, description="业绩公告日的预测 EPS。"
     )

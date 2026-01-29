@@ -1,4 +1,4 @@
-"""Calendar Splits Standard Model."""
+"""日历拆分标准模型。"""
 
 from datetime import date as dateType
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class CalendarSplitsQueryParams(QueryParams):
-    """Calendar Splits Query."""
+    """日历拆分查询。"""
 
     start_date: dateType | None = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -23,9 +23,9 @@ class CalendarSplitsQueryParams(QueryParams):
 
 
 class CalendarSplitsData(Data):
-    """Calendar Splits Data."""
+    """日历拆分数据。"""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    numerator: float = Field(description="Numerator of the stock split.")
-    denominator: float = Field(description="Denominator of the stock split.")
+    numerator: float = Field(description="股票拆分的分子。")
+    denominator: float = Field(description="股票拆分的分母。")

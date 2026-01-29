@@ -1,4 +1,4 @@
-"""Command runner module."""
+"""命令运行器模块。"""
 
 # pylint: disable=R0903
 from collections.abc import Callable
@@ -32,9 +32,9 @@ if TYPE_CHECKING:
 
 
 class ExecutionContext:
-    """Execution context."""
+    """执行上下文。"""
 
-    # For checking if the command specifies no validation in the API Route
+    # 用于检查命令是否在 API 路由中指定了无验证
     _route_map = PathHandler.build_route_map()
 
     def __init__(
@@ -44,7 +44,7 @@ class ExecutionContext:
         system_settings: "SystemSettings",
         user_settings: "UserSettings",
     ) -> None:
-        """Initialize the execution context."""
+        """初始化执行上下文。"""
         self.command_map = command_map
         self.route = route
         self.system_settings = system_settings
@@ -52,16 +52,16 @@ class ExecutionContext:
 
     @property
     def api_route(self) -> "APIRoute":
-        """API route."""
+        """API 路由。"""
         return self._route_map[self.route]  # type: ignore
 
 
 class ParametersBuilder:
-    """Build parameters for a function."""
+    """为函数构建参数。"""
 
     @staticmethod
     def get_polished_parameter_list(func: Callable) -> list[Parameter]:
-        """Get the signature parameters values as a list."""
+        """以列表形式获取签名参数值。"""
         sig = signature(func)
         parameter_list = list(sig.parameters.values())
 
@@ -69,7 +69,7 @@ class ParametersBuilder:
 
     @staticmethod
     def get_polished_func(func: Callable) -> Callable:
-        """Remove __authenticated_user_settings from the function signature and annotations."""
+        """从函数签名和注释中删除 __authenticated_user_settings。"""
         func = deepcopy(func)
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -92,7 +92,7 @@ class ParametersBuilder:
         args: tuple[Any, ...],
         kwargs: dict[str, Any],
     ) -> dict[str, Any]:
-        """Merge args and kwargs into a single dict."""
+        """将 args 和 kwargs 合并为单个字典。"""
         args = deepcopy(args)
         kwargs_copy = deepcopy(kwargs)
         parameter_list = cls.get_polished_parameter_list(func=func)
@@ -130,7 +130,7 @@ class ParametersBuilder:
         system_settings: "SystemSettings",
         user_settings: "UserSettings",
     ) -> dict[str, Any]:
-        """Update the command context with the available user and system settings."""
+        """使用可用的用户和系统设置更新命令上下文。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.command_context import CommandContext
 
@@ -148,9 +148,9 @@ class ParametersBuilder:
         extra_params: dict[str, Any],
         model: type[BaseModel],
     ) -> None:
-        """Warn if kwargs received and ignored by the validation model."""
-        # We only check the extra_params annotation because ignored fields
-        # will always be there
+        """如果收到 kwargs 并被验证模型忽略，则发出警告。"""
+        # 我们只检查 extra_params 注释，因为被忽略的字段
+        # 将始终存在
         annotation = getattr(
             model.model_fields.get("extra_params", None), "annotation", None
         )
@@ -163,13 +163,13 @@ class ParametersBuilder:
                     continue
                 if p not in valid:
                     warn(
-                        message=f"Parameter '{p}' not found.",
+                        message=f"未找到参数 '{p}'。",
                         category=OpenBBWarning,
                     )
 
     @staticmethod
     def _as_dict(obj: Any) -> dict[str, Any]:
-        """Safely convert an object to a dict."""
+        """安全地将对象转换为字典。"""
         try:
             if isinstance(obj, dict):
                 return obj
@@ -182,7 +182,7 @@ class ParametersBuilder:
         func: Callable,
         kwargs: dict[str, Any],
     ) -> dict[str, Any]:
-        """Validate kwargs and if possible coerce to the correct type."""
+        """验证 kwargs，如果可能，强制转换为正确的类型。"""
         sig = signature(func)
         fields: dict[str, tuple[Any, Any]] = {}
         for name, param in sig.parameters.items():
@@ -193,7 +193,7 @@ class ParametersBuilder:
             )
             default = ... if param.default is Parameter.empty else param.default
             fields[name] = (annotation, default)
-        # We allow extra fields to return with model with 'cc: CommandContext'
+        # 我们允许模型返回包含 'cc: CommandContext' 的额外字段
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
         # pylint: disable=C0103
         ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
@@ -214,7 +214,7 @@ class ParametersBuilder:
         func: Callable,
         kwargs: dict[str, Any],
     ) -> dict[str, Any]:
-        """Build the parameters for a function."""
+        """为函数构建参数。"""
         func = cls.get_polished_func(func=func)
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
@@ -238,7 +238,7 @@ class ParametersBuilder:
 
 # pylint: disable=too-few-public-methods
 class StaticCommandRunner:
-    """Static Command Runner."""
+    """静态命令运行器。"""
 
     @classmethod
     async def _command(
@@ -247,7 +247,7 @@ class StaticCommandRunner:
         kwargs: dict[str, Any],
         show_warnings: bool = True,  # pylint: disable=unused-argument   # type: ignore
     ) -> OBBject:
-        """Run a command and return the output."""
+        """运行命令并返回输出。"""
         obbject = await maybe_coroutine(func, **kwargs)
         if isinstance(obbject, OBBject):
             obbject.provider = getattr(
@@ -263,13 +263,13 @@ class StaticCommandRunner:
         obbject: OBBject,
         **kwargs,
     ) -> None:
-        """Create a chart from the command output."""
+        """从命令输出创建图表。"""
         try:
             if "charting" not in obbject.accessors:
                 raise OpenBBError(
-                    "Charting is not installed. Please install `openbb-charting`."
+                    "未安装 OpenBB Charting。请安装 `openbb-charting`。"
                 )
-            # Here we will pop the chart_params kwargs and flatten them into the kwargs.
+            # 在这里，我们将弹出 chart_params kwargs 并将它们扁平化到 kwargs 中。
             chart_params = {}
             extra_params = getattr(obbject, "_extra_params", {})
 
@@ -278,7 +278,7 @@ class StaticCommandRunner:
 
             if kwargs.get("chart_params"):
                 chart_params.update(kwargs.pop("chart_params", {}))
-            # Verify that kwargs is not nested as kwargs so we don't miss any chart params.
+            # 验证 kwargs 没有被嵌套为 kwargs，这样我们就不会丢失任何图表参数。
             if (
                 "kwargs" in kwargs
                 and "chart_params" in kwargs["kwargs"]
@@ -297,7 +297,7 @@ class StaticCommandRunner:
 
     @classmethod
     def _extract_params(cls, kwargs, key) -> dict:
-        """Extract params models from kwargs and convert to a dictionary."""
+        """从 kwargs 中提取参数模型并转换为字典。"""
         params = kwargs.get(key, {})
         if hasattr(params, "__dict__"):
             return params.__dict__
@@ -313,7 +313,7 @@ class StaticCommandRunner:
         func: Callable,
         kwargs: dict[str, Any],
     ) -> OBBject:
-        """Execute a function and return the output."""
+        """执行函数并返回输出。"""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
         raised_warnings: list = []
@@ -321,15 +321,15 @@ class StaticCommandRunner:
 
         try:
             with catch_warnings(record=True) as warning_list:
-                # If we're on Jupyter we need to pop here because we will lose "chart" after
-                # ParametersBuilder.build. This needs to be fixed in a way that chart is
-                # added to the function signature and shared for jupyter and api
-                # We can check in the router decorator if the given function has a chart
-                # in the charting extension then we add it there. This way we can remove
-                # the chart parameter from the commands.py and package_builder, it will be
-                # added to the function signature in the router decorator
-                # If the ProviderInterface is not in use, we need to pass a copy of the
-                # kwargs dictionary before it is validated, otherwise we lose those items.
+                # 如果我们在 Jupyter 上，我们需要在这里弹出，因为我们将失去 "chart"
+                # 在 ParametersBuilder.build 之后。这需要以一种方式修复，以便图表
+                # 添加到函数签名中，并在 jupyter 和 api 之间共享
+                # 我们可以在路由装饰器中检查给定函数是否在
+                # 图表扩展中具有图表，然后我们在那里添加它。这样我们可以移除
+                # commands.py 和 package_builder 中的图表参数，它将是
+                # 添加到路由装饰器中的函数签名中
+                # 如果未使用 ProviderInterface，我们需要传递
+                # kwargs 字典的副本，在它被验证之前，否则我们会丢失这些项目。
                 kwargs_copy = deepcopy(kwargs)
                 chart = kwargs.pop("chart", False)
                 kwargs_copy = deepcopy(kwargs)
@@ -340,17 +340,17 @@ class StaticCommandRunner:
                     kwargs=kwargs,
                 )
                 kwargs = kwargs if kwargs is not None else {}
-                # If **kwargs is in the function signature, we need to make sure to pass
-                # All kwargs to the function so dependency injection happens
-                # and kwargs are actually made available as locals within the function.
+                # 如果 **kwargs 在函数签名中，我们需要确保传递
+                # 所有 kwargs 到该函数，以便进行依赖项注入
+                # 并且 kwargs 实际上在该函数内作为局部变量可用。
                 if "kwargs" in kwargs_copy:
                     for k, v in kwargs_copy["kwargs"].items():
                         if k not in kwargs:
                             kwargs[k] = v
-                # If we're on the api we need to remove "chart" here because the parameter is added on
-                # commands.py and the function signature does not expect "chart"
+                # 如果我们在 api 上，我们需要在这里移除 "chart"，因为参数是在
+                # commands.py 上添加的，并且函数签名不期望 "chart"
                 kwargs.pop("chart", None)
-                # We also pop custom headers
+                # 我们也弹出自定义标头
                 model_headers = system_settings.api_settings.custom_headers or {}
                 custom_headers = {
                     name: kwargs.pop(name.replace("-", "_"), default)
@@ -358,11 +358,11 @@ class StaticCommandRunner:
                 } or None
 
                 obbject = await cls._command(func, kwargs)
-                # The output might be from a router command with 'no_validate=True'
-                # It might be of a different type than OBBject.
-                # In this case, we avoid accessing those attributes.
+                # 输出可能来自带有 'no_validate=True' 的路由器命令
+                # 它可能与 OBBject 类型不同。
+                # 在这种情况下，我们要避免访问这些属性。
                 if isinstance(obbject, OBBject):
-                    # This section prepares the obbject to pass to the charting service.
+                    # 本节准备传递给图表服务的 obbject。
                     obbject._route = route  # pylint: disable=protected-access
                     std_params = cls._extract_params(kwargs, "standard_params") or (
                         kwargs if "data" in kwargs else {}
@@ -377,7 +377,7 @@ class StaticCommandRunner:
                     if chart and obbject.results:
                         if "extra_params" not in kwargs_copy:
                             kwargs_copy["extra_params"] = {}
-                        # Restore any kwargs passed that were removed by the ParametersBuilder
+                        # 恢复任何传递的被 ParametersBuilder 删除的 kwargs
                         for k in kwargs_copy.copy():
                             if k == "chart":
                                 kwargs_copy.pop("chart", None)
@@ -435,7 +435,7 @@ class StaticCommandRunner:
         *args,
         **kwargs,
     ) -> OBBject:
-        """Run a command and return the OBBject as output."""
+        """运行命令并返回 OBBject 作为输出。"""
         timestamp = datetime.now()
         start_ns = perf_counter_ns()
 
@@ -451,7 +451,7 @@ class StaticCommandRunner:
                 kwargs=kwargs,
             )
         else:
-            raise AttributeError(f"Invalid command : route={route}")
+            raise AttributeError(f"无效命令 : route={route}")
 
         duration = perf_counter_ns() - start_ns
 
@@ -470,7 +470,7 @@ class StaticCommandRunner:
                     raise OpenBBError(e) from e
                 warn(str(e), OpenBBWarning)
 
-            # Remove the dependency injection objects embedded in the kwargs
+            # 删除嵌入在 kwargs 中的依赖注入对象
             deps = execution_context.api_route.dependencies
             dependency_param_names: set[str] = set()
             if deps:
@@ -486,7 +486,7 @@ class StaticCommandRunner:
 
             meta = getattr(obbject.extra.get("metadata"), "arguments", {})
 
-            # Non-provider endpoints need to have execution info added because it might have been discarded.
+            # 非提供者端点需要添加执行信息，因为它可能已被丢弃。
             if meta and (
                 not meta.get("provider_choices", {})
                 and not meta.get("standard_params", {})
@@ -510,8 +510,8 @@ class StaticCommandRunner:
                 if Env().DEBUG_MODE:
                     raise OpenBBError(e) from e
                 warn(str(e), OpenBBWarning)
-            # We need to remove callables that were added to
-            # kwargs representing dependency injections
+            # 我们需要删除已添加到
+            # 表示依赖注入的 kwargs 的回调函数
             metadata = obbject.extra.get("metadata")
             if metadata:
                 arguments = obbject.extra["metadata"].arguments
@@ -536,20 +536,20 @@ class StaticCommandRunner:
 
     @classmethod
     def _trigger_command_output_callbacks(cls, route: str, obbject: OBBject) -> None:
-        """Trigger command output callbacks for extensions."""
+        """触发扩展的命令输出回调。"""
         loader = ExtensionLoader()
         callbacks = loader.on_command_output_callbacks
         if not callbacks:
             return
 
-        # For each extension registered for all routes or the specific route,
-        # we call its accessor on the OBBject.
-        # We check if the accessor is immutable or not to decide whether to pass
-        # a copy of the OBBject or the original one.
-        # We set the _extension_modified attribute to True if any extension
-        # mutates the OBBject so we can pass this information to the interface.
-        # We also set the _results_only attribute to True if any extension
-        # indicates that only results should be returned.
+        # 对于注册所有路由或特定路由的每个扩展，
+        # 我们在 OBBject 上调用其访问器。
+        # 我们检查访问器是否不可变，以决定是否传递
+        # OBBject 的副本或原始副本。
+        # 如果任何扩展改变了 OBBject，我们将 _extension_modified 属性设置为 True，
+        # 以便我们可以将此信息传递给界面。
+        # 如果任何扩展指示仅应返回结果，
+        # 我们还将 _results_only 属性设置为 True。
         results_only = False
         executed_keys: set[str] = set()
         ordered_extensions: list = []
@@ -569,8 +569,8 @@ class StaticCommandRunner:
                 return source.model_validate(new_source)
             except Exception as e:
                 warn(
-                    "Skipped immutable callback because the OBBject "
-                    f"could not be duplicated. {e}",
+                    "跳过不可变回调，因为 OBBject "
+                    f"无法复制。{e}",
                     OpenBBWarning,
                 )
                 return None
@@ -635,12 +635,12 @@ class StaticCommandRunner:
                 object.__setattr__(
                     obbject,
                     ext.name,
-                    "Accessor is not callable outside of function execution.",
+                    "访问器在函数执行之外不可调用。",
                 )
 
 
 class CommandRunner:
-    """Command runner."""
+    """命令运行器。"""
 
     def __init__(
         self,
@@ -648,7 +648,7 @@ class CommandRunner:
         system_settings: Optional["SystemSettings"] = None,
         user_settings: Optional["UserSettings"] = None,
     ) -> None:
-        """Initialize the command runner."""
+        """初始化命令运行器。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.router import CommandMap
         from openbb_core.app.service.system_service import SystemService
@@ -659,7 +659,7 @@ class CommandRunner:
         self._user_settings = user_settings or UserService.read_from_file()
 
     def init_logging_service(self) -> None:
-        """Initialize the logging service."""
+        """初始化日志服务。"""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.logs.logging_service import LoggingService
 
@@ -669,17 +669,17 @@ class CommandRunner:
 
     @property
     def command_map(self) -> "CommandMap":
-        """Command map."""
+        """命令映射。"""
         return self._command_map
 
     @property
     def system_settings(self) -> "SystemSettings":
-        """System settings."""
+        """系统设置。"""
         return self._system_settings
 
     @property
     def user_settings(self) -> "UserSettings":
-        """User settings."""
+        """用户设置。"""
         return self._user_settings
 
     @user_settings.setter
@@ -695,7 +695,7 @@ class CommandRunner:
         *args,
         **kwargs,
     ) -> OBBject:
-        """Run a command and return the OBBject as output."""
+        """运行命令并返回 OBBject 作为输出。"""
         # pylint: disable=import-outside-toplevel
 
         self._user_settings = user_settings or self._user_settings
@@ -718,5 +718,5 @@ class CommandRunner:
         *args,
         **kwargs,
     ) -> OBBject:
-        """Run a command and return the OBBject as output."""
+        """运行命令并返回 OBBject 作为输出。"""
         return run_async(self.run, route, user_settings, *args, **kwargs)

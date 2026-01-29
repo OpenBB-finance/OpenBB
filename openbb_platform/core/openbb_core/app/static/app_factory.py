@@ -1,4 +1,4 @@
-"""App factory."""
+"""应用程序工厂。"""
 
 from typing import TypeVar
 
@@ -21,10 +21,10 @@ Utilities:
 
 
 class BaseApp:
-    """Base app."""
+    """基础应用程序。"""
 
     def __init__(self, command_runner: CommandRunner):
-        """Initialize the app."""
+        """初始化应用程序。"""
         command_runner.init_logging_service()
         self._command_runner = command_runner
         self._coverage = Coverage(self)
@@ -32,27 +32,27 @@ class BaseApp:
 
     @property
     def user(self) -> UserSettings:
-        """User settings."""
+        """用户设置。"""
         return self._command_runner.user_settings
 
     @property
     def system(self) -> SystemSettings:
-        """System settings."""
+        """系统设置。"""
         return self._command_runner.system_settings
 
     @property
     def coverage(self) -> Coverage:
-        """Coverage menu."""
+        """覆盖菜单。"""
         return self._coverage
 
     @property
     def reference(self) -> dict[str, dict]:
-        """Return reference data."""
+        """返回参考数据。"""
         return self._reference
 
 
 def create_app(extensions: E | None = None) -> type[BaseApp]:  # type: ignore
-    """Create the app."""
+    """创建应用程序。"""
 
     class App(BaseApp, extensions or object):  # type: ignore[misc]
         def __repr__(self) -> str:

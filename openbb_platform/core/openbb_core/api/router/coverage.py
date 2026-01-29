@@ -1,4 +1,4 @@
-"""Coverage API router."""
+"""覆盖率 API 路由。"""
 
 import json
 from typing import Annotated
@@ -16,7 +16,7 @@ async def get_commands_model_map(
     command_map: Annotated[CommandMap, Depends(get_command_map)],
     provider_interface: Annotated[ProviderInterface, Depends(get_provider_interface)],
 ):
-    """Get the command to provider model mapping."""
+    """获取命令到提供者模型的映射。"""
 
     commands_map: dict = {}
 
@@ -81,7 +81,7 @@ async def get_commands_model_map(
         commands_map[command] = new_command
 
     def serializer(obj):
-        """Serialize the object."""
+        """序列化对象。"""
         if isinstance(obj, type):
             return str(obj)
         return obj
@@ -93,7 +93,7 @@ async def get_commands_model_map(
 async def get_provider_coverage(
     command_map: Annotated[CommandMap, Depends(get_command_map)],
 ):
-    """Get command coverage by provider."""
+    """按提供者获取命令覆盖范围。"""
     return command_map.provider_coverage
 
 
@@ -101,5 +101,5 @@ async def get_provider_coverage(
 async def get_command_coverage(
     command_map: Annotated[CommandMap, Depends(get_command_map)],
 ):
-    """Get provider coverage by command."""
+    """按命令获取提供者覆盖范围。"""
     return command_map.command_coverage
