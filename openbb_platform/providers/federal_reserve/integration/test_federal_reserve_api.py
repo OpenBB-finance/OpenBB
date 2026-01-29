@@ -25,8 +25,8 @@ def headers():
     [{}],
 )
 @pytest.mark.integration
-def test_economy_fomc_documents_download(params, headers):
-    """Test the economy fomc documents download endpoint."""
+def federal_reserve_fomc_documents_download(params, headers):
+    """Test the federal reserve fomc documents download endpoint."""
     params = {
         "url": [
             "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
@@ -39,14 +39,18 @@ def test_economy_fomc_documents_download(params, headers):
     assert result.status_code == 200
 
 
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "year": 2022,
+            "document_type": "minutes",
+        }
+    ],
+)
 @pytest.mark.integration
-def test_economy_fomc_documents_choices(headers):
-    """Test the economy fomc documents choices endpoint."""
-    params = {
-        "year": 2022,
-        "document_type": "minutes",
-    }
-
+def federal_reserve_fomc_documents_choices(headers, params):
+    """Test the federal reserve fomc documents choices endpoint."""
     url = (
         "http://localhost:8000/api/v1/federal_reserve/fomc_documents_choices?"
         + get_querystring(params, [])
