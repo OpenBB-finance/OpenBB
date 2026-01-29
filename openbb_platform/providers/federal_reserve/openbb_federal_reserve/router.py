@@ -44,16 +44,22 @@ async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
     # pylint: disable=import-outside-toplevel
     import base64  # noqa
     from io import BytesIO
+    from urllib.parse import urlparse
     from openbb_core.provider.utils.helpers import make_request
 
     urls = params.get("url", [])
     results: list = []
 
     for url in urls:
-        if not url.startswith("https://www.federalreserve.gov"):
+        parsed_url = urlparse(url)
+        hostname = parsed_url.hostname or ""
+
+        if parsed_url.scheme != "https" or hostname not in {
+            "www.federalreserve.gov",
+            "federalreserve.gov",
+        }:
             raise OpenBBError(
-                "Invalid URL provided for download. Must be from federalreserve.gov -> "
-                + url
+                "Invalid URL provided for download. Must be from federalreserve.gov -> " + url
             )
 
         is_pdf = url.lower().endswith(".pdf")
