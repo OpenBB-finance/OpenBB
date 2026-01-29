@@ -10,21 +10,21 @@ from typing import Any
 
 
 def ttl_cache(maxsize: int = 128, typed: bool = False, ttl: int = -1):
-    """Decorator that caches a function's return value each ttl seconds."""
+    """Decorated function that caches a function's return value each ttl seconds."""
     if ttl <= 0:
         ttl = 65536
 
     hash_gen = _ttl_hash_gen(ttl)
 
     def wrapper(func: Callable) -> Callable:
-        """Wrapper function for ttl_cache."""
+        """Wrap the function for ttl_cache."""
 
         @lru_cache(maxsize, typed)
         def ttl_func(ttl_hash, *args, **kwargs):
             return func(*args, **kwargs)
 
         def wrapped(*args, **kwargs) -> Any:
-            """Wrapped function for ttl_cache."""
+            """Wrap the function for ttl_cache."""
             th = next(hash_gen)
             return ttl_func(th, *args, **kwargs)
 

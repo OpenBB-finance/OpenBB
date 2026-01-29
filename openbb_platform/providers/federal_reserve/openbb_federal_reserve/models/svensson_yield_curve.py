@@ -1089,6 +1089,7 @@ class FederalReserveSvenssonFetcher(
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FederalReserveSvenssonQueryParams:
+        """Transform input parameters into FederalReserveSvenssonQueryParams."""
         return FederalReserveSvenssonQueryParams(**params)
 
     @staticmethod
