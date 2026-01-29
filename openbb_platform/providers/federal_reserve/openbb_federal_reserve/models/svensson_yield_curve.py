@@ -129,6 +129,7 @@ SERIES_TYPE = Literal[
     "sveny30",
 ]
 
+
 @ttl_cache(ttl=86400)
 def download_csv() -> str:
     """Download the Federal Reserve Svensson Yield Curve CSV data.
@@ -164,7 +165,7 @@ class FederalReserveSvenssonQueryParams(QueryParams):
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "value": "zero_coupon",
-            }
+            },
         }
     }
 
@@ -173,7 +174,7 @@ class FederalReserveSvenssonQueryParams(QueryParams):
         description="Type of yield curve series to return. "
         "Accepts a single value or comma-separated list for multiple selections. "
         "Group options:\n- 'all' (default)\n- 'zero_coupon' (SVENY, continuously compounded)\n- 'par_yield'"
-        "(SVENPY, coupon-equivalent)\n- 'forward_instantaneous' (SVENF, continuously compounded)" \
+        "(SVENPY, coupon-equivalent)\n- 'forward_instantaneous' (SVENF, continuously compounded)"
         "\n- 'forward_1y' (SVEN1F, coupon-equivalent)\n- 'parameters' (BETA0-BETA3, TAU1-TAU2)\n\n"
         "Individual columns can also be specified (e.g., 'sveny10,sveny20,beta0'). "
         "Used to filter columns after fetching.",
@@ -204,7 +205,9 @@ class FederalReserveSvenssonQueryParams(QueryParams):
 
         for series in series_list:
             if series not in SERIES_TYPE.__args__:
-                raise ValueError(f"Invalid series_type: {series} -> Valid options are: {SERIES_TYPE.__args__}")
+                raise ValueError(
+                    f"Invalid series_type: {series} -> Valid options are: {SERIES_TYPE.__args__}"
+                )
 
         return ",".join(series_list)
 
@@ -1076,15 +1079,15 @@ class FederalReserveSvenssonData(Data):
         except (ValueError, TypeError):
             return None
 
-class FederalReserveSvenssonFetcher(Fetcher[
-    FederalReserveSvenssonQueryParams, list[FederalReserveSvenssonData]
-]):
+
+class FederalReserveSvenssonFetcher(
+    Fetcher[FederalReserveSvenssonQueryParams, list[FederalReserveSvenssonData]]
+):
     """Federal Reserve Svensson Yield Curve Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> FederalReserveSvenssonQueryParams:
         return FederalReserveSvenssonQueryParams(**params)
-
 
     @staticmethod
     def extract_data(
@@ -1098,7 +1101,6 @@ class FederalReserveSvenssonFetcher(Fetcher[
         except Exception as e:  # pylint: disable=broad-except
             raise OpenBBError(e) from e
 
-
     @staticmethod
     def transform_data(
         query: FederalReserveSvenssonQueryParams,
@@ -1111,7 +1113,9 @@ class FederalReserveSvenssonFetcher(Fetcher[
         from datetime import datetime
         from io import StringIO
 
-        csv_to_field = {v: k for k, v in FederalReserveSvenssonData.__alias_dict__.items()}
+        csv_to_field = {
+            v: k for k, v in FederalReserveSvenssonData.__alias_dict__.items()
+        }
         allowed_fields: set[str] | None = None
 
         # Parse comma-separated series_type into a list
@@ -1130,7 +1134,9 @@ class FederalReserveSvenssonFetcher(Fetcher[
                 elif series_type == "forward_1y":
                     allowed_fields.update({"sven1f01", "sven1f04", "sven1f09"})
                 elif series_type == "parameters":
-                    allowed_fields.update({"beta0", "beta1", "beta2", "beta3", "tau1", "tau2"})
+                    allowed_fields.update(
+                        {"beta0", "beta1", "beta2", "beta3", "tau1", "tau2"}
+                    )
                 else:
                     # Individual column selection
                     allowed_fields.add(series_type)
@@ -1181,6 +1187,8 @@ class FederalReserveSvenssonFetcher(Fetcher[
                 results.append(FederalReserveSvenssonData(**filtered_row))
 
         if not results:
-            raise OpenBBError("The query filters resulted in no data. Try again with different parameters.")
+            raise OpenBBError(
+                "The query filters resulted in no data. Try again with different parameters."
+            )
 
         return results

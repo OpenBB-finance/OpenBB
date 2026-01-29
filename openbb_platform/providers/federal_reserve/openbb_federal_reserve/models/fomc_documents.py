@@ -72,7 +72,6 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
         description=f"Filter by document type. Default is all. Choose from: {', '.join(choice_types)}",
     )
 
-
     @field_validator("document_type", mode="before", check_fields=False)
     @classmethod
     def _validate_doc_type(cls, v):
@@ -113,7 +112,7 @@ class FederalReserveFomcDocumentsData(Data):
                         "roles": ["fileSelector"],
                     },
                 ],
-                "$.data": {}
+                "$.data": {},
             }
         }
     )

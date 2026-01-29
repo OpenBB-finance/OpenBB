@@ -59,6 +59,6 @@ class SOFRData(Data):
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e9,
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
+            "x-widget_config": {"prefix": "$", "suffix": "B"},
         },
     )

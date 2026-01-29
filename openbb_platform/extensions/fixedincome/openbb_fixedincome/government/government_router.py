@@ -131,7 +131,7 @@ async def tips_yields(
                 "start_date": "2020-01-01",
                 "end_date": "2025-12-31",
                 "provider": "federal_reserve",
-            }
+            },
         ),
     ],
 )
@@ -157,7 +157,7 @@ async def svensson_yield_curve(
     as there were not enough Treasury securities to fit the Svensson model.
 
     This data provides daily estimated nominal yield curve parameters,
-    and smoothed yields on hypothetical Treasury securities that can 
+    and smoothed yields on hypothetical Treasury securities that can
     be easily compared across maturities and over time, from 1961 to the present.
 
     - Zero-coupon yields (SVENY): Continuously compounded, 1-30 year maturities

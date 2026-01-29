@@ -1183,6 +1183,7 @@ def test_economy_fomc_documents(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
+
 @pytest.mark.parametrize(
     "params",
     [

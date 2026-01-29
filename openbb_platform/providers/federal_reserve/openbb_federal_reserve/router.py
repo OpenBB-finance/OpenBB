@@ -51,12 +51,21 @@ async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
 
     for url in urls:
         if not url.startswith("https://www.federalreserve.gov"):
-            raise OpenBBError("Invalid URL provided for download. Must be from federalreserve.gov -> " + url)
+            raise OpenBBError(
+                "Invalid URL provided for download. Must be from federalreserve.gov -> "
+                + url
+            )
 
         is_pdf = url.lower().endswith(".pdf")
 
-        if not is_pdf and not url.lower().endswith(".htm") and not url.lower().endswith(".html"):
-            raise OpenBBError("Unsupported document format. File must be PDF or HTM type -> " + url)
+        if (
+            not is_pdf
+            and not url.lower().endswith(".htm")
+            and not url.lower().endswith(".html")
+        ):
+            raise OpenBBError(
+                "Unsupported document format. File must be PDF or HTM type -> " + url
+            )
 
         try:
             response = make_request(url)
@@ -87,8 +96,11 @@ async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
 
     return results
 
+
 @router.get("/fomc_documents_choices", include_in_schema=False)
-async def fomc_documents_choices(year: int | None = None, document_type: str | None = None) -> list:
+async def fomc_documents_choices(
+    year: int | None = None, document_type: str | None = None
+) -> list:
     """Get the available choices for FOMC document types.
 
     Returns
@@ -101,9 +113,7 @@ async def fomc_documents_choices(year: int | None = None, document_type: str | N
         get_fomc_documents_by_year,
     )
 
-    docs = get_fomc_documents_by_year(
-        year, document_type, True
-    )
+    docs = get_fomc_documents_by_year(year, document_type, True)
     choices_list: list = []
 
     for doc in docs:

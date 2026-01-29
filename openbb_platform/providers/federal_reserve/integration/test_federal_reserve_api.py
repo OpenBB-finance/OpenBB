@@ -22,19 +22,22 @@ def headers():
 
 @pytest.mark.parametrize(
     "params",
-    [({})],
+    [{}],
 )
 @pytest.mark.integration
 def test_economy_fomc_documents_download(params, headers):
     """Test the economy fomc documents download endpoint."""
     params = {
-        "url": ["https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"]
+        "url": [
+            "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
+        ]
     }
 
     url = "http://localhost:8000/api/v1/federal_reserve/fomc_documents_download"
     result = requests.post(url, headers=headers, timeout=10, json=params)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
 
 @pytest.mark.integration
 def test_economy_fomc_documents_choices(headers):
@@ -44,7 +47,10 @@ def test_economy_fomc_documents_choices(headers):
         "document_type": "minutes",
     }
 
-    url = "http://localhost:8000/api/v1/federal_reserve/fomc_documents_choices?" + get_querystring(params, [])
+    url = (
+        "http://localhost:8000/api/v1/federal_reserve/fomc_documents_choices?"
+        + get_querystring(params, [])
+    )
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

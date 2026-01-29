@@ -651,6 +651,7 @@ def test_fixedincome_government_tips_yields(params, obb):
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
 
+
 @pytest.mark.parametrize(
     "params",
     [
@@ -660,7 +661,7 @@ def test_fixedincome_government_tips_yields(params, obb):
                 "provider": "federal_reserve",
                 "start_date": "2023-05-01",
                 "end_date": "2024-06-01",
-                "series_type": "beta0,sveny10"
+                "series_type": "beta0,sveny10",
             }
         ),
     ],

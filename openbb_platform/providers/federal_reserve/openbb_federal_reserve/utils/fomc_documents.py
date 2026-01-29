@@ -32,7 +32,9 @@ def load_historical_fomc_documents() -> list:
     from pathlib import Path
 
     historical_docs: list = []
-    historical_docs_path = Path(__file__).parent.parent / "assets" / "historical_releases.json"
+    historical_docs_path = (
+        Path(__file__).parent.parent / "assets" / "historical_releases.json"
+    )
 
     with open(historical_docs_path, encoding="utf-8") as file:
         historical_docs = json.load(file)

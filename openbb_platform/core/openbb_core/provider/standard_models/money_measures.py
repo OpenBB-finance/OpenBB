@@ -30,7 +30,6 @@ class MoneyMeasuresQueryParams(QueryParams):
 class MoneyMeasuresData(Data):
     """Money Measures Data."""
 
-
     model_config = ConfigDict(
         json_schema_extra={
             "x-widget_config": {
@@ -58,35 +57,25 @@ class MoneyMeasuresData(Data):
     currency: float | None = Field(
         description="Value of currency in circulation in billions.",
         default=None,
-        json_schema_extra={
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
-        }
+        json_schema_extra={"x-widget_config": {"prefix": "$", "suffix": "B"}},
     )
     demand_deposits: float | None = Field(
         description="Value of demand deposits in billions.",
         default=None,
-        json_schema_extra={
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
-        }
+        json_schema_extra={"x-widget_config": {"prefix": "$", "suffix": "B"}},
     )
     retail_money_market_funds: float | None = Field(
         description="Value of retail money market funds in billions.",
         default=None,
-        json_schema_extra={
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
-        }
+        json_schema_extra={"x-widget_config": {"prefix": "$", "suffix": "B"}},
     )
     other_liquid_deposits: float | None = Field(
         description="Value of other liquid deposits in billions.",
         default=None,
-        json_schema_extra={
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
-        }
+        json_schema_extra={"x-widget_config": {"prefix": "$", "suffix": "B"}},
     )
     small_denomination_time_deposits: float | None = Field(
         description="Value of small denomination time deposits in billions.",
         default=None,
-        json_schema_extra={
-            "x-widget_config": {"prefix": "$", "suffix": "B"}
-        }
+        json_schema_extra={"x-widget_config": {"prefix": "$", "suffix": "B"}},
     )
