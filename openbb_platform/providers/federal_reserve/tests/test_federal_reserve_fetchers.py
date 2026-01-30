@@ -13,6 +13,9 @@ from openbb_federal_reserve.models.federal_funds_rate import (
 from openbb_federal_reserve.models.fomc_documents import (
     FederalReserveFomcDocumentsFetcher,
 )
+from openbb_federal_reserve.models.inflation_expectations import (
+    FederalReserveInflationExpectationsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -181,5 +184,17 @@ def test_federal_reserve_total_factor_productivity_fetcher(
     params = {}
 
     fetcher = FederalReserveTfpFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_inflation_expectations_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve Inflation Expectations Fetcher."""
+    params = {}
+
+    fetcher = FederalReserveInflationExpectationsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

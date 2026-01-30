@@ -10,6 +10,9 @@ from openbb_federal_reserve.models.federal_funds_rate import (
 from openbb_federal_reserve.models.fomc_documents import (
     FederalReserveFomcDocumentsFetcher,
 )
+from openbb_federal_reserve.models.inflation_expectations import (
+    FederalReserveInflationExpectationsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -42,6 +45,7 @@ federal_reserve_provider = Provider(
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
         "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
         "FomcDocuments": FederalReserveFomcDocumentsFetcher,
+        "InflationExpectations": FederalReserveInflationExpectationsFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
         "PrimaryDealerFails": FederalReservePrimaryDealerFailsFetcher,

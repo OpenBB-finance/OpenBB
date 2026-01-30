@@ -1258,3 +1258,24 @@ def test_economy_total_factor_productivity(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_inflation_expectations(params, obb):
+    """Test economy survey inflation expectations."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.inflation_expectations(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

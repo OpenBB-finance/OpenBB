@@ -57,6 +57,7 @@ This extension creates multiple OpenBB Workspace apps, along with individual wid
 - `.economy.primary_dealer_fails`
 - `.economy.fomc_documents`
 - `.economy.total_factor_productivity`
+- `.economy.survey.inflation_expectations`
 - `.fixedincome.rate.sofr`
 - `.fixedincome.rate.effr`
 - `.fixedincome.rate.overnight_bank_funding`
