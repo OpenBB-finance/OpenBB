@@ -61,8 +61,9 @@ class SecSicSearchFetcher(
     ) -> list[dict]:
         """Extract data from the SEC website table."""
         # pylint: disable=import-outside-toplevel
-        from aiohttp_client_cache import SQLiteBackend
+        from aiohttp_client_cache import SQLiteBackend  # noqa
         from aiohttp_client_cache.session import CachedSession
+        from io import StringIO
         from openbb_core.app.utils import get_user_cache_directory
         from openbb_core.provider.utils.helpers import amake_request
         from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
@@ -89,7 +90,7 @@ class SecSicSearchFetcher(
         else:
             response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-        data = read_html(response)[0].astype(str)
+        data = read_html(StringIO(response))[0].astype(str)  # type: ignore
         if len(data) == 0:
             return results
         if query:

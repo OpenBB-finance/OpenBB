@@ -148,7 +148,7 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
 
         return "".join(html_parts)
 
-    df.loc[:, "hover_html"] = df.apply(generate_hover_html, axis=1)
+    df["hover_html"] = df.apply(generate_hover_html, axis=1)
 
     fig = px.scatter_map(
         df,

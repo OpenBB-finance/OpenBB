@@ -35,7 +35,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.record_http
+@pytest.mark.record_ftp
 def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
     """Test the Nasdaq Equity Search fetcher."""
     params = {"query": "", "is_etf": True, "use_cache": False}

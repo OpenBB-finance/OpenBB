@@ -276,3 +276,60 @@ def test_econometrics_unit_root(params, data_type):
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params, data_type",
+    [
+        (
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
+            "equity",
+        ),
+        (
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_econometrics_ols_regression(params, data_type):
+    """Test the OLS regression function in econometrics extension."""
+    params = {p: v for p, v in params.items() if v}
+
+    body = json.dumps(
+        {
+            "data": get_data(data_type),
+            "x_columns": params.pop("x_columns"),
+        }
+    )
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/econometrics/ols_regression?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "columns": ["high", "low"]}, "equity"),
+        ({"data": "", "columns": ["high", "low"]}, "crypto"),
+    ],
+)
+@pytest.mark.integration
+def test_econometrics_variance_inflation_factor(params, data_type):
+    """Test the variance inflation factor endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    body = json.dumps(
+        {
+            "data": get_data(data_type),
+            "columns": params.pop("columns"),
+        }
+    )
+
+    url = "http://0.0.0.0:8000/api/v1/econometrics/variance_inflation_factor"
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

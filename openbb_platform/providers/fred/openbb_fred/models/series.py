@@ -207,6 +207,7 @@ class FredSeriesFetcher(
         records = (
             DataFrame(series)
             .filter(items=query.symbol.split(","), axis=1)
+            .sort_index()
             .reset_index()
             .rename(columns={"index": "date"})
             .replace({nan: None})

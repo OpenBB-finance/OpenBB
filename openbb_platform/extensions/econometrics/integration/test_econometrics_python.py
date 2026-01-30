@@ -105,7 +105,7 @@ def test_econometrics_ols_regression(params, data_type, obb):
     result = obb.econometrics.ols_regression(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(

@@ -118,7 +118,7 @@ def test_technical_atr(params, data_type, obb):
             {
                 "data": "",
                 "index": "date",
-                "close_column": "adj_close",
+                "close_column": "close",
                 "period": "125",
                 "start_date": "",
                 "end_date": "",

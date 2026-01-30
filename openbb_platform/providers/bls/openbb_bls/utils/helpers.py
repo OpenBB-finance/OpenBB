@@ -275,7 +275,7 @@ async def download_category_series_ids(category) -> tuple[list, dict]:
         ids = ids.rename(columns={"footnote_codes": "footnote_code"})
         ids = ids.astype(str).replace({"nan": None, "''": None, "": None})
 
-        ids.loc[:, "survey_name"] = SURVEY_NAMES.get(survey.upper(), None)
+        ids["survey_name"] = SURVEY_NAMES.get(survey.upper(), None)
         ids = ids[ids.series_id.astype(str).str.startswith(survey.upper())]
 
         if ids is None or ids.empty:

@@ -128,35 +128,35 @@ class YFinanceOptionsChainsFetcher(
 
         underlying_output: dict = {
             "symbol": symbol,
-            "name": underlying.get("longName"),
-            "exchange": underlying.get("fullExchangeName"),
-            "exchange_tz": underlying.get("exchangeTimezoneName"),
-            "currency": underlying.get("currency"),
-            "bid": underlying.get("bid"),
-            "bid_size": underlying.get("bidSize"),
-            "ask": underlying.get("ask"),
-            "ask_size": underlying.get("askSize"),
-            "last_price": underlying.get(
-                "postMarketPrice", underlying.get("regularMarketPrice")
+            "name": underlying.get("longName"),  # type: ignore
+            "exchange": underlying.get("fullExchangeName"),  # type: ignore
+            "exchange_tz": underlying.get("exchangeTimezoneName"),  # type: ignore
+            "currency": underlying.get("currency"),  # type: ignore
+            "bid": underlying.get("bid"),  # type: ignore
+            "bid_size": underlying.get("bidSize"),  # type: ignore
+            "ask": underlying.get("ask"),  # type: ignore
+            "ask_size": underlying.get("askSize"),  # type: ignore
+            "last_price": underlying.get(  # type: ignore
+                "postMarketPrice", underlying.get("regularMarketPrice")  # type: ignore
             ),
-            "open": underlying.get("regularMarketOpen"),
-            "high": underlying.get("regularMarketDayHigh"),
-            "low": underlying.get("regularMarketDayLow"),
-            "close": underlying.get("regularMarketPrice"),
-            "prev_close": underlying.get("regularMarketPreviousClose"),
-            "change": underlying.get("regularMarketChange"),
-            "change_percent": underlying.get("regularMarketChangePercent"),
-            "volume": underlying.get("regularMarketVolume"),
-            "dividend_yield": float(underlying.get("dividendYield", 0)) / 100,
-            "dividend_yield_ttm": underlying.get("trailingAnnualDividendYield"),
-            "year_high": underlying.get("fiftyTwoWeekHigh"),
-            "year_low": underlying.get("fiftyTwoWeekLow"),
-            "ma_50": underlying.get("fiftyDayAverage"),
-            "ma_200": underlying.get("twoHundredDayAverage"),
-            "volume_avg_10d": underlying.get("averageDailyVolume10Day"),
-            "volume_avg_3m": underlying.get("averageDailyVolume3Month"),
-            "market_cap": underlying.get("marketCap"),
-            "shares_outstanding": underlying.get("sharesOutstanding"),
+            "open": underlying.get("regularMarketOpen"),  # type: ignore
+            "high": underlying.get("regularMarketDayHigh"),  # type: ignore
+            "low": underlying.get("regularMarketDayLow"),  # type: ignore
+            "close": underlying.get("regularMarketPrice"),  # type: ignore
+            "prev_close": underlying.get("regularMarketPreviousClose"),  # type: ignore
+            "change": underlying.get("regularMarketChange"),  # type: ignore
+            "change_percent": underlying.get("regularMarketChangePercent"),  # type: ignore
+            "volume": underlying.get("regularMarketVolume"),  # type: ignore
+            "dividend_yield": float(underlying.get("dividendYield", 0)) / 100,  # type: ignore
+            "dividend_yield_ttm": underlying.get("trailingAnnualDividendYield"),  # type: ignore
+            "year_high": underlying.get("fiftyTwoWeekHigh"),  # type: ignore
+            "year_low": underlying.get("fiftyTwoWeekLow"),  # type: ignore
+            "ma_50": underlying.get("fiftyDayAverage"),  # type: ignore
+            "ma_200": underlying.get("twoHundredDayAverage"),  # type: ignore
+            "volume_avg_10d": underlying.get("averageDailyVolume10Day"),  # type: ignore
+            "volume_avg_3m": underlying.get("averageDailyVolume3Month"),  # type: ignore
+            "market_cap": underlying.get("marketCap"),  # type: ignore
+            "shares_outstanding": underlying.get("sharesOutstanding"),  # type: ignore
         }
 
         return {"underlying": underlying_output, "chains": chains_output}
@@ -178,9 +178,7 @@ class YFinanceOptionsChainsFetcher(
         records = data.get("chains", [])
         output = DataFrame(records)
         for col in ["volume", "openInterest"]:
-            output[col] = (
-                output[col].infer_objects(copy=False).replace({nan: 0}).astype("int64")
-            )
+            output[col] = output[col].infer_objects().replace({nan: 0}).astype("int64")
 
         output = output.replace({nan: None})
 

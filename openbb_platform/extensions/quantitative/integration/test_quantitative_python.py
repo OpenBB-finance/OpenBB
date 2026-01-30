@@ -32,8 +32,8 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = openbb.obb.equity.price.historical(
-        symbol=symbol, provider=provider
+    data["stocks_data"] = openbb.obb.equity.price.historical(  # type: ignore
+        symbol=symbol, provider=provider  # type: ignore
     ).results
     return data["stocks_data"]
 

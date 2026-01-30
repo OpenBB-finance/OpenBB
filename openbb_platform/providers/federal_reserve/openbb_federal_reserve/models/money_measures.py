@@ -85,11 +85,11 @@ class FederalReserveMoneyMeasuresFetcher(
         df = df.replace("ND", None)
         df["month"] = to_datetime(df["month"])
         df = df[
-            (to_datetime(df.month) >= to_datetime(query.start_date))
-            & (to_datetime(df.month) <= to_datetime(query.end_date))
+            (to_datetime(df.month) >= to_datetime(query.start_date))  # type: ignore
+            & (to_datetime(df.month) <= to_datetime(query.end_date))  # type: ignore
         ].set_index("month")
         # Needs the date to not be in the columns
-        df = df.applymap(lambda x: float(x) if x != "-" and x is not None else x)
+        df = df.map(lambda x: float(x) if x != "-" and x is not None else x)
         df = df.reset_index(drop=False)
 
         return df.to_dict(orient="records")
