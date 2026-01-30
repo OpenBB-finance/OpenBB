@@ -729,8 +729,9 @@ async def total_factor_productivity(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """
-    This data represents a real-time, quarterly series on total factor productivity (TFP) for the U.S. business sector,
+    """Total Factor Productivity (TFP)
+
+    A real-time, quarterly series on total factor productivity (TFP) for the U.S. business sector,
     adjusted for variations in factor utilization - labor effort and capital's workweek.
 
     The utilization adjustments follows Basu, Fernald, and Kimball (BFK, 2006).
