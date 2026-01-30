@@ -711,3 +711,37 @@ async def fomc_documents(
     Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="TotalFactorProductivity",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            description="Get summary data instead of the default quarterly time series.",
+            parameters={"provider": "federal_reserve", "frequency": "summary"},
+        ),
+    ],
+)
+async def total_factor_productivity(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """
+    This data represents a real-time, quarterly series on total factor productivity (TFP) for the U.S. business sector,
+    adjusted for variations in factor utilization - labor effort and capital's workweek.
+
+    The utilization adjustments follows Basu, Fernald, and Kimball (BFK, 2006).
+    Using relative prices and input-output information, the series is also decomposed into separate TFP
+    and utilization-adjusted TFP series for equipment investment (including consumer durables) and "consumption"
+    (defined as business output less equipment and consumer durables).
+
+    Labor includes an adjustment for "quality" or composition.
+    Capital services are also adjusted for changes in composition over time
+    (e.g. computers, other equipment, structures, and inventories).
+
+    Source: https://www.frbsf.org/research-and-insights/data-and-indicators/total-factor-productivity-tfp/
+    """
+    return await OBBject.from_query(Query(**locals()))

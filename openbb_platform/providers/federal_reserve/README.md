@@ -47,7 +47,7 @@ This extension creates multiple OpenBB Workspace apps, along with individual wid
 ### Apps
 
 - FOMC Documents - Current and historical PDF documents of minutes, projections, Beige Books, policy statements, and more.
-- NY Federal Reserve - Data and statistics available from the NY Fed's REST API.
+- Federal Reserve System - Stats & Indicators - Data statistics and indicators from the regional members of the Federal Reserve System.
 
 ### Endpoints
 
@@ -56,6 +56,7 @@ This extension creates multiple OpenBB Workspace apps, along with individual wid
 - `.economy.primary_dealer_positioning`
 - `.economy.primary_dealer_fails`
 - `.economy.fomc_documents`
+- `.economy.total_factor_productivity`
 - `.fixedincome.rate.sofr`
 - `.fixedincome.rate.effr`
 - `.fixedincome.rate.overnight_bank_funding`

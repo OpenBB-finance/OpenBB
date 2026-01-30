@@ -1236,3 +1236,25 @@ def test_economy_fomc_documents_download(obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "frequency": "summary",
+            "start_date": None,
+            "end_date": None,
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_total_factor_productivity(params, obb):
+    """Test economy total factor productivity."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.total_factor_productivity(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

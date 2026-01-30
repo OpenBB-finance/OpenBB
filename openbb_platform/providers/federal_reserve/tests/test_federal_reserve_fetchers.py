@@ -29,6 +29,9 @@ from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
 from openbb_federal_reserve.models.svensson_yield_curve import (
     FederalReserveSvenssonFetcher,
 )
+from openbb_federal_reserve.models.total_factor_productivity import (
+    FederalReserveTfpFetcher,
+)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -166,5 +169,17 @@ def test_federal_reserve_fomc_documents_fetcher(
     params = {}
 
     fetcher = FederalReserveFomcDocumentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_total_factor_productivity_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve Total Factor Productivity Fetcher."""
+    params = {}
+
+    fetcher = FederalReserveTfpFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
