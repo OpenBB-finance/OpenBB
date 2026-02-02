@@ -16,7 +16,7 @@ jobs:
       - name: Check PR description
         shell: bash
         run: |
-          body="${{ github.event.pull_request.body }}"
+          body="$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")"
           if [ -z "$(echo "$body" | tr -d '[:space:]')" ]; then
             echo "::error::PR description is empty. Please provide a description of the change."
             exit 1
