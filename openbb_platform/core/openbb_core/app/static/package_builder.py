@@ -2686,7 +2686,7 @@ class DocstringGenerator:
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=getattr(type(return_schema), "model_fields", {}),
+                    returns=getattr(return_schema, "model_fields", {}),
                     results_type=results_type,
                     sections=sections,
                 )

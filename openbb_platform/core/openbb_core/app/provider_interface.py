@@ -619,8 +619,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
-            fields = getattr(type(standard), "model_fields", {}).copy()
-            extra_fields = getattr(type(extra), "model_fields", {}).copy()
+            fields = getattr(standard, "model_fields", {}).copy()
+            extra_fields = getattr(extra, "model_fields", {}).copy()
             fields.update(extra_fields)
 
             fields_dict: dict[str, tuple[Any, Any]] = {}
