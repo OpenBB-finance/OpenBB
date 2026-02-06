@@ -303,6 +303,9 @@ describe('BackendsPage', () => {
   });
 
   test('handles delete error gracefully', async () => {
+    // Suppress expected console.error output for this error handling test
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     const mockBackend = {
       id: 'test-backend',
       name: 'Test Backend',
@@ -331,6 +334,10 @@ describe('BackendsPage', () => {
     await act(async () => { fireEvent.click(within(modal as HTMLElement).getByRole('button', { name: /Delete/i })); });
 
     await waitFor(() => expect(screen.getByText(/Failed to delete backend/i)).toBeInTheDocument());
+
+    // Verify console.error was called and restore it
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 
   test('views backend logs', async () => {

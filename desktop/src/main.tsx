@@ -3,6 +3,16 @@ import './styles.css';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 
+// Suppress known forwardRef warning from Radix UI in @openbb/ui-pro
+// This is a harmless warning from older Radix UI versions
+const originalError = console.error;
+console.error = (...args) => {
+  if (typeof args[0] === 'string' && args[0].includes('forwardRef render functions accept exactly two parameters')) {
+    return;
+  }
+  originalError.apply(console, args);
+};
+
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
