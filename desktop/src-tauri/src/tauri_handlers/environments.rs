@@ -2303,16 +2303,16 @@ pub async fn update_extension_impl<F: FileSystem, E: EnvSystem>(
         conda_dir.join("bin").join("conda")
     };
     let conda_args = if environment == "base" {
-        vec!["update", &package, "-y"]
+        vec!["install", &package, "-y"]
     } else {
-        vec!["update", "-n", &environment, &package, "-y"]
+        vec!["install", "-n", &environment, &package, "-y"]
     };
 
     let mut conda_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
     let conda_output = conda_command
         .args(&conda_args)
         .output()
-        .map_err(|e| format!("Failed to update extension with conda: {e}"))?;
+        .map_err(|e| format!("Failed to install extension with conda: {e}"))?;
     if conda_output.status.success() {
         log::debug!("Successfully updated extension '{package}' with conda");
         Ok(true)
@@ -2821,8 +2821,8 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
                     .split(['=', '>', '<', '!'])
                     .next()
                     .unwrap_or(conda_dep);
-                // Skip python itself - we don't want to upgrade that
-                if pkg_name != "python" && pkg_name != "pip" {
+                // Skip infrastructure packages - we don't want to upgrade these
+                if !matches!(pkg_name, "python" | "pip" | "nodejs" | "setuptools") {
                     conda_packages.push(pkg_name.to_string());
                 }
             }
@@ -2847,7 +2847,7 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
         conda_dir.join("bin").join("conda")
     };
 
-    // Update conda packages if any (excluding python)
+    // Update conda packages if any (excluding python, pip)
     if !conda_packages.is_empty() {
         log::info!(
             "Updating {} conda packages: {:?}",
@@ -2855,37 +2855,76 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
             conda_packages
         );
 
-        let mut conda_args = vec!["update", "-n", &environment, "-y"];
+        let mut conda_args = vec!["install", "-n", &environment, "-y"];
         let pkg_refs: Vec<&str> = conda_packages.iter().map(|s| s.as_str()).collect();
         conda_args.extend(pkg_refs);
 
         log::info!("Running: {} {}", conda_exe.display(), conda_args.join(" "));
 
+        // Use spawn with timeout to prevent hanging forever
         let mut conda_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
-        let output = conda_command
+        let mut child = conda_command
             .args(&conda_args)
             .stdin(std::process::Stdio::null())
-            .output()
-            .map_err(|e| format!("Failed to run conda update: {e}"))?;
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .spawn()
+            .map_err(|e| format!("Failed to spawn conda install: {e}"))?;
 
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        let stderr = String::from_utf8_lossy(&output.stderr);
+        // Run the wait in a blocking thread to not block the async runtime
+        let result = tokio::task::spawn_blocking(move || {
+            let timeout = std::time::Duration::from_secs(300);
+            let start = std::time::Instant::now();
 
+            loop {
+                match child.try_wait() {
+                    Ok(Some(status)) => {
+                        // Process finished
+                        let stdout = child.stdout.take().map(|mut s| {
+                            let mut buf = String::new();
+                            std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                            buf
+                        }).unwrap_or_default();
+                        let stderr = child.stderr.take().map(|mut s| {
+                            let mut buf = String::new();
+                            std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                            buf
+                        }).unwrap_or_default();
+                        return (Some(status), stdout, stderr);
+                    }
+                    Ok(None) => {
+                        // Still running
+                        if start.elapsed() > timeout {
+                            log::warn!("Conda update timed out after 5 minutes, killing process");
+                            let _ = child.kill();
+                            let _ = child.wait();
+                            return (None, String::new(), "Timed out".to_string());
+                        }
+                        std::thread::sleep(std::time::Duration::from_millis(100));
+                    }
+                    Err(e) => {
+                        return (None, String::new(), format!("Error: {e}"));
+                    }
+                }
+            }
+        }).await.unwrap_or((None, String::new(), "Task panicked".to_string()));
+
+        let (status, stdout, stderr) = result;
         log::info!("conda stdout: {}", stdout);
         if !stderr.is_empty() {
             log::info!("conda stderr: {}", stderr);
         }
-
-        if !output.status.success() {
-            // Log warning but don't fail - conda update can fail for various reasons
-            log::warn!(
-                "Conda update had issues: {}",
-                if stderr.is_empty() { &stdout } else { &stderr }
-            );
+        if let Some(s) = status {
+            if !s.success() {
+                log::warn!(
+                    "Conda update had issues: {}",
+                    if stderr.is_empty() { &stdout } else { &stderr }
+                );
+            }
         }
     }
 
-    // Update pip packages if any
+    // Update pip packages
     if !pip_packages.is_empty() {
         log::info!(
             "Updating {} pip packages: {:?}",
