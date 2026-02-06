@@ -2880,16 +2880,24 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
                 match child.try_wait() {
                     Ok(Some(status)) => {
                         // Process finished
-                        let stdout = child.stdout.take().map(|mut s| {
-                            let mut buf = String::new();
-                            std::io::Read::read_to_string(&mut s, &mut buf).ok();
-                            buf
-                        }).unwrap_or_default();
-                        let stderr = child.stderr.take().map(|mut s| {
-                            let mut buf = String::new();
-                            std::io::Read::read_to_string(&mut s, &mut buf).ok();
-                            buf
-                        }).unwrap_or_default();
+                        let stdout = child
+                            .stdout
+                            .take()
+                            .map(|mut s| {
+                                let mut buf = String::new();
+                                std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                                buf
+                            })
+                            .unwrap_or_default();
+                        let stderr = child
+                            .stderr
+                            .take()
+                            .map(|mut s| {
+                                let mut buf = String::new();
+                                std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                                buf
+                            })
+                            .unwrap_or_default();
                         return (Some(status), stdout, stderr);
                     }
                     Ok(None) => {
@@ -2907,7 +2915,9 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
                     }
                 }
             }
-        }).await.unwrap_or((None, String::new(), "Task panicked".to_string()));
+        })
+        .await
+        .unwrap_or((None, String::new(), "Task panicked".to_string()));
 
         let (status, stdout, stderr) = result;
         log::info!("conda stdout: {}", stdout);
