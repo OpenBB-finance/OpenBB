@@ -2924,13 +2924,13 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
         if !stderr.is_empty() {
             log::info!("conda stderr: {}", stderr);
         }
-        if let Some(s) = status {
-            if !s.success() {
-                log::warn!(
-                    "Conda update had issues: {}",
-                    if stderr.is_empty() { &stdout } else { &stderr }
-                );
-            }
+        if let Some(s) = status
+            && !s.success()
+        {
+            log::warn!(
+                "Conda update had issues: {}",
+                if stderr.is_empty() { &stdout } else { &stderr }
+            );
         }
     }
 
