@@ -1115,28 +1115,8 @@ def test_economy_direction_of_trade(params, obb):
         (
             {
                 "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
                 "year": 2022,
                 "document_type": "minutes",
-                "pdf_only": True,
-                "as_choices": True,
             }
         ),
     ],
@@ -1148,8 +1128,8 @@ def test_economy_fomc_documents(params, obb):
 
     result = obb.economy.fomc_documents(**params)
     assert result
-    assert isinstance(result, (list, dict))
-    assert len(result) > 0
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -1253,6 +1233,49 @@ def test_economy_fomc_documents_download(obb):
         "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
     }
     result = obb.economy.fomc_documents_download(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "frequency": "summary",
+            "start_date": None,
+            "end_date": None,
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_total_factor_productivity(params, obb):
+    """Test economy total factor productivity."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.total_factor_productivity(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_inflation_expectations(params, obb):
+    """Test economy survey inflation expectations."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.inflation_expectations(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -118,3 +118,52 @@ async def tips_yields(
 ) -> OBBject:
     """Get current Treasury inflation-protected securities yields."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SvenssonYieldCurve",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            description="Parameters are applied post-request to filter the data.",
+            parameters={
+                "series_type": "zero_coupon",
+                "start_date": "2020-01-01",
+                "end_date": "2025-12-31",
+                "provider": "federal_reserve",
+            },
+        ),
+    ],
+)
+async def svensson_yield_curve(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Svensson Nominal Yield Curve Data.
+
+    Source: https://www.federalreserve.gov/data/nominal-yield-curve.htm
+
+    The Svensson model, stipulates that the shape of the yield curve on any given date
+    can be adequately captured by a set of six parameters.
+
+    The values of these parameters can be estimated by minimizing the discrepancy
+    between the fitted Svensson yield curve and observed market yields.
+
+    This Svensson model is used to fit daily yield curves for the period since 1980.
+
+    Before 1980, the Nelson-Siegel model—a model with fewer parameters—was used to fit the yield curve,
+    as there were not enough Treasury securities to fit the Svensson model.
+
+    This data provides daily estimated nominal yield curve parameters,
+    and smoothed yields on hypothetical Treasury securities that can
+    be easily compared across maturities and over time, from 1961 to the present.
+
+    - Zero-coupon yields (SVENY): Continuously compounded, 1-30 year maturities
+    - Par yields (SVENPY): Coupon-equivalent, 1-30 year maturities
+    - Instantaneous forward rates (SVENF): Continuously compounded, 1-30 year horizons
+    - One-year forward rates (SVEN1F): Coupon-equivalent, at select horizons
+    - Model parameters (BETA0-BETA3, TAU1-TAU2): Nelson-Siegel-Svensson coefficients
+    """
+    return await OBBject.from_query(Query(**locals()))

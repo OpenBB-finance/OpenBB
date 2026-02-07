@@ -338,6 +338,449 @@ def test_import_factory_app():
         assert isinstance(result, MockFastAPI)
 
 
+# =============================================================================
+# Path Handling Tests - Cross-Platform Compatibility
+# =============================================================================
+
+
+class TestPathHandling:
+    """Test cross-platform path handling in import_app function."""
+
+    @pytest.fixture
+    def mock_fastapi_env(self):
+        """Set up common mocks for FastAPI import tests."""
+        # pylint: disable=import-outside-toplevel
+        from fastapi import FastAPI as RealFastAPI
+
+        class MockFastAPI(RealFastAPI):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.add_middleware = MagicMock()
+
+        mock_rest_api = MagicMock()
+        mock_rest_api.system = MagicMock()
+
+        return MockFastAPI, mock_rest_api
+
+    def _create_app_file(self, tmp_path, filename="test_app.py"):
+        """Create a test app file."""
+        app_file = tmp_path / filename
+        app_file.write_text("from fastapi import FastAPI\n\napp = FastAPI()\n")
+        return app_file
+
+    def test_unix_absolute_path(self, tmp_path, mock_fastapi_env):
+        """Test Unix-style absolute paths (e.g., /home/user/app.py)."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = self._create_app_file(tmp_path)
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # Test with absolute Unix-style path
+            result = import_app(str(app_file), "app", False)
+            assert isinstance(result, MockFastAPI)
+
+    def test_relative_path(self, tmp_path, mock_fastapi_env, monkeypatch):
+        """Test relative paths are resolved correctly."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = self._create_app_file(tmp_path)
+        monkeypatch.chdir(tmp_path)
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # Test with relative path
+            result = import_app(app_file.name, "app", False)
+            assert isinstance(result, MockFastAPI)
+
+    def test_relative_path_with_subdirectory(
+        self, tmp_path, mock_fastapi_env, monkeypatch
+    ):
+        """Test relative paths with subdirectories."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        subdir = tmp_path / "subdir"
+        subdir.mkdir()
+        app_file = subdir / "myapp.py"
+        app_file.write_text("from fastapi import FastAPI\n\napp = FastAPI()\n")
+        monkeypatch.chdir(tmp_path)
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # Test with relative path including subdirectory
+            result = import_app("subdir/myapp.py", "app", False)
+            assert isinstance(result, MockFastAPI)
+
+    def test_module_colon_notation(self, mock_fastapi_env):
+        """Test module:name colon notation (e.g., 'my_module:app')."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("importlib.import_module") as mock_import,
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch("openbb_core.app.model.credentials.CredentialsLoader.load"),
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            mock_module = MagicMock()
+            mock_module.__spec__ = MagicMock()
+            mock_module.myapp = MockFastAPI()
+            mock_import.return_value = mock_module
+
+            result = import_app("some_package.module:myapp", "myapp", False)
+            assert isinstance(result, MockFastAPI)
+            # Verify the target module was imported (among other imports)
+            mock_import.assert_any_call("some_package.module")
+
+    def test_file_path_with_colon_notation(self, tmp_path, mock_fastapi_env):
+        """Test file path with colon notation (e.g., 'myfile.py:app')."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = self._create_app_file(tmp_path, "custom_app.py")
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # Test with file path + colon notation
+            result = import_app(f"{app_file}:app", "app", False)
+            assert isinstance(result, MockFastAPI)
+
+    def test_file_not_found_error(self, tmp_path, mock_fastapi_env):
+        """Test FileNotFoundError is raised for non-existent files."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        non_existent_path = tmp_path / "does_not_exist.py"
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            with pytest.raises(FileNotFoundError):
+                import_app(str(non_existent_path), "app", False)
+
+    def test_attribute_error_missing_app_instance(self, tmp_path, mock_fastapi_env):
+        """Test AttributeError is raised when app instance is missing."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = tmp_path / "no_app.py"
+        app_file.write_text("# No app defined here\nx = 1\n")
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            with pytest.raises(AttributeError):
+                import_app(str(app_file), "app", False)
+
+    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
+    def test_windows_absolute_path(self, tmp_path, mock_fastapi_env):
+        """Test Windows-style absolute paths (e.g., C:\\Users\\app.py)."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = self._create_app_file(tmp_path)
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # On Windows, tmp_path will have a drive letter (e.g., C:\...)
+            result = import_app(str(app_file), "app", False)
+            assert isinstance(result, MockFastAPI)
+
+    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
+    def test_windows_path_with_colon_notation(self, tmp_path, mock_fastapi_env):
+        """Test Windows path with colon notation (e.g., C:\\path\\app.py:myapp)."""
+        MockFastAPI, mock_rest_api = mock_fastapi_env
+        app_file = self._create_app_file(tmp_path)
+
+        with (
+            patch.dict(
+                "sys.modules",
+                {
+                    "openbb_core.api.rest_api": mock_rest_api,
+                    "openbb_core.api.router.commands": MagicMock(),
+                    "openbb_core.app.command_runner": MagicMock(),
+                    "openbb_core.app.static.package_builder": MagicMock(),
+                    "openbb_core.app.provider_interface": MagicMock(),
+                    "openbb_core.provider.registry": MagicMock(),
+                    "openbb_core.app.extension_loader": MagicMock(),
+                },
+            ),
+            patch("fastapi.FastAPI", new=MockFastAPI),
+            patch("openbb_core.app.service.user_service.UserService.read_from_file"),
+            patch(
+                "openbb_core.app.model.credentials.CredentialsLoader.load",
+                return_value=MagicMock(),
+            ),
+            patch(
+                "openbb_core.app.service.system_service.SystemService"
+            ) as mock_system,
+            patch("openbb_core.api.app_loader.AppLoader.add_routers"),
+        ):
+            mock_system.return_value.system_settings.cors.allow_origins = ["*"]
+            mock_system.return_value.system_settings.cors.allow_methods = ["*"]
+            mock_system.return_value.system_settings.cors.allow_headers = ["*"]
+
+            # Windows path with colon notation: C:\path\app.py:app
+            result = import_app(f"{app_file}:app", "app", False)
+            assert isinstance(result, MockFastAPI)
+
+
+class TestPathDetectionHelpers:
+    """Test path detection logic for cross-platform compatibility."""
+
+    def test_is_absolute_path_detection_unix(self):
+        """Test absolute path detection for Unix paths."""
+        from pathlib import Path
+
+        # Unix absolute paths
+        assert Path("/home/user/app.py").is_absolute() is True
+        assert Path("/app.py").is_absolute() is True
+        # Relative paths
+        assert Path("app.py").is_absolute() is False
+        assert Path("./app.py").is_absolute() is False
+        assert Path("subdir/app.py").is_absolute() is False
+
+    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
+    def test_is_absolute_path_detection_windows(self):
+        """Test absolute path detection for Windows paths."""
+        from pathlib import Path
+
+        # Windows absolute paths
+        assert Path("C:\\Users\\app.py").is_absolute() is True
+        assert Path("D:/Projects/app.py").is_absolute() is True
+        # Relative paths
+        assert Path("app.py").is_absolute() is False
+        assert Path(".\\app.py").is_absolute() is False
+
+    def test_colon_notation_vs_windows_drive(self):
+        """Test distinguishing module:name notation from Windows drive letters."""
+        # These should be recognized as module:name notation
+        module_notations = [
+            "module:app",
+            "package.module:app",
+            "my_app.main:create_app",
+        ]
+
+        for notation in module_notations:
+            # Has colon and is not a Windows drive letter pattern
+            assert ":" in notation
+            # First char before colon is not a single letter (drive)
+            parts = notation.split(":")
+            assert len(parts[0]) > 1 or not parts[0].isalpha()
+
+    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
+    def test_windows_drive_letter_detection(self):
+        """Test detection of Windows drive letters vs colon notation."""
+        from pathlib import Path
+
+        # Windows paths with drive letters
+        windows_paths = [
+            "C:\\app.py",
+            "D:/Projects/app.py",
+            "E:\\Users\\test\\app.py",
+        ]
+
+        for path_str in windows_paths:
+            path = Path(path_str)
+            # Should be detected as absolute (has drive)
+            assert path.is_absolute()
+            # Drive should be detected
+            assert path.drive != ""
+
+        # Windows path WITH colon notation (e.g., C:\path\app.py:myapp)
+        complex_path = "C:\\Projects\\app.py:myapp"
+        # This has multiple colons - drive colon + notation colon
+        assert complex_path.count(":") == 2
+
+
 @pytest.mark.asyncio
 async def test_get_apps_json_creates_missing_file(tmp_path):
     main = _load_main_with_mocks()

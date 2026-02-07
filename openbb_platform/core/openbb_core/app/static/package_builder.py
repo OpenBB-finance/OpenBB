@@ -12,7 +12,6 @@ import textwrap
 import typing as typing_module
 from collections import OrderedDict
 from collections.abc import Callable
-from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -1096,7 +1095,7 @@ class MethodDefinition:
                     for meta in param.annotation.__metadata__
                 )
                 model = param.annotation.__args__[0]
-                is_pydantic_model = hasattr(model, "model_fields") or hasattr(
+                is_pydantic_model = hasattr(type(model), "model_fields") or hasattr(
                     model, "__pydantic_fields__"
                 )
                 is_get_request = not MethodDefinition.is_data_processing_function(path)
@@ -1104,7 +1103,7 @@ class MethodDefinition:
                 if is_pydantic_model and is_get_request and not has_depends:
                     # Unpack the model fields as query parameters
                     fields = getattr(
-                        model,
+                        type(model),
                         "model_fields",
                         getattr(model, "__pydantic_fields__", {}),
                     )
@@ -1747,7 +1746,7 @@ class MethodDefinition:
             elif (
                 isinstance(param.annotation, _AnnotatedAlias)
                 and (
-                    hasattr(param.annotation.__args__[0], "model_fields")
+                    hasattr(type(param.annotation.__args__[0]), "model_fields")
                     or hasattr(param.annotation.__args__[0], "__pydantic_fields__")
                 )
                 and not MethodDefinition.is_data_processing_function(path)
@@ -1759,7 +1758,7 @@ class MethodDefinition:
                 if not has_depends:
                     model = param.annotation.__args__[0]
                     fields = getattr(
-                        model,
+                        type(model),
                         "model_fields",
                         getattr(model, "__pydantic_fields__", {}),
                     )
@@ -2668,15 +2667,18 @@ class DocstringGenerator:
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
                 # Format the annotation to hide the metadata, tags, etc.
                 annotation = func.__annotations__.get("return")
+                model_fields = getattr(annotation, "model_fields", {})
                 results_type = (
                     cls._get_repr(
                         cls._get_generic_types(
-                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr,arg-type]
+                            model_fields["results"].annotation,  # type: ignore[union-attr,arg-type]
                             [],
                         ),
                         model_name,
                     )
-                    if isclass(annotation) and issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    if isclass(annotation)
+                    and issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    and "results" in model_fields
                     else model_name
                 )
                 doc = cls.generate_model_docstring(
@@ -2684,7 +2686,7 @@ class DocstringGenerator:
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=return_schema.model_fields,
+                    returns=getattr(return_schema, "model_fields", {}),
                     results_type=results_type,
                     sections=sections,
                 )
@@ -2796,8 +2798,10 @@ class DocstringGenerator:
 
                     if not is_primitive:
                         try:
-                            if hasattr(return_annotation, "model_fields"):
-                                fields = return_annotation.model_fields
+                            if hasattr(type(return_annotation), "model_fields"):
+                                fields = getattr(
+                                    type(return_annotation), "model_fields", {}
+                                )
 
                                 for field_name, field in fields.items():
                                     field_type = cls.get_field_type(
@@ -2900,15 +2904,18 @@ class DocstringGenerator:
         """
         if hasattr(type_, "__args__"):
             origin = get_origin(type_)
-            # pylint: disable=unidiomatic-typecheck
-            if (
-                type(origin) is type
+            if origin is Union or origin is UnionType:
+                for arg in type_.__args__:
+                    cls._get_generic_types(arg, items)
+            elif (
+                isinstance(origin, type)
                 and origin is not Annotated
-                and (name := getattr(type_, "_name", getattr(type_, "__name__", None)))
+                and (name := getattr(type_, "_name", getattr(origin, "__name__", None)))
             ):
                 items.append(name)
-            func = partial(cls._get_generic_types, items=items)
-            set().union(*map(func, type_.__args__), items)  # type: ignore
+                for arg in type_.__args__:
+                    cls._get_generic_types(arg, items)
+
         return items
 
     @staticmethod
@@ -4004,10 +4011,12 @@ class ReferenceGenerator:
                     try:
                         module = sys.modules[route_func.__module__]
                         model_class = getattr(module, extracted_model_name, None)
-                        if model_class and hasattr(model_class, "model_fields"):
+                        if model_class and hasattr(type(model_class), "model_fields"):
                             # Set data to the fields
                             reference[path]["data"]["standard"] = []
-                            for field_name, field in model_class.model_fields.items():
+                            for field_name, field in getattr(
+                                type(model_class), "model_fields", {}
+                            ).items():
                                 field_type = DocstringGenerator.get_field_type(
                                     field.annotation, field.is_required(), "website"
                                 )

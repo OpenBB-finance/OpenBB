@@ -131,7 +131,11 @@ def collect_routers(target_dir: str) -> list[str]:
                 full_path = os.path.join(root, name)
                 # Convert the full path to a module path
                 relative_path = os.path.relpath(full_path, base_path)
-                module_path = relative_path.replace("/", ".").replace(".py", "")
+                module_path = (
+                    relative_path.replace("\\", ".")
+                    .replace("/", ".")
+                    .replace(".py", "")
+                )
                 routers.append(module_path)
 
     return routers
@@ -163,9 +167,9 @@ def collect_router_functions(loaded_routers: list) -> dict:
 def find_decorator(file_path: str, function_name: str) -> str:
     """Find the @router.command decorator of the function in the file, supporting multiline decorators."""
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(
-        this_dir.split("openbb_platform/")[0], "openbb_platform", file_path
-    )
+    normalized_dir = this_dir.replace("\\", "/")
+    base_path = normalized_dir.split("openbb_platform/")[0]
+    file_path = os.path.join(base_path, "openbb_platform", file_path)
 
     with open(file_path) as file:
         lines = file.readlines()

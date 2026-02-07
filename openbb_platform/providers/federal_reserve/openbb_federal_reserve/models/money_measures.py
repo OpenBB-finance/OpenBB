@@ -12,8 +12,8 @@ from openbb_core.provider.standard_models.money_measures import (
 )
 
 titles = {
-    "M1": "M1",
-    "M2": "M2",
+    "M1": "m1",
+    "M2": "m2",
     "MCU": "currency",
     "MDD": "demand_deposits",
     "MMFGB": "retail_money_market_funds",
@@ -109,4 +109,4 @@ class FederalReserveMoneyMeasuresFetcher(
                     d[k] = None
             fed_data.append(FederalReserveMoneyMeasuresData.model_validate(d))
 
-        return fed_data
+        return sorted(fed_data, key=lambda x: x.month)

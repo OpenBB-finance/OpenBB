@@ -552,6 +552,24 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         return result
 
+    @staticmethod
+    def _fields_to_pydantic(
+        fields: list[TupleFieldType],
+    ) -> dict[str, tuple[type | None, Any]]:
+        """Convert dataclass fields to pydantic fields.
+
+        Parameters
+        ----------
+        fields : list[TupleFieldType]
+            List of (name, annotation, default) tuples.
+
+        Returns
+        -------
+        dict[str, tuple[type | None, Any]]
+            Dictionary mapping field names to (annotation, default) tuples.
+        """
+        return {name: (annotation, default) for name, annotation, default in fields}
+
     def _generate_data_dc(
         self, map_: MapType
     ) -> dict[str, dict[str, StandardData | ExtraData]]:
@@ -577,15 +595,15 @@ class ProviderInterface(metaclass=SingletonMeta):
             extra: dict
             standard, extra = self._extract_data(providers)
             result[model_name] = {
-                "standard": make_dataclass(
-                    cls_name=model_name,
-                    fields=list(standard.values()),  # type: ignore[arg-type]
-                    bases=(StandardData,),
+                "standard": create_model(  # type: ignore
+                    model_name,
+                    __base__=StandardData,
+                    **self._fields_to_pydantic(list(standard.values())),  # type: ignore
                 ),
-                "extra": make_dataclass(
-                    cls_name=model_name,
-                    fields=list(extra.values()),  # type: ignore[arg-type]
-                    bases=(ExtraData,),
+                "extra": create_model(
+                    model_name,
+                    __base__=ExtraData,
+                    **self._fields_to_pydantic(list(extra.values())),  # type: ignore
                 ),
             }
 
@@ -601,8 +619,9 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
-            fields = standard.model_fields.copy()
-            fields.update(extra.model_fields)
+            fields = getattr(standard, "model_fields", {}).copy()
+            extra_fields = getattr(extra, "model_fields", {}).copy()
+            fields.update(extra_fields)
 
             fields_dict: dict[str, tuple[Any, Any]] = {}
 

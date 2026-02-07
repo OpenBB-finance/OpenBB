@@ -196,3 +196,19 @@ async def nonfarm_payrolls(
 ) -> OBBject:
     """Get Nonfarm Payrolls Survey."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="InflationExpectations",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+    ],
+)
+async def inflation_expectations(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Survey of forward inflation expectations from the Survey of Professional Forecasters."""
+    return await OBBject.from_query(Query(**locals()))

@@ -119,4 +119,4 @@ class FederalReserveOvernightBankFundingRateFetcher(
             _ = d.pop("footnoteId", None)
             results.append(FederalReserveOvernightBankFundingRateData.model_validate(d))
 
-        return results
+        return sorted(results, key=lambda x: x.date)

@@ -9,7 +9,11 @@ packages = [{ include = "openbb_federal_reserve" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-openbb-core = "^1.5.8"
+openpyxl = "^3.1.5"
+openbb-core = "^1.5.9"
+openbb-economy = "^1.5.1"
+openbb-fixedincome = "^1.5.1"
+openbb-platform-api = "^1.2.3"
 beautifulsoup4 = "^4.13.4"
 
 [build-system]
@@ -18,3 +22,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
 federal_reserve = "openbb_federal_reserve:federal_reserve_provider"
+
+[tool.poetry.plugins."openbb_core_extension"]
+federal_reserve = "openbb_federal_reserve.router:router"

@@ -156,6 +156,13 @@ const ExtensionSelector = ({
 			category: "other-openbb",
 			credentials: [],
 		},
+		{
+			id: "openbb-cookiecutter",
+			name: "OpenBB Cookiecutter",
+			description: "Template for creating new OpenBB extension projects.",
+			category: "other-openbb",
+			credentials: [],
+		}
 	];
 
 	// Add a custom package
@@ -1185,7 +1192,7 @@ export default function InstallationProgress() {
 		setIsComplete(true);
 	};
 
-	// Handle completion - continue to app
+	// Handle completion - continue to app (only for successful installations)
 	const handleContinue = async () => {
 		setIsContinuing(true);
 		// Instead of using navigate, use window.location to force a full page reload
@@ -1198,13 +1205,39 @@ export default function InstallationProgress() {
 
 		try {
 			await invoke("update_openbb_settings", {
-			condaDir: directory,
-			environment: "openbb",
-		});
+				condaDir: directory,
+				environment: "openbb",
+			});
 		} catch (error) {
 			console.error("Failed to update OpenBB settings:", error);
 			// Proceed to app even if this fails
 		}
+
+		// Create default backend services only on successful installation
+		try {
+			await invoke("create_default_backend_services");
+		} catch (error) {
+			console.error("Failed to create default backend services:", error);
+			// Proceed to app even if this fails
+		}
+
+		window.localStorage.setItem("environments-first-load-done", "true");
+		window.location.href = `/environments${queryString ? `?${queryString}` : ""}`;
+	};
+
+	// Handle "Continue Anyway" when installation has failed
+	// This skips settings updates since the environment may be incomplete
+	const handleContinueAnyway = () => {
+		setIsContinuing(true);
+		const searchParams = new URLSearchParams();
+		if (directory) searchParams.append("directory", directory);
+		if (userDataDir) searchParams.append("userDataDir", userDataDir);
+
+		const queryString = searchParams.toString();
+
+		// Don't update settings or create backend configs for failed installations
+		// Just navigate to environments so user can see what's available
+		console.warn("Continuing after failed installation - settings not updated");
 		window.localStorage.setItem("environments-first-load-done", "true");
 		window.location.href = `/environments${queryString ? `?${queryString}` : ""}`;
 	};
@@ -1458,7 +1491,34 @@ export default function InstallationProgress() {
 					<div className="mt-4 mb-4 p-4 bg-red-900/30 text-red-300 rounded-md">
 						<p className="body-md-bold">Installation failed</p>
 						<p className="mt-2 body-sm-regular overflow-auto max-h-40">{error}</p>
+						<p className="mt-3 body-xs-regular text-theme-secondary">
+							For common installation issues (permissions, missing compilers, etc.), see the{" "}
+							<a
+								href="https://docs.openbb.co/odp/desktop/troubleshooting"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-blue-400 hover:text-blue-300 underline"
+							>
+								troubleshooting guide
+							</a>.
+						</p>
+						<div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-600/30 rounded-md">
+							<p className="body-xs-bold text-yellow-300">What happens if you continue?</p>
+							<ul className="mt-2 body-xs-regular text-yellow-200/80 list-disc list-inside space-y-1">
+								<li>The environment may be incomplete or non-functional</li>
+								<li>Default backend services (OpenBB API, MCP) will not be configured</li>
+								<li>You may need to manually set up the environment later</li>
+							</ul>
+						</div>
 						<div className="mt-4 flex gap-2 justify-end">
+							<Button
+								variant="secondary"
+								onClick={handleContinueAnyway}
+								className="button-secondary px-2 py-1"
+								size="sm"
+							>
+								Continue Anyway
+							</Button>
 							<Button
 								variant="destructive"
 								onClick={handleTryAgain}
@@ -1466,14 +1526,6 @@ export default function InstallationProgress() {
 								size="sm"
 							>
 								Try Again
-							</Button>
-							<Button
-								variant="secondary"
-								onClick={handleContinue}
-								className="button-secondary px-2 py-1"
-								size="sm"
-							>
-								Continue Anyway
 							</Button>
 						</div>
 					</div>
