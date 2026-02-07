@@ -158,7 +158,7 @@ class Country(str):
 
     @property
     def name(self) -> str:
-        """Full country name (e.g., 'United States')."""
+        """Return the full country name (e.g., 'United States')."""
         return self._country_data["name"]
 
     @property
