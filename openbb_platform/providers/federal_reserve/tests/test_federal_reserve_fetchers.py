@@ -13,6 +13,9 @@ from openbb_federal_reserve.models.federal_funds_rate import (
 from openbb_federal_reserve.models.fomc_documents import (
     FederalReserveFomcDocumentsFetcher,
 )
+from openbb_federal_reserve.models.inflation_expectations import (
+    FederalReserveInflationExpectationsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -26,6 +29,12 @@ from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
+from openbb_federal_reserve.models.svensson_yield_curve import (
+    FederalReserveSvenssonFetcher,
+)
+from openbb_federal_reserve.models.total_factor_productivity import (
+    FederalReserveTfpFetcher,
+)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -81,6 +90,16 @@ def test_federal_reserve_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": "2024-05-13,2020-05-09"}
 
     fetcher = FederalReserveYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_svensson_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve Svensson fetcher."""
+    params = {}
+
+    fetcher = FederalReserveSvenssonFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -153,5 +172,29 @@ def test_federal_reserve_fomc_documents_fetcher(
     params = {}
 
     fetcher = FederalReserveFomcDocumentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_total_factor_productivity_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve Total Factor Productivity Fetcher."""
+    params = {}
+
+    fetcher = FederalReserveTfpFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_inflation_expectations_fetcher(
+    credentials=test_credentials,
+):
+    """Test the Federal Reserve Inflation Expectations Fetcher."""
+    params = {}
+
+    fetcher = FederalReserveInflationExpectationsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

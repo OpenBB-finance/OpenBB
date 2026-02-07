@@ -100,4 +100,16 @@ class EconDbAvailableIndicatorsFetcher(
         **kwargs: Any,
     ) -> list[EconDbAvailableIndicatorsData]:
         """Transform data."""
-        return [EconDbAvailableIndicatorsData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from math import isnan
+
+        def clean_nan(d: dict) -> dict:
+            """Replace nan values with None for Pydantic validation."""
+            return {
+                k: None if isinstance(v, float) and isnan(v) else v
+                for k, v in d.items()
+            }
+
+        return [
+            EconDbAvailableIndicatorsData.model_validate(clean_nan(d)) for d in data
+        ]

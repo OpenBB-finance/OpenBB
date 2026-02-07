@@ -138,4 +138,4 @@ class FederalReserveFederalFundsRateFetcher(
             _ = d.pop("footnoteId", None)
             results.append(FederalReserveFederalFundsRateData.model_validate(d))
 
-        return results
+        return sorted(results, key=lambda x: x.date)

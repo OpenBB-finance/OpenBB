@@ -140,9 +140,7 @@ class NasdaqEquitySearchFetcher(
             ]
         directory["Market Category"] = directory["Market Category"].replace(" ", None)
         results = (
-            directory.infer_objects(copy=False)
-            .replace({nan: None})
-            .to_dict(orient="records")
+            directory.infer_objects().replace({nan: None}).to_dict(orient="records")
         )
 
         return [NasdaqEquitySearchData.model_validate(d) for d in results]

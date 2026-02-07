@@ -36,7 +36,7 @@ async def get_13f_candidates(symbol: str | None = None, cik: str | None = None):
     params["use_cache"] = False
     params["form_type"] = "13F-HR"
     filings = await fetcher.fetch_data(params, {})
-    filings = [d.model_dump() for d in filings]
+    filings = [d.model_dump() for d in filings]  # type: ignore
     if len(filings) == 0:
         raise OpenBBError(f"No 13F-HR filings found for {symbol if symbol else cik}.")
 
@@ -86,7 +86,7 @@ def parse_header(filing_str: str) -> dict:
         header_dict = xmltodict.parse(str(header_xml))["headerData"]
     except KeyError:
         header_xml = soup.find("type")
-        header_dict = xmltodict.parse(str(header_xml)).get("type")
+        header_dict = xmltodict.parse(str(header_xml)).get("type")  # type: ignore
     if header_dict:
         return header_dict  # type: ignore
     raise OpenBBError(
@@ -142,7 +142,7 @@ async def parse_13f_hr(filing: str):
         info_table = soup.find_all("table")[-1]
 
     parsed_xml = xmltodict.parse(
-        str(info_table[0]).replace("ns1:", "").replace("n1:", "")
+        str(info_table[0]).replace("ns1:", "").replace("n1:", "")  # type: ignore
     )["informationTable"]["infoTable"]
 
     if parsed_xml is None:
@@ -152,23 +152,23 @@ async def parse_13f_hr(filing: str):
             + " Documents filed before Q2 2013 are not supported."
         )
 
-    period_ending = get_period_ending(soup)
+    period_ending = get_period_ending(soup)  # type: ignore
     data = (
         DataFrame(parsed_xml)
         if isinstance(parsed_xml, list)
         else DataFrame([parsed_xml])
     )
     data.columns = data.columns.str.replace("ns1:", "")
-    data.loc[:, "value"] = data["value"].astype(int)
+    data["value"] = data["value"].astype(int)
     security_type: list = []
     principal_amount: list = []
 
     # Unpack the nested objects
     try:
         security_type = [d.get("sshPrnamtType") for d in data["shrsOrPrnAmt"]]
-        data.loc[:, "security_type"] = security_type
+        data["security_type"] = security_type
         principal_amount = [int(d.get("sshPrnamt", 0)) for d in data["shrsOrPrnAmt"]]
-        data.loc[:, "principal_amount"] = principal_amount
+        data["principal_amount"] = principal_amount
         _ = data.pop("shrsOrPrnAmt")
     except ValueError:
         pass
@@ -176,18 +176,18 @@ async def parse_13f_hr(filing: str):
         sole = [d.get("Sole") for d in data["votingAuthority"]]
         shared = [d.get("Shared") for d in data["votingAuthority"]]
         none = [d.get("None") for d in data["votingAuthority"]]
-        data.loc[:, "voting_authority_sole"] = [int(s) if s else 0 for s in sole]
-        data.loc[:, "voting_authority_shared"] = [int(s) if s else 0 for s in shared]
-        data.loc[:, "voting_authority_none"] = [int(s) if s else 0 for s in none]
+        data["voting_authority_sole"] = [int(s) if s else 0 for s in sole]
+        data["voting_authority_shared"] = [int(s) if s else 0 for s in shared]
+        data["voting_authority_none"] = [int(s) if s else 0 for s in none]
         _ = data.pop("votingAuthority")
     except ValueError:
         pass
 
     if "putCall" in data.columns:
-        data.loc[:, "putCall"] = data["putCall"].fillna("--")
+        data["putCall"] = data["putCall"].fillna("--")
 
     # Add the period ending so that the filing is identified when multiple are requested.
-    data.loc[:, "period_ending"] = to_datetime(period_ending, yearfirst=False).date()
+    data["period_ending"] = to_datetime(period_ending, yearfirst=False).date()
     df = DataFrame(data)
     # Aggregate the data because there are multiple entries for each security and we need the totals.
     # We break it down by CUSIP, security type, and option type.
@@ -221,7 +221,7 @@ async def parse_13f_hr(filing: str):
             df.drop(columns=col, inplace=True)
 
     total_value = df.value.sum()
-    df.loc[:, "weight"] = round(df.value.astype(float) / total_value, 6)
+    df["weight"] = round(df.value.astype(float) / total_value, 6)
 
     return (
         df.reset_index()

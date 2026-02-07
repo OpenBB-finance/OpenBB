@@ -12,8 +12,8 @@ from openbb_core.provider.standard_models.money_measures import (
 )
 
 titles = {
-    "M1": "M1",
-    "M2": "M2",
+    "M1": "m1",
+    "M2": "m2",
     "MCU": "currency",
     "MDD": "demand_deposits",
     "MMFGB": "retail_money_market_funds",
@@ -85,11 +85,11 @@ class FederalReserveMoneyMeasuresFetcher(
         df = df.replace("ND", None)
         df["month"] = to_datetime(df["month"])
         df = df[
-            (to_datetime(df.month) >= to_datetime(query.start_date))
-            & (to_datetime(df.month) <= to_datetime(query.end_date))
+            (to_datetime(df.month) >= to_datetime(query.start_date))  # type: ignore
+            & (to_datetime(df.month) <= to_datetime(query.end_date))  # type: ignore
         ].set_index("month")
         # Needs the date to not be in the columns
-        df = df.applymap(lambda x: float(x) if x != "-" and x is not None else x)
+        df = df.map(lambda x: float(x) if x != "-" and x is not None else x)
         df = df.reset_index(drop=False)
 
         return df.to_dict(orient="records")
@@ -109,4 +109,4 @@ class FederalReserveMoneyMeasuresFetcher(
                     d[k] = None
             fed_data.append(FederalReserveMoneyMeasuresData.model_validate(d))
 
-        return fed_data
+        return sorted(fed_data, key=lambda x: x.month)

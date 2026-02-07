@@ -180,7 +180,7 @@ class FamaFrenchUSPortfolioReturnsFetcher(
             )
             .copy()
         )
-        flattened_data.loc[:, "measure"] = query.measure
+        flattened_data["measure"] = query.measure
 
         return AnnotatedResult(
             result=[

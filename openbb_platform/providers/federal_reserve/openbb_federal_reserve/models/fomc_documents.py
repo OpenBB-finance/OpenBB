@@ -2,15 +2,27 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any
 
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_federal_reserve.utils.fomc_documents import FomcDocumentType
-from pydantic import Field, field_validator
+from pydantic import ConfigDict, Field, field_validator
+
+api_prefix = (
+    SystemService()
+    .system_settings.python_settings.model_dump()
+    .get("api_settings", {})
+    .get("prefix", "")
+    or "/api/v1"
+)
 
 choice_types = list(FomcDocumentType.__args__)
 choices = [
@@ -45,16 +57,9 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
         },
         "document_type": {
             "x-widget_config": {
-                "type": "text",
-                "value": None,
                 "options": choices,
+                "description": "Filter by document type. Default is all.",
             }
-        },
-        "pdf_only": {
-            "x-widget_config": {"value": True, "type": "boolean", "show": False}
-        },
-        "as_choices": {
-            "x-widget_config": {"value": True, "type": "boolean", "show": False}
         },
     }
 
@@ -65,15 +70,6 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
     document_type: str | None = Field(
         default=None,
         description=f"Filter by document type. Default is all. Choose from: {', '.join(choice_types)}",
-    )
-    pdf_only: bool = Field(
-        default=False,
-        description="Whether to return as a list with only the PDF documents. Default is False.",
-    )
-    as_choices: bool = Field(
-        default=False,
-        description="Whether to return cast as a list of valid Workspace parameter choices."
-        + " Leave as False for typical use.",
     )
 
     @field_validator("document_type", mode="before", check_fields=False)
@@ -90,19 +86,55 @@ class FederalReserveFomcDocumentsQueryParams(QueryParams):
 class FederalReserveFomcDocumentsData(Data):
     """Federal Reserve FOMC Documents Data."""
 
-    content: Any = Field(
-        default=None,
-        description="The content of request results."
-        + " If `url` was provided, the content is a dictionary with keys `filename` and `content`."
-        + " Otherwise, it is a list of dictionaries with a mapping of FOMC documents to URLs."
-        + " The endpoint response will not be an OBBject.results object, but the content directly.",
+    model_config = ConfigDict(
+        json_schema_extra={
+            "x-widget_config": {
+                "$.type": "multi_file_viewer",
+                "$.name": "FOMC PDF Document Viewer",
+                "$.description": "Current and historical FOMC PDF materials.",
+                "$.gridData": {
+                    "w": 30,
+                    "h": 27,
+                },
+                "$.refetchInterval": False,
+                "$.endpoint": f"{api_prefix}/federal_reserve/fomc_documents_download",
+                "$.params": [
+                    {
+                        "type": "endpoint",
+                        "paramName": "url",
+                        "optionsEndpoint": f"{api_prefix}/federal_reserve/fomc_documents_choices",
+                        "optionsParams": {
+                            "document_type": "$document_type",
+                            "year": "$year",
+                        },
+                        "show": False,
+                        "multiSelect": True,
+                        "roles": ["fileSelector"],
+                    },
+                ],
+                "$.data": {},
+            }
+        }
+    )
+
+    date: dateType = Field(
+        description="The date of the document, formatted as YYYY-MM-DD.",
+    )
+    doc_type: str = Field(
+        description="The type of the FOMC document.",
+    )
+    doc_format: str = Field(
+        description="The format of the document (e.g., pdf, htm).",
+    )
+    url: str = Field(
+        description="The URL of the document.",
     )
 
 
 class FederalReserveFomcDocumentsFetcher(
     Fetcher[
         FederalReserveFomcDocumentsQueryParams,
-        FederalReserveFomcDocumentsData,
+        list[FederalReserveFomcDocumentsData],
     ]
 ):
     """Federal Reserve FOMC Documents Fetcher."""
@@ -115,55 +147,26 @@ class FederalReserveFomcDocumentsFetcher(
         return FederalReserveFomcDocumentsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FederalReserveFomcDocumentsQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> dict:
+    ) -> list[dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         from openbb_federal_reserve.utils.fomc_documents import (
             get_fomc_documents_by_year,
         )
 
-        docs = get_fomc_documents_by_year(
-            query.year, query.document_type, query.pdf_only
-        )
-
-        if query.as_choices is True:
-            choices_list: list = []
-            for doc in docs:
-                if query.pdf_only is True and doc.get("doc_format", "") != "pdf":
-                    continue
-                title = (
-                    doc.get("doc_type", "").replace("_", " ").title()
-                    + " - "
-                    + doc.get("date", "")
-                )
-                value = doc.get("url", "")
-                if title and value:
-                    choices_list.append(
-                        {
-                            "label": title,
-                            "value": value,
-                        }
-                    )
-
-            output = {"content": choices_list}
-
-            return output
-
-        output = {"content": docs}
-
-        return output
+        return get_fomc_documents_by_year(query.year, query.document_type)
 
     @staticmethod
     def transform_data(
         query: FederalReserveFomcDocumentsQueryParams,
-        data: dict,
+        data: list[dict],
         **kwargs: Any,
-    ) -> FederalReserveFomcDocumentsData:
+    ) -> list[FederalReserveFomcDocumentsData]:
         """Transform data."""
         if not data:
             raise EmptyDataError("No FOMC documents found.")
-        return FederalReserveFomcDocumentsData(content=data.get("content"))
+        return [FederalReserveFomcDocumentsData.model_validate(d) for d in data]

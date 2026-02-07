@@ -168,7 +168,7 @@ class AVEquityHistoricalFetcher(
                         inplace=True,
                     )
                 if len(query.symbol.split(",")) > 1:
-                    df.loc[:, "symbol"] = symbol
+                    df["symbol"] = symbol
                 results.extend(df.to_dict("records"))
             if not data:
                 warn(f"Symbol Error: No data found for {symbol}")
@@ -268,7 +268,7 @@ class AVEquityHistoricalFetcher(
                         if freq in ["M", "W-FRI"]:
                             data = data.resample(freq).agg({**agg_dict})
                         if len(query.symbol.split(",")) > 1:
-                            data.loc[:, "symbol"] = symbol
+                            data["symbol"] = symbol
 
                         data = data.reset_index()
                         if intraday is False:

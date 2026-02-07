@@ -1,6 +1,6 @@
 use crate::tauri_handlers::backends::create_backend_service_impl;
 use crate::tauri_handlers::helpers::{
-    EnvSystem, FileExtTrait, FileSystem, RealEnvSystem, RealFileExtTrait, RealFileSystem,
+    EnvSystem, FileExtTrait, FileSystem, RealEnvSystem, RealFileSystem,
 };
 use once_cell::sync::Lazy;
 use reqwest;
@@ -1237,19 +1237,17 @@ pub async fn setup_python_environment(
         window,
         &RealFileSystem,
         &RealEnvSystem,
-        &RealFileExtTrait,
     )
     .await
 }
 
 // Split the large function into a separate implementation
-async fn setup_python_environment_impl<F: FileSystem, E: EnvSystem, FE: FileExtTrait>(
+async fn setup_python_environment_impl<F: FileSystem, E: EnvSystem>(
     directory: String,
     python_version: String,
     window: Window,
     fs: &F,
     env_sys: &E,
-    file_ext: &FE,
 ) -> Result<bool, String> {
     use std::path::Path;
 
@@ -1291,8 +1289,6 @@ async fn setup_python_environment_impl<F: FileSystem, E: EnvSystem, FE: FileExtT
     let yaml_path = generate_environment_yaml(&python_version, fs, env_sys).await?;
     create_environment_from_yaml(&conda_exe, &yaml_path, &report_progress, env_sys).await?;
 
-    install_openbb_package(&conda_path, &report_progress, env_sys).await?;
-
     // Update OpenBB settings
     if let Err(e) = crate::tauri_handlers::helpers::update_openbb_settings_impl(
         &conda_path,
@@ -1306,9 +1302,6 @@ async fn setup_python_environment_impl<F: FileSystem, E: EnvSystem, FE: FileExtT
     }
 
     report_progress("complete", 1.0, "Installation complete");
-
-    // Create default backend service
-    create_default_backend_service(fs, env_sys, file_ext).await;
 
     window
         .emit("installation-directory", &directory)
@@ -1433,71 +1426,19 @@ where
     Ok(())
 }
 
-async fn install_openbb_package<F, E: EnvSystem>(
-    conda_path: &Path,
-    report_progress: &F,
-    env_sys: &E,
-) -> Result<(), String>
-where
-    F: Fn(&str, f32, &str),
-{
-    report_progress("config", 0.85, "Installing OpenBB package");
-
-    let env_name = "openbb";
-    let env_path = conda_path.join("envs").join(env_name);
-
-    if !env_path.exists() {
-        return Err(format!(
-            "Environment '{}' does not exist at path: {}",
-            env_name,
-            env_path.display()
-        ));
-    }
-
-    let conda_exe = if env_sys.consts_os() == "windows" {
-        conda_path.join("Scripts").join("conda.exe")
-    } else {
-        conda_path.join("bin").join("conda")
-    };
-
-    let mut pip_command = env_sys.new_conda_command(&conda_exe, conda_path);
-    let pip_output = pip_command
-        .args([
-            "run",
-            "-n",
-            env_name,
-            "pip",
-            "install",
-            "openbb",
-            "--no-deps",
-        ])
-        .output()
-        .map_err(|e| format!("Failed to install openbb package: {e}"))?;
-
-    if !pip_output.status.success() {
-        let stderr = String::from_utf8_lossy(&pip_output.stderr);
-        return Err(format!("Failed to install openbb package: {stderr}"));
-    }
-
-    let mut build_command = env_sys.new_conda_command(&conda_exe, conda_path);
-    let build_output = build_command
-        .args(["run", "-n", env_name, "openbb-build"])
-        .output()
-        .map_err(|e| format!("Failed to run openbb-build: {e}"))?;
-
-    if !build_output.status.success() {
-        let stderr = String::from_utf8_lossy(&build_output.stderr);
-        log::debug!("Warning: openbb-build failed, continuing anyway: {stderr}");
-    }
-
-    Ok(())
+/// Create default backend services (OpenBB API and MCP)
+/// This should only be called after a successful full installation
+#[tauri::command]
+pub async fn create_default_backend_services() -> Result<(), String> {
+    use crate::tauri_handlers::helpers::{RealEnvSystem, RealFileExtTrait, RealFileSystem};
+    create_default_backend_services_impl(&RealFileSystem, &RealEnvSystem, &RealFileExtTrait).await
 }
 
-async fn create_default_backend_service<F: FileSystem, E: EnvSystem, FE: FileExtTrait>(
+async fn create_default_backend_services_impl<F: FileSystem, E: EnvSystem, FE: FileExtTrait>(
     fs: &F,
     env_sys: &E,
     file_ext: &FE,
-) {
+) -> Result<(), String> {
     let backend = crate::tauri_handlers::backends::BackendService {
         id: uuid::Uuid::new_v4().to_string(),
         name: "OpenBB API".to_string(),
@@ -1535,6 +1476,8 @@ async fn create_default_backend_service<F: FileSystem, E: EnvSystem, FE: FileExt
         url: None,
     };
     let _ = create_backend_service_impl(mcp_backend, fs, env_sys, file_ext);
+
+    Ok(())
 }
 
 async fn generate_environment_yaml<F: FileSystem, E: EnvSystem>(
@@ -1932,7 +1875,7 @@ mod tests {
 
         fs.expect_create_dir_all().returning(|_| Ok(()));
 
-        create_default_backend_service(&fs, &env_sys, &file_ext).await;
+        let _ = create_default_backend_services_impl(&fs, &env_sys, &file_ext).await;
 
         // Clean up the temp file
         let _ = std::fs::remove_file(&temp_path);

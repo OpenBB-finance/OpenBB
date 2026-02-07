@@ -3,6 +3,8 @@
 from functools import lru_cache
 from typing import Literal
 
+from openbb_core.provider.utils.lru import ttl_cache
+
 FomcDocumentType = Literal[
     "all",
     "monetary_policy",
@@ -27,18 +29,20 @@ def load_historical_fomc_documents() -> list:
     """Load historical FOMC documents map from the static assets."""
     # pylint: disable=import-outside-toplevel
     import json
+    from pathlib import Path
 
     historical_docs: list = []
-    historical_docs_path = __file__.replace(
-        "utils/fomc_documents.py", "assets/historical_releases.json"
+    historical_docs_path = (
+        Path(__file__).parent.parent / "assets" / "historical_releases.json"
     )
+
     with open(historical_docs_path, encoding="utf-8") as file:
         historical_docs = json.load(file)
 
     return historical_docs
 
 
-@lru_cache(maxsize=64)
+@ttl_cache(maxsize=1, ttl=3600)
 def get_current_fomc_documents(url: str | None = None) -> list:
     """
     Get the current FOMC documents from https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.
@@ -123,7 +127,7 @@ def get_current_fomc_documents(url: str | None = None) -> list:
     return data_releases
 
 
-@lru_cache(maxsize=32)
+@ttl_cache(maxsize=32, ttl=3600)
 def get_fomc_documents_by_year(
     year: int | None = None,
     document_type: FomcDocumentType | None = None,

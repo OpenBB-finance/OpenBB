@@ -292,10 +292,10 @@ async def get_ohlc_data(
                 .rename(columns={"ticks": "date", "cost": "volume_notional"})
                 .convert_dtypes()
             )
-            df.date = to_datetime(df.date, unit="ms", origin="unix", utc=True)
+            df["date"] = to_datetime(df.date, unit="ms", origin="unix", utc=True)
             if interval == "1D":
                 df.date = df.date.dt.date
-            df.loc[:, "symbol"] = symbol
+            df["symbol"] = symbol
             results.extend(
                 df[
                     [

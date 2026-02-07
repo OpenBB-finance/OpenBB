@@ -169,7 +169,7 @@ class DerivativesViews:
                 str(d) + " Hours Ago" if d > 0 else "Current"
                 for d in df["hours_ago"].unique().tolist()
             ]
-            df.loc[:, "date"] = df["hours_ago"].apply(
+            df["date"] = df["hours_ago"].apply(
                 lambda x: str(x) + " Hours Ago" if x > 0 else "Current"
             )
         figure, color_count = create_fig(figure, df, dates, color_count)

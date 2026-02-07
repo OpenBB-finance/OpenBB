@@ -662,7 +662,8 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = N
     return None
 
 
-def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-branches
+# pylint: disable=too-many-branches,too-many-statements
+def data_schema_to_columns_defs(  # noqa: PLR0912
     openapi_json,
     operation_id,
     provider,
@@ -718,16 +719,29 @@ def data_schema_to_columns_defs(  # noqa: PLR0912  # pylint: disable=too-many-br
         target_schema = schemas[0]
     else:
         for schema in schemas:
-            if (
-                schema.get("description", "")
-                .lower()
-                .startswith(provider.lower().replace("tradingeconomics", "te"))
-            ) or (
-                schema.get("description", "").lower().startswith("us government")
-                or (schema.get("description", "").lower().startswith(provider))
+            schema_desc = schema.get("description", "").lower()
+            provider_lower = provider.lower().replace("tradingeconomics", "te")
+            # Check if description starts with provider name (with or without underscores/spaces)
+            provider_variants = [
+                provider_lower,
+                provider_lower.replace("_", " "),
+                provider_lower.replace("_", ""),
+            ]
+            if any(schema_desc.startswith(v) for v in provider_variants) or (
+                schema_desc.startswith("us government")
             ):
                 target_schema = schema
                 break
+        # Fallback: if no description match, try matching by schema title/name
+        if not target_schema:
+            for schema in schemas:
+                schema_title = schema.get("title", "").lower()
+                if provider.lower().replace("_", "") in schema_title.replace("_", ""):
+                    target_schema = schema
+                    break
+        # Final fallback: use the first schema if still no match
+        if not target_schema and schemas:
+            target_schema = schemas[0]
 
     if get_widget_config:
         return target_schema.get("x-widget_config", {})

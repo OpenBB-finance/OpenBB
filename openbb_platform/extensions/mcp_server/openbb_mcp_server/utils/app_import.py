@@ -13,6 +13,17 @@ def import_app(app_path: str, name: str = "app", factory: bool = False) -> FastA
     # pylint: disable=import-outside-toplevel
     from importlib import import_module, util
 
+    def _is_module_colon_notation(app_path: str) -> bool:
+        """Check if the path uses module:name notation vs a Windows path."""
+        if ":" not in app_path:
+            return False
+        # Windows absolute path check (e.g., C:\path or D:/path)
+        if len(app_path) >= 2 and app_path[1] == ":" and app_path[0].isalpha():
+            # Could still have colon notation: C:\path\file.py:app
+            parts = app_path.split(":")
+            return len(parts) > 2  # More than just drive letter colon
+        return True
+
     def _load_module_from_file_path(file_path: str):
         """Load a Python module from a file path."""
         spec_name = os.path.basename(file_path).split(".")[0]
@@ -27,8 +38,8 @@ def import_app(app_path: str, name: str = "app", factory: bool = False) -> FastA
         return module
 
     # Case 1: Module path with colon notation (e.g., "my_app.main:app" or "main:app")
-    if ":" in app_path:
-        module_path, name = app_path.split(":")
+    if _is_module_colon_notation(app_path):
+        module_path, name = app_path.rsplit(":", 1)
         try:  # First try to import as a module
             module = import_module(module_path)
         except ImportError:  # If module import fails, try to load as a local file
@@ -50,7 +61,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False) -> FastA
 
     # Case 2: File path (e.g., "main.py" or "my_app/main.py")
     else:
-        if not str(app_path).startswith("/"):
+        if not Path(app_path).is_absolute():
             cwd = Path.cwd()
             app_path = str(cwd.joinpath(app_path).resolve())
 

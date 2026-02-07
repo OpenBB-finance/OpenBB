@@ -1,4 +1,13 @@
 import '@testing-library/jest-dom';
+import React from 'react';
+
+// Mock @openbb/ui-pro to avoid forwardRef warnings in tests
+vi.mock('@openbb/ui-pro', () => ({
+  Tooltip: ({ children, content }: { children: React.ReactNode; content: string }) =>
+    React.createElement('div', { 'data-tooltip-content': content }, children),
+  Button: ({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }) =>
+    React.createElement('button', props, children),
+}));
 
 // Mock ResizeObserver
 const ResizeObserverMock = vi.fn(() => ({

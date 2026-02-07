@@ -1,0 +1,23 @@
+name: PR Description Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  pr-description:
+    name: Ensure PR description is present
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR description
+        shell: bash
+        run: |
+          body="$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")"
+          if [ -z "$(echo "$body" | tr -d '[:space:]')" ]; then
+            echo "::error::PR description is empty. Please provide a description of the change."
+            exit 1
+          fi

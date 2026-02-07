@@ -136,18 +136,20 @@ def test_get_chart_function(obbject):
 
 
 @patch("openbb_charting.charting.Charting._get_chart_function")
-@patch("openbb_charting.charting.Chart")
-def test_show(_, mock_get_chart_function, obbject):
+def test_show(mock_get_chart_function, obbject):
     """Test show method."""
     # Arrange
     mock_function = MagicMock()
     mock_get_chart_function.return_value = mock_function
     mock_fig = MagicMock()
+    mock_fig.show = MagicMock(
+        return_value=MagicMock(to_plotly_json=MagicMock(return_value={}))
+    )
     mock_function.return_value = (mock_fig, {"content": "mock_content"})
     obj = Charting(obbject)
 
     # Act
-    obj.show()
+    obj.show(render=False)
 
     # Assert
     mock_get_chart_function.assert_called_once()
@@ -156,19 +158,21 @@ def test_show(_, mock_get_chart_function, obbject):
 
 @patch("openbb_charting.charting.Charting._prepare_data_as_df")
 @patch("openbb_charting.charting.Charting._get_chart_function")
-@patch("openbb_charting.charting.Chart")
-def test_to_chart(_, mock_get_chart_function, mock_prepare_data_as_df, obbject):
+def test_to_chart(mock_get_chart_function, mock_prepare_data_as_df, obbject):
     """Test to_chart method."""
     # Arrange
     mock_prepare_data_as_df.return_value = (mock_dataframe, True)
     mock_function = MagicMock()
     mock_get_chart_function.return_value = mock_function
     mock_fig = MagicMock()
+    mock_fig.show = MagicMock(
+        return_value=MagicMock(to_plotly_json=MagicMock(return_value={}))
+    )
     mock_function.return_value = (mock_fig, {"content": "mock_content"})
     obj = Charting(obbject)
 
     # Act
-    obj.to_chart()
+    obj.to_chart(render=False)
 
     # Assert
     mock_get_chart_function.assert_called_once()

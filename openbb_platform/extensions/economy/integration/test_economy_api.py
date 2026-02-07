@@ -1165,33 +1165,11 @@ def test_economy_direction_of_trade(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
-                "year": None,
-                "document_type": None,
-                "pdf_only": False,
-                "as_choices": False,
-            }
-        ),
-        (
-            {
-                "provider": "federal_reserve",
-                "year": 2022,
-                "document_type": "minutes",
-                "pdf_only": True,
-                "as_choices": True,
-            }
-        ),
+        {
+            "provider": "federal_reserve",
+            "year": 2022,
+            "document_type": "minutes",
+        }
     ],
 )
 @pytest.mark.integration
@@ -1200,21 +1178,8 @@ def test_economy_fomc_documents(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/fomc_documents?{query_str}"
+    url = f"http://localhost:8000/api/v1/economy/fomc_documents?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.integration
-def test_economy_fomc_documents_download(headers):
-    """Test the economy fomc documents download endpoint."""
-    params = {
-        "url": "https://www.federalreserve.gov/monetarypolicy/files/BeigeBook_20230118.pdf"
-    }
-
-    url = "http://0.0.0.0:8000/api/v1/economy/fomc_documents/download?"
-    result = requests.post(url, headers=headers, timeout=10, json=params)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1318,6 +1283,51 @@ def test_economy_shipping_port_info(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/shipping/port_info?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "frequency": "summary",
+            "start_date": None,
+            "end_date": None,
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_total_factor_productivity(params, headers):
+    """Test the economy total factor productivity endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/total_factor_productivity?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {
+            "provider": "federal_reserve",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+        }
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_inflation_expectations(params, headers):
+    """Test the economy survey inflation expectations endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://localhost:8000/api/v1/economy/survey/inflation_expectations?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

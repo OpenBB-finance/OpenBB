@@ -166,7 +166,7 @@ async def get_defined_screener(
     offset = 0
 
     response = yf.screen(
-        name,
+        name,  # type: ignore
         size=250,
         offset=offset,
     )
@@ -182,7 +182,7 @@ async def get_defined_screener(
             break
         offset = len(results)
         res = yf.screen(
-            name,
+            name,  # type: ignore
             size=250,
             offset=offset,
         )
@@ -286,8 +286,8 @@ async def get_futures_quotes(symbols: list) -> "DataFrame":
 
     df = DataFrame([d.model_dump() for d in data])  # type: ignore
     prices = df[["symbol", "bid", "ask", "prev_close"]].copy()
-    prices.loc[:, "price"] = round((prices.ask + prices.bid) / 2, 2)
-    prices.price = prices.price.fillna(prices.prev_close)
+    prices["price"] = round((prices.ask + prices.bid) / 2, 2)
+    prices["price"] = prices.price.fillna(prices.prev_close)
     prices["expiration"] = [get_expiration_month(symbol) for symbol in prices.symbol]
 
     return prices[["expiration", "price"]]  # type: ignore
@@ -387,7 +387,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         flattened_data = flattened_data.sort_values(
             by=["date", "expiration"]
         ).reset_index(drop=True)
-        flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
+        flattened_data["date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
 
         return flattened_data
 
@@ -544,21 +544,21 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             threads=False,
             **kwargs,
         )
-        if hasattr(data.index, "tz") and data.index.tz is not None:
-            data = data.tz_convert(None)
+        if hasattr(data.index, "tz") and data.index.tz is not None:  # type: ignore
+            data = data.tz_convert(None)  # type: ignore
 
     except ValueError as exc:
         raise EmptyDataError() from exc
 
     tickers = symbol.split(",")
     if len(tickers) == 1:
-        data = data.get(symbol, DataFrame())
+        data = data.get(symbol, DataFrame())  # type: ignore
     elif len(tickers) > 1:
         _data = DataFrame()
         for ticker in tickers:
-            temp = data[ticker].copy().dropna(how="all")
+            temp = data[ticker].copy().dropna(how="all")  # type: ignore
             if len(temp) > 0:
-                temp.loc[:, "symbol"] = ticker
+                temp["symbol"] = ticker
                 temp = temp.reset_index().rename(
                     columns={"Date": "date", "Datetime": "date", "index": "date"}
                 )
@@ -568,10 +568,10 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             _data = _data.set_index(index_keys).sort_index()
             data = _data
 
-    if data.empty:
+    if data.empty:  # type: ignore
         raise EmptyDataError()
 
-    data = data.reset_index()
+    data = data.reset_index()  # type: ignore
     data = data.rename(columns={"Date": "date", "Datetime": "date"})
     data["date"] = data["date"].apply(to_datetime)
     data = data[data["Open"] > 0]

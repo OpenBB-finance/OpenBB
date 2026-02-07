@@ -22,26 +22,35 @@ class AsyncProcess(beam.DoFn):
     def process(self, element: str):
         return asyncio.run(self.fetch_data(element))
 
+
 class MyTestCase(unittest.TestCase):
 
-
     def test_sample_pipeline(self):
-        credentials = {} # Running OBB endpoints which do not require credentials
+        credentials = {}  # Running OBB endpoints which do not require credentials
         debug_sink = beam.Map(print)
         ticker = 'AAPL'
 
         with TestPipeline(options=PipelineOptions()) as p:
-            quote = (p | 'Start Quote' >> beam.Create([ticker])
-                     | 'Run Quote' >> beam.ParDo(AsyncProcess(credentials, quote_fetcher))
-                     | 'Print quote' >> debug_sink)
+            quote = (
+                p
+                | 'Start Quote' >> beam.Create([ticker])
+                | 'Run Quote' >> beam.ParDo(AsyncProcess(credentials, quote_fetcher))
+                | 'Print quote' >> debug_sink
+            )
 
-            profile = (p | 'Start Profile' >> beam.Create([ticker])
-                     | 'Run Profile' >> beam.ParDo(AsyncProcess(credentials, profile_fetcher))
-                     | 'Print profile' >> debug_sink)
+            profile = (
+                p
+                | 'Start Profile' >> beam.Create([ticker])
+                | 'Run Profile' >> beam.ParDo(AsyncProcess(credentials, profile_fetcher))
+                | 'Print profile' >> debug_sink
+            )
 
-            news = (p | 'Start News' >> beam.Create([ticker])
-                       | 'Run News' >> beam.ParDo(AsyncProcess(credentials, news_fetcher))
-                       | 'Print nes' >> debug_sink)
+            news = (
+                p
+                | 'Start News' >> beam.Create([ticker])
+                | 'Run News' >> beam.ParDo(AsyncProcess(credentials, news_fetcher))
+                | 'Print news' >> debug_sink
+            )
 
 
 if __name__ == '__main__':

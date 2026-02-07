@@ -206,8 +206,8 @@ class FredCommoditySpotPricesFetcher(
             results = await FredSeriesFetcher.fetch_data(series_query, credentials)
 
             return {
-                "result": results.result,
-                "metadata": results.metadata,
+                "result": results.result,  # type: ignore
+                "metadata": results.metadata,  # type: ignore
             }
         except Exception as e:
             raise OpenBBError(f"Failed to fetch data from FRED API: {e}") from e
@@ -240,8 +240,8 @@ class FredCommoditySpotPricesFetcher(
             .sort_values(by="date")
         )
         df = df.reset_index(drop=True)
-        df.loc[:, "commodity"] = df.symbol.map(title_map)
-        df.loc[:, "unit"] = df.symbol.map(units_map)
+        df["commodity"] = df.symbol.map(title_map)
+        df["unit"] = df.symbol.map(units_map)
         records = df.to_dict(orient="records")
 
         return AnnotatedResult(
