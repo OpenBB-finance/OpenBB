@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from pydantic_core import core_schema
+
 
 def _load_country_data() -> dict[str, dict[str, str]]:
     """Load country data from JSON and build lookup indices.
@@ -167,10 +169,8 @@ class Country(str):
         return self._country_data.get("numeric")
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, source_type: Any, handler: Any) -> Any:
+    def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: Any) -> Any:
         """Return the Pydantic core schema for validation."""
-        from pydantic_core import core_schema
-
         return core_schema.no_info_after_validator_function(
             cls,
             core_schema.str_schema(),
