@@ -96,10 +96,7 @@ class Country(str):
         ValueError
             If the country cannot be resolved.
         """
-        if isinstance(value, Country):
-            country_data = value._country_data
-        else:
-            country_data = cls._lookup_country(value)
+        country_data = value._country_data if isinstance(value, Country) else cls._lookup_country(value)
 
         # Create str instance with the alpha_2 code
         instance = super().__new__(cls, country_data["alpha_2"])
