@@ -78,7 +78,7 @@ class TmxEtfCountriesFetcher(
                     columns={"name": "country", "percent": "weight"}
                 )
                 if not target.empty:
-                    target.loc[:, "symbol"] = symbol
+                    target["symbol"] = symbol
                     result = (
                         target[["symbol", "country", "weight"]]
                         .reset_index(drop=True)

@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
+from openbb_core.provider.utils.country_utils import Country
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fmp.utils.definitions import (
     Countries,
@@ -121,8 +122,10 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         default=None,
         description="Filter by industry.",
     )
-    country: Countries | None = Field(
-        default=None, description="Filter by country, as a two-letter country code."
+    country: Country | None = Field(
+        default=None,
+        description="Filter by country. Accepts ISO 3166-1 alpha-2 codes (e.g., 'US', 'DE'), "
+        "alpha-3 codes (e.g., 'USA'), or country names (e.g., 'United States', 'united_states').",
     )
     exchange: Exchanges | None = Field(default=None, description="Filter by exchange.")
     is_etf: bool | None = Field(
@@ -152,6 +155,22 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         industries = [v["value"] for v in IndustryChoices]
         if v and v not in industries + ["all"]:
             raise ValueError(f"Industry must be one of {', '.join(industries)}")
+        return v
+
+    @field_validator("country", mode="after")
+    @classmethod
+    def _validate_country(cls, v):
+        """Validate country is supported by FMP."""
+        if v is None:
+            return v
+        # Country stores alpha_2 in uppercase, FMP expects lowercase
+        country_code = v.alpha_2.lower()
+        valid_countries = list(Countries.__args__)
+        if country_code not in valid_countries:
+            raise ValueError(
+                f"Country '{v.name}' ({v.alpha_2}) is not supported by FMP. "
+                f"Valid options: {', '.join(sorted(valid_countries)[:20])}..."
+            )
         return v
 
 

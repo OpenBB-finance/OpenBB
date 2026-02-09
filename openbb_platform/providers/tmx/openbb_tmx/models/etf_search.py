@@ -268,4 +268,14 @@ class TmxEtfSearchFetcher(
         **kwargs: Any,
     ) -> list[TmxEtfSearchData]:
         """Transform the data to the standard format."""
-        return [TmxEtfSearchData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from math import isnan
+
+        def clean_nan(d: dict) -> dict:
+            """Replace nan values with None for Pydantic validation."""
+            return {
+                k: None if isinstance(v, float) and isnan(v) else v
+                for k, v in d.items()
+            }
+
+        return [TmxEtfSearchData.model_validate(clean_nan(d)) for d in data]

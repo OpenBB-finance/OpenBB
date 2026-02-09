@@ -73,7 +73,7 @@ class TmxEtfSectorsFetcher(
                 target = DataFrame.from_records(_target.iloc[0]).rename(
                     columns={"name": "sector", "percent": "weight"}
                 )
-                target.loc[:, "symbol"] = symbol.upper()
+                target["symbol"] = symbol.upper()
                 result = (
                     target[["symbol", "sector", "weight"]]
                     .replace({float("nan"): None})

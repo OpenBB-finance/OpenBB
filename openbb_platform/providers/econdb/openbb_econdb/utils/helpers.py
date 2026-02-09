@@ -453,7 +453,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
     all_tickers = all_tickers[~all_tickers.short_ticker.isin(["POPNP", "M3CO"])]
     all_tickers = all_tickers[~all_tickers.short_ticker.str.contains("_")]
     country_indicators = all_tickers[all_tickers.iso.str.len() == 2].copy()
-    country_indicators.loc[:, "symbol_root"] = country_indicators.apply(
+    country_indicators["symbol_root"] = country_indicators.apply(
         lambda row: (
             row["short_ticker"][::-1].replace(row["iso"][::-1], "", 1)[::-1]
             if row["short_ticker"].endswith(row["iso"])
@@ -477,7 +477,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
     # Fix a known incorrect value.
     tickers.loc[tickers["short_ticker"] == "GDPPCNZ", "multiplier"] = 1
     tickers.loc[tickers["short_ticker"] == "GDPPCNZ", "scale"] = "Units"
-    tickers.entity = tickers.entity.str.replace("All countries", "World")
+    tickers["entity"] = tickers.entity.str.replace("All countries", "World")
     tickers = tickers.fillna("N/A").replace("N/A", None).replace("nan", None)
     return tickers.sort_values(by="last_date", ascending=False)
 

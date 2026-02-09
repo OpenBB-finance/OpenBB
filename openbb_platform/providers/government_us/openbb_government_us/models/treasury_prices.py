@@ -101,8 +101,9 @@ class GovernmentUSTreasuryPricesFetcher(
     ) -> list[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from pandas import Index, read_csv, to_datetime  # noqa
+        from math import isnan  # noqa
+        from io import StringIO
+        from pandas import Index, read_csv, to_datetime
 
         try:
             if not data:
@@ -141,7 +142,15 @@ class GovernmentUSTreasuryPricesFetcher(
             ]
         if query.cusip is not None:
             results = results[results["cusip"] == query.cusip]
+
+        def clean_nan(d: dict) -> dict:
+            """Replace nan values with None for Pydantic validation."""
+            return {
+                k: None if isinstance(v, float) and isnan(v) else v
+                for k, v in d.items()
+            }
+
         return [
-            GovernmentUSTreasuryPricesData.model_validate(d)
+            GovernmentUSTreasuryPricesData.model_validate(clean_nan(d))
             for d in results.to_dict("records")
         ]

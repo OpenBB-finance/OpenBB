@@ -696,3 +696,29 @@ def test_fixedincome_government_tips_yields(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({}),
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2023-05-01",
+                "end_date": "2024-06-01",
+                "series_type": "beta0,sveny10",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_svensson_yield_curve(params, headers):
+    """Test the Svensson yield curve endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://localhost:8000/api/v1/fixedincome/government/svensson_yield_curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

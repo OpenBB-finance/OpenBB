@@ -15,11 +15,11 @@ from pydantic import field_validator
 
 
 class FederalReserveSOFRQueryParams(SOFRQueryParams):
-    """FederalReserve FED Query."""
+    """Federal Reserve SOFR Query."""
 
 
 class FederalReserveSOFRData(SOFRData):
-    """FederalReserve FED Data."""
+    """Federal Reserve SOFR Data."""
 
     __alias_dict__ = {
         "date": "effectiveDate",
@@ -105,4 +105,4 @@ class FederalReserveSOFRFetcher(
             _ = d.pop("revisionIndicator", None)
             results.append(FederalReserveSOFRData.model_validate(d))
 
-        return results
+        return sorted(results, key=lambda x: x.date)

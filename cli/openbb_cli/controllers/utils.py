@@ -379,7 +379,7 @@ def print_rich_table(  # noqa: PLR0912
                     )
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
-            df = df.applymap(lambda x: return_colored_value(str(x)))  # type: ignore
+            df = df.map(lambda x: return_colored_value(str(x)))  # type: ignore
 
     exceeds_allowed_columns = len(df.columns) > MAX_COLS
     exceeds_allowed_rows = len(df) > MAX_ROWS

@@ -19,8 +19,8 @@ use tauri_plugin_dialog::DialogExt;
 extern crate winapi;
 
 use crate::tauri_handlers::startup::{
-    abort_installation, get_installation_status, install_conda, install_to_directory,
-    setup_python_environment,
+    abort_installation, create_default_backend_services, get_installation_status, install_conda,
+    install_to_directory, setup_python_environment,
 };
 
 use crate::tauri_handlers::environments::{
@@ -538,7 +538,8 @@ fn main() {
             uninstall_application,
             quit_application,
             generate_self_signed_cert,
-            update_openbb_settings
+            update_openbb_settings,
+            create_default_backend_services
         ])
         .setup(|app_handle| {
             let install_state = check_installation_on_startup();

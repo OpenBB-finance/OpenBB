@@ -10,6 +10,9 @@ from openbb_federal_reserve.models.federal_funds_rate import (
 from openbb_federal_reserve.models.fomc_documents import (
     FederalReserveFomcDocumentsFetcher,
 )
+from openbb_federal_reserve.models.inflation_expectations import (
+    FederalReserveInflationExpectationsFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -23,6 +26,12 @@ from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
+from openbb_federal_reserve.models.svensson_yield_curve import (
+    FederalReserveSvenssonFetcher,
+)
+from openbb_federal_reserve.models.total_factor_productivity import (
+    FederalReserveTfpFetcher,
+)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -36,11 +45,14 @@ federal_reserve_provider = Provider(
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
         "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
         "FomcDocuments": FederalReserveFomcDocumentsFetcher,
+        "InflationExpectations": FederalReserveInflationExpectationsFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "OvernightBankFundingRate": FederalReserveOvernightBankFundingRateFetcher,
         "PrimaryDealerFails": FederalReservePrimaryDealerFailsFetcher,
         "PrimaryDealerPositioning": FederalReservePrimaryDealerPositioningFetcher,
         "SOFR": FederalReserveSOFRFetcher,
+        "SvenssonYieldCurve": FederalReserveSvenssonFetcher,
+        "TotalFactorProductivity": FederalReserveTfpFetcher,
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "YieldCurve": FederalReserveYieldCurveFetcher,
     },

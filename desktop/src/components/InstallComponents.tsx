@@ -156,6 +156,13 @@ export const ExtensionSelector = ({
 	  category: "other-openbb",
 	  credentials: [],
 	},
+	{
+		id: "openbb-cookiecutter",
+		name: "OpenBB Cookiecutter",
+		description: "Template for creating new OpenBB extension projects.",
+		category: "other-openbb",
+		credentials: [],
+	},
   ];
 
   // Update the getFilteredExtensions function to use the new hasMatchingExtensions

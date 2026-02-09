@@ -2303,16 +2303,16 @@ pub async fn update_extension_impl<F: FileSystem, E: EnvSystem>(
         conda_dir.join("bin").join("conda")
     };
     let conda_args = if environment == "base" {
-        vec!["update", &package, "-y"]
+        vec!["install", &package, "-y"]
     } else {
-        vec!["update", "-n", &environment, &package, "-y"]
+        vec!["install", "-n", &environment, &package, "-y"]
     };
 
     let mut conda_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
     let conda_output = conda_command
         .args(&conda_args)
         .output()
-        .map_err(|e| format!("Failed to update extension with conda: {e}"))?;
+        .map_err(|e| format!("Failed to install extension with conda: {e}"))?;
     if conda_output.status.success() {
         log::debug!("Successfully updated extension '{package}' with conda");
         Ok(true)
@@ -2777,7 +2777,7 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
 ) -> Result<bool, String> {
     use std::path::Path;
 
-    log::debug!("Updating packages in environment: {environment}");
+    log::info!("Updating packages in environment: {environment}");
 
     // Path to conda
     let conda_dir = Path::new(&directory).join("conda");
@@ -2790,87 +2790,160 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
         return Err(format!("Environment YAML file not found for {environment}"));
     }
 
-    // Read and parse YAML to check for 'openbb'
+    // Read and parse YAML to extract packages
     let yaml_content = fs
         .read_to_string(&yaml_path)
         .map_err(|e| format!("Failed to read environment YAML: {e}"))?;
     let yaml_value: serde_yaml::Value = serde_yaml::from_str(&yaml_content)
         .map_err(|e| format!("Failed to parse environment YAML: {e}"))?;
 
-    let mut has_openbb = false;
+    // Extract conda and pip packages from YAML
+    let mut conda_packages: Vec<String> = Vec::new();
+    let mut pip_packages: Vec<String> = Vec::new();
+
     if let Some(deps) = yaml_value.get("dependencies").and_then(|d| d.as_sequence()) {
         for dep in deps {
+            // Check if it's a pip mapping
             if let Some(pip_map) = dep.as_mapping()
                 && let Some(pip_deps) = pip_map
                     .get(serde_yaml::Value::String("pip".to_string()))
                     .and_then(|p| p.as_sequence())
             {
                 for pip_dep in pip_deps {
-                    if let Some(pip_dep_str) = pip_dep.as_str()
-                        && pip_dep_str == "openbb"
-                    {
-                        has_openbb = true;
-                        break;
+                    if let Some(pip_dep_str) = pip_dep.as_str() {
+                        pip_packages.push(pip_dep_str.to_string());
                     }
                 }
-            }
-            if has_openbb {
-                break;
+            } else if let Some(conda_dep) = dep.as_str() {
+                // It's a conda package (string entry)
+                // Extract just the package name (remove version specifiers like =3.11)
+                let pkg_name = conda_dep
+                    .split(['=', '>', '<', '!'])
+                    .next()
+                    .unwrap_or(conda_dep);
+                // Skip infrastructure packages - we don't want to upgrade these
+                if !matches!(pkg_name, "python" | "pip" | "nodejs" | "setuptools") {
+                    conda_packages.push(pkg_name.to_string());
+                }
             }
         }
     }
 
-    log::debug!("Using environment definition from: {}", yaml_path.display()); // Get conda executable path
+    log::info!(
+        "Found {} conda packages and {} pip packages to update",
+        conda_packages.len(),
+        pip_packages.len()
+    );
+
+    if conda_packages.is_empty() && pip_packages.is_empty() {
+        log::info!("No packages found in environment YAML, nothing to update");
+        return Ok(true);
+    }
+
+    // Get conda executable
     let conda_exe = if env_sys.consts_os() == "windows" {
         conda_dir.join("Scripts").join("conda.exe")
     } else {
         conda_dir.join("bin").join("conda")
     };
 
-    // Update conda itself first using direct conda command
-    log::debug!("Updating conda itself");
-    let mut conda_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
-    let conda_output = conda_command
-        .args(["update", "-n", "base", "-c", "conda-forge", "conda", "-y"])
-        .output()
-        .map_err(|e| format!("Failed to update conda: {e}"))?;
-
-    if !conda_output.status.success() {
-        log::debug!(
-            "Warning: Conda self-update may have failed, but continuing with environment update"
+    // Update conda packages if any (excluding python, pip)
+    if !conda_packages.is_empty() {
+        log::info!(
+            "Updating {} conda packages: {:?}",
+            conda_packages.len(),
+            conda_packages
         );
-    } // Use direct conda command instead of scripts that require activation
-    log::debug!("Updating environment using conda's dependency solver");
-    let mut update_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
 
-    let update_output = update_command
-        .args([
-            "env",
-            "update",
-            "-n",
-            &environment,
-            "-f",
-            &yaml_path.to_string_lossy(),
-            "--prune",
-        ])
-        .output()
-        .map_err(|e| format!("Failed to update environment: {e}"))?;
+        let mut conda_args = vec!["install", "-n", &environment, "-y"];
+        let pkg_refs: Vec<&str> = conda_packages.iter().map(|s| s.as_str()).collect();
+        conda_args.extend(pkg_refs);
 
-    // Handle output
-    let stdout = String::from_utf8_lossy(&update_output.stdout).to_string();
-    let stderr = String::from_utf8_lossy(&update_output.stderr).to_string();
+        log::info!("Running: {} {}", conda_exe.display(), conda_args.join(" "));
 
-    log::debug!("Update output: {stdout}");
+        // Use spawn with timeout to prevent hanging forever
+        let mut conda_command = env_sys.new_conda_command(&conda_exe, &conda_dir);
+        let mut child = conda_command
+            .args(&conda_args)
+            .stdin(std::process::Stdio::null())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .spawn()
+            .map_err(|e| format!("Failed to spawn conda install: {e}"))?;
 
-    if !update_output.status.success() {
-        return Err(format!("Failed to update environment: {stderr}"));
+        // Run the wait in a blocking thread to not block the async runtime
+        let result = tokio::task::spawn_blocking(move || {
+            let timeout = std::time::Duration::from_secs(300);
+            let start = std::time::Instant::now();
+
+            loop {
+                match child.try_wait() {
+                    Ok(Some(status)) => {
+                        // Process finished
+                        let stdout = child
+                            .stdout
+                            .take()
+                            .map(|mut s| {
+                                let mut buf = String::new();
+                                std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                                buf
+                            })
+                            .unwrap_or_default();
+                        let stderr = child
+                            .stderr
+                            .take()
+                            .map(|mut s| {
+                                let mut buf = String::new();
+                                std::io::Read::read_to_string(&mut s, &mut buf).ok();
+                                buf
+                            })
+                            .unwrap_or_default();
+                        return (Some(status), stdout, stderr);
+                    }
+                    Ok(None) => {
+                        // Still running
+                        if start.elapsed() > timeout {
+                            log::warn!("Conda update timed out after 5 minutes, killing process");
+                            let _ = child.kill();
+                            let _ = child.wait();
+                            return (None, String::new(), "Timed out".to_string());
+                        }
+                        std::thread::sleep(std::time::Duration::from_millis(100));
+                    }
+                    Err(e) => {
+                        return (None, String::new(), format!("Error: {e}"));
+                    }
+                }
+            }
+        })
+        .await
+        .unwrap_or((None, String::new(), "Task panicked".to_string()));
+
+        let (status, stdout, stderr) = result;
+        log::info!("conda stdout: {}", stdout);
+        if !stderr.is_empty() {
+            log::info!("conda stderr: {}", stderr);
+        }
+        if let Some(s) = status
+            && !s.success()
+        {
+            log::warn!(
+                "Conda update had issues: {}",
+                if stderr.is_empty() { &stdout } else { &stderr }
+            );
+        }
     }
 
-    // If 'openbb' is in the environment, reinstall it with --no-deps
-    if has_openbb {
-        log::debug!("'openbb' package found, running pip install --no-deps");
+    // Update pip packages
+    if !pip_packages.is_empty() {
+        log::info!(
+            "Updating {} pip packages: {:?}",
+            pip_packages.len(),
+            pip_packages
+        );
 
-        let env_python_path = if env_sys.consts_os() == "windows" {
+        // Get python executable path for this environment
+        let env_python = if env_sys.consts_os() == "windows" {
             conda_dir.join("envs").join(&environment).join("python.exe")
         } else {
             conda_dir
@@ -2880,23 +2953,86 @@ pub async fn update_environment_impl<F: FileSystem, E: EnvSystem>(
                 .join("python")
         };
 
-        let mut pip_command = env_sys.new_conda_command(&env_python_path, &conda_dir);
-        let pip_output = pip_command
-            .args(["-m", "pip", "install", "openbb", "--no-deps"])
-            .output()
-            .map_err(|e| format!("Failed to run pip install for openbb: {e}"))?;
-
-        if !pip_output.status.success() {
-            let pip_stderr = String::from_utf8_lossy(&pip_output.stderr);
+        if !fs.exists(&env_python) {
             return Err(format!(
-                "Failed to update the openbb meta package, but all other extensions successfully updated -> {}",
-                pip_stderr
+                "Python executable not found for environment {}: {}",
+                environment,
+                env_python.display()
             ));
         }
-        log::debug!("Successfully re-installed openbb with --no-deps");
+
+        let mut pip_command = env_sys.new_conda_command(&env_python, &conda_dir);
+        let mut args = vec!["-m", "pip", "install", "--upgrade"];
+        let package_refs: Vec<&str> = pip_packages.iter().map(|s| s.as_str()).collect();
+        args.extend(package_refs);
+
+        log::info!("Running: {} {}", env_python.display(), args.join(" "));
+
+        let output = pip_command
+            .args(&args)
+            .stdin(std::process::Stdio::null())
+            .output()
+            .map_err(|e| format!("Failed to run pip upgrade: {e}"))?;
+
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        log::info!("pip stdout: {}", stdout);
+        if !stderr.is_empty() {
+            log::info!("pip stderr: {}", stderr);
+        }
+
+        if !output.status.success() {
+            return Err(format!(
+                "Failed to update pip packages: {}",
+                if stderr.is_empty() {
+                    stdout.to_string()
+                } else {
+                    stderr.to_string()
+                }
+            ));
+        }
     }
 
-    log::debug!("Successfully updated environment: {environment}");
+    // Rebuild OpenBB if it's in the environment
+    if pip_packages
+        .iter()
+        .any(|p| p == "openbb" || p.starts_with("openbb-"))
+    {
+        log::info!("OpenBB packages detected, running openbb-build");
+
+        let openbb_build = if env_sys.consts_os() == "windows" {
+            conda_dir
+                .join("envs")
+                .join(&environment)
+                .join("Scripts")
+                .join("openbb-build.exe")
+        } else {
+            conda_dir
+                .join("envs")
+                .join(&environment)
+                .join("bin")
+                .join("openbb-build")
+        };
+
+        if fs.exists(&openbb_build) {
+            let mut build_command = env_sys.new_conda_command(&openbb_build, &conda_dir);
+            let build_output = build_command
+                .stdin(std::process::Stdio::null())
+                .output()
+                .map_err(|e| format!("Failed to run openbb-build: {e}"))?;
+
+            if !build_output.status.success() {
+                let build_stderr = String::from_utf8_lossy(&build_output.stderr);
+                log::warn!("openbb-build had issues: {}", build_stderr);
+                // Don't fail the whole update if openbb-build has issues
+            } else {
+                log::info!("openbb-build completed successfully");
+            }
+        }
+    }
+
+    log::info!("Successfully updated environment: {environment}");
     Ok(true)
 }
 

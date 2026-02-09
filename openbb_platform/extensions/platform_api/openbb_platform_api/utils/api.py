@@ -218,6 +218,17 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
     from openbb_core.api.app_loader import AppLoader
     from openbb_core.api.rest_api import system
 
+    def _is_module_colon_notation(app_path: str) -> bool:
+        """Check if the path uses module:name notation vs a Windows path."""
+        if ":" not in app_path:
+            return False
+        # Windows absolute path check (e.g., C:\path or D:/path)
+        if len(app_path) >= 2 and app_path[1] == ":" and app_path[0].isalpha():
+            # Could still have colon notation: C:\path\file.py:app
+            parts = app_path.split(":")
+            return len(parts) > 2  # More than just drive letter colon
+        return True
+
     def _load_module_from_file_path(file_path: str):
         spec_name = os.path.basename(file_path).split(".")[0]
         spec = util.spec_from_file_location(spec_name, file_path)
@@ -230,16 +241,15 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
         spec.loader.exec_module(module)  # type: ignore
         return module
 
-    # Case 1: Module path with colon notation (e.g., "my_app.main:app" or "main:app")
-    if ":" in app_path:
-        module_path, name = app_path.split(":")
+    if _is_module_colon_notation(app_path):
+        module_path, name = app_path.rsplit(":", 1)
         try:  # First try to import as a module
             module = import_module(module_path)
         except ImportError:  # If module import fails, try to load as a local file
             if not module_path.endswith(".py"):
                 module_path += ".py"
 
-            if not str(module_path).startswith("/"):
+            if not Path(module_path).is_absolute():
                 cwd = Path.cwd()
                 file_path = str(cwd.joinpath(module_path).resolve())
             else:
@@ -254,7 +264,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
 
     # Case 2: File path (e.g., "main.py" or "my_app/main.py")
     else:
-        if not str(app_path).startswith("/"):
+        if not Path(app_path).is_absolute():
             cwd = Path.cwd()
             app_path = str(cwd.joinpath(app_path).resolve())
 

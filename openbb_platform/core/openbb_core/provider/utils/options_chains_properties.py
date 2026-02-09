@@ -67,7 +67,7 @@ class OptionsChainsProperties(Data):
 
         # Add the underlying price to the DataFrame, or override the existing price.
         if self.last_price:
-            chains_data.loc[:, "underlying_price"] = self.last_price
+            chains_data["underlying_price"] = self.last_price
 
         if chains_data.empty:
             raise OpenBBError("Error: No validated data was found.")
@@ -76,14 +76,14 @@ class OptionsChainsProperties(Data):
             _date = to_datetime(chains_data.eod_date)
             temp = DatetimeIndex(chains_data.expiration)
             temp_ = temp - _date  # type: ignore
-            chains_data.loc[:, "dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
+            chains_data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
 
         if "dte" in chains_data.columns:
             chains_data = DataFrame(chains_data[chains_data.dte >= 0])
 
         if "dte" not in chains_data.columns and "eod_date" not in chains_data.columns:
             today = datetime.today().date()
-            chains_data.loc[:, "dte"] = chains_data.expiration - today
+            chains_data["dte"] = chains_data.expiration - today
 
         # Add the breakeven price for each option, and the DEX and GEX for each option, if available.
         try:

@@ -619,14 +619,22 @@ async def download_eod_chains(
 
     cal = xcals.get_calendar("XTSE")
 
+    def _is_session(dt: str) -> bool:
+        """Check if date is a trading session.
+
+        Workaround for exchange_calendars bug with Pandas 3 where
+        is_session() fails due to ns/us unit mismatch in _date_oob.
+        """
+        return to_datetime(dt) in cal.sessions
+
     if date is None:
         EOD_URL = BASE_URL + f"{symbol}&dnld=1#quotes"
     else:
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date) is False:  # type: ignore
+        if _is_session(date) is False:  # type: ignore
             date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date=date) is False:  # type: ignore
+        if _is_session(date) is False:  # type: ignore
             date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = BASE_URL + f"{symbol}&from={date}&to={date}&dnld=1#quotes"

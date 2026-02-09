@@ -143,7 +143,7 @@ class TmxTreasuryPricesFetcher(
             + " & bondType == 'Govt'"
             + " & issuer.str.contains(@govt_type, case=False)"
         ).sort_values(by=["maturityDate"])
-        data.issuer = data.loc[:, "issuer"].str.strip()
+        data["issuer"] = data["issuer"].str.strip()
         if query.maturity_date_max:
             data = data.query(
                 "maturityDate <= @query.maturity_date_max.strftime('%Y-%m-%d')"

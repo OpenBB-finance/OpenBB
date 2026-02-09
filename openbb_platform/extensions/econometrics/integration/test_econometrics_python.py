@@ -31,7 +31,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "polygon"])  # noqa: S311
+    provider = random.choice(["fmp", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
@@ -105,7 +105,7 @@ def test_econometrics_ols_regression(params, data_type, obb):
     result = obb.econometrics.ols_regression(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(

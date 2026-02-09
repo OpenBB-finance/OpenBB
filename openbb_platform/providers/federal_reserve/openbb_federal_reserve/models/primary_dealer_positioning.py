@@ -65,6 +65,7 @@ class FederalReservePrimaryDealerPositioningData(PrimaryDealerPositioningData):
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e6,
+            "x-widget_config": {"prefix": "$", "suffix": "M"},
         },
     )
     name: str = Field(
@@ -145,8 +146,15 @@ class FederalReservePrimaryDealerPositioningFetcher(
             lambda x: POSITION_SERIES_TO_FIELD["dealer_position"].get(x)
         )
         df["title"] = df.symbol.map(lambda x: POSITION_SERIES_TO_TITLE.get(x))
+        df["date"] = df["date"].astype("datetime64[ns]").dt.date
+
+        if query.start_date:
+            df = df[df["date"] >= query.start_date]
+
+        if query.end_date:
+            df = df[df["date"] <= query.end_date]
 
         return [
             FederalReservePrimaryDealerPositioningData.model_validate(d)
-            for d in df.to_dict(orient="records")
+            for d in df.sort_values(by="date").to_dict(orient="records")
         ]

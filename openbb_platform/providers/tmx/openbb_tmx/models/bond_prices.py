@@ -190,7 +190,7 @@ class TmxBondPricesFetcher(
                 "bondType == 'Corp'& maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
             ).sort_values(by=["maturityDate"])
 
-        data.loc[:, "issuer"] = data.issuer.str.strip()
+        data["issuer"] = data.issuer.str.strip()
 
         if query.maturity_date_max:
             data = data.query(

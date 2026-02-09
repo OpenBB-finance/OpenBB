@@ -2,9 +2,6 @@
 
 # pylint: disable=unused-argument
 
-from typing import Annotated
-
-from fastapi import Body
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -699,37 +696,6 @@ async def direction_of_trade(
             },
         ),
     ],
-    response_model=list | dict,
-    openapi_extra={
-        "widget_config": {
-            "type": "multi_file_viewer",
-            "name": "FOMC PDF Document Viewer",
-            "description": "Current and historical FOMC PDF materials.",
-            "gridData": {
-                "w": 30,
-                "h": 27,
-            },
-            "refetchInterval": False,
-            "endpoint": f"{api_prefix}/economy/fomc_documents/download",
-            "params": [
-                {
-                    "type": "endpoint",
-                    "paramName": "url",
-                    "optionsEndpoint": f"{api_prefix}/economy/fomc_documents",
-                    "optionsParams": {
-                        "document_type": "$document_type",
-                        "year": "$year",
-                        "pdf_only": True,
-                        "as_choices": True,
-                        "provider": "federal_reserve",
-                    },
-                    "show": False,
-                    "multiSelect": True,
-                    "roles": ["fileSelector"],
-                },
-            ],
-        }
-    },
 )
 async def fomc_documents(
     cc: CommandContext,
@@ -738,78 +704,45 @@ async def fomc_documents(
     extra_params: ExtraParams,
 ) -> OBBject:
     """
-    Get FOMC documents by year and document type.
+    Get lists of FOMC documents by year and document type.
 
     Source: https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm
 
     Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
-
-    This function does not return the typical OBBject response.
-
-    The response is `list[dict[str, str]]` of FOMC documents and their URLs.
-
-    Each dictionary entry has keys: `date`, `url`, `doc_type`, and `doc_format`.
-
-    If `as_choices` is True, the response is a list of valid Workspace parameter choices.
-    Keys, `label` and `value`, correspond with the `doc_type` + `date`, and the `url`, respectively.
     """
-    results = await OBBject.from_query(Query(**locals()))
-
-    return results.results.content  # type: ignore
+    return await OBBject.from_query(Query(**locals()))
 
 
-# This endpoint is used to download FOMC documents in Workspace.
-# This is not included in the OpenAPI schema or Python SDK.
-
-
-# pylint: disable=protected-access
-@router._api_router.post(
-    "/fomc_documents/download",
-    include_in_schema=False,
-    openapi_extra={},
+@router.command(
+    model="TotalFactorProductivity",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
+            description="Get summary data instead of the default quarterly time series.",
+            parameters={"provider": "federal_reserve", "frequency": "summary"},
+        ),
+    ],
 )
-async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
+async def total_factor_productivity(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Total Factor Productivity (TFP)
+
+    A real-time, quarterly series on total factor productivity (TFP) for the U.S. business sector,
+    adjusted for variations in factor utilization - labor effort and capital's workweek.
+
+    The utilization adjustments follows Basu, Fernald, and Kimball (BFK, 2006).
+    Using relative prices and input-output information, the series is also decomposed into separate TFP
+    and utilization-adjusted TFP series for equipment investment (including consumer durables) and "consumption"
+    (defined as business output less equipment and consumer durables).
+
+    Labor includes an adjustment for "quality" or composition.
+    Capital services are also adjusted for changes in composition over time
+    (e.g. computers, other equipment, structures, and inventories).
+
+    Source: https://www.frbsf.org/research-and-insights/data-and-indicators/total-factor-productivity-tfp/
     """
-    Download FOMC documents from the Federal Reserve's website.
-
-    This function does not return the typical OBBject response.
-
-    The response is a `dict[str, Any]` with keys `filename`, `content`, and `data_format`.
-    """
-    # pylint: disable=import-outside-toplevel
-    import base64  # noqa
-    from io import BytesIO
-    from openbb_core.provider.utils.helpers import make_request
-
-    urls = params.get("url", [])
-
-    results: list = []
-    for url in urls:
-        try:
-            response = make_request(url)
-            response.raise_for_status()
-            pdf = (
-                base64.b64encode(BytesIO(response.content).getvalue()).decode("utf-8")
-                if isinstance(response.content, bytes)
-                else response.content
-            )
-            results.append(
-                {
-                    "content": pdf,
-                    "data_format": {
-                        "data_type": "pdf",
-                        "filename": url.split("/")[-1],
-                    },
-                }
-            )
-        except Exception as exc:
-            results.append(
-                {
-                    "error_type": "download_error",
-                    "content": f"{exc.__class__.__name__}: {exc.args[0]}",
-                    "filename": url.split("/")[-1],
-                }
-            )
-            continue
-
-    return results
+    return await OBBject.from_query(Query(**locals()))

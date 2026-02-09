@@ -122,16 +122,6 @@ def test_news_world(params, obb):
         ),
         (
             {
-                "order": "desc",
-                "provider": "polygon",
-                "symbol": "AAPL",
-                "limit": 20,
-                "start_date": "2024-01-10",
-                "end_date": "2024-01-10",
-            }
-        ),
-        (
-            {
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "limit": 20,
