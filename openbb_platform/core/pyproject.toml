@@ -11,7 +11,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<4"
 uvicorn = "^0.40.0"
 websockets = "^15.0"
 pandas = ">=1.5.3"

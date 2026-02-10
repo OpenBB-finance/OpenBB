@@ -10,7 +10,7 @@ homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/openbb-cookiecutter"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<4"
 cookiecutter = "^2.6.0"
 
 [tool.poetry.scripts]

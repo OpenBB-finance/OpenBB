@@ -14,7 +14,7 @@ packages = [{ include = "openbb_platform_api" }]
 openbb-api = "openbb_platform_api.main:main"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<4"
 openbb-core = "^1.5.8"
 deepdiff = ">=8.6.1"
 
