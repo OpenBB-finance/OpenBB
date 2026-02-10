@@ -122,9 +122,7 @@ class ArgparseTranslator:
                         if argument.name not in self.signature.parameters:
                             # update help
                             action.help = ArgparseTranslator._escape_help(
-                                _update_providers(
-                                    action.help or "", [group.title]
-                                )
+                                _update_providers(action.help or "", [group.title])
                             )
                 return
 
