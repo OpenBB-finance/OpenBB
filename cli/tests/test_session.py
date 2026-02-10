@@ -31,8 +31,9 @@ def test_session_initialization(session):
     assert isinstance(session.settings, Settings)
 
 
+@patch("openbb_cli.session.PromptSession")
 @patch("sys.stdin.isatty", return_value=True)
-def test_get_prompt_session_true(mock_isatty, session):
+def test_get_prompt_session_true(mock_isatty, mock_prompt_session, session):
     "Test get_prompt_session method."
     prompt_session = session._get_prompt_session()
     assert prompt_session is not None
