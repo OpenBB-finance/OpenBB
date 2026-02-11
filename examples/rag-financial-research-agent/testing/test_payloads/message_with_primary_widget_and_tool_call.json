@@ -1,0 +1,63 @@
+{
+    "messages": [
+        {
+            "role": "human",
+            "content": "What are the key risk factors for Apple? Use both the widget data and any documents from the knowledge base."
+        },
+        {
+            "role": "ai",
+            "content": "{\"function\":\"get_widget_data\",\"input_arguments\":{\"data_sources\":[{\"widget_uuid\":\"123e4567-e89b-12d3-a456-426614174000\",\"origin\":\"openbb\",\"id\":\"company_news\",\"input_args\":{\"symbol\":\"AAPL\"}}]}}"
+        },
+        {
+            "role": "tool",
+            "function": "get_widget_data",
+            "input_arguments": {
+                "data_sources": [
+                    {
+                        "widget_uuid": "123e4567-e89b-12d3-a456-426614174000",
+                        "origin": "OpenBB API",
+                        "id": "company_news",
+                        "input_args": {
+                            "symbol": "AAPL"
+                        }
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "items": [
+                        {
+                            "content": "Apple Reports Record-Breaking Quarterly Earnings, Stock Soars 10%\nApple Faces Major Supply Chain Disruptions, Delays Expected for iPhone 15\nApple Announces Annual Developer Conference Dates for June"
+                        }
+                    ]
+                }
+            ],
+            "extra_state": {
+                "copilot_function_call_arguments": {
+                    "widget_uuid": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "_locally_bound_function": "get_widget_data"
+            }
+        }
+    ],
+    "widgets": {
+        "primary": [
+            {
+                "uuid": "123e4567-e89b-12d3-a456-426614174000",
+                "origin": "openbb",
+                "widget_id": "company_news",
+                "name": "Company News",
+                "description": "News about a company",
+                "params": [
+                    {
+                        "name": "ticker",
+                        "type": "string",
+                        "description": "The ticker of the company",
+                        "current_value": "AAPL"
+                    }
+                ],
+                "metadata": {}
+            }
+        ]
+    }
+}

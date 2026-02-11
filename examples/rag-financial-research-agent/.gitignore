@@ -1,0 +1,15 @@
+# Vector store data
+chroma_db/
+test_chroma_db/
+test_chroma_db_vs/
+
+# Downloaded SEC filings
+sec_filings/
+
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/

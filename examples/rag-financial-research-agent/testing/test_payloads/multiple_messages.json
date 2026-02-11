@@ -1,0 +1,7 @@
+{
+    "messages": [
+        {"role": "human", "content": "what is 1 + 1?"},
+        {"role": "ai", "content": "2"},
+        {"role": "human", "content": "what is 2 + 2? Just answer. Don't retrieve data."}
+    ]
+}

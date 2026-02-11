@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "rag-financial-research-agent"
+version = "0.1.0"
+description = "RAG-powered financial research agent for OpenBB Workspace"
+authors = ["sandole"]
+readme = "README.md"
+packages = [{include = "rag_financial_research_agent"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.118.0"
+uvicorn = "^0.27.0"
+sse-starlette = "^2.1.2"
+openbb-ai = "^1.7.5"
+openai = "^1.50.0"
+chromadb = "^0.5.0"
+langchain-openai = "^0.2.0"
+langchain-chroma = "^0.1.0"
+langchain-text-splitters = "^0.3.0"
+httpx = "^0.28.1"
+pydantic = "^2.9.0"
+pydantic-settings = "^2.5.0"
+python-dotenv = "^1.0.0"
+sec-edgar-downloader = "^5.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-asyncio = "^0.24.0"
+pytest-cov = "^5.0.0"
+ruff = "^0.8.0"
+mypy = "^1.15.0"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+exclude = ["tests/", "test_*.py"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

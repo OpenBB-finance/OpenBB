@@ -1,0 +1,28 @@
+{
+    "messages": [
+        {
+            "role": "human",
+            "content": "Fetch the latest news from the widget and combine it with any relevant documents from the knowledge base."
+        }
+    ],
+    "widgets": {
+        "primary": [
+            {
+                "uuid": "123e4567-e89b-12d3-a456-426614174000",
+                "origin": "openbb",
+                "widget_id": "company_news",
+                "name": "Company News",
+                "description": "News about a company",
+                "params": [
+                    {
+                        "name": "ticker",
+                        "type": "string",
+                        "description": "The ticker of the company",
+                        "current_value": "AAPL"
+                    }
+                ],
+                "metadata": {}
+            }
+        ]
+    }
+}
