@@ -3,7 +3,16 @@
 This module provides a Country type that inherits from str for type checker compatibility
 while providing full access to ISO 3166 country data via a static dataset.
 
-Providers can access alpha_2, alpha_3, name, and numeric properties as needed.
+Providers can access alpha_2, alpha_3, name, numeric, and groups properties as needed.
+
+Supported membership groups:
+    - G7: Group of Seven major advanced economies
+    - G20: Group of Twenty major economies
+    - EU: European Union member states
+    - NATO: North Atlantic Treaty Organization members
+    - OECD: Organisation for Economic Co-operation and Development members
+    - OPEC: Organization of the Petroleum Exporting Countries
+    - BRICS: Brazil, Russia, India, China, South Africa (+ 2024 expansion)
 
 References:
     - ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
@@ -16,7 +25,7 @@ from typing import Any
 from pydantic_core import core_schema
 
 
-def _load_country_data() -> dict[str, dict[str, str]]:
+def _load_country_data() -> dict[str, dict[str, Any]]:
     """Load country data from JSON and build lookup indices.
 
     Returns a dict with lookup keys (alpha_2, alpha_3, name variants) mapping to country data.
@@ -74,9 +83,13 @@ class Country(str):
     'USA'
     >>> c.name
     'United States'
+    >>> c.groups
+    ['G7', 'G20', 'NATO', 'OECD']
+    >>> c.is_member_of("G7")
+    True
     """
 
-    _country_data: dict[str, str]
+    _country_data: dict[str, Any]
 
     def __new__(cls, value: Any) -> "Country":
         """Create a new Country instance.
@@ -109,7 +122,7 @@ class Country(str):
         return instance
 
     @staticmethod
-    def _lookup_country(value: Any) -> dict[str, str]:
+    def _lookup_country(value: Any) -> dict[str, Any]:
         """Look up a country from various input formats.
 
         Parameters
@@ -119,8 +132,8 @@ class Country(str):
 
         Returns
         -------
-        dict[str, str]
-            The country data dictionary with alpha_2, alpha_3, name, numeric.
+        dict[str, Any]
+            The country data dictionary with alpha_2, alpha_3, name, numeric, groups.
 
         Raises
         ------
@@ -168,6 +181,44 @@ class Country(str):
     def numeric(self) -> str | None:
         """ISO 3166-1 numeric code (e.g., '840'), if available."""
         return self._country_data.get("numeric")
+
+    @property
+    def groups(self) -> list[str]:
+        """List of membership groups this country belongs to.
+
+        Available groups: G7, G20, EU, NATO, OECD, OPEC, BRICS.
+
+        Examples
+        --------
+        >>> c = Country("US")
+        >>> c.groups
+        ['G7', 'G20', 'NATO', 'OECD']
+        """
+        return self._country_data.get("groups", [])
+
+    def is_member_of(self, group: str) -> bool:
+        """Check if country is a member of a specific group.
+
+        Parameters
+        ----------
+        group : str
+            The group to check membership for (e.g., 'G7', 'EU', 'NATO').
+            Case-insensitive.
+
+        Returns
+        -------
+        bool
+            True if the country is a member of the group.
+
+        Examples
+        --------
+        >>> c = Country("Germany")
+        >>> c.is_member_of("G7")
+        True
+        >>> c.is_member_of("OPEC")
+        False
+        """
+        return group.upper() in [g.upper() for g in self.groups]
 
     @classmethod
     def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: Any) -> Any:
