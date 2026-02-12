@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
+from openbb_core.provider.utils.country_utils import Country
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
@@ -243,7 +244,8 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         | str
     ) = Field(
         default="all",
-        description="Filter by country.",
+        description="Filter by country. Accepts country names, ISO 3166-1 alpha-2/alpha-3 codes, "
+        "or 'all' for all countries. Multiple comma-separated values allowed.",
         json_schema_extra={"choices": COUNTRY_CHOICES},
     )
     limit: int | None = Field(
@@ -344,14 +346,31 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, v):
-        """Validate country."""
+        """Validate country.
+
+        Accepts Country type, ISO codes, country names, or snake_case names.
+        Converts all inputs to Nasdaq's expected snake_case format.
+        """
+        if isinstance(v, Country):
+            # Convert Country to snake_case name
+            v = v.name.lower().replace(" ", "_").replace("-", "_")
         v = v.split(",")
         new_items = []
         for item in v:
             if item == "all":
                 continue
-            if item in COUNTRY_CHOICES:
-                new_items.append(item)
+            # Try to convert via Country type if not already valid
+            normalized_item = item
+            if item not in COUNTRY_CHOICES:
+                try:
+                    country = Country(item)
+                    normalized_item = (
+                        country.name.lower().replace(" ", "_").replace("-", "_")
+                    )
+                except ValueError:
+                    pass  # Keep original, will warn below
+            if normalized_item in COUNTRY_CHOICES:
+                new_items.append(normalized_item)
             else:
                 warn(f"Invalid country: {item}")
         return ",".join(new_items) if new_items else "all"
@@ -408,14 +427,14 @@ class NasdaqEquityScreenerData(EquityScreenerData):
             .replace("--", "")
             .replace("NA", "")
         )
-        return v if v else None
+        return v or None
 
 
 class NasdaqEquityScreenerFetcher(
     Fetcher[
         NasdaqEquityScreenerQueryParams,
         list[NasdaqEquityScreenerData],
-    ]
+    ],
 ):
     """Nasdaq Equity Screener Fetcher."""
 
@@ -440,7 +459,7 @@ class NasdaqEquityScreenerFetcher(
         HEADERS = get_headers(accept_type="text")
         base_url = (
             "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
-            + f"{query.limit if query.limit else 10000}&"
+            f"{query.limit or 10000}&"
         )
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
