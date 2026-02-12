@@ -1449,7 +1449,7 @@ class XBRLParser:
                 if href and "#" in href:
                     loc_map[label_key] = href.split("#")[1]
 
-            resource_map = {}
+            resource_map: dict[str | None, dict[str, str | None]] = {}
             for res in target_root.findall(".//link:label", NS):
                 role = res.get(f"{{{NS['xlink']}}}role")
                 # Simplify role to short name (e.g. terseLabel)
@@ -1460,7 +1460,7 @@ class XBRLParser:
                     resource_map[label_key] = {}
                 resource_map[label_key][role_short] = res.text
 
-            new_labels = {}
+            new_labels: dict[str, dict[str, str | None]] = {}
             for arc in target_root.findall(".//link:labelArc", NS):
                 from_loc = arc.get(f"{{{NS['xlink']}}}from")
                 to_label = arc.get(f"{{{NS['xlink']}}}to")
@@ -1471,15 +1471,15 @@ class XBRLParser:
 
                     # Update standard labels store (simple string)
                     if "label" in label_data:
-                        self.labels[element_id] = label_data["label"]
+                        self.labels[element_id] = label_data["label"]  # type: ignore
                     elif "documentation" not in label_data and list(
                         label_data.values()
                     ):
-                        self.labels[element_id] = list(label_data.values())[0]
+                        self.labels[element_id] = list(label_data.values())[0]  # type: ignore
 
                     # Update documentation store
                     if "documentation" in label_data:
-                        self.documentation[element_id] = label_data["documentation"]
+                        self.documentation[element_id] = label_data["documentation"]  # type: ignore
 
                     if element_id not in new_labels:
                         new_labels[element_id] = {}
@@ -1736,7 +1736,7 @@ class XBRLParser:
                 my_children_rels = [
                     r for r in relationships if r["parent"] == element_id
                 ]
-                my_children_rels.sort(key=lambda x: x["order"])
+                my_children_rels.sort(key=lambda x: float(x["order"]))
 
                 for rel in my_children_rels:
                     child_node = build_node(
