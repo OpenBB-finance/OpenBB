@@ -1,0 +1,240 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://xbrl.fasb.org/us-gaap/2024/stm/
+  response:
+    body:
+      string: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n<html>\n
+        <head>\n  <title>Index of /us-gaap/2024/stm</title>\n </head>\n <body>\n<h1>Index
+        of /us-gaap/2024/stm</h1>\n  <table>\n   <tr><th valign=\"top\"><img src=\"/icons/blank.gif\"
+        alt=\"[ICO]\"></th><th><a href=\"?C=N;O=D\">Name</a></th><th><a href=\"?C=M;O=A\">Last
+        modified</a></th><th><a href=\"?C=S;O=A\">Size</a></th><th><a href=\"?C=D;O=A\">Description</a></th></tr>\n
+        \  <tr><th colspan=\"5\"><hr></th></tr>\n<tr><td valign=\"top\"><img src=\"/icons/back.gif\"
+        alt=\"[PARENTDIR]\"></td><td><a href=\"/us-gaap/2024/\">Parent Directory</a></td><td>&nbsp;</td><td
+        align=\"right\">  - </td><td>&nbsp;</td></tr>\n<tr><td valign=\"top\"><img
+        src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-com-2024.xsd\">us-gaap-stm-com-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-com-def-2024.xml\">us-gaap-stm-com-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">106K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-com-pre-2024.xml\">us-gaap-stm-com-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">213K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dbo-2024.xsd\">us-gaap-stm-scf-dbo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.3K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dbo-cal-2024.xml\">us-gaap-stm-scf-dbo-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 53K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dbo-def-2024.xml\">us-gaap-stm-scf-dbo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">276K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dbo-pre-2024.xml\">us-gaap-stm-scf-dbo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">286K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dir-2024.xsd\">us-gaap-stm-scf-dir-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.3K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dir-cal-2024.xml\">us-gaap-stm-scf-dir-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 31K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dir-def-2024.xml\">us-gaap-stm-scf-dir-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 37K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-dir-pre-2024.xml\">us-gaap-stm-scf-dir-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 35K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indir-2024.xsd\">us-gaap-stm-scf-indir-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.2K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indir-cal-2024.xml\">us-gaap-stm-scf-indir-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">333K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indir-def-2024.xml\">us-gaap-stm-scf-indir-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">318K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indir-pre-2024.xml\">us-gaap-stm-scf-indir-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">329K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indira-2024.xsd\">us-gaap-stm-scf-indira-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indira-def-2024.xml\">us-gaap-stm-scf-indira-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 12K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-indira-pre-2024.xml\">us-gaap-stm-scf-indira-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 87K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-inv-2024.xsd\">us-gaap-stm-scf-inv-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.3K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-inv-cal-2024.xml\">us-gaap-stm-scf-inv-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 13K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-inv-def-2024.xml\">us-gaap-stm-scf-inv-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">284K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-inv-pre-2024.xml\">us-gaap-stm-scf-inv-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">296K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-re-2024.xsd\">us-gaap-stm-scf-re-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-re-def-2024.xml\">us-gaap-stm-scf-re-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">281K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-re-pre-2024.xml\">us-gaap-stm-scf-re-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">289K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sbo-2024.xsd\">us-gaap-stm-scf-sbo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sbo-def-2024.xml\">us-gaap-stm-scf-sbo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">233K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sbo-pre-2024.xml\">us-gaap-stm-scf-sbo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">243K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sd-2024.xsd\">us-gaap-stm-scf-sd-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.8K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sd-def-2024.xml\">us-gaap-stm-scf-sd-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 65K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-scf-sd-pre-2024.xml\">us-gaap-stm-scf-sd-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 77K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-clreo-2024.xsd\">us-gaap-stm-sfp-clreo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-clreo-def-2024.xml\">us-gaap-stm-sfp-clreo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">218K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-clreo-pre-2024.xml\">us-gaap-stm-sfp-clreo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">220K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls-2024.xsd\">us-gaap-stm-sfp-cls-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls-cal-2024.xml\">us-gaap-stm-sfp-cls-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-12 01:56  </td><td align=\"right\">240K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls-def-2024.xml\">us-gaap-stm-sfp-cls-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">289K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls-pre-2024.xml\">us-gaap-stm-sfp-cls-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">291K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls1-cal-2024.xml\">us-gaap-stm-sfp-cls1-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">120K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-cls2-cal-2024.xml\">us-gaap-stm-sfp-cls2-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">118K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-dbo-2024.xsd\">us-gaap-stm-sfp-dbo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.7K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-dbo-cal-2024.xml\">us-gaap-stm-sfp-dbo-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-12 01:56  </td><td align=\"right\">223K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-dbo-def-2024.xml\">us-gaap-stm-sfp-dbo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">201K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-dbo-pre-2024.xml\">us-gaap-stm-sfp-dbo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">203K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-dbo1-cal-2024.xml\">us-gaap-stm-sfp-dbo1-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 48K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ibo-2024.xsd\">us-gaap-stm-sfp-ibo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.4K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ibo-cal-2024.xml\">us-gaap-stm-sfp-ibo-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 15K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ibo-def-2024.xml\">us-gaap-stm-sfp-ibo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">184K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ibo-pre-2024.xml\">us-gaap-stm-sfp-ibo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">185K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-sbo-2024.xsd\">us-gaap-stm-sfp-sbo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-sbo-def-2024.xml\">us-gaap-stm-sfp-sbo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">172K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-sbo-pre-2024.xml\">us-gaap-stm-sfp-sbo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">173K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ucreo-2024.xsd\">us-gaap-stm-sfp-ucreo-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ucreo-def-2024.xml\">us-gaap-stm-sfp-ucreo-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">161K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sfp-ucreo-pre-2024.xml\">us-gaap-stm-sfp-ucreo-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">162K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sheci-2024.xsd\">us-gaap-stm-sheci-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.5K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sheci-cal-2024.xml\">us-gaap-stm-sheci-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 59K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sheci-def-2024.xml\">us-gaap-stm-sheci-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">151K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sheci-pre-2024.xml\">us-gaap-stm-sheci-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">151K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-sheci2-cal-2024.xml\">us-gaap-stm-sheci2-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 14K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc-2024.xsd\">us-gaap-stm-soc-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">3.4K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc-cal-2024.xml\">us-gaap-stm-soc-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 52K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc-def-2024.xml\">us-gaap-stm-soc-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">161K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc-pre-2024.xml\">us-gaap-stm-soc-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">181K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc2-cal-2024.xml\">us-gaap-stm-soc2-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 62K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc3-cal-2024.xml\">us-gaap-stm-soc3-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 34K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc4-cal-2024.xml\">us-gaap-stm-soc4-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 17K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soc5-cal-2024.xml\">us-gaap-stm-soc5-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 46K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-2024.xsd\">us-gaap-stm-soi-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.8K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-cal-2024.xml\">us-gaap-stm-soi-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">223K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-def-2024.xml\">us-gaap-stm-soi-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">225K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-egm-2024.xsd\">us-gaap-stm-soi-egm-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-egm-def-2024.xml\">us-gaap-stm-soi-egm-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">174K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-egm-pre-2024.xml\">us-gaap-stm-soi-egm-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">176K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-indira-2024.xsd\">us-gaap-stm-soi-indira-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.6K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-indira-pre-2024.xml\">us-gaap-stm-soi-indira-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">8.7K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-ins-2024.xsd\">us-gaap-stm-soi-ins-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-ins-def-2024.xml\">us-gaap-stm-soi-ins-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">113K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-ins-pre-2024.xml\">us-gaap-stm-soi-ins-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">113K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-int-2024.xsd\">us-gaap-stm-soi-int-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-int-def-2024.xml\">us-gaap-stm-soi-int-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">173K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-int-pre-2024.xml\">us-gaap-stm-soi-int-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">177K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-pre-2024.xml\">us-gaap-stm-soi-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">228K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-re-2024.xsd\">us-gaap-stm-soi-re-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-re-def-2024.xml\">us-gaap-stm-soi-re-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">156K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-re-pre-2024.xml\">us-gaap-stm-soi-re-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">157K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-reit-2024.xsd\">us-gaap-stm-soi-reit-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.0K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-reit-def-2024.xml\">us-gaap-stm-soi-reit-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">154K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-reit-pre-2024.xml\">us-gaap-stm-soi-reit-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">155K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-sbi-2024.xsd\">us-gaap-stm-soi-sbi-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">1.9K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-sbi-def-2024.xml\">us-gaap-stm-soi-sbi-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">125K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi-sbi-pre-2024.xml\">us-gaap-stm-soi-sbi-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">127K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi1-cal-2024.xml\">us-gaap-stm-soi1-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 68K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-soi4-cal-2024.xml\">us-gaap-stm-soi4-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 50K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-spc-2024.xsd\">us-gaap-stm-spc-2024.xsd</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\">2.2K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-spc-cal-2024.xml\">us-gaap-stm-spc-cal-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 14K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-spc-def-2024.xml\">us-gaap-stm-spc-def-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 57K</td><td>&nbsp;</td></tr>\n<tr><td
+        valign=\"top\"><img src=\"/icons/unknown.gif\" alt=\"[   ]\"></td><td><a href=\"us-gaap-stm-spc-pre-2024.xml\">us-gaap-stm-spc-pre-2024.xml</a></td><td
+        align=\"right\">2023-12-09 03:08  </td><td align=\"right\"> 54K</td><td>&nbsp;</td></tr>\n
+        \  <tr><th colspan=\"5\"><hr></th></tr>\n</table>\n</body></html>\n"
+    headers:
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1491'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Thu, 12 Feb 2026 01:30:57 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - CFLWWW
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -61,15 +61,8 @@ def test_regulators_sec_institutions_search(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "2022", "provider": "sec", "url": "", "use_cache": None}),
-        (
-            {
-                "query": "",
-                "provider": "sec",
-                "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
-                "use_cache": None,
-            }
-        ),
+        ({"provider": "sec"}),
+        ({"provider": "sec", "taxonomy": "us-gaap", "year": 2024, "component": "soi"}),
     ],
 )
 @pytest.mark.integration
