@@ -62,7 +62,15 @@ def test_regulators_sec_institutions_search(params, headers):
     "params",
     [
         ({"provider": "sec"}),
-        ({"provider": "sec", "taxonomy": "us-gaap", "year": 2024, "component": "soi"}),
+        (
+            {
+                "provider": "sec",
+                "taxonomy": "us-gaap",
+                "year": 2024,
+                "component": "soi",
+                "category": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
