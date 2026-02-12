@@ -977,6 +977,80 @@ class FASBClient:
 
     def __init__(self):
         """Initialize the client."""
+        # Cache: dir_url → list of filenames (just the filename, not full URL)
+        self._dir_cache: dict[str, list[str]] = {}
+
+    def list_files(self, dir_url: str) -> list[str]:
+        """Return the list of filenames in a remote directory.
+
+        Fetches the directory listing HTML page (caching per URL) and
+        extracts every ``href="<filename>"`` that looks like an actual
+        file (not a parent link, not an absolute URL).
+
+        Parameters
+        ----------
+        dir_url : str
+            URL of the directory (should end with ``/``).
+
+        Returns
+        -------
+        list[str]
+            Sorted list of filenames present in that directory.
+        """
+        import re  # pylint: disable=import-outside-toplevel
+
+        if not dir_url.endswith("/"):
+            dir_url += "/"
+
+        if dir_url not in self._dir_cache:
+            html = self._fetch_url_content(dir_url)
+            # Pull every href value that is a plain filename (no slash prefix,
+            # no absolute URL, no "../" parent link).
+            raw = re.findall(r'href="([^"]+)"', html)
+            files = sorted(
+                f
+                for f in raw
+                if f
+                and not f.startswith("/")
+                and not f.startswith("http")
+                and not f.startswith("?")
+                and f != "../"
+            )
+            self._dir_cache[dir_url] = files
+
+        return self._dir_cache[dir_url]
+
+    def find_file(self, dir_url: str, *fragments: str) -> str | None:
+        """Find a file in a directory whose name contains ALL given fragments.
+
+        This does exact substring matching on the real filename list — no
+        regex, no guessing.  The fragments are AND-ed: the filename must
+        contain every one of them.
+
+        Parameters
+        ----------
+        dir_url : str
+            URL of the directory to search.
+        *fragments : str
+            One or more substrings that must all appear in the filename.
+
+        Returns
+        -------
+        str | None
+            Full URL to the matching file, or ``None`` if not found.
+        """
+        if not dir_url.endswith("/"):
+            dir_url += "/"
+
+        try:
+            files = self.list_files(dir_url)
+        except Exception:  # pylint: disable=broad-except
+            return None
+
+        for fname in files:
+            if all(frag in fname for frag in fragments):
+                return f"{dir_url}{fname}"
+        return None
 
     def get_available_years(self, taxonomy: str, config: TaxonomyConfig) -> list[int]:
         """Scrapes the base directory to find available taxonomy years."""
@@ -1046,29 +1120,52 @@ class FASBClient:
         base_url = config.base_url_template.format(year=year)
 
         if config.style == TaxonomyStyle.FASB_STANDARD:
-            url = f"{base_url}stm/"
+            stm_url = f"{base_url}stm/"
             try:
-                content = self._fetch_url_content(url)
-                pattern = config.presentation_pattern_regex.format(year=year)
-                found = re.findall(pattern, content)
-                return sorted(list(set(found)))
+                files = self.list_files(stm_url)
+                # Extract component names from actual presentation filenames.
+                # Files look like: us-gaap-stm-{comp}-pre-{date}.xml
+                components: set[str] = set()
+                prefix = config.presentation_file_template.split("{name}")[0]
+                # e.g. "stm/us-gaap-stm-" → we strip "stm/" to get "us-gaap-stm-"
+                if prefix.startswith("stm/"):
+                    prefix = prefix[4:]
+                for fname in files:
+                    if "-pre-" in fname and fname.startswith(prefix):
+                        rest = fname[len(prefix) :]
+                        # rest = "soc-pre-2023.xml" or "soc-pre-2019-01-31.xml"
+                        comp = rest.split("-pre-")[0]
+                        if comp:
+                            components.add(comp)
+                return sorted(components)
             except Exception as e:
-                raise OpenBBError(
-                    f"Failed to fetch components for {year} {config}: {e}"
-                ) from e
+                raise OpenBBError(f"Failed to fetch components for {year}: {e}") from e
 
         if config.style in (
             TaxonomyStyle.SEC_EMBEDDED,
             TaxonomyStyle.SEC_STANDALONE,
         ):
             try:
-                content = self._fetch_url_content(base_url)
-                pattern = config.presentation_pattern_regex.format(year=year)
-                found = re.findall(pattern, content)
-                if found:
-                    return sorted(list(set(found)))
-                # Fallback: check if any matching file just exists
-                return ["standard"] if f"-{year}" in content else []
+                files = self.list_files(base_url)
+                # Extract component names from actual presentation / sub-schema files.
+                # Use the regex to pull component names out of real filenames.
+                components: set[str] = set()  # type: ignore[no-redef]
+                for fname in files:
+                    # Try the configured regex (replace {year} with a catch-all date pattern)
+                    if config.presentation_pattern_regex:
+                        yr_pat = rf"{year}(?:-\d{{2}}-\d{{2}})?"
+                        pattern = config.presentation_pattern_regex.format(
+                            year=yr_pat,
+                        )
+                        m = re.match(pattern, fname)
+                        if m:
+                            components.add(m.group(1))
+                if components:
+                    return sorted(components)
+                # Fallback: if any file mentions this year, it's a single-component taxonomy
+                if any(str(year) in f for f in files):
+                    return ["standard"]
+                return []
             except Exception:
                 return []
 
@@ -2332,14 +2429,21 @@ class XBRLManager:
         else:
             base_url = config.base_url_template.format(year=year)
             if config.style == TaxonomyStyle.FASB_STANDARD:
-                urls.append(f"{base_url}elts/{taxonomy}-{year}.xsd")
+                elts_url = f"{base_url}elts/"
+                found = self.client.find_file(
+                    elts_url, f"{taxonomy}-", str(year), ".xsd"
+                ) or self.client.find_file(elts_url, taxonomy, str(year), ".xsd")
+                if found:
+                    urls.append(found)
             else:
-                urls.extend(
-                    [
-                        f"{base_url}{taxonomy}-{year}.xsd",
-                        f"{base_url}{taxonomy}-entire-{year}.xsd",
-                    ]
-                )
+                for frags in [
+                    (f"{taxonomy}-", str(year), ".xsd"),
+                    (f"{taxonomy}-entire-", str(year), ".xsd"),
+                    (taxonomy, str(year), ".xsd"),
+                ]:
+                    found = self.client.find_file(base_url, *frags)
+                    if found:
+                        urls.append(found)
 
         for url in urls:
             try:
@@ -2364,24 +2468,31 @@ class XBRLManager:
         urls: list[str] = []
         if config.style == TaxonomyStyle.FASB_STANDARD:
             base_url = config.base_url_template.format(year=year)
-            # FASB roles are in a dedicated roles file
-            # e.g. us-gaap → us-roles-{year}.xsd, srt → srt-roles-{year}.xsd
             short = taxonomy.replace("-gaap", "")
-            urls.append(f"{base_url}elts/{short}-roles-{year}.xsd")
-            # Fallback: main schema (some taxonomies embed roles)
-            urls.append(f"{base_url}elts/{taxonomy}-{year}.xsd")
+            elts_url = f"{base_url}elts/"
+            found_roles = self.client.find_file(
+                elts_url, f"{short}-roles-", str(year), ".xsd"
+            ) or self.client.find_file(elts_url, "roles", str(year), ".xsd")
+            if found_roles:
+                urls.append(found_roles)
+            found_main = self.client.find_file(
+                elts_url, f"{taxonomy}-", str(year), ".xsd"
+            ) or self.client.find_file(elts_url, taxonomy, str(year), ".xsd")
+            if found_main:
+                urls.append(found_main)
         elif config.style in (
             TaxonomyStyle.SEC_EMBEDDED,
             TaxonomyStyle.SEC_STANDALONE,
         ):
             base_url = config.base_url_template.format(year=year)
-            urls.extend(
-                [
-                    f"{base_url}{taxonomy}-{year}.xsd",
-                    f"{base_url}{taxonomy}-entire-{year}.xsd",
-                    f"{base_url}{taxonomy}-sub-{year}.xsd",
-                ]
-            )
+            for frags in [
+                (f"{taxonomy}-{year}", ".xsd"),
+                (f"{taxonomy}-entire-", str(year), ".xsd"),
+                (f"{taxonomy}-sub-", str(year), ".xsd"),
+            ]:
+                found = self.client.find_file(base_url, *frags)
+                if found:
+                    urls.append(found)
         elif config.style == TaxonomyStyle.STATIC:
             urls.append(config.base_url_template + config.label_file_pattern)
         elif config.style == TaxonomyStyle.EXTERNAL and taxonomy == "hmrc-dpl":
@@ -2424,20 +2535,42 @@ class XBRLManager:
         if not components:
             return []
 
-        # --- Strategy 1: FASB — role IDs match component names ---
+        # --- Strategy 1: FASB --- role IDs match component names ---
         if config.style == TaxonomyStyle.FASB_STANDARD:
             roles = self._get_roles_for_taxonomy(taxonomy, year)
             role_by_name: dict[str, dict[str, Any]] = {r["name"]: r for r in roles}
             results: list[dict[str, Any]] = []
 
+            # Industry prefix labels for early years (e.g. 2011) where
+            # component names carry an industry prefix like "basi-", "bd-",
+            # "ci-", "ins-", "re-" that does NOT appear in the role names.
+            _industry_prefixes: dict[str, str] = {
+                "basi": "Basic",
+                "bd": "Broker-Dealer",
+                "ci": "Commercial & Industrial",
+                "ins": "Insurance",
+                "re": "Real Estate",
+            }
+
             for comp in components:
                 role = role_by_name.get(comp)
+                prefix_label = ""
+
+                # If no direct match, try stripping the first segment as an
+                # industry prefix (e.g. "basi-com" -> "com").
+                if role is None and "-" in comp:
+                    prefix, rest = comp.split("-", 1)
+                    role = role_by_name.get(rest)
+                    if role is not None:
+                        prefix_label = _industry_prefixes.get(prefix, prefix.upper())
 
                 if role:
+                    short = role.get("short_name", comp)
+                    label = f"{short} ({prefix_label})" if prefix_label else short
                     results.append(
                         {
                             "name": comp,
-                            "label": role.get("short_name", comp),
+                            "label": label,
                             "description": role.get("long_name"),
                             "category": role.get("group"),
                             "url": None,
@@ -2521,10 +2654,20 @@ class XBRLManager:
             comp_roles: list[dict[str, Any]] = []
 
             # Fetch the component's presentation/schema file to find roleRefs
-            comp_urls = [
-                f"{base_url}{taxonomy}-{comp}-{year}.xsd",
-                f"{base_url}{comp}-{year}.xsd",
-            ]
+            comp_urls = []
+            found_tc = self.client.find_file(
+                base_url, f"{taxonomy}-{comp}-", str(year), ".xsd"
+            )
+            if found_tc:
+                comp_urls.append(found_tc)
+            found_c = self.client.find_file(base_url, f"{comp}-{year}", ".xsd")
+            if found_c:
+                comp_urls.append(found_c)
+            if not comp_urls:
+                # Broader search: any file containing the component name
+                found_broad = self.client.find_file(base_url, comp, str(year), ".xsd")
+                if found_broad:
+                    comp_urls.append(found_broad)
 
             for comp_url in comp_urls:
                 try:
@@ -2613,7 +2756,6 @@ class XBRLManager:
         documentation file (separate from the label file).
         """
         # pylint: disable=import-outside-toplevel
-        from urllib.parse import urljoin
 
         if (taxonomy, year) in self._labels_loaded_for:
             return
@@ -2672,21 +2814,35 @@ class XBRLManager:
         else:
             base_url = config.base_url_template.format(year=year)
 
-            # Primary: the configured label file pattern (always try it)
+            # Primary: resolve label file from directory listing
             if config.label_file_pattern:
-                relative_path = config.label_file_pattern.format(year=year)
-                urls_to_try.append(urljoin(base_url, relative_path))
+                if config.style == TaxonomyStyle.FASB_STANDARD:
+                    # FASB: labels in elts/ subdir
+                    found = self.client.find_file(
+                        f"{base_url}elts/", taxonomy, "lab", str(year)
+                    ) or self.client.find_file(f"{base_url}elts/", "lab", str(year))
+                    if found:
+                        urls_to_try.append(found)
+                else:
+                    # SEC: find the label file (any naming convention)
+                    found = self.client.find_file(
+                        base_url, taxonomy, "lab", str(year)
+                    ) or self.client.find_file(base_url, "lab", str(year))
+                    if found:
+                        urls_to_try.append(found)
 
             # Fallbacks for SEC taxonomies
             if config.style != TaxonomyStyle.FASB_STANDARD:
-                urls_to_try.extend(
-                    [
-                        f"{base_url}{taxonomy}-{year}.xsd",
-                        f"{base_url}{taxonomy}-entire-{year}.xsd",
-                        f"{base_url}{taxonomy}-sub-{year}.xsd",
-                        f"{base_url}{taxonomy}-{year}_doc.xsd",
-                    ]
-                )
+                for frags in [
+                    (f"{taxonomy}-{year}", ".xsd"),
+                    (f"{taxonomy}-entire-", str(year), ".xsd"),
+                    (f"{taxonomy}-sub-", str(year), ".xsd"),
+                    (f"{taxonomy}-std-", str(year)),
+                    (taxonomy, "doc", str(year)),
+                ]:
+                    found = self.client.find_file(base_url, *frags)
+                    if found:
+                        urls_to_try.append(found)
 
         loaded_any = False
 
@@ -2716,13 +2872,11 @@ class XBRLManager:
         doc_urls: list[str] = []
         if config.style == TaxonomyStyle.FASB_STANDARD:
             base_url = config.base_url_template.format(year=year)
-            # FASB doc file mirrors the label file naming:
-            # us-gaap-lab-{year}.xml -> us-gaap-doc-{year}.xml
-            # srt-lab-{year}.xml -> srt-doc-{year}.xml
-            doc_file = config.label_file_pattern.format(year=year).replace(
-                "-lab-", "-doc-"
-            )
-            doc_urls.append(urljoin(base_url, doc_file))
+            found_doc = self.client.find_file(
+                f"{base_url}elts/", taxonomy, "doc", str(year)
+            ) or self.client.find_file(f"{base_url}elts/", "doc", str(year))
+            if found_doc:
+                doc_urls.append(found_doc)
 
         for url in doc_urls:
             try:
@@ -2756,13 +2910,20 @@ class XBRLManager:
             TaxonomyStyle.SEC_STANDALONE,
         ):
             base_url = config.base_url_template.format(year=year)
-            ref_url = f"{base_url}{taxonomy}-{year}.xsd"
+            found_ref = self.client.find_file(
+                base_url, f"{taxonomy}-{year}", ".xsd"
+            ) or self.client.find_file(base_url, taxonomy, "ref", str(year))
+            if not found_ref:
+                # Broader: any .xsd containing the taxonomy name and year
+                found_ref = self.client.find_file(base_url, taxonomy, str(year), ".xsd")
+            ref_url = found_ref
 
-            try:
-                ref_content = self.client.fetch_file(ref_url)
-                self.parser.parse_reference_linkbase(ref_content)
-            except Exception:  # pylint: disable=broad-except  # noqa: S110
-                pass
+            if ref_url:
+                try:
+                    ref_content = self.client.fetch_file(ref_url)
+                    self.parser.parse_reference_linkbase(ref_content)
+                except Exception:  # pylint: disable=broad-except  # noqa: S110
+                    pass
 
     def _load_frc_core_labels(self, year: int):
         """Load FRC core taxonomy labels for HMRC DPL cross-namespace resolution.
@@ -2828,7 +2989,12 @@ class XBRLManager:
         from urllib.parse import urljoin  # pylint: disable=import-outside-toplevel
 
         base_url = config.base_url_template.format(year=year)
-        entire_url = f"{base_url}{taxonomy}-entire-{year}.xsd"
+        found = self.client.find_file(
+            base_url, f"{taxonomy}-entire-", str(year), ".xsd"
+        )
+        if not found:
+            return []  # No -entire- file in the directory listing
+        entire_url = found
 
         try:
             content = self.client.fetch_file(entire_url)
@@ -2980,7 +3146,6 @@ class XBRLManager:
             presentation structure of the component.
         """
         # pylint: disable=import-outside-toplevel
-        from urllib.parse import urljoin
 
         config = TAXONOMIES.get(taxonomy)
         if not config:
@@ -3015,10 +3180,35 @@ class XBRLManager:
             full_url = config.base_url_template + config.presentation_file_template
         elif config.style == TaxonomyStyle.FASB_STANDARD:
             base_url = config.base_url_template.format(year=year)
-            relative_path = config.presentation_file_template.format(
-                name=component, year=year
+            stm_url = f"{base_url}stm/"
+            # Resolve actual filename from directory listing — try
+            # progressively broader fragment sets to handle different
+            # naming conventions across years.
+            found = (
+                self.client.find_file(
+                    stm_url,
+                    f"{taxonomy}-stm-{component}-pre-",
+                    str(year),
+                )
+                or self.client.find_file(
+                    stm_url,
+                    component,
+                    "-pre-",
+                    str(year),
+                )
+                or self.client.find_file(
+                    stm_url,
+                    component,
+                    "pre",
+                    str(year),
+                )
             )
-            full_url = urljoin(base_url, relative_path)
+            if not found:
+                raise OpenBBError(
+                    f"No presentation file found for {taxonomy}/{year}/{component}. "
+                    f"Available files in stm/: {[f for f in self.client.list_files(stm_url) if component in f]}"
+                )
+            full_url = found
         elif component == "standard" and config.style in (
             TaxonomyStyle.SEC_EMBEDDED,
             TaxonomyStyle.SEC_STANDALONE,
@@ -3036,13 +3226,41 @@ class XBRLManager:
             # Fall back to the main schema and flat element extraction
             # (reference taxonomies: country, currency, exch, etc.)
             base_url = config.base_url_template.format(year=year)
-            full_url = f"{base_url}{taxonomy}-{year}.xsd"
+            found = self.client.find_file(
+                base_url, f"{taxonomy}-{year}", ".xsd"
+            ) or self.client.find_file(base_url, taxonomy, str(year), ".xsd")
+            if not found:
+                raise OpenBBError(
+                    f"No schema file found for {taxonomy}/{year} in listing."
+                )
+            full_url = found
         else:
             base_url = config.base_url_template.format(year=year)
-            relative_path = config.presentation_file_template.format(
-                name=component, year=year
+            # Resolve actual file from directory listing — try
+            # progressively broader fragment sets.
+            found = (
+                self.client.find_file(
+                    base_url,
+                    f"{taxonomy}-{component}-",
+                    str(year),
+                )
+                or self.client.find_file(
+                    base_url,
+                    f"{taxonomy}-{component}-pre-",
+                    str(year),
+                )
+                or self.client.find_file(
+                    base_url,
+                    component,
+                    str(year),
+                )
             )
-            full_url = urljoin(base_url, relative_path)
+            if not found:
+                raise OpenBBError(
+                    f"No presentation file found for {taxonomy}/{year}/{component}. "
+                    f"Check available components with list_available_components()."
+                )
+            full_url = found
 
         try:
             content = self.client.fetch_file(full_url)
@@ -3062,9 +3280,12 @@ class XBRLManager:
                     nodes = self.parser.parse_schema_elements(content)
                 else:
                     base_url = config.base_url_template.format(year=year)
-                    schema_url = f"{base_url}{taxonomy}-{year}.xsd"
-                    schema_content = self.client.fetch_file(schema_url)
-                    nodes = self.parser.parse_schema_elements(schema_content)
+                    found_schema = self.client.find_file(
+                        base_url, f"{taxonomy}-{year}", ".xsd"
+                    ) or self.client.find_file(base_url, taxonomy, str(year), ".xsd")
+                    if found_schema:
+                        schema_content = self.client.fetch_file(found_schema)
+                        nodes = self.parser.parse_schema_elements(schema_content)
 
             # Aggregation: if a component is an empty wrapper that only
             # imports sub-schemas (e.g. sbs "sbsef" imports sbsef-cco,

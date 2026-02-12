@@ -71,7 +71,7 @@ class SecSchemaFilesQueryParams(QueryParams):
     year: int | None = Field(
         default=None,
         description=(
-            "Taxonomy year (2009-2026 for us-gaap, varies by taxonomy). "
+            "Taxonomy year (e.g. 2011-2026 for us-gaap, varies by taxonomy). "
             + "Defaults to the most recent year when omitted."
         ),
     )
@@ -258,14 +258,19 @@ class SecSchemaFilesFetcher(
 
         # Mode 2: Auto-resolve year to the most recent if not supplied
         year = query.year
+        available_years = manager.get_available_years(query.taxonomy)
         if year is None:
-            years = manager.get_available_years(query.taxonomy)
-            if not years:
+            if not available_years:
                 raise OpenBBError(
                     f"No years found for taxonomy '{query.taxonomy}'. "
                     "Omit all parameters to list available taxonomies."
                 )
-            year = max(years)
+            year = max(available_years)
+        elif available_years and year not in available_years:
+            raise OpenBBError(
+                f"Year {year} is not available for taxonomy '{query.taxonomy}'. "
+                f"Available years: {sorted(available_years, reverse=True)}"
+            )
 
         # Resolve components to fetch
         if query.component is not None:
