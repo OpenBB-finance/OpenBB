@@ -2807,6 +2807,40 @@ class XBRLManager:
 
             return
 
+        # --- HMRC DPL: use template URL directly (no directory listing) ---
+        if config.style == TaxonomyStyle.EXTERNAL and taxonomy == "hmrc-dpl":
+            base_url = config.base_url_template.format(year=year)
+            label_url = base_url + config.label_file_pattern.format(year=year)
+            try:
+                content = self.client.fetch_file(label_url)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    self.parser.parse_label_linkbase(
+                        content, TaxonomyStyle.SEC_EMBEDDED
+                    )
+                if self.parser.labels:
+                    self._labels_loaded_for.add((taxonomy, year))
+            except Exception:  # pylint: disable=broad-except  # noqa: S110
+                pass
+
+            # Also load doc XSD and main schema for fallback labels
+            for suffix in [
+                f"hmrc-dpl-{year}.xsd",
+                f"hmrc-dpl-{year}_doc.xsd",
+                f"dpl-{year}.xsd",
+            ]:
+                try:
+                    content = self.client.fetch_file(base_url + suffix)
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        self.parser.parse_label_linkbase(
+                            content, TaxonomyStyle.SEC_EMBEDDED
+                        )
+                except Exception:  # pylint: disable=broad-except  # noqa: S112
+                    continue
+
+            return
+
         # Build list of candidate URLs to try
         urls_to_try: list[str] = []
 
@@ -3179,6 +3213,13 @@ class XBRLManager:
 
         if config.style == TaxonomyStyle.STATIC:
             full_url = config.base_url_template + config.presentation_file_template
+        elif (
+            config.style == TaxonomyStyle.EXTERNAL and config.presentation_file_template
+        ):
+            # EXTERNAL taxonomies with known presentation templates
+            # (e.g. HMRC DPL) — use template URL directly, no directory listing.
+            base_url = config.base_url_template.format(year=year)
+            full_url = base_url + config.presentation_file_template.format(year=year)
         elif config.style == TaxonomyStyle.FASB_STANDARD:
             base_url = config.base_url_template.format(year=year)
             stm_url = f"{base_url}stm/"

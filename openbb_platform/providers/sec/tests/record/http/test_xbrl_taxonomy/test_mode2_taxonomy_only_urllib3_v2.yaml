@@ -83,7 +83,7 @@ interactions:
       Content-Type:
       - text/html;charset=ISO-8859-1
       Date:
-      - Thu, 12 Feb 2026 01:31:42 GMT
+      - Thu, 12 Feb 2026 06:22:09 GMT
       Server:
       - Apache
       Strict-Transport-Security:
@@ -149,7 +149,7 @@ interactions:
       Content-Type:
       - text/html;charset=ISO-8859-1
       Date:
-      - Thu, 12 Feb 2026 01:31:43 GMT
+      - Thu, 12 Feb 2026 06:22:09 GMT
       Server:
       - Apache
       Set-Cookie:
@@ -2462,7 +2462,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:43 GMT
+      - Thu, 12 Feb 2026 06:22:09 GMT
       ETag:
       - '"1b896-63fa6a06ec940"'
       Last-Modified:
@@ -5252,7 +5252,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:43 GMT
+      - Thu, 12 Feb 2026 06:22:09 GMT
       ETag:
       - '"121dc-63fa6a06ec940"'
       Last-Modified:
@@ -5330,7 +5330,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
       - '"39d-63fa6a06ec940"'
       Last-Modified:
@@ -5406,7 +5406,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
       - '"338-63fa6a06ec940"'
       Last-Modified:
@@ -7527,7 +7527,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
       - '"1aab3-63fa6a06ec940"'
       Last-Modified:
@@ -10317,7 +10317,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
       - '"121dc-63fa6a06ec940"'
       Last-Modified:
@@ -13105,7 +13105,7 @@ interactions:
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
       - '"121dc-63fa6a06ec940"'
       Last-Modified:
@@ -13129,7 +13129,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://xbrl.sec.gov/dei/2026/dei-2026_pre.xsd
+    uri: https://xbrl.sec.gov/dei/2026/dei-2026.xsd
   response:
     body:
       string: '<?xml version="1.0" encoding="US-ASCII"?>
@@ -13144,1143 +13144,2739 @@ interactions:
 
         <xs:schema
 
-        xmlns:dei-pre="http://xbrl.sec.gov/dei-pre/2026"
+        xmlns:dei="http://xbrl.sec.gov/dei/2026"
+
+        xmlns:dtr-types="http://www.xbrl.org/dtr/type/2024-01-31"
 
         xmlns:link="http://www.xbrl.org/2003/linkbase"
 
-        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xbrldt="http://xbrl.org/2005/xbrldt"
+
+        xmlns:xbrli="http://www.xbrl.org/2003/instance"
 
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
 
-        targetNamespace="http://xbrl.sec.gov/dei-pre/2026"
+        targetNamespace="http://xbrl.sec.gov/dei/2026"
 
         elementFormDefault="qualified">
+
+        <xs:import namespace="http://www.xbrl.org/2003/instance" schemaLocation="http://www.xbrl.org/2003/xbrl-instance-2003-12-31.xsd"/>
+
+        <xs:import namespace="http://xbrl.org/2005/xbrldt" schemaLocation="http://www.xbrl.org/2005/xbrldt-2005.xsd"/>
+
+        <xs:import namespace="http://www.xbrl.org/dtr/type/2024-01-31" schemaLocation="https://www.xbrl.org/dtr/type/2024-01-31/types.xsd"/>
 
         <xs:annotation>
 
         <xs:appinfo>
 
-        <link:linkbase id="lnk">
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/Cover" id="cover">
 
-        <link:roleRef roleURI="http://xbrl.sec.gov/dei/role/document/Cover" xlink:type="simple"
-        xlink:href="dei-2026.xsd#cover"/>
+        <link:definition>995100 - Document - Cover</link:definition>
 
-        <link:roleRef roleURI="http://xbrl.sec.gov/dei/role/document/AuditInformation"
-        xlink:type="simple" xlink:href="dei-2026.xsd#ai"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:presentationLink xlink:type="extended" xlink:role="http://xbrl.sec.gov/dei/role/document/Cover">
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_CoverAbstract"
-        xlink:label="CoverAbstract"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentInformationTable"
-        xlink:label="DocumentInformationTable"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="CoverAbstract" xlink:to="DocumentInformationTable" order="1.0"
-        priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/DocumentInformation"
+        id="di">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentInformationDocumentAxis"
-        xlink:label="DocumentInformationDocumentAxis"/>
+        <link:definition>995200 - Document - Document Information</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationTable" xlink:to="DocumentInformationDocumentAxis"
-        order="1.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentDomain"
-        xlink:label="DocumentDomain"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationDocumentAxis" xlink:to="DocumentDomain" order="1.0"
-        priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentInformationLineItems"
-        xlink:label="DocumentInformationLineItems"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationTable" xlink:to="DocumentInformationLineItems"
-        order="2.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/AuditInformation"
+        id="ai">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentType"
-        xlink:label="DocumentType"/>
+        <link:definition>995300 - Document - Audit Information</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentType" order="1.0"
-        priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentRegistrationStatement"
-        xlink:label="DocumentRegistrationStatement"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentRegistrationStatement"
-        order="2.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PreEffectiveAmendment"
-        xlink:label="PreEffectiveAmendment"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PreEffectiveAmendment"
-        order="3.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformation"
+        id="ent">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PreEffectiveAmendmentNumber"
-        xlink:label="PreEffectiveAmendmentNumber"/>
+        <link:definition>995400 - Document - Entity Information</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PreEffectiveAmendmentNumber"
-        order="4.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PostEffectiveAmendment"
-        xlink:label="PostEffectiveAmendment"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PostEffectiveAmendment"
-        order="5.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_InvestmentCompanyActRegistration"
-        xlink:label="InvestmentCompanyActRegistration"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="InvestmentCompanyActRegistration"
-        order="8.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntitiesTable"
+        id="EntityInformationEntitiesTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_InvestmentCompanyRegistrationAmendment"
-        xlink:label="InvestmentCompanyRegistrationAmendment"/>
+        <link:definition>995402 - Document - Entity Information, Entities [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="InvestmentCompanyRegistrationAmendment"
-        order="9.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_InvestmentCompanyRegistrationAmendmentNumber"
-        xlink:label="InvestmentCompanyRegistrationAmendmentNumber"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="InvestmentCompanyRegistrationAmendmentNumber"
-        order="10.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_RegistrationStatementAmendmentNumber"
-        xlink:label="RegistrationStatementAmendmentNumber"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="RegistrationStatementAmendmentNumber"
-        order="7.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityAddressesTable"
+        id="EntityInformationEntityAddressesTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PostEffectiveAmendmentNumber"
-        xlink:label="PostEffectiveAmendmentNumber"/>
+        <link:definition>995403 - Document - Entity Information, Entity Addresses
+        [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PostEffectiveAmendmentNumber"
-        order="6.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentAnnualReport"
-        xlink:label="DocumentAnnualReport"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentAnnualReport"
-        order="11.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentQuarterlyReport"
-        xlink:label="DocumentQuarterlyReport"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentQuarterlyReport"
-        order="12.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityPhoneFaxNumbersTable"
+        id="EntityInformationEntityPhoneFaxNumbersTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentTransitionReport"
-        xlink:label="DocumentTransitionReport"/>
+        <link:definition>995404 - Document - Entity Information, Entity Phone Fax
+        Numbers [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentTransitionReport"
-        order="13.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentPeriodStartDate"
-        xlink:label="DocumentPeriodStartDate"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentPeriodStartDate"
-        order="14.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentFinStmtErrorCorrectionFlag"
-        xlink:label="DocumentFinStmtErrorCorrectionFlag"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentFinStmtErrorCorrectionFlag"
-        order="15.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityListingsTable"
+        id="EntityInformationEntityListingsTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentFinStmtRestatementRecoveryAnalysisFlag"
-        xlink:label="DocumentFinStmtRestatementRecoveryAnalysisFlag"/>
+        <link:definition>995405 - Document - Entity Information, Entity Listings [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentFinStmtRestatementRecoveryAnalysisFlag"
-        order="16.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentShellCompanyReport"
-        xlink:label="DocumentShellCompanyReport"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentShellCompanyReport"
-        order="17.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityInteractiveDataCurrent"
-        xlink:label="EntityInteractiveDataCurrent"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EntityInteractiveDataCurrent"
-        order="19.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntitySectorIndustryClassificationsTable"
+        id="EntityInformationEntitySectorIndustryClassificationsTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentShellCompanyEventDate"
-        xlink:label="DocumentShellCompanyEventDate"/>
+        <link:definition>995406 - Document - Entity Information, Entity Sector Industry
+        Classifications [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentShellCompanyEventDate"
-        order="18.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AnnualInformationForm"
-        xlink:label="AnnualInformationForm"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AnnualInformationForm"
-        order="20.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditedAnnualFinancialStatements"
-        xlink:label="AuditedAnnualFinancialStatements"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AuditedAnnualFinancialStatements"
-        order="21.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityNorthAmericanIndustryClassificationsTable"
+        id="EntityInformationEntityNorthAmericanIndustryClassificationsTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentAccountingStandard"
-        xlink:label="DocumentAccountingStandard"/>
+        <link:definition>995407 - Document - Entity Information, Entity North American
+        Industry Classifications [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentAccountingStandard"
-        order="22.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_OtherReportingStandardItemNumber"
-        xlink:label="OtherReportingStandardItemNumber"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="OtherReportingStandardItemNumber"
-        order="23.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DividendOrInterestReinvestmentPlanOnly"
-        xlink:label="DividendOrInterestReinvestmentPlanOnly"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DividendOrInterestReinvestmentPlanOnly"
-        order="24.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityContactPersonnelTable"
+        id="EntityInformationEntityContactPersonnelTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DelayedOrContinuousOffering"
-        xlink:label="DelayedOrContinuousOffering"/>
+        <link:definition>995408 - Document - Entity Information, Entity Contact Personnel
+        [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DelayedOrContinuousOffering"
-        order="25.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveUponFiling462e"
-        xlink:label="EffectiveUponFiling462e"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveUponFiling462e"
-        order="26.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AdditionalSecuritiesEffective413b"
-        xlink:label="AdditionalSecuritiesEffective413b"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AdditionalSecuritiesEffective413b"
-        order="27.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationEntityLocationTable"
+        id="EntityInformationEntityLocationTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveWhenDeclaredSection8c"
-        xlink:label="EffectiveWhenDeclaredSection8c"/>
+        <link:definition>995409 - Document - Entity Information, Entity Location [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveWhenDeclaredSection8c"
-        order="28.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveUponFiling486b"
-        xlink:label="EffectiveUponFiling486b"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveUponFiling486b"
-        order="29.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveOnSetDate486b"
-        xlink:label="EffectiveOnSetDate486b"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveOnSetDate486b"
-        order="30.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/EntityInformationNameChangeEventTable"
+        id="EntityInformationNameChangeEventTable">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveOnDate486b"
-        xlink:label="EffectiveOnDate486b"/>
+        <link:definition>995410 - Document - Entity Information, Name Change Event
+        [Table]</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveOnDate486b" order="31.0"
-        priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveAfter60Days486a"
-        xlink:label="EffectiveAfter60Days486a"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveAfter60Days486a"
-        order="32.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveOnSetDate486a"
-        xlink:label="EffectiveOnSetDate486a"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveOnSetDate486a"
-        order="33.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/document/Defaults" id="defaults">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EffectiveOnDate486a"
-        xlink:label="EffectiveOnDate486a"/>
+        <link:definition>995411 - Document - Document and Entity Information, Defaults</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EffectiveOnDate486a" order="34.0"
-        priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NewEffectiveDateForPreviousFiling"
-        xlink:label="NewEffectiveDateForPreviousFiling"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="NewEffectiveDateForPreviousFiling"
-        order="35.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AdditionalSecurities462b"
-        xlink:label="AdditionalSecurities462b"/>
+        </link:roleType>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AdditionalSecurities462b"
-        order="36.0" priority="10"/>
+        <link:roleType roleURI="http://xbrl.sec.gov/dei/role/deprecated/dei" id="dep-dei">
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AdditionalSecurities462bFileNumber"
-        xlink:label="AdditionalSecurities462bFileNumber"/>
+        <link:definition>999100 - Document - Deprecated Document Entity Concepts</link:definition>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AdditionalSecurities462bFileNumber"
-        order="37.0" priority="10"/>
+        <link:usedOn>link:presentationLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NoSubstantiveChanges462c"
-        xlink:label="NoSubstantiveChanges462c"/>
+        <link:usedOn>link:calculationLink</link:usedOn>
 
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="NoSubstantiveChanges462c"
-        order="38.0" priority="10"/>
+        <link:usedOn>link:definitionLink</link:usedOn>
 
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NoSubstantiveChanges462cFileNumber"
-        xlink:label="NoSubstantiveChanges462cFileNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="NoSubstantiveChanges462cFileNumber"
-        order="39.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ExhibitsOnly462d"
-        xlink:label="ExhibitsOnly462d"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ExhibitsOnly462d" order="40.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_WrittenCommunications"
-        xlink:label="WrittenCommunications"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="WrittenCommunications"
-        order="43.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_SolicitingMaterial"
-        xlink:label="SolicitingMaterial"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="SolicitingMaterial" order="44.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PreCommencementTenderOffer"
-        xlink:label="PreCommencementTenderOffer"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PreCommencementTenderOffer"
-        order="45.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PreCommencementIssuerTenderOffer"
-        xlink:label="PreCommencementIssuerTenderOffer"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="PreCommencementIssuerTenderOffer"
-        order="46.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityBankruptcyProceedingsReportingCurrent"
-        xlink:label="EntityBankruptcyProceedingsReportingCurrent"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="EntityBankruptcyProceedingsReportingCurrent"
-        order="47.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AmendmentFlag"
-        xlink:label="AmendmentFlag"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AmendmentFlag" order="49.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AmendmentDescription"
-        xlink:label="AmendmentDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="AmendmentDescription"
-        order="50.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentDescription"
-        xlink:label="DocumentDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentDescription" order="51.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentCreationDate"
-        xlink:label="DocumentCreationDate"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentCreationDate"
-        order="52.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentEffectiveDate"
-        xlink:label="DocumentEffectiveDate"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentEffectiveDate"
-        order="53.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentPeriodEndDate"
-        xlink:label="DocumentPeriodEndDate"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentPeriodEndDate"
-        order="54.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentFiscalYearFocus"
-        xlink:label="DocumentFiscalYearFocus"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentFiscalYearFocus"
-        order="55.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentFiscalPeriodFocus"
-        xlink:label="DocumentFiscalPeriodFocus"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentFiscalPeriodFocus"
-        order="56.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentVersion"
-        xlink:label="DocumentVersion"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentVersion" order="57.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentCopyrightInformation"
-        xlink:label="DocumentCopyrightInformation"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentCopyrightInformation"
-        order="58.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentName"
-        xlink:label="DocumentName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentName" order="59.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentTitle"
-        xlink:label="DocumentTitle"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentTitle" order="60.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentSubtitle"
-        xlink:label="DocumentSubtitle"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentSubtitle" order="61.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentSynopsis"
-        xlink:label="DocumentSynopsis"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentSynopsis" order="62.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContainedFileInformationFileName"
-        xlink:label="ContainedFileInformationFileName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ContainedFileInformationFileName"
-        order="63.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContainedFileInformationFileDescription"
-        xlink:label="ContainedFileInformationFileDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ContainedFileInformationFileDescription"
-        order="64.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContainedFileInformationFileType"
-        xlink:label="ContainedFileInformationFileType"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ContainedFileInformationFileType"
-        order="65.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContainedFileInformationFileNumber"
-        xlink:label="ContainedFileInformationFileNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ContainedFileInformationFileNumber"
-        order="66.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ApproximateDateOfCommencementOfProposedSaleToThePublic"
-        xlink:label="ApproximateDateOfCommencementOfProposedSaleToThePublic"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ApproximateDateOfCommencementOfProposedSaleToThePublic"
-        order="42.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_IcfrAuditorAttestationFlag"
-        xlink:label="IcfrAuditorAttestationFlag"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="IcfrAuditorAttestationFlag"
-        order="48.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentsIncorporatedByReferenceTextBlock"
-        xlink:label="DocumentsIncorporatedByReferenceTextBlock"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentsIncorporatedByReferenceTextBlock"
-        order="67.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_DocumentInformationTextBlock"
-        xlink:label="DocumentInformationTextBlock"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="DocumentInformationTextBlock"
-        order="68.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ExhibitsOnly462dFileNumber"
-        xlink:label="ExhibitsOnly462dFileNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="DocumentInformationLineItems" xlink:to="ExhibitsOnly462dFileNumber"
-        order="41.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntitiesTable"
-        xlink:label="EntitiesTable"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="CoverAbstract" xlink:to="EntitiesTable" order="2.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_LegalEntityAxis"
-        xlink:label="LegalEntityAxis"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntitiesTable" xlink:to="LegalEntityAxis" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityDomain"
-        xlink:label="EntityDomain"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="LegalEntityAxis" xlink:to="EntityDomain" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityInformationLineItems"
-        xlink:label="EntityInformationLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntitiesTable" xlink:to="EntityInformationLineItems" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityRegistrantName"
-        xlink:label="EntityRegistrantName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityRegistrantName" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityCentralIndexKey"
-        xlink:label="EntityCentralIndexKey"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityCentralIndexKey" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityTaxIdentificationNumber"
-        xlink:label="EntityTaxIdentificationNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityTaxIdentificationNumber"
-        order="6.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAccountingStandard"
-        xlink:label="EntityAccountingStandard"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityAccountingStandard"
-        order="7.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityNumberOfEmployees"
-        xlink:label="EntityNumberOfEmployees"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityNumberOfEmployees"
-        order="9.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_CurrentFiscalYearEndDate"
-        xlink:label="CurrentFiscalYearEndDate"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="CurrentFiscalYearEndDate"
-        order="10.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_FormerFiscalYearEndDate"
-        xlink:label="FormerFiscalYearEndDate"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="FormerFiscalYearEndDate"
-        order="11.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityWellKnownSeasonedIssuer"
-        xlink:label="EntityWellKnownSeasonedIssuer"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityWellKnownSeasonedIssuer"
-        order="12.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityVoluntaryFilers"
-        xlink:label="EntityVoluntaryFilers"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityVoluntaryFilers" order="13.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityCurrentReportingStatus"
-        xlink:label="EntityCurrentReportingStatus"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityCurrentReportingStatus"
-        order="14.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityFilerCategory"
-        xlink:label="EntityFilerCategory"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityFilerCategory" order="16.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityPublicFloat"
-        xlink:label="EntityPublicFloat"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityPublicFloat" order="20.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_LegalEntityIdentifier"
-        xlink:label="LegalEntityIdentifier"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="LegalEntityIdentifier" order="23.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityFileNumber"
-        xlink:label="EntityFileNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityFileNumber" order="3.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityShellCompany"
-        xlink:label="EntityShellCompany"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityShellCompany" order="15.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityEmergingGrowthCompany"
-        xlink:label="EntityEmergingGrowthCompany"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityEmergingGrowthCompany"
-        order="18.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityExTransitionPeriod"
-        xlink:label="EntityExTransitionPeriod"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityExTransitionPeriod"
-        order="19.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntitySmallBusiness"
-        xlink:label="EntitySmallBusiness"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntitySmallBusiness" order="17.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityInvCompanyType"
-        xlink:label="EntityInvCompanyType"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityInvCompanyType" order="22.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityPrimarySicNumber"
-        xlink:label="EntityPrimarySicNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityPrimarySicNumber"
-        order="5.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityLegalForm"
-        xlink:label="EntityLegalForm"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityLegalForm" order="24.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityHomeCountryISOCode"
-        xlink:label="EntityHomeCountryISOCode"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityHomeCountryISOCode"
-        order="25.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ParentEntityLegalName"
-        xlink:label="ParentEntityLegalName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="ParentEntityLegalName" order="26.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityReportingCurrencyISOCode"
-        xlink:label="EntityReportingCurrencyISOCode"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityReportingCurrencyISOCode"
-        order="27.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityIncorporationDateOfIncorporation"
-        xlink:label="EntityIncorporationDateOfIncorporation"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityIncorporationDateOfIncorporation"
-        order="28.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityInformationFormerLegalOrRegisteredName"
-        xlink:label="EntityInformationFormerLegalOrRegisteredName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityInformationFormerLegalOrRegisteredName"
-        order="21.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityIncorporationStateCountryCode"
-        xlink:label="EntityIncorporationStateCountryCode"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityIncorporationStateCountryCode"
-        order="8.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_InvestmentCompanyActFileNumber"
-        xlink:label="InvestmentCompanyActFileNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="InvestmentCompanyActFileNumber"
-        order="4.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityTextBlock"
-        xlink:label="EntityTextBlock"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityInformationLineItems" xlink:to="EntityTextBlock" order="29.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressesTable"
-        xlink:label="EntityAddressesTable"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="CoverAbstract" xlink:to="EntityAddressesTable" order="3.0" priority="10"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesTable" xlink:to="LegalEntityAxis" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressesAddressTypeAxis"
-        xlink:label="EntityAddressesAddressTypeAxis"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesTable" xlink:to="EntityAddressesAddressTypeAxis"
-        order="2.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AddressTypeDomain"
-        xlink:label="AddressTypeDomain"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesAddressTypeAxis" xlink:to="AddressTypeDomain" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_BusinessContactMember"
-        xlink:label="BusinessContactMember"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AddressTypeDomain" xlink:to="BusinessContactMember" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_OtherAddressMember"
-        xlink:label="OtherAddressMember"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AddressTypeDomain" xlink:to="OtherAddressMember" order="3.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_FormerAddressMember"
-        xlink:label="FormerAddressMember"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AddressTypeDomain" xlink:to="FormerAddressMember" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressesLineItems"
-        xlink:label="EntityAddressesLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesTable" xlink:to="EntityAddressesLineItems" order="3.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressAddressDescription"
-        xlink:label="EntityAddressAddressDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressAddressDescription"
-        order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressAddressLine1"
-        xlink:label="EntityAddressAddressLine1"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressAddressLine1"
-        order="3.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressAddressLine2"
-        xlink:label="EntityAddressAddressLine2"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressAddressLine2"
-        order="4.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressCityOrTown"
-        xlink:label="EntityAddressCityOrTown"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressCityOrTown" order="6.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressStateOrProvince"
-        xlink:label="EntityAddressStateOrProvince"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressStateOrProvince"
-        order="7.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressCountry"
-        xlink:label="EntityAddressCountry"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressCountry" order="8.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressPostalZipCode"
-        xlink:label="EntityAddressPostalZipCode"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressPostalZipCode"
-        order="9.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityPhoneFaxNumbersLineItems"
-        xlink:label="EntityPhoneFaxNumbersLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityPhoneFaxNumbersLineItems"
-        order="10.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_CountryRegion"
-        xlink:label="CountryRegion"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityPhoneFaxNumbersLineItems" xlink:to="CountryRegion" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_CityAreaCode"
-        xlink:label="CityAreaCode"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityPhoneFaxNumbersLineItems" xlink:to="CityAreaCode" order="3.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_LocalPhoneNumber"
-        xlink:label="LocalPhoneNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityPhoneFaxNumbersLineItems" xlink:to="LocalPhoneNumber" order="4.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_Extension" xlink:label="Extension"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityPhoneFaxNumbersLineItems" xlink:to="Extension" order="5.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_PhoneFaxNumberDescription"
-        xlink:label="PhoneFaxNumberDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityPhoneFaxNumbersLineItems" xlink:to="PhoneFaxNumberDescription"
-        order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityContactPersonnelLineItems"
-        xlink:label="EntityContactPersonnelLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityContactPersonnelLineItems"
-        order="2.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContactPersonnelName"
-        xlink:label="ContactPersonnelName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityContactPersonnelLineItems" xlink:to="ContactPersonnelName"
-        order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContactPersonnelEmailAddress"
-        xlink:label="ContactPersonnelEmailAddress"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityContactPersonnelLineItems" xlink:to="ContactPersonnelEmailAddress"
-        order="2.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ContactPersonnelFaxNumber"
-        xlink:label="ContactPersonnelFaxNumber"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityContactPersonnelLineItems" xlink:to="ContactPersonnelFaxNumber"
-        order="3.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityAddressAddressLine3"
-        xlink:label="EntityAddressAddressLine3"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityAddressesLineItems" xlink:to="EntityAddressAddressLine3"
-        order="5.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingsTable"
-        xlink:label="EntityListingsTable"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="CoverAbstract" xlink:to="EntityListingsTable" order="4.0" priority="10"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsTable" xlink:to="LegalEntityAxis" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingsLineItems"
-        xlink:label="EntityListingsLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsTable" xlink:to="EntityListingsLineItems" order="3.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_TradingSymbol"
-        xlink:label="TradingSymbol"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="TradingSymbol" order="3.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingPrimary"
-        xlink:label="EntityListingPrimary"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingPrimary" order="9.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingForeign"
-        xlink:label="EntityListingForeign"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingForeign" order="10.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingDepositoryReceiptRatio"
-        xlink:label="EntityListingDepositoryReceiptRatio"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingDepositoryReceiptRatio"
-        order="11.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingDescription"
-        xlink:label="EntityListingDescription"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingDescription" order="12.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingSecurityTradingCurrency"
-        xlink:label="EntityListingSecurityTradingCurrency"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingSecurityTradingCurrency"
-        order="13.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingParValuePerShare"
-        xlink:label="EntityListingParValuePerShare"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityListingParValuePerShare"
-        order="7.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityCommonStockSharesOutstanding"
-        xlink:label="EntityCommonStockSharesOutstanding"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="EntityCommonStockSharesOutstanding"
-        order="8.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_Security12bTitle"
-        xlink:label="Security12bTitle"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="Security12bTitle" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_Security12gTitle"
-        xlink:label="Security12gTitle"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="Security12gTitle" order="5.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NoTradingSymbolFlag"
-        xlink:label="NoTradingSymbolFlag"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="NoTradingSymbolFlag" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_SecurityExchangeName"
-        xlink:label="SecurityExchangeName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="SecurityExchangeName" order="4.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_SecurityReportingObligation"
-        xlink:label="SecurityReportingObligation"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsLineItems" xlink:to="SecurityReportingObligation"
-        order="6.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityListingsExchangeAxis"
-        xlink:label="EntityListingsExchangeAxis"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsTable" xlink:to="EntityListingsExchangeAxis" order="2.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_ExchangeDomain"
-        xlink:label="ExchangeDomain"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="EntityListingsExchangeAxis" xlink:to="ExchangeDomain" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NameChangeEventTable"
-        xlink:label="NameChangeEventTable"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="CoverAbstract" xlink:to="NameChangeEventTable" order="5.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NameChangeEventDateAxis"
-        xlink:label="NameChangeEventDateAxis"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="NameChangeEventTable" xlink:to="NameChangeEventDateAxis" order="1.0"
-        priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_NameChangeEventLineItems"
-        xlink:label="NameChangeEventLineItems"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="NameChangeEventTable" xlink:to="NameChangeEventLineItems" order="2.0"
-        priority="10"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="NameChangeEventLineItems" xlink:to="EntityInformationFormerLegalOrRegisteredName"
-        order="1.0" priority="10"/>
-
-        </link:presentationLink>
-
-        <link:presentationLink xlink:type="extended" xlink:role="http://xbrl.sec.gov/dei/role/document/AuditInformation">
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_LegalEntityAxis"
-        xlink:label="LegalEntityAxis"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_EntityDomain"
-        xlink:label="EntityDomain"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="LegalEntityAxis" xlink:to="EntityDomain" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorLineItems"
-        xlink:label="AuditorLineItems"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorTable"
-        xlink:label="AuditorTable"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorLineItems" xlink:to="AuditorTable" order="1.0" priority="10"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorTable" xlink:to="LegalEntityAxis" order="1.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorName" xlink:label="AuditorName"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorLineItems" xlink:to="AuditorName" order="2.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorFirmId"
-        xlink:label="AuditorFirmId"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorLineItems" xlink:to="AuditorFirmId" order="3.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorLocation"
-        xlink:label="AuditorLocation"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorLineItems" xlink:to="AuditorLocation" order="4.0" priority="10"/>
-
-        <link:loc xlink:type="locator" xlink:href="dei-2026.xsd#dei_AuditorOpinionTextBlock"
-        xlink:label="AuditorOpinionTextblock"/>
-
-        <link:presentationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/parent-child"
-        xlink:from="AuditorLineItems" xlink:to="AuditorOpinionTextblock" order="5.0"
-        priority="10"/>
-
-        </link:presentationLink>
-
-        </link:linkbase>
+        </link:roleType>
 
         </xs:appinfo>
 
         </xs:annotation>
+
+        <xs:element name="CoverAbstract" id="dei_CoverAbstract" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentInformationTable" id="dei_DocumentInformationTable"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:hypercubeItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentInformationDocumentAxis" id="dei_DocumentInformationDocumentAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentDomain" id="dei_DocumentDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentInformationLineItems" id="dei_DocumentInformationLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentType" id="dei_DocumentType" type="dei:submissionTypeItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentAnnualReport" id="dei_DocumentAnnualReport" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentQuarterlyReport" id="dei_DocumentQuarterlyReport"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentTransitionReport" id="dei_DocumentTransitionReport"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentPeriodStartDate" id="dei_DocumentPeriodStartDate"
+        type="xbrli:dateItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentShellCompanyReport" id="dei_DocumentShellCompanyReport"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentFinStmtErrorCorrectionFlag" id="dei_DocumentFinStmtErrorCorrectionFlag"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentFinStmtRestatementRecoveryAnalysisFlag" id="dei_DocumentFinStmtRestatementRecoveryAnalysisFlag"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentShellCompanyEventDate" id="dei_DocumentShellCompanyEventDate"
+        type="xbrli:dateItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityInteractiveDataCurrent" id="dei_EntityInteractiveDataCurrent"
+        type="dei:yesNoItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentRegistrationStatement" id="dei_DocumentRegistrationStatement"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="RegistrationStatementAmendmentNumber" id="dei_RegistrationStatementAmendmentNumber"
+        type="dei:sequenceNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="PreEffectiveAmendment" id="dei_PreEffectiveAmendment" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="PreEffectiveAmendmentNumber" id="dei_PreEffectiveAmendmentNumber"
+        type="dei:sequenceNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="PostEffectiveAmendment" id="dei_PostEffectiveAmendment"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="PostEffectiveAmendmentNumber" id="dei_PostEffectiveAmendmentNumber"
+        type="dei:sequenceNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="InvestmentCompanyActRegistration" id="dei_InvestmentCompanyActRegistration"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="InvestmentCompanyRegistrationAmendment" id="dei_InvestmentCompanyRegistrationAmendment"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="InvestmentCompanyRegistrationAmendmentNumber" id="dei_InvestmentCompanyRegistrationAmendmentNumber"
+        type="dei:sequenceNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AnnualInformationForm" id="dei_AnnualInformationForm" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditedAnnualFinancialStatements" id="dei_AuditedAnnualFinancialStatements"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentAccountingStandard" id="dei_DocumentAccountingStandard"
+        type="dei:accountingStandardItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="OtherReportingStandardItemNumber" id="dei_OtherReportingStandardItemNumber"
+        type="dei:otherReportingStandardItemNumberItemType" substitutionGroup="xbrli:item"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DividendOrInterestReinvestmentPlanOnly" id="dei_DividendOrInterestReinvestmentPlanOnly"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DelayedOrContinuousOffering" id="dei_DelayedOrContinuousOffering"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveUponFiling462e" id="dei_EffectiveUponFiling462e"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AdditionalSecuritiesEffective413b" id="dei_AdditionalSecuritiesEffective413b"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveWhenDeclaredSection8c" id="dei_EffectiveWhenDeclaredSection8c"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveUponFiling486b" id="dei_EffectiveUponFiling486b"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveOnSetDate486b" id="dei_EffectiveOnSetDate486b"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveOnDate486b" id="dei_EffectiveOnDate486b" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveAfter60Days486a" id="dei_EffectiveAfter60Days486a"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveOnSetDate486a" id="dei_EffectiveOnSetDate486a"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EffectiveOnDate486a" id="dei_EffectiveOnDate486a" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="NewEffectiveDateForPreviousFiling" id="dei_NewEffectiveDateForPreviousFiling"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AdditionalSecurities462b" id="dei_AdditionalSecurities462b"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AdditionalSecurities462bFileNumber" id="dei_AdditionalSecurities462bFileNumber"
+        type="dei:fileNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="NoSubstantiveChanges462c" id="dei_NoSubstantiveChanges462c"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="NoSubstantiveChanges462cFileNumber" id="dei_NoSubstantiveChanges462cFileNumber"
+        type="dei:fileNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ExhibitsOnly462d" id="dei_ExhibitsOnly462d" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ExhibitsOnly462dFileNumber" id="dei_ExhibitsOnly462dFileNumber"
+        type="dei:fileNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="WrittenCommunications" id="dei_WrittenCommunications" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="SolicitingMaterial" id="dei_SolicitingMaterial" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="PreCommencementTenderOffer" id="dei_PreCommencementTenderOffer"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="PreCommencementIssuerTenderOffer" id="dei_PreCommencementIssuerTenderOffer"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityBankruptcyProceedingsReportingCurrent" id="dei_EntityBankruptcyProceedingsReportingCurrent"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AmendmentFlag" id="dei_AmendmentFlag" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AmendmentDescription" id="dei_AmendmentDescription" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="IcfrAuditorAttestationFlag" id="dei_IcfrAuditorAttestationFlag"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentFiscalYearFocus" id="dei_DocumentFiscalYearFocus"
+        type="xbrli:gYearItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentFiscalPeriodFocus" id="dei_DocumentFiscalPeriodFocus"
+        type="dei:fiscalPeriodItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentDescription" id="dei_DocumentDescription" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentCreationDate" id="dei_DocumentCreationDate" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentEffectiveDate" id="dei_DocumentEffectiveDate" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentPeriodEndDate" id="dei_DocumentPeriodEndDate" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentVersion" id="dei_DocumentVersion" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentCopyrightInformation" id="dei_DocumentCopyrightInformation"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentName" id="dei_DocumentName" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentTitle" id="dei_DocumentTitle" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentSubtitle" id="dei_DocumentSubtitle" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentSynopsis" id="dei_DocumentSynopsis" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContainedFileInformationFileName" id="dei_ContainedFileInformationFileName"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ContainedFileInformationFileDescription" id="dei_ContainedFileInformationFileDescription"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ContainedFileInformationFileType" id="dei_ContainedFileInformationFileType"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ContainedFileInformationFileNumber" id="dei_ContainedFileInformationFileNumber"
+        type="dei:fileNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntitiesTable" id="dei_EntitiesTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalEntityAxis" id="dei_LegalEntityAxis" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:dimensionItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityDomain" id="dei_EntityDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityInformationLineItems" id="dei_EntityInformationLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityRegistrantName" id="dei_EntityRegistrantName" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityCentralIndexKey" id="dei_EntityCentralIndexKey" type="dei:centralIndexKeyItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityFileNumber" id="dei_EntityFileNumber" type="dei:fileNumberItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="InvestmentCompanyActFileNumber" id="dei_InvestmentCompanyActFileNumber"
+        type="dei:fileNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityPrimarySicNumber" id="dei_EntityPrimarySicNumber"
+        type="dei:sicNumberItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityTaxIdentificationNumber" id="dei_EntityTaxIdentificationNumber"
+        type="dei:employerIdItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAccountingStandard" id="dei_EntityAccountingStandard"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityIncorporationStateCountryCode" id="dei_EntityIncorporationStateCountryCode"
+        type="dei:edgarStateCountryItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityNumberOfEmployees" id="dei_EntityNumberOfEmployees"
+        type="xbrli:decimalItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="instant"/>
+
+        <xs:element name="CurrentFiscalYearEndDate" id="dei_CurrentFiscalYearEndDate"
+        type="xbrli:gMonthDayItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="FormerFiscalYearEndDate" id="dei_FormerFiscalYearEndDate"
+        type="xbrli:gMonthDayItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityWellKnownSeasonedIssuer" id="dei_EntityWellKnownSeasonedIssuer"
+        type="dei:yesNoItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityVoluntaryFilers" id="dei_EntityVoluntaryFilers" type="dei:yesNoItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityCurrentReportingStatus" id="dei_EntityCurrentReportingStatus"
+        type="dei:yesNoItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityShellCompany" id="dei_EntityShellCompany" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityFilerCategory" id="dei_EntityFilerCategory" type="dei:filerCategoryItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntitySmallBusiness" id="dei_EntitySmallBusiness" type="xbrli:booleanItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityEmergingGrowthCompany" id="dei_EntityEmergingGrowthCompany"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityExTransitionPeriod" id="dei_EntityExTransitionPeriod"
+        type="xbrli:booleanItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityPublicFloat" id="dei_EntityPublicFloat" type="xbrli:monetaryItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:balance="credit" xbrli:periodType="instant"/>
+
+        <xs:element name="EntityInformationFormerLegalOrRegisteredName" id="dei_EntityInformationFormerLegalOrRegisteredName"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityInvCompanyType" id="dei_EntityInvCompanyType" type="dei:invCompanyType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalEntityIdentifier" id="dei_LegalEntityIdentifier" type="dei:legalEntityIdentifierItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityLegalForm" id="dei_EntityLegalForm" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityHomeCountryISOCode" id="dei_EntityHomeCountryISOCode"
+        type="dei:countryCodeItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ParentEntityLegalName" id="dei_ParentEntityLegalName" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityReportingCurrencyISOCode" id="dei_EntityReportingCurrencyISOCode"
+        type="dei:currencyItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityIncorporationDateOfIncorporation" id="dei_EntityIncorporationDateOfIncorporation"
+        type="xbrli:dateItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ApproximateDateOfCommencementOfProposedSaleToThePublic"
+        id="dei_ApproximateDateOfCommencementOfProposedSaleToThePublic" type="dei:dateOrAsapItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressesTable" id="dei_EntityAddressesTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressesAddressTypeAxis" id="dei_EntityAddressesAddressTypeAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AddressTypeDomain" id="dei_AddressTypeDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="BusinessContactMember" id="dei_BusinessContactMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="FormerAddressMember" id="dei_FormerAddressMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="OtherAddressMember" id="dei_OtherAddressMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressesLineItems" id="dei_EntityAddressesLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressAddressDescription" id="dei_EntityAddressAddressDescription"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityContactPersonnelLineItems" id="dei_EntityContactPersonnelLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPersonnelName" id="dei_ContactPersonnelName" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPersonnelEmailAddress" id="dei_ContactPersonnelEmailAddress"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPersonnelFaxNumber" id="dei_ContactPersonnelFaxNumber"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressAddressLine1" id="dei_EntityAddressAddressLine1"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressAddressLine2" id="dei_EntityAddressAddressLine2"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressAddressLine3" id="dei_EntityAddressAddressLine3"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressCityOrTown" id="dei_EntityAddressCityOrTown"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressStateOrProvince" id="dei_EntityAddressStateOrProvince"
+        type="dei:stateOrProvinceItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressCountry" id="dei_EntityAddressCountry" type="dei:countryCodeItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressPostalZipCode" id="dei_EntityAddressPostalZipCode"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityPhoneFaxNumbersLineItems" id="dei_EntityPhoneFaxNumbersLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="PhoneFaxNumberDescription" id="dei_PhoneFaxNumberDescription"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="CountryRegion" id="dei_CountryRegion" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="CityAreaCode" id="dei_CityAreaCode" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LocalPhoneNumber" id="dei_LocalPhoneNumber" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="Extension" id="dei_Extension" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingsTable" id="dei_EntityListingsTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingsExchangeAxis" id="dei_EntityListingsExchangeAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ExchangeDomain" id="dei_ExchangeDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingsLineItems" id="dei_EntityListingsLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="Security12bTitle" id="dei_Security12bTitle" type="dei:securityTitleItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="NoTradingSymbolFlag" id="dei_NoTradingSymbolFlag" type="dei:trueItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="TradingSymbol" id="dei_TradingSymbol" type="dei:tradingSymbolItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="SecurityExchangeName" id="dei_SecurityExchangeName" type="dei:edgarExchangeCodeItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="Security12gTitle" id="dei_Security12gTitle" type="dei:securityTitleItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="SecurityReportingObligation" id="dei_SecurityReportingObligation"
+        type="dei:securityReportingObligationItemType" substitutionGroup="xbrli:item"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingParValuePerShare" id="dei_EntityListingParValuePerShare"
+        type="dtr-types:perShareItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityCommonStockSharesOutstanding" id="dei_EntityCommonStockSharesOutstanding"
+        type="xbrli:sharesItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="instant"/>
+
+        <xs:element name="EntityListingPrimary" id="dei_EntityListingPrimary" type="dei:yesNoItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingForeign" id="dei_EntityListingForeign" type="dei:yesNoItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingDepositoryReceiptRatio" id="dei_EntityListingDepositoryReceiptRatio"
+        type="xbrli:pureItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="instant"/>
+
+        <xs:element name="EntityListingDescription" id="dei_EntityListingDescription"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityListingSecurityTradingCurrency" id="dei_EntityListingSecurityTradingCurrency"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="AdrMember" id="dei_AdrMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="NameChangeEventTable" id="dei_NameChangeEventTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="NameChangeEventDateAxis" id="dei_NameChangeEventDateAxis"
+        type="xbrli:stringItemType" xbrldt:typedDomainRef="#dei_eventDateTime" substitutionGroup="xbrldt:dimensionItem"
+        abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="eventDateTime" id="dei_eventDateTime" type="xbrli:dateUnion"
+        nillable="true"/>
+
+        <xs:element name="NameChangeEventLineItems" id="dei_NameChangeEventLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentsIncorporatedByReferenceTextBlock" id="dei_DocumentsIncorporatedByReferenceTextBlock"
+        type="dtr-types:textBlockItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentInformationTextBlock" id="dei_DocumentInformationTextBlock"
+        type="dtr-types:textBlockItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityTextBlock" id="dei_EntityTextBlock" type="dtr-types:textBlockItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityContactPersonnelTable" id="dei_EntityContactPersonnelTable"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:hypercubeItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityContactPersonnelContactPersonTypeAxis" id="dei_EntityContactPersonnelContactPersonTypeAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPersonTypeDomain" id="dei_ContactPersonTypeDomain"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="DocumentContactMember" id="dei_DocumentContactMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalContactMember" id="dei_LegalContactMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AccountingContactMember" id="dei_AccountingContactMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="InvestorRelationsContactMember" id="dei_InvestorRelationsContactMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="HumanResourcesContactMember" id="dei_HumanResourcesContactMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPersonnelUniformResourceLocatorURL" id="dei_ContactPersonnelUniformResourceLocatorURL"
+        type="xbrli:anyURIItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityLocationTable" id="dei_EntityLocationTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityByLocationAxis" id="dei_EntityByLocationAxis" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:dimensionItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LocationDomain" id="dei_LocationDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityLocationLineItems" id="dei_EntityLocationLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityLocationPrimary" id="dei_EntityLocationPrimary" type="dei:yesNoItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityNorthAmericanIndustryClassificationsTable" id="dei_EntityNorthAmericanIndustryClassificationsTable"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:hypercubeItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityNorthAmericanIndustryClassificationsIndustryAxis"
+        id="dei_EntityNorthAmericanIndustryClassificationsIndustryAxis" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:dimensionItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="NAICSDomain" id="dei_NAICSDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityNorthAmericanIndustryClassificationsLineItems" id="dei_EntityNorthAmericanIndustryClassificationsLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityNorthAmericanIndustryClassificationPrimary" id="dei_EntityNorthAmericanIndustryClassificationPrimary"
+        type="dei:yesNoItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityPhoneFaxNumbersTable" id="dei_EntityPhoneFaxNumbersTable"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:hypercubeItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityPhoneFaxNumbersPhoneFaxNumberTypeAxis" id="dei_EntityPhoneFaxNumbersPhoneFaxNumberTypeAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="PhoneFaxNumberTypeDomain" id="dei_PhoneFaxNumberTypeDomain"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="InvestorRelationsPhoneMember" id="dei_InvestorRelationsPhoneMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="InvestorRelationsFaxMember" id="dei_InvestorRelationsFaxMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="GeneralPhoneMember" id="dei_GeneralPhoneMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="GeneralFaxMember" id="dei_GeneralFaxMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalPhoneMember" id="dei_LegalPhoneMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalFaxMember" id="dei_LegalFaxMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AccountingPhoneMember" id="dei_AccountingPhoneMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AccountingFaxMember" id="dei_AccountingFaxMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactPhoneMember" id="dei_ContactPhoneMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactFaxMember" id="dei_ContactFaxMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntitySectorIndustryClassificationsTable" id="dei_EntitySectorIndustryClassificationsTable"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:hypercubeItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntitySectorIndustryClassificationsSectorAxis" id="dei_EntitySectorIndustryClassificationsSectorAxis"
+        type="xbrli:stringItemType" substitutionGroup="xbrldt:dimensionItem" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="SectorDomain" id="dei_SectorDomain" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntitySectorIndustryClassificationsLineItems" id="dei_EntitySectorIndustryClassificationsLineItems"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntitySectorIndustryClassificationPrimary" id="dei_EntitySectorIndustryClassificationPrimary"
+        type="dei:yesNoItemType" substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityOtherIdentificationValue" id="dei_EntityOtherIdentificationValue"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityInformationDateToChangeFormerLegalOrRegisteredName"
+        id="dei_EntityInformationDateToChangeFormerLegalOrRegisteredName" type="xbrli:dateItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityDataUniversalNumberingSystemNumber" id="dei_EntityDataUniversalNumberingSystemNumber"
+        type="dei:nineDigitItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="EntityOtherIdentificationType" id="dei_EntityOtherIdentificationType"
+        type="xbrli:normalizedStringItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="DeprecatedItemsForDEI" id="dei_DeprecatedItemsForDEI" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ReservedItemsForDeiAbstract" id="dei_ReservedItemsForDeiAbstract"
+        type="xbrli:stringItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="LegalAddressMember" id="dei_LegalAddressMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="ContactAddressMember" id="dei_ContactAddressMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AccountingAddressMember" id="dei_AccountingAddressMember"
+        type="dtr-types:domainItemType" substitutionGroup="xbrli:item" abstract="true"
+        nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="MailingAddressMember" id="dei_MailingAddressMember" type="dtr-types:domainItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="EntityAddressRegion" id="dei_EntityAddressRegion" type="xbrli:normalizedStringItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="UTR" id="dei_UTR" type="xbrli:stringItemType" substitutionGroup="xbrli:item"
+        abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorLineItems" id="dei_AuditorLineItems" type="xbrli:stringItemType"
+        substitutionGroup="xbrli:item" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorTable" id="dei_AuditorTable" type="xbrli:stringItemType"
+        substitutionGroup="xbrldt:hypercubeItem" abstract="true" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorName" id="dei_AuditorName" type="dei:internationalNameItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorFirmId" id="dei_AuditorFirmId" type="dei:nonemptySequenceNumberItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorLocation" id="dei_AuditorLocation" type="dei:internationalNameItemType"
+        substitutionGroup="xbrli:item" nillable="true" xbrli:periodType="duration"/>
+
+        <xs:element name="AuditorOpinionTextBlock" id="dei_AuditorOpinionTextBlock"
+        type="dtr-types:textBlockItemType" substitutionGroup="xbrli:item" nillable="true"
+        xbrli:periodType="duration"/>
+
+        <xs:element name="lineNo" id="dei_lineNo" type="xs:nonNegativeInteger" nillable="true"/>
+
+        <xs:complexType name="invCompanyType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:enumeration value="N-1A"/>
+
+        <xs:enumeration value="N-1"/>
+
+        <xs:enumeration value="N-2"/>
+
+        <xs:enumeration value="N-3"/>
+
+        <xs:enumeration value="N-4"/>
+
+        <xs:enumeration value="N-5"/>
+
+        <xs:enumeration value="N-6"/>
+
+        <xs:enumeration value="S-1 or S-3"/>
+
+        <xs:enumeration value="S-6"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="yesNoItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:enumeration value="Yes"/>
+
+        <xs:enumeration value="No"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="trueItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="true"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="filerCategoryItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="Large Accelerated Filer"/>
+
+        <xs:enumeration value="Accelerated Filer"/>
+
+        <xs:enumeration value="Non-accelerated Filer"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="securityTitleItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:normalizedStringItemType">
+
+        <xs:minLength value="1"/>
+
+        <xs:maxLength value="150"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="conformedNameItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:minLength value="1"/>
+
+        <xs:maxLength value="150"/>
+
+        <xs:pattern value="[A-Za-z0-9].*"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="internationalNameItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:minLength value="1"/>
+
+        <xs:maxLength value="150"/>
+
+        <xs:pattern value="[\p{L}\p{N}].*"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="tradingSymbolItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:normalizedStringItemType">
+
+        <xs:maxLength value="25"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="securityReportingObligationItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="15(d)"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="accountingStandardItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="U.S. GAAP"/>
+
+        <xs:enumeration value="International Financial Reporting Standards"/>
+
+        <xs:enumeration value="Other"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="currencyItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="[A-Z][A-Z][A-Z]"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="nineDigitItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="employerIdItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="centralIndexKeyItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="legalEntityIdentifierItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:pattern value="[A-Z0-9]{18}[0-9]{2}"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="fiscalPeriodItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:enumeration value="FY"/>
+
+        <xs:enumeration value="Q1"/>
+
+        <xs:enumeration value="Q2"/>
+
+        <xs:enumeration value="Q3"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="submissionTypeItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:pattern value="((Other)|([A-Z0-9]+([/A-Z0-9 a-z\.\-]*[A-Z0-9])?))"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="formTypeItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:pattern value="((Other)|([A-Z0-9]+([A-Z0-9 \-]*[A-Z0-9])?))"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="fileNumberItemType" id="dei_fileNumberItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:pattern value="\d{1,3}-\d{1,8}-[a-zA-Z0-9]{1,4}|\d{1,3}-\d{1,8}|24R-\d{1,8}-[a-zA-Z0-9]{1,4}|24R-\d{1,8}"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="sequenceNumberItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="([1-9][0-9]*)?"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="nonemptySequenceNumberItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="[1-9][0-9]*"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="sicNumberItemType" id="dei_sicNumberItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:normalizedStringItemType">
+
+        <xs:pattern value="[0-9]{4}"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="dateOrAsapItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:pattern value="((As soon as practicable|From time to time) after the effective
+        date of this Registration Statement.?)|(20[0-9][0-9]-(0[1-9]|1[0-2])-(3[01]|[012][0-9]))"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="otherReportingStandardItemNumberItemType" id="dei_otherReportingStandardItemNumberItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:normalizedStringItemType">
+
+        <xs:enumeration value="Item 17"/>
+
+        <xs:enumeration value="Item 18"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="edgarExchangeCodeItemType" id="dei_edgarExchangeCodeItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:normalizedStringItemType">
+
+        <xs:enumeration value="NONE"/>
+
+        <xs:enumeration value="NYSE"/>
+
+        <xs:enumeration value="NASDAQ"/>
+
+        <xs:enumeration value="CHX"/>
+
+        <xs:enumeration value="BOX"/>
+
+        <xs:enumeration value="BX"/>
+
+        <xs:enumeration value="C2"/>
+
+        <xs:enumeration value="CBOE"/>
+
+        <xs:enumeration value="CboeBYX"/>
+
+        <xs:enumeration value="CboeBZX"/>
+
+        <xs:enumeration value="CboeEDGA"/>
+
+        <xs:enumeration value="CboeEDGX"/>
+
+        <xs:enumeration value="GEMX"/>
+
+        <xs:enumeration value="IEX"/>
+
+        <xs:enumeration value="ISE"/>
+
+        <xs:enumeration value="MIAX"/>
+
+        <xs:enumeration value="MRX"/>
+
+        <xs:enumeration value="NYSEAMER"/>
+
+        <xs:enumeration value="NYSEArca"/>
+
+        <xs:enumeration value="NYSENAT"/>
+
+        <xs:enumeration value="PEARL"/>
+
+        <xs:enumeration value="Phlx"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="countryCodeItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:tokenItemType">
+
+        <xs:enumeration value="AF"/>
+
+        <xs:enumeration value="AX"/>
+
+        <xs:enumeration value="AL"/>
+
+        <xs:enumeration value="DZ"/>
+
+        <xs:enumeration value="AS"/>
+
+        <xs:enumeration value="AD"/>
+
+        <xs:enumeration value="AO"/>
+
+        <xs:enumeration value="AI"/>
+
+        <xs:enumeration value="AQ"/>
+
+        <xs:enumeration value="AG"/>
+
+        <xs:enumeration value="AR"/>
+
+        <xs:enumeration value="AM"/>
+
+        <xs:enumeration value="AW"/>
+
+        <xs:enumeration value="AT"/>
+
+        <xs:enumeration value="AU"/>
+
+        <xs:enumeration value="AZ"/>
+
+        <xs:enumeration value="BS"/>
+
+        <xs:enumeration value="BH"/>
+
+        <xs:enumeration value="BD"/>
+
+        <xs:enumeration value="BB"/>
+
+        <xs:enumeration value="BY"/>
+
+        <xs:enumeration value="BE"/>
+
+        <xs:enumeration value="BZ"/>
+
+        <xs:enumeration value="BJ"/>
+
+        <xs:enumeration value="BM"/>
+
+        <xs:enumeration value="BT"/>
+
+        <xs:enumeration value="BO"/>
+
+        <xs:enumeration value="BQ"/>
+
+        <xs:enumeration value="BA"/>
+
+        <xs:enumeration value="BW"/>
+
+        <xs:enumeration value="BV"/>
+
+        <xs:enumeration value="BR"/>
+
+        <xs:enumeration value="IO"/>
+
+        <xs:enumeration value="BN"/>
+
+        <xs:enumeration value="BG"/>
+
+        <xs:enumeration value="BF"/>
+
+        <xs:enumeration value="BI"/>
+
+        <xs:enumeration value="KH"/>
+
+        <xs:enumeration value="CM"/>
+
+        <xs:enumeration value="CA"/>
+
+        <xs:enumeration value="CV"/>
+
+        <xs:enumeration value="KY"/>
+
+        <xs:enumeration value="CF"/>
+
+        <xs:enumeration value="TD"/>
+
+        <xs:enumeration value="CL"/>
+
+        <xs:enumeration value="CN"/>
+
+        <xs:enumeration value="CX"/>
+
+        <xs:enumeration value="CC"/>
+
+        <xs:enumeration value="CO"/>
+
+        <xs:enumeration value="KM"/>
+
+        <xs:enumeration value="CG"/>
+
+        <xs:enumeration value="CD"/>
+
+        <xs:enumeration value="CK"/>
+
+        <xs:enumeration value="CR"/>
+
+        <xs:enumeration value="CI"/>
+
+        <xs:enumeration value="HR"/>
+
+        <xs:enumeration value="CU"/>
+
+        <xs:enumeration value="CW"/>
+
+        <xs:enumeration value="CY"/>
+
+        <xs:enumeration value="CZ"/>
+
+        <xs:enumeration value="DK"/>
+
+        <xs:enumeration value="DJ"/>
+
+        <xs:enumeration value="DM"/>
+
+        <xs:enumeration value="DO"/>
+
+        <xs:enumeration value="EC"/>
+
+        <xs:enumeration value="EG"/>
+
+        <xs:enumeration value="SV"/>
+
+        <xs:enumeration value="GQ"/>
+
+        <xs:enumeration value="ER"/>
+
+        <xs:enumeration value="EE"/>
+
+        <xs:enumeration value="ET"/>
+
+        <xs:enumeration value="FK"/>
+
+        <xs:enumeration value="FO"/>
+
+        <xs:enumeration value="FJ"/>
+
+        <xs:enumeration value="FI"/>
+
+        <xs:enumeration value="FR"/>
+
+        <xs:enumeration value="GF"/>
+
+        <xs:enumeration value="TF"/>
+
+        <xs:enumeration value="GA"/>
+
+        <xs:enumeration value="GM"/>
+
+        <xs:enumeration value="GE"/>
+
+        <xs:enumeration value="DE"/>
+
+        <xs:enumeration value="GH"/>
+
+        <xs:enumeration value="GI"/>
+
+        <xs:enumeration value="GR"/>
+
+        <xs:enumeration value="GL"/>
+
+        <xs:enumeration value="GD"/>
+
+        <xs:enumeration value="GP"/>
+
+        <xs:enumeration value="GU"/>
+
+        <xs:enumeration value="GT"/>
+
+        <xs:enumeration value="GG"/>
+
+        <xs:enumeration value="GN"/>
+
+        <xs:enumeration value="GW"/>
+
+        <xs:enumeration value="GY"/>
+
+        <xs:enumeration value="HT"/>
+
+        <xs:enumeration value="HM"/>
+
+        <xs:enumeration value="HN"/>
+
+        <xs:enumeration value="HK"/>
+
+        <xs:enumeration value="HU"/>
+
+        <xs:enumeration value="IS"/>
+
+        <xs:enumeration value="IN"/>
+
+        <xs:enumeration value="ID"/>
+
+        <xs:enumeration value="IR"/>
+
+        <xs:enumeration value="IQ"/>
+
+        <xs:enumeration value="IE"/>
+
+        <xs:enumeration value="IM"/>
+
+        <xs:enumeration value="IL"/>
+
+        <xs:enumeration value="IT"/>
+
+        <xs:enumeration value="JM"/>
+
+        <xs:enumeration value="JP"/>
+
+        <xs:enumeration value="JE"/>
+
+        <xs:enumeration value="JO"/>
+
+        <xs:enumeration value="KZ"/>
+
+        <xs:enumeration value="KE"/>
+
+        <xs:enumeration value="KI"/>
+
+        <xs:enumeration value="KP"/>
+
+        <xs:enumeration value="KR"/>
+
+        <xs:enumeration value="KW"/>
+
+        <xs:enumeration value="KG"/>
+
+        <xs:enumeration value="LA"/>
+
+        <xs:enumeration value="LV"/>
+
+        <xs:enumeration value="LB"/>
+
+        <xs:enumeration value="LS"/>
+
+        <xs:enumeration value="LR"/>
+
+        <xs:enumeration value="LY"/>
+
+        <xs:enumeration value="LI"/>
+
+        <xs:enumeration value="LT"/>
+
+        <xs:enumeration value="LU"/>
+
+        <xs:enumeration value="MO"/>
+
+        <xs:enumeration value="MK"/>
+
+        <xs:enumeration value="MG"/>
+
+        <xs:enumeration value="MW"/>
+
+        <xs:enumeration value="MY"/>
+
+        <xs:enumeration value="MV"/>
+
+        <xs:enumeration value="ML"/>
+
+        <xs:enumeration value="MT"/>
+
+        <xs:enumeration value="MH"/>
+
+        <xs:enumeration value="MR"/>
+
+        <xs:enumeration value="MU"/>
+
+        <xs:enumeration value="YT"/>
+
+        <xs:enumeration value="MX"/>
+
+        <xs:enumeration value="FM"/>
+
+        <xs:enumeration value="MQ"/>
+
+        <xs:enumeration value="MD"/>
+
+        <xs:enumeration value="MC"/>
+
+        <xs:enumeration value="MN"/>
+
+        <xs:enumeration value="ME"/>
+
+        <xs:enumeration value="MS"/>
+
+        <xs:enumeration value="MA"/>
+
+        <xs:enumeration value="MZ"/>
+
+        <xs:enumeration value="MM"/>
+
+        <xs:enumeration value="NA"/>
+
+        <xs:enumeration value="NR"/>
+
+        <xs:enumeration value="NP"/>
+
+        <xs:enumeration value="NL"/>
+
+        <xs:enumeration value="NC"/>
+
+        <xs:enumeration value="NZ"/>
+
+        <xs:enumeration value="NI"/>
+
+        <xs:enumeration value="NE"/>
+
+        <xs:enumeration value="NG"/>
+
+        <xs:enumeration value="NU"/>
+
+        <xs:enumeration value="NF"/>
+
+        <xs:enumeration value="MP"/>
+
+        <xs:enumeration value="NO"/>
+
+        <xs:enumeration value="OM"/>
+
+        <xs:enumeration value="PK"/>
+
+        <xs:enumeration value="PW"/>
+
+        <xs:enumeration value="PS"/>
+
+        <xs:enumeration value="PA"/>
+
+        <xs:enumeration value="PF"/>
+
+        <xs:enumeration value="PY"/>
+
+        <xs:enumeration value="PE"/>
+
+        <xs:enumeration value="PH"/>
+
+        <xs:enumeration value="PN"/>
+
+        <xs:enumeration value="PL"/>
+
+        <xs:enumeration value="PT"/>
+
+        <xs:enumeration value="PR"/>
+
+        <xs:enumeration value="QA"/>
+
+        <xs:enumeration value="RE"/>
+
+        <xs:enumeration value="RO"/>
+
+        <xs:enumeration value="RU"/>
+
+        <xs:enumeration value="RW"/>
+
+        <xs:enumeration value="BL"/>
+
+        <xs:enumeration value="SH"/>
+
+        <xs:enumeration value="KN"/>
+
+        <xs:enumeration value="LC"/>
+
+        <xs:enumeration value="MF"/>
+
+        <xs:enumeration value="PM"/>
+
+        <xs:enumeration value="VC"/>
+
+        <xs:enumeration value="WS"/>
+
+        <xs:enumeration value="SM"/>
+
+        <xs:enumeration value="ST"/>
+
+        <xs:enumeration value="SA"/>
+
+        <xs:enumeration value="SN"/>
+
+        <xs:enumeration value="RS"/>
+
+        <xs:enumeration value="SC"/>
+
+        <xs:enumeration value="SL"/>
+
+        <xs:enumeration value="SG"/>
+
+        <xs:enumeration value="SX"/>
+
+        <xs:enumeration value="SK"/>
+
+        <xs:enumeration value="SI"/>
+
+        <xs:enumeration value="SB"/>
+
+        <xs:enumeration value="SO"/>
+
+        <xs:enumeration value="ZA"/>
+
+        <xs:enumeration value="GS"/>
+
+        <xs:enumeration value="SS"/>
+
+        <xs:enumeration value="ES"/>
+
+        <xs:enumeration value="PG"/>
+
+        <xs:enumeration value="LK"/>
+
+        <xs:enumeration value="SD"/>
+
+        <xs:enumeration value="SR"/>
+
+        <xs:enumeration value="SJ"/>
+
+        <xs:enumeration value="SZ"/>
+
+        <xs:enumeration value="SE"/>
+
+        <xs:enumeration value="CH"/>
+
+        <xs:enumeration value="SY"/>
+
+        <xs:enumeration value="TW"/>
+
+        <xs:enumeration value="TJ"/>
+
+        <xs:enumeration value="TZ"/>
+
+        <xs:enumeration value="TH"/>
+
+        <xs:enumeration value="TL"/>
+
+        <xs:enumeration value="TG"/>
+
+        <xs:enumeration value="TK"/>
+
+        <xs:enumeration value="TO"/>
+
+        <xs:enumeration value="TT"/>
+
+        <xs:enumeration value="TN"/>
+
+        <xs:enumeration value="TR"/>
+
+        <xs:enumeration value="TM"/>
+
+        <xs:enumeration value="TC"/>
+
+        <xs:enumeration value="TV"/>
+
+        <xs:enumeration value="UG"/>
+
+        <xs:enumeration value="UA"/>
+
+        <xs:enumeration value="AE"/>
+
+        <xs:enumeration value="GB"/>
+
+        <xs:enumeration value="US"/>
+
+        <xs:enumeration value="UM"/>
+
+        <xs:enumeration value="UY"/>
+
+        <xs:enumeration value="UZ"/>
+
+        <xs:enumeration value="VU"/>
+
+        <xs:enumeration value="VA"/>
+
+        <xs:enumeration value="VE"/>
+
+        <xs:enumeration value="VN"/>
+
+        <xs:enumeration value="VG"/>
+
+        <xs:enumeration value="VI"/>
+
+        <xs:enumeration value="WF"/>
+
+        <xs:enumeration value="EH"/>
+
+        <xs:enumeration value="YE"/>
+
+        <xs:enumeration value="ZM"/>
+
+        <xs:enumeration value="ZW"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="edgarStateCountryItemType" id="dei_edgarStateCountryItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="AL"/>
+
+        <xs:enumeration value="AK"/>
+
+        <xs:enumeration value="AZ"/>
+
+        <xs:enumeration value="AR"/>
+
+        <xs:enumeration value="CA"/>
+
+        <xs:enumeration value="CO"/>
+
+        <xs:enumeration value="CT"/>
+
+        <xs:enumeration value="DE"/>
+
+        <xs:enumeration value="DC"/>
+
+        <xs:enumeration value="FL"/>
+
+        <xs:enumeration value="GA"/>
+
+        <xs:enumeration value="HI"/>
+
+        <xs:enumeration value="ID"/>
+
+        <xs:enumeration value="IL"/>
+
+        <xs:enumeration value="IN"/>
+
+        <xs:enumeration value="IA"/>
+
+        <xs:enumeration value="KS"/>
+
+        <xs:enumeration value="KY"/>
+
+        <xs:enumeration value="LA"/>
+
+        <xs:enumeration value="ME"/>
+
+        <xs:enumeration value="MD"/>
+
+        <xs:enumeration value="MA"/>
+
+        <xs:enumeration value="MI"/>
+
+        <xs:enumeration value="MN"/>
+
+        <xs:enumeration value="MS"/>
+
+        <xs:enumeration value="MO"/>
+
+        <xs:enumeration value="MT"/>
+
+        <xs:enumeration value="NE"/>
+
+        <xs:enumeration value="NV"/>
+
+        <xs:enumeration value="NH"/>
+
+        <xs:enumeration value="NJ"/>
+
+        <xs:enumeration value="NM"/>
+
+        <xs:enumeration value="NY"/>
+
+        <xs:enumeration value="NC"/>
+
+        <xs:enumeration value="ND"/>
+
+        <xs:enumeration value="OH"/>
+
+        <xs:enumeration value="OK"/>
+
+        <xs:enumeration value="OR"/>
+
+        <xs:enumeration value="PA"/>
+
+        <xs:enumeration value="RI"/>
+
+        <xs:enumeration value="SC"/>
+
+        <xs:enumeration value="SD"/>
+
+        <xs:enumeration value="TN"/>
+
+        <xs:enumeration value="TX"/>
+
+        <xs:enumeration value="UT"/>
+
+        <xs:enumeration value="VT"/>
+
+        <xs:enumeration value="VA"/>
+
+        <xs:enumeration value="WA"/>
+
+        <xs:enumeration value="WV"/>
+
+        <xs:enumeration value="WI"/>
+
+        <xs:enumeration value="WY"/>
+
+        <xs:enumeration value="A0"/>
+
+        <xs:enumeration value="A1"/>
+
+        <xs:enumeration value="A2"/>
+
+        <xs:enumeration value="A3"/>
+
+        <xs:enumeration value="A4"/>
+
+        <xs:enumeration value="A5"/>
+
+        <xs:enumeration value="A6"/>
+
+        <xs:enumeration value="A7"/>
+
+        <xs:enumeration value="A8"/>
+
+        <xs:enumeration value="A9"/>
+
+        <xs:enumeration value="B0"/>
+
+        <xs:enumeration value="B2"/>
+
+        <xs:enumeration value="Y6"/>
+
+        <xs:enumeration value="B3"/>
+
+        <xs:enumeration value="B4"/>
+
+        <xs:enumeration value="B5"/>
+
+        <xs:enumeration value="B6"/>
+
+        <xs:enumeration value="B7"/>
+
+        <xs:enumeration value="1A"/>
+
+        <xs:enumeration value="B8"/>
+
+        <xs:enumeration value="B9"/>
+
+        <xs:enumeration value="C1"/>
+
+        <xs:enumeration value="1B"/>
+
+        <xs:enumeration value="1C"/>
+
+        <xs:enumeration value="C3"/>
+
+        <xs:enumeration value="C4"/>
+
+        <xs:enumeration value="1D"/>
+
+        <xs:enumeration value="C5"/>
+
+        <xs:enumeration value="C6"/>
+
+        <xs:enumeration value="C7"/>
+
+        <xs:enumeration value="C8"/>
+
+        <xs:enumeration value="1F"/>
+
+        <xs:enumeration value="C9"/>
+
+        <xs:enumeration value="D1"/>
+
+        <xs:enumeration value="G6"/>
+
+        <xs:enumeration value="D0"/>
+
+        <xs:enumeration value="D2"/>
+
+        <xs:enumeration value="D3"/>
+
+        <xs:enumeration value="1E"/>
+
+        <xs:enumeration value="B1"/>
+
+        <xs:enumeration value="D4"/>
+
+        <xs:enumeration value="D5"/>
+
+        <xs:enumeration value="D6"/>
+
+        <xs:enumeration value="D9"/>
+
+        <xs:enumeration value="E0"/>
+
+        <xs:enumeration value="X2"/>
+
+        <xs:enumeration value="E2"/>
+
+        <xs:enumeration value="E3"/>
+
+        <xs:enumeration value="E4"/>
+
+        <xs:enumeration value="Z4"/>
+
+        <xs:enumeration value="E8"/>
+
+        <xs:enumeration value="E9"/>
+
+        <xs:enumeration value="F0"/>
+
+        <xs:enumeration value="F2"/>
+
+        <xs:enumeration value="F3"/>
+
+        <xs:enumeration value="F4"/>
+
+        <xs:enumeration value="F6"/>
+
+        <xs:enumeration value="F7"/>
+
+        <xs:enumeration value="F8"/>
+
+        <xs:enumeration value="F9"/>
+
+        <xs:enumeration value="G0"/>
+
+        <xs:enumeration value="Y3"/>
+
+        <xs:enumeration value="G1"/>
+
+        <xs:enumeration value="G2"/>
+
+        <xs:enumeration value="L7"/>
+
+        <xs:enumeration value="1M"/>
+
+        <xs:enumeration value="G3"/>
+
+        <xs:enumeration value="G4"/>
+
+        <xs:enumeration value="2N"/>
+
+        <xs:enumeration value="G7"/>
+
+        <xs:enumeration value="1G"/>
+
+        <xs:enumeration value="G9"/>
+
+        <xs:enumeration value="G8"/>
+
+        <xs:enumeration value="H1"/>
+
+        <xs:enumeration value="H2"/>
+
+        <xs:enumeration value="H3"/>
+
+        <xs:enumeration value="H4"/>
+
+        <xs:enumeration value="1J"/>
+
+        <xs:enumeration value="1H"/>
+
+        <xs:enumeration value="H5"/>
+
+        <xs:enumeration value="H7"/>
+
+        <xs:enumeration value="H6"/>
+
+        <xs:enumeration value="H8"/>
+
+        <xs:enumeration value="H9"/>
+
+        <xs:enumeration value="I0"/>
+
+        <xs:enumeration value="I3"/>
+
+        <xs:enumeration value="I4"/>
+
+        <xs:enumeration value="2C"/>
+
+        <xs:enumeration value="I5"/>
+
+        <xs:enumeration value="I6"/>
+
+        <xs:enumeration value="2Q"/>
+
+        <xs:enumeration value="2M"/>
+
+        <xs:enumeration value="J0"/>
+
+        <xs:enumeration value="J1"/>
+
+        <xs:enumeration value="J3"/>
+
+        <xs:enumeration value="J4"/>
+
+        <xs:enumeration value="J5"/>
+
+        <xs:enumeration value="J6"/>
+
+        <xs:enumeration value="GU"/>
+
+        <xs:enumeration value="J8"/>
+
+        <xs:enumeration value="Y7"/>
+
+        <xs:enumeration value="J9"/>
+
+        <xs:enumeration value="S0"/>
+
+        <xs:enumeration value="K0"/>
+
+        <xs:enumeration value="K1"/>
+
+        <xs:enumeration value="K4"/>
+
+        <xs:enumeration value="X4"/>
+
+        <xs:enumeration value="K2"/>
+
+        <xs:enumeration value="K3"/>
+
+        <xs:enumeration value="K5"/>
+
+        <xs:enumeration value="K6"/>
+
+        <xs:enumeration value="K7"/>
+
+        <xs:enumeration value="K8"/>
+
+        <xs:enumeration value="K9"/>
+
+        <xs:enumeration value="L0"/>
+
+        <xs:enumeration value="L2"/>
+
+        <xs:enumeration value="Y8"/>
+
+        <xs:enumeration value="L3"/>
+
+        <xs:enumeration value="L6"/>
+
+        <xs:enumeration value="L8"/>
+
+        <xs:enumeration value="M0"/>
+
+        <xs:enumeration value="Y9"/>
+
+        <xs:enumeration value="M2"/>
+
+        <xs:enumeration value="1P"/>
+
+        <xs:enumeration value="M3"/>
+
+        <xs:enumeration value="J2"/>
+
+        <xs:enumeration value="M4"/>
+
+        <xs:enumeration value="M5"/>
+
+        <xs:enumeration value="M6"/>
+
+        <xs:enumeration value="1N"/>
+
+        <xs:enumeration value="M7"/>
+
+        <xs:enumeration value="1R"/>
+
+        <xs:enumeration value="M8"/>
+
+        <xs:enumeration value="M9"/>
+
+        <xs:enumeration value="N0"/>
+
+        <xs:enumeration value="N1"/>
+
+        <xs:enumeration value="N2"/>
+
+        <xs:enumeration value="1Q"/>
+
+        <xs:enumeration value="N4"/>
+
+        <xs:enumeration value="N5"/>
+
+        <xs:enumeration value="1U"/>
+
+        <xs:enumeration value="N6"/>
+
+        <xs:enumeration value="N7"/>
+
+        <xs:enumeration value="N8"/>
+
+        <xs:enumeration value="N9"/>
+
+        <xs:enumeration value="O0"/>
+
+        <xs:enumeration value="O1"/>
+
+        <xs:enumeration value="1T"/>
+
+        <xs:enumeration value="O2"/>
+
+        <xs:enumeration value="O3"/>
+
+        <xs:enumeration value="O4"/>
+
+        <xs:enumeration value="2P"/>
+
+        <xs:enumeration value="O5"/>
+
+        <xs:enumeration value="1K"/>
+
+        <xs:enumeration value="1S"/>
+
+        <xs:enumeration value="O9"/>
+
+        <xs:enumeration value="P0"/>
+
+        <xs:enumeration value="Z5"/>
+
+        <xs:enumeration value="P1"/>
+
+        <xs:enumeration value="P2"/>
+
+        <xs:enumeration value="P3"/>
+
+        <xs:enumeration value="E1"/>
+
+        <xs:enumeration value="T6"/>
+
+        <xs:enumeration value="P5"/>
+
+        <xs:enumeration value="P6"/>
+
+        <xs:enumeration value="P7"/>
+
+        <xs:enumeration value="P8"/>
+
+        <xs:enumeration value="1W"/>
+
+        <xs:enumeration value="Q2"/>
+
+        <xs:enumeration value="Q3"/>
+
+        <xs:enumeration value="Q4"/>
+
+        <xs:enumeration value="Q5"/>
+
+        <xs:enumeration value="Q6"/>
+
+        <xs:enumeration value="Q7"/>
+
+        <xs:enumeration value="1V"/>
+
+        <xs:enumeration value="Q8"/>
+
+        <xs:enumeration value="P4"/>
+
+        <xs:enumeration value="R0"/>
+
+        <xs:enumeration value="1Y"/>
+
+        <xs:enumeration value="1X"/>
+
+        <xs:enumeration value="R1"/>
+
+        <xs:enumeration value="R2"/>
+
+        <xs:enumeration value="R4"/>
+
+        <xs:enumeration value="R5"/>
+
+        <xs:enumeration value="R6"/>
+
+        <xs:enumeration value="R8"/>
+
+        <xs:enumeration value="R9"/>
+
+        <xs:enumeration value="S1"/>
+
+        <xs:enumeration value="PR"/>
+
+        <xs:enumeration value="S3"/>
+
+        <xs:enumeration value="S4"/>
+
+        <xs:enumeration value="S5"/>
+
+        <xs:enumeration value="1Z"/>
+
+        <xs:enumeration value="S6"/>
+
+        <xs:enumeration value="Z0"/>
+
+        <xs:enumeration value="U8"/>
+
+        <xs:enumeration value="U7"/>
+
+        <xs:enumeration value="U9"/>
+
+        <xs:enumeration value="Z1"/>
+
+        <xs:enumeration value="V0"/>
+
+        <xs:enumeration value="V1"/>
+
+        <xs:enumeration value="Y0"/>
+
+        <xs:enumeration value="S8"/>
+
+        <xs:enumeration value="S9"/>
+
+        <xs:enumeration value="T0"/>
+
+        <xs:enumeration value="T1"/>
+
+        <xs:enumeration value="Z2"/>
+
+        <xs:enumeration value="T2"/>
+
+        <xs:enumeration value="T8"/>
+
+        <xs:enumeration value="U0"/>
+
+        <xs:enumeration value="2B"/>
+
+        <xs:enumeration value="2A"/>
+
+        <xs:enumeration value="D7"/>
+
+        <xs:enumeration value="U1"/>
+
+        <xs:enumeration value="T3"/>
+
+        <xs:enumeration value="1L"/>
+
+        <xs:enumeration value="U3"/>
+
+        <xs:enumeration value="F1"/>
+
+        <xs:enumeration value="V2"/>
+
+        <xs:enumeration value="V3"/>
+
+        <xs:enumeration value="L9"/>
+
+        <xs:enumeration value="V6"/>
+
+        <xs:enumeration value="V7"/>
+
+        <xs:enumeration value="V8"/>
+
+        <xs:enumeration value="V9"/>
+
+        <xs:enumeration value="F5"/>
+
+        <xs:enumeration value="2D"/>
+
+        <xs:enumeration value="W0"/>
+
+        <xs:enumeration value="W1"/>
+
+        <xs:enumeration value="Z3"/>
+
+        <xs:enumeration value="W2"/>
+
+        <xs:enumeration value="W3"/>
+
+        <xs:enumeration value="W4"/>
+
+        <xs:enumeration value="W5"/>
+
+        <xs:enumeration value="W6"/>
+
+        <xs:enumeration value="W8"/>
+
+        <xs:enumeration value="2E"/>
+
+        <xs:enumeration value="W7"/>
+
+        <xs:enumeration value="2G"/>
+
+        <xs:enumeration value="W9"/>
+
+        <xs:enumeration value="2H"/>
+
+        <xs:enumeration value="C0"/>
+
+        <xs:enumeration value="X0"/>
+
+        <xs:enumeration value="X1"/>
+
+        <xs:enumeration value="2J"/>
+
+        <xs:enumeration value="X3"/>
+
+        <xs:enumeration value="2K"/>
+
+        <xs:enumeration value="2L"/>
+
+        <xs:enumeration value="X5"/>
+
+        <xs:enumeration value="Q1"/>
+
+        <xs:enumeration value="D8"/>
+
+        <xs:enumeration value="VI"/>
+
+        <xs:enumeration value="X8"/>
+
+        <xs:enumeration value="U5"/>
+
+        <xs:enumeration value="T7"/>
+
+        <xs:enumeration value="Y4"/>
+
+        <xs:enumeration value="Y5"/>
+
+        <xs:enumeration value="XX"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
+
+        <xs:complexType name="stateOrProvinceItemType">
+
+        <xs:simpleContent>
+
+        <xs:restriction base="xbrli:stringItemType">
+
+        <xs:enumeration value="AL"/>
+
+        <xs:enumeration value="AK"/>
+
+        <xs:enumeration value="AZ"/>
+
+        <xs:enumeration value="AR"/>
+
+        <xs:enumeration value="CA"/>
+
+        <xs:enumeration value="CO"/>
+
+        <xs:enumeration value="CT"/>
+
+        <xs:enumeration value="DE"/>
+
+        <xs:enumeration value="DC"/>
+
+        <xs:enumeration value="FL"/>
+
+        <xs:enumeration value="GA"/>
+
+        <xs:enumeration value="HI"/>
+
+        <xs:enumeration value="ID"/>
+
+        <xs:enumeration value="IL"/>
+
+        <xs:enumeration value="IN"/>
+
+        <xs:enumeration value="IA"/>
+
+        <xs:enumeration value="KS"/>
+
+        <xs:enumeration value="KY"/>
+
+        <xs:enumeration value="LA"/>
+
+        <xs:enumeration value="ME"/>
+
+        <xs:enumeration value="MD"/>
+
+        <xs:enumeration value="MA"/>
+
+        <xs:enumeration value="MI"/>
+
+        <xs:enumeration value="MN"/>
+
+        <xs:enumeration value="MS"/>
+
+        <xs:enumeration value="MO"/>
+
+        <xs:enumeration value="MT"/>
+
+        <xs:enumeration value="NE"/>
+
+        <xs:enumeration value="NV"/>
+
+        <xs:enumeration value="NH"/>
+
+        <xs:enumeration value="NJ"/>
+
+        <xs:enumeration value="NM"/>
+
+        <xs:enumeration value="NY"/>
+
+        <xs:enumeration value="NC"/>
+
+        <xs:enumeration value="ND"/>
+
+        <xs:enumeration value="OH"/>
+
+        <xs:enumeration value="OK"/>
+
+        <xs:enumeration value="OR"/>
+
+        <xs:enumeration value="PA"/>
+
+        <xs:enumeration value="RI"/>
+
+        <xs:enumeration value="SC"/>
+
+        <xs:enumeration value="SD"/>
+
+        <xs:enumeration value="TN"/>
+
+        <xs:enumeration value="TX"/>
+
+        <xs:enumeration value="UT"/>
+
+        <xs:enumeration value="VT"/>
+
+        <xs:enumeration value="VA"/>
+
+        <xs:enumeration value="WA"/>
+
+        <xs:enumeration value="WV"/>
+
+        <xs:enumeration value="WI"/>
+
+        <xs:enumeration value="WY"/>
+
+        <xs:enumeration value="AB"/>
+
+        <xs:enumeration value="BC"/>
+
+        <xs:enumeration value="MB"/>
+
+        <xs:enumeration value="NB"/>
+
+        <xs:enumeration value="NL"/>
+
+        <xs:enumeration value="NS"/>
+
+        <xs:enumeration value="ON"/>
+
+        <xs:enumeration value="NT"/>
+
+        <xs:enumeration value="NU"/>
+
+        <xs:enumeration value="PE"/>
+
+        <xs:enumeration value="QC"/>
+
+        <xs:enumeration value="SK"/>
+
+        <xs:enumeration value="YT"/>
+
+        <xs:attributeGroup ref="xbrli:nonNumericItemAttrs"/>
+
+        </xs:restriction>
+
+        </xs:simpleContent>
+
+        </xs:complexType>
 
         </xs:schema>
 
@@ -14293,19 +15889,17 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '4035'
+      - '6858'
       Content-Type:
       - text/xml
       Date:
-      - Thu, 12 Feb 2026 01:31:44 GMT
+      - Thu, 12 Feb 2026 06:22:10 GMT
       ETag:
-      - '"d3a9-63fa6a06ec940"'
+      - '"121dc-63fa6a06ec940"'
       Last-Modified:
       - Thu, 25 Sep 2025 21:12:29 GMT
       Server:
       - Apache
-      Set-Cookie:
-      - datacenter=dc2;Path=/
       Strict-Transport-Security:
       - max-age=31536000
       Vary:
