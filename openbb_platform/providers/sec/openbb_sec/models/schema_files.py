@@ -71,7 +71,7 @@ class SecSchemaFilesQueryParams(QueryParams):
     year: int | None = Field(
         default=None,
         description=(
-            "Taxonomy year (e.g. 2011-2026 for us-gaap, varies by taxonomy). "
+            "Taxonomy year (e.g. 2011+ for us-gaap, varies by taxonomy). "
             + "Defaults to the most recent year when omitted."
         ),
     )

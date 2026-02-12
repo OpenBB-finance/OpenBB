@@ -1736,7 +1736,7 @@ class XBRLParser:
                 my_children_rels = [
                     r for r in relationships if r["parent"] == element_id
                 ]
-                my_children_rels.sort(key=lambda x: float(x["order"]))
+                my_children_rels.sort(key=lambda x: float(x["order"]))  # type: ignore
 
                 for rel in my_children_rels:
                     child_node = build_node(
