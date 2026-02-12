@@ -2289,7 +2289,8 @@ class XBRLParser:
                         val = (explicit.text or "").strip()
                         if dim and val:
                             dimensions[dim] = val
-                    # Typed dimensions: <xbrldi:typedMember dimension="axis"><ns:value>text</ns:value></xbrldi:typedMember>
+                    # Typed dimensions
+                    # <xbrldi:typedMember dimension="axis"><ns:value>text</ns:value></xbrldi:typedMember>
                     for typed in container.findall(f"{{{xbrldi_ns}}}typedMember"):
                         dim = typed.get("dimension", "")
                         if dim:
