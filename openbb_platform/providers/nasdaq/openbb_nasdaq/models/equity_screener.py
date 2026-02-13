@@ -15,11 +15,13 @@ from openbb_core.provider.utils.country_utils import Country
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
-EXCHANGE_CHOICES = ["all", "nasdaq", "nyse", "amex"]
-EXSUBCATEGORY_CHOICES = ["all", "ngs", "ngm", "ncm", "adr"]
-MKT_CAP_CHOICES = ["all", "mega", "large", "mid", "small", "micro"]
-RECOMMENDATION_CHOICES = ["all", "strong_buy", "buy", "hold", "sell", "strong_sell"]
-SECTOR_CHOICES = [
+EXCHANGE_CHOICES = Literal["all", "nasdaq", "nyse", "amex"]
+EXSUBCATEGORY_CHOICES = Literal["all", "ngs", "ngm", "ncm", "adr"]
+MKT_CAP_CHOICES = Literal["all", "mega", "large", "mid", "small", "micro"]
+RECOMMENDATION_CHOICES = Literal[
+    "all", "strong_buy", "buy", "hold", "sell", "strong_sell"
+]
+SECTOR_CHOICES = Literal[
     "all",
     "energy",
     "basic_materials",
@@ -33,7 +35,7 @@ SECTOR_CHOICES = [
     "utilities",
     "real_estate",
 ]
-REGION_CHOICES = [
+REGION_CHOICES = Literal[
     "all",
     "africa",
     "asia",
@@ -44,7 +46,7 @@ REGION_CHOICES = [
     "north_america",
     "south_america",
 ]
-COUNTRY_CHOICES = [
+COUNTRY_CHOICES = Literal[
     "all",
     "argentina",
     "armenia",
@@ -107,146 +109,73 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         "mktcap": "marketcap",
     }
     __json_schema_extra__ = {
-        "exchange": {"multiple_items_allowed": True},
-        "exsubcategory": {"multiple_items_allowed": True},
-        "mktcap": {"multiple_items_allowed": True},
-        "recommendation": {"multiple_items_allowed": True},
-        "sector": {"multiple_items_allowed": True},
-        "region": {"multiple_items_allowed": True},
-        "country": {"multiple_items_allowed": True},
+        "exchange": {
+            "multiple_items_allowed": True,
+            "choices": list(EXCHANGE_CHOICES.__args__),
+        },
+        "exsubcategory": {
+            "multiple_items_allowed": True,
+            "choices": list(EXSUBCATEGORY_CHOICES.__args__),
+        },
+        "mktcap": {
+            "multiple_items_allowed": True,
+            "choices": list(MKT_CAP_CHOICES.__args__),
+        },
+        "recommendation": {
+            "multiple_items_allowed": True,
+            "choices": list(RECOMMENDATION_CHOICES.__args__),
+        },
+        "sector": {
+            "multiple_items_allowed": True,
+            "choices": list(SECTOR_CHOICES.__args__),
+        },
+        "region": {
+            "multiple_items_allowed": True,
+            "choices": list(REGION_CHOICES.__args__),
+        },
+        "country": {
+            "multiple_items_allowed": True,
+            "choices": list(COUNTRY_CHOICES.__args__),
+        },
     }
 
-    exchange: Literal["all", "nasdaq", "nyse", "amex"] | str = Field(
+    exchange: EXCHANGE_CHOICES | str = Field(
         default="all",
         description="Filter by exchange.",
-        json_schema_extra={"choices": EXCHANGE_CHOICES},
     )
-    exsubcategory: Literal["all", "ngs", "ngm", "ncm", "adr"] | str = Field(
+    exsubcategory: EXSUBCATEGORY_CHOICES | str = Field(
         default="all",
         description="Filter by exchange subcategory."
-        "\n    NGS - Nasdaq Global Select Market"
-        "\n    NGM - Nasdaq Global Market"
-        "\n    NCM - Nasdaq Capital Market"
-        "\n    ADR - American Depository Receipt\n",
-        json_schema_extra={"choices": EXSUBCATEGORY_CHOICES},
+        "\n- NGS - Nasdaq Global Select Market"
+        "\n- NGM - Nasdaq Global Market"
+        "\n- NCM - Nasdaq Capital Market"
+        "\n- ADR - American Depository Receipt\n",
     )
-    mktcap: Literal["all", "mega", "large", "mid", "small", "micro"] | str = Field(
+    mktcap: MKT_CAP_CHOICES | str = Field(
         default="all",
         description="Filter by market cap."
-        "\n    Mega - > 200B"
-        "\n    Large - 10B - 200B"
-        "\n    Mid - 2B - 10B"
-        "\n    Small - 300M - 2B"
-        "\n    Micro - 50M - 300M\n",
-        json_schema_extra={"choices": MKT_CAP_CHOICES},
+        "\n- Mega - > 200B"
+        "\n- Large - 10B - 200B"
+        "\n- Mid - 2B - 10B"
+        "\n- Small - 300M - 2B"
+        "\n- Micro - 50M - 300M\n",
     )
-    recommendation: (
-        Literal["all", "strong_buy", "buy", "hold", "sell", "strong_sell"] | str
-    ) = Field(
+    recommendation: RECOMMENDATION_CHOICES | str = Field(
         default="all",
         description="Filter by consensus analyst action.",
-        json_schema_extra={"choices": RECOMMENDATION_CHOICES},
     )
-    sector: (
-        Literal[
-            "all",
-            "energy",
-            "basic_materials",
-            "industrials",
-            "consumer_staples",
-            "consumer_discretionary",
-            "health_care",
-            "financial_services",
-            "technology",
-            "communication_services",
-            "utilities",
-            "real_estate",
-        ]
-        | str
-    ) = Field(
+    sector: SECTOR_CHOICES | str = Field(
         default="all",
         description="Filter by sector.",
-        json_schema_extra={"choices": SECTOR_CHOICES},
     )
-    region: (
-        Literal[
-            "all",
-            "africa",
-            "asia",
-            "australia_and_south_pacific",
-            "caribbean",
-            "europe",
-            "middle_east",
-            "north_america",
-            "south_america",
-        ]
-        | str
-    ) = Field(
+    region: REGION_CHOICES | str = Field(
         default="all",
         description="Filter by region.",
-        json_schema_extra={"choices": REGION_CHOICES},
     )
-    country: (
-        Literal[
-            "all",
-            "argentina",
-            "armenia",
-            "australia",
-            "austria",
-            "belgium",
-            "bermuda",
-            "brazil",
-            "canada",
-            "cayman_islands",
-            "chile",
-            "colombia",
-            "costa_rica",
-            "curacao",
-            "cyprus",
-            "denmark",
-            "finland",
-            "france",
-            "germany",
-            "greece",
-            "guernsey",
-            "hong_kong",
-            "india",
-            "indonesia",
-            "ireland",
-            "isle_of_man",
-            "israel",
-            "italy",
-            "japan",
-            "jersey",
-            "luxembourg",
-            "macau",
-            "mexico",
-            "monaco",
-            "netherlands",
-            "norway",
-            "panama",
-            "peru",
-            "philippines",
-            "puerto_rico",
-            "russia",
-            "singapore",
-            "south_africa",
-            "south_korea",
-            "spain",
-            "sweden",
-            "switzerland",
-            "taiwan",
-            "turkey",
-            "united_kingdom",
-            "united_states",
-            "usa",
-        ]
-        | str
-    ) = Field(
+    country: COUNTRY_CHOICES | str = Field(
         default="all",
         description="Filter by country. Accepts country names, ISO 3166-1 alpha-2/alpha-3 codes, "
         "or 'all' for all countries. Multiple comma-separated values allowed.",
-        json_schema_extra={"choices": COUNTRY_CHOICES},
     )
     limit: int | None = Field(
         default=None,
@@ -262,7 +191,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in EXCHANGE_CHOICES:
+            if item in list(EXCHANGE_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid exchange: {item}")
@@ -277,7 +206,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in EXSUBCATEGORY_CHOICES:
+            if item in list(EXSUBCATEGORY_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid exsubcategory: {item}")
@@ -292,7 +221,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in MKT_CAP_CHOICES:
+            if item in list(MKT_CAP_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid market cap: {item}")
@@ -307,7 +236,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in RECOMMENDATION_CHOICES:
+            if item in list(RECOMMENDATION_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid recommendation: {item}")
@@ -322,7 +251,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in SECTOR_CHOICES:
+            if item in list(SECTOR_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid sector: {item}")
@@ -337,7 +266,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in REGION_CHOICES:
+            if item in list(REGION_CHOICES.__args__):
                 new_items.append(item)
             else:
                 warn(f"Invalid region: {item}")
@@ -361,7 +290,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
                 continue
             # Try to convert via Country type if not already valid
             normalized_item = item
-            if item not in COUNTRY_CHOICES:
+            if item not in list(COUNTRY_CHOICES.__args__):
                 try:
                     country = Country(item)
                     normalized_item = (
@@ -369,7 +298,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
                     )
                 except ValueError:
                     pass  # Keep original, will warn below
-            if normalized_item in COUNTRY_CHOICES:
+            if normalized_item in list(COUNTRY_CHOICES.__args__):
                 new_items.append(normalized_item)
             else:
                 warn(f"Invalid country: {item}")
