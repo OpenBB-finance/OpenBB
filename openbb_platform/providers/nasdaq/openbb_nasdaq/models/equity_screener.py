@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -111,31 +111,31 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
     __json_schema_extra__ = {
         "exchange": {
             "multiple_items_allowed": True,
-            "choices": list(EXCHANGE_CHOICES.__args__),
+            "choices": list(get_args(EXCHANGE_CHOICES)),
         },
         "exsubcategory": {
             "multiple_items_allowed": True,
-            "choices": list(EXSUBCATEGORY_CHOICES.__args__),
+            "choices": list(get_args(EXSUBCATEGORY_CHOICES)),
         },
         "mktcap": {
             "multiple_items_allowed": True,
-            "choices": list(MKT_CAP_CHOICES.__args__),
+            "choices": list(get_args(MKT_CAP_CHOICES)),
         },
         "recommendation": {
             "multiple_items_allowed": True,
-            "choices": list(RECOMMENDATION_CHOICES.__args__),
+            "choices": list(get_args(RECOMMENDATION_CHOICES)),
         },
         "sector": {
             "multiple_items_allowed": True,
-            "choices": list(SECTOR_CHOICES.__args__),
+            "choices": list(get_args(SECTOR_CHOICES)),
         },
         "region": {
             "multiple_items_allowed": True,
-            "choices": list(REGION_CHOICES.__args__),
+            "choices": list(get_args(REGION_CHOICES)),
         },
         "country": {
             "multiple_items_allowed": True,
-            "choices": list(COUNTRY_CHOICES.__args__),
+            "choices": list(get_args(COUNTRY_CHOICES)),
         },
     }
 
@@ -191,7 +191,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(EXCHANGE_CHOICES.__args__):
+            if item in list(get_args(EXCHANGE_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid exchange: {item}")
@@ -206,7 +206,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(EXSUBCATEGORY_CHOICES.__args__):
+            if item in list(get_args(EXSUBCATEGORY_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid exsubcategory: {item}")
@@ -221,7 +221,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(MKT_CAP_CHOICES.__args__):
+            if item in list(get_args(MKT_CAP_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid market cap: {item}")
@@ -236,7 +236,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(RECOMMENDATION_CHOICES.__args__):
+            if item in list(get_args(RECOMMENDATION_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid recommendation: {item}")
@@ -251,7 +251,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(SECTOR_CHOICES.__args__):
+            if item in list(get_args(SECTOR_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid sector: {item}")
@@ -266,7 +266,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
         for item in v:
             if item == "all":
                 continue
-            if item in list(REGION_CHOICES.__args__):
+            if item in list(get_args(REGION_CHOICES)):
                 new_items.append(item)
             else:
                 warn(f"Invalid region: {item}")
@@ -290,7 +290,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
                 continue
             # Try to convert via Country type if not already valid
             normalized_item = item
-            if item not in list(COUNTRY_CHOICES.__args__):
+            if item not in list(get_args(COUNTRY_CHOICES)):
                 try:
                     country = Country(item)
                     normalized_item = (
@@ -298,7 +298,7 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
                     )
                 except ValueError:
                     pass  # Keep original, will warn below
-            if normalized_item in list(COUNTRY_CHOICES.__args__):
+            if normalized_item in list(get_args(COUNTRY_CHOICES)):
                 new_items.append(normalized_item)
             else:
                 warn(f"Invalid country: {item}")
