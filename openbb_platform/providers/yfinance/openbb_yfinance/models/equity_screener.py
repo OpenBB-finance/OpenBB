@@ -113,11 +113,11 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
             try:
                 country_code = Country(v).alpha_2.lower()
             except ValueError:
-                return v  # Let it fail at API level if invalid
+                country_code = v.strip().lower()
         if country_code not in COUNTRIES:
             raise ValueError(
                 f"Country '{v}' ({country_code.upper()}) is not supported by YFinance. "
-                f"Valid options: {', '.join(sorted(COUNTRIES)[:20])}...",
+                f"Valid options: {', '.join(sorted(COUNTRIES))}",
             )
         return country_code
 
