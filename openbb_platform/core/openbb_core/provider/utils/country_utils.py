@@ -16,16 +16,33 @@ Supported membership groups:
 
 References:
     - ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
+    - G7: https://www.g7italy.it/en/g7-members/ (rotating presidency)
+    - G20: https://www.g20.org/en/about/member-countries
+    - EU: https://european-union.europa.eu/principles-countries-history/country-profiles_en
+    - NATO: https://www.nato.int/cps/en/natohq/nato_countries.htm
+    - OECD: https://www.oecd.org/about/members-and-partners/
+    - OPEC: https://www.opec.org/opec_web/en/about_us/25.htm
+    - BRICS: https://brics-russia2024.ru/en/about/members/
 """
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 from pydantic_core import core_schema
 
 
-def _load_country_data() -> dict[str, dict[str, Any]]:
+class CountryData(TypedDict, total=False):
+    """Type definition for country data dictionary."""
+
+    alpha_2: str
+    alpha_3: str
+    name: str
+    numeric: str
+    groups: list[str]
+
+
+def _load_country_data() -> dict[str, CountryData]:
     """Load country data from JSON and build lookup indices.
 
     Returns a dict with lookup keys (alpha_2, alpha_3, name variants) mapping to country data.
@@ -34,7 +51,7 @@ def _load_country_data() -> dict[str, dict[str, Any]]:
     with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
 
-    lookup: dict[str, dict[str, str]] = {}
+    lookup: dict[str, CountryData] = {}
     for country in data["countries"]:
         # Index by alpha_2 (case-insensitive)
         lookup[country["alpha_2"].upper()] = country
@@ -89,7 +106,7 @@ class Country(str):
     True
     """
 
-    _country_data: dict[str, Any]
+    _country_data: CountryData
 
     def __new__(cls, value: Any) -> "Country":
         """Create a new Country instance.
@@ -122,7 +139,7 @@ class Country(str):
         return instance
 
     @staticmethod
-    def _lookup_country(value: Any) -> dict[str, Any]:
+    def _lookup_country(value: Any) -> CountryData:
         """Look up a country from various input formats.
 
         Parameters
@@ -132,7 +149,7 @@ class Country(str):
 
         Returns
         -------
-        dict[str, Any]
+        CountryData
             The country data dictionary with alpha_2, alpha_3, name, numeric, groups.
 
         Raises
