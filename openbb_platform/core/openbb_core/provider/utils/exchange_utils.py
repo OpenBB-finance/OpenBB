@@ -7,17 +7,28 @@ Providers can access mic, acronym, name, country, and city properties as needed.
 
 References:
     - ISO 10383: https://www.iso20022.org/market-identifier-codes
-    - MIC Registry: https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv
+    - MIC Registry (CSV): https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv
+    - Wikipedia: https://en.wikipedia.org/wiki/Market_Identifier_Code
 """
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 from pydantic_core import core_schema
 
 
-def _load_exchange_data() -> dict[str, dict[str, str]]:
+class ExchangeData(TypedDict, total=False):
+    """Type definition for exchange data dictionary."""
+
+    mic: str
+    acronym: str
+    name: str
+    country: str
+    city: str
+
+
+def _load_exchange_data() -> dict[str, ExchangeData]:
     """Load exchange data from JSON and build lookup indices.
 
     Returns a dict with lookup keys (mic, acronym, name variants) mapping to exchange data.
@@ -26,7 +37,7 @@ def _load_exchange_data() -> dict[str, dict[str, str]]:
     with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
 
-    lookup: dict[str, dict[str, str]] = {}
+    lookup: dict[str, ExchangeData] = {}
     for exchange in data["exchanges"]:
         # Index by MIC (case-insensitive)
         lookup[exchange["mic"].upper()] = exchange
@@ -85,7 +96,7 @@ class Exchange(str):
     'US'
     """
 
-    _exchange_data: dict[str, str]
+    _exchange_data: ExchangeData
 
     def __new__(cls, value: Any) -> "Exchange":
         """Create a new Exchange instance.
@@ -118,7 +129,7 @@ class Exchange(str):
         return instance
 
     @staticmethod
-    def _lookup_exchange(value: Any) -> dict[str, str]:
+    def _lookup_exchange(value: Any) -> ExchangeData:
         """Look up an exchange from various input formats.
 
         Parameters
@@ -128,7 +139,7 @@ class Exchange(str):
 
         Returns
         -------
-        dict[str, str]
+        ExchangeData
             The exchange data dictionary with mic, acronym, name, country, city.
 
         Raises
