@@ -392,7 +392,7 @@
     {
       "alpha_2": "CW",
       "alpha_3": "CUW",
-      "name": "Curaçao",
+      "name": "Cura\u00e7ao",
       "numeric": "531"
     },
     {
@@ -418,7 +418,7 @@
     {
       "alpha_2": "CI",
       "alpha_3": "CIV",
-      "name": "Côte d'Ivoire",
+      "name": "C\u00f4te d'Ivoire",
       "numeric": "384"
     },
     {
@@ -750,7 +750,8 @@
       "name": "Indonesia",
       "numeric": "360",
       "groups": [
-        "G20"
+        "G20",
+        "BRICS"
       ]
     },
     {
@@ -1327,13 +1328,13 @@
     {
       "alpha_2": "RE",
       "alpha_3": "REU",
-      "name": "Réunion",
+      "name": "R\u00e9union",
       "numeric": "638"
     },
     {
       "alpha_2": "BL",
       "alpha_3": "BLM",
-      "name": "Saint Barthélemy",
+      "name": "Saint Barth\u00e9lemy",
       "numeric": "652"
     },
     {
@@ -1773,7 +1774,7 @@
     {
       "alpha_2": "AX",
       "alpha_3": "ALA",
-      "name": "Åland Islands",
+      "name": "\u00c5land Islands",
       "numeric": "248"
     }
   ]
