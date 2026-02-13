@@ -14,8 +14,11 @@ from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
     CalendarEarningsQueryParams,
 )
+from openbb_core.provider.utils.country_utils import Country
 from openbb_seeking_alpha.utils.helpers import HEADERS, date_range
 from pydantic import Field, field_validator
+
+SA_COUNTRIES = {"us", "ca"}
 
 
 class SACalendarEarningsQueryParams(CalendarEarningsQueryParams):
@@ -26,9 +29,28 @@ class SACalendarEarningsQueryParams(CalendarEarningsQueryParams):
 
     country: Literal["us", "ca"] = Field(
         default="us",
-        description="The country to get calendar data for.",
+        description="The country to get calendar data for. "
+        "Accepts 'us'/'ca', ISO codes ('US', 'USA', 'CA', 'CAN'), "
+        "or names ('United States', 'Canada').",
         json_schema_extra={"choices": ["us", "ca"]},
     )
+
+    @field_validator("country", mode="before")
+    @classmethod
+    def _validate_country(cls, v):
+        """Normalize country input to Seeking Alpha format."""
+        if v in SA_COUNTRIES:
+            return v
+        try:
+            country = Country(v)
+            code = country.alpha_2.lower()
+            if code in SA_COUNTRIES:
+                return code
+        except ValueError:
+            pass
+        raise ValueError(
+            f"Country '{v}' not supported. Seeking Alpha only supports US and Canada."
+        )
 
 
 class SACalendarEarningsData(CalendarEarningsData):

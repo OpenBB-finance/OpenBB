@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
+from openbb_core.provider.utils.country_utils import Country
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import (
     COUNTRIES,
@@ -23,7 +24,7 @@ from openbb_yfinance.utils.references import (
     YFPredefinedScreenerData,
     get_industry_sector,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
@@ -50,7 +51,8 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
 
     country: str | None = Field(
         default="us",
-        description="Filter by country, as a two-letter country code. Default is, 'us'. Use, 'all', for all countries.",
+        description="Filter by country. Accepts ISO 3166-1 alpha-2 codes (e.g., 'US', 'DE'), "
+        "alpha-3 codes (e.g., 'USA'), country names (e.g., 'United States'), or 'all' for all countries.",
     )
     exchange: Exchanges | None = Field(
         default=None,
@@ -98,13 +100,34 @@ class YFinanceEquityScreenerQueryParams(EquityScreenerQueryParams):
         description="Limit the number of results returned. Default is, 200. Set to, 0, for all results.",
     )
 
+    @field_validator("country", mode="before")
+    @classmethod
+    def _validate_country(cls, v):
+        """Validate and normalize country input."""
+        if v is None or v == "all":
+            return v
+        # Convert Country type or string to lowercase alpha-2 for YFinance
+        if isinstance(v, Country):
+            country_code = v.alpha_2.lower()
+        else:
+            try:
+                country_code = Country(v).alpha_2.lower()
+            except ValueError:
+                country_code = v.strip().lower()
+        if country_code not in COUNTRIES:
+            raise ValueError(
+                f"Country '{v}' ({country_code.upper()}) is not supported by YFinance. "
+                f"Valid options: {', '.join(sorted(COUNTRIES))}",
+            )
+        return country_code
+
 
 class YFinanceEquityScreenerData(EquityScreenerData, YFPredefinedScreenerData):
     """YFinance Equity Screener Data."""
 
 
 class YFinanceEquityScreenerFetcher(
-    Fetcher[YFinanceEquityScreenerQueryParams, list[YFinanceEquityScreenerData]]
+    Fetcher[YFinanceEquityScreenerQueryParams, list[YFinanceEquityScreenerData]],
 ):
     """YFinance Equity Screener Fetcher."""
 
@@ -121,8 +144,8 @@ class YFinanceEquityScreenerFetcher(
                 raise OpenBBError(
                     ValueError(
                         f"Industry {industry} does not belong to sector {sector}."
-                        " Valid choices are:" + "\n\n    " + f"{choices}"
-                    )
+                        " Valid choices are:" + "\n\n    " + f"{choices}",
+                    ),
                 )
         elif industry and not sector:
             choices = "\n".join(INDUSTRIES)
@@ -131,8 +154,8 @@ class YFinanceEquityScreenerFetcher(
                 raise OpenBBError(
                     ValueError(
                         f"Industry {industry} not found. Valid choices are:\n"
-                        + f"{choices}"
-                    )
+                        f"{choices}",
+                    ),
                 )
             _industry = INDUSTRY_MAP[sector][industry]
 
@@ -155,7 +178,7 @@ class YFinanceEquityScreenerFetcher(
 
         if query.exchange is not None:
             operands.append(
-                {"operator": "eq", "operands": ["exchange", query.exchange.upper()]}
+                {"operator": "eq", "operands": ["exchange", query.exchange.upper()]},
             )
             query.country = "all"
 
@@ -175,39 +198,39 @@ class YFinanceEquityScreenerFetcher(
             industry = INDUSTRY_MAP[sector][query.industry]
             if industry in PEER_GROUPS:
                 operands.append(
-                    {"operator": "EQ", "operands": ["peer_group", industry]}
+                    {"operator": "EQ", "operands": ["peer_group", industry]},
                 )
             else:
                 operands.append({"operator": "EQ", "operands": ["industry", industry]})
 
         if query.mktcap_min is not None:
             operands.append(
-                {"operator": "gt", "operands": ["intradaymarketcap", query.mktcap_min]}
+                {"operator": "gt", "operands": ["intradaymarketcap", query.mktcap_min]},
             )
 
         if query.mktcap_max is not None:
             operands.append(
-                {"operator": "lt", "operands": ["intradaymarketcap", query.mktcap_max]}
+                {"operator": "lt", "operands": ["intradaymarketcap", query.mktcap_max]},
             )
 
         if query.price_min is not None:
             operands.append(
-                {"operator": "gt", "operands": ["intradayprice", query.price_min]}
+                {"operator": "gt", "operands": ["intradayprice", query.price_min]},
             )
 
         if query.price_max is not None:
             operands.append(
-                {"operator": "lt", "operands": ["intradayprice", query.price_max]}
+                {"operator": "lt", "operands": ["intradayprice", query.price_max]},
             )
 
         if query.volume_min is not None:
             operands.append(
-                {"operator": "gt", "operands": ["dayvolume", query.volume_min]}
+                {"operator": "gt", "operands": ["dayvolume", query.volume_min]},
             )
 
         if query.volume_max is not None:
             operands.append(
-                {"operator": "lt", "operands": ["dayvolume", query.volume_max]}
+                {"operator": "lt", "operands": ["dayvolume", query.volume_max]},
             )
 
         if query.beta_min is not None:

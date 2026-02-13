@@ -9,7 +9,9 @@ from openbb_core.provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
-from pydantic import ConfigDict, Field
+from openbb_core.provider.utils.country_utils import Country
+from openbb_fmp.utils.definitions import Countries
+from pydantic import ConfigDict, Field, field_validator
 
 
 class FMPEtfSearchQueryParams(EtfSearchQueryParams):
@@ -26,13 +28,42 @@ class FMPEtfSearchQueryParams(EtfSearchQueryParams):
                     {"label": "Euronext", "value": "euronext"},
                 ],
             }
-        }
+        },
+        "country": {
+            "x-widget_config": {
+                "options": [
+                    {"label": country.upper(), "value": country}
+                    for country in Countries.__args__
+                ],
+            },
+        },
     }
 
     exchange: Literal["amex", "nyse", "nasdaq", "tsx", "euronext"] | None = Field(
         description="Exchange where the ETF is listed. If not provided, all exchanges are searched.",
         default=None,
     )
+    country: Country | None = Field(
+        default=None,
+        description="Filter by country. Accepts ISO 3166-1 alpha-2 codes (e.g., 'US', 'DE'), "
+        "alpha-3 codes (e.g., 'USA'), or country names (e.g., 'United States', 'united_states').",
+    )
+
+    @field_validator("country", mode="after")
+    @classmethod
+    def _validate_country(cls, v):
+        """Validate country is supported by FMP."""
+        if v is None:
+            return v
+        # Country stores alpha_2 in uppercase, FMP expects lowercase
+        country_code = v.alpha_2.lower()
+        valid_countries = list(Countries.__args__)
+        if country_code not in valid_countries:
+            raise ValueError(
+                f"Country '{v.name}' ({v.alpha_2}) is not supported by FMP. "
+                f"Valid options: {', '.join(sorted(valid_countries)[:20])}..."
+            )
+        return v
 
 
 class FMPEtfSearchData(EtfSearchData):
@@ -100,6 +131,8 @@ class FMPEtfSearchFetcher(
         url = "https://financialmodelingprep.com/stable/company-screener?isEtf=true&isFund=false&isActivelyTrading=true"
         if query.exchange:
             url += f"&exchange={query.exchange.upper()}"
+        if query.country:
+            url += f"&country={query.country.upper()}"
 
         url += f"&limit=10000&apikey={api_key}"
 
