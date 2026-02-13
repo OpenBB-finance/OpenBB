@@ -16,13 +16,13 @@ Supported membership groups:
 
 References:
     - ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
-    - G7: https://www.g7italy.it/en/g7-members/ (rotating presidency)
-    - G20: https://www.g20.org/en/about/member-countries
-    - EU: https://european-union.europa.eu/principles-countries-history/country-profiles_en
-    - NATO: https://www.nato.int/cps/en/natohq/nato_countries.htm
-    - OECD: https://www.oecd.org/about/members-and-partners/
-    - OPEC: https://www.opec.org/opec_web/en/about_us/25.htm
-    - BRICS: https://brics-russia2024.ru/en/about/members/
+    - G7: https://en.wikipedia.org/wiki/G7
+    - G20: https://en.wikipedia.org/wiki/G20
+    - EU: https://european-union.europa.eu/principles-countries-history/eu-countries_en
+    - NATO: https://www.nato.int/en/about-us/organization/nato-member-countries
+    - OECD: https://en.wikipedia.org/wiki/OECD
+    - OPEC: https://en.wikipedia.org/wiki/OPEC
+    - BRICS: https://en.wikipedia.org/wiki/BRICS
 """
 
 import json
