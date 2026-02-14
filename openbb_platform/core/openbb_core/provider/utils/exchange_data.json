@@ -1,58 +1,467 @@
 {
-  "_last_updated": "2025-02-13",
+  "_last_updated": "2026-02-13",
   "exchanges": [
-    {"mic": "XASE", "acronym": "AMEX", "name": "NYSE American", "country": "US", "city": "New York"},
-    {"mic": "XAMS", "acronym": "AMS", "name": "Euronext Amsterdam", "country": "NL", "city": "Amsterdam"},
-    {"mic": "XATH", "acronym": "ASE", "name": "Athens Stock Exchange", "country": "GR", "city": "Athens"},
-    {"mic": "XASX", "acronym": "ASX", "name": "Australian Securities Exchange", "country": "AU", "city": "Sydney"},
-    {"mic": "XBME", "acronym": "BME", "name": "Bolsas y Mercados Españoles", "country": "ES", "city": "Madrid"},
-    {"mic": "XBRU", "acronym": "BRU", "name": "Euronext Brussels", "country": "BE", "city": "Brussels"},
-    {"mic": "XBUD", "acronym": "BUD", "name": "Budapest Stock Exchange", "country": "HU", "city": "Budapest"},
-    {"mic": "XBUE", "acronym": "BUE", "name": "Bolsa de Comercio de Buenos Aires", "country": "AR", "city": "Buenos Aires"},
-    {"mic": "XCAI", "acronym": "CAI", "name": "Egyptian Exchange", "country": "EG", "city": "Cairo"},
-    {"mic": "XCNQ", "acronym": "CNQ", "name": "Canadian Securities Exchange", "country": "CA", "city": "Toronto"},
-    {"mic": "XCSE", "acronym": "CPH", "name": "Nasdaq Copenhagen", "country": "DK", "city": "Copenhagen"},
-    {"mic": "XDFM", "acronym": "DFM", "name": "Dubai Financial Market", "country": "AE", "city": "Dubai"},
-    {"mic": "DSMD", "acronym": "DOH", "name": "Qatar Stock Exchange", "country": "QA", "city": "Doha"},
-    {"mic": "XPAR", "acronym": "EURONEXT", "name": "Euronext Paris", "country": "FR", "city": "Paris"},
-    {"mic": "XHEL", "acronym": "HEL", "name": "Nasdaq Helsinki", "country": "FI", "city": "Helsinki"},
-    {"mic": "XHKG", "acronym": "HKSE", "name": "Hong Kong Stock Exchange", "country": "HK", "city": "Hong Kong"},
-    {"mic": "IFEU", "acronym": "ICE", "name": "ICE Futures Europe", "country": "GB", "city": "London"},
-    {"mic": "XLON", "acronym": "IOB", "name": "London Stock Exchange - International Order Book", "country": "GB", "city": "London"},
-    {"mic": "XIST", "acronym": "IST", "name": "Borsa Istanbul", "country": "TR", "city": "Istanbul"},
-    {"mic": "XIDX", "acronym": "JKT", "name": "Indonesia Stock Exchange", "country": "ID", "city": "Jakarta"},
-    {"mic": "XJSE", "acronym": "JNB", "name": "Johannesburg Stock Exchange", "country": "ZA", "city": "Johannesburg"},
-    {"mic": "XJPX", "acronym": "JPX", "name": "Japan Exchange Group", "country": "JP", "city": "Tokyo"},
-    {"mic": "XKLS", "acronym": "KLS", "name": "Bursa Malaysia", "country": "MY", "city": "Kuala Lumpur"},
-    {"mic": "XKRX", "acronym": "KOE", "name": "Korea Exchange", "country": "KR", "city": "Seoul"},
-    {"mic": "XKOS", "acronym": "KSC", "name": "Korea Exchange - KOSDAQ", "country": "KR", "city": "Seoul"},
-    {"mic": "XKUW", "acronym": "KUW", "name": "Boursa Kuwait", "country": "KW", "city": "Kuwait City"},
-    {"mic": "XLON", "acronym": "LSE", "name": "London Stock Exchange", "country": "GB", "city": "London"},
-    {"mic": "XMEX", "acronym": "MEX", "name": "Bolsa Mexicana de Valores", "country": "MX", "city": "Mexico City"},
-    {"mic": "XNAS", "acronym": "NASDAQ", "name": "NASDAQ Stock Market", "country": "US", "city": "New York"},
-    {"mic": "NEOE", "acronym": "NEO", "name": "NEO Exchange", "country": "CA", "city": "Toronto"},
-    {"mic": "XNSE", "acronym": "NSE", "name": "National Stock Exchange of India", "country": "IN", "city": "Mumbai"},
-    {"mic": "XNYS", "acronym": "NYSE", "name": "New York Stock Exchange", "country": "US", "city": "New York"},
-    {"mic": "XNZE", "acronym": "NZE", "name": "New Zealand Exchange", "country": "NZ", "city": "Wellington"},
-    {"mic": "XOSL", "acronym": "OSL", "name": "Oslo Stock Exchange", "country": "NO", "city": "Oslo"},
-    {"mic": "OTCM", "acronym": "OTC", "name": "OTC Markets Group", "country": "US", "city": "New York"},
-    {"mic": "PINX", "acronym": "PNK", "name": "OTC Pink Sheets", "country": "US", "city": "New York"},
-    {"mic": "XPRA", "acronym": "PRA", "name": "Prague Stock Exchange", "country": "CZ", "city": "Prague"},
-    {"mic": "XRIS", "acronym": "RIS", "name": "Nasdaq Riga", "country": "LV", "city": "Riga"},
-    {"mic": "BVMF", "acronym": "SAO", "name": "B3 - Brasil Bolsa Balcão", "country": "BR", "city": "São Paulo"},
-    {"mic": "XSAU", "acronym": "SAU", "name": "Saudi Exchange", "country": "SA", "city": "Riyadh"},
-    {"mic": "XBKK", "acronym": "SET", "name": "Stock Exchange of Thailand", "country": "TH", "city": "Bangkok"},
-    {"mic": "XSGO", "acronym": "SGO", "name": "Santiago Stock Exchange", "country": "CL", "city": "Santiago"},
-    {"mic": "XSHG", "acronym": "SHH", "name": "Shanghai Stock Exchange", "country": "CN", "city": "Shanghai"},
-    {"mic": "XSHE", "acronym": "SHZ", "name": "Shenzhen Stock Exchange", "country": "CN", "city": "Shenzhen"},
-    {"mic": "XSWX", "acronym": "SIX", "name": "SIX Swiss Exchange", "country": "CH", "city": "Zurich"},
-    {"mic": "XSTO", "acronym": "STO", "name": "Nasdaq Stockholm", "country": "SE", "city": "Stockholm"},
-    {"mic": "XTAI", "acronym": "TAI", "name": "Taiwan Stock Exchange", "country": "TW", "city": "Taipei"},
-    {"mic": "XTAE", "acronym": "TLV", "name": "Tel Aviv Stock Exchange", "country": "IL", "city": "Tel Aviv"},
-    {"mic": "XTSE", "acronym": "TSX", "name": "Toronto Stock Exchange", "country": "CA", "city": "Toronto"},
-    {"mic": "ROCO", "acronym": "TWO", "name": "Taipei Exchange", "country": "TW", "city": "Taipei"},
-    {"mic": "XWBO", "acronym": "VIE", "name": "Wiener Börse", "country": "AT", "city": "Vienna"},
-    {"mic": "XWAR", "acronym": "WSE", "name": "Warsaw Stock Exchange", "country": "PL", "city": "Warsaw"},
-    {"mic": "XETR", "acronym": "XETRA", "name": "Deutsche Börse Xetra", "country": "DE", "city": "Frankfurt"}
+    {
+      "mic": "BVMF",
+      "acronym": "B3",
+      "name": "B3 S.A. - BRASIL BOLSA BALCAO",
+      "country": "BR",
+      "city": "SAO PAULO"
+    },
+    {
+      "mic": "DSMD",
+      "acronym": "DSM",
+      "name": "QATAR STOCK EXCHANGE",
+      "country": "QA",
+      "city": "DOHA"
+    },
+    {
+      "mic": "IEXG",
+      "acronym": "IEX",
+      "name": "INVESTORS EXCHANGE",
+      "country": "US",
+      "city": "NEW YORK"
+    },
+    {
+      "mic": "NEOE",
+      "acronym": "NEO-L",
+      "name": "CBOE CANADA - NEO-L (MARKET BY ORDER)",
+      "country": "CA",
+      "city": "TORONTO"
+    },
+    {
+      "mic": "OTCM",
+      "acronym": "",
+      "name": "OTC LINK ATS - OTC MARKETS",
+      "country": "US",
+      "city": "NEW YORK"
+    },
+    {
+      "mic": "ROCO",
+      "acronym": "TPEX",
+      "name": "TAIPEI EXCHANGE",
+      "country": "TW",
+      "city": "TAIPEI"
+    },
+    {
+      "mic": "XADS",
+      "acronym": "ADSM",
+      "name": "ABU DHABI SECURITIES EXCHANGE",
+      "country": "AE",
+      "city": "ABU DHABI"
+    },
+    {
+      "mic": "XAMS",
+      "acronym": "",
+      "name": "EURONEXT - EURONEXT AMSTERDAM",
+      "country": "NL",
+      "city": "AMSTERDAM"
+    },
+    {
+      "mic": "XASX",
+      "acronym": "ASX",
+      "name": "ASX - ALL MARKETS",
+      "country": "AU",
+      "city": "SYDNEY"
+    },
+    {
+      "mic": "XBKK",
+      "acronym": "SET",
+      "name": "STOCK EXCHANGE OF THAILAND",
+      "country": "TH",
+      "city": "BANGKOK"
+    },
+    {
+      "mic": "XBOG",
+      "acronym": "BVC",
+      "name": "BOLSA DE VALORES DE COLOMBIA",
+      "country": "CO",
+      "city": "BOGOTA"
+    },
+    {
+      "mic": "XBOM",
+      "acronym": "BSE",
+      "name": "BSE LTD",
+      "country": "IN",
+      "city": "MUMBAI"
+    },
+    {
+      "mic": "XBRU",
+      "acronym": "",
+      "name": "EURONEXT - EURONEXT BRUSSELS",
+      "country": "BE",
+      "city": "BRUSSELS"
+    },
+    {
+      "mic": "XBUD",
+      "acronym": "",
+      "name": "BUDAPEST STOCK EXCHANGE",
+      "country": "HU",
+      "city": "BUDAPEST"
+    },
+    {
+      "mic": "XBUE",
+      "acronym": "BCBA",
+      "name": "BOLSA DE COMERCIO DE BUENOS AIRES",
+      "country": "AR",
+      "city": "BUENOS AIRES"
+    },
+    {
+      "mic": "XCAI",
+      "acronym": "CASE",
+      "name": "EGYPTIAN EXCHANGE",
+      "country": "EG",
+      "city": "CAIRO"
+    },
+    {
+      "mic": "XCBO",
+      "acronym": "CBOE",
+      "name": "CBOE GLOBAL MARKETS INC.",
+      "country": "US",
+      "city": "CHICAGO"
+    },
+    {
+      "mic": "XCBT",
+      "acronym": "CBOT",
+      "name": "CHICAGO BOARD OF TRADE",
+      "country": "US",
+      "city": "CHICAGO"
+    },
+    {
+      "mic": "XCME",
+      "acronym": "CME",
+      "name": "CHICAGO MERCANTILE EXCHANGE",
+      "country": "US",
+      "city": "CHICAGO"
+    },
+    {
+      "mic": "XCNQ",
+      "acronym": "CSE LISTED",
+      "name": "CANADIAN SECURITIES EXCHANGE",
+      "country": "CA",
+      "city": "TORONTO"
+    },
+    {
+      "mic": "XCSE",
+      "acronym": "",
+      "name": "NASDAQ COPENHAGEN A/S",
+      "country": "DK",
+      "city": "COPENHAGEN"
+    },
+    {
+      "mic": "XDFM",
+      "acronym": "DFM",
+      "name": "DUBAI FINANCIAL MARKET",
+      "country": "AE",
+      "city": "DUBAI"
+    },
+    {
+      "mic": "XDUB",
+      "acronym": "ISE",
+      "name": "IRISH STOCK EXCHANGE - ALL MARKET",
+      "country": "IE",
+      "city": "DUBLIN"
+    },
+    {
+      "mic": "XETR",
+      "acronym": "XETRA",
+      "name": "XETRA",
+      "country": "DE",
+      "city": "FRANKFURT"
+    },
+    {
+      "mic": "XFRA",
+      "acronym": "",
+      "name": "DEUTSCHE BOERSE AG",
+      "country": "DE",
+      "city": "FRANKFURT"
+    },
+    {
+      "mic": "XHEL",
+      "acronym": "",
+      "name": "NASDAQ HELSINKI LTD",
+      "country": "FI",
+      "city": "HELSINKI"
+    },
+    {
+      "mic": "XHKG",
+      "acronym": "HKEX",
+      "name": "HONG KONG EXCHANGES AND CLEARING LTD",
+      "country": "HK",
+      "city": "HONG KONG"
+    },
+    {
+      "mic": "XICE",
+      "acronym": "ICEX",
+      "name": "NASDAQ ICELAND HF.",
+      "country": "IS",
+      "city": "REYKJAVIK"
+    },
+    {
+      "mic": "XIDX",
+      "acronym": "IDX",
+      "name": "INDONESIA STOCK EXCHANGE",
+      "country": "ID",
+      "city": "JAKARTA"
+    },
+    {
+      "mic": "XIST",
+      "acronym": "",
+      "name": "BORSA ISTANBUL",
+      "country": "TR",
+      "city": "ISTANBUL"
+    },
+    {
+      "mic": "XJPX",
+      "acronym": "JPX",
+      "name": "JAPAN EXCHANGE GROUP",
+      "country": "JP",
+      "city": "TOKYO"
+    },
+    {
+      "mic": "XJSE",
+      "acronym": "JSE",
+      "name": "JOHANNESBURG STOCK EXCHANGE",
+      "country": "ZA",
+      "city": "JOHANNESBURG"
+    },
+    {
+      "mic": "XKLS",
+      "acronym": "",
+      "name": "BURSA MALAYSIA",
+      "country": "MY",
+      "city": "KUALA LUMPUR"
+    },
+    {
+      "mic": "XKRX",
+      "acronym": "KRX SM",
+      "name": "KOREA EXCHANGE (STOCK MARKET)",
+      "country": "KR",
+      "city": "SEOUL"
+    },
+    {
+      "mic": "XKUW",
+      "acronym": "",
+      "name": "KUWAIT STOCK EXCHANGE",
+      "country": "KW",
+      "city": "KUWAIT"
+    },
+    {
+      "mic": "XLIM",
+      "acronym": "BVL",
+      "name": "BOLSA DE VALORES DE LIMA",
+      "country": "PE",
+      "city": "LIMA"
+    },
+    {
+      "mic": "XLIS",
+      "acronym": "",
+      "name": "EURONEXT - EURONEXT LISBON",
+      "country": "PT",
+      "city": "LISBON"
+    },
+    {
+      "mic": "XLIT",
+      "acronym": "",
+      "name": "AB NASDAQ VILNIUS",
+      "country": "LT",
+      "city": "VILNIUS"
+    },
+    {
+      "mic": "XLON",
+      "acronym": "LSE",
+      "name": "LONDON STOCK EXCHANGE",
+      "country": "GB",
+      "city": "LONDON"
+    },
+    {
+      "mic": "XMEX",
+      "acronym": "",
+      "name": "BOLSA MEXICANA DE VALORES (MEXICAN STOCK EXCHANGE)",
+      "country": "MX",
+      "city": "MEXICO"
+    },
+    {
+      "mic": "XMIL",
+      "acronym": "",
+      "name": "BORSA ITALIANA S.P.A.",
+      "country": "IT",
+      "city": "MILAN"
+    },
+    {
+      "mic": "XNAS",
+      "acronym": "NASDAQ",
+      "name": "NASDAQ - ALL MARKETS",
+      "country": "US",
+      "city": "NEW YORK"
+    },
+    {
+      "mic": "XNSA",
+      "acronym": "NSE",
+      "name": "THE NIGERIAN STOCK EXCHANGE",
+      "country": "NG",
+      "city": "LAGOS"
+    },
+    {
+      "mic": "XNSE",
+      "acronym": "NSE",
+      "name": "NATIONAL STOCK EXCHANGE OF INDIA",
+      "country": "IN",
+      "city": "MUMBAI"
+    },
+    {
+      "mic": "XNYM",
+      "acronym": "NYMEX",
+      "name": "NEW YORK MERCANTILE EXCHANGE",
+      "country": "US",
+      "city": "NEW YORK"
+    },
+    {
+      "mic": "XNYS",
+      "acronym": "NYSE",
+      "name": "NEW YORK STOCK EXCHANGE, INC.",
+      "country": "US",
+      "city": "NEW YORK"
+    },
+    {
+      "mic": "XNZE",
+      "acronym": "NZX",
+      "name": "NZX - ALL MARKETS",
+      "country": "NZ",
+      "city": "AUCKLAND"
+    },
+    {
+      "mic": "XOSL",
+      "acronym": "",
+      "name": "OSLO BORS",
+      "country": "NO",
+      "city": "OSLO"
+    },
+    {
+      "mic": "XPAR",
+      "acronym": "",
+      "name": "EURONEXT - EURONEXT PARIS",
+      "country": "FR",
+      "city": "PARIS"
+    },
+    {
+      "mic": "XPHS",
+      "acronym": "PSE",
+      "name": "PHILIPPINE STOCK EXCHANGE, INC.",
+      "country": "PH",
+      "city": "PASIG CITY"
+    },
+    {
+      "mic": "XPRA",
+      "acronym": "PSE",
+      "name": "PRAGUE STOCK EXCHANGE",
+      "country": "CZ",
+      "city": "PRAGUE"
+    },
+    {
+      "mic": "XRIS",
+      "acronym": "",
+      "name": "NASDAQ RIGA AS",
+      "country": "LV",
+      "city": "RIGA"
+    },
+    {
+      "mic": "XSAU",
+      "acronym": "",
+      "name": "SAUDI STOCK EXCHANGE",
+      "country": "SA",
+      "city": "RIYADH"
+    },
+    {
+      "mic": "XSES",
+      "acronym": "SGX",
+      "name": "SINGAPORE EXCHANGE",
+      "country": "SG",
+      "city": "SINGAPORE"
+    },
+    {
+      "mic": "XSGO",
+      "acronym": "",
+      "name": "SANTIAGO STOCK EXCHANGE",
+      "country": "CL",
+      "city": "SANTIAGO"
+    },
+    {
+      "mic": "XSHE",
+      "acronym": "",
+      "name": "SHENZHEN STOCK EXCHANGE",
+      "country": "CN",
+      "city": "SHENZHEN"
+    },
+    {
+      "mic": "XSHG",
+      "acronym": "SSE",
+      "name": "SHANGHAI STOCK EXCHANGE",
+      "country": "CN",
+      "city": "SHANGHAI"
+    },
+    {
+      "mic": "XSTO",
+      "acronym": "",
+      "name": "NASDAQ STOCKHOLM AB",
+      "country": "SE",
+      "city": "STOCKHOLM"
+    },
+    {
+      "mic": "XSWX",
+      "acronym": "SIX",
+      "name": "SIX SWISS EXCHANGE",
+      "country": "CH",
+      "city": "ZURICH"
+    },
+    {
+      "mic": "XTAI",
+      "acronym": "TWSE",
+      "name": "TAIWAN STOCK EXCHANGE",
+      "country": "TW",
+      "city": "TAIPEI"
+    },
+    {
+      "mic": "XTAL",
+      "acronym": "",
+      "name": "NASDAQ TALLINN AS",
+      "country": "EE",
+      "city": "TALLINN"
+    },
+    {
+      "mic": "XTEH",
+      "acronym": "TSE",
+      "name": "TEHRAN STOCK EXCHANGE",
+      "country": "IR",
+      "city": "TEHRAN"
+    },
+    {
+      "mic": "XTSE",
+      "acronym": "TSX",
+      "name": "TORONTO STOCK EXCHANGE",
+      "country": "CA",
+      "city": "TORONTO"
+    },
+    {
+      "mic": "XTSX",
+      "acronym": "TSX-V",
+      "name": "TSX VENTURE EXCHANGE",
+      "country": "CA",
+      "city": "TORONTO"
+    },
+    {
+      "mic": "XWAR",
+      "acronym": "WSE",
+      "name": "WARSAW STOCK EXCHANGE/EQUITIES/MAIN MARKET",
+      "country": "PL",
+      "city": "WARSAW"
+    },
+    {
+      "mic": "XWBO",
+      "acronym": "",
+      "name": "WIENER BOERSE AG",
+      "country": "AT",
+      "city": "VIENNA"
+    }
   ]
 }

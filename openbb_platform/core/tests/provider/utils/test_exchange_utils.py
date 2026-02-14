@@ -13,7 +13,7 @@ class TestExchange:
         assert str(e) == "XNAS"
         assert e.mic == "XNAS"
         assert e.acronym == "NASDAQ"
-        assert e.name == "NASDAQ Stock Market"
+        assert e.name == "NASDAQ - ALL MARKETS"
         assert e.country == "US"
 
     def test_from_mic_lowercase(self):
@@ -35,22 +35,22 @@ class TestExchange:
         e = Exchange("nyse")
         assert str(e) == "XNYS"
         assert e.acronym == "NYSE"
-        assert e.name == "New York Stock Exchange"
+        assert e.name == "NEW YORK STOCK EXCHANGE, INC."
 
     def test_from_name(self):
         """Test creating Exchange from full name."""
-        e = Exchange("London Stock Exchange")
+        e = Exchange("LONDON STOCK EXCHANGE")
         assert str(e) == "XLON"
         assert e.mic == "XLON"
         assert e.acronym == "LSE"
         assert e.country == "GB"
 
-    def test_from_snake_case_name(self):
-        """Test creating Exchange from lower_snake_case name."""
-        e = Exchange("hong_kong_stock_exchange")
+    def test_from_partial_name(self):
+        """Test creating Exchange from partial/similar name."""
+        e = Exchange("HKEX")
         assert str(e) == "XHKG"
         assert e.mic == "XHKG"
-        assert e.acronym == "HKSE"
+        assert e.acronym == "HKEX"
         assert e.country == "HK"
 
     def test_properties(self):
@@ -58,9 +58,9 @@ class TestExchange:
         e = Exchange("TSX")
         assert e.mic == "XTSE"
         assert e.acronym == "TSX"
-        assert e.name == "Toronto Stock Exchange"
+        assert e.name == "TORONTO STOCK EXCHANGE"
         assert e.country == "CA"
-        assert e.city == "Toronto"
+        assert e.city == "TORONTO"
 
     def test_invalid_exchange(self):
         """Test that invalid exchanges raise ValueError."""
@@ -91,7 +91,7 @@ class TestExchange:
             ("ASX", "XASX", "AU"),
             ("JPX", "XJPX", "JP"),
             ("NSE", "XNSE", "IN"),
-            ("SAO", "BVMF", "BR"),
+            ("B3", "BVMF", "BR"),
         ]
         for acronym, expected_mic, expected_country in test_cases:
             e = Exchange(acronym)
