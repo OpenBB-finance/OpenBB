@@ -3,6 +3,11 @@ export type SignalSide = "buy" | "hold" | "sell";
 export type ModelName = "xgb_lstm" | "lgbm_ranker";
 export type PortfolioMode = "long_only" | "long_short";
 export type MuMapping = "z_score" | "quantile_mean_return";
+export type TargetMode = "close_to_close" | "close_to_next_open" | "next_open_to_close";
+export type EntryPriceMode = "next_open" | "close";
+export type ExitPriceMode = "close" | "next_open";
+export type CloseToNextOpenHorizonPolicy = "fixed_1" | "use_h";
+export type ModelChoice = "lgbm_only" | "xgb_only" | "dual";
 export type DashboardMode = "live" | "backtest";
 export type WorkflowRunStatus = "queued" | "running" | "completed" | "failed" | "unknown";
 
@@ -75,8 +80,13 @@ export interface FeatureConfigInput {
 
 export interface TrainRequestPayload {
   symbols?: string[];
+  universe_id?: string;
   date_range: DateRangeInput;
   horizon_days: number;
+  target_mode?: TargetMode;
+  close_to_next_open_horizon_policy?: CloseToNextOpenHorizonPolicy;
+  include_macro_features?: boolean;
+  macro_feature_subset?: string[];
   model_config: ModelConfigInput;
   feature_config: FeatureConfigInput;
   training_mode?: "single" | "dual_compare";
@@ -86,6 +96,13 @@ export interface TrainRequestPayload {
   signal_config?: SignalConfigInput;
   portfolio_mode?: PortfolioMode;
   mu_mapping?: MuMapping;
+  quick_mode?: boolean;
+  model_choice?: ModelChoice;
+  early_stopping?: boolean;
+  feature_pruning?: boolean;
+  walk_forward_compact?: boolean;
+  cross_sectional_sampling?: boolean;
+  top_liquid_n?: number;
 }
 
 export interface TrainResponsePayload {
@@ -147,6 +164,9 @@ export interface BacktestRequestPayload {
   rebalance: "monthly";
   constraints: BacktestConstraintsInput;
   cost_bps: number;
+  slippage_bps?: number;
+  entry_price?: EntryPriceMode;
+  exit_price?: ExitPriceMode;
   portfolio_mode?: PortfolioMode;
   mu_mapping?: MuMapping;
 }

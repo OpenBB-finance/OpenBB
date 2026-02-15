@@ -1,4 +1,4 @@
-import type { MacroAlertItem, MacroRegimePoint } from "../../types/macro";
+import type { MacroAlertItem, MacroRegimePoint, MacroRegimeStateResponse } from "../../types/macro";
 
 function valueText(value: number | null | undefined, digits = 1): string {
   if (value === null || value === undefined || Number.isNaN(value)) {
@@ -19,14 +19,33 @@ function severityClass(severity: MacroAlertItem["severity"]): string {
 
 interface RegimeAlertsPanelProps {
   latestRegime: MacroRegimePoint | null;
+  regimeState: MacroRegimeStateResponse | null;
   currentAlerts: MacroAlertItem[];
   historyAlerts: MacroAlertItem[];
 }
 
-export function RegimeAlertsPanel({ latestRegime, currentAlerts, historyAlerts }: RegimeAlertsPanelProps) {
+function lightClass(active: boolean): string {
+  return active ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300" : "border-zinc-500/50 bg-zinc-500/15 text-zinc-300";
+}
+
+export function RegimeAlertsPanel({ latestRegime, regimeState, currentAlerts, historyAlerts }: RegimeAlertsPanelProps) {
   return (
     <div className="rounded-sm border border-theme-outline bg-theme-primary p-3">
       <h3 className="body-sm-medium text-theme-primary">Regime + Alerts</h3>
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        <div className={`rounded-sm border p-2 ${lightClass(Boolean(regimeState?.inflation_up))}`}>
+          <p className="body-xxs-regular">Inflation Up</p>
+          <p className="body-xs-medium">{regimeState?.inflation_up ? "ON" : "OFF"}</p>
+        </div>
+        <div className={`rounded-sm border p-2 ${lightClass(Boolean(regimeState?.growth_down))}`}>
+          <p className="body-xxs-regular">Growth Down</p>
+          <p className="body-xs-medium">{regimeState?.growth_down ? "ON" : "OFF"}</p>
+        </div>
+        <div className={`rounded-sm border p-2 ${lightClass(Boolean(regimeState?.risk_off_proxy))}`}>
+          <p className="body-xxs-regular">Risk Off</p>
+          <p className="body-xs-medium">{regimeState?.risk_off_proxy ? "ON" : "OFF"}</p>
+        </div>
+      </div>
       <div className="mt-2 grid grid-cols-2 gap-2">
         <div className="rounded-sm bg-theme-secondary p-2">
           <p className="body-xxs-regular text-theme-muted">Risk-On</p>

@@ -256,30 +256,59 @@ def _benchmark_curve(
     ]
 
 
+def _execution_return_panel(
+    open_panel: pd.DataFrame,
+    close_panel: pd.DataFrame,
+    entry_price: str,
+    exit_price: str,
+) -> pd.DataFrame:
+    if entry_price == "close" and exit_price == "close":
+        return close_panel.pct_change(fill_method=None)
+    if entry_price == "next_open" and exit_price == "close":
+        return close_panel / (open_panel + 1e-12) - 1.0
+    if entry_price == "close" and exit_price == "next_open":
+        return open_panel / (close_panel.shift(1) + 1e-12) - 1.0
+    # Fallback for unsupported combinations.
+    return close_panel / (open_panel + 1e-12) - 1.0
+
+
 def run_backtest(
     predictions: pd.DataFrame,
+    open_panel: pd.DataFrame,
     close_panel: pd.DataFrame,
     start_date: date,
     end_date: date,
     constraints: BacktestConstraints,
     cost_bps: float,
+    slippage_bps: float = 2.0,
+    entry_price: str = "next_open",
+    exit_price: str = "close",
     benchmark_symbol: str = "SPY",
     portfolio_mode: str = "long_only",
     regime_policy: str = "fixed",
 ) -> BacktestResult:
-    """Run monthly-rebalance mean-variance backtest with SPY benchmark."""
+    """Run monthly-rebalance mean-variance backtest with configurable execution prices."""
     if predictions.empty:
         raise ValueError("No predictions are available for backtest.")
-    if close_panel.empty:
+    if close_panel.empty or open_panel.empty:
         raise ValueError("No price data is available for backtest.")
 
     pred = predictions.copy()
     pred["date"] = pd.to_datetime(pred["date"]).dt.tz_localize(None)
     pred_wide = pred.pivot(index="date", columns="symbol", values="predicted_return").sort_index()
 
-    price_panel = close_panel.copy()
-    price_panel.index = pd.to_datetime(price_panel.index).tz_localize(None)
-    returns = price_panel.pct_change(fill_method=None).fillna(0.0)
+    close_panel = close_panel.copy()
+    close_panel.index = pd.to_datetime(close_panel.index).tz_localize(None)
+    open_panel = open_panel.copy()
+    open_panel.index = pd.to_datetime(open_panel.index).tz_localize(None)
+    open_panel = open_panel.reindex(index=close_panel.index, columns=close_panel.columns).ffill()
+
+    returns = _execution_return_panel(
+        open_panel=open_panel,
+        close_panel=close_panel,
+        entry_price=entry_price,
+        exit_price=exit_price,
+    ).fillna(0.0)
 
     window_mask = (returns.index.date >= start_date) & (returns.index.date <= end_date)
     trade_dates = returns.index[window_mask]
@@ -306,7 +335,7 @@ def run_backtest(
     trading_costs: list[float] = []
     cost_breakdown: list[dict[str, Any]] = []
     regime_mode_rows: list[dict[str, str]] = []
-    regime_frame = _compute_regime_series(price_panel, returns.index, benchmark_symbol)
+    regime_frame = _compute_regime_series(close_panel, returns.index, benchmark_symbol)
 
     base_index = 100.0
     equity = base_index
@@ -319,6 +348,7 @@ def run_backtest(
         }
     )
 
+    one_way_cost = (float(cost_bps) + float(slippage_bps)) / 10000.0
     for idx, rebalance_date in enumerate(rebalance_dates):
         mu = pred_wide.loc[rebalance_date, symbols].fillna(0.0).values.astype(float)
         hist = returns.loc[:rebalance_date, symbols].tail(constraints.lookback_days)
@@ -334,7 +364,6 @@ def run_backtest(
             mode_used = "long_short" if allow_short else "long_only"
 
         optimized = _optimize_weights(mu, cov, constraints, allow_short=allow_short)
-
         turnover = float(np.abs(optimized - current_weights).sum())
         turnover_values.append(turnover)
         regime_mode_rows.append({"date": rebalance_date.date().isoformat(), "mode": mode_used})
@@ -349,7 +378,7 @@ def run_backtest(
         for day_idx, trading_date in enumerate(period_dates):
             ret_vec = returns.loc[trading_date, symbols].fillna(0.0).values
             gross_return = float(np.dot(optimized, ret_vec))
-            trading_cost = (cost_bps / 10000.0) * turnover if day_idx == 0 else 0.0
+            trading_cost = (2.0 * one_way_cost * turnover) if day_idx == 0 else 0.0
             net_return = gross_return - trading_cost
             gross_returns.append(gross_return)
             trading_costs.append(trading_cost)
@@ -391,14 +420,13 @@ def run_backtest(
     equity_series = curve["equity"]
     metrics = _compute_metrics(daily_returns, equity_series)
     metrics["turnover"] = float(np.mean(turnover_values)) if turnover_values else 0.0
-    gross_curve = float(np.prod(1.0 + np.array(gross_returns)) - 1.0) if gross_returns else 0.0
-    metrics["gross_return"] = gross_curve
+    metrics["gross_return"] = float(np.prod(1.0 + np.array(gross_returns)) - 1.0) if gross_returns else 0.0
     metrics["total_cost"] = float(np.sum(trading_costs)) if trading_costs else 0.0
     metrics["net_return"] = float(equity_series.iloc[-1] / equity_series.iloc[0] - 1.0)
 
     curve_dates = pd.to_datetime(curve["date"]).dt.tz_localize(None)
     benchmark_curve = _benchmark_curve(
-        close_panel=price_panel,
+        close_panel=close_panel,
         curve_dates=pd.DatetimeIndex(curve_dates),
         benchmark_symbol=benchmark_symbol,
         base_index=base_index,

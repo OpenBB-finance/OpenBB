@@ -6,7 +6,9 @@ import type {
   MacroExpressionRequest,
   MacroExpressionResponse,
   MacroRegimeResponse,
+  MacroRegimeStateResponse,
   MacroSeriesResponse,
+  MacroSeriesMultiResponse,
   MacroUpdateResponse,
 } from "../types/macro";
 
@@ -107,6 +109,27 @@ export function fetchMacroSeries(
   return cachedMacro(`series:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
 }
 
+export function fetchMacroSeriesMulti(
+  baseUrl: string,
+  params: {
+    ids: string[];
+    start?: string;
+    end?: string;
+    transform?: string;
+    freq?: string;
+    fill?: string;
+  },
+): Promise<MacroSeriesMultiResponse> {
+  const query = new URLSearchParams({ ids: params.ids.join(",") });
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.transform) query.set("transform", params.transform);
+  if (params.freq) query.set("freq", params.freq);
+  if (params.fill) query.set("fill", params.fill);
+  const path = `/series?${query.toString()}`;
+  return cachedMacro(`series-multi:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+}
+
 export function evaluateMacroExpression(baseUrl: string, payload: MacroExpressionRequest): Promise<MacroExpressionResponse> {
   return requestMacro(baseUrl, "/expression", {
     method: "POST",
@@ -126,6 +149,13 @@ export function fetchMacroRegime(
   if (params.fill) query.set("fill", params.fill);
   const path = query.toString() ? `/regime?${query.toString()}` : "/regime";
   return cachedMacro(`regime:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+}
+
+export function fetchMacroRegimeState(baseUrl: string, date?: string): Promise<MacroRegimeStateResponse> {
+  const query = new URLSearchParams();
+  if (date) query.set("date", date);
+  const path = query.toString() ? `/regime?${query.toString()}` : "/regime";
+  return cachedMacro(`regime-state:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
 }
 
 export function fetchMacroAlerts(
@@ -165,4 +195,53 @@ export function triggerMacroUpdate(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+}
+
+export function fetchMarketRatio(
+  baseUrl: string,
+  params: { lhs: string; rhs: string; start?: string; end?: string; freq?: string; fill?: string },
+): Promise<MacroSeriesResponse> {
+  const query = new URLSearchParams({ lhs: params.lhs, rhs: params.rhs });
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.freq) query.set("freq", params.freq);
+  if (params.fill) query.set("fill", params.fill);
+  return cachedMacro(
+    `market-ratio:${baseUrl}:${query.toString()}`,
+    () => requestJsonWithQuantPrefix(baseUrl, `/market/ratio?${query.toString()}`),
+  );
+}
+
+export function fetchMarketRollingCorr(
+  baseUrl: string,
+  params: { x: string; y: string; window: number; start?: string; end?: string; freq?: string; fill?: string },
+): Promise<MacroSeriesResponse> {
+  const query = new URLSearchParams({
+    x: params.x,
+    y: params.y,
+    window: String(params.window),
+  });
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.freq) query.set("freq", params.freq);
+  if (params.fill) query.set("fill", params.fill);
+  return cachedMacro(
+    `market-corr:${baseUrl}:${query.toString()}`,
+    () => requestJsonWithQuantPrefix(baseUrl, `/market/rolling_corr?${query.toString()}`),
+  );
+}
+
+async function requestJsonWithQuantPrefix<T>(baseUrl: string, path: string): Promise<T> {
+  const response = await fetch(`${baseUrl}/api/v1/quant_ml${path}`, { method: "GET" });
+  if (!response.ok) {
+    let detail = "";
+    try {
+      const payload = await response.json();
+      detail = payload?.detail ? String(payload.detail) : payload?.message ? String(payload.message) : "";
+    } catch {
+      detail = "";
+    }
+    throw new Error(detail || `Request failed (${response.status})`);
+  }
+  return (await response.json()) as T;
 }

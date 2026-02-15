@@ -12,6 +12,11 @@ SignalSide = Literal["buy", "hold", "sell"]
 ModelName = Literal["xgb_lstm", "lgbm_ranker"]
 PortfolioMode = Literal["long_only", "long_short"]
 MuMapping = Literal["z_score", "quantile_mean_return"]
+TargetMode = Literal["close_to_close", "close_to_next_open", "next_open_to_close"]
+EntryPriceMode = Literal["next_open", "close"]
+ExitPriceMode = Literal["close", "next_open"]
+CloseToNextOpenHorizonPolicy = Literal["fixed_1", "use_h"]
+ModelChoice = Literal["lgbm_only", "xgb_only", "dual"]
 DashboardMode = Literal["live", "backtest"]
 DashboardPayloadStatus = Literal["ok", "insufficient_data", "not_found"]
 WorkflowRunStatus = Literal["queued", "running", "completed", "failed", "unknown"]
@@ -103,8 +108,13 @@ class TrainRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     symbols: list[str] | None = None
+    universe_id: str | None = None
     date_range: DateRange
     horizon_days: int = Field(default=1, ge=1, le=31)
+    target_mode: TargetMode = "next_open_to_close"
+    close_to_next_open_horizon_policy: CloseToNextOpenHorizonPolicy = "fixed_1"
+    include_macro_features: bool = True
+    macro_feature_subset: list[str] = Field(default_factory=lambda: ["z_252", "yoy", "mom_3", "slope"])
     model_parameters: ModelConfig = Field(
         default_factory=ModelConfig,
         validation_alias=AliasChoices("model_config", "model_parameters"),
@@ -122,6 +132,13 @@ class TrainRequest(BaseModel):
     signal_config: SignalConfig = Field(default_factory=SignalConfig)
     portfolio_mode: PortfolioMode = "long_only"
     mu_mapping: MuMapping = "quantile_mean_return"
+    quick_mode: bool = False
+    model_choice: ModelChoice = "dual"
+    early_stopping: bool = True
+    feature_pruning: bool = False
+    walk_forward_compact: bool = False
+    cross_sectional_sampling: bool = False
+    top_liquid_n: int | None = Field(default=None, ge=50, le=5000)
 
 
 class TrainResponse(BaseModel):
@@ -204,6 +221,9 @@ class BacktestRequest(BaseModel):
     rebalance: Literal["monthly"] = "monthly"
     constraints: BacktestConstraints = Field(default_factory=BacktestConstraints)
     cost_bps: float = Field(default=10.0, ge=0, le=1000)
+    slippage_bps: float = Field(default=2.0, ge=0, le=1000)
+    entry_price: EntryPriceMode = "next_open"
+    exit_price: ExitPriceMode = "close"
     portfolio_mode: PortfolioMode = "long_only"
     mu_mapping: MuMapping = "quantile_mean_return"
     regime_policy: Literal["fixed", "mixed"] = "mixed"
@@ -271,6 +291,10 @@ class BacktestResponse(BaseModel):
     cost_breakdown: list[dict[str, float | str]] = Field(default_factory=list)
     consistency_checks: dict[str, float | bool] = Field(default_factory=dict)
     regime_mode_by_period: list[dict[str, str]] = Field(default_factory=list)
+    cost_bps: float = 10.0
+    slippage_bps: float = 2.0
+    entry_price: EntryPriceMode = "next_open"
+    exit_price: ExitPriceMode = "close"
 
 
 class ArtifactSummaryResponse(BaseModel):

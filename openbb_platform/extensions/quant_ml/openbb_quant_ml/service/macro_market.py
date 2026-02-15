@@ -121,23 +121,33 @@ def get_market_series(symbol: str, start: date | None, end: date | None) -> tupl
     """Load market series with configured fallback order."""
     symbol_norm = symbol.upper()
     cfg = load_macro_config()
-    order = cfg.get("defaults", {}).get("market_fallback_order", ["yfinance", "openbb_http", "cache"])
+    defaults = cfg.get("defaults", {})
+    order = defaults.get("market_fallback_order", ["yfinance", "openbb_http", "cache"])
+    aliases = defaults.get("market_symbol_aliases", {})
+    symbol_for_fetch = str(aliases.get(symbol_norm, symbol_norm)).upper()
 
     cached_rows = load_observations("MARKET", symbol_norm, start.isoformat() if start else None, end.isoformat() if end else None)
     cached_series = _parse_rows_to_series(cached_rows)
+    if not cached_series.empty:
+        cached_series.name = symbol_norm
 
     warning: str | None = None
     for source in order:
         source_key = str(source).lower()
         if source_key == "yfinance":
-            series = _fetch_yfinance(symbol_norm, start, end)
+            series = _fetch_yfinance(symbol_for_fetch, start, end)
             if not series.empty:
+                series.name = symbol_norm
                 upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
                 return series, "yfinance", warning
             warning = "market_yfinance_fetch_failed"
         elif source_key == "openbb_http":
-            series = _fetch_openbb_http(symbol_norm, start, end)
+            if symbol_for_fetch != symbol_norm and symbol_for_fetch.endswith("=F"):
+                warning = "futures_symbol_openbb_http_not_supported"
+                continue
+            series = _fetch_openbb_http(symbol_for_fetch, start, end)
             if not series.empty:
+                series.name = symbol_norm
                 upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
                 return series, "openbb_http", warning
             warning = "market_openbb_http_fetch_failed"

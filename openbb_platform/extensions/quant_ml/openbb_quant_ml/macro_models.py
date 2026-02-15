@@ -52,6 +52,43 @@ class MacroSeriesResponse(BaseModel):
     message: str | None = None
 
 
+class MacroSeriesMultiResponse(BaseModel):
+    """Multi-series response for /series?ids=... queries."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    series: dict[str, MacroSeriesResponse] = Field(default_factory=dict)
+
+
+class MacroPresetSeries(BaseModel):
+    """Preset series payload for multi-axis chart rendering."""
+
+    id: str
+    axis: Literal["left", "right", "bottom"] = "left"
+    meta: MacroSeriesMeta
+    data: list[MacroDataPoint] = Field(default_factory=list)
+    stats: MacroSeriesStats = Field(default_factory=MacroSeriesStats)
+
+
+class MacroEventItem(BaseModel):
+    """Macro preset event row."""
+
+    date: str
+    event_type: str
+    details: dict[str, float | str] = Field(default_factory=dict)
+
+
+class MacroPresetResponse(BaseModel):
+    """Preset response for paired macro-market workflows."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    preset_id: str = "copper_gold"
+    inputs: dict[str, str | float | bool] = Field(default_factory=dict)
+    series: list[MacroPresetSeries] = Field(default_factory=list)
+    events: list[MacroEventItem] = Field(default_factory=list)
+
+
 class MacroCatalogItem(BaseModel):
     """Catalog item."""
 
@@ -183,6 +220,17 @@ class MacroRegimeResponse(BaseModel):
     message: str | None = None
     data: list[MacroRegimePoint] = Field(default_factory=list)
     latest: MacroRegimePoint | None = None
+
+
+class MacroRegimeStateResponse(BaseModel):
+    """Compact regime-state response for dashboard signal lights."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    date: str | None = None
+    inflation_up: bool = False
+    growth_down: bool = False
+    risk_off_proxy: bool = False
 
 
 class MacroAlertItem(BaseModel):

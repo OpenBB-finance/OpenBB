@@ -115,6 +115,15 @@ describe("Quant Route", () => {
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/train"))).toBe(true);
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/runs/run-1"))).toBe(true);
     });
+
+    const trainCall = vi
+      .mocked(global.fetch)
+      .mock.calls.find((call) => String(call[0]).endsWith("/api/v1/quant_ml/train"));
+    expect(trainCall).toBeDefined();
+    const trainBody = JSON.parse(String((trainCall?.[1] as RequestInit | undefined)?.body ?? "{}"));
+    expect(trainBody.target_mode).toBe("next_open_to_close");
+    expect(trainBody.include_macro_features).toBe(true);
+    expect(trainBody.model_choice).toBe("dual");
   });
 
   test("shows disconnected state when health check fails", async () => {

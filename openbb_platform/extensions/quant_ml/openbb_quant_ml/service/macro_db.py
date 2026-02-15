@@ -67,6 +67,19 @@ def init_macro_db() -> None:
             CREATE INDEX IF NOT EXISTS idx_macro_obs_key_date
               ON macro_obs(source, series_id, date);
 
+            CREATE TABLE IF NOT EXISTS macro_features (
+              source TEXT NOT NULL,
+              series_id TEXT NOT NULL,
+              date TEXT NOT NULL,
+              feat_name TEXT NOT NULL,
+              feat_value REAL,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (source, series_id, date, feat_name) ON CONFLICT REPLACE
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_macro_features_key_date
+              ON macro_features(source, series_id, date, feat_name);
+
             CREATE TABLE IF NOT EXISTS macro_derived (
               derived_id TEXT PRIMARY KEY,
               expression TEXT NOT NULL,
@@ -253,6 +266,76 @@ def get_obs_date_bounds(source: str, series_id: str) -> tuple[str | None, str | 
     if not row:
         return None, None
     return row["min_date"], row["max_date"]
+
+
+def upsert_macro_features(
+    source: str,
+    series_id: str,
+    rows: list[dict[str, Any]],
+) -> int:
+    """Upsert feature rows for one macro series."""
+    init_macro_db()
+    if not rows:
+        return 0
+    payload = [
+        (
+            source,
+            series_id,
+            str(item.get("date")),
+            str(item.get("feat_name")),
+            float(item.get("feat_value")) if item.get("feat_value") is not None else None,
+            str(item.get("updated_at") or utc_now_iso()),
+        )
+        for item in rows
+        if item.get("date") is not None and item.get("feat_name")
+    ]
+    if not payload:
+        return 0
+    with get_connection() as conn:
+        conn.executemany(
+            """
+            INSERT OR REPLACE INTO macro_features(
+              source, series_id, date, feat_name, feat_value, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            payload,
+        )
+        conn.commit()
+    return len(payload)
+
+
+def load_macro_features(
+    source: str = "FRED",
+    series_ids: list[str] | None = None,
+    feat_names: list[str] | None = None,
+    start: str | None = None,
+    end: str | None = None,
+) -> list[dict[str, Any]]:
+    """Load macro feature rows."""
+    init_macro_db()
+    where = ["source = ?"]
+    params: list[Any] = [source]
+    if series_ids:
+        placeholders = ",".join("?" for _ in series_ids)
+        where.append(f"series_id IN ({placeholders})")
+        params.extend(series_ids)
+    if feat_names:
+        placeholders = ",".join("?" for _ in feat_names)
+        where.append(f"feat_name IN ({placeholders})")
+        params.extend(feat_names)
+    if start:
+        where.append("date >= ?")
+        params.append(start)
+    if end:
+        where.append("date <= ?")
+        params.append(end)
+    query = "SELECT source, series_id, date, feat_name, feat_value, updated_at FROM macro_features"
+    if where:
+        query += " WHERE " + " AND ".join(where)
+    query += " ORDER BY date, series_id, feat_name"
+    with get_connection() as conn:
+        rows = conn.execute(query, params).fetchall()
+    return [dict(row) for row in rows]
 
 
 def save_derived_expression(

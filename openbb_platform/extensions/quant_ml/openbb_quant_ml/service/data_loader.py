@@ -12,7 +12,8 @@ from typing import Callable
 import pandas as pd
 import yfinance as yf
 
-from openbb_quant_ml.service.constants import ARTIFACT_ROOT, CACHE_DIR, CACHE_TTL_DAYS
+from openbb_quant_ml.service.cache_registry import update_data_version
+from openbb_quant_ml.service.constants import ARTIFACT_ROOT, CACHE_DIR, CACHE_TTL_DAYS, RAW_STORE_DIR
 
 
 def _safe_symbol(symbol: str) -> str:
@@ -20,7 +21,12 @@ def _safe_symbol(symbol: str) -> str:
 
 
 def _cache_path(symbol: str) -> Path:
-    return CACHE_DIR / f"{_safe_symbol(symbol)}.parquet"
+    # Keep backward compatibility with legacy cache location.
+    legacy_path = CACHE_DIR / f"{_safe_symbol(symbol)}.parquet"
+    new_path = RAW_STORE_DIR / f"{_safe_symbol(symbol)}.parquet"
+    if new_path.exists() or not legacy_path.exists():
+        return new_path
+    return legacy_path
 
 
 def _contains_non_ascii(text: str) -> bool:
@@ -103,6 +109,7 @@ def _save_cache(symbol: str, frame: pd.DataFrame) -> None:
     cache_path = _cache_path(symbol)
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     frame.to_parquet(cache_path, index=False)
+    update_data_version(symbol=symbol, frame=frame, source="yfinance")
 
 
 def load_symbol_prices(
@@ -191,4 +198,21 @@ def build_close_panel(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
         return pd.DataFrame()
     pivot_source = pd.concat([df[["date", "symbol", "close"]] for df in data.values()], ignore_index=True)
     panel = pivot_source.pivot(index="date", columns="symbol", values="close").sort_index()
+    return panel
+
+
+def build_price_panel(data: dict[str, pd.DataFrame], price_field: str) -> pd.DataFrame:
+    """Build wide panel for one price field indexed by date."""
+    if not data:
+        return pd.DataFrame()
+    field = str(price_field).lower()
+    rows: list[pd.DataFrame] = []
+    for frame in data.values():
+        if field not in frame.columns:
+            continue
+        rows.append(frame[["date", "symbol", field]])
+    if not rows:
+        return pd.DataFrame()
+    pivot_source = pd.concat(rows, ignore_index=True)
+    panel = pivot_source.pivot(index="date", columns="symbol", values=field).sort_index()
     return panel

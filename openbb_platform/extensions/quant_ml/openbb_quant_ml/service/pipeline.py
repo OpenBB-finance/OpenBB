@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import traceback
 from concurrent.futures import Future, ThreadPoolExecutor
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 import re
+import time
 from typing import Any
 
 import numpy as np
@@ -37,7 +38,8 @@ from openbb_quant_ml.models import (
     UniverseResponse,
 )
 from openbb_quant_ml.service.backtest import run_backtest
-from openbb_quant_ml.service.data_loader import build_close_panel, load_market_data
+from openbb_quant_ml.service.cache_registry import get_data_versions, get_feature_versions
+from openbb_quant_ml.service.data_loader import build_close_panel, build_price_panel, load_market_data
 from openbb_quant_ml.service.dashboard_metrics import (
     get_performance_regime as get_dashboard_performance_regime,
     refresh_alerts_for_run,
@@ -55,7 +57,7 @@ from openbb_quant_ml.service.run_registry import (
 )
 from openbb_quant_ml.service.signals import generate_signals
 from openbb_quant_ml.service.storage import get_run_dir, list_run_artifacts, load_json, save_json
-from openbb_quant_ml.service.universe import get_default_symbols, load_universe_config
+from openbb_quant_ml.service.universe import get_default_symbols, get_symbols_for_universe, load_universe_config
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
@@ -291,7 +293,7 @@ def _group_ic(frame: pd.DataFrame, score_col: str = "predicted_return") -> float
 def _compute_baseline_metrics(predictions: pd.DataFrame, split_ratio: float) -> dict[str, Any]:
     with_target = predictions.dropna(subset=["target_return"]).copy()
     if with_target.empty:
-        return {"train_ic": 0.0, "val_ic": 0.0, "hit_rate": 0.0}
+        return {"train_ic": 0.0, "val_ic": 0.0, "hit_rate": 0.0, "mse": 0.0, "mae": 0.0}
 
     unique_dates = sorted(with_target["date"].unique())
     cut_idx = max(1, min(len(unique_dates) - 1, int(len(unique_dates) * split_ratio)))
@@ -305,10 +307,15 @@ def _compute_baseline_metrics(predictions: pd.DataFrame, split_ratio: float) -> 
             == np.sign(with_target["target_return"].to_numpy(dtype=float))
         ).mean()
     )
+    err = with_target["predicted_return"].to_numpy(dtype=float) - with_target["target_return"].to_numpy(dtype=float)
+    mse = float(np.mean(np.square(err))) if err.size > 0 else 0.0
+    mae = float(np.mean(np.abs(err))) if err.size > 0 else 0.0
     return {
         "train_ic": _group_ic(train_df, "predicted_return"),
         "val_ic": _group_ic(val_df, "predicted_return") if not val_df.empty else 0.0,
         "hit_rate": hit_rate,
+        "mse": mse,
+        "mae": mae,
     }
 
 
@@ -335,20 +342,83 @@ def _save_default_compat_artifacts(
     save_json(run_dir / "metrics.json", metrics_payload)
 
 
+def _resolve_selected_models(request: TrainRequest, symbol_count: int) -> tuple[ModelName, ...]:
+    if request.model_choice == "lgbm_only" or (symbol_count >= 1000 and request.model_choice == "dual"):
+        return ("lgbm_ranker",)
+    if request.model_choice == "xgb_only":
+        return ("xgb_lstm",)
+    selected = tuple(model for model in request.model_set if model in SUPPORTED_MODELS)
+    return selected or SUPPORTED_MODELS
+
+
+def _apply_quick_mode_bounds(request: TrainRequest) -> tuple[date, date]:
+    start_date = request.date_range.start_date
+    end_date = request.date_range.end_date
+    if request.quick_mode:
+        quick_start = end_date - timedelta(days=365 * 3)
+        if quick_start > start_date:
+            start_date = quick_start
+    return start_date, end_date
+
+
+def _sample_symbols_by_liquidity(
+    datasets: dict[str, pd.DataFrame],
+    limit: int,
+) -> dict[str, pd.DataFrame]:
+    if len(datasets) <= limit:
+        return datasets
+    ranked: list[tuple[str, float]] = []
+    for symbol, frame in datasets.items():
+        if frame.empty or "close" not in frame.columns or "volume" not in frame.columns:
+            continue
+        adv = (frame["close"].astype(float) * frame["volume"].astype(float)).tail(60).mean()
+        ranked.append((symbol, float(adv) if np.isfinite(float(adv)) else 0.0))
+    ranked = sorted(ranked, key=lambda item: item[1], reverse=True)
+    selected = {symbol for symbol, _ in ranked[: max(1, int(limit))]}
+    return {symbol: frame for symbol, frame in datasets.items() if symbol in selected}
+
+
+def _apply_feature_pruning(
+    frame: pd.DataFrame,
+    feature_columns: list[str],
+) -> tuple[pd.DataFrame, list[str], int]:
+    if frame.empty or not feature_columns:
+        return frame, feature_columns, 0
+    sample = frame[feature_columns].copy()
+    corr = sample.corr().abs()
+    upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))
+    drop_cols = [column for column in upper.columns if bool((upper[column] > 0.98).any())]
+    if not drop_cols:
+        return frame, feature_columns, 0
+    pruned = frame.drop(columns=drop_cols, errors="ignore")
+    out_cols = [col for col in feature_columns if col not in set(drop_cols)]
+    return pruned, out_cols, len(drop_cols)
+
+
 def _run_training_job(run_id: str, request: TrainRequest) -> None:
+    run_dir = get_run_dir(run_id)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    time_profile: dict[str, float] = {}
+
+    def _mark_elapsed(key: str, started_at: float) -> None:
+        time_profile[key] = float(time.perf_counter() - started_at)
+
     try:
         update_run(run_id, status="running", progress=2, stage="initializing")
         append_log(run_id, "Training job started.")
 
-        symbols = request.symbols or get_default_symbols()
-        start_date = request.date_range.start_date
-        end_date = request.date_range.end_date
-        selected_models = tuple(model for model in request.model_set if model in SUPPORTED_MODELS)
-        if not selected_models:
-            selected_models = SUPPORTED_MODELS
+        symbols = request.symbols or get_symbols_for_universe(request.universe_id) or get_default_symbols()
+        start_date, end_date = _apply_quick_mode_bounds(request)
+        selected_models = _resolve_selected_models(request, len(symbols))
+        walk_forward_cfg = request.walk_forward_config.model_copy(deep=True)
+        if request.quick_mode or request.walk_forward_compact:
+            walk_forward_cfg.step_months = max(2, int(walk_forward_cfg.step_months))
+            walk_forward_cfg.train_months = min(int(walk_forward_cfg.train_months), 24)
+            walk_forward_cfg.val_months = max(1, min(int(walk_forward_cfg.val_months), 1))
 
         _mark_stage(run_id, progress=5, stage="loading_data", log="Loading market data.")
         load_log_bucket = {"value": -1}
+        t_data = time.perf_counter()
 
         def _on_market_data_progress(processed: int, total: int, symbol: str, loaded: bool) -> None:
             total_safe = max(int(total), 1)
@@ -372,32 +442,58 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         )
         if not datasets:
             raise ValueError("No valid market data was loaded for requested symbols.")
+        if request.quick_mode:
+            limit = int(request.top_liquid_n or min(500, len(datasets)))
+            datasets = _sample_symbols_by_liquidity(datasets, limit=limit)
         if skipped_symbols:
             append_log(run_id, f"Skipped symbols (insufficient data): {', '.join(skipped_symbols)}")
+        _mark_elapsed("data_update_sec", t_data)
 
         _mark_stage(run_id, progress=36, stage="feature_engineering", log="Building feature dataset.")
+        t_features = time.perf_counter()
         feature_data, feature_columns, feature_skips = build_feature_dataset(
             data_by_symbol=datasets,
             feature_config=request.feature_parameters,
             horizon_days=request.horizon_days,
+            target_mode=request.target_mode,
+            close_to_next_open_horizon_policy=request.close_to_next_open_horizon_policy,
+            include_macro_features=request.include_macro_features,
+            macro_feature_subset=request.macro_feature_subset,
         )
+        if request.feature_pruning:
+            feature_data, feature_columns, dropped = _apply_feature_pruning(feature_data, feature_columns)
+            if dropped > 0:
+                append_log(run_id, f"Feature pruning removed {dropped} highly correlated columns.")
         _mark_stage(run_id, progress=45, stage="feature_engineering", log="Feature dataset built.")
+        _mark_elapsed("feature_engineering_sec", t_features)
         skipped_union = sorted(set(skipped_symbols + feature_skips))
         if feature_data.empty:
             raise ValueError("Feature dataset is empty.")
         if not feature_columns:
             raise ValueError("No feature columns were generated.")
 
-        run_dir = get_run_dir(run_id)
-        run_dir.mkdir(parents=True, exist_ok=True)
-
         close_panel = build_close_panel(datasets)
+        open_panel = build_price_panel(datasets, "open")
         close_long = (
             close_panel.reset_index()
             .melt(id_vars=["date"], var_name="symbol", value_name="close")
             .dropna(subset=["close"])
         )
-        close_long.to_parquet(run_dir / "market_data.parquet", index=False)
+        open_long = (
+            open_panel.reset_index()
+            .melt(id_vars=["date"], var_name="symbol", value_name="open")
+            .dropna(subset=["open"])
+        )
+        market_long = close_long.merge(open_long, on=["date", "symbol"], how="left")
+        market_long.to_parquet(run_dir / "market_data.parquet", index=False)
+        save_json(run_dir / "config_used.json", request.model_dump(mode="json", by_alias=True))
+        save_json(
+            run_dir / "data_versions.json",
+            {
+                "data": get_data_versions(),
+                "features": get_feature_versions(),
+            },
+        )
         _mark_stage(run_id, progress=48, stage="training_prepare", log="Saved market panel artifact.")
 
         performance_rows: list[dict[str, Any]] = []
@@ -419,6 +515,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 stage="training_xgb_lstm",
                 log="Training baseline hybrid model (XGBoost + LSTM).",
             )
+            t_train_xgb = time.perf_counter()
             xgb_log_progress = {"value": -1}
 
             def _xgb_progress(local_ratio: float, message: str) -> None:
@@ -435,6 +532,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 config=request.model_parameters,
                 progress_callback=_xgb_progress,
             )
+            _mark_elapsed("train_xgb_lstm_sec", t_train_xgb)
             update_run(run_id, progress=xgb_end, stage="training_xgb_lstm")
             baseline_pred = baseline_output.predictions.copy()
             baseline_pred["date"] = pd.to_datetime(baseline_pred["date"]).dt.tz_localize(None)
@@ -457,6 +555,8 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 "symbols_requested": symbols,
                 "symbols_trained": sorted(list(datasets.keys())),
                 "symbols_skipped": skipped_union,
+                "target_mode": request.target_mode,
+                "horizon_days": request.horizon_days,
             }
             save_json(run_dir / "metrics_xgb_lstm.json", metrics_payload)
 
@@ -479,6 +579,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         if "lgbm_ranker" in selected_models:
             ranker_start, ranker_end = model_windows.get("lgbm_ranker", (50, 92))
             _mark_stage(run_id, progress=ranker_start, stage="training_ranker", log="Training ranker model.")
+            t_train_ranker = time.perf_counter()
             ranker_log_progress = {"value": -1}
 
             def _ranker_progress(local_ratio: float, message: str) -> None:
@@ -492,12 +593,13 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             ranker_output = train_ranker_models(
                 feature_data=feature_data,
                 feature_columns=feature_columns,
-                walk_forward=request.walk_forward_config,
+                walk_forward=walk_forward_cfg,
                 ranker_config=request.ranker_config,
                 theta_grid=request.signal_config.theta_grid,
                 horizon_months=max(1, request.horizon_days // 21 or 1),
                 progress_callback=_ranker_progress,
             )
+            _mark_elapsed("train_ranker_sec", t_train_ranker)
             update_run(run_id, progress=ranker_end, stage="training_ranker")
             ranker_pred = ranker_output.predictions.copy()
             ranker_pred["date"] = pd.to_datetime(ranker_pred["date"]).dt.tz_localize(None)
@@ -512,6 +614,8 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 "symbols_requested": symbols,
                 "symbols_trained": sorted(list(datasets.keys())),
                 "symbols_skipped": skipped_union,
+                "target_mode": request.target_mode,
+                "horizon_days": request.horizon_days,
             }
             save_json(run_dir / "metrics_lgbm_ranker.json", ranker_metrics_payload)
             _save_default_compat_artifacts(run_dir, ranker_pred, ranker_metrics_payload)
@@ -536,11 +640,16 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 "models": performance_rows,
             },
         )
+        time_profile["total_training_sec"] = float(sum(time_profile.values()))
+        save_json(run_dir / "time_profile.json", time_profile)
 
         update_run(run_id, progress=99, stage="finalizing")
         update_run(run_id, status="completed", progress=100, stage="completed", error=None)
         append_log(run_id, "Training job completed.")
     except Exception as exc:  # noqa: BLE001
+        if time_profile:
+            time_profile["total_training_sec"] = float(sum(time_profile.values()))
+            save_json(run_dir / "time_profile.json", time_profile)
         update_run(run_id, status="failed", progress=100, stage="failed", error=str(exc))
         append_log(run_id, f"Error: {exc}")
         append_log(run_id, traceback.format_exc(limit=3))
@@ -684,19 +793,24 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     if not market_path.exists():
         raise ValueError("Market data artifact is missing.")
     market_long = pd.read_parquet(market_path)
-    close_panel = (
-        market_long.assign(date=pd.to_datetime(market_long["date"]).dt.tz_localize(None))
-        .pivot(index="date", columns="symbol", values="close")
-        .sort_index()
-    )
+    market_long = market_long.assign(date=pd.to_datetime(market_long["date"]).dt.tz_localize(None))
+    close_panel = market_long.pivot(index="date", columns="symbol", values="close").sort_index()
+    if "open" in market_long.columns:
+        open_panel = market_long.pivot(index="date", columns="symbol", values="open").sort_index()
+    else:
+        open_panel = close_panel.copy()
 
     result = run_backtest(
         predictions=predictions[["date", "symbol", "predicted_return"]],
+        open_panel=open_panel,
         close_panel=close_panel,
         start_date=request.start_date,
         end_date=request.end_date,
         constraints=request.constraints,
         cost_bps=request.cost_bps,
+        slippage_bps=request.slippage_bps,
+        entry_price=request.entry_price,
+        exit_price=request.exit_price,
         portfolio_mode=request.portfolio_mode,
         regime_policy=request.regime_policy,
     )
@@ -717,6 +831,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "regime_mode_by_period": result.regime_mode_by_period,
         "constraints": request.constraints.model_dump(mode="json"),
         "cost_bps": request.cost_bps,
+        "slippage_bps": request.slippage_bps,
+        "entry_price": request.entry_price,
+        "exit_price": request.exit_price,
         "portfolio_mode": request.portfolio_mode,
         "mu_mapping": request.mu_mapping,
         "regime_policy": request.regime_policy,

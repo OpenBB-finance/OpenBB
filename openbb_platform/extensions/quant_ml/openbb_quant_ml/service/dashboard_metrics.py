@@ -269,18 +269,25 @@ def _load_metrics(run_dir: Path, model_name: ModelName) -> dict[str, Any]:
 
 
 def _load_market_panel(run_dir: Path) -> pd.DataFrame:
+    _, close_panel = _load_market_price_panels(run_dir)
+    return close_panel
+
+
+def _load_market_price_panels(run_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     market_path = run_dir / "market_data.parquet"
     if not market_path.exists():
-        return pd.DataFrame()
+        return pd.DataFrame(), pd.DataFrame()
     frame = pd.read_parquet(market_path)
     if frame.empty:
-        return pd.DataFrame()
-    panel = (
-        frame.assign(date=pd.to_datetime(frame["date"]).dt.tz_localize(None))
-        .pivot(index="date", columns="symbol", values="close")
-        .sort_index()
-    )
-    return panel
+        return pd.DataFrame(), pd.DataFrame()
+    base = frame.assign(date=pd.to_datetime(frame["date"]).dt.tz_localize(None))
+    close_panel = base.pivot(index="date", columns="symbol", values="close").sort_index()
+    if "open" in base.columns:
+        open_panel = base.pivot(index="date", columns="symbol", values="open").sort_index()
+    else:
+        open_panel = close_panel.copy()
+    open_panel = open_panel.reindex(index=close_panel.index, columns=close_panel.columns).ffill()
+    return open_panel, close_panel
 
 
 def _series_points(series: pd.Series, *, key: str = "value") -> list[dict[str, float | str]]:
@@ -1120,9 +1127,13 @@ def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: 
     normalized_model = _normalize_model_name(model_name)
     run_dir = get_run_dir(run_id)
     predictions = _load_predictions(run_dir, normalized_model)
-    close_panel = _load_market_panel(run_dir)
+    open_panel, close_panel = _load_market_price_panels(run_dir)
+    config_payload = load_json(run_dir / "config.json", default={})
+    request_payload = config_payload.get("request", {}) if isinstance(config_payload, dict) else {}
+    target_mode = str(request_payload.get("target_mode", "close_to_close"))
+    close_to_next_open_policy = str(request_payload.get("close_to_next_open_horizon_policy", "fixed_1"))
 
-    if predictions.empty or close_panel.empty:
+    if predictions.empty or close_panel.empty or open_panel.empty:
         return ICDecayResponse(
             run_id=run_id,
             model_name=normalized_model,
@@ -1136,7 +1147,13 @@ def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: 
     horizon_values: list[float] = []
 
     for horizon in range(1, max_h + 1):
-        fwd = close_panel.shift(-horizon) / (close_panel + 1e-12) - 1.0
+        if target_mode == "close_to_next_open":
+            open_h = 1 if close_to_next_open_policy == "fixed_1" else horizon
+            fwd = open_panel.shift(-open_h) / (close_panel + 1e-12) - 1.0
+        elif target_mode == "next_open_to_close":
+            fwd = close_panel.shift(-horizon) / (open_panel.shift(-1) + 1e-12) - 1.0
+        else:
+            fwd = close_panel.shift(-horizon) / (close_panel + 1e-12) - 1.0
         fwd_long = (
             fwd.reset_index()
             .melt(id_vars=["date"], var_name="symbol", value_name="fwd_return")

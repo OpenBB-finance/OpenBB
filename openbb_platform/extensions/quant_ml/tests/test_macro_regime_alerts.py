@@ -30,7 +30,7 @@ def _resolver(symbol: str) -> pd.Series:
     }
     if symbol in macro_map:
         mean, std = macro_map[symbol]
-        m_idx = pd.date_range("2015-01-31", periods=130, freq="M")
+        m_idx = pd.date_range("2015-01-31", periods=130, freq="ME")
         values = mean + np.cumsum(np.random.default_rng(7).normal(0.0, std, len(m_idx)))
         return pd.Series(values, index=m_idx, dtype=float)
     raise ValueError(symbol)

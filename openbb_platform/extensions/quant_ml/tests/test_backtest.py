@@ -17,9 +17,11 @@ def test_backtest_constraints_are_respected():
     dates = pd.date_range("2024-01-01", "2024-06-30", freq="B")
 
     price_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
     for symbol in symbols:
         returns = rng.normal(0.0005, 0.01, len(dates))
         price_panel[symbol] = 100 * np.cumprod(1 + returns)
+        open_panel[symbol] = price_panel[symbol] * (1.0 - 0.001)
 
     pred_dates = pd.date_range("2024-01-01", "2024-06-30", freq="BMS")
     prediction_rows = []
@@ -32,11 +34,15 @@ def test_backtest_constraints_are_respected():
 
     result = run_backtest(
         predictions=predictions,
+        open_panel=open_panel,
         close_panel=price_panel,
         start_date=date(2024, 1, 1),
         end_date=date(2024, 6, 30),
         constraints=BacktestConstraints(max_weight=0.2, long_only=True, risk_aversion=3.0, lookback_days=60),
         cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
     )
 
     assert "cagr" in result.metrics
@@ -68,9 +74,11 @@ def test_backtest_supports_long_short_mode():
     dates = pd.date_range("2024-01-01", "2024-06-30", freq="B")
 
     price_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
     for symbol in symbols:
         returns = rng.normal(0.0003, 0.012, len(dates))
         price_panel[symbol] = 100 * np.cumprod(1 + returns)
+        open_panel[symbol] = price_panel[symbol] * (1.0 - 0.0015)
 
     pred_dates = pd.date_range("2024-01-01", "2024-06-30", freq="BMS")
     prediction_rows = []
@@ -84,11 +92,15 @@ def test_backtest_supports_long_short_mode():
 
     result = run_backtest(
         predictions=predictions,
+        open_panel=open_panel,
         close_panel=price_panel,
         start_date=date(2024, 1, 1),
         end_date=date(2024, 6, 30),
         constraints=BacktestConstraints(max_weight=0.35, long_only=False, risk_aversion=1.5, lookback_days=60),
         cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
         portfolio_mode="long_short",
         regime_policy="fixed",
     )
@@ -97,3 +109,51 @@ def test_backtest_supports_long_short_mode():
     has_negative_weight = any(any(weight < -1e-6 for weight in row["weights"].values()) for row in result.period_weights)
     assert has_negative_weight
     assert len(result.regime_mode_by_period) > 0
+
+
+def test_backtest_execution_price_modes_change_outcome():
+    dates = pd.date_range("2024-01-01", "2024-04-30", freq="B")
+    symbols = ["A", "B", "C"]
+    close_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    rng = np.random.default_rng(99)
+    for symbol in symbols:
+        base = 100 * np.cumprod(1 + rng.normal(0.0002, 0.01, len(dates)))
+        close_panel[symbol] = base
+        open_panel[symbol] = base * (1.0 - 0.003)
+
+    pred_dates = pd.date_range("2024-01-01", "2024-04-30", freq="BMS")
+    predictions = pd.DataFrame(
+        [
+            {"date": d, "symbol": symbol, "predicted_return": float(0.03 - i * 0.01)}
+            for d in pred_dates
+            for i, symbol in enumerate(symbols)
+        ]
+    )
+
+    close_close = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=close_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 4, 30),
+        constraints=BacktestConstraints(max_weight=0.5, long_only=True, risk_aversion=2.0, lookback_days=60),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="close",
+        exit_price="close",
+    )
+    open_close = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=close_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 4, 30),
+        constraints=BacktestConstraints(max_weight=0.5, long_only=True, risk_aversion=2.0, lookback_days=60),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
+    )
+
+    assert close_close.metrics["net_return"] != open_close.metrics["net_return"]

@@ -55,3 +55,54 @@ python -m openbb_quant_ml.service.macro_update --all-default
 - `POST /api/v1/quant_ml/macro/derived/save`
 - `GET /api/v1/quant_ml/macro/derived`
 - `POST /api/v1/quant_ml/macro/update`
+- `GET /api/v1/quant_ml/macro/presets/copper_gold`
+
+### Copper/Gold preset examples
+
+```bash
+# canonical route
+curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/presets/copper_gold?start=2000-01-01&end=2024-08-19&freq=W&adjust_units=true&scale=1000"
+
+# alias route
+curl "http://127.0.0.1:6900/api/v1/macro/presets/copper_gold?start=2000-01-01&end=2024-08-19&freq=W&adjust_units=false&scale=1000"
+```
+
+### Manual expression examples
+
+```bash
+# simple ratio
+curl -X POST "http://127.0.0.1:6900/api/v1/macro/expression" \
+  -H "Content-Type: application/json" \
+  -d "{\"expr\":\"(HG/GC)*1000\",\"freq\":\"W\",\"fill\":\"ffill\"}"
+
+# per-ounce adjusted ratio
+curl -X POST "http://127.0.0.1:6900/api/v1/macro/expression" \
+  -H "Content-Type: application/json" \
+  -d "{\"expr\":\"((HG/16)/(GC*0.911458))*1000\",\"freq\":\"W\",\"fill\":\"ffill\"}"
+```
+
+## Jobs CLI Scheduling
+
+The operational jobs entrypoint:
+
+```bash
+PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+```
+
+### Windows Task Scheduler example
+
+```powershell
+schtasks /Create /F /TN "QuantML-Daily" /SC WEEKLY /D MON,TUE,WED,THU,FRI /ST 18:30 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\<user>\quant_ml_jobs\quantml_daily.ps1"
+schtasks /Create /F /TN "QuantML-Weekly" /SC WEEKLY /D SAT /ST 08:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\<user>\quant_ml_jobs\quantml_weekly.ps1"
+schtasks /Create /F /TN "QuantML-Monthly" /SC MONTHLY /D 1 /ST 09:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\<user>\quant_ml_jobs\quantml_monthly.ps1"
+```
+
+### cron appendix (Linux)
+
+```bash
+30 18 * * 1-5 cd <REPO_ROOT> && PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+0 8 * * 6 cd <REPO_ROOT> && PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+0 9 1 * * cd <REPO_ROOT> && PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/job.yaml
+```

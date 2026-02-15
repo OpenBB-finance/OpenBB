@@ -34,6 +34,12 @@ export interface MacroSeriesResponse {
   message?: string | null;
 }
 
+export interface MacroSeriesMultiResponse {
+  status: MacroStatus;
+  message?: string | null;
+  series: Record<string, MacroSeriesResponse>;
+}
+
 export interface MacroCatalogItem {
   id: string;
   source: string;
@@ -97,6 +103,15 @@ export interface MacroRegimeResponse {
   message?: string | null;
   data: MacroRegimePoint[];
   latest?: MacroRegimePoint | null;
+}
+
+export interface MacroRegimeStateResponse {
+  status: MacroStatus;
+  message?: string | null;
+  date?: string | null;
+  inflation_up: boolean;
+  growth_down: boolean;
+  risk_off_proxy: boolean;
 }
 
 export interface MacroAlertItem {

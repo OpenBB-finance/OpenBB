@@ -13,6 +13,7 @@ from openbb_quant_ml.service.macro_catalog import (
 )
 from openbb_quant_ml.service.macro_constants import load_macro_config
 from openbb_quant_ml.service.macro_db import get_obs_date_bounds, upsert_observations
+from openbb_quant_ml.service.macro_feature_engineering import update_macro_features_for_series
 from openbb_quant_ml.service.macro_fred_client import FredApiKeyMissingError, FredClient, FredClientError
 
 
@@ -84,12 +85,42 @@ def update_series_ids(
         if rows:
             upsert_observations("FRED", series_id, rows)
             updated.append(series_id)
+    if updated:
+        update_macro_features_for_series(
+            updated,
+            start=(start.isoformat() if start else None),
+            end=(end.isoformat() if end else None),
+        )
     return updated
 
 
 def update_all_defaults(start: date | None = None, end: date | None = None) -> list[str]:
     """Refresh all default config series."""
     return update_series_ids(all_default_series_ids(), start=start, end=end)
+
+
+def update_macro_series(
+    series_id: str,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    provider: str = "fred",
+) -> list[str]:
+    """Public helper for single-series incremental macro refresh."""
+    if provider.lower() != "fred":
+        return []
+    return update_series_ids([series_id], start=start_date, end=end_date)
+
+
+def update_macro_all(
+    series_list: list[str] | None = None,
+    end_date: date | None = None,
+    lookback_years: int = 30,
+) -> list[str]:
+    """Public helper for full-list incremental macro refresh."""
+    end_value = end_date or date.today()
+    start_value = end_value - timedelta(days=max(1, int(lookback_years)) * 365)
+    targets = series_list or all_default_series_ids()
+    return update_series_ids(targets, start=start_value, end=end_value)
 
 
 def _parse_args() -> argparse.Namespace:

@@ -133,31 +133,48 @@ def _save_execution_state(run_dir: Path, model_name: ModelName, state: dict[str,
     save_json(_execution_state_path(run_dir, model_name), state)
 
 
-def _load_close_panel(run_dir: Path) -> pd.DataFrame:
+def _load_price_panel(run_dir: Path, field: str = "close") -> pd.DataFrame:
     market_path = run_dir / "market_data.parquet"
     if not market_path.exists():
         return pd.DataFrame()
     market = pd.read_parquet(market_path)
     if market.empty:
         return pd.DataFrame()
+    if field not in market.columns:
+        if field == "open" and "close" in market.columns:
+            field = "close"
+        else:
+            return pd.DataFrame()
     return (
         market.assign(date=pd.to_datetime(market["date"]).dt.tz_localize(None))
-        .pivot(index="date", columns="symbol", values="close")
+        .pivot(index="date", columns="symbol", values=field)
         .sort_index()
     )
 
 
-def _latest_prices(run_dir: Path, as_of_date: str | None = None) -> tuple[str | None, dict[str, float]]:
-    close_panel = _load_close_panel(run_dir)
-    if close_panel.empty:
+def _execution_price_field(run_dir: Path, model_name: ModelName) -> str:
+    payload = load_json(run_dir / f"backtest_{model_name}.json", default={})
+    if not payload:
+        payload = load_json(run_dir / "backtest.json", default={})
+    entry_price = str(payload.get("entry_price", "close"))
+    return "open" if entry_price == "next_open" else "close"
+
+
+def _latest_prices(
+    run_dir: Path,
+    as_of_date: str | None = None,
+    price_field: str = "close",
+) -> tuple[str | None, dict[str, float]]:
+    panel = _load_price_panel(run_dir, field=price_field)
+    if panel.empty:
         return None, {}
     if as_of_date:
         target = pd.Timestamp(as_of_date)
-        series = close_panel.loc[close_panel.index <= target].tail(1)
+        series = panel.loc[panel.index <= target].tail(1)
         if series.empty:
-            series = close_panel.tail(1)
+            series = panel.tail(1)
     else:
-        series = close_panel.tail(1)
+        series = panel.tail(1)
     if series.empty:
         return None, {}
     date_iso = pd.Timestamp(series.index[-1]).date().isoformat()
@@ -251,7 +268,8 @@ def _preview_orders(
         nav_value = float(state.get("initial_nav", DEFAULT_NAV))
 
     current_positions = _load_positions(run_dir, model_name)
-    latest_market_date, prices = _latest_prices(run_dir, as_of_date)
+    entry_field = _execution_price_field(run_dir, model_name)
+    latest_market_date, prices = _latest_prices(run_dir, as_of_date, price_field=entry_field)
     if not prices:
         return (
             ExecutionPreviewResponse(
@@ -311,6 +329,7 @@ def _preview_orders(
         "state": state,
         "positions": current_positions,
         "prices": prices,
+        "price_field": entry_field,
         "cost_bps": float(cost_bps) if cost_bps is not None else float(state.get("cost_bps", 10.0)),
         "slippage_bps": float(slippage_bps),
         "target_category_weights": category_weights,

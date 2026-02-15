@@ -483,6 +483,10 @@ export default function QuantPage() {
         symbols: parsedSymbols,
         date_range: { start: dateStart, end: dateEnd },
         horizon_days: 1,
+        target_mode: "next_open_to_close",
+        close_to_next_open_horizon_policy: "fixed_1",
+        include_macro_features: true,
+        macro_feature_subset: ["z_252", "yoy", "mom_3", "slope"],
         model_config: modelConfig,
         feature_config: {
           lags: [1, 2, 3, 5, 10, 20],
@@ -502,6 +506,9 @@ export default function QuantPage() {
         },
         portfolio_mode: "long_only",
         mu_mapping: "quantile_mean_return",
+        quick_mode: false,
+        model_choice: "dual",
+        early_stopping: true,
       });
 
       setRunStatus({
@@ -600,6 +607,9 @@ export default function QuantPage() {
           lookback_days: 126,
         },
         cost_bps: 10,
+        slippage_bps: 2,
+        entry_price: "next_open",
+        exit_price: "close",
         portfolio_mode: "long_only",
         mu_mapping: "quantile_mean_return",
       });

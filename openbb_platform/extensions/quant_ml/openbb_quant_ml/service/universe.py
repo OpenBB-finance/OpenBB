@@ -7,6 +7,7 @@ from typing import Any
 import yaml
 
 from openbb_quant_ml.service.constants import UNIVERSE_CONFIG_PATH
+from openbb_quant_ml.service.universe_builder import build_universe
 
 
 def load_universe_config() -> dict[str, Any]:
@@ -23,3 +24,14 @@ def get_default_symbols() -> list[str]:
     payload = load_universe_config()
     assets = payload.get("assets", [])
     return [asset["symbol"] for asset in assets if asset.get("symbol")]
+
+
+def get_symbols_for_universe(universe_id: str | None) -> list[str]:
+    """Resolve symbols from universe builder or fallback defaults."""
+    if not universe_id:
+        return get_default_symbols()
+    payload = build_universe(universe_id=universe_id)
+    symbols = payload.get("train_universe", [])
+    if not symbols:
+        symbols = payload.get("trade_universe", [])
+    return [str(item) for item in symbols if str(item).strip()]

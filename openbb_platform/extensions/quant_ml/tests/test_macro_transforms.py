@@ -15,7 +15,7 @@ from openbb_quant_ml.service.macro_transforms import (
 
 
 def _sample_monthly_series() -> pd.Series:
-    idx = pd.date_range("2020-01-31", periods=36, freq="M")
+    idx = pd.date_range("2020-01-31", periods=36, freq="ME")
     values = np.linspace(100.0, 130.0, len(idx))
     return pd.Series(values, index=idx, dtype=float)
 

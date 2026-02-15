@@ -32,6 +32,7 @@ def load_macro_config() -> dict[str, Any]:
             "defaults": {
                 "stale_refresh_days": DEFAULT_STALE_REFRESH_DAYS,
                 "market_fallback_order": ["yfinance", "openbb_http", "cache"],
+                "market_symbol_aliases": {},
                 "fred": {
                     "base_url": DEFAULT_FRED_BASE_URL,
                     "timeout_sec": DEFAULT_FRED_TIMEOUT_SEC,
@@ -41,6 +42,7 @@ def load_macro_config() -> dict[str, Any]:
             "domains": {},
             "regime_weights": {},
             "alerts": [],
+            "derived_defaults": [],
         }
     with MACRO_CONFIG_PATH.open(encoding="utf-8") as file:
         payload = yaml.safe_load(file) or {}
@@ -49,9 +51,11 @@ def load_macro_config() -> dict[str, Any]:
     payload.setdefault("domains", {})
     payload.setdefault("regime_weights", {})
     payload.setdefault("alerts", [])
+    payload.setdefault("derived_defaults", [])
     defaults = payload["defaults"]
     defaults.setdefault("stale_refresh_days", DEFAULT_STALE_REFRESH_DAYS)
     defaults.setdefault("market_fallback_order", ["yfinance", "openbb_http", "cache"])
+    defaults.setdefault("market_symbol_aliases", {})
     defaults.setdefault("fred", {})
     defaults["fred"].setdefault("base_url", DEFAULT_FRED_BASE_URL)
     defaults["fred"].setdefault("timeout_sec", DEFAULT_FRED_TIMEOUT_SEC)

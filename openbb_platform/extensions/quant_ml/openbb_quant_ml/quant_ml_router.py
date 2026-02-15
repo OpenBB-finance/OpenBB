@@ -1,8 +1,11 @@
 """Quant ML Router."""
 
+from datetime import date
+
 from fastapi import HTTPException
 from openbb_core.app.router import Router
 
+from openbb_quant_ml.macro_models import MacroSeriesResponse
 from openbb_quant_ml.macro_router import router as macro_router
 from openbb_quant_ml.models import (
     AlertsResponse,
@@ -46,6 +49,8 @@ from openbb_quant_ml.models import (
 )
 from openbb_quant_ml.service import (
     build_signals,
+    get_market_ratio_response,
+    get_market_rolling_corr_response,
     get_alerts_current,
     get_alerts_history,
     get_dashboard_health,
@@ -388,3 +393,44 @@ def risk_check_pretrade_route(request: RiskPretradeRequest) -> RiskPretradeRespo
 def risk_events(run_id: str, model_name: ModelName = "lgbm_ranker", limit: int = 200) -> RiskEventsResponse:
     """Return stored risk events."""
     return get_risk_events(run_id=run_id, model_name=model_name, limit=limit)
+
+
+@router.command(methods=["GET"], path="/market/ratio")
+def market_ratio(
+    lhs: str,
+    rhs: str,
+    start: date | None = None,
+    end: date | None = None,
+    freq: str = "D",
+    fill: str = "ffill",
+) -> MacroSeriesResponse:
+    """Return aligned ratio series lhs/rhs."""
+    try:
+        return get_market_ratio_response(lhs=lhs, rhs=rhs, start=start, end=end, freq=freq, fill=fill)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/market/rolling_corr")
+def market_rolling_corr(
+    x: str,
+    y: str,
+    window: int = 60,
+    start: date | None = None,
+    end: date | None = None,
+    freq: str = "D",
+    fill: str = "ffill",
+) -> MacroSeriesResponse:
+    """Return rolling correlation series for selected assets."""
+    try:
+        return get_market_rolling_corr_response(
+            x=x,
+            y=y,
+            window=window,
+            start=start,
+            end=end,
+            freq=freq,
+            fill=fill,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc

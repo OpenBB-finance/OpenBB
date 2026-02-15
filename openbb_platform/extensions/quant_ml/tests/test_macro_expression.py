@@ -16,7 +16,7 @@ def _resolver(symbol: str) -> pd.Series:
         values = base + np.linspace(0, 10, len(idx))
         return pd.Series(values, index=idx, dtype=float)
     if symbol == "FRED:UNRATE":
-        m_idx = pd.date_range("2020-01-31", periods=60, freq="M")
+        m_idx = pd.date_range("2020-01-31", periods=60, freq="ME")
         values = np.linspace(3.5, 5.0, len(m_idx))
         return pd.Series(values, index=m_idx, dtype=float)
     raise MacroExpressionError(f"unknown symbol {symbol}")
@@ -44,3 +44,8 @@ def test_fred_expression():
 def test_forbidden_expression():
     with pytest.raises(MacroExpressionError):
         evaluate_expression("__import__('os').system('whoami')", resolver=_resolver)
+
+
+def test_equals_token_is_not_allowed():
+    with pytest.raises(MacroExpressionError):
+        evaluate_expression("GC=F", resolver=_resolver)

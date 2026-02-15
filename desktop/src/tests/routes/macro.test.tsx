@@ -115,6 +115,30 @@ describe("Macro Route", () => {
           dependencies: ["GLD", "SPY"],
         });
       }
+      if (url.includes("/api/v1/quant_ml/market/ratio")) {
+        return mockResponse({
+          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
+          data: [
+            { date: "2025-01-31", value: 1.2 },
+            { date: "2025-02-28", value: 1.25 },
+          ],
+          stats: { last: 1.25, change_1m: 0.05, change_3m: 0.1, z: 0.2, percentile_5y: 0.6 },
+          status: "ok",
+          message: null,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
+        return mockResponse({
+          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
+          data: [
+            { date: "2025-01-31", value: 0.8 },
+            { date: "2025-02-28", value: 0.82 },
+          ],
+          stats: { last: 0.82, change_1m: 0.02, change_3m: 0.03, z: 0.1, percentile_5y: 0.5 },
+          status: "ok",
+          message: null,
+        });
+      }
       if (url.includes("/api/v1/quant_ml/macro/regime")) {
         return mockResponse({
           status: "ok",
@@ -186,7 +210,7 @@ describe("Macro Route", () => {
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByPlaceholderText(/GLD\/SPY/i), { target: { value: "GLD/SPY" } });
+      fireEvent.change(screen.getByLabelText(/Expression/i), { target: { value: "GLD/SPY" } });
       fireEvent.click(screen.getByRole("button", { name: /Execute/i }));
     });
 
@@ -244,6 +268,24 @@ describe("Macro Route", () => {
           status: "insufficient_data",
           message: "No market observations found for symbol: GLD",
           dependencies: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/ratio")) {
+        return mockResponse({
+          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
+          status: "insufficient_data",
+          message: "No market observations found",
+          data: [],
+          stats: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
+        return mockResponse({
+          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
+          status: "insufficient_data",
+          message: "No market observations found",
+          data: [],
+          stats: {},
         });
       }
       if (url.includes("/api/v1/quant_ml/macro/regime")) {

@@ -2,10 +2,13 @@
 import { resolveOpenBBBackend } from "../../lib/openbbBackend";
 import {
   evaluateMacroExpression,
+  fetchMarketRatio,
+  fetchMarketRollingCorr,
   fetchMacroAlerts,
   fetchMacroCatalog,
   fetchMacroDerived,
   fetchMacroRegime,
+  fetchMacroRegimeState,
   fetchMacroSeries,
   invalidateMacroCache,
   registerMacroSeries,
@@ -21,6 +24,7 @@ import type {
   MacroFill,
   MacroFreq,
   MacroRegimePoint,
+  MacroRegimeStateResponse,
   MacroSeriesResponse,
 } from "../../types/macro";
 import { CatalogSidebar } from "./CatalogSidebar";
@@ -121,8 +125,11 @@ export default function MacroPage() {
   const [betaPoints, setBetaPoints] = useState<Array<{ date: string; value: number }>>([]);
   const [leftSymbol, setLeftSymbol] = useState("FRED:DGS10");
   const [rightSymbol, setRightSymbol] = useState("FRED:DGS2");
+  const [ratioTicker, setRatioTicker] = useState("GLD/SPY");
+  const [corrWindow, setCorrWindow] = useState(60);
 
   const [latestRegime, setLatestRegime] = useState<MacroRegimePoint | null>(null);
+  const [regimeState, setRegimeState] = useState<MacroRegimeStateResponse | null>(null);
   const [currentAlerts, setCurrentAlerts] = useState<MacroAlertItem[]>([]);
   const [historyAlerts, setHistoryAlerts] = useState<MacroAlertItem[]>([]);
 
@@ -157,6 +164,12 @@ export default function MacroPage() {
       fetchMacroRegime(backendBaseUrl, { start: startDate, end: endDate, freq: "W", fill: "ffill" }),
       fetchMacroAlerts(backendBaseUrl, { start: startDate, end: endDate, limit: 200 }),
     ]);
+    try {
+      const state = await fetchMacroRegimeState(backendBaseUrl, endDate);
+      setRegimeState(state);
+    } catch {
+      setRegimeState(null);
+    }
     const regimePoints = Array.isArray(regime.data) ? regime.data : [];
     setLatestRegime(regime.latest || (regimePoints.length > 0 ? regimePoints[regimePoints.length - 1] : null));
     setCurrentAlerts(normalizeAlerts(alerts.current));
@@ -224,13 +237,13 @@ export default function MacroPage() {
     setErrorMessage(null);
     try {
       const [ratio, spread, corr, beta] = await Promise.all([
-        evaluateMacroExpression(backendBaseUrl, {
-          expr: `${leftSymbol}/${rightSymbol}`,
+        fetchMarketRatio(backendBaseUrl, {
+          lhs: (ratioTicker.split("/")[0] || leftSymbol).trim(),
+          rhs: (ratioTicker.split("/")[1] || rightSymbol).trim(),
           start: startDate,
           end: endDate,
           freq,
           fill,
-          transform: "level",
         }),
         evaluateMacroExpression(backendBaseUrl, {
           expr: `${leftSymbol}-${rightSymbol}`,
@@ -240,16 +253,17 @@ export default function MacroPage() {
           fill,
           transform: "level",
         }),
-        evaluateMacroExpression(backendBaseUrl, {
-          expr: `rolling_corr(${leftSymbol},${rightSymbol},60)`,
+        fetchMarketRollingCorr(backendBaseUrl, {
+          x: leftSymbol,
+          y: rightSymbol,
+          window: corrWindow,
           start: startDate,
           end: endDate,
           freq,
           fill,
-          transform: "level",
         }),
         evaluateMacroExpression(backendBaseUrl, {
-          expr: `rolling_beta(${leftSymbol},${rightSymbol},60)`,
+          expr: `rolling_beta(${leftSymbol},${rightSymbol},${corrWindow})`,
           start: startDate,
           end: endDate,
           freq,
@@ -274,7 +288,7 @@ export default function MacroPage() {
     } finally {
       setIsBusy(false);
     }
-  }, [backendBaseUrl, endDate, fill, freq, leftSymbol, rightSymbol, startDate]);
+  }, [backendBaseUrl, corrWindow, endDate, fill, freq, leftSymbol, ratioTicker, rightSymbol, startDate]);
 
   const handleSearch = useCallback(async () => {
     if (!backendBaseUrl || !searchText.trim()) {
@@ -443,8 +457,12 @@ export default function MacroPage() {
           <RelationshipPanel
             leftSymbol={leftSymbol}
             rightSymbol={rightSymbol}
+            ratioTicker={ratioTicker}
+            onRatioTickerChange={setRatioTicker}
             onLeftChange={setLeftSymbol}
             onRightChange={setRightSymbol}
+            corrWindow={corrWindow}
+            onCorrWindowChange={setCorrWindow}
             onRun={() => void runRelationship()}
             ratioPoints={ratioPoints}
             spreadPoints={spreadPoints}
@@ -455,7 +473,12 @@ export default function MacroPage() {
 
         <div className="space-y-3">
           <StatsPanel meta={chartPayload?.meta ?? null} stats={chartPayload?.stats ?? null} />
-          <RegimeAlertsPanel latestRegime={latestRegime} currentAlerts={currentAlerts} historyAlerts={historyAlerts} />
+          <RegimeAlertsPanel
+            latestRegime={latestRegime}
+            regimeState={regimeState}
+            currentAlerts={currentAlerts}
+            historyAlerts={historyAlerts}
+          />
         </div>
       </div>
     </div>

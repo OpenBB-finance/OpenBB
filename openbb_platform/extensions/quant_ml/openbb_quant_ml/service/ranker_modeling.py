@@ -219,6 +219,29 @@ def _validation_sharpe_for_theta(frame: pd.DataFrame, theta: float) -> float:
     return float((values.mean() / vol) * np.sqrt(12))
 
 
+def _top_k_mean_return(frame: pd.DataFrame, k: int) -> float:
+    period_returns: list[float] = []
+    for _, group in frame.groupby("date"):
+        if group.empty:
+            continue
+        top = group.sort_values("score", ascending=False).head(max(1, int(k)))
+        period_returns.append(float(top["target_return"].mean()))
+    return float(np.mean(period_returns)) if period_returns else 0.0
+
+
+def _decile_spread(frame: pd.DataFrame) -> float:
+    spreads: list[float] = []
+    for _, group in frame.groupby("date"):
+        if len(group) < 10:
+            continue
+        ranked = group.sort_values("score", ascending=False)
+        bucket = max(1, int(np.ceil(len(ranked) * 0.1)))
+        top = float(ranked.head(bucket)["target_return"].mean())
+        bottom = float(ranked.tail(bucket)["target_return"].mean())
+        spreads.append(top - bottom)
+    return float(np.mean(spreads)) if spreads else 0.0
+
+
 def train_ranker_models(
     feature_data: pd.DataFrame,
     feature_columns: list[str],
@@ -357,6 +380,12 @@ def train_ranker_models(
         "best_theta": best_theta,
         "theta_validation_sharpe": theta_scores,
         "hit_rate": hit_rate,
+        "top_k_mean_return": {
+            "k5": _top_k_mean_return(combined, 5),
+            "k10": _top_k_mean_return(combined, 10),
+            "k20": _top_k_mean_return(combined, 20),
+        },
+        "decile_spread": _decile_spread(combined),
         "fold_count": len(splits),
         "model_backend": backend_name,
     }

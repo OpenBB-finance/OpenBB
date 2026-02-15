@@ -2,6 +2,9 @@ version: "v1"
 defaults:
   stale_refresh_days: 30
   market_fallback_order: ["yfinance", "openbb_http", "cache"]
+  market_symbol_aliases:
+    GC: "GC=F"
+    HG: "HG=F"
   fred:
     base_url: "https://api.stlouisfed.org/fred"
     timeout_sec: 10
@@ -67,3 +70,11 @@ alerts:
   - {rule_id: "credit_stress_gt_80", metric: "credit_stress_score", op: ">", threshold: 80, severity: "critical"}
   - {rule_id: "curve_10y2y_lt_-0_5", metric: "DGS10-DGS2", op: "<", threshold: -0.5, severity: "warning"}
   - {rule_id: "real_rate_spike", metric: "DGS10-CPIAUCSL_yoy", op: "delta_gt", threshold: 0.75, lookback_days: 20, severity: "warning"}
+
+derived_defaults:
+  - derived_id: "copper_gold_ratio_x1000_simple"
+    expression: "(HG/GC)*1000"
+    default_transform: "level"
+  - derived_id: "copper_gold_ratio_x1000_per_ounce"
+    expression: "((HG/16)/(GC*0.911458))*1000"
+    default_transform: "level"

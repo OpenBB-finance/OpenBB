@@ -1,0 +1,43 @@
+version: "v1"
+
+daily:
+  universe_id: "default"
+  lookback_years: 3
+  run_id: null
+  model_name: "lgbm_ranker"
+  top_k: 20
+  score_threshold: 0.5
+  cost_bps: 10.0
+  slippage_bps: 2.0
+  entry_price: "next_open"
+  exit_price: "close"
+  retries: 1
+  backoff_sec: 1.0
+
+weekly:
+  universe_id: "default"
+  recent_years: 5
+  horizon_days: 1
+  target_mode: "next_open_to_close"
+  include_macro_features: true
+  macro_feature_subset: ["z_252", "yoy", "mom_3", "slope"]
+  quick_mode: false
+  model_choice: "dual"
+  early_stopping: true
+  feature_pruning: true
+  walk_forward_compact: false
+  cross_sectional_sampling: false
+
+monthly:
+  universe_id: "default"
+  recent_years: 5
+  horizon_days: 1
+  target_mode: "next_open_to_close"
+  include_macro_features: true
+  macro_feature_subset: ["z_252", "yoy", "mom_3", "slope"]
+  quick_mode: false
+  model_choice: "lgbm_only"
+  early_stopping: true
+  feature_pruning: true
+  walk_forward_compact: false
+  cross_sectional_sampling: false
