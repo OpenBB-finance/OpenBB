@@ -1,0 +1,523 @@
+export type TrainRunStatus = "queued" | "running" | "completed" | "failed";
+export type SignalSide = "buy" | "hold" | "sell";
+export type ModelName = "xgb_lstm" | "lgbm_ranker";
+export type PortfolioMode = "long_only" | "long_short";
+export type MuMapping = "z_score" | "quantile_mean_return";
+export type DashboardMode = "live" | "backtest";
+export type WorkflowRunStatus = "queued" | "running" | "completed" | "failed" | "unknown";
+
+export interface UniverseAsset {
+  symbol: string;
+  category: string;
+}
+
+export interface UniverseResponse {
+  version: string;
+  assets: UniverseAsset[];
+}
+
+export interface DateRangeInput {
+  start: string;
+  end: string;
+}
+
+export interface ModelConfigInput {
+  seq_len: number;
+  xgb_n_estimators: number;
+  xgb_max_depth: number;
+  xgb_learning_rate: number;
+  xgb_subsample: number;
+  xgb_colsample_bytree: number;
+  lstm_hidden_size: number;
+  lstm_num_layers: number;
+  lstm_dropout: number;
+  lstm_epochs: number;
+  lstm_batch_size: number;
+  lstm_learning_rate: number;
+  train_val_split: number;
+}
+
+export interface RankerConfigInput {
+  objective: "rank_xendcg";
+  metric: "ndcg";
+  ndcg_eval_at: number[];
+  learning_rate: number;
+  n_estimators: number;
+  num_leaves: number;
+  min_data_in_leaf: number;
+  subsample: number;
+  colsample_bytree: number;
+  reg_lambda: number;
+  random_state: number;
+  early_stopping_rounds: number;
+}
+
+export interface WalkForwardConfigInput {
+  train_months: number;
+  embargo_months: number;
+  val_months: number;
+  step_months: number;
+}
+
+export interface SignalConfigInput {
+  theta_grid: number[];
+  selection_metric: "val_sharpe";
+}
+
+export interface FeatureConfigInput {
+  lags: number[];
+  vol_windows: number[];
+  momentum_windows: number[];
+  include_rsi: boolean;
+  include_macd: boolean;
+  include_regime_features: boolean;
+}
+
+export interface TrainRequestPayload {
+  symbols?: string[];
+  date_range: DateRangeInput;
+  horizon_days: number;
+  model_config: ModelConfigInput;
+  feature_config: FeatureConfigInput;
+  training_mode?: "single" | "dual_compare";
+  model_set?: ModelName[];
+  walk_forward_config?: WalkForwardConfigInput;
+  ranker_config?: RankerConfigInput;
+  signal_config?: SignalConfigInput;
+  portfolio_mode?: PortfolioMode;
+  mu_mapping?: MuMapping;
+}
+
+export interface TrainResponsePayload {
+  run_id: string;
+  status: TrainRunStatus;
+  artifact_root: string;
+  created_at: string;
+}
+
+export interface RunStatusPayload {
+  run_id: string;
+  status: TrainRunStatus;
+  progress: number;
+  stage: string;
+  created_at: string;
+  updated_at: string;
+  logs_tail: string[];
+  error?: string | null;
+}
+
+export interface SignalItem {
+  symbol: string;
+  side: SignalSide;
+  predicted_return: number;
+  confidence: number;
+  reason_codes: string[];
+  z_score: number;
+  predicted_xgb?: number | null;
+  predicted_lstm?: number | null;
+}
+
+export interface SignalsResponsePayload {
+  run_id: string;
+  model_name: ModelName;
+  as_of_date: string;
+  signals: SignalItem[];
+}
+
+export interface SignalsRequestPayload {
+  run_id: string;
+  model_name: ModelName;
+  as_of_date?: string;
+  top_k: number;
+  score_threshold: number;
+}
+
+export interface BacktestConstraintsInput {
+  max_weight: number;
+  long_only: boolean;
+  risk_aversion: number;
+  lookback_days: number;
+}
+
+export interface BacktestRequestPayload {
+  run_id: string;
+  model_name: ModelName;
+  start: string;
+  end: string;
+  rebalance: "monthly";
+  constraints: BacktestConstraintsInput;
+  cost_bps: number;
+  portfolio_mode?: PortfolioMode;
+  mu_mapping?: MuMapping;
+}
+
+export interface BacktestMetrics {
+  cagr: number;
+  sharpe: number;
+  max_drawdown: number;
+  volatility: number;
+  turnover: number;
+}
+
+export interface EquityCurvePoint {
+  date: string;
+  equity: number;
+  daily_return: number;
+}
+
+export interface BenchmarkCurvePoint {
+  date: string;
+  benchmark: number;
+}
+
+export interface PeriodWeightsPoint {
+  date: string;
+  weights: Record<string, number>;
+}
+
+export interface BacktestResponsePayload {
+  run_id: string;
+  model_name: ModelName;
+  start_date: string;
+  end_date: string;
+  base_index: number;
+  benchmark_symbol: string;
+  metrics: BacktestMetrics;
+  equity_curve: EquityCurvePoint[];
+  benchmark_curve: BenchmarkCurvePoint[];
+  period_weights: PeriodWeightsPoint[];
+}
+
+export interface ArtifactSummaryPayload {
+  run_id: string;
+  model_name: ModelName;
+  model_meta: Record<string, unknown>;
+  latest_validation_error?: number | null;
+  feature_importance: Array<{ feature: string; importance: number }>;
+  params: Record<string, unknown>;
+  available_artifacts: string[];
+}
+
+export interface ModelPerformanceItem {
+  model_name: ModelName;
+  train_ic?: number | null;
+  val_ic?: number | null;
+  ndcg?: number | null;
+  sharpe?: number | null;
+  max_dd?: number | null;
+  turnover?: number | null;
+  hit_rate?: number | null;
+  regime_performance?: Record<string, number | string | null>;
+}
+
+export interface ModelPerformancePayload {
+  run_id: string;
+  models: ModelPerformanceItem[];
+}
+
+export interface ModelICPoint {
+  date: string;
+  ic: number;
+  rolling_ic?: number | null;
+}
+
+export interface ModelICPayload {
+  run_id: string;
+  model_name: ModelName;
+  window: number;
+  points: ModelICPoint[];
+}
+
+export interface ModelRegimePayload {
+  run_id: string;
+  model_name: ModelName;
+  regimes: Record<string, Record<string, number>>;
+}
+
+export interface PortfolioSymbolWeightItem {
+  symbol: string;
+  weight: number;
+  category: string;
+}
+
+export interface AssetClassWeightItem {
+  category: string;
+  weight: number;
+}
+
+export interface PortfolioRationalePayload {
+  summary_lines: string[];
+  constraints_applied: Record<string, number | boolean>;
+}
+
+export interface PortfolioCurrentPayload {
+  run_id: string;
+  model_name: ModelName;
+  as_of_date?: string | null;
+  total_weight: number;
+  symbol_weights: PortfolioSymbolWeightItem[];
+  asset_class_weights: AssetClassWeightItem[];
+  rationale: PortfolioRationalePayload;
+}
+
+export interface FeatureImportancePayload {
+  run_id: string;
+  model_name: ModelName;
+  items: Array<{ feature?: string; importance?: number }>;
+}
+
+export interface PredictionsLatestPayload {
+  run_id: string;
+  model_name: ModelName;
+  as_of_date: string;
+  predictions: Array<Record<string, unknown>>;
+}
+
+export type DashboardPayloadStatus = "ok" | "insufficient_data" | "not_found";
+
+export interface DashboardHealthPayload {
+  run_id?: string | null;
+  model_name?: ModelName | null;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  backend_connected: boolean;
+  backend_source: string;
+  backend_detail: string;
+  latest_run_id?: string | null;
+  resolved_run_id?: string | null;
+  mode_supported: DashboardMode[];
+  data_timestamp?: string | null;
+  universe_size: number;
+  cost_bps: number;
+  cash_exposure: number;
+  gross_exposure: number;
+  net_exposure: number;
+  strategy_health: Record<string, number>;
+  workflow_state?: WorkflowStatePayload;
+}
+
+export interface WorkflowArtifactsReadyPayload {
+  predictions: boolean;
+  signals: boolean;
+  backtest: boolean;
+  portfolio_current: boolean;
+}
+
+export interface WorkflowStatePayload {
+  run_status: WorkflowRunStatus;
+  run_stage: string;
+  run_progress: number;
+  artifacts_ready: WorkflowArtifactsReadyPayload;
+  updated_at?: string | null;
+}
+
+export interface QuantSessionState {
+  run_id: string;
+  model_name: ModelName;
+  mode: DashboardMode;
+  run_status: WorkflowRunStatus;
+  run_stage: string;
+  run_progress: number;
+  artifacts_ready: WorkflowArtifactsReadyPayload;
+  data_timestamp?: string | null;
+  updated_at?: string | null;
+}
+
+export interface TimeSeriesPoint {
+  date: string;
+  value: number;
+}
+
+export interface ExposureTimeSeriesPoint {
+  date: string;
+  cash: number;
+  gross: number;
+  net: number;
+}
+
+export interface RollingPerformancePayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  window_short: number;
+  window_long: number;
+  cumulative_return: TimeSeriesPoint[];
+  rolling_sharpe_3m: TimeSeriesPoint[];
+  rolling_sharpe_6m: TimeSeriesPoint[];
+  rolling_ic_3m: TimeSeriesPoint[];
+  rolling_ic_6m: TimeSeriesPoint[];
+  rolling_maxdd: TimeSeriesPoint[];
+  turnover_ts: TimeSeriesPoint[];
+  exposure_ts: ExposureTimeSeriesPoint[];
+}
+
+export interface RegimePerformanceStats {
+  count: number;
+  mean_return: number;
+  sharpe: number;
+  ic: number;
+  turnover: number;
+}
+
+export interface RegimeMatrixPoint {
+  trend_regime: string;
+  vol_regime: string;
+  count: number;
+  sharpe: number;
+  mean_return: number;
+  ic: number;
+}
+
+export interface PerformanceRegimePayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  trend_regime_perf: Record<string, RegimePerformanceStats>;
+  vol_regime_perf: Record<string, RegimePerformanceStats>;
+  liquidity_regime_perf: Record<string, RegimePerformanceStats>;
+  matrix_2d: RegimeMatrixPoint[];
+}
+
+export interface PortfolioPositionItem {
+  symbol: string;
+  weight: number;
+}
+
+export interface PortfolioExposurePayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  sector_exposure: AssetClassWeightItem[];
+  factor_exposure: Record<string, number>;
+  beta_spy: number;
+  beta_qqq: number;
+  duration_estimate: number;
+  top10_long: PortfolioPositionItem[];
+  top10_short: PortfolioPositionItem[];
+}
+
+export interface PortfolioRiskContributionItem {
+  symbol: string;
+  contribution: number;
+}
+
+export interface PortfolioRiskPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  vol_ex_ante: number;
+  cvar_95: number;
+  position_risk_contrib_top5: PortfolioRiskContributionItem[];
+  position_return_contrib_top5: PortfolioRiskContributionItem[];
+  worst5_positions: PortfolioRiskContributionItem[];
+}
+
+export interface ICDecayPoint {
+  horizon: number;
+  ic: number;
+}
+
+export interface ICDecayPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  max_horizon: number;
+  ic_decay: ICDecayPoint[];
+  ic_t_stat: number;
+}
+
+export interface PredictionHistogramBin {
+  bin_left: number;
+  bin_right: number;
+  count: number;
+}
+
+export interface PredictionDistributionPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  bins: number;
+  histogram: PredictionHistogramBin[];
+  top_decile_mean: number;
+  bottom_decile_mean: number;
+  decile_spread_ts: Array<{ date: string; spread: number }>;
+}
+
+export interface RegimeCurrentPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  trend_regime: string;
+  vol_regime: string;
+  liquidity_regime: string;
+  vix_level: number;
+  breadth: number;
+  spx_distance_200ma: number;
+}
+
+export interface RegimeHistoryPoint {
+  date: string;
+  trend_regime: string;
+  vol_regime: string;
+  liquidity_regime: string;
+  vix_level: number;
+  breadth: number;
+  spx_distance_200ma: number;
+}
+
+export interface RegimeHistoryPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  history: RegimeHistoryPoint[];
+  regime_transition_stats: Record<string, number>;
+}
+
+export interface AlertItem {
+  rule_id: string;
+  severity: "info" | "warning" | "critical";
+  triggered_at: string;
+  message: string;
+  value: number;
+}
+
+export interface AlertsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  alerts: AlertItem[];
+}
+
+export interface ModelShapPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  summary_points: Array<Record<string, string | number>>;
+  dependence_top3: Array<Record<string, string | number>>;
+  feature_stability_ts: Array<Record<string, string | number>>;
+}
+
+export interface BackendService {
+  id: string;
+  name: string;
+  command: string;
+  status: "running" | "stopped" | "starting" | "stopping" | "error";
+  url?: string;
+}
+
+export interface BackendResolution {
+  baseUrl: string;
+  source: "running-service-url" | "command-parse" | "fallback";
+  connected: boolean;
+  detail: string;
+}

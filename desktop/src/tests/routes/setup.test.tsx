@@ -32,9 +32,23 @@ import { Route as SetupRoute } from '../../routes/setup';
 describe('SetupPage Route', () => {
   const mockNavigate = vi.fn();
   const SetupComponent = SetupRoute.options.component as React.ComponentType;
+  const originalTauriInternals = (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__;
+
+  afterAll(() => {
+    Object.defineProperty(window, '__TAURI_INTERNALS__', {
+      configurable: true,
+      writable: true,
+      value: originalTauriInternals,
+    });
+  });
 
   beforeEach(() => {
     vi.clearAllMocks();
+    Object.defineProperty(window, '__TAURI_INTERNALS__', {
+      configurable: true,
+      writable: true,
+      value: {},
+    });
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
     vi.mocked(invoke).mockClear();
     vi.mocked(confirm).mockClear();

@@ -10,6 +10,7 @@ import { ThemeToggleButton } from "../components/Icon";*/}
 import ShowVersion from "../components/ShowVersion";
 import { ODPLogo, OpenBBLogo } from "../components/Icon";
 import { EnvironmentCreationProvider, useEnvironmentCreation } from "../contexts/EnvironmentCreationContext";
+import { QuantSessionProvider } from "../contexts/QuantSessionContext";
 
 {/*interface UserCredentials {
 	preferences?: {
@@ -237,6 +238,9 @@ function Root() {
 						<NavLink to="/backends" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Backends</NavLink>
 						<NavLink to="/environments" search={{ directory: undefined, userDataDir: undefined }} selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Environments</NavLink>
 						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API Keys</NavLink>
+						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
+						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
+						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro</NavLink>
 					</nav>
 				)}
 			</div>
@@ -258,7 +262,9 @@ function Root() {
 export function RootWithProvider() {
 	return (
 		<EnvironmentCreationProvider>
-			<Root />
+			<QuantSessionProvider>
+				<Root />
+			</QuantSessionProvider>
 		</EnvironmentCreationProvider>
 	);
 }

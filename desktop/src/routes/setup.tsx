@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {FolderIcon} from "~/components/Icon";
+import { isTauriRuntime } from "../lib/runtime";
 
 // Define form schema using Zod
 const formSchema = z.object({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/setup")({
 
 export default function Setup() {
   const navigate = useNavigate();
+  const tauriMode = isTauriRuntime();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [defaultHome, setDefaultHome] = useState("");
@@ -51,6 +53,11 @@ export default function Setup() {
 
   // Load home directory and set defaults on component mount
   useEffect(() => {
+    if (!tauriMode) {
+      navigate({ to: "/quant" });
+      return;
+    }
+
     async function loadHomeDirectory() {
       try {
         const homeDir = await invoke<string>("get_home_directory");
@@ -73,10 +80,15 @@ export default function Setup() {
     }
 
     loadHomeDirectory();
-  }, [setValue]);
+  }, [navigate, setValue, tauriMode]);
 
   // Handle installation start with debounce protection
   async function onSubmit(data: FormValues) {
+    if (!tauriMode) {
+      setErrorMessage("Web mode does not support Desktop installation commands. Open /quant or /backends.");
+      return;
+    }
+
     // Prevent duplicate submissions
     if (isSubmittingRef.current) {
       console.log("Submission already in progress, ignoring duplicate call");
@@ -141,6 +153,11 @@ export default function Setup() {
 
   // Browse for directories with automatic window focus restoration
   async function browseDirectory(field: keyof FormValues, title: string) {
+    if (!tauriMode) {
+      setErrorMessage("Directory picker is unavailable in web mode.");
+      return;
+    }
+
     try {
       const selectedDir = await invoke<string>("select_directory", {
         prompt: `Select ${title}`,
@@ -176,6 +193,34 @@ export default function Setup() {
             Please select the directories where Conda, OpenBB, and its user data will be stored.
           </p>
 
+          {!tauriMode && (
+            <div className="mb-4 rounded border border-yellow-500/60 bg-yellow-500/10 p-3">
+              <p className="body-sm-regular text-yellow-300">
+                Web mode detected. This installation wizard works only in the Tauri Desktop app.
+              </p>
+              <div className="mt-2 flex gap-2">
+                <Button
+                  type="button"
+                  variant="neutral"
+                  size="sm"
+                  className="button-neutral px-2 py-1"
+                  onClick={() => navigate({ to: "/quant" })}
+                >
+                  Go to Quant Lab
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="button-outline px-2 py-1"
+                  onClick={() => navigate({ to: "/backends" })}
+                >
+                  Go to Backends
+                </Button>
+              </div>
+            </div>
+          )}
+
           {errorMessage && (
             <div className="mb-6 p-4 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 rounded border border-red-300 dark:border-red-700">
               {errorMessage}
@@ -207,6 +252,7 @@ export default function Setup() {
                       size="icon"
                       className="button-ghost ml-2"
                       variant="ghost"
+                      disabled={!tauriMode}
                       aria-label="browse for installation directory"
                     >
                       <FolderIcon className="h-5 w-5" />
@@ -249,6 +295,7 @@ export default function Setup() {
                       size="icon"
                       className="button-ghost"
                       variant="ghost"
+                      disabled={!tauriMode}
                       aria-label="browse for user data directory"
                     >
                       <FolderIcon className="h-5 w-5 ml-2" />
@@ -293,6 +340,10 @@ export default function Setup() {
               <Button
                 type="button"
                 onClick={async () => {
+                  if (!tauriMode) {
+                    navigate({ to: "/quant" });
+                    return;
+                  }
                   const confirmed = await confirm(
                     "Are you sure you want to quit the installation?",
                     { title: "Quit Installation", kind: "warning" }
@@ -307,7 +358,7 @@ export default function Setup() {
                 size="sm"
                 className="button-outline px-2 py-1 shadow-md"
               >
-                Cancel
+                {tauriMode ? "Cancel" : "Back to Quant"}
               </Button>
             </Tooltip>
             <Tooltip
@@ -316,7 +367,7 @@ export default function Setup() {
             >
               <Button 
                 onClick={handleSubmit(onSubmit)} 
-                disabled={isLoading} 
+                disabled={isLoading || !tauriMode} 
                 variant="neutral" 
                 size="sm" 
                 className="button-neutral shadow-md px-2 py-1 whitespace-nowrap"

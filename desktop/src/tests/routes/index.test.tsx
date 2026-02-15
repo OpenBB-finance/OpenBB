@@ -18,6 +18,7 @@ vi.mock('@tauri-apps/api/event', () => ({
 
 describe('Index Route', () => {
   const originalLocation = window.location;
+  const originalTauriInternals = (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__;
   const IndexComponent = IndexRoute.options.component as React.ComponentType;
 
   // No global timeout configuration here. Tests should pass within default timeout.
@@ -36,11 +37,21 @@ describe('Index Route', () => {
       writable: true,
       value: originalLocation,
     });
+    Object.defineProperty(window, '__TAURI_INTERNALS__', {
+      configurable: true,
+      writable: true,
+      value: originalTauriInternals,
+    });
   });
 
   beforeEach(() => {
     vi.clearAllMocks();
     window.location.href = ''; // Reset href for each test
+    Object.defineProperty(window, '__TAURI_INTERNALS__', {
+      configurable: true,
+      writable: true,
+      value: {},
+    });
     vi.mocked(invoke).mockClear();
     vi.mocked(listen).mockClear();
     localStorage.clear(); // Clear localStorage for each test
@@ -104,6 +115,23 @@ describe('Index Route', () => {
 
     await waitFor(() => expect(window.location.href).toBe('/setup'));
     expect(vi.mocked(invoke)).not.toHaveBeenCalledWith('get_installation_state');
+  });
+
+  test('redirects to /quant in web mode', async () => {
+    Object.defineProperty(window, '__TAURI_INTERNALS__', {
+      configurable: true,
+      writable: true,
+      value: undefined,
+    });
+
+    await act(async () => {
+      render(<IndexComponent />);
+      await Promise.resolve();
+    });
+
+    await waitFor(() => expect(window.location.href).toBe('/quant'));
+    expect(vi.mocked(invoke)).not.toHaveBeenCalled();
+    expect(vi.mocked(listen)).not.toHaveBeenCalled();
   });
 
 });

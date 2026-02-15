@@ -1,0 +1,69 @@
+version: "v1"
+defaults:
+  stale_refresh_days: 30
+  market_fallback_order: ["yfinance", "openbb_http", "cache"]
+  fred:
+    base_url: "https://api.stlouisfed.org/fred"
+    timeout_sec: 10
+    max_retries: 5
+
+domains:
+  Labor:
+    keywords: ["unemployment", "nonfarm payroll", "jobless claims", "participation", "average hourly earnings", "JOLTS"]
+    default_series: ["UNRATE", "PAYEMS", "ICSA", "CIVPART", "CES0500000003", "JTSJOL"]
+    default_transform: "yoy"
+    default_publish_lag: 30
+  Inflation:
+    default_series: ["CPIAUCSL", "CPILFESL", "PCEPI", "PCEPILFE", "T5YIE", "T10YIE"]
+    default_transform: "yoy"
+    default_publish_lag: 30
+  Growth:
+    default_series: ["GDPC1", "INDPRO", "RSAFS", "PI"]
+    default_transform: "yoy"
+    default_publish_lag: 30
+  Rates:
+    default_series: ["FEDFUNDS", "DGS2", "DGS10", "TB3MS"]
+    derived: ["DGS10-DGS2", "DGS10-TB3MS"]
+    default_transform: "level"
+    default_publish_lag: 1
+  Credit:
+    default_series: ["BAMLH0A0HYM2", "BAA10Y", "DRCCLACBS"]
+    default_transform: "zscore"
+    default_publish_lag: 7
+  Housing:
+    default_series: ["HOUST", "HSN1F", "CSUSHPINSA", "MORTGAGE30US"]
+    default_transform: "yoy"
+    default_publish_lag: 30
+  Liquidity:
+    default_series: ["M2SL", "NFCI"]
+    default_transform: "yoy"
+    default_publish_lag: 30
+  GlobalFXCommodities:
+    default_series: ["DTWEXBGS", "DCOILWTICO", "GOLDAMGBD228NLBM"]
+    default_transform: "zscore"
+    default_publish_lag: 1
+
+regime_weights:
+  risk_on_score:
+    - {key: "FRED:VIXCLS", transform: "zscore", weight: -0.35}
+    - {key: "FRED:BAMLH0A0HYM2", transform: "zscore", weight: -0.35}
+    - {key: "SPY/IEF", transform: "zscore", weight: 0.30}
+  inflation_score:
+    - {key: "FRED:CPIAUCSL", transform: "yoy_zscore", weight: 0.4}
+    - {key: "FRED:PCEPILFE", transform: "yoy_zscore", weight: 0.4}
+    - {key: "FRED:T10YIE", transform: "zscore", weight: 0.2}
+  growth_score:
+    - {key: "FRED:INDPRO", transform: "yoy_zscore", weight: 0.35}
+    - {key: "FRED:PAYEMS", transform: "yoy_zscore", weight: 0.35}
+    - {key: "FRED:RSAFS", transform: "yoy_zscore", weight: 0.30}
+  liquidity_score:
+    - {key: "FRED:M2SL", transform: "yoy_zscore", weight: 0.6}
+    - {key: "FRED:NFCI", transform: "zscore", weight: -0.4}
+  credit_stress_score:
+    - {key: "FRED:BAMLH0A0HYM2", transform: "zscore", weight: 0.6}
+    - {key: "FRED:BAA10Y", transform: "zscore", weight: 0.4}
+
+alerts:
+  - {rule_id: "credit_stress_gt_80", metric: "credit_stress_score", op: ">", threshold: 80, severity: "critical"}
+  - {rule_id: "curve_10y2y_lt_-0_5", metric: "DGS10-DGS2", op: "<", threshold: -0.5, severity: "warning"}
+  - {rule_id: "real_rate_spike", metric: "DGS10-CPIAUCSL_yoy", op: "delta_gt", threshold: 0.75, lookback_days: 20, severity: "warning"}

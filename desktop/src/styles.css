@@ -426,7 +426,7 @@ input[type="text"], input[type="password"], .dark input[type="text"], .dark inpu
   color: var(--text-primary);
   padding: 0.5rem;
   font-size: 0.875rem; /* 14px */
-  line-height: 0.25; /* 20px */
+  line-height: 1.25; /* 20px */
   outline: var(--border-color);
 }
 
@@ -456,7 +456,7 @@ input[type="number"] + div button:focus-visible {
   color: var(--text-primary);
   padding: 0.5rem;
   font-size: 0.875rem; /* 14px */
-  line-height: 0.25; /* 20px */
+  line-height: 1.25; /* 20px */
   outline: var(--border-color);
 }
 

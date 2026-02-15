@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "openbb-quant-ml"
+version = "0.1.0"
+description = "ML/DL quant workflow extension for OpenBB Platform."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_quant_ml" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+openbb-core = "^1.5.9"
+openbb-yfinance = "^1.5.2"
+numpy = ">=1.26"
+pandas = ">=2.1"
+scipy = ">=1.11"
+pyyaml = ">=6.0"
+xgboost = ">=2.0"
+torch = ">=2.2"
+yfinance = ">=0.2.40"
+scikit-learn = ">=1.4"
+pyarrow = ">=14.0"
+lightgbm = ">=4.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+quant_ml = "openbb_quant_ml.quant_ml_router:router"
+macro = "openbb_quant_ml.macro_alias_router:router"
