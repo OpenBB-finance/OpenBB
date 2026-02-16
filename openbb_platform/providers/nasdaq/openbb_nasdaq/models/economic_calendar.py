@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
+from openbb_core.provider.utils.country_utils import Country
 from pydantic import Field, field_validator
 
 
@@ -28,14 +29,27 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
     country: str | None = Field(
         default=None,
-        description="Country of the event",
+        description="Country of the event. Accepts country names, "
+        "ISO 3166-1 alpha-2/alpha-3 codes. Multiple comma-separated values allowed.",
     )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, c: str):  # pylint: disable=E0213
-        """Validate country."""
-        return ",".join([v.lower() for v in c.replace(" ", "_").split(",")])
+        """Validate and normalize country input."""
+        if c is None:
+            return c
+        results = []
+        for item in c.split(","):
+            stripped = item.strip()
+            # Try to convert via Country type
+            try:
+                country = Country(stripped)
+                results.append(country.name.lower().replace(" ", "_"))
+            except ValueError:
+                # Keep original format (lowercase snake_case)
+                results.append(stripped.lower().replace(" ", "_"))
+        return ",".join(results)
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):
