@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""
+Update exchange data from ISO 10383 (Market Identifier Codes).
+
+Downloads the official ISO 10383 MIC registry and regenerates exchange_data.json.
+Uses only Python standard library (no external dependencies).
+
+Source:
+    https://www.iso20022.org/market-identifier-codes
+
+Usage:
+    python scripts/update_exchange_data.py
+    python scripts/update_exchange_data.py --operating-only
+"""
+
+import argparse
+import csv
+import io
+import json
+import sys
+import urllib.request
+from datetime import date
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).parent
+OUTPUT_PATH = (
+    SCRIPT_DIR.parent
+    / "openbb_platform/core/openbb_core/provider/utils/exchange_data.json"
+)
+MIC_CSV_URL = (
+    "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"
+)
+
+
+def download_mic_csv() -> list[dict]:
+    """Download and parse the official ISO 10383 MIC CSV."""
+    print(f"Downloading MIC data from {MIC_CSV_URL}...")
+
+    req = urllib.request.Request(MIC_CSV_URL, headers={"User-Agent": "OpenBB/1.0"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        raw = resp.read().decode("utf-8-sig")
+
+    reader = csv.DictReader(io.StringIO(raw))
+    rows = list(reader)
+    print(f"Downloaded {len(rows)} total MIC entries")
+    return rows
+
+
+def process_mic_data(rows: list[dict], operating_only: bool = False) -> list[dict]:
+    """Filter and transform MIC rows into exchange entries."""
+    # Normalize header keys (strip whitespace, uppercase)
+    active = [r for r in rows if r.get("STATUS", "").strip().upper() == "ACTIVE"]
+    print(f"Active entries: {len(active)}")
+
+    if operating_only:
+        active = [
+            r
+            for r in active
+            if r.get("OPRT/SGMT", "").strip().upper() in ("OPRT", "O")
+        ]
+        print(f"Operating MICs only: {len(active)}")
+
+    exchanges = []
+    for row in active:
+        mic = row.get("MIC", "").strip()
+        if not mic:
+            continue
+
+        name = row.get("MARKET NAME-INSTITUTION DESCRIPTION", "").strip()
+        if not name:
+            continue
+
+        acronym = row.get("ACRONYM", "").strip() or mic
+
+        exchanges.append({
+            "mic": mic,
+            "acronym": acronym,
+            "name": name,
+            "_type": row.get("OPRT/SGMT", "").strip().upper(),
+        })
+
+    # Sort operating MICs before segments so that the lookup in exchange_utils
+    # (first-write-wins) gives priority to operating MICs when acronyms collide.
+    exchanges.sort(key=lambda x: (0 if x["_type"] in ("OPRT", "O") else 1, x["mic"]))
+
+    # Strip internal sort key before output
+    for e in exchanges:
+        del e["_type"]
+    return exchanges
+
+
+def build_exchange_data(exchanges: list[dict]) -> dict:
+    """Build the final exchange data structure."""
+    return {
+        "_last_updated": date.today().isoformat(),
+        "_source": {
+            "url": "https://www.iso20022.org/market-identifier-codes",
+            "standard": "ISO 10383",
+            "maintainer": "SWIFT (ISO 20022 Registration Authority)",
+        },
+        "_stats": {
+            "total_exchanges": len(exchanges),
+        },
+        "exchanges": exchanges,
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Update exchange data from ISO 10383")
+    parser.add_argument(
+        "--operating-only",
+        action="store_true",
+        help="Exclude segment MICs (only include operating MICs)",
+    )
+    args = parser.parse_args()
+
+    rows = download_mic_csv()
+    exchanges = process_mic_data(rows, operating_only=args.operating_only)
+
+    if not exchanges:
+        print("Error: No exchanges found after filtering")
+        sys.exit(1)
+
+    data = build_exchange_data(exchanges)
+
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+    print(f"\nWrote {OUTPUT_PATH}")
+    print(f"   Total exchanges: {len(exchanges)}")
+
+
+if __name__ == "__main__":
+    main()

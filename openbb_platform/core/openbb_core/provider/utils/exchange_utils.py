@@ -3,7 +3,7 @@
 This module provides an Exchange type that inherits from str for type checker compatibility
 while providing full access to ISO 10383 Market Identifier Code (MIC) data via a static dataset.
 
-Providers can access mic, acronym, name, country, and city properties as needed.
+Providers can access mic, acronym, and name properties as needed.
 
 References:
     - ISO 10383: https://www.iso20022.org/market-identifier-codes
@@ -24,8 +24,6 @@ class ExchangeData(TypedDict, total=False):
     mic: str
     acronym: str
     name: str
-    country: str
-    city: str
 
 
 def _load_exchange_data() -> dict[str, ExchangeData]:
@@ -43,15 +41,22 @@ def _load_exchange_data() -> dict[str, ExchangeData]:
         lookup[exchange["mic"].upper()] = exchange
         lookup[exchange["mic"].lower()] = exchange
 
-        # Index by acronym (case-insensitive)
+        # Index by acronym (case-insensitive, first-write-wins to preserve
+        # operating MIC priority over segment MICs sharing the same acronym)
         acronym = exchange["acronym"]
-        lookup[acronym.upper()] = exchange
-        lookup[acronym.lower()] = exchange
+        acronym_upper = acronym.upper()
+        acronym_lower = acronym.lower()
+        if acronym_upper not in lookup:
+            lookup[acronym_upper] = exchange
+        if acronym_lower not in lookup:
+            lookup[acronym_lower] = exchange
 
         # Index by name (case-insensitive)
         name_lower = exchange["name"].lower()
-        lookup[name_lower] = exchange
-        lookup[exchange["name"]] = exchange
+        if name_lower not in lookup:
+            lookup[name_lower] = exchange
+        if exchange["name"] not in lookup:
+            lookup[exchange["name"]] = exchange
 
         # Index by snake_case name
         snake_name = (
@@ -60,7 +65,8 @@ def _load_exchange_data() -> dict[str, ExchangeData]:
             .replace(",", "")
             .replace("'", "")
         )
-        lookup[snake_name] = exchange
+        if snake_name not in lookup:
+            lookup[snake_name] = exchange
 
     return lookup
 
@@ -73,7 +79,7 @@ class Exchange(str):
     """Exchange string type with full ISO 10383 MIC data access.
 
     Inherits from str (storing MIC code) for type checker compatibility
-    while providing access to mic, acronym, name, country, and city properties.
+    while providing access to mic, acronym, and name properties.
 
     Accepts:
         - ISO 10383 MIC codes (e.g., "XNAS", "XNYS")
@@ -91,9 +97,7 @@ class Exchange(str):
     >>> e.acronym
     'NASDAQ'
     >>> e.name
-    'NASDAQ Stock Market'
-    >>> e.country
-    'US'
+    'NASDAQ - ALL MARKETS'
     """
 
     _exchange_data: ExchangeData
@@ -140,7 +144,7 @@ class Exchange(str):
         Returns
         -------
         ExchangeData
-            The exchange data dictionary with mic, acronym, name, country, city.
+            The exchange data dictionary with mic, acronym, name.
 
         Raises
         ------
@@ -185,18 +189,8 @@ class Exchange(str):
 
     @property
     def name(self) -> str:
-        """Full exchange name (e.g., 'NASDAQ Stock Market')."""
+        """Full exchange name (e.g., 'NASDAQ - ALL MARKETS')."""
         return self._exchange_data["name"]
-
-    @property
-    def country(self) -> str:
-        """ISO 3166-1 alpha-2 country code where the exchange is located."""
-        return self._exchange_data["country"]
-
-    @property
-    def city(self) -> str | None:
-        """City where the exchange is headquartered."""
-        return self._exchange_data.get("city")
 
     @classmethod
     def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: Any) -> Any:

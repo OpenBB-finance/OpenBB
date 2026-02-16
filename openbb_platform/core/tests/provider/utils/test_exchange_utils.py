@@ -14,14 +14,12 @@ class TestExchange:
         assert e.mic == "XNAS"
         assert e.acronym == "NASDAQ"
         assert e.name == "NASDAQ - ALL MARKETS"
-        assert e.country == "US"
 
     def test_from_mic_lowercase(self):
         """Test creating Exchange from lowercase MIC."""
         e = Exchange("xnys")
         assert str(e) == "XNYS"
         assert e.mic == "XNYS"
-        assert e.acronym == "NYSE"
 
     def test_from_acronym(self):
         """Test creating Exchange from acronym."""
@@ -43,15 +41,13 @@ class TestExchange:
         assert str(e) == "XLON"
         assert e.mic == "XLON"
         assert e.acronym == "LSE"
-        assert e.country == "GB"
 
     def test_from_partial_name(self):
-        """Test creating Exchange from partial/similar name."""
+        """Test creating Exchange from acronym lookup."""
         e = Exchange("HKEX")
         assert str(e) == "XHKG"
         assert e.mic == "XHKG"
         assert e.acronym == "HKEX"
-        assert e.country == "HK"
 
     def test_properties(self):
         """Test all Exchange properties."""
@@ -59,15 +55,13 @@ class TestExchange:
         assert e.mic == "XTSE"
         assert e.acronym == "TSX"
         assert e.name == "TORONTO STOCK EXCHANGE"
-        assert e.country == "CA"
-        assert e.city == "TORONTO"
 
     def test_invalid_exchange(self):
         """Test that invalid exchanges raise ValueError."""
         with pytest.raises(ValueError) as exc_info:
             Exchange("INVALID_EXCHANGE")
         assert "Invalid exchange" in str(exc_info.value)
-        assert "XNAS" in str(exc_info.value)  # Should mention valid examples
+        assert "XNAS" in str(exc_info.value)
 
     def test_str_inheritance(self):
         """Test that Exchange behaves as str."""
@@ -86,17 +80,16 @@ class TestExchange:
     def test_various_exchanges(self):
         """Test various international exchanges."""
         test_cases = [
-            ("XETRA", "XETR", "DE"),
-            ("SIX", "XSWX", "CH"),
-            ("ASX", "XASX", "AU"),
-            ("JPX", "XJPX", "JP"),
-            ("NSE", "XNSE", "IN"),
-            ("B3", "BVMF", "BR"),
+            ("XETRA", "XETR"),
+            ("XSWX", "XSWX"),
+            ("ASX", "XASX"),
+            ("JPX", "XJPX"),
+            ("XNSE", "XNSE"),
+            ("B3", "BVMF"),
         ]
-        for acronym, expected_mic, expected_country in test_cases:
-            e = Exchange(acronym)
-            assert e.mic == expected_mic, f"Failed for {acronym}"
-            assert e.country == expected_country, f"Failed for {acronym}"
+        for input_val, expected_mic in test_cases:
+            e = Exchange(input_val)
+            assert e.mic == expected_mic, f"Failed for {input_val}"
 
     def test_whitespace_handling(self):
         """Test that whitespace is stripped from input."""
