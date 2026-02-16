@@ -371,7 +371,7 @@ def html_to_markdown(
             else:
                 texts.append(get_text_content(child, preserve_links_in_text))
 
-        result_parts = []
+        result_parts: list = []
         had_whitespace_separator = False
 
         for _t in texts:
@@ -1362,7 +1362,7 @@ def html_to_markdown(
                 return (has_year or has_category), False
 
             # First pass: identify all header rows and classify them
-            header_info = []  # (row_idx, parsed, is_year_row, is_category_row)
+            header_info: list = []  # (row_idx, parsed, is_year_row, is_category_row)
             header_row_count = 0
 
             def has_visible_text(t):
@@ -1689,7 +1689,7 @@ def html_to_markdown(
 
                     if is_date_super:
                         # Vertically merge remaining category rows by position
-                        pos_texts = {}  # col_pos -> [text1, text2, ...]
+                        pos_texts: dict = {}  # col_pos -> [text1, text2, ...]
                         for cat_idx in range(1, len(category_rows)):
                             _, sub_parsed = category_rows[cat_idx]
                             for sub_text, _, sub_start in sub_parsed:
@@ -1875,17 +1875,17 @@ def html_to_markdown(
                                 year_row.append("")  # Empty for remaining columns
 
                         # Build sub-header row
-                        sub_header_row = [first_col_label] + sub_headers
+                        sub_header_row = [first_col_label] + sub_headers  # type: ignore
 
-                        header_layers = [year_row, sub_header_row]
+                        header_layers = [year_row, sub_header_row]  # type: ignore
 
                         return header_layers, header_row_count
 
             # Extract categories with their positions, then merge vertically
             # Categories at same position merge: "EQUIPMENT" + "OPERATIONS" -> "EQUIPMENT OPERATIONS"
             # Only include cells with LARGE colspan (spanning multiple year columns)
-            position_texts = {}  # col_pos -> [text1, text2, ...]
-            position_colspans = {}  # col_pos -> colspan
+            position_texts: dict = {}  # col_pos -> [text1, text2, ...]
+            position_colspans: dict = {}  # col_pos -> colspan
 
             for row_idx, parsed in category_rows:
                 for text, colspan, start in parsed:
@@ -2161,7 +2161,7 @@ def html_to_markdown(
                     return False
 
                 # Find consecutive header rows (non-empty, non-data rows)
-                header_rows = []
+                header_rows: list = []
 
                 for row_idx, row in enumerate(rows_with_cs):
                     # If we have th/td tracking and this row has no <th> elements,
@@ -2233,8 +2233,8 @@ def html_to_markdown(
 
                 # Build column position map across all header rows
                 # position_texts[col_pos] = [(text1, colspan1), (text2, colspan2), ...] from each row
-                position_texts = {}
-                position_colspan = {}
+                position_texts: dict = {}
+                position_colspan: dict = {}
 
                 for row_idx, row in header_rows:
                     col_pos = 0
@@ -3193,7 +3193,7 @@ def html_to_markdown(
                 col_boundaries.append((start, v_pos + 1))  # inclusive range
 
             # First, find all unique header column positions from header rows
-            header_positions = {}  # col_idx -> [text1, text2, ...]
+            header_positions: dict = {}  # col_idx -> [text1, text2, ...]
 
             for row_idx in header_rows:
                 row = rows[row_idx]
@@ -3503,7 +3503,7 @@ def html_to_markdown(
                                 all_header_entries.append((col_pos, h, li))
 
                     # Deduplicate
-                    col_to_text = {}
+                    col_to_text: dict = {}
 
                     for col_pos, h, li in all_header_entries:
                         if col_pos not in col_to_text or li > col_to_text[col_pos][1]:
@@ -4332,7 +4332,7 @@ def html_to_markdown(
             return f"\n```\n{text}\n```\n"
 
         # Default: process children (including spans, sections, etc.)
-        result = []
+        result: list = []
 
         for child in element.children:
             result.append(process_element(child, depth + 1))
@@ -4917,7 +4917,8 @@ def _remove_repeated_page_elements(markdown: str) -> str:
         return normalized
 
     # Count normalized patterns
-    line_counts = Counter()
+    line_counts: Counter = Counter()
+
     for line in lines:
         stripped = line.strip()
         normalized = normalize_line(stripped)
@@ -5526,8 +5527,8 @@ def _convert_layout_table(table_elem, base_url: str = "") -> str | None:
 
     # ===== PATTERN 1: Single column with multi-div cells (checkmark lists) =====
     # First, find the header row (if any) and content rows
-    header_cells = []
-    content_cells = []
+    header_cells: list = []
+    content_cells: list = []
 
     for row in rows:
         cells = row.find_all(["td", "th"])

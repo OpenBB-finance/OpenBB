@@ -252,7 +252,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                 def group(self, n):
                                     return _m_url if n == 1 else ""
 
-                            _m = _FakeMatch()
+                            _m = _FakeMatch()  # type: ignore
                 except Exception:  # noqa  # pylint: disable=broad-except
                     pass  # Index page unavailable; proceed without exhibit
 
