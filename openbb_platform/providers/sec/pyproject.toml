@@ -14,9 +14,7 @@ aiohttp-client-cache = "^0.11.0"
 aiosqlite = "^0.20.0"
 xmltodict = "^0.13.0"
 beautifulsoup4 = "^4.12"
-lxml = "^5.2.1"
-trafilatura = "^2.0"
-inscriptis = "^2.5.3"
+lxml = ">=5.2.1"
 
 [build-system]
 requires = ["poetry-core"]

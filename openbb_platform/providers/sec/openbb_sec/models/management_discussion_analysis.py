@@ -1,8 +1,10 @@
 """SEC Management & Discussion Model."""
 
-# pylint: disable=unused-argument,too-many-branches,too-many-locals,too-many-statements,too-many-nested-blocks,too-many-boolean-expressions,too-many-lines
+# pylint: disable=unused-argument, too-many-locals, too-many-branches
+# flake8: noqa: PLR0912, PLR0914
 
-from typing import Any, Literal
+
+from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,20 +21,9 @@ class SecManagementDiscussionAnalysisQueryParams(
 ):
     """SEC Management & Discussion Query."""
 
-    strategy: Literal["inscriptis", "trafilatura"] = Field(
-        default="trafilatura",
-        description="The strategy to use for extracting the text. Default is 'trafilatura'.",
-    )
-    wrap_length: int = Field(
-        default=120,
-        description="The length to wrap the extracted text, excluding tables. Default is 120.",
-    )
     include_tables: bool = Field(
-        default=False,
-        description="Return tables formatted as markdown in the text. Default is False."
-        + " Tables may reveal 'missing' content,"
-        + " but will likely need some level of manual cleaning, post-request, to display properly."
-        + " In some cases, tables may not be recoverable due to the nature of the document.",
+        default=True,
+        description="Return tables formatted as markdown in the text. Default is True.",
     )
     use_cache: bool = Field(
         default=True,
@@ -75,6 +66,8 @@ class SecManagementDiscussionAnalysisFetcher(
     ) -> dict:  # type: ignore[override]
         """Extract the data."""
         # pylint: disable=import-outside-toplevel
+        import re
+
         from aiohttp_client_cache import SQLiteBackend
         from aiohttp_client_cache.session import CachedSession
         from openbb_core.app.utils import get_user_cache_directory
@@ -85,7 +78,9 @@ class SecManagementDiscussionAnalysisFetcher(
 
         # Get the company filings to find the URL.
 
-        if query.symbol == "BLK" or query.symbol.isnumeric():
+        if (
+            query.symbol == "BLK" and query.calendar_year and query.calendar_year < 2025
+        ) or query.symbol.isnumeric():
             filings = await SecCompanyFilingsFetcher.fetch_data(
                 {
                     "cik": "0001364742" if query.symbol == "BLK" else query.symbol,
@@ -186,8 +181,108 @@ class SecManagementDiscussionAnalysisFetcher(
         else:
             response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
+        # Some 10-K filings have a stub Item 7 that simply
+        # cross-references the Annual Report to Stockholders filed as
+        # Exhibit 13.  When we detect this pattern we pre-fetch the
+        # exhibit so that transform_data can extract MD&A from it.
+        exhibit_content: str | None = None
+        exhibit_url: str | None = None
+
+        if isinstance(response, str) and re.search(
+            r"incorporated\s+herein\s+by\s+reference", response, re.IGNORECASE
+        ):
+            _base_dir = url.rsplit("/", 1)[0]
+
+            # Strategy 1: look for an inline exhibit link in the HTML
+            # (modern filings embed <a href="...">Annual Report to
+            # Security Holders</a>).
+            _ar_re = re.compile(
+                r'<a\b[^>]*href="([^"]+)"[^>]*>[^<]*'
+                r"Annual\s+Report\s+to\s+(?:Security|Stock|Share)\s*[Hh]olders"
+                r"[^<]*</a>",
+                re.IGNORECASE,
+            )
+            _m = _ar_re.search(response)
+
+            # Strategy 2: fall back to the filing index page and look for
+            # the EX-13 exhibit document (older filings).
+            if not _m:
+                _index_url = target_filing.filing_detail_url
+                try:
+                    if query.use_cache is True:
+                        cache_dir = f"{get_user_cache_directory()}/http/sec_financials"
+                        async with CachedSession(
+                            cache=SQLiteBackend(cache_dir)
+                        ) as session:
+                            try:
+                                _index_html = await amake_request(
+                                    _index_url,
+                                    headers=SEC_HEADERS,
+                                    response_callback=sec_callback,
+                                    session=session,
+                                )
+                            finally:
+                                await session.close()
+                    else:
+                        _index_html = await amake_request(
+                            _index_url,
+                            headers=SEC_HEADERS,
+                            response_callback=sec_callback,
+                        )
+                    if isinstance(_index_html, str):
+                        # Look for a link whose row has EX-13 type or
+                        # whose filename contains "ex-13" / "ex13".
+                        _ex13_re = re.compile(
+                            r'<a\b[^>]*href="([^"]+ex[\-_]?13[^"]*\.htm[l]?)"',
+                            re.IGNORECASE,
+                        )
+                        _em = _ex13_re.search(_index_html)
+                        if _em:
+                            _href = _em.group(1)
+                            # Index page links are usually absolute paths
+                            if _href.startswith("http"):
+                                _m_url = _href
+                            elif _href.startswith("/"):
+                                _m_url = "https://www.sec.gov" + _href
+                            else:
+                                _m_url = _base_dir + "/" + _href
+
+                            # Wrap in a fake match-like object
+                            class _FakeMatch:
+                                def group(self, n):
+                                    return _m_url if n == 1 else ""
+
+                            _m = _FakeMatch()
+                except Exception:  # noqa  # pylint: disable=broad-except
+                    pass  # Index page unavailable; proceed without exhibit
+
+            if _m:
+                _href = _m.group(1)
+                _exhibit_url: str = (
+                    _href if _href.startswith("http") else _base_dir + "/" + _href
+                )
+                exhibit_url = _exhibit_url
+                if query.use_cache is True:
+                    cache_dir = f"{get_user_cache_directory()}/http/sec_financials"
+                    async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
+                        try:
+                            exhibit_content = await amake_request(
+                                _exhibit_url,
+                                headers=SEC_HEADERS,
+                                response_callback=sec_callback,
+                                session=session,
+                            )  # type: ignore
+                        finally:
+                            await session.close()
+                else:
+                    exhibit_content = await amake_request(  # type: ignore
+                        _exhibit_url,
+                        headers=SEC_HEADERS,
+                        response_callback=sec_callback,
+                    )
+
         if isinstance(response, str):
-            return {
+            result: dict[str, Any] = {
                 "symbol": query.symbol,
                 "calendar_year": (
                     calendar_year if calendar_year else target_filing.report_date.year
@@ -202,6 +297,10 @@ class SecManagementDiscussionAnalysisFetcher(
                 "url": url,
                 "content": response,
             }
+            if exhibit_content and exhibit_url:
+                result["exhibit_content"] = exhibit_content
+                result["exhibit_url"] = exhibit_url
+            return result
 
         raise OpenBBError(
             f"Unexpected response received. Expected string and got -> {response.__class__.__name__}"
@@ -209,1185 +308,308 @@ class SecManagementDiscussionAnalysisFetcher(
         )
 
     @staticmethod
-    def transform_data(  # noqa: PLR0912
+    def transform_data(
         query: SecManagementDiscussionAnalysisQueryParams,
         data: dict,
         **kwargs: Any,
     ) -> SecManagementDiscussionAnalysisData:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
-        import re  # noqa
-        from inscriptis import get_text
-        from inscriptis.model.config import ParserConfig
-        from textwrap import wrap
-        from trafilatura import extract
-        from warnings import warn
+        import re
+
+        from openbb_sec.utils.html2markdown import html_to_markdown
 
         if query.raw_html is True:
             return SecManagementDiscussionAnalysisData(**data)
 
+        filing_html = data.get("content", "")
+        base_url = data.get("url", "")
         is_quarterly = data.get("report_type", "").endswith("Q")
-        is_inscriptis = query.strategy == "inscriptis"
 
-        def is_table_header(line: str) -> bool:
-            """Check if line is a table header"""
-            return (
-                (
-                    all(
-                        not char.isnumeric()
-                        for char in line.replace("(", "")
-                        .replace(")", "")
-                        .replace(",", "")
-                        .replace(" ", "")
-                        .replace("|", "")
-                    )
-                    and line.replace("|", "").replace("-", "").strip() != ""
-                    and "/" not in line
-                )
-                or all(
-                    len(str(word).strip()) == 4 and str(word).strip().startswith("20")
-                    for word in line.split("|")
-                    if word
-                )
-                or line.replace("|", "").replace(" ", "").endswith(":")
-                or "of dollars" in line.lower()
-            )
+        # Convert the full HTML filing to markdown.
+        markdown = html_to_markdown(
+            filing_html,
+            base_url=base_url,
+            keep_tables=query.include_tables,
+        )
 
-        def insert_cell_dividers(line):
-            cells = line.strip().split("|")
-            new_cells: list = []
-            for cell in cells:
-                cell = cell.replace("$", "").replace(" % ", "").replace("%", "")  # noqa
-                if (
-                    "par value" in cell.lower()
-                    or "shares" in cell.lower()
-                    or (" %-" in cell and "notes" in cell.lower())
-                    or "as of" in cell.lower()
-                    or "of dollars" in cell.lower()
-                    or "year" in cell.lower()
-                    or "scenario" in cell.lower()
-                    or " to " in cell.lower()
-                    or "section" in cell.lower()
-                    or "title" in cell.lower()
-                    or "adverse currency fluctuation" in cell.lower()
-                    or "vs" in cell.lower()
-                    or cell.strip().endswith(",")
-                ):
-                    new_cells.append(cell)
-                    continue
-                if "Form 10-" in cell:
-                    continue
-                new_cell = cell.strip()
-                if new_cell.endswith(("-", "—", "–")) and any(
-                    c.isalpha() for c in new_cell
-                ):
-                    # Remove the dash and insert a divider before it
-                    new_cell = re.sub(r"[—\-–]+$", "", new_cell).strip() + " | —"
-                elif (
-                    re.search("[A-Za-z]", new_cell)
-                    and re.search("[0-9]", new_cell)
-                    and re.search(r"[A-Za-z]\s+[0-9]", new_cell)
-                    and "thru" not in new_cell.lower()
-                    and "through" not in new_cell.lower()
-                    and "outstanding" not in new_cell.lower()
-                    and "Tier" not in new_cell
-                    and "%" not in new_cell
-                    and "$" not in new_cell
-                    and "in" not in new_cell
-                    and "year" not in new_cell
-                    and "scenario" not in new_cell
-                ):
-                    # Handle cases with spaces between letters and numbers
-                    new_cell = re.sub(
-                        r"(?<=[A-Za-z])\s+(?=[0-9])(?!\([a-zA-Z])", " |", new_cell
-                    )
-                    new_cell = re.sub(
-                        r"(?<=[A-Za-z])(?=[0-9])(?!\([a-zA-Z])", "|", new_cell
-                    )
-                # Insert divider between consecutive numbers, excluding number(letter)
-                if (
-                    re.search(
-                        r"(\(\d+\.?\d*\)|\d+\.?\d*)\s+(\(\d+\.?\d*\)|\d+\.?\d*)",
-                        new_cell,
-                    )
-                    and "versus" not in new_cell.lower()
-                    and "thru" not in new_cell.lower()
-                    and "through" not in new_cell.lower()
-                    and not re.search(r"\d+\.?\d*\([a-zA-Z]\)", new_cell)
-                ):
-                    new_cell = re.sub(
-                        r"(\(\d+\)|\d+(?:\.\d+)?)\s+(?=\(|\d)(?!\([a-zA-Z])",
-                        r"\1|",
-                        new_cell,
-                    )
-                new_cells.append(new_cell)
-            return "|".join(new_cells)
-
-        def process_extracted_text(  # noqa: PLR0912
-            extracted_text: str, is_inscriptis: bool
-        ) -> list:
-            """Process extracted text"""
-
-            new_lines: list = []
-            starting_line = "Item 2."
-            annual_start = "Item 7."
-            ending_line = "Item 6"
-            annual_end = "Item 8. "
-            found_start = False
-            at_end = False
-            previous_line = ""
-            start_line_text = ""
-            line_i = 0
-            extracted_lines = extracted_text.splitlines()
-
-            for line in extracted_lines:
-                line_i += 1
-                if (
-                    not line.strip()
-                    or line.replace("|", "")
-                    .strip()
-                    .startswith(("Page ", "Table of Contents"))
-                    or line.strip() in ("|", start_line_text)
-                    or (len(line) < 3 and line.isnumeric())
-                    or line.strip().replace("_", "").replace("**", "") == ""
-                ):
-                    continue
-
-                if (
-                    "Discussion and Analysis of Financial Condition and Results of Operations is presented in".lower()
-                    in line.lower()
-                ):
-                    annual_end = "PART IV"
-                elif (
-                    "see the information under" in line.lower()
-                    and "discussion and analysis" in line.lower()
-                ) and (
-                    (is_quarterly and "10-K" not in line)
-                    or (not is_quarterly and "10-Q" not in line)
-                ):
-                    annual_end = "statements of consolidated"
-                    ending_line = "statements of conslidated"
-
-                if (
-                    (
-                        line.strip()
-                        .lower()
-                        .startswith(
-                            (
-                                starting_line.lower(),
-                                annual_start.lower(),
-                            )
-                        )
-                        and "management" in line.lower()
-                    )
-                    or (
-                        line.replace("|", "")
-                        .lstrip(" ")
-                        .lower()
-                        .startswith("the following is management")
-                        and "discussion and analysis of" in line.lower()
-                    )
-                    or (
-                        line.endswith(
-                            " “Management’s Discussion and Analysis of Financial Condition and Results of Operations” "
-                            "below."
-                        )
-                    )
-                    or (
-                        line.replace("*", "").strip().lower().startswith("item")
-                        and line.replace("*", "")
-                        .replace(".", "")
-                        .strip()
-                        .lower()
-                        .endswith(
-                            "discussion and analysis of financial condition and results of operations"
-                        )
-                    )
-                    # Section may be in a nested table.
-                    or (
-                        line.replace("*", "")
-                        .replace("|", "")
-                        .strip()
-                        .lower()
-                        .startswith("item")
-                        and line.replace("*", "")
-                        .replace("|", "")
-                        .replace(".", "")
-                        .rstrip(" ")
-                        .lower()
-                        .endswith(
-                            "discussion and analysis of financial condition and results of operations"
-                        )
-                        and line_i > 200
-                    )
-                    or (
-                        line.replace("*", "").replace("|", "").strip().lower()
-                        == "financial review"
-                        and line_i > 200
-                    )
-                    or (
-                        line.replace("*", "")
-                        .replace("|", "")
-                        .replace(".", "")
-                        .strip()
-                        .lower()
-                        .endswith(
-                            (
-                                "discussion and analysis",
-                                "discussion and analysis of",
-                                "analysis of financial",
-                                "of financial condition",
-                            )
-                        )
-                        and extracted_lines[line_i + 1]
-                        .replace("|", "")
-                        .replace(".", "")
-                        .strip()
-                        .lower()
-                        .endswith(("financial condition", "results of operations"))
-                    )
-                    or (
-                        line.replace("|", "").replace(".", "").strip()
-                        == "Management’s Discussion and Analysis of Financial Condition and Results of Operations"
-                    )
-                    or (
-                        line
-                        in [
-                            "2. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
-                            "7. MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
-                            "Items 2. and 3. Management’s Discussion and Analysis of Financial Condition and "
-                            "Results of Operations; Quantitative and Qualitative Disclosures about Market Risk",
-                            "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS |",
-                            "Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations.",  # noqa
-                            "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations.",  # noqa
-                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
-                            "Management's Discussion and Analysis of Financial Condition and Results of Operations",
-                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF THE FINANCIAL CONDITION AND RESULTS OF",
-                            "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
-                            "Part I. Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa
-                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (“MD&A”)",  # noqa
-                            "ITEM 7 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
-                            "ITEM 2 – MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)",  # noqa
-                            "Part II. Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",  # noqa  # pylint: disable=line-too-long
-                            "| Item 2. | |",
-                            "| Item 7. | |",
-                        ]
-                    )
-                    or line.startswith(
-                        "Item 7—Management's Discussion and Analysis of Financial Conditions"
-                    )
-                    or (
-                        line.startswith(
-                            "MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)"
-                        )
-                        and line_i > 200
-                    )
-                    or (
-                        line.replace("|", "").strip()
-                        == "Management's Discussion and Analysis"
-                        and line_i > 300
-                    )
-                    or (
-                        line.replace("|", "")
-                        .strip()
-                        .startswith(
-                            "The following discussion and analysis of the financial condition and results of operations"
-                        )
-                    )
-                ):
-                    line = line.replace("|", "").replace("*", "")  # noqa
-                    if line.strip(" ")[-1].isnumeric():
-                        continue
-
-                    if (
-                        extracted_lines[line_i + 1]
-                        .replace("*", "")
-                        .replace(".", "")
-                        .strip()
-                        .lower()
-                        .endswith(("financial condition", "results of operations"))
-                    ):
-                        line = "Management’s Discussion and Analysis of Financial Condition and Results of Operations"  # noqa
-                        _ = extracted_lines.pop(line_i + 1)
-                    found_start = True
-                    at_end = False
-                    start_line_text = line
-                    new_lines.append(
-                        "# **MANAGEMENT’S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS (MD&A)"
-                        "**\n\n"
-                    )
-                    continue
-
-                if (
-                    found_start
-                    and (
-                        line.replace("|", "")
-                        .strip()
-                        .lower()
-                        .startswith(ending_line.lower())
-                        and is_quarterly
-                    )
-                    or (
-                        annual_end.lower() in line.lower()
-                        and not is_quarterly
-                        and len(new_lines) > 20
-                    )
-                    or line.replace("|", "").strip().lower().startswith("signatures")
-                    or line.strip().startswith(
-                        "Item 8—Financial Statements and Supplementary Data"
-                    )
-                    or line.strip().startswith("MANAGEMENT AND AUDITOR’S REPORTS")
-                    or line == "EXHIBIT INDEX"
-                ):
-                    at_end = True
-                    line = line.replace("|", " ").replace("  ", " ")  # noqa
-
-                if found_start and not at_end:
-                    if (
-                        line[0].isdigit()
-                        or line[0] == "•"
-                        or line[0] == "●"
-                        and line[1] not in [".", " ", "\u0020"]
-                        and line[1].isalpha()
-                    ):
-                        word = line.split(" ")[0]
-                        if not word.replace(" ", "").isnumeric():
-                            line = line[0] + " " + line[1:]  # noqa
-
-                    if "▪" in line:
-                        line = line.replace("▪", "").replace("|", "").strip()  # noqa
-                        line = "- " + line  # noqa
-
-                    if "●" in line or "•" in line or "◦" in line:
-                        line = (  # noqa
-                            line.replace("|", "")
-                            .replace("●", "-")
-                            .replace("•", "-")
-                            .replace("◦", "-")
-                        )
-
-                    if (
-                        line.replace("|", "").strip().startswith("-")
-                        and len(line.strip()) > 1
-                        and line.strip()[1] != " "
-                    ):
-                        line = "- " + line[1:]  # noqa
-
-                    if "the following table" in line.lower():
-                        line = (  # noqa
-                            line.replace("|", "").replace("  ", " ").strip() + "\n"
-                        )
-
-                    if (
-                        line.replace("|", "").replace(" ", "").strip().startswith("(")
-                        and (
-                            line.replace("|", "").replace(" ", "").strip().endswith(")")
-                        )
-                        and line.count("|") < 3
-                    ):
-                        line = line.replace("|", "").replace(" ", "").strip()  # noqa
-                        next_line = (
-                            extracted_lines[line_i + 1]
-                            if line_i + 1 < len(extracted_lines)
-                            else ""
-                        )
-                        if not next_line.replace("|", "").replace(" ", "").strip():
-                            next_line = (
-                                extracted_lines[line_i + 2]
-                                if line_i + 2 < len(extracted_lines)
-                                else ""
-                            )
-                            if line_i + 1 < len(extracted_lines):
-                                _ = extracted_lines.pop(line_i + 1)
-                        if (
-                            next_line.replace("|", "")
-                            .replace(" ", "")
-                            .strip()
-                            .endswith((",", ";", "."))
-                        ):
-                            line = (  # noqa
-                                line.replace("|", "").replace(" ", "").strip()
-                                + " "
-                                + next_line.replace("|", "").strip()
-                            )
-                            _ = extracted_lines.pop(line_i + 1)
-
-                    if "|" in line:
-                        first_word = line.split("|")[0].strip()
-                        if first_word.isupper() or "item" in first_word.lower():
-                            line = (  # noqa
-                                line.replace("|", " ").replace("  ", " ").strip()
-                            )
-
-                        if (
-                            line.endswith("|")
-                            and not line.startswith("|")
-                            and len(line) > 1
-                        ):
-                            line = (  # noqa
-                                "| " + line
-                                if len(line.split("|")) > 1
-                                else line.replace("|", "").strip()
-                            )
-                        elif (
-                            line.startswith("|")
-                            and not line.endswith("|")
-                            and len(line) > 1
-                            and len(line.split("|"))
-                        ):
-                            line = (  # noqa
-                                line + " |"
-                                if len(line.split("|")) > 1
-                                else line.replace("|", "").strip()
-                            )
-
-                        if query.include_tables is False and "|" in line:
-                            continue
-
-                        if (
-                            "page" in line.replace("|", "").lower()
-                            or "form 10-" in line.lower()
-                        ):
-                            continue
-
-                        if "$" in line:
-                            line = line.replace("$ |", "").replace("| |", "|")  # noqa
-                        elif "%" in line:
-                            line = line.replace("% |", "").replace("| |", "|")  # noqa
-
-                        if "|" not in previous_line and all(
-                            char == "|" for char in line.replace(" ", "")
-                        ):
-                            line = (  # noqa
-                                line
-                                + "\n"
-                                + line.replace("      ", "")
-                                .replace("   ", "")
-                                .replace("  ", "")
-                                .replace(" ", ":------:")
-                            )
-
-                        else:
-                            is_header = is_table_header(line)
-                            is_multi_header = (
-                                "months ended" in line.lower()
-                                or "year ended" in line.lower()
-                                or "quarter ended" in line.lower()
-                                or "change" in line.lower()
-                                or line.strip().endswith(",")
-                            )
-                            is_date = (
-                                ", 20" in line
-                                and "through" not in line.lower()
-                                and "thru" not in line.lower()
-                                and "from" not in line.lower()
-                            ) or (
-                                "20" in line
-                                and all(
-                                    len(d.strip()) == 4 for d in line.split("|") if d
-                                )
-                            )
-                            if is_header or is_date or is_multi_header:
-                                line = (  # noqa
-                                    line.replace(" | | ", " | ")
-                                    .replace(" | |", " | ")
-                                    .replace("| % |", "")
-                                    .replace("| $ |", "")
-                                    .replace("|$ |", "")
-                                )
-                                if is_header:
-                                    line = "| " + line  # noqa
-                            else:
-                                line = (  # noqa
-                                    line.replace("| $ | ", "")
-                                    .replace("| % |", "")
-                                    .replace("   ", "|")
-                                    .replace("|$ |", "")
-                                )
-                                if not line.strip().startswith("|"):
-                                    line = "| " + line  # noqa
-                                line = insert_cell_dividers(line)  # noqa
-                                line = (  # noqa
-                                    line.replace(" | | ", " | ")
-                                    .replace(" | |", " |")
-                                    .replace("||", "|")
-                                    .replace("||", "|")
-                                    .replace(" | | | ", " | ")
-                                    .replace(" | | |", "|")
-                                )
-                                if line[-1] != "|":
-                                    line = line + "|"  # noqa
-
-                        previous_line = new_lines[-1]
-                        next_line = extracted_lines[line_i + 1]
-
-                        if "|" in previous_line and not line.strip():
-                            continue
-
-                        if (
-                            "|" in previous_line
-                            and "|" in next_line
-                            and not line.strip("\n").replace(" ", "")
-                        ):
-                            continue
-
-                        if (
-                            "|" in previous_line
-                            and "|" not in next_line
-                            and "|" in extracted_lines[line_i + 2]
-                            and not line.strip()
-                        ):
-                            line_i += 1
-                            continue
-
-                        if (
-                            "|" in previous_line
-                            and "|" in next_line
-                            and not line.strip("\n").replace(" ", "")
-                        ):
-                            continue
-                        if (
-                            "|" in previous_line
-                            and "|" not in next_line
-                            and "|" in extracted_lines[line_i + 2]
-                            and not line.strip()
-                        ):
-                            line_i += 1
-                            continue
-
-                        if is_inscriptis is True:
-                            if (
-                                "|:-" in previous_line
-                                and "|" in extracted_lines[line_i + 1]
-                                and line.strip()
-                                and not line.strip().startswith("|")
-                            ):
-                                line = "|" + line  # noqa
-                                if not line.strip().endswith("|"):
-                                    line = line + "|"  # noqa
-
-                            line = (  # noqa
-                                line.replace("||||", "|")
-                                .replace("|||", "|")
-                                .replace("|          |", "")
-                                .replace("| | |", "|")
-                                .replace("| |", "|")
-                                .replace("    ", "")
-                                .replace("||", "|")
-                                .replace("|%|", "")
-                                .replace("|%  |", "")
-                                .replace("|$|", "")
-                                .replace("|$ |", "")
-                                .replace("|)", ")")
-                                .replace("  )", ")")
-                                .replace(" )", ")")
-                                .replace("| | |", "|")
-                                .replace("|  |", "|")
-                                .replace(" | | ", "|")
-                                .replace("| |", "|")
-                            )
-                            if (
-                                "months ended" in line.lower()
-                                or "year ended" in line.lower()
-                                or "quarter ended" in line.lower()
-                                or "weeks ended" in line.lower()
-                                and "|" not in line
-                                and "|" in previous_line
-                            ):
-                                line = "|" + line  # noqa
-
-                        if line not in ["||", "|  |"]:
-                            new_lines.append(line)
-                            previous_line = line
-                    else:
-                        if (
-                            "|" in previous_line
-                            and "|" in extracted_lines[line_i + 1]
-                            and not line.strip()
-                        ):
-                            continue
-
-                        if is_inscriptis is True and ".   " in line:
-                            line = line.replace(".   ", ".\n\n")  # noqa
-                        elif is_inscriptis is True and ".  " in line:
-                            line = line.replace(".  ", ".\n\n")  # noqa
-
-                        if " ." in line:
-                            line = line.replace(" .", ".")  # noqa
-
-                        if "|" in previous_line:
-                            new_lines.extend(
-                                ["\n"] + wrap(line, width=query.wrap_length) + ["\n"]
-                            )
-                        elif line.strip().startswith("-"):
-                            new_lines.extend([line] + ["\n"])
-                        else:
-                            new_lines.extend(
-                                wrap(line, width=query.wrap_length) + ["\n"]
-                            )
-                        previous_line = line
-
-            return new_lines
-
-        # Do a first pass, and if extraction fails we can identify where the problem originates.
-
-        def try_inscriptis(filing_str):
-            """Try using Inscriptis instead."""
-            extracted_text = get_text(
-                filing_str,
-                config=ParserConfig(
-                    table_cell_separator="|",
-                ),
-            )
-            extracted_lines = []
-            for line in extracted_text.splitlines():
-                if not line.strip():
-                    continue
-                extracted_lines.append(
-                    line.strip()
-                    .replace(" , ", ", ")
-                    .replace(" . ", ". ")
-                    .replace(" .", ".")
-                    .replace(" ’ ", "'")
-                    .replace(" ' ", "'")
-                    .replace("“  ", "“")
-                    .replace("  ”", "”")
-                    .replace("o f", "of")
-                    .replace("a n", "an")
-                    .replace("in crease", "increase")
-                )
-
-            return process_extracted_text("\n".join(extracted_lines), True)
-
-        filing_str = data.get("content", "")
-
-        if query.strategy == "trafilatura":
-            extracted_text = extract(
-                filing_str,
-                include_tables=True,
-                include_comments=True,
-                include_formatting=True,
-                include_images=True,
-                include_links=False,
-            )
-            new_lines = process_extracted_text(extracted_text, False)  # type: ignore
-
-            if not new_lines:
-                warn("Trafilatura extraction failed, trying Inscriptis.")
-                new_lines = try_inscriptis(filing_str)
-                is_inscriptis = True
-
-        else:
-            new_lines = try_inscriptis(filing_str)
-
-        if not new_lines:
+        if not markdown:
             raise EmptyDataError(
-                "No content was found in the filing, likely a parsing error from unreachable content."
-                f" -> {data['url']}"
-                " -> The content can be analyzed by inspecting"
-                " the output of `SecManagementDiscussionAnalysisFetcher.aextract_data`,"
-                " or by setting `raw_html=True` in the query."
+                "No content was found in the filing after HTML-to-Markdown conversion."
+                f" -> {data.get('url', '')}"
+                " -> The content can be analyzed by setting"
+                " `raw_html=True` in the query."
             )
 
-        # Second pass - clean up document
+        # Strip leftover HTML anchor tags that the converter may leave
+        # (e.g. <a id="item_2_management"></a>).  These interfere with
+        # line-start-anchored regex matching.
+        markdown = re.sub(r"<a\s[^>]*>\s*</a>", "", markdown)
+        lines = markdown.splitlines()
+        # Matches an Item 7 / Item 2 header for MD&A (the formal SEC item).
+        item_header_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Part\s+(?:I{1,2}|1|2)[\.\s,\-\u2013\u2014]*\s*)?"
+            r"(?:ITEM|Item)\s*(?:7|2)"
+            r"[\.\s\-\u2013\u2014:]*"
+            r"(?:Management.s|MANAGEMENT.S)\s+Discussion",
+            re.IGNORECASE,
+        )
+        # When we see a bare Item header we check the next non-blank line for the
+        # MD&A title.
+        bare_item_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Part\s+(?:I{1,2}|1|2)[\.\s,\-\u2013\u2014]*\s*)?"
+            r"(?:ITEM|Item)\s*(?:7|2)"
+            r"\s*[\.\-\u2013\u2014:]*\s*$",
+            re.IGNORECASE,
+        )
+        mda_title_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Management.s|MANAGEMENT.S)\s+Discussion",
+            re.IGNORECASE,
+        )
 
-        def is_title_case(line: str) -> bool:
-            """Check if line follows financial document title case patterns"""
-            if (
-                line.strip().startswith("-")
-                or line.strip().endswith(".")
-                or line.strip().endswith(",")
-                or "“" in line
-                or line.endswith("-")
-                or line.lower().endswith("ended")
-            ):
+        standalone_mda_re = re.compile(
+            r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+            r"(?:Management.s|MANAGEMENT.S)\s+Discussion\s+and\s+Analysis",
+            re.IGNORECASE,
+        )
+
+        # Any Item header (to detect section boundaries).
+        any_item_re = re.compile(
+            r"^(?:#{1,4}\s*)?\*{0,2}\s*" + r"(?:ITEM|Item)\s*\d",
+            re.IGNORECASE,
+        )
+
+        # End-of-section patterns.
+        end_patterns_quarterly = [
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:ITEM|Item)\s*(?:3|4)"
+                r"[.\s\-\u2013\u2014:]",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*SIGNATURES",
+                re.IGNORECASE,
+            ),
+        ]
+
+        end_patterns_annual = [
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:ITEM|Item)\s*(?:7A|8)"
+                r"[.\s\-\u2013\u2014:]",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:Financial\s+Statements\s+and\s+Supplementary\s+Data"
+                r"|FINANCIAL\s+STATEMENTS)",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*SIGNATURES",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*PART\s+IV",
+                re.IGNORECASE,
+            ),
+        ]
+
+        end_patterns = end_patterns_quarterly if is_quarterly else end_patterns_annual
+
+        def _find_end(start: int) -> int:
+            """Find the end line index for a section starting at *start*."""
+            body_lines = 0
+            for j in range(start + 1, len(lines)):
+                stripped = lines[j].strip()
+                if not stripped:
+                    continue
+                body_lines += 1
+                if body_lines > 15:
+                    for pat in end_patterns:
+                        if pat.search(stripped):
+                            return j
+            return len(lines)
+
+        def _is_stub(start: int) -> bool:
+            """Return True if the section at *start* is a stub / cross-ref.
+
+            A stub is a very short section (< 500 chars of body text) that
+            either contains a cross-reference phrase or is immediately
+            followed by another Item header with no real body content.
+            """
+            # Gather text until the next Item header or end of document.
+            body_chars: list[str] = []
+            for j in range(start + 1, min(start + 30, len(lines))):
+                stripped = lines[j].strip()
+
+                if not stripped:
+                    continue
+                # Hit another Item header → the section between is the body.
+
+                if any_item_re.match(stripped):
+                    break
+
+                body_chars.append(stripped)
+
+            body_text = " ".join(body_chars)
+            # If the body is substantial, it's not a stub.
+            if len(body_text) > 500:
                 return False
-
-            if line.istitle() and not line.endswith(".") and not line.startswith("-"):
-                return True
-
-            if (
-                line.strip().endswith(",")
-                or line.strip().startswith("-")
-                or line.strip().endswith(".")
-            ):
-                return False
-
-            if (
-                "|" not in line
-                and line.strip().isupper()
-                and len(line.strip()) > 1
-                and line[-1].isalpha()
-                or line.strip().startswith("Item")
-                or line.strip().startswith("ITEM")
-            ):
-                return True
-
-            return (
-                line.replace("(", "")
-                .replace(")", "")
-                .replace(",", "")
-                .replace(" and ", " And ")
-                .replace(" of ", " Of ")
-                .replace(" the ", " The ")
-                .replace(" vs ", " VS ")
-                .replace(" in ", " In ")
-                .replace(" to ", " To ")
-                .replace(" for ", " For ")
-                .replace(" with ", " With ")
-                .replace(" on ", " On ")
-                .replace(" at ", " At ")
-                .replace(" from ", " From ")
-                .replace(" by ", " By ")
-            ).istitle()
-
-        def count_columns_in_data_row(data_row: str) -> int:
-            """Count actual columns from first data row"""
-            return len(list(data_row.split("|"))) - 2
-
-        def pad_row_columns(row: str, target_cols: int) -> str:
-            """Pad a table row with empty cells to match target column count"""
-            cells = row.split("|")
-            current_cols = len(cells) - 2  # Exclude outer pipes
-
-            if current_cols < target_cols:
-                # Add empty cells
-                if (
-                    is_table_header(row)
-                    and row.replace("|", "").replace(" ", "").endswith(":")
-                    or (
-                        row.replace("|", "").replace(" ", "").endswith(")")
-                        and row.replace("|", "").replace(" ", "")[0].isalpha()
-                        and len(row.split("|")) < 3
-                    )
-                    and not (
-                        "20" in row and all(len(d) == 4 for d in row.split("|") if d)
-                    )
-                ):
-                    cells = [c for c in cells if c.strip()] + [
-                        " " for _ in range(target_cols - current_cols - 2)
-                    ]
-                    return "|" + "|".join(cells)
-                cells = [" " for _ in range(target_cols - current_cols - 2)] + cells
-
-            return "|".join(cells)
-
-        def process_document(  # noqa: PLR0912
-            document: list[str], is_inscriptis: bool
-        ) -> list[str]:
-            """Clean up document lines"""
-            cleaned_lines: list = []
-            i = 0
-            max_cols = 0
-
-            while i < len(document):
-                current_line = document[i]
-                if (
-                    "|" in document[i - 1]
-                    and i - 1 > 1
-                    and i + 1 <= len(document)
-                    and i + 1 < len(document)
-                    and "|" in document[i + 1]
-                ) and (
-                    current_line == "" or current_line.replace("|", "").strip() == ""
-                ):
-                    i += 1
-                    continue
-
-                if is_inscriptis is True and "|" not in current_line:
-                    current_line = current_line.replace("   ", " ")
-
-                if is_inscriptis is True and "-::-" in current_line:
-                    current_line = (
-                        current_line.replace(":------::", "")
-                        .replace("::------:", "")
-                        .replace("::------::", "")
-                        .replace(" ", "")
-                    ).strip()
-                if (
-                    is_inscriptis is True
-                    and "|:-" in current_line
-                    and "|" not in document[i - 1]
-                ):
-                    cleaned_lines.append("|   " * current_line.count("|"))
-
-                if is_inscriptis is True and "|" in document[i - 1]:
-                    if current_line.strip() in [
-                        '""',
-                        "",
-                        " ",
-                        "\n",
-                        "|",
-                        "|   |   |   |   |",
-                        "|   |   |",
-                    ]:
-                        _ = document.pop(i)
-                        continue
-
-                    current_line = current_line.replace("   ", " ")
-
-                    if (
-                        current_line.strip().startswith("(inmillions")
-                        and "|" not in current_line
-                    ):
-                        current_line = "|" + current_line
-
-                    if (
-                        current_line.strip().startswith("|:-")
-                        and current_line[-1] != "|"
-                    ):
-                        current_line = current_line + "|"
-
-                    if (
-                        "in the preceding table" in current_line.lower()
-                        or "in the table above" in current_line.lower()
-                        or "the following tables present" in current_line.lower()
-                        and "|" in document[i - 1]
-                    ):
-                        cleaned_lines.append("\n")
-                        current_line = "\n" + current_line.replace("|", "").strip()
-
-                    if (
-                        current_line.startswith("# ")
-                        and "|" not in current_line
-                        and "|" in document[i - 1]
-                    ):
-                        current_line = "|" + current_line.replace("# ", " *")
-                        cleaned_lines.append(current_line)
-                        i += 1
-                        continue
-
-                    if (
-                        "|" in document[i - 1]
-                        and len(current_line) > 1
-                        and "|" not in current_line
-                        and current_line.replace(")", "")[-1].isnumeric()
-                    ):
-                        current_line = "|" + current_line + " |"
-
-                if (
-                    current_line.strip()
-                    and current_line.strip().startswith("-")
-                    and current_line.strip().endswith("-")
-                    and len(current_line.strip().replace("-", "").replace(" ", "")) < 4
-                    and current_line.strip()
-                    .replace("-", "")
-                    .replace(" ", "")
-                    .isnumeric()
-                ):
-                    i += 1
-                    continue
-                if "![" in current_line:
-                    image_file = (
-                        current_line.split("]")[1].replace("(", "").replace(")", "")
-                    )
-                    base_url = data["url"].rsplit("/", 1)[0]
-                    image_url = f"{base_url}/{image_file}"
-                    cleaned_lines.append(f"![Graphic]({image_url})")
-                    i += 1
-                    continue
-
-                if current_line.strip() == "| | o |":
-                    i += 1
-                    current_line = "- " + document[i].replace("|", "").strip()
-                    cleaned_lines.append(current_line)
-                    i += 1
-                    continue
-                if current_line.strip() == ":------:":
-                    i += 1
-                    continue
-                if current_line.count("|") < 3:
-                    current_line = (
-                        current_line.replace("|", "").replace(":------:", "").strip()
-                    )
-                    cleaned_lines.append(current_line)
-                    i += 1
-                    continue
-
-                next_line = document[i + 1] if i + 1 < len(document) else ""
-
-                if next_line.replace("**", "").strip() == "AND RESULTS OF OPERATIONS":
-                    current_line = (
-                        "**"
-                        + current_line.replace("**", "").replace("\n", "").strip()
-                        + " "
-                        + "AND RESULTS OF OPERATIONS"
-                        + "**"
-                    )
-                    _ = document.pop(i + 1)
-                    cleaned_lines.append(current_line)
-                    i += 1
-                    continue
-
-                previous_line = document[i - 1] if i > 0 else ""
-
-                if current_line.strip() in (
-                    "--",
-                    "-",
-                    "|:------:|",
-                    "||",
-                    "|  |",
-                    ":------:",
-                ):
-                    if not next_line.strip() or next_line == current_line:
-                        i += 2
-                        continue
-                    i += 1
-                    continue
-
-                if "| :-" in current_line:
-                    current_line = current_line.replace(" :- ", ":-")
-
-                if "|:-" in current_line and not current_line.strip().endswith("|"):
-                    current_line = current_line + "|"
-
-                if (
-                    not current_line.strip()
-                    and "|" in document[i - 1]
-                    and "|" in document[i + 1]
-                ):
-                    continue
-
-                if (
-                    query.include_tables is False
-                    and "|" in current_line
-                    and "|" not in document[i - 1]
-                ):
-                    current_line = current_line.replace("|", "")
-
-                if current_line.startswith(" -"):
-                    current_line = "- " + current_line[2:]
-
-                if (
-                    current_line.startswith(("(", "["))
-                    and current_line.endswith((")", "]"))
-                    and len(current_line) < 4
-                ):
-                    current_line = current_line.replace("[", "(").replace("]", ")")
-                    dead_line = True
-                    new_i = i
-                    while dead_line is True:
-                        new_i += 1
-                        next_line = document[new_i]
-                        if next_line.replace("|", "").strip():
-                            dead_line = False
-                            break
-
-                    next_line = next_line.replace("|", "").rstrip()
-
-                    if document[new_i + 1].replace("|", "").rstrip() == next_line:
-                        new_i += 1
-
-                    current_line = (
-                        current_line
-                        + " "
-                        + next_line.replace("|", "").strip().rstrip(" ")
-                    ).strip()
-                    i = new_i
-                    previous_line = document[i - 1]
-
-                if (
-                    current_line.replace("|", "").strip().startswith("-")
-                    and current_line[1] != " "
-                ):
-                    current_line = current_line.replace("|", "").replace("-", "- ")
-
-                if (
-                    "|" in current_line
-                    and "|" in previous_line
-                    and "|" in next_line
-                    and "|:-" not in next_line
-                    and current_line.replace(" ", "").replace("|", "") == ""
-                ):
-                    i += 1
-                    continue
-
-                if query.include_tables is False and "|" in current_line:
-                    i += 1
-                    continue
-
-                # Fix table header rows with missing dividers.
-                # We can't fix all tables, but this helps with some.
-
-                if (
-                    "|" in current_line
-                    and "|" not in previous_line
-                    and "|:-" not in next_line
-                ) and current_line.count("|") > 2:
-                    n_bars = current_line.replace(" |  | ", "|").count("|")
-                    inserted_line = ("|:------:" * (n_bars - 2)) + "|"
-
-                    document.insert(
-                        i + 1,
-                        inserted_line.replace(":------:", "   ").strip()[1:-2],
-                    )
-                    document.insert(i + 2, inserted_line)
-                    current_line = current_line.replace("|", "").lstrip(" ") + "\n"
-
-                elif (
-                    "|:-" in current_line
-                    and "|" not in previous_line
-                    and "|" in next_line
-                ):
-                    inserted_line = current_line.replace("-", "").replace("::", "   ")
-
-                    if previous_line.strip():
-                        inserted_line = "\n" + inserted_line
-
-                    document.insert(i - 1, inserted_line)
-                    cleaned_lines.append(inserted_line)
-
-                if current_line.startswith("|:-") and not current_line.strip().endswith(
-                    "|"
-                ):
-                    current_line = current_line + "|"
-
-                # Detect table by empty header pattern
-                if (
-                    i + 2 < len(document)
-                    and "|" in current_line
-                    and all(not cell.strip() for cell in current_line.split("|")[1:-1])
-                    and ":---" in document[i + 1]
-                ):
-                    table_i = i + 2
-                    max_cols = 0
-                    # First pass - find max columns
-                    while table_i < len(document):
-                        if "|" not in document[table_i]:
-                            break
-                        row = document[table_i].strip()
-                        if row and row != "|":
-                            cols = count_columns_in_data_row(row)
-                            max_cols = max(max_cols, cols)
-                        table_i += 1
-
-                    # Fix empty header row
-                    header_line = (
-                        "| " + " | ".join([" " for _ in range(max_cols)]) + " |"
-                    )
-                    cleaned_lines.append(header_line)
-
-                    # Fix separator row
-                    separator_line = (
-                        "|" + "|".join([":------:" for _ in range(max_cols)]) + "|"
-                    )
-                    cleaned_lines.append(separator_line)
-
-                    i += 2  # Skip original header and separator
-                else:
-                    if current_line.strip().startswith("-"):
-                        current_line = current_line.replace("|", "")
-                        if current_line.strip()[-1] not in (".", ";", ":") and (
-                            (
-                                next_line.replace("|", "").strip().islower()
-                                and next_line.replace("|", "").strip().endswith(".")
-                            )
-                            or not next_line.strip()
-                            and i + 2 < len(document)
-                            and document[i + 2].replace("|", "").strip().endswith(".")
-                        ):
-                            if not next_line.strip() and i + 2 <= len(document):
-                                next_line = document[i + 2].strip()
-
-                            current_line = (
-                                current_line + " " + next_line.replace("|", "").strip()
-                            )
-                            cleaned_lines.append(current_line)
-                            i += 2
-                            continue
-                    # Check if this is a table row that needs padding
-                    current_line = current_line.replace(")  (", ")|(")
-                    if (
-                        current_line.strip().startswith("-")
-                        and "|" not in current_line
-                        and "." in current_line
-                        and (
-                            document[i - 1].strip().endswith(", and")
-                            or document[i - 1].strip().endswith(" and")
-                        )
-                    ):
-                        clean_line = current_line.split(".")[0] + ".\n\n"
-                        if len(current_line.split(".")) > 1:
-                            remaining = ". ".join(current_line.split(".")[1:])
-                            clean_line += remaining + "\n"
-                        cleaned_lines.append(clean_line)
-                        i += 1
-                        continue
-
-                    if current_line.strip().startswith("-") and (
-                        "|" not in current_line
-                        and not previous_line.replace("|", "")
-                        .strip()
-                        .endswith((";", ".", ":"))
-                        and current_line.strip()
-                        .replace("-", "")
-                        .replace(" ", "")
-                        .islower()
-                    ):
-                        old_line = cleaned_lines.pop(-1)
-                        if not old_line.strip("\n"):
-                            old_line = cleaned_lines.pop(-2)
-
-                        cleaned_lines.append(
-                            old_line.strip("\n")
-                            + " "
-                            + current_line.replace("-", "").strip()
-                        )
-
-                    elif "|" in current_line:
-                        current_line = current_line.replace("|)|", ")|").replace(
-                            "| | (Dollars in ", "| (Dollars in "
-                        )
-                        if (
-                            current_line in ("|  |", "| |", "|")
-                            or "form 10-k" in current_line.replace("|", "").lower()
-                        ):
-                            i += 1
-                            continue
-                        current_cols = count_columns_in_data_row(current_line)
-                        if max_cols and max_cols > 0 and current_cols != max_cols:
-                            padded_line = pad_row_columns(current_line, max_cols)
-                            cleaned_lines.append(padded_line.strip())
-                        else:
-                            cleaned_lines.append(current_line)
-
-                    # Not a table row, keep unchanged
-                    else:
-                        cleaned_lines.append(current_line)
-                    i += 1
-
-            return cleaned_lines
-
-        document = "\n".join(new_lines)
-
-        cleaned_lines = process_document(document.splitlines(), is_inscriptis)  # type: ignore
-
-        finished_lines: list = []
-
-        i = 0
-        for line in cleaned_lines:
-            i += 1
-            line = line.replace(  # noqa
-                "(amountsinmillions,exceptpershare,share,percentagesandwarehousecountdata) ",
-                "",
+            # Short body — check for cross-reference language.
+            crossref_re = re.compile(
+                r"see\s+(?:the\s+)?(?:information|discussion)|"
+                r"(?:is|are)\s+(?:presented|included|incorporated)\s+(?:in|by)|"
+                r"incorporated\s+herein\s+by\s+reference|"
+                r"(?:refer|refers)\s+to\s+(?:Item|Part|the\s+section|pages?\s+\d)|"
+                r"included\s+(?:elsewhere|herein|in\s+(?:Part|Item))|"
+                r"set\s+forth\s+(?:in|under|below)|"
+                r"appears?\s+on\s+page|"
+                r"begins?\s+on\s+page|"
+                r"found\s+(?:on|in)\s+(?:page|section)|"
+                r"(?:should|must)\s+be\s+read\s+in\s+conjunction|"
+                r"contained\s+(?:in|on)\s+page|"
+                r"(?:is|are)\s+(?:set\s+forth|described|discussed)\s+(?:in|on|under)",
+                re.IGNORECASE,
             )
-            if (
-                "|" not in line
-                and "#" not in line
-                and is_title_case(line)
-                and "|" not in cleaned_lines[i - 1]
-            ):
-                if "." in line and " " not in line:
-                    continue
-                if len(finished_lines) > 1 and "|" not in finished_lines[-1]:
-                    finished_lines.append(
-                        f"## **{line.strip().replace('*', '').rstrip()}**"
-                        if line.strip().startswith("Item") or line.strip().isupper()
-                        else f"### **{line.strip().replace('*', '').rstrip()}**"
-                    )
-            else:
-                finished_lines.append(line)
+            if crossref_re.search(body_text):
+                return True
+            # Very short body with no cross-ref — still a stub if nearly empty.
+            return len(body_text) < 100
 
-        data["content"] = "\n".join(finished_lines)
+        # -- main extraction --------------------------------------------------
+
+        # Strategy:
+        #  1. Find all Item 7/2 header matches.
+        #  2. For each, check body length to determine stub vs real.
+        #  3. If all are stubs, fall back to standalone heading.
+
+        best_start: int | None = None
+        best_end: int | None = None
+
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+
+            if not stripped:
+                continue
+
+            if item_header_re.search(stripped):
+                if _is_stub(i):
+                    continue
+                best_start = i
+                best_end = _find_end(i)
+                break
+            # Handle split headers: "Item 2." on one line, MD&A title on next.
+            if bare_item_re.search(stripped):
+                # Look at the next non-blank line for the MD&A title.
+                for k in range(i + 1, min(i + 4, len(lines))):
+                    next_stripped = lines[k].strip()
+
+                    if not next_stripped:
+                        continue
+
+                    if mda_title_re.search(next_stripped) and not _is_stub(i):
+                        best_start = i
+                        best_end = _find_end(i)
+                    break  # Only check up to the first non-blank line
+
+                if best_start is not None:
+                    break
+
+        # Fallback: standalone "Management's Discussion and Analysis" heading.
+        if best_start is None:
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+
+                if not stripped:
+                    continue
+
+                if standalone_mda_re.search(stripped) and not _is_stub(i):
+                    candidate_end = _find_end(i)
+                    body = "\n".join(lines[i:candidate_end]).strip()
+
+                    if len(body) > 200:
+                        best_start = i
+                        best_end = candidate_end
+                        break
+
+        # -- Exhibit fallback: Annual Report to Stockholders (Exhibit 13) ---
+        # When the main 10-K document only has a stub Item 7 that says
+        # "Refer to pages X–Y of the Annual Report …, incorporated
+        # herein by reference", the real MD&A lives in the separately
+        # filed Annual Report exhibit.  aextract_data pre-fetched the
+        # exhibit HTML when it detected the cross-reference pattern.
+
+        if best_start is None and data.get("exhibit_content"):
+            exhibit_base_url = data.get("exhibit_url", "")
+            exhibit_md = html_to_markdown(
+                data["exhibit_content"],
+                base_url=exhibit_base_url,
+                keep_tables=query.include_tables,
+            )
+            exhibit_md = re.sub(r"<a\s[^>]*>\s*</a>", "", exhibit_md)
+            exhibit_lines = exhibit_md.splitlines()
+            _exhibit_start_re = re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*" + r"MANAGEMENT\s+DISCUSSION",
+                re.IGNORECASE,
+            )
+            _exhibit_end_re = re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*(?:"
+                r"Management\s+Responsibility\s+for\s+Financial|"
+                r"Management.s\s+Report\s+on\s+Internal\s+Control|"
+                r"Report\s+of\s+(?:Management|Independent)|"
+                r"Consolidated\s+(?:Balance\s+Sheet|Statement|Financial)|"
+                r"Notes?\s+to\s+(?:Consolidated\s+)?Financial"
+                r")",
+                re.IGNORECASE,
+            )
+
+            for i, eline in enumerate(exhibit_lines):
+                estripped = eline.strip()
+                if not estripped or estripped.startswith("|"):
+                    continue
+                if _exhibit_start_re.search(estripped):
+                    end = len(exhibit_lines)
+                    body_count = 0
+                    for j in range(i + 1, len(exhibit_lines)):
+                        sj = exhibit_lines[j].strip()
+                        if not sj:
+                            continue
+                        body_count += 1
+                        if body_count > 15 and _exhibit_end_re.search(sj):
+                            end = j
+                            break
+                    _content = "\n".join(exhibit_lines[i:end]).strip()
+                    if len(_content) > 200:
+                        data["content"] = _content
+                        data["url"] = exhibit_base_url
+                        return SecManagementDiscussionAnalysisData(**data)
+
+        if best_start is None:
+            raise EmptyDataError(
+                "Could not locate the MD&A section in the filing."
+                f" -> {data.get('url', '')}"
+                " -> The content can be analyzed by setting"
+                " `raw_html=True` in the query."
+            )
+
+        if best_end is None:
+            best_end = len(lines)
+
+        mda_content = "\n".join(lines[best_start:best_end]).strip()
+
+        if not mda_content:
+            raise EmptyDataError(
+                "The MD&A section appears to be empty after extraction."
+                f" -> {data.get('url', '')}"
+                " -> The content can be analyzed by setting"
+                " `raw_html=True` in the query."
+            )
+
+        data["content"] = mda_content
 
         return SecManagementDiscussionAnalysisData(**data)
