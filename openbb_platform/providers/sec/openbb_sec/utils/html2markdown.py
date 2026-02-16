@@ -2508,8 +2508,8 @@ def html_to_markdown(
 
             # Fall back to original single-row logic
             period_prefixes = []
-            years = []
-            generic_headers = []
+            years: list = []
+            generic_headers: list = []
             full_date_headers = []
             sub_headers = []
             period_parts = []
@@ -4332,12 +4332,12 @@ def html_to_markdown(
             return f"\n```\n{text}\n```\n"
 
         # Default: process children (including spans, sections, etc.)
-        result: list = []
+        result_list: list = []
 
         for child in element.children:
-            result.append(process_element(child, depth + 1))
+            result_list.append(process_element(child, depth + 1))
 
-        inner = "".join(result)
+        inner = "".join(result_list)
         # Prepend anchor if element had an id attribute
         if anchor_prefix and inner.strip():
             return f"{anchor_prefix}{inner}"
