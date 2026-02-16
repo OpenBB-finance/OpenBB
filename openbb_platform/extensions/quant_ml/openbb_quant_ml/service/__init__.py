@@ -57,6 +57,7 @@ from openbb_quant_ml.service.macro_service import (
     search_catalog_response as search_macro_catalog,
     trigger_update_response as update_macro_series,
 )
+from openbb_quant_ml.service.ops_status import get_ops_status_response
 
 __all__ = [
     "get_alerts_current",
@@ -108,4 +109,5 @@ __all__ = [
     "get_market_ratio_response",
     "get_market_rolling_corr_response",
     "get_copper_gold_preset_response",
+    "get_ops_status_response",
 ]

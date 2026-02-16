@@ -11,34 +11,69 @@ import { SignalsTable } from "../components/quant/SignalsTable";
 import {
   createSignals,
   fetchArtifactSummary,
+  fetchModelIc,
+  fetchModelRegime,
+  fetchModelShap,
   fetchPortfolioCurrent,
   fetchRunStatus,
   fetchUniverse,
+  fetchUniverseList,
   invalidateQuantCaches,
+  resolveUniverse,
   runBacktest,
   startTrain,
 } from "../lib/quantApi";
 import { resolveOpenBBBackend } from "../lib/openbbBackend";
 import { useQuantSession } from "../contexts/QuantSessionContext";
+import type { FeatureActivation } from "../types/feature-activation";
 import type {
   ArtifactSummaryPayload,
   BacktestResponsePayload,
+  ModelICPayload,
   ModelName,
   ModelConfigInput,
+  ModelRegimePayload,
+  ModelShapPayload,
   RankerConfigInput,
   PortfolioCurrentPayload,
   RunStatusPayload,
   SignalsResponsePayload,
+  TrainRequestPayload,
   UniverseAsset,
+  UniverseListItemPayload,
   UniverseResponse,
 } from "../types/quant";
 
 type UniverseProfileId = "all" | "aggressive" | "defensive" | "custom";
+type UniverseSetId =
+  | "default"
+  | "kospi200"
+  | "kosdaq100"
+  | "sp500"
+  | "nasdaq100"
+  | "sox"
+  | "dow30";
 
 interface UniverseProfile {
   id: Exclude<UniverseProfileId, "custom">;
   label: string;
   description: string;
+}
+
+interface UniverseSetOption {
+  id: UniverseSetId;
+  label: string;
+  countHint?: number;
+  hasFile?: boolean;
+  minimumRequired?: number;
+}
+
+interface UniverseResolveState {
+  status: "idle" | "loading" | "ok" | "error";
+  message: string | null;
+  count: number | null;
+  minimumRequired: number;
+  meetsMinimum: boolean;
 }
 
 const PROFILE_LIST: UniverseProfile[] = [
@@ -54,6 +89,44 @@ const PROFILE_LIST: UniverseProfile[] = [
     description: "Bonds, commodities, and defensive assets.",
   },
 ];
+
+const UNIVERSE_SET_OPTIONS_DEFAULT: UniverseSetOption[] = [
+  { id: "default", label: "Default (manual symbols)" },
+  { id: "kospi200", label: "KOSPI 200", minimumRequired: 180 },
+  { id: "kosdaq100", label: "KOSDAQ 100", minimumRequired: 90 },
+  { id: "sp500", label: "S&P 500", minimumRequired: 450 },
+  { id: "nasdaq100", label: "NASDAQ 100", minimumRequired: 95 },
+  { id: "sox", label: "SOX", minimumRequired: 25 },
+  { id: "dow30", label: "DOW 30", minimumRequired: 25 },
+];
+
+function isUniverseSetId(value: string): value is UniverseSetId {
+  return UNIVERSE_SET_OPTIONS_DEFAULT.some((option) => option.id === value);
+}
+
+function mergeUniverseSetOptions(items: UniverseListItemPayload[]): UniverseSetOption[] {
+  const byId = new Map<UniverseSetId, UniverseSetOption>(
+    UNIVERSE_SET_OPTIONS_DEFAULT.map((option) => [option.id, option]),
+  );
+
+  for (const item of items) {
+    if (!isUniverseSetId(item.id)) {
+      continue;
+    }
+    const base = byId.get(item.id);
+    if (!base) {
+      continue;
+    }
+    byId.set(item.id, {
+      ...base,
+      countHint: item.count_hint,
+      hasFile: item.has_file,
+      minimumRequired: item.minimum_required ?? base.minimumRequired,
+    });
+  }
+
+  return UNIVERSE_SET_OPTIONS_DEFAULT.map((option) => byId.get(option.id) ?? option);
+}
 
 const AGGRESSIVE_CATEGORIES = new Set([
   "korea_index",
@@ -188,7 +261,19 @@ export default function QuantPage() {
 
   const [isResolvingBackend, setIsResolvingBackend] = useState(false);
   const [backend, setBackend] = useState<Awaited<ReturnType<typeof resolveOpenBBBackend>> | null>(null);
+  const [quantActivation, setQuantActivation] = useState<FeatureActivation | null>(null);
   const [universe, setUniverse] = useState<UniverseResponse | null>(null);
+  const [universeSetOptions, setUniverseSetOptions] = useState<UniverseSetOption[]>(
+    UNIVERSE_SET_OPTIONS_DEFAULT,
+  );
+  const [selectedUniverseSet, setSelectedUniverseSet] = useState<UniverseSetId>("default");
+  const [universeResolveState, setUniverseResolveState] = useState<UniverseResolveState>({
+    status: "idle",
+    message: null,
+    count: null,
+    minimumRequired: 0,
+    meetsMinimum: true,
+  });
 
   const [selectedProfile, setSelectedProfile] = useState<UniverseProfileId>("all");
   const [symbolsInput, setSymbolsInput] = useState("");
@@ -205,6 +290,10 @@ export default function QuantPage() {
   const [backtest, setBacktest] = useState<BacktestResponsePayload | null>(null);
   const [summary, setSummary] = useState<ArtifactSummaryPayload | null>(null);
   const [portfolioCurrent, setPortfolioCurrent] = useState<PortfolioCurrentPayload | null>(null);
+  const [modelIcPayload, setModelIcPayload] = useState<ModelICPayload | null>(null);
+  const [modelRegimePayload, setModelRegimePayload] = useState<ModelRegimePayload | null>(null);
+  const [modelShapPayload, setModelShapPayload] = useState<ModelShapPayload | null>(null);
+  const [diagnosticsError, setDiagnosticsError] = useState<string | null>(null);
 
   const [topK, setTopK] = useState(20);
   const [scoreThreshold, setScoreThreshold] = useState(0.5);
@@ -216,6 +305,11 @@ export default function QuantPage() {
   const [portfolioError, setPortfolioError] = useState<string | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isUniverseSetMode = selectedUniverseSet !== "default";
+  const selectedUniverseOption = useMemo(
+    () => universeSetOptions.find((option) => option.id === selectedUniverseSet) ?? null,
+    [selectedUniverseSet, universeSetOptions],
+  );
 
   const applyProfile = useCallback(
     (profileId: Exclude<UniverseProfileId, "custom">, sourceUniverse: UniverseResponse | null) => {
@@ -239,12 +333,55 @@ export default function QuantPage() {
       setBackend(resolved);
 
       if (!resolved.connected) {
+        setQuantActivation({
+          featureName: "quant_ml",
+          available: false,
+          detail: "OpenBB API is not connected.",
+          lastCheckedAt: new Date().toISOString(),
+        });
         setUniverse(null);
+        setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
+        return;
+      }
+
+      let fetchedUniverseList: { universes: UniverseListItemPayload[] } | null = null;
+      try {
+        fetchedUniverseList = await fetchUniverseList(resolved.baseUrl);
+        setQuantActivation({
+          featureName: "quant_ml",
+          available: true,
+          detail: null,
+          lastCheckedAt: new Date().toISOString(),
+        });
+      } catch (error) {
+        setQuantActivation({
+          featureName: "quant_ml",
+          available: false,
+          detail: error instanceof Error ? error.message : "quant_ml extension unavailable",
+          lastCheckedAt: new Date().toISOString(),
+        });
+        setUniverse(null);
+        setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "quant_ml extension is unavailable. Install/enable openbb-quant-ml.",
+        );
+        return;
+      }
+
+      if (!fetchedUniverseList) {
+        setUniverse(null);
+        setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
+        setErrorMessage(
+          "quant_ml extension is unavailable. Install/enable openbb-quant-ml.",
+        );
         return;
       }
 
       const fetchedUniverse = await fetchUniverse(resolved.baseUrl);
       setUniverse(fetchedUniverse);
+      setUniverseSetOptions(mergeUniverseSetOptions(fetchedUniverseList.universes));
 
       setSymbolsInput((prev) => {
         if (prev.trim()) {
@@ -254,6 +391,12 @@ export default function QuantPage() {
       });
       setSelectedProfile((prev) => (prev === "custom" ? prev : "all"));
     } catch (error) {
+      setQuantActivation({
+        featureName: "quant_ml",
+        available: false,
+        detail: error instanceof Error ? error.message : "Failed to resolve quant_ml activation.",
+        lastCheckedAt: new Date().toISOString(),
+      });
       setErrorMessage(error instanceof Error ? error.message : "Failed to resolve backend connection.");
     } finally {
       setIsResolvingBackend(false);
@@ -402,7 +545,83 @@ export default function QuantPage() {
     return universe?.assets.map((asset) => asset.symbol) ?? [];
   }, [symbolsInput, universe]);
 
+  useEffect(() => {
+    if (!isUniverseSetMode) {
+      setUniverseResolveState({
+        status: "idle",
+        message: null,
+        count: null,
+        minimumRequired: 0,
+        meetsMinimum: true,
+      });
+      return;
+    }
+    if (!backend?.connected) {
+      setUniverseResolveState({
+        status: "error",
+        message: "OpenBB API is not connected.",
+        count: null,
+        minimumRequired: selectedUniverseOption?.minimumRequired ?? 0,
+        meetsMinimum: false,
+      });
+      return;
+    }
+
+    let cancelled = false;
+    setUniverseResolveState((prev) => ({
+      ...prev,
+      status: "loading",
+      message: null,
+      count: null,
+      minimumRequired: selectedUniverseOption?.minimumRequired ?? 0,
+      meetsMinimum: false,
+    }));
+
+    void (async () => {
+      try {
+        const resolved = await resolveUniverse(backend.baseUrl, selectedUniverseSet, "train", false);
+        if (cancelled) {
+          return;
+        }
+        const minimumRequired = Number(
+          resolved.minimum_required ?? selectedUniverseOption?.minimumRequired ?? 0,
+        );
+        const meetsMinimum =
+          typeof resolved.meets_minimum === "boolean"
+            ? resolved.meets_minimum
+            : minimumRequired <= 0 || Number(resolved.count) >= minimumRequired;
+        setUniverseResolveState({
+          status: "ok",
+          message: null,
+          count: Number(resolved.count),
+          minimumRequired,
+          meetsMinimum,
+        });
+      } catch (error) {
+        if (cancelled) {
+          return;
+        }
+        setUniverseResolveState({
+          status: "error",
+          message: error instanceof Error ? error.message : "Failed to resolve selected universe set.",
+          count: null,
+          minimumRequired: selectedUniverseOption?.minimumRequired ?? 0,
+          meetsMinimum: false,
+        });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [backend, isUniverseSetMode, selectedUniverseOption?.minimumRequired, selectedUniverseSet]);
+
   const canUseApi = backend?.connected === true;
+  const isTrainBlockedByUniverse =
+    isUniverseSetMode &&
+    (universeResolveState.status === "loading" ||
+      universeResolveState.status === "error" ||
+      universeResolveState.meetsMinimum === false);
   const canGenerateSignals = canUseApi && runStatus?.status === "completed";
   const dashboardLink = runId
     ? `/dashboard?run_id=${encodeURIComponent(runId)}&model=${encodeURIComponent(selectedModel)}&mode=backtest&focus=portfolio`
@@ -462,10 +681,74 @@ export default function QuantPage() {
     })();
   }, [backend, loadPortfolioCurrent, markArtifactReady, runId, selectedModel]);
 
+  useEffect(() => {
+    if (!backend?.connected || !runId || runStatus?.status !== "completed") {
+      setModelIcPayload(null);
+      setModelRegimePayload(null);
+      setModelShapPayload(null);
+      setDiagnosticsError(null);
+      return;
+    }
+
+    let disposed = false;
+    void (async () => {
+      const [icRes, regimeRes, shapRes] = await Promise.allSettled([
+        fetchModelIc(backend.baseUrl, runId, selectedModel),
+        fetchModelRegime(backend.baseUrl, runId, selectedModel),
+        fetchModelShap(backend.baseUrl, runId, selectedModel),
+      ]);
+
+      if (disposed) {
+        return;
+      }
+
+      const errors: string[] = [];
+      if (icRes.status === "fulfilled") {
+        setModelIcPayload(icRes.value);
+      } else {
+        setModelIcPayload(null);
+        errors.push(icRes.reason instanceof Error ? icRes.reason.message : "model/ic failed");
+      }
+      if (regimeRes.status === "fulfilled") {
+        setModelRegimePayload(regimeRes.value);
+      } else {
+        setModelRegimePayload(null);
+        errors.push(regimeRes.reason instanceof Error ? regimeRes.reason.message : "model/regime failed");
+      }
+      if (shapRes.status === "fulfilled") {
+        setModelShapPayload(shapRes.value);
+      } else {
+        setModelShapPayload(null);
+        errors.push(shapRes.reason instanceof Error ? shapRes.reason.message : "model/shap failed");
+      }
+      setDiagnosticsError(errors.length > 0 ? errors.join(" | ") : null);
+    })();
+
+    return () => {
+      disposed = true;
+    };
+  }, [backend, runId, runStatus?.status, selectedModel]);
+
   const handleTrain = useCallback(async () => {
     if (!backend?.connected) {
       setErrorMessage("OpenBB API is not connected.");
       return;
+    }
+    if (selectedUniverseSet !== "default") {
+      if (universeResolveState.status === "loading") {
+        setErrorMessage("Universe set is still resolving. Retry after resolution completes.");
+        return;
+      }
+      if (
+        universeResolveState.status !== "ok" ||
+        universeResolveState.meetsMinimum === false
+      ) {
+        setErrorMessage(
+          universeResolveState.message ??
+            "Selected universe set is unavailable or undersized. Run refresh_universes and retry.",
+        );
+        return;
+      }
     }
 
     setIsSubmittingTrain(true);
@@ -479,8 +762,7 @@ export default function QuantPage() {
     setActiveTrainingRunId(null);
 
     try {
-      const response = await startTrain(backend.baseUrl, {
-        symbols: parsedSymbols,
+      const trainPayloadBase: Omit<TrainRequestPayload, "symbols" | "universe_id"> = {
         date_range: { start: dateStart, end: dateEnd },
         horizon_days: 1,
         target_mode: "next_open_to_close",
@@ -509,7 +791,12 @@ export default function QuantPage() {
         quick_mode: false,
         model_choice: "dual",
         early_stopping: true,
-      });
+      };
+      const trainPayload: TrainRequestPayload =
+        selectedUniverseSet === "default"
+          ? { ...trainPayloadBase, symbols: parsedSymbols }
+          : { ...trainPayloadBase, universe_id: selectedUniverseSet };
+      const response = await startTrain(backend.baseUrl, trainPayload);
 
       setRunStatus({
         run_id: response.run_id,
@@ -551,7 +838,20 @@ export default function QuantPage() {
     } finally {
       setIsSubmittingTrain(false);
     }
-  }, [backend, dateEnd, dateStart, modelConfig, parsedSymbols, patchSession, selectedModel, setRunId]);
+  }, [
+    backend,
+    dateEnd,
+    dateStart,
+    modelConfig,
+    parsedSymbols,
+    patchSession,
+    selectedModel,
+    universeResolveState.meetsMinimum,
+    universeResolveState.message,
+    universeResolveState.status,
+    selectedUniverseSet,
+    setRunId,
+  ]);
 
   const handleSignals = useCallback(async () => {
     if (!backend?.connected || !runId) {
@@ -647,11 +947,78 @@ export default function QuantPage() {
           <p className="body-xs-medium text-red-400">{errorMessage}</p>
         </div>
       ) : null}
+      {quantActivation && !quantActivation.available ? (
+        <div className="mb-3 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
+          <p className="body-xs-medium text-amber-300">
+            quant_ml extension unavailable: {quantActivation.detail || "Install/enable openbb-quant-ml."}
+          </p>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
         <div className="space-y-4">
           <PanelCard title="Controls" description="Universe, period, model, and run actions">
             <div className="space-y-3">
+              <div>
+                <label htmlFor="quant-universe-set" className="body-xs-medium text-theme-muted">
+                  Universe Set
+                </label>
+                <select
+                  id="quant-universe-set"
+                  className="mt-1 w-full rounded-sm border border-theme-outline bg-theme-secondary p-2 body-xs-regular text-theme-primary"
+                  value={selectedUniverseSet}
+                  onChange={(event) => {
+                    setSelectedUniverseSet(event.target.value as UniverseSetId);
+                    setErrorMessage(null);
+                  }}
+                >
+                  {universeSetOptions.map((option) => {
+                    const suffix =
+                      option.countHint !== undefined
+                        ? ` (${option.countHint}${
+                            option.minimumRequired ? ` / min ${option.minimumRequired}` : ""
+                          })`
+                        : option.minimumRequired
+                          ? ` (min ${option.minimumRequired})`
+                          : "";
+                    const missing =
+                      option.id !== "default" && option.hasFile === false ? " [missing]" : "";
+                    return (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                        {suffix}
+                        {missing}
+                      </option>
+                    );
+                  })}
+                </select>
+                <p className="mt-1 body-xs-regular text-theme-muted">
+                  {isUniverseSetMode
+                    ? "Universe set mode is active. Train request will send universe_id only."
+                    : "Default mode is active. Train request will use symbols from textarea."}
+                </p>
+                {isUniverseSetMode && universeResolveState.status === "loading" ? (
+                  <p className="mt-1 body-xs-regular text-theme-muted">
+                    Resolving universe set symbols...
+                  </p>
+                ) : null}
+                {isUniverseSetMode && universeResolveState.status === "ok" ? (
+                  <p className="mt-1 body-xs-regular text-emerald-300">
+                    Resolved {universeResolveState.count ?? 0} symbols
+                    {universeResolveState.minimumRequired > 0
+                      ? ` (minimum ${universeResolveState.minimumRequired})`
+                      : ""}
+                    .
+                  </p>
+                ) : null}
+                {isUniverseSetMode && universeResolveState.status === "error" ? (
+                  <p className="mt-1 body-xs-medium text-amber-300">
+                    {universeResolveState.message ??
+                      "Selected universe set is invalid or undersized. Run refresh_universes --all --no-validate."}
+                  </p>
+                ) : null}
+              </div>
+
               <div>
                 <p className="body-xs-medium text-theme-muted">Universe Profile</p>
                 <div className="mt-1 flex flex-wrap gap-2">
@@ -663,7 +1030,7 @@ export default function QuantPage() {
                         selectedProfile === profile.id ? "button-neutral" : "button-secondary"
                       }`}
                       onClick={() => applyProfile(profile.id, universe)}
-                      disabled={!universe}
+                      disabled={!universe || isUniverseSetMode}
                       title={profile.description}
                     >
                       {profile.id === "all" && universe ? `All (${universe.assets.length})` : profile.label}
@@ -689,6 +1056,7 @@ export default function QuantPage() {
                     setSelectedProfile("custom");
                     setSymbolsInput(event.target.value);
                   }}
+                  disabled={isUniverseSetMode}
                 />
                 <div className="mt-2 flex gap-2">
                   <button
@@ -698,6 +1066,7 @@ export default function QuantPage() {
                       setSelectedProfile("custom");
                       setSymbolsInput(formatSymbolsForTextarea(parsedSymbols));
                     }}
+                    disabled={isUniverseSetMode}
                   >
                     Format
                   </button>
@@ -708,6 +1077,7 @@ export default function QuantPage() {
                       setSelectedProfile("custom");
                       setSymbolsInput("");
                     }}
+                    disabled={isUniverseSetMode}
                   >
                     Clear
                   </button>
@@ -837,7 +1207,7 @@ export default function QuantPage() {
                   type="button"
                   className="button-neutral rounded-sm px-3 py-2 body-xs-medium"
                   onClick={handleTrain}
-                  disabled={!canUseApi || isSubmittingTrain}
+                  disabled={!canUseApi || isSubmittingTrain || isTrainBlockedByUniverse}
                 >
                   {isSubmittingTrain ? "Submitting..." : "Start Training"}
                 </button>
@@ -922,6 +1292,23 @@ export default function QuantPage() {
             benchmarkSymbol={backtest?.benchmark_symbol ?? "SPY"}
             baseIndex={backtest?.base_index ?? 100}
           />
+          <PanelCard title="Model Diagnostics" description="IC / regime / SHAP payloads">
+            {diagnosticsError ? (
+              <p className="mb-2 body-xs-medium text-amber-300">{diagnosticsError}</p>
+            ) : null}
+            <pre className="max-h-56 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-2 text-[11px] text-theme-muted">
+              {JSON.stringify(
+                {
+                  model_ic_points: modelIcPayload?.points?.length ?? 0,
+                  model_regimes: Object.keys(modelRegimePayload?.regimes ?? {}).length,
+                  model_shap_status: modelShapPayload?.status ?? "not_loaded",
+                  model_shap_summary_points: modelShapPayload?.summary_points?.length ?? 0,
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </PanelCard>
           <ExplainabilityCard summary={summary} />
         </div>
       </div>

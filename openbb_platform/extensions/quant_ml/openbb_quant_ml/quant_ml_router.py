@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Query
 from openbb_core.app.router import Router
 
 from openbb_quant_ml.macro_models import MacroSeriesResponse
@@ -27,6 +27,7 @@ from openbb_quant_ml.models import (
     ModelPerformanceResponse,
     ModelRegimeResponse,
     ModelShapResponse,
+    OpsStatusResponse,
     PerformanceRegimeResponse,
     PortfolioExposureResponse,
     PortfolioRiskResponse,
@@ -46,11 +47,14 @@ from openbb_quant_ml.models import (
     TrainRequest,
     TrainResponse,
     UniverseResponse,
+    UniverseListResponse,
+    UniverseResolveResponse,
 )
 from openbb_quant_ml.service import (
     build_signals,
     get_market_ratio_response,
     get_market_rolling_corr_response,
+    get_ops_status_response,
     get_alerts_current,
     get_alerts_history,
     get_dashboard_health,
@@ -84,6 +88,15 @@ from openbb_quant_ml.service import (
     submit_execution_orders,
     submit_training,
 )
+from openbb_quant_ml.service.universe import (
+    get_symbols_for_universe,
+    get_universe_count_hint,
+    get_universe_file_path,
+    get_universe_minimum_required,
+    get_universe_size_status,
+    list_universe_ids,
+    universe_file_exists,
+)
 
 router = Router(prefix="", description="ML/DL based Quant Lab backend extension")
 router.include_router(macro_router)
@@ -93,6 +106,78 @@ router.include_router(macro_router)
 def universe() -> UniverseResponse:
     """Return active universe configuration."""
     return get_universe()
+
+
+@router.command(methods=["GET"], path="/universe/list")
+def universe_list() -> UniverseListResponse:
+    """Return discoverable universe identifiers from local universe files."""
+    rows = []
+    for universe_id in list_universe_ids():
+        file_path = get_universe_file_path(universe_id)
+        has_file = universe_file_exists(universe_id)
+        rows.append(
+            {
+                "id": universe_id,
+                "has_file": has_file,
+                "path": str(file_path) if file_path else None,
+                "count_hint": int(get_universe_count_hint(universe_id)),
+                "minimum_required": int(get_universe_minimum_required(universe_id)),
+            }
+        )
+    return UniverseListResponse(universes=rows)
+
+
+@router.command(methods=["GET"], path="/universe/resolve")
+def universe_resolve(
+    universe_id: str = Query(...),
+    mode: str = Query("train"),
+    include_symbols: bool = Query(False),
+) -> UniverseResolveResponse:
+    """Resolve one universe id into symbol count and optional symbol list."""
+    key = str(universe_id).strip()
+    available = ", ".join(list_universe_ids())
+    if not key:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "invalid_or_empty_universe_id: <empty>; "
+                f"available_universe_id: {available}; "
+                "hint: run refresh_universes"
+            ),
+        )
+    symbols = get_symbols_for_universe(key)
+    if not symbols:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"invalid_or_empty_universe_id: {key}; "
+                f"available_universe_id: {available}; "
+                f"hint: populate openbb_quant_ml/universe/{key}.csv "
+                "or run refresh_universes"
+            ),
+        )
+    actual_count, minimum_required, meets_minimum = get_universe_size_status(key, symbols)
+    if not meets_minimum:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"invalid_or_undersized_universe_id: {key}; "
+                f"actual_count: {actual_count}; "
+                f"minimum_required: {minimum_required}; "
+                "hint: run refresh_universes --all --no-validate"
+            ),
+        )
+
+    response = UniverseResolveResponse(
+        universe_id=key,
+        mode=mode,
+        count=actual_count,
+        minimum_required=minimum_required,
+        meets_minimum=meets_minimum,
+    )
+    if include_symbols:
+        response.symbols = symbols
+    return response
 
 
 @router.command(methods=["POST"])
@@ -205,6 +290,12 @@ def predictions_latest(
 def health(run_id: str | None = None, model_name: ModelName = "lgbm_ranker") -> DashboardHealthResponse:
     """Return dashboard health and run resolution metadata."""
     return get_dashboard_health(run_id=run_id, model_name=model_name)
+
+
+@router.command(methods=["GET"], path="/ops/status")
+def ops_status() -> OpsStatusResponse:
+    """Return operational jobs/cache/run/macro status summary."""
+    return get_ops_status_response()
 
 
 @router.command(methods=["GET"], path="/performance/rolling")

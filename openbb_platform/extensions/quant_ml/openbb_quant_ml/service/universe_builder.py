@@ -132,13 +132,17 @@ def build_universe(
             max_missing_ratio=float(cfg_filters.get("max_missing_ratio", active_filters.max_missing_ratio)),
         )
 
-    symbols = _local_symbols(universe_key)
-    if not symbols:
+    txt_path = UNIVERSE_INPUT_DIR / f"{universe_key}.txt"
+    csv_path = UNIVERSE_INPUT_DIR / f"{universe_key}.csv"
+    local_found = txt_path.exists() or csv_path.exists()
+
+    symbols = _local_symbols(universe_key) if local_found else []
+    if (not symbols) and (not local_found):
         sets = cfg.get("universe_sets", {})
         configured = sets.get(universe_key, {}) if isinstance(sets, dict) else {}
         if isinstance(configured, dict):
             symbols = [str(item).upper() for item in configured.get("symbols", []) if str(item).strip()]
-    if not symbols:
+    if (not symbols) and (not local_found):
         symbols = [str(item.get("symbol", "")).upper() for item in cfg.get("assets", []) if item.get("symbol")]
     symbols = sorted(set(symbols))
 

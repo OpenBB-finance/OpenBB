@@ -21,6 +21,27 @@ export interface UniverseResponse {
   assets: UniverseAsset[];
 }
 
+export interface UniverseListItemPayload {
+  id: string;
+  has_file: boolean;
+  path?: string | null;
+  count_hint: number;
+  minimum_required?: number;
+}
+
+export interface UniverseListPayload {
+  universes: UniverseListItemPayload[];
+}
+
+export interface UniverseResolvePayload {
+  universe_id: string;
+  mode: string;
+  count: number;
+  minimum_required?: number;
+  meets_minimum?: boolean;
+  symbols?: string[] | null;
+}
+
 export interface DateRangeInput {
   start: string;
   end: string;
@@ -525,6 +546,148 @@ export interface ModelShapPayload {
   summary_points: Array<Record<string, string | number>>;
   dependence_top3: Array<Record<string, string | number>>;
   feature_stability_ts: Array<Record<string, string | number>>;
+}
+
+export interface ExecutionOrderPreviewRequestPayload {
+  run_id: string;
+  model_name: ModelName;
+  slippage_bps?: number;
+  cost_bps?: number;
+  nav?: number;
+}
+
+export interface ExecutionOrderItemPayload {
+  order_id: string;
+  symbol: string;
+  side: "buy" | "sell";
+  quantity: number;
+  current_weight: number;
+  target_weight: number;
+  est_price: number;
+  est_notional: number;
+  status: "preview" | "submitted" | "filled" | "rejected";
+}
+
+export interface ExecutionPreviewPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  as_of_date?: string | null;
+  nav: number;
+  orders: ExecutionOrderItemPayload[];
+  estimated_turnover: number;
+}
+
+export interface ExecutionSubmitPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  submitted_at?: string | null;
+  orders: ExecutionOrderItemPayload[];
+  fills_count: number;
+  cash_after: number;
+  nav_after: number;
+  kill_switch: boolean;
+}
+
+export interface ExecutionOrdersPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  orders: ExecutionOrderItemPayload[];
+}
+
+export interface ExecutionFillsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  fills: Array<Record<string, string | number>>;
+}
+
+export interface ExecutionPositionsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  as_of_date?: string | null;
+  positions: Array<Record<string, string | number>>;
+  cash: number;
+  gross_exposure: number;
+  net_exposure: number;
+}
+
+export interface ExecutionPnlPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  as_of_date?: string | null;
+  realized_pnl: number;
+  unrealized_pnl: number;
+  total_pnl: number;
+  return_pct: number;
+}
+
+export interface RiskPretradeRequestPayload {
+  run_id: string;
+  model_name: ModelName;
+  turnover_limit?: number;
+}
+
+export interface RiskViolationItemPayload {
+  rule_id: string;
+  severity: "info" | "warning" | "critical";
+  value: number;
+  limit: number;
+  message: string;
+}
+
+export interface RiskPretradePayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  passed: boolean;
+  kill_switch: boolean;
+  violations: RiskViolationItemPayload[];
+}
+
+export interface RiskLimitsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  limits: Record<string, number>;
+  kill_switch: boolean;
+}
+
+export interface RiskEventsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  events: Array<Record<string, string | number>>;
+}
+
+export interface OpsJobStatePayload {
+  job: "daily" | "weekly" | "monthly";
+  last_status: string;
+  last_run_id?: string | null;
+  last_error?: string | null;
+  steps: Record<string, Record<string, unknown>>;
+}
+
+export interface OpsStatusPayload {
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  generated_at?: string | null;
+  jobs: OpsJobStatePayload[];
+  latest_publish: Record<string, unknown>;
+  versions: Record<string, unknown>;
+  latest_runs: Array<Record<string, unknown>>;
+  macro_health: Record<string, unknown>;
 }
 
 export interface BackendService {

@@ -21,6 +21,11 @@ yfinance = ">=0.2.40"
 scikit-learn = ">=1.4"
 pyarrow = ">=14.0"
 lightgbm = ">=4.3"
+pykrx = { version = ">=1.0.48", optional = true }
+
+[tool.poetry.extras]
+kr = ["pykrx"]
+universe-refresh = ["pykrx"]
 
 [build-system]
 requires = ["poetry-core"]

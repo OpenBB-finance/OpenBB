@@ -57,7 +57,13 @@ from openbb_quant_ml.service.run_registry import (
 )
 from openbb_quant_ml.service.signals import generate_signals
 from openbb_quant_ml.service.storage import get_run_dir, list_run_artifacts, load_json, save_json
-from openbb_quant_ml.service.universe import get_default_symbols, get_symbols_for_universe, load_universe_config
+from openbb_quant_ml.service.universe import (
+    get_default_symbols,
+    get_symbols_for_universe,
+    get_universe_size_status,
+    list_universe_ids,
+    load_universe_config,
+)
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
@@ -281,6 +287,22 @@ def _safe_spearman(x: pd.Series, y: pd.Series) -> float:
     return float(corr)
 
 
+def _json_sanitize(value: Any) -> Any:
+    """Recursively coerce NaN/Inf numerics into JSON-safe values."""
+    if isinstance(value, dict):
+        return {key: _json_sanitize(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_sanitize(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_sanitize(item) for item in value]
+    if isinstance(value, (float, np.floating)):
+        casted = float(value)
+        if np.isnan(casted) or np.isinf(casted):
+            return 0.0
+        return casted
+    return value
+
+
 def _group_ic(frame: pd.DataFrame, score_col: str = "predicted_return") -> float:
     values: list[float] = []
     for _, group in frame.groupby("date"):
@@ -361,6 +383,50 @@ def _apply_quick_mode_bounds(request: TrainRequest) -> tuple[date, date]:
     return start_date, end_date
 
 
+def _resolve_symbols_for_training_request(request: TrainRequest) -> list[str]:
+    """Resolve training symbols with strict universe-id policy."""
+    if request.symbols:
+        symbols_from_request = [
+            str(symbol) for symbol in request.symbols if str(symbol).strip()
+        ]
+        if symbols_from_request:
+            return symbols_from_request
+
+    if request.universe_id is not None:
+        universe_key = str(request.universe_id).strip()
+        available = ", ".join(list_universe_ids())
+        if not universe_key:
+            raise ValueError(
+                "invalid_or_empty_universe_id: <empty>; "
+                f"available_universe_id: {available}; "
+                "hint: populate openbb_quant_ml/universe/<universe_id>.csv "
+                "or run refresh_universes"
+            )
+
+        symbols = get_symbols_for_universe(universe_key)
+        if not symbols:
+            raise ValueError(
+                f"invalid_or_empty_universe_id: {universe_key}; "
+                f"available_universe_id: {available}; "
+                f"hint: populate openbb_quant_ml/universe/{universe_key}.csv "
+                "or run refresh_universes"
+            )
+
+        actual_count, minimum_required, meets_minimum = get_universe_size_status(
+            universe_key, symbols
+        )
+        if not meets_minimum:
+            raise ValueError(
+                f"invalid_or_undersized_universe_id: {universe_key}; "
+                f"actual_count: {actual_count}; "
+                f"minimum_required: {minimum_required}; "
+                "hint: run refresh_universes --all --no-validate"
+            )
+        return symbols
+
+    return get_default_symbols()
+
+
 def _sample_symbols_by_liquidity(
     datasets: dict[str, pd.DataFrame],
     limit: int,
@@ -407,7 +473,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         update_run(run_id, status="running", progress=2, stage="initializing")
         append_log(run_id, "Training job started.")
 
-        symbols = request.symbols or get_symbols_for_universe(request.universe_id) or get_default_symbols()
+        symbols = _resolve_symbols_for_training_request(request)
         start_date, end_date = _apply_quick_mode_bounds(request)
         selected_models = _resolve_selected_models(request, len(symbols))
         walk_forward_cfg = request.walk_forward_config.model_copy(deep=True)
@@ -657,10 +723,14 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
 
 def submit_training(request: TrainRequest) -> TrainResponse:
     """Queue a training job."""
+    resolved_symbols = _resolve_symbols_for_training_request(request)
+    resolved_request = request.model_copy(deep=True)
+    resolved_request.symbols = resolved_symbols
+
     initialize_registry()
     state = create_run()
-    _save_run_config(state.run_id, request)
-    future = _EXECUTOR.submit(_run_training_job, state.run_id, request)
+    _save_run_config(state.run_id, resolved_request)
+    future = _EXECUTOR.submit(_run_training_job, state.run_id, resolved_request)
     _FUTURES[state.run_id] = future
     return TrainResponse(
         run_id=state.run_id,
@@ -838,6 +908,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "mu_mapping": request.mu_mapping,
         "regime_policy": request.regime_policy,
     }
+    payload = _json_sanitize(payload)
     save_json(_backtest_path(request.run_id, model_name), payload)
     if model_name == DEFAULT_MODEL:
         save_json(run_dir / "backtest.json", payload)

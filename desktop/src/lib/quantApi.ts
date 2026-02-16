@@ -1,4 +1,5 @@
 import { clearCachePrefix, getCachedOrFetch } from "./quantCache";
+import type { FeatureActivation, FeatureActivationResult } from "../types/feature-activation";
 import type {
   AlertsPayload,
   ArtifactSummaryPayload,
@@ -13,7 +14,19 @@ import type {
   ModelName,
   ModelPerformancePayload,
   ModelRegimePayload,
+  OpsStatusPayload,
   PerformanceRegimePayload,
+  ExecutionOrderPreviewRequestPayload,
+  ExecutionPreviewPayload,
+  ExecutionSubmitPayload,
+  ExecutionOrdersPayload,
+  ExecutionFillsPayload,
+  ExecutionPositionsPayload,
+  ExecutionPnlPayload,
+  RiskPretradeRequestPayload,
+  RiskPretradePayload,
+  RiskLimitsPayload,
+  RiskEventsPayload,
   PortfolioExposurePayload,
   PortfolioCurrentPayload,
   PortfolioRiskPayload,
@@ -28,11 +41,22 @@ import type {
   TrainRequestPayload,
   TrainResponsePayload,
   UniverseResponse,
+  UniverseListPayload,
+  UniverseResolvePayload,
 } from "../types/quant";
 
 const QUANT_PREFIX = "/api/v1/quant_ml";
 const DASHBOARD_CACHE_TTL_MS = 60_000;
 const LIVE_CACHE_TTL_MS = 0;
+
+function buildFeatureActivation(featureName: string, available: boolean, detail?: string): FeatureActivation {
+  return {
+    featureName,
+    available,
+    detail: detail ?? null,
+    lastCheckedAt: new Date().toISOString(),
+  };
+}
 
 interface DashboardRequestOptions {
   mode?: DashboardMode;
@@ -97,6 +121,57 @@ export function fetchUniverse(baseUrl: string): Promise<UniverseResponse> {
   return requestJson<UniverseResponse>(baseUrl, `${QUANT_PREFIX}/universe`, {
     method: "GET",
   });
+}
+
+export function fetchUniverseList(baseUrl: string): Promise<UniverseListPayload> {
+  return requestJson<UniverseListPayload>(baseUrl, `${QUANT_PREFIX}/universe/list`, {
+    method: "GET",
+  });
+}
+
+export async function fetchUniverseListWithActivation(
+  baseUrl: string,
+): Promise<FeatureActivationResult<UniverseListPayload>> {
+  try {
+    const data = await fetchUniverseList(baseUrl);
+    return {
+      activation: buildFeatureActivation("quant_ml", true),
+      data,
+    };
+  } catch (error) {
+    return {
+      activation: buildFeatureActivation(
+        "quant_ml",
+        false,
+        error instanceof Error ? error.message : "quant_ml extension unavailable",
+      ),
+    };
+  }
+}
+
+export async function probeQuantMlActivation(baseUrl: string): Promise<FeatureActivation> {
+  const result = await fetchUniverseListWithActivation(baseUrl);
+  return result.activation;
+}
+
+export function resolveUniverse(
+  baseUrl: string,
+  universeId: string,
+  mode = "train",
+  includeSymbols = false,
+): Promise<UniverseResolvePayload> {
+  const query = new URLSearchParams({
+    universe_id: universeId,
+    mode,
+    include_symbols: String(includeSymbols),
+  });
+  return requestJson<UniverseResolvePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/universe/resolve?${query.toString()}`,
+    {
+      method: "GET",
+    },
+  );
 }
 
 export function startTrain(baseUrl: string, payload: TrainRequestPayload): Promise<TrainResponsePayload> {
@@ -504,4 +579,105 @@ export function fetchModelShap(
     `${QUANT_PREFIX}/model/shap?${query.toString()}`,
     { method: "GET", signal: options.signal },
   );
+}
+
+export function previewExecutionOrders(
+  baseUrl: string,
+  payload: ExecutionOrderPreviewRequestPayload,
+): Promise<ExecutionPreviewPayload> {
+  return requestJson<ExecutionPreviewPayload>(baseUrl, `${QUANT_PREFIX}/execution/orders/preview`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function submitExecutionOrders(
+  baseUrl: string,
+  payload: ExecutionOrderPreviewRequestPayload,
+): Promise<ExecutionSubmitPayload> {
+  return requestJson<ExecutionSubmitPayload>(baseUrl, `${QUANT_PREFIX}/execution/orders/submit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function riskCheckPretrade(
+  baseUrl: string,
+  payload: RiskPretradeRequestPayload,
+): Promise<RiskPretradePayload> {
+  return requestJson<RiskPretradePayload>(baseUrl, `${QUANT_PREFIX}/risk/check/pretrade`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function fetchExecutionOrdersCurrent(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<ExecutionOrdersPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName });
+  return requestJson<ExecutionOrdersPayload>(baseUrl, `${QUANT_PREFIX}/execution/orders/current?${query.toString()}`, {
+    method: "GET",
+  });
+}
+
+export function fetchExecutionFillsHistory(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+  limit = 200,
+): Promise<ExecutionFillsPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName, limit: String(limit) });
+  return requestJson<ExecutionFillsPayload>(baseUrl, `${QUANT_PREFIX}/execution/fills/history?${query.toString()}`, {
+    method: "GET",
+  });
+}
+
+export function fetchExecutionPositionsCurrent(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<ExecutionPositionsPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName });
+  return requestJson<ExecutionPositionsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/execution/positions/current?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchExecutionPnl(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<ExecutionPnlPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName });
+  return requestJson<ExecutionPnlPayload>(baseUrl, `${QUANT_PREFIX}/execution/pnl?${query.toString()}`, { method: "GET" });
+}
+
+export function fetchRiskLimits(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<RiskLimitsPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName });
+  return requestJson<RiskLimitsPayload>(baseUrl, `${QUANT_PREFIX}/risk/limits?${query.toString()}`, { method: "GET" });
+}
+
+export function fetchRiskEvents(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+  limit = 200,
+): Promise<RiskEventsPayload> {
+  const query = new URLSearchParams({ run_id: runId, model_name: modelName, limit: String(limit) });
+  return requestJson<RiskEventsPayload>(baseUrl, `${QUANT_PREFIX}/risk/events?${query.toString()}`, { method: "GET" });
+}
+
+export function fetchOpsStatus(baseUrl: string): Promise<OpsStatusPayload> {
+  return requestJson<OpsStatusPayload>(baseUrl, `${QUANT_PREFIX}/ops/status`, { method: "GET" });
 }

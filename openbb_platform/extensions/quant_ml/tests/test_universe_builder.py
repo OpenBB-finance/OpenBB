@@ -60,3 +60,32 @@ def test_build_universe_with_filters(monkeypatch, tmp_path: Path):
     assert "SPY" in payload["train_universe"]
     assert "SPY" in payload["trade_universe"]
     assert "LOWVOL" not in payload["trade_universe"]
+
+
+def test_local_empty_csv_does_not_fallback(monkeypatch, tmp_path: Path):
+    cfg_path = tmp_path / "universe.yaml"
+    cfg_path.write_text(
+        "\n".join(
+            [
+                'version: "v1"',
+                "assets:",
+                "  - symbol: SPY",
+                "    category: us_equity_etf",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    universe_dir = tmp_path / "universe_input"
+    universe_dir.mkdir(parents=True, exist_ok=True)
+    (universe_dir / "sp500.csv").write_text("symbol\n", encoding="utf-8")
+
+    monkeypatch.setattr(ub, "UNIVERSE_CONFIG_PATH", cfg_path)
+    monkeypatch.setattr(ub, "UNIVERSE_INPUT_DIR", universe_dir)
+    monkeypatch.setattr(ub, "UNIVERSE_META_PATH", tmp_path / "universe_meta.json")
+    monkeypatch.setattr(ub, "RAW_STORE_DIR", tmp_path / "raw_store")
+    monkeypatch.setattr(ub, "CACHE_DIR", tmp_path / "cache")
+
+    payload = ub.build_universe(universe_id="sp500")
+    assert payload["train_universe"] == []
+    assert payload["trade_universe"] == []

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
@@ -758,3 +758,53 @@ class ModelShapResponse(BaseModel):
     summary_points: list[dict[str, float | str]] = Field(default_factory=list)
     dependence_top3: list[dict[str, float | str]] = Field(default_factory=list)
     feature_stability_ts: list[dict[str, float | str]] = Field(default_factory=list)
+
+
+class OpsJobStateResponse(BaseModel):
+    """One job state summary from job_state.json."""
+
+    job: Literal["daily", "weekly", "monthly"]
+    last_status: str = "unknown"
+    last_run_id: str | None = None
+    last_error: str | None = None
+    steps: dict[str, dict[str, Any]] = Field(default_factory=dict)
+
+
+class OpsStatusResponse(BaseModel):
+    """Operational status payload for /ops dashboard."""
+
+    status: DashboardPayloadStatus = "ok"
+    message: str | None = None
+    generated_at: str | None = None
+    jobs: list[OpsJobStateResponse] = Field(default_factory=list)
+    latest_publish: dict[str, Any] = Field(default_factory=dict)
+    versions: dict[str, Any] = Field(default_factory=dict)
+    latest_runs: list[dict[str, Any]] = Field(default_factory=list)
+    macro_health: dict[str, Any] = Field(default_factory=dict)
+
+
+class UniverseListItemResponse(BaseModel):
+    """Universe list row."""
+
+    id: str
+    has_file: bool = False
+    path: str | None = None
+    count_hint: int = 0
+    minimum_required: int = 0
+
+
+class UniverseListResponse(BaseModel):
+    """Universe list payload."""
+
+    universes: list[UniverseListItemResponse] = Field(default_factory=list)
+
+
+class UniverseResolveResponse(BaseModel):
+    """Universe resolve payload."""
+
+    universe_id: str
+    mode: str = "train"
+    count: int = 0
+    minimum_required: int = 0
+    meets_minimum: bool = True
+    symbols: list[str] | None = None
