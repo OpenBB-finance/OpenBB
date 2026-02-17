@@ -183,6 +183,7 @@ app = FastAPI(title="Test App")
         app_file.write_text(app_content)
         return app_file
 
+    @pytest.mark.skipif(sys.platform == "win32", reason="Unix-specific test")
     def test_unix_absolute_path(self, app_file: Path):
         """Test Unix-style absolute paths (e.g., /home/user/app.py)."""
         app = import_app(str(app_file), "app", False)
@@ -282,14 +283,14 @@ custom_app = FastAPI(title="Custom Named App")
 
     @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
     def test_windows_absolute_path(self, app_file: Path):
-        """Test Windows-style absolute paths (e.g., C:\\Users\\app.py)."""
+        """Test Windows-style absolute paths"""
         # On Windows, tmp_path will have a drive letter (e.g., C:\...)
         app = import_app(str(app_file), "app", False)
         assert isinstance(app, FastAPI)
 
     @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
     def test_windows_path_with_colon_notation(self, app_file: Path):
-        """Test Windows path with colon notation (e.g., C:\\path\\app.py:myapp)."""
+        """Test Windows path with colon notation."""
         # Windows path with colon notation: C:\path\app.py:app
         app = import_app(f"{app_file}:app", "app", False)
         assert isinstance(app, FastAPI)
@@ -298,6 +299,7 @@ custom_app = FastAPI(title="Custom Named App")
 class TestPathDetectionHelpers:
     """Test path detection logic for cross-platform compatibility."""
 
+    @pytest.mark.skipif(sys.platform == "win32", reason="Unix-specific test")
     def test_is_absolute_path_detection_unix(self):
         """Test absolute path detection for Unix paths."""
         # Unix absolute paths

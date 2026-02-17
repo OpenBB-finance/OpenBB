@@ -467,6 +467,7 @@ def create_mcp_server(
 
         @mcp.tool(tags={"admin"})
         def available_categories() -> list[CategoryInfo]:
+            """List available tool categories and subcategories with tool counts."""
             categories = tool_registry.get_categories()
             return [
                 CategoryInfo(
