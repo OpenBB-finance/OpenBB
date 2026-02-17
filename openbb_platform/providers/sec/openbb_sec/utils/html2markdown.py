@@ -749,13 +749,16 @@ def html_to_markdown(
                                 for k in range(i + 1, j + 1):
                                     new_row[k] = ""
                                 break
-                            elif next_val and next_val not in ["", " "]:
+
+                            if next_val and next_val not in ["", " "]:
                                 break
+
                     i += 1
 
                 # Pass 4: Merge numeric value with following note like "(a)", "(b)"
                 # Pattern: "7" + "(a)" → "7 (a)" or "5,754" + "(a)" → "5,754 (a)"
                 i = 0
+
                 while i < len(new_row):
                     cell = new_row[i].strip()
                     # Check if cell is a numeric value
