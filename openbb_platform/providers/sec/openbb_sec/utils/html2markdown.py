@@ -728,10 +728,9 @@ def html_to_markdown(
                                 new_row[i] = cell + next_val
                                 new_row[j] = ""
                                 break
-                            elif next_val == "":
+                            if next_val == "":
                                 continue
-                            else:
-                                break
+                            break
                     i += 1
 
                 # Pass 3: Merge value with trailing ), %, pts., footnote markers (*, **)
@@ -1255,6 +1254,9 @@ def html_to_markdown(
                     re.match(r"^[A-Z]{2,}\.?(\s+[A-Z]{2,}\.?)*(\s+[A-Z]+)*$", t_clean)
                     and len(t_clean) > 3
                 ):
+                    return True
+                # Abbreviated ALL-CAPS with dots and dashes: "YR.-TO-YR."
+                if re.match(r"^[A-Z]{2,}\.(-[A-Z]{2,}\.?)+$", t_clean):
                     return True
                 # Abbreviations like "U.S.", "NON-U.S.", "U.K." - single letters with periods
                 # Pattern: optional prefix (NON-), then letter-period pairs
@@ -2216,14 +2218,9 @@ def html_to_markdown(
                                 is_section_label = True
 
                         if is_section_label:
-                            # Only break if we've already collected multi-column header rows
-                            # This avoids breaking at top-of-table titles
                             if header_rows:
-                                # We have headers, and this is a section label - stop
                                 break
-                            else:
-                                # Still at top of table, skip this title row
-                                continue
+                            continue
 
                     header_rows.append((row_idx, row))
 
@@ -2764,12 +2761,9 @@ def html_to_markdown(
                 ):
                     values.append(c)
                 # Check if this is a number (with optional $ prefix, commas, parens for negative)
-                # Also handle numbers with footnote references like "7 (a)" or "(917)(3)" or "(171)*"
-                # Match: 1,234 or (1,234) or $1,234 or ($1,234) or 7 (a) or (917)(3) or $(171)*
-                # Also handle spaced parens like "( 135 )" and "$ 1,787"
-                # Also handle sign-prefixed values: +6.6, -1.5, +0.8
+
                 elif re.match(
-                    r"^[+\-]?[\$]?\s*\(?[\$]?\s*\d[\d,]*\.?\d*\s*\)?\*{0,2}\s*(\(\d+\)|\([a-z]\))?$",
+                    r"^[+\-]?[\$]?\s*\(?[\$]?\s*\d[\d,]*\.?\d*\s*\)?\s*%?(?:pts\.?)?\s*\*{0,2}\s*(\(\d+\)|\([a-z]\))?$",
                     c.replace(",", ""),
                 ):
                     # It's a number (possibly with footnote) - it's a value
@@ -3933,6 +3927,12 @@ def html_to_markdown(
                     return 3  # Subsection headers (11-14pt)
         return 3
 
+    # Track whether we have already emitted a TOC / page-navigation table.
+    # Older SEC exhibits (e.g. IBM 2008 Annual Report) embed the same sidebar
+    # navigation table on every page — dozens of copies.  We keep only the
+    # first one and suppress the rest.
+    _seen_toc_table = [False]  # mutable so inner function can write
+
     def process_element(element, depth=0) -> str:
         """Recursively process element to markdown."""
         if isinstance(element, NavigableString):
@@ -4001,6 +4001,34 @@ def html_to_markdown(
         # Tables
         if element.name == "table":
             if keep_tables:
+                # Detect TOC / page-navigation tables and suppress duplicates.
+                # Older SEC exhibits (e.g. IBM 2008 Annual Report) embed a
+                # sidebar navigation table on every page.  These tables have
+                # section names with page numbers — NOT financial data.
+                # Key signal: a row whose first cell says "Management
+                # Discussion" (or similar TOC heading) combined with most
+                # rows ending in a bare page-number integer.
+                tbl_rows = element.find_all("tr")
+                if len(tbl_rows) >= 5:
+                    _has_toc_heading = False
+                    _page_num_rows = 0
+                    for _tr in tbl_rows:
+                        _cells = _tr.find_all(["td", "th"])
+                        if not _cells:
+                            continue
+                        _first = _cells[0].get_text(strip=True).lower()
+                        if _first in (
+                            "management discussion",
+                            "table of contents",
+                        ) or _first.startswith("management\n"):
+                            _has_toc_heading = True
+                        _last = _cells[-1].get_text(strip=True)
+                        if _last.isdigit() and 0 < int(_last) < 300:
+                            _page_num_rows += 1
+                    if _has_toc_heading and _page_num_rows >= len(tbl_rows) * 0.5:
+                        if _seen_toc_table[0]:
+                            return ""  # Already emitted one — skip
+                        _seen_toc_table[0] = True
                 return "\n\n" + convert_table(element) + "\n\n"
             return ""
 
