@@ -88,7 +88,6 @@ NAME_OVERRIDES: dict[str, str] = {
     "uk": "GB",
     "venezuela": "VE",
     "vietnam": "VN",
-    "viet nam": "VN",
     "palestine": "PS",
     "the netherlands": "NL",
     "netherlands": "NL",
@@ -265,7 +264,8 @@ def scrape_oecd() -> set[str]:
 
     # Find "Member countries" section
     for header in soup.find_all(["h2", "h3"]):
-        if "member" in header.get_text().lower() and "countr" in header.get_text().lower():
+        htext = header.get_text().lower()
+        if "member" in htext and "country" in htext or "countries" in htext:
             for sib in header.find_next_siblings():
                 if sib.name in ("h2", "h3"):
                     break
@@ -293,7 +293,7 @@ def scrape_opec() -> set[str]:
     for header in soup.find_all(["h2", "h3"]):
         htext = header.get_text().lower()
         if ("current" in htext and "member" in htext) or (
-            "member" in htext and "countr" in htext
+            "member" in htext and ("country" in htext or "countries" in htext)
         ):
             for sib in header.find_next_siblings():
                 if sib.name in ("h2", "h3"):
