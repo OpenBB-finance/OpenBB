@@ -139,7 +139,7 @@ async def parse_13f_hr(filing: str):
     info_table = soup.find_all("informationTable")
 
     if not info_table:
-        info_table = soup.find_all("table")[-1]
+        info_table = soup.find_all("table")[-1]  # type: ignore[assignment]
 
     parsed_xml = xmltodict.parse(
         str(info_table[0]).replace("ns1:", "").replace("n1:", "")  # type: ignore

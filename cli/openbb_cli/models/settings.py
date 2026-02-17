@@ -41,106 +41,140 @@ class Settings(BaseModel):
     FILE_OVERWRITE: bool = Field(
         default=False,
         description="whether to overwrite Excel files if they already exists",
-        command="overwrite",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "overwrite",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     SHOW_VERSION: bool = Field(
         default=True,
         description="whether to show the version in the bottom right corner",
-        command="version",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "version",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     USE_INTERACTIVE_DF: bool = Field(
         default=True,
         description="display tables in interactive window",
-        command="interactive",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "interactive",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     USE_CLEAR_AFTER_CMD: bool = Field(
         default=False,
         description="clear console after each command",
-        command="cls",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "cls",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     USE_DATETIME: bool = Field(
         default=True,
         description="whether to show the date and time before the flair",
-        command="datetime",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "datetime",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     USE_PROMPT_TOOLKIT: bool = Field(
         default=True,
         description="enable prompt toolkit (autocomplete and history)",
-        command="promptkit",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "promptkit",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     ENABLE_EXIT_AUTO_HELP: bool = Field(
         default=True,
         description="automatically print help when quitting menu",
-        command="exithelp",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "exithelp",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     ENABLE_RICH_PANEL: bool = Field(
         default=True,
         description="enable colorful rich CLI panel",
-        command="richpanel",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "richpanel",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     TOOLBAR_HINT: bool = Field(
         default=True,
         description="displays usage hints in the bottom toolbar",
-        command="tbhint",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "tbhint",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
     SHOW_MSG_OBBJECT_REGISTRY: bool = Field(
         default=False,
         description="show obbject registry message after a new result is added",
-        command="obbject_msg",
-        group=SettingGroups.feature_flags,
+        json_schema_extra={
+            "command": "obbject_msg",
+            "group": SettingGroups.feature_flags.value,
+        },
     )
 
     # PREFERENCES
     TIMEZONE: Literal[tuple(all_timezones)] = Field(  # type: ignore[valid-type]
         default="America/New_York",
         description="pick timezone",
-        command="timezone",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "timezone",
+            "group": SettingGroups.preferences.value,
+        },
     )
     FLAIR: Literal[tuple(AVAILABLE_FLAIRS)] = Field(  # type: ignore[valid-type]
         default=":openbb",
         description="choose flair icon",
-        command="flair",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "flair",
+            "group": SettingGroups.preferences.value,
+        },
     )
     N_TO_KEEP_OBBJECT_REGISTRY: int = Field(
         default=10,
         description="define the maximum number of obbjects allowed in the registry",
-        command="obbject_res",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "obbject_res",
+            "group": SettingGroups.preferences.value,
+        },
     )
     N_TO_DISPLAY_OBBJECT_REGISTRY: int = Field(
         default=5,
         description="define the maximum number of cached results to display on the help menu",
-        command="obbject_display",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "obbject_display",
+            "group": SettingGroups.preferences.value,
+        },
     )
     RICH_STYLE: str = Field(
         default="dark",
         description="apply a custom rich style to the CLI",
-        command="console_style",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "console_style",
+            "group": SettingGroups.preferences.value,
+        },
     )
     ALLOWED_NUMBER_OF_ROWS: int = Field(
         default=20,
         description="number of rows to show (when not using interactive tables).",
-        command="n_rows",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "n_rows",
+            "group": SettingGroups.preferences.value,
+        },
     )
     ALLOWED_NUMBER_OF_COLUMNS: int = Field(
         default=5,
         description="number of columns to show (when not using interactive tables).",
-        command="n_cols",
-        group=SettingGroups.preferences,
+        json_schema_extra={
+            "command": "n_cols",
+            "group": SettingGroups.preferences.value,
+        },
     )
 
     model_config = ConfigDict(validate_assignment=True)
