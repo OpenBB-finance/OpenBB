@@ -5389,11 +5389,11 @@ def _convert_layout_table(table_elem, base_url: str = "") -> str | None:
         for section in bio_sections:
             if section["name"]:
                 result_parts.append(f"\n**{section['name']}**\n")
-            for item in section.get("metadata", []):
+            for item in section.get("metadata", []):  # type: ignore
                 result_parts.append(f"- {item}")
             if section["metadata"]:
                 result_parts.append("")  # Blank line after metadata
-            for para in section.get("paragraphs", []):
+            for para in section.get("paragraphs", []):  # type: ignore
                 result_parts.append(para)
                 result_parts.append("")  # Blank line after each paragraph
         if result_parts:
