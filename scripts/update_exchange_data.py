@@ -72,12 +72,30 @@ def process_mic_data(rows: list[dict], operating_only: bool = False) -> list[dic
 
         acronym = row.get("ACRONYM", "").strip() or mic
 
-        exchanges.append({
+        entry = {
             "mic": mic,
             "acronym": acronym,
             "name": name,
-            "_type": row.get("OPRT/SGMT", "").strip().upper(),
-        })
+        }
+
+        city = row.get("CITY", "").strip()
+        if city:
+            entry["city"] = city.title()
+
+        country_code = row.get("ISO COUNTRY CODE (ISO 3166)", "").strip().upper()
+        if country_code:
+            entry["country"] = country_code
+
+        website = row.get("WEBSITE", "").strip()
+        if website:
+            # Normalize: ensure lowercase, add https:// if missing scheme
+            website = website.lower()
+            if website and not website.startswith(("http://", "https://")):
+                website = f"https://{website}"
+            entry["website"] = website
+
+        entry["_type"] = row.get("OPRT/SGMT", "").strip().upper()
+        exchanges.append(entry)
 
     # Sort operating MICs before segments so that the lookup in exchange_utils
     # (first-write-wins) gives priority to operating MICs when acronyms collide.
