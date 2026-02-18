@@ -3,7 +3,7 @@
 import argparse
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Literal, get_origin
+from typing import Any, Literal, cast, get_origin
 
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
@@ -13,20 +13,26 @@ from openbb_cli.session import Session
 session = Session()
 
 
+def _get_extra(field: Any) -> dict[str, Any]:
+    """Safely extract json_schema_extra as a dict."""
+    extra = field.json_schema_extra
+    return cast(dict[str, Any], extra) if isinstance(extra, dict) else {}
+
+
 class SettingsController(BaseController):
     """Settings Controller class."""
 
-    _COMMANDS = {
-        v.json_schema_extra.get("command"): {
-            "command": (v.json_schema_extra or {}).get("command"),
-            "group": (v.json_schema_extra or {}).get("group"),
+    _COMMANDS: dict[str, dict[str, Any]] = {
+        _get_extra(v).get("command", ""): {
+            "command": _get_extra(v).get("command"),
+            "group": _get_extra(v).get("group"),
             "description": v.description,
             "annotation": v.annotation,
             "field_name": k,
         }
         for k, v in sorted(
             session.settings.model_fields.items(),
-            key=lambda item: (item[1].json_schema_extra or {}).get("command", ""),
+            key=lambda item: _get_extra(item[1]).get("command", ""),
         )
         if v.json_schema_extra
     }
@@ -39,9 +45,9 @@ class SettingsController(BaseController):
         super().__init__(queue)
         for cmd, field in self._COMMANDS.items():
             group = field.get("group")
-            if group == SettingGroups.feature_flags:
+            if group == SettingGroups.feature_flags.value:
                 self._generate_command(cmd, field, "toggle")
-            elif group == SettingGroups.preferences:
+            elif group == SettingGroups.preferences.value:
                 self._generate_command(cmd, field, "set")
         self.update_completer(self.choices_default)
 
@@ -50,7 +56,7 @@ class SettingsController(BaseController):
         mt = MenuText("settings/")
         mt.add_info("Feature Flags")
         for k, f in self._COMMANDS.items():
-            if f.get("group") == SettingGroups.feature_flags:
+            if f.get("group") == SettingGroups.feature_flags.value:
                 mt.add_setting(
                     name=k,
                     status=getattr(session.settings, f["field_name"]),
@@ -59,7 +65,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_info("Preferences")
         for k, f in self._COMMANDS.items():
-            if f.get("group") == SettingGroups.preferences:
+            if f.get("group") == SettingGroups.preferences.value:
                 mt.add_cmd(
                     name=k,
                     description=f["description"],
