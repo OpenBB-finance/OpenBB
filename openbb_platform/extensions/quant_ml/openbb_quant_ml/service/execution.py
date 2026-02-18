@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from pathlib import Path
-from uuid import uuid4
 from typing import Any
+from uuid import uuid4
 
 import numpy as np
 import pandas as pd
@@ -20,11 +20,11 @@ from openbb_quant_ml.models import (
     ExecutionPreviewResponse,
     ExecutionSubmitResponse,
     ModelName,
+    RiskEventsResponse,
     RiskLimitsResponse,
     RiskPretradeRequest,
     RiskPretradeResponse,
     RiskViolationItem,
-    RiskEventsResponse,
 )
 from openbb_quant_ml.service.pipeline import get_portfolio_current
 from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json

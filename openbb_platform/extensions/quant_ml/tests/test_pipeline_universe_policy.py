@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from openbb_quant_ml.models import TrainRequest
 from openbb_quant_ml.service import pipeline
 

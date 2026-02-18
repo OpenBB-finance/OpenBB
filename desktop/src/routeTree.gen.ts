@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UninstallRouteImport } from './routes/uninstall'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as QuantRouteImport } from './routes/quant'
+import { Route as OpsRouteImport } from './routes/ops'
 import { Route as MacroRouteImport } from './routes/macro'
 import { Route as JupyterLogsRouteImport } from './routes/jupyter-logs'
 import { Route as InstallationProgressRouteImport } from './routes/installation-progress'
+import { Route as ExecutionRouteImport } from './routes/execution'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BackendsRouteImport } from './routes/backends'
@@ -37,6 +39,11 @@ const QuantRoute = QuantRouteImport.update({
   path: '/quant',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsRoute = OpsRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MacroRoute = MacroRouteImport.update({
   id: '/macro',
   path: '/macro',
@@ -50,6 +57,11 @@ const JupyterLogsRoute = JupyterLogsRouteImport.update({
 const InstallationProgressRoute = InstallationProgressRouteImport.update({
   id: '/installation-progress',
   path: '/installation-progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExecutionRoute = ExecutionRouteImport.update({
+  id: '/execution',
+  path: '/execution',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnvironmentsRoute = EnvironmentsRouteImport.update({
@@ -90,9 +102,11 @@ export interface FileRoutesByFullPath {
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
+  '/execution': typeof ExecutionRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
+  '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
   '/setup': typeof SetupRoute
   '/uninstall': typeof UninstallRoute
@@ -104,9 +118,11 @@ export interface FileRoutesByTo {
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
+  '/execution': typeof ExecutionRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
+  '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
   '/setup': typeof SetupRoute
   '/uninstall': typeof UninstallRoute
@@ -119,9 +135,11 @@ export interface FileRoutesById {
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
+  '/execution': typeof ExecutionRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
+  '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
   '/setup': typeof SetupRoute
   '/uninstall': typeof UninstallRoute
@@ -135,9 +153,11 @@ export interface FileRouteTypes {
     | '/backends'
     | '/dashboard'
     | '/environments'
+    | '/execution'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
+    | '/ops'
     | '/quant'
     | '/setup'
     | '/uninstall'
@@ -149,9 +169,11 @@ export interface FileRouteTypes {
     | '/backends'
     | '/dashboard'
     | '/environments'
+    | '/execution'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
+    | '/ops'
     | '/quant'
     | '/setup'
     | '/uninstall'
@@ -163,9 +185,11 @@ export interface FileRouteTypes {
     | '/backends'
     | '/dashboard'
     | '/environments'
+    | '/execution'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
+    | '/ops'
     | '/quant'
     | '/setup'
     | '/uninstall'
@@ -178,9 +202,11 @@ export interface RootRouteChildren {
   BackendsRoute: typeof BackendsRoute
   DashboardRoute: typeof DashboardRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
+  ExecutionRoute: typeof ExecutionRoute
   InstallationProgressRoute: typeof InstallationProgressRoute
   JupyterLogsRoute: typeof JupyterLogsRoute
   MacroRoute: typeof MacroRoute
+  OpsRoute: typeof OpsRoute
   QuantRoute: typeof QuantRoute
   SetupRoute: typeof SetupRoute
   UninstallRoute: typeof UninstallRoute
@@ -209,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuantRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops': {
+      id: '/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof OpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/macro': {
       id: '/macro'
       path: '/macro'
@@ -228,6 +261,13 @@ declare module '@tanstack/react-router' {
       path: '/installation-progress'
       fullPath: '/installation-progress'
       preLoaderRoute: typeof InstallationProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/execution': {
+      id: '/execution'
+      path: '/execution'
+      fullPath: '/execution'
+      preLoaderRoute: typeof ExecutionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/environments': {
@@ -282,9 +322,11 @@ const rootRouteChildren: RootRouteChildren = {
   BackendsRoute: BackendsRoute,
   DashboardRoute: DashboardRoute,
   EnvironmentsRoute: EnvironmentsRoute,
+  ExecutionRoute: ExecutionRoute,
   InstallationProgressRoute: InstallationProgressRoute,
   JupyterLogsRoute: JupyterLogsRoute,
   MacroRoute: MacroRoute,
+  OpsRoute: OpsRoute,
   QuantRoute: QuantRoute,
   SetupRoute: SetupRoute,
   UninstallRoute: UninstallRoute,

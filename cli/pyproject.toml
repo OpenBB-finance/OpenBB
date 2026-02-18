@@ -17,7 +17,6 @@ openbb = 'openbb_cli.cli:main'
 python = "^3.10,<3.14"
 
 # OpenBB dependencies
-openbb = { version = "^4.6.0", extras = ["all"] }
 
 # CLI dependencies
 prompt-toolkit = "^3.0.50"

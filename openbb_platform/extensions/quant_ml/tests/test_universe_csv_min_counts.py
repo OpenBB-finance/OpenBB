@@ -6,7 +6,6 @@ import csv
 from pathlib import Path
 
 import pytest
-
 from openbb_quant_ml.service.universe import UNIVERSE_MINIMUM_COUNTS
 from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 

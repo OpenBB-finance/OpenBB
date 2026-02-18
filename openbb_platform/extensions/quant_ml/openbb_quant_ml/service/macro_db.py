@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from collections.abc import Iterable
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 from uuid import uuid4
 
 from openbb_quant_ml.service.macro_constants import MACRO_DB_PATH, MACRO_ROOT
@@ -336,6 +337,50 @@ def load_macro_features(
     with get_connection() as conn:
         rows = conn.execute(query, params).fetchall()
     return [dict(row) for row in rows]
+
+
+def get_macro_obs_health_stats() -> dict[str, Any]:
+    """Return aggregate observation stats for macro health endpoint."""
+    init_macro_db()
+    with get_connection() as conn:
+        catalog_total = conn.execute("SELECT COUNT(*) AS cnt FROM macro_series WHERE active = 1").fetchone()
+        with_obs = conn.execute(
+            "SELECT COUNT(*) AS cnt FROM (SELECT DISTINCT source, series_id FROM macro_obs)"
+        ).fetchone()
+        obs_tail = conn.execute(
+            "SELECT MAX(date) AS last_obs_date_global, MAX(fetched_at) AS last_fetched_at_global FROM macro_obs"
+        ).fetchone()
+    return {
+        "total_series_in_catalog": int(catalog_total["cnt"]) if catalog_total else 0,
+        "total_series_with_obs": int(with_obs["cnt"]) if with_obs else 0,
+        "last_obs_date_global": obs_tail["last_obs_date_global"] if obs_tail else None,
+        "last_fetched_at_global": obs_tail["last_fetched_at_global"] if obs_tail else None,
+    }
+
+
+def get_macro_feature_health_stats(top_n: int = 10) -> dict[str, Any]:
+    """Return aggregate feature stats for macro health endpoint."""
+    init_macro_db()
+    top_n_safe = max(1, int(top_n))
+    with get_connection() as conn:
+        base = conn.execute(
+            "SELECT COUNT(*) AS cnt, MAX(date) AS last_feature_date FROM macro_features"
+        ).fetchone()
+        names = conn.execute(
+            """
+            SELECT feat_name, COUNT(*) AS cnt
+            FROM macro_features
+            GROUP BY feat_name
+            ORDER BY cnt DESC, feat_name ASC
+            LIMIT ?
+            """,
+            (top_n_safe,),
+        ).fetchall()
+    return {
+        "total_feature_rows": int(base["cnt"]) if base else 0,
+        "last_feature_date": base["last_feature_date"] if base else None,
+        "feature_names_present": [str(row["feat_name"]) for row in names],
+    }
 
 
 def save_derived_expression(

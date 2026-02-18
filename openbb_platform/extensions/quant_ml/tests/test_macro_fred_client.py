@@ -7,12 +7,12 @@ import json
 from urllib.error import HTTPError
 
 import pytest
-
 from openbb_quant_ml.service import macro_fred_client as mfc
 
 
 def test_fred_client_requires_api_key(monkeypatch):
     monkeypatch.delenv("FRED_API_KEY", raising=False)
+    monkeypatch.setattr(mfc, "_load_fred_api_key", lambda: "")
     client = mfc.FredClient()
     with pytest.raises(mfc.FredApiKeyMissingError):
         client.search_series("unemployment")

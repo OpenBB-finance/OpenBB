@@ -44,6 +44,11 @@ class Env(metaclass=SingletonMeta):
         return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD", True))
 
     @property
+    def AUTO_BUILD_STRICT(self) -> bool:
+        """Strict build mode: fail fast when extension drift is detected."""
+        return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD_STRICT", False))
+
+    @property
     def DEBUG_MODE(self) -> bool:
         """Debug mode: enables debug mode."""
         return self.str2bool(self._environ.get("OPENBB_DEBUG_MODE", False))

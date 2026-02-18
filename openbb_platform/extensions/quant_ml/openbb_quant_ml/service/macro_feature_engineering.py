@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from openbb_quant_ml.service.macro_db import load_macro_features, load_observations, upsert_macro_features

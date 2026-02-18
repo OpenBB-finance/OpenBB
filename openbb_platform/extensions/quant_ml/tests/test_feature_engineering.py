@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.models import FeatureConfig
 from openbb_quant_ml.service.feature_engineering import attach_macro_features, build_feature_dataset
 

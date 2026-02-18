@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from openbb_quant_ml.service import universe as uv
-from openbb_quant_ml.service import universe_builder as ub
+from openbb_quant_ml.service import (
+    universe as uv,
+    universe_builder as ub,
+)
 
 
 def test_unknown_universe_returns_empty(monkeypatch, tmp_path: Path):

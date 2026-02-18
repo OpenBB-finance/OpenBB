@@ -1,5 +1,6 @@
 """Extension Loader."""
 
+import logging
 from enum import Enum
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
@@ -147,6 +148,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self, entry_points_: EntryPoints, group: OpenBBGroups
     ) -> dict[str, Any]:
         """Return a dict of objects matching the entry points."""
+        logger = logging.getLogger(__name__)
 
         def load_obbject(eps: EntryPoints) -> dict[str, Extension]:
             """
@@ -154,11 +156,21 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
             Keys are entry point names and values are instances of the Extension class.
             """
-            return {
-                ep.name: entry
-                for ep in eps
-                if isinstance((entry := ep.load()), Extension)
-            }
+            entries: dict[str, Extension] = {}
+            for ep in eps:
+                try:
+                    entry = ep.load()
+                except ModuleNotFoundError as exc:
+                    logger.warning("Skipping obbject extension '%s': missing dependency (%s)", ep.name, exc)
+                    continue
+                except Exception:  # noqa: BLE001
+                    logger.exception("Failed loading obbject extension '%s'", ep.name)
+                    continue
+                if isinstance(entry, Extension):
+                    entries[ep.name] = entry
+                else:
+                    logger.warning("Skipping obbject extension '%s': loaded object is not Extension", ep.name)
+            return entries
 
         def load_core(eps: EntryPoints) -> dict[str, "Router"]:
             """Return a dictionary of core objects."""
@@ -167,7 +179,14 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
             entries: dict[str, Router] = {}
             for ep in eps:
-                entry = ep.load()
+                try:
+                    entry = ep.load()
+                except ModuleNotFoundError as exc:
+                    logger.warning("Skipping core extension '%s': missing dependency (%s)", ep.name, exc)
+                    continue
+                except Exception:  # noqa: BLE001
+                    logger.exception("Failed loading core extension '%s'", ep.name)
+                    continue
                 if isinstance(entry, Router):
                     entries[ep.name] = entry
                     continue
@@ -175,6 +194,8 @@ class ExtensionLoader(metaclass=SingletonMeta):
                     entry = entry.router
                 if isinstance(entry, APIRouter):
                     entries[ep.name] = Router.from_fastapi(entry)
+                    continue
+                logger.warning("Skipping core extension '%s': loaded object is not Router/APIRouter/FastAPI", ep.name)
             return entries
 
         def load_provider(eps: EntryPoints) -> dict[str, "Provider"]:
@@ -189,9 +210,16 @@ class ExtensionLoader(metaclass=SingletonMeta):
             entries: dict = {}
             for ep in eps:
                 try:
-                    if isinstance((entry := ep.load()), Provider):
+                    entry = ep.load()
+                    if isinstance(entry, Provider):
                         entries[ep.name] = entry
-                except ModuleNotFoundError:
+                    else:
+                        logger.warning("Skipping provider extension '%s': loaded object is not Provider", ep.name)
+                except ModuleNotFoundError as exc:
+                    logger.warning("Skipping provider extension '%s': missing dependency (%s)", ep.name, exc)
+                    continue
+                except Exception:  # noqa: BLE001
+                    logger.exception("Failed loading provider extension '%s'", ep.name)
                     continue
             return entries
 

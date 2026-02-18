@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from openbb_quant_ml.tools import refresh_universes as ru
 
 

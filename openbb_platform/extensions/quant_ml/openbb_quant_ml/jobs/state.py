@@ -18,7 +18,7 @@ class JobState:
         self.data = data
 
     @classmethod
-    def load(cls, path: Path = STATE_PATH) -> "JobState":
+    def load(cls, path: Path = STATE_PATH) -> JobState:
         if not path.exists():
             return cls({})
         with path.open(encoding="utf-8") as file:
@@ -35,3 +35,6 @@ class JobState:
 
     def set(self, key: str, value: Any) -> None:
         self.data[key] = value
+
+    def delete(self, key: str) -> None:
+        self.data.pop(key, None)

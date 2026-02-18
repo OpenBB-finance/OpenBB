@@ -86,7 +86,9 @@ describe('Root Route', () => {
     expect(screen.getByText(/API Keys/i)).toBeInTheDocument();
     expect(screen.getByText(/Quant Lab/i)).toBeInTheDocument();
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
+    expect(screen.getByText(/Execution/i)).toBeInTheDocument();
     expect(screen.getByText(/Macro/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ops/i)).toBeInTheDocument();
   });
 
   test('hides navigation links in Jupyter logs view', async () => {
@@ -103,7 +105,9 @@ describe('Root Route', () => {
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
   });
 
   test('hides navigation links in Backend logs view', async () => {
@@ -120,7 +124,9 @@ describe('Root Route', () => {
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
   });
 
   test('hides navigation links in Setup view', async () => {
@@ -137,7 +143,9 @@ describe('Root Route', () => {
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
   });
 
   test('hides navigation links in Installation Progress view', async () => {
@@ -154,6 +162,8 @@ describe('Root Route', () => {
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
   });
 });

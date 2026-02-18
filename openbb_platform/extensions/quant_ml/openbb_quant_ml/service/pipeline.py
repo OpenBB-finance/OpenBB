@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import re
+import time
 import traceback
 from concurrent.futures import Future, ThreadPoolExecutor
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
-import re
-import time
 from typing import Any
 
 import numpy as np
@@ -39,11 +39,11 @@ from openbb_quant_ml.models import (
 )
 from openbb_quant_ml.service.backtest import run_backtest
 from openbb_quant_ml.service.cache_registry import get_data_versions, get_feature_versions
-from openbb_quant_ml.service.data_loader import build_close_panel, build_price_panel, load_market_data
 from openbb_quant_ml.service.dashboard_metrics import (
     get_performance_regime as get_dashboard_performance_regime,
     refresh_alerts_for_run,
 )
+from openbb_quant_ml.service.data_loader import build_close_panel, build_price_panel, load_market_data
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
 from openbb_quant_ml.service.modeling import train_hybrid_models
 from openbb_quant_ml.service.ranker_modeling import train_ranker_models
@@ -188,9 +188,7 @@ def _normalize_run_payload(payload: dict[str, Any]) -> dict[str, Any]:
         progress_value = int(normalized.get("progress", 0) or 0)
         if has_error or "fail" in stage_text:
             status_key = "failed"
-        elif "complete" in stage_text or "backtest_completed" in stage_text:
-            status_key = "completed"
-        elif progress_value >= 100:
+        elif "complete" in stage_text or "backtest_completed" in stage_text or progress_value >= 100:
             status_key = "completed"
         elif progress_value <= 0:
             status_key = "queued"
@@ -378,8 +376,7 @@ def _apply_quick_mode_bounds(request: TrainRequest) -> tuple[date, date]:
     end_date = request.date_range.end_date
     if request.quick_mode:
         quick_start = end_date - timedelta(days=365 * 3)
-        if quick_start > start_date:
-            start_date = quick_start
+        start_date = max(start_date, quick_start)
     return start_date, end_date
 
 

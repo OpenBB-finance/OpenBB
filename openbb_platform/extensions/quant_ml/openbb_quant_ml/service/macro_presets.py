@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import date
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -22,6 +23,19 @@ from openbb_quant_ml.service.macro_transforms import compute_stats, infer_freque
 Resolver = Callable[[str], pd.Series]
 
 
+def _safe_float_or_none(value: Any) -> float | None:
+    """Convert NaN/inf to None for JSON-safe payloads."""
+    if value is None:
+        return None
+    try:
+        out = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not np.isfinite(out):
+        return None
+    return out
+
+
 def _series_to_points(series: pd.Series) -> list[MacroDataPoint]:
     clean = series.dropna().sort_index()
     return [MacroDataPoint(date=idx.date().isoformat(), value=float(value)) for idx, value in clean.items()]
@@ -29,11 +43,11 @@ def _series_to_points(series: pd.Series) -> list[MacroDataPoint]:
 
 def _stats_to_model(stats: dict[str, float | None]) -> MacroSeriesStats:
     return MacroSeriesStats(
-        last=stats.get("last"),
-        change_1m=stats.get("change_1m"),
-        change_3m=stats.get("change_3m"),
-        z=stats.get("z"),
-        percentile_5y=stats.get("percentile_5y"),
+        last=_safe_float_or_none(stats.get("last")),
+        change_1m=_safe_float_or_none(stats.get("change_1m")),
+        change_3m=_safe_float_or_none(stats.get("change_3m")),
+        z=_safe_float_or_none(stats.get("z")),
+        percentile_5y=_safe_float_or_none(stats.get("percentile_5y")),
     )
 
 
@@ -91,17 +105,19 @@ def _detect_divergence_events(
         if run_start is None or run_end is None or run_len < min_weeks_safe:
             return
         row = frame.loc[run_end]
-        sr = float(row["slope_ratio"])
-        sy = float(row["slope_yield"])
+        sr = _safe_float_or_none(row["slope_ratio"])
+        sy = _safe_float_or_none(row["slope_yield"])
+        if sr is None or sy is None:
+            return
         event_type = "ratio_up_yield_down" if sr > 0 and sy < 0 else "ratio_down_yield_up"
         details: dict[str, float | str] = {
             "duration_weeks": float(run_len),
             "slope_ratio_last": sr,
             "slope_yield_last": sy,
         }
-        corr_value = row.get("corr")
-        if corr_value is not None and pd.notna(corr_value):
-            details["corr_last"] = float(corr_value)
+        corr_value = _safe_float_or_none(row.get("corr"))
+        if corr_value is not None:
+            details["corr_last"] = corr_value
         events.append(
             MacroEventItem(
                 date=pd.Timestamp(run_start).date().isoformat(),
@@ -261,4 +277,3 @@ def get_copper_gold_preset_response(
         series=series_payload,
         events=events,
     )
-

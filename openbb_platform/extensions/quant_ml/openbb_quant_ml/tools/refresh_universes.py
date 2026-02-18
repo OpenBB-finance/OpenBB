@@ -8,22 +8,22 @@ from __future__ import annotations
 
 import argparse
 import csv
-from io import StringIO
 import os
 import re
 import sys
 import tempfile
+from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
+from io import StringIO
 from pathlib import Path
-from typing import Iterable
 from urllib.request import Request, urlopen
 
 import pandas as pd
 
-from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 from openbb_quant_ml.service.universe import get_universe_minimum_required
+from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 
 UNIVERSE_IDS_ALL = ("kospi200", "kosdaq100", "sp500", "nasdaq100", "sox", "dow30")
 

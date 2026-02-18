@@ -2,6 +2,9 @@
 import { resolveOpenBBBackend } from "../../lib/openbbBackend";
 import {
   evaluateMacroExpression,
+  fetchCopperGoldPreset,
+  fetchMacroHealth,
+  fetchMacroHealthWithActivation,
   fetchMarketRatio,
   fetchMarketRollingCorr,
   fetchMacroAlerts,
@@ -10,26 +13,32 @@ import {
   fetchMacroRegime,
   fetchMacroRegimeState,
   fetchMacroSeries,
+  fetchMacroSeriesMulti,
   invalidateMacroCache,
   registerMacroSeries,
   saveMacroDerived,
   searchMacroCatalog,
   triggerMacroUpdate,
 } from "../../lib/macroApi";
+import type { FeatureActivation } from "../../types/feature-activation";
 import type {
   MacroAlertItem,
   MacroCatalogItem,
   MacroDataPoint,
   MacroExpressionResponse,
+  MacroHealthResponse,
+  MacroPresetResponse,
   MacroFill,
   MacroFreq,
   MacroRegimePoint,
   MacroRegimeStateResponse,
   MacroSeriesResponse,
+  MacroSeriesMultiResponse,
 } from "../../types/macro";
 import { CatalogSidebar } from "./CatalogSidebar";
 import { ExpressionBar } from "./ExpressionBar";
 import { MainSeriesChart } from "./MainSeriesChart";
+import { MultiSeriesComparePanel } from "./MultiSeriesComparePanel";
 import { RegimeAlertsPanel } from "./RegimeAlertsPanel";
 import { RelationshipPanel } from "./RelationshipPanel";
 import { StatsPanel } from "./StatsPanel";
@@ -81,6 +90,22 @@ function normalizeAlerts(input: unknown): MacroAlertItem[] {
   return input as MacroAlertItem[];
 }
 
+function parseCompareKeys(raw: string): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const token of raw.split(",")) {
+    const key = token.trim();
+    if (!key) {
+      continue;
+    }
+    if (!seen.has(key)) {
+      seen.add(key);
+      out.push(key);
+    }
+  }
+  return out;
+}
+
 function toFriendlyError(error: unknown): string {
   if (error instanceof Error) {
     const text = error.message || "Unknown error";
@@ -100,6 +125,7 @@ function toFriendlyError(error: unknown): string {
 
 export default function MacroPage() {
   const [backendBaseUrl, setBackendBaseUrl] = useState<string>("");
+  const [macroActivation, setMacroActivation] = useState<FeatureActivation | null>(null);
   const [isBackendLoading, setIsBackendLoading] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -118,6 +144,9 @@ export default function MacroPage() {
   const [searchResults, setSearchResults] = useState<MacroCatalogItem[]>([]);
   const [seriesPayload, setSeriesPayload] = useState<MacroSeriesResponse | null>(null);
   const [exprPayload, setExprPayload] = useState<MacroExpressionResponse | null>(null);
+  const [compareKeys, setCompareKeys] = useState("FRED:UNRATE,FRED:CPIAUCSL,FRED:FEDFUNDS");
+  const [seriesMultiPayload, setSeriesMultiPayload] = useState<MacroSeriesMultiResponse | null>(null);
+  const [seriesMultiError, setSeriesMultiError] = useState<string | null>(null);
 
   const [ratioPoints, setRatioPoints] = useState<Array<{ date: string; value: number }>>([]);
   const [spreadPoints, setSpreadPoints] = useState<Array<{ date: string; value: number }>>([]);
@@ -132,6 +161,8 @@ export default function MacroPage() {
   const [regimeState, setRegimeState] = useState<MacroRegimeStateResponse | null>(null);
   const [currentAlerts, setCurrentAlerts] = useState<MacroAlertItem[]>([]);
   const [historyAlerts, setHistoryAlerts] = useState<MacroAlertItem[]>([]);
+  const [macroHealth, setMacroHealth] = useState<MacroHealthResponse | null>(null);
+  const [copperGoldPreset, setCopperGoldPreset] = useState<MacroPresetResponse | null>(null);
 
   const chartPayload = exprPayload?.status === "ok" ? exprPayload : seriesPayload;
   const chartPoints = normalizePoints(chartPayload?.data);
@@ -156,6 +187,56 @@ export default function MacroPage() {
     }
   }, []);
 
+  const checkMacroActivation = useCallback(async () => {
+    if (!backendBaseUrl) {
+      return false;
+    }
+    const activationResult = await fetchMacroHealthWithActivation(backendBaseUrl);
+    setMacroActivation(activationResult.activation);
+    if (!activationResult.activation.available) {
+      setErrorMessage(
+        activationResult.activation.detail ||
+          "macro extension unavailable. Install/enable openbb-quant-ml.",
+      );
+      return false;
+    }
+    if (activationResult.data) {
+      setMacroHealth(activationResult.data);
+    }
+    return true;
+  }, [backendBaseUrl]);
+
+  const runSeriesMultiCompare = useCallback(async () => {
+    if (!backendBaseUrl) {
+      return;
+    }
+    const ids = parseCompareKeys(compareKeys);
+    if (ids.length < 2) {
+      setSeriesMultiPayload(null);
+      setSeriesMultiError("Provide at least two keys for multi-series comparison.");
+      return;
+    }
+    try {
+      const response = await fetchMacroSeriesMulti(backendBaseUrl, {
+        ids,
+        start: startDate,
+        end: endDate,
+        transform: "level",
+        freq,
+        fill,
+      });
+      setSeriesMultiPayload(response);
+      if (response.status !== "ok") {
+        setSeriesMultiError(response.message || "Multi-series comparison returned no data.");
+      } else {
+        setSeriesMultiError(null);
+      }
+    } catch (error) {
+      setSeriesMultiPayload(null);
+      setSeriesMultiError(toFriendlyError(error));
+    }
+  }, [backendBaseUrl, compareKeys, endDate, fill, freq, startDate]);
+
   const refreshRegimeAndAlerts = useCallback(async () => {
     if (!backendBaseUrl) {
       return;
@@ -174,6 +255,25 @@ export default function MacroPage() {
     setLatestRegime(regime.latest || (regimePoints.length > 0 ? regimePoints[regimePoints.length - 1] : null));
     setCurrentAlerts(normalizeAlerts(alerts.current));
     setHistoryAlerts(normalizeAlerts(alerts.history));
+  }, [backendBaseUrl, endDate, startDate]);
+
+  const refreshDiagnostics = useCallback(async () => {
+    if (!backendBaseUrl) {
+      return;
+    }
+    const [health, preset] = await Promise.all([
+      fetchMacroHealth(backendBaseUrl),
+      fetchCopperGoldPreset(backendBaseUrl, {
+        start: startDate,
+        end: endDate,
+        freq: "W",
+        fill: "ffill",
+        adjust_units: true,
+        include_corr: true,
+      }),
+    ]);
+    setMacroHealth(health);
+    setCopperGoldPreset(preset);
   }, [backendBaseUrl, endDate, startDate]);
 
   const loadCatalog = useCallback(async () => {
@@ -352,17 +452,33 @@ export default function MacroPage() {
     setIsBusy(true);
     setErrorMessage(null);
     try {
-      const response = await triggerMacroUpdate(backendBaseUrl, { all_default: true, start: startDate, end: endDate });
+      const response = await triggerMacroUpdate(backendBaseUrl, {
+        all_default: true,
+        start: startDate,
+        end: endDate,
+        compute_features: true,
+        features_lookback_days: 365,
+      });
       invalidateMacroCache();
       await loadCatalog();
       await refreshRegimeAndAlerts();
+      await refreshDiagnostics();
+      await runSeriesMultiCompare();
       setInfoMessage(response.message || `Updated ${response.updated_series.length} series.`);
     } catch (error) {
       setErrorMessage(toFriendlyError(error));
     } finally {
       setIsBusy(false);
     }
-  }, [backendBaseUrl, endDate, loadCatalog, refreshRegimeAndAlerts, startDate]);
+  }, [
+    backendBaseUrl,
+    endDate,
+    loadCatalog,
+    refreshDiagnostics,
+    refreshRegimeAndAlerts,
+    runSeriesMultiCompare,
+    startDate,
+  ]);
 
   useEffect(() => {
     void resolveBackend();
@@ -374,15 +490,30 @@ export default function MacroPage() {
     }
     void (async () => {
       try {
+        const active = await checkMacroActivation();
+        if (!active) {
+          return;
+        }
         await loadCatalog();
         await runExpression();
         await runRelationship();
+        await runSeriesMultiCompare();
         await refreshRegimeAndAlerts();
+        await refreshDiagnostics();
       } catch (error) {
         setErrorMessage(toFriendlyError(error));
       }
     })();
-  }, [backendBaseUrl, loadCatalog, refreshRegimeAndAlerts, runExpression, runRelationship]);
+  }, [
+    backendBaseUrl,
+    checkMacroActivation,
+    loadCatalog,
+    refreshDiagnostics,
+    refreshRegimeAndAlerts,
+    runExpression,
+    runRelationship,
+    runSeriesMultiCompare,
+  ]);
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
@@ -401,6 +532,13 @@ export default function MacroPage() {
       {errorMessage ? (
         <div className="mb-2 rounded-sm border border-red-500/60 bg-red-500/10 p-2">
           <p className="body-xs-medium text-red-300">{errorMessage}</p>
+        </div>
+      ) : null}
+      {macroActivation && !macroActivation.available ? (
+        <div className="mb-2 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
+          <p className="body-xs-medium text-amber-300">
+            macro extension unavailable: {macroActivation.detail || "Install/enable openbb-quant-ml."}
+          </p>
         </div>
       ) : null}
       {infoMessage ? (
@@ -425,6 +563,7 @@ export default function MacroPage() {
         onRun={() => {
           void runExpression();
           void runRelationship();
+          void runSeriesMultiCompare();
           void refreshRegimeAndAlerts();
         }}
         onSave={() => {
@@ -454,6 +593,14 @@ export default function MacroPage() {
 
         <div className="space-y-3">
           <MainSeriesChart points={chartPoints} title={chartTitle} subtitle={chartSubtitle} />
+          <MultiSeriesComparePanel
+            compareKeys={compareKeys}
+            onCompareKeysChange={setCompareKeys}
+            onRefresh={() => void runSeriesMultiCompare()}
+            isBusy={isBusy}
+            payload={seriesMultiPayload}
+            errorMessage={seriesMultiError}
+          />
           <RelationshipPanel
             leftSymbol={leftSymbol}
             rightSymbol={rightSymbol}
@@ -472,6 +619,33 @@ export default function MacroPage() {
         </div>
 
         <div className="space-y-3">
+          <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
+            <p className="body-xs-medium text-theme-primary">Macro Health</p>
+            <p className="body-xxs-regular text-theme-muted mt-1">
+              status: {macroHealth?.status ?? "unknown"} | obs: {macroHealth?.obs_stats?.last_obs_date_global ?? "-"} | feat:{" "}
+              {macroHealth?.feature_stats?.last_feature_date ?? "-"}
+            </p>
+            {Array.isArray(macroHealth?.warnings) && macroHealth!.warnings.length > 0 ? (
+              <p className="body-xxs-regular text-amber-400 mt-1">{macroHealth?.warnings.join(" | ")}</p>
+            ) : null}
+          </div>
+          <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
+            <p className="body-xs-medium text-theme-primary">Copper/Gold Preset</p>
+            <p className="body-xxs-regular text-theme-muted mt-1">
+              status: {copperGoldPreset?.status ?? "unknown"} | series: {copperGoldPreset?.series?.length ?? 0} | events:{" "}
+              {copperGoldPreset?.events?.length ?? 0}
+            </p>
+            {copperGoldPreset?.message ? <p className="body-xxs-regular text-theme-muted mt-1">{copperGoldPreset.message}</p> : null}
+            {Array.isArray(copperGoldPreset?.events) && copperGoldPreset!.events.length > 0 ? (
+              <div className="mt-2 space-y-1">
+                {copperGoldPreset!.events.slice(0, 3).map((event) => (
+                  <p key={`${event.date}-${event.event_type}`} className="body-xxs-regular text-theme-primary">
+                    {event.date} | {event.event_type}
+                  </p>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <StatsPanel meta={chartPayload?.meta ?? null} stats={chartPayload?.stats ?? null} />
           <RegimeAlertsPanel
             latestRegime={latestRegime}

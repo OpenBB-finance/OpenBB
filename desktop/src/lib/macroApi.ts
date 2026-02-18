@@ -1,10 +1,13 @@
 import { clearCachePrefix, getCachedOrFetch } from "./quantCache";
+import type { FeatureActivation, FeatureActivationResult } from "../types/feature-activation";
 import type {
   MacroAlertsResponse,
   MacroCatalogResponse,
   MacroDerivedResponse,
   MacroExpressionRequest,
   MacroExpressionResponse,
+  MacroHealthResponse,
+  MacroPresetResponse,
   MacroRegimeResponse,
   MacroRegimeStateResponse,
   MacroSeriesResponse,
@@ -15,6 +18,15 @@ import type {
 const MACRO_PREFIX_CANONICAL = "/api/v1/quant_ml/macro";
 const MACRO_PREFIX_ALIAS = "/api/v1/macro";
 const CACHE_TTL_MS = 60_000;
+
+function buildFeatureActivation(featureName: string, available: boolean, detail?: string): FeatureActivation {
+  return {
+    featureName,
+    available,
+    detail: detail ?? null,
+    lastCheckedAt: new Date().toISOString(),
+  };
+}
 
 async function requestMacro<T>(baseUrl: string, path: string, init: RequestInit): Promise<T> {
   const candidates = [`${MACRO_PREFIX_CANONICAL}${path}`, `${MACRO_PREFIX_ALIAS}${path}`];
@@ -187,7 +199,14 @@ export function fetchMacroDerived(baseUrl: string): Promise<MacroDerivedResponse
 
 export function triggerMacroUpdate(
   baseUrl: string,
-  payload: { series_ids?: string[]; start?: string; end?: string; all_default?: boolean },
+  payload: {
+    series_ids?: string[];
+    start?: string;
+    end?: string;
+    all_default?: boolean;
+    compute_features?: boolean;
+    features_lookback_days?: number;
+  },
 ): Promise<MacroUpdateResponse> {
   invalidateMacroCache();
   return requestMacro(baseUrl, "/update", {
@@ -195,6 +214,69 @@ export function triggerMacroUpdate(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+}
+
+export function fetchMacroHealth(baseUrl: string): Promise<MacroHealthResponse> {
+  return cachedMacro(`health:${baseUrl}`, () => requestMacro(baseUrl, "/health", { method: "GET" }));
+}
+
+export async function fetchMacroHealthWithActivation(
+  baseUrl: string,
+): Promise<FeatureActivationResult<MacroHealthResponse>> {
+  try {
+    const data = await fetchMacroHealth(baseUrl);
+    return {
+      activation: buildFeatureActivation("macro", true),
+      data,
+    };
+  } catch (error) {
+    return {
+      activation: buildFeatureActivation(
+        "macro",
+        false,
+        error instanceof Error ? error.message : "macro extension unavailable",
+      ),
+    };
+  }
+}
+
+export async function probeMacroActivation(baseUrl: string): Promise<FeatureActivation> {
+  const result = await fetchMacroHealthWithActivation(baseUrl);
+  return result.activation;
+}
+
+export function fetchCopperGoldPreset(
+  baseUrl: string,
+  params: {
+    start?: string;
+    end?: string;
+    freq?: string;
+    fill?: string;
+    scale?: number;
+    adjust_units?: boolean;
+    yield_key?: string;
+    corr_window?: number;
+    slope_window?: number;
+    divergence_min_weeks?: number;
+    include_corr?: boolean;
+  } = {},
+): Promise<MacroPresetResponse> {
+  const query = new URLSearchParams();
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.freq) query.set("freq", params.freq);
+  if (params.fill) query.set("fill", params.fill);
+  if (params.scale !== undefined) query.set("scale", String(params.scale));
+  if (params.adjust_units !== undefined) query.set("adjust_units", String(params.adjust_units));
+  if (params.yield_key) query.set("yield_key", params.yield_key);
+  if (params.corr_window !== undefined) query.set("corr_window", String(params.corr_window));
+  if (params.slope_window !== undefined) query.set("slope_window", String(params.slope_window));
+  if (params.divergence_min_weeks !== undefined) query.set("divergence_min_weeks", String(params.divergence_min_weeks));
+  if (params.include_corr !== undefined) query.set("include_corr", String(params.include_corr));
+  const suffix = query.toString() ? `?${query.toString()}` : "";
+  return cachedMacro(`preset-copper-gold:${baseUrl}:${suffix}`, () =>
+    requestMacro(baseUrl, `/presets/copper_gold${suffix}`, { method: "GET" }),
+  );
 }
 
 export function fetchMarketRatio(

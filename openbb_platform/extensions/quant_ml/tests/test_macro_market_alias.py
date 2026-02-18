@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from openbb_quant_ml.service import macro_market as mm
 
 

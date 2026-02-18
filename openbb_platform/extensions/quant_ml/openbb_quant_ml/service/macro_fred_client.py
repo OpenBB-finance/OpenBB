@@ -8,6 +8,7 @@ import random
 import time
 from dataclasses import dataclass
 from datetime import date
+from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -48,12 +49,45 @@ def _load_config() -> FredClientConfig:
     )
 
 
+def _load_fred_api_key() -> str:
+    """Resolve FRED API key from env first, then OpenBB user settings."""
+    from_env = (os.getenv("FRED_API_KEY") or "").strip()
+    if from_env:
+        return from_env
+
+    settings_path = Path.home() / ".openbb_platform" / "user_settings.json"
+    if not settings_path.exists():
+        return ""
+
+    try:
+        text = settings_path.read_text(encoding="utf-8-sig")
+        payload = json.loads(text)
+    except Exception:  # noqa: BLE001
+        return ""
+
+    credentials = payload.get("credentials")
+    if not isinstance(credentials, dict):
+        return ""
+
+    # Support both flattened and nested credential schemas.
+    flat_key = credentials.get("fred_api_key")
+    if isinstance(flat_key, str) and flat_key.strip():
+        return flat_key.strip()
+
+    nested = credentials.get("fred")
+    if isinstance(nested, dict):
+        nested_key = nested.get("api_key")
+        if isinstance(nested_key, str):
+            return nested_key.strip()
+    return ""
+
+
 class FredClient:
     """Thin FRED REST wrapper."""
 
     def __init__(self) -> None:
         self.config = _load_config()
-        self.api_key = (os.getenv("FRED_API_KEY") or "").strip()
+        self.api_key = _load_fred_api_key()
 
     @property
     def has_api_key(self) -> bool:

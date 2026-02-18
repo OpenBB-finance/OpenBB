@@ -5,9 +5,9 @@ from __future__ import annotations
 import os
 import re
 import shutil
+from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from typing import Callable
 
 import pandas as pd
 import yfinance as yf

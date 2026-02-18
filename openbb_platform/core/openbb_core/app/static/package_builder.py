@@ -4,6 +4,7 @@
 import builtins
 import contextlib
 import inspect
+import logging
 import os
 import re
 import shutil
@@ -138,6 +139,7 @@ class PackageBuilder:
         self, directory: Path | None = None, lint: bool = True, verbose: bool = False
     ) -> None:
         """Initialize the package builder."""
+        self._logger = logging.getLogger(__name__)
         self.directory = directory or Path(__file__).parent
         self.lint = lint
         self.verbose = verbose
@@ -163,6 +165,13 @@ class PackageBuilder:
                 print(f"Extensions to remove: {r}")  # noqa: T201
 
             if add or remove:
+                if Env().AUTO_BUILD_STRICT:
+                    message = (
+                        "Reference drift detected. "
+                        f"openbb_core extension sync mismatch (add={sorted(add)} remove={sorted(remove)})."
+                    )
+                    self._logger.error(message)
+                    raise RuntimeError(message)
                 print("\nBuilding...")  # noqa: T201
                 self.build()
 

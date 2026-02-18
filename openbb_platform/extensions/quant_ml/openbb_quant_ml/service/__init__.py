@@ -15,20 +15,6 @@ from openbb_quant_ml.service.dashboard_metrics import (
     get_regime_history,
     refresh_alerts_for_run,
 )
-from openbb_quant_ml.service.pipeline import (
-    build_signals,
-    get_feature_importance,
-    get_model_ic,
-    get_model_performance,
-    get_model_regime,
-    get_portfolio_current,
-    get_predictions_latest,
-    get_run,
-    get_summary,
-    get_universe,
-    run_backtest_for_run,
-    submit_training,
-)
 from openbb_quant_ml.service.execution import (
     get_execution_fills_history,
     get_execution_orders_current,
@@ -49,8 +35,8 @@ from openbb_quant_ml.service.macro_service import (
     get_market_rolling_corr_response,
     get_regime_response as get_macro_regime,
     get_regime_state_response as get_macro_regime_state,
-    get_series_response as get_macro_series,
     get_series_multi_response as get_macro_series_multi,
+    get_series_response as get_macro_series,
     list_derived_response as get_macro_derived,
     register_catalog_response as register_macro_catalog,
     save_derived_response as save_macro_derived,
@@ -58,6 +44,20 @@ from openbb_quant_ml.service.macro_service import (
     trigger_update_response as update_macro_series,
 )
 from openbb_quant_ml.service.ops_status import get_ops_status_response
+from openbb_quant_ml.service.pipeline import (
+    build_signals,
+    get_feature_importance,
+    get_model_ic,
+    get_model_performance,
+    get_model_regime,
+    get_portfolio_current,
+    get_predictions_latest,
+    get_run,
+    get_summary,
+    get_universe,
+    run_backtest_for_run,
+    submit_training,
+)
 
 __all__ = [
     "get_alerts_current",

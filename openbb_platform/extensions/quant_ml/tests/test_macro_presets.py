@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.service.macro_presets import get_copper_gold_preset_response
 
 

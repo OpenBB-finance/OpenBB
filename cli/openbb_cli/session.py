@@ -3,13 +3,13 @@
 import sys
 from pathlib import Path
 
-from openbb import obb
 from openbb_charting.core.backend import create_backend, get_backend
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
 
+from openbb import obb
 from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_cli.config.completer import CustomFileHistory
 from openbb_cli.config.console import Console

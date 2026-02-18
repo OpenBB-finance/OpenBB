@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -18,7 +19,7 @@ class _LSTMRegressor:  # pragma: no cover - wrapper for deferred torch import
     """LSTM regressor with deferred torch import."""
 
     def __init__(self, input_size: int, hidden_size: int, num_layers: int, dropout: float):
-        import torch.nn as nn
+        from torch import nn
 
         self.model = nn.Sequential()  # placeholder for type checker
         self._nn = nn

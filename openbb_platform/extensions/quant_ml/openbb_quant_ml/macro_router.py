@@ -13,11 +13,12 @@ from openbb_quant_ml.macro_models import (
     MacroDerivedSaveRequest,
     MacroExpressionRequest,
     MacroExpressionResponse,
+    MacroHealthResponse,
     MacroPresetResponse,
     MacroRegimeResponse,
     MacroRegimeStateResponse,
-    MacroSeriesQuery,
     MacroSeriesMultiResponse,
+    MacroSeriesQuery,
     MacroSeriesResponse,
     MacroUpdateRequest,
     MacroUpdateResponse,
@@ -27,8 +28,9 @@ from openbb_quant_ml.service.macro_service import (
     get_alerts_response,
     get_catalog_response,
     get_copper_gold_preset_response,
-    get_regime_state_response,
+    get_health_response,
     get_regime_response,
+    get_regime_state_response,
     get_series_multi_response,
     get_series_response,
     list_derived_response,
@@ -46,6 +48,11 @@ def _build_macro_router(prefix: str, description: str) -> Router:
     def catalog(domain: str | None = None) -> MacroCatalogResponse:
         """List registered macro series catalog."""
         return get_catalog_response(domain=domain)
+
+    @router.command(methods=["GET"], path="/health")
+    def health() -> MacroHealthResponse:
+        """Return macro data freshness and coverage diagnostics."""
+        return get_health_response()
 
     @router.command(methods=["POST"], path="/catalog/search")
     def catalog_search(request: MacroCatalogSearchRequest) -> MacroCatalogResponse:

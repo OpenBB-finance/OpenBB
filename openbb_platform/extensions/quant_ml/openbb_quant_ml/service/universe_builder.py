@@ -13,7 +13,6 @@ import pandas as pd
 from openbb_quant_ml.service.constants import ARTIFACT_ROOT, CACHE_DIR, RAW_STORE_DIR, UNIVERSE_CONFIG_PATH
 from openbb_quant_ml.service.storage import load_json, save_json, utc_now_iso
 
-
 UNIVERSE_INPUT_DIR = Path(__file__).resolve().parent.parent / "universe"
 UNIVERSE_META_PATH = ARTIFACT_ROOT / "universe" / "universe_meta.json"
 

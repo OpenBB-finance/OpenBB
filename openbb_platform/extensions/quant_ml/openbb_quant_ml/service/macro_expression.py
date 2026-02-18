@@ -4,12 +4,11 @@ from __future__ import annotations
 
 import ast
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 import numpy as np
 import pandas as pd
-
 
 Resolver = Callable[[str], pd.Series]
 

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from openbb_quant_ml.jobs.logging import append_log, write_json
 from openbb_quant_ml.jobs.state import JobState
-from openbb_quant_ml.service.storage import read_registry
 from openbb_quant_ml.jobs.steps import (
     backtest,
     build_features,
@@ -18,6 +18,7 @@ from openbb_quant_ml.jobs.steps import (
     update_macro_data,
     update_market_data,
 )
+from openbb_quant_ml.service.storage import read_registry
 
 StepFunc = Callable[[dict[str, Any]], dict[str, Any]]
 
@@ -76,6 +77,13 @@ def _run_step(
     raise RuntimeError(f"{name} failed after retries: {last_exc}") from last_exc
 
 
+def _run_date_token(run_id: str) -> str:
+    head = str(run_id).split("-", 1)[0]
+    if len(head) == 8 and head.isdigit():
+        return f"{head[:4]}-{head[4:6]}-{head[6:8]}"
+    return head
+
+
 def run_daily(config: dict[str, Any], state: JobState, run_id: str, run_dir) -> None:
     """Execute daily job steps."""
     job_cfg = config.get("daily", {}) if isinstance(config, dict) else {}
@@ -90,6 +98,7 @@ def run_daily(config: dict[str, Any], state: JobState, run_id: str, run_dir) -> 
     runtime_cfg["updated_at"] = run_id
     retries = int(job_cfg.get("retries", 1))
     backoff_sec = float(job_cfg.get("backoff_sec", 1.0))
+    date_token = _run_date_token(run_id)
 
     steps: list[tuple[str, StepFunc]] = [
         ("update_market_data", update_market_data.run),
@@ -104,8 +113,19 @@ def run_daily(config: dict[str, Any], state: JobState, run_id: str, run_dir) -> 
 
     time_profile: dict[str, float] = {}
     for step_name, func in steps:
+        last_success_date = str(state.get(f"daily.{step_name}.last_success_date", "") or "")
+        if last_success_date == date_token:
+            append_log(
+                run_dir,
+                "info",
+                step_name,
+                f"step skipped (already successful for {date_token})",
+            )
+            time_profile[step_name] = 0.0
+            continue
         result, elapsed = _run_step(run_dir, step_name, func, runtime_cfg, retries=retries, backoff_sec=backoff_sec)
         state.set(f"daily.{step_name}.last_success", run_id)
+        state.set(f"daily.{step_name}.last_success_date", date_token)
         state.set(f"daily.{step_name}.result", result)
         time_profile[step_name] = elapsed
     write_json(run_dir, "time_profile.json", time_profile)

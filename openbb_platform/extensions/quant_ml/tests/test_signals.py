@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from openbb_quant_ml.service.signals import generate_signals
 
 

@@ -15,9 +15,12 @@ from openbb_quant_ml.macro_models import (
     MacroDataPoint,
     MacroDerivedItem,
     MacroDerivedResponse,
-    MacroPresetResponse,
     MacroExpressionRequest,
     MacroExpressionResponse,
+    MacroHealthFeatureStats,
+    MacroHealthObsStats,
+    MacroHealthResponse,
+    MacroPresetResponse,
     MacroRegimePoint,
     MacroRegimeResponse,
     MacroRegimeStateResponse,
@@ -29,7 +32,6 @@ from openbb_quant_ml.macro_models import (
     MacroUpdateRequest,
     MacroUpdateResponse,
 )
-from openbb_quant_ml.service.macro_constants import load_macro_config
 from openbb_quant_ml.service.macro_alerts import evaluate_alerts, persist_and_get_alerts
 from openbb_quant_ml.service.macro_catalog import (
     bootstrap_default_catalog,
@@ -38,13 +40,17 @@ from openbb_quant_ml.service.macro_catalog import (
     resolve_catalog_item,
     search_catalog,
 )
+from openbb_quant_ml.service.macro_constants import MACRO_DB_PATH, load_macro_config
 from openbb_quant_ml.service.macro_db import (
+    get_macro_feature_health_stats,
+    get_macro_obs_health_stats,
     list_alert_events,
     list_derived_expressions,
     load_observations,
     save_derived_expression,
 )
 from openbb_quant_ml.service.macro_expression import MacroExpressionError, evaluate_expression
+from openbb_quant_ml.service.macro_fred_client import FredClient
 from openbb_quant_ml.service.macro_market import get_market_series
 from openbb_quant_ml.service.macro_presets import get_copper_gold_preset_response as build_copper_gold_preset_response
 from openbb_quant_ml.service.macro_regime import compute_regime_scores
@@ -100,8 +106,9 @@ def _load_fred_series(
 ) -> tuple[pd.Series, dict[str, Any], str | None]:
     item = resolve_catalog_item(f"FRED:{series_id}", create_if_missing=True) or {}
     warning: str | None = None
+    has_fred_api_key = FredClient().has_api_key
     updated = update_series_ids([series_id], start=start, end=end)
-    if not updated:
+    if not updated and not has_fred_api_key:
         warning = "missing_api_key_cache_fallback"
     rows = load_observations("FRED", series_id, start.isoformat() if start else None, end.isoformat() if end else None)
     series = normalize_series(rows)
@@ -455,13 +462,67 @@ def get_alerts_response(
     )
 
 
+def get_health_response() -> MacroHealthResponse:
+    """Return macro storage/update health summary for UI diagnostics."""
+    warnings: list[str] = []
+    fred_api_key_configured = FredClient().has_api_key
+    if not fred_api_key_configured:
+        warnings.append("missing_api_key_cache_fallback")
+
+    obs_stats_raw = get_macro_obs_health_stats()
+    feat_stats_raw = get_macro_feature_health_stats(top_n=12)
+
+    status: str = "ok"
+    message: str | None = None
+    if int(obs_stats_raw.get("total_series_with_obs", 0)) <= 0:
+        status = "insufficient_data"
+        warnings.append("macro_observations_empty")
+        message = "No macro observations are stored. Run macro update first."
+    if int(feat_stats_raw.get("total_feature_rows", 0)) <= 0:
+        status = "insufficient_data"
+        warnings.append("macro_features_empty")
+        if not message:
+            message = "Macro features are missing. Re-run update with compute_features enabled."
+
+    last_obs = obs_stats_raw.get("last_obs_date_global")
+    last_feat = feat_stats_raw.get("last_feature_date")
+    if last_obs and last_feat:
+        try:
+            stale_days = int((pd.Timestamp(last_obs) - pd.Timestamp(last_feat)).days)
+            if stale_days > 7:
+                warnings.append("macro_features_stale_vs_observations")
+        except Exception:  # noqa: BLE001
+            pass
+
+    return MacroHealthResponse(
+        status=cast(Any, status),
+        message=message,
+        fred_api_key_configured=fred_api_key_configured,
+        macro_db_path=str(MACRO_DB_PATH),
+        obs_stats=MacroHealthObsStats(**obs_stats_raw),
+        feature_stats=MacroHealthFeatureStats(**feat_stats_raw),
+        warnings=warnings,
+    )
+
+
 def trigger_update_response(request: MacroUpdateRequest) -> MacroUpdateResponse:
     """Trigger on-demand refresh."""
     try:
         if request.all_default:
-            updated = update_all_defaults(start=request.start, end=request.end)
+            updated = update_all_defaults(
+                start=request.start,
+                end=request.end,
+                compute_features=request.compute_features,
+                features_lookback_days=request.features_lookback_days,
+            )
         else:
-            updated = update_series_ids(request.series_ids or [], start=request.start, end=request.end)
+            updated = update_series_ids(
+                request.series_ids or [],
+                start=request.start,
+                end=request.end,
+                compute_features=request.compute_features,
+                features_lookback_days=request.features_lookback_days,
+            )
     except Exception as exc:  # noqa: BLE001
         return MacroUpdateResponse(status="error", message=str(exc), updated_series=[])
     if not updated:

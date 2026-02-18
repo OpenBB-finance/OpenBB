@@ -1,0 +1,50 @@
+name: Unused Features Audit
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "openbb_platform/**"
+      - "desktop/**"
+      - "OpenBB/openbb_platform/**"
+      - ".github/workflows/unused-features-audit.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Generate unused features audit
+        run: |
+          python openbb_platform/tools/unused_features_audit.py \
+            --repo-root . \
+            --markdown-out docs/unused-features-audit.md \
+            --json-out docs/unused-features-audit.json
+
+      - name: Validate mirror sync policy
+        run: |
+          python openbb_platform/tools/check_openbb_sync.py --repo-root .
+
+      - name: Upload audit artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: unused-features-audit
+          path: |
+            docs/unused-features-audit.md
+            docs/unused-features-audit.json

@@ -34,7 +34,8 @@ cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
 .\start_all.ps1
 ```
 
-> 주의: PowerShell에서는 `start_all.ps1`만 입력하면 실행되지 않습니다. 반드시 `.\start_all.ps1` 형태로 실행해야 합니다.
+> 주의: PowerShell에서는 `start_all.ps1`만 입력하면 실행되지 않습니다. 
+반드시 `.\start_all.ps1` 형태로 실행해야 합니다.
 
 ### 사용/종료
 
@@ -222,6 +223,46 @@ git push -u myrepo develop
 | 내 변경사항 GitHub에 올리기 | `git add .` → `git commit -m "메시지"` → `git push myrepo develop` |
 | 업데이트 후 패키지 재설치 | `cd openbb_platform` → `python dev_install.py -e --cli` |
 
+### 수동 업로드(권장, 실무 절차)
+
+아래 절차를 그대로 실행하면 로컬 변경을 `myrepo/develop`에 안전하게 올릴 수 있습니다.
+
+1. 작업 위치/브랜치/원격 확인
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+git status --short
+git branch --show-current
+git remote -v
+```
+
+2. 불필요 산출물은 제외하고 필요한 경로만 스테이징
+
+```powershell
+# 예시: 프론트 + quant_ml 확장만 올릴 때
+git add desktop openbb_platform/extensions/quant_ml
+```
+
+3. 커밋 생성
+
+```powershell
+git commit -m "feat: 변경 내용 요약"
+```
+
+4. 내 저장소(`myrepo`)의 `develop` 브랜치로 푸시
+
+```powershell
+git push myrepo develop
+```
+
+5. 푸시 후 확인
+
+```powershell
+git status --short
+```
+
+`logs/`, `OpenBB/` 같은 로컬 임시 폴더가 남아도, 스테이징하지 않았다면 GitHub에는 올라가지 않습니다.
+
 ---
 
 ## 📋 당신이 해야 할 일
@@ -249,6 +290,158 @@ API 키 발급:
 - [FMP](https://site.financialmodelingprep.com/developer/docs/) 
 - [FRED](https://fred.stlouisfed.org/docs/api/api_key.html)
 - [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+
+### API 키 작성란 바로 열기
+
+```powershell
+notepad "$HOME\\.openbb_platform\\user_settings.json"
+```
+
+필수 키 이름(정확히 동일):
+
+```json
+{
+  "credentials": {
+    "fmp_api_key": "YOUR_FMP_KEY",
+    "fred_api_key": "YOUR_FRED_KEY",
+    "alpha_vantage_api_key": "YOUR_ALPHA_VANTAGE_KEY"
+  }
+}
+```
+
+### API 연결 상태 점검/복구 절차 (권장)
+
+아래 순서대로 하면 `FRED/FMP/Alpha Vantage` 연결 상태를 한 번에 점검할 수 있습니다.
+
+1. `user_settings.json` 인코딩 점검(BOM 제거)
+
+```powershell
+$p = "$HOME\\.openbb_platform\\user_settings.json"
+$bytes = [System.IO.File]::ReadAllBytes($p)
+if ($bytes[0] -eq 239 -and $bytes[1] -eq 187 -and $bytes[2] -eq 191) {
+  $txt = [System.IO.File]::ReadAllText($p)
+  $enc = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($p, $txt, $enc)
+  "BOM 제거 완료"
+} else {
+  "이미 UTF-8(BOM 없음)"
+}
+```
+
+2. 백엔드 실행/포트 확인
+
+```powershell
+Get-NetTCPConnection -State Listen | Where-Object { $_.LocalPort -in 6900,6901 }
+```
+
+`6901`로 떠 있다면 아래 URL의 포트를 `6901`로 바꿔서 테스트하면 됩니다.
+
+3. OpenBB API로 provider 연결 테스트
+
+```powershell
+# FMP
+curl "http://127.0.0.1:6900/api/v1/equity/profile?symbol=AAPL&provider=fmp"
+
+# Alpha Vantage
+curl "http://127.0.0.1:6900/api/v1/equity/price/historical?symbol=IBM&provider=alpha_vantage&start_date=2025-01-01&end_date=2025-01-31"
+
+# FRED (Macro)
+curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/series?key=FRED:DGS10&start=2024-01-01&end=2024-12-31&freq=W&fill=ffill"
+```
+
+4. Macro preset 동작 확인 (Copper/Gold + 10Y)
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/presets/copper_gold?start=2024-01-01&end=2024-12-31&freq=W"
+```
+
+5. FRED 키가 캐시 경고로 나오면
+
+- 백엔드를 재시작하고 다시 3~4를 실행합니다.
+- 이 확장은 `~/.openbb_platform/user_settings.json`의 `credentials.fred_api_key`도 자동 인식합니다.
+
+### 전체 연결 상태 1회 점검(복붙용)
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/health"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/health"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/presets/copper_gold?start=2024-01-01&end=2024-12-31&freq=W"
+curl "http://127.0.0.1:6900/api/v1/economy/fred_series?symbol=DGS10&provider=fred&start_date=2025-01-01&end_date=2025-01-31"
+curl "http://127.0.0.1:6900/api/v1/equity/profile?symbol=AAPL&provider=fmp"
+curl "http://127.0.0.1:6900/api/v1/equity/price/historical?symbol=IBM&provider=alpha_vantage&start_date=2025-01-01&end_date=2025-01-31"
+```
+
+정상 기준:
+- 모두 `200 OK` 응답
+- `quant_ml/macro/presets/copper_gold` 응답에서 `series` 2개 이상
+- `quant_ml/macro/health` 응답에서 `status=ok` 또는 경고 메시지 포함(`insufficient_data` 원인 확인 가능)
+
+### Quant 운영잡/베이스라인 실행 절차 (신규)
+
+1. 운영 잡 수동 1회 점검 (`ops_jobs.yaml` 사용)
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
+python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
+python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
+python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
+```
+
+2. Task Scheduler 등록(Windows)
+
+```powershell
+$repo = "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+$cfg  = "openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml"
+
+$jobRoot = "C:\quantml_jobs"
+New-Item -ItemType Directory -Force -Path $jobRoot | Out-Null
+
+@"
+Set-Location "$repo"
+$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
+python -m openbb_quant_ml.jobs.cli daily --config "$cfg"
+"@ | Set-Content -Path "$jobRoot\quantml_daily.ps1" -Encoding UTF8
+
+@"
+Set-Location "$repo"
+$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
+python -m openbb_quant_ml.jobs.cli weekly --config "$cfg"
+"@ | Set-Content -Path "$jobRoot\quantml_weekly.ps1" -Encoding UTF8
+
+@"
+Set-Location "$repo"
+$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
+python -m openbb_quant_ml.jobs.cli monthly --config "$cfg"
+"@ | Set-Content -Path "$jobRoot\quantml_monthly.ps1" -Encoding UTF8
+
+schtasks /Create /F /TN "QuantML-Daily"   /SC DAILY   /ST 18:30 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_daily.ps1"
+schtasks /Create /F /TN "QuantML-Weekly"  /SC WEEKLY  /D SAT /ST 08:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_weekly.ps1"
+schtasks /Create /F /TN "QuantML-Monthly" /SC MONTHLY /D 1   /ST 09:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_monthly.ps1"
+```
+
+3. 소규모 E2E 후 베이스라인 스냅샷 생성
+
+- 학습/신호/백테스트를 1회 완료한 다음:
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
+python -m openbb_quant_ml.service.baseline_snapshot --run-id <RUN_ID> --period 1y --symbols-count 20 --target-mode next_open_to_close --entry-price next_open --exit-price close
+```
+
+- `RUN_ID` 확인:
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/health"
+```
+
+응답의 `resolved_run_id`를 사용하면 됩니다.
+
+- 결과 파일:
+  - `~/.openbb_platform/quant_ml/runs/<RUN_ID>/time_profile.json`
+  - `~/.openbb_platform/quant_ml/runs/<RUN_ID>/metrics.json`
+  - `~/.openbb_platform/quant_ml/baselines/baseline_*.json`
 
 ### 2. ODP Desktop (선택)
 
@@ -293,5 +486,3 @@ docker run -it --rm -p 6900:6900 -v ~/.openbb_platform:/root/.openbb_platform op
 - [ODP CLI 문서](https://docs.openbb.co/odp/cli)
 - [ODP Desktop 문서](https://docs.openbb.co/odp/desktop)
 - [API 키 설정](https://docs.openbb.co/odp/python/settings/user_settings/api_keys)
-
-

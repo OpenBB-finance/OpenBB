@@ -1461,13 +1461,55 @@ def get_alerts_history(run_id: str, model_name: str | None = None, limit: int = 
 
 
 def get_model_shap(run_id: str, model_name: str | None = None) -> ModelShapResponse:
-    """Return phase-2 SHAP placeholder payload."""
+    """Return explainability payload with surrogate fallback when SHAP is unavailable."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
     normalized_model = _normalize_model_name(model_name)
+    run_dir = get_run_dir(run_id)
+    metrics_payload = _load_metrics(run_dir, normalized_model)
+
+    feature_rows = metrics_payload.get("feature_importance", [])
+    if not isinstance(feature_rows, list):
+        feature_rows = []
+
+    normalized: list[dict[str, float | str]] = []
+    for row in feature_rows:
+        if not isinstance(row, dict):
+            continue
+        feature = str(row.get("feature", "")).strip()
+        importance = _safe_float(row.get("importance", 0.0))
+        if not feature:
+            continue
+        normalized.append({"feature": feature, "importance": importance})
+    normalized.sort(key=lambda item: abs(float(item.get("importance", 0.0))), reverse=True)
+
+    if not normalized:
+        return ModelShapResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="insufficient_data",
+            message="Explainability data is unavailable. Train run with feature importance artifacts first.",
+        )
+
+    top20 = normalized[:20]
+    top3 = normalized[:3]
+    run_state = _registry_run_state(run_id)
+    updated_at = str(run_state.get("updated_at") or datetime.now(UTC).replace(microsecond=0).isoformat())
+    feature_stability_ts = [
+        {
+            "date": updated_at[:10],
+            "feature": str(item.get("feature", "")),
+            "importance": float(item.get("importance", 0.0)),
+        }
+        for item in top3
+    ]
+
     return ModelShapResponse(
         run_id=run_id,
         model_name=normalized_model,
-        status="insufficient_data",
-        message="SHAP endpoint is in phase-2 rollout.",
+        status="ok",
+        message="Explainability(beta): surrogate importance summary (SHAP optional dependency not required).",
+        summary_points=top20,
+        dependence_top3=top3,
+        feature_stability_ts=feature_stability_ts,
     )

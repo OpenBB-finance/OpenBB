@@ -240,7 +240,9 @@ function Root() {
 						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API Keys</NavLink>
 						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
 						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
+						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Execution</NavLink>
 						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro</NavLink>
+						<NavLink to="/ops" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Ops</NavLink>
 					</nav>
 				)}
 			</div>

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.service.macro_transforms import (
     apply_publish_lag,
     apply_transform,

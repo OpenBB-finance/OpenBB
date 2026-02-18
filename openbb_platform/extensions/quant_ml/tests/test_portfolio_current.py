@@ -7,7 +7,6 @@ import math
 import numpy as np
 import pandas as pd
 import pytest
-
 from openbb_quant_ml.service import pipeline
 
 
@@ -154,7 +153,6 @@ def test_get_run_stale_running_timeout(monkeypatch: pytest.MonkeyPatch):
     def _update(run_id: str, **kwargs):
         state.update(kwargs)
         state["updated_at"] = "2026-01-01T00:00:00+00:00"
-        return None
 
     monkeypatch.setattr(pipeline, "get_run_state_dict", _get_state)
     monkeypatch.setattr(pipeline, "_run_has_completion_artifacts", lambda run_id: False)

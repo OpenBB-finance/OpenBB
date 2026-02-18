@@ -1,6 +1,7 @@
 """ReferenceLoader class for loading reference data from a file."""
 
 import json
+import logging
 from pathlib import Path
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
@@ -46,9 +47,17 @@ class ReferenceLoader(metaclass=SingletonMeta):
 
     def _load(self, file_path: Path):
         """Load the reference data from a file."""
+        logger = logging.getLogger(__name__)
         try:
             with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)
         except FileNotFoundError:
+            logger.warning("reference.json not found; reference endpoints metadata is unavailable: %s", file_path)
+            data = {}
+        except json.JSONDecodeError:
+            logger.error("reference.json parse error; returning empty reference payload: %s", file_path)
+            data = {}
+        except OSError:
+            logger.exception("reference.json cannot be read; returning empty reference payload: %s", file_path)
             data = {}
         return data

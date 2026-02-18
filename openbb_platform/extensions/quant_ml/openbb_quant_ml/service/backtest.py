@@ -8,8 +8,8 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import minimize
 import yfinance as yf
+from scipy.optimize import minimize
 
 from openbb_quant_ml.models import BacktestConstraints
 

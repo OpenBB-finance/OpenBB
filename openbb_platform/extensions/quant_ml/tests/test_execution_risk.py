@@ -6,10 +6,11 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-
 from openbb_quant_ml.models import ExecutionOrderPreviewRequest, RiskPretradeRequest
-from openbb_quant_ml.service import execution as ex
-from openbb_quant_ml.service import pipeline
+from openbb_quant_ml.service import (
+    execution as ex,
+    pipeline,
+)
 from openbb_quant_ml.service.storage import save_json
 
 
@@ -20,8 +21,8 @@ def _build_execution_run(tmp_path: Path, run_id: str, concentrated: bool = False
     dates = pd.date_range("2025-01-01", periods=40, freq="B")
     market_rows: list[dict[str, object]] = []
     for date_value in dates:
-        market_rows.append({"date": date_value, "symbol": "AAA", "close": 100.0 + float((date_value.day % 10))})
-        market_rows.append({"date": date_value, "symbol": "BBB", "close": 80.0 + float((date_value.day % 7))})
+        market_rows.append({"date": date_value, "symbol": "AAA", "close": 100.0 + float(date_value.day % 10)})
+        market_rows.append({"date": date_value, "symbol": "BBB", "close": 80.0 + float(date_value.day % 7)})
     pd.DataFrame(market_rows).to_parquet(run_dir / "market_data.parquet", index=False)
 
     if concentrated:

@@ -216,3 +216,44 @@ def test_core_objects_with_apirouter_instance(mock_entry_points):
     assert "apirouter_extension" in core_objects
     assert isinstance(core_objects["apirouter_extension"], Router)
     mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_skip_missing_dependency(mock_entry_points):
+    """Extension loading should continue when one extension dependency is missing."""
+    class _FakeEntryPoint:
+        def __init__(self, name: str, group: str, load_fn):
+            self.name = name
+            self.group = group
+            self._load_fn = load_fn
+
+        def load(self):
+            return self._load_fn()
+
+        def __lt__(self, other):
+            return self.name < other.name
+
+    missing_ep = _FakeEntryPoint(
+        name="quant_ml",
+        group=OpenBBGroups.core.value,
+        load_fn=lambda: (_ for _ in ()).throw(
+            ModuleNotFoundError("No module named 'openbb_quant_ml'")
+        ),
+    )
+    valid_ep = _FakeEntryPoint(
+        name="valid_core",
+        group=OpenBBGroups.core.value,
+        load_fn=lambda: APIRouter(),
+    )
+
+    def _entry_points(*, group):  # noqa: ANN001
+        if group == OpenBBGroups.core.value:
+            return [missing_ep, valid_ep]
+        return []
+
+    mock_entry_points.side_effect = _entry_points
+
+    el = ExtensionLoader()
+    core_objects = el.core_objects
+    assert "quant_ml" not in core_objects
+    assert "valid_core" in core_objects

@@ -4,16 +4,16 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
 import threading
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
 
 from openbb_quant_ml.service.constants import (
     DATA_VERSION_PATH,
-    FEATURE_VERSION_PATH,
     FEATURE_STORE_DIR,
+    FEATURE_VERSION_PATH,
     RAW_STORE_DIR,
     VERSIONS_DIR,
 )

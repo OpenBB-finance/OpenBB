@@ -153,7 +153,9 @@ def attach_macro_features(
         return panel_df
 
     macro_wide = macro_wide.copy()
-    macro_wide["macro_date"] = pd.to_datetime(macro_wide["date"]).dt.tz_localize(None)
+    macro_wide["macro_date"] = (
+        pd.to_datetime(macro_wide["date"]).dt.tz_localize(None).astype("datetime64[ns]")
+    )
     if publication_lag_mode == "one_day":
         macro_wide["macro_date"] = macro_wide["macro_date"] + timedelta(days=1)
     macro_wide = macro_wide.drop(columns=["date"]).sort_values("macro_date")
@@ -162,7 +164,7 @@ def attach_macro_features(
         panel_df[["date"]]
         .drop_duplicates()
         .rename(columns={"date": "sample_date"})
-        .assign(sample_date=lambda x: pd.to_datetime(x["sample_date"]).dt.tz_localize(None))
+        .assign(sample_date=lambda x: pd.to_datetime(x["sample_date"]).dt.tz_localize(None).astype("datetime64[ns]"))
         .sort_values("sample_date")
     )
 

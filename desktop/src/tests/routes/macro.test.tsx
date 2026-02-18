@@ -4,6 +4,7 @@ import React from "react";
 import { vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { Route as MacroRoute } from "../../routes/macro";
+import { clearCachePrefix } from "../../lib/quantCache";
 
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(() => (options: { component: React.ComponentType }) => ({
@@ -30,6 +31,7 @@ describe("Macro Route", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    clearCachePrefix("");
 
     vi.mocked(invoke).mockResolvedValue([
       {
@@ -66,6 +68,32 @@ describe("Macro Route", () => {
         });
       }
       if (url.includes("/api/v1/quant_ml/macro/series")) {
+        if (url.includes("ids=")) {
+          return mockResponse({
+            status: "ok",
+            message: null,
+            series: {
+              "FRED:UNRATE": {
+                meta: { key: "FRED:UNRATE", source: "FRED", transform: "level" },
+                data: [
+                  { date: "2025-01-31", value: 4.0 },
+                  { date: "2025-02-28", value: 4.1 },
+                ],
+                stats: { last: 4.1 },
+                status: "ok",
+              },
+              "FRED:CPIAUCSL": {
+                meta: { key: "FRED:CPIAUCSL", source: "FRED", transform: "level" },
+                data: [
+                  { date: "2025-01-31", value: 300.0 },
+                  { date: "2025-02-28", value: 301.0 },
+                ],
+                stats: { last: 301.0 },
+                status: "ok",
+              },
+            },
+          });
+        }
         return mockResponse({
           meta: {
             key: "FRED:UNRATE",
@@ -175,10 +203,30 @@ describe("Macro Route", () => {
           items: [],
         });
       }
+      if (url.includes("/api/v1/quant_ml/macro/health")) {
+        return mockResponse({
+          status: "ok",
+          fred_api_key_configured: true,
+          macro_db_path: "/tmp/macro.db",
+          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 1 },
+          feature_stats: { total_feature_rows: 10, feature_names_present: [] },
+          warnings: [],
+        });
+      }
       if (url.includes("/api/v1/quant_ml/macro/update")) {
         return mockResponse({
           status: "ok",
           updated_series: ["UNRATE"],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
+        return mockResponse({
+          status: "ok",
+          message: null,
+          preset_id: "copper_gold",
+          inputs: {},
+          series: [],
+          events: [],
         });
       }
       if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
@@ -220,6 +268,17 @@ describe("Macro Route", () => {
     });
   });
 
+  test("requests multi-series comparison payload", async () => {
+    await act(async () => {
+      render(<MacroComponent />);
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/macro/series?ids="))).toBe(true);
+    });
+  });
+
   test("does not crash when expression response omits data on insufficient_data", async () => {
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
@@ -246,6 +305,13 @@ describe("Macro Route", () => {
         });
       }
       if (url.includes("/api/v1/quant_ml/macro/series")) {
+        if (url.includes("ids=")) {
+          return mockResponse({
+            status: "insufficient_data",
+            message: "No comparison data",
+            series: {},
+          });
+        }
         return mockResponse({
           meta: {
             key: "FRED:UNRATE",
@@ -296,6 +362,26 @@ describe("Macro Route", () => {
       }
       if (url.includes("/api/v1/quant_ml/macro/derived")) {
         return mockResponse({ status: "ok", items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/health")) {
+        return mockResponse({
+          status: "ok",
+          fred_api_key_configured: false,
+          macro_db_path: "/tmp/macro.db",
+          obs_stats: { total_series_in_catalog: 0, total_series_with_obs: 0 },
+          feature_stats: { total_feature_rows: 0, feature_names_present: [] },
+          warnings: ["FRED_API_KEY missing"],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
+        return mockResponse({
+          status: "insufficient_data",
+          message: "No preset data",
+          preset_id: "copper_gold",
+          inputs: {},
+          series: [],
+          events: [],
+        });
       }
       if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
         return mockResponse({ detail: "fallback" }, false, 404);

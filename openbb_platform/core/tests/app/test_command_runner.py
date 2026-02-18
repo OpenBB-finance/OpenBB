@@ -480,7 +480,8 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
     monkeypatch,
 ):
     """Mutable extensions must modify the original OBBject and set the modification flag;
-    registration must be route-scoped."""
+    registration must be route-scoped.
+    """
     monkeypatch.setattr(
         "openbb_core.app.service.system_service.SystemService",
         lambda: SimpleNamespace(
@@ -523,7 +524,8 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
 
 def test_results_only_flag_sets_attribute_and_accessor_runs(monkeypatch):
     """Extensions that declare results_only should toggle the _results_only attribute
-    and still run their accessor."""
+    and still run their accessor.
+    """
     monkeypatch.setattr(
         "openbb_core.app.service.system_service.SystemService",
         lambda: SimpleNamespace(

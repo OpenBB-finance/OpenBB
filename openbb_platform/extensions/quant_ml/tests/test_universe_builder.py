@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-
 from openbb_quant_ml.service import universe_builder as ub
 
 

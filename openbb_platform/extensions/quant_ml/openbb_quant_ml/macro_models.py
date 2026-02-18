@@ -254,6 +254,35 @@ class MacroAlertsResponse(BaseModel):
     history: list[MacroAlertItem] = Field(default_factory=list)
 
 
+class MacroHealthObsStats(BaseModel):
+    """Observation-layer health summary."""
+
+    total_series_in_catalog: int = 0
+    total_series_with_obs: int = 0
+    last_obs_date_global: str | None = None
+    last_fetched_at_global: str | None = None
+
+
+class MacroHealthFeatureStats(BaseModel):
+    """Feature-layer health summary."""
+
+    total_feature_rows: int = 0
+    last_feature_date: str | None = None
+    feature_names_present: list[str] = Field(default_factory=list)
+
+
+class MacroHealthResponse(BaseModel):
+    """Macro subsystem health response."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    fred_api_key_configured: bool = False
+    macro_db_path: str = ""
+    obs_stats: MacroHealthObsStats = Field(default_factory=MacroHealthObsStats)
+    feature_stats: MacroHealthFeatureStats = Field(default_factory=MacroHealthFeatureStats)
+    warnings: list[str] = Field(default_factory=list)
+
+
 class MacroUpdateRequest(BaseModel):
     """Manual update trigger request."""
 
@@ -261,6 +290,8 @@ class MacroUpdateRequest(BaseModel):
     start: date | None = None
     end: date | None = None
     all_default: bool = False
+    compute_features: bool = True
+    features_lookback_days: int | None = Field(default=None, ge=7, le=3650)
 
     @field_validator("end")
     @classmethod

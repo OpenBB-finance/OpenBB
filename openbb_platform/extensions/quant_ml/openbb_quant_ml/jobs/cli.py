@@ -46,6 +46,7 @@ def main() -> int:
                 run_monthly(cfg, state, run_id, run_dir)
             state.set(f"{args.job}.last_run_id", run_id)
             state.set(f"{args.job}.last_status", "ok")
+            state.delete(f"{args.job}.last_error")
             state.save()
             write_json(run_dir, "config_used.json", cfg)
             append_log(run_dir, "info", "job", "job completed")

@@ -40,6 +40,29 @@ export interface MacroSeriesMultiResponse {
   series: Record<string, MacroSeriesResponse>;
 }
 
+export interface MacroPresetSeries {
+  id: string;
+  axis: "left" | "right" | "bottom";
+  meta: MacroSeriesMeta;
+  data: MacroDataPoint[];
+  stats: MacroSeriesStats;
+}
+
+export interface MacroEventItem {
+  date: string;
+  event_type: string;
+  details: Record<string, string | number>;
+}
+
+export interface MacroPresetResponse {
+  status: MacroStatus;
+  message?: string | null;
+  preset_id: string;
+  inputs: Record<string, string | number | boolean>;
+  series: MacroPresetSeries[];
+  events: MacroEventItem[];
+}
+
 export interface MacroCatalogItem {
   id: string;
   source: string;
@@ -129,6 +152,29 @@ export interface MacroAlertsResponse {
   message?: string | null;
   current: MacroAlertItem[];
   history: MacroAlertItem[];
+}
+
+export interface MacroHealthObsStats {
+  total_series_in_catalog: number;
+  total_series_with_obs: number;
+  last_obs_date_global?: string | null;
+  last_fetched_at_global?: string | null;
+}
+
+export interface MacroHealthFeatureStats {
+  total_feature_rows: number;
+  last_feature_date?: string | null;
+  feature_names_present: string[];
+}
+
+export interface MacroHealthResponse {
+  status: MacroStatus;
+  message?: string | null;
+  fred_api_key_configured: boolean;
+  macro_db_path: string;
+  obs_stats: MacroHealthObsStats;
+  feature_stats: MacroHealthFeatureStats;
+  warnings: string[];
 }
 
 export interface MacroUpdateResponse {

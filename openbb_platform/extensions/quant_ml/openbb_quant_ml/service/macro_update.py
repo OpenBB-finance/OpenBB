@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import argparse
+from collections.abc import Iterable
 from datetime import date, timedelta
-from typing import Iterable
 
 from openbb_quant_ml.service.macro_catalog import (
     all_default_series_ids,
@@ -59,6 +59,8 @@ def update_series_ids(
     series_ids: list[str],
     start: date | None = None,
     end: date | None = None,
+    compute_features: bool = True,
+    features_lookback_days: int | None = None,
 ) -> list[str]:
     """Fetch and persist series data with stale-window refresh."""
     cfg = load_macro_config()
@@ -85,18 +87,35 @@ def update_series_ids(
         if rows:
             upsert_observations("FRED", series_id, rows)
             updated.append(series_id)
-    if updated:
+    if updated and compute_features:
+        feature_start = start
+        if features_lookback_days is not None:
+            end_anchor = end or date.today()
+            lookback_start = end_anchor - timedelta(days=max(7, int(features_lookback_days)))
+            if feature_start is None or feature_start > lookback_start:
+                feature_start = lookback_start
         update_macro_features_for_series(
             updated,
-            start=(start.isoformat() if start else None),
+            start=(feature_start.isoformat() if feature_start else None),
             end=(end.isoformat() if end else None),
         )
     return updated
 
 
-def update_all_defaults(start: date | None = None, end: date | None = None) -> list[str]:
+def update_all_defaults(
+    start: date | None = None,
+    end: date | None = None,
+    compute_features: bool = True,
+    features_lookback_days: int | None = None,
+) -> list[str]:
     """Refresh all default config series."""
-    return update_series_ids(all_default_series_ids(), start=start, end=end)
+    return update_series_ids(
+        all_default_series_ids(),
+        start=start,
+        end=end,
+        compute_features=compute_features,
+        features_lookback_days=features_lookback_days,
+    )
 
 
 def update_macro_series(
@@ -104,23 +123,39 @@ def update_macro_series(
     start_date: date | None = None,
     end_date: date | None = None,
     provider: str = "fred",
+    compute_features: bool = True,
+    features_lookback_days: int | None = None,
 ) -> list[str]:
     """Public helper for single-series incremental macro refresh."""
     if provider.lower() != "fred":
         return []
-    return update_series_ids([series_id], start=start_date, end=end_date)
+    return update_series_ids(
+        [series_id],
+        start=start_date,
+        end=end_date,
+        compute_features=compute_features,
+        features_lookback_days=features_lookback_days,
+    )
 
 
 def update_macro_all(
     series_list: list[str] | None = None,
     end_date: date | None = None,
     lookback_years: int = 30,
+    compute_features: bool = True,
+    features_lookback_days: int | None = None,
 ) -> list[str]:
     """Public helper for full-list incremental macro refresh."""
     end_value = end_date or date.today()
     start_value = end_value - timedelta(days=max(1, int(lookback_years)) * 365)
     targets = series_list or all_default_series_ids()
-    return update_series_ids(targets, start=start_value, end=end_value)
+    return update_series_ids(
+        targets,
+        start=start_value,
+        end=end_value,
+        compute_features=compute_features,
+        features_lookback_days=features_lookback_days,
+    )
 
 
 def _parse_args() -> argparse.Namespace:
@@ -129,6 +164,15 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--start", default=None, help="Start date (YYYY-MM-DD)")
     parser.add_argument("--end", default=None, help="End date (YYYY-MM-DD or today)")
     parser.add_argument("--all-default", action="store_true", help="Update all configured default series")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--also-features", action="store_true", help="Recompute macro features after obs update")
+    group.add_argument("--skip-features", action="store_true", help="Skip macro feature update")
+    parser.add_argument(
+        "--features-lookback-days",
+        type=int,
+        default=None,
+        help="When recomputing features, ensure this trailing window is recalculated",
+    )
     return parser.parse_args()
 
 
@@ -137,10 +181,24 @@ def main() -> int:
     args = _parse_args()
     start = parse_date_input(args.start)
     end = parse_date_input(args.end)
+    compute_features = not bool(args.skip_features)
+    if args.also_features:
+        compute_features = True
     if args.all_default:
-        updated = update_all_defaults(start=start, end=end)
+        updated = update_all_defaults(
+            start=start,
+            end=end,
+            compute_features=compute_features,
+            features_lookback_days=args.features_lookback_days,
+        )
     else:
-        updated = update_series_ids(args.series or [], start=start, end=end)
+        updated = update_series_ids(
+            args.series or [],
+            start=start,
+            end=end,
+            compute_features=compute_features,
+            features_lookback_days=args.features_lookback_days,
+        )
     print(f"Updated {len(updated)} series.")
     if updated:
         print(", ".join(updated))

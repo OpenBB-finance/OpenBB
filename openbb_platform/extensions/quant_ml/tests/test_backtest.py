@@ -6,7 +6,6 @@ from datetime import date
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.models import BacktestConstraints
 from openbb_quant_ml.service.backtest import run_backtest
 

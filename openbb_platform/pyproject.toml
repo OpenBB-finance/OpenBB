@@ -10,62 +10,65 @@ packages = [{ include = "openbb", from = "core" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-openbb-core = "^1.5.9"
-openbb-platform-api = "^1.2.3"
+openbb-core = { path = "./core", develop = true }
+openbb-platform-api = { path = "./extensions/platform_api", develop = true }
 
-openbb-benzinga = "^1.5.1"
-openbb-bls = "^1.2.1"
-openbb-cftc = "^1.2.1"
-openbb-congress-gov = "^1.1.1"
-openbb-econdb = "^1.4.1"
-openbb-federal-reserve = "^1.5.1"
-openbb-fmp = "^1.5.2"
-openbb-fred = "^1.5.1"
-openbb-government-us = "^1.5.2"
-openbb-imf = "^2.0.0"
-openbb-intrinio = "^1.5.1"
-openbb-oecd = "^1.5.1"
-openbb-sec = "^1.5.1"
-openbb-tiingo = "^1.5.1"
-openbb-tradingeconomics = "^1.5.1"
-openbb-us-eia = "^1.2.1"
-openbb-yfinance = "^1.5.2"
+openbb-benzinga = { path = "./providers/benzinga", develop = true }
+openbb-bls = { path = "./providers/bls", develop = true }
+openbb-cftc = { path = "./providers/cftc", develop = true }
+openbb-congress-gov = { path = "./providers/congress_gov", develop = true }
+openbb-econdb = { path = "./providers/econdb", develop = true }
+openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
+openbb-fmp = { path = "./providers/fmp", develop = true }
+openbb-fred = { path = "./providers/fred", develop = true }
+openbb-government-us = { path = "./providers/government_us", develop = true }
+openbb-imf = { path = "./providers/imf", develop = true }
+openbb-intrinio = { path = "./providers/intrinio", develop = true }
+openbb-oecd = { path = "./providers/oecd", develop = true }
+openbb-sec = { path = "./providers/sec", develop = true }
+openbb-tiingo = { path = "./providers/tiingo", develop = true }
+openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-us-eia = { path = "./providers/eia", develop = true }
+openbb-yfinance = { path = "./providers/yfinance", develop = true }
 
-openbb-commodity = "^1.4.2"
-openbb-crypto = "^1.5.1"
-openbb-currency = "^1.5.1"
-openbb-derivatives = "^1.5.1"
-openbb-economy = "^1.5.1"
-openbb-equity = "^1.5.1"
-openbb-etf = "^1.5.1"
-openbb-fixedincome = "^1.5.1"
-openbb-index = "^1.5.1"
-openbb-news = "^1.5.1"
-openbb-regulators = "^1.5.1"
+openbb-commodity = { path = "./extensions/commodity", develop = true }
+openbb-crypto = { path = "./extensions/crypto", develop = true }
+openbb-currency = { path = "./extensions/currency", develop = true }
+openbb-derivatives = { path = "./extensions/derivatives", develop = true }
+openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-equity = { path = "./extensions/equity", develop = true }
+openbb-etf = { path = "./extensions/etf", develop = true }
+openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
+openbb-index = { path = "./extensions/index", develop = true }
+openbb-news = { path = "./extensions/news", develop = true }
+openbb-regulators = { path = "./extensions/regulators", develop = true }
 
 # Community dependencies
-openbb-alpha-vantage = { version = "^1.5.1", optional = true }
-openbb-biztoc = { version = "^1.5.1", optional = true }
-openbb-cboe = { version = "^1.5.1", optional = true }
-openbb-deribit = { version = "^1.1.1", optional = true }
-openbb-ecb = { version = "^1.5.1", optional = true }
-openbb-famafrench = { version = "^1.1.1", optional = true }
-openbb-finra = { version = "^1.5.1", optional = true }
-openbb-finviz = { version = "^1.4.1", optional = true }
-openbb-multpl = { version = "^1.2.1", optional = true }
-openbb-nasdaq = { version = "^1.5.1", optional = true }
-openbb-seeking-alpha = { version = "^1.5.1", optional = true }
-openbb-stockgrid = { version = "^1.5.1", optional = true }
+openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
+openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
+openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
+openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
+openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
+openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
+openbb-finra = { path = "./providers/finra", optional = true, develop = true }
+openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
+openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
+openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
+openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
+openbb-stockgrid = { path = "./providers/stockgrid",  optional = true,  develop = true }
 openbb-tmx = { version = "^1.4.1", optional = true }
 openbb-tradier = { version = "^1.4.1", optional = true }
-openbb-wsj = { version = "^1.5.1", optional = true }
+openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
-openbb-charting = { version = "^2.4.1", optional = true }
-openbb-econometrics = { version = "^1.6.1", optional = true }
-openbb-quant-ml = { version = "^0.1.0", optional = true }
-openbb-quantitative = { version = "^1.5.1", optional = true }
-openbb-technical = { version = "^1.5.1", optional = true }
-openbb-mcp-server = { version = "^1.2.2", optional = true }
+openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
+openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
+openbb-quant-ml = { path = "./extensions/quant_ml", optional = true, develop = true }
+openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
+openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
+openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
+openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
+openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
+openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -115,6 +118,7 @@ all = [
     "openbb-wsj",
 ]
 
+[tool.poetry.group.dev.dependencies]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.service import macro_alerts, macro_regime
 
 
