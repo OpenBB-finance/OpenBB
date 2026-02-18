@@ -1,0 +1,160 @@
+name: Full system verification
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full_verification_python:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.10", "3.11", "3.12", "3.13"]
+    env:
+      API_USERNAME: openbb
+      API_PASSWORD: openbb
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+      SEC_API_KEY: ${{ secrets.SEC_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+          cache: pip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          components: clippy, rustfmt
+          override: true
+
+      - name: Install uv toolchain wrappers
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+          uv tool install poetry
+          uv tool install nox
+
+      - name: Run full verification (CI mode, python matrix lane)
+        shell: pwsh
+        run: |
+          ./qa/scripts/run_full_verification.ps1 `
+            -CiMode `
+            -RunId "full_${{ github.run_id }}_${{ matrix.python_version }}" `
+            -OutputBaseDir logs/verification `
+            -ProviderConfigPath qa/config/provider_tiers.yaml `
+            -PythonVersions "${{ matrix.python_version }}" `
+            -SkipDesktop `
+            -SkipFrontendComponents
+
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-verification-python-${{ matrix.python_version }}
+          path: logs/verification/**
+
+  full_verification_desktop_windows:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: desktop
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cache vcpkg
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.VCPKG_ROOT }}
+          key: ${{ runner.os }}-full-vcpkg-${{ hashFiles('desktop/**/vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-full-vcpkg-
+
+      - name: Bootstrap vcpkg
+        working-directory: ${{ github.workspace }}
+        shell: pwsh
+        run: |
+          if (-not (Test-Path ${{ env.VCPKG_ROOT }})) {
+            git clone https://github.com/microsoft/vcpkg.git ${{ env.VCPKG_ROOT }}
+          }
+          ${{ env.VCPKG_ROOT }}/bootstrap-vcpkg.bat
+
+      - name: Install OpenSSL using vcpkg
+        working-directory: ${{ github.workspace }}
+        run: ${{ env.VCPKG_ROOT }}/vcpkg install openssl:x64-windows-static --vcpkg-root ${{ env.VCPKG_ROOT }}
+        env:
+          VCPKG_DEFAULT_TRIPLET: x64-windows-static
+
+      - name: Set OpenSSL env
+        shell: bash
+        run: |
+          echo "OPENSSL_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static/include" >> $GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static/lib" >> $GITHUB_ENV
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          components: clippy, rustfmt
+          override: true
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy linter
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Run Rust tests
+        run: cargo test --all
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Lint frontend code
+        run: npm run lint
+
+      - name: Type check
+        run: ./node_modules/.bin/tsc --noEmit
+
+      - name: Run frontend tests
+        run: npm run test -- --watch=false
+
+  finalize:
+    runs-on: ubuntu-latest
+    needs:
+      - full_verification_python
+      - full_verification_desktop_windows
+    steps:
+      - name: Finalize
+        run: echo "Full system verification workflow completed."

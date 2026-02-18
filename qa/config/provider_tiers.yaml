@@ -1,0 +1,27 @@
+core_blocking:
+  - yfinance
+  - fred
+  - sec
+  - eia
+  - bls
+  - oecd
+  - government_us
+  - cftc
+extended_quarantine:
+  - fmp
+  - intrinio
+  - polygon
+  - benzinga
+  - nasdaq
+  - tmx
+  - seeking_alpha
+  - tradier
+  - tiingo
+  - alpha_vantage
+  - finviz
+  - finra
+  - tradingeconomics
+  - wsj
+retry_policy:
+  max_retries: 2
+  retry_delay_seconds: 10

@@ -1,0 +1,70 @@
+name: Integration test Platform
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "openbb_platform/**"
+      - "qa/**"
+      - ".github/workflows/test-integration-platform.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  integration_platform:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.10", "3.11", "3.12", "3.13"]
+    env:
+      API_USERNAME: openbb
+      API_PASSWORD: openbb
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+      SEC_API_KEY: ${{ secrets.SEC_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+          cache: pip
+
+      - name: Install base dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Install OpenBB platform (editable)
+        run: |
+          python openbb_platform/dev_install.py -e
+
+      - name: Run platform integration gate
+        shell: pwsh
+        run: |
+          ./qa/scripts/run_integration_gate.ps1 `
+            -RootPath . `
+            -RunId "ci_platform_${{ github.run_id }}_${{ matrix.python_version }}" `
+            -OutputBaseDir logs/verification `
+            -ProviderConfigPath qa/config/provider_tiers.yaml `
+            -PythonCommand python `
+            -SkipCliIntegration
+
+      - name: Upload integration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-platform-${{ matrix.python_version }}
+          path: logs/verification/**

@@ -1,0 +1,13 @@
+roots:
+  - path: "."
+    ci_required: true
+    run_desktop: true
+    run_frontend_components: true
+    run_cli: true
+    run_platform: true
+  - path: "OpenBB"
+    ci_required: false
+    run_desktop: true
+    run_frontend_components: true
+    run_cli: true
+    run_platform: true
