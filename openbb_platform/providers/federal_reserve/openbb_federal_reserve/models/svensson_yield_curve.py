@@ -239,7 +239,6 @@ class FederalReserveSvenssonData(Data):
             }
         },
         populate_by_name=True,
-        populate_by_alias=True,
         alias_generator=AliasGenerator(
             serialization_alias=lambda x: x,  # Identity function to preserve field names
         ),
