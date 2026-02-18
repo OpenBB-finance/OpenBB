@@ -88,6 +88,8 @@ class ArgparseTranslator:
         # check if the argument is already in use, if not, add it
         if f"--{argument.name}" not in self._parser._option_string_actions:
             kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+            if "help" in kwargs:
+                kwargs["help"] = ArgparseTranslator._escape_help(kwargs["help"])
             group.add_argument(f"--{argument.name}", **kwargs)
             if group.title in self.provider_parameters:
                 self.provider_parameters[group.title].append(argument.name)
@@ -119,8 +121,8 @@ class ArgparseTranslator:
                             set_optional_choices(action, optional_choices)
                         if argument.name not in self.signature.parameters:
                             # update help
-                            action.help = _update_providers(
-                                action.help or "", [group.title]
+                            action.help = ArgparseTranslator._escape_help(
+                                _update_providers(action.help or "", [group.title])
                             )
                 return
 
@@ -140,7 +142,9 @@ class ArgparseTranslator:
             if choices:
                 kwargs["choices"] = choices  # update choices
             # add provider info to the help
-            kwargs["help"] = _update_providers(argument.help or "", groups_w_arg)
+            kwargs["help"] = ArgparseTranslator._escape_help(
+                _update_providers(argument.help or "", groups_w_arg)
+            )
             action = self._parser.add_argument(f"--{argument.name}", **kwargs)
             set_optional_choices(action, optional_choices)
 
@@ -148,6 +152,18 @@ class ArgparseTranslator:
     def parser(self) -> argparse.ArgumentParser:
         """Get the argparse parser."""
         return deepcopy(self._parser)
+
+    @staticmethod
+    def _escape_help(text: str | None) -> str | None:
+        """Escape percent signs in help strings for argparse.
+
+        Python 3.14+ validates help strings at add_argument time using
+        %-formatting. Bare '%' characters that aren't valid format
+        specifiers (like '%(default)s') cause a ValueError.
+        """
+        if text is None:
+            return None
+        return text.replace("%", "%%")
 
     @staticmethod
     def _build_description(func_doc: str) -> str:
@@ -405,7 +421,7 @@ class ArgparseTranslator:
                 default=param.default,
                 required=required,
                 action=action,
-                help=self._get_argument_custom_help(param),
+                help=self._escape_help(self._get_argument_custom_help(param)),
                 nargs=self._get_nargs(param),
                 choices=choices,
             )
