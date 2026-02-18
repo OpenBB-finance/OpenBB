@@ -3,7 +3,8 @@
 import argparse
 import os
 from pathlib import Path
-from typing import Literal, get_type_hints
+import inspect as _inspect
+from typing import Literal
 
 import pytest
 import requests
@@ -136,12 +137,11 @@ def write_commands_integration_tests(
         if not http_method:
             commands_not_found.append(route)
         else:
-            hints = get_type_hints(cm_map[route])
-            hints.pop("cc", None)
-            hints.pop("return", None)
+            sig = _inspect.signature(cm_map[route])
+            param_names = [k for k in sig.parameters.keys() if k not in ("cc", "return")]
 
             params_list = (
-                [{k: "" for k in get_post_flat_params(hints)}]
+                [{k: "" for k in param_names}]
                 if http_method == "post"
                 else get_test_params(
                     model_name=cm_models[route],  # type: ignore
