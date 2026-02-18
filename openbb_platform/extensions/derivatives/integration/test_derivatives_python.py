@@ -200,7 +200,7 @@ def test_derivatives_futures_info(params, obb):
     [
         (
             {
-                "data": "",
+                "data": [],
                 "target": "implied_volatility",
                 "underlying_price": None,
                 "option_type": "otm",
