@@ -286,7 +286,7 @@ def ols_regression_summary(
 
     clean_results["raw"] = str(results_summary)
 
-    return OBBject(results=clean_results)
+    return OBBject(results=clean_results)  # type: ignore[arg-type]
 
 
 @router.command(
@@ -349,7 +349,7 @@ def autocorrelation(
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     results = sm.OLS(y, X).fit()
-    return OBBject(results=Data(score=durbin_watson(results.resid)))
+    return OBBject(results=Data(score=durbin_watson(results.resid)))  # type: ignore[call-arg]
 
 
 @router.command(
@@ -429,7 +429,7 @@ def residual_autocorrelation(
         "fp_value": fp_value,
     }
 
-    return OBBject(results=results)
+    return OBBject(results=results)  # type: ignore[arg-type]
 
 
 @router.command(
@@ -499,7 +499,7 @@ def cointegration(
             "pvalue": pvalue,
         }
 
-    return OBBject(results=result)
+    return OBBject(results=result)  # type: ignore[arg-type]
 
 
 @router.command(
@@ -641,7 +641,7 @@ def unit_root(
         "nobs": nobs,
         "icbest": icbest,
     }
-    return OBBject(results=results)
+    return OBBject(results=results)  # type: ignore[arg-type]
 
 
 @router.command(

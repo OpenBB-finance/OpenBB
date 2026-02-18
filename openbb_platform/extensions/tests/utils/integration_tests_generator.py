@@ -2,11 +2,11 @@
 
 import argparse
 from pathlib import Path, PosixPath
+import inspect as _inspect
 from typing import (
     Any,
     Literal,
     get_origin,
-    get_type_hints,
 )
 
 import pytest
@@ -145,6 +145,16 @@ def get_test_params_data_processing(hints: dict[str, type]):
     return list(hints.keys())
 
 
+def get_params_from_signature(func) -> list[str]:
+    """Get parameter names from function signature.
+
+    Uses inspect.signature instead of get_type_hints for compatibility
+    with Python 3.14+ (PEP 649 lazy annotation evaluation).
+    """
+    sig = _inspect.signature(func)
+    return list(sig.parameters.keys())
+
+
 def get_full_command_name_and_test_name(route: str) -> tuple[str, str]:
     """Get the full command name and test name."""
     cmd_parts = route.split("/")
@@ -217,10 +227,9 @@ def write_test_data_processing(
         if extension_name in route and route.startswith(f"/{extension_name}/"):
             test_name, full_command = get_full_command_name_and_test_name(route=route)
 
-            hints = get_type_hints(commands_map[route])
-            hints.pop("cc", None)
-            hints.pop("return", None)
-            test_params_list = [{k: "" for k in get_test_params_data_processing(hints)}]
+            param_names = get_params_from_signature(commands_map[route])
+            param_names = [k for k in param_names if k not in ("cc", "return")]
+            test_params_list = [{k: "" for k in param_names}]
 
             write_to_file_w_template(
                 test_file=test_file,

@@ -236,7 +236,7 @@ class PlatformController(BaseController):
                                 if not export:
                                     obbject.show()
                             elif session.settings.USE_INTERACTIVE_DF and not export:
-                                obbject.charting.table()
+                                obbject.charting.table()  # type: ignore[attr-defined]
                             else:
                                 if isinstance(df.columns, pd.RangeIndex):
                                     df.columns = [str(i) for i in df.columns]

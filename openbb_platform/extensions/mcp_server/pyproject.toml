@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-mcp-server"
-version = "1.2.2"
+version = "1.3.0"
 description = "OpenBB Platform MCP Server"
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -14,8 +14,8 @@ packages = [{ include = "openbb_mcp_server" }]
 openbb-mcp = "openbb_mcp_server.app.app:main"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-openbb-core = "^1.5.8"
+python = ">=3.10,<4"
+openbb-core = "^1.6.0"
 fastmcp = ">=2.14.2,<3"
 
 [build-system]
