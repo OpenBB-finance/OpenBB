@@ -1,3 +1,4 @@
+# ruff: noqa: T201
 """Developer script to regenerate country_data.json from authoritative sources.
 
 Sources:
@@ -22,8 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
-from datetime import date, timezone
+from datetime import date
 from pathlib import Path
 
 import pycountry
@@ -139,6 +139,7 @@ def resolve_country(name: str) -> str | None:
 
 # ── Scrapers ────────────────────────────────────────────────────────────────
 
+
 def fetch_soup(url: str) -> BeautifulSoup:
     """Fetch a URL and return parsed BeautifulSoup."""
     resp = requests.get(url, headers=HEADERS, timeout=30)
@@ -178,8 +179,25 @@ def scrape_g20() -> set[str]:
     """Scrape G20 members from Wikipedia."""
     soup = fetch_soup("https://en.wikipedia.org/wiki/G20")
     hardcoded = {
-        "AR", "AU", "BR", "CA", "CN", "FR", "DE", "IN", "ID", "IT",
-        "JP", "KR", "MX", "RU", "SA", "ZA", "TR", "GB", "US",
+        "AR",
+        "AU",
+        "BR",
+        "CA",
+        "CN",
+        "FR",
+        "DE",
+        "IN",
+        "ID",
+        "IT",
+        "JP",
+        "KR",
+        "MX",
+        "RU",
+        "SA",
+        "ZA",
+        "TR",
+        "GB",
+        "US",
     }
 
     members = set()
@@ -191,7 +209,6 @@ def scrape_g20() -> set[str]:
                 if sib.name in ("h2", "h3"):
                     break
                 for a in sib.find_all("a"):
-                    title = a.get("title", "")
                     code = resolve_country(a.get_text())
                     if code:
                         members.add(code)
@@ -203,9 +220,33 @@ def scrape_g20() -> set[str]:
 def scrape_eu() -> set[str]:
     """Scrape EU member states from Wikipedia's member states table."""
     hardcoded = {
-        "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR",
-        "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL",
-        "PL", "PT", "RO", "SK", "SI", "ES", "SE",
+        "AT",
+        "BE",
+        "BG",
+        "HR",
+        "CY",
+        "CZ",
+        "DK",
+        "EE",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IE",
+        "IT",
+        "LV",
+        "LT",
+        "LU",
+        "MT",
+        "NL",
+        "PL",
+        "PT",
+        "RO",
+        "SK",
+        "SI",
+        "ES",
+        "SE",
     }
 
     soup = fetch_soup(
@@ -249,10 +290,38 @@ def scrape_nato() -> set[str]:
                     break
 
     hardcoded = {
-        "AL", "BE", "BG", "CA", "HR", "CZ", "DK", "EE", "FI", "FR",
-        "DE", "GR", "HU", "IS", "IT", "LV", "LT", "LU", "ME", "NL",
-        "MK", "NO", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "TR",
-        "GB", "US",
+        "AL",
+        "BE",
+        "BG",
+        "CA",
+        "HR",
+        "CZ",
+        "DK",
+        "EE",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IS",
+        "IT",
+        "LV",
+        "LT",
+        "LU",
+        "ME",
+        "NL",
+        "MK",
+        "NO",
+        "PL",
+        "PT",
+        "RO",
+        "SK",
+        "SI",
+        "ES",
+        "SE",
+        "TR",
+        "GB",
+        "US",
     }
     return members if len(members) >= 30 else hardcoded
 
@@ -276,10 +345,44 @@ def scrape_oecd() -> set[str]:
             break
 
     hardcoded = {
-        "AU", "AT", "BE", "CA", "CL", "CO", "CR", "CZ", "DK", "EE",
-        "FI", "FR", "DE", "GR", "HU", "IS", "IE", "IL", "IT", "JP",
-        "KR", "LV", "LT", "LU", "MX", "NL", "NZ", "NO", "PL", "PT",
-        "SK", "SI", "ES", "SE", "CH", "TR", "GB", "US",
+        "AU",
+        "AT",
+        "BE",
+        "CA",
+        "CL",
+        "CO",
+        "CR",
+        "CZ",
+        "DK",
+        "EE",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IS",
+        "IE",
+        "IL",
+        "IT",
+        "JP",
+        "KR",
+        "LV",
+        "LT",
+        "LU",
+        "MX",
+        "NL",
+        "NZ",
+        "NO",
+        "PL",
+        "PT",
+        "SK",
+        "SI",
+        "ES",
+        "SE",
+        "CH",
+        "TR",
+        "GB",
+        "US",
     }
     return members if len(members) >= 35 else hardcoded
 
@@ -306,8 +409,19 @@ def scrape_opec() -> set[str]:
                 break
 
     hardcoded = {
-        "DZ", "AO", "CG", "GQ", "GA", "IR", "IQ", "KW", "LY",
-        "NG", "SA", "AE", "VE",
+        "DZ",
+        "AO",
+        "CG",
+        "GQ",
+        "GA",
+        "IR",
+        "IQ",
+        "KW",
+        "LY",
+        "NG",
+        "SA",
+        "AE",
+        "VE",
     }
     return members if len(members) >= 10 else hardcoded
 
@@ -429,11 +543,13 @@ def build_country_data() -> dict:
 
 
 def main():
+    """CLI entrypoint to regenerate country_data.json."""
     parser = argparse.ArgumentParser(
         description="Regenerate country_data.json from authoritative sources."
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=DEFAULT_OUTPUT,
         help=f"Output path (default: {DEFAULT_OUTPUT})",
@@ -450,7 +566,7 @@ def main():
 
     countries_with_groups = sum(1 for c in data["countries"] if "groups" in c)
     total = len(data["countries"])
-    print(f"\n── Summary ──")
+    print("\n── Summary ──")
     print(f"  Total countries: {total}")
     print(f"  Countries with group memberships: {countries_with_groups}")
     print(f"  Last updated: {data['_last_updated']}")
@@ -459,7 +575,10 @@ def main():
         print("\n[DRY RUN] Would write to:", args.output)
         # Print first 5 entries as sample
         print("\nSample (first 5 entries):")
-        sample = {"_last_updated": data["_last_updated"], "countries": data["countries"][:5]}
+        sample = {
+            "_last_updated": data["_last_updated"],
+            "countries": data["countries"][:5],
+        }
         print(json.dumps(sample, indent=2, ensure_ascii=False))
     else:
         with open(args.output, "w", encoding="utf-8") as f:
