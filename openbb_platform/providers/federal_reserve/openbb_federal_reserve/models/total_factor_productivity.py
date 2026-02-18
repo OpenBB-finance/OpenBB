@@ -494,14 +494,14 @@ class FederalReserveTfpData(
                     field_schema["description"] = field_info.description
 
                 if field_info.json_schema_extra:
-                    field_schema.update(field_info.json_schema_extra)
+                    field_schema.update(field_info.json_schema_extra)  # type: ignore[arg-type]
 
                 json_schema["properties"][field_name] = field_schema
 
         # Preserve x-widget_config from model_config.json_schema_extra
         config_extra = cls.model_config.get("json_schema_extra", {})
-        if "x-widget_config" in config_extra:
-            json_schema["x-widget_config"] = config_extra["x-widget_config"]
+        if "x-widget_config" in config_extra:  # type: ignore[operator]
+            json_schema["x-widget_config"] = config_extra["x-widget_config"]  # type: ignore[index]
 
         return json_schema
 

@@ -202,9 +202,9 @@ async def get_ticker_data(symbol: str) -> dict:
 
     try:
         response = await amake_request(url)
-        if response.get("error"):
-            raise OpenBBError(response.get("error"))
-        data = response.get("result", {})
+        if response.get("error"):  # type: ignore[union-attr]
+            raise OpenBBError(response.get("error"))  # type: ignore[union-attr]
+        data = response.get("result", {})  # type: ignore[union-attr]
         stats = data.pop("stats", {})
         return {**data, **stats}
 
@@ -282,10 +282,10 @@ async def get_ohlc_data(
     async def get_one(url):
         """Get data from one url."""
         json_response = await amake_request(url)
-        if json_response.get("error"):
-            raise ValueError(json_response["error"])
-        if json_response.get("result"):
-            result = json_response["result"]
+        if json_response.get("error"):  # type: ignore[union-attr]
+            raise ValueError(json_response["error"])  # type: ignore[call-overload]
+        if json_response.get("result"):  # type: ignore[union-attr]
+            result = json_response["result"]  # type: ignore[call-overload]
             df = DataFrame(result)
             df = (
                 df.drop(columns=["status"])

@@ -1,21 +1,21 @@
 [tool.poetry]
 name = "openbb-platform-api"
-version = "1.2.3"
+version = "1.3.0"
 description = "OpenBB Platform API: Launch script and widgets builder for the Open Data Platform REST API and Workspace Backend Connector."
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/openbb-finance/openbb"
-documentation = "https://docs.openbb.co/python/extensions/interface/openbb-api"
+documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-api"
 packages = [{ include = "openbb_platform_api" }]
 
 [tool.poetry.scripts]
 openbb-api = "openbb_platform_api.main:main"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-openbb-core = "^1.5.8"
+python = ">=3.10,<4"
+openbb-core = "^1.6.0"
 deepdiff = ">=8.6.1"
 
 [build-system]

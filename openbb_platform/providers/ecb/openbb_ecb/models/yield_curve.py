@@ -134,7 +134,7 @@ class ECBYieldCurveFetcher(
         if not data:
             raise EmptyDataError("The request was returned empty.")
         dates = (
-            query.date.split(",")
+            str(query.date).split(",")
             if query.date
             else [datetime.now().strftime("%Y-%m-%d")]
         )
