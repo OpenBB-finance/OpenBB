@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pickle
 import re
 import time
 import traceback
@@ -410,6 +411,38 @@ def _save_default_compat_artifacts(
     save_json(run_dir / "metrics.json", metrics_payload)
 
 
+def _save_ranker_inference_artifacts(
+    run_dir: Path,
+    *,
+    model: Any,
+    feature_columns: list[str],
+    backend: str,
+    trained_until: str,
+    mu_mapping: str,
+    label_return_map: dict[int, float],
+    label_return_fallback: float,
+) -> None:
+    model_path = run_dir / "model_lgbm_ranker.pkl"
+    meta_path = run_dir / "model_lgbm_ranker_meta.json"
+
+    with model_path.open("wb") as file:
+        pickle.dump(model, file)
+
+    save_json(
+        meta_path,
+        {
+            "backend": backend,
+            "feature_columns": feature_columns,
+            "trained_until": trained_until,
+            "mu_mapping": mu_mapping,
+            "label_return_map": {
+                str(int(key)): float(value) for key, value in label_return_map.items()
+            },
+            "label_return_fallback": float(label_return_fallback),
+        },
+    )
+
+
 def _resolve_selected_models(
     request: TrainRequest, symbol_count: int
 ) -> tuple[ModelName, ...]:
@@ -789,6 +822,21 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             }
             save_json(run_dir / "metrics_lgbm_ranker.json", ranker_metrics_payload)
             _save_default_compat_artifacts(run_dir, ranker_pred, ranker_metrics_payload)
+            trained_until = (
+                pd.Timestamp(ranker_pred["date"].max()).date().isoformat()
+                if not ranker_pred.empty
+                else date.today().isoformat()
+            )
+            _save_ranker_inference_artifacts(
+                run_dir,
+                model=ranker_output.inference_model,
+                feature_columns=ranker_output.feature_names,
+                backend=ranker_output.inference_backend,
+                trained_until=trained_until,
+                mu_mapping=request.mu_mapping,
+                label_return_map=ranker_output.label_return_map,
+                label_return_fallback=ranker_output.label_return_fallback,
+            )
 
             ndcg_obj = ranker_output.metrics.get("ndcg", {})
             performance_rows.append(
@@ -836,14 +884,19 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         append_log(run_id, traceback.format_exc(limit=3))
 
 
-def submit_training(request: TrainRequest) -> TrainResponse:
+def submit_training(
+    request: TrainRequest,
+    *,
+    run_id_scheme: str = "compact_v1",
+    timezone: str = "Asia/Seoul",
+) -> TrainResponse:
     """Queue a training job."""
     resolved_symbols = _resolve_symbols_for_training_request(request)
     resolved_request = request.model_copy(deep=True)
     resolved_request.symbols = resolved_symbols
 
     initialize_registry()
-    state = create_run()
+    state = create_run(run_id_scheme=run_id_scheme, timezone=timezone)
     _save_run_config(state.run_id, resolved_request)
     future = _EXECUTOR.submit(_run_training_job, state.run_id, resolved_request)
     _FUTURES[state.run_id] = future

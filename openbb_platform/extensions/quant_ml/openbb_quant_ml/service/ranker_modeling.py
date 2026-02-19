@@ -23,6 +23,10 @@ class RankerTrainingOutput:
     model_meta: dict[str, Any]
     best_theta: float
     feature_names: list[str]
+    inference_model: Any
+    inference_backend: str
+    label_return_map: dict[int, float]
+    label_return_fallback: float
 
 
 def _monthly_index(values: pd.Series) -> pd.Series:
@@ -110,7 +114,9 @@ def _group_ic(frame: pd.DataFrame, score_col: str, target_col: str) -> float:
     for _, group in frame.groupby("date"):
         if len(group) < 3:
             continue
-        corr = spearmanr(group[score_col], group[target_col], nan_policy="omit").correlation
+        corr = spearmanr(
+            group[score_col], group[target_col], nan_policy="omit"
+        ).correlation
         if corr is None or np.isnan(corr):
             continue
         values.append(float(corr))
@@ -194,7 +200,9 @@ def _map_score_to_mu(
             continue
         pct = group["score"].rank(method="first", pct=True)
         labels = np.floor(np.clip((pct - 1e-12) * 5, 0.0, 4.999)).astype(int)
-        mapped.loc[group.index] = labels.map(lambda item: float(label_means.get(int(item), fallback)))
+        mapped.loc[group.index] = labels.map(
+            lambda item: float(label_means.get(int(item), fallback))
+        )
     return mapped.fillna(fallback)
 
 
@@ -253,6 +261,7 @@ def train_ranker_models(
     progress_callback: Callable[[float, str], None] | None = None,
 ) -> RankerTrainingOutput:
     """Train ranker model with walk-forward splits and return OOS predictions."""
+
     def emit_progress(ratio: float, message: str) -> None:
         if progress_callback is None:
             return
@@ -299,10 +308,14 @@ def train_ranker_models(
         importance_accumulator += feature_importance
 
         train_scored = train_df.copy()
-        train_scored["score"] = model.predict(train_scored[feature_columns].to_numpy(dtype=float)).astype(float)
+        train_scored["score"] = model.predict(
+            train_scored[feature_columns].to_numpy(dtype=float)
+        ).astype(float)
 
         scored = val_df.copy()
-        scored["score"] = model.predict(scored[feature_columns].to_numpy(dtype=float)).astype(float)
+        scored["score"] = model.predict(
+            scored[feature_columns].to_numpy(dtype=float)
+        ).astype(float)
         scored["predicted_return"] = _map_score_to_mu(train_df, scored).astype(float)
         scored["predicted_xgb"] = scored["score"]
         scored["predicted_lstm"] = scored["score"]
@@ -346,13 +359,67 @@ def train_ranker_models(
         str(theta): _validation_sharpe_for_theta(combined, float(theta))
         for theta in theta_candidates
     }
-    best_theta = float(max(theta_candidates, key=lambda item: theta_scores.get(str(item), -1e9)))
+    best_theta = float(
+        max(theta_candidates, key=lambda item: theta_scores.get(str(item), -1e9))
+    )
 
-    train_ic = float(np.mean([item["train_ic"] for item in fold_metrics])) if fold_metrics else 0.0
-    val_ic = float(np.mean([item["val_ic"] for item in fold_metrics])) if fold_metrics else 0.0
-    ndcg_5 = float(np.mean([item["ndcg_5"] for item in fold_metrics])) if fold_metrics else 0.0
-    ndcg_10 = float(np.mean([item["ndcg_10"] for item in fold_metrics])) if fold_metrics else 0.0
-    ndcg_20 = float(np.mean([item["ndcg_20"] for item in fold_metrics])) if fold_metrics else 0.0
+    # Fit an inference model on the full sample for daily infer-only refresh jobs.
+    emit_progress(0.92, "Fitting final ranker inference model")
+    final_train_df = data.copy()
+    months = sorted(final_train_df["month_id"].unique())
+    if len(months) >= 2:
+        final_val_df = final_train_df[final_train_df["month_id"] == months[-1]].copy()
+    else:
+        final_val_df = final_train_df.tail(min(300, len(final_train_df))).copy()
+    if final_val_df.empty:
+        final_val_df = final_train_df.tail(min(300, len(final_train_df))).copy()
+    final_model, _, final_backend = _fit_ranker_model(
+        train_df=final_train_df,
+        val_df=final_val_df,
+        feature_columns=feature_columns,
+        config=ranker_config,
+    )
+
+    label_return_map: dict[int, float] = {}
+    grouped = final_train_df.groupby("label")["target_return"].mean()
+    for label, value in grouped.items():
+        casted = float(value)
+        if np.isnan(casted) or np.isinf(casted):
+            continue
+        label_return_map[int(label)] = casted
+    label_return_fallback = (
+        float(final_train_df["target_return"].mean())
+        if not final_train_df.empty
+        else 0.0
+    )
+    if np.isnan(label_return_fallback) or np.isinf(label_return_fallback):
+        label_return_fallback = 0.0
+
+    train_ic = (
+        float(np.mean([item["train_ic"] for item in fold_metrics]))
+        if fold_metrics
+        else 0.0
+    )
+    val_ic = (
+        float(np.mean([item["val_ic"] for item in fold_metrics]))
+        if fold_metrics
+        else 0.0
+    )
+    ndcg_5 = (
+        float(np.mean([item["ndcg_5"] for item in fold_metrics]))
+        if fold_metrics
+        else 0.0
+    )
+    ndcg_10 = (
+        float(np.mean([item["ndcg_10"] for item in fold_metrics]))
+        if fold_metrics
+        else 0.0
+    )
+    ndcg_20 = (
+        float(np.mean([item["ndcg_20"] for item in fold_metrics]))
+        if fold_metrics
+        else 0.0
+    )
     hit_rate = float(
         (
             np.sign(combined["predicted_return"].to_numpy(dtype=float))
@@ -388,12 +455,12 @@ def train_ranker_models(
         },
         "decile_spread": _decile_spread(combined),
         "fold_count": len(splits),
-        "model_backend": backend_name,
+        "model_backend": final_backend,
     }
 
     model_meta: dict[str, Any] = {
         "model": "LGBMRanker",
-        "backend": backend_name,
+        "backend": final_backend,
         "feature_count": len(feature_columns),
         "walk_forward": walk_forward.model_dump(mode="json"),
         "ranker_config": ranker_config.model_dump(mode="json"),
@@ -407,4 +474,8 @@ def train_ranker_models(
         model_meta=model_meta,
         best_theta=best_theta,
         feature_names=feature_columns,
+        inference_model=final_model,
+        inference_backend=final_backend,
+        label_return_map=label_return_map,
+        label_return_fallback=label_return_fallback,
     )
