@@ -19,6 +19,7 @@ from openbb_quant_ml.jobs.steps import (
     update_macro_data,
     update_market_data,
 )
+from openbb_quant_ml.service.runtime_pointer import get_promoted_run_id
 from openbb_quant_ml.service.storage import read_registry
 
 StepFunc = Callable[[dict[str, Any]], dict[str, Any]]
@@ -94,6 +95,19 @@ def _resolve_run_date(run_date: str | None) -> str:
         return date.today().isoformat()
 
 
+def _resolve_operational_run_id(
+    state: JobState, model_name: str | None = None
+) -> str | None:
+    promoted = get_promoted_run_id(model_name=model_name)
+    if _is_completed_run(promoted):
+        return promoted
+
+    weekly_run = state.get("weekly.latest_run_id")
+    if _is_completed_run(weekly_run):
+        return weekly_run
+    return _latest_completed_run_id()
+
+
 def run_daily(
     config: dict[str, Any],
     state: JobState,
@@ -114,9 +128,9 @@ def run_daily(
     if configured_run:
         runtime_cfg["run_id"] = configured_run
     else:
-        weekly_run = state.get("weekly.latest_run_id")
-        runtime_cfg["run_id"] = (
-            weekly_run if _is_completed_run(weekly_run) else _latest_completed_run_id()
+        runtime_cfg["run_id"] = _resolve_operational_run_id(
+            state,
+            model_name=str(runtime_cfg.get("model_name", "lgbm_ranker")),
         )
     runtime_cfg.setdefault("job", "daily")
     runtime_cfg["updated_at"] = run_id
@@ -149,14 +163,44 @@ def run_daily(
             )
             time_profile[step_name] = 0.0
             continue
-        result, elapsed = _run_step(
-            run_dir,
-            step_name,
-            func,
-            runtime_cfg,
-            retries=retries,
-            backoff_sec=backoff_sec,
-        )
+        try:
+            result, elapsed = _run_step(
+                run_dir,
+                step_name,
+                func,
+                runtime_cfg,
+                retries=retries,
+                backoff_sec=backoff_sec,
+            )
+        except RuntimeError:
+            can_fallback = step_name in {"predict", "build_signals", "backtest_light"}
+            current_run_id = str(runtime_cfg.get("run_id") or "").strip()
+            fallback_run_id = _resolve_operational_run_id(
+                state,
+                model_name=str(runtime_cfg.get("model_name", "lgbm_ranker")),
+            )
+            if (
+                not can_fallback
+                or not fallback_run_id
+                or fallback_run_id == current_run_id
+            ):
+                raise
+            append_log(
+                run_dir,
+                "warning",
+                step_name,
+                f"retrying with fallback run_id={fallback_run_id}",
+                {"previous_run_id": current_run_id},
+            )
+            runtime_cfg["run_id"] = fallback_run_id
+            result, elapsed = _run_step(
+                run_dir,
+                step_name,
+                func,
+                runtime_cfg,
+                retries=0,
+                backoff_sec=backoff_sec,
+            )
         state.set(f"daily.{step_name}.last_success", run_id)
         state.set(f"daily.{step_name}.last_success_date", run_date_token)
         state.set(f"daily.{step_name}.result", result)

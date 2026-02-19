@@ -4,10 +4,14 @@ defaults:
   timezone: "Asia/Seoul"
   run_id_scheme: "compact_v1"
   training_run_id_scheme: "compact_v1"
+  pretrain_bootstrap_enabled: true
 
 daily:
   universe_id: "default"
   lookback_years: 3
+  market_delta_days: 45
+  feature_delta_days: 120
+  max_infer_workers: 4
   run_id: null
   model_name: "lgbm_ranker"
   top_k: 20
@@ -40,6 +44,7 @@ weekly:
   backoff_sec: 2.0
   compute_features: true
   features_lookback_days: 365
+  promote_on_success: true
   promote_thresholds:
     sharpe_min: 0.1
     max_drawdown_min: -0.4
@@ -63,3 +68,7 @@ monthly:
   backoff_sec: 2.0
   compute_features: true
   features_lookback_days: 365
+
+retention:
+  policy: "keep_all"
+  index_compaction: true

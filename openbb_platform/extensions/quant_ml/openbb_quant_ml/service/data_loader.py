@@ -13,7 +13,13 @@ import pandas as pd
 import yfinance as yf
 
 from openbb_quant_ml.service.cache_registry import update_data_version
-from openbb_quant_ml.service.constants import ARTIFACT_ROOT, CACHE_DIR, CACHE_TTL_DAYS, RAW_STORE_DIR
+from openbb_quant_ml.service.constants import (
+    ARTIFACT_ROOT,
+    CACHE_DIR,
+    CACHE_TTL_DAYS,
+    RAW_STORE_DIR,
+)
+from openbb_quant_ml.service.storage import save_parquet_atomic
 
 
 def _safe_symbol(symbol: str) -> str:
@@ -53,7 +59,10 @@ def _ensure_ssl_bundle_path() -> None:
     if needs_copy:
         target_path = ARTIFACT_ROOT / "certs" / "cacert.pem"
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        if not target_path.exists() or target_path.stat().st_size != source_path.stat().st_size:
+        if (
+            not target_path.exists()
+            or target_path.stat().st_size != source_path.stat().st_size
+        ):
             shutil.copy2(source_path, target_path)
         bundle_path = str(target_path)
     else:
@@ -91,7 +100,9 @@ def _normalize_frame(frame: pd.DataFrame, symbol: str) -> pd.DataFrame:
     df = df[keep_columns]
     df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None)
     df["symbol"] = symbol
-    return df.dropna(subset=["date", "close"]).sort_values("date").reset_index(drop=True)
+    return (
+        df.dropna(subset=["date", "close"]).sort_values("date").reset_index(drop=True)
+    )
 
 
 def _load_cached(symbol: str) -> pd.DataFrame:
@@ -108,7 +119,7 @@ def _load_cached(symbol: str) -> pd.DataFrame:
 def _save_cache(symbol: str, frame: pd.DataFrame) -> None:
     cache_path = _cache_path(symbol)
     cache_path.parent.mkdir(parents=True, exist_ok=True)
-    frame.to_parquet(cache_path, index=False)
+    save_parquet_atomic(cache_path, frame, index=False)
     update_data_version(symbol=symbol, frame=frame, source="yfinance")
 
 
@@ -121,7 +132,6 @@ def load_symbol_prices(
     """Load OHLCV series from cache or yfinance."""
     _ensure_ssl_bundle_path()
 
-    cache_path = _cache_path(symbol)
     cached = _load_cached(symbol)
     has_coverage = False
     if not cached.empty:
@@ -129,10 +139,17 @@ def load_symbol_prices(
         max_date = cached["date"].max().date()
         has_coverage = min_date <= start_date and max_date >= end_date
 
-    if not cached.empty and _is_cache_fresh(cache_path, ttl_days) and has_coverage:
-        return cached[(cached["date"].dt.date >= start_date) & (cached["date"].dt.date <= end_date)].copy()
+    if not cached.empty and has_coverage:
+        return cached[
+            (cached["date"].dt.date >= start_date)
+            & (cached["date"].dt.date <= end_date)
+        ].copy()
 
-    download_start = min(start_date - timedelta(days=400), start_date)
+    download_start = start_date - timedelta(days=400)
+    if not cached.empty:
+        cached_max = cached["date"].max().date()
+        download_start = max(start_date, cached_max - timedelta(days=7))
+
     download_end = end_date + timedelta(days=5)
     fresh = yf.download(
         tickers=symbol,
@@ -147,15 +164,22 @@ def load_symbol_prices(
     if normalized.empty:
         if not cached.empty:
             return cached[
-                (cached["date"].dt.date >= start_date) & (cached["date"].dt.date <= end_date)
+                (cached["date"].dt.date >= start_date)
+                & (cached["date"].dt.date <= end_date)
             ].copy()
         raise ValueError(f"Failed to load market data for symbol: {symbol}")
 
     # Keep the most complete frame in cache by unioning old+new and dropping duplicates.
-    merged = pd.concat([cached, normalized], ignore_index=True) if not cached.empty else normalized
+    merged = (
+        pd.concat([cached, normalized], ignore_index=True)
+        if not cached.empty
+        else normalized
+    )
     merged = merged.sort_values("date").drop_duplicates(subset=["date"], keep="last")
     _save_cache(symbol, merged)
-    return merged[(merged["date"].dt.date >= start_date) & (merged["date"].dt.date <= end_date)].copy()
+    return merged[
+        (merged["date"].dt.date >= start_date) & (merged["date"].dt.date <= end_date)
+    ].copy()
 
 
 def load_market_data(
@@ -196,8 +220,12 @@ def build_close_panel(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Build wide close-price dataframe indexed by date."""
     if not data:
         return pd.DataFrame()
-    pivot_source = pd.concat([df[["date", "symbol", "close"]] for df in data.values()], ignore_index=True)
-    panel = pivot_source.pivot(index="date", columns="symbol", values="close").sort_index()
+    pivot_source = pd.concat(
+        [df[["date", "symbol", "close"]] for df in data.values()], ignore_index=True
+    )
+    panel = pivot_source.pivot(
+        index="date", columns="symbol", values="close"
+    ).sort_index()
     return panel
 
 
@@ -214,5 +242,7 @@ def build_price_panel(data: dict[str, pd.DataFrame], price_field: str) -> pd.Dat
     if not rows:
         return pd.DataFrame()
     pivot_source = pd.concat(rows, ignore_index=True)
-    panel = pivot_source.pivot(index="date", columns="symbol", values=field).sort_index()
+    panel = pivot_source.pivot(
+        index="date", columns="symbol", values=field
+    ).sort_index()
     return panel

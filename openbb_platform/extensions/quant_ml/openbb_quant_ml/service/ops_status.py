@@ -6,9 +6,17 @@ from datetime import UTC, datetime
 from typing import Any
 
 from openbb_quant_ml.models import OpsJobStateResponse, OpsStatusResponse
-from openbb_quant_ml.service.cache_registry import get_data_versions, get_feature_versions
-from openbb_quant_ml.service.constants import ARTIFACT_ROOT
-from openbb_quant_ml.service.storage import load_json, read_registry
+from openbb_quant_ml.service.cache_registry import (
+    get_data_versions,
+    get_feature_versions,
+)
+from openbb_quant_ml.service.constants import ARTIFACT_ROOT, WALKFORWARD_JOBS_PATH
+from openbb_quant_ml.service.run_index import (
+    get_latest_training_run_id_from_index,
+    list_latest_runs_from_index,
+    rebuild_runs_index,
+)
+from openbb_quant_ml.service.storage import get_run_dir, load_json, read_registry
 
 
 def _build_job_state(payload: dict[str, Any], job: str) -> OpsJobStateResponse:
@@ -36,6 +44,10 @@ def _build_job_state(payload: dict[str, Any], job: str) -> OpsJobStateResponse:
 
 
 def _latest_runs(limit: int = 10) -> list[dict[str, Any]]:
+    indexed = list_latest_runs_from_index(limit=limit)
+    if indexed:
+        return indexed
+
     registry = read_registry()
     runs = registry.get("runs", {})
     if not isinstance(runs, dict):
@@ -53,8 +65,46 @@ def _latest_runs(limit: int = 10) -> list[dict[str, Any]]:
                 "updated_at": row.get("updated_at"),
             }
         )
-    rows.sort(key=lambda item: str(item.get("updated_at") or item.get("created_at") or ""), reverse=True)
+    rows.sort(
+        key=lambda item: str(item.get("updated_at") or item.get("created_at") or ""),
+        reverse=True,
+    )
     return rows[: max(1, int(limit))]
+
+
+def _latest_daily_infer_date(job_state: dict[str, Any]) -> str | None:
+    result = job_state.get("daily.predict.result", {})
+    if isinstance(result, dict):
+        as_of_date = str(result.get("as_of_date", "")).strip()
+        if as_of_date:
+            return as_of_date
+
+    latest_daily_run_id = str(job_state.get("daily.last_run_id", "")).strip()
+    if not latest_daily_run_id:
+        return None
+    infer_path = get_run_dir(latest_daily_run_id) / "inference_latest.json"
+    payload = load_json(infer_path, default={})
+    if not isinstance(payload, dict):
+        return None
+    as_of_date = str(payload.get("as_of_date", "")).strip()
+    return as_of_date or None
+
+
+def _walkforward_queue_depth() -> int:
+    payload = load_json(WALKFORWARD_JOBS_PATH, default={})
+    if not isinstance(payload, dict):
+        return 0
+    jobs = payload.get("jobs", {})
+    if not isinstance(jobs, dict):
+        return 0
+    depth = 0
+    for row in jobs.values():
+        if not isinstance(row, dict):
+            continue
+        status = str(row.get("status", "")).lower()
+        if status in {"queued", "running"}:
+            depth += 1
+    return depth
 
 
 def get_ops_status_response() -> OpsStatusResponse:
@@ -71,6 +121,7 @@ def get_ops_status_response() -> OpsStatusResponse:
         _build_job_state(job_state, "weekly"),
         _build_job_state(job_state, "monthly"),
     ]
+    rebuild_runs_index()
 
     latest_publish = load_json(latest_publish_path, default={})
     if not isinstance(latest_publish, dict):
@@ -107,5 +158,7 @@ def get_ops_status_response() -> OpsStatusResponse:
         },
         latest_runs=_latest_runs(limit=10),
         macro_health=macro_health,
+        latest_training_run_id=get_latest_training_run_id_from_index(),
+        latest_daily_infer_date=_latest_daily_infer_date(job_state),
+        walkforward_queue_depth=_walkforward_queue_depth(),
     )
-

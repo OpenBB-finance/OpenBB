@@ -13,6 +13,7 @@ from openbb_quant_ml.service.run_id import (
     build_training_run_id,
     normalize_run_id_scheme,
 )
+from openbb_quant_ml.service.run_index import rebuild_runs_index, upsert_run_index_entry
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     read_registry,
@@ -73,6 +74,7 @@ def initialize_registry() -> None:
     with _LOCK:
         if not _RUN_STATES:
             _load_states_from_disk()
+            rebuild_runs_index()
 
 
 def create_run(
@@ -101,6 +103,13 @@ def create_run(
         )
         _RUN_STATES[run_id] = state
         _persist_states_to_disk()
+        upsert_run_index_entry(
+            run_id,
+            status=state.status,
+            stage=state.stage,
+            created_at=state.created_at,
+            updated_at=state.updated_at,
+        )
         return state
 
 
@@ -139,6 +148,13 @@ def update_run(
             state.error = error
         state.updated_at = utc_now_iso()
         _persist_states_to_disk()
+        upsert_run_index_entry(
+            run_id,
+            status=state.status,
+            stage=state.stage,
+            created_at=state.created_at,
+            updated_at=state.updated_at,
+        )
         return state
 
 

@@ -9,11 +9,20 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from openbb_quant_ml.models import CloseToNextOpenHorizonPolicy, FeatureConfig, TargetMode
-from openbb_quant_ml.service.cache_registry import compute_params_hash, get_feature_version, update_feature_version
+from openbb_quant_ml.models import (
+    CloseToNextOpenHorizonPolicy,
+    FeatureConfig,
+    TargetMode,
+)
+from openbb_quant_ml.service.cache_registry import (
+    compute_params_hash,
+    get_feature_version,
+    update_feature_version,
+)
 from openbb_quant_ml.service.constants import FEATURE_STORE_DIR
 from openbb_quant_ml.service.data_loader import build_close_panel
 from openbb_quant_ml.service.macro_feature_engineering import load_macro_feature_wide
+from openbb_quant_ml.service.storage import save_parquet_atomic
 
 
 def _rsi(series: pd.Series, period: int = 14) -> pd.Series:
@@ -35,11 +44,30 @@ def _macd_hist(series: pd.Series) -> pd.Series:
 
 
 def _safe_symbol(symbol: str) -> str:
-    return "".join(ch if ch.isalnum() or ch in {"_", "-", "."} else "_" for ch in str(symbol))
+    return "".join(
+        ch if ch.isalnum() or ch in {"_", "-", "."} else "_" for ch in str(symbol)
+    )
 
 
 def _feature_cache_path(feature_set_id: str, params_hash: str, symbol: str) -> Path:
-    return FEATURE_STORE_DIR / feature_set_id / params_hash / f"{_safe_symbol(symbol)}.parquet"
+    return (
+        FEATURE_STORE_DIR
+        / feature_set_id
+        / params_hash
+        / f"{_safe_symbol(symbol)}.parquet"
+    )
+
+
+def _feature_overlap_days(feature_config: FeatureConfig, horizon_days: int) -> int:
+    lookbacks = [
+        max(feature_config.lags or [1]),
+        max(feature_config.vol_windows or [5]),
+        max(feature_config.momentum_windows or [5]),
+        60,
+        26,
+        14,
+    ]
+    return max(30, int(max(lookbacks)) + int(max(1, horizon_days)) + 10)
 
 
 def _compute_target_return(
@@ -66,7 +94,9 @@ def _compute_target_return(
 def _build_regime_features(data_by_symbol: dict[str, pd.DataFrame]) -> pd.DataFrame:
     close_panel = build_close_panel(data_by_symbol)
     if close_panel.empty:
-        return pd.DataFrame(columns=["date", "regime_rate_change_1d", "regime_commodity_change_1d"])
+        return pd.DataFrame(
+            columns=["date", "regime_rate_change_1d", "regime_commodity_change_1d"]
+        )
 
     rate_candidates = ["^TNX", "IEF", "TLT", "BIL"]
     commodity_candidates = ["DBC", "GLD", "USO", "SLV"]
@@ -77,7 +107,9 @@ def _build_regime_features(data_by_symbol: dict[str, pd.DataFrame]) -> pd.DataFr
 
     regime = pd.DataFrame(index=close_panel.index)
     regime["regime_rate_change_1d"] = (
-        close_panel[rate_symbol].pct_change() if rate_symbol else pd.Series(0.0, index=close_panel.index)
+        close_panel[rate_symbol].pct_change()
+        if rate_symbol
+        else pd.Series(0.0, index=close_panel.index)
     )
     regime["regime_commodity_change_1d"] = (
         close_panel[commodity_symbol].pct_change()
@@ -164,7 +196,11 @@ def attach_macro_features(
         panel_df[["date"]]
         .drop_duplicates()
         .rename(columns={"date": "sample_date"})
-        .assign(sample_date=lambda x: pd.to_datetime(x["sample_date"]).dt.tz_localize(None).astype("datetime64[ns]"))
+        .assign(
+            sample_date=lambda x: pd.to_datetime(x["sample_date"])
+            .dt.tz_localize(None)
+            .astype("datetime64[ns]")
+        )
         .sort_values("sample_date")
     )
 
@@ -176,10 +212,14 @@ def attach_macro_features(
         direction="backward",
     )
     if "macro_date" in aligned.columns:
-        invalid = aligned["macro_date"].notna() & (aligned["macro_date"] > aligned["sample_date"])
+        invalid = aligned["macro_date"].notna() & (
+            aligned["macro_date"] > aligned["sample_date"]
+        )
         if bool(invalid.any()):
             raise ValueError("Macro asof join leakage detected.")
-    aligned = aligned.rename(columns={"sample_date": "date"}).drop(columns=["macro_date"], errors="ignore")
+    aligned = aligned.rename(columns={"sample_date": "date"}).drop(
+        columns=["macro_date"], errors="ignore"
+    )
     return panel_df.merge(aligned, on="date", how="left")
 
 
@@ -201,28 +241,78 @@ def _build_or_load_symbol_features(
     params_hash: str,
 ) -> pd.DataFrame:
     cache_path = _feature_cache_path(feature_set_id, params_hash, symbol)
-    last_date = pd.Timestamp(pd.to_datetime(symbol_df["date"]).max()).date().isoformat()
+    symbol_working = symbol_df.copy()
+    symbol_working["date"] = pd.to_datetime(symbol_working["date"]).dt.tz_localize(None)
+    last_date = pd.Timestamp(symbol_working["date"].max()).date().isoformat()
     version_row = get_feature_version(symbol=symbol, feature_set_id=feature_set_id)
-    if (
+    cached_frame = pd.DataFrame()
+    cache_is_valid = (
         cache_path.exists()
         and version_row
         and str(version_row.get("params_hash")) == params_hash
+    )
+    if cache_is_valid:
+        try:
+            cached_frame = pd.read_parquet(cache_path)
+            if not cached_frame.empty:
+                cached_frame["date"] = pd.to_datetime(
+                    cached_frame["date"]
+                ).dt.tz_localize(None)
+        except Exception:
+            cached_frame = pd.DataFrame()
+
+    if (
+        cache_is_valid
+        and not cached_frame.empty
         and str(version_row.get("last_date")) == last_date
     ):
-        cached = pd.read_parquet(cache_path)
-        if not cached.empty:
-            cached["date"] = pd.to_datetime(cached["date"]).dt.tz_localize(None)
-            return cached
+        return cached_frame
+
+    if cache_is_valid and not cached_frame.empty:
+        cached_last = pd.Timestamp(cached_frame["date"].max())
+        source_last = pd.Timestamp(symbol_working["date"].max())
+        if source_last <= cached_last:
+            return cached_frame
+
+        overlap_days = _feature_overlap_days(feature_config, horizon_days)
+        recalc_start = cached_last - pd.Timedelta(days=overlap_days)
+        recalc_source = symbol_working[symbol_working["date"] >= recalc_start].copy()
+        if not recalc_source.empty:
+            recalculated = _build_single_symbol_features(
+                symbol_df=recalc_source,
+                feature_config=feature_config,
+                horizon_days=horizon_days,
+                target_mode=target_mode,
+                close_to_next_open_horizon_policy=close_to_next_open_horizon_policy,
+            )
+            if not recalculated.empty:
+                recalculated["date"] = pd.to_datetime(
+                    recalculated["date"]
+                ).dt.tz_localize(None)
+                keep_until = pd.Timestamp(recalculated["date"].min())
+                preserved = cached_frame[cached_frame["date"] < keep_until].copy()
+                merged = pd.concat([preserved, recalculated], ignore_index=True)
+                merged = merged.sort_values("date").drop_duplicates(
+                    subset=["date"], keep="last"
+                )
+                save_parquet_atomic(cache_path, merged, index=False)
+                update_feature_version(
+                    symbol=symbol,
+                    feature_set_id=feature_set_id,
+                    params_hash=params_hash,
+                    frame=merged,
+                )
+                return merged
 
     features = _build_single_symbol_features(
-        symbol_df=symbol_df,
+        symbol_df=symbol_working,
         feature_config=feature_config,
         horizon_days=horizon_days,
         target_mode=target_mode,
         close_to_next_open_horizon_policy=close_to_next_open_horizon_policy,
     )
     cache_path.parent.mkdir(parents=True, exist_ok=True)
-    features.to_parquet(cache_path, index=False)
+    save_parquet_atomic(cache_path, features, index=False)
     update_feature_version(
         symbol=symbol,
         feature_set_id=feature_set_id,
@@ -260,7 +350,9 @@ def build_feature_dataset(
     skipped_symbols: list[str] = []
     workers = max(1, int(max_workers or min(8, len(data_by_symbol))))
 
-    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="feature-build") as executor:
+    with ThreadPoolExecutor(
+        max_workers=workers, thread_name_prefix="feature-build"
+    ) as executor:
         futures = {
             executor.submit(
                 _build_or_load_symbol_features,
@@ -307,7 +399,14 @@ def build_feature_dataset(
     merged = merged.sort_values(["date", "symbol"]).reset_index(drop=True)
     merged = merged.replace([np.inf, -np.inf], np.nan)
 
-    ignore_columns = {"date", "symbol", "target_return", "close", "open", "daily_return"}
+    ignore_columns = {
+        "date",
+        "symbol",
+        "target_return",
+        "close",
+        "open",
+        "daily_return",
+    }
     feature_columns = [col for col in merged.columns if col not in ignore_columns]
     _validate_feature_columns(feature_columns)
 

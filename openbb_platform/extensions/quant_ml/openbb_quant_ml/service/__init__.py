@@ -59,6 +59,11 @@ from openbb_quant_ml.service.pipeline import (
     run_backtest_for_run,
     submit_training,
 )
+from openbb_quant_ml.service.runtime_pointer import get_promoted_model_response
+from openbb_quant_ml.service.walkforward_backtest import (
+    get_walkforward_backtest_status,
+    submit_walkforward_backtest,
+)
 
 __all__ = [
     "get_alerts_current",
@@ -95,6 +100,9 @@ __all__ = [
     "get_risk_events",
     "run_backtest_for_run",
     "submit_training",
+    "submit_walkforward_backtest",
+    "get_walkforward_backtest_status",
+    "get_promoted_model_response",
     "get_macro_catalog",
     "search_macro_catalog",
     "register_macro_catalog",

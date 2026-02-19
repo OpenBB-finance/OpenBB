@@ -15,14 +15,30 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     universe_id = config.get("universe_id")
     symbols = get_symbols_for_universe(universe_id)
     end_date = date.today()
-    start_date = end_date - timedelta(days=365 * int(config.get("lookback_years", 3)))
+    feature_delta_days = int(
+        config.get("feature_delta_days", 365 * int(config.get("lookback_years", 3)))
+    )
+    start_date = end_date - timedelta(days=max(30, feature_delta_days))
+    horizon_days = int(config.get("horizon_days", 1))
+    target_mode = str(config.get("target_mode", "next_open_to_close"))
+    include_macro_features = bool(config.get("include_macro_features", True))
+    macro_feature_subset = list(
+        config.get("macro_feature_subset", ["z_252", "yoy", "mom_3", "slope"])
+    )
+    max_workers = config.get("max_infer_workers")
     datasets, _ = load_market_data(symbols, start_date=start_date, end_date=end_date)
     frame, feature_cols, skipped = build_feature_dataset(
         data_by_symbol=datasets,
         feature_config=FeatureConfig(),
-        horizon_days=1,
-        target_mode="next_open_to_close",
-        include_macro_features=True,
-        macro_feature_subset=["z_252", "yoy", "mom_3", "slope"],
+        horizon_days=horizon_days,
+        target_mode=target_mode,  # type: ignore[arg-type]
+        include_macro_features=include_macro_features,
+        macro_feature_subset=macro_feature_subset,
+        max_workers=max_workers if isinstance(max_workers, int) else None,
     )
-    return {"rows": int(len(frame)), "feature_count": len(feature_cols), "skipped": len(skipped)}
+    return {
+        "rows": int(len(frame)),
+        "feature_count": len(feature_cols),
+        "skipped": len(skipped),
+        "feature_delta_days": max(30, feature_delta_days),
+    }

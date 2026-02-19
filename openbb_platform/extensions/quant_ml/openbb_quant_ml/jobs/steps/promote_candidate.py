@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from openbb_quant_ml.service.runtime_pointer import set_promoted_model_pointer
 from openbb_quant_ml.service.storage import get_run_dir, load_json
 
 
@@ -15,7 +16,11 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     model_name = str(config.get("model_name", "lgbm_ranker"))
     run_dir = get_run_dir(str(run_id))
     if not run_dir.exists():
-        return {"status": "skipped", "message": f"run not found: {run_id}", "run_id": run_id}
+        return {
+            "status": "skipped",
+            "message": f"run not found: {run_id}",
+            "run_id": run_id,
+        }
 
     backtest_payload = load_json(run_dir / f"backtest_{model_name}.json", default={})
     if not isinstance(backtest_payload, dict) or not backtest_payload:
@@ -24,14 +29,25 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(metrics_payload, dict) or not metrics_payload:
         metrics_payload = load_json(run_dir / "metrics.json", default={})
 
-    metrics_block = backtest_payload.get("metrics", {}) if isinstance(backtest_payload, dict) else {}
+    metrics_block = (
+        backtest_payload.get("metrics", {})
+        if isinstance(backtest_payload, dict)
+        else {}
+    )
     if not isinstance(metrics_block, dict):
         metrics_block = {}
 
     sharpe = float(metrics_block.get("sharpe", 0.0))
     max_drawdown = float(metrics_block.get("max_drawdown", 0.0))
     turnover = float(metrics_block.get("turnover", 0.0))
-    val_ic = float(metrics_payload.get("val_ic", metrics_payload.get("train_ic", 0.0)) or 0.0)
+    val_ic = float(
+        metrics_payload.get("val_ic", metrics_payload.get("train_ic", 0.0)) or 0.0
+    )
+    if isinstance(metrics_payload.get("metrics"), dict):
+        metric_block = metrics_payload.get("metrics", {})
+        val_ic = float(
+            metric_block.get("val_ic", metric_block.get("train_ic", val_ic)) or 0.0
+        )
 
     thresholds = config.get("promote_thresholds", {})
     if not isinstance(thresholds, dict):
@@ -52,6 +68,14 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         failures.append(f"val_ic<{val_ic_min}")
 
     promoted = len(failures) == 0
+    promoted_pointer = None
+    if promoted and bool(config.get("promote_on_success", True)):
+        promoted_pointer = set_promoted_model_pointer(
+            run_id=str(run_id),
+            model_name=model_name,
+            source="promote_candidate",
+        )
+
     return {
         "status": "ok",
         "run_id": str(run_id),
@@ -70,5 +94,10 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             "val_ic_min": val_ic_min,
         },
         "reasons": failures,
-        "message": "candidate promoted" if promoted else "candidate did not pass promotion thresholds",
+        "promoted_pointer": promoted_pointer,
+        "message": (
+            "candidate promoted"
+            if promoted
+            else "candidate did not pass promotion thresholds"
+        ),
     }

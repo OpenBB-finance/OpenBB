@@ -3,16 +3,23 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import RLock
 from typing import Any
+from uuid import uuid4
+
+import pandas as pd
 
 from openbb_quant_ml.service.constants import (
     ARTIFACT_ROOT,
     CACHE_DIR,
+    INDEX_DIR,
     REGISTRY_PATH,
+    RUNTIME_DIR,
     RUNS_DIR,
+    WALKFORWARD_DIR,
 )
 
 _REGISTRY_LOCK = RLock()
@@ -27,16 +34,37 @@ def ensure_storage_dirs() -> None:
     """Ensure all required storage directories exist."""
     ARTIFACT_ROOT.mkdir(parents=True, exist_ok=True)
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
+    INDEX_DIR.mkdir(parents=True, exist_ok=True)
+    WALKFORWARD_DIR.mkdir(parents=True, exist_ok=True)
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
     if not REGISTRY_PATH.exists():
         save_json(REGISTRY_PATH, {"runs": {}})
 
 
+def _atomic_replace(path: Path, payload_text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.parent / f".{path.name}.{os.getpid()}.{uuid4().hex}.tmp"
+    tmp_path.write_text(payload_text, encoding="utf-8")
+    tmp_path.replace(path)
+
+
 def save_json(path: Path, payload: Any) -> None:
     """Write JSON payload to disk."""
+    _atomic_replace(
+        path,
+        json.dumps(payload, ensure_ascii=False, indent=2),
+    )
+
+
+def save_parquet_atomic(
+    path: Path, frame: pd.DataFrame, *, index: bool = False
+) -> None:
+    """Write parquet payload atomically via temporary file replace."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as file:
-        json.dump(payload, file, ensure_ascii=False, indent=2)
+    tmp_path = path.parent / f".{path.name}.{os.getpid()}.{uuid4().hex}.tmp"
+    frame.to_parquet(tmp_path, index=index)
+    tmp_path.replace(path)
 
 
 def load_json(path: Path, default: Any) -> Any:

@@ -13,7 +13,12 @@ import pandas as pd
 from openbb_quant_ml.models import ModelName, TrainRequest
 from openbb_quant_ml.service.data_loader import load_market_data
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
-from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json
+from openbb_quant_ml.service.storage import (
+    get_run_dir,
+    load_json,
+    save_json,
+    save_parquet_atomic,
+)
 from openbb_quant_ml.service.universe import (
     get_default_symbols,
     get_symbols_for_universe,
@@ -168,12 +173,24 @@ def _write_market_data_artifact(
     market_long["date"] = pd.to_datetime(market_long["date"]).dt.tz_localize(None)
     market_long = market_long.sort_values(["date", "symbol"])
     market_long = market_long.drop_duplicates(subset=["date", "symbol"], keep="last")
-    market_long.to_parquet(run_dir / "market_data.parquet", index=False)
+
+    market_path = run_dir / "market_data.parquet"
+    if market_path.exists():
+        existing = pd.read_parquet(market_path)
+        if not existing.empty:
+            existing["date"] = pd.to_datetime(existing["date"]).dt.tz_localize(None)
+            market_long = pd.concat([existing, market_long], ignore_index=True)
+            market_long = market_long.sort_values(["date", "symbol"])
+            market_long = market_long.drop_duplicates(
+                subset=["date", "symbol"], keep="last"
+            )
+
+    save_parquet_atomic(market_path, market_long, index=False)
 
 
 def _upsert_predictions(
     run_dir: Path, model_name: ModelName, scored_latest: pd.DataFrame
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, int, bool]:
     predictions_path = run_dir / f"predictions_{model_name}.parquet"
     existing = pd.DataFrame()
     if predictions_path.exists():
@@ -181,14 +198,28 @@ def _upsert_predictions(
         if not existing.empty:
             existing["date"] = pd.to_datetime(existing["date"]).dt.tz_localize(None)
 
+    if not existing.empty:
+        existing_latest_date = pd.Timestamp(existing["date"].max()).normalize()
+        latest_date = pd.Timestamp(scored_latest["date"].max()).normalize()
+        if latest_date <= existing_latest_date:
+            existing_latest = existing[
+                pd.to_datetime(existing["date"]).dt.normalize() == latest_date
+            ]
+            incoming_symbols = set(scored_latest["symbol"].astype(str))
+            existing_symbols = set(existing_latest["symbol"].astype(str))
+            if incoming_symbols.issubset(existing_symbols):
+                return existing, 0, False
+
     merged = pd.concat([existing, scored_latest], ignore_index=True, sort=False)
     merged["date"] = pd.to_datetime(merged["date"]).dt.tz_localize(None)
     merged = merged.sort_values(["date", "symbol"])
     merged = merged.drop_duplicates(subset=["date", "symbol"], keep="last")
-    merged.to_parquet(predictions_path, index=False)
+    before_count = len(existing)
+    upserted_rows = max(0, len(merged) - before_count)
+    save_parquet_atomic(predictions_path, merged, index=False)
     if model_name == "lgbm_ranker":
-        merged.to_parquet(run_dir / "predictions.parquet", index=False)
-    return merged
+        save_parquet_atomic(run_dir / "predictions.parquet", merged, index=False)
+    return merged, int(upserted_rows), True
 
 
 def refresh_latest_ranker_predictions(
@@ -196,6 +227,8 @@ def refresh_latest_ranker_predictions(
     *,
     model_name: ModelName = "lgbm_ranker",
     lookback_years: int = 3,
+    market_delta_days: int | None = None,
+    max_workers: int | None = None,
 ) -> dict[str, Any]:
     """Refresh latest-day predictions for an already-trained ranker run."""
     resolved_run_id = str(run_id).strip()
@@ -217,7 +250,26 @@ def refresh_latest_ranker_predictions(
 
     lookback = max(1, int(lookback_years))
     lookback_start = date.today() - timedelta(days=365 * lookback)
+    delta_days = max(14, int(market_delta_days or 0)) if market_delta_days else None
+    predictions_path = run_dir / f"predictions_{model_name}.parquet"
+    existing_predictions = pd.DataFrame()
+    existing_max_date = None
+    if predictions_path.exists():
+        existing_predictions = pd.read_parquet(
+            predictions_path, columns=["date", "symbol"]
+        )
+        if not existing_predictions.empty:
+            existing_predictions["date"] = pd.to_datetime(
+                existing_predictions["date"]
+            ).dt.tz_localize(None)
+            existing_max_date = pd.Timestamp(existing_predictions["date"].max()).date()
     start_date = max(request.date_range.start_date, lookback_start)
+    if delta_days is not None:
+        delta_start = date.today() - timedelta(days=delta_days)
+        start_date = max(start_date, delta_start)
+    if existing_max_date is not None:
+        warm_start = existing_max_date - timedelta(days=14)
+        start_date = max(start_date, warm_start)
     end_date = date.today()
 
     datasets, skipped = load_market_data(
@@ -236,6 +288,7 @@ def refresh_latest_ranker_predictions(
         close_to_next_open_horizon_policy=request.close_to_next_open_horizon_policy,
         include_macro_features=request.include_macro_features,
         macro_feature_subset=request.macro_feature_subset,
+        max_workers=max_workers,
     )
     if feature_data.empty:
         raise ValueError("Feature dataset is empty for inference refresh.")
@@ -253,7 +306,9 @@ def refresh_latest_ranker_predictions(
         model=model,
         metadata=metadata,
     )
-    merged_predictions = _upsert_predictions(run_dir, model_name, scored_latest)
+    merged_predictions, upserted_rows, changed = _upsert_predictions(
+        run_dir, model_name, scored_latest
+    )
     _write_market_data_artifact(run_dir, datasets)
 
     payload = {
@@ -266,7 +321,8 @@ def refresh_latest_ranker_predictions(
         "symbols_loaded": len(datasets),
         "symbols_skipped_data": len(skipped),
         "symbols_skipped_features": len(skipped_feature_symbols),
-        "latest_rows_upserted": int(len(scored_latest)),
+        "latest_rows_upserted": int(upserted_rows),
+        "changed": bool(changed),
         "predictions_total_rows": int(len(merged_predictions)),
     }
     save_json(run_dir / "inference_latest.json", payload)

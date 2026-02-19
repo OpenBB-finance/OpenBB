@@ -8,12 +8,14 @@ from typing import Any
 
 import yaml
 
+from openbb_quant_ml.jobs.bootstrap import run_bootstrap
 from openbb_quant_ml.jobs.daily import run_daily
 from openbb_quant_ml.jobs.lock import job_lock
 from openbb_quant_ml.jobs.logging import append_log, create_run_dir, write_json
 from openbb_quant_ml.jobs.monthly import run_monthly
 from openbb_quant_ml.jobs.state import JobState
 from openbb_quant_ml.jobs.weekly import run_weekly
+from openbb_quant_ml.service.run_index import rebuild_runs_index
 
 
 def _load_config(path: str) -> dict[str, Any]:
@@ -38,7 +40,7 @@ def _resolve_runtime_config(config: dict[str, Any], job_name: str) -> dict[str, 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Quant ML operational jobs CLI.")
-    parser.add_argument("job", choices=["daily", "weekly", "monthly"])
+    parser.add_argument("job", choices=["daily", "weekly", "monthly", "bootstrap"])
     parser.add_argument("--config", required=True)
     args = parser.parse_args()
 
@@ -60,12 +62,19 @@ def main() -> int:
                 run_daily(cfg, state, run_id, run_dir, run_date=run_date)
             elif args.job == "weekly":
                 run_weekly(cfg, state, run_id, run_dir)
+            elif args.job == "bootstrap":
+                run_bootstrap(cfg, state, run_id, run_dir)
             else:
                 run_monthly(cfg, state, run_id, run_dir)
             state.set(f"{args.job}.last_run_id", run_id)
             state.set(f"{args.job}.last_status", "ok")
             state.delete(f"{args.job}.last_error")
             state.save()
+            retention_cfg = cfg.get("retention", {}) if isinstance(cfg, dict) else {}
+            if isinstance(retention_cfg, dict) and bool(
+                retention_cfg.get("index_compaction", False)
+            ):
+                rebuild_runs_index()
             write_json(run_dir, "config_used.json", cfg)
             append_log(run_dir, "info", "job", "job completed")
             return 0

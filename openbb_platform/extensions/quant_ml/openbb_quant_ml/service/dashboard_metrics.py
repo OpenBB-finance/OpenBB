@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from pathlib import Path
+import re
 from typing import Any
 
 import numpy as np
@@ -26,8 +27,13 @@ from openbb_quant_ml.models import (
     RegimeHistoryResponse,
     RollingPerformanceResponse,
 )
-from openbb_quant_ml.service.constants import RUNS_DIR
+from openbb_quant_ml.service.constants import RAW_STORE_DIR, RUNS_DIR
+from openbb_quant_ml.service.run_index import (
+    get_latest_run_id_from_index,
+    upsert_run_index_entry,
+)
 from openbb_quant_ml.service.run_registry import append_log, update_run
+from openbb_quant_ml.service.runtime_pointer import get_promoted_model
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     load_json,
@@ -146,14 +152,20 @@ def _latest_run_from_registry() -> str | None:
 
 def get_latest_run_id() -> str | None:
     """Return latest run id using registry first, then filesystem mtime."""
+    indexed_latest = get_latest_run_id_from_index()
+    if indexed_latest and _has_run_dir(indexed_latest):
+        return indexed_latest
+
     registry_latest = _latest_run_from_registry()
     if registry_latest and _has_run_dir(registry_latest):
+        upsert_run_index_entry(run_id=registry_latest)
         return registry_latest
 
     run_dirs = _list_run_dirs()
     if not run_dirs:
         return None
     run_dirs.sort(key=lambda item: item.stat().st_mtime, reverse=True)
+    upsert_run_index_entry(run_id=run_dirs[0].name)
     return run_dirs[0].name
 
 
@@ -268,6 +280,12 @@ def _workflow_state_payload(
             run_progress = 100
             updated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
             stale_running = False
+            upsert_run_index_entry(
+                run_id=run_id,
+                status=run_status,
+                stage=run_stage,
+                updated_at=updated_at,
+            )
 
     return (
         {
@@ -811,6 +829,39 @@ def _latest_prediction_frame(predictions: pd.DataFrame) -> pd.DataFrame:
     return latest
 
 
+def _safe_symbol(symbol: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9_.-]+", "_", str(symbol))
+
+
+def _cache_warm_ratio(
+    config_payload: dict[str, Any],
+    predictions: pd.DataFrame,
+) -> float:
+    symbols: list[str] = []
+    req = config_payload.get("request", {}) if isinstance(config_payload, dict) else {}
+    req_symbols = req.get("symbols", []) if isinstance(req, dict) else []
+    if isinstance(req_symbols, list):
+        symbols = [
+            str(item).strip().upper() for item in req_symbols if str(item).strip()
+        ]
+    if not symbols and not predictions.empty:
+        symbols = sorted(
+            {
+                str(item).strip().upper()
+                for item in predictions["symbol"].tolist()
+                if str(item).strip()
+            }
+        )
+    if not symbols:
+        return 0.0
+    warmed = 0
+    for symbol in symbols:
+        path = RAW_STORE_DIR / f"{_safe_symbol(symbol)}.parquet"
+        if path.exists():
+            warmed += 1
+    return float(warmed) / float(max(len(symbols), 1))
+
+
 def _prediction_confidence(latest_predictions: pd.DataFrame) -> float:
     if latest_predictions.empty:
         return 0.0
@@ -897,6 +948,11 @@ def get_dashboard_health(
     normalized_model = _normalize_model_name(model_name)
     latest_run_id = get_latest_run_id()
     resolved_run_id = _resolve_run_id(run_id)
+    promoted_payload = get_promoted_model(model_name=normalized_model)
+    promoted_run_id = (
+        str(promoted_payload.get("run_id")) if promoted_payload.get("run_id") else None
+    )
+    pretrain_ready = bool(promoted_payload.get("ready", False))
 
     if run_id and not _has_run_dir(run_id):
         return _sanitize_model_response(
@@ -907,6 +963,8 @@ def get_dashboard_health(
                 message="Run not found",
                 latest_run_id=latest_run_id,
                 resolved_run_id=resolved_run_id,
+                promoted_run_id=promoted_run_id,
+                pretrain_ready=pretrain_ready,
                 backend_connected=True,
                 backend_source="quant_ml_api",
                 backend_detail="quant_ml_api_connected",
@@ -922,6 +980,8 @@ def get_dashboard_health(
                 message="No available runs",
                 latest_run_id=latest_run_id,
                 resolved_run_id=resolved_run_id,
+                promoted_run_id=promoted_run_id,
+                pretrain_ready=pretrain_ready,
             )
         )
 
@@ -933,6 +993,7 @@ def get_dashboard_health(
     predictions = _load_predictions(run_dir, normalized_model)
     metrics_payload = _load_metrics(run_dir, normalized_model)
     config_payload = load_json(run_dir / "config.json", default={})
+    cache_warm_ratio = _cache_warm_ratio(config_payload, predictions)
 
     latest_weight_date, latest_weights = _latest_weights(backtest_payload)
     cash_exp, gross_exp, net_exp = _exposure_from_weights(latest_weights)
@@ -1036,6 +1097,9 @@ def get_dashboard_health(
             status=status,
             latest_run_id=latest_run_id,
             resolved_run_id=resolved_run_id,
+            promoted_run_id=promoted_run_id,
+            pretrain_ready=pretrain_ready,
+            cache_warm_ratio=cache_warm_ratio,
             data_timestamp=data_timestamp,
             latest_market_date=latest_market_date,
             staleness_days=staleness_days,

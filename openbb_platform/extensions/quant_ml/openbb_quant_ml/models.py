@@ -20,6 +20,7 @@ ModelChoice = Literal["lgbm_only", "xgb_only", "dual"]
 DashboardMode = Literal["live", "backtest"]
 DashboardPayloadStatus = Literal["ok", "insufficient_data", "not_found"]
 WorkflowRunStatus = Literal["queued", "running", "completed", "failed", "unknown"]
+WalkForwardJobStatus = Literal["queued", "running", "completed", "failed", "not_found"]
 
 
 class DateRange(BaseModel):
@@ -242,6 +243,35 @@ class BacktestRequest(BaseModel):
         return end_date
 
 
+class WalkForwardBacktestRequest(BaseModel):
+    """Walk-forward backtest request."""
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    start_date: date = Field(validation_alias=AliasChoices("start_date", "start"))
+    end_date: date = Field(validation_alias=AliasChoices("end_date", "end"))
+    rebalance: Literal["monthly"] = "monthly"
+    constraints: BacktestConstraints = Field(default_factory=BacktestConstraints)
+    cost_bps: float = Field(default=10.0, ge=0, le=1000)
+    slippage_bps: float = Field(default=2.0, ge=0, le=1000)
+    entry_price: EntryPriceMode = "next_open"
+    exit_price: ExitPriceMode = "close"
+    portfolio_mode: PortfolioMode = "long_only"
+    regime_policy: Literal["fixed", "mixed"] = "mixed"
+    min_history_days: int = Field(default=126, ge=60, le=1260)
+
+    @field_validator("end_date")
+    @classmethod
+    def validate_date_range(cls, end_date: date, info):  # noqa: ANN001
+        """Validate end date is after start date."""
+        start_date = info.data.get("start_date")
+        if start_date and end_date <= start_date:
+            raise ValueError("end_date must be after start_date")
+        return end_date
+
+
 class BacktestMetrics(BaseModel):
     """Backtest metrics."""
 
@@ -301,6 +331,32 @@ class BacktestResponse(BaseModel):
     slippage_bps: float = 2.0
     entry_price: EntryPriceMode = "next_open"
     exit_price: ExitPriceMode = "close"
+
+
+class WalkForwardBacktestSubmitResponse(BaseModel):
+    """Walk-forward backtest submit response."""
+
+    job_id: str
+    status: WalkForwardJobStatus = "queued"
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    created_at: str
+
+
+class WalkForwardBacktestStatusResponse(BaseModel):
+    """Walk-forward backtest status response."""
+
+    job_id: str
+    status: WalkForwardJobStatus = "queued"
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    created_at: str | None = None
+    updated_at: str | None = None
+    artifact_root: str | None = None
+    progress: int = Field(default=0, ge=0, le=100)
+    metrics: BacktestMetrics | None = None
+    message: str | None = None
+    train_windows: list[dict[str, str]] = Field(default_factory=list)
 
 
 class ArtifactSummaryResponse(BaseModel):
@@ -428,6 +484,18 @@ class PortfolioPolicyResponse(BaseModel):
     cash_category: str = "cash_proxy"
 
 
+class PromotedModelResponse(BaseModel):
+    """Runtime promoted model pointer payload."""
+
+    run_id: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    as_of_date: str | None = None
+    feature_hash: str | None = None
+    updated_at: str | None = None
+    source: str = "fallback_registry"
+    ready: bool = False
+
+
 class FeatureImportanceResponse(BaseModel):
     """Feature importance payload."""
 
@@ -478,6 +546,9 @@ class DashboardHealthResponse(BaseModel):
     backend_detail: str = "quant_ml_api_connected"
     latest_run_id: str | None = None
     resolved_run_id: str | None = None
+    promoted_run_id: str | None = None
+    pretrain_ready: bool = False
+    cache_warm_ratio: float = 0.0
     mode_supported: list[DashboardMode] = Field(
         default_factory=lambda: ["live", "backtest"]
     )
@@ -816,6 +887,9 @@ class OpsStatusResponse(BaseModel):
     versions: dict[str, Any] = Field(default_factory=dict)
     latest_runs: list[dict[str, Any]] = Field(default_factory=list)
     macro_health: dict[str, Any] = Field(default_factory=dict)
+    latest_training_run_id: str | None = None
+    latest_daily_infer_date: str | None = None
+    walkforward_queue_depth: int = 0
 
 
 class UniverseListItemResponse(BaseModel):

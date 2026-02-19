@@ -30,6 +30,7 @@ from openbb_quant_ml.models import (
     OpsStatusResponse,
     PerformanceRegimeResponse,
     PortfolioCurrentResponse,
+    PromotedModelResponse,
     PortfolioPolicyResponse,
     PortfolioExposureResponse,
     PortfolioRiskResponse,
@@ -50,6 +51,9 @@ from openbb_quant_ml.models import (
     UniverseListResponse,
     UniverseResolveResponse,
     UniverseResponse,
+    WalkForwardBacktestRequest,
+    WalkForwardBacktestStatusResponse,
+    WalkForwardBacktestSubmitResponse,
 )
 from openbb_quant_ml.service import (
     build_signals,
@@ -70,6 +74,7 @@ from openbb_quant_ml.service import (
     get_model_shap,
     get_ops_status_response,
     get_portfolio_policy_response,
+    get_promoted_model_response,
     get_performance_regime,
     get_performance_rolling,
     get_portfolio_current,
@@ -88,7 +93,9 @@ from openbb_quant_ml.service import (
     risk_check_pretrade,
     run_backtest_for_run,
     submit_execution_orders,
+    submit_walkforward_backtest,
     submit_training,
+    get_walkforward_backtest_status,
 )
 from openbb_quant_ml.service.universe import (
     get_symbols_for_universe,
@@ -220,6 +227,26 @@ def backtest(request: BacktestRequest) -> BacktestResponse:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@router.command(methods=["POST"], path="/backtest/walkforward")
+def backtest_walkforward(
+    request: WalkForwardBacktestRequest,
+) -> WalkForwardBacktestSubmitResponse:
+    """Queue asynchronous walk-forward backtest."""
+    try:
+        return submit_walkforward_backtest(request)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/backtest/walkforward/{job_id}")
+def backtest_walkforward_status(job_id: str) -> WalkForwardBacktestStatusResponse:
+    """Get walk-forward backtest status."""
+    response = get_walkforward_backtest_status(job_id)
+    if response.status == "not_found":
+        raise HTTPException(status_code=404, detail=response.message or "not found")
+    return response
+
+
 @router.command(methods=["GET"], path="/artifacts/{run_id}/summary")
 def artifacts_summary(
     run_id: str, model_name: ModelName = "lgbm_ranker"
@@ -280,6 +307,12 @@ def portfolio_current(
 def portfolio_policy() -> PortfolioPolicyResponse:
     """Return enforced portfolio policy constants."""
     return get_portfolio_policy_response()
+
+
+@router.command(methods=["GET"], path="/model/promoted")
+def model_promoted(model_name: ModelName = "lgbm_ranker") -> PromotedModelResponse:
+    """Return promoted model pointer payload."""
+    return get_promoted_model_response(model_name=model_name)
 
 
 @router.command(methods=["GET"], path="/feature/importance")
