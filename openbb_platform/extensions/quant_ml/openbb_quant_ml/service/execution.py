@@ -26,6 +26,7 @@ from openbb_quant_ml.models import (
     RiskPretradeResponse,
     RiskViolationItem,
 )
+from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
 from openbb_quant_ml.service.pipeline import get_portfolio_current
 from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json
 
@@ -33,14 +34,18 @@ DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
 DEFAULT_NAV = 1_000_000.0
 DEFAULT_SLIPPAGE_BPS = 2.0
+PORTFOLIO_POLICY = get_portfolio_policy()
+DEFAULT_CASH_CATEGORY = (
+    str(PORTFOLIO_POLICY.get("cash_category", "cash_proxy")).strip() or "cash_proxy"
+)
 DEFAULT_RISK_LIMITS: dict[str, float] = {
-    # Keep a pragmatic default that permits diversified long-only allocations,
-    # while still blocking highly concentrated books.
-    "max_weight": 0.60,
-    "gross_exposure": 1.4,
-    "net_exposure_abs": 1.0,
-    "sector_concentration": 0.60,
-    "turnover": 1.0,
+    "max_weight": float(PORTFOLIO_POLICY.get("single_name_max_abs_weight", 0.10)),
+    "gross_exposure": float(PORTFOLIO_POLICY.get("gross_exposure_max", 1.0)),
+    "net_exposure_abs": float(PORTFOLIO_POLICY.get("net_exposure_abs_max", 1.0)),
+    "sector_concentration": float(
+        PORTFOLIO_POLICY.get("sector_concentration_max", 0.35)
+    ),
+    "turnover": float(PORTFOLIO_POLICY.get("turnover_max", 0.8)),
 }
 
 
@@ -86,7 +91,9 @@ def _default_execution_state(nav: float = DEFAULT_NAV) -> dict[str, Any]:
     }
 
 
-def _load_execution_state(run_dir: Path, model_name: ModelName, nav: float | None = None) -> dict[str, Any]:
+def _load_execution_state(
+    run_dir: Path, model_name: ModelName, nav: float | None = None
+) -> dict[str, Any]:
     default_nav = float(nav) if nav is not None else DEFAULT_NAV
     payload = load_json(_execution_state_path(run_dir, model_name), default={})
     if not isinstance(payload, dict) or not payload:
@@ -101,7 +108,9 @@ def _load_execution_state(run_dir: Path, model_name: ModelName, nav: float | Non
     return payload
 
 
-def _load_positions(run_dir: Path, model_name: ModelName) -> dict[str, dict[str, float]]:
+def _load_positions(
+    run_dir: Path, model_name: ModelName
+) -> dict[str, dict[str, float]]:
     payload = load_json(_positions_path(run_dir, model_name), default={})
     if not isinstance(payload, dict):
         return {}
@@ -116,7 +125,9 @@ def _load_positions(run_dir: Path, model_name: ModelName) -> dict[str, dict[str,
     return out
 
 
-def _save_positions(run_dir: Path, model_name: ModelName, positions: dict[str, dict[str, float]]) -> None:
+def _save_positions(
+    run_dir: Path, model_name: ModelName, positions: dict[str, dict[str, float]]
+) -> None:
     clean = {
         symbol: {
             "quantity": float(row.get("quantity", 0.0)),
@@ -128,7 +139,9 @@ def _save_positions(run_dir: Path, model_name: ModelName, positions: dict[str, d
     save_json(_positions_path(run_dir, model_name), clean)
 
 
-def _save_execution_state(run_dir: Path, model_name: ModelName, state: dict[str, Any]) -> None:
+def _save_execution_state(
+    run_dir: Path, model_name: ModelName, state: dict[str, Any]
+) -> None:
     state["updated_at"] = _utc_now_iso()
     save_json(_execution_state_path(run_dir, model_name), state)
 
@@ -183,7 +196,9 @@ def _latest_prices(
     return date_iso, prices
 
 
-def _append_fills(run_dir: Path, model_name: ModelName, fills: list[dict[str, Any]]) -> None:
+def _append_fills(
+    run_dir: Path, model_name: ModelName, fills: list[dict[str, Any]]
+) -> None:
     if not fills:
         return
     path = _fills_path(run_dir, model_name)
@@ -194,7 +209,9 @@ def _append_fills(run_dir: Path, model_name: ModelName, fills: list[dict[str, An
     incoming.to_parquet(path, index=False)
 
 
-def _append_risk_events(run_dir: Path, model_name: ModelName, events: list[dict[str, Any]]) -> None:
+def _append_risk_events(
+    run_dir: Path, model_name: ModelName, events: list[dict[str, Any]]
+) -> None:
     if not events:
         return
     path = _risk_events_path(run_dir, model_name)
@@ -207,10 +224,16 @@ def _append_risk_events(run_dir: Path, model_name: ModelName, events: list[dict[
     save_json(path, payload)
 
 
-def _portfolio_snapshot(run_id: str, model_name: ModelName) -> tuple[str | None, dict[str, float], dict[str, float]]:
+def _portfolio_snapshot(
+    run_id: str, model_name: ModelName
+) -> tuple[str | None, dict[str, float], dict[str, float]]:
     portfolio = get_portfolio_current(run_id=run_id, model_name=model_name)
-    target_weights = {item.symbol: float(item.weight) for item in portfolio.symbol_weights}
-    category_weights = {item.category: float(item.weight) for item in portfolio.asset_class_weights}
+    target_weights = {
+        item.symbol: float(item.weight) for item in portfolio.symbol_weights
+    }
+    category_weights = {
+        item.category: float(item.weight) for item in portfolio.asset_class_weights
+    }
     return portfolio.as_of_date, target_weights, category_weights
 
 
@@ -250,7 +273,9 @@ def _preview_orders(
         )
 
     run_dir = get_run_dir(run_id)
-    as_of_date, target_weights, category_weights = _portfolio_snapshot(run_id, model_name)
+    as_of_date, target_weights, category_weights = _portfolio_snapshot(
+        run_id, model_name
+    )
     if not target_weights:
         return (
             ExecutionPreviewResponse(
@@ -263,13 +288,19 @@ def _preview_orders(
         )
 
     state = _load_execution_state(run_dir, model_name, nav=nav)
-    nav_value = float(nav) if nav is not None else float(state.get("nav", state.get("initial_nav", DEFAULT_NAV)))
+    nav_value = (
+        float(nav)
+        if nav is not None
+        else float(state.get("nav", state.get("initial_nav", DEFAULT_NAV)))
+    )
     if nav_value <= 0:
         nav_value = float(state.get("initial_nav", DEFAULT_NAV))
 
     current_positions = _load_positions(run_dir, model_name)
     entry_field = _execution_price_field(run_dir, model_name)
-    latest_market_date, prices = _latest_prices(run_dir, as_of_date, price_field=entry_field)
+    latest_market_date, prices = _latest_prices(
+        run_dir, as_of_date, price_field=entry_field
+    )
     if not prices:
         return (
             ExecutionPreviewResponse(
@@ -330,7 +361,11 @@ def _preview_orders(
         "positions": current_positions,
         "prices": prices,
         "price_field": entry_field,
-        "cost_bps": float(cost_bps) if cost_bps is not None else float(state.get("cost_bps", 10.0)),
+        "cost_bps": (
+            float(cost_bps)
+            if cost_bps is not None
+            else float(state.get("cost_bps", 10.0))
+        ),
         "slippage_bps": float(slippage_bps),
         "target_category_weights": category_weights,
     }
@@ -355,7 +390,9 @@ def _risk_violations_from_preview(
         gross_exposure += abs(float(order.target_weight))
         net_exposure += float(order.target_weight)
 
-    max_weight_limit = float(limits.get("max_weight", DEFAULT_RISK_LIMITS["max_weight"]))
+    max_weight_limit = float(
+        limits.get("max_weight", DEFAULT_RISK_LIMITS["max_weight"])
+    )
     if max_weight > max_weight_limit + 1e-12:
         violations.append(
             RiskViolationItem(
@@ -363,11 +400,13 @@ def _risk_violations_from_preview(
                 severity="critical",
                 value=max_weight,
                 limit=max_weight_limit,
-                message="Maximum position weight exceeded.",
+                message="Maximum position weight exceeded (hard cap policy).",
             )
         )
 
-    gross_limit = float(limits.get("gross_exposure", DEFAULT_RISK_LIMITS["gross_exposure"]))
+    gross_limit = float(
+        limits.get("gross_exposure", DEFAULT_RISK_LIMITS["gross_exposure"])
+    )
     if gross_exposure > gross_limit + 1e-12:
         violations.append(
             RiskViolationItem(
@@ -379,7 +418,9 @@ def _risk_violations_from_preview(
             )
         )
 
-    net_limit = float(limits.get("net_exposure_abs", DEFAULT_RISK_LIMITS["net_exposure_abs"]))
+    net_limit = float(
+        limits.get("net_exposure_abs", DEFAULT_RISK_LIMITS["net_exposure_abs"])
+    )
     if abs(net_exposure) > net_limit + 1e-12:
         violations.append(
             RiskViolationItem(
@@ -391,8 +432,15 @@ def _risk_violations_from_preview(
             )
         )
 
-    sector_concentration = max(category_weights.values()) if category_weights else 0.0
-    sector_limit = float(limits.get("sector_concentration", DEFAULT_RISK_LIMITS["sector_concentration"]))
+    sector_values = [
+        float(value)
+        for category, value in category_weights.items()
+        if str(category).strip().lower() != DEFAULT_CASH_CATEGORY.lower()
+    ]
+    sector_concentration = max(sector_values) if sector_values else 0.0
+    sector_limit = float(
+        limits.get("sector_concentration", DEFAULT_RISK_LIMITS["sector_concentration"])
+    )
     if sector_concentration > sector_limit + 1e-12:
         violations.append(
             RiskViolationItem(
@@ -405,8 +453,10 @@ def _risk_violations_from_preview(
         )
 
     turnover = float(preview.estimated_turnover)
-    turnover_limit_value = float(turnover_limit) if turnover_limit is not None else float(
-        limits.get("turnover", DEFAULT_RISK_LIMITS["turnover"])
+    turnover_limit_value = (
+        float(turnover_limit)
+        if turnover_limit is not None
+        else float(limits.get("turnover", DEFAULT_RISK_LIMITS["turnover"]))
     )
     if turnover > turnover_limit_value + 1e-12:
         violations.append(
@@ -433,11 +483,15 @@ def _risk_limits(run_dir: Path, model_name: ModelName) -> dict[str, float]:
             except (TypeError, ValueError):
                 continue
         if out:
-            return out
+            merged = DEFAULT_RISK_LIMITS.copy()
+            merged.update(out)
+            return merged
     return DEFAULT_RISK_LIMITS.copy()
 
 
-def preview_execution_orders(request: ExecutionOrderPreviewRequest) -> ExecutionPreviewResponse:
+def preview_execution_orders(
+    request: ExecutionOrderPreviewRequest,
+) -> ExecutionPreviewResponse:
     """Preview paper execution orders from latest target portfolio."""
     model_name = _normalize_model_name(request.model_name)
     preview, _ = _preview_orders(
@@ -450,7 +504,9 @@ def preview_execution_orders(request: ExecutionOrderPreviewRequest) -> Execution
     return preview
 
 
-def submit_execution_orders(request: ExecutionOrderPreviewRequest) -> ExecutionSubmitResponse:
+def submit_execution_orders(
+    request: ExecutionOrderPreviewRequest,
+) -> ExecutionSubmitResponse:
     """Submit paper execution orders and mark immediate fills."""
     model_name = _normalize_model_name(request.model_name)
     preview, context = _preview_orders(
@@ -546,7 +602,9 @@ def submit_execution_orders(request: ExecutionOrderPreviewRequest) -> ExecutionS
         positions[symbol] = {"quantity": float(new_qty), "avg_cost": float(new_avg)}
         cash -= notional + fee
 
-        submitted = order.model_copy(update={"status": "filled", "est_price": float(fill_price)})
+        submitted = order.model_copy(
+            update={"status": "filled", "est_price": float(fill_price)}
+        )
         submitted_orders.append(submitted)
         fills.append(
             {
@@ -596,14 +654,25 @@ def submit_execution_orders(request: ExecutionOrderPreviewRequest) -> ExecutionS
     )
 
 
-def get_execution_orders_current(run_id: str, model_name: str | None = None) -> ExecutionOrdersResponse:
+def get_execution_orders_current(
+    run_id: str, model_name: str | None = None
+) -> ExecutionOrdersResponse:
     """Return latest order snapshot for paper execution."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return ExecutionOrdersResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return ExecutionOrdersResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
-    orders = [ExecutionOrderItem(**row) for row in state.get("orders", []) if isinstance(row, dict)]
+    orders = [
+        ExecutionOrderItem(**row)
+        for row in state.get("orders", [])
+        if isinstance(row, dict)
+    ]
     return ExecutionOrdersResponse(
         run_id=run_id,
         model_name=normalized_model,
@@ -612,11 +681,18 @@ def get_execution_orders_current(run_id: str, model_name: str | None = None) -> 
     )
 
 
-def get_execution_fills_history(run_id: str, model_name: str | None = None, limit: int = 200) -> ExecutionFillsResponse:
+def get_execution_fills_history(
+    run_id: str, model_name: str | None = None, limit: int = 200
+) -> ExecutionFillsResponse:
     """Return paper execution fills history."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return ExecutionFillsResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return ExecutionFillsResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
     run_dir = get_run_dir(run_id)
     path = _fills_path(run_dir, normalized_model)
     if not path.exists():
@@ -637,14 +713,23 @@ def get_execution_fills_history(run_id: str, model_name: str | None = None, limi
             fills=[],
         )
     rows = frame.tail(max(int(limit), 1)).to_dict(orient="records")
-    return ExecutionFillsResponse(run_id=run_id, model_name=normalized_model, status="ok", fills=rows)
+    return ExecutionFillsResponse(
+        run_id=run_id, model_name=normalized_model, status="ok", fills=rows
+    )
 
 
-def get_execution_positions_current(run_id: str, model_name: str | None = None) -> ExecutionPositionsResponse:
+def get_execution_positions_current(
+    run_id: str, model_name: str | None = None
+) -> ExecutionPositionsResponse:
     """Return current paper execution positions and exposures."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return ExecutionPositionsResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return ExecutionPositionsResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
 
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
@@ -693,20 +778,38 @@ def get_execution_positions_current(run_id: str, model_name: str | None = None) 
     )
 
 
-def get_execution_pnl(run_id: str, model_name: str | None = None) -> ExecutionPnlResponse:
+def get_execution_pnl(
+    run_id: str, model_name: str | None = None
+) -> ExecutionPnlResponse:
     """Return paper execution realized/unrealized PnL."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return ExecutionPnlResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return ExecutionPnlResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
 
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
-    positions_payload = get_execution_positions_current(run_id=run_id, model_name=normalized_model)
+    positions_payload = get_execution_positions_current(
+        run_id=run_id, model_name=normalized_model
+    )
     if positions_payload.status == "not_found":
-        return ExecutionPnlResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return ExecutionPnlResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
 
     realized = float(state.get("realized_pnl", 0.0))
-    unrealized = float(sum(float(row.get("unrealized_pnl", 0.0)) for row in positions_payload.positions))
+    unrealized = float(
+        sum(
+            float(row.get("unrealized_pnl", 0.0)) for row in positions_payload.positions
+        )
+    )
     total = realized + unrealized
     initial_nav = float(state.get("initial_nav", DEFAULT_NAV))
 
@@ -726,7 +829,9 @@ def get_risk_limits(run_id: str, model_name: str | None = None) -> RiskLimitsRes
     """Return current risk limits and kill-switch status."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return RiskLimitsResponse(run_id=run_id, model_name=normalized_model, status="not_found", limits={})
+        return RiskLimitsResponse(
+            run_id=run_id, model_name=normalized_model, status="not_found", limits={}
+        )
     run_dir = get_run_dir(run_id)
     limits = _risk_limits(run_dir, normalized_model)
     state = _load_execution_state(run_dir, normalized_model)
@@ -806,13 +911,22 @@ def risk_check_pretrade(request: RiskPretradeRequest) -> RiskPretradeResponse:
     )
 
 
-def get_risk_events(run_id: str, model_name: str | None = None, limit: int = 200) -> RiskEventsResponse:
+def get_risk_events(
+    run_id: str, model_name: str | None = None, limit: int = 200
+) -> RiskEventsResponse:
     """Return risk events history."""
     normalized_model = _normalize_model_name(model_name)
     if not _run_exists(run_id):
-        return RiskEventsResponse(run_id=run_id, model_name=normalized_model, status="not_found", message="Run not found")
+        return RiskEventsResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="not_found",
+            message="Run not found",
+        )
     run_dir = get_run_dir(run_id)
-    payload = load_json(_risk_events_path(run_dir, normalized_model), default={"events": []})
+    payload = load_json(
+        _risk_events_path(run_dir, normalized_model), default={"events": []}
+    )
     rows = payload.get("events", []) if isinstance(payload, dict) else []
     if not isinstance(rows, list):
         rows = []

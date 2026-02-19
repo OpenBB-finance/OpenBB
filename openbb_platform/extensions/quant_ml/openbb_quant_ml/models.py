@@ -114,7 +114,9 @@ class TrainRequest(BaseModel):
     target_mode: TargetMode = "next_open_to_close"
     close_to_next_open_horizon_policy: CloseToNextOpenHorizonPolicy = "fixed_1"
     include_macro_features: bool = True
-    macro_feature_subset: list[str] = Field(default_factory=lambda: ["z_252", "yoy", "mom_3", "slope"])
+    macro_feature_subset: list[str] = Field(
+        default_factory=lambda: ["z_252", "yoy", "mom_3", "slope"]
+    )
     model_parameters: ModelConfig = Field(
         default_factory=ModelConfig,
         validation_alias=AliasChoices("model_config", "model_parameters"),
@@ -126,7 +128,9 @@ class TrainRequest(BaseModel):
         serialization_alias="feature_config",
     )
     training_mode: Literal["single", "dual_compare"] = "dual_compare"
-    model_set: list[ModelName] = Field(default_factory=lambda: ["xgb_lstm", "lgbm_ranker"])
+    model_set: list[ModelName] = Field(
+        default_factory=lambda: ["xgb_lstm", "lgbm_ranker"]
+    )
     walk_forward_config: WalkForwardConfig = Field(default_factory=WalkForwardConfig)
     ranker_config: RankerConfig = Field(default_factory=RankerConfig)
     signal_config: SignalConfig = Field(default_factory=SignalConfig)
@@ -291,6 +295,8 @@ class BacktestResponse(BaseModel):
     cost_breakdown: list[dict[str, float | str]] = Field(default_factory=list)
     consistency_checks: dict[str, float | bool] = Field(default_factory=dict)
     regime_mode_by_period: list[dict[str, str]] = Field(default_factory=list)
+    effective_constraints: dict[str, float | bool] = Field(default_factory=dict)
+    cash_weight: float = 0.0
     cost_bps: float = 10.0
     slippage_bps: float = 2.0
     entry_price: EntryPriceMode = "next_open"
@@ -375,6 +381,10 @@ class PortfolioSymbolWeightItem(BaseModel):
     symbol: str
     weight: float
     category: str
+    name: str | None = None
+    market: str | None = None
+    sector_l1: str | None = None
+    category_l2: str = "other"
 
 
 class AssetClassWeightItem(BaseModel):
@@ -400,7 +410,22 @@ class PortfolioCurrentResponse(BaseModel):
     total_weight: float
     symbol_weights: list[PortfolioSymbolWeightItem]
     asset_class_weights: list[AssetClassWeightItem]
+    asset_class_weights_l1: list[AssetClassWeightItem] = Field(default_factory=list)
     rationale: PortfolioRationale
+
+
+class PortfolioPolicyResponse(BaseModel):
+    """Portfolio hard-policy payload."""
+
+    template: str = "diversified_long_only"
+    single_name_max_abs_weight: float = 0.10
+    small_universe_policy: str = "cash_buffer"
+    sector_concentration_max: float = 0.35
+    turnover_max: float = 0.8
+    gross_exposure_max: float = 1.0
+    net_exposure_abs_max: float = 1.0
+    cash_symbol: str = "CASH"
+    cash_category: str = "cash_proxy"
 
 
 class FeatureImportanceResponse(BaseModel):
@@ -435,7 +460,9 @@ class WorkflowState(BaseModel):
     run_status: WorkflowRunStatus = "unknown"
     run_stage: str = ""
     run_progress: int = Field(default=0, ge=0, le=100)
-    artifacts_ready: WorkflowArtifactsReady = Field(default_factory=WorkflowArtifactsReady)
+    artifacts_ready: WorkflowArtifactsReady = Field(
+        default_factory=WorkflowArtifactsReady
+    )
     updated_at: str | None = None
 
 
@@ -451,7 +478,9 @@ class DashboardHealthResponse(BaseModel):
     backend_detail: str = "quant_ml_api_connected"
     latest_run_id: str | None = None
     resolved_run_id: str | None = None
-    mode_supported: list[DashboardMode] = Field(default_factory=lambda: ["live", "backtest"])
+    mode_supported: list[DashboardMode] = Field(
+        default_factory=lambda: ["live", "backtest"]
+    )
     data_timestamp: str | None = None
     latest_market_date: str | None = None
     staleness_days: int = 0
@@ -493,7 +522,9 @@ class PerformanceRegimeResponse(BaseModel):
     message: str | None = None
     trend_regime_perf: dict[str, dict[str, float | int]] = Field(default_factory=dict)
     vol_regime_perf: dict[str, dict[str, float | int]] = Field(default_factory=dict)
-    liquidity_regime_perf: dict[str, dict[str, float | int]] = Field(default_factory=dict)
+    liquidity_regime_perf: dict[str, dict[str, float | int]] = Field(
+        default_factory=dict
+    )
     matrix_2d: list[dict[str, float | str | int]] = Field(default_factory=list)
 
 
@@ -522,8 +553,12 @@ class PortfolioRiskResponse(BaseModel):
     message: str | None = None
     vol_ex_ante: float = 0.0
     cvar_95: float = 0.0
-    position_risk_contrib_top5: list[dict[str, float | str]] = Field(default_factory=list)
-    position_return_contrib_top5: list[dict[str, float | str]] = Field(default_factory=list)
+    position_risk_contrib_top5: list[dict[str, float | str]] = Field(
+        default_factory=list
+    )
+    position_return_contrib_top5: list[dict[str, float | str]] = Field(
+        default_factory=list
+    )
     worst5_positions: list[dict[str, float | str]] = Field(default_factory=list)
 
 

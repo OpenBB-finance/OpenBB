@@ -30,6 +30,7 @@ from openbb_quant_ml.models import (
     OpsStatusResponse,
     PerformanceRegimeResponse,
     PortfolioCurrentResponse,
+    PortfolioPolicyResponse,
     PortfolioExposureResponse,
     PortfolioRiskResponse,
     PredictionDistributionResponse,
@@ -68,6 +69,7 @@ from openbb_quant_ml.service import (
     get_model_regime,
     get_model_shap,
     get_ops_status_response,
+    get_portfolio_policy_response,
     get_performance_regime,
     get_performance_rolling,
     get_portfolio_current,
@@ -156,7 +158,9 @@ def universe_resolve(
                 "or run refresh_universes"
             ),
         )
-    actual_count, minimum_required, meets_minimum = get_universe_size_status(key, symbols)
+    actual_count, minimum_required, meets_minimum = get_universe_size_status(
+        key, symbols
+    )
     if not meets_minimum:
         raise HTTPException(
             status_code=400,
@@ -217,7 +221,9 @@ def backtest(request: BacktestRequest) -> BacktestResponse:
 
 
 @router.command(methods=["GET"], path="/artifacts/{run_id}/summary")
-def artifacts_summary(run_id: str, model_name: ModelName = "lgbm_ranker") -> ArtifactSummaryResponse:
+def artifacts_summary(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> ArtifactSummaryResponse:
     """Return run artifact summary."""
     try:
         return get_summary(run_id, model_name=model_name)
@@ -235,7 +241,9 @@ def model_performance(run_id: str) -> ModelPerformanceResponse:
 
 
 @router.command(methods=["GET"], path="/model/ic")
-def model_ic(run_id: str, model_name: ModelName = "lgbm_ranker", window: int = 6) -> ModelICResponse:
+def model_ic(
+    run_id: str, model_name: ModelName = "lgbm_ranker", window: int = 6
+) -> ModelICResponse:
     """Return model IC series."""
     try:
         return get_model_ic(run_id=run_id, model_name=model_name, window=window)
@@ -244,7 +252,9 @@ def model_ic(run_id: str, model_name: ModelName = "lgbm_ranker", window: int = 6
 
 
 @router.command(methods=["GET"], path="/model/regime")
-def model_regime(run_id: str, model_name: ModelName = "lgbm_ranker") -> ModelRegimeResponse:
+def model_regime(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> ModelRegimeResponse:
     """Return regime performance breakdown."""
     try:
         return get_model_regime(run_id=run_id, model_name=model_name)
@@ -253,7 +263,9 @@ def model_regime(run_id: str, model_name: ModelName = "lgbm_ranker") -> ModelReg
 
 
 @router.command(methods=["GET"], path="/portfolio/current")
-def portfolio_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> PortfolioCurrentResponse:
+def portfolio_current(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> PortfolioCurrentResponse:
     """Return latest portfolio allocations and rationale."""
     try:
         return get_portfolio_current(run_id=run_id, model_name=model_name)
@@ -264,8 +276,16 @@ def portfolio_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> Por
         raise HTTPException(status_code=404, detail=detail) from exc
 
 
+@router.command(methods=["GET"], path="/portfolio/policy")
+def portfolio_policy() -> PortfolioPolicyResponse:
+    """Return enforced portfolio policy constants."""
+    return get_portfolio_policy_response()
+
+
 @router.command(methods=["GET"], path="/feature/importance")
-def feature_importance(run_id: str, model_name: ModelName = "lgbm_ranker") -> FeatureImportanceResponse:
+def feature_importance(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> FeatureImportanceResponse:
     """Return feature importance for a trained model."""
     try:
         return get_feature_importance(run_id=run_id, model_name=model_name)
@@ -287,7 +307,9 @@ def predictions_latest(
 
 
 @router.command(methods=["GET"], path="/health")
-def health(run_id: str | None = None, model_name: ModelName = "lgbm_ranker") -> DashboardHealthResponse:
+def health(
+    run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
+) -> DashboardHealthResponse:
     """Return dashboard health and run resolution metadata."""
     return get_dashboard_health(run_id=run_id, model_name=model_name)
 
@@ -318,7 +340,9 @@ def performance_rolling(
 
 
 @router.command(methods=["GET"], path="/performance/regime")
-def performance_regime(run_id: str, model_name: ModelName = "lgbm_ranker") -> PerformanceRegimeResponse:
+def performance_regime(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> PerformanceRegimeResponse:
     """Return regime breakdown for strategy performance."""
     try:
         return get_performance_regime(run_id=run_id, model_name=model_name)
@@ -327,7 +351,9 @@ def performance_regime(run_id: str, model_name: ModelName = "lgbm_ranker") -> Pe
 
 
 @router.command(methods=["GET"], path="/portfolio/exposure")
-def portfolio_exposure(run_id: str, model_name: ModelName = "lgbm_ranker") -> PortfolioExposureResponse:
+def portfolio_exposure(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> PortfolioExposureResponse:
     """Return portfolio exposure decomposition."""
     try:
         return get_portfolio_exposure(run_id=run_id, model_name=model_name)
@@ -343,7 +369,9 @@ def portfolio_risk(
 ) -> PortfolioRiskResponse:
     """Return portfolio risk decomposition."""
     try:
-        return get_portfolio_risk(run_id=run_id, model_name=model_name, lookback=lookback)
+        return get_portfolio_risk(
+            run_id=run_id, model_name=model_name, lookback=lookback
+        )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -356,7 +384,9 @@ def model_ic_decay(
 ) -> ICDecayResponse:
     """Return IC decay across horizons."""
     try:
-        return get_model_ic_decay(run_id=run_id, model_name=model_name, max_horizon=max_horizon)
+        return get_model_ic_decay(
+            run_id=run_id, model_name=model_name, max_horizon=max_horizon
+        )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -378,13 +408,17 @@ def prediction_distribution(
 ) -> PredictionDistributionResponse:
     """Return latest prediction distribution and decile spread."""
     try:
-        return get_prediction_distribution(run_id=run_id, model_name=model_name, bins=bins)
+        return get_prediction_distribution(
+            run_id=run_id, model_name=model_name, bins=bins
+        )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.command(methods=["GET"], path="/regime/current")
-def regime_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> RegimeCurrentResponse:
+def regime_current(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> RegimeCurrentResponse:
     """Return current regime state."""
     try:
         return get_regime_current(run_id=run_id, model_name=model_name)
@@ -393,7 +427,9 @@ def regime_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> Regime
 
 
 @router.command(methods=["GET"], path="/regime/history")
-def regime_history(run_id: str, model_name: ModelName = "lgbm_ranker") -> RegimeHistoryResponse:
+def regime_history(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> RegimeHistoryResponse:
     """Return regime history timeline."""
     try:
         return get_regime_history(run_id=run_id, model_name=model_name)
@@ -402,7 +438,9 @@ def regime_history(run_id: str, model_name: ModelName = "lgbm_ranker") -> Regime
 
 
 @router.command(methods=["GET"], path="/alerts/current")
-def alerts_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> AlertsResponse:
+def alerts_current(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> AlertsResponse:
     """Return current strategy alerts."""
     try:
         return get_alerts_current(run_id=run_id, model_name=model_name)
@@ -411,7 +449,9 @@ def alerts_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> Alerts
 
 
 @router.command(methods=["GET"], path="/alerts/history")
-def alerts_history(run_id: str, model_name: ModelName = "lgbm_ranker", limit: int = 200) -> AlertsResponse:
+def alerts_history(
+    run_id: str, model_name: ModelName = "lgbm_ranker", limit: int = 200
+) -> AlertsResponse:
     """Return strategy alerts history."""
     try:
         return get_alerts_history(run_id=run_id, model_name=model_name, limit=limit)
@@ -420,7 +460,9 @@ def alerts_history(run_id: str, model_name: ModelName = "lgbm_ranker", limit: in
 
 
 @router.command(methods=["POST"], path="/execution/orders/preview")
-def execution_orders_preview(request: ExecutionOrderPreviewRequest) -> ExecutionPreviewResponse:
+def execution_orders_preview(
+    request: ExecutionOrderPreviewRequest,
+) -> ExecutionPreviewResponse:
     """Preview paper execution orders for latest target portfolio."""
     try:
         return preview_execution_orders(request)
@@ -429,7 +471,9 @@ def execution_orders_preview(request: ExecutionOrderPreviewRequest) -> Execution
 
 
 @router.command(methods=["POST"], path="/execution/orders/submit")
-def execution_orders_submit(request: ExecutionOrderPreviewRequest) -> ExecutionSubmitResponse:
+def execution_orders_submit(
+    request: ExecutionOrderPreviewRequest,
+) -> ExecutionSubmitResponse:
     """Submit paper execution orders and generate fills."""
     try:
         return submit_execution_orders(request)
@@ -438,7 +482,9 @@ def execution_orders_submit(request: ExecutionOrderPreviewRequest) -> ExecutionS
 
 
 @router.command(methods=["GET"], path="/execution/orders/current")
-def execution_orders_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> ExecutionOrdersResponse:
+def execution_orders_current(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> ExecutionOrdersResponse:
     """Return current paper execution order snapshot."""
     return get_execution_orders_current(run_id=run_id, model_name=model_name)
 
@@ -450,23 +496,31 @@ def execution_fills_history(
     limit: int = 200,
 ) -> ExecutionFillsResponse:
     """Return paper execution fills history."""
-    return get_execution_fills_history(run_id=run_id, model_name=model_name, limit=limit)
+    return get_execution_fills_history(
+        run_id=run_id, model_name=model_name, limit=limit
+    )
 
 
 @router.command(methods=["GET"], path="/execution/positions/current")
-def execution_positions_current(run_id: str, model_name: ModelName = "lgbm_ranker") -> ExecutionPositionsResponse:
+def execution_positions_current(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> ExecutionPositionsResponse:
     """Return current paper execution positions."""
     return get_execution_positions_current(run_id=run_id, model_name=model_name)
 
 
 @router.command(methods=["GET"], path="/execution/pnl")
-def execution_pnl(run_id: str, model_name: ModelName = "lgbm_ranker") -> ExecutionPnlResponse:
+def execution_pnl(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> ExecutionPnlResponse:
     """Return paper execution PnL."""
     return get_execution_pnl(run_id=run_id, model_name=model_name)
 
 
 @router.command(methods=["GET"], path="/risk/limits")
-def risk_limits(run_id: str, model_name: ModelName = "lgbm_ranker") -> RiskLimitsResponse:
+def risk_limits(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> RiskLimitsResponse:
     """Return risk limits and kill-switch state."""
     return get_risk_limits(run_id=run_id, model_name=model_name)
 
@@ -481,7 +535,9 @@ def risk_check_pretrade_route(request: RiskPretradeRequest) -> RiskPretradeRespo
 
 
 @router.command(methods=["GET"], path="/risk/events")
-def risk_events(run_id: str, model_name: ModelName = "lgbm_ranker", limit: int = 200) -> RiskEventsResponse:
+def risk_events(
+    run_id: str, model_name: ModelName = "lgbm_ranker", limit: int = 200
+) -> RiskEventsResponse:
     """Return stored risk events."""
     return get_risk_events(run_id=run_id, model_name=model_name, limit=limit)
 
@@ -497,7 +553,9 @@ def market_ratio(
 ) -> MacroSeriesResponse:
     """Return aligned ratio series lhs/rhs."""
     try:
-        return get_market_ratio_response(lhs=lhs, rhs=rhs, start=start, end=end, freq=freq, fill=fill)
+        return get_market_ratio_response(
+            lhs=lhs, rhs=rhs, start=start, end=end, freq=freq, fill=fill
+        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

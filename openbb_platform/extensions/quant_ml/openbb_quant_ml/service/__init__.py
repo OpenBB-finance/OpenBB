@@ -44,6 +44,7 @@ from openbb_quant_ml.service.macro_service import (
     trigger_update_response as update_macro_series,
 )
 from openbb_quant_ml.service.ops_status import get_ops_status_response
+from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy_response
 from openbb_quant_ml.service.pipeline import (
     build_signals,
     get_feature_importance,
@@ -110,4 +111,5 @@ __all__ = [
     "get_market_rolling_corr_response",
     "get_copper_gold_preset_response",
     "get_ops_status_response",
+    "get_portfolio_policy_response",
 ]

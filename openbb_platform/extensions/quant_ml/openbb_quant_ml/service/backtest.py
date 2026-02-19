@@ -12,6 +12,10 @@ import yfinance as yf
 from scipy.optimize import minimize
 
 from openbb_quant_ml.models import BacktestConstraints
+from openbb_quant_ml.service.portfolio_policy import (
+    apply_effective_max_weight,
+    get_portfolio_policy,
+)
 
 
 @dataclass
@@ -27,6 +31,8 @@ class BacktestResult:
     cost_breakdown: list[dict[str, Any]]
     consistency_checks: dict[str, float | bool]
     regime_mode_by_period: list[dict[str, str]]
+    effective_constraints: dict[str, float | bool]
+    cash_weight: float
 
 
 def _monthly_rebalance_dates(dates: pd.DatetimeIndex) -> list[pd.Timestamp]:
@@ -36,15 +42,21 @@ def _monthly_rebalance_dates(dates: pd.DatetimeIndex) -> list[pd.Timestamp]:
     return [pd.Timestamp(value) for value in grouped.values]
 
 
-def _safe_initial_weights(asset_count: int, max_weight: float) -> np.ndarray:
+def _safe_initial_weights(
+    asset_count: int, max_weight: float, *, allow_short: bool
+) -> np.ndarray:
+    if asset_count <= 0:
+        return np.array([])
     equal = np.repeat(1.0 / asset_count, asset_count)
+    if allow_short:
+        return np.clip(equal, -max_weight, max_weight)
     clipped = np.minimum(equal, max_weight)
-    clipped_sum = clipped.sum()
+    clipped_sum = float(clipped.sum())
     if clipped_sum <= 0:
-        return equal
-    if np.isclose(clipped_sum, 1.0):
-        return clipped
-    return clipped / clipped_sum
+        return np.zeros(asset_count, dtype=float)
+    if clipped_sum > 1.0:
+        clipped = clipped / clipped_sum
+    return clipped
 
 
 def _optimize_weights(
@@ -53,24 +65,37 @@ def _optimize_weights(
     constraints: BacktestConstraints,
     *,
     allow_short: bool,
+    max_weight: float,
 ) -> np.ndarray:
     asset_count = len(mu)
     if asset_count == 0:
         return np.array([])
 
-    feasible_max = max(constraints.max_weight, 1.0 / asset_count)
-    bounds = [(-feasible_max, feasible_max) if allow_short else (0.0, feasible_max) for _ in range(asset_count)]
-    initial = _safe_initial_weights(asset_count, feasible_max)
+    weight_cap = max(float(max_weight), 1e-6)
+    bounds = [
+        (-weight_cap, weight_cap) if allow_short else (0.0, weight_cap)
+        for _ in range(asset_count)
+    ]
+    initial = _safe_initial_weights(asset_count, weight_cap, allow_short=allow_short)
 
     def objective(weights: np.ndarray) -> float:
         mean_term = float(np.dot(mu, weights))
         risk_term = float(weights @ cov @ weights)
         return -(mean_term - constraints.risk_aversion * risk_term)
 
-    optimizer_constraints = [{"type": "eq", "fun": lambda w: float(np.sum(w) - 1.0)}]
+    if allow_short:
+        optimizer_constraints = [
+            {"type": "eq", "fun": lambda w: float(np.sum(w) - 1.0)}
+        ]
+    else:
+        optimizer_constraints = [
+            {"type": "ineq", "fun": lambda w: float(1.0 - np.sum(w))}
+        ]
     if allow_short:
         gross_cap = 1.5
-        optimizer_constraints.append({"type": "ineq", "fun": lambda w: float(gross_cap - np.sum(np.abs(w)))})
+        optimizer_constraints.append(
+            {"type": "ineq", "fun": lambda w: float(gross_cap - np.sum(np.abs(w)))}
+        )
 
     result = minimize(
         objective,
@@ -80,13 +105,18 @@ def _optimize_weights(
         constraints=optimizer_constraints,
     )
     if result.success:
-        clipped = np.clip(result.x, -feasible_max if allow_short else 0.0, feasible_max)
+        clipped = np.clip(result.x, -weight_cap if allow_short else 0.0, weight_cap)
         if allow_short:
             gross = float(np.sum(np.abs(clipped)))
             if gross > 1.5 and gross > 0:
                 clipped = clipped * (1.5 / gross)
             clipped = clipped + ((1.0 - float(np.sum(clipped))) / max(asset_count, 1))
-            clipped = np.clip(clipped, -feasible_max, feasible_max)
+            clipped = np.clip(clipped, -weight_cap, weight_cap)
+        else:
+            total = float(np.sum(clipped))
+            if total > 1.0 and total > 0:
+                clipped = clipped * (1.0 / total)
+            clipped = np.clip(clipped, 0.0, weight_cap)
         return clipped
 
     positive = np.maximum(mu, 0.0)
@@ -95,16 +125,26 @@ def _optimize_weights(
         positive = np.maximum(centered, 0.0)
         negative = np.maximum(-centered, 0.0)
         if positive.sum() > 0 and negative.sum() > 0:
-            short_budget = min(0.35, float(negative.sum() / (positive.sum() + negative.sum() + 1e-12)))
+            short_budget = min(
+                0.35, float(negative.sum() / (positive.sum() + negative.sum() + 1e-12))
+            )
             long_w = positive / positive.sum()
             short_w = negative / negative.sum()
             fallback = long_w * (1.0 + short_budget) - short_w * short_budget
-            fallback = np.clip(fallback, -feasible_max, feasible_max)
-            fallback = fallback + ((1.0 - float(np.sum(fallback))) / max(asset_count, 1))
-            return np.clip(fallback, -feasible_max, feasible_max)
+            fallback = np.clip(fallback, -weight_cap, weight_cap)
+            fallback = fallback + (
+                (1.0 - float(np.sum(fallback))) / max(asset_count, 1)
+            )
+            return np.clip(fallback, -weight_cap, weight_cap)
     if positive.sum() > 0:
         fallback = positive / positive.sum()
-        return np.clip(fallback, -feasible_max if allow_short else 0.0, feasible_max)
+        fallback = np.clip(fallback, -weight_cap if allow_short else 0.0, weight_cap)
+        if not allow_short:
+            total = float(np.sum(fallback))
+            if total > 1.0 and total > 0:
+                fallback = fallback * (1.0 / total)
+            fallback = np.clip(fallback, 0.0, weight_cap)
+        return fallback
     return initial
 
 
@@ -115,11 +155,21 @@ def _compute_regime_series(
 ) -> pd.DataFrame:
     if len(dates) == 0:
         return pd.DataFrame(columns=["trend_regime", "vol_regime"])
-    symbol = benchmark_symbol if benchmark_symbol in close_panel.columns else str(close_panel.columns[0])
+    symbol = (
+        benchmark_symbol
+        if benchmark_symbol in close_panel.columns
+        else str(close_panel.columns[0])
+    )
     benchmark = close_panel[symbol].astype(float).reindex(dates).ffill().bfill()
     if benchmark.empty:
-        return pd.DataFrame(index=dates, data={"trend_regime": "sideways", "vol_regime": "mid"})
-    ret = benchmark.pct_change(fill_method=None).replace([np.inf, -np.inf], np.nan).fillna(0.0)
+        return pd.DataFrame(
+            index=dates, data={"trend_regime": "sideways", "vol_regime": "mid"}
+        )
+    ret = (
+        benchmark.pct_change(fill_method=None)
+        .replace([np.inf, -np.inf], np.nan)
+        .fillna(0.0)
+    )
     ma200 = benchmark.rolling(200, min_periods=20).mean()
     trend = np.where(
         benchmark > ma200 * 1.01,
@@ -129,7 +179,9 @@ def _compute_regime_series(
     vol20 = ret.rolling(20, min_periods=5).std(ddof=0) * np.sqrt(252)
     low_q = float(vol20.quantile(0.33))
     high_q = float(vol20.quantile(0.66))
-    vol_regime = np.where(vol20 <= low_q, "low", np.where(vol20 >= high_q, "high", "mid"))
+    vol_regime = np.where(
+        vol20 <= low_q, "low", np.where(vol20 >= high_q, "high", "mid")
+    )
     return pd.DataFrame(
         index=dates,
         data={
@@ -143,7 +195,9 @@ def _mixed_policy_allows_short(trend_regime: str, vol_regime: str) -> bool:
     return trend_regime == "bull" and vol_regime in {"low", "mid"}
 
 
-def _consistency_checks(period_weights: list[dict[str, Any]], turnover_values: list[float]) -> dict[str, float | bool]:
+def _consistency_checks(
+    period_weights: list[dict[str, Any]], turnover_values: list[float]
+) -> dict[str, float | bool]:
     if not period_weights:
         return {
             "valid": False,
@@ -174,7 +228,9 @@ def _consistency_checks(period_weights: list[dict[str, Any]], turnover_values: l
     }
 
 
-def _compute_metrics(daily_returns: pd.Series, equity_curve: pd.Series) -> dict[str, float]:
+def _compute_metrics(
+    daily_returns: pd.Series, equity_curve: pd.Series
+) -> dict[str, float]:
     if daily_returns.empty:
         return {
             "cagr": 0.0,
@@ -186,10 +242,16 @@ def _compute_metrics(daily_returns: pd.Series, equity_curve: pd.Series) -> dict[
 
     trading_days = max(len(daily_returns), 1)
     total_return = float(equity_curve.iloc[-1] / equity_curve.iloc[0] - 1.0)
-    cagr = float((1 + total_return) ** (252 / trading_days) - 1) if trading_days > 0 else 0.0
+    cagr = (
+        float((1 + total_return) ** (252 / trading_days) - 1)
+        if trading_days > 0
+        else 0.0
+    )
 
     vol = float(daily_returns.std(ddof=0) * np.sqrt(252))
-    sharpe = float((daily_returns.mean() / (daily_returns.std(ddof=0) + 1e-12)) * np.sqrt(252))
+    sharpe = float(
+        (daily_returns.mean() / (daily_returns.std(ddof=0) + 1e-12)) * np.sqrt(252)
+    )
 
     running_max = equity_curve.cummax()
     drawdown = equity_curve / (running_max + 1e-12) - 1.0
@@ -246,7 +308,10 @@ def _benchmark_curve(
 
     aligned = prices.reindex(curve_dates).ffill().bfill()
     if aligned.empty or aligned.isna().all():
-        return [{"date": d.date().isoformat(), "benchmark": float(base_index)} for d in curve_dates]
+        return [
+            {"date": d.date().isoformat(), "benchmark": float(base_index)}
+            for d in curve_dates
+        ]
 
     first_price = float(aligned.iloc[0]) if float(aligned.iloc[0]) != 0 else 1.0
     index_values = (aligned / first_price) * base_index
@@ -295,13 +360,17 @@ def run_backtest(
 
     pred = predictions.copy()
     pred["date"] = pd.to_datetime(pred["date"]).dt.tz_localize(None)
-    pred_wide = pred.pivot(index="date", columns="symbol", values="predicted_return").sort_index()
+    pred_wide = pred.pivot(
+        index="date", columns="symbol", values="predicted_return"
+    ).sort_index()
 
     close_panel = close_panel.copy()
     close_panel.index = pd.to_datetime(close_panel.index).tz_localize(None)
     open_panel = open_panel.copy()
     open_panel.index = pd.to_datetime(open_panel.index).tz_localize(None)
-    open_panel = open_panel.reindex(index=close_panel.index, columns=close_panel.columns).ffill()
+    open_panel = open_panel.reindex(
+        index=close_panel.index, columns=close_panel.columns
+    ).ffill()
 
     returns = _execution_return_panel(
         open_panel=open_panel,
@@ -315,7 +384,9 @@ def run_backtest(
     if len(trade_dates) == 0:
         raise ValueError("No trading days found in the selected date range.")
 
-    rebalance_dates = [d for d in _monthly_rebalance_dates(trade_dates) if d in pred_wide.index]
+    rebalance_dates = [
+        d for d in _monthly_rebalance_dates(trade_dates) if d in pred_wide.index
+    ]
     if not rebalance_dates:
         candidates = [d for d in pred_wide.index if d in trade_dates]
         if not candidates:
@@ -325,6 +396,10 @@ def run_backtest(
     symbols = sorted(list(set(pred_wide.columns).intersection(set(returns.columns))))
     if not symbols:
         raise ValueError("No overlapping symbols between predictions and prices.")
+
+    policy = get_portfolio_policy()
+    cash_symbol = str(policy.get("cash_symbol", "CASH")).strip().upper() or "CASH"
+    effective_max_weight = apply_effective_max_weight(constraints.max_weight)
 
     daily_rows: list[dict[str, Any]] = []
     weight_rows: list[dict[str, Any]] = []
@@ -336,6 +411,7 @@ def run_backtest(
     cost_breakdown: list[dict[str, Any]] = []
     regime_mode_rows: list[dict[str, str]] = []
     regime_frame = _compute_regime_series(close_panel, returns.index, benchmark_symbol)
+    latest_cash_weight = 0.0
 
     base_index = 100.0
     equity = base_index
@@ -363,12 +439,37 @@ def run_backtest(
             )
             mode_used = "long_short" if allow_short else "long_only"
 
-        optimized = _optimize_weights(mu, cov, constraints, allow_short=allow_short)
+        optimized = _optimize_weights(
+            mu,
+            cov,
+            constraints,
+            allow_short=allow_short,
+            max_weight=effective_max_weight,
+        )
+        optimized = np.clip(
+            optimized,
+            -effective_max_weight if allow_short else 0.0,
+            effective_max_weight,
+        )
+        weight_sum = float(np.sum(optimized))
+        cash_weight = 0.0
+        if not allow_short:
+            if weight_sum > 1.0 and weight_sum > 0:
+                optimized = optimized * (1.0 / weight_sum)
+                weight_sum = float(np.sum(optimized))
+            cash_weight = max(0.0, 1.0 - weight_sum)
+            latest_cash_weight = cash_weight
         turnover = float(np.abs(optimized - current_weights).sum())
         turnover_values.append(turnover)
-        regime_mode_rows.append({"date": rebalance_date.date().isoformat(), "mode": mode_used})
+        regime_mode_rows.append(
+            {"date": rebalance_date.date().isoformat(), "mode": mode_used}
+        )
 
-        next_date = rebalance_dates[idx + 1] if idx + 1 < len(rebalance_dates) else pd.Timestamp(end_date)
+        next_date = (
+            rebalance_dates[idx + 1]
+            if idx + 1 < len(rebalance_dates)
+            else pd.Timestamp(end_date)
+        )
         period_mask = (returns.index > rebalance_date) & (returns.index <= next_date)
         period_dates = returns.index[period_mask]
         if len(period_dates) == 0:
@@ -405,9 +506,20 @@ def run_backtest(
         weight_rows.append(
             {
                 "date": rebalance_date.date().isoformat(),
-                "weights": {
-                    symbol: float(weight) for symbol, weight in zip(symbols, optimized, strict=False)
-                },
+                "weights": (
+                    {
+                        **{
+                            symbol: float(weight)
+                            for symbol, weight in zip(symbols, optimized, strict=False)
+                        },
+                        cash_symbol: float(cash_weight),
+                    }
+                    if mode_used == "long_only"
+                    else {
+                        symbol: float(weight)
+                        for symbol, weight in zip(symbols, optimized, strict=False)
+                    }
+                ),
             }
         )
         current_weights = optimized
@@ -420,7 +532,9 @@ def run_backtest(
     equity_series = curve["equity"]
     metrics = _compute_metrics(daily_returns, equity_series)
     metrics["turnover"] = float(np.mean(turnover_values)) if turnover_values else 0.0
-    metrics["gross_return"] = float(np.prod(1.0 + np.array(gross_returns)) - 1.0) if gross_returns else 0.0
+    metrics["gross_return"] = (
+        float(np.prod(1.0 + np.array(gross_returns)) - 1.0) if gross_returns else 0.0
+    )
     metrics["total_cost"] = float(np.sum(trading_costs)) if trading_costs else 0.0
     metrics["net_return"] = float(equity_series.iloc[-1] / equity_series.iloc[0] - 1.0)
 
@@ -442,4 +556,13 @@ def run_backtest(
         cost_breakdown=cost_breakdown,
         consistency_checks=_consistency_checks(weight_rows, turnover_values),
         regime_mode_by_period=regime_mode_rows,
+        effective_constraints={
+            "max_weight_requested": float(constraints.max_weight),
+            "max_weight_applied": float(effective_max_weight),
+            "max_weight": float(effective_max_weight),
+            "long_only": bool(constraints.long_only),
+            "risk_aversion": float(constraints.risk_aversion),
+            "lookback_days": float(constraints.lookback_days),
+        },
+        cash_weight=float(latest_cash_weight),
     )

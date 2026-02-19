@@ -38,14 +38,22 @@ from openbb_quant_ml.models import (
     UniverseResponse,
 )
 from openbb_quant_ml.service.backtest import run_backtest
-from openbb_quant_ml.service.cache_registry import get_data_versions, get_feature_versions
+from openbb_quant_ml.service.cache_registry import (
+    get_data_versions,
+    get_feature_versions,
+)
 from openbb_quant_ml.service.dashboard_metrics import (
     get_performance_regime as get_dashboard_performance_regime,
     refresh_alerts_for_run,
 )
-from openbb_quant_ml.service.data_loader import build_close_panel, build_price_panel, load_market_data
+from openbb_quant_ml.service.data_loader import (
+    build_close_panel,
+    build_price_panel,
+    load_market_data,
+)
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
 from openbb_quant_ml.service.modeling import train_hybrid_models
+from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
 from openbb_quant_ml.service.ranker_modeling import train_ranker_models
 from openbb_quant_ml.service.run_registry import (
     append_log,
@@ -56,9 +64,15 @@ from openbb_quant_ml.service.run_registry import (
     update_run,
 )
 from openbb_quant_ml.service.signals import generate_signals
-from openbb_quant_ml.service.storage import get_run_dir, list_run_artifacts, load_json, save_json
+from openbb_quant_ml.service.storage import (
+    get_run_dir,
+    list_run_artifacts,
+    load_json,
+    save_json,
+)
 from openbb_quant_ml.service.universe import (
     get_default_symbols,
+    get_symbol_metadata_map,
     get_symbols_for_universe,
     get_universe_size_status,
     list_universe_ids,
@@ -95,7 +109,9 @@ def _save_run_config(run_id: str, request: TrainRequest) -> None:
     save_json(run_dir / "config.json", payload)
 
 
-def _mark_stage(run_id: str, *, progress: int, stage: str, log: str | None = None) -> None:
+def _mark_stage(
+    run_id: str, *, progress: int, stage: str, log: str | None = None
+) -> None:
     update_run(run_id, progress=progress, stage=stage)
     if log:
         append_log(run_id, log)
@@ -125,9 +141,15 @@ def _run_has_completion_artifacts(run_id: str) -> bool:
     files = _run_artifact_files(run_id)
     if not files:
         return False
-    has_predictions = any(name.startswith("predictions") and name.endswith(".parquet") for name in files)
-    has_metrics = any(name.startswith("metrics") and name.endswith(".json") for name in files)
-    has_backtest = any(name.startswith("backtest") and name.endswith(".json") for name in files)
+    has_predictions = any(
+        name.startswith("predictions") and name.endswith(".parquet") for name in files
+    )
+    has_metrics = any(
+        name.startswith("metrics") and name.endswith(".json") for name in files
+    )
+    has_backtest = any(
+        name.startswith("backtest") and name.endswith(".json") for name in files
+    )
     return has_predictions or has_metrics or has_backtest
 
 
@@ -181,14 +203,20 @@ def _recover_stale_running_run(run_id: str, payload: dict[str, Any]) -> dict[str
 def _normalize_run_payload(payload: dict[str, Any]) -> dict[str, Any]:
     normalized = dict(payload)
     status_raw = str(normalized.get("status", "")).strip()
-    status_key = _STATUS_ALIASES.get(status_raw) or _STATUS_ALIASES.get(status_raw.lower())
+    status_key = _STATUS_ALIASES.get(status_raw) or _STATUS_ALIASES.get(
+        status_raw.lower()
+    )
     if status_key is None:
         stage_text = str(normalized.get("stage", "")).lower()
         has_error = bool(normalized.get("error"))
         progress_value = int(normalized.get("progress", 0) or 0)
         if has_error or "fail" in stage_text:
             status_key = "failed"
-        elif "complete" in stage_text or "backtest_completed" in stage_text or progress_value >= 100:
+        elif (
+            "complete" in stage_text
+            or "backtest_completed" in stage_text
+            or progress_value >= 100
+        ):
             status_key = "completed"
         elif progress_value <= 0:
             status_key = "queued"
@@ -225,7 +253,9 @@ def _signals_path(run_id: str, model_name: ModelName) -> Path:
     return get_run_dir(run_id) / f"signals_{model_name}.parquet"
 
 
-def _load_predictions(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> pd.DataFrame:
+def _load_predictions(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> pd.DataFrame:
     run_dir = get_run_dir(run_id)
     candidates = [run_dir / f"predictions_{model_name}.parquet"]
     if model_name == DEFAULT_MODEL:
@@ -241,7 +271,9 @@ def _load_predictions(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> pd.
     raise ValueError(f"Prediction artifacts not found for model: {model_name}")
 
 
-def _load_metrics_payload(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> dict[str, Any]:
+def _load_metrics_payload(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> dict[str, Any]:
     run_dir = get_run_dir(run_id)
     candidates = [run_dir / f"metrics_{model_name}.json"]
     if model_name == DEFAULT_MODEL:
@@ -256,7 +288,9 @@ def _load_metrics_payload(run_id: str, model_name: ModelName = DEFAULT_MODEL) ->
     raise ValueError(f"Metrics artifacts not found for model: {model_name}")
 
 
-def _load_backtest_payload(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> dict[str, Any]:
+def _load_backtest_payload(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> dict[str, Any]:
     run_dir = get_run_dir(run_id)
     candidates = [run_dir / f"backtest_{model_name}.json"]
     if model_name == DEFAULT_MODEL:
@@ -301,6 +335,16 @@ def _json_sanitize(value: Any) -> Any:
     return value
 
 
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    try:
+        casted = float(value)
+    except (TypeError, ValueError):
+        return default
+    if np.isnan(casted) or np.isinf(casted):
+        return default
+    return casted
+
+
 def _group_ic(frame: pd.DataFrame, score_col: str = "predicted_return") -> float:
     values: list[float] = []
     for _, group in frame.groupby("date"):
@@ -310,7 +354,9 @@ def _group_ic(frame: pd.DataFrame, score_col: str = "predicted_return") -> float
     return float(np.mean(values)) if values else 0.0
 
 
-def _compute_baseline_metrics(predictions: pd.DataFrame, split_ratio: float) -> dict[str, Any]:
+def _compute_baseline_metrics(
+    predictions: pd.DataFrame, split_ratio: float
+) -> dict[str, Any]:
     with_target = predictions.dropna(subset=["target_return"]).copy()
     if with_target.empty:
         return {"train_ic": 0.0, "val_ic": 0.0, "hit_rate": 0.0, "mse": 0.0, "mae": 0.0}
@@ -327,7 +373,9 @@ def _compute_baseline_metrics(predictions: pd.DataFrame, split_ratio: float) -> 
             == np.sign(with_target["target_return"].to_numpy(dtype=float))
         ).mean()
     )
-    err = with_target["predicted_return"].to_numpy(dtype=float) - with_target["target_return"].to_numpy(dtype=float)
+    err = with_target["predicted_return"].to_numpy(dtype=float) - with_target[
+        "target_return"
+    ].to_numpy(dtype=float)
     mse = float(np.mean(np.square(err))) if err.size > 0 else 0.0
     mae = float(np.mean(np.abs(err))) if err.size > 0 else 0.0
     return {
@@ -362,8 +410,12 @@ def _save_default_compat_artifacts(
     save_json(run_dir / "metrics.json", metrics_payload)
 
 
-def _resolve_selected_models(request: TrainRequest, symbol_count: int) -> tuple[ModelName, ...]:
-    if request.model_choice == "lgbm_only" or (symbol_count >= 1000 and request.model_choice == "dual"):
+def _resolve_selected_models(
+    request: TrainRequest, symbol_count: int
+) -> tuple[ModelName, ...]:
+    if request.model_choice == "lgbm_only" or (
+        symbol_count >= 1000 and request.model_choice == "dual"
+    ):
         return ("lgbm_ranker",)
     if request.model_choice == "xgb_only":
         return ("xgb_lstm",)
@@ -434,7 +486,11 @@ def _sample_symbols_by_liquidity(
     for symbol, frame in datasets.items():
         if frame.empty or "close" not in frame.columns or "volume" not in frame.columns:
             continue
-        adv = (frame["close"].astype(float) * frame["volume"].astype(float)).tail(60).mean()
+        adv = (
+            (frame["close"].astype(float) * frame["volume"].astype(float))
+            .tail(60)
+            .mean()
+        )
         ranked.append((symbol, float(adv) if np.isfinite(float(adv)) else 0.0))
     ranked = sorted(ranked, key=lambda item: item[1], reverse=True)
     selected = {symbol for symbol, _ in ranked[: max(1, int(limit))]}
@@ -450,7 +506,9 @@ def _apply_feature_pruning(
     sample = frame[feature_columns].copy()
     corr = sample.corr().abs()
     upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))
-    drop_cols = [column for column in upper.columns if bool((upper[column] > 0.98).any())]
+    drop_cols = [
+        column for column in upper.columns if bool((upper[column] > 0.98).any())
+    ]
     if not drop_cols:
         return frame, feature_columns, 0
     pruned = frame.drop(columns=drop_cols, errors="ignore")
@@ -477,13 +535,19 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         if request.quick_mode or request.walk_forward_compact:
             walk_forward_cfg.step_months = max(2, int(walk_forward_cfg.step_months))
             walk_forward_cfg.train_months = min(int(walk_forward_cfg.train_months), 24)
-            walk_forward_cfg.val_months = max(1, min(int(walk_forward_cfg.val_months), 1))
+            walk_forward_cfg.val_months = max(
+                1, min(int(walk_forward_cfg.val_months), 1)
+            )
 
-        _mark_stage(run_id, progress=5, stage="loading_data", log="Loading market data.")
+        _mark_stage(
+            run_id, progress=5, stage="loading_data", log="Loading market data."
+        )
         load_log_bucket = {"value": -1}
         t_data = time.perf_counter()
 
-        def _on_market_data_progress(processed: int, total: int, symbol: str, loaded: bool) -> None:
+        def _on_market_data_progress(
+            processed: int, total: int, symbol: str, loaded: bool
+        ) -> None:
             total_safe = max(int(total), 1)
             fraction = float(processed) / float(total_safe)
             progress = 5 + int(30 * fraction)
@@ -509,10 +573,18 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             limit = int(request.top_liquid_n or min(500, len(datasets)))
             datasets = _sample_symbols_by_liquidity(datasets, limit=limit)
         if skipped_symbols:
-            append_log(run_id, f"Skipped symbols (insufficient data): {', '.join(skipped_symbols)}")
+            append_log(
+                run_id,
+                f"Skipped symbols (insufficient data): {', '.join(skipped_symbols)}",
+            )
         _mark_elapsed("data_update_sec", t_data)
 
-        _mark_stage(run_id, progress=36, stage="feature_engineering", log="Building feature dataset.")
+        _mark_stage(
+            run_id,
+            progress=36,
+            stage="feature_engineering",
+            log="Building feature dataset.",
+        )
         t_features = time.perf_counter()
         feature_data, feature_columns, feature_skips = build_feature_dataset(
             data_by_symbol=datasets,
@@ -524,10 +596,20 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             macro_feature_subset=request.macro_feature_subset,
         )
         if request.feature_pruning:
-            feature_data, feature_columns, dropped = _apply_feature_pruning(feature_data, feature_columns)
+            feature_data, feature_columns, dropped = _apply_feature_pruning(
+                feature_data, feature_columns
+            )
             if dropped > 0:
-                append_log(run_id, f"Feature pruning removed {dropped} highly correlated columns.")
-        _mark_stage(run_id, progress=45, stage="feature_engineering", log="Feature dataset built.")
+                append_log(
+                    run_id,
+                    f"Feature pruning removed {dropped} highly correlated columns.",
+                )
+        _mark_stage(
+            run_id,
+            progress=45,
+            stage="feature_engineering",
+            log="Feature dataset built.",
+        )
         _mark_elapsed("feature_engineering_sec", t_features)
         skipped_union = sorted(set(skipped_symbols + feature_skips))
         if feature_data.empty:
@@ -549,7 +631,9 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         )
         market_long = close_long.merge(open_long, on=["date", "symbol"], how="left")
         market_long.to_parquet(run_dir / "market_data.parquet", index=False)
-        save_json(run_dir / "config_used.json", request.model_dump(mode="json", by_alias=True))
+        save_json(
+            run_dir / "config_used.json", request.model_dump(mode="json", by_alias=True)
+        )
         save_json(
             run_dir / "data_versions.json",
             {
@@ -557,7 +641,12 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 "features": get_feature_versions(),
             },
         )
-        _mark_stage(run_id, progress=48, stage="training_prepare", log="Saved market panel artifact.")
+        _mark_stage(
+            run_id,
+            progress=48,
+            stage="training_prepare",
+            log="Saved market panel artifact.",
+        )
 
         performance_rows: list[dict[str, Any]] = []
         model_windows: dict[str, tuple[int, int]] = {}
@@ -598,8 +687,12 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             _mark_elapsed("train_xgb_lstm_sec", t_train_xgb)
             update_run(run_id, progress=xgb_end, stage="training_xgb_lstm")
             baseline_pred = baseline_output.predictions.copy()
-            baseline_pred["date"] = pd.to_datetime(baseline_pred["date"]).dt.tz_localize(None)
-            baseline_pred.to_parquet(run_dir / "predictions_xgb_lstm.parquet", index=False)
+            baseline_pred["date"] = pd.to_datetime(
+                baseline_pred["date"]
+            ).dt.tz_localize(None)
+            baseline_pred.to_parquet(
+                run_dir / "predictions_xgb_lstm.parquet", index=False
+            )
 
             baseline_ic = _compute_baseline_metrics(
                 predictions=baseline_pred,
@@ -623,11 +716,16 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             }
             save_json(run_dir / "metrics_xgb_lstm.json", metrics_payload)
 
-            baseline_output.xgb_model.save_model(str(run_dir / "model_xgb_xgb_lstm.json"))
+            baseline_output.xgb_model.save_model(
+                str(run_dir / "model_xgb_xgb_lstm.json")
+            )
             if baseline_output.lstm_bundle is not None:
                 import torch
 
-                torch.save(_serialize_lstm_bundle(baseline_output.lstm_bundle), run_dir / "model_lstm_xgb_lstm.pt")
+                torch.save(
+                    _serialize_lstm_bundle(baseline_output.lstm_bundle),
+                    run_dir / "model_lstm_xgb_lstm.pt",
+                )
 
             performance_rows.append(
                 {
@@ -641,7 +739,12 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
 
         if "lgbm_ranker" in selected_models:
             ranker_start, ranker_end = model_windows.get("lgbm_ranker", (50, 92))
-            _mark_stage(run_id, progress=ranker_start, stage="training_ranker", log="Training ranker model.")
+            _mark_stage(
+                run_id,
+                progress=ranker_start,
+                stage="training_ranker",
+                log="Training ranker model.",
+            )
             t_train_ranker = time.perf_counter()
             ranker_log_progress = {"value": -1}
 
@@ -665,8 +768,12 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             _mark_elapsed("train_ranker_sec", t_train_ranker)
             update_run(run_id, progress=ranker_end, stage="training_ranker")
             ranker_pred = ranker_output.predictions.copy()
-            ranker_pred["date"] = pd.to_datetime(ranker_pred["date"]).dt.tz_localize(None)
-            ranker_pred.to_parquet(run_dir / "predictions_lgbm_ranker.parquet", index=False)
+            ranker_pred["date"] = pd.to_datetime(ranker_pred["date"]).dt.tz_localize(
+                None
+            )
+            ranker_pred.to_parquet(
+                run_dir / "predictions_lgbm_ranker.parquet", index=False
+            )
 
             ranker_metrics_payload: dict[str, Any] = {
                 "model_name": "lgbm_ranker",
@@ -689,13 +796,20 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                     "model_name": "lgbm_ranker",
                     "train_ic": ranker_output.metrics.get("train_ic"),
                     "val_ic": ranker_output.metrics.get("val_ic"),
-                    "ndcg": ndcg_obj.get("ndcg_10") if isinstance(ndcg_obj, dict) else None,
+                    "ndcg": (
+                        ndcg_obj.get("ndcg_10") if isinstance(ndcg_obj, dict) else None
+                    ),
                     "hit_rate": ranker_output.metrics.get("hit_rate"),
                     "best_theta": ranker_output.metrics.get("best_theta"),
                 }
             )
 
-        _mark_stage(run_id, progress=95, stage="finalizing", log="Saving model performance summary.")
+        _mark_stage(
+            run_id,
+            progress=95,
+            stage="finalizing",
+            log="Saving model performance summary.",
+        )
         save_json(
             run_dir / "model_performance.json",
             {
@@ -707,13 +821,17 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         save_json(run_dir / "time_profile.json", time_profile)
 
         update_run(run_id, progress=99, stage="finalizing")
-        update_run(run_id, status="completed", progress=100, stage="completed", error=None)
+        update_run(
+            run_id, status="completed", progress=100, stage="completed", error=None
+        )
         append_log(run_id, "Training job completed.")
     except Exception as exc:  # noqa: BLE001
         if time_profile:
             time_profile["total_training_sec"] = float(sum(time_profile.values()))
             save_json(run_dir / "time_profile.json", time_profile)
-        update_run(run_id, status="failed", progress=100, stage="failed", error=str(exc))
+        update_run(
+            run_id, status="failed", progress=100, stage="failed", error=str(exc)
+        )
         append_log(run_id, f"Error: {exc}")
         append_log(run_id, traceback.format_exc(limit=3))
 
@@ -747,9 +865,16 @@ def get_run(run_id: str) -> RunStatusResponse:
 
     files = _run_artifact_files(run_id)
     if files:
-        has_backtest = any(name.startswith("backtest") and name.endswith(".json") for name in files)
-        has_predictions = any(name.startswith("predictions") and name.endswith(".parquet") for name in files)
-        has_metrics = any(name.startswith("metrics") and name.endswith(".json") for name in files)
+        has_backtest = any(
+            name.startswith("backtest") and name.endswith(".json") for name in files
+        )
+        has_predictions = any(
+            name.startswith("predictions") and name.endswith(".parquet")
+            for name in files
+        )
+        has_metrics = any(
+            name.startswith("metrics") and name.endswith(".json") for name in files
+        )
         has_models = any(name.startswith("model_") for name in files)
         has_market_data = "market_data.parquet" in files
         has_config = "config.json" in files
@@ -797,7 +922,9 @@ def get_run(run_id: str) -> RunStatusResponse:
     raise ValueError(f"Run not found: {run_id}")
 
 
-def _ensure_run_completed(run_id: str, *, allow_artifact_fallback: bool = False) -> None:
+def _ensure_run_completed(
+    run_id: str, *, allow_artifact_fallback: bool = False
+) -> None:
     state = get_run_state(run_id)
     if state:
         if state.status != "completed":
@@ -829,12 +956,18 @@ def build_signals(request: SignalRequest) -> SignalResponse:
     if market_path.exists():
         market_long = pd.read_parquet(market_path, columns=["date"])
         if not market_long.empty:
-            latest_market_date = pd.Timestamp(pd.to_datetime(market_long["date"]).max()).date().isoformat()
+            latest_market_date = (
+                pd.Timestamp(pd.to_datetime(market_long["date"]).max())
+                .date()
+                .isoformat()
+            )
     staleness_days = 0
     if latest_market_date:
         staleness_days = max(
             0,
-            (pd.Timestamp(latest_market_date).date() - pd.Timestamp(as_of_iso).date()).days,
+            (
+                pd.Timestamp(latest_market_date).date() - pd.Timestamp(as_of_iso).date()
+            ).days,
         )
     regime_snapshot, recommended_mode = _signal_regime_snapshot(request.run_id)
     return SignalResponse(
@@ -860,10 +993,16 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     if not market_path.exists():
         raise ValueError("Market data artifact is missing.")
     market_long = pd.read_parquet(market_path)
-    market_long = market_long.assign(date=pd.to_datetime(market_long["date"]).dt.tz_localize(None))
-    close_panel = market_long.pivot(index="date", columns="symbol", values="close").sort_index()
+    market_long = market_long.assign(
+        date=pd.to_datetime(market_long["date"]).dt.tz_localize(None)
+    )
+    close_panel = market_long.pivot(
+        index="date", columns="symbol", values="close"
+    ).sort_index()
     if "open" in market_long.columns:
-        open_panel = market_long.pivot(index="date", columns="symbol", values="open").sort_index()
+        open_panel = market_long.pivot(
+            index="date", columns="symbol", values="open"
+        ).sort_index()
     else:
         open_panel = close_panel.copy()
 
@@ -897,6 +1036,8 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "consistency_checks": result.consistency_checks,
         "regime_mode_by_period": result.regime_mode_by_period,
         "constraints": request.constraints.model_dump(mode="json"),
+        "effective_constraints": result.effective_constraints,
+        "cash_weight": result.cash_weight,
         "cost_bps": request.cost_bps,
         "slippage_bps": request.slippage_bps,
         "entry_price": request.entry_price,
@@ -918,26 +1059,33 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     return BacktestResponse(**payload)
 
 
-def get_summary(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> ArtifactSummaryResponse:
+def get_summary(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> ArtifactSummaryResponse:
     """Read artifact summary for a run."""
     model_name = _normalize_model_name(model_name)
     run_dir = get_run_dir(run_id)
     metrics = _load_metrics_payload(run_id, model_name=model_name)
-    return ArtifactSummaryResponse(
+    response = ArtifactSummaryResponse(
         run_id=run_id,
         model_name=model_name,
         model_meta=metrics.get("model_meta", {}),
-        latest_validation_error=metrics.get("metrics", {}).get("latest_validation_error"),
+        latest_validation_error=metrics.get("metrics", {}).get(
+            "latest_validation_error"
+        ),
         feature_importance=metrics.get("feature_importance", []),
         params=load_json(run_dir / "config.json", default={}),
         available_artifacts=list_run_artifacts(run_id),
     )
+    return ArtifactSummaryResponse(**_json_sanitize(response.model_dump(mode="json")))
 
 
 def get_universe() -> UniverseResponse:
     """Return active universe config."""
     payload = load_universe_config()
-    return UniverseResponse(version=payload.get("version", "v1"), assets=payload.get("assets", []))
+    return UniverseResponse(
+        version=payload.get("version", "v1"), assets=payload.get("assets", [])
+    )
 
 
 def _extract_backtest_metric(backtest: dict[str, Any], key: str) -> float | None:
@@ -946,13 +1094,23 @@ def _extract_backtest_metric(backtest: dict[str, Any], key: str) -> float | None
     if value is None:
         return None
     try:
-        return float(value)
+        out = float(value)
     except (TypeError, ValueError):
         return None
+    if np.isnan(out) or np.isinf(out):
+        return None
+    return out
 
 
 def get_model_performance(run_id: str) -> ModelPerformanceResponse:
     """Return model comparison metrics."""
+
+    def _optional_metric(value: Any) -> float | None:
+        out = _safe_float(value, default=float("nan"))
+        if np.isnan(out) or np.isinf(out):
+            return None
+        return out
+
     models: list[ModelPerformanceItem] = []
     for model_name in SUPPORTED_MODELS:
         try:
@@ -967,26 +1125,37 @@ def get_model_performance(run_id: str) -> ModelPerformanceResponse:
 
         item = ModelPerformanceItem(
             model_name=model_name,
-            train_ic=metrics.get("train_ic") if isinstance(metrics, dict) else None,
-            val_ic=metrics.get("val_ic") if isinstance(metrics, dict) else None,
-            ndcg=ndcg_score,
+            train_ic=_optional_metric(
+                metrics.get("train_ic") if isinstance(metrics, dict) else None
+            ),
+            val_ic=_optional_metric(
+                metrics.get("val_ic") if isinstance(metrics, dict) else None
+            ),
+            ndcg=_optional_metric(ndcg_score),
             sharpe=_extract_backtest_metric(backtest_payload, "sharpe"),
             max_dd=_extract_backtest_metric(backtest_payload, "max_drawdown"),
             turnover=_extract_backtest_metric(backtest_payload, "turnover"),
-            hit_rate=metrics.get("hit_rate") if isinstance(metrics, dict) else None,
+            hit_rate=_optional_metric(
+                metrics.get("hit_rate") if isinstance(metrics, dict) else None
+            ),
             regime_performance=backtest_payload.get("regime_performance", {}),
         )
         models.append(item)
 
     if not models:
         raise ValueError(f"No model metrics found for run: {run_id}")
-    return ModelPerformanceResponse(run_id=run_id, models=models)
+    response = ModelPerformanceResponse(run_id=run_id, models=models)
+    return ModelPerformanceResponse(**_json_sanitize(response.model_dump(mode="json")))
 
 
-def get_model_ic(run_id: str, model_name: ModelName = DEFAULT_MODEL, window: int = 6) -> ModelICResponse:
+def get_model_ic(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL, window: int = 6
+) -> ModelICResponse:
     """Return IC time-series for a model."""
     model_name = _normalize_model_name(model_name)
-    predictions = _load_predictions(run_id, model_name=model_name).dropna(subset=["target_return"])
+    predictions = _load_predictions(run_id, model_name=model_name).dropna(
+        subset=["target_return"]
+    )
     if predictions.empty:
         raise ValueError("No prediction rows with target_return were found.")
 
@@ -1004,12 +1173,18 @@ def get_model_ic(run_id: str, model_name: ModelName = DEFAULT_MODEL, window: int
         raise ValueError("Insufficient grouped rows to compute IC.")
 
     frame = pd.DataFrame(rows).sort_values("date").reset_index(drop=True)
-    frame["rolling_ic"] = frame["ic"].rolling(window=max(window, 1), min_periods=1).mean()
+    frame["rolling_ic"] = (
+        frame["ic"].rolling(window=max(window, 1), min_periods=1).mean()
+    )
     points = [
-        ModelICPoint(date=row["date"], ic=float(row["ic"]), rolling_ic=float(row["rolling_ic"]))
+        ModelICPoint(
+            date=row["date"], ic=float(row["ic"]), rolling_ic=float(row["rolling_ic"])
+        )
         for _, row in frame.iterrows()
     ]
-    return ModelICResponse(run_id=run_id, model_name=model_name, window=max(window, 1), points=points)
+    return ModelICResponse(
+        run_id=run_id, model_name=model_name, window=max(window, 1), points=points
+    )
 
 
 def _load_close_panel(run_id: str) -> pd.DataFrame:
@@ -1018,7 +1193,9 @@ def _load_close_panel(run_id: str) -> pd.DataFrame:
         return pd.DataFrame()
     market_long = pd.read_parquet(market_path)
     panel = (
-        market_long.assign(date=pd.to_datetime(market_long["date"]).dt.tz_localize(None))
+        market_long.assign(
+            date=pd.to_datetime(market_long["date"]).dt.tz_localize(None)
+        )
         .pivot(index="date", columns="symbol", values="close")
         .sort_index()
     )
@@ -1029,31 +1206,51 @@ def _signal_regime_snapshot(run_id: str) -> tuple[dict[str, str], str]:
     close_panel = _load_close_panel(run_id)
     if close_panel.empty:
         return {}, "long_only"
-    benchmark_symbol = "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
+    benchmark_symbol = (
+        "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
+    )
     benchmark = close_panel[benchmark_symbol].dropna().astype(float)
     benchmark.index = pd.to_datetime(benchmark.index).tz_localize(None)
     if benchmark.empty:
         return {}, "long_only"
 
-    ret = benchmark.pct_change(fill_method=None).replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    ret = (
+        benchmark.pct_change(fill_method=None)
+        .replace([np.inf, -np.inf], np.nan)
+        .fillna(0.0)
+    )
     ma200 = benchmark.rolling(200, min_periods=20).mean()
     distance = benchmark / (ma200 + 1e-12) - 1.0
-    trend = "bull" if float(distance.iloc[-1]) > 0.01 else "bear" if float(distance.iloc[-1]) < -0.01 else "sideways"
+    trend = (
+        "bull"
+        if float(distance.iloc[-1]) > 0.01
+        else "bear" if float(distance.iloc[-1]) < -0.01 else "sideways"
+    )
     vol20 = ret.rolling(20, min_periods=5).std(ddof=0) * np.sqrt(252)
     low_q = float(vol20.quantile(0.33))
     high_q = float(vol20.quantile(0.66))
     latest_vol = float(vol20.iloc[-1]) if not np.isnan(float(vol20.iloc[-1])) else 0.0
-    vol_regime = "low" if latest_vol <= low_q else "high" if latest_vol >= high_q else "mid"
+    vol_regime = (
+        "low" if latest_vol <= low_q else "high" if latest_vol >= high_q else "mid"
+    )
 
-    recommended_mode = "long_short" if trend == "bull" and vol_regime in {"low", "mid"} else "long_only"
+    recommended_mode = (
+        "long_short"
+        if trend == "bull" and vol_regime in {"low", "mid"}
+        else "long_only"
+    )
     return {"trend_regime": trend, "vol_regime": vol_regime}, recommended_mode
 
 
-def get_model_regime(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> ModelRegimeResponse:
+def get_model_regime(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> ModelRegimeResponse:
     """Return legacy regime payload mapped from dashboard regime metrics."""
     model_name = _normalize_model_name(model_name)
     try:
-        regime_payload = get_dashboard_performance_regime(run_id=run_id, model_name=model_name)
+        regime_payload = get_dashboard_performance_regime(
+            run_id=run_id, model_name=model_name
+        )
     except Exception:
         return ModelRegimeResponse(run_id=run_id, model_name=model_name, regimes={})
     if regime_payload.status != "ok":
@@ -1087,7 +1284,9 @@ def get_model_regime(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> Mode
     return ModelRegimeResponse(run_id=run_id, model_name=model_name, regimes=regimes)
 
 
-def get_feature_importance(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> FeatureImportanceResponse:
+def get_feature_importance(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> FeatureImportanceResponse:
     """Return feature importance payload for a model."""
     model_name = _normalize_model_name(model_name)
     metrics_payload = _load_metrics_payload(run_id, model_name=model_name)
@@ -1122,19 +1321,32 @@ def get_predictions_latest(
         "buy",
         np.where(latest["z_score"] <= -0.5, "sell", "hold"),
     )
-    latest = latest.sort_values("predicted_return", ascending=False).head(max(int(top_k), 1))
+    latest = latest.sort_values("predicted_return", ascending=False).head(
+        max(int(top_k), 1)
+    )
     rows = latest[
-        ["symbol", "predicted_return", "target_return", "z_score", "side", "predicted_xgb", "predicted_lstm"]
+        [
+            "symbol",
+            "predicted_return",
+            "target_return",
+            "z_score",
+            "side",
+            "predicted_xgb",
+            "predicted_lstm",
+        ]
     ].to_dict(orient="records")
-    return PredictionsLatestResponse(
+    response = PredictionsLatestResponse(
         run_id=run_id,
         model_name=model_name,
         as_of_date=latest_date,
-        predictions=rows,
+        predictions=_json_sanitize(rows),
     )
+    return PredictionsLatestResponse(**_json_sanitize(response.model_dump(mode="json")))
 
 
-def _collapse_small_categories(weights: dict[str, float], cutoff: float = 0.01) -> dict[str, float]:
+def _collapse_small_categories(
+    weights: dict[str, float], cutoff: float = 0.01
+) -> dict[str, float]:
     collapsed: dict[str, float] = {}
     other_total = 0.0
     for category, value in weights.items():
@@ -1151,10 +1363,18 @@ def _round_pct(value: float) -> str:
     return f"{value * 100:.1f}%"
 
 
-def get_portfolio_current(run_id: str, model_name: ModelName = DEFAULT_MODEL) -> PortfolioCurrentResponse:
+def get_portfolio_current(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> PortfolioCurrentResponse:
     """Return latest rebalance portfolio and rationale."""
     _ensure_run_completed(run_id, allow_artifact_fallback=True)
     model_name = _normalize_model_name(model_name)
+    policy = get_portfolio_policy()
+    policy_max_weight = float(policy.get("single_name_max_abs_weight", 0.10))
+    cash_symbol = str(policy.get("cash_symbol", "CASH")).strip().upper() or "CASH"
+    cash_category = (
+        str(policy.get("cash_category", "cash_proxy")).strip() or "cash_proxy"
+    )
 
     try:
         backtest_payload = _load_backtest_payload(run_id, model_name=model_name)
@@ -1164,9 +1384,21 @@ def get_portfolio_current(run_id: str, model_name: ModelName = DEFAULT_MODEL) ->
     period_weights = backtest_payload.get("period_weights", [])
     constraints = backtest_payload.get(
         "constraints",
-        {"max_weight": 0.2, "long_only": True, "risk_aversion": 3.0, "lookback_days": 126},
+        {
+            "max_weight": policy_max_weight,
+            "long_only": True,
+            "risk_aversion": 3.0,
+            "lookback_days": 126,
+        },
     )
+    effective_constraints = backtest_payload.get("effective_constraints", {})
     cost_bps = float(backtest_payload.get("cost_bps", 10.0))
+    requested_max_weight = _safe_float(
+        constraints.get("max_weight"), default=policy_max_weight
+    )
+    applied_max_weight = _safe_float(
+        effective_constraints.get("max_weight"), default=requested_max_weight
+    )
 
     if not period_weights:
         rationale = PortfolioRationale(
@@ -1176,7 +1408,9 @@ def get_portfolio_current(run_id: str, model_name: ModelName = DEFAULT_MODEL) ->
                 "먼저 Run Backtest를 실행하면 최신 리밸런싱 비중과 설명이 생성됩니다.",
             ],
             constraints_applied={
-                "max_weight": float(constraints.get("max_weight", 0.2)),
+                "max_weight_requested": requested_max_weight,
+                "max_weight_applied": applied_max_weight,
+                "max_weight": applied_max_weight,
                 "long_only": bool(constraints.get("long_only", True)),
                 "risk_aversion": float(constraints.get("risk_aversion", 3.0)),
                 "lookback_days": float(constraints.get("lookback_days", 126)),
@@ -1190,66 +1424,134 @@ def get_portfolio_current(run_id: str, model_name: ModelName = DEFAULT_MODEL) ->
             total_weight=0.0,
             symbol_weights=[],
             asset_class_weights=[],
+            asset_class_weights_l1=[],
             rationale=rationale,
         )
 
     latest = period_weights[-1]
     as_of_date = str(latest.get("date"))
-    raw_weights: dict[str, float] = {
-        str(symbol): max(float(weight), 0.0)
-        for symbol, weight in dict(latest.get("weights", {})).items()
-    }
+    raw_weights: dict[str, float] = {}
+    for symbol, weight in dict(latest.get("weights", {})).items():
+        symbol_key = str(symbol).strip().upper()
+        if not symbol_key:
+            continue
+        safe_weight = _safe_float(weight, default=0.0)
+        if safe_weight > 0:
+            raw_weights[symbol_key] = safe_weight
     total_weight = float(sum(raw_weights.values()))
     if total_weight <= 0:
         total_weight = 1.0
 
-    universe_payload = load_universe_config()
-    category_map = {item.get("symbol"): item.get("category", "other") for item in universe_payload.get("assets", [])}
+    symbol_metadata = get_symbol_metadata_map()
 
     symbol_items: list[PortfolioSymbolWeightItem] = []
-    category_weights: dict[str, float] = {}
-    for symbol, weight in sorted(raw_weights.items(), key=lambda pair: pair[1], reverse=True):
-        normalized = float(weight / total_weight)
-        category = str(category_map.get(symbol, "other"))
-        symbol_items.append(
-            PortfolioSymbolWeightItem(symbol=symbol, weight=normalized, category=category),
+    category_weights_l2: dict[str, float] = {}
+    category_weights_l1: dict[str, float] = {}
+    for symbol, weight in sorted(
+        raw_weights.items(), key=lambda pair: pair[1], reverse=True
+    ):
+        normalized = _safe_float(weight / total_weight, default=0.0)
+        if symbol == cash_symbol:
+            metadata = {
+                "name": "Cash Buffer",
+                "market": "CASH",
+                "sector_l1": "cash",
+                "category_l2": cash_category,
+                "category": cash_category,
+            }
+        else:
+            metadata = symbol_metadata.get(symbol, {})
+        category_l2 = (
+            str(
+                metadata.get("category_l2") or metadata.get("category") or "other"
+            ).strip()
+            or "other"
         )
-        category_weights[category] = category_weights.get(category, 0.0) + normalized
+        sector_l1 = str(metadata.get("sector_l1") or "other").strip() or "other"
+        name = str(metadata.get("name", "")).strip() or None
+        market = str(metadata.get("market", "")).strip() or None
 
-    category_weights = _collapse_small_categories(category_weights, cutoff=0.01)
+        symbol_items.append(
+            PortfolioSymbolWeightItem(
+                symbol=symbol,
+                weight=normalized,
+                category=category_l2,
+                name=name,
+                market=market,
+                sector_l1=sector_l1,
+                category_l2=category_l2,
+            ),
+        )
+        category_weights_l2[category_l2] = (
+            category_weights_l2.get(category_l2, 0.0) + normalized
+        )
+        category_weights_l1[sector_l1] = (
+            category_weights_l1.get(sector_l1, 0.0) + normalized
+        )
+
+    category_weights_l2 = _collapse_small_categories(category_weights_l2, cutoff=0.01)
+    category_weights_l1 = _collapse_small_categories(category_weights_l1, cutoff=0.01)
     asset_items = [
         AssetClassWeightItem(category=category, weight=value)
-        for category, value in sorted(category_weights.items(), key=lambda pair: pair[1], reverse=True)
+        for category, value in sorted(
+            category_weights_l2.items(), key=lambda pair: pair[1], reverse=True
+        )
+    ]
+    asset_items_l1 = [
+        AssetClassWeightItem(category=category, weight=value)
+        for category, value in sorted(
+            category_weights_l1.items(), key=lambda pair: pair[1], reverse=True
+        )
     ]
 
     top_categories = asset_items[:2]
     top_symbols = symbol_items[:3]
-    top_cat_text = ", ".join(f"{item.category} {_round_pct(item.weight)}" for item in top_categories) or "구성 없음"
+    top_cat_text = (
+        ", ".join(
+            f"{item.category} {_round_pct(item.weight)}" for item in top_categories
+        )
+        or "구성 없음"
+    )
     top_cat_total = sum(item.weight for item in top_categories)
-    top_symbol_text = ", ".join(f"{item.symbol} {_round_pct(item.weight)}" for item in top_symbols) or "구성 없음"
+    top_symbol_text = (
+        ", ".join(
+            f"{(item.name + f'({item.symbol})') if item.name else item.symbol} {_round_pct(item.weight)}"
+            for item in top_symbols
+        )
+        or "구성 없음"
+    )
     top_category_name = top_categories[0].category if top_categories else "other"
 
     summary_lines = [
         f"최신 리밸런싱({as_of_date}) 기준 상위 자산군은 {top_cat_text}이며 합계는 {_round_pct(top_cat_total)}입니다.",
         f"상위 비중 종목({top_symbol_text})이 {top_category_name}에 집중되어 해당 자산군 비중이 확대되었습니다.",
-        "리스크 제약(max_weight, long_only, risk_aversion, cost_bps)을 적용해 과도한 편중을 제한했습니다.",
+        (
+            f"요청 상한 {_round_pct(requested_max_weight)} 대비 정책 하드캡 적용 상한은 "
+            f"{_round_pct(applied_max_weight)}입니다."
+        ),
     ]
     rationale = PortfolioRationale(
         summary_lines=summary_lines,
         constraints_applied={
-            "max_weight": float(constraints.get("max_weight", 0.2)),
+            "max_weight_requested": requested_max_weight,
+            "max_weight_applied": applied_max_weight,
+            "max_weight": applied_max_weight,
             "long_only": bool(constraints.get("long_only", True)),
             "risk_aversion": float(constraints.get("risk_aversion", 3.0)),
             "lookback_days": float(constraints.get("lookback_days", 126)),
             "cost_bps": cost_bps,
         },
     )
-    return PortfolioCurrentResponse(
+    response = PortfolioCurrentResponse(
         run_id=run_id,
         model_name=model_name,
         as_of_date=as_of_date,
-        total_weight=float(sum(item.weight for item in symbol_items)),
+        total_weight=_safe_float(
+            sum(item.weight for item in symbol_items), default=0.0
+        ),
         symbol_weights=symbol_items,
         asset_class_weights=asset_items,
+        asset_class_weights_l1=asset_items_l1,
         rationale=rationale,
     )
+    return PortfolioCurrentResponse(**_json_sanitize(response.model_dump(mode="json")))
