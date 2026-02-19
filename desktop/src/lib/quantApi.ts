@@ -5,6 +5,9 @@ import type {
   ArtifactSummaryPayload,
   BacktestRequestPayload,
   BacktestResponsePayload,
+  WalkForwardBacktestRequestPayload,
+  WalkForwardBacktestStatusPayload,
+  WalkForwardBacktestSubmitPayload,
   DashboardHealthPayload,
   DashboardMode,
   FeatureImportancePayload,
@@ -17,6 +20,7 @@ import type {
   OpsStatusPayload,
   PerformanceRegimePayload,
   PortfolioPolicyPayload,
+  PromotedModelPayload,
   ExecutionOrderPreviewRequestPayload,
   ExecutionPreviewPayload,
   ExecutionSubmitPayload,
@@ -209,6 +213,40 @@ export function runBacktest(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+}
+
+export function runBacktestWalkforward(
+  baseUrl: string,
+  payload: WalkForwardBacktestRequestPayload,
+): Promise<WalkForwardBacktestSubmitPayload> {
+  return requestJson<WalkForwardBacktestSubmitPayload>(baseUrl, `${QUANT_PREFIX}/backtest/walkforward`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function fetchWalkforwardBacktestStatus(
+  baseUrl: string,
+  jobId: string,
+): Promise<WalkForwardBacktestStatusPayload> {
+  return requestJson<WalkForwardBacktestStatusPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/backtest/walkforward/${encodeURIComponent(jobId)}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchPromotedModel(
+  baseUrl: string,
+  modelName: ModelName = "lgbm_ranker",
+): Promise<PromotedModelPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  return requestJson<PromotedModelPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/model/promoted?${query.toString()}`,
+    { method: "GET" },
+  );
 }
 
 export function fetchArtifactSummary(

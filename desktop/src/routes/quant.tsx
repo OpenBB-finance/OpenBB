@@ -12,6 +12,7 @@ import {
   createSignals,
   fetchArtifactSummary,
   fetchModelIc,
+  fetchPromotedModel,
   fetchModelRegime,
   fetchModelShap,
   fetchPortfolioPolicy,
@@ -22,6 +23,8 @@ import {
   invalidateQuantCaches,
   resolveUniverse,
   runBacktest,
+  runBacktestWalkforward,
+  fetchWalkforwardBacktestStatus,
   startTrain,
 } from "../lib/quantApi";
 import { resolveOpenBBBackend } from "../lib/openbbBackend";
@@ -36,6 +39,7 @@ import type {
   ModelRegimePayload,
   ModelShapPayload,
   PortfolioPolicyPayload,
+  PromotedModelPayload,
   RankerConfigInput,
   PortfolioCurrentPayload,
   RunStatusPayload,
@@ -44,6 +48,7 @@ import type {
   UniverseAsset,
   UniverseListItemPayload,
   UniverseResponse,
+  WalkForwardBacktestStatusPayload,
 } from "../types/quant";
 
 type UniverseProfileId = "all" | "aggressive" | "defensive" | "custom";
@@ -307,6 +312,8 @@ export default function QuantPage() {
   const [modelRegimePayload, setModelRegimePayload] = useState<ModelRegimePayload | null>(null);
   const [modelShapPayload, setModelShapPayload] = useState<ModelShapPayload | null>(null);
   const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
+  const [promotedModel, setPromotedModel] = useState<PromotedModelPayload | null>(null);
+  const [walkforwardStatus, setWalkforwardStatus] = useState<WalkForwardBacktestStatusPayload | null>(null);
   const [diagnosticsError, setDiagnosticsError] = useState<string | null>(null);
 
   const [topK, setTopK] = useState(20);
@@ -315,6 +322,7 @@ export default function QuantPage() {
   const [isSubmittingTrain, setIsSubmittingTrain] = useState(false);
   const [isSubmittingSignals, setIsSubmittingSignals] = useState(false);
   const [isSubmittingBacktest, setIsSubmittingBacktest] = useState(false);
+  const [isSubmittingWalkforward, setIsSubmittingWalkforward] = useState(false);
   const [isLoadingPortfolio, setIsLoadingPortfolio] = useState(false);
   const [portfolioError, setPortfolioError] = useState<string | null>(null);
 
@@ -401,6 +409,12 @@ export default function QuantPage() {
         setPortfolioPolicy(fetchedPolicy);
       } catch {
         setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
+      }
+      try {
+        const promoted = await fetchPromotedModel(resolved.baseUrl, selectedModel);
+        setPromotedModel(promoted);
+      } catch {
+        setPromotedModel(null);
       }
 
       setSymbolsInput((prev) => {
@@ -963,6 +977,74 @@ export default function QuantPage() {
     selectedModel,
   ]);
 
+  const handleWalkforwardBacktest = useCallback(async () => {
+    if (!backend?.connected || !runId) {
+      setErrorMessage("Training run must be completed before walk-forward backtest.");
+      return;
+    }
+
+    setIsSubmittingWalkforward(true);
+    setErrorMessage(null);
+    setWalkforwardStatus(null);
+    try {
+      const submit = await runBacktestWalkforward(backend.baseUrl, {
+        run_id: runId,
+        model_name: selectedModel,
+        start: dateStart,
+        end: dateEnd,
+        rebalance: "monthly",
+        constraints: {
+          max_weight: portfolioPolicy.single_name_max_abs_weight,
+          long_only: true,
+          risk_aversion: 3.0,
+          lookback_days: 126,
+        },
+        cost_bps: 10,
+        slippage_bps: 2,
+        entry_price: "next_open",
+        exit_price: "close",
+        portfolio_mode: "long_only",
+        regime_policy: "mixed",
+        min_history_days: 126,
+      });
+
+      let latest = await fetchWalkforwardBacktestStatus(backend.baseUrl, submit.job_id);
+      setWalkforwardStatus(latest);
+      const startedAt = Date.now();
+      while ((latest.status === "queued" || latest.status === "running") && Date.now() - startedAt < 180_000) {
+        await new Promise((resolve) => window.setTimeout(resolve, 1500));
+        latest = await fetchWalkforwardBacktestStatus(backend.baseUrl, submit.job_id);
+        setWalkforwardStatus(latest);
+      }
+
+      if (latest.status === "failed") {
+        throw new Error(latest.message || "Walk-forward backtest failed.");
+      }
+
+      if (latest.status === "completed") {
+        markArtifactReady("backtest", true);
+        patchSession({
+          run_stage: "walkforward_completed",
+          run_progress: 100,
+          artifacts_ready: { backtest: true },
+        });
+      }
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Failed to run walk-forward backtest.");
+    } finally {
+      setIsSubmittingWalkforward(false);
+    }
+  }, [
+    backend,
+    dateEnd,
+    dateStart,
+    markArtifactReady,
+    patchSession,
+    portfolioPolicy.single_name_max_abs_weight,
+    runId,
+    selectedModel,
+  ]);
+
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
       <div className="mb-4">
@@ -1257,6 +1339,14 @@ export default function QuantPage() {
                 >
                   {isSubmittingBacktest ? "Running..." : "Run Backtest"}
                 </button>
+                <button
+                  type="button"
+                  className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
+                  onClick={handleWalkforwardBacktest}
+                  disabled={!canGenerateSignals || isSubmittingWalkforward}
+                >
+                  {isSubmittingWalkforward ? "Running..." : "Run Walk-forward Backtest"}
+                </button>
               </div>
               <div className="rounded-sm border border-theme-outline bg-theme-secondary p-2">
                 <p className="body-xs-medium text-theme-primary">
@@ -1272,6 +1362,16 @@ export default function QuantPage() {
                       Number(backtest.effective_constraints.max_weight ?? portfolioPolicy.single_name_max_abs_weight) * 100
                     ).toFixed(1)}
                     % | Cash buffer: {(Number(backtest.cash_weight ?? 0) * 100).toFixed(1)}%
+                  </p>
+                ) : null}
+                {promotedModel?.run_id ? (
+                  <p className="body-xxs-regular text-theme-muted">
+                    Promoted model: {promotedModel.run_id} ({promotedModel.ready ? "ready" : "not ready"})
+                  </p>
+                ) : null}
+                {walkforwardStatus ? (
+                  <p className="body-xxs-regular text-theme-muted">
+                    Walk-forward: {walkforwardStatus.status} ({walkforwardStatus.progress}%)
                   </p>
                 ) : null}
               </div>

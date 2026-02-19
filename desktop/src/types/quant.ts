@@ -10,6 +10,7 @@ export type CloseToNextOpenHorizonPolicy = "fixed_1" | "use_h";
 export type ModelChoice = "lgbm_only" | "xgb_only" | "dual";
 export type DashboardMode = "live" | "backtest";
 export type WorkflowRunStatus = "queued" | "running" | "completed" | "failed" | "unknown";
+export type WalkForwardJobStatus = "queued" | "running" | "completed" | "failed" | "not_found";
 
 export interface UniverseAsset {
   symbol: string;
@@ -192,6 +193,22 @@ export interface BacktestRequestPayload {
   mu_mapping?: MuMapping;
 }
 
+export interface WalkForwardBacktestRequestPayload {
+  run_id: string;
+  model_name: ModelName;
+  start: string;
+  end: string;
+  rebalance: "monthly";
+  constraints: BacktestConstraintsInput;
+  cost_bps: number;
+  slippage_bps?: number;
+  entry_price?: EntryPriceMode;
+  exit_price?: ExitPriceMode;
+  portfolio_mode?: PortfolioMode;
+  regime_policy?: "fixed" | "mixed";
+  min_history_days?: number;
+}
+
 export interface BacktestMetrics {
   cagr: number;
   sharpe: number;
@@ -229,6 +246,28 @@ export interface BacktestResponsePayload {
   period_weights: PeriodWeightsPoint[];
   effective_constraints?: Record<string, number | boolean>;
   cash_weight?: number;
+}
+
+export interface WalkForwardBacktestSubmitPayload {
+  job_id: string;
+  status: WalkForwardJobStatus;
+  run_id: string;
+  model_name: ModelName;
+  created_at: string;
+}
+
+export interface WalkForwardBacktestStatusPayload {
+  job_id: string;
+  status: WalkForwardJobStatus;
+  run_id: string;
+  model_name: ModelName;
+  created_at?: string | null;
+  updated_at?: string | null;
+  artifact_root?: string | null;
+  progress: number;
+  metrics?: BacktestMetrics | null;
+  message?: string | null;
+  train_windows: Array<{ rebalance_date: string; train_until: string }>;
 }
 
 export interface ArtifactSummaryPayload {
@@ -320,6 +359,16 @@ export interface PortfolioPolicyPayload {
   cash_category: string;
 }
 
+export interface PromotedModelPayload {
+  run_id?: string | null;
+  model_name: ModelName;
+  as_of_date?: string | null;
+  feature_hash?: string | null;
+  updated_at?: string | null;
+  source: string;
+  ready: boolean;
+}
+
 export interface FeatureImportancePayload {
   run_id: string;
   model_name: ModelName;
@@ -345,6 +394,9 @@ export interface DashboardHealthPayload {
   backend_detail: string;
   latest_run_id?: string | null;
   resolved_run_id?: string | null;
+  promoted_run_id?: string | null;
+  pretrain_ready?: boolean;
+  cache_warm_ratio?: number;
   mode_supported: DashboardMode[];
   data_timestamp?: string | null;
   universe_size: number;
@@ -707,6 +759,9 @@ export interface OpsStatusPayload {
   versions: Record<string, unknown>;
   latest_runs: Array<Record<string, unknown>>;
   macro_health: Record<string, unknown>;
+  latest_training_run_id?: string | null;
+  latest_daily_infer_date?: string | null;
+  walkforward_queue_depth?: number;
 }
 
 export interface BackendService {

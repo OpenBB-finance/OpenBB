@@ -83,6 +83,17 @@ describe("Quant Route", () => {
           cash_category: "cash_proxy",
         });
       }
+      if (url.includes("/api/v1/quant_ml/model/promoted")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          as_of_date: "2026-02-13",
+          feature_hash: "abc123",
+          updated_at: "2026-02-13T00:00:00Z",
+          source: "runtime_pointer",
+          ready: true,
+        });
+      }
       if (url.includes("/api/v1/quant_ml/universe/resolve")) {
         return mockJsonResponse({
           universe_id: "sp500",
@@ -120,6 +131,33 @@ describe("Quant Route", () => {
           period_weights: [{ date: "2026-02-13", weights: { "005930.KS": 0.1, "CASH": 0.9 } }],
           effective_constraints: { max_weight: 0.1 },
           cash_weight: 0.9,
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/backtest/walkforward")) {
+        return mockJsonResponse({
+          job_id: "wf-260219-001",
+          status: "queued",
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          created_at: "2026-02-13T00:00:00Z",
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/backtest/walkforward/wf-260219-001")) {
+        return mockJsonResponse({
+          job_id: "wf-260219-001",
+          status: "completed",
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          progress: 100,
+          message: "walk-forward backtest completed",
+          train_windows: [{ rebalance_date: "2026-01-02", train_until: "2026-01-01" }],
+          metrics: {
+            cagr: 0.08,
+            sharpe: 1.0,
+            max_drawdown: -0.12,
+            volatility: 0.2,
+            turnover: 0.3,
+          },
         });
       }
       if (url.endsWith("/api/v1/quant_ml/runs/run-1")) {
@@ -418,6 +456,36 @@ describe("Quant Route", () => {
     expect(backtestCall).toBeDefined();
     const backtestBody = JSON.parse(String((backtestCall?.[1] as RequestInit | undefined)?.body ?? "{}"));
     expect(backtestBody.constraints.max_weight).toBe(0.1);
+  });
+
+  test("runs walk-forward backtest from dedicated button", async () => {
+    await act(async () => {
+      render(<QuantComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Start Training/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Run Walk-forward Backtest/i })).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Run Walk-forward Backtest/i }));
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/backtest/walkforward"))).toBe(true);
+      expect(
+        calls.some((url) => url.endsWith("/api/v1/quant_ml/backtest/walkforward/wf-260219-001")),
+      ).toBe(true);
+    });
   });
 
   test("shows disconnected state when health check fails", async () => {
