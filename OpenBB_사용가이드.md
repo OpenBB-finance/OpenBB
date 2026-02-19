@@ -406,13 +406,21 @@ $env:PYTHONPATH='openbb_platform/extensions/quant_ml'
 python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
+python -m openbb_quant_ml.jobs.cli bootstrap --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 ```
 
 기본 운영 정책(`ops_jobs.yaml`):
 - `defaults.run_id_scheme: compact_v1`
 - `defaults.training_run_id_scheme: compact_v1`
+- `defaults.pretrain_bootstrap_enabled: true`
 - `daily.predict_mode: infer_only`
 - `daily.predict_fallback_legacy: true`
+- `daily.market_delta_days: 45`
+- `daily.feature_delta_days: 120`
+- `daily.max_infer_workers: 4`
+- `weekly.promote_on_success: true`
+- `retention.policy: keep_all`
+- `retention.index_compaction: true`
 
 run id 예시:
 - Daily Job: `dly-260219-01`
@@ -423,6 +431,12 @@ run id 예시:
 의미:
 - Daily는 데이터/피처/예측만 갱신(재학습 없음)
 - Weekly/Monthly에서만 full 학습 수행
+- Bootstrap은 최초 1회 선학습/승격(run pointer 초기화) 용도
+
+백테스트 이중 모드:
+- 빠른 모드: `POST /api/v1/quant_ml/backtest`
+- 시점별 리밸런싱(Walk-forward): `POST /api/v1/quant_ml/backtest/walkforward`
+- Walk-forward 상태 조회: `GET /api/v1/quant_ml/backtest/walkforward/{job_id}`
 
 롤백(기존 방식으로 즉시 복귀):
 - `run_id_scheme: legacy`

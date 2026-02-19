@@ -80,8 +80,11 @@ pip install pykrx
 - `GET /api/v1/quant_ml/runs/{run_id}`
 - `POST /api/v1/quant_ml/signals`
 - `POST /api/v1/quant_ml/backtest`
+- `POST /api/v1/quant_ml/backtest/walkforward`
+- `GET /api/v1/quant_ml/backtest/walkforward/{job_id}`
 - `GET /api/v1/quant_ml/artifacts/{run_id}/summary`
 - `GET /api/v1/quant_ml/portfolio/policy`
+- `GET /api/v1/quant_ml/model/promoted`
 
 ## Portfolio Policy (Hard Constraints)
 
@@ -182,14 +185,22 @@ The operational jobs entrypoint:
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
+PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli bootstrap --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 ```
 
 Run id scheme and incremental defaults (`ops_jobs.yaml`):
 
 - `defaults.run_id_scheme: compact_v1`
 - `defaults.training_run_id_scheme: compact_v1`
+- `defaults.pretrain_bootstrap_enabled: true`
 - `daily.predict_mode: infer_only`
 - `daily.predict_fallback_legacy: true`
+- `daily.market_delta_days: 45`
+- `daily.feature_delta_days: 120`
+- `daily.max_infer_workers: 4`
+- `weekly.promote_on_success: true`
+- `retention.policy: keep_all`
+- `retention.index_compaction: true`
 
 Compact run id examples:
 
@@ -202,6 +213,10 @@ Operational policy:
 
 - Daily: infer-only refresh (no model retraining)
 - Weekly/Monthly: full model training + promotion workflow
+- Bootstrap (one-time): cache warmup + feature precompute + weekly-style train/promote
+- Backtest dual mode:
+  - fast: existing `/backtest`
+  - walk-forward: `/backtest/walkforward` async job
 
 Rollback switches:
 
