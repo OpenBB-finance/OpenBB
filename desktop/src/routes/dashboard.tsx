@@ -10,6 +10,7 @@ import {
   fetchFeatureImportance,
   fetchModelIcDecay,
   fetchModelPerformance,
+  fetchPortfolioPolicy,
   fetchPerformanceRegime,
   fetchPerformanceRolling,
   fetchPortfolioExposure,
@@ -32,6 +33,7 @@ import type {
   ICDecayPayload,
   ModelName,
   ModelPerformancePayload,
+  PortfolioPolicyPayload,
   PerformanceRegimePayload,
   PortfolioExposurePayload,
   PortfolioRiskPayload,
@@ -54,6 +56,17 @@ const MODEL_TABS: Array<{ id: DashboardModelTab; label: string; implemented: boo
 const POLL_MS = 20_000;
 const DEFAULT_TOP_K = 20;
 const DEFAULT_SCORE_THRESHOLD = 0.5;
+const DEFAULT_PORTFOLIO_POLICY: PortfolioPolicyPayload = {
+  template: "diversified_long_only",
+  single_name_max_abs_weight: 0.1,
+  small_universe_policy: "cash_buffer",
+  sector_concentration_max: 0.35,
+  turnover_max: 0.8,
+  gross_exposure_max: 1.0,
+  net_exposure_abs_max: 1.0,
+  cash_symbol: "CASH",
+  cash_category: "cash_proxy",
+};
 
 function toNumber(value: unknown): number {
   if (typeof value !== "number" || Number.isNaN(value)) {
@@ -205,6 +218,7 @@ export default function DashboardPage() {
   const [predictionsLatest, setPredictionsLatest] = useState<PredictionsLatestPayload | null>(null);
   const [alertsCurrent, setAlertsCurrent] = useState<AlertsPayload | null>(null);
   const [alertsHistory, setAlertsHistory] = useState<AlertsPayload | null>(null);
+  const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
 
   const abortRef = useRef<AbortController | null>(null);
   const [isVisible, setIsVisible] = useState<boolean>(document.visibilityState === "visible");
@@ -234,6 +248,14 @@ export default function DashboardPage() {
     try {
       const resolved = await resolveOpenBBBackend();
       setBackend(resolved);
+      if (resolved.connected) {
+        try {
+          const fetchedPolicy = await fetchPortfolioPolicy(resolved.baseUrl);
+          setPortfolioPolicy(fetchedPolicy);
+        } catch {
+          setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
+        }
+      }
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Failed to resolve backend.");
     } finally {
@@ -584,7 +606,7 @@ export default function DashboardPage() {
         end: backtestEnd,
         rebalance: "monthly",
         constraints: {
-          max_weight: 0.2,
+          max_weight: portfolioPolicy.single_name_max_abs_weight,
           long_only: true,
           risk_aversion: 3.0,
           lookback_days: 126,
@@ -602,7 +624,17 @@ export default function DashboardPage() {
     } finally {
       setIsSubmittingBacktest(false);
     }
-  }, [backend, backtestEnd, backtestStart, effectiveModel, isImplementedModel, loadDashboard, markArtifactReady, normalizedRunId]);
+  }, [
+    backend,
+    backtestEnd,
+    backtestStart,
+    effectiveModel,
+    isImplementedModel,
+    loadDashboard,
+    markArtifactReady,
+    normalizedRunId,
+    portfolioPolicy.single_name_max_abs_weight,
+  ]);
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
@@ -768,6 +800,16 @@ export default function DashboardPage() {
             <div className="rounded-sm bg-theme-secondary p-2">
               <p className="body-xxs-regular text-theme-muted">Backtest End</p>
               <p className="body-xs-medium text-theme-primary">{backtestEnd}</p>
+            </div>
+            <div className="rounded-sm bg-theme-secondary p-2">
+              <p className="body-xxs-regular text-theme-muted">Policy Cap</p>
+              <p className="body-xs-medium text-theme-primary">
+                Single-name {(portfolioPolicy.single_name_max_abs_weight * 100).toFixed(0)}% (Hard)
+              </p>
+            </div>
+            <div className="rounded-sm bg-theme-secondary p-2">
+              <p className="body-xxs-regular text-theme-muted">Small Universe</p>
+              <p className="body-xs-medium text-theme-primary">{portfolioPolicy.small_universe_policy}</p>
             </div>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">

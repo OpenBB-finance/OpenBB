@@ -14,6 +14,7 @@ import {
   fetchModelIc,
   fetchModelRegime,
   fetchModelShap,
+  fetchPortfolioPolicy,
   fetchPortfolioCurrent,
   fetchRunStatus,
   fetchUniverse,
@@ -34,6 +35,7 @@ import type {
   ModelConfigInput,
   ModelRegimePayload,
   ModelShapPayload,
+  PortfolioPolicyPayload,
   RankerConfigInput,
   PortfolioCurrentPayload,
   RunStatusPayload,
@@ -201,6 +203,17 @@ const defaultRankerConfig: RankerConfigInput = {
 };
 
 const defaultThetaGrid = [0.8, 1.0, 1.2, 1.5];
+const DEFAULT_PORTFOLIO_POLICY: PortfolioPolicyPayload = {
+  template: "diversified_long_only",
+  single_name_max_abs_weight: 0.1,
+  small_universe_policy: "cash_buffer",
+  sector_concentration_max: 0.35,
+  turnover_max: 0.8,
+  gross_exposure_max: 1.0,
+  net_exposure_abs_max: 1.0,
+  cash_symbol: "CASH",
+  cash_category: "cash_proxy",
+};
 
 function parseSymbolsText(text: string): string[] {
   const seen = new Set<string>();
@@ -293,6 +306,7 @@ export default function QuantPage() {
   const [modelIcPayload, setModelIcPayload] = useState<ModelICPayload | null>(null);
   const [modelRegimePayload, setModelRegimePayload] = useState<ModelRegimePayload | null>(null);
   const [modelShapPayload, setModelShapPayload] = useState<ModelShapPayload | null>(null);
+  const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
   const [diagnosticsError, setDiagnosticsError] = useState<string | null>(null);
 
   const [topK, setTopK] = useState(20);
@@ -382,6 +396,12 @@ export default function QuantPage() {
       const fetchedUniverse = await fetchUniverse(resolved.baseUrl);
       setUniverse(fetchedUniverse);
       setUniverseSetOptions(mergeUniverseSetOptions(fetchedUniverseList.universes));
+      try {
+        const fetchedPolicy = await fetchPortfolioPolicy(resolved.baseUrl);
+        setPortfolioPolicy(fetchedPolicy);
+      } catch {
+        setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
+      }
 
       setSymbolsInput((prev) => {
         if (prev.trim()) {
@@ -901,7 +921,7 @@ export default function QuantPage() {
         end: dateEnd,
         rebalance: "monthly",
         constraints: {
-          max_weight: 0.2,
+          max_weight: portfolioPolicy.single_name_max_abs_weight,
           long_only: true,
           risk_aversion: 3.0,
           lookback_days: 126,
@@ -931,7 +951,17 @@ export default function QuantPage() {
     } finally {
       setIsSubmittingBacktest(false);
     }
-  }, [backend, dateEnd, dateStart, loadPortfolioCurrent, markArtifactReady, patchSession, runId, selectedModel]);
+  }, [
+    backend,
+    dateEnd,
+    dateStart,
+    loadPortfolioCurrent,
+    markArtifactReady,
+    patchSession,
+    portfolioPolicy.single_name_max_abs_weight,
+    runId,
+    selectedModel,
+  ]);
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
@@ -1227,6 +1257,23 @@ export default function QuantPage() {
                 >
                   {isSubmittingBacktest ? "Running..." : "Run Backtest"}
                 </button>
+              </div>
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary p-2">
+                <p className="body-xs-medium text-theme-primary">
+                  Single-name cap {(portfolioPolicy.single_name_max_abs_weight * 100).toFixed(0)}% (Hard)
+                </p>
+                <p className="body-xxs-regular text-theme-muted">
+                  Template: {portfolioPolicy.template} | Small universe: {portfolioPolicy.small_universe_policy}
+                </p>
+                {backtest?.effective_constraints ? (
+                  <p className="body-xxs-regular text-theme-muted">
+                    Applied cap:{" "}
+                    {(
+                      Number(backtest.effective_constraints.max_weight ?? portfolioPolicy.single_name_max_abs_weight) * 100
+                    ).toFixed(1)}
+                    % | Cash buffer: {(Number(backtest.cash_weight ?? 0) * 100).toFixed(1)}%
+                  </p>
+                ) : null}
               </div>
             </div>
           </PanelCard>

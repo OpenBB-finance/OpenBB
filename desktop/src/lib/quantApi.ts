@@ -16,6 +16,7 @@ import type {
   ModelRegimePayload,
   OpsStatusPayload,
   PerformanceRegimePayload,
+  PortfolioPolicyPayload,
   ExecutionOrderPreviewRequestPayload,
   ExecutionPreviewPayload,
   ExecutionSubmitPayload,
@@ -291,6 +292,10 @@ export function fetchPortfolioCurrent(
     path,
     { method: "GET" },
   );
+}
+
+export function fetchPortfolioPolicy(baseUrl: string): Promise<PortfolioPolicyPayload> {
+  return requestJson<PortfolioPolicyPayload>(baseUrl, `${QUANT_PREFIX}/portfolio/policy`, { method: "GET" });
 }
 
 export function fetchFeatureImportance(

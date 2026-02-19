@@ -227,6 +227,8 @@ export interface BacktestResponsePayload {
   equity_curve: EquityCurvePoint[];
   benchmark_curve: BenchmarkCurvePoint[];
   period_weights: PeriodWeightsPoint[];
+  effective_constraints?: Record<string, number | boolean>;
+  cash_weight?: number;
 }
 
 export interface ArtifactSummaryPayload {
@@ -279,6 +281,10 @@ export interface PortfolioSymbolWeightItem {
   symbol: string;
   weight: number;
   category: string;
+  name?: string | null;
+  market?: string | null;
+  sector_l1?: string | null;
+  category_l2?: string | null;
 }
 
 export interface AssetClassWeightItem {
@@ -298,7 +304,20 @@ export interface PortfolioCurrentPayload {
   total_weight: number;
   symbol_weights: PortfolioSymbolWeightItem[];
   asset_class_weights: AssetClassWeightItem[];
+  asset_class_weights_l1?: AssetClassWeightItem[];
   rationale: PortfolioRationalePayload;
+}
+
+export interface PortfolioPolicyPayload {
+  template: string;
+  single_name_max_abs_weight: number;
+  small_universe_policy: string;
+  sector_concentration_max: number;
+  turnover_max: number;
+  gross_exposure_max: number;
+  net_exposure_abs_max: number;
+  cash_symbol: string;
+  cash_category: string;
 }
 
 export interface FeatureImportancePayload {
@@ -700,7 +719,7 @@ export interface BackendService {
 
 export interface BackendResolution {
   baseUrl: string;
-  source: "running-service-url" | "command-parse" | "fallback";
+  source: "running-service-url" | "command-parse" | "fallback" | "web-dev-fallback";
   connected: boolean;
   detail: string;
 }
