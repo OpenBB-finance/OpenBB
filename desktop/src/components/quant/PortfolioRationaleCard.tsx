@@ -13,13 +13,24 @@ function toPercent(value: number): string {
   return `${(value * 100).toFixed(1)}%`;
 }
 
+function normalizeText(value: string | null | undefined, fallback: string): string {
+  const normalized = typeof value === "string" ? value.trim() : "";
+  return normalized.length > 0 ? normalized : fallback;
+}
+
+function nameTickerLabel(item: PortfolioCurrentPayload["symbol_weights"][number]): string {
+  const symbol = normalizeText(item.symbol, "Unknown");
+  const name = normalizeText(item.name, "");
+  return name ? `${name} (${symbol})` : symbol;
+}
+
 function topHoldingsText(portfolio: PortfolioCurrentPayload): string {
   if (portfolio.symbol_weights.length === 0) {
     return "No holdings available.";
   }
   return portfolio.symbol_weights
     .slice(0, 5)
-    .map((item) => `${item.symbol} ${toPercent(item.weight)}`)
+    .map((item) => `${nameTickerLabel(item)} ${toPercent(item.weight)}`)
     .join(", ");
 }
 
@@ -81,16 +92,22 @@ export function PortfolioRationaleCard({
                 <table className="min-w-full text-left">
                   <thead>
                     <tr className="border-b border-theme-outline/50">
-                      <th className="px-2 py-1 body-xs-medium text-theme-muted">Symbol</th>
-                      <th className="px-2 py-1 body-xs-medium text-theme-muted">Category</th>
+                      <th className="px-2 py-1 body-xs-medium text-theme-muted">Name / Ticker</th>
+                      <th className="px-2 py-1 body-xs-medium text-theme-muted">L2 Category</th>
+                      <th className="px-2 py-1 body-xs-medium text-theme-muted">L1 Sector</th>
                       <th className="px-2 py-1 body-xs-medium text-theme-muted text-right">Weight</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {portfolio.symbol_weights.map((item) => (
-                      <tr key={`${item.symbol}-${item.category}`} className="border-b border-theme-outline/30">
-                        <td className="px-2 py-1 body-xs-regular text-theme-primary">{item.symbol}</td>
-                        <td className="px-2 py-1 body-xs-regular text-theme-muted">{item.category}</td>
+                    {portfolio.symbol_weights.map((item, index) => (
+                      <tr key={`${item.symbol}-${index}`} className="border-b border-theme-outline/30">
+                        <td className="px-2 py-1 body-xs-regular text-theme-primary">{nameTickerLabel(item)}</td>
+                        <td className="px-2 py-1 body-xs-regular text-theme-muted">
+                          {normalizeText(item.category_l2 ?? item.category, "other")}
+                        </td>
+                        <td className="px-2 py-1 body-xs-regular text-theme-muted">
+                          {normalizeText(item.sector_l1, "Unknown")}
+                        </td>
                         <td className="px-2 py-1 body-xs-regular text-theme-primary text-right">
                           {toPercent(item.weight)}
                         </td>
@@ -105,11 +122,27 @@ export function PortfolioRationaleCard({
           </div>
 
           <div className="rounded-sm bg-theme-secondary p-2">
-            <p className="mb-2 body-xs-medium text-theme-muted">Asset Class Weights</p>
+            <p className="mb-2 body-xs-medium text-theme-muted">L1 Sector Weights</p>
+            {(portfolio.asset_class_weights_l1 ?? []).length > 0 ? (
+              <ul className="space-y-1">
+                {(portfolio.asset_class_weights_l1 ?? []).map((item) => (
+                  <li key={item.category} className="flex items-center justify-between">
+                    <span className="body-xs-regular text-theme-primary">{normalizeText(item.category, "Unknown")}</span>
+                    <span className="body-xs-regular text-theme-muted">{toPercent(item.weight)}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="body-xs-regular text-theme-muted">Unknown</p>
+            )}
+          </div>
+
+          <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="mb-2 body-xs-medium text-theme-muted">L2 Category Weights</p>
             <ul className="space-y-1">
               {portfolio.asset_class_weights.map((item) => (
                 <li key={item.category} className="flex items-center justify-between">
-                  <span className="body-xs-regular text-theme-primary">{item.category}</span>
+                  <span className="body-xs-regular text-theme-primary">{normalizeText(item.category, "other")}</span>
                   <span className="body-xs-regular text-theme-muted">{toPercent(item.weight)}</span>
                 </li>
               ))}

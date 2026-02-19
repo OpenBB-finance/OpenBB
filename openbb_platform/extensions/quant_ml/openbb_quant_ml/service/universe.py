@@ -22,6 +22,20 @@ UNIVERSE_MINIMUM_COUNTS: dict[str, int] = {
     "kosdaq100": 90,
 }
 
+UNIVERSE_OPTIONAL_METADATA_COLUMNS: tuple[str, ...] = (
+    "category",
+    "name",
+    "market",
+    "sector_l1",
+    "category_l2",
+    "data_asof",
+    "source",
+)
+
+
+def _normalize_symbol(value: Any) -> str:
+    return str(value or "").strip().upper()
+
 
 def load_universe_config() -> dict[str, Any]:
     """Load universe configuration YAML."""
@@ -45,7 +59,9 @@ def get_universe_minimum_required(universe_id: str | None) -> int:
     return int(UNIVERSE_MINIMUM_COUNTS.get(key, 0))
 
 
-def get_universe_size_status(universe_id: str | None, symbols: list[str]) -> tuple[int, int, bool]:
+def get_universe_size_status(
+    universe_id: str | None, symbols: list[str]
+) -> tuple[int, int, bool]:
     """Return (actual_count, minimum_required, meets_minimum) tuple."""
     actual = len({str(item).strip().upper() for item in symbols if str(item).strip()})
     minimum = get_universe_minimum_required(universe_id)
@@ -114,21 +130,106 @@ def _read_symbols_from_universe_file(path: Path) -> list[str]:
     try:
         if path.suffix.lower() == ".txt":
             rows = path.read_text(encoding="utf-8").splitlines()
-            return [row.strip().upper() for row in rows if row.strip()]
+            return [_normalize_symbol(row) for row in rows if str(row).strip()]
         symbols: list[str] = []
         with path.open(encoding="utf-8", newline="") as file:
             reader = csv.DictReader(file)
             columns = [column for column in (reader.fieldnames or []) if column]
-            symbol_col = "symbol" if "symbol" in columns else columns[0] if columns else None
+            symbol_col = (
+                "symbol" if "symbol" in columns else columns[0] if columns else None
+            )
             if symbol_col is None:
                 return symbols
             for row in reader:
-                value = str(row.get(symbol_col, "")).strip().upper()
+                value = _normalize_symbol(row.get(symbol_col, ""))
                 if value:
                     symbols.append(value)
         return symbols
     except OSError:
         return []
+
+
+def _read_universe_rows_from_file(path: Path) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    try:
+        if path.suffix.lower() == ".txt":
+            text_rows = path.read_text(encoding="utf-8").splitlines()
+            for item in text_rows:
+                symbol = _normalize_symbol(item)
+                if symbol:
+                    rows.append({"symbol": symbol})
+            return rows
+
+        with path.open(encoding="utf-8", newline="") as file:
+            reader = csv.DictReader(file)
+            columns = [column for column in (reader.fieldnames or []) if column]
+            symbol_col = (
+                "symbol" if "symbol" in columns else columns[0] if columns else None
+            )
+            if symbol_col is None:
+                return rows
+
+            for source_row in reader:
+                symbol = _normalize_symbol(source_row.get(symbol_col, ""))
+                if not symbol:
+                    continue
+                row: dict[str, str] = {"symbol": symbol}
+                for column in UNIVERSE_OPTIONAL_METADATA_COLUMNS:
+                    value = str(source_row.get(column, "")).strip()
+                    if value:
+                        row[column] = value
+                rows.append(row)
+    except OSError:
+        return []
+    return rows
+
+
+def get_symbol_metadata_map() -> dict[str, dict[str, str]]:
+    """Build merged symbol metadata map from YAML config and local universe CSV/TXT files."""
+    metadata: dict[str, dict[str, str]] = {}
+
+    universe_payload = load_universe_config()
+    assets = universe_payload.get("assets", [])
+    for asset in assets:
+        symbol = _normalize_symbol(asset.get("symbol"))
+        if not symbol:
+            continue
+        category = str(asset.get("category", "other")).strip() or "other"
+        metadata[symbol] = {
+            "symbol": symbol,
+            "category": category,
+            "category_l2": category,
+        }
+
+    for universe_id in list_universe_ids():
+        if universe_id == "default":
+            continue
+        path = get_universe_file_path(universe_id)
+        if path is None:
+            continue
+
+        for row in _read_universe_rows_from_file(path):
+            symbol = _normalize_symbol(row.get("symbol"))
+            if not symbol:
+                continue
+
+            existing = dict(metadata.get(symbol, {"symbol": symbol}))
+            for column in UNIVERSE_OPTIONAL_METADATA_COLUMNS:
+                value = str(row.get(column, "")).strip()
+                if value:
+                    existing[column] = value
+
+            category_l2 = str(existing.get("category_l2", "")).strip()
+            category = str(existing.get("category", "")).strip()
+            if not category_l2 and category:
+                category_l2 = category
+            if not category and category_l2:
+                category = category_l2
+            existing["category"] = category or "other"
+            existing["category_l2"] = category_l2 or existing["category"]
+            metadata[symbol] = existing
+
+    return metadata
 
 
 def get_symbols_for_universe(universe_id: str | None) -> list[str]:
@@ -147,4 +248,6 @@ def get_symbols_for_universe(universe_id: str | None) -> list[str]:
         return []
 
     symbols = _read_symbols_from_universe_file(path)
-    return sorted({str(item) for item in symbols if str(item).strip()})
+    return sorted(
+        {_normalize_symbol(item) for item in symbols if _normalize_symbol(item)}
+    )

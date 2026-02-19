@@ -18,14 +18,28 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from io import StringIO
 from pathlib import Path
+from typing import Any
 from urllib.request import Request, urlopen
 
 import pandas as pd
+import yaml
 
 from openbb_quant_ml.service.universe import get_universe_minimum_required
 from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 
 UNIVERSE_IDS_ALL = ("kospi200", "kosdaq100", "sp500", "nasdaq100", "sox", "dow30")
+KR_TAXONOMY_PATH = (
+    Path(__file__).resolve().parent.parent / "config" / "kr_sector_taxonomy.yaml"
+)
+UNIVERSE_CSV_BASE_FIELDS: tuple[str, ...] = (
+    "symbol",
+    "name",
+    "market",
+    "sector_l1",
+    "category_l2",
+    "data_asof",
+    "source",
+)
 
 
 @dataclass(frozen=True)
@@ -49,17 +63,19 @@ def _log(msg: str) -> None:
     print(msg, file=sys.stderr)
 
 
-def _atomic_write_csv(path: Path, symbols: list[str]) -> None:
+def _atomic_write_rows_csv(
+    path: Path, rows: list[dict[str, str]], fieldnames: list[str]
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(
         prefix=path.name + ".", suffix=".tmp", dir=str(path.parent)
     )
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(["symbol"])
-            for symbol in symbols:
-                writer.writerow([symbol])
+            writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({name: row.get(name, "") for name in fieldnames})
             file.flush()
             os.fsync(file.fileno())
         os.replace(tmp_name, path)
@@ -69,6 +85,11 @@ def _atomic_write_csv(path: Path, symbols: list[str]) -> None:
                 os.remove(tmp_name)
         except OSError:
             pass
+
+
+def _atomic_write_csv(path: Path, symbols: list[str]) -> None:
+    rows = [{"symbol": str(symbol)} for symbol in symbols if str(symbol).strip()]
+    _atomic_write_rows_csv(path, rows, fieldnames=["symbol"])
 
 
 def _sanitize_token(value: str) -> str:
@@ -94,6 +115,106 @@ def _normalize_kr_code(raw: str, suffix: str) -> str:
 
 def _dedupe_sort(items: Iterable[str]) -> list[str]:
     return sorted({item for item in items if item})
+
+
+def _normalize_symbol(value: str) -> str:
+    return str(value or "").strip().upper()
+
+
+def _symbol_only_rows(symbols: list[str]) -> list[dict[str, str]]:
+    out: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for symbol in symbols:
+        normalized = _normalize_symbol(symbol)
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        out.append({"symbol": normalized})
+    return out
+
+
+def _dedupe_rows_by_symbol(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    merged: dict[str, dict[str, str]] = {}
+    for row in rows:
+        symbol = _normalize_symbol(row.get("symbol", ""))
+        if not symbol:
+            continue
+        existing = merged.get(symbol, {"symbol": symbol})
+        for key, value in row.items():
+            if key == "symbol":
+                continue
+            value_clean = str(value).strip()
+            if value_clean:
+                existing[key] = value_clean
+        merged[symbol] = existing
+    return sorted(merged.values(), key=lambda item: item["symbol"])
+
+
+def _universe_rows_fieldnames(rows: list[dict[str, str]]) -> list[str]:
+    extra: list[str] = []
+    for key in UNIVERSE_CSV_BASE_FIELDS[1:]:
+        if any(str(row.get(key, "")).strip() for row in rows):
+            extra.append(key)
+    return ["symbol", *extra]
+
+
+def _load_kr_taxonomy() -> dict[str, Any]:
+    if not KR_TAXONOMY_PATH.exists():
+        return {
+            "symbol_overrides": {},
+            "name_keywords": [],
+            "sector_defaults": {},
+            "default_category_l2": "other",
+        }
+    try:
+        with KR_TAXONOMY_PATH.open(encoding="utf-8") as file:
+            payload = yaml.safe_load(file) or {}
+    except Exception:  # noqa: BLE001
+        payload = {}
+    payload.setdefault("symbol_overrides", {})
+    payload.setdefault("name_keywords", [])
+    payload.setdefault("sector_defaults", {})
+    payload.setdefault("default_category_l2", "other")
+    return payload
+
+
+def _classify_kr_category_l2(
+    symbol: str, name: str, sector_l1: str, taxonomy: dict[str, Any]
+) -> str:
+    symbol_key = _normalize_symbol(symbol)
+    overrides = (
+        taxonomy.get("symbol_overrides", {}) if isinstance(taxonomy, dict) else {}
+    )
+    if isinstance(overrides, dict):
+        mapped = str(overrides.get(symbol_key, "")).strip()
+        if mapped:
+            return mapped
+
+    name_text = str(name or "").strip()
+    for rule in taxonomy.get("name_keywords", []) if isinstance(taxonomy, dict) else []:
+        if not isinstance(rule, dict):
+            continue
+        keyword = str(rule.get("keyword", "")).strip()
+        category_l2 = str(rule.get("category_l2", "")).strip()
+        if keyword and category_l2 and keyword in name_text:
+            return category_l2
+
+    sector_key = str(sector_l1 or "").strip()
+    sector_defaults = (
+        taxonomy.get("sector_defaults", {}) if isinstance(taxonomy, dict) else {}
+    )
+    if isinstance(sector_defaults, dict):
+        mapped = str(sector_defaults.get(sector_key, "")).strip()
+        if mapped:
+            return mapped
+
+    fallback = (
+        taxonomy.get("default_category_l2", "other")
+        if isinstance(taxonomy, dict)
+        else "other"
+    )
+    fallback_clean = str(fallback).strip()
+    return fallback_clean or "other"
 
 
 def _fetch_html(url: str, timeout_sec: int = 20) -> str:
@@ -177,7 +298,25 @@ def _fetch_us_from_wikipedia(universe_id: str) -> list[str]:
     return out
 
 
-def _fetch_kr_with_pykrx(universe_id: str) -> list[str]:
+def _latest_kr_sector_snapshot(
+    stock_module,
+    *,
+    market: str,
+    max_lookback_days: int = 14,
+) -> tuple[str | None, pd.DataFrame]:
+    for offset in range(max(1, int(max_lookback_days))):
+        day = (date.today() - timedelta(days=offset)).strftime("%Y%m%d")
+        try:
+            frame = stock_module.get_market_sector_classifications(day, market=market)
+        except Exception:  # noqa: BLE001
+            continue
+        if frame is None or getattr(frame, "empty", True):
+            continue
+        return day, frame.copy()
+    return None, pd.DataFrame()
+
+
+def _fetch_kr_with_pykrx(universe_id: str) -> list[dict[str, str]]:
     try:
         from pykrx import stock  # type: ignore
     except Exception as exc:  # noqa: BLE001
@@ -212,7 +351,9 @@ def _fetch_kr_with_pykrx(universe_id: str) -> list[str]:
     tickers: list[str] = []
     used_fallback = False
     if target_code:
-        tickers = [str(item) for item in stock.get_index_portfolio_deposit_file(target_code)]
+        tickers = [
+            str(item) for item in stock.get_index_portfolio_deposit_file(target_code)
+        ]
     if not tickers:
         _log(
             f"WARN universe_id: {universe_id} index constituents unavailable; "
@@ -242,7 +383,61 @@ def _fetch_kr_with_pykrx(universe_id: str) -> list[str]:
         )
     if not out:
         raise RuntimeError(f"empty constituents for {universe_id}")
-    return out
+
+    taxonomy = _load_kr_taxonomy()
+    sector_day, sector_frame = _latest_kr_sector_snapshot(stock, market=market)
+    name_col = ""
+    sector_col = ""
+    sector_lookup: dict[str, Any] = {}
+    if not sector_frame.empty:
+        columns = [str(column) for column in sector_frame.columns]
+        if "종목명" in columns:
+            name_col = "종목명"
+        elif columns:
+            name_col = columns[0]
+        if "업종명" in columns:
+            sector_col = "업종명"
+        elif len(columns) >= 2:
+            sector_col = columns[1]
+        for ticker, row in sector_frame.iterrows():
+            ticker_key = re.sub(r"[^0-9]", "", str(ticker)).zfill(6)
+            if ticker_key:
+                sector_lookup[ticker_key] = row
+
+    if sector_day:
+        data_asof = f"{sector_day[0:4]}-{sector_day[4:6]}-{sector_day[6:8]}"
+    else:
+        data_asof = date.today().isoformat()
+
+    rows: list[dict[str, str]] = []
+    for symbol in out:
+        code = re.sub(r"[^0-9]", "", symbol.split(".", 1)[0]).zfill(6)
+        name = ""
+        sector_l1 = ""
+        row = sector_lookup.get(code)
+        if row is not None:
+            if name_col:
+                name = str(row.get(name_col, "")).strip()
+            if sector_col:
+                sector_l1 = str(row.get(sector_col, "")).strip()
+        category_l2 = _classify_kr_category_l2(
+            symbol=symbol,
+            name=name,
+            sector_l1=sector_l1,
+            taxonomy=taxonomy,
+        )
+        rows.append(
+            {
+                "symbol": symbol,
+                "name": name,
+                "market": market,
+                "sector_l1": sector_l1,
+                "category_l2": category_l2,
+                "data_asof": data_asof,
+                "source": "pykrx",
+            }
+        )
+    return _dedupe_rows_by_symbol(rows)
 
 
 def _fallback_kr_market_cap_tickers(
@@ -265,9 +460,7 @@ def _fallback_kr_market_cap_tickers(
         tickers = [str(item) for item in ordered.index.tolist()]
         if tickers:
             return tickers[: max(1, int(top_n))]
-    raise RuntimeError(
-        f"market-cap fallback failed: market={market}, top_n={top_n}"
-    )
+    raise RuntimeError(f"market-cap fallback failed: market={market}, top_n={top_n}")
 
 
 def _validate_with_yfinance(
@@ -317,31 +510,41 @@ def _refresh_one(
 ) -> RefreshResult:
     try:
         if universe_id in ("sp500", "nasdaq100", "sox", "dow30"):
-            fetched = _fetch_us_from_wikipedia(universe_id)
+            fetched_rows = _symbol_only_rows(_fetch_us_from_wikipedia(universe_id))
         elif universe_id in ("kospi200", "kosdaq100"):
-            fetched = _fetch_kr_with_pykrx(universe_id)
+            fetched_rows = _fetch_kr_with_pykrx(universe_id)
         else:
-            return RefreshResult(
-                universe_id, False, 0, 0, 0, 0, "unknown universe id"
-            )
+            return RefreshResult(universe_id, False, 0, 0, 0, 0, "unknown universe id")
 
-        normalized = _dedupe_sort(fetched)
-        valid_symbols = normalized
+        normalized_rows = _dedupe_rows_by_symbol(fetched_rows)
+        valid_rows = list(normalized_rows)
         invalid_symbols: list[str] = []
+        invalid_rows: list[dict[str, str]] = []
         validate_msg = "skipped"
-        if validate and normalized:
+        if validate and normalized_rows:
+            symbols_to_validate = [
+                row["symbol"] for row in normalized_rows if row.get("symbol")
+            ]
             valid_symbols, invalid_symbols, validate_msg = _validate_with_yfinance(
-                normalized, max_workers=max_workers
+                symbols_to_validate, max_workers=max_workers
             )
+            valid_set = set(valid_symbols)
+            invalid_set = set(invalid_symbols)
+            valid_rows = [
+                row for row in normalized_rows if row.get("symbol") in valid_set
+            ]
+            invalid_rows = [
+                row for row in normalized_rows if row.get("symbol") in invalid_set
+            ]
 
         minimum_required = int(get_universe_minimum_required(universe_id))
-        actual_count = len(valid_symbols)
+        actual_count = len(valid_rows)
         if minimum_required > 0 and actual_count < minimum_required:
             return RefreshResult(
                 universe_id,
                 False,
-                len(fetched),
-                len(normalized),
+                len(fetched_rows),
+                len(normalized_rows),
                 actual_count,
                 len(invalid_symbols),
                 (
@@ -356,18 +559,29 @@ def _refresh_one(
             return RefreshResult(
                 universe_id,
                 True,
-                len(fetched),
-                len(normalized),
-                len(valid_symbols),
+                len(fetched_rows),
+                len(normalized_rows),
+                len(valid_rows),
                 len(invalid_symbols),
                 f"dry-run; validate={validate_msg}",
             )
 
         target = outdir / f"{universe_id}.csv"
         invalid_path = outdir / f"_invalid_{universe_id}.csv"
-        _atomic_write_csv(target, valid_symbols)
+        _atomic_write_rows_csv(
+            target,
+            valid_rows,
+            fieldnames=_universe_rows_fieldnames(valid_rows),
+        )
         if invalid_symbols:
-            _atomic_write_csv(invalid_path, invalid_symbols)
+            if invalid_rows:
+                _atomic_write_rows_csv(
+                    invalid_path,
+                    invalid_rows,
+                    fieldnames=_universe_rows_fieldnames(invalid_rows),
+                )
+            else:
+                _atomic_write_csv(invalid_path, invalid_symbols)
         else:
             try:
                 if invalid_path.exists():
@@ -378,9 +592,9 @@ def _refresh_one(
         return RefreshResult(
             universe_id,
             True,
-            len(fetched),
-            len(normalized),
-            len(valid_symbols),
+            len(fetched_rows),
+            len(normalized_rows),
+            len(valid_rows),
             len(invalid_symbols),
             f"ok; validate={validate_msg}",
         )

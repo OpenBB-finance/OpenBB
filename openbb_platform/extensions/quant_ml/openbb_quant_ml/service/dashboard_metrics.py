@@ -28,8 +28,16 @@ from openbb_quant_ml.models import (
 )
 from openbb_quant_ml.service.constants import RUNS_DIR
 from openbb_quant_ml.service.run_registry import append_log, update_run
-from openbb_quant_ml.service.storage import get_run_dir, load_json, read_registry, save_json
-from openbb_quant_ml.service.universe import load_universe_config
+from openbb_quant_ml.service.storage import (
+    get_run_dir,
+    load_json,
+    read_registry,
+    save_json,
+)
+from openbb_quant_ml.service.universe import (
+    get_symbol_metadata_map,
+    load_universe_config,
+)
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
@@ -89,6 +97,26 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
         return default
 
 
+def _json_sanitize(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: _json_sanitize(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_sanitize(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_sanitize(item) for item in value]
+    if isinstance(value, (float, np.floating)):
+        casted = float(value)
+        if np.isnan(casted) or np.isinf(casted):
+            return 0.0
+        return casted
+    return value
+
+
+def _sanitize_model_response(model: Any) -> Any:
+    payload = _json_sanitize(model.model_dump(mode="json"))
+    return model.__class__.model_validate(payload)
+
+
 def _has_run_dir(run_id: str | None) -> bool:
     if not run_id:
         return False
@@ -135,15 +163,22 @@ def _resolve_run_id(run_id: str | None) -> str | None:
     return get_latest_run_id()
 
 
-def _artifact_candidates(run_dir: Path, prefix: str, model_name: ModelName, suffix: str) -> list[Path]:
+def _artifact_candidates(
+    run_dir: Path, prefix: str, model_name: ModelName, suffix: str
+) -> list[Path]:
     return [
         run_dir / f"{prefix}_{model_name}.{suffix}",
         run_dir / f"{prefix}.{suffix}",
     ]
 
 
-def _artifact_exists(run_dir: Path, prefix: str, model_name: ModelName, suffix: str) -> bool:
-    return any(path.exists() for path in _artifact_candidates(run_dir, prefix, model_name, suffix))
+def _artifact_exists(
+    run_dir: Path, prefix: str, model_name: ModelName, suffix: str
+) -> bool:
+    return any(
+        path.exists()
+        for path in _artifact_candidates(run_dir, prefix, model_name, suffix)
+    )
 
 
 def _registry_run_state(run_id: str) -> dict[str, Any]:
@@ -186,7 +221,9 @@ def _infer_run_state(run_dir: Path, model_name: ModelName) -> dict[str, Any]:
         "status": status,
         "progress": progress,
         "stage": stage,
-        "updated_at": datetime.fromtimestamp(run_dir.stat().st_mtime, tz=UTC).replace(microsecond=0).isoformat(),
+        "updated_at": datetime.fromtimestamp(run_dir.stat().st_mtime, tz=UTC)
+        .replace(microsecond=0)
+        .isoformat(),
         "artifacts_ready": {
             "predictions": bool(has_predictions),
             "signals": bool(has_signals),
@@ -196,7 +233,9 @@ def _infer_run_state(run_dir: Path, model_name: ModelName) -> dict[str, Any]:
     }
 
 
-def _workflow_state_payload(run_id: str, run_dir: Path, model_name: ModelName) -> tuple[dict[str, Any], bool]:
+def _workflow_state_payload(
+    run_id: str, run_dir: Path, model_name: ModelName
+) -> tuple[dict[str, Any], bool]:
     inferred = _infer_run_state(run_dir, model_name)
     registry_state = _registry_run_state(run_id)
     artifact_flags = inferred["artifacts_ready"]
@@ -209,7 +248,9 @@ def _workflow_state_payload(run_id: str, run_dir: Path, model_name: ModelName) -
     stale_running = False
     updated_at_dt = _parse_iso_timestamp(updated_at)
     if run_status == "running" and updated_at_dt is not None:
-        stale_running = (datetime.now(UTC) - updated_at_dt).total_seconds() >= STALE_RUN_MINUTES * 60
+        stale_running = (
+            datetime.now(UTC) - updated_at_dt
+        ).total_seconds() >= STALE_RUN_MINUTES * 60
         if stale_running and not any(artifact_flags.values()):
             update_run(
                 run_id,
@@ -230,7 +271,11 @@ def _workflow_state_payload(run_id: str, run_dir: Path, model_name: ModelName) -
 
     return (
         {
-            "run_status": run_status if run_status in {"queued", "running", "completed", "failed"} else "unknown",
+            "run_status": (
+                run_status
+                if run_status in {"queued", "running", "completed", "failed"}
+                else "unknown"
+            ),
             "run_stage": run_stage,
             "run_progress": max(0, min(100, run_progress)),
             "artifacts_ready": artifact_flags,
@@ -240,7 +285,9 @@ def _workflow_state_payload(run_id: str, run_dir: Path, model_name: ModelName) -
     )
 
 
-def _load_json_artifact(run_dir: Path, prefix: str, model_name: ModelName) -> dict[str, Any]:
+def _load_json_artifact(
+    run_dir: Path, prefix: str, model_name: ModelName
+) -> dict[str, Any]:
     for path in _artifact_candidates(run_dir, prefix, model_name, "json"):
         payload = load_json(path, default={})
         if isinstance(payload, dict) and payload:
@@ -281,16 +328,24 @@ def _load_market_price_panels(run_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame
     if frame.empty:
         return pd.DataFrame(), pd.DataFrame()
     base = frame.assign(date=pd.to_datetime(frame["date"]).dt.tz_localize(None))
-    close_panel = base.pivot(index="date", columns="symbol", values="close").sort_index()
+    close_panel = base.pivot(
+        index="date", columns="symbol", values="close"
+    ).sort_index()
     if "open" in base.columns:
-        open_panel = base.pivot(index="date", columns="symbol", values="open").sort_index()
+        open_panel = base.pivot(
+            index="date", columns="symbol", values="open"
+        ).sort_index()
     else:
         open_panel = close_panel.copy()
-    open_panel = open_panel.reindex(index=close_panel.index, columns=close_panel.columns).ffill()
+    open_panel = open_panel.reindex(
+        index=close_panel.index, columns=close_panel.columns
+    ).ffill()
     return open_panel, close_panel
 
 
-def _series_points(series: pd.Series, *, key: str = "value") -> list[dict[str, float | str]]:
+def _series_points(
+    series: pd.Series, *, key: str = "value"
+) -> list[dict[str, float | str]]:
     if series.empty:
         return []
     series = series.dropna()
@@ -319,7 +374,9 @@ def _safe_spearman(x: pd.Series, y: pd.Series) -> float:
     return float(corr)
 
 
-def _ic_series(predictions: pd.DataFrame, score_col: str = "predicted_return") -> pd.Series:
+def _ic_series(
+    predictions: pd.DataFrame, score_col: str = "predicted_return"
+) -> pd.Series:
     if predictions.empty or "target_return" not in predictions.columns:
         return pd.Series(dtype=float)
     with_target = predictions.dropna(subset=["target_return"]).copy()
@@ -342,7 +399,9 @@ def _strategy_returns(backtest_payload: dict[str, Any]) -> pd.Series:
     if curve.empty:
         return pd.Series(dtype=float)
     curve["date"] = pd.to_datetime(curve["date"]).dt.tz_localize(None)
-    curve["daily_return"] = pd.to_numeric(curve["daily_return"], errors="coerce").fillna(0.0)
+    curve["daily_return"] = pd.to_numeric(
+        curve["daily_return"], errors="coerce"
+    ).fillna(0.0)
     return curve.set_index("date")["daily_return"].sort_index()
 
 
@@ -351,11 +410,15 @@ def _equity_series(backtest_payload: dict[str, Any]) -> pd.Series:
     if curve.empty:
         return pd.Series(dtype=float)
     curve["date"] = pd.to_datetime(curve["date"]).dt.tz_localize(None)
-    curve["equity"] = pd.to_numeric(curve["equity"], errors="coerce").ffill().fillna(100.0)
+    curve["equity"] = (
+        pd.to_numeric(curve["equity"], errors="coerce").ffill().fillna(100.0)
+    )
     return curve.set_index("date")["equity"].sort_index()
 
 
-def _weights_by_date(backtest_payload: dict[str, Any]) -> list[tuple[pd.Timestamp, dict[str, float]]]:
+def _weights_by_date(
+    backtest_payload: dict[str, Any],
+) -> list[tuple[pd.Timestamp, dict[str, float]]]:
     rows: list[tuple[pd.Timestamp, dict[str, float]]] = []
     for item in backtest_payload.get("period_weights", []) or []:
         date_value = item.get("date")
@@ -371,7 +434,9 @@ def _weights_by_date(backtest_payload: dict[str, Any]) -> list[tuple[pd.Timestam
     return rows
 
 
-def _latest_weights(backtest_payload: dict[str, Any]) -> tuple[pd.Timestamp | None, dict[str, float]]:
+def _latest_weights(
+    backtest_payload: dict[str, Any],
+) -> tuple[pd.Timestamp | None, dict[str, float]]:
     rows = _weights_by_date(backtest_payload)
     if not rows:
         return None, {}
@@ -387,7 +452,9 @@ def _exposure_from_weights(weights: dict[str, float]) -> tuple[float, float, flo
     return cash, gross, net
 
 
-def _turnover_and_exposure_series(backtest_payload: dict[str, Any]) -> tuple[pd.Series, pd.DataFrame]:
+def _turnover_and_exposure_series(
+    backtest_payload: dict[str, Any],
+) -> tuple[pd.Series, pd.DataFrame]:
     rows = _weights_by_date(backtest_payload)
     if not rows:
         return pd.Series(dtype=float), pd.DataFrame(columns=["cash", "gross", "net"])
@@ -397,7 +464,9 @@ def _turnover_and_exposure_series(backtest_payload: dict[str, Any]) -> tuple[pd.
     exposure_rows: list[dict[str, Any]] = []
     for date_value, weights in rows:
         symbols = set(prev).union(weights)
-        turnover = float(sum(abs(weights.get(sym, 0.0) - prev.get(sym, 0.0)) for sym in symbols))
+        turnover = float(
+            sum(abs(weights.get(sym, 0.0) - prev.get(sym, 0.0)) for sym in symbols)
+        )
         cash, gross, net = _exposure_from_weights(weights)
         turnover_rows.append((date_value, turnover))
         exposure_rows.append(
@@ -410,7 +479,9 @@ def _turnover_and_exposure_series(backtest_payload: dict[str, Any]) -> tuple[pd.
         )
         prev = weights
 
-    turnover_series = pd.DataFrame(turnover_rows, columns=["date", "turnover"]).set_index("date")["turnover"]
+    turnover_series = pd.DataFrame(
+        turnover_rows, columns=["date", "turnover"]
+    ).set_index("date")["turnover"]
     exposure_frame = pd.DataFrame(exposure_rows).set_index("date").sort_index()
     return turnover_series.sort_index(), exposure_frame
 
@@ -418,8 +489,12 @@ def _turnover_and_exposure_series(backtest_payload: dict[str, Any]) -> tuple[pd.
 def _rolling_sharpe(returns: pd.Series, window: int) -> pd.Series:
     if returns.empty:
         return pd.Series(dtype=float)
-    rolling_mean = returns.rolling(window=window, min_periods=max(10, window // 3)).mean()
-    rolling_std = returns.rolling(window=window, min_periods=max(10, window // 3)).std(ddof=0)
+    rolling_mean = returns.rolling(
+        window=window, min_periods=max(10, window // 3)
+    ).mean()
+    rolling_std = returns.rolling(window=window, min_periods=max(10, window // 3)).std(
+        ddof=0
+    )
     sharpe = (rolling_mean / (rolling_std + 1e-12)) * np.sqrt(252)
     return sharpe.replace([np.inf, -np.inf], 0.0).fillna(0.0)
 
@@ -433,9 +508,17 @@ def _rolling_max_drawdown(equity: pd.Series) -> pd.Series:
 
 
 def _category_map() -> dict[str, str]:
+    symbol_metadata = get_symbol_metadata_map()
+    if symbol_metadata:
+        return {
+            str(symbol): str(meta.get("category_l2") or meta.get("category") or "other")
+            for symbol, meta in symbol_metadata.items()
+        }
     universe_payload = load_universe_config()
     assets = universe_payload.get("assets", [])
-    return {str(item.get("symbol")): str(item.get("category", "other")) for item in assets}
+    return {
+        str(item.get("symbol")): str(item.get("category", "other")) for item in assets
+    }
 
 
 def _sector_exposure(weights: dict[str, float]) -> list[AssetClassWeightItem]:
@@ -459,7 +542,11 @@ def _sector_exposure(weights: dict[str, float]) -> list[AssetClassWeightItem]:
 def _returns_panel(close_panel: pd.DataFrame) -> pd.DataFrame:
     if close_panel.empty:
         return pd.DataFrame()
-    return close_panel.pct_change(fill_method=None).replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    return (
+        close_panel.pct_change(fill_method=None)
+        .replace([np.inf, -np.inf], np.nan)
+        .fillna(0.0)
+    )
 
 
 def _beta(y: pd.Series, x: pd.Series) -> float:
@@ -489,7 +576,9 @@ def _rolling_beta(y: pd.Series, x: pd.Series, window: int = 126) -> pd.Series:
     return pd.DataFrame(values, columns=["date", "beta"]).set_index("date")["beta"]
 
 
-def _factor_exposure(strategy_returns: pd.Series, close_panel: pd.DataFrame, lookback: int = 126) -> dict[str, float]:
+def _factor_exposure(
+    strategy_returns: pd.Series, close_panel: pd.DataFrame, lookback: int = 126
+) -> dict[str, float]:
     returns = _returns_panel(close_panel)
     if returns.empty or strategy_returns.empty:
         return {
@@ -532,7 +621,9 @@ def _duration_estimate(weights: dict[str, float]) -> float:
     return float(total)
 
 
-def _portfolio_cov(close_panel: pd.DataFrame, symbols: list[str], lookback: int) -> tuple[pd.DataFrame, pd.Series]:
+def _portfolio_cov(
+    close_panel: pd.DataFrame, symbols: list[str], lookback: int
+) -> tuple[pd.DataFrame, pd.Series]:
     if close_panel.empty or not symbols:
         return pd.DataFrame(), pd.Series(dtype=float)
     returns = _returns_panel(close_panel)[symbols].dropna(how="all")
@@ -544,7 +635,9 @@ def _portfolio_cov(close_panel: pd.DataFrame, symbols: list[str], lookback: int)
     return cov, mean_ret
 
 
-def _risk_contributions(cov: pd.DataFrame, weights: dict[str, float]) -> list[dict[str, float | str]]:
+def _risk_contributions(
+    cov: pd.DataFrame, weights: dict[str, float]
+) -> list[dict[str, float | str]]:
     if cov.empty or not weights:
         return []
     symbols = [symbol for symbol in cov.columns if symbol in weights]
@@ -556,7 +649,10 @@ def _risk_contributions(cov: pd.DataFrame, weights: dict[str, float]) -> list[di
     port_vol = np.sqrt(max(port_var, 1e-12))
     mrc = sigma @ w / (port_vol + 1e-12)
     rc = w * mrc
-    rows = [{"symbol": symbol, "contribution": float(value)} for symbol, value in zip(symbols, rc, strict=False)]
+    rows = [
+        {"symbol": symbol, "contribution": float(value)}
+        for symbol, value in zip(symbols, rc, strict=False)
+    ]
     rows.sort(key=lambda item: abs(float(item["contribution"])), reverse=True)
     return rows
 
@@ -572,25 +668,41 @@ def _regime_frame(close_panel: pd.DataFrame) -> pd.DataFrame:
     spy_ret = spy.pct_change().fillna(0.0)
     ma200 = spy.rolling(200, min_periods=20).mean()
     distance = (spy / (ma200 + 1e-12) - 1.0).fillna(0.0)
-    trend_regime = np.where(distance > 0.01, "bull", np.where(distance < -0.01, "bear", "sideways"))
+    trend_regime = np.where(
+        distance > 0.01, "bull", np.where(distance < -0.01, "bear", "sideways")
+    )
 
     vol20 = (spy_ret.rolling(20, min_periods=5).std(ddof=0) * np.sqrt(252)).fillna(0.0)
     if (vol20 > 0).any():
         low_q = float(vol20.quantile(0.33))
         high_q = float(vol20.quantile(0.66))
-        vol_regime = np.where(vol20 <= low_q, "low", np.where(vol20 >= high_q, "high", "mid"))
+        vol_regime = np.where(
+            vol20 <= low_q, "low", np.where(vol20 >= high_q, "high", "mid")
+        )
     else:
         vol_regime = np.repeat("mid", len(vol20))
 
-    breadth_cols = [symbol for symbol in close_panel.columns if close_panel[symbol].notna().sum() > 220]
+    breadth_cols = [
+        symbol
+        for symbol in close_panel.columns
+        if close_panel[symbol].notna().sum() > 220
+    ]
     if not breadth_cols:
         breadth = pd.Series(0.0, index=spy.index)
     else:
         filtered = close_panel[breadth_cols].reindex(spy.index).ffill()
-        above_ma = (filtered / (filtered.rolling(200, min_periods=20).mean() + 1e-12) - 1.0) > 0
+        above_ma = (
+            filtered / (filtered.rolling(200, min_periods=20).mean() + 1e-12) - 1.0
+        ) > 0
         breadth = above_ma.mean(axis=1).fillna(0.0)
 
-    liquidity_proxy = close_panel.reindex(spy.index).notna().sum(axis=1).rolling(20, min_periods=5).mean()
+    liquidity_proxy = (
+        close_panel.reindex(spy.index)
+        .notna()
+        .sum(axis=1)
+        .rolling(20, min_periods=5)
+        .mean()
+    )
     if liquidity_proxy.nunique(dropna=True) <= 1:
         liquidity_regime = np.repeat("mid", len(liquidity_proxy))
     else:
@@ -638,7 +750,12 @@ def _build_regime_performance(
     strategy_returns: pd.Series,
     ic_series: pd.Series,
     turnover_series: pd.Series,
-) -> tuple[dict[str, dict[str, float | int]], dict[str, dict[str, float | int]], dict[str, dict[str, float | int]], list[dict[str, float | str | int]]]:
+) -> tuple[
+    dict[str, dict[str, float | int]],
+    dict[str, dict[str, float | int]],
+    dict[str, dict[str, float | int]],
+    list[dict[str, float | str | int]],
+]:
     if regime_frame.empty or strategy_returns.empty:
         return {}, {}, {}, []
 
@@ -702,7 +819,9 @@ def _prediction_confidence(latest_predictions: pd.DataFrame) -> float:
 
     agreement = 1.0
     if {"predicted_xgb", "predicted_lstm"}.issubset(set(latest_predictions.columns)):
-        diff = (latest_predictions["predicted_xgb"] - latest_predictions["predicted_lstm"]).abs()
+        diff = (
+            latest_predictions["predicted_xgb"] - latest_predictions["predicted_lstm"]
+        ).abs()
         denom = latest_predictions["predicted_return"].abs().mean() + 1e-12
         agreement = float(max(0.0, min(1.0, 1.0 - float(diff.mean()) / float(denom))))
 
@@ -761,7 +880,9 @@ def _strategy_health(
     }
 
 
-def _recommended_portfolio_mode(trend_regime: str | None, vol_regime: str | None) -> str:
+def _recommended_portfolio_mode(
+    trend_regime: str | None, vol_regime: str | None
+) -> str:
     trend = (trend_regime or "sideways").lower()
     vol = (vol_regime or "mid").lower()
     if trend == "bull" and vol in {"low", "mid"}:
@@ -769,37 +890,45 @@ def _recommended_portfolio_mode(trend_regime: str | None, vol_regime: str | None
     return "long_only"
 
 
-def get_dashboard_health(run_id: str | None = None, model_name: str | None = None) -> DashboardHealthResponse:
+def get_dashboard_health(
+    run_id: str | None = None, model_name: str | None = None
+) -> DashboardHealthResponse:
     """Build dashboard health payload."""
     normalized_model = _normalize_model_name(model_name)
     latest_run_id = get_latest_run_id()
     resolved_run_id = _resolve_run_id(run_id)
 
     if run_id and not _has_run_dir(run_id):
-        return DashboardHealthResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="not_found",
-            message="Run not found",
-            latest_run_id=latest_run_id,
-            resolved_run_id=resolved_run_id,
-            backend_connected=True,
-            backend_source="quant_ml_api",
-            backend_detail="quant_ml_api_connected",
+        return _sanitize_model_response(
+            DashboardHealthResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="not_found",
+                message="Run not found",
+                latest_run_id=latest_run_id,
+                resolved_run_id=resolved_run_id,
+                backend_connected=True,
+                backend_source="quant_ml_api",
+                backend_detail="quant_ml_api_connected",
+            )
         )
 
     if not resolved_run_id:
-        return DashboardHealthResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="No available runs",
-            latest_run_id=latest_run_id,
-            resolved_run_id=resolved_run_id,
+        return _sanitize_model_response(
+            DashboardHealthResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="No available runs",
+                latest_run_id=latest_run_id,
+                resolved_run_id=resolved_run_id,
+            )
         )
 
     run_dir = get_run_dir(resolved_run_id)
-    workflow_state, stale_running = _workflow_state_payload(resolved_run_id, run_dir, normalized_model)
+    workflow_state, stale_running = _workflow_state_payload(
+        resolved_run_id, run_dir, normalized_model
+    )
     backtest_payload = _load_backtest(run_dir, normalized_model)
     predictions = _load_predictions(run_dir, normalized_model)
     metrics_payload = _load_metrics(run_dir, normalized_model)
@@ -825,14 +954,20 @@ def get_dashboard_health(run_id: str | None = None, model_name: str | None = Non
     close_panel = _load_market_panel(run_dir)
     benchmark_returns = pd.Series(dtype=float)
     if not close_panel.empty:
-        benchmark_symbol = "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
+        benchmark_symbol = (
+            "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
+        )
         benchmark_returns = _returns_panel(close_panel)[benchmark_symbol]
-        benchmark_returns = benchmark_returns.reindex(strategy_returns.index).fillna(0.0)
+        benchmark_returns = benchmark_returns.reindex(strategy_returns.index).fillna(
+            0.0
+        )
 
     ic_series = _ic_series(predictions)
     turnover_series, _ = _turnover_and_exposure_series(backtest_payload)
     regime_frame = _regime_frame(close_panel)
-    trend_perf, _, _, _ = _build_regime_performance(regime_frame, strategy_returns, ic_series, turnover_series)
+    trend_perf, _, _, _ = _build_regime_performance(
+        regime_frame, strategy_returns, ic_series, turnover_series
+    )
     current_regime = None
     current_vol_regime = None
     if not regime_frame.empty:
@@ -848,8 +983,12 @@ def get_dashboard_health(run_id: str | None = None, model_name: str | None = Non
         current_regime=current_regime,
     )
 
-    has_predictions = bool(workflow_state.get("artifacts_ready", {}).get("predictions", False))
-    has_backtest = bool(workflow_state.get("artifacts_ready", {}).get("backtest", False))
+    has_predictions = bool(
+        workflow_state.get("artifacts_ready", {}).get("predictions", False)
+    )
+    has_backtest = bool(
+        workflow_state.get("artifacts_ready", {}).get("backtest", False)
+    )
     has_metrics = bool(metrics_payload)
     latest_market_date = None
     if not close_panel.empty:
@@ -862,7 +1001,10 @@ def get_dashboard_health(run_id: str | None = None, model_name: str | None = Non
         try:
             staleness_days = max(
                 0,
-                (pd.Timestamp(latest_market_date).date() - pd.Timestamp(data_timestamp).date()).days,
+                (
+                    pd.Timestamp(latest_market_date).date()
+                    - pd.Timestamp(data_timestamp).date()
+                ).days,
             )
         except Exception:  # noqa: BLE001
             staleness_days = 0
@@ -878,32 +1020,38 @@ def get_dashboard_health(run_id: str | None = None, model_name: str | None = Non
     if stale_running and status != "not_found":
         stall_message = f"Run appears stalled: running state unchanged for >= {STALE_RUN_MINUTES} minutes."
         message = f"{message} {stall_message}".strip() if message else stall_message
-    if workflow_state.get("run_status") == "running" and not has_predictions and not has_metrics:
+    if (
+        workflow_state.get("run_status") == "running"
+        and not has_predictions
+        and not has_metrics
+    ):
         status = "insufficient_data"
         if not message:
             message = "Run is still in progress. Predictions are not ready yet."
 
-    return DashboardHealthResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        status=status,
-        latest_run_id=latest_run_id,
-        resolved_run_id=resolved_run_id,
-        data_timestamp=data_timestamp,
-        latest_market_date=latest_market_date,
-        staleness_days=staleness_days,
-        recommended_portfolio_mode=recommended_mode,
-        universe_size=universe_size,
-        cost_bps=_safe_float(backtest_payload.get("cost_bps", 10.0), 10.0),
-        cash_exposure=cash_exp,
-        gross_exposure=gross_exp,
-        net_exposure=net_exp,
-        strategy_health=strategy_health,
-        message=message,
-        workflow_state=workflow_state,
-        backend_connected=True,
-        backend_source="quant_ml_api",
-        backend_detail="quant_ml_api_connected",
+    return _sanitize_model_response(
+        DashboardHealthResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status=status,
+            latest_run_id=latest_run_id,
+            resolved_run_id=resolved_run_id,
+            data_timestamp=data_timestamp,
+            latest_market_date=latest_market_date,
+            staleness_days=staleness_days,
+            recommended_portfolio_mode=recommended_mode,
+            universe_size=universe_size,
+            cost_bps=_safe_float(backtest_payload.get("cost_bps", 10.0), 10.0),
+            cash_exposure=cash_exp,
+            gross_exposure=gross_exp,
+            net_exposure=net_exp,
+            strategy_health=strategy_health,
+            message=message,
+            workflow_state=workflow_state,
+            backend_connected=True,
+            backend_source="quant_ml_api",
+            backend_detail="quant_ml_api_connected",
+        )
     )
 
 
@@ -924,13 +1072,15 @@ def get_performance_rolling(
     strategy_returns = _strategy_returns(backtest_payload)
     equity = _equity_series(backtest_payload)
     if strategy_returns.empty or equity.empty:
-        return RollingPerformanceResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Run backtest first",
-            window_short=window_short,
-            window_long=window_long,
+        return _sanitize_model_response(
+            RollingPerformanceResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Run backtest first",
+                window_short=window_short,
+                window_long=window_long,
+            )
         )
 
     cumulative = equity / (float(equity.iloc[0]) + 1e-12) - 1.0
@@ -938,7 +1088,9 @@ def get_performance_rolling(
     rolling_sharpe_long = _rolling_sharpe(strategy_returns, max(int(window_long), 20))
 
     ic_series = _ic_series(predictions)
-    rolling_ic_short = ic_series.rolling(max(int(window_short), 5), min_periods=1).mean()
+    rolling_ic_short = ic_series.rolling(
+        max(int(window_short), 5), min_periods=1
+    ).mean()
     rolling_ic_long = ic_series.rolling(max(int(window_long), 5), min_periods=1).mean()
 
     maxdd = _rolling_max_drawdown(equity)
@@ -954,24 +1106,28 @@ def get_performance_rolling(
             }
         )
 
-    return RollingPerformanceResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        status="ok",
-        window_short=window_short,
-        window_long=window_long,
-        cumulative_return=_series_points(cumulative),
-        rolling_sharpe_3m=_series_points(rolling_sharpe_short),
-        rolling_sharpe_6m=_series_points(rolling_sharpe_long),
-        rolling_ic_3m=_series_points(rolling_ic_short),
-        rolling_ic_6m=_series_points(rolling_ic_long),
-        rolling_maxdd=_series_points(maxdd),
-        turnover_ts=_series_points(turnover_series, key="value"),
-        exposure_ts=exposure_rows,
+    return _sanitize_model_response(
+        RollingPerformanceResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="ok",
+            window_short=window_short,
+            window_long=window_long,
+            cumulative_return=_series_points(cumulative),
+            rolling_sharpe_3m=_series_points(rolling_sharpe_short),
+            rolling_sharpe_6m=_series_points(rolling_sharpe_long),
+            rolling_ic_3m=_series_points(rolling_ic_short),
+            rolling_ic_6m=_series_points(rolling_ic_long),
+            rolling_maxdd=_series_points(maxdd),
+            turnover_ts=_series_points(turnover_series, key="value"),
+            exposure_ts=exposure_rows,
+        )
     )
 
 
-def get_performance_regime(run_id: str, model_name: str | None = None) -> PerformanceRegimeResponse:
+def get_performance_regime(
+    run_id: str, model_name: str | None = None
+) -> PerformanceRegimeResponse:
     """Return regime performance payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -983,11 +1139,13 @@ def get_performance_regime(run_id: str, model_name: str | None = None) -> Perfor
 
     strategy_returns = _strategy_returns(backtest_payload)
     if strategy_returns.empty or close_panel.empty:
-        return PerformanceRegimeResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Run backtest first",
+        return _sanitize_model_response(
+            PerformanceRegimeResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Run backtest first",
+            )
         )
 
     ic_series = _ic_series(predictions)
@@ -1000,17 +1158,21 @@ def get_performance_regime(run_id: str, model_name: str | None = None) -> Perfor
         turnover_series=turnover_series,
     )
 
-    return PerformanceRegimeResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        trend_regime_perf=trend_perf,
-        vol_regime_perf=vol_perf,
-        liquidity_regime_perf=liquidity_perf,
-        matrix_2d=matrix,
+    return _sanitize_model_response(
+        PerformanceRegimeResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            trend_regime_perf=trend_perf,
+            vol_regime_perf=vol_perf,
+            liquidity_regime_perf=liquidity_perf,
+            matrix_2d=matrix,
+        )
     )
 
 
-def get_portfolio_exposure(run_id: str, model_name: str | None = None) -> PortfolioExposureResponse:
+def get_portfolio_exposure(
+    run_id: str, model_name: str | None = None
+) -> PortfolioExposureResponse:
     """Return portfolio exposure payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1021,11 +1183,13 @@ def get_portfolio_exposure(run_id: str, model_name: str | None = None) -> Portfo
 
     _, latest_weights = _latest_weights(backtest_payload)
     if not latest_weights:
-        return PortfolioExposureResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Run backtest first",
+        return _sanitize_model_response(
+            PortfolioExposureResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Run backtest first",
+            )
         )
 
     sector_exposure = _sector_exposure(latest_weights)
@@ -1035,33 +1199,49 @@ def get_portfolio_exposure(run_id: str, model_name: str | None = None) -> Portfo
     returns = _returns_panel(close_panel)
     spy_series = returns["SPY"] if "SPY" in returns.columns else pd.Series(dtype=float)
     qqq_series = returns["QQQ"] if "QQQ" in returns.columns else pd.Series(dtype=float)
-    beta_spy = _beta(strategy_returns.tail(126), spy_series.reindex(strategy_returns.tail(126).index))
-    beta_qqq = _beta(strategy_returns.tail(126), qqq_series.reindex(strategy_returns.tail(126).index))
+    beta_spy = _beta(
+        strategy_returns.tail(126), spy_series.reindex(strategy_returns.tail(126).index)
+    )
+    beta_qqq = _beta(
+        strategy_returns.tail(126), qqq_series.reindex(strategy_returns.tail(126).index)
+    )
 
     top_long = sorted(
         ((symbol, weight) for symbol, weight in latest_weights.items() if weight > 0),
         key=lambda pair: pair[1],
         reverse=True,
     )[:10]
-    top_short = sorted(((symbol, weight) for symbol, weight in latest_weights.items() if weight < 0), key=lambda pair: pair[1])[:10]
+    top_short = sorted(
+        ((symbol, weight) for symbol, weight in latest_weights.items() if weight < 0),
+        key=lambda pair: pair[1],
+    )[:10]
 
-    top10_long = [{"symbol": symbol, "weight": _safe_float(weight)} for symbol, weight in top_long]
-    top10_short = [{"symbol": symbol, "weight": _safe_float(weight)} for symbol, weight in top_short]
+    top10_long = [
+        {"symbol": symbol, "weight": _safe_float(weight)} for symbol, weight in top_long
+    ]
+    top10_short = [
+        {"symbol": symbol, "weight": _safe_float(weight)}
+        for symbol, weight in top_short
+    ]
 
-    return PortfolioExposureResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        sector_exposure=sector_exposure,
-        factor_exposure=factor_exposure,
-        beta_spy=_safe_float(beta_spy),
-        beta_qqq=_safe_float(beta_qqq),
-        duration_estimate=_duration_estimate(latest_weights),
-        top10_long=top10_long,
-        top10_short=top10_short,
+    return _sanitize_model_response(
+        PortfolioExposureResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            sector_exposure=sector_exposure,
+            factor_exposure=factor_exposure,
+            beta_spy=_safe_float(beta_spy),
+            beta_qqq=_safe_float(beta_qqq),
+            duration_estimate=_duration_estimate(latest_weights),
+            top10_long=top10_long,
+            top10_short=top10_short,
+        )
     )
 
 
-def get_portfolio_risk(run_id: str, model_name: str | None = None, lookback: int = 126) -> PortfolioRiskResponse:
+def get_portfolio_risk(
+    run_id: str, model_name: str | None = None, lookback: int = 126
+) -> PortfolioRiskResponse:
     """Return portfolio risk payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1073,11 +1253,13 @@ def get_portfolio_risk(run_id: str, model_name: str | None = None, lookback: int
     _, latest_weights = _latest_weights(backtest_payload)
 
     if not latest_weights:
-        return PortfolioRiskResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Run backtest first",
+        return _sanitize_model_response(
+            PortfolioRiskResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Run backtest first",
+            )
         )
 
     symbols = [symbol for symbol in latest_weights if symbol in close_panel.columns]
@@ -1098,29 +1280,37 @@ def get_portfolio_risk(run_id: str, model_name: str | None = None, lookback: int
     for symbol in symbols:
         value = latest_weights[symbol] * _safe_float(mean_ret.get(symbol, 0.0))
         return_contrib_rows.append({"symbol": symbol, "contribution": value})
-    return_contrib_rows.sort(key=lambda item: abs(float(item["contribution"])), reverse=True)
+    return_contrib_rows.sort(
+        key=lambda item: abs(float(item["contribution"])), reverse=True
+    )
 
     worst_rows: list[dict[str, float | str]] = []
     if symbols:
         returns = _returns_panel(close_panel)[symbols].tail(max(int(lookback), 20))
         cumulative = (1 + returns).prod() - 1.0
         for symbol in symbols:
-            contribution = latest_weights[symbol] * _safe_float(cumulative.get(symbol, 0.0))
+            contribution = latest_weights[symbol] * _safe_float(
+                cumulative.get(symbol, 0.0)
+            )
             worst_rows.append({"symbol": symbol, "contribution": contribution})
         worst_rows.sort(key=lambda item: float(item["contribution"]))
 
-    return PortfolioRiskResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        vol_ex_ante=vol_ex_ante,
-        cvar_95=cvar_95,
-        position_risk_contrib_top5=risk_contrib[:5],
-        position_return_contrib_top5=return_contrib_rows[:5],
-        worst5_positions=worst_rows[:5],
+    return _sanitize_model_response(
+        PortfolioRiskResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            vol_ex_ante=vol_ex_ante,
+            cvar_95=cvar_95,
+            position_risk_contrib_top5=risk_contrib[:5],
+            position_return_contrib_top5=return_contrib_rows[:5],
+            worst5_positions=worst_rows[:5],
+        )
     )
 
 
-def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: int = 20) -> ICDecayResponse:
+def get_model_ic_decay(
+    run_id: str, model_name: str | None = None, max_horizon: int = 20
+) -> ICDecayResponse:
     """Return IC decay payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1129,17 +1319,23 @@ def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: 
     predictions = _load_predictions(run_dir, normalized_model)
     open_panel, close_panel = _load_market_price_panels(run_dir)
     config_payload = load_json(run_dir / "config.json", default={})
-    request_payload = config_payload.get("request", {}) if isinstance(config_payload, dict) else {}
+    request_payload = (
+        config_payload.get("request", {}) if isinstance(config_payload, dict) else {}
+    )
     target_mode = str(request_payload.get("target_mode", "close_to_close"))
-    close_to_next_open_policy = str(request_payload.get("close_to_next_open_horizon_policy", "fixed_1"))
+    close_to_next_open_policy = str(
+        request_payload.get("close_to_next_open_horizon_policy", "fixed_1")
+    )
 
     if predictions.empty or close_panel.empty or open_panel.empty:
-        return ICDecayResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Insufficient predictions or market data",
-            max_horizon=max_horizon,
+        return _sanitize_model_response(
+            ICDecayResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Insufficient predictions or market data",
+                max_horizon=max_horizon,
+            )
         )
 
     max_h = max(1, int(max_horizon))
@@ -1167,7 +1363,9 @@ def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: 
             for _, group in merged.groupby("date"):
                 if len(group) < 3:
                     continue
-                per_date.append(_safe_spearman(group["predicted_return"], group["fwd_return"]))
+                per_date.append(
+                    _safe_spearman(group["predicted_return"], group["fwd_return"])
+                )
             ic_value = float(np.mean(per_date)) if per_date else 0.0
         ic_rows.append({"horizon": horizon, "ic": _safe_float(ic_value)})
         horizon_values.append(_safe_float(ic_value))
@@ -1177,16 +1375,20 @@ def get_model_ic_decay(run_id: str, model_name: str | None = None, max_horizon: 
     if arr.size >= 2 and float(np.std(arr, ddof=1)) > 0:
         ic_t_stat = float(arr.mean() / (arr.std(ddof=1) / np.sqrt(arr.size)))
 
-    return ICDecayResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        max_horizon=max_h,
-        ic_decay=ic_rows,
-        ic_t_stat=ic_t_stat,
+    return _sanitize_model_response(
+        ICDecayResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            max_horizon=max_h,
+            ic_decay=ic_rows,
+            ic_t_stat=ic_t_stat,
+        )
     )
 
 
-def get_prediction_distribution(run_id: str, model_name: str | None = None, bins: int = 30) -> PredictionDistributionResponse:
+def get_prediction_distribution(
+    run_id: str, model_name: str | None = None, bins: int = 30
+) -> PredictionDistributionResponse:
     """Return prediction distribution payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1194,16 +1396,22 @@ def get_prediction_distribution(run_id: str, model_name: str | None = None, bins
     run_dir = get_run_dir(run_id)
     predictions = _load_predictions(run_dir, normalized_model)
     if predictions.empty:
-        return PredictionDistributionResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="No predictions available",
-            bins=bins,
+        return _sanitize_model_response(
+            PredictionDistributionResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="No predictions available",
+                bins=bins,
+            )
         )
 
     latest = _latest_prediction_frame(predictions)
-    scores = latest["predicted_return"].astype(float).to_numpy() if not latest.empty else np.array([])
+    scores = (
+        latest["predicted_return"].astype(float).to_numpy()
+        if not latest.empty
+        else np.array([])
+    )
     hist_rows: list[dict[str, float | int]] = []
     if scores.size >= 1:
         counts, edges = np.histogram(scores, bins=max(5, int(bins)))
@@ -1239,18 +1447,22 @@ def get_prediction_distribution(run_id: str, model_name: str | None = None, bins
             }
         )
 
-    return PredictionDistributionResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        bins=max(5, int(bins)),
-        histogram=hist_rows,
-        top_decile_mean=top_decile_mean,
-        bottom_decile_mean=bottom_decile_mean,
-        decile_spread_ts=spread_rows,
+    return _sanitize_model_response(
+        PredictionDistributionResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            bins=max(5, int(bins)),
+            histogram=hist_rows,
+            top_decile_mean=top_decile_mean,
+            bottom_decile_mean=bottom_decile_mean,
+            decile_spread_ts=spread_rows,
+        )
     )
 
 
-def get_regime_history(run_id: str, model_name: str | None = None) -> RegimeHistoryResponse:
+def get_regime_history(
+    run_id: str, model_name: str | None = None
+) -> RegimeHistoryResponse:
     """Return regime history payload."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1258,11 +1470,13 @@ def get_regime_history(run_id: str, model_name: str | None = None) -> RegimeHist
     run_dir = get_run_dir(run_id)
     regime_frame = _regime_frame(_load_market_panel(run_dir))
     if regime_frame.empty:
-        return RegimeHistoryResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="No market data available",
+        return _sanitize_model_response(
+            RegimeHistoryResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="No market data available",
+            )
         )
 
     history: list[dict[str, float | str | int]] = []
@@ -1293,35 +1507,43 @@ def get_regime_history(run_id: str, model_name: str | None = None) -> RegimeHist
         "transition_rate": _safe_float(transitions / max(1, len(history) - 1)),
     }
 
-    return RegimeHistoryResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        history=history,
-        regime_transition_stats=transition_stats,
+    return _sanitize_model_response(
+        RegimeHistoryResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            history=history,
+            regime_transition_stats=transition_stats,
+        )
     )
 
 
-def get_regime_current(run_id: str, model_name: str | None = None) -> RegimeCurrentResponse:
+def get_regime_current(
+    run_id: str, model_name: str | None = None
+) -> RegimeCurrentResponse:
     """Return current regime payload."""
     history_payload = get_regime_history(run_id=run_id, model_name=model_name)
     if history_payload.status != "ok" or not history_payload.history:
-        return RegimeCurrentResponse(
-            run_id=history_payload.run_id,
-            model_name=history_payload.model_name,
-            status=history_payload.status,
-            message=history_payload.message,
+        return _sanitize_model_response(
+            RegimeCurrentResponse(
+                run_id=history_payload.run_id,
+                model_name=history_payload.model_name,
+                status=history_payload.status,
+                message=history_payload.message,
+            )
         )
 
     latest = history_payload.history[-1]
-    return RegimeCurrentResponse(
-        run_id=history_payload.run_id,
-        model_name=history_payload.model_name,
-        trend_regime=str(latest.get("trend_regime", "sideways")),
-        vol_regime=str(latest.get("vol_regime", "mid")),
-        liquidity_regime=str(latest.get("liquidity_regime", "mid")),
-        vix_level=_safe_float(latest.get("vix_level", 0.0)),
-        breadth=_safe_float(latest.get("breadth", 0.0)),
-        spx_distance_200ma=_safe_float(latest.get("spx_distance_200ma", 0.0)),
+    return _sanitize_model_response(
+        RegimeCurrentResponse(
+            run_id=history_payload.run_id,
+            model_name=history_payload.model_name,
+            trend_regime=str(latest.get("trend_regime", "sideways")),
+            vol_regime=str(latest.get("vol_regime", "mid")),
+            liquidity_regime=str(latest.get("liquidity_regime", "mid")),
+            vix_level=_safe_float(latest.get("vix_level", 0.0)),
+            breadth=_safe_float(latest.get("breadth", 0.0)),
+            spx_distance_200ma=_safe_float(latest.get("spx_distance_200ma", 0.0)),
+        )
     )
 
 
@@ -1329,11 +1551,17 @@ def _alerts_path(run_dir: Path, model_name: ModelName) -> Path:
     return run_dir / f"{ALERTS_FILENAME_PREFIX}_{model_name}.json"
 
 
-def _upsert_alert_history(run_dir: Path, model_name: ModelName, alerts: list[dict[str, Any]]) -> dict[str, Any]:
+def _upsert_alert_history(
+    run_dir: Path, model_name: ModelName, alerts: list[dict[str, Any]]
+) -> dict[str, Any]:
     path = _alerts_path(run_dir, model_name)
     payload = load_json(path, default={"alerts": [], "alerts_history": []})
     history = payload.get("alerts_history", [])
-    seen = {(item.get("rule_id"), item.get("triggered_at")) for item in history if isinstance(item, dict)}
+    seen = {
+        (item.get("rule_id"), item.get("triggered_at"))
+        for item in history
+        if isinstance(item, dict)
+    }
     for alert in alerts:
         key = (alert.get("rule_id"), alert.get("triggered_at"))
         if key not in seen:
@@ -1402,7 +1630,9 @@ def _compute_alerts(run_id: str, model_name: ModelName) -> list[dict[str, Any]]:
 
     if not close_panel.empty:
         returns = _returns_panel(close_panel)
-        benchmark = returns["SPY"] if "SPY" in returns.columns else pd.Series(dtype=float)
+        benchmark = (
+            returns["SPY"] if "SPY" in returns.columns else pd.Series(dtype=float)
+        )
         benchmark = benchmark.reindex(strategy_returns.index).fillna(0.0)
         beta_series = _rolling_beta(strategy_returns, benchmark, window=126)
         if beta_series.shape[0] >= 22:
@@ -1422,7 +1652,9 @@ def _compute_alerts(run_id: str, model_name: ModelName) -> list[dict[str, Any]]:
     return alerts
 
 
-def refresh_alerts_for_run(run_id: str, model_name: str | None = None) -> AlertsResponse:
+def refresh_alerts_for_run(
+    run_id: str, model_name: str | None = None
+) -> AlertsResponse:
     """Compute and persist current alerts."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
@@ -1430,10 +1662,12 @@ def refresh_alerts_for_run(run_id: str, model_name: str | None = None) -> Alerts
     run_dir = get_run_dir(run_id)
     alerts = _compute_alerts(run_id, normalized_model)
     payload = _upsert_alert_history(run_dir, normalized_model, alerts)
-    return AlertsResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        alerts=[AlertItem(**item) for item in payload.get("alerts", [])],
+    return _sanitize_model_response(
+        AlertsResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            alerts=[AlertItem(**item) for item in payload.get("alerts", [])],
+        )
     )
 
 
@@ -1442,21 +1676,27 @@ def get_alerts_current(run_id: str, model_name: str | None = None) -> AlertsResp
     return refresh_alerts_for_run(run_id=run_id, model_name=model_name)
 
 
-def get_alerts_history(run_id: str, model_name: str | None = None, limit: int = 200) -> AlertsResponse:
+def get_alerts_history(
+    run_id: str, model_name: str | None = None, limit: int = 200
+) -> AlertsResponse:
     """Return stored alerts history."""
     if not _has_run_dir(run_id):
         raise ValueError(f"Run not found: {run_id}")
     normalized_model = _normalize_model_name(model_name)
     run_dir = get_run_dir(run_id)
-    payload = load_json(_alerts_path(run_dir, normalized_model), default={"alerts_history": []})
+    payload = load_json(
+        _alerts_path(run_dir, normalized_model), default={"alerts_history": []}
+    )
     rows = payload.get("alerts_history", [])
     if not isinstance(rows, list):
         rows = []
     clipped = rows[-max(1, int(limit)) :]
-    return AlertsResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        alerts=[AlertItem(**item) for item in clipped if isinstance(item, dict)],
+    return _sanitize_model_response(
+        AlertsResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            alerts=[AlertItem(**item) for item in clipped if isinstance(item, dict)],
+        )
     )
 
 
@@ -1481,20 +1721,27 @@ def get_model_shap(run_id: str, model_name: str | None = None) -> ModelShapRespo
         if not feature:
             continue
         normalized.append({"feature": feature, "importance": importance})
-    normalized.sort(key=lambda item: abs(float(item.get("importance", 0.0))), reverse=True)
+    normalized.sort(
+        key=lambda item: abs(float(item.get("importance", 0.0))), reverse=True
+    )
 
     if not normalized:
-        return ModelShapResponse(
-            run_id=run_id,
-            model_name=normalized_model,
-            status="insufficient_data",
-            message="Explainability data is unavailable. Train run with feature importance artifacts first.",
+        return _sanitize_model_response(
+            ModelShapResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Explainability data is unavailable. Train run with feature importance artifacts first.",
+            )
         )
 
     top20 = normalized[:20]
     top3 = normalized[:3]
     run_state = _registry_run_state(run_id)
-    updated_at = str(run_state.get("updated_at") or datetime.now(UTC).replace(microsecond=0).isoformat())
+    updated_at = str(
+        run_state.get("updated_at")
+        or datetime.now(UTC).replace(microsecond=0).isoformat()
+    )
     feature_stability_ts = [
         {
             "date": updated_at[:10],
@@ -1504,12 +1751,14 @@ def get_model_shap(run_id: str, model_name: str | None = None) -> ModelShapRespo
         for item in top3
     ]
 
-    return ModelShapResponse(
-        run_id=run_id,
-        model_name=normalized_model,
-        status="ok",
-        message="Explainability(beta): surrogate importance summary (SHAP optional dependency not required).",
-        summary_points=top20,
-        dependence_top3=top3,
-        feature_stability_ts=feature_stability_ts,
+    return _sanitize_model_response(
+        ModelShapResponse(
+            run_id=run_id,
+            model_name=normalized_model,
+            status="ok",
+            message="Explainability(beta): surrogate importance summary (SHAP optional dependency not required).",
+            summary_points=top20,
+            dependence_top3=top3,
+            feature_stability_ts=feature_stability_ts,
+        )
     )

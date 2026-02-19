@@ -87,7 +87,12 @@ def _build_test_run(tmp_path: Path, run_id: str = "run-1") -> Path:
         },
         "equity_curve": equity_curve,
         "period_weights": period_weights,
-        "constraints": {"max_weight": 0.4, "long_only": True, "risk_aversion": 3.0, "lookback_days": 126},
+        "constraints": {
+            "max_weight": 0.4,
+            "long_only": True,
+            "risk_aversion": 3.0,
+            "lookback_days": 126,
+        },
         "cost_bps": 10.0,
     }
     dm.save_json(run_dir / "backtest_lgbm_ranker.json", backtest_payload)
@@ -106,10 +111,26 @@ def _build_test_run(tmp_path: Path, run_id: str = "run-1") -> Path:
     return run_dir
 
 
-def _patch_run(monkeypatch: pytest.MonkeyPatch, run_dir: Path, run_id: str = "run-1") -> None:
-    monkeypatch.setattr(dm, "get_run_dir", lambda rid: run_dir if rid == run_id else run_dir.parent / rid)
+def _patch_run(
+    monkeypatch: pytest.MonkeyPatch, run_dir: Path, run_id: str = "run-1"
+) -> None:
+    monkeypatch.setattr(
+        dm,
+        "get_run_dir",
+        lambda rid: run_dir if rid == run_id else run_dir.parent / rid,
+    )
     monkeypatch.setattr(dm, "_has_run_dir", lambda rid: rid == run_id)
     monkeypatch.setattr(dm, "get_latest_run_id", lambda: run_id)
+    monkeypatch.setattr(
+        dm,
+        "get_symbol_metadata_map",
+        lambda: {
+            "XLK": {"symbol": "XLK", "category_l2": "us_sector_etf"},
+            "XLF": {"symbol": "XLF", "category_l2": "us_sector_etf"},
+            "TLT": {"symbol": "TLT", "category_l2": "bond_etf"},
+            "QQQ": {"symbol": "QQQ", "category_l2": "us_tech_etf"},
+        },
+    )
     monkeypatch.setattr(
         dm,
         "load_universe_config",
@@ -134,7 +155,13 @@ def test_dashboard_health_payload(monkeypatch: pytest.MonkeyPatch, tmp_path: Pat
     assert payload.data_timestamp is not None
     assert payload.universe_size > 0
     assert payload.gross_exposure > 0
-    assert payload.workflow_state.run_status in {"queued", "running", "completed", "failed", "unknown"}
+    assert payload.workflow_state.run_status in {
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "unknown",
+    }
     assert payload.workflow_state.artifacts_ready.predictions is True
     assert payload.workflow_state.artifacts_ready.backtest is True
     assert set(payload.strategy_health.keys()) == {
@@ -178,7 +205,9 @@ def test_portfolio_exposure_and_risk(monkeypatch: pytest.MonkeyPatch, tmp_path: 
     assert len(risk.worst5_positions) <= 5
 
 
-def test_ic_decay_and_prediction_distribution(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+def test_ic_decay_and_prediction_distribution(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
     run_dir = _build_test_run(tmp_path)
     _patch_run(monkeypatch, run_dir)
 
@@ -218,13 +247,19 @@ def test_regime_and_alerts(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     assert shap_payload.status == "insufficient_data"
 
 
-def test_health_insufficient_when_predictions_and_backtest_missing(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+def test_health_insufficient_when_predictions_and_backtest_missing(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
     run_id = "run-empty"
     run_dir = tmp_path / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     dm.save_json(run_dir / "config.json", {"request": {"symbols": ["SPY", "QQQ"]}})
 
-    monkeypatch.setattr(dm, "get_run_dir", lambda rid: run_dir if rid == run_id else run_dir.parent / rid)
+    monkeypatch.setattr(
+        dm,
+        "get_run_dir",
+        lambda rid: run_dir if rid == run_id else run_dir.parent / rid,
+    )
     monkeypatch.setattr(dm, "_has_run_dir", lambda rid: rid == run_id)
     monkeypatch.setattr(dm, "get_latest_run_id", lambda: run_id)
     monkeypatch.setattr(dm, "read_registry", lambda: {"runs": {}})
@@ -242,7 +277,11 @@ def test_health_marks_stale_running(monkeypatch: pytest.MonkeyPatch, tmp_path: P
     dm.save_json(run_dir / "config.json", {"request": {"symbols": ["XLK", "XLF"]}})
     stale_updated_at = "2025-01-01T00:00:00+00:00"
 
-    monkeypatch.setattr(dm, "get_run_dir", lambda rid: run_dir if rid == "run-stale" else run_dir.parent / rid)
+    monkeypatch.setattr(
+        dm,
+        "get_run_dir",
+        lambda rid: run_dir if rid == "run-stale" else run_dir.parent / rid,
+    )
     monkeypatch.setattr(dm, "_has_run_dir", lambda rid: rid == "run-stale")
     monkeypatch.setattr(dm, "get_latest_run_id", lambda: "run-stale")
     monkeypatch.setattr(
