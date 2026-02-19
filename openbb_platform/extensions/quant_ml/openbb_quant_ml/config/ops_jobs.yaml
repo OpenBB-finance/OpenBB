@@ -2,6 +2,8 @@ version: "v1"
 
 defaults:
   timezone: "Asia/Seoul"
+  run_id_scheme: "compact_v1"
+  training_run_id_scheme: "compact_v1"
 
 daily:
   universe_id: "default"
@@ -18,6 +20,8 @@ daily:
   backoff_sec: 1.0
   compute_features: true
   features_lookback_days: 365
+  predict_mode: "infer_only"
+  predict_fallback_legacy: true
 
 weekly:
   universe_id: "default"

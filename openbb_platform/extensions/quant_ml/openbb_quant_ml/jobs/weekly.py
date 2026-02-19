@@ -36,11 +36,19 @@ def _run_step(
         try:
             result = func(config)
             elapsed = float(time.perf_counter() - started)
-            append_log(run_dir, "info", name, f"step completed (attempt={attempt})", {"result": result, "elapsed": elapsed})
+            append_log(
+                run_dir,
+                "info",
+                name,
+                f"step completed (attempt={attempt})",
+                {"result": result, "elapsed": elapsed},
+            )
             return result, elapsed
         except Exception as exc:  # noqa: BLE001
             last_exc = exc
-            append_log(run_dir, "warning", name, f"step failed (attempt={attempt}): {exc}")
+            append_log(
+                run_dir, "warning", name, f"step failed (attempt={attempt}): {exc}"
+            )
             if attempt < retries + 1:
                 time.sleep(backoff_sec * attempt)
     raise RuntimeError(f"{name} failed after retries: {last_exc}") from last_exc
@@ -48,12 +56,17 @@ def _run_step(
 
 def run_weekly(config: dict[str, Any], state: JobState, run_id: str, run_dir) -> None:
     """Execute weekly job steps."""
+    defaults = config.get("defaults", {}) if isinstance(config, dict) else {}
     job_cfg = config.get("weekly", {}) if isinstance(config, dict) else {}
-    runtime_cfg = dict(job_cfg)
+    runtime_cfg: dict[str, Any] = {}
+    if isinstance(defaults, dict):
+        runtime_cfg.update(defaults)
+    if isinstance(job_cfg, dict):
+        runtime_cfg.update(job_cfg)
     runtime_cfg.setdefault("job", "weekly")
     runtime_cfg["updated_at"] = run_id
-    retries = int(job_cfg.get("retries", 1))
-    backoff_sec = float(job_cfg.get("backoff_sec", 1.0))
+    retries = int(runtime_cfg.get("retries", 1))
+    backoff_sec = float(runtime_cfg.get("backoff_sec", 1.0))
 
     steps: list[tuple[str, StepFunc]] = [
         ("update_market_data", update_market_data.run),
@@ -68,11 +81,27 @@ def run_weekly(config: dict[str, Any], state: JobState, run_id: str, run_dir) ->
 
     time_profile: dict[str, float] = {}
     for step_name, func in steps:
-        result, elapsed = _run_step(run_dir, step_name, func, runtime_cfg, retries=retries, backoff_sec=backoff_sec)
-        if step_name == "train_models" and isinstance(result, dict) and result.get("run_id"):
+        result, elapsed = _run_step(
+            run_dir,
+            step_name,
+            func,
+            runtime_cfg,
+            retries=retries,
+            backoff_sec=backoff_sec,
+        )
+        if (
+            step_name == "train_models"
+            and isinstance(result, dict)
+            and result.get("run_id")
+        ):
             runtime_cfg["run_id"] = str(result["run_id"])
             state.set("weekly.candidate_run_id", str(result["run_id"]))
-        if step_name == "promote_candidate" and isinstance(result, dict) and result.get("promoted") and result.get("run_id"):
+        if (
+            step_name == "promote_candidate"
+            and isinstance(result, dict)
+            and result.get("promoted")
+            and result.get("run_id")
+        ):
             state.set("weekly.latest_run_id", str(result["run_id"]))
         state.set(f"weekly.{step_name}.last_success", run_id)
         state.set(f"weekly.{step_name}.result", result)

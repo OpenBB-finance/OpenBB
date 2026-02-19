@@ -5,9 +5,14 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from threading import RLock
 from typing import Any
-from uuid import uuid4
 
 from openbb_quant_ml.service.constants import MAX_LOG_LINES
+from openbb_quant_ml.service.run_id import (
+    DEFAULT_RUN_ID_SCHEME,
+    DEFAULT_RUN_ID_TIMEZONE,
+    build_training_run_id,
+    normalize_run_id_scheme,
+)
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     read_registry,
@@ -70,11 +75,16 @@ def initialize_registry() -> None:
             _load_states_from_disk()
 
 
-def create_run() -> RunState:
+def create_run(
+    *,
+    run_id_scheme: str = DEFAULT_RUN_ID_SCHEME,
+    timezone: str = DEFAULT_RUN_ID_TIMEZONE,
+) -> RunState:
     """Create and persist a new queued run."""
     with _LOCK:
         initialize_registry()
-        run_id = uuid4().hex
+        scheme = normalize_run_id_scheme(run_id_scheme)
+        run_id = build_training_run_id(run_id_scheme=scheme, timezone=timezone)
         now = utc_now_iso()
         run_dir = get_run_dir(run_id)
         run_dir.mkdir(parents=True, exist_ok=True)

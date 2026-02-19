@@ -25,6 +25,17 @@ def _load_config(path: str) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _resolve_runtime_config(config: dict[str, Any], job_name: str) -> dict[str, Any]:
+    runtime_cfg: dict[str, Any] = {}
+    defaults = config.get("defaults", {}) if isinstance(config, dict) else {}
+    if isinstance(defaults, dict):
+        runtime_cfg.update(defaults)
+    job_cfg = config.get(job_name, {}) if isinstance(config, dict) else {}
+    if isinstance(job_cfg, dict):
+        runtime_cfg.update(job_cfg)
+    return runtime_cfg
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Quant ML operational jobs CLI.")
     parser.add_argument("job", choices=["daily", "weekly", "monthly"])
@@ -32,14 +43,21 @@ def main() -> int:
     args = parser.parse_args()
 
     cfg = _load_config(args.config)
-    run_id, run_dir = create_run_dir(args.job)
+    runtime_cfg = _resolve_runtime_config(cfg, args.job)
+    run_id_scheme = str(runtime_cfg.get("run_id_scheme", "compact_v1"))
+    timezone = str(runtime_cfg.get("timezone", "Asia/Seoul"))
+    run_id, run_dir, run_date = create_run_dir(
+        args.job,
+        run_id_scheme=run_id_scheme,
+        timezone=timezone,
+    )
     state = JobState.load()
 
     try:
         with job_lock(args.job):
             append_log(run_dir, "info", "job", f"job started: {args.job}")
             if args.job == "daily":
-                run_daily(cfg, state, run_id, run_dir)
+                run_daily(cfg, state, run_id, run_dir, run_date=run_date)
             elif args.job == "weekly":
                 run_weekly(cfg, state, run_id, run_dir)
             else:
