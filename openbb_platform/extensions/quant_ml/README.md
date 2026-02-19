@@ -81,6 +81,33 @@ pip install pykrx
 - `POST /api/v1/quant_ml/signals`
 - `POST /api/v1/quant_ml/backtest`
 - `GET /api/v1/quant_ml/artifacts/{run_id}/summary`
+- `GET /api/v1/quant_ml/portfolio/policy`
+
+## Portfolio Policy (Hard Constraints)
+
+The extension enforces a centralized policy from:
+
+- `openbb_platform/extensions/quant_ml/openbb_quant_ml/config/portfolio_policy.yaml`
+
+Default live policy:
+
+- single-name absolute weight cap: `10%` (hard)
+- small-universe behavior: `cash_buffer`
+- template: `diversified_long_only`
+- risk defaults: `max_weight=0.10`, `sector_concentration=0.35`, `gross_exposure=1.0`, `net_exposure_abs=1.0`, `turnover=0.8`
+
+Backtest responses include:
+
+- `effective_constraints` (requested vs applied constraints)
+- `cash_weight` (remaining capital not allocated to risky assets)
+
+Quick verification:
+
+```bash
+pytest openbb_platform/extensions/quant_ml/tests/test_backtest.py -q
+pytest openbb_platform/extensions/quant_ml/tests/test_execution_risk.py -q
+pytest openbb_platform/extensions/quant_ml/tests/test_portfolio_policy.py -q
+```
 
 ## Macro Tab API
 

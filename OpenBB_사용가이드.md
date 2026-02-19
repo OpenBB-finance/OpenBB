@@ -43,6 +43,26 @@ cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
 2. 화면에서 `학습 실행 -> 신호 생성 -> 백테스트 실행`
 3. 종료할 때는 두 PowerShell 창에서 각각 `Ctrl + C`
 
+### 포트폴리오 10% 하드캡 정책 (기본 적용)
+
+Quant 백엔드는 기본적으로 아래 정책을 강제합니다.
+
+- 단일 종목 절대비중 상한: `10%` (하드캡)
+- 종목 수가 적어 10% 제약을 채우기 어려운 경우: 남는 비중은 `CASH` 버퍼로 유지
+- 기본 템플릿: `Diversified Long-only`
+
+확인 명령:
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/portfolio/policy"
+```
+
+검증 포인트:
+
+1. `backtest` 응답의 `effective_constraints.max_weight == 0.1`
+2. 필요 시 `cash_weight > 0` 생성
+3. `risk/limits` 기본값이 10% 체계(`max_weight=0.1`)인지 확인
+
 ### 안 열릴 때 빠른 점검
 
 ```powershell
