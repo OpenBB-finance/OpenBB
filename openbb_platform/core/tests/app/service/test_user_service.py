@@ -4,6 +4,7 @@ import json
 import tempfile
 from pathlib import Path
 
+import openbb_core.app.model.user_settings as user_settings_module
 from openbb_core.app.service.user_service import (
     UserService,
     UserSettings,
@@ -43,6 +44,49 @@ def test_write_to_file():
         }
 
     # Clean up the temporary file
+    temp_path.unlink()
+
+
+def test_read_from_file_with_utf8_bom(monkeypatch):
+    """Test read user settings when JSON includes UTF-8 BOM."""
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_path = Path(temp_file.name)
+
+    monkeypatch.setattr(
+        user_settings_module,
+        "USER_SETTINGS_PATH",
+        str(temp_path.parent / "__nonexistent_user_settings__.json"),
+    )
+
+    baseline = UserSettings().model_dump(mode="json")
+    baseline["preferences"]["chart_style"] = "light"
+
+    temp_path.write_text(
+        json.dumps(baseline),
+        encoding="utf-8-sig",
+    )
+
+    result = UserService.read_from_file(path=temp_path)
+    payload = result.model_dump(mode="json")
+    assert isinstance(result, UserSettings)
+    assert payload["preferences"].get("chart_style") == "light"
+
+    temp_path.unlink()
+
+
+def test_read_from_file_invalid_json_falls_back_to_default():
+    """Test invalid JSON falls back to default settings."""
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_path = Path(temp_file.name)
+    temp_path.write_text("{invalid-json", encoding="utf-8")
+
+    result = UserService.read_from_file(path=temp_path)
+    payload = result.model_dump()
+    assert isinstance(result, UserSettings)
+    assert isinstance(payload["credentials"], dict)
+    assert isinstance(payload["preferences"], dict)
+    assert isinstance(payload["defaults"], dict)
+
     temp_path.unlink()
 
 

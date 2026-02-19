@@ -1,6 +1,7 @@
 """User service."""
 
 import json
+import logging
 from collections.abc import MutableMapping
 from functools import reduce
 from pathlib import Path
@@ -9,6 +10,8 @@ from typing import Any
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class UserService(metaclass=SingletonMeta):
@@ -29,11 +32,35 @@ class UserService(metaclass=SingletonMeta):
         """Read user settings from json into UserSettings."""
         path = path or cls.USER_SETTINGS_PATH
 
-        return (
-            UserSettings.model_validate(json.loads(path.read_text(encoding="utf-8")))
-            if path.exists()
-            else UserSettings()
-        )
+        if not path.exists():
+            return UserSettings()
+
+        try:
+            raw = path.read_text(encoding="utf-8-sig")
+        except OSError:
+            _LOGGER.warning(
+                "Failed to read user settings from %s. Falling back to defaults.", path
+            )
+            return UserSettings()
+
+        if not raw.strip():
+            return UserSettings()
+
+        try:
+            payload = json.loads(raw)
+        except json.JSONDecodeError:
+            _LOGGER.warning(
+                "Failed to parse user settings from %s. Falling back to defaults.", path
+            )
+            return UserSettings()
+
+        try:
+            return UserSettings.model_validate(payload)
+        except Exception:  # noqa: BLE001
+            _LOGGER.warning(
+                "Invalid user settings payload in %s. Falling back to defaults.", path
+            )
+            return UserSettings()
 
     @classmethod
     def write_to_file(

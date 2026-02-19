@@ -48,8 +48,11 @@ async function checkHealth(baseUrl: string): Promise<boolean> {
 }
 
 export function formatBackendDetail(detail: string, connected: boolean): string {
+  if (connected && /web[- ]dev[- ]fallback/i.test(detail)) {
+    return "Web development fallback URL connected.";
+  }
   if (connected && /Failed to query backend services/i.test(detail)) {
-    return "Service query unavailable, fallback URL connected";
+    return "Backend service query unavailable; fallback URL connected.";
   }
   return detail;
 }
@@ -58,6 +61,7 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
   let candidateUrl = DEFAULT_OPENBB_API_URL;
   let source: BackendResolution["source"] = "fallback";
   let detail = "Using fallback URL.";
+  let serviceQueryFailed = false;
 
   try {
     const backends = await invoke<BackendService[]>("list_backend_services");
@@ -84,12 +88,17 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
       }
     }
   } catch {
+    serviceQueryFailed = true;
     candidateUrl = DEFAULT_OPENBB_API_URL;
     source = "fallback";
     detail = "Failed to query backend services. Using fallback URL.";
   }
 
   const connected = await checkHealth(candidateUrl);
+  if (serviceQueryFailed && connected) {
+    source = "web-dev-fallback";
+    detail = "Web-dev-fallback: backend service query unavailable, default API URL connected.";
+  }
 
   return {
     baseUrl: candidateUrl,
