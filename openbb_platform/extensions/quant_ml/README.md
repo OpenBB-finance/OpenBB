@@ -184,6 +184,31 @@ PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cl
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 ```
 
+Run id scheme and incremental defaults (`ops_jobs.yaml`):
+
+- `defaults.run_id_scheme: compact_v1`
+- `defaults.training_run_id_scheme: compact_v1`
+- `daily.predict_mode: infer_only`
+- `daily.predict_fallback_legacy: true`
+
+Compact run id examples:
+
+- daily: `dly-260219-01`
+- weekly: `wkl-260219-01`
+- monthly: `mth-260301-01`
+- training: `trn-260219-001`
+
+Operational policy:
+
+- Daily: infer-only refresh (no model retraining)
+- Weekly/Monthly: full model training + promotion workflow
+
+Rollback switches:
+
+- `run_id_scheme: legacy`
+- `training_run_id_scheme: legacy`
+- `daily.predict_mode: legacy`
+
 Ops status endpoint:
 
 - `GET /api/v1/quant_ml/ops/status`

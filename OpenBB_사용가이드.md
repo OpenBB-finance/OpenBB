@@ -408,6 +408,27 @@ python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/qu
 python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 ```
 
+기본 운영 정책(`ops_jobs.yaml`):
+- `defaults.run_id_scheme: compact_v1`
+- `defaults.training_run_id_scheme: compact_v1`
+- `daily.predict_mode: infer_only`
+- `daily.predict_fallback_legacy: true`
+
+run id 예시:
+- Daily Job: `dly-260219-01`
+- Weekly Job: `wkl-260219-01`
+- Monthly Job: `mth-260301-01`
+- Training Run: `trn-260219-001`
+
+의미:
+- Daily는 데이터/피처/예측만 갱신(재학습 없음)
+- Weekly/Monthly에서만 full 학습 수행
+
+롤백(기존 방식으로 즉시 복귀):
+- `run_id_scheme: legacy`
+- `training_run_id_scheme: legacy`
+- `daily.predict_mode: legacy`
+
 2. Task Scheduler 등록(Windows)
 
 ```powershell
