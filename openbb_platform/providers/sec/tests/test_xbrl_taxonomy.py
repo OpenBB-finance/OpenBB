@@ -9,19 +9,14 @@ Covers:
   - Instance-level fact resolution (units, contexts, labels, presentation, dimensions)
   - Schema files fetcher integration (progressive drill-down modes)
 
-Cassette strategy
------------------
-All cassettes live in ``record/http/test_xbrl_taxonomy/`` and are committed.
+Network strategy
+----------------
+All tests that require HTTP make real network requests — no VCR cassettes.
 
-Heavy XBRL tests share **gzip-compressed** VCR cassettes (``.yaml.gz``) so
-that multi-MB XML payloads compress to a few hundred KB each.
-
-*  Playback (cassette exists) — ``record_mode="none"``, no network.
-*  Recording (cassette deleted) — ``record_mode="new_episodes"``;
-   VCR deduplicates automatically (one entry per unique URL).
-*  To re-record, delete the ``.yaml.gz`` file and run the tests.
-
-Small / unique cassettes use ``@pytest.mark.record_http`` (plain YAML).
+**Module-scoped fixtures** ensure each expensive download or parse happens
+at most **once per pytest run** of this file.  Cheap index-page fetches
+(``get_available_years``, ``list_available_components``) are small enough
+that per-test fetching is acceptable.
 """
 
 # pylint: disable=C0415, C1803, W0212
@@ -30,14 +25,10 @@ Small / unique cassettes use ``@pytest.mark.record_http`` (plain YAML).
 
 from __future__ import annotations
 
-import gzip
-from contextlib import contextmanager
 from io import BytesIO
-from pathlib import Path
 from typing import Any
 
 import pytest
-import vcr as vcrpy
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.schema_files import (
     SecSchemaFilesFetcher,
@@ -52,146 +43,11 @@ from openbb_sec.utils.xbrl_taxonomy_helper import (
     XBRLNode,
     XBRLParser,
 )
-from vcr.persisters.filesystem import CassetteNotFoundError
 
 test_credentials = UserService().default_user_settings.credentials.dict()
-# Shared VCR cassette infrastructure — gzip-compressed, committed cassettes
-_CASSETTE_DIR = Path(__file__).parent / "record" / "http" / "test_xbrl_taxonomy"
 
 
-class _GzipYamlPersister:
-    """VCR persister that stores cassettes as gzip-compressed YAML.
-
-    XBRL XML is highly repetitive and compresses ~20-30x with gzip,
-    turning 37 MB cassettes into ~1-2 MB committed files.
-
-    Uses ``vcr.serialize.serialize/deserialize`` for the
-    ``interactions`` ↔ ``(requests, responses)`` round-trip that
-    VCR's cassette loader expects.
-    """
-
-    @staticmethod
-    def load_cassette(cassette_path, serializer):
-        from vcr.serialize import deserialize as vcr_deserialize
-
-        cassette_path = Path(cassette_path)
-        if not cassette_path.is_file():
-            raise CassetteNotFoundError()
-        with gzip.open(cassette_path, "rt", encoding="utf-8") as fh:
-            return vcr_deserialize(fh.read(), serializer)
-
-    @staticmethod
-    def save_cassette(cassette_path, cassette_dict, serializer):
-        from vcr.serialize import serialize as vcr_serialize
-
-        cassette_path = Path(cassette_path)
-        cassette_path.parent.mkdir(parents=True, exist_ok=True)
-
-        # Deduplicate interactions: VCR's new_episodes mode records every
-        # request made during the session even when the same URL is fetched
-        # by multiple tests.  Keep only the first response per (method, uri).
-        # VCR stores parallel lists: {"requests": [...], "responses": [...]}.
-        requests = cassette_dict.get("requests", [])
-        responses = cassette_dict.get("responses", [])
-        seen: set[tuple[str, str]] = set()
-        keep_idx: list[int] = []
-        for i, req in enumerate(requests):
-            key = (req.method, req.uri)
-            if key not in seen:
-                seen.add(key)
-                keep_idx.append(i)
-        if len(keep_idx) < len(requests):
-            cassette_dict["requests"] = [requests[i] for i in keep_idx]
-            cassette_dict["responses"] = [responses[i] for i in keep_idx]
-
-        data = vcr_serialize(cassette_dict, serializer)
-        with gzip.open(cassette_path, "wt", encoding="utf-8") as fh:
-            fh.write(data)
-
-
-@contextmanager
-def _shared_vcr_cassette(cassette_name: str):
-    """Open a gzip-compressed VCR cassette from the test cassette directory.
-
-    * Playback (file exists): ``record_mode="none"`` — fast, no writes.
-    * Recording (file missing): ``record_mode="new_episodes"`` — deduplicates
-      automatically (one entry per unique URL).
-    * ``allow_playback_repeats=True`` lets multiple tests replay the same URL.
-
-    To re-record: delete the ``.yaml.gz`` file and run the tests.
-    """
-    cassette_path = _CASSETTE_DIR / cassette_name
-    mode = "none" if cassette_path.exists() else "new_episodes"
-
-    my_vcr = vcrpy.VCR(
-        cassette_library_dir=str(_CASSETTE_DIR),
-        record_mode=mode,  # type: ignore
-        filter_headers=[("User-Agent", None)],
-    )
-    my_vcr.register_persister(_GzipYamlPersister)
-    with my_vcr.use_cassette(  # type: ignore
-        cassette_name,
-        allow_playback_repeats=True,
-        serialize_with="yaml",
-    ):
-        yield
-
-
-# -- Class-scoped fixtures for each shared cassette -----------------------
-
-
-@pytest.fixture(scope="class")
-def us_gaap_structure_cassette():
-    """us-gaap 2024 full structure (schema + labels + presentation)."""
-    with _shared_vcr_cassette("us_gaap_2024_structure.yaml.gz"):
-        yield
-
-
-@pytest.fixture(scope="class")
-def apple_instance_cassette():
-    """Apple 10-K XBRL instance (4 filing URLs)."""
-    with _shared_vcr_cassette("apple_instance.yaml.gz"):
-        yield
-
-
-@pytest.fixture(scope="class")
-def us_gaap_labels_cassette():
-    """us-gaap 2024 label + documentation linkbases."""
-    with _shared_vcr_cassette("us_gaap_labels.yaml.gz"):
-        yield
-
-
-@pytest.fixture(scope="class")
-def hmrc_dpl_cassette():
-    """HMRC DPL taxonomy (labels, schema, presentation, FRC core)."""
-    with _shared_vcr_cassette("hmrc_dpl.yaml.gz"):
-        yield
-
-
-@pytest.fixture(scope="class")
-def dei_structure_cassette():
-    """DEI 2024 full structure."""
-    with _shared_vcr_cassette("dei_2024_structure.yaml.gz"):
-        yield
-
-
-@pytest.fixture(scope="class")
-def us_gaap_components_cassette():
-    """us-gaap 2024 component listing + roles."""
-    with _shared_vcr_cassette("us_gaap_components.yaml.gz"):
-        yield
-
-
-# -- Standard per-test fixtures -------------------------------------------
-
-
-@pytest.fixture(scope="module")
-def vcr_config():
-    """VCR configuration for HTTP recording (used by @pytest.mark.record_http)."""
-    return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [None],
-    }
+# ─── Per-test fixtures (cheap, no network) ────────────────────────────────
 
 
 @pytest.fixture
@@ -204,6 +60,116 @@ def parser() -> XBRLParser:
 def manager() -> XBRLManager:
     """Fresh XBRLManager instance."""
     return XBRLManager()
+
+
+# ─── Module-scoped fixtures — each expensive fetch runs at most once ──────
+
+
+@pytest.fixture(scope="module")
+def apple_10k_parsed():
+    """Download + fully parse Apple 10-K XBRL once for the module.
+
+    This is the most expensive single operation in the suite (~15 s)
+    because ``parse_instance`` with *base_url* resolves labels,
+    presentation, and schemas from the filing's schemaRef chain.
+
+    Returns ``(contexts, units, facts)``.
+    """
+    from openbb_core.provider.utils.helpers import make_request
+    from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
+
+    url = (
+        "https://www.sec.gov/Archives/edgar/data/320193/"
+        "000032019324000123/aapl-20240928_htm.xml"
+    )
+    resp = make_request(url, headers=SEC_HEADERS)
+    p = XBRLParser()
+    contexts, units, facts = p.parse_instance(BytesIO(resp.content), base_url=url)
+    return contexts, units, facts
+
+
+@pytest.fixture(scope="module")
+def us_gaap_sfp_cls_nodes():
+    """us-gaap 2024 classified balance-sheet structure (fetched once)."""
+    return XBRLManager().get_structure("us-gaap", 2024, "sfp-cls")
+
+
+@pytest.fixture(scope="module")
+def dei_standard_nodes():
+    """DEI 2024 standard structure (fetched once)."""
+    return XBRLManager().get_structure("dei", 2024, "standard")
+
+
+@pytest.fixture(scope="module")
+def us_gaap_components_meta():
+    """us-gaap 2024 component metadata list (fetched once)."""
+    return XBRLManager().get_components_metadata("us-gaap", 2024)
+
+
+@pytest.fixture(scope="module")
+def hmrc_dpl_loaded():
+    """HMRC DPL 2021 fully loaded — ``(manager, nodes)``.
+
+    ``get_structure`` internally calls ``_ensure_labels`` and
+    ``_ensure_element_properties``, so the returned manager has
+    all parser state populated.
+    """
+    mgr = XBRLManager()
+    nodes = mgr.get_structure("hmrc-dpl", 2021, "standard")
+    return mgr, nodes
+
+
+@pytest.fixture(scope="module")
+def us_gaap_lab_bytes():
+    """Raw bytes of the us-gaap 2024 label linkbase (fetched once)."""
+    from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
+
+    return FASBClient().fetch_file(
+        "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
+    ).read()
+
+
+@pytest.fixture(scope="module")
+def us_gaap_doc_bytes():
+    """Raw bytes of the us-gaap 2024 documentation linkbase (fetched once)."""
+    from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
+
+    return FASBClient().fetch_file(
+        "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-doc-2024.xml"
+    ).read()
+
+
+@pytest.fixture(scope="module")
+def us_gaap_pres_bytes():
+    """Raw bytes of the us-gaap sfp-cls presentation linkbase (fetched once)."""
+    from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
+
+    return FASBClient().fetch_file(
+        "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-pre-2024.xml"
+    ).read()
+
+
+@pytest.fixture(scope="module")
+def us_gaap_cal_bytes():
+    """Raw bytes of the us-gaap sfp-cls calculation linkbase (fetched once)."""
+    from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
+
+    return FASBClient().fetch_file(
+        "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-cal-2024.xml"
+    ).read()
+
+
+@pytest.fixture(scope="module")
+def us_gaap_labels_manager():
+    """XBRLManager with us-gaap 2024 labels + docs already loaded."""
+    mgr = XBRLManager()
+    mgr._ensure_labels("us-gaap", 2024)
+    return mgr
+
+
+# ═════════════════════════════════════════════════════════════════════════
+# 1. Offline tests — no network, no fixtures
+# ═════════════════════════════════════════════════════════════════════════
 
 
 class TestTaxonomyRegistry:
@@ -477,8 +443,6 @@ class TestResolveHelpers:
     def test_resolve_ns_prefix_heuristic_company_extension(self):
         """Company extension URIs like http://company.com/20240928 get date skipped."""
         result = XBRLParser._resolve_ns_prefix("http://www.apple.com/20240928", {})
-        # Without xmlns lookup, heuristic should pick "www.apple.com" (or similar)
-        # but NOT "20240928"
         assert not result.isdigit(), f"Got numeric prefix: {result}"
 
     def test_resolve_ns_prefix_prefers_xmlns_over_heuristic(self):
@@ -587,16 +551,11 @@ class TestParserWithSyntheticXML:
         content = BytesIO(xml_str.encode("utf-8"))
         contexts, units, facts = parser.parse_instance(content)
 
-        # Contexts
         assert "ctx1" in contexts
         assert contexts["ctx1"]["entity"] == "0000320193"
         assert contexts["ctx1"]["period_type"] == "instant"
         assert contexts["ctx1"]["end"] == "2024-09-28"
-
-        # Units
         assert units["usd"] == "iso4217:USD"
-
-        # Facts
         assert "us-gaap_Assets" in facts
         fact = facts["us-gaap_Assets"][0]
         assert fact["value"] == "364980000000"
@@ -699,13 +658,8 @@ class TestParserWithSyntheticXML:
         content = BytesIO(xml_str.encode("utf-8"))
         _, _, facts = parser.parse_instance(content)
 
-        # aapl: prefix, NOT 20240928
         assert "aapl_CustomMeasure" in facts, f"Got keys: {list(facts.keys())}"
-
-        # ecd: prefix, NOT 2024
         assert "ecd_TrdArrIndName" in facts, f"Got keys: {list(facts.keys())}"
-
-        # Verify wrong prefixes do NOT exist
         wrong = [k for k in facts if k.startswith("20240928_") or k.startswith("2024_")]
         assert wrong == [], f"Wrong-prefix tags found: {wrong}"
 
@@ -756,7 +710,6 @@ class TestParserWithSyntheticXML:
         assert "dei_EntityRegistrantName" in facts
         fact = facts["dei_EntityRegistrantName"][0]
         assert fact["value"] == "Apple Inc."
-        # unit should be empty string or None
         assert not fact.get("unit")
 
 
@@ -785,7 +738,6 @@ class TestXBRLManagerRegistry:
         result = manager.list_available_taxonomies(TaxonomyCategory.COMMON_REFERENCE)
         for meta in result.values():
             assert meta["category"] == "common_reference"
-        # dei, country, currency, exch are common_reference
         assert "dei" in result
 
     def test_list_available_taxonomies_invalid_category(self, manager: XBRLManager):
@@ -794,15 +746,14 @@ class TestXBRLManagerRegistry:
             manager.list_available_taxonomies("not_a_category")
 
 
-# ──────────────────────────────────────────────────────────────────────
-# 6. XBRLManager — Network tests grouped by shared HTTP cassette
-# ──────────────────────────────────────────────────────────────────────
+# ═════════════════════════════════════════════════════════════════════════
+# 2. Network tests — grouped by shared fixture
+# ═════════════════════════════════════════════════════════════════════════
 
 
 class TestXBRLManagerSmall:
-    """Small / unique HTTP tests that keep individual cassettes."""
+    """Small / unique HTTP tests (cheap index-page fetches)."""
 
-    @pytest.mark.record_http
     def test_get_available_years_us_gaap(self, manager: XBRLManager):
         """us-gaap should have many years of taxonomy data."""
         years = manager.get_available_years("us-gaap")
@@ -810,7 +761,6 @@ class TestXBRLManagerSmall:
         assert len(years) > 5
         assert 2024 in years
 
-    @pytest.mark.record_http
     def test_get_available_years_dei(self, manager: XBRLManager):
         """DEI should have available years."""
         years = manager.get_available_years("dei")
@@ -822,7 +772,6 @@ class TestXBRLManagerSmall:
         years = manager.get_available_years("nonexistent")
         assert years == []
 
-    @pytest.mark.record_http
     def test_list_available_components_us_gaap(self, manager: XBRLManager):
         """us-gaap 2024 should have multiple components."""
         components = manager.list_available_components("us-gaap", 2024)
@@ -831,7 +780,6 @@ class TestXBRLManagerSmall:
         assert "sfp-cls" in components
         assert "soi" in components
 
-    @pytest.mark.record_http
     def test_list_available_components_dei(self, manager: XBRLManager):
         """Single-component taxonomies should return one standard component."""
         components = manager.list_available_components("dei", 2024)
@@ -839,54 +787,41 @@ class TestXBRLManagerSmall:
         assert len(components) >= 1
 
 
-@pytest.mark.usefixtures("us_gaap_components_cassette")
 class TestUSGaapComponents:
-    """Tests sharing the us-gaap 2024 component listing cassette.
+    """Tests sharing the ``us_gaap_components_meta`` fixture (fetched once)."""
 
-    Cassette: us_gaap_components.yaml.gz
-    """
-
-    def test_get_components_metadata_us_gaap(self):
+    def test_get_components_metadata_us_gaap(self, us_gaap_components_meta):
         """Component metadata should include labels and descriptions."""
-        manager = XBRLManager()
-        metadata = manager.get_components_metadata("us-gaap", 2024)
-        assert isinstance(metadata, list)
-        assert len(metadata) > 10
-
-        for item in metadata:
+        assert isinstance(us_gaap_components_meta, list)
+        assert len(us_gaap_components_meta) > 10
+        for item in us_gaap_components_meta:
             assert "name" in item
             assert "label" in item
 
     def test_mode2_taxonomy_with_year(self):
-        """Mode 2: taxonomy + year → list components."""
+        """Mode 2: taxonomy + year → list components (fetcher integration)."""
         params: dict[str, Any] = {"taxonomy": "us-gaap", "year": 2024}
         fetcher = SecSchemaFilesFetcher()
         result = fetcher.test(params, test_credentials)
         assert result is None
 
 
-@pytest.mark.usefixtures("dei_structure_cassette")
 class TestDEIStructure:
-    """Tests sharing the DEI 2024 structure cassette.
+    """Tests sharing the ``dei_standard_nodes`` fixture (fetched once)."""
 
-    Cassette: dei_2024_structure.yaml.gz
-    """
-
-    def test_get_structure_dei(self):
+    def test_get_structure_dei(self, dei_standard_nodes):
         """get_structure should return XBRLNodes for a parsed component."""
-        manager = XBRLManager()
-        nodes = manager.get_structure("dei", 2024, "standard")
+        nodes = dei_standard_nodes
         assert isinstance(nodes, list)
         assert len(nodes) > 0
         assert all(isinstance(n, XBRLNode) for n in nodes)
-
         first = nodes[0]
         assert first.element_id
         assert first.label
         assert first.level >= 0
 
     def test_mode3_taxonomy_component(self):
-        """Mode 3: taxonomy + component → parsed structure."""
+        """Mode 3: taxonomy + component → parsed structure (fetcher integration)."""
         params: dict[str, Any] = {
             "taxonomy": "dei",
             "year": 2024,
@@ -897,39 +832,29 @@ class TestDEIStructure:
         assert result is None
 
 
-@pytest.mark.usefixtures("us_gaap_structure_cassette")
 class TestUSGaapStructure:
-    """Tests sharing the us-gaap 2024 full structure cassette.
+    """Tests sharing the ``us_gaap_sfp_cls_nodes`` fixture (fetched once)."""
 
-    Cassette: us_gaap_2024_structure.yaml.gz
-    """
-
-    def test_get_structure_us_gaap_balance_sheet(self):
+    def test_get_structure_us_gaap_balance_sheet(self, us_gaap_sfp_cls_nodes):
         """us-gaap classified balance sheet should have recognizable elements."""
-        manager = XBRLManager()
-        nodes = manager.get_structure("us-gaap", 2024, "sfp-cls")
+        nodes = us_gaap_sfp_cls_nodes
         assert len(nodes) > 0
-
         flat = _flatten_nodes(nodes)
         element_ids = {f["name"] for f in flat}
         assert "us-gaap_Assets" in element_ids or any(
             "Assets" in eid for eid in element_ids
         )
 
-    def test_get_structure_enriched_metadata(self):
+    def test_get_structure_enriched_metadata(self, us_gaap_sfp_cls_nodes):
         """Parsed structure should include enriched element metadata."""
-        manager = XBRLManager()
-        nodes = manager.get_structure("us-gaap", 2024, "sfp-cls")
-        flat = _flatten_nodes(nodes)
-
+        flat = _flatten_nodes(us_gaap_sfp_cls_nodes)
         with_type = [f for f in flat if f.get("xbrl_type")]
         assert len(with_type) > 0, "Expected some elements with xbrl_type"
-
         with_period = [f for f in flat if f.get("period_type")]
         assert len(with_period) > 0
 
     def test_mode3_us_gaap_component(self):
-        """Mode 3: us-gaap + specific component → parsed structure."""
+        """Mode 3: us-gaap + specific component → parsed structure (fetcher integration)."""
         params: dict[str, Any] = {
             "taxonomy": "us-gaap",
             "year": 2024,
@@ -940,32 +865,18 @@ class TestUSGaapStructure:
         assert result is None
 
 
-@pytest.mark.usefixtures("apple_instance_cassette")
 class TestInstanceParsing:
-    """Full instance document parsing with label/presentation resolution.
+    """Full instance document parsing — sharing ``apple_10k_parsed`` (parsed once)."""
 
-    Cassette: apple_instance.yaml.gz
-    """
-
-    def test_parse_apple_10k_instance(self):
+    def test_parse_apple_10k_instance(self, apple_10k_parsed):
         """Parse Apple's 10-K XBRL instance with full resolution."""
-        from openbb_core.provider.utils.helpers import make_request
-        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
-
-        url = "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/aapl-20240928_htm.xml"
-        resp = make_request(url, headers=SEC_HEADERS)
-        content = BytesIO(resp.content)
-
-        parser = XBRLParser()
-        contexts, units, facts = parser.parse_instance(content, base_url=url)
+        contexts, units, facts = apple_10k_parsed
 
         # Contexts
         assert len(contexts) > 10
-        # At least one instant and one duration context
         period_types = {ctx["period_type"] for ctx in contexts.values()}
         assert "instant" in period_types
         assert "duration" in period_types
-        # All contexts should have entity
         for ctx_id, ctx in contexts.items():
             assert ctx.get("entity"), f"Context {ctx_id} missing entity"
 
@@ -980,7 +891,6 @@ class TestInstanceParsing:
         assert total_tags > 100, f"Only {total_tags} unique tags"
         assert total_facts > 500, f"Only {total_facts} total facts"
 
-        # Namespace prefixes should be correct
         wrong_prefix = [
             k for k in facts if k.startswith("20240928_") or k.startswith("2024_")
         ]
@@ -991,45 +901,26 @@ class TestInstanceParsing:
         assert len(aapl_tags) > 0, "No aapl_ company extension tags found"
         assert len(ecd_tags) > 0, "No ecd_ tags found"
 
-    def test_instance_label_coverage(self):
+    def test_instance_label_coverage(self, apple_10k_parsed):
         """Label resolution should achieve very high coverage."""
-        from openbb_core.provider.utils.helpers import make_request
-        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
-
-        url = "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/aapl-20240928_htm.xml"
-        resp = make_request(url, headers=SEC_HEADERS)
-        content = BytesIO(resp.content)
-
-        parser = XBRLParser()
-        _, _, facts = parser.parse_instance(content, base_url=url)
+        _, _, facts = apple_10k_parsed
 
         total_tags = len(facts)
         has_label = sum(1 for tag_facts in facts.values() if tag_facts[0].get("label"))
         coverage = has_label / total_tags * 100
-
         assert (
             coverage >= 95
         ), f"Label coverage only {coverage:.1f}% ({has_label}/{total_tags})"
 
-    def test_instance_presentation_metadata(self):
+    def test_instance_presentation_metadata(self, apple_10k_parsed):
         """Facts should have presentation metadata (table, parent, order)."""
-        from openbb_core.provider.utils.helpers import make_request
-        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
+        _, _, facts = apple_10k_parsed
 
-        url = "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/aapl-20240928_htm.xml"
-        resp = make_request(url, headers=SEC_HEADERS)
-        content = BytesIO(resp.content)
-
-        parser = XBRLParser()
-        _, _, facts = parser.parse_instance(content, base_url=url)
-
-        # At least some facts should have presentation metadata
         with_pres = sum(
             1 for tag_facts in facts.values() if tag_facts[0].get("presentation")
         )
         assert with_pres > 0, "No facts have presentation metadata"
 
-        # Check structure of presentation entry
         for tag_facts in facts.values():
             pres = tag_facts[0].get("presentation")
             if pres:
@@ -1039,50 +930,31 @@ class TestInstanceParsing:
                 assert "order" in entry
                 break
 
-    def test_instance_unit_resolution(self):
+    def test_instance_unit_resolution(self, apple_10k_parsed):
         """Units should resolve to readable strings, not raw IDs."""
-        from openbb_core.provider.utils.helpers import make_request
-        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
+        _, units, facts = apple_10k_parsed
 
-        url = "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/aapl-20240928_htm.xml"
-        resp = make_request(url, headers=SEC_HEADERS)
-        content = BytesIO(resp.content)
-
-        parser = XBRLParser()
-        _, units, facts = parser.parse_instance(content, base_url=url)
-
-        # Verify unit map has readable units
         unit_values = set(units.values())
         assert "iso4217:USD" in unit_values
         assert "shares" in unit_values
 
-        # At least one compound unit
         compound = [v for v in unit_values if "/" in v]
         assert len(compound) > 0, "No compound units found (e.g. USD/share)"
 
-        # Facts should have resolved units, not raw IDs
         for tag, tag_facts in facts.items():
             for f in tag_facts:
                 unit = f.get("unit")
                 if unit:
-                    # Should not be a raw ID like "usd" or "shares_unit"
-                    # Also allow custom company measures (e.g. aapl:Vendor)
                     assert (
                         "iso4217:" in unit
                         or unit in ("shares", "pure")
                         or "/" in unit
-                        or ":" in unit  # custom namespace measure
+                        or ":" in unit
                     ), f"Unexpected unit format for {tag}: {unit}"
 
 
 class TestSchemaFilesFetcher:
-    """Integration tests for the SecSchemaFilesFetcher progressive modes.
-
-    Mode 2/3 fetcher tests that require HTTP are in the shared-cassette
-    classes above (TestUSGaapComponents, TestDEIStructure, TestUSGaapStructure).
-    Only mode-1 (offline) tests, the unique mode-2 (taxonomy-only), and
-    validation tests remain here.
-    """
+    """Integration tests for the SecSchemaFilesFetcher progressive modes."""
 
     def test_mode1_list_all_taxonomies(self):
         """Mode 1: No params → list all taxonomy families (no HTTP)."""
@@ -1098,7 +970,6 @@ class TestSchemaFilesFetcher:
         result = fetcher.test(params, test_credentials)
         assert result is None
 
-    @pytest.mark.record_http
     def test_mode2_taxonomy_only(self):
         """Mode 2: taxonomy only → auto-resolve year, list components."""
         params: dict[str, Any] = {"taxonomy": "dei"}
@@ -1124,40 +995,30 @@ class TestSchemaFilesFetcher:
             fetcher.test(params, test_credentials)
 
 
-@pytest.mark.usefixtures("us_gaap_labels_cassette")
 class TestUSGaapLabelsParsing:
     """Tests for label/documentation/presentation linkbase parsing.
 
-    Cassette: us_gaap_labels.yaml.gz
+    Raw file bytes are shared via module-scoped fixtures so each file
+    is downloaded at most once.
     """
 
-    def test_parse_label_linkbase_us_gaap(self):
+    def test_parse_label_linkbase_us_gaap(self, us_gaap_lab_bytes):
         """Should parse labels from us-gaap label linkbase."""
-        from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
-
-        client = FASBClient()
-        parser = XBRLParser()
-
-        url = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
-        content = client.fetch_file(url)
-        result = parser.parse_label_linkbase(content, TaxonomyStyle.FASB_STANDARD)
+        p = XBRLParser()
+        result = p.parse_label_linkbase(
+            BytesIO(us_gaap_lab_bytes), TaxonomyStyle.FASB_STANDARD
+        )
         assert isinstance(result, dict)
         assert len(result) > 1000, f"Only {len(result)} labels parsed from us-gaap"
-        assert len(parser.labels) > 1000
-        assert any(
-            "Assets" in k for k in parser.labels
-        ), "No Assets-related label found"
+        assert len(p.labels) > 1000
+        assert any("Assets" in k for k in p.labels), "No Assets-related label found"
 
-    def test_parse_label_linkbase_documentation(self):
+    def test_parse_label_linkbase_documentation(self, us_gaap_doc_bytes):
         """FASB documentation lives in a separate *-doc-{year}.xml file."""
-        from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
-
-        client = FASBClient()
-        parser = XBRLParser()
-
-        doc_url = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-doc-2024.xml"
-        content = client.fetch_file(doc_url)
-        result = parser.parse_label_linkbase(content, TaxonomyStyle.FASB_STANDARD)
+        p = XBRLParser()
+        result = p.parse_label_linkbase(
+            BytesIO(us_gaap_doc_bytes), TaxonomyStyle.FASB_STANDARD
+        )
 
         all_roles: set[str] = set()
         for v in result.values():
@@ -1165,48 +1026,42 @@ class TestUSGaapLabelsParsing:
         assert "documentation" in all_roles
 
         assert len(result) > 10000, f"Only {len(result)} doc entries"
-        assert len(parser.documentation) > 10000
+        assert len(p.documentation) > 10000
 
         assets_docs = [
-            v for k, v in parser.documentation.items() if k.split("_")[-1] == "Assets"
+            v for k, v in p.documentation.items() if k.split("_")[-1] == "Assets"
         ]
         assert len(assets_docs) > 0, "No documentation for 'Assets'"
         assert len(assets_docs[0]) > 20, "Assets documentation is too short"
 
-    def test_ensure_labels_loads_both_labels_and_docs(self):
+    def test_ensure_labels_loads_both_labels_and_docs(self, us_gaap_labels_manager):
         """XBRLManager._ensure_labels loads lab + doc files for FASB taxonomies."""
-        manager = XBRLManager()
-        manager._ensure_labels("us-gaap", 2024)
+        mgr = us_gaap_labels_manager
 
-        assert len(manager.parser.labels) > 1000
-        assert len(manager.parser.documentation) > 1000, (
-            f"Only {len(manager.parser.documentation)} documentation entries — "
+        assert len(mgr.parser.labels) > 1000
+        assert len(mgr.parser.documentation) > 1000, (
+            f"Only {len(mgr.parser.documentation)} documentation entries — "
             "doc file not loaded"
         )
 
         has_both = [
-            eid for eid in manager.parser.labels if eid in manager.parser.documentation
+            eid for eid in mgr.parser.labels if eid in mgr.parser.documentation
         ]
         assert (
             len(has_both) > 100
         ), f"Only {len(has_both)} elements have both label + documentation"
 
-    def test_parse_presentation_balance_sheet(self):
+    def test_parse_presentation_balance_sheet(
+        self, us_gaap_lab_bytes, us_gaap_pres_bytes
+    ):
         """Should produce a tree structure for us-gaap classified balance sheet."""
-        from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
-
-        client = FASBClient()
-        parser = XBRLParser()
-
-        lab_url = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
-        content = client.fetch_file(lab_url)
-        parser.parse_label_linkbase(content, TaxonomyStyle.FASB_STANDARD)
-
-        pres_url = (
-            "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-pre-2024.xml"
+        p = XBRLParser()
+        p.parse_label_linkbase(
+            BytesIO(us_gaap_lab_bytes), TaxonomyStyle.FASB_STANDARD
         )
-        content = client.fetch_file(pres_url)
-        nodes = parser.parse_presentation(content, TaxonomyStyle.FASB_STANDARD)
+        nodes = p.parse_presentation(
+            BytesIO(us_gaap_pres_bytes), TaxonomyStyle.FASB_STANDARD
+        )
 
         assert isinstance(nodes, list)
         assert len(nodes) > 0
@@ -1221,23 +1076,16 @@ class TestUSGaapLabelsParsing:
 class TestCalculationParsing:
     """Tests for calculation linkbase parsing."""
 
-    @pytest.mark.record_http
-    def test_parse_calculation_us_gaap(self):
+    def test_parse_calculation_us_gaap(self, us_gaap_cal_bytes):
         """Should parse calculation relationships."""
-        from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
-
-        client = FASBClient()
-        parser = XBRLParser()
-
-        url = "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-cal-2024.xml"
-        content = client.fetch_file(url)
-        calculations = parser.parse_calculation(content, TaxonomyStyle.FASB_STANDARD)
+        p = XBRLParser()
+        calculations = p.parse_calculation(
+            BytesIO(us_gaap_cal_bytes), TaxonomyStyle.FASB_STANDARD
+        )
 
         assert isinstance(calculations, dict)
-        # Should have at least one child element
         assert len(calculations) > 0
 
-        # Each key maps child_id → {order, weight, parent_tag}
         for child_id, info in calculations.items():
             assert isinstance(child_id, str)
             assert isinstance(info, dict)
@@ -1296,49 +1144,47 @@ class TestHMRCDPLTaxonomy:
         assert components == ["standard"]
 
 
-@pytest.mark.usefixtures("hmrc_dpl_cassette")
 class TestHMRCDPLNetwork:
-    """HMRC DPL HTTP tests sharing one cassette.
+    """HMRC DPL HTTP tests — sharing ``hmrc_dpl_loaded`` (fetched once).
 
-    Cassette: hmrc_dpl.yaml.gz
+    ``get_structure`` internally calls ``_ensure_labels`` and
+    ``_ensure_element_properties``, so the returned manager has all
+    label and property state populated for verification.
     """
 
-    def test_hmrc_dpl_labels(self):
+    def test_hmrc_dpl_labels(self, hmrc_dpl_loaded):
         """Should parse HMRC DPL labels from the standalone label XML."""
-        manager = XBRLManager()
-        manager._ensure_labels("hmrc-dpl", 2021)
+        mgr, _ = hmrc_dpl_loaded
         dpl_labels = {
-            k: v for k, v in manager.parser.labels.items() if k.startswith("dpl_")
+            k: v for k, v in mgr.parser.labels.items() if k.startswith("dpl_")
         }
         assert (
             len(dpl_labels) >= 170
         ), f"Expected >=170 DPL labels, got {len(dpl_labels)}"
-        assert "dpl_AdministrativeExpenses" in manager.parser.labels
+        assert "dpl_AdministrativeExpenses" in mgr.parser.labels
         assert (
-            manager.parser.labels["dpl_AdministrativeExpenses"]
+            mgr.parser.labels["dpl_AdministrativeExpenses"]
             == "Administrative expenses"
         )
 
-    def test_hmrc_dpl_element_properties(self):
+    def test_hmrc_dpl_element_properties(self, hmrc_dpl_loaded):
         """Should load element properties from dpl-2021.xsd."""
-        manager = XBRLManager()
-        manager._ensure_element_properties("hmrc-dpl", 2021)
+        mgr, _ = hmrc_dpl_loaded
         dpl_props = {
             k: v
-            for k, v in manager.parser.element_properties.items()
+            for k, v in mgr.parser.element_properties.items()
             if k.startswith("dpl_")
         }
         assert (
             len(dpl_props) >= 170
         ), f"Expected >=170 DPL properties, got {len(dpl_props)}"
-        assert "dpl_AdministrativeExpenses" in manager.parser.element_properties
-        props = manager.parser.element_properties["dpl_AdministrativeExpenses"]
+        assert "dpl_AdministrativeExpenses" in mgr.parser.element_properties
+        props = mgr.parser.element_properties["dpl_AdministrativeExpenses"]
         assert props.get("period_type") == "duration"
 
-    def test_hmrc_dpl_structure(self):
+    def test_hmrc_dpl_structure(self, hmrc_dpl_loaded):
         """get_structure should return presentation tree for HMRC DPL."""
-        manager = XBRLManager()
-        nodes = manager.get_structure("hmrc-dpl", 2021, "standard")
+        _, nodes = hmrc_dpl_loaded
         assert isinstance(nodes, list)
         assert len(nodes) > 0
         assert all(isinstance(n, XBRLNode) for n in nodes)
@@ -1350,10 +1196,9 @@ class TestHMRCDPLNetwork:
         assert any(eid.startswith("core_") for eid in element_ids)
         assert len(flat) >= 500, f"Expected >=500 items, got {len(flat)}"
 
-    def test_hmrc_dpl_frc_core_labels(self):
+    def test_hmrc_dpl_frc_core_labels(self, hmrc_dpl_loaded):
         """FRC core labels should be loaded for cross-taxonomy resolution."""
-        manager = XBRLManager()
-        nodes = manager.get_structure("hmrc-dpl", 2021, "standard")
+        _, nodes = hmrc_dpl_loaded
         flat = _flatten_nodes(nodes)
 
         core_items = [f for f in flat if f["name"].startswith("core_")]
