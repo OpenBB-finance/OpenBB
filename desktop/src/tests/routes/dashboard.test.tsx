@@ -47,6 +47,19 @@ describe("Dashboard Route v3", () => {
       if (url.endsWith("/api/v1/system")) {
         return mockJsonResponse({ results: {} });
       }
+      if (url.endsWith("/api/v1/quant_ml/portfolio/policy")) {
+        return mockJsonResponse({
+          template: "diversified_long_only",
+          single_name_max_abs_weight: 0.1,
+          small_universe_policy: "cash_buffer",
+          sector_concentration_max: 0.35,
+          turnover_max: 0.8,
+          gross_exposure_max: 1.0,
+          net_exposure_abs_max: 1.0,
+          cash_symbol: "CASH",
+          cash_category: "cash_proxy",
+        });
+      }
       if (url.includes("/api/v1/quant_ml/health")) {
         return mockJsonResponse({
           run_id: "run-1",
@@ -254,6 +267,7 @@ describe("Dashboard Route v3", () => {
       expect(screen.getByText(/Strategy Alerts/i)).toBeInTheDocument();
       expect(screen.getByText(/Regime Matrix/i)).toBeInTheDocument();
       expect(screen.getByText(/TradingView Heatmap/i)).toBeInTheDocument();
+      expect(screen.getByText(/Single-name 10% \(Hard\)/i)).toBeInTheDocument();
     });
   });
 });

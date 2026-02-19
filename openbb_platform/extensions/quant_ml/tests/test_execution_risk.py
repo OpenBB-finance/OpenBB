@@ -14,21 +14,35 @@ from openbb_quant_ml.service import (
 from openbb_quant_ml.service.storage import save_json
 
 
-def _build_execution_run(tmp_path: Path, run_id: str, concentrated: bool = False) -> Path:
+def _build_execution_run(
+    tmp_path: Path, run_id: str, concentrated: bool = False
+) -> Path:
     run_dir = tmp_path / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
     dates = pd.date_range("2025-01-01", periods=40, freq="B")
     market_rows: list[dict[str, object]] = []
     for date_value in dates:
-        market_rows.append({"date": date_value, "symbol": "AAA", "close": 100.0 + float(date_value.day % 10)})
-        market_rows.append({"date": date_value, "symbol": "BBB", "close": 80.0 + float(date_value.day % 7)})
+        market_rows.append(
+            {
+                "date": date_value,
+                "symbol": "AAA",
+                "close": 100.0 + float(date_value.day % 10),
+            }
+        )
+        market_rows.append(
+            {
+                "date": date_value,
+                "symbol": "BBB",
+                "close": 80.0 + float(date_value.day % 7),
+            }
+        )
     pd.DataFrame(market_rows).to_parquet(run_dir / "market_data.parquet", index=False)
 
     if concentrated:
         weights = {"AAA": 0.9, "BBB": 0.1}
     else:
-        weights = {"AAA": 0.55, "BBB": 0.45}
+        weights = {"AAA": 0.1, "BBB": 0.1, "CASH": 0.8}
 
     backtest_payload = {
         "run_id": run_id,
@@ -48,7 +62,21 @@ def _build_execution_run(tmp_path: Path, run_id: str, concentrated: bool = False
             {"date": "2025-01-03", "daily_return": 0.001, "equity": 100.1},
         ],
         "period_weights": [{"date": "2025-02-03", "weights": weights}],
-        "constraints": {"max_weight": 0.9 if concentrated else 0.6, "long_only": True, "risk_aversion": 3.0, "lookback_days": 126},
+        "constraints": {
+            "max_weight": 0.9 if concentrated else 0.1,
+            "long_only": True,
+            "risk_aversion": 3.0,
+            "lookback_days": 126,
+        },
+        "effective_constraints": {
+            "max_weight_requested": 0.9 if concentrated else 0.1,
+            "max_weight_applied": 0.1,
+            "max_weight": 0.1,
+            "long_only": True,
+            "risk_aversion": 3.0,
+            "lookback_days": 126.0,
+        },
+        "cash_weight": 0.8 if not concentrated else 0.0,
         "cost_bps": 10.0,
     }
     save_json(run_dir / "backtest_lgbm_ranker.json", backtest_payload)
@@ -58,8 +86,16 @@ def _build_execution_run(tmp_path: Path, run_id: str, concentrated: bool = False
 
 
 def _patch_run(monkeypatch: pytest.MonkeyPatch, run_dir: Path, run_id: str) -> None:
-    monkeypatch.setattr(ex, "get_run_dir", lambda rid: run_dir if rid == run_id else run_dir.parent / rid)
-    monkeypatch.setattr(pipeline, "get_run_dir", lambda rid: run_dir if rid == run_id else run_dir.parent / rid)
+    monkeypatch.setattr(
+        ex,
+        "get_run_dir",
+        lambda rid: run_dir if rid == run_id else run_dir.parent / rid,
+    )
+    monkeypatch.setattr(
+        pipeline,
+        "get_run_dir",
+        lambda rid: run_dir if rid == run_id else run_dir.parent / rid,
+    )
     monkeypatch.setattr(
         pipeline,
         "load_universe_config",
@@ -72,7 +108,9 @@ def _patch_run(monkeypatch: pytest.MonkeyPatch, run_dir: Path, run_id: str) -> N
     )
 
 
-def test_execution_preview_submit_and_pnl(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+def test_execution_preview_submit_and_pnl(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
     run_id = "run-exec"
     run_dir = _build_execution_run(tmp_path, run_id=run_id, concentrated=False)
     _patch_run(monkeypatch, run_dir, run_id)
@@ -110,7 +148,9 @@ def test_execution_preview_submit_and_pnl(monkeypatch: pytest.MonkeyPatch, tmp_p
     assert pnl.status == "ok"
 
 
-def test_risk_pretrade_killswitch_blocks_submit(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+def test_risk_pretrade_killswitch_blocks_submit(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
     run_id = "run-risk"
     run_dir = _build_execution_run(tmp_path, run_id=run_id, concentrated=True)
     _patch_run(monkeypatch, run_dir, run_id)
@@ -146,3 +186,4 @@ def test_risk_pretrade_killswitch_blocks_submit(monkeypatch: pytest.MonkeyPatch,
     limits = ex.get_risk_limits(run_id, "lgbm_ranker")
     assert limits.status == "ok"
     assert limits.kill_switch is True
+    assert limits.limits.get("max_weight") == pytest.approx(0.10)
