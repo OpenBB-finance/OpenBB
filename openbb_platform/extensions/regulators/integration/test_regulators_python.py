@@ -53,20 +53,14 @@ def test_regulators_sec_institutions_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"provider": "sec"}),
         (
             {
-                "query": "2022",
                 "provider": "sec",
-                "url": None,
-                "use_cache": None,
-            }
-        ),
-        (
-            {
-                "query": "",
-                "provider": "sec",
-                "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
-                "use_cache": None,
+                "taxonomy": "us-gaap",
+                "year": 2024,
+                "component": "soi",
+                "category": None,
             }
         ),
     ],
@@ -77,7 +71,7 @@ def test_regulators_sec_schema_files(params, obb):
     result = obb.regulators.sec.schema_files(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results.files) > 0
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(

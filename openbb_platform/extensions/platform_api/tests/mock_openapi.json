@@ -3041,7 +3041,7 @@
           "regulators"
         ],
         "summary": "Schema Files",
-        "description": "Use tool for navigating the directory of SEC XML schema files by year.",
+        "description": "Explore SEC and FASB XBRL taxonomy schemas, labels, and presentation structures.\n\n- No parameters: list all available taxonomy families.\n- taxonomy only: get all parsed structures for the most recent year.\n- taxonomy + year: get all parsed structures for a specific year.\n- taxonomy + component: get one component's structure using the most recent year.\n- taxonomy + year + component: get one component's parsed structure.",
         "operationId": "regulators_sec_schema_files",
         "parameters": [
           {
@@ -3049,9 +3049,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "sec"
-              ],
               "const": "sec",
               "type": "string",
               "default": "sec",
@@ -3059,38 +3056,69 @@
             }
           },
           {
-            "name": "query",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Search query.",
-              "default": "",
-              "title": "Query"
-            },
-            "description": "Search query."
-          },
-          {
-            "name": "use_cache",
+            "name": "taxonomy",
             "in": "query",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "type": "boolean"
+                  "enum": [
+                    "us-gaap",
+                    "srt",
+                    "dei",
+                    "ecd",
+                    "cyd",
+                    "ffd",
+                    "ifrs",
+                    "hmrc-dpl",
+                    "rxp",
+                    "spac",
+                    "cef",
+                    "oef",
+                    "vip",
+                    "fnd",
+                    "sro",
+                    "sbs",
+                    "rocr",
+                    "country",
+                    "currency",
+                    "exch",
+                    "naics",
+                    "sic",
+                    "stpr",
+                    "snj"
+                  ],
+                  "type": "string"
                 },
                 {
-                  "type": null
+                  "type": "null"
                 }
               ],
-              "description": "Whether or not to use cache.",
-              "default": true,
-              "title": "Use Cache"
+              "title": "sec",
+              "description": "Taxonomy family to explore. Omit to list all available taxonomies and their descriptions. (provider: sec)"
             },
-            "description": "Whether or not to use cache."
+            "description": "Taxonomy family to explore. Omit to list all available taxonomies and their descriptions. (provider: sec)"
           },
           {
-            "name": "url",
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "sec",
+              "description": "Taxonomy year (2009-2026 for us-gaap, varies by taxonomy). Defaults to the most recent year when omitted. (provider: sec)"
+            },
+            "description": "Taxonomy year (2009-2026 for us-gaap, varies by taxonomy). Defaults to the most recent year when omitted. (provider: sec)"
+          },
+          {
+            "name": "component",
             "in": "query",
             "required": false,
             "schema": {
@@ -3099,13 +3127,39 @@
                   "type": "string"
                 },
                 {
-                  "type": null
+                  "type": "null"
                 }
               ],
               "title": "sec",
-              "description": "Enter an optional URL path to fetch the next level. (provider: sec)"
+              "description": "Presentation component to retrieve. Values are taxonomy-specific. Omit to return all components for the taxonomy. (provider: sec)"
             },
-            "description": "Enter an optional URL path to fetch the next level. (provider: sec)"
+            "description": "Presentation component to retrieve. Values are taxonomy-specific. Omit to return all components for the taxonomy. (provider: sec)"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "operating_company",
+                    "investment_company",
+                    "self_regulatory_org",
+                    "sbs_repository",
+                    "nrsro",
+                    "common_reference"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "sec",
+              "description": "Filter taxonomies by SEC filer category. (provider: sec)"
+            },
+            "description": "Filter taxonomies by SEC filer category. (provider: sec)"
           }
         ],
         "responses": {
@@ -3157,32 +3211,20 @@
         "examples": [
           {
             "scope": "api",
-            "parameters": {
-              "provider": "sec"
-            },
-            "provider": "sec"
+            "parameters": {}
           },
           {
             "scope": "python",
-            "description": "Get a list of schema files.",
+            "description": "Explore XBRL taxonomies progressively.",
             "code": [
-              "data = obb.regulators.sec.schema_files().results",
-              "data.files[0]",
-              "'https://xbrl.fasb.org/us-gaap/'",
-              "# The directory structure can be navigated by constructing a URL from the 'results' list.",
-              "url = data.files[0]+data.files[-1]",
-              "# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.",
-              "obb.regulators.sec.schema_files(url=url).results.files",
-              "['https://xbrl.fasb.org/us-gaap/2024/'",
-              "'USGAAP2024FileList.xml'",
-              "'dis/'",
-              "'dqcrules/'",
-              "'ebp/'",
-              "'elts/'",
-              "'entire/'",
-              "'meta/'",
-              "'stm/'",
-              "'us-gaap-2024.zip']"
+              "# List all available taxonomy families",
+              "obb.regulators.sec.schema_files(provider='sec')",
+              "# List components for US GAAP (latest year)",
+              "obb.regulators.sec.schema_files(taxonomy='us-gaap', provider='sec')",
+              "# List presentation components for US GAAP 2024",
+              "obb.regulators.sec.schema_files(taxonomy='us-gaap', year=2024, provider='sec')",
+              "# Get the Statement of Income presentation structure",
+              "obb.regulators.sec.schema_files(taxonomy='us-gaap', year=2024, component='soi', provider='sec')"
             ]
           }
         ]
@@ -6315,22 +6357,211 @@
       },
       "SecSchemaFilesData": {
         "properties": {
-          "files": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Files",
-            "description": "Dictionary of URLs to SEC Schema Files"
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Identifier: taxonomy key, year, component name, or XBRL element ID depending on the query mode."
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label",
+            "description": "Human-readable label."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Description or long name."
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Taxonomy category (e.g., operating_company)."
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style",
+            "description": "Taxonomy style (e.g., FASB_STANDARD, SEC_EMBEDDED)."
+          },
+          "has_label_linkbase": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Label Linkbase",
+            "description": "Whether the taxonomy has a parseable label linkbase."
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "URL to the taxonomy resource or SEC reference page."
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level",
+            "description": "Hierarchy depth in presentation structure (0 = root)."
+          },
+          "order": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Order",
+            "description": "Sort order within parent in presentation structure."
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id",
+            "description": "Parent XBRL element ID in presentation structure."
+          },
+          "preferred_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Label",
+            "description": "Preferred label role URI for presentation rendering."
+          },
+          "xbrl_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Xbrl Type",
+            "description": "XBRL data type (e.g., monetaryItemType, textBlockItemType, stringItemType, sharesItemType, perShareItemType, domainItemType)."
+          },
+          "period_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Type",
+            "description": "Period type: 'instant' (point-in-time) or 'duration' (over a period)."
+          },
+          "balance_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balance Type",
+            "description": "Balance type for monetary items: 'credit' or 'debit'."
+          },
+          "abstract": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abstract",
+            "description": "Whether the element is abstract (grouping/heading only, not taggable)."
+          },
+          "substitution_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Substitution Group",
+            "description": "XBRL substitution group: 'item' (line item), 'dimensionItem' (axis), 'hypercubeItem' (table)."
+          },
+          "nillable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nillable",
+            "description": "Whether the element value can be nil."
           }
         },
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "files"
+          "name"
         ],
         "title": "SecSchemaFilesData",
-        "description": "SEC Schema Files List Data."
+        "description": "SEC XBRL Taxonomy Explorer Data."
       },
       "SecSicSearchData": {
         "properties": {
