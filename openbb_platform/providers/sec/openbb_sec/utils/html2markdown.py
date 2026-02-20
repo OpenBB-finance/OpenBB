@@ -2311,7 +2311,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
             # Build per-row start-maps: col_start -> (text, inclusive_end)
             row_start_maps: list = []
             for _, sub_parsed_row in sub_rows:
-                sm: dict = {}
+                sm = {}
                 for text, colspan, start in sub_parsed_row:
                     t = (
                         text.replace("\u200b", "")
@@ -2352,7 +2352,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                     # label and must not contaminate sub-column names.
                     merged_subs: list = []
                     for leaf_pos in leaf_positions_sub:
-                        parts: list = []
+                        parts = []
                         last_text = None
                         for sm in row_start_maps:
                             for start, (text, end) in sm.items():
@@ -2370,7 +2370,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                     # Merge staircase texts at position 0 the same way
                     # data columns do — e.g. "Assets" / "Contract Type"
                     # across two rows → "Assets Contract Type".
-                    first_col_parts: list = []
+                    first_col_parts = []
                     last_first_col: str | None = None
                     for sm in row_start_maps:
                         if 0 in sm:
@@ -3949,7 +3949,7 @@ def convert_table(table, base_url: str = "") -> str:
             unique_headers = [h for h in header_layers[0][1:] if h.strip()]
             if len(unique_headers) == num_periods and num_periods > 0:
                 found_positions = []
-                used_cols: set[int] = set()
+                used_cols = set()
                 for target in unique_headers:
                     for row_idx in range(min(header_row_count, len(data))):
                         matched = False
