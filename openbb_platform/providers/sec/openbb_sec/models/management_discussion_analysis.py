@@ -1,6 +1,6 @@
 """SEC Management & Discussion Model."""
 
-# pylint: disable=unused-argument, too-many-locals, too-many-branches
+# pylint: disable=unused-argument, too-many-locals, too-many-branches, too-many-statements
 # flake8: noqa: PLR0912, PLR0914
 
 from typing import Any
