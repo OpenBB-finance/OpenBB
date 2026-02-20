@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument, too-many-locals, too-many-branches
 # flake8: noqa: PLR0912, PLR0914
 
-
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -138,7 +137,9 @@ class SecManagementDiscussionAnalysisFetcher(
                 ]
                 if not target_filing:
                     target_filing = [
-                        f for f in filings if f.filing_date.year == query.calendar_year  # type: ignore
+                        f
+                        for f in filings
+                        if f.filing_date.year == query.calendar_year  # type: ignore
                     ]
                 if target_filing:
                     target_filing = target_filing[0]
@@ -303,8 +304,7 @@ class SecManagementDiscussionAnalysisFetcher(
             return result
 
         raise OpenBBError(
-            f"Unexpected response received. Expected string and got -> {response.__class__.__name__}"
-            f" -> {response[:100]}"
+            f"Unexpected response received. Expected string and got -> {response.__class__.__name__} -> {response[:100]}"
         )
 
     @staticmethod
@@ -490,6 +490,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         best_start: int | None = None
         best_end: int | None = None
+        _stub_anchor_id: str | None = None
 
         for i, line in enumerate(lines):
             stripped = line.strip()
@@ -499,6 +500,22 @@ class SecManagementDiscussionAnalysisFetcher(
 
             if item_header_re.search(stripped):
                 if _is_stub(i):
+                    # Check for an internal anchor link pointing to
+                    # the actual MD&A content elsewhere in the same
+                    # filing (e.g., in a "Financial Section").
+                    if not _stub_anchor_id:
+                        _am = re.search(r"\[[^\]]*\]\(#([^)]+)\)", stripped)
+                        if not _am:
+                            for k in range(i + 1, min(i + 5, len(lines))):
+                                ks = lines[k].strip()
+                                if ks:
+                                    _am = re.search(
+                                        r"\[[^\]]*\]\(#([^)]+)\)",
+                                        ks,
+                                    )
+                                    break
+                        if _am:
+                            _stub_anchor_id = _am.group(1)
                     continue
                 best_start = i
                 best_end = _find_end(i)
@@ -536,6 +553,52 @@ class SecManagementDiscussionAnalysisFetcher(
                         best_start = i
                         best_end = candidate_end
                         break
+
+        # -- Internal cross-reference fallback --
+        # Some filings (e.g., ExxonMobil 10-K) place the full MD&A
+        # in a "Financial Section" appended to the same document.
+        # The formal Item 7 is a one-line stub such as:
+        #   "Reference is made to [MD&A title](#anchor) in the
+        #    Financial Section of this report."
+        # Follow the embedded anchor link directly to the referenced
+        # section in the raw HTML, extract it, and convert it.
+
+        if best_start is None and _stub_anchor_id:
+            _anchor_tag = f'id="{_stub_anchor_id}"'
+            _anchor_pos = filing_html.find(_anchor_tag)
+            if _anchor_pos >= 0:
+                # Skip past the closing '>' of the anchor element.
+                _gt = filing_html.find(">", _anchor_pos)
+                _start = _gt + 1 if _gt >= 0 else _anchor_pos
+                _remainder = filing_html[_start:]
+
+                # Locate the end of the MD&A section in the raw HTML.
+                _html_end_pats = [
+                    re.compile(
+                        r"Management[\u2019\u2018']s\s+Report\s+"
+                        r"on\s+Internal\s+Control",
+                        re.IGNORECASE,
+                    ),
+                    re.compile(
+                        r"Report\s+of\s+Independent\s+Registered",
+                        re.IGNORECASE,
+                    ),
+                ]
+                _cut = len(_remainder)
+                for _hp in _html_end_pats:
+                    _hm = _hp.search(_remainder)
+                    if _hm and _hm.start() > 2000:
+                        _cut = min(_cut, _hm.start())
+                        break
+
+                _section_md = html_to_markdown(
+                    f"<html><body>{_remainder[:_cut]}</body></html>",
+                    base_url=base_url,
+                    keep_tables=query.include_tables,
+                )
+                if _section_md and len(_section_md.strip()) > 500:
+                    data["content"] = _section_md.strip()
+                    return SecManagementDiscussionAnalysisData(**data)
 
         # -- Exhibit fallback: Annual Report to Stockholders (Exhibit 13) ---
         # When the main 10-K document only has a stub Item 7 that says
