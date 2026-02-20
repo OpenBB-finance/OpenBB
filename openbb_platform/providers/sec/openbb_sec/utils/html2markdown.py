@@ -3939,6 +3939,33 @@ def convert_table(table, base_url: str = "") -> str:
                     if len(found_positions) == num_periods:
                         header_col_positions = sorted(found_positions)
 
+        # Single-layer header fallback: find where each unique header text
+        # first appears in the raw (colspan-expanded) data header rows.
+        # E.g., header_layers=[['', '2025', '2024', '% Change']] and the
+        # raw data row is ['', '', '2025', '2025', '', '2024', '2024', '',
+        # '% Change', ''].  We need header_col_positions=[2, 5, 8] so the
+        # position-aware extraction maps data cells to correct columns.
+        if not header_col_positions and header_layers and len(header_layers) == 1:
+            unique_headers = [h for h in header_layers[0][1:] if h.strip()]
+            if len(unique_headers) == num_periods and num_periods > 0:
+                found_positions = []
+                used_cols: set[int] = set()
+                for target in unique_headers:
+                    for row_idx in range(min(header_row_count, len(data))):
+                        matched = False
+                        for col_idx, cell in enumerate(data[row_idx]):
+                            if col_idx in used_cols:
+                                continue
+                            if cell.strip() == target:
+                                found_positions.append(col_idx)
+                                used_cols.add(col_idx)
+                                matched = True
+                                break
+                        if matched:
+                            break
+                if len(found_positions) == num_periods:
+                    header_col_positions = found_positions
+
         if header_layers:
             for layer in header_layers:
                 if len(layer) == num_periods + 1:
