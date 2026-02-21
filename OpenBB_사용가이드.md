@@ -603,6 +603,23 @@ docker run -it --rm -p 6900:6900 -v ~/.openbb_platform:/root/.openbb_platform op
 
 ## 📚 참고 링크
 
+## Quant Lab 표준 조회 API (run_id 기반)
+
+`run/latest/*`는 호환용으로 유지되지만, 신규 대시보드/자동화는 아래 경로를 우선 사용합니다.
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/snapshot?model_name=lgbm_ranker"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/risk?model_name=lgbm_ranker&lookback=126"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/exposures?model_name=lgbm_ranker"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/constraints?model_name=lgbm_ranker"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/audit?limit=200"
+```
+
+운영 중 레지스트리 저장 위치:
+
+- `~/.openbb_platform/quant_ml/run_registry.sqlite3` (표준)
+- `~/.openbb_platform/quant_ml/registry.json` (호환 dual-write)
+
 - [ODP Python 문서](https://docs.openbb.co/odp/python)
 - [ODP CLI 문서](https://docs.openbb.co/odp/cli)
 - [ODP Desktop 문서](https://docs.openbb.co/odp/desktop)

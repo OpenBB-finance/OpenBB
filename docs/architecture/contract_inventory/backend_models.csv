@@ -1,0 +1,652 @@
+model,field_name,type,unit,shape,index_format,nullable,owner_layer,compute_responsibility
+AlertItem,rule_id,<class 'str'>,,scalar,,false,backend,server
+AlertItem,severity,"typing.Literal['info', 'warning', 'critical']",,scalar,,false,backend,server
+AlertItem,triggered_at,<class 'str'>,,scalar,,false,backend,server
+AlertItem,message,<class 'str'>,,scalar,,false,backend,server
+AlertItem,value,<class 'float'>,,scalar,,false,backend,server
+AlertsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+AlertsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+AlertsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+AlertsResponse,message,str | None,,scalar,,true,backend,server
+AlertsResponse,alerts,list[openbb_quant_ml.models.AlertItem],,scalar,,true,backend,server
+ArtifactCompletenessItem,artifact,<class 'str'>,,scalar,,false,backend,server
+ArtifactCompletenessItem,ready,<class 'bool'>,,scalar,,true,backend,server
+ArtifactCompletenessItem,path,str | None,,scalar,,true,backend,server
+ArtifactSummaryResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ArtifactSummaryResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+ArtifactSummaryResponse,model_meta,<class 'dict'>,,scalar,,false,backend,server
+ArtifactSummaryResponse,latest_validation_error,float | None,,scalar,,true,backend,server
+ArtifactSummaryResponse,feature_importance,list[dict],,scalar,,false,backend,server
+ArtifactSummaryResponse,params,<class 'dict'>,,scalar,,false,backend,server
+ArtifactSummaryResponse,available_artifacts,list[str],,scalar,,false,backend,server
+AssetClassWeightItem,category,<class 'str'>,,scalar,,false,backend,server
+AssetClassWeightItem,weight,<class 'float'>,,scalar,,false,backend,server
+BacktestConstraints,max_weight,<class 'float'>,,scalar,,true,backend,server
+BacktestConstraints,long_only,<class 'bool'>,,scalar,,true,backend,server
+BacktestConstraints,risk_aversion,<class 'float'>,,scalar,,true,backend,server
+BacktestConstraints,lookback_days,<class 'int'>,,scalar,,true,backend,server
+BacktestMetrics,cagr,<class 'float'>,,scalar,,false,backend,server
+BacktestMetrics,sharpe,<class 'float'>,,scalar,,false,backend,server
+BacktestMetrics,max_drawdown,<class 'float'>,,scalar,,false,backend,server
+BacktestMetrics,volatility,<class 'float'>,,scalar,,false,backend,server
+BacktestMetrics,turnover,<class 'float'>,,scalar,,false,backend,server
+BacktestMetrics,gross_return,<class 'float'>,,scalar,,true,backend,server
+BacktestMetrics,total_cost,<class 'float'>,,scalar,,true,backend,server
+BacktestMetrics,net_return,<class 'float'>,,scalar,,true,backend,server
+BacktestRequest,run_id,<class 'str'>,,scalar,,false,backend,server
+BacktestRequest,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+BacktestRequest,start_date,<class 'datetime.date'>,,scalar,,false,backend,server
+BacktestRequest,end_date,<class 'datetime.date'>,,scalar,,false,backend,server
+BacktestRequest,rebalance,typing.Literal['monthly'],,scalar,,true,backend,server
+BacktestRequest,constraints,<class 'openbb_quant_ml.models.BacktestConstraints'>,,scalar,,true,backend,server
+BacktestRequest,cost_bps,<class 'float'>,,scalar,,true,backend,server
+BacktestRequest,slippage_bps,<class 'float'>,,scalar,,true,backend,server
+BacktestRequest,entry_price,"typing.Literal['next_open', 'close']",,scalar,,true,backend,server
+BacktestRequest,exit_price,"typing.Literal['close', 'next_open']",,scalar,,true,backend,server
+BacktestRequest,portfolio_mode,"typing.Literal['long_only', 'long_short']",,scalar,,true,backend,server
+BacktestRequest,mu_mapping,"typing.Literal['z_score', 'quantile_mean_return']",,scalar,,true,backend,server
+BacktestRequest,regime_policy,"typing.Literal['fixed', 'mixed']",,scalar,,true,backend,server
+BacktestResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+BacktestResponse,run_uid,str | None,,scalar,,true,backend,server
+BacktestResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+BacktestResponse,start_date,<class 'str'>,,scalar,,false,backend,server
+BacktestResponse,end_date,<class 'str'>,,scalar,,false,backend,server
+BacktestResponse,base_index,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,benchmark_symbol,<class 'str'>,,scalar,,false,backend,server
+BacktestResponse,metrics,<class 'openbb_quant_ml.models.BacktestMetrics'>,,scalar,,false,backend,server
+BacktestResponse,equity_curve,list[openbb_quant_ml.models.EquityPoint],,scalar,,false,backend,server
+BacktestResponse,benchmark_curve,list[openbb_quant_ml.models.BenchmarkPoint],,scalar,,false,backend,server
+BacktestResponse,period_weights,list[openbb_quant_ml.models.PeriodWeight],,scalar,,false,backend,server
+BacktestResponse,cost_breakdown,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResponse,consistency_checks,"dict[str, float | bool]",,scalar,,true,backend,server
+BacktestResponse,regime_mode_by_period,"list[dict[str, str]]",,scalar,,true,backend,server
+BacktestResponse,effective_constraints,"dict[str, float | bool]",,scalar,,true,backend,server
+BacktestResponse,cash_weight,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,cost_bps,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,slippage_bps,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,entry_price,"typing.Literal['next_open', 'close']",,scalar,,true,backend,server
+BacktestResponse,exit_price,"typing.Literal['close', 'next_open']",,scalar,,true,backend,server
+BacktestResponse,rebalance_history_summary,list[openbb_quant_ml.models.RebalanceHistoryItem],,scalar,,true,backend,server
+BacktestResponse,constraint_violations,"list[dict[str, typing.Any]]",,scalar,,true,backend,server
+BacktestResponse,liquidity_clip_ratio,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,risk_contribution_max,<class 'float'>,,scalar,,true,backend,server
+BacktestResponse,universe_stage_counts,"dict[str, int]",,scalar,,true,backend,server
+BacktestResponse,weights_target_available,<class 'bool'>,,scalar,,true,backend,server
+BacktestResponse,weights_final_available,<class 'bool'>,,scalar,,true,backend,server
+BacktestResponse,constraint_binding_summary,"list[dict[str, typing.Any]]",,scalar,,true,backend,server
+BacktestResponse,artifact_contract_version,str | None,,scalar,,true,backend,server
+BacktestResponse,required_artifacts_ready,<class 'bool'>,,scalar,,true,backend,server
+BacktestResultV2,run_id,<class 'str'>,,scalar,,false,backend,server
+BacktestResultV2,run_uid,str | None,,scalar,,true,backend,server
+BacktestResultV2,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+BacktestResultV2,equity_base,<class 'float'>,,scalar,,true,backend,server
+BacktestResultV2,equity_curve,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,returns_decimal,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,cumulative_returns,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,drawdown,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,gross_exposure,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,net_exposure,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,positions,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,trades,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,turnover,"list[dict[str, float | str]]",,scalar,,true,backend,server
+BacktestResultV2,metrics,"dict[str, float]",,scalar,,true,backend,server
+BacktestResultV2,asof_manifest,"dict[str, typing.Any]",,scalar,,true,backend,server
+BacktestResultV2,currency,<class 'str'>,,scalar,,true,backend,server
+BenchmarkPoint,date,<class 'str'>,,scalar,,false,backend,server
+BenchmarkPoint,benchmark,<class 'float'>,,scalar,,false,backend,server
+ConstraintBindingItem,constraint_type,<class 'str'>,,scalar,,false,backend,server
+ConstraintBindingItem,binding_count,<class 'int'>,,scalar,,true,backend,server
+ConstraintBindingItem,binding_ratio,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,run_id,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,model_name,"typing.Optional[typing.Literal['xgb_lstm', 'lgbm_ranker']]",,scalar,,true,backend,server
+DashboardHealthResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+DashboardHealthResponse,message,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,backend_connected,<class 'bool'>,,scalar,,true,backend,server
+DashboardHealthResponse,backend_source,<class 'str'>,,scalar,,true,backend,server
+DashboardHealthResponse,backend_detail,<class 'str'>,,scalar,,true,backend,server
+DashboardHealthResponse,latest_run_id,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,resolved_run_id,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,promoted_run_id,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,pretrain_ready,<class 'bool'>,,scalar,,true,backend,server
+DashboardHealthResponse,cache_warm_ratio,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,mode_supported,"list[typing.Literal['live', 'backtest']]",,scalar,,true,backend,server
+DashboardHealthResponse,data_timestamp,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,latest_market_date,str | None,,scalar,,true,backend,server
+DashboardHealthResponse,staleness_days,<class 'int'>,,scalar,,true,backend,server
+DashboardHealthResponse,recommended_portfolio_mode,"typing.Literal['long_only', 'long_short']",,scalar,,true,backend,server
+DashboardHealthResponse,universe_size,<class 'int'>,,scalar,,true,backend,server
+DashboardHealthResponse,cost_bps,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,cash_exposure,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,gross_exposure,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,net_exposure,<class 'float'>,,scalar,,true,backend,server
+DashboardHealthResponse,strategy_health,"dict[str, float]",,scalar,,true,backend,server
+DashboardHealthResponse,workflow_state,<class 'openbb_quant_ml.models.WorkflowState'>,,scalar,,true,backend,server
+DashboardSnapshotV2,run_id,<class 'str'>,,scalar,,false,backend,server
+DashboardSnapshotV2,run_uid,str | None,,scalar,,true,backend,server
+DashboardSnapshotV2,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+DashboardSnapshotV2,as_of_utc,<class 'str'>,,scalar,,false,backend,server
+DashboardSnapshotV2,total_return,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,cagr,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,sharpe,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,sortino,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,max_drawdown,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,volatility,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,turnover,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,win_rate,<class 'float'>,,scalar,,true,backend,server
+DashboardSnapshotV2,exposure,"dict[str, float]",,scalar,,true,backend,server
+DashboardSnapshotV2,risk_contrib_top10,"list[dict[str, float | str]]",,scalar,,true,backend,server
+DashboardSnapshotV2,constraint_bindings,list[openbb_quant_ml.models.ConstraintBindingItem],,scalar,,true,backend,server
+DashboardSnapshotV2,ic_rolling,"list[dict[str, float | str]]",,scalar,,true,backend,server
+DashboardSnapshotV2,currency,<class 'str'>,,scalar,,true,backend,server
+DateRange,start_date,<class 'datetime.date'>,,scalar,,false,backend,server
+DateRange,end_date,<class 'datetime.date'>,,scalar,,false,backend,server
+EquityPoint,date,<class 'str'>,,scalar,,false,backend,server
+EquityPoint,equity,<class 'float'>,,scalar,,false,backend,server
+EquityPoint,daily_return,<class 'float'>,,scalar,,false,backend,server
+EquityPoint,gross_return,<class 'float'>,,scalar,,true,backend,server
+EquityPoint,trading_cost,<class 'float'>,,scalar,,true,backend,server
+ExecutionFillsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionFillsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionFillsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionFillsResponse,message,str | None,,scalar,,true,backend,server
+ExecutionFillsResponse,fills,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionOrderItem,order_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionOrderItem,symbol,<class 'str'>,,scalar,,false,backend,server
+ExecutionOrderItem,side,"typing.Literal['buy', 'sell']",,scalar,,false,backend,server
+ExecutionOrderItem,quantity,<class 'float'>,,scalar,,false,backend,server
+ExecutionOrderItem,current_weight,<class 'float'>,,scalar,,false,backend,server
+ExecutionOrderItem,target_weight,<class 'float'>,,scalar,,false,backend,server
+ExecutionOrderItem,est_price,<class 'float'>,,scalar,,false,backend,server
+ExecutionOrderItem,est_notional,<class 'float'>,,scalar,,false,backend,server
+ExecutionOrderItem,status,"typing.Literal['preview', 'submitted', 'filled', 'rejected']",,scalar,,true,backend,server
+ExecutionOrderPreviewRequest,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionOrderPreviewRequest,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+ExecutionOrderPreviewRequest,slippage_bps,<class 'float'>,,scalar,,true,backend,server
+ExecutionOrderPreviewRequest,cost_bps,float | None,,scalar,,true,backend,server
+ExecutionOrderPreviewRequest,nav,float | None,,scalar,,true,backend,server
+ExecutionOrdersResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionOrdersResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionOrdersResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionOrdersResponse,message,str | None,,scalar,,true,backend,server
+ExecutionOrdersResponse,orders,list[openbb_quant_ml.models.ExecutionOrderItem],,scalar,,true,backend,server
+ExecutionPnlResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionPnlResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionPnlResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionPnlResponse,message,str | None,,scalar,,true,backend,server
+ExecutionPnlResponse,as_of_date,str | None,,scalar,,true,backend,server
+ExecutionPnlResponse,realized_pnl,<class 'float'>,,scalar,,true,backend,server
+ExecutionPnlResponse,unrealized_pnl,<class 'float'>,,scalar,,true,backend,server
+ExecutionPnlResponse,total_pnl,<class 'float'>,,scalar,,true,backend,server
+ExecutionPnlResponse,return_pct,<class 'float'>,,scalar,,true,backend,server
+ExecutionPositionsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionPositionsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionPositionsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionPositionsResponse,message,str | None,,scalar,,true,backend,server
+ExecutionPositionsResponse,as_of_date,str | None,,scalar,,true,backend,server
+ExecutionPositionsResponse,positions,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionPositionsResponse,cash,<class 'float'>,,scalar,,true,backend,server
+ExecutionPositionsResponse,gross_exposure,<class 'float'>,,scalar,,true,backend,server
+ExecutionPositionsResponse,net_exposure,<class 'float'>,,scalar,,true,backend,server
+ExecutionPreviewResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionPreviewResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionPreviewResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionPreviewResponse,message,str | None,,scalar,,true,backend,server
+ExecutionPreviewResponse,as_of_date,str | None,,scalar,,true,backend,server
+ExecutionPreviewResponse,nav,<class 'float'>,,scalar,,true,backend,server
+ExecutionPreviewResponse,orders,list[openbb_quant_ml.models.ExecutionOrderItem],,scalar,,true,backend,server
+ExecutionPreviewResponse,estimated_turnover,<class 'float'>,,scalar,,true,backend,server
+ExecutionStateV2,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionStateV2,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+ExecutionStateV2,portfolio_value,<class 'float'>,,scalar,,true,backend,server
+ExecutionStateV2,cash,<class 'float'>,,scalar,,true,backend,server
+ExecutionStateV2,positions_weight,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionStateV2,positions_quantity,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionStateV2,exposure,"dict[str, float]",,scalar,,true,backend,server
+ExecutionStateV2,risk_metrics,"dict[str, float]",,scalar,,true,backend,server
+ExecutionStateV2,last_rebalance_time_utc,str | None,,scalar,,true,backend,server
+ExecutionStateV2,orders,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionStateV2,fills,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ExecutionStateV2,kill_switch,<class 'bool'>,,scalar,,true,backend,server
+ExecutionStateV2,currency,<class 'str'>,,scalar,,true,backend,server
+ExecutionSubmitResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ExecutionSubmitResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ExecutionSubmitResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ExecutionSubmitResponse,message,str | None,,scalar,,true,backend,server
+ExecutionSubmitResponse,submitted_at,str | None,,scalar,,true,backend,server
+ExecutionSubmitResponse,orders,list[openbb_quant_ml.models.ExecutionOrderItem],,scalar,,true,backend,server
+ExecutionSubmitResponse,fills_count,<class 'int'>,,scalar,,true,backend,server
+ExecutionSubmitResponse,cash_after,<class 'float'>,,scalar,,true,backend,server
+ExecutionSubmitResponse,nav_after,<class 'float'>,,scalar,,true,backend,server
+ExecutionSubmitResponse,kill_switch,<class 'bool'>,,scalar,,true,backend,server
+FeatureConfig,lags,list[int],,scalar,,true,backend,server
+FeatureConfig,vol_windows,list[int],,scalar,,true,backend,server
+FeatureConfig,momentum_windows,list[int],,scalar,,true,backend,server
+FeatureConfig,include_rsi,<class 'bool'>,,scalar,,true,backend,server
+FeatureConfig,include_macd,<class 'bool'>,,scalar,,true,backend,server
+FeatureConfig,include_regime_features,<class 'bool'>,,scalar,,true,backend,server
+FeatureImportanceResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+FeatureImportanceResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+FeatureImportanceResponse,items,list[dict],,scalar,,false,backend,server
+ICDecayResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ICDecayResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ICDecayResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ICDecayResponse,message,str | None,,scalar,,true,backend,server
+ICDecayResponse,max_horizon,<class 'int'>,,scalar,,false,backend,server
+ICDecayResponse,ic_decay,"list[dict[str, float | int]]",,scalar,,true,backend,server
+ICDecayResponse,ic_t_stat,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,seq_len,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,xgb_n_estimators,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,xgb_max_depth,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,xgb_learning_rate,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,xgb_subsample,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,xgb_colsample_bytree,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,lstm_hidden_size,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,lstm_num_layers,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,lstm_dropout,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,lstm_epochs,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,lstm_batch_size,<class 'int'>,,scalar,,true,backend,server
+ModelConfig,lstm_learning_rate,<class 'float'>,,scalar,,true,backend,server
+ModelConfig,train_val_split,<class 'float'>,,scalar,,true,backend,server
+ModelICPoint,date,<class 'str'>,,scalar,,false,backend,server
+ModelICPoint,ic,<class 'float'>,,scalar,,false,backend,server
+ModelICPoint,rolling_ic,float | None,,scalar,,true,backend,server
+ModelICResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ModelICResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ModelICResponse,window,<class 'int'>,,scalar,,false,backend,server
+ModelICResponse,points,list[openbb_quant_ml.models.ModelICPoint],,scalar,,false,backend,server
+ModelPerformanceItem,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ModelPerformanceItem,train_ic,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,val_ic,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,ndcg,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,sharpe,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,max_dd,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,turnover,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,hit_rate,float | None,,scalar,,true,backend,server
+ModelPerformanceItem,regime_performance,"dict[str, float | int | None]",,scalar,,true,backend,server
+ModelPerformanceResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ModelPerformanceResponse,models,list[openbb_quant_ml.models.ModelPerformanceItem],,scalar,,false,backend,server
+ModelRegimeResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ModelRegimeResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ModelRegimeResponse,regimes,"dict[str, dict[str, float | int]]",,scalar,,false,backend,server
+ModelShapResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+ModelShapResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+ModelShapResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+ModelShapResponse,message,str | None,,scalar,,true,backend,server
+ModelShapResponse,summary_points,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ModelShapResponse,dependence_top3,"list[dict[str, float | str]]",,scalar,,true,backend,server
+ModelShapResponse,feature_stability_ts,"list[dict[str, float | str]]",,scalar,,true,backend,server
+OpsJobStateResponse,job,"typing.Literal['daily', 'weekly', 'monthly']",,scalar,,false,backend,server
+OpsJobStateResponse,last_status,<class 'str'>,,scalar,,true,backend,server
+OpsJobStateResponse,last_run_id,str | None,,scalar,,true,backend,server
+OpsJobStateResponse,last_error,str | None,,scalar,,true,backend,server
+OpsJobStateResponse,steps,"dict[str, dict[str, typing.Any]]",,scalar,,true,backend,server
+OpsStatusResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+OpsStatusResponse,message,str | None,,scalar,,true,backend,server
+OpsStatusResponse,generated_at,str | None,,scalar,,true,backend,server
+OpsStatusResponse,jobs,list[openbb_quant_ml.models.OpsJobStateResponse],,scalar,,true,backend,server
+OpsStatusResponse,latest_publish,"dict[str, typing.Any]",,scalar,,true,backend,server
+OpsStatusResponse,versions,"dict[str, typing.Any]",,scalar,,true,backend,server
+OpsStatusResponse,latest_runs,"list[dict[str, typing.Any]]",,scalar,,true,backend,server
+OpsStatusResponse,macro_health,"dict[str, typing.Any]",,scalar,,true,backend,server
+OpsStatusResponse,latest_training_run_id,str | None,,scalar,,true,backend,server
+OpsStatusResponse,latest_daily_infer_date,str | None,,scalar,,true,backend,server
+OpsStatusResponse,walkforward_queue_depth,<class 'int'>,,scalar,,true,backend,server
+OpsStatusResponse,active_job_locks,"list[dict[str, typing.Any]]",,scalar,,true,backend,server
+OpsStatusResponse,lock_health,"dict[str, str]",,scalar,,true,backend,server
+OpsStatusResponse,stale_policy,"dict[str, typing.Any]",,scalar,,true,backend,server
+PerformanceRegimeResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PerformanceRegimeResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PerformanceRegimeResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+PerformanceRegimeResponse,message,str | None,,scalar,,true,backend,server
+PerformanceRegimeResponse,trend_regime_perf,"dict[str, dict[str, float | int]]",,scalar,,true,backend,server
+PerformanceRegimeResponse,vol_regime_perf,"dict[str, dict[str, float | int]]",,scalar,,true,backend,server
+PerformanceRegimeResponse,liquidity_regime_perf,"dict[str, dict[str, float | int]]",,scalar,,true,backend,server
+PerformanceRegimeResponse,matrix_2d,"list[dict[str, float | str | int]]",,scalar,,true,backend,server
+PeriodWeight,date,<class 'str'>,,scalar,,false,backend,server
+PeriodWeight,weights,"dict[str, float]",,scalar,,false,backend,server
+PortfolioCurrentResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PortfolioCurrentResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PortfolioCurrentResponse,as_of_date,str | None,,scalar,,true,backend,server
+PortfolioCurrentResponse,total_weight,<class 'float'>,,scalar,,false,backend,server
+PortfolioCurrentResponse,symbol_weights,list[openbb_quant_ml.models.PortfolioSymbolWeightItem],,scalar,,false,backend,server
+PortfolioCurrentResponse,asset_class_weights,list[openbb_quant_ml.models.AssetClassWeightItem],,scalar,,false,backend,server
+PortfolioCurrentResponse,asset_class_weights_l1,list[openbb_quant_ml.models.AssetClassWeightItem],,scalar,,true,backend,server
+PortfolioCurrentResponse,rationale,<class 'openbb_quant_ml.models.PortfolioRationale'>,,scalar,,false,backend,server
+PortfolioCurrentResponse,last_rebalance_trades,openbb_quant_ml.models.RebalanceHistoryItem | None,,scalar,,true,backend,server
+PortfolioCurrentResponse,last_rebalance_turnover,<class 'float'>,,scalar,,true,backend,server
+PortfolioExposureResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PortfolioExposureResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PortfolioExposureResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+PortfolioExposureResponse,message,str | None,,scalar,,true,backend,server
+PortfolioExposureResponse,sector_exposure,list[openbb_quant_ml.models.AssetClassWeightItem],,scalar,,true,backend,server
+PortfolioExposureResponse,factor_exposure,"dict[str, float]",,scalar,,true,backend,server
+PortfolioExposureResponse,beta_spy,<class 'float'>,,scalar,,true,backend,server
+PortfolioExposureResponse,beta_qqq,<class 'float'>,,scalar,,true,backend,server
+PortfolioExposureResponse,duration_estimate,<class 'float'>,,scalar,,true,backend,server
+PortfolioExposureResponse,top10_long,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioExposureResponse,top10_short,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioPolicyResponse,template,<class 'str'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,single_name_max_abs_weight,<class 'float'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,small_universe_policy,<class 'str'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,sector_concentration_max,<class 'float'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,turnover_max,<class 'float'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,gross_exposure_max,<class 'float'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,net_exposure_abs_max,<class 'float'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,cash_symbol,<class 'str'>,,scalar,,true,backend,server
+PortfolioPolicyResponse,cash_category,<class 'str'>,,scalar,,true,backend,server
+PortfolioRationale,summary_lines,list[str],,scalar,,false,backend,server
+PortfolioRationale,constraints_applied,"dict[str, float | bool]",,scalar,,false,backend,server
+PortfolioRiskResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PortfolioRiskResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PortfolioRiskResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+PortfolioRiskResponse,message,str | None,,scalar,,true,backend,server
+PortfolioRiskResponse,vol_ex_ante,<class 'float'>,,scalar,,true,backend,server
+PortfolioRiskResponse,cvar_95,<class 'float'>,,scalar,,true,backend,server
+PortfolioRiskResponse,position_risk_contrib_top5,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioRiskResponse,position_risk_contrib_top10,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioRiskResponse,position_return_contrib_top5,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioRiskResponse,worst5_positions,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PortfolioSymbolWeightItem,symbol,<class 'str'>,,scalar,,false,backend,server
+PortfolioSymbolWeightItem,weight,<class 'float'>,,scalar,,false,backend,server
+PortfolioSymbolWeightItem,category,<class 'str'>,,scalar,,false,backend,server
+PortfolioSymbolWeightItem,name,str | None,,scalar,,true,backend,server
+PortfolioSymbolWeightItem,market,str | None,,scalar,,true,backend,server
+PortfolioSymbolWeightItem,sector_l1,str | None,,scalar,,true,backend,server
+PortfolioSymbolWeightItem,category_l2,<class 'str'>,,scalar,,true,backend,server
+PredictionDistributionResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PredictionDistributionResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PredictionDistributionResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+PredictionDistributionResponse,message,str | None,,scalar,,true,backend,server
+PredictionDistributionResponse,bins,<class 'int'>,,scalar,,true,backend,server
+PredictionDistributionResponse,histogram,"list[dict[str, float | int]]",,scalar,,true,backend,server
+PredictionDistributionResponse,top_decile_mean,<class 'float'>,,scalar,,true,backend,server
+PredictionDistributionResponse,bottom_decile_mean,<class 'float'>,,scalar,,true,backend,server
+PredictionDistributionResponse,decile_spread_ts,"list[dict[str, float | str]]",,scalar,,true,backend,server
+PredictionsLatestResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+PredictionsLatestResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+PredictionsLatestResponse,as_of_date,<class 'str'>,,scalar,,false,backend,server
+PredictionsLatestResponse,predictions,list[dict],,scalar,,false,backend,server
+PromotedModelResponse,run_id,str | None,,scalar,,true,backend,server
+PromotedModelResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+PromotedModelResponse,as_of_date,str | None,,scalar,,true,backend,server
+PromotedModelResponse,feature_hash,str | None,,scalar,,true,backend,server
+PromotedModelResponse,updated_at,str | None,,scalar,,true,backend,server
+PromotedModelResponse,source,<class 'str'>,,scalar,,true,backend,server
+PromotedModelResponse,ready,<class 'bool'>,,scalar,,true,backend,server
+RankerConfig,objective,typing.Literal['rank_xendcg'],,scalar,,true,backend,server
+RankerConfig,metric,typing.Literal['ndcg'],,scalar,,true,backend,server
+RankerConfig,ndcg_eval_at,list[int],,scalar,,true,backend,server
+RankerConfig,learning_rate,<class 'float'>,,scalar,,true,backend,server
+RankerConfig,n_estimators,<class 'int'>,,scalar,,true,backend,server
+RankerConfig,num_leaves,<class 'int'>,,scalar,,true,backend,server
+RankerConfig,min_data_in_leaf,<class 'int'>,,scalar,,true,backend,server
+RankerConfig,subsample,<class 'float'>,,scalar,,true,backend,server
+RankerConfig,colsample_bytree,<class 'float'>,,scalar,,true,backend,server
+RankerConfig,reg_lambda,<class 'float'>,,scalar,,true,backend,server
+RankerConfig,random_state,<class 'int'>,,scalar,,true,backend,server
+RankerConfig,early_stopping_rounds,<class 'int'>,,scalar,,true,backend,server
+RebalanceHistoryItem,date,<class 'str'>,,scalar,,false,backend,server
+RebalanceHistoryItem,added,list[str],,scalar,,true,backend,server
+RebalanceHistoryItem,sold,list[str],,scalar,,true,backend,server
+RebalanceHistoryItem,top_weight_increases,list[openbb_quant_ml.models.WeightDeltaItem],,scalar,,true,backend,server
+RebalanceHistoryItem,top_weight_decreases,list[openbb_quant_ml.models.WeightDeltaItem],,scalar,,true,backend,server
+RebalanceHistoryItem,turnover,<class 'float'>,,scalar,,true,backend,server
+RebalanceHistoryItem,binding_constraints,list[str],,scalar,,true,backend,server
+RebalanceHistoryItem,previous_date,str | None,,scalar,,true,backend,server
+RebalanceHistoryResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RebalanceHistoryResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RebalanceHistoryResponse,items,list[openbb_quant_ml.models.RebalanceHistoryItem],,scalar,,true,backend,server
+RegimeCurrentResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RegimeCurrentResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RegimeCurrentResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RegimeCurrentResponse,message,str | None,,scalar,,true,backend,server
+RegimeCurrentResponse,trend_regime,<class 'str'>,,scalar,,true,backend,server
+RegimeCurrentResponse,vol_regime,<class 'str'>,,scalar,,true,backend,server
+RegimeCurrentResponse,liquidity_regime,<class 'str'>,,scalar,,true,backend,server
+RegimeCurrentResponse,vix_level,<class 'float'>,,scalar,,true,backend,server
+RegimeCurrentResponse,breadth,<class 'float'>,,scalar,,true,backend,server
+RegimeCurrentResponse,spx_distance_200ma,<class 'float'>,,scalar,,true,backend,server
+RegimeHistoryResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RegimeHistoryResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RegimeHistoryResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RegimeHistoryResponse,message,str | None,,scalar,,true,backend,server
+RegimeHistoryResponse,history,"list[dict[str, float | str | int]]",,scalar,,true,backend,server
+RegimeHistoryResponse,regime_transition_stats,"dict[str, float | int]",,scalar,,true,backend,server
+RiskEventsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RiskEventsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RiskEventsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RiskEventsResponse,message,str | None,,scalar,,true,backend,server
+RiskEventsResponse,events,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RiskLimitsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RiskLimitsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RiskLimitsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RiskLimitsResponse,limits,"dict[str, float]",,scalar,,true,backend,server
+RiskLimitsResponse,kill_switch,<class 'bool'>,,scalar,,true,backend,server
+RiskPretradeRequest,run_id,<class 'str'>,,scalar,,false,backend,server
+RiskPretradeRequest,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+RiskPretradeRequest,turnover_limit,<class 'float'>,,scalar,,true,backend,server
+RiskPretradeResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RiskPretradeResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RiskPretradeResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RiskPretradeResponse,passed,<class 'bool'>,,scalar,,true,backend,server
+RiskPretradeResponse,kill_switch,<class 'bool'>,,scalar,,true,backend,server
+RiskPretradeResponse,violations,list[openbb_quant_ml.models.RiskViolationItem],,scalar,,true,backend,server
+RiskViolationItem,rule_id,<class 'str'>,,scalar,,false,backend,server
+RiskViolationItem,severity,"typing.Literal['info', 'warning', 'critical']",,scalar,,false,backend,server
+RiskViolationItem,value,<class 'float'>,,scalar,,false,backend,server
+RiskViolationItem,limit,<class 'float'>,,scalar,,false,backend,server
+RiskViolationItem,message,<class 'str'>,,scalar,,false,backend,server
+RollingPerformanceResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RollingPerformanceResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,false,backend,server
+RollingPerformanceResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RollingPerformanceResponse,message,str | None,,scalar,,true,backend,server
+RollingPerformanceResponse,window_short,<class 'int'>,,scalar,,true,backend,server
+RollingPerformanceResponse,window_long,<class 'int'>,,scalar,,true,backend,server
+RollingPerformanceResponse,cumulative_return,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,rolling_sharpe_3m,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,rolling_sharpe_6m,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,rolling_ic_3m,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,rolling_ic_6m,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,rolling_maxdd,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,turnover_ts,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RollingPerformanceResponse,exposure_ts,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RunAuditEventItem,id,int | None,,scalar,,true,backend,server
+RunAuditEventItem,run_id,<class 'str'>,,scalar,,false,backend,server
+RunAuditEventItem,event_type,<class 'str'>,,scalar,,false,backend,server
+RunAuditEventItem,severity,"typing.Literal['info', 'warning', 'critical']",,scalar,,true,backend,server
+RunAuditEventItem,payload,"dict[str, typing.Any]",,scalar,,true,backend,server
+RunAuditEventItem,created_at_utc,<class 'str'>,,scalar,,false,backend,server
+RunAuditResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RunAuditResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RunAuditResponse,message,str | None,,scalar,,true,backend,server
+RunAuditResponse,events,list[openbb_quant_ml.models.RunAuditEventItem],,scalar,,true,backend,server
+RunLatestConstraintsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RunLatestConstraintsResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+RunLatestConstraintsResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RunLatestConstraintsResponse,message,str | None,,scalar,,true,backend,server
+RunLatestConstraintsResponse,items,list[openbb_quant_ml.models.ConstraintBindingItem],,scalar,,true,backend,server
+RunLatestConstraintsResponse,liquidity_clip_ratio,<class 'float'>,,scalar,,true,backend,server
+RunLatestConstraintsResponse,risk_contribution_max,<class 'float'>,,scalar,,true,backend,server
+RunLatestConstraintsResponse,top_risk_contribution,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RunLatestConstraintsResponse,liquidity_adv_top,"list[dict[str, float | str]]",,scalar,,true,backend,server
+RunLatestMetaResponse,run_id,str | None,,scalar,,true,backend,server
+RunLatestMetaResponse,run_uid,str | None,,scalar,,true,backend,server
+RunLatestMetaResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+RunLatestMetaResponse,as_of_date,str | None,,scalar,,true,backend,server
+RunLatestMetaResponse,status,"typing.Literal['ok', 'insufficient_data', 'not_found']",,scalar,,true,backend,server
+RunLatestMetaResponse,artifact_contract_version,str | None,,scalar,,true,backend,server
+RunLatestMetaResponse,required_artifacts_ready,<class 'bool'>,,scalar,,true,backend,server
+RunLatestMetaResponse,universe_stage_counts,"dict[str, int]",,scalar,,true,backend,server
+RunLatestMetaResponse,artifact_completeness,list[openbb_quant_ml.models.ArtifactCompletenessItem],,scalar,,true,backend,server
+RunLatestMetaResponse,message,str | None,,scalar,,true,backend,server
+RunStatusResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+RunStatusResponse,run_uid,str | None,,scalar,,true,backend,server
+RunStatusResponse,status,"typing.Literal['queued', 'running', 'completed', 'failed']",,scalar,,false,backend,server
+RunStatusResponse,progress,<class 'int'>,,scalar,,false,backend,server
+RunStatusResponse,stage,<class 'str'>,,scalar,,false,backend,server
+RunStatusResponse,created_at,<class 'str'>,,scalar,,false,backend,server
+RunStatusResponse,updated_at,<class 'str'>,,scalar,,false,backend,server
+RunStatusResponse,last_heartbeat_at,str | None,,scalar,,true,backend,server
+RunStatusResponse,run_idle_minutes,float | None,,scalar,,true,backend,server
+RunStatusResponse,stale_timeout_minutes,int | None,,scalar,,true,backend,server
+RunStatusResponse,stale_reason,str | None,,scalar,,true,backend,server
+RunStatusResponse,logs_tail,list[str],,scalar,,false,backend,server
+RunStatusResponse,error,str | None,,scalar,,true,backend,server
+RunStatusResponse,artifact_contract_version,str | None,,scalar,,true,backend,server
+RunStatusResponse,required_artifacts_ready,bool | None,,scalar,,true,backend,server
+SignalConfig,theta_grid,list[float],,scalar,,true,backend,server
+SignalConfig,selection_metric,typing.Literal['val_sharpe'],,scalar,,true,backend,server
+SignalItem,symbol,<class 'str'>,,scalar,,false,backend,server
+SignalItem,side,"typing.Literal['buy', 'hold', 'sell']",,scalar,,false,backend,server
+SignalItem,predicted_return,<class 'float'>,,scalar,,false,backend,server
+SignalItem,confidence,<class 'float'>,,scalar,,false,backend,server
+SignalItem,reason_codes,list[str],,scalar,,false,backend,server
+SignalItem,z_score,<class 'float'>,,scalar,,false,backend,server
+SignalItem,predicted_xgb,float | None,,scalar,,true,backend,server
+SignalItem,predicted_lstm,float | None,,scalar,,true,backend,server
+SignalRequest,run_id,<class 'str'>,,scalar,,false,backend,server
+SignalRequest,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+SignalRequest,as_of_date,datetime.date | None,,scalar,,true,backend,server
+SignalRequest,top_k,<class 'int'>,,scalar,,true,backend,server
+SignalRequest,score_threshold,<class 'float'>,,scalar,,true,backend,server
+SignalRequest,balanced_long_short,<class 'bool'>,,scalar,,true,backend,server
+SignalResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+SignalResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+SignalResponse,as_of_date,<class 'str'>,,scalar,,false,backend,server
+SignalResponse,latest_market_date,str | None,,scalar,,true,backend,server
+SignalResponse,staleness_days,<class 'int'>,,scalar,,true,backend,server
+SignalResponse,recommended_portfolio_mode,"typing.Literal['long_only', 'long_short']",,scalar,,true,backend,server
+SignalResponse,regime_snapshot,"dict[str, str]",,scalar,,true,backend,server
+SignalResponse,signals,list[openbb_quant_ml.models.SignalItem],,scalar,,false,backend,server
+TrainRequest,symbols,list[str] | None,,scalar,,true,backend,server
+TrainRequest,universe_id,str | None,,scalar,,true,backend,server
+TrainRequest,date_range,<class 'openbb_quant_ml.models.DateRange'>,,scalar,,false,backend,server
+TrainRequest,horizon_days,<class 'int'>,,scalar,,true,backend,server
+TrainRequest,target_mode,"typing.Literal['close_to_close', 'close_to_next_open', 'next_open_to_close']",,scalar,,true,backend,server
+TrainRequest,close_to_next_open_horizon_policy,"typing.Literal['fixed_1', 'use_h']",,scalar,,true,backend,server
+TrainRequest,include_macro_features,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,macro_feature_subset,list[str],,scalar,,true,backend,server
+TrainRequest,model_parameters,<class 'openbb_quant_ml.models.ModelConfig'>,,scalar,,true,backend,server
+TrainRequest,feature_parameters,<class 'openbb_quant_ml.models.FeatureConfig'>,,scalar,,true,backend,server
+TrainRequest,training_mode,"typing.Literal['single', 'dual_compare']",,scalar,,true,backend,server
+TrainRequest,model_set,"list[typing.Literal['xgb_lstm', 'lgbm_ranker']]",,scalar,,true,backend,server
+TrainRequest,walk_forward_config,<class 'openbb_quant_ml.models.WalkForwardConfig'>,,scalar,,true,backend,server
+TrainRequest,ranker_config,<class 'openbb_quant_ml.models.RankerConfig'>,,scalar,,true,backend,server
+TrainRequest,signal_config,<class 'openbb_quant_ml.models.SignalConfig'>,,scalar,,true,backend,server
+TrainRequest,portfolio_mode,"typing.Literal['long_only', 'long_short']",,scalar,,true,backend,server
+TrainRequest,mu_mapping,"typing.Literal['z_score', 'quantile_mean_return']",,scalar,,true,backend,server
+TrainRequest,quick_mode,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,model_choice,"typing.Literal['lgbm_only', 'xgb_only', 'dual']",,scalar,,true,backend,server
+TrainRequest,early_stopping,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,feature_pruning,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,walk_forward_compact,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,cross_sectional_sampling,<class 'bool'>,,scalar,,true,backend,server
+TrainRequest,top_liquid_n,int | None,,scalar,,true,backend,server
+TrainResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+TrainResponse,status,"typing.Literal['queued', 'running', 'completed', 'failed']",,scalar,,false,backend,server
+TrainResponse,artifact_root,<class 'str'>,,scalar,,false,backend,server
+TrainResponse,created_at,<class 'str'>,,scalar,,false,backend,server
+TrainResultV2,run_id,<class 'str'>,,scalar,,false,backend,server
+TrainResultV2,run_uid,str | None,,scalar,,true,backend,server
+TrainResultV2,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+TrainResultV2,universe_hash,str | None,,scalar,,true,backend,server
+TrainResultV2,feature_hash,str | None,,scalar,,true,backend,server
+TrainResultV2,config_hash,str | None,,scalar,,true,backend,server
+TrainResultV2,train_start_utc,str | None,,scalar,,true,backend,server
+TrainResultV2,train_end_utc,str | None,,scalar,,true,backend,server
+TrainResultV2,validation_metrics,"dict[str, float]",,scalar,,true,backend,server
+TrainResultV2,artifact_uri,str | None,,scalar,,true,backend,server
+TrainResultV2,data_version,str | None,,scalar,,true,backend,server
+TrainResultV2,feature_version,str | None,,scalar,,true,backend,server
+TrainResultV2,currency,<class 'str'>,,scalar,,true,backend,server
+UniverseAsset,symbol,<class 'str'>,,scalar,,false,backend,server
+UniverseAsset,category,<class 'str'>,,scalar,,false,backend,server
+UniverseExclusionItem,symbol,<class 'str'>,,scalar,,false,backend,server
+UniverseExclusionItem,stage,"typing.Literal['u0', 'u1', 'u2']",,scalar,,false,backend,server
+UniverseExclusionItem,reasons,list[str],,scalar,,true,backend,server
+UniverseExclusionItem,as_of_date,str | None,,scalar,,true,backend,server
+UniverseExclusionItem,company_id,str | None,,scalar,,true,backend,server
+UniverseExclusionsResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+UniverseExclusionsResponse,items,list[openbb_quant_ml.models.UniverseExclusionItem],,scalar,,true,backend,server
+UniverseListItemResponse,id,<class 'str'>,,scalar,,false,backend,server
+UniverseListItemResponse,has_file,<class 'bool'>,,scalar,,true,backend,server
+UniverseListItemResponse,path,str | None,,scalar,,true,backend,server
+UniverseListItemResponse,count_hint,<class 'int'>,,scalar,,true,backend,server
+UniverseListItemResponse,minimum_required,<class 'int'>,,scalar,,true,backend,server
+UniverseListResponse,universes,list[openbb_quant_ml.models.UniverseListItemResponse],,scalar,,true,backend,server
+UniverseResolveResponse,universe_id,<class 'str'>,,scalar,,false,backend,server
+UniverseResolveResponse,mode,<class 'str'>,,scalar,,true,backend,server
+UniverseResolveResponse,count,<class 'int'>,,scalar,,true,backend,server
+UniverseResolveResponse,minimum_required,<class 'int'>,,scalar,,true,backend,server
+UniverseResolveResponse,meets_minimum,<class 'bool'>,,scalar,,true,backend,server
+UniverseResolveResponse,symbols,list[str] | None,,scalar,,true,backend,server
+UniverseResolveResponse,deprecated,<class 'bool'>,,scalar,,true,backend,server
+UniverseResolveResponse,replacement_id,str | None,,scalar,,true,backend,server
+UniverseResolveResponse,sunset_date,str | None,,scalar,,true,backend,server
+UniverseResponse,version,<class 'str'>,,scalar,,false,backend,server
+UniverseResponse,assets,list[openbb_quant_ml.models.UniverseAsset],,scalar,,false,backend,server
+UniverseSnapshotResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+UniverseSnapshotResponse,as_of_date,<class 'str'>,,scalar,,false,backend,server
+UniverseSnapshotResponse,universe_id,<class 'str'>,,scalar,,false,backend,server
+UniverseSnapshotResponse,stage_counts,"dict[str, int]",,scalar,,true,backend,server
+UniverseSnapshotResponse,u0_symbols,list[str],,scalar,,true,backend,server
+UniverseSnapshotResponse,u1_symbols,list[str],,scalar,,true,backend,server
+UniverseSnapshotResponse,u2_symbols,list[str],,scalar,,true,backend,server
+UniverseSnapshotResponse,excluded,list[openbb_quant_ml.models.UniverseExclusionItem],,scalar,,true,backend,server
+WalkForwardBacktestRequest,run_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardBacktestRequest,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+WalkForwardBacktestRequest,start_date,<class 'datetime.date'>,,scalar,,false,backend,server
+WalkForwardBacktestRequest,end_date,<class 'datetime.date'>,,scalar,,false,backend,server
+WalkForwardBacktestRequest,rebalance,typing.Literal['monthly'],,scalar,,true,backend,server
+WalkForwardBacktestRequest,constraints,<class 'openbb_quant_ml.models.BacktestConstraints'>,,scalar,,true,backend,server
+WalkForwardBacktestRequest,cost_bps,<class 'float'>,,scalar,,true,backend,server
+WalkForwardBacktestRequest,slippage_bps,<class 'float'>,,scalar,,true,backend,server
+WalkForwardBacktestRequest,entry_price,"typing.Literal['next_open', 'close']",,scalar,,true,backend,server
+WalkForwardBacktestRequest,exit_price,"typing.Literal['close', 'next_open']",,scalar,,true,backend,server
+WalkForwardBacktestRequest,portfolio_mode,"typing.Literal['long_only', 'long_short']",,scalar,,true,backend,server
+WalkForwardBacktestRequest,regime_policy,"typing.Literal['fixed', 'mixed']",,scalar,,true,backend,server
+WalkForwardBacktestRequest,min_history_days,<class 'int'>,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,job_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardBacktestStatusResponse,status,"typing.Literal['queued', 'running', 'completed', 'failed', 'not_found']",,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardBacktestStatusResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,created_at,str | None,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,updated_at,str | None,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,artifact_root,str | None,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,progress,<class 'int'>,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,metrics,openbb_quant_ml.models.BacktestMetrics | None,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,message,str | None,,scalar,,true,backend,server
+WalkForwardBacktestStatusResponse,train_windows,"list[dict[str, str]]",,scalar,,true,backend,server
+WalkForwardBacktestSubmitResponse,job_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardBacktestSubmitResponse,status,"typing.Literal['queued', 'running', 'completed', 'failed', 'not_found']",,scalar,,true,backend,server
+WalkForwardBacktestSubmitResponse,run_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardBacktestSubmitResponse,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+WalkForwardBacktestSubmitResponse,created_at,<class 'str'>,,scalar,,false,backend,server
+WalkForwardConfig,train_months,<class 'int'>,,scalar,,true,backend,server
+WalkForwardConfig,embargo_months,<class 'int'>,,scalar,,true,backend,server
+WalkForwardConfig,val_months,<class 'int'>,,scalar,,true,backend,server
+WalkForwardConfig,step_months,<class 'int'>,,scalar,,true,backend,server
+WalkForwardFoldV2,fold_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardFoldV2,train_period,"dict[str, str]",,scalar,,true,backend,server
+WalkForwardFoldV2,test_period,"dict[str, str]",,scalar,,true,backend,server
+WalkForwardFoldV2,fold_metrics,"dict[str, float]",,scalar,,true,backend,server
+WalkForwardFoldV2,fold_equity,"list[dict[str, float | str]]",,scalar,,true,backend,server
+WalkForwardFoldV2,asof_manifest_hash,str | None,,scalar,,true,backend,server
+WalkForwardResultV2,run_id,<class 'str'>,,scalar,,false,backend,server
+WalkForwardResultV2,run_uid,str | None,,scalar,,true,backend,server
+WalkForwardResultV2,model_name,"typing.Literal['xgb_lstm', 'lgbm_ranker']",,scalar,,true,backend,server
+WalkForwardResultV2,folds,list[openbb_quant_ml.models.WalkForwardFoldV2],,scalar,,true,backend,server
+WalkForwardResultV2,aggregate_metrics,"dict[str, float]",,scalar,,true,backend,server
+WalkForwardResultV2,train_window_integrity,<class 'bool'>,,scalar,,true,backend,server
+WalkForwardResultV2,currency,<class 'str'>,,scalar,,true,backend,server
+WeightDeltaItem,symbol,<class 'str'>,,scalar,,false,backend,server
+WeightDeltaItem,delta,<class 'float'>,,scalar,,false,backend,server
+WorkflowArtifactsReady,predictions,<class 'bool'>,,scalar,,true,backend,server
+WorkflowArtifactsReady,signals,<class 'bool'>,,scalar,,true,backend,server
+WorkflowArtifactsReady,backtest,<class 'bool'>,,scalar,,true,backend,server
+WorkflowArtifactsReady,portfolio_current,<class 'bool'>,,scalar,,true,backend,server
+WorkflowState,run_status,"typing.Literal['queued', 'running', 'completed', 'failed', 'unknown']",,scalar,,true,backend,server
+WorkflowState,run_stage,<class 'str'>,,scalar,,true,backend,server
+WorkflowState,run_progress,<class 'int'>,,scalar,,true,backend,server
+WorkflowState,artifacts_ready,<class 'openbb_quant_ml.models.WorkflowArtifactsReady'>,,scalar,,true,backend,server
+WorkflowState,updated_at,str | None,,scalar,,true,backend,server

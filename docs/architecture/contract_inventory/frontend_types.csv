@@ -1,0 +1,685 @@
+interface,field_name,type,unit,shape,index_format,nullable,owner_layer,compute_responsibility
+UniverseAsset,symbol,string,,scalar,,false,frontend,client_render_only
+UniverseAsset,category,string,,scalar,,false,frontend,client_render_only
+UniverseResponse,version,string,,scalar,,false,frontend,client_render_only
+UniverseResponse,assets,UniverseAsset[],,scalar,,false,frontend,client_render_only
+UniverseListItemPayload,id,string,,scalar,,false,frontend,client_render_only
+UniverseListItemPayload,has_file,boolean,,scalar,,false,frontend,client_render_only
+UniverseListItemPayload,path,string | null,,scalar,,true,frontend,client_render_only
+UniverseListItemPayload,count_hint,number,,scalar,,false,frontend,client_render_only
+UniverseListItemPayload,minimum_required,number,,scalar,,true,frontend,client_render_only
+UniverseListPayload,universes,UniverseListItemPayload[],,scalar,,false,frontend,client_render_only
+UniverseResolvePayload,universe_id,string,,scalar,,false,frontend,client_render_only
+UniverseResolvePayload,mode,string,,scalar,,false,frontend,client_render_only
+UniverseResolvePayload,count,number,,scalar,,false,frontend,client_render_only
+UniverseResolvePayload,minimum_required,number,,scalar,,true,frontend,client_render_only
+UniverseResolvePayload,meets_minimum,boolean,,scalar,,true,frontend,client_render_only
+UniverseResolvePayload,symbols,string[] | null,,scalar,,true,frontend,client_render_only
+UniverseResolvePayload,deprecated,boolean,,scalar,,true,frontend,client_render_only
+UniverseResolvePayload,replacement_id,string | null,,scalar,,true,frontend,client_render_only
+UniverseResolvePayload,sunset_date,string | null,,scalar,,true,frontend,client_render_only
+DateRangeInput,start,string,,scalar,,false,frontend,client_render_only
+DateRangeInput,end,string,,scalar,,false,frontend,client_render_only
+ModelConfigInput,seq_len,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,xgb_n_estimators,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,xgb_max_depth,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,xgb_learning_rate,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,xgb_subsample,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,xgb_colsample_bytree,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_hidden_size,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_num_layers,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_dropout,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_epochs,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_batch_size,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,lstm_learning_rate,number,,scalar,,false,frontend,client_render_only
+ModelConfigInput,train_val_split,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,objective,"""rank_xendcg""",,scalar,,false,frontend,client_render_only
+RankerConfigInput,metric,"""ndcg""",,scalar,,false,frontend,client_render_only
+RankerConfigInput,ndcg_eval_at,number[],,scalar,,false,frontend,client_render_only
+RankerConfigInput,learning_rate,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,n_estimators,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,num_leaves,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,min_data_in_leaf,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,subsample,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,colsample_bytree,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,reg_lambda,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,random_state,number,,scalar,,false,frontend,client_render_only
+RankerConfigInput,early_stopping_rounds,number,,scalar,,false,frontend,client_render_only
+WalkForwardConfigInput,train_months,number,,scalar,,false,frontend,client_render_only
+WalkForwardConfigInput,embargo_months,number,,scalar,,false,frontend,client_render_only
+WalkForwardConfigInput,val_months,number,,scalar,,false,frontend,client_render_only
+WalkForwardConfigInput,step_months,number,,scalar,,false,frontend,client_render_only
+SignalConfigInput,theta_grid,number[],,scalar,,false,frontend,client_render_only
+SignalConfigInput,selection_metric,"""val_sharpe""",,scalar,,false,frontend,client_render_only
+FeatureConfigInput,lags,number[],,scalar,,false,frontend,client_render_only
+FeatureConfigInput,vol_windows,number[],,scalar,,false,frontend,client_render_only
+FeatureConfigInput,momentum_windows,number[],,scalar,,false,frontend,client_render_only
+FeatureConfigInput,include_rsi,boolean,,scalar,,false,frontend,client_render_only
+FeatureConfigInput,include_macd,boolean,,scalar,,false,frontend,client_render_only
+FeatureConfigInput,include_regime_features,boolean,,scalar,,false,frontend,client_render_only
+TrainRequestPayload,symbols,string[],,scalar,,true,frontend,client_render_only
+TrainRequestPayload,universe_id,string,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,date_range,DateRangeInput,,scalar,,false,frontend,client_render_only
+TrainRequestPayload,horizon_days,number,,scalar,,false,frontend,client_render_only
+TrainRequestPayload,target_mode,TargetMode,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,close_to_next_open_horizon_policy,CloseToNextOpenHorizonPolicy,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,include_macro_features,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,macro_feature_subset,string[],,scalar,,true,frontend,client_render_only
+TrainRequestPayload,model_config,ModelConfigInput,,scalar,,false,frontend,client_render_only
+TrainRequestPayload,feature_config,FeatureConfigInput,,scalar,,false,frontend,client_render_only
+TrainRequestPayload,training_mode,"""single"" | ""dual_compare""",,scalar,,true,frontend,client_render_only
+TrainRequestPayload,model_set,ModelName[],,scalar,,true,frontend,client_render_only
+TrainRequestPayload,walk_forward_config,WalkForwardConfigInput,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,ranker_config,RankerConfigInput,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,signal_config,SignalConfigInput,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,portfolio_mode,PortfolioMode,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,mu_mapping,MuMapping,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,quick_mode,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,model_choice,ModelChoice,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,early_stopping,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,feature_pruning,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,walk_forward_compact,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,cross_sectional_sampling,boolean,,scalar,,true,frontend,client_render_only
+TrainRequestPayload,top_liquid_n,number,,scalar,,true,frontend,client_render_only
+TrainResponsePayload,run_id,string,,scalar,,false,frontend,client_render_only
+TrainResponsePayload,status,TrainRunStatus,,scalar,,false,frontend,client_render_only
+TrainResponsePayload,artifact_root,string,,scalar,,false,frontend,client_render_only
+TrainResponsePayload,created_at,string,,scalar,,false,frontend,client_render_only
+RunStatusPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RunStatusPayload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,status,TrainRunStatus,,scalar,,false,frontend,client_render_only
+RunStatusPayload,progress,number,,scalar,,false,frontend,client_render_only
+RunStatusPayload,stage,string,,scalar,,false,frontend,client_render_only
+RunStatusPayload,created_at,string,,scalar,,false,frontend,client_render_only
+RunStatusPayload,updated_at,string,,scalar,,false,frontend,client_render_only
+RunStatusPayload,last_heartbeat_at,string | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,run_idle_minutes,number | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,stale_timeout_minutes,number | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,stale_reason,string | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,logs_tail,string[],,scalar,,false,frontend,client_render_only
+RunStatusPayload,error,string | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,artifact_contract_version,string | null,,scalar,,true,frontend,client_render_only
+RunStatusPayload,required_artifacts_ready,boolean | null,,scalar,,true,frontend,client_render_only
+SignalItem,symbol,string,,scalar,,false,frontend,client_render_only
+SignalItem,side,SignalSide,,scalar,,false,frontend,client_render_only
+SignalItem,predicted_return,number,,scalar,,false,frontend,client_render_only
+SignalItem,confidence,number,,scalar,,false,frontend,client_render_only
+SignalItem,reason_codes,string[],,scalar,,false,frontend,client_render_only
+SignalItem,z_score,number,,scalar,,false,frontend,client_render_only
+SignalItem,predicted_xgb,number | null,,scalar,,true,frontend,client_render_only
+SignalItem,predicted_lstm,number | null,,scalar,,true,frontend,client_render_only
+SignalsResponsePayload,run_id,string,,scalar,,false,frontend,client_render_only
+SignalsResponsePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+SignalsResponsePayload,as_of_date,string,,scalar,,false,frontend,client_render_only
+SignalsResponsePayload,signals,SignalItem[],,scalar,,false,frontend,client_render_only
+SignalsRequestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+SignalsRequestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+SignalsRequestPayload,as_of_date,string,,scalar,,true,frontend,client_render_only
+SignalsRequestPayload,top_k,number,,scalar,,false,frontend,client_render_only
+SignalsRequestPayload,score_threshold,number,,scalar,,false,frontend,client_render_only
+BacktestConstraintsInput,max_weight,number,,scalar,,false,frontend,client_render_only
+BacktestConstraintsInput,long_only,boolean,,scalar,,false,frontend,client_render_only
+BacktestConstraintsInput,risk_aversion,number,,scalar,,false,frontend,client_render_only
+BacktestConstraintsInput,lookback_days,number,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,start,string,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,end,string,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,rebalance,"""monthly""",,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,constraints,BacktestConstraintsInput,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,cost_bps,number,,scalar,,false,frontend,client_render_only
+BacktestRequestPayload,slippage_bps,number,,scalar,,true,frontend,client_render_only
+BacktestRequestPayload,entry_price,EntryPriceMode,,scalar,,true,frontend,client_render_only
+BacktestRequestPayload,exit_price,ExitPriceMode,,scalar,,true,frontend,client_render_only
+BacktestRequestPayload,portfolio_mode,PortfolioMode,,scalar,,true,frontend,client_render_only
+BacktestRequestPayload,mu_mapping,MuMapping,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,start,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,end,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,rebalance,"""monthly""",,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,constraints,BacktestConstraintsInput,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,cost_bps,number,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestRequestPayload,slippage_bps,number,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,entry_price,EntryPriceMode,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,exit_price,ExitPriceMode,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,portfolio_mode,PortfolioMode,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,regime_policy,"""fixed"" | ""mixed""",,scalar,,true,frontend,client_render_only
+WalkForwardBacktestRequestPayload,min_history_days,number,,scalar,,true,frontend,client_render_only
+BacktestMetrics,cagr,number,,scalar,,false,frontend,client_render_only
+BacktestMetrics,sharpe,number,,scalar,,false,frontend,client_render_only
+BacktestMetrics,max_drawdown,number,,scalar,,false,frontend,client_render_only
+BacktestMetrics,volatility,number,,scalar,,false,frontend,client_render_only
+BacktestMetrics,turnover,number,,scalar,,false,frontend,client_render_only
+EquityCurvePoint,date,string,,scalar,,false,frontend,client_render_only
+EquityCurvePoint,equity,number,,scalar,,false,frontend,client_render_only
+EquityCurvePoint,daily_return,number,,scalar,,false,frontend,client_render_only
+BenchmarkCurvePoint,date,string,,scalar,,false,frontend,client_render_only
+BenchmarkCurvePoint,benchmark,number,,scalar,,false,frontend,client_render_only
+PeriodWeightsPoint,date,string,,scalar,,false,frontend,client_render_only
+PeriodWeightsPoint,weights,"Record<string, number>",,scalar,,false,frontend,client_render_only
+WeightDeltaItem,symbol,string,,scalar,,false,frontend,client_render_only
+WeightDeltaItem,delta,number,,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,date,string,,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,previous_date,string | null,,scalar,,true,frontend,client_render_only
+RebalanceHistoryItem,added,string[],,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,sold,string[],,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,top_weight_increases,WeightDeltaItem[],,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,top_weight_decreases,WeightDeltaItem[],,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,turnover,number,,scalar,,false,frontend,client_render_only
+RebalanceHistoryItem,binding_constraints,string[],,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,run_id,string,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,start_date,string,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,end_date,string,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,base_index,number,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,benchmark_symbol,string,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,metrics,BacktestMetrics,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,equity_curve,EquityCurvePoint[],,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,benchmark_curve,BenchmarkCurvePoint[],,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,period_weights,PeriodWeightsPoint[],,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,effective_constraints,"Record<string, number | boolean>",,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,cash_weight,number,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,rebalance_history_summary,RebalanceHistoryItem[],,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,constraint_violations,"Array<Record<string, unknown>>",,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,liquidity_clip_ratio,number,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,risk_contribution_max,number,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,universe_stage_counts,"Record<string, number>",,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,weights_target_available,boolean,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,weights_final_available,boolean,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,constraint_binding_summary,"Array<{
+    constraint_type: string",,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,binding_count,number,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,binding_ratio,number,,scalar,,false,frontend,client_render_only
+BacktestResponsePayload,artifact_contract_version,string | null,,scalar,,true,frontend,client_render_only
+BacktestResponsePayload,required_artifacts_ready,boolean,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestSubmitPayload,job_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestSubmitPayload,status,WalkForwardJobStatus,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestSubmitPayload,run_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestSubmitPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestSubmitPayload,created_at,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,job_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,status,WalkForwardJobStatus,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,run_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,created_at,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestStatusPayload,updated_at,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestStatusPayload,artifact_root,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestStatusPayload,progress,number,,scalar,,false,frontend,client_render_only
+WalkForwardBacktestStatusPayload,metrics,BacktestMetrics | null,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestStatusPayload,message,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardBacktestStatusPayload,train_windows,Array<{ rebalance_date: string,,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,model_meta,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,latest_validation_error,number | null,,scalar,,true,frontend,client_render_only
+ArtifactSummaryPayload,feature_importance,Array<{ feature: string,,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,params,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+ArtifactSummaryPayload,available_artifacts,string[],,scalar,,false,frontend,client_render_only
+ModelPerformanceItem,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ModelPerformanceItem,train_ic,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,val_ic,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,ndcg,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,sharpe,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,max_dd,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,turnover,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,hit_rate,number | null,,scalar,,true,frontend,client_render_only
+ModelPerformanceItem,regime_performance,"Record<string, number | string | null>",,scalar,,true,frontend,client_render_only
+ModelPerformancePayload,run_id,string,,scalar,,false,frontend,client_render_only
+ModelPerformancePayload,models,ModelPerformanceItem[],,scalar,,false,frontend,client_render_only
+ModelICPoint,date,string,,scalar,,false,frontend,client_render_only
+ModelICPoint,ic,number,,scalar,,false,frontend,client_render_only
+ModelICPoint,rolling_ic,number | null,,scalar,,true,frontend,client_render_only
+ModelICPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ModelICPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ModelICPayload,window,number,,scalar,,false,frontend,client_render_only
+ModelICPayload,points,ModelICPoint[],,scalar,,false,frontend,client_render_only
+ModelRegimePayload,run_id,string,,scalar,,false,frontend,client_render_only
+ModelRegimePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ModelRegimePayload,regimes,"Record<string, Record<string, number>>",,scalar,,false,frontend,client_render_only
+PortfolioSymbolWeightItem,symbol,string,,scalar,,false,frontend,client_render_only
+PortfolioSymbolWeightItem,weight,number,,scalar,,false,frontend,client_render_only
+PortfolioSymbolWeightItem,category,string,,scalar,,false,frontend,client_render_only
+PortfolioSymbolWeightItem,name,string | null,,scalar,,true,frontend,client_render_only
+PortfolioSymbolWeightItem,market,string | null,,scalar,,true,frontend,client_render_only
+PortfolioSymbolWeightItem,sector_l1,string | null,,scalar,,true,frontend,client_render_only
+PortfolioSymbolWeightItem,category_l2,string | null,,scalar,,true,frontend,client_render_only
+AssetClassWeightItem,category,string,,scalar,,false,frontend,client_render_only
+AssetClassWeightItem,weight,number,,scalar,,false,frontend,client_render_only
+PortfolioRationalePayload,summary_lines,string[],,scalar,,false,frontend,client_render_only
+PortfolioRationalePayload,constraints_applied,"Record<string, number | boolean>",,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,run_id,string,,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+PortfolioCurrentPayload,total_weight,number,,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,symbol_weights,PortfolioSymbolWeightItem[],,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,asset_class_weights,AssetClassWeightItem[],,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,asset_class_weights_l1,AssetClassWeightItem[],,scalar,,true,frontend,client_render_only
+PortfolioCurrentPayload,rationale,PortfolioRationalePayload,,scalar,,false,frontend,client_render_only
+PortfolioCurrentPayload,last_rebalance_trades,RebalanceHistoryItem | null,,scalar,,true,frontend,client_render_only
+PortfolioCurrentPayload,last_rebalance_turnover,number,,scalar,,true,frontend,client_render_only
+RebalanceHistoryPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RebalanceHistoryPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RebalanceHistoryPayload,items,RebalanceHistoryItem[],,scalar,,false,frontend,client_render_only
+UniverseExclusionItemPayload,symbol,string,,scalar,,false,frontend,client_render_only
+UniverseExclusionItemPayload,stage,"""u0"" | ""u1"" | ""u2""",,scalar,,false,frontend,client_render_only
+UniverseExclusionItemPayload,reasons,string[],,scalar,,false,frontend,client_render_only
+UniverseExclusionItemPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+UniverseExclusionItemPayload,company_id,string | null,,scalar,,true,frontend,client_render_only
+UniverseSnapshotPayload,run_id,string,,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,as_of_date,string,,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,universe_id,string,,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,stage_counts,"Record<string, number>",,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,u0_symbols,string[],,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,u1_symbols,string[],,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,u2_symbols,string[],,scalar,,false,frontend,client_render_only
+UniverseSnapshotPayload,excluded,UniverseExclusionItemPayload[],,scalar,,false,frontend,client_render_only
+UniverseExclusionsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+UniverseExclusionsPayload,items,UniverseExclusionItemPayload[],,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,template,string,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,single_name_max_abs_weight,number,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,small_universe_policy,string,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,sector_concentration_max,number,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,turnover_max,number,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,gross_exposure_max,number,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,net_exposure_abs_max,number,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,cash_symbol,string,,scalar,,false,frontend,client_render_only
+PortfolioPolicyPayload,cash_category,string,,scalar,,false,frontend,client_render_only
+PromotedModelPayload,run_id,string | null,,scalar,,true,frontend,client_render_only
+PromotedModelPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PromotedModelPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+PromotedModelPayload,feature_hash,string | null,,scalar,,true,frontend,client_render_only
+PromotedModelPayload,updated_at,string | null,,scalar,,true,frontend,client_render_only
+PromotedModelPayload,source,string,,scalar,,false,frontend,client_render_only
+PromotedModelPayload,ready,boolean,,scalar,,false,frontend,client_render_only
+FeatureImportancePayload,run_id,string,,scalar,,false,frontend,client_render_only
+FeatureImportancePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+FeatureImportancePayload,items,Array<{ feature?: string,,scalar,,true,frontend,client_render_only
+PredictionsLatestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+PredictionsLatestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PredictionsLatestPayload,as_of_date,string,,scalar,,false,frontend,client_render_only
+PredictionsLatestPayload,predictions,"Array<Record<string, unknown>>",,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,run_id,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,model_name,ModelName | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,message,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,backend_connected,boolean,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,backend_source,string,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,backend_detail,string,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,latest_run_id,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,resolved_run_id,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,promoted_run_id,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,pretrain_ready,boolean,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,cache_warm_ratio,number,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,mode_supported,DashboardMode[],,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,data_timestamp,string | null,,scalar,,true,frontend,client_render_only
+DashboardHealthPayload,universe_size,number,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,cost_bps,number,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,cash_exposure,number,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,gross_exposure,number,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,net_exposure,number,,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,strategy_health,"Record<string, number>",,scalar,,false,frontend,client_render_only
+DashboardHealthPayload,workflow_state,WorkflowStatePayload,,scalar,,true,frontend,client_render_only
+WorkflowArtifactsReadyPayload,predictions,boolean,,scalar,,false,frontend,client_render_only
+WorkflowArtifactsReadyPayload,signals,boolean,,scalar,,false,frontend,client_render_only
+WorkflowArtifactsReadyPayload,backtest,boolean,,scalar,,false,frontend,client_render_only
+WorkflowArtifactsReadyPayload,portfolio_current,boolean,,scalar,,false,frontend,client_render_only
+WorkflowStatePayload,run_status,WorkflowRunStatus,,scalar,,false,frontend,client_render_only
+WorkflowStatePayload,run_stage,string,,scalar,,false,frontend,client_render_only
+WorkflowStatePayload,run_progress,number,,scalar,,false,frontend,client_render_only
+WorkflowStatePayload,artifacts_ready,WorkflowArtifactsReadyPayload,,scalar,,false,frontend,client_render_only
+WorkflowStatePayload,updated_at,string | null,,scalar,,true,frontend,client_render_only
+QuantSessionState,run_id,string,,scalar,,false,frontend,client_render_only
+QuantSessionState,model_name,ModelName,,scalar,,false,frontend,client_render_only
+QuantSessionState,mode,DashboardMode,,scalar,,false,frontend,client_render_only
+QuantSessionState,run_status,WorkflowRunStatus,,scalar,,false,frontend,client_render_only
+QuantSessionState,run_stage,string,,scalar,,false,frontend,client_render_only
+QuantSessionState,run_progress,number,,scalar,,false,frontend,client_render_only
+QuantSessionState,artifacts_ready,WorkflowArtifactsReadyPayload,,scalar,,false,frontend,client_render_only
+QuantSessionState,data_timestamp,string | null,,scalar,,true,frontend,client_render_only
+QuantSessionState,updated_at,string | null,,scalar,,true,frontend,client_render_only
+TimeSeriesPoint,date,string,,scalar,,false,frontend,client_render_only
+TimeSeriesPoint,value,number,,scalar,,false,frontend,client_render_only
+ExposureTimeSeriesPoint,date,string,,scalar,,false,frontend,client_render_only
+ExposureTimeSeriesPoint,cash,number,,scalar,,false,frontend,client_render_only
+ExposureTimeSeriesPoint,gross,number,,scalar,,false,frontend,client_render_only
+ExposureTimeSeriesPoint,net,number,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,run_id,string,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,message,string | null,,scalar,,true,frontend,client_render_only
+RollingPerformancePayload,window_short,number,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,window_long,number,,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,cumulative_return,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,rolling_sharpe_3m,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,rolling_sharpe_6m,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,rolling_ic_3m,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,rolling_ic_6m,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,rolling_maxdd,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,turnover_ts,TimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RollingPerformancePayload,exposure_ts,ExposureTimeSeriesPoint[],,scalar,,false,frontend,client_render_only
+RegimePerformanceStats,count,number,,scalar,,false,frontend,client_render_only
+RegimePerformanceStats,mean_return,number,,scalar,,false,frontend,client_render_only
+RegimePerformanceStats,sharpe,number,,scalar,,false,frontend,client_render_only
+RegimePerformanceStats,ic,number,,scalar,,false,frontend,client_render_only
+RegimePerformanceStats,turnover,number,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,trend_regime,string,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,vol_regime,string,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,count,number,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,sharpe,number,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,mean_return,number,,scalar,,false,frontend,client_render_only
+RegimeMatrixPoint,ic,number,,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,run_id,string,,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,message,string | null,,scalar,,true,frontend,client_render_only
+PerformanceRegimePayload,trend_regime_perf,"Record<string, RegimePerformanceStats>",,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,vol_regime_perf,"Record<string, RegimePerformanceStats>",,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,liquidity_regime_perf,"Record<string, RegimePerformanceStats>",,scalar,,false,frontend,client_render_only
+PerformanceRegimePayload,matrix_2d,RegimeMatrixPoint[],,scalar,,false,frontend,client_render_only
+PortfolioPositionItem,symbol,string,,scalar,,false,frontend,client_render_only
+PortfolioPositionItem,weight,number,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,run_id,string,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,message,string | null,,scalar,,true,frontend,client_render_only
+PortfolioExposurePayload,sector_exposure,AssetClassWeightItem[],,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,factor_exposure,"Record<string, number>",,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,beta_spy,number,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,beta_qqq,number,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,duration_estimate,number,,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,top10_long,PortfolioPositionItem[],,scalar,,false,frontend,client_render_only
+PortfolioExposurePayload,top10_short,PortfolioPositionItem[],,scalar,,false,frontend,client_render_only
+PortfolioRiskContributionItem,symbol,string,,scalar,,false,frontend,client_render_only
+PortfolioRiskContributionItem,contribution,number,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,run_id,string,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,message,string | null,,scalar,,true,frontend,client_render_only
+PortfolioRiskPayload,vol_ex_ante,number,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,cvar_95,number,,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,position_risk_contrib_top5,PortfolioRiskContributionItem[],,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,position_risk_contrib_top10,PortfolioRiskContributionItem[],,scalar,,true,frontend,client_render_only
+PortfolioRiskPayload,position_return_contrib_top5,PortfolioRiskContributionItem[],,scalar,,false,frontend,client_render_only
+PortfolioRiskPayload,worst5_positions,PortfolioRiskContributionItem[],,scalar,,false,frontend,client_render_only
+ConstraintBindingItemPayload,constraint_type,string,,scalar,,false,frontend,client_render_only
+ConstraintBindingItemPayload,binding_count,number,,scalar,,false,frontend,client_render_only
+ConstraintBindingItemPayload,binding_ratio,number,,scalar,,false,frontend,client_render_only
+ArtifactCompletenessItemPayload,artifact,string,,scalar,,false,frontend,client_render_only
+ArtifactCompletenessItemPayload,ready,boolean,,scalar,,false,frontend,client_render_only
+ArtifactCompletenessItemPayload,path,string | null,,scalar,,true,frontend,client_render_only
+RunLatestMetaPayload,run_id,string | null,,scalar,,true,frontend,client_render_only
+RunLatestMetaPayload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+RunLatestMetaPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RunLatestMetaPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+RunLatestMetaPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RunLatestMetaPayload,artifact_contract_version,string | null,,scalar,,true,frontend,client_render_only
+RunLatestMetaPayload,required_artifacts_ready,boolean,,scalar,,false,frontend,client_render_only
+RunLatestMetaPayload,universe_stage_counts,"Record<string, number>",,scalar,,false,frontend,client_render_only
+RunLatestMetaPayload,artifact_completeness,ArtifactCompletenessItemPayload[],,scalar,,false,frontend,client_render_only
+RunLatestMetaPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RunLatestConstraintsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RunLatestConstraintsPayload,items,ConstraintBindingItemPayload[],,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,liquidity_clip_ratio,number,,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,risk_contribution_max,number,,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,top_risk_contribution,PortfolioRiskContributionItem[],,scalar,,false,frontend,client_render_only
+RunLatestConstraintsPayload,liquidity_adv_top,Array<{ symbol: string,,scalar,,false,frontend,client_render_only
+TrainResultV2Payload,run_id,string,,scalar,,false,frontend,client_render_only
+TrainResultV2Payload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+TrainResultV2Payload,universe_hash,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,feature_hash,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,config_hash,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,train_start_utc,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,train_end_utc,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,validation_metrics,"Record<string, number>",,scalar,,false,frontend,client_render_only
+TrainResultV2Payload,artifact_uri,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,data_version,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,feature_version,string | null,,scalar,,true,frontend,client_render_only
+TrainResultV2Payload,currency,string,,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,run_id,string,,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+BacktestResultV2Payload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,equity_base,number,,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,equity_curve,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,returns_decimal,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,cumulative_returns,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,drawdown,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,gross_exposure,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,net_exposure,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,positions,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,trades,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,turnover,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,metrics,"Record<string, number>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,asof_manifest,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+BacktestResultV2Payload,currency,string,,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,fold_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,train_period,"Record<string, string>",,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,test_period,"Record<string, string>",,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,fold_metrics,"Record<string, number>",,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,fold_equity,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+WalkForwardFoldV2Payload,asof_manifest_hash,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardResultV2Payload,run_id,string,,scalar,,false,frontend,client_render_only
+WalkForwardResultV2Payload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+WalkForwardResultV2Payload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+WalkForwardResultV2Payload,folds,WalkForwardFoldV2Payload[],,scalar,,false,frontend,client_render_only
+WalkForwardResultV2Payload,aggregate_metrics,"Record<string, number>",,scalar,,false,frontend,client_render_only
+WalkForwardResultV2Payload,train_window_integrity,boolean,,scalar,,false,frontend,client_render_only
+WalkForwardResultV2Payload,currency,string,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,portfolio_value,number,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,cash,number,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,positions_weight,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,positions_quantity,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,exposure,"Record<string, number>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,risk_metrics,"Record<string, number>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,last_rebalance_time_utc,string | null,,scalar,,true,frontend,client_render_only
+ExecutionStateV2Payload,orders,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,fills,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,kill_switch,boolean,,scalar,,false,frontend,client_render_only
+ExecutionStateV2Payload,currency,string,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,run_id,string,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,run_uid,string | null,,scalar,,true,frontend,client_render_only
+DashboardSnapshotV2Payload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,as_of_utc,string,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,total_return,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,cagr,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,sharpe,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,sortino,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,max_drawdown,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,volatility,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,turnover,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,win_rate,number,,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,exposure,"Record<string, number>",,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,risk_contrib_top10,PortfolioRiskContributionItem[],,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,constraint_bindings,ConstraintBindingItemPayload[],,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,ic_rolling,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+DashboardSnapshotV2Payload,currency,string,,scalar,,false,frontend,client_render_only
+RunAuditEventPayload,id,number | null,,scalar,,true,frontend,client_render_only
+RunAuditEventPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RunAuditEventPayload,event_type,string,,scalar,,false,frontend,client_render_only
+RunAuditEventPayload,severity,"""info"" | ""warning"" | ""critical""",,scalar,,false,frontend,client_render_only
+RunAuditEventPayload,payload,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+RunAuditEventPayload,created_at_utc,string,,scalar,,false,frontend,client_render_only
+RunAuditPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RunAuditPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RunAuditPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RunAuditPayload,events,RunAuditEventPayload[],,scalar,,false,frontend,client_render_only
+ICDecayPoint,horizon,number,,scalar,,false,frontend,client_render_only
+ICDecayPoint,ic,number,,scalar,,false,frontend,client_render_only
+ICDecayPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ICDecayPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ICDecayPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ICDecayPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ICDecayPayload,max_horizon,number,,scalar,,false,frontend,client_render_only
+ICDecayPayload,ic_decay,ICDecayPoint[],,scalar,,false,frontend,client_render_only
+ICDecayPayload,ic_t_stat,number,,scalar,,false,frontend,client_render_only
+PredictionHistogramBin,bin_left,number,,scalar,,false,frontend,client_render_only
+PredictionHistogramBin,bin_right,number,,scalar,,false,frontend,client_render_only
+PredictionHistogramBin,count,number,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,run_id,string,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,message,string | null,,scalar,,true,frontend,client_render_only
+PredictionDistributionPayload,bins,number,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,histogram,PredictionHistogramBin[],,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,top_decile_mean,number,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,bottom_decile_mean,number,,scalar,,false,frontend,client_render_only
+PredictionDistributionPayload,decile_spread_ts,Array<{ date: string,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RegimeCurrentPayload,trend_regime,string,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,vol_regime,string,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,liquidity_regime,string,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,vix_level,number,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,breadth,number,,scalar,,false,frontend,client_render_only
+RegimeCurrentPayload,spx_distance_200ma,number,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,date,string,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,trend_regime,string,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,vol_regime,string,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,liquidity_regime,string,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,vix_level,number,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,breadth,number,,scalar,,false,frontend,client_render_only
+RegimeHistoryPoint,spx_distance_200ma,number,,scalar,,false,frontend,client_render_only
+RegimeHistoryPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RegimeHistoryPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RegimeHistoryPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RegimeHistoryPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RegimeHistoryPayload,history,RegimeHistoryPoint[],,scalar,,false,frontend,client_render_only
+RegimeHistoryPayload,regime_transition_stats,"Record<string, number>",,scalar,,false,frontend,client_render_only
+AlertItem,rule_id,string,,scalar,,false,frontend,client_render_only
+AlertItem,severity,"""info"" | ""warning"" | ""critical""",,scalar,,false,frontend,client_render_only
+AlertItem,triggered_at,string,,scalar,,false,frontend,client_render_only
+AlertItem,message,string,,scalar,,false,frontend,client_render_only
+AlertItem,value,number,,scalar,,false,frontend,client_render_only
+AlertsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+AlertsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+AlertsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+AlertsPayload,message,string | null,,scalar,,true,frontend,client_render_only
+AlertsPayload,alerts,AlertItem[],,scalar,,false,frontend,client_render_only
+ModelShapPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ModelShapPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ModelShapPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ModelShapPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ModelShapPayload,summary_points,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ModelShapPayload,dependence_top3,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ModelShapPayload,feature_stability_ts,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionOrderPreviewRequestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionOrderPreviewRequestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionOrderPreviewRequestPayload,slippage_bps,number,,scalar,,true,frontend,client_render_only
+ExecutionOrderPreviewRequestPayload,cost_bps,number,,scalar,,true,frontend,client_render_only
+ExecutionOrderPreviewRequestPayload,nav,number,,scalar,,true,frontend,client_render_only
+ExecutionOrderItemPayload,order_id,string,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,symbol,string,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,side,"""buy"" | ""sell""",,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,quantity,number,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,current_weight,number,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,target_weight,number,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,est_price,number,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,est_notional,number,,scalar,,false,frontend,client_render_only
+ExecutionOrderItemPayload,status,"""preview"" | ""submitted"" | ""filled"" | ""rejected""",,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPreviewPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPreviewPayload,nav,number,,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,orders,ExecutionOrderItemPayload[],,scalar,,false,frontend,client_render_only
+ExecutionPreviewPayload,estimated_turnover,number,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionSubmitPayload,submitted_at,string | null,,scalar,,true,frontend,client_render_only
+ExecutionSubmitPayload,orders,ExecutionOrderItemPayload[],,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,fills_count,number,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,cash_after,number,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,nav_after,number,,scalar,,false,frontend,client_render_only
+ExecutionSubmitPayload,kill_switch,boolean,,scalar,,false,frontend,client_render_only
+ExecutionOrdersPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionOrdersPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionOrdersPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionOrdersPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionOrdersPayload,orders,ExecutionOrderItemPayload[],,scalar,,false,frontend,client_render_only
+ExecutionFillsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionFillsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionFillsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionFillsPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionFillsPayload,fills,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPositionsPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPositionsPayload,positions,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,cash,number,,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,gross_exposure,number,,scalar,,false,frontend,client_render_only
+ExecutionPositionsPayload,net_exposure,number,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,run_id,string,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,message,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPnlPayload,as_of_date,string | null,,scalar,,true,frontend,client_render_only
+ExecutionPnlPayload,realized_pnl,number,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,unrealized_pnl,number,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,total_pnl,number,,scalar,,false,frontend,client_render_only
+ExecutionPnlPayload,return_pct,number,,scalar,,false,frontend,client_render_only
+RiskPretradeRequestPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RiskPretradeRequestPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RiskPretradeRequestPayload,turnover_limit,number,,scalar,,true,frontend,client_render_only
+RiskViolationItemPayload,rule_id,string,,scalar,,false,frontend,client_render_only
+RiskViolationItemPayload,severity,"""info"" | ""warning"" | ""critical""",,scalar,,false,frontend,client_render_only
+RiskViolationItemPayload,value,number,,scalar,,false,frontend,client_render_only
+RiskViolationItemPayload,limit,number,,scalar,,false,frontend,client_render_only
+RiskViolationItemPayload,message,string,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,run_id,string,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,passed,boolean,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,kill_switch,boolean,,scalar,,false,frontend,client_render_only
+RiskPretradePayload,violations,RiskViolationItemPayload[],,scalar,,false,frontend,client_render_only
+RiskLimitsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RiskLimitsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RiskLimitsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RiskLimitsPayload,limits,"Record<string, number>",,scalar,,false,frontend,client_render_only
+RiskLimitsPayload,kill_switch,boolean,,scalar,,false,frontend,client_render_only
+RiskEventsPayload,run_id,string,,scalar,,false,frontend,client_render_only
+RiskEventsPayload,model_name,ModelName,,scalar,,false,frontend,client_render_only
+RiskEventsPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+RiskEventsPayload,message,string | null,,scalar,,true,frontend,client_render_only
+RiskEventsPayload,events,"Array<Record<string, string | number>>",,scalar,,false,frontend,client_render_only
+OpsJobStatePayload,job,"""daily"" | ""weekly"" | ""monthly""",,scalar,,false,frontend,client_render_only
+OpsJobStatePayload,last_status,string,,scalar,,false,frontend,client_render_only
+OpsJobStatePayload,last_run_id,string | null,,scalar,,true,frontend,client_render_only
+OpsJobStatePayload,last_error,string | null,,scalar,,true,frontend,client_render_only
+OpsJobStatePayload,steps,"Record<string, Record<string, unknown>>",,scalar,,false,frontend,client_render_only
+OpsStatusPayload,status,DashboardPayloadStatus,,scalar,,false,frontend,client_render_only
+OpsStatusPayload,message,string | null,,scalar,,true,frontend,client_render_only
+OpsStatusPayload,generated_at,string | null,,scalar,,true,frontend,client_render_only
+OpsStatusPayload,jobs,OpsJobStatePayload[],,scalar,,false,frontend,client_render_only
+OpsStatusPayload,latest_publish,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+OpsStatusPayload,versions,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+OpsStatusPayload,latest_runs,"Array<Record<string, unknown>>",,scalar,,false,frontend,client_render_only
+OpsStatusPayload,macro_health,"Record<string, unknown>",,scalar,,false,frontend,client_render_only
+OpsStatusPayload,latest_training_run_id,string | null,,scalar,,true,frontend,client_render_only
+OpsStatusPayload,latest_daily_infer_date,string | null,,scalar,,true,frontend,client_render_only
+OpsStatusPayload,walkforward_queue_depth,number,,scalar,,true,frontend,client_render_only
+OpsStatusPayload,active_job_locks,"Array<Record<string, unknown>>",,scalar,,true,frontend,client_render_only
+OpsStatusPayload,lock_health,"Record<string, string>",,scalar,,true,frontend,client_render_only
+OpsStatusPayload,stale_policy,"Record<string, unknown>",,scalar,,true,frontend,client_render_only
+BackendService,id,string,,scalar,,false,frontend,client_render_only
+BackendService,name,string,,scalar,,false,frontend,client_render_only
+BackendService,command,string,,scalar,,false,frontend,client_render_only
+BackendService,status,"""running"" | ""stopped"" | ""starting"" | ""stopping"" | ""error""",,scalar,,false,frontend,client_render_only
+BackendService,url,string,,scalar,,true,frontend,client_render_only
+BackendResolution,baseUrl,string,,scalar,,false,frontend,client_render_only
+BackendResolution,source,"""running-service-url"" | ""command-parse"" | ""fallback"" | ""web-dev-fallback""",,scalar,,false,frontend,client_render_only
+BackendResolution,connected,boolean,,scalar,,false,frontend,client_render_only
+BackendResolution,detail,string,,scalar,,false,frontend,client_render_only

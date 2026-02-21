@@ -95,6 +95,16 @@ pip install pykrx
 - `GET /api/v1/quant_ml/run/latest/risk`
 - `GET /api/v1/quant_ml/run/latest/exposures`
 - `GET /api/v1/quant_ml/run/latest/constraints`
+- `GET /api/v1/quant_ml/runs/{run_id}/snapshot`
+- `GET /api/v1/quant_ml/runs/{run_id}/risk`
+- `GET /api/v1/quant_ml/runs/{run_id}/exposures`
+- `GET /api/v1/quant_ml/runs/{run_id}/constraints`
+- `GET /api/v1/quant_ml/runs/{run_id}/audit`
+
+Compatibility note:
+
+- `run/latest/*` endpoints stay available for one release cycle.
+- New automation and dashboards should prefer explicit `runs/{run_id}/*`.
 
 ## Institutional Artifact Contract
 
@@ -114,6 +124,20 @@ Run metadata now includes:
 - `run_uid` (`YYYY-MM-DD_HHMMSSZ_<8hex>`)
 - `artifact_contract_version`
 - `required_artifacts_ready`
+
+Run registry storage:
+
+- legacy JSON: `~/.openbb_platform/quant_ml/registry.json` (dual-write compatibility)
+- canonical DB: `~/.openbb_platform/quant_ml/run_registry.sqlite3`
+- audit events are queryable through `GET /runs/{run_id}/audit`
+
+Contract inventory generators:
+
+```bash
+PYTHONPATH=openbb_platform/extensions/quant_ml python qa/scripts/quant_ml_contract_inventory.py
+python qa/scripts/quant_ml_frontend_contract_inventory.py
+PYTHONPATH=openbb_platform/extensions/quant_ml python qa/scripts/generate_quant_ts_types.py
+```
 
 ## Portfolio Policy (Hard Constraints)
 
