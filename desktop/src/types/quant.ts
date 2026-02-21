@@ -139,6 +139,7 @@ export interface TrainResponsePayload {
 
 export interface RunStatusPayload {
   run_id: string;
+  run_uid?: string | null;
   status: TrainRunStatus;
   progress: number;
   stage: string;
@@ -150,6 +151,8 @@ export interface RunStatusPayload {
   stale_reason?: string | null;
   logs_tail: string[];
   error?: string | null;
+  artifact_contract_version?: string | null;
+  required_artifacts_ready?: boolean | null;
 }
 
 export interface SignalItem {
@@ -258,6 +261,7 @@ export interface RebalanceHistoryItem {
 
 export interface BacktestResponsePayload {
   run_id: string;
+  run_uid?: string | null;
   model_name: ModelName;
   start_date: string;
   end_date: string;
@@ -274,6 +278,15 @@ export interface BacktestResponsePayload {
   liquidity_clip_ratio?: number;
   risk_contribution_max?: number;
   universe_stage_counts?: Record<string, number>;
+  weights_target_available?: boolean;
+  weights_final_available?: boolean;
+  constraint_binding_summary?: Array<{
+    constraint_type: string;
+    binding_count: number;
+    binding_ratio: number;
+  }>;
+  artifact_contract_version?: string | null;
+  required_artifacts_ready?: boolean;
 }
 
 export interface WalkForwardBacktestSubmitPayload {
@@ -584,9 +597,50 @@ export interface PortfolioRiskPayload {
   vol_ex_ante: number;
   cvar_95: number;
   position_risk_contrib_top5: PortfolioRiskContributionItem[];
+  position_risk_contrib_top10?: PortfolioRiskContributionItem[];
   position_return_contrib_top5: PortfolioRiskContributionItem[];
   worst5_positions: PortfolioRiskContributionItem[];
 }
+
+export interface ConstraintBindingItemPayload {
+  constraint_type: string;
+  binding_count: number;
+  binding_ratio: number;
+}
+
+export interface ArtifactCompletenessItemPayload {
+  artifact: string;
+  ready: boolean;
+  path?: string | null;
+}
+
+export interface RunLatestMetaPayload {
+  run_id?: string | null;
+  run_uid?: string | null;
+  model_name: ModelName;
+  as_of_date?: string | null;
+  status: DashboardPayloadStatus;
+  artifact_contract_version?: string | null;
+  required_artifacts_ready: boolean;
+  universe_stage_counts: Record<string, number>;
+  artifact_completeness: ArtifactCompletenessItemPayload[];
+  message?: string | null;
+}
+
+export interface RunLatestConstraintsPayload {
+  run_id: string;
+  model_name: ModelName;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  items: ConstraintBindingItemPayload[];
+  liquidity_clip_ratio: number;
+  risk_contribution_max: number;
+  top_risk_contribution: PortfolioRiskContributionItem[];
+  liquidity_adv_top: Array<{ symbol: string; adv_weight_cap: number }>;
+}
+
+export type RunLatestRiskPayload = PortfolioRiskPayload;
+export type RunLatestExposuresPayload = PortfolioExposurePayload;
 
 export interface ICDecayPoint {
   horizon: number;

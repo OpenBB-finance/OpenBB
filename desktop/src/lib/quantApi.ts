@@ -38,6 +38,10 @@ import type {
   PortfolioRiskPayload,
   PredictionDistributionPayload,
   PredictionsLatestPayload,
+  RunLatestConstraintsPayload,
+  RunLatestMetaPayload,
+  RunLatestExposuresPayload,
+  RunLatestRiskPayload,
   RegimeCurrentPayload,
   RegimeHistoryPayload,
   RollingPerformancePayload,
@@ -250,6 +254,74 @@ export function fetchPromotedModel(
   return requestJson<PromotedModelPayload>(
     baseUrl,
     `${QUANT_PREFIX}/model/promoted?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchRunLatestMeta(
+  baseUrl: string,
+  modelName: ModelName = "lgbm_ranker",
+  runId?: string,
+): Promise<RunLatestMetaPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  if (runId && runId.trim()) {
+    query.set("run_id", runId.trim());
+  }
+  return requestJson<RunLatestMetaPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/run/latest/meta?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchRunLatestRisk(
+  baseUrl: string,
+  modelName: ModelName = "lgbm_ranker",
+  runId?: string,
+  lookback = 126,
+): Promise<RunLatestRiskPayload> {
+  const query = new URLSearchParams({
+    model_name: modelName,
+    lookback: String(lookback),
+  });
+  if (runId && runId.trim()) {
+    query.set("run_id", runId.trim());
+  }
+  return requestJson<RunLatestRiskPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/run/latest/risk?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchRunLatestExposures(
+  baseUrl: string,
+  modelName: ModelName = "lgbm_ranker",
+  runId?: string,
+): Promise<RunLatestExposuresPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  if (runId && runId.trim()) {
+    query.set("run_id", runId.trim());
+  }
+  return requestJson<RunLatestExposuresPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/run/latest/exposures?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchRunLatestConstraints(
+  baseUrl: string,
+  modelName: ModelName = "lgbm_ranker",
+  runId?: string,
+): Promise<RunLatestConstraintsPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  if (runId && runId.trim()) {
+    query.set("run_id", runId.trim());
+  }
+  return requestJson<RunLatestConstraintsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/run/latest/constraints?${query.toString()}`,
     { method: "GET" },
   );
 }

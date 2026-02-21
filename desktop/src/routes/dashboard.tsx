@@ -19,6 +19,10 @@ import {
   fetchPredictionsLatest,
   fetchRegimeCurrent,
   fetchRegimeHistory,
+  fetchRunLatestConstraints,
+  fetchRunLatestExposures,
+  fetchRunLatestMeta,
+  fetchRunLatestRisk,
   invalidateQuantCaches,
   runBacktest,
 } from "../lib/quantApi";
@@ -41,6 +45,10 @@ import type {
   PredictionsLatestPayload,
   RegimeCurrentPayload,
   RegimeHistoryPayload,
+  RunLatestConstraintsPayload,
+  RunLatestExposuresPayload,
+  RunLatestMetaPayload,
+  RunLatestRiskPayload,
   RollingPerformancePayload,
 } from "../types/quant";
 
@@ -218,6 +226,10 @@ export default function DashboardPage() {
   const [predictionsLatest, setPredictionsLatest] = useState<PredictionsLatestPayload | null>(null);
   const [alertsCurrent, setAlertsCurrent] = useState<AlertsPayload | null>(null);
   const [alertsHistory, setAlertsHistory] = useState<AlertsPayload | null>(null);
+  const [runLatestMeta, setRunLatestMeta] = useState<RunLatestMetaPayload | null>(null);
+  const [runLatestRisk, setRunLatestRisk] = useState<RunLatestRiskPayload | null>(null);
+  const [runLatestExposures, setRunLatestExposures] = useState<RunLatestExposuresPayload | null>(null);
+  const [runLatestConstraints, setRunLatestConstraints] = useState<RunLatestConstraintsPayload | null>(null);
   const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
 
   const abortRef = useRef<AbortController | null>(null);
@@ -347,6 +359,10 @@ export default function DashboardPage() {
         setPredictionsLatest(null);
         setAlertsCurrent(null);
         setAlertsHistory(null);
+        setRunLatestMeta(null);
+        setRunLatestRisk(null);
+        setRunLatestExposures(null);
+        setRunLatestConstraints(null);
         return;
       }
 
@@ -365,6 +381,10 @@ export default function DashboardPage() {
         fetchPredictionsLatest(backend.baseUrl, runToUse, effectiveModel, 60),
         fetchAlertsCurrent(backend.baseUrl, runToUse, effectiveModel, { mode, signal: controller.signal }),
         fetchAlertsHistory(backend.baseUrl, runToUse, effectiveModel, 200, { mode, signal: controller.signal }),
+        fetchRunLatestMeta(backend.baseUrl, effectiveModel, runToUse),
+        fetchRunLatestRisk(backend.baseUrl, effectiveModel, runToUse, 126),
+        fetchRunLatestExposures(backend.baseUrl, effectiveModel, runToUse),
+        fetchRunLatestConstraints(backend.baseUrl, effectiveModel, runToUse),
       ]);
       if (controller.signal.aborted) {
         return;
@@ -386,6 +406,10 @@ export default function DashboardPage() {
         latestPredictionResult,
         alertsCurrentResult,
         alertsHistoryResult,
+        runLatestMetaResult,
+        runLatestRiskResult,
+        runLatestExposuresResult,
+        runLatestConstraintsResult,
       ] = settled;
 
       if (summaryResult.status === "fulfilled") setSummary(summaryResult.value);
@@ -429,6 +453,18 @@ export default function DashboardPage() {
 
       if (alertsHistoryResult.status === "fulfilled") setAlertsHistory(alertsHistoryResult.value);
       else errors.push(alertsHistoryResult.reason instanceof Error ? alertsHistoryResult.reason.message : "alerts history unavailable");
+
+      if (runLatestMetaResult.status === "fulfilled") setRunLatestMeta(runLatestMetaResult.value);
+      else errors.push(runLatestMetaResult.reason instanceof Error ? runLatestMetaResult.reason.message : "run latest meta unavailable");
+
+      if (runLatestRiskResult.status === "fulfilled") setRunLatestRisk(runLatestRiskResult.value);
+      else errors.push(runLatestRiskResult.reason instanceof Error ? runLatestRiskResult.reason.message : "run latest risk unavailable");
+
+      if (runLatestExposuresResult.status === "fulfilled") setRunLatestExposures(runLatestExposuresResult.value);
+      else errors.push(runLatestExposuresResult.reason instanceof Error ? runLatestExposuresResult.reason.message : "run latest exposures unavailable");
+
+      if (runLatestConstraintsResult.status === "fulfilled") setRunLatestConstraints(runLatestConstraintsResult.value);
+      else errors.push(runLatestConstraintsResult.reason instanceof Error ? runLatestConstraintsResult.reason.message : "run latest constraints unavailable");
 
       if (errors.length > 0) {
         setWarningMessage(`Some panels are using partial data: ${errors[0]}`);
@@ -509,6 +545,14 @@ export default function DashboardPage() {
   const icDecayValues = icDecay?.ic_decay.map((item) => toNumber(item.ic)) ?? [];
 
   const connectionDetail = backend ? formatBackendDetail(backend.detail, backend.connected) : "Resolving backend...";
+  const exposureView = runLatestExposures ?? portfolioExposure;
+  const riskTop10 =
+    runLatestRisk?.position_risk_contrib_top10 ??
+    portfolioRisk?.position_risk_contrib_top10 ??
+    portfolioRisk?.position_risk_contrib_top5 ??
+    [];
+  const constraintBindings = runLatestConstraints?.items ?? [];
+  const advLiquidityCaps = runLatestConstraints?.liquidity_adv_top ?? [];
 
   const latestPredRows =
     predictionsLatest?.predictions
@@ -759,6 +803,17 @@ export default function DashboardPage() {
             </p>
             <p className="body-xxs-regular text-theme-muted">{health?.workflow_state?.run_stage ?? "-"}</p>
           </div>
+          <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="body-xxs-regular text-theme-muted">Run UID</p>
+            <p className="body-xs-medium text-theme-primary">{runLatestMeta?.run_uid ?? "-"}</p>
+          </div>
+          <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="body-xxs-regular text-theme-muted">Artifact Contract</p>
+            <p className="body-xs-medium text-theme-primary">
+              {runLatestMeta?.required_artifacts_ready ? "Ready" : "Pending"}
+            </p>
+            <p className="body-xxs-regular text-theme-muted">{runLatestMeta?.artifact_contract_version ?? "v1"}</p>
+          </div>
         </div>
         <p className="mt-2 body-xxs-regular text-theme-muted">{connectionDetail}</p>
       </div>
@@ -1007,7 +1062,7 @@ export default function DashboardPage() {
             <div className="col-span-2 rounded-sm bg-theme-secondary p-2">
               <p className="body-xxs-regular text-theme-muted">Sector Exposure</p>
               <ul className="mt-1 space-y-1">
-                {(portfolioExposure?.sector_exposure ?? []).map((item) => (
+                {(exposureView?.sector_exposure ?? []).map((item) => (
                   <li key={item.category} className="flex items-center justify-between">
                     <span className="body-xs-regular text-theme-primary">{item.category}</span>
                     <span className="body-xs-regular text-theme-muted">{formatPct(item.weight, 1)}</span>
@@ -1017,9 +1072,9 @@ export default function DashboardPage() {
             </div>
             <div className="rounded-sm bg-theme-secondary p-2">
               <p className="body-xxs-regular text-theme-muted">Beta SPY</p>
-              <p className="body-xs-medium text-theme-primary">{formatNumber(portfolioExposure?.beta_spy ?? null, 3)}</p>
+              <p className="body-xs-medium text-theme-primary">{formatNumber(exposureView?.beta_spy ?? null, 3)}</p>
               <p className="body-xxs-regular text-theme-muted mt-2">Beta QQQ</p>
-              <p className="body-xs-medium text-theme-primary">{formatNumber(portfolioExposure?.beta_qqq ?? null, 3)}</p>
+              <p className="body-xs-medium text-theme-primary">{formatNumber(exposureView?.beta_qqq ?? null, 3)}</p>
             </div>
             <div className="rounded-sm bg-theme-secondary p-2">
               <p className="body-xxs-regular text-theme-muted">Ex-Ante Vol</p>
@@ -1031,7 +1086,7 @@ export default function DashboardPage() {
               <p className="body-xxs-regular text-theme-muted">Top 10 Long / Top 10 Short</p>
               <div className="mt-1 grid grid-cols-2 gap-2">
                 <ul className="space-y-1">
-                  {(portfolioExposure?.top10_long ?? []).slice(0, 10).map((item) => (
+                  {(exposureView?.top10_long ?? []).slice(0, 10).map((item) => (
                     <li key={`long-${item.symbol}`} className="flex items-center justify-between">
                       <span className="body-xs-regular text-theme-primary">{item.symbol}</span>
                       <span className="body-xs-regular text-theme-muted">{formatPct(item.weight, 1)}</span>
@@ -1039,7 +1094,7 @@ export default function DashboardPage() {
                   ))}
                 </ul>
                 <ul className="space-y-1">
-                  {(portfolioExposure?.top10_short ?? []).slice(0, 10).map((item) => (
+                  {(exposureView?.top10_short ?? []).slice(0, 10).map((item) => (
                     <li key={`short-${item.symbol}`} className="flex items-center justify-between">
                       <span className="body-xs-regular text-theme-primary">{item.symbol}</span>
                       <span className="body-xs-regular text-theme-muted">{formatPct(item.weight, 1)}</span>
@@ -1047,6 +1102,57 @@ export default function DashboardPage() {
                   ))}
                 </ul>
               </div>
+            </div>
+            <div className="col-span-2 rounded-sm bg-theme-secondary p-2">
+              <p className="body-xxs-regular text-theme-muted">Constraint Binding Frequency</p>
+              {constraintBindings.length === 0 ? (
+                <p className="mt-1 body-xs-regular text-theme-muted">No binding constraints recorded.</p>
+              ) : (
+                <ul className="mt-1 space-y-1">
+                  {constraintBindings.slice(0, 8).map((item) => (
+                    <li key={`bind-${item.constraint_type}`} className="flex items-center justify-between">
+                      <span className="body-xs-regular text-theme-primary">{item.constraint_type}</span>
+                      <span className="body-xs-regular text-theme-muted">
+                        {item.binding_count} ({formatPct(item.binding_ratio, 1)})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="col-span-2 rounded-sm bg-theme-secondary p-2">
+              <p className="body-xxs-regular text-theme-muted">ADV Participation Cap Heatmap</p>
+              {advLiquidityCaps.length === 0 ? (
+                <p className="mt-1 body-xs-regular text-theme-muted">No liquidity cap records.</p>
+              ) : (
+                <div className="mt-2 grid grid-cols-5 gap-1">
+                  {advLiquidityCaps.slice(0, 20).map((item) => (
+                    <div
+                      key={`adv-${item.symbol}`}
+                      className="rounded-sm p-1 text-center"
+                      style={{ backgroundColor: zColor(Math.min(2, item.adv_weight_cap * 50)) }}
+                    >
+                      <p className="body-xxs-medium text-slate-100">{item.symbol}</p>
+                      <p className="body-xxs-regular text-slate-100">{formatPct(item.adv_weight_cap, 1)}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="col-span-2 rounded-sm bg-theme-secondary p-2">
+              <p className="body-xxs-regular text-theme-muted">Risk Contribution Top 10</p>
+              {riskTop10.length === 0 ? (
+                <p className="mt-1 body-xs-regular text-theme-muted">No risk contribution rows.</p>
+              ) : (
+                <ul className="mt-1 grid grid-cols-2 gap-1">
+                  {riskTop10.slice(0, 10).map((item) => (
+                    <li key={`rc-${item.symbol}`} className="flex items-center justify-between">
+                      <span className="body-xs-regular text-theme-primary">{item.symbol}</span>
+                      <span className="body-xs-regular text-theme-muted">{formatPct(item.contribution, 2)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div className="col-span-2 rounded-sm bg-theme-secondary p-2">
               <p className="body-xxs-regular text-theme-muted">Z-Score Heatmap</p>
