@@ -2,7 +2,6 @@
 
 from typing import Literal
 
-from async_lru import alru_cache
 from openbb_core.app.model.abstract.error import OpenBBError
 
 DERIBIT_OPTIONS_SYMBOLS = ["BTC", "ETH", "SOL", "XRP", "BNB", "PAXG"]
@@ -48,7 +47,9 @@ INTERVAL_MAP = {
 }
 
 
-@alru_cache(maxsize=64)
+_instruments_cache: dict[tuple, list[dict]] = {}
+
+
 async def get_instruments(
     currency: Currencies = "BTC",
     derivative_type: DerivativeTypes | None = None,
@@ -72,6 +73,10 @@ async def get_instruments(
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
 
+    cache_key = (currency, derivative_type, expired)
+    if cache_key in _instruments_cache:
+        return _instruments_cache[cache_key]
+
     if currency != "all" and currency.upper() not in CURRENCIES:
         raise ValueError(
             f"Currency {currency} not supported. Supported currencies are: {', '.join(CURRENCIES)}"
@@ -91,7 +96,9 @@ async def get_instruments(
 
     try:
         response = await amake_request(url)
-        return response.get("result", [])  # type: ignore
+        result = response.get("result", [])  # type: ignore
+        _instruments_cache[cache_key] = result
+        return result
     except Exception as e:  # pylint: disable=broad-except
         raise OpenBBError(
             f"Failed to get instruments -> {e.__class__.__name__}: {e}"
