@@ -642,6 +642,117 @@ export interface RunLatestConstraintsPayload {
 export type RunLatestRiskPayload = PortfolioRiskPayload;
 export type RunLatestExposuresPayload = PortfolioExposurePayload;
 
+export interface TrainResultV2Payload {
+  run_id: string;
+  run_uid?: string | null;
+  model_name: ModelName;
+  universe_hash?: string | null;
+  feature_hash?: string | null;
+  config_hash?: string | null;
+  train_start_utc?: string | null;
+  train_end_utc?: string | null;
+  validation_metrics: Record<string, number>;
+  artifact_uri?: string | null;
+  data_version?: string | null;
+  feature_version?: string | null;
+  currency: string;
+}
+
+export interface BacktestResultV2Payload {
+  run_id: string;
+  run_uid?: string | null;
+  model_name: ModelName;
+  equity_base: number;
+  equity_curve: Array<Record<string, string | number>>;
+  returns_decimal: Array<Record<string, string | number>>;
+  cumulative_returns: Array<Record<string, string | number>>;
+  drawdown: Array<Record<string, string | number>>;
+  gross_exposure: Array<Record<string, string | number>>;
+  net_exposure: Array<Record<string, string | number>>;
+  positions: Array<Record<string, string | number>>;
+  trades: Array<Record<string, string | number>>;
+  turnover: Array<Record<string, string | number>>;
+  metrics: Record<string, number>;
+  asof_manifest: Record<string, unknown>;
+  currency: string;
+}
+
+export interface WalkForwardFoldV2Payload {
+  fold_id: string;
+  train_period: Record<string, string>;
+  test_period: Record<string, string>;
+  fold_metrics: Record<string, number>;
+  fold_equity: Array<Record<string, string | number>>;
+  asof_manifest_hash?: string | null;
+}
+
+export interface WalkForwardResultV2Payload {
+  run_id: string;
+  run_uid?: string | null;
+  model_name: ModelName;
+  folds: WalkForwardFoldV2Payload[];
+  aggregate_metrics: Record<string, number>;
+  train_window_integrity: boolean;
+  currency: string;
+}
+
+export interface ExecutionStateV2Payload {
+  run_id: string;
+  model_name: ModelName;
+  portfolio_value: number;
+  cash: number;
+  positions_weight: Array<Record<string, string | number>>;
+  positions_quantity: Array<Record<string, string | number>>;
+  exposure: Record<string, number>;
+  risk_metrics: Record<string, number>;
+  last_rebalance_time_utc?: string | null;
+  orders: Array<Record<string, string | number>>;
+  fills: Array<Record<string, string | number>>;
+  kill_switch: boolean;
+  currency: string;
+}
+
+export interface DashboardSnapshotV2Payload {
+  run_id: string;
+  run_uid?: string | null;
+  model_name: ModelName;
+  as_of_utc: string;
+  total_return: number;
+  cagr: number;
+  sharpe: number;
+  sortino: number;
+  max_drawdown: number;
+  volatility: number;
+  turnover: number;
+  win_rate: number;
+  exposure: Record<string, number>;
+  risk_contrib_top10: PortfolioRiskContributionItem[];
+  constraint_bindings: ConstraintBindingItemPayload[];
+  ic_rolling: Array<Record<string, string | number>>;
+  currency: string;
+}
+
+export interface RunAuditEventPayload {
+  id?: number | null;
+  run_id: string;
+  event_type: string;
+  severity: "info" | "warning" | "critical";
+  payload: Record<string, unknown>;
+  created_at_utc: string;
+}
+
+export interface RunAuditPayload {
+  run_id: string;
+  status: DashboardPayloadStatus;
+  message?: string | null;
+  events: RunAuditEventPayload[];
+}
+
+export type RunSnapshotPayload = DashboardSnapshotV2Payload;
+export type RunConstraintsPayload = RunLatestConstraintsPayload;
+export type RunRiskPayload = PortfolioRiskPayload;
+export type RunExposuresPayload = PortfolioExposurePayload;
+
 export interface ICDecayPoint {
   horizon: number;
   ic: number;

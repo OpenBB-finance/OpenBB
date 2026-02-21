@@ -23,6 +23,7 @@ import {
   fetchRunLatestExposures,
   fetchRunLatestMeta,
   fetchRunLatestRisk,
+  fetchRunSnapshot,
   invalidateQuantCaches,
   runBacktest,
 } from "../lib/quantApi";
@@ -49,6 +50,7 @@ import type {
   RunLatestExposuresPayload,
   RunLatestMetaPayload,
   RunLatestRiskPayload,
+  RunSnapshotPayload,
   RollingPerformancePayload,
 } from "../types/quant";
 
@@ -75,6 +77,44 @@ const DEFAULT_PORTFOLIO_POLICY: PortfolioPolicyPayload = {
   cash_symbol: "CASH",
   cash_category: "cash_proxy",
 };
+
+interface SummaryDateRangeMeta {
+  start?: string;
+  end?: string;
+}
+
+interface SummaryWalkForwardMeta {
+  train_months?: number;
+  val_months?: number;
+}
+
+interface SummaryRequestMeta {
+  date_range?: SummaryDateRangeMeta;
+  walk_forward_config?: SummaryWalkForwardMeta;
+}
+
+function extractSummaryRequestMeta(input: unknown): SummaryRequestMeta | undefined {
+  if (!input || typeof input !== "object") {
+    return undefined;
+  }
+  const root = input as { request?: unknown };
+  if (!root.request || typeof root.request !== "object") {
+    return undefined;
+  }
+  const request = root.request as { date_range?: unknown; walk_forward_config?: unknown };
+  const date_range =
+    request.date_range && typeof request.date_range === "object"
+      ? (request.date_range as SummaryDateRangeMeta)
+      : undefined;
+  const walk_forward_config =
+    request.walk_forward_config && typeof request.walk_forward_config === "object"
+      ? (request.walk_forward_config as SummaryWalkForwardMeta)
+      : undefined;
+  return {
+    date_range,
+    walk_forward_config,
+  };
+}
 
 function toNumber(value: unknown): number {
   if (typeof value !== "number" || Number.isNaN(value)) {
@@ -230,6 +270,7 @@ export default function DashboardPage() {
   const [runLatestRisk, setRunLatestRisk] = useState<RunLatestRiskPayload | null>(null);
   const [runLatestExposures, setRunLatestExposures] = useState<RunLatestExposuresPayload | null>(null);
   const [runLatestConstraints, setRunLatestConstraints] = useState<RunLatestConstraintsPayload | null>(null);
+  const [runSnapshot, setRunSnapshot] = useState<RunSnapshotPayload | null>(null);
   const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
 
   const abortRef = useRef<AbortController | null>(null);
@@ -363,6 +404,7 @@ export default function DashboardPage() {
         setRunLatestRisk(null);
         setRunLatestExposures(null);
         setRunLatestConstraints(null);
+        setRunSnapshot(null);
         return;
       }
 
@@ -385,6 +427,7 @@ export default function DashboardPage() {
         fetchRunLatestRisk(backend.baseUrl, effectiveModel, runToUse, 126),
         fetchRunLatestExposures(backend.baseUrl, effectiveModel, runToUse),
         fetchRunLatestConstraints(backend.baseUrl, effectiveModel, runToUse),
+        fetchRunSnapshot(backend.baseUrl, runToUse, effectiveModel),
       ]);
       if (controller.signal.aborted) {
         return;
@@ -410,6 +453,7 @@ export default function DashboardPage() {
         runLatestRiskResult,
         runLatestExposuresResult,
         runLatestConstraintsResult,
+        runSnapshotResult,
       ] = settled;
 
       if (summaryResult.status === "fulfilled") setSummary(summaryResult.value);
@@ -465,6 +509,9 @@ export default function DashboardPage() {
 
       if (runLatestConstraintsResult.status === "fulfilled") setRunLatestConstraints(runLatestConstraintsResult.value);
       else errors.push(runLatestConstraintsResult.reason instanceof Error ? runLatestConstraintsResult.reason.message : "run latest constraints unavailable");
+
+      if (runSnapshotResult.status === "fulfilled") setRunSnapshot(runSnapshotResult.value);
+      else errors.push(runSnapshotResult.reason instanceof Error ? runSnapshotResult.reason.message : "run snapshot unavailable");
 
       if (errors.length > 0) {
         setWarningMessage(`Some panels are using partial data: ${errors[0]}`);
@@ -529,9 +576,8 @@ export default function DashboardPage() {
     [performance, effectiveModel],
   );
 
-  const wfConfig = (summary?.params as Record<string, any> | undefined)?.request?.walk_forward_config as
-    | Record<string, number>
-    | undefined;
+  const summaryRequestMeta = extractSummaryRequestMeta(summary?.params);
+  const wfConfig = summaryRequestMeta?.walk_forward_config;
   const trainingWindow = wfConfig ? `${wfConfig.train_months ?? "-"}M` : "-";
   const validationWindow = wfConfig ? `${wfConfig.val_months ?? "-"}M` : "-";
 
@@ -548,10 +594,11 @@ export default function DashboardPage() {
   const exposureView = runLatestExposures ?? portfolioExposure;
   const riskTop10 =
     runLatestRisk?.position_risk_contrib_top10 ??
+    runSnapshot?.risk_contrib_top10 ??
     portfolioRisk?.position_risk_contrib_top10 ??
     portfolioRisk?.position_risk_contrib_top5 ??
     [];
-  const constraintBindings = runLatestConstraints?.items ?? [];
+  const constraintBindings = runLatestConstraints?.items ?? runSnapshot?.constraint_bindings ?? [];
   const advLiquidityCaps = runLatestConstraints?.liquidity_adv_top ?? [];
 
   const latestPredRows =
@@ -571,9 +618,8 @@ export default function DashboardPage() {
         : "https://s.tradingview.com/embed-widget/market-overview/";
 
   const focusSection = useMemo(() => new URLSearchParams(window.location.search).get("focus"), []);
-  const summaryRequest = (summary?.params as Record<string, any> | undefined)?.request as Record<string, any> | undefined;
-  const requestedStart = typeof summaryRequest?.date_range?.start === "string" ? summaryRequest.date_range.start : "";
-  const requestedEnd = typeof summaryRequest?.date_range?.end === "string" ? summaryRequest.date_range.end : "";
+  const requestedStart = typeof summaryRequestMeta?.date_range?.start === "string" ? summaryRequestMeta.date_range.start : "";
+  const requestedEnd = typeof summaryRequestMeta?.date_range?.end === "string" ? summaryRequestMeta.date_range.end : "";
   const rollingDates = rolling?.cumulative_return ?? [];
   const fallbackStart = rollingDates.length > 0 ? String(rollingDates[0]?.date ?? "") : "";
   const fallbackEnd = rollingDates.length > 0 ? String(rollingDates[rollingDates.length - 1]?.date ?? "") : "";

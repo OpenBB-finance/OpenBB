@@ -42,6 +42,11 @@ import type {
   RunLatestMetaPayload,
   RunLatestExposuresPayload,
   RunLatestRiskPayload,
+  RunSnapshotPayload,
+  RunAuditPayload,
+  RunConstraintsPayload,
+  RunRiskPayload,
+  RunExposuresPayload,
   RegimeCurrentPayload,
   RegimeHistoryPayload,
   RollingPerformancePayload,
@@ -56,6 +61,14 @@ import type {
   UniverseResolvePayload,
   UniverseSnapshotPayload,
 } from "../types/quant";
+import {
+  parseRunAudit,
+  parseRunExposures,
+  parseRunLatestConstraints,
+  parseRunLatestMeta,
+  parseRunRisk,
+  parseRunSnapshot,
+} from "./quantSchemas";
 
 const QUANT_PREFIX = "/api/v1/quant_ml";
 const DASHBOARD_CACHE_TTL_MS = 60_000;
@@ -88,6 +101,16 @@ async function requestJson<T>(baseUrl: string, path: string, init: RequestInit):
     throw new Error(detail || `Request failed (${response.status})`);
   }
   return (await response.json()) as T;
+}
+
+async function requestJsonParsed<T>(
+  baseUrl: string,
+  path: string,
+  init: RequestInit,
+  parse: (payload: unknown) => T,
+): Promise<T> {
+  const payload = await requestJson<unknown>(baseUrl, path, init);
+  return parse(payload);
 }
 
 function requestJsonCached<T>(
@@ -267,10 +290,11 @@ export function fetchRunLatestMeta(
   if (runId && runId.trim()) {
     query.set("run_id", runId.trim());
   }
-  return requestJson<RunLatestMetaPayload>(
+  return requestJsonParsed<RunLatestMetaPayload>(
     baseUrl,
     `${QUANT_PREFIX}/run/latest/meta?${query.toString()}`,
     { method: "GET" },
+    parseRunLatestMeta,
   );
 }
 
@@ -287,10 +311,11 @@ export function fetchRunLatestRisk(
   if (runId && runId.trim()) {
     query.set("run_id", runId.trim());
   }
-  return requestJson<RunLatestRiskPayload>(
+  return requestJsonParsed<RunLatestRiskPayload>(
     baseUrl,
     `${QUANT_PREFIX}/run/latest/risk?${query.toString()}`,
     { method: "GET" },
+    parseRunRisk,
   );
 }
 
@@ -303,10 +328,11 @@ export function fetchRunLatestExposures(
   if (runId && runId.trim()) {
     query.set("run_id", runId.trim());
   }
-  return requestJson<RunLatestExposuresPayload>(
+  return requestJsonParsed<RunLatestExposuresPayload>(
     baseUrl,
     `${QUANT_PREFIX}/run/latest/exposures?${query.toString()}`,
     { method: "GET" },
+    parseRunExposures,
   );
 }
 
@@ -319,10 +345,85 @@ export function fetchRunLatestConstraints(
   if (runId && runId.trim()) {
     query.set("run_id", runId.trim());
   }
-  return requestJson<RunLatestConstraintsPayload>(
+  return requestJsonParsed<RunLatestConstraintsPayload>(
     baseUrl,
     `${QUANT_PREFIX}/run/latest/constraints?${query.toString()}`,
     { method: "GET" },
+    parseRunLatestConstraints,
+  );
+}
+
+export function fetchRunSnapshot(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName = "lgbm_ranker",
+): Promise<RunSnapshotPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  return requestJsonParsed<RunSnapshotPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/snapshot?${query.toString()}`,
+    { method: "GET" },
+    parseRunSnapshot,
+  );
+}
+
+export function fetchRunRisk(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName = "lgbm_ranker",
+  lookback = 126,
+): Promise<RunRiskPayload> {
+  const query = new URLSearchParams({
+    model_name: modelName,
+    lookback: String(lookback),
+  });
+  return requestJsonParsed<RunRiskPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/risk?${query.toString()}`,
+    { method: "GET" },
+    parseRunRisk,
+  );
+}
+
+export function fetchRunExposures(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName = "lgbm_ranker",
+): Promise<RunExposuresPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  return requestJsonParsed<RunExposuresPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/exposures?${query.toString()}`,
+    { method: "GET" },
+    parseRunExposures,
+  );
+}
+
+export function fetchRunConstraints(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName = "lgbm_ranker",
+): Promise<RunConstraintsPayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  return requestJsonParsed<RunConstraintsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/constraints?${query.toString()}`,
+    { method: "GET" },
+    parseRunLatestConstraints,
+  );
+}
+
+export function fetchRunAudit(
+  baseUrl: string,
+  runId: string,
+  limit = 500,
+): Promise<RunAuditPayload> {
+  const query = new URLSearchParams({ limit: String(limit) });
+  return requestJsonParsed<RunAuditPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/audit?${query.toString()}`,
+    { method: "GET" },
+    parseRunAudit,
   );
 }
 

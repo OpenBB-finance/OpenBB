@@ -104,6 +104,15 @@ const UNIVERSE_SET_OPTIONS_DEFAULT: UniverseSetOption[] = [
   },
 ];
 
+const UNIVERSE_SET_API_ID: Record<UniverseSetId, string> = {
+  default: "default",
+  global_core_equity: "all_in_one",
+};
+
+function toApiUniverseId(id: UniverseSetId): string {
+  return UNIVERSE_SET_API_ID[id] ?? id;
+}
+
 function isUniverseSetId(value: string): value is UniverseSetId {
   return UNIVERSE_SET_OPTIONS_DEFAULT.some((option) => option.id === value);
 }
@@ -114,14 +123,20 @@ function mergeUniverseSetOptions(items: UniverseListItemPayload[]): UniverseSetO
   );
 
   for (const item of items) {
-    if (!isUniverseSetId(item.id)) {
+    let mappedId: UniverseSetId | null = null;
+    if (isUniverseSetId(item.id)) {
+      mappedId = item.id;
+    } else if (item.id === "all_in_one") {
+      mappedId = "global_core_equity";
+    }
+    if (!mappedId) {
       continue;
     }
-    const base = byId.get(item.id);
+    const base = byId.get(mappedId);
     if (!base) {
       continue;
     }
-    byId.set(item.id, {
+    byId.set(mappedId, {
       ...base,
       countHint: item.count_hint,
       hasFile: item.has_file,
@@ -616,7 +631,12 @@ export default function QuantPage() {
 
     void (async () => {
       try {
-        const resolved = await resolveUniverse(backend.baseUrl, selectedUniverseSet, "train", false);
+        const resolved = await resolveUniverse(
+          backend.baseUrl,
+          toApiUniverseId(selectedUniverseSet),
+          "train",
+          false,
+        );
         if (cancelled) {
           return;
         }
@@ -856,7 +876,7 @@ export default function QuantPage() {
       const trainPayload: TrainRequestPayload =
         selectedUniverseSet === "default"
           ? { ...trainPayloadBase, symbols: parsedSymbols }
-          : { ...trainPayloadBase, universe_id: selectedUniverseSet };
+          : { ...trainPayloadBase, universe_id: toApiUniverseId(selectedUniverseSet) };
       const response = await startTrain(backend.baseUrl, trainPayload);
 
       setRunStatus({

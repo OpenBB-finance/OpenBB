@@ -67,7 +67,7 @@ describe("Quant Route", () => {
           universes: [
             { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
             {
-              id: "global_core_equity",
+              id: "all_in_one",
               has_file: true,
               path: "/tmp/all_in_one.csv",
               count_hint: 1300,
@@ -102,7 +102,7 @@ describe("Quant Route", () => {
       }
       if (url.includes("/api/v1/quant_ml/universe/resolve")) {
         return mockJsonResponse({
-          universe_id: "global_core_equity",
+          universe_id: "all_in_one",
           mode: "train",
           count: 1300,
           minimum_required: 1200,
@@ -373,7 +373,7 @@ describe("Quant Route", () => {
       .mock.calls.find((call) => String(call[0]).endsWith("/api/v1/quant_ml/train"));
     expect(trainCall).toBeDefined();
     const trainBody = JSON.parse(String((trainCall?.[1] as RequestInit | undefined)?.body ?? "{}"));
-    expect(trainBody.universe_id).toBe("global_core_equity");
+    expect(trainBody.universe_id).toBe("all_in_one");
     expect(trainBody.symbols).toBeUndefined();
   });
 
@@ -398,7 +398,7 @@ describe("Quant Route", () => {
           universes: [
             { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
             {
-              id: "global_core_equity",
+              id: "all_in_one",
               has_file: true,
               path: "/tmp/all_in_one.csv",
               count_hint: 2,
@@ -411,7 +411,7 @@ describe("Quant Route", () => {
         return mockJsonResponse(
           {
             detail:
-              "invalid_or_undersized_universe_id: global_core_equity; actual_count: 2; minimum_required: 1200; hint: run refresh_universes --all --no-validate",
+              "invalid_or_undersized_universe_id: all_in_one; actual_count: 2; minimum_required: 1200; hint: run refresh_universes --all --no-validate",
           },
           false,
           400,
