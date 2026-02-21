@@ -69,6 +69,13 @@ from openbb_quant_ml.service.run_latest import (
     get_run_latest_meta,
     get_run_latest_risk,
 )
+from openbb_quant_ml.service.snapshot.run_snapshot import (
+    get_run_audit,
+    get_run_constraints,
+    get_run_exposures,
+    get_run_risk,
+    get_run_snapshot,
+)
 from openbb_quant_ml.service.walkforward_backtest import (
     get_walkforward_backtest_status,
     submit_walkforward_backtest,
@@ -136,4 +143,9 @@ __all__ = [
     "get_run_latest_risk",
     "get_run_latest_exposures",
     "get_run_latest_constraints",
+    "get_run_snapshot",
+    "get_run_risk",
+    "get_run_exposures",
+    "get_run_constraints",
+    "get_run_audit",
 ]

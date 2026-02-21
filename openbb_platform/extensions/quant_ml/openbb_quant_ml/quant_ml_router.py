@@ -12,6 +12,7 @@ from openbb_quant_ml.models import (
     ArtifactSummaryResponse,
     BacktestRequest,
     BacktestResponse,
+    DashboardSnapshotV2,
     DashboardHealthResponse,
     ExecutionFillsResponse,
     ExecutionOrderPreviewRequest,
@@ -45,6 +46,7 @@ from openbb_quant_ml.models import (
     RiskPretradeResponse,
     RunLatestConstraintsResponse,
     RunLatestMetaResponse,
+    RunAuditResponse,
     RollingPerformanceResponse,
     RunStatusResponse,
     SignalRequest,
@@ -98,6 +100,11 @@ from openbb_quant_ml.service import (
     get_run_latest_exposures,
     get_run_latest_meta,
     get_run_latest_risk,
+    get_run_audit,
+    get_run_constraints,
+    get_run_exposures,
+    get_run_risk,
+    get_run_snapshot,
     get_universe,
     get_universe_exclusions,
     get_universe_snapshot,
@@ -221,6 +228,56 @@ def run_status(run_id: str) -> RunStatusResponse:
         return get_run(run_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/runs/{run_id}/snapshot")
+def run_snapshot(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> DashboardSnapshotV2:
+    """Return canonical run-scoped dashboard snapshot payload."""
+    try:
+        return get_run_snapshot(run_id=run_id, model_name=model_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/runs/{run_id}/risk")
+def run_risk(
+    run_id: str, model_name: ModelName = "lgbm_ranker", lookback: int = 126
+) -> PortfolioRiskResponse:
+    """Return canonical run-scoped risk payload."""
+    try:
+        return get_run_risk(run_id=run_id, model_name=model_name, lookback=lookback)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/runs/{run_id}/exposures")
+def run_exposures(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> PortfolioExposureResponse:
+    """Return canonical run-scoped exposure payload."""
+    try:
+        return get_run_exposures(run_id=run_id, model_name=model_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/runs/{run_id}/constraints")
+def run_constraints(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> RunLatestConstraintsResponse:
+    """Return canonical run-scoped constraints payload."""
+    try:
+        return get_run_constraints(run_id=run_id, model_name=model_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/runs/{run_id}/audit")
+def run_audit(run_id: str, limit: int = 500) -> RunAuditResponse:
+    """Return run-scoped audit trail payload."""
+    return get_run_audit(run_id=run_id, limit=limit)
 
 
 @router.command(methods=["POST"])
@@ -355,9 +412,7 @@ def run_latest_risk(
     lookback: int = 126,
 ) -> PortfolioRiskResponse:
     """Return latest run portfolio risk alias payload."""
-    return get_run_latest_risk(
-        run_id=run_id, model_name=model_name, lookback=lookback
-    )
+    return get_run_latest_risk(run_id=run_id, model_name=model_name, lookback=lookback)
 
 
 @router.command(methods=["GET"], path="/run/latest/exposures")

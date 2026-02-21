@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import pickle
+import platform
 import re
+import sys
 import time
 import traceback
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -53,6 +55,7 @@ from openbb_quant_ml.service.artifact_store import (
 )
 from openbb_quant_ml.service.asof_guard import build_asof_manifest
 from openbb_quant_ml.service.backtest import run_backtest
+from openbb_quant_ml.service.contract.data_contract import write_data_layer_meta
 from openbb_quant_ml.service.constraints import (
     build_constraints_log,
     summarize_constraint_bindings,
@@ -427,7 +430,9 @@ def _period_weights_to_frame(period_weights: list[dict[str, Any]]) -> pd.DataFra
     return pd.DataFrame(rows)
 
 
-def _derive_trade_plan_rows(period_weights: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _derive_trade_plan_rows(
+    period_weights: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     previous: dict[str, float] = {}
     for row in period_weights:
@@ -803,13 +808,82 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         save_json(
             run_dir / "config_used.json", request.model_dump(mode="json", by_alias=True)
         )
+        data_versions_payload = get_data_versions()
+        feature_versions_payload = get_feature_versions()
         save_json(
             run_dir / "data_versions.json",
             {
-                "data": get_data_versions(),
-                "features": get_feature_versions(),
+                "data": data_versions_payload,
+                "features": feature_versions_payload,
             },
         )
+        cutoff_iso = (
+            pd.Timestamp(market_long["date"].max()).date().isoformat()
+            if not market_long.empty
+            else datetime.now(UTC).date().isoformat()
+        )
+        data_version = str(
+            (data_versions_payload.get("data_version", "unknown"))
+            if isinstance(data_versions_payload, dict)
+            else "unknown"
+        )
+        feature_version = str(
+            (feature_versions_payload.get("feature_version", "unknown"))
+            if isinstance(feature_versions_payload, dict)
+            else "unknown"
+        )
+        write_data_layer_meta(
+            run_dir,
+            layer="bronze",
+            data_version=data_version,
+            as_of_cutoff=cutoff_iso,
+            quality_flags={"raw_market_data_rows": int(len(market_long))},
+        )
+        write_data_layer_meta(
+            run_dir,
+            layer="silver",
+            data_version=data_version,
+            as_of_cutoff=cutoff_iso,
+            quality_flags={"symbols": int(len(datasets))},
+        )
+        write_data_layer_meta(
+            run_dir,
+            layer="gold",
+            data_version=feature_version,
+            as_of_cutoff=cutoff_iso,
+            quality_flags={
+                "feature_rows": int(len(feature_data)),
+                "feature_columns": int(len(feature_columns)),
+            },
+        )
+        for layer in ("bronze", "silver", "gold"):
+            write_artifact_json(
+                run_id,
+                f"{layer}_layer_meta.json",
+                load_json(run_dir / f"{layer}_layer_meta.json", default={}),
+            )
+        save_json(
+            run_dir / "environment_fingerprint.json",
+            {
+                "python": sys.version,
+                "python_executable": sys.executable,
+                "platform": platform.platform(),
+                "machine": platform.machine(),
+                "created_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+            },
+        )
+        write_artifact_json(
+            run_id,
+            "environment_fingerprint.json",
+            load_json(run_dir / "environment_fingerprint.json", default={}),
+        )
+        repro_command = (
+            "PYTHONPATH=openbb_platform/extensions/quant_ml "
+            "python -m openbb_quant_ml.jobs.cli weekly "
+            "--config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml"
+        )
+        (run_dir / "repro_command.txt").write_text(repro_command, encoding="utf-8")
+        write_artifact_text(run_id, "repro_command.txt", repro_command)
         _mark_stage(
             run_id,
             progress=48,
@@ -1063,9 +1137,9 @@ def get_run(run_id: str) -> RunStatusResponse:
             or str(run_context.get("run_uid", "")).strip()
             or None
         )
-        payload["artifact_contract_version"] = str(
-            contract_manifest.get("artifact_contract_version", "") or ""
-        ) or None
+        payload["artifact_contract_version"] = (
+            str(contract_manifest.get("artifact_contract_version", "") or "") or None
+        )
         payload["required_artifacts_ready"] = bool(
             contract_manifest.get("required_artifacts_ready", False)
         )
@@ -1177,7 +1251,11 @@ def build_signals(request: SignalRequest) -> SignalResponse:
     )
     feature_versions = get_feature_versions()
     feature_set_version = str(
-        (feature_versions.get("feature_version") if isinstance(feature_versions, dict) else "")
+        (
+            feature_versions.get("feature_version")
+            if isinstance(feature_versions, dict)
+            else ""
+        )
         or "unknown"
     )
     contract_signals = build_signal_contract(
@@ -1245,11 +1323,11 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
 
     config_payload = load_json(run_dir / "config.json", default={})
     request_payload = (
-        config_payload.get("request", {})
-        if isinstance(config_payload, dict)
-        else {}
+        config_payload.get("request", {}) if isinstance(config_payload, dict) else {}
     )
-    requested_universe_id = str(request_payload.get("universe_id", "default")).strip() or "default"
+    requested_universe_id = (
+        str(request_payload.get("universe_id", "default")).strip() or "default"
+    )
     universe_policy = get_universe_policy()
 
     predictions_for_backtest = predictions.copy()
@@ -1262,10 +1340,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         predictions_for_backtest["score"], errors="coerce"
     ).fillna(0.0)
 
-    pred_wide = (
-        predictions_for_backtest.pivot(index="date", columns="symbol", values="score")
-        .sort_index()
-    )
+    pred_wide = predictions_for_backtest.pivot(
+        index="date", columns="symbol", values="score"
+    ).sort_index()
     window_mask = (close_panel.index.date >= request.start_date) & (
         close_panel.index.date <= request.end_date
     )
@@ -1336,7 +1413,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     )
 
     report_by_date = {
-        str(item.get("date")): item for item in result.rebalance_reports if isinstance(item, dict)
+        str(item.get("date")): item
+        for item in result.rebalance_reports
+        if isinstance(item, dict)
     }
     for history_row in result.rebalance_history_summary:
         report_date = str(history_row.get("date", "")).strip()
@@ -1431,7 +1510,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     if isinstance(u2_symbols, list):
         for symbol in u2_symbols:
             key = str(symbol).strip().upper()
-            metrics = symbol_metrics.get(key, {}) if isinstance(symbol_metrics, dict) else {}
+            metrics = (
+                symbol_metrics.get(key, {}) if isinstance(symbol_metrics, dict) else {}
+            )
             universe_rows.append(
                 {
                     "ticker": key,
@@ -1468,10 +1549,16 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     )
     feature_versions = get_feature_versions()
     feature_set_version = str(
-        (feature_versions.get("feature_version") if isinstance(feature_versions, dict) else "")
+        (
+            feature_versions.get("feature_version")
+            if isinstance(feature_versions, dict)
+            else ""
+        )
         or "unknown"
     )
-    latest_pred_date = pd.Timestamp(predictions_for_backtest["date"].max()).date().isoformat()
+    latest_pred_date = (
+        pd.Timestamp(predictions_for_backtest["date"].max()).date().isoformat()
+    )
     signal_rows = predictions_for_backtest[
         predictions_for_backtest["date"] == predictions_for_backtest["date"].max()
     ][["symbol", "score"]].copy()
@@ -1488,9 +1575,13 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     write_artifact_parquet(request.run_id, "universe.parquet", universe_frame)
     write_artifact_parquet(request.run_id, "exclusions.parquet", exclusions_frame)
     write_artifact_parquet(request.run_id, "signals.parquet", contract_signals)
-    write_artifact_parquet(request.run_id, "weights_target.parquet", weights_target_frame)
+    write_artifact_parquet(
+        request.run_id, "weights_target.parquet", weights_target_frame
+    )
     write_artifact_parquet(request.run_id, "weights_final.parquet", weights_final_frame)
-    write_artifact_parquet(request.run_id, "constraints_log.parquet", constraints_log_frame)
+    write_artifact_parquet(
+        request.run_id, "constraints_log.parquet", constraints_log_frame
+    )
     write_artifact_parquet(request.run_id, "trades.parquet", trades_frame)
     write_artifact_parquet(request.run_id, "costs.parquet", costs_frame)
     write_artifact_parquet(request.run_id, "returns_daily.parquet", returns_daily_frame)

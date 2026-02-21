@@ -1049,3 +1049,125 @@ class RunLatestConstraintsResponse(BaseModel):
     risk_contribution_max: float = 0.0
     top_risk_contribution: list[dict[str, float | str]] = Field(default_factory=list)
     liquidity_adv_top: list[dict[str, float | str]] = Field(default_factory=list)
+
+
+class TrainResultV2(BaseModel):
+    """Canonical train result contract."""
+
+    run_id: str
+    run_uid: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    universe_hash: str | None = None
+    feature_hash: str | None = None
+    config_hash: str | None = None
+    train_start_utc: str | None = None
+    train_end_utc: str | None = None
+    validation_metrics: dict[str, float] = Field(default_factory=dict)
+    artifact_uri: str | None = None
+    data_version: str | None = None
+    feature_version: str | None = None
+    currency: str = "USD"
+
+
+class BacktestResultV2(BaseModel):
+    """Canonical backtest result contract."""
+
+    run_id: str
+    run_uid: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    equity_base: float = 1.0
+    equity_curve: list[dict[str, float | str]] = Field(default_factory=list)
+    returns_decimal: list[dict[str, float | str]] = Field(default_factory=list)
+    cumulative_returns: list[dict[str, float | str]] = Field(default_factory=list)
+    drawdown: list[dict[str, float | str]] = Field(default_factory=list)
+    gross_exposure: list[dict[str, float | str]] = Field(default_factory=list)
+    net_exposure: list[dict[str, float | str]] = Field(default_factory=list)
+    positions: list[dict[str, float | str]] = Field(default_factory=list)
+    trades: list[dict[str, float | str]] = Field(default_factory=list)
+    turnover: list[dict[str, float | str]] = Field(default_factory=list)
+    metrics: dict[str, float] = Field(default_factory=dict)
+    asof_manifest: dict[str, Any] = Field(default_factory=dict)
+    currency: str = "USD"
+
+
+class WalkForwardFoldV2(BaseModel):
+    """Canonical one-fold walk-forward result."""
+
+    fold_id: str
+    train_period: dict[str, str] = Field(default_factory=dict)
+    test_period: dict[str, str] = Field(default_factory=dict)
+    fold_metrics: dict[str, float] = Field(default_factory=dict)
+    fold_equity: list[dict[str, float | str]] = Field(default_factory=list)
+    asof_manifest_hash: str | None = None
+
+
+class WalkForwardResultV2(BaseModel):
+    """Canonical walk-forward result contract."""
+
+    run_id: str
+    run_uid: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    folds: list[WalkForwardFoldV2] = Field(default_factory=list)
+    aggregate_metrics: dict[str, float] = Field(default_factory=dict)
+    train_window_integrity: bool = True
+    currency: str = "USD"
+
+
+class ExecutionStateV2(BaseModel):
+    """Canonical execution state contract."""
+
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    portfolio_value: float = 0.0
+    cash: float = 0.0
+    positions_weight: list[dict[str, float | str]] = Field(default_factory=list)
+    positions_quantity: list[dict[str, float | str]] = Field(default_factory=list)
+    exposure: dict[str, float] = Field(default_factory=dict)
+    risk_metrics: dict[str, float] = Field(default_factory=dict)
+    last_rebalance_time_utc: str | None = None
+    orders: list[dict[str, float | str]] = Field(default_factory=list)
+    fills: list[dict[str, float | str]] = Field(default_factory=list)
+    kill_switch: bool = False
+    currency: str = "USD"
+
+
+class DashboardSnapshotV2(BaseModel):
+    """Canonical dashboard snapshot contract."""
+
+    run_id: str
+    run_uid: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    as_of_utc: str
+    total_return: float = 0.0
+    cagr: float = 0.0
+    sharpe: float = 0.0
+    sortino: float = 0.0
+    max_drawdown: float = 0.0
+    volatility: float = 0.0
+    turnover: float = 0.0
+    win_rate: float = 0.0
+    exposure: dict[str, float] = Field(default_factory=dict)
+    risk_contrib_top10: list[dict[str, float | str]] = Field(default_factory=list)
+    constraint_bindings: list[ConstraintBindingItem] = Field(default_factory=list)
+    ic_rolling: list[dict[str, float | str]] = Field(default_factory=list)
+    currency: str = "USD"
+
+
+class RunAuditEventItem(BaseModel):
+    """One run-level audit event."""
+
+    id: int | None = None
+    run_id: str
+    event_type: str
+    severity: Literal["info", "warning", "critical"] = "info"
+    payload: dict[str, Any] = Field(default_factory=dict)
+    created_at_utc: str
+
+
+class RunAuditResponse(BaseModel):
+    """Run audit log response payload."""
+
+    run_id: str
+    status: DashboardPayloadStatus = "ok"
+    message: str | None = None
+    events: list[RunAuditEventItem] = Field(default_factory=list)
