@@ -26,6 +26,7 @@ References:
 """
 
 import json
+import unicodedata
 from pathlib import Path
 from typing import Any, TypedDict
 
@@ -42,6 +43,17 @@ class CountryData(TypedDict, total=False):
     groups: list[str]
 
 
+_COMMON_ALIASES: dict[str, list[str]] = {
+    "TR": ["turkey"],
+}
+
+
+def _strip_accents(text: str) -> str:
+    """Strip diacritical marks from text (e.g., Curaçao -> Curacao)."""
+    nfd = unicodedata.normalize("NFD", text)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
+
+
 def _load_country_data() -> dict[str, CountryData]:
     """Load country data from JSON and build lookup indices.
 
@@ -53,22 +65,28 @@ def _load_country_data() -> dict[str, CountryData]:
 
     lookup: dict[str, CountryData] = {}
     for country in data["countries"]:
-        # Index by alpha_2 (case-insensitive)
         lookup[country["alpha_2"].upper()] = country
         lookup[country["alpha_2"].lower()] = country
 
-        # Index by alpha_3 (case-insensitive)
         lookup[country["alpha_3"].upper()] = country
         lookup[country["alpha_3"].lower()] = country
 
-        # Index by name (case-insensitive)
         name_lower = country["name"].lower()
         lookup[name_lower] = country
         lookup[country["name"]] = country
 
-        # Index by snake_case name
+        ascii_lower = _strip_accents(name_lower)
+        if ascii_lower != name_lower:
+            lookup[ascii_lower] = country
+
+        for alias in _COMMON_ALIASES.get(country["alpha_2"], []):
+            lookup[alias] = country
+
         snake_name = name_lower.replace(" ", "_").replace(",", "").replace("'", "")
         lookup[snake_name] = country
+        ascii_snake = _strip_accents(snake_name)
+        if ascii_snake != snake_name:
+            lookup[ascii_snake] = country
 
     return lookup
 
@@ -159,18 +177,19 @@ class Country(str):
         """
         val = str(value).strip()
 
-        # Convert lower_snake_case to lookup key
         if "_" in val:
             val = val.replace("_", " ")
 
-        # Try direct lookup
         lookup_key = val.lower()
         if lookup_key in _COUNTRY_LOOKUP:
             return _COUNTRY_LOOKUP[lookup_key]
 
-        # Try original case
         if val in _COUNTRY_LOOKUP:
             return _COUNTRY_LOOKUP[val]
+
+        ascii_key = _strip_accents(lookup_key)
+        if ascii_key in _COUNTRY_LOOKUP:
+            return _COUNTRY_LOOKUP[ascii_key]
 
         raise ValueError(
             f"Invalid country: '{value}'. "

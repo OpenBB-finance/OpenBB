@@ -154,6 +154,38 @@ class TestCountry:
         for code in eu_countries:
             c = Country(code)
             assert c.is_member_of("EU") is True, f"{code} should be EU member"
-        # UK left the EU
         c = Country("GB")
         assert c.is_member_of("EU") is False
+
+    @pytest.mark.parametrize(
+        "input_name, expected_alpha2",
+        [
+            ("Curacao", "CW"),
+            ("Reunion", "RE"),
+            ("Aland Islands", "AX"),
+            ("Saint Barthelemy", "BL"),
+            ("Turkiye", "TR"),
+            ("Turkey", "TR"),
+            ("Cote d'Ivoire", "CI"),
+        ],
+    )
+    def test_ascii_normalized_names(self, input_name, expected_alpha2):
+        """ASCII variants of accented country names should resolve correctly."""
+        c = Country(input_name)
+        assert c.alpha_2 == expected_alpha2
+
+    @pytest.mark.parametrize(
+        "input_name, expected_alpha2",
+        [
+            ("Curaçao", "CW"),
+            ("Réunion", "RE"),
+            ("Åland Islands", "AX"),
+            ("Saint Barthélemy", "BL"),
+            ("Türkiye", "TR"),
+            ("Côte d'Ivoire", "CI"),
+        ],
+    )
+    def test_accented_names(self, input_name, expected_alpha2):
+        """Accented country names should resolve correctly."""
+        c = Country(input_name)
+        assert c.alpha_2 == expected_alpha2
