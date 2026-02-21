@@ -1,7 +1,7 @@
 version: "v1"
 
 daily:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   lookback_years: 3
   run_id: null
   model_name: "lgbm_ranker"
@@ -15,7 +15,7 @@ daily:
   backoff_sec: 1.0
 
 weekly:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"
@@ -29,7 +29,7 @@ weekly:
   cross_sectional_sampling: false
 
 monthly:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"

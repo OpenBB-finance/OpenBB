@@ -13,7 +13,7 @@ defaults:
   market_data_workers: 6
 
 daily:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   lookback_years: 3
   market_delta_days: 45
   feature_delta_days: 120
@@ -34,7 +34,7 @@ daily:
   predict_fallback_legacy: true
 
 weekly:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"
@@ -60,7 +60,7 @@ weekly:
     val_ic_min: -1.0
 
 monthly:
-  universe_id: "all_in_one"
+  universe_id: "global_core_equity"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"
