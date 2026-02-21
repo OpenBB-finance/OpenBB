@@ -63,6 +63,27 @@ curl "http://127.0.0.1:6900/api/v1/quant_ml/portfolio/policy"
 2. 필요 시 `cash_weight > 0` 생성
 3. `risk/limits` 기본값이 10% 체계(`max_weight=0.1`)인지 확인
 
+### 기관형 운영 점검 포인트 (신규)
+
+아래 alias API로 최신 run 운영 상태를 한 번에 점검할 수 있습니다.
+
+```powershell
+curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/meta"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/constraints"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/risk"
+curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/exposures"
+```
+
+확인 포인트:
+
+1. `required_artifacts_ready=true`
+2. `constraints`에서 바인딩 빈도/ADV cap 확인
+3. `risk`에서 RC 상위 종목 확인
+4. `exposures`에서 섹터/포지션 노출 확인
+
+`ops_jobs.yaml`의 `daily.shadow_live.enabled=true`일 때는 실주문 없이
+`trade_plan.parquet`, `risk_report.json`, `universe_snapshot_shadow.json`만 저장됩니다.
+
 ### 안 열릴 때 빠른 점검
 
 ```powershell

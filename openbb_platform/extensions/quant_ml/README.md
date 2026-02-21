@@ -91,6 +91,29 @@ pip install pykrx
 - `GET /api/v1/quant_ml/artifacts/{run_id}/summary`
 - `GET /api/v1/quant_ml/portfolio/policy`
 - `GET /api/v1/quant_ml/model/promoted`
+- `GET /api/v1/quant_ml/run/latest/meta`
+- `GET /api/v1/quant_ml/run/latest/risk`
+- `GET /api/v1/quant_ml/run/latest/exposures`
+- `GET /api/v1/quant_ml/run/latest/constraints`
+
+## Institutional Artifact Contract
+
+Backtest now writes a standardized artifact bundle under:
+
+- `~/.openbb_platform/quant_ml/runs/<run_id>/artifacts/`
+
+Required outputs:
+
+- `universe.parquet`, `exclusions.parquet`, `signals.parquet`
+- `weights_target.parquet`, `weights_final.parquet`, `constraints_log.parquet`
+- `trades.parquet`, `costs.parquet`, `returns_daily.parquet`
+- `risk_summary.parquet`, `exposures_sector.parquet`, `report.html`
+
+Run metadata now includes:
+
+- `run_uid` (`YYYY-MM-DD_HHMMSSZ_<8hex>`)
+- `artifact_contract_version`
+- `required_artifacts_ready`
 
 ## Portfolio Policy (Hard Constraints)
 
