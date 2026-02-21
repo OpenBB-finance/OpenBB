@@ -1,4 +1,4 @@
-"""Test the Session class."""
+"Test the Session class."
 
 from unittest.mock import MagicMock, patch
 
@@ -31,15 +31,16 @@ def test_session_initialization(session):
     assert isinstance(session.settings, Settings)
 
 
+@patch("openbb_cli.session.PromptSession")
 @patch("sys.stdin.isatty", return_value=True)
-def test_get_prompt_session_true(mock_isatty, session):
-    """Test get_prompt_session method."""
+def test_get_prompt_session_true(mock_isatty, mock_prompt_session, session):
+    "Test get_prompt_session method."
     prompt_session = session._get_prompt_session()
     assert prompt_session is not None
 
 
 @patch("sys.stdin.isatty", return_value=False)
 def test_get_prompt_session_false(mock_isatty, session):
-    """Test get_prompt_session method."""
+    "Test get_prompt_session method."
     prompt_session = session._get_prompt_session()
     assert prompt_session is None

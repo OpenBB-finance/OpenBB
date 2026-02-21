@@ -8,7 +8,7 @@ license = "AGPL-3.0-only"
 packages = [{ include = "{{ cookiecutter.package_name }}" }]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<4"
 openbb-core = "*"
 openbb-platform-api = "*"
 

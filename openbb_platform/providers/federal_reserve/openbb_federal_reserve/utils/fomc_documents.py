@@ -82,7 +82,7 @@ def get_current_fomc_documents(url: str | None = None) -> list:
     soup = BeautifulSoup(response.content, "html.parser")
 
     for link in soup.find_all("a"):
-        url = link.get("href", "")
+        url = link.get("href", "")  # type: ignore[assignment]
 
         if "/newsevents/pressreleases" in url:
             continue

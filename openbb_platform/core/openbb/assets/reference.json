@@ -1,0 +1,15 @@
+{
+    "openbb": "1.6.0core",
+    "info": {
+        "title": "OpenBB Platform (Python)",
+        "description": "Investment research for everyone, anywhere.",
+        "core": "1.6.0",
+        "extensions": {
+            "openbb_core_extension": [],
+            "openbb_provider_extension": [],
+            "openbb_obbject_extension": []
+        }
+    },
+    "paths": {},
+    "routers": {}
+}

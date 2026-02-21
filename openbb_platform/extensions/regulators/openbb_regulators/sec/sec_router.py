@@ -119,25 +119,16 @@ async def institutions_search(
     examples=[
         APIEx(parameters={"provider": "sec"}),
         PythonEx(
-            description="Get a list of schema files.",
+            description="Explore XBRL taxonomies progressively.",
             code=[
-                "data = obb.regulators.sec.schema_files().results",
-                "data.files[0]",
-                "'https://xbrl.fasb.org/us-gaap/'",
-                "# The directory structure can be navigated by constructing a URL from the 'results' list.",
-                "url = data.files[0]+data.files[-1]",
-                "# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.",
-                "obb.regulators.sec.schema_files(url=url).results.files",
-                "['https://xbrl.fasb.org/us-gaap/2024/'",
-                "'USGAAP2024FileList.xml'",
-                "'dis/'",
-                "'dqcrules/'",
-                "'ebp/'",
-                "'elts/'",
-                "'entire/'",
-                "'meta/'",
-                "'stm/'",
-                "'us-gaap-2024.zip']",
+                "# List all available taxonomy families",
+                "obb.regulators.sec.schema_files(provider='sec')",
+                "# List components for US GAAP (latest year)",
+                "obb.regulators.sec.schema_files(taxonomy='us-gaap', provider='sec')",
+                "# List presentation components for US GAAP 2024",
+                "obb.regulators.sec.schema_files(taxonomy='us-gaap', year=2024, provider='sec')",
+                "# Get the Statement of Income presentation structure",
+                "obb.regulators.sec.schema_files(taxonomy='us-gaap', year=2024, component='soi', provider='sec')",
             ],
         ),
     ],
@@ -148,7 +139,14 @@ async def schema_files(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Use tool for navigating the directory of SEC XML schema files by year."""
+    """Explore SEC and FASB XBRL taxonomy schemas, labels, and presentation structures.
+
+    - No parameters: list all available taxonomy families.
+    - taxonomy only: get all parsed structures for the most recent year.
+    - taxonomy + year: get all parsed structures for a specific year.
+    - taxonomy + component: get one component's structure using the most recent year.
+    - taxonomy + year + component: get one component's parsed structure.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 

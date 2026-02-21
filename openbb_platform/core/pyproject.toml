@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.5.9"
+version = "1.6.0"
 description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -11,9 +11,9 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
+python = ">=3.10,<4"
 uvicorn = "^0.40.0"
-websockets = "^15.0"
+websockets = ">=15.0"
 pandas = ">=1.5.3"
 html5lib = "^1.1"
 fastapi = "^0.128.0"
