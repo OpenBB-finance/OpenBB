@@ -16,6 +16,14 @@ from openbb_quant_ml.service.run_id import (
 )
 from openbb_quant_ml.service.run_context import get_run_uid
 from openbb_quant_ml.service.run_index import rebuild_runs_index, upsert_run_index_entry
+from openbb_quant_ml.service.registry.audit_log import append_audit_event
+from openbb_quant_ml.service.registry.migration_json_to_sqlite import (
+    migrate_json_registry_to_sqlite,
+)
+from openbb_quant_ml.service.registry.run_registry_db import (
+    ensure_registry_db,
+    upsert_run_record,
+)
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     read_registry,
@@ -44,6 +52,38 @@ class RunState:
 
 _RUN_STATES: dict[str, RunState] = {}
 _LOCK = RLock()
+_DB_MIGRATED = False
+
+
+def _sync_state_to_db(state: RunState) -> None:
+    try:
+        upsert_run_record(
+            run_id=state.run_id,
+            run_uid=state.run_uid,
+            status=state.status,
+            progress=state.progress,
+            stage=state.stage,
+            created_at_utc=state.created_at,
+            updated_at_utc=state.updated_at,
+            error=state.error,
+            artifact_root=state.artifact_root,
+        )
+    except Exception:
+        return
+
+
+def _audit(
+    run_id: str, *, event_type: str, payload: dict[str, Any], severity: str = "info"
+) -> None:
+    try:
+        append_audit_event(
+            run_id,
+            event_type=event_type,
+            severity=severity,
+            payload=payload,
+        )
+    except Exception:
+        return
 
 
 def _state_from_payload(run_id: str, state: dict[str, Any]) -> RunState:
@@ -105,8 +145,13 @@ def _persist_run_state_to_disk(run_id: str, state: RunState, retries: int = 5) -
 
 def initialize_registry() -> None:
     """Initialize run registry cache."""
+    global _DB_MIGRATED
     with _LOCK:
         if not _RUN_STATES:
+            ensure_registry_db()
+            if not _DB_MIGRATED:
+                migrate_json_registry_to_sqlite()
+                _DB_MIGRATED = True
             _load_states_from_disk()
             rebuild_runs_index()
 
@@ -141,6 +186,12 @@ def create_run(
         )
         _RUN_STATES[run_id] = state
         _persist_run_state_to_disk(run_id, state)
+        _sync_state_to_db(state)
+        _audit(
+            run_id,
+            event_type="run_created",
+            payload={"stage": state.stage, "status": state.status},
+        )
         upsert_run_index_entry(
             run_id,
             status=state.status,
@@ -163,6 +214,12 @@ def append_log(run_id: str, message: str) -> None:
         state.updated_at = now
         state.last_heartbeat_at = now
         _persist_run_state_to_disk(run_id, state)
+        _sync_state_to_db(state)
+        _audit(
+            run_id,
+            event_type="run_log",
+            payload={"message": message},
+        )
 
 
 def update_run(
@@ -179,6 +236,7 @@ def update_run(
         state = _RUN_STATES.get(run_id)
         if not state:
             return None
+        previous_status = state.status
         if status is not None:
             state.status = status
         if progress is not None:
@@ -195,6 +253,20 @@ def update_run(
         state.updated_at = now
         state.last_heartbeat_at = now
         _persist_run_state_to_disk(run_id, state)
+        _sync_state_to_db(state)
+        if previous_status != state.status or stage is not None or error is not None:
+            _audit(
+                run_id,
+                event_type="run_status_update",
+                severity="warning" if state.status == "failed" else "info",
+                payload={
+                    "status": state.status,
+                    "stage": state.stage,
+                    "progress": state.progress,
+                    "error": state.error,
+                    "stale_reason": state.stale_reason,
+                },
+            )
         upsert_run_index_entry(
             run_id,
             status=state.status,
@@ -225,6 +297,7 @@ def heartbeat_run(
             state.logs_tail.append(message)
             state.logs_tail = state.logs_tail[-MAX_LOG_LINES:]
         _persist_run_state_to_disk(run_id, state)
+        _sync_state_to_db(state)
         upsert_run_index_entry(
             run_id,
             status=state.status,
