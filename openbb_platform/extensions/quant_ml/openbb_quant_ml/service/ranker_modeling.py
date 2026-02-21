@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import warnings
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import ConstantInputWarning, spearmanr
 
 from openbb_quant_ml.models import RankerConfig, WalkForwardConfig
 
@@ -109,18 +110,41 @@ def _group_ndcg(frame: pd.DataFrame, k: int) -> float:
     return float(np.mean(values)) if values else 0.0
 
 
-def _group_ic(frame: pd.DataFrame, score_col: str, target_col: str) -> float:
+def _group_ic(
+    frame: pd.DataFrame,
+    score_col: str,
+    target_col: str,
+    *,
+    return_stats: bool = False,
+) -> float | tuple[float, dict[str, int]]:
     values: list[float] = []
+    skipped_constant = 0
+    valid_groups = 0
     for _, group in frame.groupby("date"):
         if len(group) < 3:
             continue
-        corr = spearmanr(
-            group[score_col], group[target_col], nan_policy="omit"
-        ).correlation
+        if (
+            group[score_col].nunique(dropna=True) < 2
+            or group[target_col].nunique(dropna=True) < 2
+        ):
+            skipped_constant += 1
+            continue
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ConstantInputWarning)
+            corr = spearmanr(
+                group[score_col], group[target_col], nan_policy="omit"
+            ).correlation
         if corr is None or np.isnan(corr):
             continue
+        valid_groups += 1
         values.append(float(corr))
-    return float(np.mean(values)) if values else 0.0
+    ic_value = float(np.mean(values)) if values else 0.0
+    if return_stats:
+        return ic_value, {
+            "ic_skipped_constant_groups": int(skipped_constant),
+            "ic_valid_groups": int(valid_groups),
+        }
+    return ic_value
 
 
 def _fit_ranker_model(
@@ -293,6 +317,8 @@ def train_ranker_models(
     fold_metrics: list[dict[str, float]] = []
     importance_accumulator = np.zeros(len(feature_columns), dtype=float)
     backend_name = "lightgbm"
+    ic_skipped_constant_groups = 0
+    ic_valid_groups = 0
 
     for fold_idx, (train_df, val_df) in enumerate(splits, start=1):
         emit_progress(
@@ -321,11 +347,30 @@ def train_ranker_models(
         scored["predicted_lstm"] = scored["score"]
         fold_frames.append(scored)
 
+        train_ic_value, train_ic_stats = _group_ic(
+            train_scored,
+            "score",
+            "target_return",
+            return_stats=True,
+        )
+        val_ic_value, val_ic_stats = _group_ic(
+            scored,
+            "score",
+            "target_return",
+            return_stats=True,
+        )
+        ic_skipped_constant_groups += int(
+            train_ic_stats.get("ic_skipped_constant_groups", 0)
+        ) + int(val_ic_stats.get("ic_skipped_constant_groups", 0))
+        ic_valid_groups += int(train_ic_stats.get("ic_valid_groups", 0)) + int(
+            val_ic_stats.get("ic_valid_groups", 0)
+        )
+
         fold_metrics.append(
             {
                 "fold": float(fold_idx),
-                "train_ic": _group_ic(train_scored, "score", "target_return"),
-                "val_ic": _group_ic(scored, "score", "target_return"),
+                "train_ic": float(train_ic_value),
+                "val_ic": float(val_ic_value),
                 "ndcg_5": _group_ndcg(scored, 5),
                 "ndcg_10": _group_ndcg(scored, 10),
                 "ndcg_20": _group_ndcg(scored, 20),
@@ -395,16 +440,11 @@ def train_ranker_models(
     if np.isnan(label_return_fallback) or np.isinf(label_return_fallback):
         label_return_fallback = 0.0
 
-    train_ic = (
-        float(np.mean([item["train_ic"] for item in fold_metrics]))
-        if fold_metrics
-        else 0.0
-    )
-    val_ic = (
-        float(np.mean([item["val_ic"] for item in fold_metrics]))
-        if fold_metrics
-        else 0.0
-    )
+    train_ic = 0.0
+    val_ic = 0.0
+    if fold_metrics:
+        train_ic = float(np.mean([item["train_ic"] for item in fold_metrics]))
+        val_ic = float(np.mean([item["val_ic"] for item in fold_metrics]))
     ndcg_5 = (
         float(np.mean([item["ndcg_5"] for item in fold_metrics]))
         if fold_metrics
@@ -456,6 +496,8 @@ def train_ranker_models(
         "decile_spread": _decile_spread(combined),
         "fold_count": len(splits),
         "model_backend": final_backend,
+        "ic_skipped_constant_groups": int(ic_skipped_constant_groups),
+        "ic_valid_groups": int(ic_valid_groups),
     }
 
     model_meta: dict[str, Any] = {

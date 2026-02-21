@@ -1,4 +1,4 @@
-"""Hybrid XGBoost + PyTorch LSTM training and inference."""
+﻿"""Hybrid XGBoost + PyTorch LSTM training and inference."""
 
 from __future__ import annotations
 
@@ -284,12 +284,12 @@ def train_hybrid_models(
 
     model_input = feature_data.dropna(subset=["target_return"]).copy()
     if model_input.empty:
-        raise ValueError("학습할 타깃 데이터가 없습니다.")
+        raise ValueError("No target rows are available for training.")
 
     emit_progress(0.05, "Preparing train/validation split")
     train_df, val_df = _split_train_validation(model_input, config.train_val_split)
     if train_df.empty:
-        raise ValueError("학습 구간 데이터가 부족합니다.")
+        raise ValueError("Training split is empty; not enough training samples.")
 
     emit_progress(0.2, "Training XGBoost")
     xgb_model, xgb_val_mse = _fit_xgb(train_df, val_df, feature_columns, config)
