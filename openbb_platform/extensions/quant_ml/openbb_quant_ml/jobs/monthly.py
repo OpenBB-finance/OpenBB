@@ -66,6 +66,7 @@ def run_monthly(config: dict[str, Any], state: JobState, run_id: str, run_dir) -
         runtime_cfg.update(job_cfg)
     runtime_cfg.setdefault("job", "monthly")
     runtime_cfg["updated_at"] = run_id
+    runtime_cfg["_job_run_dir"] = str(run_dir)
     retries = int(runtime_cfg.get("retries", 1))
     backoff_sec = float(runtime_cfg.get("backoff_sec", 1.0))
 

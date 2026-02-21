@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Any
 
 from openbb_quant_ml.jobs.logging import append_log, write_json
@@ -66,6 +67,7 @@ def run_bootstrap(
         runtime_cfg.update(weekly_cfg)
     runtime_cfg.setdefault("job", "bootstrap")
     runtime_cfg["updated_at"] = run_id
+    runtime_cfg["_job_run_dir"] = str(run_dir)
     runtime_cfg["promote_on_success"] = True
     if not bool(runtime_cfg.get("pretrain_bootstrap_enabled", True)):
         append_log(run_dir, "info", "bootstrap", "bootstrap disabled by config")
@@ -84,8 +86,10 @@ def run_bootstrap(
         ("notify", notify.run),
     ]
 
-    time_profile: dict[str, float] = {}
+    time_profile: dict[str, Any] = {}
     for step_name, func in steps:
+        step_started_at = datetime.now(UTC).replace(microsecond=0).isoformat()
+        append_log(run_dir, "info", step_name, "step started")
         result, elapsed = _run_step(
             run_dir,
             step_name,
@@ -111,5 +115,10 @@ def run_bootstrap(
             state.set("weekly.latest_run_id", str(result["run_id"]))
         state.set(f"bootstrap.{step_name}.last_success", run_id)
         state.set(f"bootstrap.{step_name}.result", result)
-        time_profile[step_name] = elapsed
+        time_profile[step_name] = {
+            "started_at": step_started_at,
+            "finished_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
+            "elapsed_sec": float(elapsed),
+            "status": "ok",
+        }
     write_json(run_dir, "time_profile.json", time_profile)

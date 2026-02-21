@@ -57,6 +57,26 @@ def append_log(
         file.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def append_heartbeat(
+    run_dir: Path,
+    step: str,
+    processed: int,
+    total: int,
+    elapsed_sec: float,
+) -> None:
+    append_log(
+        run_dir=run_dir,
+        level="heartbeat",
+        step=step,
+        message=f"heartbeat processed={processed}/{total}",
+        extra={
+            "processed": int(processed),
+            "total": int(total),
+            "elapsed_sec": float(max(0.0, elapsed_sec)),
+        },
+    )
+
+
 def write_json(run_dir: Path, file_name: str, payload: dict[str, Any]) -> None:
     path = run_dir / file_name
     with path.open("w", encoding="utf-8") as file:

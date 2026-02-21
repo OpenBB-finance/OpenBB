@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable
-from datetime import date
+from datetime import UTC, date, datetime
 from typing import Any
 
 from openbb_quant_ml.jobs.logging import append_log, write_json
@@ -134,6 +134,7 @@ def run_daily(
         )
     runtime_cfg.setdefault("job", "daily")
     runtime_cfg["updated_at"] = run_id
+    runtime_cfg["_job_run_dir"] = str(run_dir)
     retries = int(runtime_cfg.get("retries", 1))
     backoff_sec = float(runtime_cfg.get("backoff_sec", 1.0))
     run_date_token = _resolve_run_date(run_date)
@@ -149,8 +150,10 @@ def run_daily(
         ("notify", notify.run),
     ]
 
-    time_profile: dict[str, float] = {}
+    time_profile: dict[str, Any] = {}
     for step_name, func in steps:
+        step_started_at = datetime.now(UTC).replace(microsecond=0).isoformat()
+        append_log(run_dir, "info", step_name, "step started")
         last_success_date = str(
             state.get(f"daily.{step_name}.last_success_date", "") or ""
         )
@@ -161,7 +164,12 @@ def run_daily(
                 step_name,
                 f"step skipped (already successful for {run_date_token})",
             )
-            time_profile[step_name] = 0.0
+            time_profile[step_name] = {
+                "started_at": step_started_at,
+                "finished_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
+                "elapsed_sec": 0.0,
+                "status": "skipped",
+            }
             continue
         try:
             result, elapsed = _run_step(
@@ -204,5 +212,10 @@ def run_daily(
         state.set(f"daily.{step_name}.last_success", run_id)
         state.set(f"daily.{step_name}.last_success_date", run_date_token)
         state.set(f"daily.{step_name}.result", result)
-        time_profile[step_name] = elapsed
+        time_profile[step_name] = {
+            "started_at": step_started_at,
+            "finished_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
+            "elapsed_sec": float(elapsed),
+            "status": "ok",
+        }
     write_json(run_dir, "time_profile.json", time_profile)
