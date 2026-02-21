@@ -26,7 +26,15 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         config.get("macro_feature_subset", ["z_252", "yoy", "mom_3", "slope"])
     )
     max_workers = config.get("max_infer_workers")
-    datasets, _ = load_market_data(symbols, start_date=start_date, end_date=end_date)
+    datasets, _ = load_market_data(
+        symbols,
+        start_date=start_date,
+        end_date=end_date,
+        timeout_sec=int(config.get("market_data_timeout_sec", 20)),
+        retry=int(config.get("market_data_retry", 2)),
+        backoff_base=float(config.get("market_data_backoff_base", 2.0)),
+        max_workers=int(config.get("market_data_workers", 6)),
+    )
     frame, feature_cols, skipped = build_feature_dataset(
         data_by_symbol=datasets,
         feature_config=FeatureConfig(),

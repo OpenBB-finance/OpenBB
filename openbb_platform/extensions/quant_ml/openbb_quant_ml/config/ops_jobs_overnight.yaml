@@ -51,6 +51,8 @@ weekly:
   compute_features: true
   features_lookback_days: 365
   promote_on_success: true
+  training_wait_timeout_sec: 21600
+  training_poll_sec: 2.0
   promote_thresholds:
     sharpe_min: 0.1
     max_drawdown_min: -0.4
@@ -78,3 +80,42 @@ monthly:
 retention:
   policy: "keep_all"
   index_compaction: true
+
+overnight_profiles:
+  canary:
+    defaults:
+      stale_timeout_minutes: 90
+      heartbeat_interval_sec: 30
+      market_data_timeout_sec: 20
+      market_data_retry: 2
+      market_data_workers: 6
+    daily:
+      lookback_years: 2
+      feature_delta_days: 180
+    weekly:
+      quick_mode: true
+      recent_years: 2
+      model_choice: "lgbm_only"
+      top_liquid_n: 300
+      walk_forward_compact: true
+      cross_sectional_sampling: true
+      feature_pruning: true
+      training_wait_timeout_sec: 5400
+      training_poll_sec: 2.0
+  full:
+    defaults:
+      stale_timeout_minutes: 90
+      heartbeat_interval_sec: 30
+      market_data_timeout_sec: 20
+      market_data_retry: 2
+      market_data_workers: 6
+    weekly:
+      quick_mode: false
+      recent_years: 5
+      model_choice: "lgbm_only"
+      top_liquid_n: null
+      walk_forward_compact: false
+      cross_sectional_sampling: false
+      feature_pruning: true
+      training_wait_timeout_sec: 21600
+      training_poll_sec: 2.0

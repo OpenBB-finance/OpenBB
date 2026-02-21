@@ -5,7 +5,9 @@ from __future__ import annotations
 import os
 import re
 import shutil
+import time
 from collections.abc import Callable
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -128,6 +130,9 @@ def load_symbol_prices(
     start_date: date,
     end_date: date,
     ttl_days: int = CACHE_TTL_DAYS,
+    timeout_sec: int = 20,
+    retry: int = 2,
+    backoff_base: float = 2.0,
 ) -> pd.DataFrame:
     """Load OHLCV series from cache or yfinance."""
     _ensure_ssl_bundle_path()
@@ -151,15 +156,29 @@ def load_symbol_prices(
         download_start = max(start_date, cached_max - timedelta(days=7))
 
     download_end = end_date + timedelta(days=5)
-    fresh = yf.download(
-        tickers=symbol,
-        start=download_start.isoformat(),
-        end=download_end.isoformat(),
-        auto_adjust=False,
-        progress=False,
-        group_by="column",
-        threads=False,
-    )
+    fresh = pd.DataFrame()
+    last_exc: Exception | None = None
+    attempts = max(1, int(retry) + 1)
+    for attempt in range(1, attempts + 1):
+        try:
+            fresh = yf.download(
+                tickers=symbol,
+                start=download_start.isoformat(),
+                end=download_end.isoformat(),
+                auto_adjust=False,
+                progress=False,
+                group_by="column",
+                threads=False,
+                timeout=max(1, int(timeout_sec)),
+            )
+            if not fresh.empty:
+                break
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
+        if attempt < attempts:
+            sleep_sec = float(max(0.0, backoff_base ** (attempt - 1)))
+            time.sleep(sleep_sec)
+
     normalized = _normalize_frame(fresh, symbol)
     if normalized.empty:
         if not cached.empty:
@@ -167,6 +186,10 @@ def load_symbol_prices(
                 (cached["date"].dt.date >= start_date)
                 & (cached["date"].dt.date <= end_date)
             ].copy()
+        if last_exc is not None:
+            raise ValueError(
+                f"Failed to load market data for symbol: {symbol} ({last_exc})"
+            ) from last_exc
         raise ValueError(f"Failed to load market data for symbol: {symbol}")
 
     # Keep the most complete frame in cache by unioning old+new and dropping duplicates.
@@ -188,31 +211,67 @@ def load_market_data(
     end_date: date,
     ttl_days: int = CACHE_TTL_DAYS,
     progress_callback: Callable[[int, int, str, bool], None] | None = None,
+    timeout_sec: int = 20,
+    retry: int = 2,
+    backoff_base: float = 2.0,
+    max_workers: int = 6,
 ) -> tuple[dict[str, pd.DataFrame], list[str]]:
     """Load market data for a symbol universe."""
     datasets: dict[str, pd.DataFrame] = {}
     skipped: list[str] = []
     total = max(len(symbols), 1)
-    for idx, symbol in enumerate(symbols, start=1):
-        loaded = False
-        try:
-            series = load_symbol_prices(
-                symbol=symbol,
-                start_date=start_date,
-                end_date=end_date,
-                ttl_days=ttl_days,
-            )
-            if len(series) < 120:
-                skipped.append(symbol)
-            else:
-                datasets[symbol] = series
-                loaded = True
-        except Exception:
-            skipped.append(symbol)
+
+    def _load_one(symbol: str) -> tuple[str, pd.DataFrame | None]:
+        series = load_symbol_prices(
+            symbol=symbol,
+            start_date=start_date,
+            end_date=end_date,
+            ttl_days=ttl_days,
+            timeout_sec=timeout_sec,
+            retry=retry,
+            backoff_base=backoff_base,
+        )
+        return symbol, series
+
+    worker_count = max(1, min(int(max_workers), max(len(symbols), 1)))
+    if worker_count <= 1:
+        for idx, symbol in enumerate(symbols, start=1):
             loaded = False
-        finally:
-            if progress_callback is not None:
-                progress_callback(idx, total, symbol, loaded)
+            try:
+                _, series = _load_one(symbol)
+                if series is None or len(series) < 120:
+                    skipped.append(symbol)
+                else:
+                    datasets[symbol] = series
+                    loaded = True
+            except Exception:
+                skipped.append(symbol)
+            finally:
+                if progress_callback is not None:
+                    progress_callback(idx, total, symbol, loaded)
+        return datasets, skipped
+
+    completed = 0
+    with ThreadPoolExecutor(max_workers=worker_count, thread_name_prefix="quant-data") as pool:
+        futures: dict[Future[tuple[str, pd.DataFrame | None]], str] = {
+            pool.submit(_load_one, symbol): symbol for symbol in symbols
+        }
+        for future in as_completed(futures):
+            symbol = futures[future]
+            completed += 1
+            loaded = False
+            try:
+                _, series = future.result()
+                if series is None or len(series) < 120:
+                    skipped.append(symbol)
+                else:
+                    datasets[symbol] = series
+                    loaded = True
+            except Exception:
+                skipped.append(symbol)
+            finally:
+                if progress_callback is not None:
+                    progress_callback(completed, total, symbol, loaded)
     return datasets, skipped
 
 
