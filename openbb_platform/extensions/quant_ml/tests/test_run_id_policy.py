@@ -37,6 +37,26 @@ def test_compact_job_run_id_sequence(monkeypatch: pytest.MonkeyPatch, tmp_path: 
     assert run_date == "2026-02-19"
 
 
+def test_compact_bootstrap_run_id_prefix(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    monkeypatch.setattr(rid, "RUNS_DIR", tmp_path)
+    monkeypatch.setattr(rid, "read_registry", lambda: {"runs": {}})
+    monkeypatch.setattr(
+        rid,
+        "_now_local",
+        lambda _: datetime(2026, 2, 19, 9, 0, 0, tzinfo=UTC),
+    )
+
+    run_id, run_date = rid.build_job_run_id(
+        "bootstrap",
+        run_id_scheme="compact_v1",
+        timezone="Asia/Seoul",
+    )
+    assert run_id == "bst-260219-01"
+    assert run_date == "2026-02-19"
+
+
 def test_compact_training_run_id_sequence(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):

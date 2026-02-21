@@ -1,8 +1,9 @@
-﻿"""In-memory and on-disk run status registry."""
+"""In-memory and on-disk run status registry."""
 
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import time
 from threading import RLock
 from typing import Any
 
@@ -32,8 +33,10 @@ class RunState:
     stage: str
     created_at: str
     updated_at: str
+    last_heartbeat_at: str
     logs_tail: list[str]
     error: str | None
+    stale_reason: str | None
     artifact_root: str
 
 
@@ -41,32 +44,58 @@ _RUN_STATES: dict[str, RunState] = {}
 _LOCK = RLock()
 
 
+def _state_from_payload(run_id: str, state: dict[str, Any]) -> RunState:
+    now = utc_now_iso()
+    return RunState(
+        run_id=run_id,
+        status=str(state.get("status", "failed")),
+        progress=int(state.get("progress", 0)),
+        stage=str(state.get("stage", "")),
+        created_at=str(state.get("created_at", now)),
+        updated_at=str(state.get("updated_at", now)),
+        last_heartbeat_at=str(
+            state.get("last_heartbeat_at", state.get("updated_at", now))
+        ),
+        logs_tail=list(state.get("logs_tail", [])),
+        error=state.get("error"),
+        stale_reason=state.get("stale_reason"),
+        artifact_root=str(state.get("artifact_root", str(get_run_dir(run_id)))),
+    )
+
+
 def _load_states_from_disk() -> None:
     """Hydrate in-memory state cache from disk registry."""
     payload = read_registry()
     runs = payload.get("runs", {})
+    if not isinstance(runs, dict):
+        return
     for run_id, state in runs.items():
-        _RUN_STATES[run_id] = RunState(
-            run_id=run_id,
-            status=state.get("status", "failed"),
-            progress=int(state.get("progress", 0)),
-            stage=state.get("stage", ""),
-            created_at=state.get("created_at", utc_now_iso()),
-            updated_at=state.get("updated_at", utc_now_iso()),
-            logs_tail=list(state.get("logs_tail", [])),
-            error=state.get("error"),
-            artifact_root=state.get("artifact_root", str(get_run_dir(run_id))),
-        )
+        if not isinstance(state, dict):
+            continue
+        _RUN_STATES[str(run_id)] = _state_from_payload(str(run_id), state)
 
 
-def _persist_states_to_disk(extra: dict[str, Any] | None = None) -> None:
-    """Persist all run states to disk registry."""
-    runs: dict[str, Any] = {}
-    for run_id, state in _RUN_STATES.items():
-        runs[run_id] = asdict(state)
-        if extra and run_id in extra:
-            runs[run_id].update(extra[run_id])
-    write_registry({"runs": runs})
+def _persist_run_state_to_disk(run_id: str, state: RunState, retries: int = 5) -> None:
+    """Persist one run state with merge-write semantics."""
+    last_exc: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            payload = read_registry()
+            runs = payload.get("runs", {})
+            if not isinstance(runs, dict):
+                runs = {}
+            existing = runs.get(run_id, {})
+            merged = dict(existing) if isinstance(existing, dict) else {}
+            merged.update(asdict(state))
+            runs[run_id] = merged
+            payload["runs"] = runs
+            write_registry(payload)
+            return
+        except OSError as exc:
+            last_exc = exc
+            time.sleep(0.05 * attempt)
+    if last_exc is not None:
+        raise last_exc
 
 
 def initialize_registry() -> None:
@@ -97,12 +126,14 @@ def create_run(
             stage="queued",
             created_at=now,
             updated_at=now,
+            last_heartbeat_at=now,
             logs_tail=["Run queued and registered."],
             error=None,
+            stale_reason=None,
             artifact_root=str(run_dir),
         )
         _RUN_STATES[run_id] = state
-        _persist_states_to_disk()
+        _persist_run_state_to_disk(run_id, state)
         upsert_run_index_entry(
             run_id,
             status=state.status,
@@ -121,8 +152,10 @@ def append_log(run_id: str, message: str) -> None:
             return
         state.logs_tail.append(message)
         state.logs_tail = state.logs_tail[-MAX_LOG_LINES:]
-        state.updated_at = utc_now_iso()
-        _persist_states_to_disk()
+        now = utc_now_iso()
+        state.updated_at = now
+        state.last_heartbeat_at = now
+        _persist_run_state_to_disk(run_id, state)
 
 
 def update_run(
@@ -132,6 +165,7 @@ def update_run(
     progress: int | None = None,
     stage: str | None = None,
     error: str | None = None,
+    stale_reason: str | None = None,
 ) -> RunState | None:
     """Update run lifecycle fields."""
     with _LOCK:
@@ -146,8 +180,44 @@ def update_run(
             state.stage = stage
         if error is not None:
             state.error = error
-        state.updated_at = utc_now_iso()
-        _persist_states_to_disk()
+        if stale_reason is not None:
+            state.stale_reason = stale_reason
+        elif status is not None and status != "failed":
+            state.stale_reason = None
+        now = utc_now_iso()
+        state.updated_at = now
+        state.last_heartbeat_at = now
+        _persist_run_state_to_disk(run_id, state)
+        upsert_run_index_entry(
+            run_id,
+            status=state.status,
+            stage=state.stage,
+            created_at=state.created_at,
+            updated_at=state.updated_at,
+        )
+        return state
+
+
+def heartbeat_run(
+    run_id: str,
+    *,
+    stage: str | None = None,
+    message: str | None = None,
+) -> RunState | None:
+    """Record heartbeat for long-running stages."""
+    with _LOCK:
+        state = _RUN_STATES.get(run_id)
+        if not state:
+            return None
+        now = utc_now_iso()
+        if stage is not None:
+            state.stage = stage
+        state.updated_at = now
+        state.last_heartbeat_at = now
+        if message:
+            state.logs_tail.append(message)
+            state.logs_tail = state.logs_tail[-MAX_LOG_LINES:]
+        _persist_run_state_to_disk(run_id, state)
         upsert_run_index_entry(
             run_id,
             status=state.status,

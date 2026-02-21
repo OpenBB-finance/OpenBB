@@ -18,6 +18,7 @@ _JOB_PREFIX: dict[str, str] = {
     "daily": "dly",
     "weekly": "wkl",
     "monthly": "mth",
+    "bootstrap": "bst",
 }
 
 
