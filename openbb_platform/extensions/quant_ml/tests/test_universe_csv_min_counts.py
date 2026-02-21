@@ -6,7 +6,7 @@ import csv
 from pathlib import Path
 
 import pytest
-from openbb_quant_ml.service.universe import UNIVERSE_MINIMUM_COUNTS
+from openbb_quant_ml.service.universe import UNIVERSE_ALIASES, UNIVERSE_MINIMUM_COUNTS
 from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 
 
@@ -19,7 +19,8 @@ def _read_symbols(path: Path) -> list[str]:
 
 @pytest.mark.parametrize("universe_id,minimum", sorted(UNIVERSE_MINIMUM_COUNTS.items()))
 def test_universe_csv_meets_minimum_count(universe_id: str, minimum: int):
-    path = Path(UNIVERSE_INPUT_DIR) / f"{universe_id}.csv"
+    resolved_universe_id = UNIVERSE_ALIASES.get(universe_id, universe_id)
+    path = Path(UNIVERSE_INPUT_DIR) / f"{resolved_universe_id}.csv"
     assert path.exists(), f"missing universe csv: {path}"
 
     symbols = {symbol.upper() for symbol in _read_symbols(path)}

@@ -1,0 +1,81 @@
+version: "v1"
+mode: "global_unified"
+missing_data_policy: "strict_exclude"
+legacy_universe_policy:
+  mode: "deprecate_one_release"
+  sunset_date: "2026-06-30"
+  replacement_id: "global_core_equity"
+
+u0_filters:
+  allowed_security_types:
+    - "common_stock"
+  excluded_security_types:
+    - "etf"
+    - "etn"
+    - "mutual_fund"
+    - "closed_end_fund"
+    - "adr"
+    - "dr"
+    - "spac"
+    - "lp"
+    - "mlp"
+    - "bdc"
+    - "preferred"
+    - "rights"
+    - "warrant"
+    - "convertible"
+    - "tracking_stock"
+  major_exchanges:
+    - "NYSE"
+    - "NASDAQ"
+    - "KOSPI"
+    - "KOSDAQ"
+  excluded_exchange_types:
+    - "OTC"
+    - "PINK"
+    - "BULLETIN"
+  min_price_20d_avg: 5.0
+  min_free_float_ratio: 0.10
+  min_float_mcap_usd: 500000000.0
+  min_ipo_trading_days: 60
+
+u1_filters:
+  min_median_dollar_volume_63d: 5000000.0
+  min_trading_frequency_63d: 0.90
+  min_annual_turnover_ratio_252d: 0.75
+
+u2_filters:
+  max_trading_halt_days: 29
+  exclude_management_flag: true
+  exclude_delisting_pending_flag: true
+  exclude_special_status_flag: true
+  exclude_hard_to_borrow_for_long_short: true
+
+asof_policy:
+  market_data_cutoff: "T-1_close"
+  shares_float_cutoff: "T-1"
+  fundamentals_lag_days: 60
+  prohibit_future_data: true
+
+rebalance_policy:
+  frequency: "monthly"
+  decision_time: "month_end"
+  cutoff: "T-1"
+  execution: "T+1_open"
+
+portfolio_constraints:
+  target_count: 150
+  min_count: 100
+  max_count: 200
+  max_weight_per_stock: 0.04
+  sector_cap: 0.25
+  country_cap: 0.35
+
+liquidity_constraints:
+  adv_lookback_days: 20
+  max_adv_participation: 0.05
+
+risk_constraints:
+  max_risk_contribution_per_stock: 0.05
+  covariance_lookback_days: 126
+  epsilon: 1.0e-9

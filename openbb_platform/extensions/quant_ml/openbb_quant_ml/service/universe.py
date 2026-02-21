@@ -14,6 +14,7 @@ from openbb_quant_ml.service.universe_builder import (
 )
 
 UNIVERSE_MINIMUM_COUNTS: dict[str, int] = {
+    "global_core_equity": 1200,
     "sp500": 450,
     "nasdaq100": 95,
     "dow30": 25,
@@ -22,6 +23,10 @@ UNIVERSE_MINIMUM_COUNTS: dict[str, int] = {
     "kospi200": 180,
     "kosdaq100": 90,
     "all_in_one": 1200,
+}
+
+UNIVERSE_ALIASES: dict[str, str] = {
+    "global_core_equity": "all_in_one",
 }
 
 UNIVERSE_OPTIONAL_METADATA_COLUMNS: tuple[str, ...] = (
@@ -74,7 +79,7 @@ def get_universe_size_status(
 def list_universe_ids() -> list[str]:
     """List universe identifiers discoverable from local universe files."""
     base = Path(UNIVERSE_INPUT_DIR)
-    ids: set[str] = {"default"}
+    ids: set[str] = {"default", *UNIVERSE_ALIASES.keys()}
     if base.exists():
         for path in base.glob("*.csv"):
             ids.add(path.stem)
@@ -88,6 +93,7 @@ def universe_file_exists(universe_id: str) -> bool:
     key = str(universe_id or "").strip()
     if not key or key == "default":
         return True if key == "default" else False
+    key = UNIVERSE_ALIASES.get(key, key)
     base = Path(UNIVERSE_INPUT_DIR)
     return (base / f"{key}.csv").exists() or (base / f"{key}.txt").exists()
 
@@ -97,6 +103,7 @@ def get_universe_file_path(universe_id: str) -> Path | None:
     key = str(universe_id or "").strip()
     if not key or key == "default":
         return None
+    key = UNIVERSE_ALIASES.get(key, key)
     base = Path(UNIVERSE_INPUT_DIR)
     csv_path = base / f"{key}.csv"
     if csv_path.exists():
