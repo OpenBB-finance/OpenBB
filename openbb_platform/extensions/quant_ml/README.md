@@ -41,8 +41,10 @@ Minimum size guardrails:
 - `nasdaq100 >= 95`
 - `dow30 >= 25`
 - `sox >= 25`
+- `russell1000 >= 900`
 - `kospi200 >= 180`
 - `kosdaq100 >= 90`
+- `all_in_one >= 1200`
 
 ## Refresh Universes
 
@@ -51,6 +53,7 @@ Refresh local CSVs with atomic writes:
 ```bash
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.tools.refresh_universes --all
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.tools.refresh_universes --only sp500 nasdaq100
+PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.tools.refresh_universes --only russell1000 all_in_one --no-validate
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.tools.refresh_universes --all --dry-run
 PYTHONPATH=openbb_platform/extensions/quant_ml python -m openbb_quant_ml.tools.refresh_universes --all --validate
 ```
@@ -59,6 +62,9 @@ Behavior:
 
 - KR universes use `pykrx` when available
 - US universes use Wikipedia table parsing
+- `russell1000` uses iShares IWB holdings CSV parsing
+- `all_in_one` merges KR/US stock universes and only keeps ETF categories:
+  `bond_etf`, `commodity_etf`, `currency_etf`
 - default refresh mode is `--no-validate` (faster, stable bulk updates)
 - optional fast validation uses `yfinance` only when `--validate` is passed
 - failed refreshes do not overwrite existing CSV files
@@ -193,11 +199,17 @@ Run id scheme and incremental defaults (`ops_jobs.yaml`):
 - `defaults.run_id_scheme: compact_v1`
 - `defaults.training_run_id_scheme: compact_v1`
 - `defaults.pretrain_bootstrap_enabled: true`
+- `defaults.stale_timeout_minutes: 90`
+- `defaults.heartbeat_interval_sec: 30`
+- `defaults.market_data_timeout_sec: 20`
+- `defaults.market_data_retry: 2`
+- `defaults.market_data_workers: 6`
 - `daily.predict_mode: infer_only`
 - `daily.predict_fallback_legacy: true`
 - `daily.market_delta_days: 45`
 - `daily.feature_delta_days: 120`
 - `daily.max_infer_workers: 4`
+- `daily/weekly/monthly.universe_id: all_in_one`
 - `weekly.promote_on_success: true`
 - `retention.policy: keep_all`
 - `retention.index_compaction: true`
@@ -223,6 +235,46 @@ Rollback switches:
 - `run_id_scheme: legacy`
 - `training_run_id_scheme: legacy`
 - `daily.predict_mode: legacy`
+
+## Overnight Unattended Runner
+
+Nightly unattended automation scripts:
+
+- `qa/scripts/quant_ml_recover_state.ps1`
+- `qa/scripts/quant_ml_verify_full.ps1`
+- `qa/scripts/quant_ml_overnight_runner.ps1`
+- `qa/scripts/quant_ml_collect_report.py`
+- config: `openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml`
+
+Artifacts:
+
+- `logs/overnight/<session_id>/timeline.log`
+- `logs/overnight/<session_id>/checks.json`
+- `logs/overnight/<session_id>/final_report.md`
+
+Long-running step monitoring:
+
+- `update_market_data` writes heartbeat logs every `30s` or `50 symbols` (whichever comes first)
+- stale-fail policy uses combined signals (`updated_at`, `last_heartbeat_at`, artifact mtime), timeout `90m`
+- recovery gate passes only when `active_runs_after == 0` and lock health is `ok` or `missing`
+
+Example (run overnight pipeline):
+
+```powershell
+cd <REPO_ROOT>
+$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
+powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
+  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
+  -ApiBaseUrl http://127.0.0.1:6900
+```
+
+Optional push after all gates pass:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
+  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
+  -EnablePush
+```
 
 Ops status endpoint:
 

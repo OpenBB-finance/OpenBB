@@ -403,6 +403,7 @@ curl "http://127.0.0.1:6900/api/v1/equity/price/historical?symbol=IBM&provider=a
 ```powershell
 cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
 $env:PYTHONPATH='openbb_platform/extensions/quant_ml'
+python -m openbb_quant_ml.tools.refresh_universes --only russell1000 all_in_one --no-validate
 python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
 python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
@@ -413,11 +414,17 @@ python -m openbb_quant_ml.jobs.cli bootstrap --config openbb_platform/extensions
 - `defaults.run_id_scheme: compact_v1`
 - `defaults.training_run_id_scheme: compact_v1`
 - `defaults.pretrain_bootstrap_enabled: true`
+- `defaults.stale_timeout_minutes: 90`
+- `defaults.heartbeat_interval_sec: 30`
+- `defaults.market_data_timeout_sec: 20`
+- `defaults.market_data_retry: 2`
+- `defaults.market_data_workers: 6`
 - `daily.predict_mode: infer_only`
 - `daily.predict_fallback_legacy: true`
 - `daily.market_delta_days: 45`
 - `daily.feature_delta_days: 120`
 - `daily.max_infer_workers: 4`
+- `daily/weekly/monthly.universe_id: all_in_one`
 - `weekly.promote_on_success: true`
 - `retention.policy: keep_all`
 - `retention.index_compaction: true`
@@ -426,6 +433,7 @@ run id 예시:
 - Daily Job: `dly-260219-01`
 - Weekly Job: `wkl-260219-01`
 - Monthly Job: `mth-260301-01`
+- Bootstrap Job: `bst-260219-01`
 - Training Run: `trn-260219-001`
 
 의미:
@@ -442,6 +450,43 @@ run id 예시:
 - `run_id_scheme: legacy`
 - `training_run_id_scheme: legacy`
 - `daily.predict_mode: legacy`
+
+### 야간 무인 운영(복구 + 학습 + 점검 + 리포트)
+
+추가된 스크립트:
+- `qa/scripts/quant_ml_recover_state.ps1`
+- `qa/scripts/quant_ml_verify_full.ps1`
+- `qa/scripts/quant_ml_overnight_runner.ps1`
+- `qa/scripts/quant_ml_collect_report.py`
+- 설정: `openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml`
+
+실행 예시:
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
+powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
+  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
+  -ApiBaseUrl http://127.0.0.1:6900
+```
+
+산출물:
+- `logs/overnight/<session_id>/timeline.log`
+- `logs/overnight/<session_id>/checks.json`
+- `logs/overnight/<session_id>/final_report.md`
+
+장시간 단계 모니터링 기준:
+- `update_market_data`는 `30초` 또는 `50심볼`마다 heartbeat를 기록합니다.
+- stale 판정은 `updated_at + last_heartbeat_at + artifact mtime` 결합으로 수행합니다.
+- timeout은 `90분` 고정이며, 실제 heartbeat/artifact 진척이 있으면 stale 실패로 처리되지 않습니다.
+
+모든 게이트 통과 후 자동 푸시까지 원하면:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
+  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
+  -EnablePush
+```
 
 2. Task Scheduler 등록(Windows)
 
