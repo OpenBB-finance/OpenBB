@@ -32,6 +32,9 @@ daily:
   features_lookback_days: 365
   predict_mode: "infer_only"
   predict_fallback_legacy: true
+  shadow_live:
+    enabled: true
+    submit_orders: false
 
 weekly:
   universe_id: "global_core_equity"
