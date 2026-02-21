@@ -27,10 +27,41 @@ import yaml
 from openbb_quant_ml.service.universe import get_universe_minimum_required
 from openbb_quant_ml.service.universe_builder import UNIVERSE_INPUT_DIR
 
-UNIVERSE_IDS_ALL = ("kospi200", "kosdaq100", "sp500", "nasdaq100", "sox", "dow30")
+UNIVERSE_IDS_ALL = (
+    "kospi200",
+    "kosdaq100",
+    "sp500",
+    "nasdaq100",
+    "sox",
+    "dow30",
+    "russell1000",
+    "all_in_one",
+)
 KR_TAXONOMY_PATH = (
     Path(__file__).resolve().parent.parent / "config" / "kr_sector_taxonomy.yaml"
 )
+UNIVERSE_CONFIG_PATH = (
+    Path(__file__).resolve().parent.parent / "config" / "universe.yaml"
+)
+RUSSELL1000_ISHARES_CSV_URL = (
+    "https://www.ishares.com/us/products/239707/"
+    "ishares-russell-1000-etf/1467271812596.ajax?"
+    "fileType=csv&fileName=IWB_holdings&dataType=fund"
+)
+ALL_IN_ONE_SOURCE_UNIVERSES: tuple[str, ...] = (
+    "kospi200",
+    "kosdaq100",
+    "sp500",
+    "nasdaq100",
+    "dow30",
+    "sox",
+    "russell1000",
+)
+ETF_CATEGORIES_FOR_ALL_IN_ONE: set[str] = {
+    "bond_etf",
+    "commodity_etf",
+    "currency_etf",
+}
 UNIVERSE_CSV_BASE_FIELDS: tuple[str, ...] = (
     "symbol",
     "name",
@@ -101,8 +132,19 @@ def _sanitize_token(value: str) -> str:
 
 def _normalize_us_ticker(raw: str) -> str:
     token = _sanitize_token(raw)
+    token = token.replace("/", "-")
     if re.fullmatch(r"[A-Z]{1,6}\.[A-Z]{1,2}", token):
         token = token.replace(".", "-")
+    class_share_aliases = {
+        "BFA": "BF-A",
+        "BRKB": "BRK-B",
+        "BFB": "BF-B",
+        "CWENA": "CWEN-A",
+        "HEIA": "HEI-A",
+        "LENB": "LEN-B",
+        "UHALB": "UHAL-B",
+    }
+    token = class_share_aliases.get(token, token)
     return token
 
 
@@ -131,6 +173,125 @@ def _symbol_only_rows(symbols: list[str]) -> list[dict[str, str]]:
         seen.add(normalized)
         out.append({"symbol": normalized})
     return out
+
+
+def _read_rows_from_csv(path: Path) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    if not path.exists():
+        return rows
+    with path.open(encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        columns = [column for column in (reader.fieldnames or []) if column]
+        symbol_col = (
+            "symbol" if "symbol" in columns else columns[0] if columns else None
+        )
+        if symbol_col is None:
+            return rows
+        for source_row in reader:
+            symbol = _normalize_symbol(source_row.get(symbol_col, ""))
+            if not symbol:
+                continue
+            row: dict[str, str] = {"symbol": symbol}
+            for column in UNIVERSE_CSV_BASE_FIELDS[1:]:
+                value = str(source_row.get(column, "")).strip()
+                if value:
+                    row[column] = value
+            rows.append(row)
+    return _dedupe_rows_by_symbol(rows)
+
+
+def _infer_market(symbol: str) -> str:
+    token = _normalize_symbol(symbol)
+    if token.endswith(".KS"):
+        return "KOSPI"
+    if token.endswith(".KQ"):
+        return "KOSDAQ"
+    return "US"
+
+
+def _load_allowed_etf_rows() -> list[dict[str, str]]:
+    if not UNIVERSE_CONFIG_PATH.exists():
+        return []
+    try:
+        with UNIVERSE_CONFIG_PATH.open(encoding="utf-8") as file:
+            payload = yaml.safe_load(file) or {}
+    except Exception:  # noqa: BLE001
+        return []
+    assets = payload.get("assets", [])
+    if not isinstance(assets, list):
+        return []
+
+    rows: list[dict[str, str]] = []
+    for asset in assets:
+        if not isinstance(asset, dict):
+            continue
+        symbol = _normalize_symbol(asset.get("symbol", ""))
+        category = str(asset.get("category", "")).strip()
+        if not symbol or category not in ETF_CATEGORIES_FOR_ALL_IN_ONE:
+            continue
+        rows.append(
+            {
+                "symbol": symbol,
+                "market": "US",
+                "category_l2": category,
+                "source": "universe.yaml",
+            }
+        )
+    return _dedupe_rows_by_symbol(rows)
+
+
+def _resolve_source_universe_path(universe_id: str, outdir: Path) -> Path | None:
+    candidates = [
+        outdir / f"{universe_id}.csv",
+        Path(UNIVERSE_INPUT_DIR) / f"{universe_id}.csv",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _build_all_in_one_rows(outdir: Path) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    missing_sources: list[str] = []
+    for universe_id in ALL_IN_ONE_SOURCE_UNIVERSES:
+        source_path = _resolve_source_universe_path(universe_id, outdir)
+        if source_path is None:
+            missing_sources.append(universe_id)
+            continue
+        for source_row in _read_rows_from_csv(source_path):
+            symbol = _normalize_symbol(source_row.get("symbol", ""))
+            if not symbol:
+                continue
+            normalized: dict[str, str] = {
+                "symbol": symbol,
+                "market": str(source_row.get("market", "")).strip()
+                or _infer_market(symbol),
+                "source": str(source_row.get("source", "")).strip() or universe_id,
+            }
+            for column in ("name", "sector_l1", "data_asof"):
+                value = str(source_row.get(column, "")).strip()
+                if value:
+                    normalized[column] = value
+            category_l2 = (
+                str(source_row.get("category_l2", "")).strip()
+                or str(source_row.get("category", "")).strip()
+                or "equity_stock"
+            )
+            normalized["category_l2"] = category_l2
+            rows.append(normalized)
+
+    if missing_sources:
+        raise RuntimeError(
+            "missing source universe csv(s) for all_in_one: "
+            + ", ".join(sorted(missing_sources))
+        )
+
+    rows.extend(_load_allowed_etf_rows())
+    deduped = _dedupe_rows_by_symbol(rows)
+    if not deduped:
+        raise RuntimeError("all_in_one produced no symbols")
+    return deduped
 
 
 def _dedupe_rows_by_symbol(rows: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -296,6 +457,54 @@ def _fetch_us_from_wikipedia(universe_id: str) -> list[str]:
     if not out:
         raise ValueError(f"no tickers parsed for {universe_id}")
     return out
+
+
+def _fetch_russell1000_from_ishares() -> list[dict[str, str]]:
+    content = _fetch_html(RUSSELL1000_ISHARES_CSV_URL, timeout_sec=30)
+    lines = content.splitlines()
+    header_index = -1
+    for idx, line in enumerate(lines):
+        normalized = line.lstrip("\ufeff").strip().lower()
+        if normalized.startswith("ticker,"):
+            header_index = idx
+            break
+    if header_index < 0:
+        raise ValueError("could not find ticker header in iShares Russell 1000 csv")
+
+    csv_text = "\n".join(lines[header_index:])
+    reader = csv.DictReader(StringIO(csv_text))
+    today = date.today().isoformat()
+    rows: list[dict[str, str]] = []
+    for row in reader:
+        raw_ticker = str(row.get("Ticker", "")).strip().strip('"')
+        if not raw_ticker:
+            continue
+        asset_class = str(row.get("Asset Class", "")).strip().strip('"').lower()
+        if asset_class and "equity" not in asset_class:
+            continue
+        symbol = _normalize_us_ticker(raw_ticker)
+        if not symbol:
+            continue
+        name = str(row.get("Name", "")).strip().strip('"')
+        sector = str(row.get("Sector", "")).strip().strip('"')
+        rows.append(
+            {
+                "symbol": symbol,
+                "name": name,
+                "market": "US",
+                "sector_l1": sector,
+                "category_l2": "us_large_mid_equity",
+                "data_asof": today,
+                "source": "ishares_iwb",
+            }
+        )
+
+    deduped = _dedupe_rows_by_symbol(rows)
+    if len(deduped) < 900:
+        raise ValueError(
+            f"unexpected Russell 1000 parse size: {len(deduped)} (expected >= 900)"
+        )
+    return deduped
 
 
 def _latest_kr_sector_snapshot(
@@ -513,6 +722,10 @@ def _refresh_one(
             fetched_rows = _symbol_only_rows(_fetch_us_from_wikipedia(universe_id))
         elif universe_id in ("kospi200", "kosdaq100"):
             fetched_rows = _fetch_kr_with_pykrx(universe_id)
+        elif universe_id == "russell1000":
+            fetched_rows = _fetch_russell1000_from_ishares()
+        elif universe_id == "all_in_one":
+            fetched_rows = _build_all_in_one_rows(outdir)
         else:
             return RefreshResult(universe_id, False, 0, 0, 0, 0, "unknown universe id")
 
@@ -521,7 +734,8 @@ def _refresh_one(
         invalid_symbols: list[str] = []
         invalid_rows: list[dict[str, str]] = []
         validate_msg = "skipped"
-        if validate and normalized_rows:
+        effective_validate = bool(validate) and universe_id != "all_in_one"
+        if effective_validate and normalized_rows:
             symbols_to_validate = [
                 row["symbol"] for row in normalized_rows if row.get("symbol")
             ]
@@ -536,6 +750,9 @@ def _refresh_one(
             invalid_rows = [
                 row for row in normalized_rows if row.get("symbol") in invalid_set
             ]
+
+        if validate and universe_id == "all_in_one":
+            validate_msg = "skipped (aggregate universe)"
 
         minimum_required = int(get_universe_minimum_required(universe_id))
         actual_count = len(valid_rows)

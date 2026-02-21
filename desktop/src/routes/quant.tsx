@@ -54,12 +54,14 @@ import type {
 type UniverseProfileId = "all" | "aggressive" | "defensive" | "custom";
 type UniverseSetId =
   | "default"
+  | "all_in_one"
   | "kospi200"
   | "kosdaq100"
   | "sp500"
   | "nasdaq100"
   | "sox"
-  | "dow30";
+  | "dow30"
+  | "russell1000";
 
 interface UniverseProfile {
   id: Exclude<UniverseProfileId, "custom">;
@@ -99,12 +101,14 @@ const PROFILE_LIST: UniverseProfile[] = [
 
 const UNIVERSE_SET_OPTIONS_DEFAULT: UniverseSetOption[] = [
   { id: "default", label: "Default (manual symbols)" },
+  { id: "all_in_one", label: "All-in-One (KR/US Stocks + Bond/Commodity/FX ETFs)", minimumRequired: 1200 },
   { id: "kospi200", label: "KOSPI 200", minimumRequired: 180 },
   { id: "kosdaq100", label: "KOSDAQ 100", minimumRequired: 90 },
   { id: "sp500", label: "S&P 500", minimumRequired: 450 },
   { id: "nasdaq100", label: "NASDAQ 100", minimumRequired: 95 },
   { id: "sox", label: "SOX", minimumRequired: 25 },
   { id: "dow30", label: "DOW 30", minimumRequired: 25 },
+  { id: "russell1000", label: "Russell 1000", minimumRequired: 900 },
 ];
 
 function isUniverseSetId(value: string): value is UniverseSetId {

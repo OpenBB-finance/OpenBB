@@ -1,0 +1,1357 @@
+symbol,name,market,sector_l1,category_l2,data_asof,source
+000080.KS,하이트진로,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+000100.KS,유한양행,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+000120.KS,CJ대한통운,KOSPI,운송·창고,other,2026-02-19,pykrx
+000150.KS,두산,KOSPI,기타금융,financial,2026-02-19,pykrx
+000210.KS,DL,KOSPI,화학,chemical,2026-02-19,pykrx
+000240.KS,한국앤컴퍼니,KOSPI,기타금융,financial,2026-02-19,pykrx
+000250.KQ,삼천당제약,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+000270.KS,기아,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+000660.KS,SK하이닉스,KOSPI,전기·전자,semiconductor,2026-02-19,pykrx
+000670.KS,영풍,KOSPI,금속,materials_metal,2026-02-19,pykrx
+000720.KS,현대건설,KOSPI,건설,construction,2026-02-19,pykrx
+000810.KS,삼성화재,KOSPI,보험,insurance,2026-02-19,pykrx
+000880.KS,한화,KOSPI,화학,chemical,2026-02-19,pykrx
+001040.KS,CJ,KOSPI,기타금융,financial,2026-02-19,pykrx
+001430.KS,세아베스틸지주,KOSPI,금속,materials_metal,2026-02-19,pykrx
+001440.KS,대한전선,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+001450.KS,현대해상,KOSPI,보험,insurance,2026-02-19,pykrx
+001680.KS,대상,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+001800.KS,오리온홀딩스,KOSPI,기타금융,financial,2026-02-19,pykrx
+002030.KS,아세아,KOSPI,일반서비스,services,2026-02-19,pykrx
+002380.KS,KCC,KOSPI,화학,chemical,2026-02-19,pykrx
+002790.KS,아모레퍼시픽홀딩스,KOSPI,화학,chemical,2026-02-19,pykrx
+002840.KS,미원상사,KOSPI,화학,chemical,2026-02-19,pykrx
+003030.KS,세아제강지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+003090.KS,대웅,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+003230.KS,삼양식품,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+003240.KS,태광산업,KOSPI,화학,chemical,2026-02-19,pykrx
+003380.KQ,하림지주,KOSDAQ,금융,financial,2026-02-19,pykrx
+003490.KS,대한항공,KOSPI,운송·창고,other,2026-02-19,pykrx
+003550.KS,LG,KOSPI,기타금융,financial,2026-02-19,pykrx
+003670.KS,포스코퓨처엠,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+004000.KS,롯데정밀화학,KOSPI,화학,chemical,2026-02-19,pykrx
+004020.KS,현대제철,KOSPI,금속,materials_metal,2026-02-19,pykrx
+004170.KS,신세계,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+004370.KS,농심,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+004490.KS,세방전지,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+004990.KS,롯데지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+005250.KS,녹십자홀딩스,KOSPI,일반서비스,services,2026-02-19,pykrx
+005290.KQ,동진쎄미켐,KOSDAQ,화학,chemical,2026-02-19,pykrx
+005300.KS,롯데칠성,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+005380.KS,현대차,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+005420.KS,코스모화학,KOSPI,화학,chemical,2026-02-19,pykrx
+005490.KS,POSCO홀딩스,KOSPI,금속,materials_metal,2026-02-19,pykrx
+005830.KS,DB손해보험,KOSPI,보험,insurance,2026-02-19,pykrx
+005850.KS,에스엘,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+005930.KS,삼성전자,KOSPI,전기·전자,semiconductor,2026-02-19,pykrx
+005940.KS,NH투자증권,KOSPI,증권,brokerage,2026-02-19,pykrx
+006040.KS,동원산업,KOSPI,기타금융,financial,2026-02-19,pykrx
+006260.KS,LS,KOSPI,기타금융,financial,2026-02-19,pykrx
+006280.KS,녹십자,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+006360.KS,GS건설,KOSPI,건설,construction,2026-02-19,pykrx
+006400.KS,삼성SDI,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+006650.KS,대한유화,KOSPI,화학,chemical,2026-02-19,pykrx
+006800.KS,미래에셋증권,KOSPI,증권,brokerage,2026-02-19,pykrx
+007070.KS,GS리테일,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+007310.KS,오뚜기,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+007340.KS,DN오토모티브,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+007390.KQ,네이처셀,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+007660.KS,이수페타시스,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+008730.KS,율촌화학,KOSPI,화학,chemical,2026-02-19,pykrx
+008770.KS,호텔신라,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+008930.KS,한미사이언스,KOSPI,기타금융,financial,2026-02-19,pykrx
+009150.KS,삼성전기,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+009240.KS,한샘,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+009420.KS,한올바이오파마,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+009540.KS,HD한국조선해양,KOSPI,기타금융,financial,2026-02-19,pykrx
+009830.KS,한화솔루션,KOSPI,화학,chemical,2026-02-19,pykrx
+009970.KS,영원무역홀딩스,KOSPI,기타금융,financial,2026-02-19,pykrx
+010060.KS,OCI홀딩스,KOSPI,기타금융,financial,2026-02-19,pykrx
+010120.KS,LS ELECTRIC,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+010130.KS,고려아연,KOSPI,금속,materials_metal,2026-02-19,pykrx
+010140.KS,삼성중공업,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+010950.KS,S-Oil,KOSPI,화학,chemical,2026-02-19,pykrx
+011070.KS,LG이노텍,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+011170.KS,롯데케미칼,KOSPI,화학,chemical,2026-02-19,pykrx
+011200.KS,HMM,KOSPI,운송·창고,other,2026-02-19,pykrx
+011210.KS,현대위아,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+011780.KS,금호석유화학,KOSPI,화학,chemical,2026-02-19,pykrx
+011790.KS,SKC,KOSPI,화학,chemical,2026-02-19,pykrx
+012330.KS,현대모비스,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+012450.KS,한화에어로스페이스,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+012750.KS,에스원,KOSPI,일반서비스,services,2026-02-19,pykrx
+014680.KS,한솔케미칼,KOSPI,화학,chemical,2026-02-19,pykrx
+014820.KS,동원시스템즈,KOSPI,화학,chemical,2026-02-19,pykrx
+015760.KS,한국전력,KOSPI,전기·가스,other,2026-02-19,pykrx
+016360.KS,삼성증권,KOSPI,증권,brokerage,2026-02-19,pykrx
+017670.KS,SK텔레콤,KOSPI,통신,telecom,2026-02-19,pykrx
+017800.KS,현대엘리베이터,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+017960.KS,한국카본,KOSPI,금속,materials_metal,2026-02-19,pykrx
+018260.KS,삼성에스디에스,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+018880.KS,한온시스템,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+021240.KS,코웨이,KOSPI,일반서비스,services,2026-02-19,pykrx
+022100.KS,포스코DX,KOSPI,일반서비스,services,2026-02-19,pykrx
+023530.KS,롯데쇼핑,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+024110.KS,기업은행,KOSPI,은행,bank,2026-02-19,pykrx
+026960.KS,동서,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+028050.KS,삼성E&A,KOSPI,일반서비스,services,2026-02-19,pykrx
+028260.KS,삼성물산,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+028300.KQ,HLB,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+028670.KS,팬오션,KOSPI,운송·창고,other,2026-02-19,pykrx
+029780.KS,삼성카드,KOSPI,기타금융,financial,2026-02-19,pykrx
+030000.KS,제일기획,KOSPI,일반서비스,services,2026-02-19,pykrx
+030200.KS,KT,KOSPI,통신,telecom,2026-02-19,pykrx
+030530.KQ,원익홀딩스,KOSDAQ,화학,chemical,2026-02-19,pykrx
+031980.KQ,피에스케이홀딩스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+032640.KS,LG유플러스,KOSPI,통신,telecom,2026-02-19,pykrx
+032820.KQ,우리기술,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+032830.KS,삼성생명,KOSPI,보험,insurance,2026-02-19,pykrx
+033780.KS,KT&G,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+034020.KS,두산에너빌리티,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+034220.KS,LG디스플레이,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+034230.KS,파라다이스,KOSPI,오락·문화,entertainment,2026-02-19,pykrx
+034730.KS,SK,KOSPI,기타금융,financial,2026-02-19,pykrx
+035250.KS,강원랜드,KOSPI,오락·문화,entertainment,2026-02-19,pykrx
+035420.KS,NAVER,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+035720.KS,카카오,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+035760.KQ,CJ ENM,KOSDAQ,오락·문화,entertainment,2026-02-19,pykrx
+035900.KQ,JYP Ent.,KOSDAQ,오락·문화,entertainment,2026-02-19,pykrx
+036460.KS,한국가스공사,KOSPI,전기·가스,other,2026-02-19,pykrx
+036540.KQ,SFA반도체,KOSDAQ,전기·전자,semiconductor,2026-02-19,pykrx
+036570.KS,엔씨소프트,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+036930.KQ,주성엔지니어링,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+038500.KQ,삼표시멘트,KOSDAQ,비금속,materials,2026-02-19,pykrx
+039030.KQ,이오테크닉스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+039200.KQ,오스코텍,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+039490.KS,키움증권,KOSPI,증권,brokerage,2026-02-19,pykrx
+041510.KQ,에스엠,KOSDAQ,오락·문화,entertainment,2026-02-19,pykrx
+042660.KS,한화오션,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+042700.KS,한미반도체,KOSPI,기계·장비,semiconductor,2026-02-19,pykrx
+043260.KQ,성호전자,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+047040.KS,대우건설,KOSPI,건설,construction,2026-02-19,pykrx
+047050.KS,포스코인터내셔널,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+047810.KS,한국항공우주,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+048410.KQ,현대바이오,KOSDAQ,화학,biotech_pharma,2026-02-19,pykrx
+051600.KS,한전KPS,KOSPI,건설,construction,2026-02-19,pykrx
+051900.KS,LG생활건강,KOSPI,화학,chemical,2026-02-19,pykrx
+051910.KS,LG화학,KOSPI,화학,chemical,2026-02-19,pykrx
+052690.KS,한전기술,KOSPI,일반서비스,services,2026-02-19,pykrx
+055550.KS,신한지주,KOSPI,기타금융,bank,2026-02-19,pykrx
+056080.KQ,유진로봇,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+058470.KQ,리노공업,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+058610.KQ,에스피지,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+060370.KQ,LS마린솔루션,KOSDAQ,건설,construction,2026-02-19,pykrx
+062040.KS,산일전기,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+064350.KS,현대로템,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+064400.KS,LG씨엔에스,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+064760.KQ,티씨케이,KOSDAQ,비금속,materials,2026-02-19,pykrx
+065350.KQ,신성델타테크,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+066570.KS,LG전자,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+066970.KS,엘앤에프,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+067310.KQ,하나마이크론,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+068270.KS,셀트리온,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+068760.KQ,셀트리온제약,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+069260.KS,TKG휴켐스,KOSPI,화학,chemical,2026-02-19,pykrx
+069620.KS,대웅제약,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+069960.KS,현대백화점,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+071050.KS,한국금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+071320.KS,지역난방공사,KOSPI,전기·가스,other,2026-02-19,pykrx
+071970.KS,HD현대마린엔진,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+073240.KS,금호타이어,KOSPI,화학,chemical,2026-02-19,pykrx
+078600.KQ,대주전자재료,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+078930.KS,GS,KOSPI,기타금융,financial,2026-02-19,pykrx
+079550.KS,LIG넥스원,KOSPI,금속,materials_metal,2026-02-19,pykrx
+080220.KQ,제주반도체,KOSDAQ,전기·전자,semiconductor,2026-02-19,pykrx
+081660.KS,미스토홀딩스,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+082270.KQ,젬백스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+082740.KS,한화엔진,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+083650.KQ,비에이치아이,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+084370.KQ,유진테크,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+085660.KQ,차바이오텍,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+086280.KS,현대글로비스,KOSPI,운송·창고,other,2026-02-19,pykrx
+086520.KQ,에코프로,KOSDAQ,금융,financial,2026-02-19,pykrx
+086790.KS,하나금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+087010.KQ,펩트론,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+088350.KS,한화생명,KOSPI,보험,insurance,2026-02-19,pykrx
+089030.KQ,테크윙,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+090430.KS,아모레퍼시픽,KOSPI,화학,chemical,2026-02-19,pykrx
+090710.KQ,휴림로봇,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+093370.KS,후성,KOSPI,화학,chemical,2026-02-19,pykrx
+095340.KQ,ISC,KOSDAQ,유통,consumer_retail,2026-02-19,pykrx
+095610.KQ,테스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+096530.KQ,씨젠,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+096770.KS,SK이노베이션,KOSPI,화학,chemical,2026-02-19,pykrx
+097950.KS,CJ제일제당,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+098460.KQ,고영,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+099320.KQ,쎄트렉아이,KOSDAQ,운송장비·부품,automobile,2026-02-19,pykrx
+100790.KQ,미래에셋벤처투자,KOSDAQ,금융,financial,2026-02-19,pykrx
+101490.KQ,에스앤에스텍,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+103140.KS,풍산,KOSPI,금속,materials_metal,2026-02-19,pykrx
+105560.KS,KB금융,KOSPI,기타금융,bank,2026-02-19,pykrx
+108490.KQ,로보티즈,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+111770.KS,영원무역,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+112610.KS,씨에스윈드,KOSPI,금속,materials_metal,2026-02-19,pykrx
+114090.KS,GKL,KOSPI,오락·문화,entertainment,2026-02-19,pykrx
+115180.KQ,큐리언트,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+120110.KS,코오롱인더,KOSPI,화학,chemical,2026-02-19,pykrx
+122870.KQ,와이지엔터테인먼트,KOSDAQ,오락·문화,entertainment,2026-02-19,pykrx
+128940.KS,한미약품,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+131970.KQ,두산테스나,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+137310.KS,에스디바이오센서,KOSPI,의료·정밀기기,biotech_pharma,2026-02-19,pykrx
+137400.KQ,피엔티,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+138040.KS,메리츠금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+138930.KS,BNK금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+139130.KS,iM금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+139480.KS,이마트,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+140410.KQ,메지온,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+140860.KQ,파크시스템스,KOSDAQ,의료·정밀기기,healthcare_device,2026-02-19,pykrx
+141080.KQ,리가켐바이오,KOSDAQ,일반서비스,biotech_pharma,2026-02-19,pykrx
+145020.KQ,휴젤,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+160190.KQ,하이젠알앤엠,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+161390.KS,한국타이어앤테크놀로지,KOSPI,화학,chemical,2026-02-19,pykrx
+161890.KS,한국콜마,KOSPI,화학,chemical,2026-02-19,pykrx
+171090.KQ,선익시스템,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+175330.KS,JB금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+178320.KQ,서진시스템,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+180640.KS,한진칼,KOSPI,기타금융,financial,2026-02-19,pykrx
+185750.KS,종근당,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+189300.KQ,인텔리안테크,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+192080.KS,더블유게임즈,KOSPI,IT 서비스,gaming,2026-02-19,pykrx
+192820.KS,코스맥스,KOSPI,화학,chemical,2026-02-19,pykrx
+195940.KQ,HK이노엔,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+196170.KQ,알테오젠,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+204270.KQ,제이앤티씨,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+204320.KS,HL만도,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+207940.KS,삼성바이오로직스,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+214150.KQ,클래시스,KOSDAQ,의료·정밀기기,healthcare_device,2026-02-19,pykrx
+214370.KQ,케어젠,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+214450.KQ,파마리서치,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+218410.KQ,RFHIC,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+222800.KQ,심텍,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+226950.KQ,올릭스,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+232140.KQ,와이씨,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+237690.KQ,에스티팜,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+240810.KQ,원익IPS,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+241560.KS,두산밥캣,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+247540.KQ,에코프로비엠,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+251270.KS,넷마블,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+253450.KQ,스튜디오드래곤,KOSDAQ,오락·문화,entertainment,2026-02-19,pykrx
+257720.KQ,실리콘투,KOSDAQ,유통,consumer_retail,2026-02-19,pykrx
+259960.KS,크래프톤,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+263750.KQ,펄어비스,KOSDAQ,IT 서비스,internet_platform,2026-02-19,pykrx
+267250.KS,HD현대,KOSPI,기타금융,financial,2026-02-19,pykrx
+267260.KS,HD현대일렉트릭,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+268280.KS,미원에스씨,KOSPI,화학,chemical,2026-02-19,pykrx
+271560.KS,오리온,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+272210.KS,한화시스템,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+277810.KQ,레인보우로보틱스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+278470.KS,에이피알,KOSPI,화학,chemical,2026-02-19,pykrx
+280360.KS,롯데웰푸드,KOSPI,음식료·담배,food_beverage,2026-02-19,pykrx
+281740.KQ,레이크머티리얼즈,KOSDAQ,화학,chemical,2026-02-19,pykrx
+282330.KS,BGF리테일,KOSPI,유통,consumer_retail,2026-02-19,pykrx
+285130.KS,SK케미칼,KOSPI,화학,chemical,2026-02-19,pykrx
+290650.KQ,엘앤씨바이오,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+293490.KQ,카카오게임즈,KOSDAQ,IT 서비스,gaming,2026-02-19,pykrx
+298020.KS,효성티앤씨,KOSPI,화학,chemical,2026-02-19,pykrx
+298040.KS,효성중공업,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+298050.KS,HS효성첨단소재,KOSPI,화학,chemical,2026-02-19,pykrx
+298380.KQ,에이비엘바이오,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+300720.KS,한일시멘트,KOSPI,비금속,materials,2026-02-19,pykrx
+302440.KS,SK바이오사이언스,KOSPI,제약,biotech_pharma,2026-02-19,pykrx
+307950.KS,현대오토에버,KOSPI,IT 서비스,internet_platform,2026-02-19,pykrx
+310210.KQ,보로노이,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+316140.KS,우리금융지주,KOSPI,기타금융,financial,2026-02-19,pykrx
+319400.KQ,현대무벡스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+319660.KQ,피에스케이,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+323280.KQ,태성,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+323410.KS,카카오뱅크,KOSPI,은행,bank,2026-02-19,pykrx
+326030.KS,SK바이오팜,KOSPI,일반서비스,biotech_pharma,2026-02-19,pykrx
+328130.KQ,루닛,KOSDAQ,IT 서비스,internet_platform,2026-02-19,pykrx
+329180.KS,HD현대중공업,KOSPI,운송장비·부품,automobile,2026-02-19,pykrx
+347700.KQ,스피어,KOSDAQ,IT 서비스,internet_platform,2026-02-19,pykrx
+347850.KQ,디앤디파마텍,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+348370.KQ,엔켐,KOSDAQ,화학,chemical,2026-02-19,pykrx
+352820.KS,하이브,KOSPI,오락·문화,entertainment,2026-02-19,pykrx
+357780.KQ,솔브레인,KOSDAQ,화학,chemical,2026-02-19,pykrx
+361610.KS,SK아이이테크놀로지,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+373220.KS,LG에너지솔루션,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+375500.KS,DL이앤씨,KOSPI,건설,construction,2026-02-19,pykrx
+377300.KS,카카오페이,KOSPI,기타금융,financial,2026-02-19,pykrx
+383220.KS,F&F,KOSPI,섬유·의류,consumer_apparel,2026-02-19,pykrx
+388210.KQ,씨엠티엑스,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+388720.KQ,유일로보틱스,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+397030.KQ,에이프릴바이오,KOSDAQ,일반서비스,biotech_pharma,2026-02-19,pykrx
+402340.KS,SK스퀘어,KOSPI,기타금융,financial,2026-02-19,pykrx
+403870.KQ,HPSP,KOSDAQ,기계·장비,machinery,2026-02-19,pykrx
+437730.KQ,삼현,KOSDAQ,운송장비·부품,automobile,2026-02-19,pykrx
+440110.KQ,파두,KOSDAQ,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+443060.KS,HD현대마린솔루션,KOSPI,일반서비스,services,2026-02-19,pykrx
+445680.KQ,큐리옥스바이오시스템즈,KOSDAQ,의료·정밀기기,biotech_pharma,2026-02-19,pykrx
+450080.KS,에코프로머티,KOSPI,전기·전자,semiconductor_electronics,2026-02-19,pykrx
+454910.KS,두산로보틱스,KOSPI,기계·장비,machinery,2026-02-19,pykrx
+456160.KQ,지투지바이오,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+457190.KS,이수스페셜티케미컬,KOSPI,화학,chemical,2026-02-19,pykrx
+458870.KQ,씨어스테크놀로지,KOSDAQ,의료·정밀기기,healthcare_device,2026-02-19,pykrx
+466100.KQ,클로봇,KOSDAQ,IT 서비스,internet_platform,2026-02-19,pykrx
+475830.KQ,오름테라퓨틱,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+476830.KQ,알지노믹스,KOSDAQ,일반서비스,services,2026-02-19,pykrx
+491000.KQ,리브스메드,KOSDAQ,의료·정밀기기,healthcare_device,2026-02-19,pykrx
+950160.KQ,코오롱티슈진,KOSDAQ,제약,biotech_pharma,2026-02-19,pykrx
+A,AGILENT TECHNOLOGIES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+AA,ALCOA CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AAL,AMERICAN AIRLINES GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AAON,AAON INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AAPL,APPLE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ABBV,ABBVIE INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ABNB,AIRBNB INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ABT,ABBOTT LABORATORIES,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ACGL,ARCH CAPITAL GROUP LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ACHC,ACADIA HEALTHCARE COMPANY INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ACI,ALBERTSONS COMPANY INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+ACLS,,US,,equity_stock,,sox
+ACM,AECOM,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ACN,ACCENTURE PLC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ADBE,ADOBE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ADC,AGREE REALTY REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ADI,ANALOG DEVICES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ADM,ARCHER DANIELS MIDLAND,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+ADP,AUTOMATIC DATA PROCESSING INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ADSK,AUTODESK INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ADT,ADT INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+AEE,AMEREN CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+AEP,AMERICAN ELECTRIC POWER INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+AES,AES CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+AFG,AMERICAN FINANCIAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AFL,AFLAC INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AFRM,AFFIRM HOLDINGS INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AGCO,AGCO CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AGNC,AGNC INVESTMENT REIT CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AGO,ASSURED GUARANTY LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AIG,AMERICAN INTERNATIONAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AIT,APPLIED INDUSTRIAL TECHNOLOGIES IN,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AIZ,ASSURANT INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AJG,ARTHUR J GALLAGHER,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AKAM,AKAMAI TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AL,AIR LEASE CORP CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALAB,ASTERA LABS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ALB,ALBEMARLE CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALGM,ALLEGRO MICROSYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ALGN,ALIGN TECHNOLOGY INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ALK,ALASKA AIR GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALL,ALLSTATE CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALLE,ALLEGION PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALLY,ALLY FINANCIAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ALNY,ALNYLAM PHARMACEUTICALS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ALSN,ALLISON TRANSMISSION HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AM,ANTERO MIDSTREAM CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+AMAT,APPLIED MATERIAL INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AMCR,AMCOR PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AMD,ADVANCED MICRO DEVICES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AME,AMETEK INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AMG,AFFILIATED MANAGERS GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AMGN,AMGEN INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+AMH,AMERICAN HOMES RENT REIT CLASS A,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+AMKR,AMKOR TECHNOLOGY INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AMP,AMERIPRISE FINANCE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AMT,AMERICAN TOWER REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+AMTM,AMENTUM HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AMZN,AMAZON COM INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+AN,AUTONATION INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ANET,ARISTA NETWORKS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AON,AON PLC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AOS,A O SMITH CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+APA,APA CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+APD,AIR PRODUCTS AND CHEMICALS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+APG,API GROUP CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+APH,AMPHENOL CORP CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+APLS,APELLIS PHARMACEUTICALS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+APO,APOLLO GLOBAL MANAGEMENT INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+APP,APPLOVIN CORP CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+APPF,APPFOLIO INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+APTV,APTIV PLC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+AR,ANTERO RESOURCES CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+ARE,ALEXANDRIA REAL ESTATE EQUITIES RE,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ARES,ARES MANAGEMENT CORP CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ARM,,US,,equity_stock,,nasdaq100
+ARMK,ARAMARK,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ARW,ARROW ELECTRONICS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AS,AMER SPORTS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ASH,ASHLAND INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+ASML,,US,,equity_stock,,sox
+ASTS,AST SPACEMOBILE INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+ATI,ATI INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ATO,ATMOS ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+ATR,APTARGROUP INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AU,ANGLOGOLD ASHANTI PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AUR,AURORA INNOVATION INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AVB,AVALONBAY COMMUNITIES REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+AVGO,BROADCOM INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AVT,AVNET INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+AVTR,AVANTOR INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+AVY,AVERY DENNISON CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AWI,ARMSTRONG WORLD INDUSTRIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AWK,AMERICAN WATER WORKS INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+AXON,AXON ENTERPRISE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AXP,AMERICAN EXPRESS,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AXS,AXIS CAPITAL HOLDINGS LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+AXTA,AXALTA COATING SYSTEMS LTD,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+AYI,ACUITY INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+AZO,AUTOZONE INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BA,BOEING,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+BAC,BANK OF AMERICA CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BAH,BOOZ ALLEN HAMILTON HOLDING CORP C,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+BALL,BALL CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+BAM,BROOKFIELD ASSET MANAGEMENT VOTING,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BAX,BAXTER INTERNATIONAL INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BBWI,BATH AND BODY WORKS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BBY,BEST BUY INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BC,BRUNSWICK CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BDX,BECTON DICKINSON,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BEN,FRANKLIN RESOURCES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BEPC,BROOKFIELD RENEWABLE SUBORDINATE V,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+BF-A,BROWN FORMAN CORP CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+BF-B,BROWN FORMAN CORP CLASS B,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+BFAM,BRIGHT HORIZONS FAMILY SOLUTIONS I,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BG,BUNGE GLOBAL,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+BHF,BRIGHTHOUSE FINANCIAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BIIB,BIOGEN INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BILL,BILL HOLDINGS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+BIO,BIO RAD LABORATORIES INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BIRK,BIRKENSTOCK HOLDING PLC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BJ,BJS WHOLESALE CLUB HOLDINGS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+BK,BANK OF NEW YORK MELLON CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BKNG,BOOKING HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BKR,BAKER HUGHES CLASS A,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+BLD,TOPBUILD CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BLDR,BUILDERS FIRSTSOURCE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+BLK,BLACKROCK INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BLSH,BULLISH,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BMRN,BIOMARIN PHARMACEUTICAL INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BMY,BRISTOL MYERS SQUIBB,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BND,,US,,bond_etf,,universe.yaml
+BNDX,,US,,bond_etf,,universe.yaml
+BNO,,US,,commodity_etf,,universe.yaml
+BOKF,BOK FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BPOP,POPULAR INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BR,BROADRIDGE FINANCIAL SOLUTIONS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+BRBR,BELLRING BRANDS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+BRK-B,BERKSHIRE HATHAWAY INC CLASS B,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BRKR,BRUKER CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BRO,BROWN & BROWN INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BROS,DUTCH BROS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BRX,BRIXMOR PROPERTY GROUP REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+BSX,BOSTON SCIENTIFIC CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+BSY,BENTLEY SYSTEMS INC CLASS B,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+BURL,BURLINGTON STORES INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BWA,BORGWARNER INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+BWX,,US,,bond_etf,,universe.yaml
+BWXT,BWX TECHNOLOGIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+BX,BLACKSTONE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+BXP,BXP INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+BYD,BOYD GAMING CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+C,CITIGROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CACC,CREDIT ACCEPTANCE CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CACI,CACI INTERNATIONAL INC CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CAG,CONAGRA BRANDS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CAH,CARDINAL HEALTH INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CAI,CARIS LIFE SCIENCES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CAR,AVIS BUDGET GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CARR,CARRIER GLOBAL CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CART,MAPLEBEAR INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CASY,CASEYS GENERAL STORES INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CAT,CATERPILLAR INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CAVA,CAVA GROUP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CB,CHUBB LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CBOE,CBOE GLOBAL MARKETS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CBRE,CBRE GROUP INC CLASS A,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CBSH,COMMERCE BANCSHARES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CCC,CCC INTELLIGENT SOLUTIONS HOLDINGS,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CCEP,,US,,equity_stock,,nasdaq100
+CCI,CROWN CASTLE INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CCK,CROWN HOLDINGS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CCL,CARNIVAL CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CDNS,CADENCE DESIGN SYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CDW,CDW CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CE,CELANESE CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CEG,CONSTELLATION ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+CELH,CELSIUS HOLDINGS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CERT,CERTARA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CF,CF INDUSTRIES HOLDINGS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CFG,CITIZENS FINANCIAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CFLT,CONFLUENT INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CFR,CULLEN FROST BANKERS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CG,CARLYLE GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CGNX,COGNEX CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CHD,CHURCH AND DWIGHT INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CHDN,CHURCHILL DOWNS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CHE,CHEMED CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CHH,CHOICE HOTELS INTERNATIONAL INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CHRD,CHORD ENERGY CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+CHRW,CH ROBINSON WORLDWIDE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CHTR,CHARTER COMMUNICATIONS INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+CHWY,CHEWY INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CI,CIGNA,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CIEN,CIENA CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CINF,CINCINNATI FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CL,COLGATE-PALMOLIVE,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CLF,CLEVELAND CLIFFS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CLH,CLEAN HARBORS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CLVT,CLARIVATE PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CLX,CLOROX,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CMCSA,COMCAST CORP CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+CME,CME GROUP INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CMG,CHIPOTLE MEXICAN GRILL INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CMI,CUMMINS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CMS,CMS ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+CNA,CNA FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CNC,CENTENE CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CNH,CNH INDUSTRIAL N.V. NV,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CNM,CORE & MAIN INC CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CNP,CENTERPOINT ENERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+CNXC,CONCENTRIX CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+COF,CAPITAL ONE FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+COHR,COHERENT CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+COIN,COINBASE GLOBAL INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+COKE,COCA COLA CONSOLIDATED INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+COLB,COLUMBIA BANKING SYSTEM INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+COLD,AMERICOLD REALTY INC TRUST,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+COLM,COLUMBIA SPORTSWEAR,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+COO,COOPER INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+COP,CONOCOPHILLIPS,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+COR,CENCORA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CORN,,US,,commodity_etf,,universe.yaml
+CORT,CORCEPT THERAPEUTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+COST,COSTCO WHOLESALE CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+COTY,COTY INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CPAY,CORPAY INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+CPB,CAMPBELL SOUP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+CPNG,COUPANG INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CPRT,COPART INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CPT,CAMDEN PROPERTY TRUST REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CR,CRANE,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CRCL,CIRCLE INTERNET GROUP INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CRH,CRH PUBLIC LIMITED PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CRL,CHARLES RIVER LABORATORIES INTERNA,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CRM,SALESFORCE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CROX,CROCS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CRS,CARPENTER TECHNOLOGY CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CRUS,CIRRUS LOGIC INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CRWD,CROWDSTRIKE HOLDINGS INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CSCO,CISCO SYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CSGP,COSTAR GROUP INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CSL,CARLISLE COMPANIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CSX,CSX CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CTAS,CINTAS CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CTRA,COTERRA ENERGY INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+CTSH,COGNIZANT TECHNOLOGY SOLUTIONS COR,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CTVA,CORTEVA INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+CUBE,CUBESMART REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CUZ,COUSINS PROPERTIES REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+CVNA,CARVANA CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+CVS,CVS HEALTH CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+CVX,CHEVRON CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+CW,CURTISS WRIGHT CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+CWEN,CLEARWAY ENERGY INC CLASS C,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+CWEN-A,CLEARWAY ENERGY INC CLASS A,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+CXT,CRANE NXT,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+CYB,,US,,currency_etf,,universe.yaml
+CZR,CAESARS ENTERTAINMENT INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+D,DOMINION ENERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+DAL,DELTA AIR LINES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+DAR,DARLING INGREDIENTS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+DASH,DOORDASH INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DBA,,US,,commodity_etf,,universe.yaml
+DBC,,US,,commodity_etf,,universe.yaml
+DBX,DROPBOX INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DCI,DONALDSON INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+DD,DUPONT DE NEMOURS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+DDOG,DATADOG INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DDS,DILLARDS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DE,DEERE,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+DECK,DECKERS OUTDOOR CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DELL,DELL TECHNOLOGIES INC CLASS C,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DG,DOLLAR GENERAL CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+DGX,QUEST DIAGNOSTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+DHI,D R HORTON INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DHR,DANAHER CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+DINO,HF SINCLAIR CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+DIS,WALT DISNEY,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+DJT,TRUMP MEDIA TECHNOLOGY GROUP CORP,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+DKNG,DRAFTKINGS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DKS,DICKS SPORTING INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DLB,DOLBY LABORATORIES INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DLR,DIGITAL REALTY TRUST REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+DLTR,DOLLAR TREE INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+DOC,HEALTHPEAK PROPERTIES INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+DOCS,DOXIMITY INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+DOCU,DOCUSIGN INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DOV,DOVER CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+DOW,DOW INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+DOX,AMDOCS LTD,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DPZ,DOMINOS PIZZA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DRI,DARDEN RESTAURANTS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DRS,LEONARDO DRS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+DT,DYNATRACE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DTE,DTE ENERGY,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+DTM,DT MIDSTREAM INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+DUK,DUKE ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+DUOL,DUOLINGO INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+DV,DOUBLEVERIFY HOLDINGS INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+DVA,DAVITA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+DVN,DEVON ENERGY CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+DXC,DXC TECHNOLOGY,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+DXCM,DEXCOM INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EA,ELECTRONIC ARTS INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+EBAY,EBAY INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ECG,EVERUS CONSTRUCTION GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ECL,ECOLAB INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+ED,CONSOLIDATED EDISON INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+EEFT,EURONET WORLDWIDE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+EFX,EQUIFAX INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+EG,EVEREST GROUP LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+EGP,EASTGROUP PROPERTIES REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+EHC,ENCOMPASS HEALTH CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EIX,EDISON INTERNATIONAL,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+EL,ESTEE LAUDER INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+ELAN,ELANCO ANIMAL HEALTH INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ELF,ELF BEAUTY INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+ELS,EQUITY LIFESTYLE PROPERTIES REIT I,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ELV,ELEVANCE HEALTH INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EMB,,US,,bond_etf,,universe.yaml
+EME,EMCOR GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+EMN,EASTMAN CHEMICAL,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+EMR,EMERSON ELECTRIC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ENPH,ENPHASE ENERGY INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ENTG,ENTEGRIS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+EOG,EOG RESOURCES INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+EPAM,EPAM SYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+EPR,EPR PROPERTIES REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+EQH,EQUITABLE HOLDINGS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+EQIX,EQUINIX REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+EQR,EQUITY RESIDENTIAL REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+EQT,EQT CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+ERIE,,US,,equity_stock,,sp500
+ES,EVERSOURCE ENERGY,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+ESAB,ESAB CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ESI,ELEMENT SOLUTIONS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+ESS,ESSEX PROPERTY TRUST REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ESTC,ELASTIC NV,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ETN,EATON PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ETR,ENTERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+ETSY,ETSY INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+EVR,EVERCORE INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+EVRG,EVERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+EW,EDWARDS LIFESCIENCES CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EWBC,EAST WEST BANCORP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+EXAS,EXACT SCIENCES CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EXC,EXELON CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+EXE,EXPAND ENERGY CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+EXEL,EXELIXIS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+EXLS,EXLSERVICE HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+EXP,EAGLE MATERIALS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+EXPD,EXPEDITORS INTERNATIONAL OF WASHIN,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+EXPE,EXPEDIA GROUP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+EXR,EXTRA SPACE STORAGE REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+F,FORD MOTOR CO,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+FAF,FIRST AMERICAN FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FANG,DIAMONDBACK ENERGY INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+FAST,FASTENAL,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FBIN,FORTUNE BRANDS INNOVATIONS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FCN,FTI CONSULTING INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FCNCA,FIRST CITIZENS BANCSHARES INC CLAS,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FCX,FREEPORT MCMORAN INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+FDS,FACTSET RESEARCH SYSTEMS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FDX,FEDEX CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FE,FIRSTENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+FER,,US,,equity_stock,,nasdaq100
+FERG,FERGUSON ENTERPRISES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FFIV,F5 INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+FHB,FIRST HAWAIIAN INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FHN,FIRST HORIZON CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FICO,FAIR ISAAC CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+FIGR,FIGURE TECHNOLOGY SOLUTIONS INC CL,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FIS,FIDELITY NATIONAL INFORMATION SERV,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FISV,FISERV INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FITB,FIFTH THIRD BANCORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FIVE,FIVE BELOW INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+FIX,COMFORT SYSTEMS USA INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FLEX,FLEX LTD,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+FLO,FLOWERS FOODS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+FLS,FLOWSERVE CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FLUT,FLUTTER ENTERTAINMENT PLC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+FMC,FMC CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+FNB,FNB CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FND,FLOOR DECOR HOLDINGS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+FNF,FIDELITY NATIONAL FINANCIAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FOUR,SHIFT4 PAYMENTS INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FOX,FOX CORP CLASS B,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+FOXA,FOX CORP CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+FR,FIRST INDUSTRIAL REALTY TRUST INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+FRHC,FREEDOM HOLDING CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+FRMI,FERMI INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+FRPT,FRESHPET INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+FRT,FEDERAL REALTY INVESTMENT TRUST RE,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+FSLR,FIRST SOLAR INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+FTAI,FTAI AVIATION LTD,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FTI,TECHNIPFMC PLC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+FTNT,FORTINET INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+FTV,FORTIVE CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+FWONA,LIBERTY MEDIA FORMULA ONE SERIES A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+FWONK,LIBERTY MEDIA FORMULA ONE SERIES C,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+FXB,,US,,currency_etf,,universe.yaml
+FXE,,US,,currency_etf,,universe.yaml
+FXY,,US,,currency_etf,,universe.yaml
+G,GENPACT LTD,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GAP,GAP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GD,GENERAL DYNAMICS CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GDDY,GODADDY INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GE,GE AEROSPACE,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GEHC,GE HEALTHCARE TECHNOLOGIES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+GEN,GEN DIGITAL INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GEV,GE VERNOVA INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GFS,GLOBALFOUNDRIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GGG,GRACO INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GILD,GILEAD SCIENCES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+GIS,GENERAL MILLS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+GL,GLOBE LIFE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+GLD,,US,,commodity_etf,,universe.yaml
+GLIBA,GCI LIBERTY INC SERIES A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+GLIBK,GCI LIBERTY INC SERIES C,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+GLOB,GLOBANT SA,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GLPI,GAMING AND LEISURE PROPERTIES REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+GLW,CORNING INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GM,GENERAL MOTORS,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GME,GAMESTOP CORP CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GMED,GLOBUS MEDICAL INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+GNRC,GENERAC HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GNTX,GENTEX CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GOOG,ALPHABET INC CLASS C,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+GOOGL,ALPHABET INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+GOVT,,US,,bond_etf,,universe.yaml
+GPC,GENUINE PARTS,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GPK,GRAPHIC PACKAGING HOLDING,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+GPN,GLOBAL PAYMENTS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+GRMN,GARMIN LTD,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+GS,GOLDMAN SACHS GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+GTES,GATES INDUSTRIAL PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GTLB,GITLAB INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GTM,ZOOMINFO TECHNOLOGIES INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+GWRE,GUIDEWIRE SOFTWARE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+GWW,WW GRAINGER INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+GXO,GXO LOGISTICS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+H,HYATT HOTELS CORP CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HAL,HALLIBURTON,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+HALO,HALOZYME THERAPEUTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+HAS,HASBRO INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HAYW,HAYWARD HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HBAN,HUNTINGTON BANCSHARES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+HCA,HCA HEALTHCARE INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+HD,HOME DEPOT INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HEI,HEICO CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HEI-A,HEICO CORP CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HHH,HOWARD HUGHES HOLDINGS INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+HIG,HARTFORD INSURANCE GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+HII,HUNTINGTON INGALLS INDUSTRIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HIW,HIGHWOODS PROPERTIES REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+HLI,HOULIHAN LOKEY INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+HLNE,HAMILTON LANE INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+HLT,HILTON WORLDWIDE HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HOG,HARLEY DAVIDSON INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HOLX,HOLOGIC INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+HON,HONEYWELL INTERNATIONAL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HOOD,ROBINHOOD MARKETS INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+HPE,HEWLETT PACKARD ENTERPRISE,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+HPQ,HP INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+HR,HEALTHCARE REALTY TRUST INC CLASS,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+HRB,H&R BLOCK INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+HRL,HORMEL FOODS CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+HSIC,HENRY SCHEIN INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+HST,HOST HOTELS & RESORTS REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+HSY,HERSHEY FOODS,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+HUBB,HUBBELL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HUBS,HUBSPOT INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+HUM,HUMANA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+HUN,HUNTSMAN CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+HWM,HOWMET AEROSPACE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HXL,HEXCEL CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+HYG,,US,,bond_etf,,universe.yaml
+IAC,IAC INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+IAU,,US,,commodity_etf,,universe.yaml
+IBKR,INTERACTIVE BROKERS GROUP INC CLAS,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+IBM,INTERNATIONAL BUSINESS MACHINES CO,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ICE,INTERCONTINENTAL EXCHANGE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+IDA,IDACORP INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+IDXX,IDEXX LABORATORIES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+IEF,,US,,bond_etf,,universe.yaml
+IEX,IDEX CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+IFF,INTERNATIONAL FLAVORS & FRAGRANCES,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+ILMN,ILLUMINA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+INCY,INCYTE CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+INGM,INGRAM MICRO HOLDING CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+INGR,INGREDION INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+INSM,INSMED INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+INSP,INSPIRE MEDICAL SYSTEMS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+INTC,INTEL CORPORATION CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+INTU,INTUIT INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+INVH,INVITATION HOMES INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+IONS,IONIS PHARMACEUTICALS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+IOT,SAMSARA INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+IP,INTERNATIONAL PAPER,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+IPGP,IPG PHOTONICS CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+IQV,IQVIA HOLDINGS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+IR,INGERSOLL RAND INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+IRDM,IRIDIUM COMMUNICATIONS INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+IRM,IRON MOUNTAIN INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ISRG,INTUITIVE SURGICAL INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+IT,GARTNER INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ITT,ITT INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ITW,ILLINOIS TOOL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+IVZ,INVESCO LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+J,JACOBS SOLUTIONS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+JAZZ,JAZZ PHARMACEUTICALS PLC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+JBHT,JB HUNT TRANSPORT SERVICES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+JBL,JABIL INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+JCI,JOHNSON CONTROLS INTERNATIONAL PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+JEF,JEFFERIES FINANCIAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+JHG,JANUS HENDERSON GROUP PLC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+JHX,JAMES HARDIE INDUSTRIES PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+JKHY,JACK HENRY AND ASSOCIATES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+JLL,JONES LANG LASALLE INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+JNJ,JOHNSON & JOHNSON,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+JNK,,US,,bond_etf,,universe.yaml
+JPM,JPMORGAN CHASE & CO,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+KBR,KBR INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+KD,KYNDRYL HOLDINGS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+KDP,KEURIG DR PEPPER INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+KEX,KIRBY CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+KEY,KEYCORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+KEYS,KEYSIGHT TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+KHC,KRAFT HEINZ,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+KIM,KIMCO REALTY REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+KKR,KKR AND CO INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+KLAC,KLA CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+KMB,KIMBERLY CLARK CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+KMI,KINDER MORGAN INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+KMPR,KEMPER CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+KMX,CARMAX INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+KNSL,KINSALE CAPITAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+KNX,KNIGHT-SWIFT TRANSPORTATION HOLDIN,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+KO,COCA-COLA,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+KR,KROGER,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+KRC,KILROY REALTY REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+KRMN,KARMAN HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+KVUE,KENVUE INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+L,LOEWS CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+LAD,LITHIA MOTORS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LAMR,LAMAR ADVERTISING COMPANY CLAS,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+LAZ,LAZARD INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+LBRDA,LIBERTY BROADBAND CORP SERIES A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+LBRDK,LIBERTY BROADBAND CORP SERIES C,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+LBTYA,LIBERTY GLOBAL LTD CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+LBTYK,LIBERTY GLOBAL LTD CLASS C,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+LCID,LUCID GROUP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LDOS,LEIDOS HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LEA,LEAR CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LECO,LINCOLN ELECTRIC HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LEN,LENNAR A CORP CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LEN-B,LENNAR CORP CLASS B,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LFUS,LITTELFUSE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+LH,LABCORP HOLDINGS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+LHX,L3HARRIS TECHNOLOGIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LII,LENNOX INTERNATIONAL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LIN,LINDE PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+LINE,LINEAGE INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+LITE,LUMENTUM HOLDINGS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+LKQ,LKQ CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LLY,ELI LILLY,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+LLYVA,LIBERTY LIVE HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LLYVK,LIBERTY LIVE HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LMT,LOCKHEED MARTIN CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LNC,LINCOLN NATIONAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+LNG,CHENIERE ENERGY INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+LNT,ALLIANT ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+LOAR,LOAR HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LOPE,GRAND CANYON EDUCATION INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LOW,LOWES COMPANIES INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LPLA,LPL FINANCIAL HOLDINGS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+LPX,LOUISIANA PACIFIC CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+LQD,,US,,bond_etf,,universe.yaml
+LRCX,LAM RESEARCH CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+LSCC,LATTICE SEMICONDUCTOR CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+LSTR,LANDSTAR SYSTEM INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LULU,LULULEMON ATHLETICA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LUV,SOUTHWEST AIRLINES,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LVS,LAS VEGAS SANDS CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+LW,LAMB WESTON HOLDINGS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+LYB,LYONDELLBASELL INDUSTRIES NV CLASS,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+LYFT,LYFT INC CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+LYV,LIVE NATION ENTERTAINMENT INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+M,MACYS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MA,MASTERCARD INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MAA,MID AMERICA APARTMENT COMMUNITIES,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+MAN,MANPOWER INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MANH,MANHATTAN ASSOCIATES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MAR,MARRIOTT INTERNATIONAL INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MAS,MASCO CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MASI,MASIMO CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MAT,MATTEL INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MBB,,US,,bond_etf,,universe.yaml
+MCD,MCDONALDS CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MCHP,MICROCHIP TECHNOLOGY INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MCK,MCKESSON CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MCO,MOODYS CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MDB,MONGODB INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MDLZ,MONDELEZ INTERNATIONAL INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+MDT,MEDTRONIC PLC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MDU,MDU RESOURCES GROUP INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+MEDP,MEDPACE HOLDINGS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MELI,,US,,equity_stock,,nasdaq100
+MET,METLIFE INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+META,META PLATFORMS INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+MGM,MGM RESORTS INTERNATIONAL,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MHK,MOHAWK INDUSTRIES INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MIDD,MIDDLEBY CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MKC,MCCORMICK & CO NON-VOTING INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+MKL,MARKEL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MKSI,MKS,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MKTX,MARKETAXESS HOLDINGS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MLI,MUELLER INDUSTRIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MLM,MARTIN MARIETTA MATERIALS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+MMM,3M,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MNST,MONSTER BEVERAGE CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+MO,ALTRIA GROUP INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+MOH,MOLINA HEALTHCARE INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MORN,MORNINGSTAR INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MOS,MOSAIC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+MP,MP MATERIALS CORP CLASS A,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+MPC,MARATHON PETROLEUM CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+MPT,MEDICAL PROPERTIES TRUST REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+MPWR,MONOLITHIC POWER SYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MRK,MERCK & CO INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MRNA,MODERNA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MRP,MILLROSE PROPERTIES INC CLASS A,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+MRSH,MARSH INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MRVL,MARVELL TECHNOLOGY INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MS,MORGAN STANLEY,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MSA,MSA SAFETY INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MSCI,MSCI INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MSFT,MICROSOFT CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MSGS,MADISON SQUARE GARDEN SPORTS CORP,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+MSI,MOTOROLA SOLUTIONS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MSM,MSC INDUSTRIAL INC CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MSTR,STRATEGY INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MTB,M&T BANK CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MTCH,MATCH GROUP INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+MTD,METTLER TOLEDO INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+MTDR,MATADOR RESOURCES,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+MTG,MGIC INVESTMENT CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+MTN,VAIL RESORTS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+MTSI,MACOM TECHNOLOGY SOLUTIONS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MTZ,MASTEC INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+MU,MICRON TECHNOLOGY INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+MUSA,MURPHY USA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+NBIX,NEUROCRINE BIOSCIENCES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+NCLH,NORWEGIAN CRUISE LINE HOLDINGS LTD,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+NCNO,NCINO INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NDAQ,NASDAQ INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+NDSN,NORDSON CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+NEE,NEXTERA ENERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+NEM,NEWMONT,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+NET,CLOUDFLARE INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NEU,NEWMARKET CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+NFG,NATIONAL FUEL GAS,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+NFLX,NETFLIX INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+NI,NISOURCE INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+NIQ,NIQ GLOBAL INTELLIGENCE PLC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+NKE,NIKE INC CLASS B,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+NLY,ANNALY CAPITAL MANAGEMENT REIT INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+NNN,NNN REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+NOC,NORTHROP GRUMMAN CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+NOV,NOV INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+NOW,SERVICENOW INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NRG,NRG ENERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+NSA,NATIONAL STORAGE AFFILIATES TRUST,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+NSC,NORFOLK SOUTHERN CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+NTAP,NETAPP INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NTNX,NUTANIX INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NTRA,NATERA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+NTRS,NORTHERN TRUST CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+NU,NU HOLDINGS LTD CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+NUE,NUCOR CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+NVDA,NVIDIA CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+NVR,NVR INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+NVST,ENVISTA HOLDINGS CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+NVT,NVENT ELECTRIC PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+NWL,NEWELL BRANDS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+NWS,NEWS CORP CLASS B,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+NWSA,NEWS CORP CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+NXPI,,US,,equity_stock,,sox
+NXST,NEXSTAR MEDIA GROUP INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+NYT,NEW YORK TIMES CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+O,REALTY INCOME REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+OC,OWENS CORNING,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ODFL,OLD DOMINION FREIGHT LINE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+OGE,OGE ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+OGN,ORGANON,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+OHI,OMEGA HEALTHCARE INVESTORS REIT IN,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+OKE,ONEOK INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+OKTA,OKTA INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+OLED,UNIVERSAL DISPLAY CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+OLLI,OLLIES BARGAIN OUTLET HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+OLN,OLIN CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+OMC,OMNICOM GROUP INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+OMF,ONEMAIN HOLDINGS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ON,ON SEMICONDUCTOR CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ONON,ON HOLDING LTD CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+ONTO,ONTO INNOVATION INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ORCL,ORACLE CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ORI,OLD REPUBLIC INTERNATIONAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ORLY,OREILLY AUTOMOTIVE INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+OSK,OSHKOSH CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+OTIS,OTIS WORLDWIDE CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+OVV,OVINTIV INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+OWL,BLUE OWL CAPITAL INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+OXY,OCCIDENTAL PETROLEUM CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+OZK,BANK OZK,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PAG,PENSKE AUTOMOTIVE GROUP VOTING INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+PANW,PALO ALTO NETWORKS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PATH,UIPATH INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PAYC,PAYCOM SOFTWARE INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PAYX,PAYCHEX INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PB,PROSPERITY BANCSHARES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PCAR,PACCAR INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PCG,PG&E CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+PCOR,PROCORE TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PCTY,PAYLOCITY HOLDING CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PDBC,,US,,commodity_etf,,universe.yaml
+PDD,,US,,equity_stock,,nasdaq100
+PEG,PUBLIC SERVICE ENTERPRISE GROUP IN,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+PEGA,PEGASYSTEMS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PEN,PENUMBRA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+PENN,PENN ENTERTAINMENT INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+PEP,PEPSICO INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PFE,PFIZER INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+PFG,PRINCIPAL FINANCIAL GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PFGC,PERFORMANCE FOOD GROUP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PG,PROCTER & GAMBLE,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PGR,PROGRESSIVE CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PH,PARKER-HANNIFIN CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PHM,PULTEGROUP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+PINS,PINTEREST INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+PK,PARK HOTELS RESORTS INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+PKG,PACKAGING CORP OF AMERICA,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+PLD,PROLOGIS REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+PLNT,PLANET FITNESS INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+PLTR,PALANTIR TECHNOLOGIES INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PM,PHILIP MORRIS INTERNATIONAL INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PNC,PNC FINANCIAL SERVICES GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PNFP,PINNACLE FINANCIAL PARTNERS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PNR,PENTAIR,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PNW,PINNACLE WEST CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+PODD,INSULET CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+POOL,POOL CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+POST,POST HOLDINGS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PPC,PILGRIMS PRIDE CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PPG,PPG INDUSTRIES INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+PPL,PPL CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+PR,PERMIAN RESOURCES CORP CLASS A,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+PRGO,PERRIGO PLC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+PRI,PRIMERICA INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PRMB,PRIMO BRANDS CLASS A CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+PRU,PRUDENTIAL FINANCIAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+PSA,PUBLIC STORAGE REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+PSKY,,US,,equity_stock,,sp500
+PSN,PARSONS CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PSTG,PURE STORAGE INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PSX,PHILLIPS,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+PTC,PTC INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+PVH,PVH CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+PWR,QUANTA SERVICES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+PYPL,PAYPAL HOLDINGS INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+Q,QNITY ELECTRONICS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+QCOM,QUALCOMM INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+QGEN,QIAGEN NV,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+QRVO,QORVO INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+QS,QUANTUMSCAPE CORP CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+QSR,RESTAURANTS BRANDS INTERNATIONAL I,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+QXO,QXO INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+R,RYDER SYSTEM INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RAL,RALLIANT CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+RARE,ULTRAGENYX PHARMACEUTICAL INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RBA,RB GLOBAL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RBC,RBC BEARINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RBLX,ROBLOX CORP CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+RBRK,RUBRIK INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+RCL,ROYAL CARIBBEAN GROUP LTD,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+RDDT,REDDIT INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+REG,REGENCY CENTERS REIT CORP,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+REGN,REGENERON PHARMACEUTICALS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+REXR,REXFORD INDUSTRIAL REALTY REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+REYN,REYNOLDS CONSUMER PRODUCTS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+RF,REGIONS FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RGA,REINSURANCE GROUP OF AMERICA INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RGEN,REPLIGEN CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RGLD,ROYAL GOLD INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+RH,RH,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+RHI,ROBERT HALF,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RITM,RITHM CAPITAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RIVN,RIVIAN AUTOMOTIVE INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+RJF,RAYMOND JAMES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RKLB,ROCKET LAB CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RKT,ROCKET COMPANIES INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RL,RALPH LAUREN CORP CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+RLI,RLI CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RMBS,,US,,equity_stock,,sox
+RMD,RESMED INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RNG,RINGCENTRAL INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+RNR,RENAISSANCERE HOLDING LTD,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ROIV,ROIVANT SCIENCES LTD,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ROK,ROCKWELL AUTOMATION INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ROKU,ROKU INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+ROL,ROLLINS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ROP,ROPER TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ROST,ROSS STORES INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+RPM,RPM INTERNATIONAL INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+RPRX,ROYALTY PHARMA PLC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RRC,RANGE RESOURCES CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+RRX,REGAL REXNORD CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RS,RELIANCE STEEL & ALUMINUM,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+RSG,REPUBLIC SERVICES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RTX,RTX CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+RVMD,REVOLUTION MEDICINES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RVTY,REVVITY INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+RYAN,RYAN SPECIALTY HOLDINGS INC CLASS,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+RYN,RAYONIER REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+S,SENTINELONE INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SAIA,SAIA INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SAIC,SCIENCE APPLICATIONS INTERNATIONAL,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SAIL,SAILPOINT INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SAM,BOSTON BEER INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SARO,STANDARDAERO,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SBAC,SBA COMMUNICATIONS REIT CORP CLASS,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+SBUX,STARBUCKS CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+SCCO,SOUTHERN COPPER CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SCHW,CHARLES SCHWAB CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SCI,SERVICE,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+SEB,SEABOARD CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SEE,SEALED AIR CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SEIC,SEI INVESTMENTS,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SF,STIFEL FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SFD,SMITHFIELD FOODS INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SFM,SPROUTS FARMERS MARKET INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SGI,SOMNIGROUP INTERNATIONAL INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+SHC,SOTERA HEALTH COMPANY,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+SHOP,,US,,equity_stock,,nasdaq100
+SHW,SHERWIN WILLIAMS,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SHY,,US,,bond_etf,,universe.yaml
+SIRI,SIRIUSXM HOLDINGS INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+SITE,SITEONE LANDSCAPE SUPPLY INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SIVR,,US,,commodity_etf,,universe.yaml
+SJM,JM SMUCKER,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SJNK,,US,,bond_etf,,universe.yaml
+SLB,SLB NV,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+SLGN,SILGAN HOLDINGS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SLM,SLM CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SLV,,US,,commodity_etf,,universe.yaml
+SMCI,SUPER MICRO COMPUTER INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SMG,SCOTTS MIRACLE GRO,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SMMT,SUMMIT THERAPEUTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+SN,SHARKNINJA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+SNA,SNAP ON INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SNDK,SANDISK CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SNDR,SCHNEIDER NATIONAL INC CLASS B,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SNOW,SNOWFLAKE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SNPS,SYNOPSYS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SNX,TD SYNNEX CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SO,SOUTHERN,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+SOFI,SOFI TECHNOLOGIES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SOLS,SOLSTICE ADVANCED MATERIALS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SOLV,SOLVENTUM CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+SON,SONOCO PRODUCTS,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SOYB,,US,,commodity_etf,,universe.yaml
+SPG,SIMON PROPERTY GROUP REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+SPGI,S&P GLOBAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SPOT,SPOTIFY TECHNOLOGY SA,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+SRE,SEMPRA,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+SRPT,SAREPTA THERAPEUTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+SSB,SOUTHSTATE BANK CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SSD,SIMPSON MANUFACTURING INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SSNC,SS AND C TECHNOLOGIES HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+ST,SENSATA TECHNOLOGIES HOLDING PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+STAG,STAG INDUSTRIAL REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+STE,STERIS,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+STLD,STEEL DYNAMICS INC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+STT,STATE STREET CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+STWD,STARWOOD PROPERTY TRUST REIT INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+STX,,US,,equity_stock,,nasdaq100
+STZ,CONSTELLATION BRANDS INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+SUI,SUN COMMUNITIES REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+SW,SMURFIT WESTROCK PLC,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+SWK,STANLEY BLACK & DECKER INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+SWKS,SKYWORKS SOLUTIONS INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+SYF,SYNCHRONY FINANCIAL,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+SYK,STRYKER CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+SYY,SYSCO CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+T,AT&T INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TAP,MOLSON COORS BREWING CLASS B,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+TDC,TERADATA CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TDG,TRANSDIGM GROUP INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TDY,TELEDYNE TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TEAM,ATLASSIAN CORP CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TECH,BIO TECHNE CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+TEL,,US,,equity_stock,,sp500
+TEM,TEMPUS AI INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+TER,TERADYNE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TFC,TRUIST FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TFSL,TFS FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TFX,TELEFLEX INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+TGT,TARGET CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+THC,TENET HEALTHCARE CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+THG,HANOVER INSURANCE GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+THO,THOR INDUSTRIES INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TIGO,MILLICOM INTERNATIONAL CELLULAR SA,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TIP,,US,,bond_etf,,universe.yaml
+TJX,TJX INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TKO,TKO GROUP HOLDINGS INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TKR,TIMKEN,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TLN,TALEN ENERGY CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+TLT,,US,,bond_etf,,universe.yaml
+TMO,THERMO FISHER SCIENTIFIC INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+TMUS,T MOBILE US INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TNL,TRAVEL LEISURE,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TOL,TOLL BROTHERS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TOST,TOAST INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TPG,TPG INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TPL,TEXAS PACIFIC LAND CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+TPR,TAPESTRY INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TREX,TREX INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TRGP,TARGA RESOURCES CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+TRI,,US,,equity_stock,,nasdaq100
+TRMB,TRIMBLE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TROW,T ROWE PRICE GROUP INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TRU,TRANSUNION,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TRV,TRAVELERS COMPANIES INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TSCO,TRACTOR SUPPLY,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TSLA,TESLA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TSM,,US,,equity_stock,,sox
+TSN,TYSON FOODS INC CLASS A,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+TT,TRANE TECHNOLOGIES PLC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TTC,TORO,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TTD,TRADE DESK INC CLASS A,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TTEK,TETRA TECH INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TTWO,TAKE TWO INTERACTIVE SOFTWARE INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+TW,TRADEWEB MARKETS INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+TWLO,TWILIO INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TXN,TEXAS INSTRUMENT INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+TXRH,TEXAS ROADHOUSE INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+TXT,TEXTRON INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+TYL,TYLER TECHNOLOGIES INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+U,UNITY SOFTWARE INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+UA,UNDER ARMOUR INC CLASS C,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+UAA,UNDER ARMOUR INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+UAL,UNITED AIRLINES HOLDINGS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+UBER,UBER TECHNOLOGIES INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+UDR,UDR REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+UGI,UGI CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+UHAL,U HAUL HOLDING,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+UHAL-B,U HAUL NON VOTING SERIES N,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+UHS,UNIVERSAL HEALTH SERVICES INC CLAS,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+UI,UBIQUITI INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ULTA,ULTA BEAUTY INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+UNH,UNITEDHEALTH GROUP INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+UNM,UNUM,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+UNP,UNION PACIFIC CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+UPS,UNITED PARCEL SERVICE INC CLASS B,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+URI,UNITED RENTALS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+USB,US BANCORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+USFD,US FOODS HOLDING CORP,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+USO,,US,,commodity_etf,,universe.yaml
+UTHR,UNITED THERAPEUTICS CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+UUP,,US,,currency_etf,,universe.yaml
+UWMC,UWM HOLDINGS CORP CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+V,VISA INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+VCIT,,US,,bond_etf,,universe.yaml
+VCLT,,US,,bond_etf,,universe.yaml
+VEEV,VEEVA SYSTEMS INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+VFC,VF CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+VGIT,,US,,bond_etf,,universe.yaml
+VGSH,,US,,bond_etf,,universe.yaml
+VICI,VICI PPTYS INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+VIK,VIKING HOLDINGS LTD,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+VIRT,VIRTU FINANCIAL INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+VKTX,VIKING THERAPEUTICS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+VLO,VALERO ENERGY CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+VLTO,VERALTO CORP,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+VMC,VULCAN MATERIALS,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+VMI,VALMONT INDS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+VNO,VORNADO REALTY TRUST REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+VNOM,VIPER ENERGY INC CLASS A,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+VNT,VONTIER CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+VOYA,VOYA FINANCIAL INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+VRSK,VERISK ANALYTICS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+VRSN,VERISIGN INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+VRT,VERTIV HOLDINGS CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+VRTX,VERTEX PHARMACEUTICALS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+VSNT,VERSANT MEDIA GROUP INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+VST,VISTRA CORP,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+VTR,VENTAS REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+VTRS,VIATRIS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+VVV,VALVOLINE INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+VZ,VERIZON COMMUNICATIONS INC,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+W,WAYFAIR INC CLASS A,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WAB,WESTINGHOUSE AIR BRAKE TECHNOLOGIE,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WAL,WESTERN ALLIANCE,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WAT,WATERS CORP,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+WBD,WARNER BROS. DISCOVERY INC SERIES,US,Communication,us_large_mid_equity,2026-02-21,ishares_iwb
+WBS,WEBSTER FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WCC,WESCO INTERNATIONAL INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WDAY,WORKDAY INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+WDC,WESTERN DIGITAL CORP,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+WEAT,,US,,commodity_etf,,universe.yaml
+WEC,WEC ENERGY GROUP INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+WELL,WELLTOWER INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+WEN,WENDYS,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WEX,WEX INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WFC,WELLS FARGO,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WFRD,WEATHERFORD INTERNATIONAL PLC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+WH,WYNDHAM HOTELS RESORTS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WHR,WHIRLPOOL CORP,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WING,WINGSTOP INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WLK,WESTLAKE CORP,US,Materials,us_large_mid_equity,2026-02-21,ishares_iwb
+WM,WASTE MANAGEMENT INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WMB,WILLIAMS INC,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+WMS,ADVANCED DRAINAGE SYSTEMS INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WMT,WALMART INC,US,Consumer Staples,us_large_mid_equity,2026-02-21,ishares_iwb
+WOLF,,US,,equity_stock,,sox
+WPC,W. P. CAREY REIT INC,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+WRB,WR BERKLEY CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WSC,WILLSCOT HOLDINGS CORP CLASS A,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WSM,WILLIAMS SONOMA INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+WSO,WATSCO INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WST,WEST PHARMACEUTICAL SERVICES INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+WTFC,WINTRUST FINANCIAL CORP,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WTM,WHITE MOUNTAINS INSURANCE GROUP LT,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WTRG,ESSENTIAL UTILITIES INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+WTW,WILLIS TOWERS WATSON PLC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WU,WESTERN UNION,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+WWD,WOODWARD INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+WY,WEYERHAEUSER REIT,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+WYNN,WYNN RESORTS LTD,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+XEL,XCEL ENERGY INC,US,Utilities,us_large_mid_equity,2026-02-21,ishares_iwb
+XOM,EXXON MOBIL CORP,US,Energy,us_large_mid_equity,2026-02-21,ishares_iwb
+XP,XP CLASS A INC,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+XPO,XPO INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+XRAY,DENTSPLY SIRONA INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+XYL,XYLEM INC,US,Industrials,us_large_mid_equity,2026-02-21,ishares_iwb
+XYZ,BLOCK INC CLASS A,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+YETI,YETI HOLDINGS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+YUM,YUM BRANDS INC,US,Consumer Discretionary,us_large_mid_equity,2026-02-21,ishares_iwb
+Z,ZILLOW GROUP INC CLASS C,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ZBH,ZIMMER BIOMET HOLDINGS INC,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+ZBRA,ZEBRA TECHNOLOGIES CORP CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ZG,ZILLOW GROUP INC CLASS A,US,Real Estate,us_large_mid_equity,2026-02-21,ishares_iwb
+ZION,ZIONS BANCORPORATION,US,Financials,us_large_mid_equity,2026-02-21,ishares_iwb
+ZM,ZOOM COMMUNICATIONS INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ZS,ZSCALER INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
+ZTS,ZOETIS INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb

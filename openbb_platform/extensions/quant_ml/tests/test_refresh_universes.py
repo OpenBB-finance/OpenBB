@@ -170,3 +170,74 @@ def test_universe_rows_fieldnames_includes_metadata_columns():
         "sector_l1",
         "category_l2",
     ]
+
+
+def test_build_all_in_one_rows_merges_stock_and_allowed_etf(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    source = tmp_path / "source"
+    source.mkdir(parents=True, exist_ok=True)
+    (source / "sp500.csv").write_text("symbol\nAAPL\n", encoding="utf-8")
+
+    cfg_path = tmp_path / "universe.yaml"
+    cfg_path.write_text(
+        "\n".join(
+            [
+                'version: "v1"',
+                "assets:",
+                "  - symbol: SPY",
+                "    category: us_equity_etf",
+                "  - symbol: TLT",
+                "    category: bond_etf",
+                "  - symbol: GLD",
+                "    category: commodity_etf",
+                "  - symbol: UUP",
+                "    category: currency_etf",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(ru, "UNIVERSE_CONFIG_PATH", cfg_path)
+    monkeypatch.setattr(ru, "ALL_IN_ONE_SOURCE_UNIVERSES", ("sp500",))
+
+    rows = ru._build_all_in_one_rows(source)
+    symbols = {row["symbol"] for row in rows}
+    assert symbols == {"AAPL", "GLD", "TLT", "UUP"}
+
+    aapl_row = next(row for row in rows if row["symbol"] == "AAPL")
+    assert aapl_row.get("category_l2") == "equity_stock"
+
+
+def test_refresh_one_all_in_one_skips_validation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    monkeypatch.setattr(
+        ru,
+        "_build_all_in_one_rows",
+        lambda outdir: [
+            {
+                "symbol": "AAPL",
+                "category_l2": "equity_stock",
+            }
+        ],
+    )
+    monkeypatch.setattr(ru, "get_universe_minimum_required", lambda universe_id: 0)
+    validate_called = {"value": False}
+
+    def _validate(symbols, max_workers=6):  # noqa: ARG001
+        validate_called["value"] = True
+        return symbols, [], "ok"
+
+    monkeypatch.setattr(ru, "_validate_with_yfinance", _validate)
+
+    result = ru._refresh_one(
+        "all_in_one",
+        tmp_path,
+        validate=True,
+        max_workers=2,
+        dry_run=False,
+    )
+    assert result.ok is True
+    assert validate_called["value"] is False
+    assert "aggregate universe" in result.message

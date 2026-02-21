@@ -18,8 +18,10 @@ UNIVERSE_MINIMUM_COUNTS: dict[str, int] = {
     "nasdaq100": 95,
     "dow30": 25,
     "sox": 25,
+    "russell1000": 900,
     "kospi200": 180,
     "kosdaq100": 90,
+    "all_in_one": 1200,
 }
 
 UNIVERSE_OPTIONAL_METADATA_COLUMNS: tuple[str, ...] = (
