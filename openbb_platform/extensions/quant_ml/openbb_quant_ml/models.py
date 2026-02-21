@@ -313,6 +313,26 @@ class PeriodWeight(BaseModel):
     weights: dict[str, float]
 
 
+class WeightDeltaItem(BaseModel):
+    """One symbol-level weight delta row for a rebalance period."""
+
+    symbol: str
+    delta: float
+
+
+class RebalanceHistoryItem(BaseModel):
+    """One rebalance transition summary."""
+
+    date: str
+    added: list[str] = Field(default_factory=list)
+    sold: list[str] = Field(default_factory=list)
+    top_weight_increases: list[WeightDeltaItem] = Field(default_factory=list)
+    top_weight_decreases: list[WeightDeltaItem] = Field(default_factory=list)
+    turnover: float = 0.0
+    binding_constraints: list[str] = Field(default_factory=list)
+    previous_date: str | None = None
+
+
 class BacktestResponse(BaseModel):
     """Backtest response."""
 
@@ -335,6 +355,11 @@ class BacktestResponse(BaseModel):
     slippage_bps: float = 2.0
     entry_price: EntryPriceMode = "next_open"
     exit_price: ExitPriceMode = "close"
+    rebalance_history_summary: list[RebalanceHistoryItem] = Field(default_factory=list)
+    constraint_violations: list[dict[str, Any]] = Field(default_factory=list)
+    liquidity_clip_ratio: float = 0.0
+    risk_contribution_max: float = 0.0
+    universe_stage_counts: dict[str, int] = Field(default_factory=dict)
 
 
 class WalkForwardBacktestSubmitResponse(BaseModel):
@@ -472,13 +497,53 @@ class PortfolioCurrentResponse(BaseModel):
     asset_class_weights: list[AssetClassWeightItem]
     asset_class_weights_l1: list[AssetClassWeightItem] = Field(default_factory=list)
     rationale: PortfolioRationale
+    last_rebalance_trades: RebalanceHistoryItem | None = None
+    last_rebalance_turnover: float = 0.0
+
+
+class RebalanceHistoryResponse(BaseModel):
+    """Backtest rebalance timeline payload."""
+
+    run_id: str
+    model_name: ModelName
+    items: list[RebalanceHistoryItem] = Field(default_factory=list)
+
+
+class UniverseExclusionItem(BaseModel):
+    """One excluded symbol row from universe staging."""
+
+    symbol: str
+    stage: Literal["u0", "u1", "u2"]
+    reasons: list[str] = Field(default_factory=list)
+    as_of_date: str | None = None
+    company_id: str | None = None
+
+
+class UniverseSnapshotResponse(BaseModel):
+    """Universe snapshot payload for one run/as-of date."""
+
+    run_id: str
+    as_of_date: str
+    universe_id: str
+    stage_counts: dict[str, int] = Field(default_factory=dict)
+    u0_symbols: list[str] = Field(default_factory=list)
+    u1_symbols: list[str] = Field(default_factory=list)
+    u2_symbols: list[str] = Field(default_factory=list)
+    excluded: list[UniverseExclusionItem] = Field(default_factory=list)
+
+
+class UniverseExclusionsResponse(BaseModel):
+    """Latest universe exclusion list payload."""
+
+    run_id: str
+    items: list[UniverseExclusionItem] = Field(default_factory=list)
 
 
 class PortfolioPolicyResponse(BaseModel):
     """Portfolio hard-policy payload."""
 
     template: str = "diversified_long_only"
-    single_name_max_abs_weight: float = 0.10
+    single_name_max_abs_weight: float = 0.04
     small_universe_policy: str = "cash_buffer"
     sector_concentration_max: float = 0.35
     turnover_max: float = 0.8
@@ -924,3 +989,6 @@ class UniverseResolveResponse(BaseModel):
     minimum_required: int = 0
     meets_minimum: bool = True
     symbols: list[str] | None = None
+    deprecated: bool = False
+    replacement_id: str | None = None
+    sunset_date: str | None = None

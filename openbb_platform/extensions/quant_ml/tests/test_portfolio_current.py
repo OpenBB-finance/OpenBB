@@ -121,6 +121,53 @@ def test_portfolio_current_requires_backtest(monkeypatch: pytest.MonkeyPatch):
         pipeline.get_portfolio_current("run-3", model_name="lgbm_ranker")
 
 
+def test_get_rebalance_history(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(pipeline, "_ensure_run_completed", lambda run_id, **_: None)
+    monkeypatch.setattr(
+        pipeline,
+        "_load_backtest_payload",
+        lambda run_id, model_name="lgbm_ranker": {
+            "rebalance_history_summary": [
+                {
+                    "date": "2026-02-28",
+                    "added": ["AAPL"],
+                    "sold": ["MSFT"],
+                    "top_weight_increases": [{"symbol": "AAPL", "delta": 0.02}],
+                    "top_weight_decreases": [{"symbol": "MSFT", "delta": -0.03}],
+                    "turnover": 0.15,
+                    "binding_constraints": ["single_name_cap"],
+                }
+            ]
+        },
+    )
+    payload = pipeline.get_rebalance_history("run-1", model_name="lgbm_ranker")
+    assert payload.run_id == "run-1"
+    assert len(payload.items) == 1
+    assert payload.items[0].date == "2026-02-28"
+
+
+def test_get_universe_snapshot(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(pipeline, "_ensure_run_completed", lambda run_id, **_: None)
+    monkeypatch.setattr(
+        pipeline,
+        "load_latest_universe_snapshot",
+        lambda run_id: {
+            "run_id": run_id,
+            "as_of_date": "2026-02-28",
+            "universe_id": "global_core_equity",
+            "stage_counts": {"u0": 1200, "u1": 900, "u2": 750},
+            "u0_symbols": ["AAPL"],
+            "u1_symbols": ["AAPL"],
+            "u2_symbols": ["AAPL"],
+            "excluded": [],
+        },
+    )
+    monkeypatch.setattr(pipeline, "load_latest_universe_exclusions", lambda run_id: [])
+    payload = pipeline.get_universe_snapshot("run-1")
+    assert payload.universe_id == "global_core_equity"
+    assert payload.stage_counts["u2"] == 750
+
+
 def test_get_run_restores_from_artifacts(monkeypatch: pytest.MonkeyPatch, tmp_path):
     run_dir = tmp_path / "run-restore"
     run_dir.mkdir(parents=True, exist_ok=True)

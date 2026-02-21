@@ -28,9 +28,13 @@ from openbb_quant_ml.models import (
     ModelPerformanceResponse,
     ModelRegimeResponse,
     PortfolioCurrentResponse,
+    RebalanceHistoryResponse,
+    UniverseSnapshotResponse,
+    UniverseExclusionItem,
     PortfolioRationale,
     PortfolioSymbolWeightItem,
     PredictionsLatestResponse,
+    RebalanceHistoryItem,
     RunStatusResponse,
     SignalRequest,
     SignalResponse,
@@ -39,6 +43,7 @@ from openbb_quant_ml.models import (
     UniverseResponse,
 )
 from openbb_quant_ml.service.backtest import run_backtest
+from openbb_quant_ml.service.delisting import load_delisting_events
 from openbb_quant_ml.service.cache_registry import (
     get_data_versions,
     get_feature_versions,
@@ -75,6 +80,7 @@ from openbb_quant_ml.service.storage import (
     list_run_artifacts,
     load_json,
     save_json,
+    save_parquet_atomic,
 )
 from openbb_quant_ml.service.universe import (
     get_default_symbols,
@@ -83,6 +89,12 @@ from openbb_quant_ml.service.universe import (
     get_universe_size_status,
     list_universe_ids,
     load_universe_config,
+)
+from openbb_quant_ml.service.universe_engine import (
+    build_universe_snapshot,
+    load_latest_universe_exclusions,
+    load_latest_universe_snapshot,
+    universe_snapshot_dir,
 )
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
@@ -1084,6 +1096,43 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     else:
         open_panel = close_panel.copy()
 
+    config_payload = load_json(run_dir / "config.json", default={})
+    request_payload = (
+        config_payload.get("request", {})
+        if isinstance(config_payload, dict)
+        else {}
+    )
+    requested_universe_id = str(request_payload.get("universe_id", "default")).strip() or "default"
+
+    pred_wide = predictions.pivot(index="date", columns="symbol", values="predicted_return").sort_index()
+    window_mask = (close_panel.index.date >= request.start_date) & (
+        close_panel.index.date <= request.end_date
+    )
+    trade_dates = close_panel.index[window_mask]
+    rebalance_dates = [
+        rebalance_date
+        for rebalance_date in pd.Series(trade_dates, index=trade_dates)
+        .groupby(trade_dates.to_period("M"))
+        .first()
+        .tolist()
+        if rebalance_date in pred_wide.index
+    ]
+    if not rebalance_dates:
+        overlap = [item for item in pred_wide.index if item in trade_dates]
+        if overlap:
+            rebalance_dates = [overlap[0]]
+
+    rebalance_context: dict[str, dict[str, Any]] = {}
+    for rebalance_date in rebalance_dates:
+        snapshot = build_universe_snapshot(
+            run_id=request.run_id,
+            universe_id=requested_universe_id,
+            as_of_date=pd.Timestamp(rebalance_date).date(),
+            portfolio_mode=request.portfolio_mode,
+            market_long=market_long,
+        )
+        rebalance_context[str(snapshot["as_of_date"])] = snapshot
+
     result = run_backtest(
         predictions=predictions[["date", "symbol", "predicted_return"]],
         open_panel=open_panel,
@@ -1097,7 +1146,39 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         exit_price=request.exit_price,
         portfolio_mode=request.portfolio_mode,
         regime_policy=request.regime_policy,
+        rebalance_universe_context=rebalance_context,
+        delisting_events=load_delisting_events(run_dir),
     )
+
+    report_by_date = {
+        str(item.get("date")): item for item in result.rebalance_reports if isinstance(item, dict)
+    }
+    for history_row in result.rebalance_history_summary:
+        report_date = str(history_row.get("date", "")).strip()
+        if not report_date:
+            continue
+        try:
+            as_of = date.fromisoformat(report_date)
+        except ValueError:
+            continue
+        snap_dir = universe_snapshot_dir(run_dir, as_of)
+        snap_dir.mkdir(parents=True, exist_ok=True)
+        report = report_by_date.get(report_date, {})
+        for filename, key in (
+            ("position_sizing_log.parquet", "position_sizing_log"),
+            ("liquidity_constraint_report.parquet", "liquidity_constraint_report"),
+            ("risk_contribution_report.parquet", "risk_contribution_report"),
+            ("sector_exposure_report.parquet", "sector_exposure_report"),
+            ("country_exposure_report.parquet", "country_exposure_report"),
+        ):
+            rows = report.get(key, [])
+            if not isinstance(rows, list):
+                rows = []
+            save_parquet_atomic(
+                snap_dir / filename,
+                pd.DataFrame(rows),
+                index=False,
+            )
 
     payload = {
         "run_id": request.run_id,
@@ -1123,6 +1204,11 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "portfolio_mode": request.portfolio_mode,
         "mu_mapping": request.mu_mapping,
         "regime_policy": request.regime_policy,
+        "rebalance_history_summary": result.rebalance_history_summary,
+        "constraint_violations": result.constraint_violations,
+        "liquidity_clip_ratio": result.liquidity_clip_ratio,
+        "risk_contribution_max": result.risk_contribution_max,
+        "universe_stage_counts": result.universe_stage_counts,
     }
     payload = _json_sanitize(payload)
     save_json(_backtest_path(request.run_id, model_name), payload)
@@ -1460,6 +1546,7 @@ def get_portfolio_current(
         raise ValueError("Run backtest first for selected model.") from exc
 
     period_weights = backtest_payload.get("period_weights", [])
+    history_rows = backtest_payload.get("rebalance_history_summary", [])
     constraints = backtest_payload.get(
         "constraints",
         {
@@ -1504,6 +1591,8 @@ def get_portfolio_current(
             asset_class_weights=[],
             asset_class_weights_l1=[],
             rationale=rationale,
+            last_rebalance_trades=None,
+            last_rebalance_turnover=0.0,
         )
 
     latest = period_weights[-1]
@@ -1620,6 +1709,13 @@ def get_portfolio_current(
             "cost_bps": cost_bps,
         },
     )
+    last_rebalance = None
+    if isinstance(history_rows, list) and history_rows:
+        try:
+            last_rebalance = RebalanceHistoryItem(**history_rows[-1])
+        except Exception:  # noqa: BLE001
+            last_rebalance = None
+
     response = PortfolioCurrentResponse(
         run_id=run_id,
         model_name=model_name,
@@ -1631,5 +1727,72 @@ def get_portfolio_current(
         asset_class_weights=asset_items,
         asset_class_weights_l1=asset_items_l1,
         rationale=rationale,
+        last_rebalance_trades=last_rebalance,
+        last_rebalance_turnover=(
+            _safe_float(last_rebalance.turnover, default=0.0)
+            if last_rebalance is not None
+            else 0.0
+        ),
     )
     return PortfolioCurrentResponse(**_json_sanitize(response.model_dump(mode="json")))
+
+
+def get_rebalance_history(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> RebalanceHistoryResponse:
+    """Return rebalance add/sell timeline for a backtest artifact."""
+    _ensure_run_completed(run_id, allow_artifact_fallback=True)
+    model_name = _normalize_model_name(model_name)
+    payload = _load_backtest_payload(run_id, model_name=model_name)
+    rows = payload.get("rebalance_history_summary", [])
+    items: list[RebalanceHistoryItem] = []
+    if isinstance(rows, list):
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            try:
+                items.append(RebalanceHistoryItem(**row))
+            except Exception:  # noqa: BLE001
+                continue
+    response = RebalanceHistoryResponse(
+        run_id=run_id,
+        model_name=model_name,
+        items=items,
+    )
+    return RebalanceHistoryResponse(**_json_sanitize(response.model_dump(mode="json")))
+
+
+def get_universe_snapshot(run_id: str) -> UniverseSnapshotResponse:
+    """Return latest persisted U0/U1/U2 snapshot for a run."""
+    _ensure_run_completed(run_id, allow_artifact_fallback=True)
+    snapshot = load_latest_universe_snapshot(run_id)
+    if not snapshot:
+        raise ValueError("Universe snapshot is unavailable. Run backtest first.")
+    response = UniverseSnapshotResponse(
+        run_id=run_id,
+        as_of_date=str(snapshot.get("as_of_date", "")),
+        universe_id=str(snapshot.get("universe_id", "default")),
+        stage_counts={
+            key: int(value)
+            for key, value in dict(snapshot.get("stage_counts", {})).items()
+        },
+        u0_symbols=[str(item) for item in snapshot.get("u0_symbols", [])],
+        u1_symbols=[str(item) for item in snapshot.get("u1_symbols", [])],
+        u2_symbols=[str(item) for item in snapshot.get("u2_symbols", [])],
+        excluded=[
+            UniverseExclusionItem(**row)
+            for row in load_latest_universe_exclusions(run_id)
+        ],
+    )
+    return UniverseSnapshotResponse(**_json_sanitize(response.model_dump(mode="json")))
+
+
+def get_universe_exclusions(run_id: str) -> list[UniverseExclusionItem]:
+    """Return latest universe exclusion rows for one run."""
+    _ensure_run_completed(run_id, allow_artifact_fallback=True)
+    rows = load_latest_universe_exclusions(run_id)
+    return [
+        UniverseExclusionItem(**_json_sanitize(row))
+        for row in rows
+        if isinstance(row, dict)
+    ]

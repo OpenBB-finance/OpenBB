@@ -30,6 +30,7 @@ from openbb_quant_ml.models import (
     OpsStatusResponse,
     PerformanceRegimeResponse,
     PortfolioCurrentResponse,
+    RebalanceHistoryResponse,
     PromotedModelResponse,
     PortfolioPolicyResponse,
     PortfolioExposureResponse,
@@ -49,7 +50,9 @@ from openbb_quant_ml.models import (
     TrainRequest,
     TrainResponse,
     UniverseListResponse,
+    UniverseExclusionsResponse,
     UniverseResolveResponse,
+    UniverseSnapshotResponse,
     UniverseResponse,
     WalkForwardBacktestRequest,
     WalkForwardBacktestStatusResponse,
@@ -78,6 +81,7 @@ from openbb_quant_ml.service import (
     get_performance_regime,
     get_performance_rolling,
     get_portfolio_current,
+    get_rebalance_history,
     get_portfolio_exposure,
     get_portfolio_risk,
     get_prediction_distribution,
@@ -89,6 +93,8 @@ from openbb_quant_ml.service import (
     get_run,
     get_summary,
     get_universe,
+    get_universe_exclusions,
+    get_universe_snapshot,
     preview_execution_orders,
     risk_check_pretrade,
     run_backtest_for_run,
@@ -106,6 +112,7 @@ from openbb_quant_ml.service.universe import (
     list_universe_ids,
     universe_file_exists,
 )
+from openbb_quant_ml.service.universe_policy import get_legacy_universe_meta
 
 router = Router(prefix="", description="ML/DL based Quant Lab backend extension")
 router.include_router(macro_router)
@@ -185,6 +192,7 @@ def universe_resolve(
         count=actual_count,
         minimum_required=minimum_required,
         meets_minimum=meets_minimum,
+        **get_legacy_universe_meta(key),
     )
     if include_symbols:
         response.symbols = symbols
@@ -303,6 +311,17 @@ def portfolio_current(
         raise HTTPException(status_code=404, detail=detail) from exc
 
 
+@router.command(methods=["GET"], path="/portfolio/rebalance/history")
+def portfolio_rebalance_history(
+    run_id: str, model_name: ModelName = "lgbm_ranker"
+) -> RebalanceHistoryResponse:
+    """Return rebalance timeline (added/sold/turnover) for a run/model."""
+    try:
+        return get_rebalance_history(run_id=run_id, model_name=model_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
 @router.command(methods=["GET"], path="/portfolio/policy")
 def portfolio_policy() -> PortfolioPolicyResponse:
     """Return enforced portfolio policy constants."""
@@ -313,6 +332,27 @@ def portfolio_policy() -> PortfolioPolicyResponse:
 def model_promoted(model_name: ModelName = "lgbm_ranker") -> PromotedModelResponse:
     """Return promoted model pointer payload."""
     return get_promoted_model_response(model_name=model_name)
+
+
+@router.command(methods=["GET"], path="/universe/snapshot")
+def universe_snapshot(run_id: str) -> UniverseSnapshotResponse:
+    """Return latest U0/U1/U2 snapshot for a run."""
+    try:
+        return get_universe_snapshot(run_id=run_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.command(methods=["GET"], path="/universe/exclusions")
+def universe_exclusions(run_id: str) -> UniverseExclusionsResponse:
+    """Return latest exclusion rows for a run."""
+    try:
+        return UniverseExclusionsResponse(
+            run_id=run_id,
+            items=get_universe_exclusions(run_id=run_id),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.command(methods=["GET"], path="/feature/importance")

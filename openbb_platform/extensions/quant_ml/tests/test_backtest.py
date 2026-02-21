@@ -71,12 +71,12 @@ def test_backtest_constraints_are_respected():
             symbol: weight for symbol, weight in weights.items() if symbol != "CASH"
         }
         assert all(weight >= -1e-9 for weight in risky_weights.values())
-        assert all(weight <= 0.10 + 1e-6 for weight in risky_weights.values())
+        assert all(weight <= 0.04 + 1e-6 for weight in risky_weights.values())
     assert any(
         period["weights"].get("CASH", 0.0) > 0 for period in result.period_weights
     )
     assert result.cash_weight > 0.0
-    assert result.effective_constraints.get("max_weight") == 0.10
+    assert result.effective_constraints.get("max_weight") == 0.04
 
     assert isinstance(result.consistency_checks.get("valid"), bool)
     assert len(result.cost_breakdown) > 0
@@ -127,7 +127,7 @@ def test_backtest_supports_long_short_mode():
 
     assert len(result.period_weights) > 0
     assert all(
-        abs(weight) <= 0.10 + 1e-6
+        abs(weight) <= 0.04 + 1e-6
         for row in result.period_weights
         for symbol, weight in row["weights"].items()
         if symbol != "CASH"

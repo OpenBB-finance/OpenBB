@@ -1,5 +1,5 @@
 template: diversified_long_only
-single_name_max_abs_weight: 0.10
+single_name_max_abs_weight: 0.04
 small_universe_policy: cash_buffer
 sector_concentration_max: 0.35
 turnover_max: 0.8

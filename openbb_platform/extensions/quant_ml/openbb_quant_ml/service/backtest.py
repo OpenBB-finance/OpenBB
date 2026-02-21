@@ -12,10 +12,13 @@ import yfinance as yf
 from scipy.optimize import minimize
 
 from openbb_quant_ml.models import BacktestConstraints
+from openbb_quant_ml.service.delisting import apply_delisting_returns
+from openbb_quant_ml.service.portfolio_optimizer_v2 import optimize_weights_v2
 from openbb_quant_ml.service.portfolio_policy import (
     apply_effective_max_weight,
     get_portfolio_policy,
 )
+from openbb_quant_ml.service.universe_policy import get_universe_policy
 
 
 @dataclass
@@ -33,6 +36,12 @@ class BacktestResult:
     regime_mode_by_period: list[dict[str, str]]
     effective_constraints: dict[str, float | bool]
     cash_weight: float
+    rebalance_history_summary: list[dict[str, Any]]
+    constraint_violations: list[dict[str, Any]]
+    liquidity_clip_ratio: float
+    risk_contribution_max: float
+    universe_stage_counts: dict[str, int]
+    rebalance_reports: list[dict[str, Any]]
 
 
 def _monthly_rebalance_dates(dates: pd.DatetimeIndex) -> list[pd.Timestamp]:
@@ -351,6 +360,8 @@ def run_backtest(
     benchmark_symbol: str = "SPY",
     portfolio_mode: str = "long_only",
     regime_policy: str = "fixed",
+    rebalance_universe_context: dict[str, dict[str, Any]] | None = None,
+    delisting_events: pd.DataFrame | None = None,
 ) -> BacktestResult:
     """Run monthly-rebalance mean-variance backtest with configurable execution prices."""
     if predictions.empty:
@@ -378,6 +389,10 @@ def run_backtest(
         entry_price=entry_price,
         exit_price=exit_price,
     ).fillna(0.0)
+    returns = apply_delisting_returns(
+        returns,
+        delisting_events if delisting_events is not None else pd.DataFrame(),
+    )
 
     window_mask = (returns.index.date >= start_date) & (returns.index.date <= end_date)
     trade_dates = returns.index[window_mask]
@@ -398,8 +413,15 @@ def run_backtest(
         raise ValueError("No overlapping symbols between predictions and prices.")
 
     policy = get_portfolio_policy()
+    universe_policy = get_universe_policy()
     cash_symbol = str(policy.get("cash_symbol", "CASH")).strip().upper() or "CASH"
-    effective_max_weight = apply_effective_max_weight(constraints.max_weight)
+    policy_max_weight = float(
+        universe_policy.get("portfolio_constraints", {}).get("max_weight_per_stock", 0.04)
+    )
+    effective_max_weight = min(
+        apply_effective_max_weight(constraints.max_weight),
+        policy_max_weight,
+    )
 
     daily_rows: list[dict[str, Any]] = []
     weight_rows: list[dict[str, Any]] = []
@@ -412,6 +434,12 @@ def run_backtest(
     regime_mode_rows: list[dict[str, str]] = []
     regime_frame = _compute_regime_series(close_panel, returns.index, benchmark_symbol)
     latest_cash_weight = 0.0
+    rebalance_history_rows: list[dict[str, Any]] = []
+    constraint_violations: list[dict[str, Any]] = []
+    rebalance_reports: list[dict[str, Any]] = []
+    liquidity_clip_values: list[float] = []
+    risk_contribution_values: list[float] = []
+    universe_stage_counts_latest: dict[str, int] = {}
 
     base_index = 100.0
     equity = base_index
@@ -425,7 +453,10 @@ def run_backtest(
     )
 
     one_way_cost = (float(cost_bps) + float(slippage_bps)) / 10000.0
+    current_cash_weight = 1.0
     for idx, rebalance_date in enumerate(rebalance_dates):
+        rebalance_key = rebalance_date.date().isoformat()
+        context = (rebalance_universe_context or {}).get(rebalance_key, {})
         mu = pred_wide.loc[rebalance_date, symbols].fillna(0.0).values.astype(float)
         hist = returns.loc[:rebalance_date, symbols].tail(constraints.lookback_days)
         cov = hist.cov().fillna(0.0).values
@@ -439,30 +470,214 @@ def run_backtest(
             )
             mode_used = "long_short" if allow_short else "long_only"
 
-        optimized = _optimize_weights(
-            mu,
-            cov,
-            constraints,
-            allow_short=allow_short,
-            max_weight=effective_max_weight,
-        )
-        optimized = np.clip(
-            optimized,
-            -effective_max_weight if allow_short else 0.0,
-            effective_max_weight,
-        )
-        weight_sum = float(np.sum(optimized))
-        cash_weight = 0.0
-        if not allow_short:
-            if weight_sum > 1.0 and weight_sum > 0:
-                optimized = optimized * (1.0 / weight_sum)
-                weight_sum = float(np.sum(optimized))
-            cash_weight = max(0.0, 1.0 - weight_sum)
-            latest_cash_weight = cash_weight
+        binding_constraints: list[str] = []
+        period_violations: list[dict[str, Any]] = []
+        if allow_short:
+            optimized = _optimize_weights(
+                mu,
+                cov,
+                constraints,
+                allow_short=allow_short,
+                max_weight=effective_max_weight,
+            )
+            optimized = np.clip(
+                optimized,
+                -effective_max_weight if allow_short else 0.0,
+                effective_max_weight,
+            )
+            weight_sum = float(np.sum(optimized))
+            cash_weight = 0.0
+            if weight_sum != 1.0:
+                optimized = optimized + ((1.0 - weight_sum) / max(len(optimized), 1))
+                optimized = np.clip(optimized, -effective_max_weight, effective_max_weight)
+            liquidity_clip_values.append(0.0)
+            risk_contribution_values.append(0.0)
+        else:
+            eligible_symbols = set(context.get("u2_symbols", symbols))
+            universe_stage_counts_latest = dict(
+                context.get(
+                    "stage_counts",
+                    universe_stage_counts_latest,
+                )
+            )
+            active_indices = [i for i, symbol in enumerate(symbols) if symbol in eligible_symbols]
+            optimized = np.zeros(len(symbols), dtype=float)
+            if not active_indices:
+                cash_weight = 1.0
+                binding_constraints = ["no_eligible_symbols", "cash_buffer"]
+                liquidity_clip_values.append(1.0)
+                risk_contribution_values.append(0.0)
+                period_violations.append(
+                    {"type": "no_eligible_symbols", "date": rebalance_key}
+                )
+            else:
+                active_symbols = [symbols[i] for i in active_indices]
+                mu_active = mu[active_indices]
+                cov_active = cov[np.ix_(active_indices, active_indices)]
+                metric_rows = context.get("symbol_metrics", {})
+                metadata_active: dict[str, dict[str, Any]] = {}
+                for symbol in active_symbols:
+                    metric_meta = {}
+                    if isinstance(metric_rows, dict):
+                        metric_meta = dict(metric_rows.get(symbol, {}))
+                    if "adv20_usd" not in metric_meta:
+                        symbol_hist = hist[symbol] if symbol in hist.columns else pd.Series(dtype=float)
+                        metric_meta["adv20_usd"] = float(
+                            pd.to_numeric(symbol_hist.tail(20), errors="coerce").mean()
+                        )
+                    metric_meta.setdefault("sector_l1", "other")
+                    metric_meta.setdefault(
+                        "country", "KR" if symbol.endswith(".KS") or symbol.endswith(".KQ") else "US"
+                    )
+                    metadata_active[symbol] = metric_meta
+
+                opt_result = optimize_weights_v2(
+                    mu=mu_active,
+                    cov=cov_active,
+                    symbols=active_symbols,
+                    metadata_by_symbol=metadata_active,
+                    risk_aversion=constraints.risk_aversion,
+                    requested_max_weight=effective_max_weight,
+                    policy=universe_policy,
+                    nav=1.0,
+                )
+                optimized_active = opt_result.weights
+                for local_idx, global_idx in enumerate(active_indices):
+                    optimized[global_idx] = float(optimized_active[local_idx])
+                cash_weight = float(opt_result.cash_weight)
+                latest_cash_weight = cash_weight
+                binding_constraints = list(opt_result.binding_constraints)
+                period_violations = [
+                    {"date": rebalance_key, **violation}
+                    for violation in opt_result.constraint_violations
+                ]
+                liquidity_clip_values.append(float(opt_result.liquidity_clip_ratio))
+                risk_contribution_values.append(float(opt_result.risk_contribution_max))
+                rebalance_reports.append(
+                    {
+                        "date": rebalance_key,
+                        "position_sizing_log": [
+                            {
+                                "symbol": symbol,
+                                "weight": float(weight),
+                                "sector": str(metadata_active.get(symbol, {}).get("sector_l1", "other")),
+                                "country": str(metadata_active.get(symbol, {}).get("country", "US")),
+                            }
+                            for symbol, weight in zip(active_symbols, optimized_active, strict=False)
+                            if float(weight) > 0
+                        ],
+                        "liquidity_constraint_report": [
+                            {
+                                "symbol": symbol,
+                                "adv20_usd": float(
+                                    metadata_active.get(symbol, {}).get("adv20_usd", 0.0)
+                                ),
+                                "weight_cap_adv": float(
+                                    0.05
+                                    * float(metadata_active.get(symbol, {}).get("adv20_usd", 0.0))
+                                ),
+                            }
+                            for symbol in active_symbols
+                        ],
+                        "risk_contribution_report": [
+                            {
+                                "symbol": symbol,
+                                "risk_contribution": float(value),
+                            }
+                            for symbol, value in zip(
+                                active_symbols,
+                                (
+                                    np.zeros(len(active_symbols))
+                                    if len(active_symbols) == 0
+                                    else (
+                                        optimized_active
+                                        * (cov_active @ optimized_active)
+                                        / max(
+                                            float(
+                                                np.sqrt(
+                                                    max(
+                                                        float(
+                                                            optimized_active
+                                                            @ cov_active
+                                                            @ optimized_active
+                                                        ),
+                                                        1e-9,
+                                                    )
+                                                )
+                                            ),
+                                            1e-9,
+                                        )
+                                    )
+                                ),
+                                strict=False,
+                            )
+                        ],
+                        "sector_exposure_report": [
+                            {"sector": sector, "weight": float(weight)}
+                            for sector, weight in opt_result.sector_exposure.items()
+                        ],
+                        "country_exposure_report": [
+                            {"country": country, "weight": float(weight)}
+                            for country, weight in opt_result.country_exposure.items()
+                        ],
+                        "binding_constraints": binding_constraints,
+                    }
+                )
+
+        constraint_violations.extend(period_violations)
         turnover = float(np.abs(optimized - current_weights).sum())
         turnover_values.append(turnover)
         regime_mode_rows.append(
             {"date": rebalance_date.date().isoformat(), "mode": mode_used}
+        )
+
+        prev_map = {
+            symbol: float(weight)
+            for symbol, weight in zip(symbols, current_weights, strict=False)
+            if float(weight) > 0
+        }
+        prev_map[cash_symbol] = float(current_cash_weight)
+        curr_map = {
+            symbol: float(weight)
+            for symbol, weight in zip(symbols, optimized, strict=False)
+            if float(weight) > 0
+        }
+        curr_map[cash_symbol] = float(cash_weight)
+        added = sorted(
+            [symbol for symbol, weight in curr_map.items() if symbol != cash_symbol and weight > 0 and prev_map.get(symbol, 0.0) <= 0]
+        )
+        sold = sorted(
+            [symbol for symbol, weight in prev_map.items() if symbol != cash_symbol and weight > 0 and curr_map.get(symbol, 0.0) <= 0]
+        )
+        deltas = {
+            symbol: float(curr_map.get(symbol, 0.0) - prev_map.get(symbol, 0.0))
+            for symbol in set(prev_map) | set(curr_map)
+            if symbol != cash_symbol
+        }
+        increases = sorted(
+            [item for item in deltas.items() if item[1] > 0],
+            key=lambda item: item[1],
+            reverse=True,
+        )[:5]
+        decreases = sorted(
+            [item for item in deltas.items() if item[1] < 0],
+            key=lambda item: item[1],
+        )[:5]
+        rebalance_history_rows.append(
+            {
+                "date": rebalance_key,
+                "previous_date": weight_rows[-1]["date"] if weight_rows else None,
+                "added": added,
+                "sold": sold,
+                "top_weight_increases": [
+                    {"symbol": symbol, "delta": float(delta)} for symbol, delta in increases
+                ],
+                "top_weight_decreases": [
+                    {"symbol": symbol, "delta": float(delta)} for symbol, delta in decreases
+                ],
+                "turnover": float(turnover),
+                "binding_constraints": binding_constraints,
+            }
         )
 
         next_date = (
@@ -474,6 +689,7 @@ def run_backtest(
         period_dates = returns.index[period_mask]
         if len(period_dates) == 0:
             current_weights = optimized
+            current_cash_weight = cash_weight
             continue
 
         for day_idx, trading_date in enumerate(period_dates):
@@ -523,6 +739,7 @@ def run_backtest(
             }
         )
         current_weights = optimized
+        current_cash_weight = cash_weight
 
     if not strategy_returns:
         raise ValueError("Backtest produced no return observations.")
@@ -563,6 +780,22 @@ def run_backtest(
             "long_only": bool(constraints.long_only),
             "risk_aversion": float(constraints.risk_aversion),
             "lookback_days": float(constraints.lookback_days),
+            "sector_cap": float(
+                universe_policy.get("portfolio_constraints", {}).get("sector_cap", 0.25)
+            ),
+            "country_cap": float(
+                universe_policy.get("portfolio_constraints", {}).get("country_cap", 0.35)
+            ),
         },
         cash_weight=float(latest_cash_weight),
+        rebalance_history_summary=rebalance_history_rows,
+        constraint_violations=constraint_violations,
+        liquidity_clip_ratio=(
+            float(np.mean(liquidity_clip_values)) if liquidity_clip_values else 0.0
+        ),
+        risk_contribution_max=(
+            float(np.max(risk_contribution_values)) if risk_contribution_values else 0.0
+        ),
+        universe_stage_counts=universe_stage_counts_latest,
+        rebalance_reports=rebalance_reports,
     )

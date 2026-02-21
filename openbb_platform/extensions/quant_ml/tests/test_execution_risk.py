@@ -42,7 +42,7 @@ def _build_execution_run(
     if concentrated:
         weights = {"AAA": 0.9, "BBB": 0.1}
     else:
-        weights = {"AAA": 0.1, "BBB": 0.1, "CASH": 0.8}
+        weights = {"AAA": 0.04, "BBB": 0.04, "CASH": 0.92}
 
     backtest_payload = {
         "run_id": run_id,
@@ -63,20 +63,20 @@ def _build_execution_run(
         ],
         "period_weights": [{"date": "2025-02-03", "weights": weights}],
         "constraints": {
-            "max_weight": 0.9 if concentrated else 0.1,
+            "max_weight": 0.9 if concentrated else 0.04,
             "long_only": True,
             "risk_aversion": 3.0,
             "lookback_days": 126,
         },
         "effective_constraints": {
-            "max_weight_requested": 0.9 if concentrated else 0.1,
-            "max_weight_applied": 0.1,
-            "max_weight": 0.1,
+            "max_weight_requested": 0.9 if concentrated else 0.04,
+            "max_weight_applied": 0.04,
+            "max_weight": 0.04,
             "long_only": True,
             "risk_aversion": 3.0,
             "lookback_days": 126.0,
         },
-        "cash_weight": 0.8 if not concentrated else 0.0,
+        "cash_weight": 0.92 if not concentrated else 0.0,
         "cost_bps": 10.0,
     }
     save_json(run_dir / "backtest_lgbm_ranker.json", backtest_payload)
@@ -186,4 +186,4 @@ def test_risk_pretrade_killswitch_blocks_submit(
     limits = ex.get_risk_limits(run_id, "lgbm_ranker")
     assert limits.status == "ok"
     assert limits.kill_switch is True
-    assert limits.limits.get("max_weight") == pytest.approx(0.10)
+    assert limits.limits.get("max_weight") == pytest.approx(0.04)
