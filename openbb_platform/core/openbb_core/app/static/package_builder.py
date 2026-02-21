@@ -1549,12 +1549,25 @@ class MethodDefinition:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "Any"
+        elif return_type is None or return_type is type(None):  # noqa: E721
+            func_returns = "None"
         elif isinstance(return_type, str):
             func_returns = f"ForwardRef('{return_type}')"
         elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
         else:
-            func_returns = return_type.__name__ if return_type else Any  # type: ignore
+            origin = get_origin(return_type)
+            if origin is not None:
+                # Support typing.Union / PEP 604 (A | B) and other generic hints.
+                func_returns = (
+                    str(return_type).replace("typing.", "").replace("NoneType", "None")
+                )
+            else:
+                func_returns = (
+                    return_type.__name__
+                    if hasattr(return_type, "__name__")
+                    else str(return_type).replace("typing.", "")
+                )
 
         return func_returns  # type: ignore
 
