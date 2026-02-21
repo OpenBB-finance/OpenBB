@@ -8,6 +8,8 @@ from typing import Any
 
 import pandas as pd
 
+from openbb_quant_ml.service.exclusions_logger import append_exclusions
+from openbb_quant_ml.service.pricing_vehicle import select_pricing_vehicle
 from openbb_quant_ml.service.security_master import load_security_master
 from openbb_quant_ml.service.storage import get_run_dir, save_json, save_parquet_atomic
 from openbb_quant_ml.service.universe_filters import (
@@ -15,7 +17,6 @@ from openbb_quant_ml.service.universe_filters import (
     apply_u1_filters,
     apply_u2_filters,
     build_symbol_metrics,
-    select_one_pricing_vehicle_per_company,
 )
 from openbb_quant_ml.service.universe_policy import get_universe_policy
 
@@ -73,7 +74,7 @@ def build_universe_snapshot(
         missing_data_policy=missing_data_policy,
         excluded=excluded,
     )
-    u0 = select_one_pricing_vehicle_per_company(u0, as_of_date=as_of_date, excluded=excluded)
+    u0 = select_pricing_vehicle(u0, as_of_date=as_of_date, excluded=excluded)
     u1 = apply_u1_filters(
         u0,
         policy,
@@ -105,6 +106,7 @@ def build_universe_snapshot(
     if excluded_frame.empty:
         excluded_frame = pd.DataFrame(columns=["symbol", "stage", "as_of_date", "company_id", "reasons"])
     _write_frame(snap_dir / "excluded_with_reasons.parquet", excluded_frame)
+    append_exclusions(run_id, as_of_date, excluded)
 
     snapshot_payload = {
         "run_id": run_id,

@@ -79,3 +79,6 @@ risk_constraints:
   max_risk_contribution_per_stock: 0.05
   covariance_lookback_days: 126
   epsilon: 1.0e-9
+
+institutional_mode:
+  delisting_require_event: false

@@ -371,8 +371,9 @@ def run_backtest(
 
     pred = predictions.copy()
     pred["date"] = pd.to_datetime(pred["date"]).dt.tz_localize(None)
+    score_col = "score" if "score" in pred.columns else "predicted_return"
     pred_wide = pred.pivot(
-        index="date", columns="symbol", values="predicted_return"
+        index="date", columns="symbol", values=score_col
     ).sort_index()
 
     close_panel = close_panel.copy()

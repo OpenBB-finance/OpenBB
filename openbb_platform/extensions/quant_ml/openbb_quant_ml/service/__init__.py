@@ -63,6 +63,12 @@ from openbb_quant_ml.service.pipeline import (
     submit_training,
 )
 from openbb_quant_ml.service.runtime_pointer import get_promoted_model_response
+from openbb_quant_ml.service.run_latest import (
+    get_run_latest_constraints,
+    get_run_latest_exposures,
+    get_run_latest_meta,
+    get_run_latest_risk,
+)
 from openbb_quant_ml.service.walkforward_backtest import (
     get_walkforward_backtest_status,
     submit_walkforward_backtest,
@@ -126,4 +132,8 @@ __all__ = [
     "get_copper_gold_preset_response",
     "get_ops_status_response",
     "get_portfolio_policy_response",
+    "get_run_latest_meta",
+    "get_run_latest_risk",
+    "get_run_latest_exposures",
+    "get_run_latest_constraints",
 ]

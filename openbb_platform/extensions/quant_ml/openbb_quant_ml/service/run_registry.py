@@ -14,6 +14,7 @@ from openbb_quant_ml.service.run_id import (
     build_training_run_id,
     normalize_run_id_scheme,
 )
+from openbb_quant_ml.service.run_context import get_run_uid
 from openbb_quant_ml.service.run_index import rebuild_runs_index, upsert_run_index_entry
 from openbb_quant_ml.service.storage import (
     get_run_dir,
@@ -28,6 +29,7 @@ class RunState:
     """Run lifecycle state."""
 
     run_id: str
+    run_uid: str
     status: str
     progress: int
     stage: str
@@ -46,8 +48,11 @@ _LOCK = RLock()
 
 def _state_from_payload(run_id: str, state: dict[str, Any]) -> RunState:
     now = utc_now_iso()
+    run_dir = get_run_dir(run_id)
+    run_uid = str(state.get("run_uid", "")).strip() or get_run_uid(run_dir, run_id)
     return RunState(
         run_id=run_id,
+        run_uid=run_uid,
         status=str(state.get("status", "failed")),
         progress=int(state.get("progress", 0)),
         stage=str(state.get("stage", "")),
@@ -119,8 +124,10 @@ def create_run(
         now = utc_now_iso()
         run_dir = get_run_dir(run_id)
         run_dir.mkdir(parents=True, exist_ok=True)
+        run_uid = get_run_uid(run_dir, run_id)
         state = RunState(
             run_id=run_id,
+            run_uid=run_uid,
             status="queued",
             progress=0,
             stage="queued",

@@ -16,6 +16,10 @@ from openbb_quant_ml.models import (
     WalkForwardBacktestStatusResponse,
     WalkForwardBacktestSubmitResponse,
 )
+from openbb_quant_ml.service.asof_guard import (
+    build_asof_manifest,
+    validate_walkforward_train_windows,
+)
 from openbb_quant_ml.service.backtest import run_backtest
 from openbb_quant_ml.service.constants import WALKFORWARD_JOBS_PATH
 from openbb_quant_ml.service.storage import (
@@ -253,6 +257,14 @@ def _run_walkforward_job(job_id: str, request_payload: dict[str, Any]) -> None:
             end_date=request.end_date,
             min_history_days=request.min_history_days,
         )
+        validate_walkforward_train_windows(train_windows)
+        manifest = build_asof_manifest(
+            rebalance_dates=[
+                pd.Timestamp(row["rebalance_date"]).date() for row in train_windows
+            ],
+            fundamentals_lag_days=60,
+        )
+        save_json(artifact_dir / "asof_inputs_manifest.json", manifest)
         _upsert_job(job_id, {"progress": 65, "train_windows": train_windows})
 
         result = run_backtest(

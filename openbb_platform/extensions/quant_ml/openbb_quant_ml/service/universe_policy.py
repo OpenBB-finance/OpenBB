@@ -84,6 +84,9 @@ DEFAULT_UNIVERSE_POLICY: dict[str, Any] = {
         "covariance_lookback_days": 126,
         "epsilon": 1.0e-9,
     },
+    "institutional_mode": {
+        "delisting_require_event": False,
+    },
 }
 
 UNIVERSE_POLICY_PATH = (

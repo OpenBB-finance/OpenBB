@@ -43,6 +43,8 @@ from openbb_quant_ml.models import (
     RiskLimitsResponse,
     RiskPretradeRequest,
     RiskPretradeResponse,
+    RunLatestConstraintsResponse,
+    RunLatestMetaResponse,
     RollingPerformanceResponse,
     RunStatusResponse,
     SignalRequest,
@@ -92,6 +94,10 @@ from openbb_quant_ml.service import (
     get_risk_limits,
     get_run,
     get_summary,
+    get_run_latest_constraints,
+    get_run_latest_exposures,
+    get_run_latest_meta,
+    get_run_latest_risk,
     get_universe,
     get_universe_exclusions,
     get_universe_snapshot,
@@ -332,6 +338,42 @@ def portfolio_policy() -> PortfolioPolicyResponse:
 def model_promoted(model_name: ModelName = "lgbm_ranker") -> PromotedModelResponse:
     """Return promoted model pointer payload."""
     return get_promoted_model_response(model_name=model_name)
+
+
+@router.command(methods=["GET"], path="/run/latest/meta")
+def run_latest_meta(
+    run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
+) -> RunLatestMetaResponse:
+    """Return latest run metadata alias payload."""
+    return get_run_latest_meta(run_id=run_id, model_name=model_name)
+
+
+@router.command(methods=["GET"], path="/run/latest/risk")
+def run_latest_risk(
+    run_id: str | None = None,
+    model_name: ModelName = "lgbm_ranker",
+    lookback: int = 126,
+) -> PortfolioRiskResponse:
+    """Return latest run portfolio risk alias payload."""
+    return get_run_latest_risk(
+        run_id=run_id, model_name=model_name, lookback=lookback
+    )
+
+
+@router.command(methods=["GET"], path="/run/latest/exposures")
+def run_latest_exposures(
+    run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
+) -> PortfolioExposureResponse:
+    """Return latest run portfolio exposures alias payload."""
+    return get_run_latest_exposures(run_id=run_id, model_name=model_name)
+
+
+@router.command(methods=["GET"], path="/run/latest/constraints")
+def run_latest_constraints(
+    run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
+) -> RunLatestConstraintsResponse:
+    """Return latest run constraint binding summary alias payload."""
+    return get_run_latest_constraints(run_id=run_id, model_name=model_name)
 
 
 @router.command(methods=["GET"], path="/universe/snapshot")

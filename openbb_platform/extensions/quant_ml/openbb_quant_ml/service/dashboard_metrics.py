@@ -1374,6 +1374,7 @@ def get_portfolio_risk(
             vol_ex_ante=vol_ex_ante,
             cvar_95=cvar_95,
             position_risk_contrib_top5=risk_contrib[:5],
+            position_risk_contrib_top10=risk_contrib[:10],
             position_return_contrib_top5=return_contrib_rows[:5],
             worst5_positions=worst_rows[:5],
         )

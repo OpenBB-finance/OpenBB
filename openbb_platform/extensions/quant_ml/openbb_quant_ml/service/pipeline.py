@@ -42,8 +42,23 @@ from openbb_quant_ml.models import (
     TrainResponse,
     UniverseResponse,
 )
+from openbb_quant_ml.service.artifact_store import (
+    ARTIFACT_CONTRACT_VERSION,
+    artifact_completeness,
+    required_artifacts_ready,
+    write_contract_manifest,
+    write_json as write_artifact_json,
+    write_parquet as write_artifact_parquet,
+    write_text as write_artifact_text,
+)
+from openbb_quant_ml.service.asof_guard import build_asof_manifest
 from openbb_quant_ml.service.backtest import run_backtest
+from openbb_quant_ml.service.constraints import (
+    build_constraints_log,
+    summarize_constraint_bindings,
+)
 from openbb_quant_ml.service.delisting import load_delisting_events
+from openbb_quant_ml.service.delisting import validate_delisting_events_required
 from openbb_quant_ml.service.cache_registry import (
     get_data_versions,
     get_feature_versions,
@@ -59,8 +74,11 @@ from openbb_quant_ml.service.data_loader import (
 )
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
 from openbb_quant_ml.service.modeling import train_hybrid_models
+from openbb_quant_ml.service.pnl_attribution import build_pnl_attribution
 from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
 from openbb_quant_ml.service.ranker_modeling import train_ranker_models
+from openbb_quant_ml.service.report_builder import build_report_html
+from openbb_quant_ml.service.run_context import ensure_run_context
 from openbb_quant_ml.service.run_registry import (
     append_log,
     create_run,
@@ -68,6 +86,10 @@ from openbb_quant_ml.service.run_registry import (
     get_run_state_dict,
     initialize_registry,
     update_run,
+)
+from openbb_quant_ml.service.signal_schema import (
+    build_signal_contract,
+    infer_model_version,
 )
 from openbb_quant_ml.service.signals import generate_signals
 from openbb_quant_ml.service.stale_policy import (
@@ -90,6 +112,7 @@ from openbb_quant_ml.service.universe import (
     list_universe_ids,
     load_universe_config,
 )
+from openbb_quant_ml.service.universe_policy import get_universe_policy
 from openbb_quant_ml.service.universe_engine import (
     build_universe_snapshot,
     load_latest_universe_exclusions,
@@ -300,6 +323,10 @@ def _load_predictions(
         if candidate.exists():
             frame = pd.read_parquet(candidate)
             frame["date"] = pd.to_datetime(frame["date"]).dt.tz_localize(None)
+            if "score" not in frame.columns and "predicted_return" in frame.columns:
+                frame["score"] = pd.to_numeric(
+                    frame["predicted_return"], errors="coerce"
+                ).fillna(0.0)
             return frame
     raise ValueError(f"Prediction artifacts not found for model: {model_name}")
 
@@ -376,6 +403,83 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
     if np.isnan(casted) or np.isinf(casted):
         return default
     return casted
+
+
+def _period_weights_to_frame(period_weights: list[dict[str, Any]]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    for row in period_weights:
+        if not isinstance(row, dict):
+            continue
+        as_of = str(row.get("date", "")).strip()
+        weights = row.get("weights", {})
+        if not as_of or not isinstance(weights, dict):
+            continue
+        for symbol, weight in weights.items():
+            rows.append(
+                {
+                    "date": as_of,
+                    "ticker": str(symbol).strip().upper(),
+                    "weight": _safe_float(weight, default=0.0),
+                }
+            )
+    if not rows:
+        return pd.DataFrame(columns=["date", "ticker", "weight"])
+    return pd.DataFrame(rows)
+
+
+def _derive_trade_plan_rows(period_weights: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    previous: dict[str, float] = {}
+    for row in period_weights:
+        if not isinstance(row, dict):
+            continue
+        as_of = str(row.get("date", "")).strip()
+        weights = row.get("weights", {})
+        if not as_of or not isinstance(weights, dict):
+            continue
+        current = {
+            str(symbol).strip().upper(): _safe_float(weight, default=0.0)
+            for symbol, weight in weights.items()
+            if str(symbol).strip()
+        }
+        symbols = sorted(set(previous) | set(current))
+        for symbol in symbols:
+            before = _safe_float(previous.get(symbol, 0.0), default=0.0)
+            after = _safe_float(current.get(symbol, 0.0), default=0.0)
+            delta = after - before
+            if abs(delta) <= 1e-12:
+                continue
+            rows.append(
+                {
+                    "date": as_of,
+                    "ticker": symbol,
+                    "action": "buy" if delta > 0 else "sell",
+                    "weight_before": before,
+                    "weight_after": after,
+                    "weight_delta": delta,
+                }
+            )
+        previous = current
+    return rows
+
+
+def _latest_sector_exposure_frame(
+    rebalance_reports: list[dict[str, Any]],
+) -> pd.DataFrame:
+    if not rebalance_reports:
+        return pd.DataFrame(columns=["sector", "weight"])
+    latest = rebalance_reports[-1]
+    rows = latest.get("sector_exposure_report", []) if isinstance(latest, dict) else []
+    if not isinstance(rows, list):
+        rows = []
+    frame = pd.DataFrame(rows)
+    if frame.empty:
+        return pd.DataFrame(columns=["sector", "weight"])
+    if "sector" not in frame.columns:
+        frame["sector"] = frame.get("category", "other")
+    frame["sector"] = frame["sector"].astype(str)
+    frame["weight"] = pd.to_numeric(frame.get("weight"), errors="coerce").fillna(0.0)
+    return frame[["sector", "weight"]]
 
 
 def _group_ic(frame: pd.DataFrame, score_col: str = "predicted_return") -> float:
@@ -942,11 +1046,29 @@ def submit_training(
 
 def get_run(run_id: str) -> RunStatusResponse:
     """Read current run status."""
+    run_dir = get_run_dir(run_id)
+    run_context = ensure_run_context(run_dir, run_id) if run_dir.exists() else {}
+    contract_manifest = load_json(
+        run_dir / "artifacts" / "artifact_contract.json", default={}
+    )
+    if not isinstance(contract_manifest, dict):
+        contract_manifest = {}
     payload = get_run_state_dict(run_id)
     if payload:
         payload = _recover_stale_running_run(run_id, payload)
         payload = _normalize_run_payload(payload)
         payload = _enrich_run_stale_fields(run_id, payload)
+        payload["run_uid"] = (
+            str(payload.get("run_uid", "")).strip()
+            or str(run_context.get("run_uid", "")).strip()
+            or None
+        )
+        payload["artifact_contract_version"] = str(
+            contract_manifest.get("artifact_contract_version", "") or ""
+        ) or None
+        payload["required_artifacts_ready"] = bool(
+            contract_manifest.get("required_artifacts_ready", False)
+        )
         return RunStatusResponse(**payload)
 
     files = _run_artifact_files(run_id)
@@ -994,6 +1116,7 @@ def get_run(run_id: str) -> RunStatusResponse:
         restored_at = _run_dir_timestamp_iso(run_id)
         return RunStatusResponse(
             run_id=run_id,
+            run_uid=(str(run_context.get("run_uid", "")).strip() or None),
             status=status,  # type: ignore[arg-type]
             progress=progress,
             stage=stage,
@@ -1007,6 +1130,13 @@ def get_run(run_id: str) -> RunStatusResponse:
                 log_message,
             ],
             error=None,
+            artifact_contract_version=str(
+                contract_manifest.get("artifact_contract_version", "") or ""
+            )
+            or None,
+            required_artifacts_ready=bool(
+                contract_manifest.get("required_artifacts_ready", False)
+            ),
         )
 
     raise ValueError(f"Run not found: {run_id}")
@@ -1041,6 +1171,22 @@ def build_signals(request: SignalRequest) -> SignalResponse:
     signal_df.to_parquet(_signals_path(request.run_id, model_name), index=False)
     if model_name == DEFAULT_MODEL:
         signal_df.to_parquet(run_dir / "signals.parquet", index=False)
+    metrics_payload = load_json(_metrics_path(request.run_id, model_name), default={})
+    model_version = infer_model_version(
+        metrics_payload if isinstance(metrics_payload, dict) else {}
+    )
+    feature_versions = get_feature_versions()
+    feature_set_version = str(
+        (feature_versions.get("feature_version") if isinstance(feature_versions, dict) else "")
+        or "unknown"
+    )
+    contract_signals = build_signal_contract(
+        signal_rows=signal_df,
+        as_of_date=as_of_iso,
+        model_version=model_version,
+        feature_set_version=feature_set_version,
+    )
+    write_artifact_parquet(request.run_id, "signals.parquet", contract_signals)
     latest_market_date = None
     market_path = run_dir / "market_data.parquet"
     if market_path.exists():
@@ -1079,6 +1225,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     predictions = _load_predictions(request.run_id, model_name=model_name)
 
     run_dir = get_run_dir(request.run_id)
+    run_context = ensure_run_context(run_dir, request.run_id)
     market_path = run_dir / "market_data.parquet"
     if not market_path.exists():
         raise ValueError("Market data artifact is missing.")
@@ -1103,8 +1250,22 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         else {}
     )
     requested_universe_id = str(request_payload.get("universe_id", "default")).strip() or "default"
+    universe_policy = get_universe_policy()
 
-    pred_wide = predictions.pivot(index="date", columns="symbol", values="predicted_return").sort_index()
+    predictions_for_backtest = predictions.copy()
+    if "score" not in predictions_for_backtest.columns:
+        predictions_for_backtest["score"] = pd.to_numeric(
+            predictions_for_backtest.get("predicted_return"),
+            errors="coerce",
+        ).fillna(0.0)
+    predictions_for_backtest["predicted_return"] = pd.to_numeric(
+        predictions_for_backtest["score"], errors="coerce"
+    ).fillna(0.0)
+
+    pred_wide = (
+        predictions_for_backtest.pivot(index="date", columns="symbol", values="score")
+        .sort_index()
+    )
     window_mask = (close_panel.index.date >= request.start_date) & (
         close_panel.index.date <= request.end_date
     )
@@ -1133,8 +1294,32 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         )
         rebalance_context[str(snapshot["as_of_date"])] = snapshot
 
+    asof_manifest = build_asof_manifest(
+        rebalance_dates=[pd.Timestamp(item).date() for item in rebalance_dates],
+        fundamentals_lag_days=int(
+            universe_policy.get("asof_policy", {}).get("fundamentals_lag_days", 60)
+        ),
+    )
+    save_json(run_dir / "asof_inputs_manifest.json", asof_manifest)
+    write_artifact_json(request.run_id, "asof_inputs_manifest.json", asof_manifest)
+
+    delisting_events = load_delisting_events(run_dir)
+    strict_delisting = bool(
+        universe_policy.get("institutional_mode", {}).get(
+            "delisting_require_event", False
+        )
+    )
+    if strict_delisting:
+        validate_delisting_events_required(
+            close_panel=close_panel,
+            events=delisting_events,
+            end_date=pd.Timestamp(request.end_date),
+        )
+
     result = run_backtest(
-        predictions=predictions[["date", "symbol", "predicted_return"]],
+        predictions=predictions_for_backtest[
+            ["date", "symbol", "predicted_return", "score"]
+        ],
         open_panel=open_panel,
         close_panel=close_panel,
         start_date=request.start_date,
@@ -1147,7 +1332,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         portfolio_mode=request.portfolio_mode,
         regime_policy=request.regime_policy,
         rebalance_universe_context=rebalance_context,
-        delisting_events=load_delisting_events(run_dir),
+        delisting_events=delisting_events,
     )
 
     report_by_date = {
@@ -1182,6 +1367,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
 
     payload = {
         "run_id": request.run_id,
+        "run_uid": str(run_context.get("run_uid", "")).strip() or None,
         "model_name": model_name,
         "start_date": request.start_date.isoformat(),
         "end_date": request.end_date.isoformat(),
@@ -1210,7 +1396,158 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "risk_contribution_max": result.risk_contribution_max,
         "universe_stage_counts": result.universe_stage_counts,
     }
+
+    weights_final_frame = _period_weights_to_frame(result.period_weights)
+    weights_target_frame = weights_final_frame.copy()
+    constraints_log_frame = build_constraints_log(
+        rebalance_reports=result.rebalance_reports,
+        constraint_violations=result.constraint_violations,
+    )
+    constraints_summary = summarize_constraint_bindings(constraints_log_frame)
+    trades_frame = pd.DataFrame(_derive_trade_plan_rows(result.period_weights))
+    if trades_frame.empty:
+        trades_frame = pd.DataFrame(
+            columns=[
+                "date",
+                "ticker",
+                "action",
+                "weight_before",
+                "weight_after",
+                "weight_delta",
+            ]
+        )
+    costs_frame = build_pnl_attribution(result.cost_breakdown)
+    returns_daily_frame = pd.DataFrame(result.equity_curve)
+    if returns_daily_frame.empty:
+        returns_daily_frame = pd.DataFrame(
+            columns=["date", "equity", "daily_return", "gross_return", "trading_cost"]
+        )
+    sector_exposure_frame = _latest_sector_exposure_frame(result.rebalance_reports)
+
+    latest_snapshot = load_latest_universe_snapshot(request.run_id) or {}
+    u2_symbols = latest_snapshot.get("u2_symbols", [])
+    symbol_metrics = latest_snapshot.get("symbol_metrics", {})
+    universe_rows: list[dict[str, Any]] = []
+    if isinstance(u2_symbols, list):
+        for symbol in u2_symbols:
+            key = str(symbol).strip().upper()
+            metrics = symbol_metrics.get(key, {}) if isinstance(symbol_metrics, dict) else {}
+            universe_rows.append(
+                {
+                    "ticker": key,
+                    "sector_l1": str(metrics.get("sector_l1", "other")),
+                    "country": str(metrics.get("country", "US")).upper(),
+                    "adv20_usd": _safe_float(metrics.get("adv20_usd"), default=0.0),
+                }
+            )
+    universe_frame = pd.DataFrame(universe_rows)
+    if universe_frame.empty:
+        universe_frame = pd.DataFrame(
+            columns=["ticker", "sector_l1", "country", "adv20_usd"]
+        )
+    exclusions_path = run_dir / "exclusions.parquet"
+    exclusions_frame = (
+        pd.read_parquet(exclusions_path)
+        if exclusions_path.exists()
+        else pd.DataFrame(
+            columns=[
+                "run_id",
+                "rebalance_date",
+                "ticker",
+                "stage",
+                "reason_code",
+                "company_id",
+                "raw_value",
+            ]
+        )
+    )
+
+    metrics_payload = load_json(_metrics_path(request.run_id, model_name), default={})
+    model_version = infer_model_version(
+        metrics_payload if isinstance(metrics_payload, dict) else {}
+    )
+    feature_versions = get_feature_versions()
+    feature_set_version = str(
+        (feature_versions.get("feature_version") if isinstance(feature_versions, dict) else "")
+        or "unknown"
+    )
+    latest_pred_date = pd.Timestamp(predictions_for_backtest["date"].max()).date().isoformat()
+    signal_rows = predictions_for_backtest[
+        predictions_for_backtest["date"] == predictions_for_backtest["date"].max()
+    ][["symbol", "score"]].copy()
+    signal_rows["predicted_return"] = signal_rows["score"]
+    signal_rows["confidence"] = 0.5
+    signal_rows["z_score"] = 0.0
+    contract_signals = build_signal_contract(
+        signal_rows=signal_rows,
+        as_of_date=latest_pred_date,
+        model_version=model_version,
+        feature_set_version=feature_set_version,
+    )
+
+    write_artifact_parquet(request.run_id, "universe.parquet", universe_frame)
+    write_artifact_parquet(request.run_id, "exclusions.parquet", exclusions_frame)
+    write_artifact_parquet(request.run_id, "signals.parquet", contract_signals)
+    write_artifact_parquet(request.run_id, "weights_target.parquet", weights_target_frame)
+    write_artifact_parquet(request.run_id, "weights_final.parquet", weights_final_frame)
+    write_artifact_parquet(request.run_id, "constraints_log.parquet", constraints_log_frame)
+    write_artifact_parquet(request.run_id, "trades.parquet", trades_frame)
+    write_artifact_parquet(request.run_id, "costs.parquet", costs_frame)
+    write_artifact_parquet(request.run_id, "returns_daily.parquet", returns_daily_frame)
+    write_artifact_parquet(
+        request.run_id,
+        "risk_summary.parquet",
+        pd.DataFrame(
+            [
+                {
+                    "run_id": request.run_id,
+                    "model_name": model_name,
+                    "volatility": _safe_float(
+                        result.metrics.get("volatility"), default=0.0
+                    ),
+                    "max_drawdown": _safe_float(
+                        result.metrics.get("max_drawdown"), default=0.0
+                    ),
+                    "cvar_95": 0.0,
+                    "risk_contribution_max": _safe_float(
+                        result.risk_contribution_max, default=0.0
+                    ),
+                    "invalid_rebalance_count": int(
+                        sum(
+                            1
+                            for item in result.constraint_violations
+                            if str(item.get("type", "")).strip() == "invalid"
+                        )
+                    ),
+                }
+            ]
+        ),
+    )
+    write_artifact_parquet(
+        request.run_id, "exposures_sector.parquet", sector_exposure_frame
+    )
+    write_artifact_text(
+        request.run_id,
+        "report.html",
+        build_report_html(
+            {
+                "run_id": request.run_id,
+                "run_uid": run_context.get("run_uid"),
+                "model_name": model_name,
+                "metrics": result.metrics,
+            }
+        ),
+    )
+    contract_manifest = write_contract_manifest(request.run_id)
+
     payload = _json_sanitize(payload)
+    payload["weights_target_available"] = bool(not weights_target_frame.empty)
+    payload["weights_final_available"] = bool(not weights_final_frame.empty)
+    payload["constraint_binding_summary"] = constraints_summary
+    payload["artifact_contract_version"] = ARTIFACT_CONTRACT_VERSION
+    payload["required_artifacts_ready"] = bool(
+        contract_manifest.get("required_artifacts_ready", False)
+    )
     save_json(_backtest_path(request.run_id, model_name), payload)
     if model_name == DEFAULT_MODEL:
         save_json(run_dir / "backtest.json", payload)

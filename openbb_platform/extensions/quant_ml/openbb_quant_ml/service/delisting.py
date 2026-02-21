@@ -80,3 +80,37 @@ def apply_delisting_returns(
                 value = -1.0
         out.loc[event_date, symbol] = float(value)
     return out
+
+
+def validate_delisting_events_required(
+    *,
+    close_panel: pd.DataFrame,
+    events: pd.DataFrame,
+    end_date: pd.Timestamp,
+    min_missing_days: int = 30,
+) -> None:
+    """Fail when symbols vanish long before end-date without delisting event."""
+    if close_panel.empty:
+        return
+    if not isinstance(events, pd.DataFrame):
+        events = pd.DataFrame()
+    event_symbols = set()
+    if not events.empty and "symbol" in events.columns:
+        event_symbols = {
+            _normalize_symbol(item)
+            for item in events["symbol"].tolist()
+            if _normalize_symbol(item)
+        }
+    for symbol in close_panel.columns:
+        series = close_panel[symbol]
+        valid = series.dropna()
+        if valid.empty:
+            continue
+        last_date = pd.Timestamp(valid.index.max()).tz_localize(None)
+        gap_days = (pd.Timestamp(end_date).tz_localize(None) - last_date).days
+        if gap_days < int(min_missing_days):
+            continue
+        normalized = _normalize_symbol(symbol)
+        if normalized in event_symbols:
+            continue
+        raise ValueError("delisting_event_missing")

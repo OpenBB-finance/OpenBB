@@ -159,6 +159,7 @@ class RunStatusResponse(BaseModel):
     """Run status response."""
 
     run_id: str
+    run_uid: str | None = None
     status: TrainRunStatus
     progress: int = Field(ge=0, le=100)
     stage: str
@@ -170,6 +171,8 @@ class RunStatusResponse(BaseModel):
     stale_reason: str | None = None
     logs_tail: list[str]
     error: str | None = None
+    artifact_contract_version: str | None = None
+    required_artifacts_ready: bool | None = None
 
 
 class SignalRequest(BaseModel):
@@ -337,6 +340,7 @@ class BacktestResponse(BaseModel):
     """Backtest response."""
 
     run_id: str
+    run_uid: str | None = None
     model_name: ModelName = "lgbm_ranker"
     start_date: str
     end_date: str
@@ -360,6 +364,11 @@ class BacktestResponse(BaseModel):
     liquidity_clip_ratio: float = 0.0
     risk_contribution_max: float = 0.0
     universe_stage_counts: dict[str, int] = Field(default_factory=dict)
+    weights_target_available: bool = False
+    weights_final_available: bool = False
+    constraint_binding_summary: list[dict[str, Any]] = Field(default_factory=list)
+    artifact_contract_version: str | None = None
+    required_artifacts_ready: bool = False
 
 
 class WalkForwardBacktestSubmitResponse(BaseModel):
@@ -696,6 +705,9 @@ class PortfolioRiskResponse(BaseModel):
     position_risk_contrib_top5: list[dict[str, float | str]] = Field(
         default_factory=list
     )
+    position_risk_contrib_top10: list[dict[str, float | str]] = Field(
+        default_factory=list
+    )
     position_return_contrib_top5: list[dict[str, float | str]] = Field(
         default_factory=list
     )
@@ -992,3 +1004,48 @@ class UniverseResolveResponse(BaseModel):
     deprecated: bool = False
     replacement_id: str | None = None
     sunset_date: str | None = None
+
+
+class ConstraintBindingItem(BaseModel):
+    """Constraint binding summary row."""
+
+    constraint_type: str
+    binding_count: int = 0
+    binding_ratio: float = 0.0
+
+
+class ArtifactCompletenessItem(BaseModel):
+    """Artifact contract completeness row."""
+
+    artifact: str
+    ready: bool = False
+    path: str | None = None
+
+
+class RunLatestMetaResponse(BaseModel):
+    """Latest run meta alias payload."""
+
+    run_id: str | None = None
+    run_uid: str | None = None
+    model_name: ModelName = "lgbm_ranker"
+    as_of_date: str | None = None
+    status: DashboardPayloadStatus = "ok"
+    artifact_contract_version: str | None = None
+    required_artifacts_ready: bool = False
+    universe_stage_counts: dict[str, int] = Field(default_factory=dict)
+    artifact_completeness: list[ArtifactCompletenessItem] = Field(default_factory=list)
+    message: str | None = None
+
+
+class RunLatestConstraintsResponse(BaseModel):
+    """Latest run constraints alias payload."""
+
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    status: DashboardPayloadStatus = "ok"
+    message: str | None = None
+    items: list[ConstraintBindingItem] = Field(default_factory=list)
+    liquidity_clip_ratio: float = 0.0
+    risk_contribution_max: float = 0.0
+    top_risk_contribution: list[dict[str, float | str]] = Field(default_factory=list)
+    liquidity_adv_top: list[dict[str, float | str]] = Field(default_factory=list)

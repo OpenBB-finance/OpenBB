@@ -71,6 +71,11 @@ def _has_required_artifacts(run_id: str, model_name: ModelName) -> bool:
     run_dir = get_run_dir(run_id)
     if not run_dir.exists():
         return False
+    contract = load_json(
+        run_dir / "artifacts" / "artifact_contract.json", default={}
+    )
+    if isinstance(contract, dict) and bool(contract.get("required_artifacts_ready", False)):
+        return True
     has_predictions = any(
         path.exists() for path in _prediction_paths(run_dir, model_name)
     )
