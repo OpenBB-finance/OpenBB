@@ -1,5 +1,5 @@
 {
-  "_last_updated": "2026-02-20",
+  "_last_updated": "2026-02-21",
   "_sources": {
     "iso_3166": "pycountry library",
     "G7": "https://en.wikipedia.org/wiki/G7",
@@ -64,10 +64,7 @@
       "alpha_2": "AO",
       "alpha_3": "AGO",
       "name": "Angola",
-      "numeric": "024",
-      "groups": [
-        "OPEC"
-      ]
+      "numeric": "024"
     },
     {
       "alpha_2": "AQ",
@@ -144,10 +141,7 @@
       "alpha_2": "BD",
       "alpha_3": "BGD",
       "name": "Bangladesh",
-      "numeric": "050",
-      "groups": [
-        "NATO"
-      ]
+      "numeric": "050"
     },
     {
       "alpha_2": "BE",

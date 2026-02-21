@@ -276,8 +276,10 @@ def scrape_nato() -> set[str]:
     soup = fetch_soup("https://en.wikipedia.org/wiki/Member_states_of_NATO")
     members = set()
 
-    tables = soup.find_all("table", class_="wikitable")
-    for table in tables:
+    for table in soup.find_all("table", class_="wikitable"):
+        prev_header = table.find_previous("h2")
+        if not prev_header or "member" not in prev_header.get_text().lower():
+            continue
         for row in table.find_all("tr"):
             cells = row.find_all("td")
             if not cells:
@@ -410,7 +412,6 @@ def scrape_opec() -> set[str]:
 
     hardcoded = {
         "DZ",
-        "AO",
         "CG",
         "GQ",
         "GA",
