@@ -141,6 +141,10 @@ export interface RunStatusPayload {
   stage: string;
   created_at: string;
   updated_at: string;
+  last_heartbeat_at?: string | null;
+  run_idle_minutes?: number | null;
+  stale_timeout_minutes?: number | null;
+  stale_reason?: string | null;
   logs_tail: string[];
   error?: string | null;
 }
@@ -762,6 +766,9 @@ export interface OpsStatusPayload {
   latest_training_run_id?: string | null;
   latest_daily_infer_date?: string | null;
   walkforward_queue_depth?: number;
+  active_job_locks?: Array<Record<string, unknown>>;
+  lock_health?: Record<string, string>;
+  stale_policy?: Record<string, unknown>;
 }
 
 export interface BackendService {

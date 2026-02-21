@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
+from openbb_quant_ml.jobs.lock import DEFAULT_STALE_LOCK_TTL_SEC, inspect_lock
 from openbb_quant_ml.models import OpsJobStateResponse, OpsStatusResponse
 from openbb_quant_ml.service.cache_registry import (
     get_data_versions,
@@ -16,6 +17,7 @@ from openbb_quant_ml.service.run_index import (
     list_latest_runs_from_index,
     rebuild_runs_index,
 )
+from openbb_quant_ml.service.stale_policy import STALE_TIMEOUT_MINUTES
 from openbb_quant_ml.service.storage import get_run_dir, load_json, read_registry
 
 
@@ -107,6 +109,20 @@ def _walkforward_queue_depth() -> int:
     return depth
 
 
+def _collect_lock_health() -> tuple[list[dict[str, Any]], dict[str, str]]:
+    lock_dir = ARTIFACT_ROOT / ".locks"
+    if not lock_dir.exists():
+        return [], {}
+    rows: list[dict[str, Any]] = []
+    lock_health: dict[str, str] = {}
+    for path in sorted(lock_dir.glob("*.lock")):
+        info = inspect_lock(path, stale_ttl_sec=DEFAULT_STALE_LOCK_TTL_SEC)
+        row = {"lock_name": path.name, "lock_path": str(path), **info}
+        rows.append(row)
+        lock_health[path.name] = str(info.get("health", "unknown"))
+    return rows, lock_health
+
+
 def get_ops_status_response() -> OpsStatusResponse:
     """Return aggregated ops health payload for UI monitoring."""
     jobs_state_path = ARTIFACT_ROOT / "jobs" / "job_state.json"
@@ -146,6 +162,8 @@ def get_ops_status_response() -> OpsStatusResponse:
         status = "insufficient_data"
         message = "Macro subsystem is not fully healthy."
 
+    active_job_locks, lock_health = _collect_lock_health()
+
     return OpsStatusResponse(
         status=status,  # type: ignore[arg-type]
         message=message,
@@ -161,4 +179,10 @@ def get_ops_status_response() -> OpsStatusResponse:
         latest_training_run_id=get_latest_training_run_id_from_index(),
         latest_daily_infer_date=_latest_daily_infer_date(job_state),
         walkforward_queue_depth=_walkforward_queue_depth(),
+        active_job_locks=active_job_locks,
+        lock_health=lock_health,
+        stale_policy={
+            "stale_timeout_minutes": STALE_TIMEOUT_MINUTES,
+            "lock_stale_ttl_sec": DEFAULT_STALE_LOCK_TTL_SEC,
+        },
     )

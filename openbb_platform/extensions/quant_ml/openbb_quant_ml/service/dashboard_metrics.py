@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from pathlib import Path
-import re
 from typing import Any
 
 import numpy as np
@@ -34,6 +34,11 @@ from openbb_quant_ml.service.run_index import (
 )
 from openbb_quant_ml.service.run_registry import append_log, update_run
 from openbb_quant_ml.service.runtime_pointer import get_promoted_model
+from openbb_quant_ml.service.stale_policy import (
+    STALE_TIMEOUT_MINUTES,
+    is_stale,
+    latest_artifact_mtime,
+)
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     load_json,
@@ -48,7 +53,6 @@ from openbb_quant_ml.service.universe import (
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
 ALERTS_FILENAME_PREFIX = "alerts"
-STALE_RUN_MINUTES = 20
 
 BOND_DURATION_MAP: dict[str, float] = {
     "TLT": 17.2,
@@ -258,11 +262,14 @@ def _workflow_state_payload(
     updated_at = str(registry_state.get("updated_at", inferred["updated_at"]))
 
     stale_running = False
-    updated_at_dt = _parse_iso_timestamp(updated_at)
-    if run_status == "running" and updated_at_dt is not None:
-        stale_running = (
-            datetime.now(UTC) - updated_at_dt
-        ).total_seconds() >= STALE_RUN_MINUTES * 60
+    stale_reason: str | None = None
+    if run_status == "running":
+        stale_running, stale_reason, _ = is_stale(
+            updated_at,
+            registry_state.get("last_heartbeat_at"),
+            latest_artifact_mtime(run_dir),
+            timeout_minutes=STALE_TIMEOUT_MINUTES,
+        )
         if stale_running and not any(artifact_flags.values()):
             update_run(
                 run_id,
@@ -270,10 +277,11 @@ def _workflow_state_payload(
                 stage="stale_run_timeout",
                 progress=100,
                 error="stale_run_timeout",
+                stale_reason=stale_reason or "idle_timeout",
             )
             append_log(
                 run_id,
-                f"Run failed automatically after {STALE_RUN_MINUTES} minutes without artifact progress.",
+                f"Run failed automatically after {STALE_TIMEOUT_MINUTES} minutes without heartbeat/artifact progress.",
             )
             run_status = "failed"
             run_stage = "stale_run_timeout"
@@ -1079,7 +1087,7 @@ def get_dashboard_health(
     elif not has_backtest:
         message = "Run backtest first to populate portfolio and risk panels."
     if stale_running and status != "not_found":
-        stall_message = f"Run appears stalled: running state unchanged for >= {STALE_RUN_MINUTES} minutes."
+        stall_message = f"Run appears stalled: no heartbeat/artifact progress for >= {STALE_TIMEOUT_MINUTES} minutes."
         message = f"{message} {stall_message}".strip() if message else stall_message
     if (
         workflow_state.get("run_status") == "running"

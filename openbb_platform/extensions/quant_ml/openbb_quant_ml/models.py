@@ -164,6 +164,10 @@ class RunStatusResponse(BaseModel):
     stage: str
     created_at: str
     updated_at: str
+    last_heartbeat_at: str | None = None
+    run_idle_minutes: float | None = None
+    stale_timeout_minutes: int | None = None
+    stale_reason: str | None = None
     logs_tail: list[str]
     error: str | None = None
 
@@ -890,6 +894,9 @@ class OpsStatusResponse(BaseModel):
     latest_training_run_id: str | None = None
     latest_daily_infer_date: str | None = None
     walkforward_queue_depth: int = 0
+    active_job_locks: list[dict[str, Any]] = Field(default_factory=list)
+    lock_health: dict[str, str] = Field(default_factory=dict)
+    stale_policy: dict[str, Any] = Field(default_factory=dict)
 
 
 class UniverseListItemResponse(BaseModel):

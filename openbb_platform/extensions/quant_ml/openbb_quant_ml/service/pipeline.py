@@ -65,6 +65,11 @@ from openbb_quant_ml.service.run_registry import (
     update_run,
 )
 from openbb_quant_ml.service.signals import generate_signals
+from openbb_quant_ml.service.stale_policy import (
+    STALE_TIMEOUT_MINUTES,
+    is_stale,
+    latest_artifact_mtime,
+)
 from openbb_quant_ml.service.storage import (
     get_run_dir,
     list_run_artifacts,
@@ -85,7 +90,6 @@ SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
 
 _EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="quant-ml")
 _FUTURES: dict[str, Future] = {}
-STALE_RUN_TIMEOUT_MINUTES = 15
 _STAGE_SAFE_PATTERN = re.compile(r"^[A-Za-z0-9_.:/ -]+$")
 _STATUS_ALIASES: dict[str, str] = {
     "queued": "queued",
@@ -161,30 +165,44 @@ def _run_dir_timestamp_iso(run_id: str) -> str:
     return ts.isoformat()
 
 
-def _parse_iso_timestamp(value: str | None) -> datetime | None:
-    if not value:
-        return None
-    try:
-        normalized = value.replace("Z", "+00:00")
-        parsed = datetime.fromisoformat(normalized)
-        if parsed.tzinfo is None:
-            return parsed.replace(tzinfo=UTC)
-        return parsed.astimezone(UTC)
-    except ValueError:
-        return None
+def _run_stale_meta(run_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    artifact_mtime = latest_artifact_mtime(get_run_dir(run_id))
+    stale, stale_reason, idle_minutes = is_stale(
+        payload.get("updated_at"),
+        payload.get("last_heartbeat_at"),
+        artifact_mtime,
+        timeout_minutes=STALE_TIMEOUT_MINUTES,
+    )
+    return {
+        "stale": stale,
+        "stale_reason": stale_reason,
+        "idle_minutes": idle_minutes,
+        "artifact_mtime": (
+            artifact_mtime.replace(microsecond=0).isoformat()
+            if artifact_mtime is not None
+            else None
+        ),
+    }
+
+
+def _enrich_run_stale_fields(run_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    enriched = dict(payload)
+    stale_meta = _run_stale_meta(run_id, enriched)
+    enriched["run_idle_minutes"] = stale_meta["idle_minutes"]
+    enriched["stale_timeout_minutes"] = STALE_TIMEOUT_MINUTES
+    if str(enriched.get("status", "")).lower() == "running":
+        enriched["stale_reason"] = stale_meta["stale_reason"]
+    return enriched
 
 
 def _recover_stale_running_run(run_id: str, payload: dict[str, Any]) -> dict[str, Any]:
     if payload.get("status") != "running":
-        return payload
-    updated_at = _parse_iso_timestamp(str(payload.get("updated_at", "")))
-    if updated_at is None:
-        return payload
-    age_minutes = (datetime.now(UTC) - updated_at).total_seconds() / 60.0
-    if age_minutes < STALE_RUN_TIMEOUT_MINUTES:
-        return payload
+        return _enrich_run_stale_fields(run_id, payload)
+    stale_meta = _run_stale_meta(run_id, payload)
+    if not stale_meta["stale"]:
+        return _enrich_run_stale_fields(run_id, payload)
     if _run_has_completion_artifacts(run_id):
-        return payload
+        return _enrich_run_stale_fields(run_id, payload)
 
     update_run(
         run_id,
@@ -192,13 +210,15 @@ def _recover_stale_running_run(run_id: str, payload: dict[str, Any]) -> dict[str
         stage="stale_run_timeout",
         progress=100,
         error="stale_run_timeout",
+        stale_reason=str(stale_meta["stale_reason"] or "idle_timeout"),
     )
     append_log(
         run_id,
-        f"Run failed automatically after {STALE_RUN_TIMEOUT_MINUTES} minutes without artifact progress.",
+        f"Run failed automatically after {STALE_TIMEOUT_MINUTES} minutes without heartbeat/artifact progress.",
     )
     refreshed = get_run_state_dict(run_id)
-    return refreshed if refreshed else payload
+    out = refreshed if refreshed else payload
+    return _enrich_run_stale_fields(run_id, out)
 
 
 def _normalize_run_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -914,6 +934,7 @@ def get_run(run_id: str) -> RunStatusResponse:
     if payload:
         payload = _recover_stale_running_run(run_id, payload)
         payload = _normalize_run_payload(payload)
+        payload = _enrich_run_stale_fields(run_id, payload)
         return RunStatusResponse(**payload)
 
     files = _run_artifact_files(run_id)
@@ -966,6 +987,10 @@ def get_run(run_id: str) -> RunStatusResponse:
             stage=stage,
             created_at=restored_at,
             updated_at=restored_at,
+            last_heartbeat_at=restored_at,
+            run_idle_minutes=0.0,
+            stale_timeout_minutes=STALE_TIMEOUT_MINUTES,
+            stale_reason=None,
             logs_tail=[
                 log_message,
             ],
