@@ -6,11 +6,13 @@ import { ExplainabilityCard } from "../components/quant/ExplainabilityCard";
 import { MetricsCards } from "../components/quant/MetricsCards";
 import { PanelCard } from "../components/quant/PanelCard";
 import { PortfolioRationaleCard } from "../components/quant/PortfolioRationaleCard";
+import { RebalanceTimelineCard } from "../components/quant/RebalanceTimelineCard";
 import { RunStatusCard } from "../components/quant/RunStatusCard";
 import { SignalsTable } from "../components/quant/SignalsTable";
 import {
   createSignals,
   fetchArtifactSummary,
+  fetchRebalanceHistory,
   fetchModelIc,
   fetchPromotedModel,
   fetchModelRegime,
@@ -40,6 +42,7 @@ import type {
   ModelShapPayload,
   PortfolioPolicyPayload,
   PromotedModelPayload,
+  RebalanceHistoryItem,
   RankerConfigInput,
   PortfolioCurrentPayload,
   RunStatusPayload,
@@ -54,14 +57,7 @@ import type {
 type UniverseProfileId = "all" | "aggressive" | "defensive" | "custom";
 type UniverseSetId =
   | "default"
-  | "all_in_one"
-  | "kospi200"
-  | "kosdaq100"
-  | "sp500"
-  | "nasdaq100"
-  | "sox"
-  | "dow30"
-  | "russell1000";
+  | "global_core_equity";
 
 interface UniverseProfile {
   id: Exclude<UniverseProfileId, "custom">;
@@ -101,14 +97,11 @@ const PROFILE_LIST: UniverseProfile[] = [
 
 const UNIVERSE_SET_OPTIONS_DEFAULT: UniverseSetOption[] = [
   { id: "default", label: "Default (manual symbols)" },
-  { id: "all_in_one", label: "All-in-One (KR/US Stocks + Bond/Commodity/FX ETFs)", minimumRequired: 1200 },
-  { id: "kospi200", label: "KOSPI 200", minimumRequired: 180 },
-  { id: "kosdaq100", label: "KOSDAQ 100", minimumRequired: 90 },
-  { id: "sp500", label: "S&P 500", minimumRequired: 450 },
-  { id: "nasdaq100", label: "NASDAQ 100", minimumRequired: 95 },
-  { id: "sox", label: "SOX", minimumRequired: 25 },
-  { id: "dow30", label: "DOW 30", minimumRequired: 25 },
-  { id: "russell1000", label: "Russell 1000", minimumRequired: 900 },
+  {
+    id: "global_core_equity",
+    label: "Global Core Equity (U0/U1/U2)",
+    minimumRequired: 1200,
+  },
 ];
 
 function isUniverseSetId(value: string): value is UniverseSetId {
@@ -312,6 +305,7 @@ export default function QuantPage() {
   const [backtest, setBacktest] = useState<BacktestResponsePayload | null>(null);
   const [summary, setSummary] = useState<ArtifactSummaryPayload | null>(null);
   const [portfolioCurrent, setPortfolioCurrent] = useState<PortfolioCurrentPayload | null>(null);
+  const [rebalanceHistory, setRebalanceHistory] = useState<RebalanceHistoryItem[]>([]);
   const [modelIcPayload, setModelIcPayload] = useState<ModelICPayload | null>(null);
   const [modelRegimePayload, setModelRegimePayload] = useState<ModelRegimePayload | null>(null);
   const [modelShapPayload, setModelShapPayload] = useState<ModelShapPayload | null>(null);
@@ -328,7 +322,10 @@ export default function QuantPage() {
   const [isSubmittingBacktest, setIsSubmittingBacktest] = useState(false);
   const [isSubmittingWalkforward, setIsSubmittingWalkforward] = useState(false);
   const [isLoadingPortfolio, setIsLoadingPortfolio] = useState(false);
+  const [isLoadingRebalanceHistory, setIsLoadingRebalanceHistory] = useState(false);
   const [portfolioError, setPortfolioError] = useState<string | null>(null);
+  const [rebalanceHistoryError, setRebalanceHistoryError] = useState<string | null>(null);
+  const [showPortfolioTimeline, setShowPortfolioTimeline] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isUniverseSetMode = selectedUniverseSet !== "default";
@@ -513,6 +510,8 @@ export default function QuantPage() {
         setActiveTrainingRunId(null);
         setSignals(null);
         setBacktest(null);
+        setRebalanceHistory([]);
+        setRebalanceHistoryError(null);
         setSummary(null);
         setPortfolioCurrent(null);
         setErrorMessage(error instanceof Error ? error.message : "Failed to load run by ID.");
@@ -702,6 +701,27 @@ export default function QuantPage() {
     [backend, markArtifactReady, patchSession, runId, selectedModel],
   );
 
+  const loadRebalanceHistory = useCallback(
+    async (options?: { useCache?: boolean }) => {
+      if (!backend?.connected || !runId) {
+        return;
+      }
+      const useCache = options?.useCache ?? false;
+      setIsLoadingRebalanceHistory(true);
+      setRebalanceHistoryError(null);
+      try {
+        const response = await fetchRebalanceHistory(backend.baseUrl, runId, selectedModel, useCache);
+        setRebalanceHistory(response.items ?? []);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to load rebalance history.";
+        setRebalanceHistoryError(message);
+      } finally {
+        setIsLoadingRebalanceHistory(false);
+      }
+    },
+    [backend, runId, selectedModel],
+  );
+
   useEffect(() => {
     if (!backend?.connected || !runId) {
       return;
@@ -716,8 +736,9 @@ export default function QuantPage() {
         // summary is optional for model-switching UX.
       }
       await loadPortfolioCurrent({ suppressNotReady: true, useCache: true });
+      await loadRebalanceHistory({ useCache: true });
     })();
-  }, [backend, loadPortfolioCurrent, markArtifactReady, runId, selectedModel]);
+  }, [backend, loadPortfolioCurrent, loadRebalanceHistory, markArtifactReady, runId, selectedModel]);
 
   useEffect(() => {
     if (!backend?.connected || !runId || runStatus?.status !== "completed") {
@@ -794,6 +815,8 @@ export default function QuantPage() {
     setRunStatus(null);
     setSignals(null);
     setBacktest(null);
+    setRebalanceHistory([]);
+    setRebalanceHistoryError(null);
     setSummary(null);
     setPortfolioCurrent(null);
     setPortfolioError(null);
@@ -952,6 +975,8 @@ export default function QuantPage() {
         mu_mapping: "quantile_mean_return",
       });
       setBacktest(response);
+      setRebalanceHistory(response.rebalance_history_summary ?? []);
+      setRebalanceHistoryError(null);
       markArtifactReady("backtest", true);
       patchSession({
         data_timestamp: response.end_date,
@@ -964,6 +989,9 @@ export default function QuantPage() {
       const latestSummary = await fetchArtifactSummary(backend.baseUrl, runId, selectedModel);
       setSummary(latestSummary);
       await loadPortfolioCurrent({ suppressNotReady: false, useCache: false });
+      if (!response.rebalance_history_summary || response.rebalance_history_summary.length === 0) {
+        await loadRebalanceHistory({ useCache: false });
+      }
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Failed to run backtest.");
     } finally {
@@ -974,6 +1002,7 @@ export default function QuantPage() {
     dateEnd,
     dateStart,
     loadPortfolioCurrent,
+    loadRebalanceHistory,
     markArtifactReady,
     patchSession,
     portfolioPolicy.single_name_max_abs_weight,
@@ -1378,6 +1407,14 @@ export default function QuantPage() {
                     Walk-forward: {walkforwardStatus.status} ({walkforwardStatus.progress}%)
                   </p>
                 ) : null}
+                <label className="mt-2 inline-flex items-center gap-2 body-xxs-regular text-theme-muted">
+                  <input
+                    type="checkbox"
+                    checked={showPortfolioTimeline}
+                    onChange={(event) => setShowPortfolioTimeline(event.target.checked)}
+                  />
+                  Portfolio Timeline
+                </label>
               </div>
             </div>
           </PanelCard>
@@ -1437,6 +1474,16 @@ export default function QuantPage() {
               void loadPortfolioCurrent({ suppressNotReady: false, useCache: false });
             }}
           />
+          {showPortfolioTimeline ? (
+            <RebalanceTimelineCard
+              history={rebalanceHistory}
+              isLoading={isLoadingRebalanceHistory}
+              errorMessage={rebalanceHistoryError}
+              onRetry={() => {
+                void loadRebalanceHistory({ useCache: false });
+              }}
+            />
+          ) : null}
           <EquityCurveChart
             points={backtest?.equity_curve ?? []}
             benchmarkPoints={backtest?.benchmark_curve ?? []}

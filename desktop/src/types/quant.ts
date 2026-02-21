@@ -41,6 +41,9 @@ export interface UniverseResolvePayload {
   minimum_required?: number;
   meets_minimum?: boolean;
   symbols?: string[] | null;
+  deprecated?: boolean;
+  replacement_id?: string | null;
+  sunset_date?: string | null;
 }
 
 export interface DateRangeInput {
@@ -237,6 +240,22 @@ export interface PeriodWeightsPoint {
   weights: Record<string, number>;
 }
 
+export interface WeightDeltaItem {
+  symbol: string;
+  delta: number;
+}
+
+export interface RebalanceHistoryItem {
+  date: string;
+  previous_date?: string | null;
+  added: string[];
+  sold: string[];
+  top_weight_increases: WeightDeltaItem[];
+  top_weight_decreases: WeightDeltaItem[];
+  turnover: number;
+  binding_constraints: string[];
+}
+
 export interface BacktestResponsePayload {
   run_id: string;
   model_name: ModelName;
@@ -250,6 +269,11 @@ export interface BacktestResponsePayload {
   period_weights: PeriodWeightsPoint[];
   effective_constraints?: Record<string, number | boolean>;
   cash_weight?: number;
+  rebalance_history_summary?: RebalanceHistoryItem[];
+  constraint_violations?: Array<Record<string, unknown>>;
+  liquidity_clip_ratio?: number;
+  risk_contribution_max?: number;
+  universe_stage_counts?: Record<string, number>;
 }
 
 export interface WalkForwardBacktestSubmitPayload {
@@ -349,6 +373,38 @@ export interface PortfolioCurrentPayload {
   asset_class_weights: AssetClassWeightItem[];
   asset_class_weights_l1?: AssetClassWeightItem[];
   rationale: PortfolioRationalePayload;
+  last_rebalance_trades?: RebalanceHistoryItem | null;
+  last_rebalance_turnover?: number;
+}
+
+export interface RebalanceHistoryPayload {
+  run_id: string;
+  model_name: ModelName;
+  items: RebalanceHistoryItem[];
+}
+
+export interface UniverseExclusionItemPayload {
+  symbol: string;
+  stage: "u0" | "u1" | "u2";
+  reasons: string[];
+  as_of_date?: string | null;
+  company_id?: string | null;
+}
+
+export interface UniverseSnapshotPayload {
+  run_id: string;
+  as_of_date: string;
+  universe_id: string;
+  stage_counts: Record<string, number>;
+  u0_symbols: string[];
+  u1_symbols: string[];
+  u2_symbols: string[];
+  excluded: UniverseExclusionItemPayload[];
+}
+
+export interface UniverseExclusionsPayload {
+  run_id: string;
+  items: UniverseExclusionItemPayload[];
 }
 
 export interface PortfolioPolicyPayload {

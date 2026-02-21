@@ -20,6 +20,7 @@ import type {
   OpsStatusPayload,
   PerformanceRegimePayload,
   PortfolioPolicyPayload,
+  RebalanceHistoryPayload,
   PromotedModelPayload,
   ExecutionOrderPreviewRequestPayload,
   ExecutionPreviewPayload,
@@ -47,7 +48,9 @@ import type {
   TrainResponsePayload,
   UniverseResponse,
   UniverseListPayload,
+  UniverseExclusionsPayload,
   UniverseResolvePayload,
+  UniverseSnapshotPayload,
 } from "../types/quant";
 
 const QUANT_PREFIX = "/api/v1/quant_ml";
@@ -112,11 +115,13 @@ function ttlForMode(mode: DashboardMode): number {
 export function invalidateQuantCaches(baseUrl: string, runId?: string, modelName?: ModelName): void {
   clearCachePrefix("dashboard-");
   clearCachePrefix("portfolio-current:");
+  clearCachePrefix("portfolio-rebalance-history:");
   clearCachePrefix("predictions-latest:");
   clearCachePrefix("model-performance:");
 
   if (runId && modelName) {
     clearCachePrefix(`portfolio-current:${baseUrl}:${runId}:${modelName}`);
+    clearCachePrefix(`portfolio-rebalance-history:${baseUrl}:${runId}:${modelName}`);
     clearCachePrefix(`predictions-latest:${baseUrl}:${runId}:${modelName}`);
     clearCachePrefix(`model-performance:${baseUrl}:${runId}`);
   }
@@ -332,8 +337,44 @@ export function fetchPortfolioCurrent(
   );
 }
 
+export function fetchRebalanceHistory(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+  useCache = false,
+): Promise<RebalanceHistoryPayload> {
+  const query = new URLSearchParams({
+    run_id: runId,
+    model_name: modelName,
+  });
+  const path = `${QUANT_PREFIX}/portfolio/rebalance/history?${query.toString()}`;
+  if (!useCache) {
+    return requestJson<RebalanceHistoryPayload>(baseUrl, path, { method: "GET" });
+  }
+  return requestJsonCached<RebalanceHistoryPayload>(
+    `portfolio-rebalance-history:${baseUrl}:${runId}:${modelName}`,
+    baseUrl,
+    path,
+    { method: "GET" },
+  );
+}
+
 export function fetchPortfolioPolicy(baseUrl: string): Promise<PortfolioPolicyPayload> {
   return requestJson<PortfolioPolicyPayload>(baseUrl, `${QUANT_PREFIX}/portfolio/policy`, { method: "GET" });
+}
+
+export function fetchUniverseSnapshot(baseUrl: string, runId: string): Promise<UniverseSnapshotPayload> {
+  const query = new URLSearchParams({ run_id: runId });
+  return requestJson<UniverseSnapshotPayload>(baseUrl, `${QUANT_PREFIX}/universe/snapshot?${query.toString()}`, {
+    method: "GET",
+  });
+}
+
+export function fetchUniverseExclusions(baseUrl: string, runId: string): Promise<UniverseExclusionsPayload> {
+  const query = new URLSearchParams({ run_id: runId });
+  return requestJson<UniverseExclusionsPayload>(baseUrl, `${QUANT_PREFIX}/universe/exclusions?${query.toString()}`, {
+    method: "GET",
+  });
 }
 
 export function fetchFeatureImportance(

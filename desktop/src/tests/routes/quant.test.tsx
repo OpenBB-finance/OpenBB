@@ -66,14 +66,20 @@ describe("Quant Route", () => {
         return mockJsonResponse({
           universes: [
             { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
-            { id: "sp500", has_file: true, path: "/tmp/sp500.csv", count_hint: 503, minimum_required: 450 },
+            {
+              id: "global_core_equity",
+              has_file: true,
+              path: "/tmp/all_in_one.csv",
+              count_hint: 1300,
+              minimum_required: 1200,
+            },
           ],
         });
       }
       if (url.endsWith("/api/v1/quant_ml/portfolio/policy")) {
         return mockJsonResponse({
           template: "diversified_long_only",
-          single_name_max_abs_weight: 0.1,
+          single_name_max_abs_weight: 0.04,
           small_universe_policy: "cash_buffer",
           sector_concentration_max: 0.35,
           turnover_max: 0.8,
@@ -96,10 +102,10 @@ describe("Quant Route", () => {
       }
       if (url.includes("/api/v1/quant_ml/universe/resolve")) {
         return mockJsonResponse({
-          universe_id: "sp500",
+          universe_id: "global_core_equity",
           mode: "train",
-          count: 503,
-          minimum_required: 450,
+          count: 1300,
+          minimum_required: 1200,
           meets_minimum: true,
         });
       }
@@ -129,7 +135,7 @@ describe("Quant Route", () => {
           equity_curve: [{ date: "2026-02-13", equity: 100, daily_return: 0 }],
           benchmark_curve: [{ date: "2026-02-13", benchmark: 100 }],
           period_weights: [{ date: "2026-02-13", weights: { "005930.KS": 0.1, "CASH": 0.9 } }],
-          effective_constraints: { max_weight: 0.1 },
+          effective_constraints: { max_weight: 0.04 },
           cash_weight: 0.9,
         });
       }
@@ -207,12 +213,31 @@ describe("Quant Route", () => {
             summary_lines: ["line-1", "line-2", "line-3"],
             constraints_applied: {
               max_weight: 0.1,
+              max_weight_applied: 0.04,
               long_only: true,
               risk_aversion: 3,
               lookback_days: 126,
               cost_bps: 10,
             },
           },
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/portfolio/rebalance/history")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          items: [
+            {
+              date: "2026-01-31",
+              previous_date: "2025-12-31",
+              added: ["005930.KS"],
+              sold: ["AAPL"],
+              top_weight_increases: [{ symbol: "005930.KS", delta: 0.03 }],
+              top_weight_decreases: [{ symbol: "AAPL", delta: -0.02 }],
+              turnover: 0.12,
+              binding_constraints: ["single_name_cap"],
+            },
+          ],
         });
       }
       if (url.includes("/api/v1/quant_ml/model/ic")) {
@@ -262,6 +287,28 @@ describe("Quant Route", () => {
     });
   });
 
+  test("renders portfolio timeline from rebalance history endpoint", async () => {
+    await act(async () => {
+      render(<QuantComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Load Run/i })).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Run ID/i), { target: { value: "run-1" } });
+      fireEvent.click(screen.getByRole("button", { name: /Load Run/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Portfolio Timeline" })).toBeInTheDocument();
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/run-1"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/portfolio/rebalance/history"))).toBe(true);
+    });
+  });
+
   test("starts training workflow", async () => {
     await act(async () => {
       render(<QuantComponent />);
@@ -304,12 +351,12 @@ describe("Quant Route", () => {
 
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/Universe Set/i), {
-        target: { value: "sp500" },
+        target: { value: "global_core_equity" },
       });
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Resolved 503 symbols/i)).toBeInTheDocument();
+      expect(screen.getByText(/Resolved 1300 symbols/i)).toBeInTheDocument();
     });
 
     await act(async () => {
@@ -326,7 +373,7 @@ describe("Quant Route", () => {
       .mock.calls.find((call) => String(call[0]).endsWith("/api/v1/quant_ml/train"));
     expect(trainCall).toBeDefined();
     const trainBody = JSON.parse(String((trainCall?.[1] as RequestInit | undefined)?.body ?? "{}"));
-    expect(trainBody.universe_id).toBe("sp500");
+    expect(trainBody.universe_id).toBe("global_core_equity");
     expect(trainBody.symbols).toBeUndefined();
   });
 
@@ -350,7 +397,13 @@ describe("Quant Route", () => {
         return mockJsonResponse({
           universes: [
             { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
-            { id: "sp500", has_file: true, path: "/tmp/sp500.csv", count_hint: 2, minimum_required: 450 },
+            {
+              id: "global_core_equity",
+              has_file: true,
+              path: "/tmp/all_in_one.csv",
+              count_hint: 2,
+              minimum_required: 1200,
+            },
           ],
         });
       }
@@ -358,7 +411,7 @@ describe("Quant Route", () => {
         return mockJsonResponse(
           {
             detail:
-              "invalid_or_undersized_universe_id: sp500; actual_count: 2; minimum_required: 450; hint: run refresh_universes --all --no-validate",
+              "invalid_or_undersized_universe_id: global_core_equity; actual_count: 2; minimum_required: 1200; hint: run refresh_universes --all --no-validate",
           },
           false,
           400,
@@ -385,7 +438,7 @@ describe("Quant Route", () => {
 
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/Universe Set/i), {
-        target: { value: "sp500" },
+        target: { value: "global_core_equity" },
       });
     });
 
@@ -422,13 +475,13 @@ describe("Quant Route", () => {
     });
   });
 
-  test("uses 10% hard cap in backtest request and shows policy badge", async () => {
+  test("uses 4% hard cap in backtest request and shows policy badge", async () => {
     await act(async () => {
       render(<QuantComponent />);
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Single-name cap 10% \(Hard\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Single-name cap 4% \(Hard\)/i)).toBeInTheDocument();
       expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
     });
 
@@ -455,7 +508,7 @@ describe("Quant Route", () => {
       .mock.calls.find((call) => String(call[0]).endsWith("/api/v1/quant_ml/backtest"));
     expect(backtestCall).toBeDefined();
     const backtestBody = JSON.parse(String((backtestCall?.[1] as RequestInit | undefined)?.body ?? "{}"));
-    expect(backtestBody.constraints.max_weight).toBe(0.1);
+    expect(backtestBody.constraints.max_weight).toBe(0.04);
   });
 
   test("runs walk-forward backtest from dedicated button", async () => {
