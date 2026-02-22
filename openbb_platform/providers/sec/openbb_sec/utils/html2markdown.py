@@ -319,6 +319,10 @@ def _is_continuation_table(table, prev_table=None):
 
     Returns True if the table's first non-empty row is just a year like "2024" or "2023"
     AND the column count matches the previous table (if provided).
+
+    Also returns True for "headerless continuations": tables that have no header
+    rows (no years), start directly with data rows (containing dollar/numeric values),
+    have the same expanded column count as prev_table, and are immediate DOM siblings.
     """
     rows = table.find_all("tr")
     is_year_only_start = False
@@ -338,18 +342,155 @@ def _is_continuation_table(table, prev_table=None):
         # If has multiple cells but first is a year and rest are empty/whitespace
         break
 
-    if not is_year_only_start:
+    if is_year_only_start:
+        # Original year-only continuation check
+        if prev_table is not None:
+            prev_cols = _count_data_columns(prev_table)
+            this_cols = _count_data_columns(table)
+            if prev_cols > 0 and this_cols > 0 and prev_cols != this_cols:
+                return False
+        return True
+
+    # ── Headerless continuation detection ──────────────────────────────
+    # A table that has NO header rows but matching column structure is
+    # likely a page-break continuation of the previous table.
+    if prev_table is None:
         return False
 
-    # If we have a previous table, check column counts match
-    if prev_table is not None:
-        prev_cols = _count_data_columns(prev_table)
-        this_cols = _count_data_columns(table)
-        # Only merge if column counts match (or can't determine)
-        if prev_cols > 0 and this_cols > 0 and prev_cols != this_cols:
-            return False
+    # 1. Check that they are immediate DOM siblings (no significant content between)
+    if not _are_immediate_sibling_tables(prev_table, table):
+        return False
 
-    return True
+    # 2. Must have matching expanded column counts
+    prev_width = _expanded_col_count(prev_table)
+    this_width = _expanded_col_count(table)
+    if prev_width == 0 or this_width == 0 or prev_width != this_width:
+        return False
+
+    # 3. Must have NO header row (no years or period phrases in the first
+    #    non-empty row that would indicate an independent table)
+    for row in rows[:3]:
+        cells = row.find_all(["td", "th"])
+        non_empty = []
+        for cell in cells:
+            text = cell.get_text().replace("\u200b", "").replace("\xa0", " ").strip()
+            if text:
+                non_empty.append(text)
+        if not non_empty:
+            continue
+        # If ANY cell is a year or period phrase, it has its own header
+        for t in non_empty:
+            if re.match(r"^(19|20)\d{2}$", t):
+                return False
+            if re.search(r"(months?\s+ended|year\s+ended|quarter\s+ended)", t, re.I):
+                return False
+        break
+
+    # 4. At least one of the first several rows must look like a data row
+    #    (contains a dollar sign, or 2+ numeric/percentage cells).
+    #    This allows section label rows (e.g., "Investment banking fees")
+    #    to precede the actual data without blocking detection,
+    #    while avoiding false merges on TOC tables (single page-number cells).
+    for row in rows[:10]:
+        cells = row.find_all(["td", "th"])
+        texts = []
+        for cell in cells:
+            text = cell.get_text().replace("\u200b", "").replace("\xa0", " ").strip()
+            if text:
+                texts.append(text)
+        if not texts:
+            continue
+        has_dollar = any("$" in t for t in texts)
+        if has_dollar:
+            return True
+        numeric_count = sum(
+            1
+            for t in texts
+            if t not in ("—", "-", "–")
+            and re.match(r"^[\$\(\)]?\s*[\d,]+\.?\d*\s*[\)\%]?$", t)
+        )
+        if numeric_count >= 2:
+            return True
+
+    return False
+
+
+def _are_immediate_sibling_tables(table_a, table_b):
+    """Check if two tables are nearby in the DOM with no significant content between.
+
+    Tables may be in different wrapper divs (e.g. page-break divs) — walk
+    upward to find the containers, then check siblings between them.
+    """
+    # Simple case: same parent
+    if table_a.parent is table_b.parent:
+        node = table_a.next_sibling
+        while node is not None and node is not table_b:
+            if hasattr(node, "name") and node.name:
+                text = node.get_text(strip=True)
+                if text and len(text) > 2:
+                    return False
+            elif isinstance(node, str) and len(node.strip()) > 2:
+                return False
+            node = node.next_sibling  # type: ignore[assignment]
+        return node is table_b
+
+    # Different parents: walk up to find wrapper containers and check
+    # that the gap between them contains no significant content.
+    # Typical pattern: <div><table17/></div><hr/><div><table18/></div>
+    container_a = table_a.parent
+    container_b = table_b.parent
+    if container_a is None or container_b is None:
+        return False
+    # Both containers must share the same grandparent
+    if container_a.parent is not container_b.parent:
+        return False
+    # Table must be the last element in its container
+    # (no significant content after the table within the div)
+    node = table_a.next_sibling
+    while node is not None:
+        if hasattr(node, "name") and node.name:
+            text = node.get_text(strip=True)
+            if text and len(text) > 2:
+                return False
+        elif isinstance(node, str) and len(node.strip()) > 2:
+            return False
+        node = node.next_sibling  # type: ignore[assignment]
+    # Table_b must be the first significant element in its container
+    node = table_b.previous_sibling
+    while node is not None:
+        if hasattr(node, "name") and node.name:
+            text = node.get_text(strip=True)
+            if text and len(text) > 2:
+                return False
+        elif isinstance(node, str) and len(node.strip()) > 2:
+            return False
+        node = node.previous_sibling  # type: ignore[assignment]
+    # Check gap between the two containers (page number, hr, etc. are ok)
+    node = container_a.next_sibling
+    while node is not None and node is not container_b:
+        if hasattr(node, "name") and node.name:
+            text = node.get_text(strip=True)
+            # Allow page numbers, empty divs, <hr> separators
+            if node.name == "hr":
+                node = node.next_sibling  # type: ignore[assignment]
+                continue
+            if text and len(text) > 10:
+                # Substantial content between containers — not a continuation
+                return False
+        elif isinstance(node, str) and len(node.strip()) > 10:
+            return False
+        node = node.next_sibling  # type: ignore[assignment]
+    return node is container_b
+
+
+def _expanded_col_count(table):
+    """Get the expanded column count (sum of colspans) of a table's widest row."""
+    max_cols = 0
+    for row in table.find_all("tr")[:10]:
+        cells = row.find_all(["td", "th"])
+        total = sum(int(c.get("colspan", 1)) for c in cells)
+        max_cols = max(max_cols, total)
+    return max_cols
 
 
 def _merge_continuation_tables(soup):
@@ -364,9 +505,13 @@ def _merge_continuation_tables(soup):
             i += 1
             continue
 
-        # Find consecutive continuation tables
+        # Find consecutive continuation tables.
+        # Track last_ref so the proximity check is always between
+        # adjacent tables (not base-vs-distant) when chaining
+        # across multiple page-break boundaries.
         continuations = []
         j = i + 1
+        last_ref = table
         while j < len(tables):
             next_table = tables[j]
             if next_table in tables_to_remove:
@@ -374,8 +519,9 @@ def _merge_continuation_tables(soup):
                 continue
             # Check if next_table immediately follows (no significant content between)
             # and is a continuation table
-            if _is_continuation_table(next_table, table):
+            if _is_continuation_table(next_table, last_ref):
                 continuations.append(next_table)
+                last_ref = next_table
                 j += 1
             else:
                 break
@@ -1516,9 +1662,19 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
         # Strip /()\- before checking to avoid catastrophic backtracking
         t_stripped = re.sub(r"[/()\-]", " ", t_clean)
         t_stripped = re.sub(r"\s+", " ", t_stripped).strip()
+        # Also prepare a variant with leading symbol prefixes removed
+        # so that headers like "% Average rate" or "# of Shares" are
+        # recognized after stripping the leading punctuation.
+        t_no_prefix = re.sub(r"^[%#$&*~!@^]+\s*", "", t_stripped)
         if (
             re.match(r"^[A-Z][A-Za-z]*(\s+[A-Za-z&]+)*$", t_stripped)
             and len(t_clean) > 2
+        ):
+            return True
+        if (
+            t_no_prefix != t_stripped
+            and re.match(r"^[A-Z][A-Za-z]*(\s+[A-Za-z&]+)*$", t_no_prefix)
+            and len(t_no_prefix) > 2
         ):
             return True
         # ALL CAPS: "EQUIPMENT", "FINANCIAL SERVICES", "LONG-LIVED ASSETS"
@@ -2522,10 +2678,97 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
         # If all categories have same colspan, headers are evenly distributed
         categories.append(merged_name)
 
+    # Collect "orphan" header cells from category rows — cells at
+    # start > 0 that are NOT categories (failed is_category_text) and
+    # NOT inside any recognized category's column span.  These are
+    # independent column headers (e.g., "Balance Dec. 31, 2024")
+    # that should appear as their own columns in the output.
+    orphan_headers: list[tuple[str, int]] = []  # (text, start_pos)
+    for _ri, parsed in category_rows:
+        for text, colspan, start in parsed:
+            if not text or start == 0:
+                continue
+            # Skip cells already captured as categories
+            if start in position_texts:
+                continue
+            # Skip cells inside a category span
+            inside_cat = False
+            for cat_pos in sorted_positions:
+                cat_end = cat_pos + position_colspans[cat_pos]
+                if cat_pos <= start < cat_end:
+                    inside_cat = True
+                    break
+            if inside_cat:
+                continue
+            clean_text = re.sub(r"<[Bb][Rr]\s*/?>", " ", text).strip()
+            clean_text = re.sub(r"\s+", " ", clean_text)
+            if clean_text:
+                orphan_headers.append((clean_text, start))
+
     num_categories = len(categories)
-    if num_categories == 0:
+    if num_categories == 0 and not orphan_headers:
         # No categories - just column headers
         header_layers = [[""] + column_headers_list]
+        return header_layers, header_row_count
+
+    # When there are orphan headers alongside categories, build a
+    # combined position-ordered structure: orphan headers appear as
+    # independent leaf columns (1 column each) and categories expand
+    # to hold their sub-headers from year_rows.
+    if orphan_headers and num_categories > 0:
+        # Build a unified position list: each entry is either
+        # ("orphan", text, start) or ("cat", name, start, colspan)
+        unified: list = []
+        for text, pos in orphan_headers:
+            unified.append(("orphan", text, pos, 0))
+        for cat_idx, cat_name in enumerate(categories):
+            cat_pos = sorted_positions[cat_idx]
+            cat_cs = position_colspans[cat_pos]
+            unified.append(("cat", cat_name, cat_pos, cat_cs))
+        unified.sort(key=lambda x: x[2])  # sort by start position
+
+        cat_row = [""]
+        header_row = [""]
+        header_idx = 0
+
+        for entry in unified:
+            kind = entry[0]
+            if kind == "orphan":
+                orphan_text = entry[1]
+                # Orphan headers are independent leaf columns —
+                # they appear directly in the header row with empty
+                # category text above.
+                cat_row.append("")
+                header_row.append(orphan_text)
+            else:
+                cat_name = entry[1]
+                cat_pos = entry[2]
+                cat_cs = entry[3]
+                cat_end = cat_pos + cat_cs
+
+                # Collect year headers whose positions fall within
+                # this category's column range.
+                sub_hdrs = []
+                for hi in range(num_headers):
+                    if column_headers_positions:
+                        hdr_pos = column_headers_positions[hi]
+                    else:
+                        break
+                    if cat_pos <= hdr_pos < cat_end:
+                        sub_hdrs.append(column_headers_list[hi])
+
+                if not sub_hdrs:
+                    cat_row.append(cat_name)
+                    header_row.append("")
+                else:
+                    cat_row.append(cat_name)
+                    for _ in range(len(sub_hdrs) - 1):
+                        cat_row.append("")
+                    for sh in sub_hdrs:
+                        header_row.append(sh)
+
+        header_layers = [cat_row, header_row]
+
         return header_layers, header_row_count
 
     # Distribute column headers across categories
@@ -2555,6 +2798,16 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
             cat_cs = position_colspans[cat_pos]
             cat_end = cat_pos + cat_cs
 
+            # Consume any gap/orphan headers that fall between the
+            # previous category's end and this category's start.
+            while (
+                header_idx < num_headers
+                and column_headers_positions[header_idx] < cat_pos
+            ):
+                cat_row.append("")
+                header_row.append(column_headers_list[header_idx])
+                header_idx += 1
+
             # Collect headers whose positions fall within [cat_pos, cat_end)
             start_idx = header_idx
             while header_idx < num_headers:
@@ -2566,18 +2819,20 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
 
             count = header_idx - start_idx
             if count == 0:
-                count = 1  # At least one slot per category
+                # Category has no sub-headers; add a single empty slot
+                cat_row.append(cat_name)
+                header_row.append("")
+            else:
+                cat_row.append(cat_name)
+                for _ in range(count - 1):
+                    cat_row.append("")
 
-            cat_row.append(cat_name)
-            for _ in range(count - 1):
-                cat_row.append("")
-
-            for i in range(count):
-                idx = start_idx + i
-                if idx < len(column_headers_list):
-                    header_row.append(column_headers_list[idx])
-                else:
-                    header_row.append("")
+                for i in range(count):
+                    idx = start_idx + i
+                    if idx < len(column_headers_list):
+                        header_row.append(column_headers_list[idx])
+                    else:
+                        header_row.append("")
 
         # Append any remaining unmatched headers
         while header_idx < num_headers:
@@ -2605,6 +2860,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                     header_row.append("")
 
     header_layers = [cat_row, header_row]
+
     return header_layers, header_row_count
 
 
@@ -2927,7 +3183,13 @@ def extract_periods_from_rows(
         header_layers is not None
         and len(header_layers) == 1
         and any(
+            # Match incomplete year-range fragments like "2009 -" that need
+            # merging with a row below (e.g. "2010"), but NOT complete ranges
+            # like "2027-2028" or "2029 - 2030" which are valid headers.
             re.match(r"^(19|20)\d{2}\s*[-\u2013\u2014]", h.strip())
+            and not re.match(
+                r"^(19|20)\d{2}\s*[-\u2013\u2014]\s*(19|20)\d{2}$", h.strip()
+            )
             for h in header_layers[0]
             if h
         )
@@ -3378,12 +3640,30 @@ def convert_table(table, base_url: str = "") -> str:
     raw_extracted_rows = []
     raw_extracted_colspans = []
     raw_row_has_th = []  # Track whether each row has <th> elements
+
+    # Track grid positions occupied by cells with rowspan > 1 from
+    # earlier rows.  Maps grid_col -> remaining row count.
+    _rowspan_grid: dict[int, int] = {}
+
     for row in rows:
         cells = row.find_all(["td", "th"])
-        row_data = []
-        row_with_colspan = []  # (text, colspan) pairs
+        row_data: list[str] = []
+        row_with_colspan: list[tuple[str, int]] = []  # (text, colspan) pairs
         has_th = any(cell.name == "th" for cell in cells)
-        for cell in cells:
+
+        grid_col = 0
+        cell_idx = 0
+
+        while cell_idx < len(cells):
+            # Insert empty placeholders for positions occupied by
+            # rowspan from earlier rows before placing the current cell.
+            while grid_col in _rowspan_grid:
+                row_data.append("")
+                row_with_colspan.append(("", 1))
+                grid_col += 1
+
+            cell = cells[cell_idx]
+
             # Check for id attribute on cell - emit anchor if present
             cell_id = cell.get("id")
             anchor_prefix = ""
@@ -3403,16 +3683,37 @@ def convert_table(table, base_url: str = "") -> str:
             # Prepend anchor if cell had an id
             if anchor_prefix:
                 text = anchor_prefix + text
-            # Handle colspan
+
+            # Handle colspan and rowspan
             colspan = int(cell.get("colspan", 1) or 1)
+            rowspan = int(cell.get("rowspan", 1) or 1)
+
             row_data.append(text)
             row_with_colspan.append((text, colspan))
+
+            # Register this cell's grid positions for future rows
+            if rowspan > 1:
+                for _c in range(colspan):
+                    _rowspan_grid[grid_col + _c] = rowspan
+
             for _ in range(colspan - 1):
                 row_data.append("")
+
+            grid_col += colspan
+            cell_idx += 1
+
+        # Fill any trailing positions still occupied by rowspan
+        while grid_col in _rowspan_grid:
+            row_data.append("")
+            row_with_colspan.append(("", 1))
+            grid_col += 1
 
         raw_extracted_rows.append(row_data)
         raw_extracted_colspans.append(row_with_colspan)
         raw_row_has_th.append(has_th)
+
+        # Decrement rowspan counts; drop positions that have expired.
+        _rowspan_grid = {pos: rem - 1 for pos, rem in _rowspan_grid.items() if rem > 1}
 
     # Identify positions that have $ prefixes in ANY row
     # These are the only positions where "empty + numeric" shift should apply
@@ -3633,6 +3934,7 @@ def convert_table(table, base_url: str = "") -> str:
         header_layers, extracted_header_count = extract_periods_from_rows(
             raw_rows_with_colspan, row_has_th_flags, _year_pos_shift
         )
+
         num_periods = 0
 
         if header_layers:
@@ -4079,6 +4381,19 @@ def convert_table(table, base_url: str = "") -> str:
                                     values[hi] = cell_clean
                                 else:
                                     values.append(cell_clean)
+                            elif (
+                                re.match(
+                                    r"^(bps?|pts?|pps?|x)$",
+                                    cell_clean,
+                                    re.I,
+                                )
+                                and values[hi]
+                            ):
+                                # Unit suffix (e.g. "bps", "pts") that
+                                # belongs to the preceding numeric value
+                                # in the same header range — merge rather
+                                # than creating a spurious extra column.
+                                values[hi] = f"{values[hi]} {cell_clean}"
                             elif not label_parts:
                                 # Non-numeric before any data = part of label
                                 label_parts.append(cell_clean)
