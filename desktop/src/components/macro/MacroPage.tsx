@@ -63,7 +63,7 @@ function toDerivedId(expression: string): string {
 }
 
 function isSimpleKey(expr: string): boolean {
-  return /^[A-Za-z0-9:_\.]+$/.test(expr.trim());
+  return /^[A-Za-z0-9:_.]+$/.test(expr.trim());
 }
 
 function normalizePoints(input: unknown): MacroDataPoint[] {

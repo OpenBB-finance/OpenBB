@@ -28,7 +28,7 @@ from openbb_quant_ml.service.snapshot.dashboard_snapshot import (
 )
 from openbb_quant_ml.service.storage import get_run_dir, load_json, read_registry
 
-_SUPPORTED_MODELS: tuple[ModelName, ...] = ("lgbm_ranker", "xgb_lstm")
+_SUPPORTED_MODELS: tuple[ModelName, ...] = ("lgbm_ranker", "xgb_lstm", "catboost_ranker")
 
 
 def _normalize_model_name(model_name: str | None) -> ModelName:

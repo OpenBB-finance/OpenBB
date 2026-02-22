@@ -1,47 +1,77 @@
 ﻿## 빠른 실행 순서 (Quant Lab)
 
-### 백엔드 서버 열기 (OpenBB API)
+### 2026-02-23 실행 검증 상태
 
-PowerShell 창 1개에서 실행:
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-.\.venv\Scripts\Activate.ps1
-openbb-api --host 127.0.0.1 --port 6900
-```
-
-- 백엔드 주소: `http://127.0.0.1:6900`
-- 확인용: `http://127.0.0.1:6900/docs`
-
-### 프론트 서버 열기 (Desktop Web)
-
-PowerShell 창을 하나 더 열고 실행:
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop\desktop"
-npm run dev
-```
-
-- 프론트 주소: `http://localhost:1470`
-- Quant Lab 바로가기: `http://localhost:1470/quant`
+- `http://127.0.0.1:6900/docs` 응답 코드: `200`
+- `http://localhost:1470/quant` 응답 코드: `200`
 
 ### 한 번에 두 서버 실행 (권장)
 
-루트 폴더에서 아래를 실행하면 PowerShell 2개가 자동으로 열립니다.
+아래 명령 1개로 백엔드/프론트를 동시에 올리는 방법이 가장 안정적입니다.
 
 ```powershell
 cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
 .\start_all.ps1
 ```
 
-> 주의: PowerShell에서는 `start_all.ps1`만 입력하면 실행되지 않습니다. 
-반드시 `.\start_all.ps1` 형태로 실행해야 합니다.
+성공 메시지에 `Open: http://localhost:1470/quant`가 뜨면 정상입니다.
+
+### 수동 실행 (문제 있을 때만)
+
+PowerShell 창 1개(백엔드):
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+.\.venv\Scripts\openbb-api.exe --host 127.0.0.1 --port 6900
+```
+
+PowerShell 창 1개(프론트):
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop\desktop"
+if (!(Test-Path .\node_modules)) { npm ci }
+npm run dev -- --port 1470
+```
 
 ### 사용/종료
 
 1. 브라우저에서 `http://localhost:1470/quant` 접속
-2. 화면에서 `학습 실행 -> 신호 생성 -> 백테스트 실행`
-3. 종료할 때는 두 PowerShell 창에서 각각 `Ctrl + C`
+2. 종료는 실행한 터미널에서 `Ctrl + C`
+
+### Quant 화면 파라미터 설명 + 권장 시작값
+
+아래 값은 `desktop/src/routes/quant.tsx`와 `openbb_quant_ml/service/signals.py` 기준 동작입니다.
+
+- `LSTM Seq Len`: LSTM이 보는 과거 시점 길이(기본 `60`, 허용 `20~240`)
+- `LSTM Epochs`: LSTM 학습 반복 횟수(기본 `30`, 허용 `5~300`)
+- `Model`: 신호/백테스트에 사용할 모델 (`lgbm_ranker`, `xgb_lstm`, `catboost_ranker`)
+- `Top K`: 최종 채택 종목 수(기본 `20`, 허용 `1~200`)
+- `Score Threshold`: `|z_score|` 필터 임계값(기본 `0.5`, 허용 `0~5`)
+- `Balanced long/short`: `Top K`를 롱/숏으로 최대한 반반 분할
+
+권장 시작값(안정형, long-only):
+
+- `LSTM Seq Len = 60`
+- `LSTM Epochs = 30`
+- `Model = lgbm_ranker` (학습 안정성 우선)
+- `Top K = 20`
+- `Score Threshold = 0.5`
+- `Balanced long/short = false`
+
+권장 시작값(중립형, long/short):
+
+- `LSTM Seq Len = 80`
+- `LSTM Epochs = 40`
+- `Model = xgb_lstm`
+- `Top K = 24`
+- `Score Threshold = 0.7`
+- `Balanced long/short = true`
+
+참고:
+
+1. 단일 종목 하드캡 `10%` 정책 때문에 `Top K < 10`이면 현금 비중이 크게 남을 수 있습니다.
+2. `Score Threshold`를 너무 높이면 후보가 줄어들고, 코드상 후보가 비면 fallback으로 원본 풀에서 다시 선별됩니다.
+3. 절대적인 "최적값"은 데이터 구간/유니버스/시장 국면에 따라 달라지므로, 위 값을 기준점으로 두고 백테스트로 미세 조정하는 것이 안전합니다.
 
 ### 포트폴리오 10% 하드캡 정책 (기본 적용)
 
@@ -91,19 +121,74 @@ netstat -ano | findstr :6900
 netstat -ano | findstr :1470
 ```
 
-- `LISTENING`이 보이지 않으면 해당 서버를 다시 실행
+- `LISTENING`이 없으면 서버가 안 뜬 상태이므로 `.\start_all.ps1` 재실행
+- 다른 프로세스가 포트를 점유하면 해당 PID 종료 후 재실행:
+
+```powershell
+$apiPid = (Get-NetTCPConnection -LocalPort 6900 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1)
+$webPid = (Get-NetTCPConnection -LocalPort 1470 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1)
+if ($apiPid) { Stop-Process -Id $apiPid -Force }
+if ($webPid) { Stop-Process -Id $webPid -Force }
+```
+
+- 최종 확인:
+
+```powershell
+Invoke-WebRequest "http://127.0.0.1:6900/docs" -UseBasicParsing | Select-Object -ExpandProperty StatusCode
+Invoke-WebRequest "http://localhost:1470/quant" -UseBasicParsing | Select-Object -ExpandProperty StatusCode
+```
+
+- 둘 다 `200`이면 정상입니다.
+
+### 통합 검증(개발/QA)
+
+`run_integration_gate.ps1`는 로컬 `.venv` Python을 우선 사용하며, 테스트가 고정 URL(`0.0.0.0:8000`)을 써도 내부적으로 지정한 API 포트로 라우팅되도록 구성되어 있습니다.
+
+기본 실행:
+
+```powershell
+cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+.\qa\scripts\run_integration_gate.ps1
+```
+
+`8000` 포트를 이미 다른 서비스가 사용 중이면(예: 다른 `uvicorn`), 포트를 바꿔 실행:
+
+```powershell
+.\qa\scripts\run_integration_gate.ps1 -ApiHost 127.0.0.1 -ApiPort 8011
+```
+
+포트 충돌 시 스크립트가 `non-OpenBB service` 메시지로 중단하면, 기존 프로세스를 종료하거나 위처럼 다른 포트를 지정하면 됩니다.
+
+장시간 실행을 백그라운드로 돌릴 때:
+
+```powershell
+# 시작
+.\qa\scripts\run_integration_gate_background.ps1 -Mode start -RunId int_bg_20260223 -ApiHost 127.0.0.1 -ApiPort 8011
+
+# 상태 확인
+.\qa\scripts\run_integration_gate_background.ps1 -Mode status -RunId int_bg_20260223
+
+# 완료 대기(성공 PASS면 exit 0)
+.\qa\scripts\run_integration_gate_background.ps1 -Mode wait -RunId int_bg_20260223
+
+# 중단
+.\qa\scripts\run_integration_gate_background.ps1 -Mode stop -RunId int_bg_20260223
+```
+
+결과 요약 파일:
+- `logs/verification/<RUN_ID>/tracked_root/integration/integration_gate.json`
+- 백그라운드 로그: `logs/verification/_background/<RUN_ID>/`
 ---
 # OpenBB ODP 사용 가이드
 
 ## ⚡ 간단 실행
 
-1. **`openbb_실행.bat`** 더블클릭
-2. 또는 터미널에서:
+1. 터미널에서 아래 실행 (권장)
    ```powershell
    cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-   .\.venv\Scripts\Activate.ps1
-   openbb
+   .\start_all.ps1
    ```
+2. 브라우저에서 `http://localhost:1470/quant` 접속
 
 ---
 
@@ -160,7 +245,11 @@ netstat -ano | findstr :1470
 
 **"지정된 경로를 찾을 수 없습니다" 지속 시 (한글 경로 이슈):**
 
-1. **`openbb_실행.bat`** 더블클릭 — 작업 디렉터리를 `C:\Users\yygg1`로 바꿔 실행
+1. 프로젝트 루트에서 명령을 직접 실행:
+   ```powershell
+   cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+   .\.venv\Scripts\openbb.cmd
+   ```
 2. **system_settings.json**에 `"headless": true` 추가 — 차트 창 없이 실행 (이미 적용됨)
 3. 위 방법으로도 안 되면 프로젝트를 **한글이 없는 경로**(예: `C:\OpenBB-develop`)로 이동 후 재설치
 
@@ -191,15 +280,12 @@ ta = obb.technical.donchian(data=output.results).to_df()
 
 ### ZIP으로 받은 경우 → Git 저장소로 바꾸기 (1회만)
 
-**`git_변환.ps1`** 더블클릭하면 자동 변환됩니다. (우클릭 → PowerShell에서 실행)
-
-또는 수동으로:
+이 저장소에는 `git_변환.ps1`가 없으므로 아래 수동 절차를 사용하세요.
 
 ```powershell
 cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
 
 # 1. 커스텀 파일 백업 (홈 폴더에 보관)
-Copy-Item openbb_실행.bat $env:USERPROFILE\openbb_실행.bat.bak
 Copy-Item OpenBB_사용가이드.md $env:USERPROFILE\OpenBB_사용가이드.md.bak
 
 # 2. Git 저장소로 전환
@@ -209,9 +295,8 @@ git fetch origin develop
 git checkout -b develop origin/develop
 
 # 3. 백업 파일 복원
-Copy-Item $env:USERPROFILE\openbb_실행.bat.bak openbb_실행.bat -Force
 Copy-Item $env:USERPROFILE\OpenBB_사용가이드.md.bak OpenBB_사용가이드.md -Force
-Remove-Item $env:USERPROFILE\openbb_실행.bat.bak, $env:USERPROFILE\OpenBB_사용가이드.md.bak
+Remove-Item $env:USERPROFILE\OpenBB_사용가이드.md.bak
 ```
 
 ### 일반 업데이트 (Git 저장소로 전환 후)

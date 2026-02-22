@@ -5,7 +5,7 @@ from __future__ import annotations
 import warnings
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -147,6 +147,52 @@ def _group_ic(
     return ic_value
 
 
+def _fit_catboost_ranker(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    feature_columns: list[str],
+    config: RankerConfig,
+):
+    """Fit CatBoost ranker; fallback to LightGBM if CatBoost unavailable."""
+    x_train = train_df[feature_columns].to_numpy(dtype=float)
+    y_train = train_df["label"].to_numpy(dtype=float)
+    group_train = train_df.groupby("date").size().to_numpy(dtype=int)
+    group_id_train = np.repeat(np.arange(len(group_train)), group_train)
+
+    x_val = val_df[feature_columns].to_numpy(dtype=float)
+    y_val = val_df["label"].to_numpy(dtype=float)
+    group_val = val_df.groupby("date").size().to_numpy(dtype=int)
+    group_id_val = np.repeat(np.arange(len(group_val)), group_val)
+
+    try:
+        from catboost import CatBoostRanker, Pool
+
+        model = CatBoostRanker(
+            iterations=min(config.n_estimators, 10000),
+            learning_rate=config.learning_rate,
+            depth=6,
+            l2_leaf_reg=config.reg_lambda,
+            random_seed=config.random_state,
+            verbose=False,
+            early_stopping_rounds=config.early_stopping_rounds,
+        )
+        train_pool = Pool(
+            data=x_train,
+            label=y_train,
+            group_id=group_id_train,
+        )
+        eval_pool = Pool(
+            data=x_val,
+            label=y_val,
+            group_id=group_id_val,
+        )
+        model.fit(train_pool, eval_set=eval_pool)
+        feature_importance = np.array(model.get_feature_importance(), dtype=float)
+        return model, feature_importance, "catboost"
+    except Exception:
+        return _fit_ranker_model(train_df, val_df, feature_columns, config)
+
+
 def _fit_ranker_model(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
@@ -283,6 +329,7 @@ def train_ranker_models(
     theta_grid: list[float],
     horizon_months: int = 1,
     progress_callback: Callable[[float, str], None] | None = None,
+    backend: Literal["lightgbm", "catboost"] = "lightgbm",
 ) -> RankerTrainingOutput:
     """Train ranker model with walk-forward splits and return OOS predictions."""
 
@@ -325,12 +372,20 @@ def train_ranker_models(
             0.2 + 0.6 * (float(fold_idx - 1) / max(float(len(splits)), 1.0)),
             f"Ranker fold {fold_idx}/{len(splits)}",
         )
-        model, feature_importance, backend_name = _fit_ranker_model(
-            train_df=train_df,
-            val_df=val_df,
-            feature_columns=feature_columns,
-            config=ranker_config,
-        )
+        if backend == "catboost":
+            model, feature_importance, backend_name = _fit_catboost_ranker(
+                train_df=train_df,
+                val_df=val_df,
+                feature_columns=feature_columns,
+                config=ranker_config,
+            )
+        else:
+            model, feature_importance, backend_name = _fit_ranker_model(
+                train_df=train_df,
+                val_df=val_df,
+                feature_columns=feature_columns,
+                config=ranker_config,
+            )
         importance_accumulator += feature_importance
 
         train_scored = train_df.copy()
@@ -418,12 +473,20 @@ def train_ranker_models(
         final_val_df = final_train_df.tail(min(300, len(final_train_df))).copy()
     if final_val_df.empty:
         final_val_df = final_train_df.tail(min(300, len(final_train_df))).copy()
-    final_model, _, final_backend = _fit_ranker_model(
-        train_df=final_train_df,
-        val_df=final_val_df,
-        feature_columns=feature_columns,
-        config=ranker_config,
-    )
+    if backend == "catboost":
+        final_model, _, final_backend = _fit_catboost_ranker(
+            train_df=final_train_df,
+            val_df=final_val_df,
+            feature_columns=feature_columns,
+            config=ranker_config,
+        )
+    else:
+        final_model, _, final_backend = _fit_ranker_model(
+            train_df=final_train_df,
+            val_df=final_val_df,
+            feature_columns=feature_columns,
+            config=ranker_config,
+        )
 
     label_return_map: dict[int, float] = {}
     grouped = final_train_df.groupby("label")["target_return"].mean()

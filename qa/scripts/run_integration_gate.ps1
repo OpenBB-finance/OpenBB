@@ -153,21 +153,24 @@ function Test-ApiHealth {
     [string]$HostName,
     [int]$Port
   )
-  $uris = @(
-    "http://$HostName`:$Port/api/v1/system",
-    "http://$HostName`:$Port/openapi.json",
-    "http://$HostName`:$Port/docs"
-  )
-  foreach ($uri in $uris) {
-    try {
-      $response = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 6
-      if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 500) {
-        return $true
-      }
-    } catch {
-      continue
+  try {
+    $coverageUri = "http://$HostName`:$Port/api/v1/coverage/providers"
+    $coverageResponse = Invoke-WebRequest -Uri $coverageUri -UseBasicParsing -TimeoutSec 6
+    if ($coverageResponse.StatusCode -eq 200) {
+      return $true
     }
-  }
+  } catch {}
+
+  try {
+    $openapiUri = "http://$HostName`:$Port/openapi.json"
+    $openapiResponse = Invoke-WebRequest -Uri $openapiUri -UseBasicParsing -TimeoutSec 6
+    if ($openapiResponse.StatusCode -eq 200 -and
+      $openapiResponse.Content -match '"/api/v1/coverage/providers"' -and
+      $openapiResponse.Content -match '"/api/v1/equity/search"') {
+      return $true
+    }
+  } catch {}
+
   return $false
 }
 
@@ -202,6 +205,41 @@ function Get-ApiExecutable {
     return $command.Source
   }
   return $null
+}
+
+function Get-PythonExecutable {
+  param(
+    [string]$RootAbsPath,
+    [string]$RequestedPythonCommand
+  )
+
+  if (-not [string]::IsNullOrWhiteSpace($RequestedPythonCommand) -and $RequestedPythonCommand -ne "python") {
+    if (Test-Path -LiteralPath $RequestedPythonCommand) {
+      return (Resolve-Path -LiteralPath $RequestedPythonCommand -ErrorAction Stop).Path
+    }
+    $explicitCommand = Get-Command $RequestedPythonCommand -ErrorAction SilentlyContinue
+    if ($null -ne $explicitCommand) {
+      return $explicitCommand.Source
+    }
+    throw "Python command not found: $RequestedPythonCommand"
+  }
+
+  $candidateWindows = Join-Path $RootAbsPath ".venv\Scripts\python.exe"
+  if (Test-Path -LiteralPath $candidateWindows) {
+    return $candidateWindows
+  }
+
+  $candidateUnix = Join-Path $RootAbsPath ".venv/bin/python"
+  if (Test-Path -LiteralPath $candidateUnix) {
+    return $candidateUnix
+  }
+
+  $pythonCommand = Get-Command "python" -ErrorAction SilentlyContinue
+  if ($null -ne $pythonCommand) {
+    return $pythonCommand.Source
+  }
+
+  throw "Python executable not found. Provide -PythonCommand explicitly or create .venv."
 }
 
 function Get-DetectedProviders {
@@ -239,6 +277,8 @@ function Invoke-PytestWithRetries {
     [int]$RetryDelaySeconds,
     [string]$SuiteOutputDirectory,
     [string]$PythonExe,
+    [string]$ApiHost,
+    [int]$ApiPort,
     [switch]$DryRunMode
   )
 
@@ -258,19 +298,47 @@ function Invoke-PytestWithRetries {
         attempts = ($attempt + 1)
         exit_code = 0
         junit_xml = $junitPath
-        logs = @($attemptLogs)
+        logs = @($attemptLogs.ToArray())
       }
     }
 
     Push-Location $WorkingDirectory
     try {
+      $prevPythonNoUserSite = $env:PYTHONNOUSERSITE
+      $prevTestApiHost = $env:OPENBB_TEST_API_HOST
+      $prevTestApiPort = $env:OPENBB_TEST_API_PORT
+      $prevApiBaseUrl = $env:OPENBB_API_BASE_URL
       $prevEap = $ErrorActionPreference
       try {
+        $env:PYTHONNOUSERSITE = "1"
+        $env:OPENBB_TEST_API_HOST = $ApiHost
+        $env:OPENBB_TEST_API_PORT = "$ApiPort"
+        $env:OPENBB_API_BASE_URL = "http://$ApiHost`:$ApiPort"
         $ErrorActionPreference = "Continue"
         $global:LASTEXITCODE = 0
         & $PythonExe -m pytest @PytestArguments 2>&1 | Tee-Object -FilePath $attemptLog | Out-Host
         $exitCode = [int]$LASTEXITCODE
       } finally {
+        if ($null -eq $prevTestApiHost) {
+          Remove-Item Env:OPENBB_TEST_API_HOST -ErrorAction SilentlyContinue
+        } else {
+          $env:OPENBB_TEST_API_HOST = $prevTestApiHost
+        }
+        if ($null -eq $prevTestApiPort) {
+          Remove-Item Env:OPENBB_TEST_API_PORT -ErrorAction SilentlyContinue
+        } else {
+          $env:OPENBB_TEST_API_PORT = $prevTestApiPort
+        }
+        if ($null -eq $prevApiBaseUrl) {
+          Remove-Item Env:OPENBB_API_BASE_URL -ErrorAction SilentlyContinue
+        } else {
+          $env:OPENBB_API_BASE_URL = $prevApiBaseUrl
+        }
+        if ($null -eq $prevPythonNoUserSite) {
+          Remove-Item Env:PYTHONNOUSERSITE -ErrorAction SilentlyContinue
+        } else {
+          $env:PYTHONNOUSERSITE = $prevPythonNoUserSite
+        }
         $ErrorActionPreference = $prevEap
       }
     } finally {
@@ -284,7 +352,7 @@ function Invoke-PytestWithRetries {
         attempts = ($attempt + 1)
         exit_code = 0
         junit_xml = $junitPath
-        logs = @($attemptLogs)
+        logs = @($attemptLogs.ToArray())
       }
     }
 
@@ -299,7 +367,7 @@ function Invoke-PytestWithRetries {
     attempts = ($MaxRetries + 1)
     exit_code = 1
     junit_xml = $junitPath
-    logs = @($attemptLogs)
+    logs = @($attemptLogs.ToArray())
   }
 }
 
@@ -324,6 +392,7 @@ $tiers = Get-ProviderTiers -ConfigPath $providerConfigAbs
 $knownProviders = @($tiers.core_blocking + $tiers.extended_quarantine | Sort-Object -Unique)
 $retryMax = [int]$tiers.retry_policy.max_retries
 $retryDelaySeconds = [int]$tiers.retry_policy.retry_delay_seconds
+$pythonExe = Get-PythonExecutable -RootAbsPath $rootAbs -RequestedPythonCommand $PythonCommand
 
 $suiteResults = [System.Collections.Generic.List[object]]::new()
 $apiProcess = $null
@@ -331,7 +400,11 @@ $apiStartedByScript = $false
 
 try {
   if (-not $SkipApiIntegration -and -not $DryRun) {
-    if (-not (Test-ListeningPort -HostName $ApiHost -Port $ApiPort)) {
+    $apiPortInUse = Test-ListeningPort -HostName $ApiHost -Port $ApiPort
+    if ($apiPortInUse -and -not (Test-ApiHealth -HostName $ApiHost -Port $ApiPort)) {
+      throw "Port $ApiPort on $ApiHost is already in use by a non-OpenBB service. Stop that process or rerun with a different -ApiPort."
+    }
+    if (-not $apiPortInUse) {
       $apiExe = Get-ApiExecutable -RootAbsPath $rootAbs
       if ([string]::IsNullOrWhiteSpace($apiExe)) {
         throw "Cannot run API integration tests: openbb-api executable not found."
@@ -356,12 +429,14 @@ try {
 
   if (-not $SkipPythonIntegration) {
     $pythonTargets = @(
-      (Join-Path $rootAbs "openbb_platform/core/integration"),
-      (Join-Path $rootAbs "openbb_platform/extensions"),
-      (Join-Path $rootAbs "openbb_platform/obbject_extensions/charting/integration")
-    ) | Where-Object { Test-Path -LiteralPath $_ } | ForEach-Object {
-      Convert-ToRepoRelativePath -RootAbsPath $rootAbs -TargetAbsPath $_
-    }
+      @(
+        (Join-Path $rootAbs "openbb_platform/core/integration"),
+        (Join-Path $rootAbs "openbb_platform/extensions"),
+        (Join-Path $rootAbs "openbb_platform/obbject_extensions/charting/integration")
+      ) | Where-Object { Test-Path -LiteralPath $_ } | ForEach-Object {
+        Convert-ToRepoRelativePath -RootAbsPath $rootAbs -TargetAbsPath $_
+      }
+    )
 
     if ($pythonTargets.Count -gt 0) {
       $junitPath = Join-Path $integrationDir "python_integration.junit.xml"
@@ -373,7 +448,9 @@ try {
         -MaxRetries $retryMax `
         -RetryDelaySeconds $retryDelaySeconds `
         -SuiteOutputDirectory $integrationDir `
-        -PythonExe $PythonCommand `
+        -PythonExe $pythonExe `
+        -ApiHost $ApiHost `
+        -ApiPort $ApiPort `
         -DryRunMode:$DryRun
       $suiteResults.Add($result)
     } else {
@@ -411,7 +488,9 @@ try {
         -MaxRetries $retryMax `
         -RetryDelaySeconds $retryDelaySeconds `
         -SuiteOutputDirectory $integrationDir `
-        -PythonExe $PythonCommand `
+        -PythonExe $pythonExe `
+        -ApiHost $ApiHost `
+        -ApiPort $ApiPort `
         -DryRunMode:$DryRun
       $suiteResults.Add($result)
     } else {
@@ -439,7 +518,9 @@ try {
         -MaxRetries $retryMax `
         -RetryDelaySeconds $retryDelaySeconds `
         -SuiteOutputDirectory $integrationDir `
-        -PythonExe $PythonCommand `
+        -PythonExe $pythonExe `
+        -ApiHost $ApiHost `
+        -ApiPort $ApiPort `
         -DryRunMode:$DryRun
       $suiteResults.Add($result)
     } else {
@@ -480,7 +561,7 @@ foreach ($suite in $suiteResults) {
   if (-not [string]::IsNullOrWhiteSpace($suite.junit_xml)) {
     $scanFiles.Add($suite.junit_xml)
   }
-  $detectedProviders = Get-DetectedProviders -FilesToScan @($scanFiles) -KnownProviders $knownProviders
+  $detectedProviders = @(Get-DetectedProviders -FilesToScan @($scanFiles) -KnownProviders $knownProviders)
   if ($detectedProviders.Count -eq 0) {
     $unknownSuiteFailures.Add($suite.suite)
     continue

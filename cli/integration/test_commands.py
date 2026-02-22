@@ -1,4 +1,5 @@
 import io
+import sys
 
 import pytest
 from openbb_cli.cli import main
@@ -22,8 +23,13 @@ def test_launch_with_cli_input(monkeypatch, input_values):
     """Test launching the CLI and providing input via stdin with multiple parameters."""
     stdin = io.StringIO(input_values)
     monkeypatch.setattr("sys.stdin", stdin)
+    # Avoid pytest arguments leaking into CLI arg parsing.
+    monkeypatch.setattr(sys, "argv", ["openbb"])
 
     try:
         main()
+    except SystemExit as e:
+        if e.code not in (0, None):
+            pytest.fail(f"Main function exited with non-zero code: {e.code}")
     except Exception as e:
         pytest.fail(f"Main function raised an exception: {e}")

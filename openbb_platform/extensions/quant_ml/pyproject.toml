@@ -22,10 +22,12 @@ scikit-learn = ">=1.4"
 pyarrow = ">=14.0"
 lightgbm = ">=4.3"
 pykrx = { version = ">=1.0.48", optional = true }
+catboost = { version = ">=1.2", optional = true }
 
 [tool.poetry.extras]
 kr = ["pykrx"]
 universe-refresh = ["pykrx"]
+catboost = ["catboost"]
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,4 +1,4 @@
-﻿import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConnectionStatusCard } from "../components/quant/ConnectionStatusCard";
 import { EquityCurveChart } from "../components/quant/EquityCurveChart";
@@ -331,6 +331,7 @@ export default function QuantPage() {
 
   const [topK, setTopK] = useState(20);
   const [scoreThreshold, setScoreThreshold] = useState(0.5);
+  const [balancedLongShort, setBalancedLongShort] = useState(false);
 
   const [isSubmittingTrain, setIsSubmittingTrain] = useState(false);
   const [isSubmittingSignals, setIsSubmittingSignals] = useState(false);
@@ -733,7 +734,11 @@ export default function QuantPage() {
         const response = await fetchRebalanceHistory(backend.baseUrl, runId, selectedModel, useCache);
         setRebalanceHistory(response.items ?? []);
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to load rebalance history.";
+        const rawMessage = error instanceof Error ? error.message : "Failed to load rebalance history.";
+        const message =
+          rawMessage.includes("404") || rawMessage.toLowerCase().includes("not found")
+            ? "백테스트를 먼저 실행하세요. (Run backtest first.)"
+            : rawMessage;
         setRebalanceHistoryError(message);
       } finally {
         setIsLoadingRebalanceHistory(false);
@@ -948,6 +953,7 @@ export default function QuantPage() {
         model_name: selectedModel,
         top_k: topK,
         score_threshold: scoreThreshold,
+        balanced_long_short: balancedLongShort,
       });
       setSignals(response);
       markArtifactReady("signals", true);
@@ -964,7 +970,7 @@ export default function QuantPage() {
     } finally {
       setIsSubmittingSignals(false);
     }
-  }, [backend, markArtifactReady, patchSession, runId, scoreThreshold, selectedModel, topK]);
+  }, [backend, markArtifactReady, patchSession, runId, scoreThreshold, selectedModel, topK, balancedLongShort]);
 
   const handleBacktest = useCallback(async () => {
     if (!backend?.connected || !runId) {
@@ -1101,10 +1107,39 @@ export default function QuantPage() {
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
       <div className="mb-4">
-        <h1 className="body-lg-medium text-theme-primary">Quant Lab</h1>
+        <h1 className="body-lg-medium text-theme-primary" id="quant-lab-title">
+          Quant Lab
+        </h1>
         <p className="body-sm-regular text-theme-muted">
           Local ML/DL quant workflow: train, signal generation, backtest, and SPY benchmark comparison.
         </p>
+        <div
+          className="mt-2 flex flex-wrap gap-2 body-xs-regular text-theme-muted"
+          role="status"
+          aria-label="Workflow steps"
+        >
+          <span
+            className={
+              parsedSymbols.length > 0 || isUniverseSetMode
+                ? "text-emerald-400"
+                : "text-theme-muted"
+            }
+          >
+            1. Universe
+          </span>
+          <span aria-hidden>→</span>
+          <span className={runStatus?.status === "completed" ? "text-emerald-400" : "text-theme-muted"}>
+            2. Train
+          </span>
+          <span aria-hidden>→</span>
+          <span className={signals?.signals?.length ? "text-emerald-400" : "text-theme-muted"}>
+            3. Signals
+          </span>
+          <span aria-hidden>→</span>
+          <span className={backtest?.equity_curve?.length ? "text-emerald-400" : "text-theme-muted"}>
+            4. Backtest
+          </span>
+        </div>
       </div>
 
       {errorMessage ? (
@@ -1340,6 +1375,7 @@ export default function QuantPage() {
                   >
                     <option value="lgbm_ranker">LGBM Ranker</option>
                     <option value="xgb_lstm">XGB + LSTM</option>
+                    <option value="catboost_ranker">CatBoost Ranker</option>
                   </select>
                 </label>
                 <label className="body-xs-medium text-theme-muted">
@@ -1364,6 +1400,15 @@ export default function QuantPage() {
                     value={scoreThreshold}
                     onChange={(event) => setScoreThreshold(Number(event.target.value))}
                   />
+                </label>
+                <label className="flex items-center gap-2 body-xs-medium text-theme-muted pt-6">
+                  <input
+                    type="checkbox"
+                    checked={balancedLongShort}
+                    onChange={(event) => setBalancedLongShort(event.target.checked)}
+                    aria-label="Balanced long/short"
+                  />
+                  Balanced long/short
                 </label>
               </div>
 
@@ -1478,8 +1523,12 @@ export default function QuantPage() {
                   <p className="body-xs-medium text-theme-primary">{session.artifacts_ready.portfolio_current ? "Ready" : "Not Ready"}</p>
                 </div>
               </div>
-              <a className="button-secondary inline-flex rounded-sm px-3 py-2 body-xs-medium" href={dashboardLink}>
-                Dashboard에서 리스크 구조 보기
+              <a
+                className="button-secondary inline-flex rounded-sm px-3 py-2 body-xs-medium"
+                href={dashboardLink}
+                aria-label={`View this run in Dashboard (run: ${runId || "none"}, model: ${selectedModel})`}
+              >
+                이 Run으로 Dashboard 보기
               </a>
             </div>
           </PanelCard>

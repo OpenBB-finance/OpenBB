@@ -88,19 +88,61 @@ interface DashboardRequestOptions {
   signal?: AbortSignal;
 }
 
-async function requestJson<T>(baseUrl: string, path: string, init: RequestInit): Promise<T> {
-  const response = await fetch(`${baseUrl}${path}`, init);
-  if (!response.ok) {
-    let detail = "";
-    try {
-      const payload = await response.json();
-      detail = payload?.detail ? String(payload.detail) : "";
-    } catch {
-      detail = "";
-    }
-    throw new Error(detail || `Request failed (${response.status})`);
+const MAX_RETRIES = 2;
+const RETRY_BASE_MS = 500;
+
+function isRetryableError(response: Response | null, error: unknown): boolean {
+  if (response) {
+    return response.status === 503 || response.status === 502 || response.status === 504;
   }
-  return (await response.json()) as T;
+  const msg = error instanceof Error ? error.message : String(error);
+  return (
+    msg.includes("Failed to fetch") ||
+    msg.includes("NetworkError") ||
+    msg.includes("network") ||
+    msg.includes("ECONNRESET") ||
+    msg.includes("ETIMEDOUT")
+  );
+}
+
+async function requestJson<T>(baseUrl: string, path: string, init: RequestInit): Promise<T> {
+  let lastError: Error | null = null;
+  let lastResponse: Response | null = null;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await fetch(`${baseUrl}${path}`, init);
+      lastResponse = response;
+
+      if (!response.ok) {
+        let detail = "";
+        try {
+          const payload = await response.json();
+          detail = payload?.detail ? String(payload.detail) : "";
+        } catch {
+          detail = "";
+        }
+        const err = new Error(detail || `Request failed (${response.status})`);
+        if (attempt < MAX_RETRIES && isRetryableError(response, null)) {
+          const delayMs = RETRY_BASE_MS * Math.pow(2, attempt);
+          await new Promise((resolve) => setTimeout(resolve, delayMs));
+          continue;
+        }
+        throw err;
+      }
+      return (await response.json()) as T;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt < MAX_RETRIES && isRetryableError(lastResponse, error)) {
+        const delayMs = RETRY_BASE_MS * Math.pow(2, attempt);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
+      throw lastError;
+    }
+  }
+
+  throw lastError ?? new Error("Request failed after retries");
 }
 
 async function requestJsonParsed<T>(
@@ -593,7 +635,7 @@ export function fetchDashboardHealth(
   options: DashboardRequestOptions = {},
 ): Promise<DashboardHealthPayload> {
   const mode = options.mode ?? "backtest";
-  const query = new URLSearchParams({ model_name: modelName });
+  const query = new URLSearchParams({ model_name: modelName, mode });
   if (runId && runId.trim()) {
     query.set("run_id", runId.trim());
   }

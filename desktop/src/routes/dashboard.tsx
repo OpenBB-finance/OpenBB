@@ -59,6 +59,7 @@ type DashboardModelTab = ModelName | "transformer" | "ensemble";
 const MODEL_TABS: Array<{ id: DashboardModelTab; label: string; implemented: boolean }> = [
   { id: "lgbm_ranker", label: "Ranker", implemented: true },
   { id: "xgb_lstm", label: "XGB+LSTM", implemented: true },
+  { id: "catboost_ranker", label: "CatBoost Ranker", implemented: true },
   { id: "transformer", label: "Transformer", implemented: false },
   { id: "ensemble", label: "Ensemble", implemented: false },
 ];
@@ -280,7 +281,8 @@ export default function DashboardPage() {
   const portfolioRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledFocusRef = useRef(false);
 
-  const isImplementedModel = modelTab === "lgbm_ranker" || modelTab === "xgb_lstm";
+  const isImplementedModel =
+    modelTab === "lgbm_ranker" || modelTab === "xgb_lstm" || modelTab === "catboost_ranker";
   const effectiveModel: ModelName = isImplementedModel ? modelTab : "lgbm_ranker";
   const normalizedRunId = session.run_id.trim();
 
@@ -658,6 +660,7 @@ export default function DashboardPage() {
         model_name: effectiveModel,
         top_k: DEFAULT_TOP_K,
         score_threshold: DEFAULT_SCORE_THRESHOLD,
+        balanced_long_short: false,
       });
       markArtifactReady("predictions", true);
       markArtifactReady("signals", true);
@@ -819,6 +822,20 @@ export default function DashboardPage() {
             <p className="body-xs-medium text-theme-primary">{health?.data_timestamp ?? "-"}</p>
           </div>
           <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="body-xxs-regular text-theme-muted">Latest Market Date</p>
+            <p className="body-xs-medium text-theme-primary">{health?.latest_market_date ?? "-"}</p>
+          </div>
+          <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="body-xxs-regular text-theme-muted">Staleness (days)</p>
+            <p className={`body-xs-medium ${(health?.staleness_days ?? 0) > 1 ? "text-amber-400" : "text-theme-primary"}`}>
+              {health?.staleness_days ?? 0}
+            </p>
+          </div>
+          <div className="rounded-sm bg-theme-secondary p-2">
+            <p className="body-xxs-regular text-theme-muted">Recommended Mode</p>
+            <p className="body-xs-medium text-theme-primary">{health?.recommended_portfolio_mode ?? "-"}</p>
+          </div>
+          <div className="rounded-sm bg-theme-secondary p-2">
             <p className="body-xxs-regular text-theme-muted">Universe Size</p>
             <p className="body-xs-medium text-theme-primary">{health?.universe_size ?? 0}</p>
           </div>
@@ -954,7 +971,10 @@ export default function DashboardPage() {
         </PanelCard>
       </div>
 
-      <div ref={healthRef} className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+      <div
+        ref={healthRef}
+        className={`grid grid-cols-1 gap-4 xl:grid-cols-3 ${focusSection === "health" ? "ring-2 ring-sky-500/50 rounded-lg p-1 -m-1" : ""}`}
+      >
         <PanelCard title="Strategy Health" description="Signal dispersion, crowding, correlation, mismatch, confidence">
           <div className="grid grid-cols-2 gap-2">
             {Object.entries(health?.strategy_health ?? {}).map(([key, value]) => (
@@ -1007,7 +1027,10 @@ export default function DashboardPage() {
           </div>
         </PanelCard>
 
-        <div ref={regimeRef}>
+        <div
+          ref={regimeRef}
+          className={focusSection === "regime" ? "ring-2 ring-sky-500/50 rounded-lg p-1 -m-1" : ""}
+        >
           <PanelCard title="Current Regime" description="Trend, volatility, liquidity, breadth">
             <div className="grid grid-cols-2 gap-2">
               <div className="rounded-sm bg-theme-secondary p-2">
@@ -1102,7 +1125,10 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-3">
-        <div ref={portfolioRef}>
+        <div
+          ref={portfolioRef}
+          className={focusSection === "portfolio" ? "ring-2 ring-sky-500/50 rounded-lg p-1 -m-1" : ""}
+        >
           <PanelCard title="Portfolio Structure" description="Sector/factor exposure and position risk">
             <div className="grid grid-cols-2 gap-2">
             <div className="col-span-2 rounded-sm bg-theme-secondary p-2">

@@ -91,6 +91,47 @@ def _compute_target_return(
     return close.shift(-h) / (open_.shift(-1) + 1e-12) - 1.0
 
 
+def _attach_residual_momentum(
+    merged: pd.DataFrame,
+    data_by_symbol: dict[str, pd.DataFrame],
+    windows: list[int],
+) -> pd.DataFrame:
+    """Add residual momentum features: ret - beta*market_ret over rolling windows."""
+    close_panel = build_close_panel(data_by_symbol)
+    if close_panel.empty or len(close_panel.columns) < 2:
+        return merged
+
+    market_ret = close_panel.pct_change(fill_method=None).mean(axis=1)
+    market_ret = market_ret.reindex(merged["date"].unique()).fillna(0.0)
+
+    merged = merged.copy()
+    merged["_market_ret"] = merged["date"].map(market_ret)
+
+    for window in windows or [20]:
+        if window < 5:
+            continue
+        col = f"residual_momentum_{window}"
+        min_periods = max(5, window // 2)
+        values_list: list[pd.Series] = []
+
+        for symbol, group in merged.groupby("symbol", sort=False):
+            g = group.sort_values("date").reset_index(drop=True)
+            ret = g["daily_return"].astype(float)
+            mkt = g["_market_ret"].astype(float)
+            cov = ret.rolling(window, min_periods=min_periods).cov(mkt)
+            var_mkt = mkt.rolling(window, min_periods=min_periods).var()
+            beta = np.where(var_mkt > 1e-12, cov / (var_mkt + 1e-12), 0.0)
+            beta = np.where(np.isfinite(beta), beta, 0.0)
+            residual = ret - beta * mkt
+            res_mom = residual.rolling(window, min_periods=min_periods).sum()
+            values_list.append(res_mom)
+
+        merged[col] = pd.concat(values_list, axis=0)
+
+    merged = merged.drop(columns=["_market_ret"], errors="ignore")
+    return merged
+
+
 def _build_regime_features(data_by_symbol: dict[str, pd.DataFrame]) -> pd.DataFrame:
     close_panel = build_close_panel(data_by_symbol)
     if close_panel.empty:
@@ -388,6 +429,11 @@ def build_feature_dataset(
     if feature_config.include_regime_features:
         regime = _build_regime_features(data_by_symbol)
         merged = merged.merge(regime, on="date", how="left")
+
+    if feature_config.include_residual_momentum:
+        merged = _attach_residual_momentum(
+            merged, data_by_symbol, feature_config.residual_momentum_windows
+        )
 
     merged = attach_macro_features(
         panel_df=merged,

@@ -1,4 +1,4 @@
-﻿import type { BenchmarkCurvePoint, EquityCurvePoint } from "../../types/quant";
+import type { BenchmarkCurvePoint, EquityCurvePoint } from "../../types/quant";
 import { PanelCard } from "./PanelCard";
 
 interface EquityCurveChartProps {
@@ -140,7 +140,7 @@ export function EquityCurveChart({
       {rows.length === 0 ? (
         <p className="body-sm-regular text-theme-muted">No equity data available.</p>
       ) : (
-        <div className="rounded-sm bg-theme-secondary p-2">
+        <div className="max-w-full overflow-x-auto rounded-sm bg-theme-secondary p-2" role="img" aria-label="Equity curve chart">
           <div className="mb-2 flex items-center gap-4">
             <div className="flex items-center gap-1">
               <span className="inline-block h-2 w-2 rounded-full bg-sky-500" />
@@ -152,7 +152,7 @@ export function EquityCurveChart({
             </div>
           </div>
 
-          <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-64 w-full">
+          <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-64 min-w-0 w-full max-w-full" preserveAspectRatio="xMidYMid meet">
             {yAxisTicks.map((tick) => {
               const y = MARGIN.top + ((yMax - tick) / Math.max(yMax - yMin, 1e-9)) * plotHeight;
               return (

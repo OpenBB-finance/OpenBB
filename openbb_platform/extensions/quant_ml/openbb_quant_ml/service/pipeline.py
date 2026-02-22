@@ -1,4 +1,4 @@
-﻿"""Pipeline orchestration for quant training, signals, and backtests."""
+"""Pipeline orchestration for quant training, signals, and backtests."""
 
 from __future__ import annotations
 
@@ -124,7 +124,7 @@ from openbb_quant_ml.service.universe_engine import (
 )
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
-SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
+SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker", "catboost_ranker")
 
 _EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="quant-ml")
 _FUTURES: dict[str, Future] = {}
@@ -562,10 +562,16 @@ def _save_ranker_inference_artifacts(
     mu_mapping: str,
     label_return_map: dict[int, float],
     label_return_fallback: float,
+    model_name: ModelName = "lgbm_ranker",
 ) -> None:
-    model_path = run_dir / "model_lgbm_ranker.pkl"
-    meta_path = run_dir / "model_lgbm_ranker_meta.json"
+    model_path = run_dir / f"model_{model_name}.pkl"
+    meta_path = run_dir / f"model_{model_name}_meta.json"
 
+    if backend == "catboost":
+        try:
+            model.save_model(str(run_dir / f"model_{model_name}.cbm"))
+        except Exception:
+            pass
     with model_path.open("wb") as file:
         pickle.dump(model, file)
 
@@ -593,6 +599,8 @@ def _resolve_selected_models(
         return ("lgbm_ranker",)
     if request.model_choice == "xgb_only":
         return ("xgb_lstm",)
+    if request.model_choice == "catboost_only":
+        return ("catboost_ranker",)
     selected = tuple(model for model in request.model_set if model in SUPPORTED_MODELS)
     return selected or SUPPORTED_MODELS
 
@@ -901,6 +909,8 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 model_windows["xgb_lstm"] = (50, 71)
             if "lgbm_ranker" in selected_models:
                 model_windows["lgbm_ranker"] = (72, 92)
+            if "catboost_ranker" in selected_models:
+                model_windows["catboost_ranker"] = (72, 92)
 
         if "xgb_lstm" in selected_models:
             xgb_start, xgb_end = model_windows.get("xgb_lstm", (50, 92))
@@ -1007,6 +1017,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 theta_grid=request.signal_config.theta_grid,
                 horizon_months=max(1, request.horizon_days // 21 or 1),
                 progress_callback=_ranker_progress,
+                backend="lightgbm",
             )
             _mark_elapsed("train_ranker_sec", t_train_ranker)
             update_run(run_id, progress=ranker_end, stage="training_ranker")
@@ -1046,6 +1057,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 mu_mapping=request.mu_mapping,
                 label_return_map=ranker_output.label_return_map,
                 label_return_fallback=ranker_output.label_return_fallback,
+                model_name="lgbm_ranker",
             )
 
             ndcg_obj = ranker_output.metrics.get("ndcg", {})
@@ -1059,6 +1071,91 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                     ),
                     "hit_rate": ranker_output.metrics.get("hit_rate"),
                     "best_theta": ranker_output.metrics.get("best_theta"),
+                }
+            )
+
+        if "catboost_ranker" in selected_models:
+            ranker_start, ranker_end = model_windows.get("catboost_ranker", (50, 92))
+            _mark_stage(
+                run_id,
+                progress=ranker_start,
+                stage="training_ranker",
+                log="Training CatBoost ranker model.",
+            )
+            t_train_catboost = time.perf_counter()
+            catboost_log_progress = {"value": -1}
+
+            def _catboost_progress(local_ratio: float, message: str) -> None:
+                clipped = float(max(0.0, min(1.0, local_ratio)))
+                progress = ranker_start + int((ranker_end - ranker_start) * clipped)
+                update_run(run_id, progress=progress, stage="training_ranker")
+                if progress - catboost_log_progress["value"] >= 5 or clipped >= 1.0:
+                    append_log(run_id, f"[catboost_ranker] {message} ({progress}%)")
+                    catboost_log_progress["value"] = progress
+
+            catboost_output = train_ranker_models(
+                feature_data=feature_data,
+                feature_columns=feature_columns,
+                walk_forward=walk_forward_cfg,
+                ranker_config=request.ranker_config,
+                theta_grid=request.signal_config.theta_grid,
+                horizon_months=max(1, request.horizon_days // 21 or 1),
+                progress_callback=_catboost_progress,
+                backend="catboost",
+            )
+            _mark_elapsed("train_ranker_sec", t_train_catboost)
+            update_run(run_id, progress=ranker_end, stage="training_ranker")
+            catboost_pred = catboost_output.predictions.copy()
+            catboost_pred["date"] = pd.to_datetime(catboost_pred["date"]).dt.tz_localize(
+                None
+            )
+            catboost_pred.to_parquet(
+                run_dir / "predictions_catboost_ranker.parquet", index=False
+            )
+
+            catboost_metrics_payload: dict[str, Any] = {
+                "model_name": "catboost_ranker",
+                "metrics": catboost_output.metrics,
+                "feature_importance": catboost_output.feature_importance,
+                "model_meta": catboost_output.model_meta,
+                "feature_columns": catboost_output.feature_names,
+                "symbols_requested": symbols,
+                "symbols_trained": sorted(list(datasets.keys())),
+                "symbols_skipped": skipped_union,
+                "target_mode": request.target_mode,
+                "horizon_days": request.horizon_days,
+            }
+            save_json(run_dir / "metrics_catboost_ranker.json", catboost_metrics_payload)
+            trained_until = (
+                pd.Timestamp(catboost_pred["date"].max()).date().isoformat()
+                if not catboost_pred.empty
+                else date.today().isoformat()
+            )
+            _save_ranker_inference_artifacts(
+                run_dir,
+                model=catboost_output.inference_model,
+                feature_columns=catboost_output.feature_names,
+                backend=catboost_output.inference_backend,
+                trained_until=trained_until,
+                mu_mapping=request.mu_mapping,
+                label_return_map=catboost_output.label_return_map,
+                label_return_fallback=catboost_output.label_return_fallback,
+                model_name="catboost_ranker",
+            )
+
+            ndcg_obj_cb = catboost_output.metrics.get("ndcg", {})
+            performance_rows.append(
+                {
+                    "model_name": "catboost_ranker",
+                    "train_ic": catboost_output.metrics.get("train_ic"),
+                    "val_ic": catboost_output.metrics.get("val_ic"),
+                    "ndcg": (
+                        ndcg_obj_cb.get("ndcg_10")
+                        if isinstance(ndcg_obj_cb, dict)
+                        else None
+                    ),
+                    "hit_rate": catboost_output.metrics.get("hit_rate"),
+                    "best_theta": catboost_output.metrics.get("best_theta"),
                 }
             )
 

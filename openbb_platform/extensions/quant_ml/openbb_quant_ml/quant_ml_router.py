@@ -478,7 +478,9 @@ def predictions_latest(
 
 @router.command(methods=["GET"], path="/health")
 def health(
-    run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
+    run_id: str | None = None,
+    model_name: ModelName = "lgbm_ranker",
+    mode: str | None = None,
 ) -> DashboardHealthResponse:
     """Return dashboard health and run resolution metadata."""
     return get_dashboard_health(run_id=run_id, model_name=model_name)

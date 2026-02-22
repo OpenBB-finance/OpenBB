@@ -9,14 +9,14 @@ from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
 TrainRunStatus = Literal["queued", "running", "completed", "failed"]
 SignalSide = Literal["buy", "hold", "sell"]
-ModelName = Literal["xgb_lstm", "lgbm_ranker"]
+ModelName = Literal["xgb_lstm", "lgbm_ranker", "catboost_ranker"]
 PortfolioMode = Literal["long_only", "long_short"]
 MuMapping = Literal["z_score", "quantile_mean_return"]
 TargetMode = Literal["close_to_close", "close_to_next_open", "next_open_to_close"]
 EntryPriceMode = Literal["next_open", "close"]
 ExitPriceMode = Literal["close", "next_open"]
 CloseToNextOpenHorizonPolicy = Literal["fixed_1", "use_h"]
-ModelChoice = Literal["lgbm_only", "xgb_only", "dual"]
+ModelChoice = Literal["lgbm_only", "xgb_only", "catboost_only", "dual"]
 DashboardMode = Literal["live", "backtest"]
 DashboardPayloadStatus = Literal["ok", "insufficient_data", "not_found"]
 WorkflowRunStatus = Literal["queued", "running", "completed", "failed", "unknown"]
@@ -101,6 +101,8 @@ class FeatureConfig(BaseModel):
     include_rsi: bool = True
     include_macd: bool = True
     include_regime_features: bool = True
+    include_residual_momentum: bool = False
+    residual_momentum_windows: list[int] = Field(default_factory=lambda: [20])
 
 
 class TrainRequest(BaseModel):

@@ -1,13 +1,13 @@
 export type TrainRunStatus = "queued" | "running" | "completed" | "failed";
 export type SignalSide = "buy" | "hold" | "sell";
-export type ModelName = "xgb_lstm" | "lgbm_ranker";
+export type ModelName = "xgb_lstm" | "lgbm_ranker" | "catboost_ranker";
 export type PortfolioMode = "long_only" | "long_short";
 export type MuMapping = "z_score" | "quantile_mean_return";
 export type TargetMode = "close_to_close" | "close_to_next_open" | "next_open_to_close";
 export type EntryPriceMode = "next_open" | "close";
 export type ExitPriceMode = "close" | "next_open";
 export type CloseToNextOpenHorizonPolicy = "fixed_1" | "use_h";
-export type ModelChoice = "lgbm_only" | "xgb_only" | "dual";
+export type ModelChoice = "lgbm_only" | "xgb_only" | "catboost_only" | "dual";
 export type DashboardMode = "live" | "backtest";
 export type WorkflowRunStatus = "queued" | "running" | "completed" | "failed" | "unknown";
 export type WalkForwardJobStatus = "queued" | "running" | "completed" | "failed" | "not_found";
@@ -101,6 +101,8 @@ export interface FeatureConfigInput {
   include_rsi: boolean;
   include_macd: boolean;
   include_regime_features: boolean;
+  include_residual_momentum?: boolean;
+  residual_momentum_windows?: number[];
 }
 
 export interface TrainRequestPayload {
@@ -179,6 +181,7 @@ export interface SignalsRequestPayload {
   as_of_date?: string;
   top_k: number;
   score_threshold: number;
+  balanced_long_short?: boolean;
 }
 
 export interface BacktestConstraintsInput {
@@ -472,6 +475,9 @@ export interface DashboardHealthPayload {
   cache_warm_ratio?: number;
   mode_supported: DashboardMode[];
   data_timestamp?: string | null;
+  latest_market_date?: string | null;
+  staleness_days?: number;
+  recommended_portfolio_mode?: PortfolioMode;
   universe_size: number;
   cost_bps: number;
   cash_exposure: number;
