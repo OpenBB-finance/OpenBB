@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import unicodedata
 from datetime import date
 from pathlib import Path
 
@@ -98,6 +99,12 @@ NAME_OVERRIDES: dict[str, str] = {
     "european union": None,  # skip — not a country
     "african union": None,
 }
+
+
+def _strip_accents(text: str) -> str:
+    """Strip diacritical marks (e.g., Côte d'Ivoire -> Cote d'Ivoire)."""
+    nfd = unicodedata.normalize("NFD", text)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
 
 
 def _build_name_index() -> dict[str, str]:
@@ -519,7 +526,7 @@ def build_country_data() -> dict:
         entry: dict = {
             "alpha_2": c.alpha_2,
             "alpha_3": c.alpha_3,
-            "name": c.name,
+            "name": _strip_accents(c.name),
             "numeric": c.numeric,
         }
         groups = country_groups.get(c.alpha_2)
