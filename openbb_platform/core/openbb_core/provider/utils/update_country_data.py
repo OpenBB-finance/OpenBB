@@ -27,7 +27,16 @@ import unicodedata
 from datetime import date
 from pathlib import Path
 
-import pycountry
+import requests
+try:
+    import pycountry
+    from bs4 import BeautifulSoup
+except ImportError as e:
+    missing_package = str(e).split("'")[1] if "'" in str(e) else "unknown"
+    raise ImportError(
+        f"Missing required package: {missing_package}. "
+        "Please install dependencies: pip install pycountry beautifulsoup4 requests"
+    ) from e
 import requests
 from bs4 import BeautifulSoup
 
