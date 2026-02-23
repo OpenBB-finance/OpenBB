@@ -1,0 +1,2 @@
+"""CoinGecko provider tests."""
+
