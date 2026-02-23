@@ -29,6 +29,7 @@ pyjwt = "^2.10.1"
 
 [tool.poetry.scripts]
 openbb-build = "openbb_core.build:main"
+openbb-update = "openbb_core.provider.utils.update_taxonomy:main"
 
 [build-system]
 requires = ["poetry-core"]

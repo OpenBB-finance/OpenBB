@@ -63,6 +63,7 @@ ignore = [
 "**/tests/*" = ["S101"]
 "*init*.py" = ["F401"]
 "website/*" = ["T201", "PLR0915"]
+"**/update_taxonomy.py" = ["T201", "S310"]
 "*integration/*" = ["S101"]
 
 [lint.isort]
