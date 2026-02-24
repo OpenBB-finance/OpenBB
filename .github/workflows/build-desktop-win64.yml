@@ -218,7 +218,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/signed-installer"
 
       - name: Sign Installer
-        uses: sslcom/esigner-codesign@v1.3.1
+        uses: sslcom/esigner-codesign@v1.3.2
         with:
           command: sign
           username: ${{ secrets.ESIGNER_USERNAME }}
