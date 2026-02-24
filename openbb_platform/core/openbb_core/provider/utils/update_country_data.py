@@ -28,6 +28,7 @@ from datetime import date
 from pathlib import Path
 
 import requests
+
 try:
     import pycountry
     from bs4 import BeautifulSoup
@@ -37,8 +38,6 @@ except ImportError as e:
         f"Missing required package: {missing_package}. "
         "Please install dependencies: pip install pycountry beautifulsoup4 requests"
     ) from e
-import requests
-from bs4 import BeautifulSoup
 
 SCRIPT_DIR = Path(__file__).parent
 DEFAULT_OUTPUT = SCRIPT_DIR / "country_data.json"
@@ -63,7 +62,7 @@ EXPECTED_COUNTS = {
 
 # ── Name normalization ──────────────────────────────────────────────────────
 # Map common display names → pycountry names or alpha_2 codes
-NAME_OVERRIDES: dict[str, str] = {
+NAME_OVERRIDES: dict[str, str | None] = {
     "brunei": "BN",
     "bolivia": "BO",
     "congo": "CG",
@@ -120,12 +119,12 @@ def _build_name_index() -> dict[str, str]:
     """Build lowercase name → alpha_2 lookup from pycountry + overrides."""
     idx: dict[str, str] = {}
     for c in pycountry.countries:
-        idx[c.name.lower()] = c.alpha_2
+        idx[c.name.lower()] = c.alpha_2  # type: ignore
         if hasattr(c, "common_name"):
-            idx[c.common_name.lower()] = c.alpha_2
+            idx[c.common_name.lower()] = c.alpha_2  # type: ignore
         if hasattr(c, "official_name"):
-            idx[c.official_name.lower()] = c.alpha_2
-    idx.update(NAME_OVERRIDES)
+            idx[c.official_name.lower()] = c.alpha_2  # type: ignore
+    idx.update(NAME_OVERRIDES)  # type: ignore
     return idx
 
 
@@ -146,7 +145,7 @@ def resolve_country(name: str) -> str | None:
     try:
         results = pycountry.countries.search_fuzzy(clean)
         if results:
-            return results[0].alpha_2
+            return results[0].alpha_2  # type: ignore
     except LookupError:
         pass
 
@@ -531,14 +530,14 @@ def build_country_data() -> dict:
 
     # 4. Build country list from pycountry
     countries = []
-    for c in sorted(pycountry.countries, key=lambda x: x.alpha_2):
+    for c in sorted(pycountry.countries, key=lambda x: x.alpha_2):  # type: ignore
         entry: dict = {
-            "alpha_2": c.alpha_2,
-            "alpha_3": c.alpha_3,
-            "name": _strip_accents(c.name),
-            "numeric": c.numeric,
+            "alpha_2": c.alpha_2,  # type: ignore
+            "alpha_3": c.alpha_3,  # type: ignore
+            "name": _strip_accents(c.name),  # type: ignore
+            "numeric": c.numeric,  # type: ignore
         }
-        groups = country_groups.get(c.alpha_2)
+        groups = country_groups.get(c.alpha_2)  # type: ignore
         if groups:
             entry["groups"] = groups
         countries.append(entry)
