@@ -33,7 +33,7 @@ class FMPCalendarIpoData(CalendarIpoData):
 
     __alias_dict__ = {
         "ipo_date": "date",
-        "exchange_date": "daa",
+        "exchange_date": "date",
         "name": "company",
     }
 
