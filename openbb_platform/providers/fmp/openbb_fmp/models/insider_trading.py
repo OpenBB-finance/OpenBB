@@ -62,7 +62,7 @@ class FMPInsiderTradingData(InsiderTradingData):
         "ownership_type": "directOrIndirect",
         "security_type": "securityName",
         "transaction_price": "price",
-        "acquisition_or_disposition": "acquistionOrDisposition",
+        "acquisition_or_disposition": "acquisitionOrDisposition",
         "filing_url": "link",
         "transactions_ratio": "acquiredDisposedRatio",
         "company_cik": "cik",
