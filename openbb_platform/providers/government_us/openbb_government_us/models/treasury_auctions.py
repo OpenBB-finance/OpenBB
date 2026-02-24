@@ -28,7 +28,7 @@ class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
     }
 
 
-class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
+class GovernmentUSTreasuryAuctionsData(USTreasuryAuctionsData):
     """US Government Treasury Auctions Data."""
 
     __alias_dict__ = {
@@ -167,7 +167,7 @@ class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
 class GovernmentUSTreasuryAuctionsFetcher(
     Fetcher[
         GovernmentUSTreasuryAuctionsQueryParams,
-        list[GovernementUSTreasuryAuctionsData],
+        list[GovernmentUSTreasuryAuctionsData],
     ]
 ):
     """Transform the query, extract and transform the data from the us treasury endpoints."""
@@ -230,7 +230,7 @@ class GovernmentUSTreasuryAuctionsFetcher(
         query: GovernmentUSTreasuryAuctionsQueryParams,
         data: list[dict],
         **kwargs: Any,
-    ) -> list[GovernementUSTreasuryAuctionsData]:
+    ) -> list[GovernmentUSTreasuryAuctionsData]:
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from math import isnan
@@ -243,5 +243,5 @@ class GovernmentUSTreasuryAuctionsFetcher(
             }
 
         return [
-            GovernementUSTreasuryAuctionsData.model_validate(clean_nan(d)) for d in data
+            GovernmentUSTreasuryAuctionsData.model_validate(clean_nan(d)) for d in data
         ]
