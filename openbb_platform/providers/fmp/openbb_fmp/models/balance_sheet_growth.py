@@ -213,7 +213,7 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of long-term debt.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    growth_deferrred_tax_liabilities_non_current: float | None = Field(
+    growth_deferred_tax_liabilities_non_current: float | None = Field(
         default=None,
         description="Growth rate of non-current deferred tax liabilities.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
