@@ -139,7 +139,7 @@ class ECBMain(Data):
     reserve_assets: float | None = Field(
         default=None, description="Reserve Assets Balance (Billions of EUR)"
     )
-    errors_and_ommissions: float | None = Field(
+    errors_and_omissions: float | None = Field(
         default=None, description="Errors and Omissions (Billions of EUR)"
     )
 
