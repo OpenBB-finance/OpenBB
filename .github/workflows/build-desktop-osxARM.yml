@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Import Code Signing Certificate
-        uses: apple-actions/import-codesign-certs@v3
+        uses: apple-actions/import-codesign-certs@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
