@@ -17,10 +17,13 @@ import argparse
 import csv
 import io
 import json
+import logging
 import sys
 import urllib.request
 from datetime import date
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 SCRIPT_DIR = Path(__file__).parent
 OUTPUT_PATH = SCRIPT_DIR / "exchange_data.json"
@@ -31,15 +34,17 @@ MIC_CSV_URL = (
 
 def download_mic_csv() -> list[dict]:
     """Download and parse the official ISO 10383 MIC CSV."""
-    print(f"Downloading MIC data from {MIC_CSV_URL}...")
+    logger.info("Downloading MIC data from %s...", MIC_CSV_URL)
 
-    req = urllib.request.Request(MIC_CSV_URL, headers={"User-Agent": "OpenBB/1.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
+    req = urllib.request.Request(  # noqa: S310
+        MIC_CSV_URL, headers={"User-Agent": "OpenBB/1.0"}
+    )
+    with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
         raw = resp.read().decode("utf-8-sig")
 
     reader = csv.DictReader(io.StringIO(raw))
     rows = list(reader)
-    print(f"Downloaded {len(rows)} total MIC entries")
+    logger.info("Downloaded %d total MIC entries", len(rows))
     return rows
 
 
@@ -47,15 +52,13 @@ def process_mic_data(rows: list[dict], operating_only: bool = False) -> list[dic
     """Filter and transform MIC rows into exchange entries."""
     # Normalize header keys (strip whitespace, uppercase)
     active = [r for r in rows if r.get("STATUS", "").strip().upper() == "ACTIVE"]
-    print(f"Active entries: {len(active)}")
+    logger.info("Active entries: %d", len(active))
 
     if operating_only:
         active = [
-            r
-            for r in active
-            if r.get("OPRT/SGMT", "").strip().upper() in ("OPRT", "O")
+            r for r in active if r.get("OPRT/SGMT", "").strip().upper() in ("OPRT", "O")
         ]
-        print(f"Operating MICs only: {len(active)}")
+        logger.info("Operating MICs only: %d", len(active))
 
     exchanges = []
     for row in active:
@@ -121,6 +124,9 @@ def build_exchange_data(exchanges: list[dict]) -> dict:
 
 
 def main():
+    """Download ISO 10383 MIC registry and regenerate exchange_data.json."""
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
     parser = argparse.ArgumentParser(description="Update exchange data from ISO 10383")
     parser.add_argument(
         "--operating-only",
@@ -133,7 +139,7 @@ def main():
     exchanges = process_mic_data(rows, operating_only=args.operating_only)
 
     if not exchanges:
-        print("Error: No exchanges found after filtering")
+        logger.error("No exchanges found after filtering")
         sys.exit(1)
 
     data = build_exchange_data(exchanges)
@@ -144,8 +150,8 @@ def main():
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
-    print(f"\nWrote {OUTPUT_PATH}")
-    print(f"   Total exchanges: {len(exchanges)}")
+    logger.info("\nWrote %s", OUTPUT_PATH)
+    logger.info("   Total exchanges: %d", len(exchanges))
 
 
 if __name__ == "__main__":
