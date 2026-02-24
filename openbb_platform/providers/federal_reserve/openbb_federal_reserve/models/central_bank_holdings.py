@@ -112,7 +112,7 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
         default=None,
         description="Description of the security. Only returned for Agency securities.",
     )
-    is_aggreated: Literal["Y"] | None = Field(
+    is_aggregated: Literal["Y"] | None = Field(
         default=None,
         description="Whether the security is aggregated. Only returned for Agency securities.",
     )
