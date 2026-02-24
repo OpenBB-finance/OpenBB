@@ -9,8 +9,8 @@ Source:
     https://www.iso20022.org/market-identifier-codes
 
 Usage:
-    python scripts/update_exchange_data.py
-    python scripts/update_exchange_data.py --operating-only
+    python openbb_platform/core/openbb_core/provider/utils/update_exchange_data.py
+    python openbb_platform/core/openbb_core/provider/utils/update_exchange_data.py --operating-only
 """
 
 import argparse
@@ -23,10 +23,7 @@ from datetime import date
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
-OUTPUT_PATH = (
-    SCRIPT_DIR.parent
-    / "openbb_platform/core/openbb_core/provider/utils/exchange_data.json"
-)
+OUTPUT_PATH = SCRIPT_DIR / "exchange_data.json"
 MIC_CSV_URL = (
     "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"
 )
