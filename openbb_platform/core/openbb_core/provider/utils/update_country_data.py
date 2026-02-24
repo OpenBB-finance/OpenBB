@@ -50,7 +50,7 @@ HEADERS = {
 }
 
 # Expected member counts for sanity checks (approximate — update when membership changes)
-EXPECTED_COUNTS = {
+EXPECTED_COUNTS: dict[str, int | tuple[int, int]] = {
     "G7": 7,
     "G20": 20,  # 19 countries + EU (we only count countries)
     "EU": 27,
@@ -510,7 +510,7 @@ def build_country_data() -> dict:
             lo, hi = expected
             ok = lo <= count <= hi
             expected_str = f"{lo}-{hi}"
-        else:
+        elif isinstance(expected, int):
             ok = abs(count - expected) <= 2  # allow ±2 tolerance
             expected_str = str(expected)
         status = "✅" if ok else "⚠️"
