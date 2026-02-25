@@ -515,6 +515,13 @@ def run_backtest(
                 active_symbols = [symbols[i] for i in active_indices]
                 mu_active = mu[active_indices]
                 cov_active = cov[np.ix_(active_indices, active_indices)]
+                scenario_lookback = max(
+                    int(getattr(constraints, "scenario_lookback_days", constraints.lookback_days)),
+                    int(constraints.lookback_days),
+                )
+                scenario_frame = returns.loc[:rebalance_date, active_symbols].tail(
+                    scenario_lookback
+                )
                 metric_rows = context.get("symbol_metrics", {})
                 metadata_active: dict[str, dict[str, Any]] = {}
                 for symbol in active_symbols:
@@ -541,6 +548,10 @@ def run_backtest(
                     requested_max_weight=effective_max_weight,
                     policy=universe_policy,
                     nav=1.0,
+                    optimizer_mode=str(constraints.optimizer_mode),
+                    cvar_alpha=float(constraints.cvar_alpha),
+                    cvar_lambda=float(constraints.cvar_lambda),
+                    scenario_returns=scenario_frame.fillna(0.0).to_numpy(dtype=float),
                 )
                 optimized_active = opt_result.weights
                 for local_idx, global_idx in enumerate(active_indices):
@@ -755,6 +766,8 @@ def run_backtest(
     )
     metrics["total_cost"] = float(np.sum(trading_costs)) if trading_costs else 0.0
     metrics["net_return"] = float(equity_series.iloc[-1] / equity_series.iloc[0] - 1.0)
+    tail = daily_returns.nsmallest(max(1, int(len(daily_returns) * 0.05)))
+    metrics["cvar_95"] = float(tail.mean()) if not tail.empty else 0.0
 
     curve_dates = pd.to_datetime(curve["date"]).dt.tz_localize(None)
     benchmark_curve = _benchmark_curve(
@@ -781,6 +794,10 @@ def run_backtest(
             "long_only": bool(constraints.long_only),
             "risk_aversion": float(constraints.risk_aversion),
             "lookback_days": float(constraints.lookback_days),
+            "optimizer_mode_cvar": bool(str(constraints.optimizer_mode) == "cvar"),
+            "cvar_alpha": float(constraints.cvar_alpha),
+            "cvar_lambda": float(constraints.cvar_lambda),
+            "scenario_lookback_days": float(constraints.scenario_lookback_days),
             "sector_cap": float(
                 universe_policy.get("portfolio_constraints", {}).get("sector_cap", 0.25)
             ),

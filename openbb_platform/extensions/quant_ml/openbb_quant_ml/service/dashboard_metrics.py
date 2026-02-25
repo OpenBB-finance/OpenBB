@@ -1671,6 +1671,33 @@ def _compute_alerts(run_id: str, model_name: ModelName) -> list[dict[str, Any]]:
                 "value": _safe_float(ic.tail(3).mean()),
             }
         )
+    if ic.shape[0] >= 12:
+        recent_6 = _safe_float(ic.tail(6).mean())
+        prior_6 = _safe_float(ic.tail(12).head(6).mean())
+        if recent_6 < (prior_6 - 0.03):
+            alerts.append(
+                {
+                    "rule_id": "ic_rolling_drop_6m",
+                    "severity": "warning",
+                    "triggered_at": now_iso,
+                    "message": "6-period rolling IC dropped versus previous regime.",
+                    "value": recent_6 - prior_6,
+                }
+            )
+    if ic.shape[0] >= 6:
+        y = ic.tail(6).to_numpy(dtype=float)
+        x = np.arange(len(y), dtype=float)
+        slope = _safe_float(np.polyfit(x, y, 1)[0]) if len(y) >= 2 else 0.0
+        if slope < -0.005:
+            alerts.append(
+                {
+                    "rule_id": "ic_trend_negative",
+                    "severity": "warning",
+                    "triggered_at": now_iso,
+                    "message": "Recent IC trend is negative.",
+                    "value": slope,
+                }
+            )
 
     maxdd = _safe_float(backtest_payload.get("metrics", {}).get("max_drawdown", 0.0))
     if maxdd <= -0.15:

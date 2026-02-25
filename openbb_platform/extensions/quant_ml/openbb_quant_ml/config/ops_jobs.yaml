@@ -10,14 +10,15 @@ defaults:
   market_data_timeout_sec: 20
   market_data_retry: 2
   market_data_backoff_base: 2.0
-  market_data_workers: 6
+  market_data_workers: 10
 
 daily:
-  universe_id: "global_core_equity"
+  universe_id: "all_in_one"
   lookback_years: 3
   market_delta_days: 45
   feature_delta_days: 120
-  max_infer_workers: 4
+  max_infer_workers: 8
+  market_update_delta_days: 60
   run_id: null
   model_name: "lgbm_ranker"
   top_k: 20
@@ -37,18 +38,39 @@ daily:
     submit_orders: false
 
 weekly:
-  universe_id: "global_core_equity"
+  universe_id: "all_in_one"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"
   include_macro_features: true
   macro_feature_subset: ["z_252", "yoy", "mom_3", "slope"]
   quick_mode: false
+  top_liquid_n: null
   model_choice: "lgbm_only"
   early_stopping: true
   feature_pruning: true
   walk_forward_compact: false
   cross_sectional_sampling: false
+  walk_forward_config:
+    train_months: 36
+    embargo_months: 1
+    val_months: 1
+    step_months: 2
+    purging_mode: "legacy_month_cutoff"
+  ranker_config:
+    n_estimators: 3000
+    early_stopping_rounds: 100
+  feature_config:
+    include_bollinger: false
+    include_atr: false
+    include_adx: false
+    include_obv: false
+  hpo_config:
+    enabled: false
+    n_trials: 25
+    timeout_sec: 1800
+    objective_metric: "val_ic"
+    random_state: 42
   retries: 1
   backoff_sec: 2.0
   compute_features: true
@@ -61,18 +83,39 @@ weekly:
     val_ic_min: -1.0
 
 monthly:
-  universe_id: "global_core_equity"
+  universe_id: "all_in_one"
   recent_years: 5
   horizon_days: 1
   target_mode: "next_open_to_close"
   include_macro_features: true
   macro_feature_subset: ["z_252", "yoy", "mom_3", "slope"]
   quick_mode: false
+  top_liquid_n: null
   model_choice: "lgbm_only"
   early_stopping: true
   feature_pruning: true
   walk_forward_compact: false
   cross_sectional_sampling: false
+  walk_forward_config:
+    train_months: 36
+    embargo_months: 1
+    val_months: 1
+    step_months: 1
+    purging_mode: "legacy_month_cutoff"
+  ranker_config:
+    n_estimators: 5000
+    early_stopping_rounds: 150
+  feature_config:
+    include_bollinger: false
+    include_atr: false
+    include_adx: false
+    include_obv: false
+  hpo_config:
+    enabled: false
+    n_trials: 40
+    timeout_sec: 1800
+    objective_metric: "val_ic"
+    random_state: 42
   retries: 1
   backoff_sec: 2.0
   compute_features: true

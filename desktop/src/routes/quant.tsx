@@ -202,6 +202,7 @@ const defaultWalkForwardConfig = {
   embargo_months: 1,
   val_months: 1,
   step_months: 1,
+  purging_mode: "legacy_month_cutoff" as const,
 };
 
 const defaultRankerConfig: RankerConfigInput = {
@@ -862,6 +863,10 @@ export default function QuantPage() {
           momentum_windows: [5, 20],
           include_rsi: true,
           include_macd: true,
+          include_bollinger: false,
+          include_atr: false,
+          include_adx: false,
+          include_obv: false,
           include_regime_features: true,
         },
         training_mode: "dual_compare",
@@ -877,6 +882,13 @@ export default function QuantPage() {
         quick_mode: false,
         model_choice: "dual",
         early_stopping: true,
+        hpo_config: {
+          enabled: false,
+          n_trials: 25,
+          timeout_sec: 1800,
+          objective_metric: "val_ic",
+          random_state: 42,
+        },
       };
       const trainPayload: TrainRequestPayload =
         selectedUniverseSet === "default"
@@ -992,6 +1004,10 @@ export default function QuantPage() {
           long_only: true,
           risk_aversion: 3.0,
           lookback_days: 126,
+          optimizer_mode: "mv",
+          cvar_alpha: 0.05,
+          cvar_lambda: 3.0,
+          scenario_lookback_days: 252,
         },
         cost_bps: 10,
         slippage_bps: 2,
@@ -1057,6 +1073,10 @@ export default function QuantPage() {
           long_only: true,
           risk_aversion: 3.0,
           lookback_days: 126,
+          optimizer_mode: "mv",
+          cvar_alpha: 0.05,
+          cvar_lambda: 3.0,
+          scenario_lookback_days: 252,
         },
         cost_bps: 10,
         slippage_bps: 2,

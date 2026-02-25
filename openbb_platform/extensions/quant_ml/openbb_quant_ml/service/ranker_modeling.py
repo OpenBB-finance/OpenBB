@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import warnings
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -50,7 +51,7 @@ def _build_rank_labels(frame: pd.DataFrame) -> pd.Series:
 def _build_splits(
     data: pd.DataFrame,
     config: WalkForwardConfig,
-    horizon_months: int,
+    horizon_days: int,
 ) -> list[tuple[pd.DataFrame, pd.DataFrame]]:
     month_values = sorted(data["month_id"].unique())
     min_needed = config.train_months + config.embargo_months + config.val_months
@@ -73,9 +74,14 @@ def _build_splits(
             continue
 
         # Purge labels whose forward horizon overlaps with validation period.
-        val_start = pd.Period(val_months[0], freq="M").start_time
-        purge_cutoff = val_start - pd.DateOffset(months=horizon_months)
-        train_df = train_df[train_df["date"] < purge_cutoff]
+        val_start = pd.Timestamp(val_df["date"].min()).tz_localize(None)
+        if str(config.purging_mode) == "strict_label_overlap":
+            label_end = train_df["date"] + pd.to_timedelta(max(1, int(horizon_days)), unit="D")
+            train_df = train_df[label_end < val_start]
+        else:
+            purge_months = max(1, int(np.ceil(max(1, int(horizon_days)) / 21)))
+            purge_cutoff = val_start - pd.DateOffset(months=purge_months)
+            train_df = train_df[train_df["date"] < purge_cutoff]
         if train_df.empty:
             cursor += max(config.step_months, 1)
             continue
@@ -321,13 +327,136 @@ def _decile_spread(frame: pd.DataFrame) -> float:
     return float(np.mean(spreads)) if spreads else 0.0
 
 
+def tune_ranker_hyperparameters(
+    feature_data: pd.DataFrame,
+    feature_columns: list[str],
+    walk_forward: WalkForwardConfig,
+    ranker_config: RankerConfig,
+    *,
+    horizon_days: int = 1,
+    n_trials: int = 25,
+    timeout_sec: int = 1800,
+    random_state: int = 42,
+    objective_metric: str = "val_ic",
+    backend: Literal["lightgbm", "catboost"] = "lightgbm",
+) -> tuple[RankerConfig, dict[str, Any]]:
+    """Tune ranker hyperparameters with Optuna using walk-forward splits."""
+    data = feature_data.dropna(subset=["target_return"]).copy()
+    if data.empty:
+        return ranker_config, {
+            "status": "skipped",
+            "reason": "empty_target_rows",
+            "objective_metric": objective_metric,
+        }
+
+    data["date"] = pd.to_datetime(data["date"]).dt.tz_localize(None)
+    data["month_id"] = _monthly_index(data["date"])
+    data["label"] = _build_rank_labels(data).astype(int)
+    data = data.sort_values(["date", "symbol"]).reset_index(drop=True)
+    splits = _build_splits(data, walk_forward, horizon_days)
+    if not splits:
+        return ranker_config, {
+            "status": "skipped",
+            "reason": "no_walkforward_splits",
+            "objective_metric": objective_metric,
+        }
+    splits = splits[: min(3, len(splits))]
+
+    try:
+        import optuna
+    except Exception as exc:  # noqa: BLE001
+        return ranker_config, {
+            "status": "skipped",
+            "reason": f"optuna_unavailable:{exc}",
+            "objective_metric": objective_metric,
+        }
+
+    sampler = optuna.samplers.TPESampler(seed=int(random_state))
+
+    def objective(trial) -> float:  # noqa: ANN001
+        tuned = copy.deepcopy(ranker_config)
+        tuned.learning_rate = trial.suggest_float("learning_rate", 1e-4, 0.3, log=True)
+        tuned.n_estimators = trial.suggest_int("n_estimators", 300, 8000)
+        tuned.num_leaves = trial.suggest_int("num_leaves", 16, 256)
+        tuned.min_data_in_leaf = trial.suggest_int("min_data_in_leaf", 50, 1500)
+        tuned.subsample = trial.suggest_float("subsample", 0.5, 1.0)
+        tuned.colsample_bytree = trial.suggest_float("colsample_bytree", 0.5, 1.0)
+        tuned.reg_lambda = trial.suggest_float("reg_lambda", 1e-3, 100.0, log=True)
+        tuned.random_state = int(random_state)
+
+        fold_scores: list[float] = []
+        for train_df, val_df in splits:
+            if backend == "catboost":
+                model, _, _ = _fit_catboost_ranker(
+                    train_df=train_df,
+                    val_df=val_df,
+                    feature_columns=feature_columns,
+                    config=tuned,
+                )
+            else:
+                model, _, _ = _fit_ranker_model(
+                    train_df=train_df,
+                    val_df=val_df,
+                    feature_columns=feature_columns,
+                    config=tuned,
+                )
+            scored = val_df.copy()
+            scored["score"] = model.predict(
+                scored[feature_columns].to_numpy(dtype=float)
+            ).astype(float)
+            fold_scores.append(float(_group_ic(scored, "score", "target_return")))
+        return float(np.mean(fold_scores)) if fold_scores else 0.0
+
+    try:
+        study = optuna.create_study(direction="maximize", sampler=sampler)
+        study.optimize(objective, n_trials=int(n_trials), timeout=int(timeout_sec))
+    except Exception as exc:  # noqa: BLE001
+        return ranker_config, {
+            "status": "failed",
+            "reason": str(exc),
+            "objective_metric": objective_metric,
+        }
+
+    params = study.best_params or {}
+    tuned = copy.deepcopy(ranker_config)
+    tuned.learning_rate = float(params.get("learning_rate", ranker_config.learning_rate))
+    tuned.n_estimators = int(params.get("n_estimators", ranker_config.n_estimators))
+    tuned.num_leaves = int(params.get("num_leaves", ranker_config.num_leaves))
+    tuned.min_data_in_leaf = int(
+        params.get("min_data_in_leaf", ranker_config.min_data_in_leaf)
+    )
+    tuned.subsample = float(params.get("subsample", ranker_config.subsample))
+    tuned.colsample_bytree = float(
+        params.get("colsample_bytree", ranker_config.colsample_bytree)
+    )
+    tuned.reg_lambda = float(params.get("reg_lambda", ranker_config.reg_lambda))
+    tuned.random_state = int(random_state)
+    return tuned, {
+        "status": "ok",
+        "objective_metric": str(objective_metric or "val_ic").strip().lower(),
+        "direction": "maximize",
+        "n_trials_requested": int(n_trials),
+        "n_trials_completed": int(len(study.trials)),
+        "best_value": float(study.best_value),
+        "best_params": {
+            "learning_rate": tuned.learning_rate,
+            "n_estimators": tuned.n_estimators,
+            "num_leaves": tuned.num_leaves,
+            "min_data_in_leaf": tuned.min_data_in_leaf,
+            "subsample": tuned.subsample,
+            "colsample_bytree": tuned.colsample_bytree,
+            "reg_lambda": tuned.reg_lambda,
+        },
+    }
+
+
 def train_ranker_models(
     feature_data: pd.DataFrame,
     feature_columns: list[str],
     walk_forward: WalkForwardConfig,
     ranker_config: RankerConfig,
     theta_grid: list[float],
-    horizon_months: int = 1,
+    horizon_days: int = 1,
     progress_callback: Callable[[float, str], None] | None = None,
     backend: Literal["lightgbm", "catboost"] = "lightgbm",
 ) -> RankerTrainingOutput:
@@ -349,7 +478,7 @@ def train_ranker_models(
     data = data.sort_values(["date", "symbol"]).reset_index(drop=True)
     emit_progress(0.1, "Prepared ranker labels")
 
-    splits = _build_splits(data, walk_forward, horizon_months)
+    splits = _build_splits(data, walk_forward, horizon_days)
     if not splits:
         # Fallback to a single last-month validation split.
         months = sorted(data["month_id"].unique())
@@ -568,6 +697,8 @@ def train_ranker_models(
         "backend": final_backend,
         "feature_count": len(feature_columns),
         "walk_forward": walk_forward.model_dump(mode="json"),
+        "purging_mode": str(walk_forward.purging_mode),
+        "horizon_days": int(horizon_days),
         "ranker_config": ranker_config.model_dump(mode="json"),
     }
 

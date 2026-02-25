@@ -76,10 +76,16 @@ from openbb_quant_ml.service.data_loader import (
     load_market_data,
 )
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
-from openbb_quant_ml.service.modeling import train_hybrid_models
+from openbb_quant_ml.service.modeling import (
+    train_hybrid_models,
+    tune_xgb_hyperparameters,
+)
 from openbb_quant_ml.service.pnl_attribution import build_pnl_attribution
 from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
-from openbb_quant_ml.service.ranker_modeling import train_ranker_models
+from openbb_quant_ml.service.ranker_modeling import (
+    train_ranker_models,
+    tune_ranker_hyperparameters,
+)
 from openbb_quant_ml.service.report_builder import build_report_html
 from openbb_quant_ml.service.run_context import ensure_run_context
 from openbb_quant_ml.service.run_registry import (
@@ -748,6 +754,11 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             start_date,
             end_date,
             progress_callback=_on_market_data_progress,
+            max_workers=(
+                int(request.market_data_workers)
+                if request.market_data_workers is not None
+                else 6
+            ),
         )
         if not datasets:
             raise ValueError("No valid market data was loaded for requested symbols.")
@@ -798,6 +809,96 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             raise ValueError("Feature dataset is empty.")
         if not feature_columns:
             raise ValueError("No feature columns were generated.")
+
+        model_config_active = request.model_parameters.model_copy(deep=True)
+        ranker_config_active_lgbm = request.ranker_config.model_copy(deep=True)
+        ranker_config_active_catboost = request.ranker_config.model_copy(deep=True)
+        if not request.early_stopping:
+            ranker_config_active_lgbm.early_stopping_rounds = max(
+                int(ranker_config_active_lgbm.n_estimators), 10
+            )
+            ranker_config_active_catboost.early_stopping_rounds = max(
+                int(ranker_config_active_catboost.n_estimators), 10
+            )
+
+        hpo_cfg = request.hpo_config
+        if bool(hpo_cfg.enabled):
+            _mark_stage(
+                run_id,
+                progress=49,
+                stage="hpo_tuning",
+                log=(
+                    f"HPO enabled (trials={int(hpo_cfg.n_trials)}, timeout={int(hpo_cfg.timeout_sec)}s, "
+                    f"objective={hpo_cfg.objective_metric})."
+                ),
+            )
+            hpo_trials = int(hpo_cfg.n_trials)
+            if request.quick_mode:
+                hpo_trials = max(5, min(hpo_trials, 10))
+
+            if "xgb_lstm" in selected_models:
+                tuned_model_config, hpo_summary_xgb = tune_xgb_hyperparameters(
+                    feature_data=feature_data,
+                    feature_columns=feature_columns,
+                    config=model_config_active,
+                    n_trials=hpo_trials,
+                    timeout_sec=int(hpo_cfg.timeout_sec),
+                    random_state=int(hpo_cfg.random_state),
+                    objective_metric=str(hpo_cfg.objective_metric),
+                )
+                model_config_active = tuned_model_config
+                save_json(run_dir / "hpo_summary_xgb_lstm.json", hpo_summary_xgb)
+                append_log(
+                    run_id,
+                    f"HPO[xgb_lstm] status={hpo_summary_xgb.get('status')} best={hpo_summary_xgb.get('best_value')}",
+                )
+
+            if "lgbm_ranker" in selected_models:
+                tuned_ranker_cfg_lgbm, hpo_summary_ranker = tune_ranker_hyperparameters(
+                    feature_data=feature_data,
+                    feature_columns=feature_columns,
+                    walk_forward=walk_forward_cfg,
+                    ranker_config=ranker_config_active_lgbm,
+                    horizon_days=int(request.horizon_days),
+                    n_trials=hpo_trials,
+                    timeout_sec=int(hpo_cfg.timeout_sec),
+                    random_state=int(hpo_cfg.random_state),
+                    objective_metric=str(hpo_cfg.objective_metric),
+                    backend="lightgbm",
+                )
+                ranker_config_active_lgbm = tuned_ranker_cfg_lgbm
+                save_json(run_dir / "hpo_summary_lgbm_ranker.json", hpo_summary_ranker)
+                append_log(
+                    run_id,
+                    f"HPO[lgbm_ranker] status={hpo_summary_ranker.get('status')} best={hpo_summary_ranker.get('best_value')}",
+                )
+
+            if "catboost_ranker" in selected_models:
+                tuned_ranker_cfg_cat, hpo_summary_cat = tune_ranker_hyperparameters(
+                    feature_data=feature_data,
+                    feature_columns=feature_columns,
+                    walk_forward=walk_forward_cfg,
+                    ranker_config=ranker_config_active_catboost,
+                    horizon_days=int(request.horizon_days),
+                    n_trials=hpo_trials,
+                    timeout_sec=int(hpo_cfg.timeout_sec),
+                    random_state=int(hpo_cfg.random_state),
+                    objective_metric=str(hpo_cfg.objective_metric),
+                    backend="catboost",
+                )
+                ranker_config_active_catboost = tuned_ranker_cfg_cat
+                save_json(run_dir / "hpo_summary_catboost_ranker.json", hpo_summary_cat)
+                append_log(
+                    run_id,
+                    f"HPO[catboost_ranker] status={hpo_summary_cat.get('status')} best={hpo_summary_cat.get('best_value')}",
+                )
+
+            _mark_stage(
+                run_id,
+                progress=50,
+                stage="training_prepare",
+                log="HPO stage completed.",
+            )
 
         close_panel = build_close_panel(datasets)
         open_panel = build_price_panel(datasets, "open")
@@ -894,7 +995,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         write_artifact_text(run_id, "repro_command.txt", repro_command)
         _mark_stage(
             run_id,
-            progress=48,
+            progress=52,
             stage="training_prepare",
             log="Saved market panel artifact.",
         )
@@ -902,18 +1003,18 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         performance_rows: list[dict[str, Any]] = []
         model_windows: dict[str, tuple[int, int]] = {}
         if len(selected_models) == 1:
-            model_windows[selected_models[0]] = (50, 92)
+            model_windows[selected_models[0]] = (55, 92)
         else:
             # Keep fixed windows for stable UX when both models are requested.
             if "xgb_lstm" in selected_models:
-                model_windows["xgb_lstm"] = (50, 71)
+                model_windows["xgb_lstm"] = (55, 71)
             if "lgbm_ranker" in selected_models:
                 model_windows["lgbm_ranker"] = (72, 92)
             if "catboost_ranker" in selected_models:
                 model_windows["catboost_ranker"] = (72, 92)
 
         if "xgb_lstm" in selected_models:
-            xgb_start, xgb_end = model_windows.get("xgb_lstm", (50, 92))
+            xgb_start, xgb_end = model_windows.get("xgb_lstm", (55, 92))
             _mark_stage(
                 run_id,
                 progress=xgb_start,
@@ -934,7 +1035,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             baseline_output = train_hybrid_models(
                 feature_data=feature_data,
                 feature_columns=feature_columns,
-                config=request.model_parameters,
+                config=model_config_active,
                 progress_callback=_xgb_progress,
             )
             _mark_elapsed("train_xgb_lstm_sec", t_train_xgb)
@@ -949,7 +1050,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
 
             baseline_ic = _compute_baseline_metrics(
                 predictions=baseline_pred,
-                split_ratio=request.model_parameters.train_val_split,
+                split_ratio=model_config_active.train_val_split,
             )
 
             metrics_payload: dict[str, Any] = {
@@ -1013,9 +1114,9 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 feature_data=feature_data,
                 feature_columns=feature_columns,
                 walk_forward=walk_forward_cfg,
-                ranker_config=request.ranker_config,
+                ranker_config=ranker_config_active_lgbm,
                 theta_grid=request.signal_config.theta_grid,
-                horizon_months=max(1, request.horizon_days // 21 or 1),
+                horizon_days=int(request.horizon_days),
                 progress_callback=_ranker_progress,
                 backend="lightgbm",
             )
@@ -1097,9 +1198,9 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 feature_data=feature_data,
                 feature_columns=feature_columns,
                 walk_forward=walk_forward_cfg,
-                ranker_config=request.ranker_config,
+                ranker_config=ranker_config_active_catboost,
                 theta_grid=request.signal_config.theta_grid,
-                horizon_months=max(1, request.horizon_days // 21 or 1),
+                horizon_days=int(request.horizon_days),
                 progress_callback=_catboost_progress,
                 backend="catboost",
             )
@@ -1696,7 +1797,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
                     "max_drawdown": _safe_float(
                         result.metrics.get("max_drawdown"), default=0.0
                     ),
-                    "cvar_95": 0.0,
+                    "cvar_95": _safe_float(
+                        result.metrics.get("cvar_95"), default=0.0
+                    ),
                     "risk_contribution_max": _safe_float(
                         result.risk_contribution_max, default=0.0
                     ),

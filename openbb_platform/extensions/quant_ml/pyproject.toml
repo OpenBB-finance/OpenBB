@@ -23,11 +23,15 @@ pyarrow = ">=14.0"
 lightgbm = ">=4.3"
 pykrx = { version = ">=1.0.48", optional = true }
 catboost = { version = ">=1.2", optional = true }
+optuna = { version = ">=3.6", optional = true }
+cvxpy = { version = ">=1.5", optional = true }
 
 [tool.poetry.extras]
 kr = ["pykrx"]
 universe-refresh = ["pykrx"]
 catboost = ["catboost"]
+hpo = ["optuna"]
+cvar = ["cvxpy"]
 
 [build-system]
 requires = ["poetry-core"]

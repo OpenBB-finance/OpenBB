@@ -11,6 +11,9 @@ export type ModelChoice = "lgbm_only" | "xgb_only" | "catboost_only" | "dual";
 export type DashboardMode = "live" | "backtest";
 export type WorkflowRunStatus = "queued" | "running" | "completed" | "failed" | "unknown";
 export type WalkForwardJobStatus = "queued" | "running" | "completed" | "failed" | "not_found";
+export type PurgingMode = "legacy_month_cutoff" | "strict_label_overlap";
+export type HPOObjectiveMetric = "val_ic" | "validation_mse";
+export type OptimizerMode = "mv" | "cvar";
 
 export interface UniverseAsset {
   symbol: string;
@@ -87,11 +90,20 @@ export interface WalkForwardConfigInput {
   embargo_months: number;
   val_months: number;
   step_months: number;
+  purging_mode?: PurgingMode;
 }
 
 export interface SignalConfigInput {
   theta_grid: number[];
   selection_metric: "val_sharpe";
+}
+
+export interface HPOConfigInput {
+  enabled?: boolean;
+  n_trials?: number;
+  timeout_sec?: number;
+  objective_metric?: HPOObjectiveMetric;
+  random_state?: number;
 }
 
 export interface FeatureConfigInput {
@@ -100,6 +112,13 @@ export interface FeatureConfigInput {
   momentum_windows: number[];
   include_rsi: boolean;
   include_macd: boolean;
+  include_bollinger?: boolean;
+  bollinger_windows?: number[];
+  include_atr?: boolean;
+  atr_windows?: number[];
+  include_adx?: boolean;
+  adx_windows?: number[];
+  include_obv?: boolean;
   include_regime_features: boolean;
   include_residual_momentum?: boolean;
   residual_momentum_windows?: number[];
@@ -130,6 +149,7 @@ export interface TrainRequestPayload {
   walk_forward_compact?: boolean;
   cross_sectional_sampling?: boolean;
   top_liquid_n?: number;
+  hpo_config?: HPOConfigInput;
 }
 
 export interface TrainResponsePayload {
@@ -189,6 +209,10 @@ export interface BacktestConstraintsInput {
   long_only: boolean;
   risk_aversion: number;
   lookback_days: number;
+  optimizer_mode?: OptimizerMode;
+  cvar_alpha?: number;
+  cvar_lambda?: number;
+  scenario_lookback_days?: number;
 }
 
 export interface BacktestRequestPayload {
@@ -228,6 +252,7 @@ export interface BacktestMetrics {
   max_drawdown: number;
   volatility: number;
   turnover: number;
+  cvar_95?: number;
 }
 
 export interface EquityCurvePoint {

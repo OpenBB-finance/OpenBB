@@ -43,6 +43,53 @@ def _macd_hist(series: pd.Series) -> pd.Series:
     return macd - signal
 
 
+def _bollinger_percent_b(
+    series: pd.Series, window: int = 20, n_std: float = 2.0
+) -> pd.Series:
+    ma = series.rolling(window).mean()
+    std = series.rolling(window).std(ddof=0)
+    upper = ma + n_std * std
+    lower = ma - n_std * std
+    return (series - lower) / ((upper - lower) + 1e-12)
+
+
+def _atr(
+    high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14
+) -> pd.Series:
+    prev_close = close.shift(1)
+    tr = pd.concat(
+        [
+            (high - low).abs(),
+            (high - prev_close).abs(),
+            (low - prev_close).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    return tr.rolling(period).mean()
+
+
+def _adx(
+    high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14
+) -> pd.Series:
+    up_move = high.diff()
+    down_move = -low.diff()
+    plus_dm = np.where((up_move > down_move) & (up_move > 0), up_move, 0.0)
+    minus_dm = np.where((down_move > up_move) & (down_move > 0), down_move, 0.0)
+    plus_dm = pd.Series(plus_dm, index=high.index)
+    minus_dm = pd.Series(minus_dm, index=high.index)
+
+    atr = _atr(high, low, close, period=period)
+    plus_di = 100.0 * (plus_dm.rolling(period).sum() / (atr + 1e-12))
+    minus_di = 100.0 * (minus_dm.rolling(period).sum() / (atr + 1e-12))
+    dx = 100.0 * (plus_di - minus_di).abs() / ((plus_di + minus_di) + 1e-12)
+    return dx.rolling(period).mean()
+
+
+def _obv(close: pd.Series, volume: pd.Series) -> pd.Series:
+    direction = np.sign(close.diff().fillna(0.0))
+    return (direction * volume.fillna(0.0)).cumsum()
+
+
 def _safe_symbol(symbol: str) -> str:
     return "".join(
         ch if ch.isalnum() or ch in {"_", "-", "."} else "_" for ch in str(symbol)
@@ -63,6 +110,9 @@ def _feature_overlap_days(feature_config: FeatureConfig, horizon_days: int) -> i
         max(feature_config.lags or [1]),
         max(feature_config.vol_windows or [5]),
         max(feature_config.momentum_windows or [5]),
+        max(feature_config.bollinger_windows or [20]),
+        max(feature_config.atr_windows or [14]),
+        max(feature_config.adx_windows or [14]),
         60,
         26,
         14,
@@ -170,9 +220,18 @@ def _build_single_symbol_features(
     df = symbol_df.copy().sort_values("date").reset_index(drop=True)
     if "open" not in df.columns:
         df["open"] = df["close"]
+    if "high" not in df.columns:
+        df["high"] = np.maximum(df["open"], df["close"])
+    if "low" not in df.columns:
+        df["low"] = np.minimum(df["open"], df["close"])
+    if "volume" not in df.columns:
+        df["volume"] = 0.0
 
     close = df["close"].astype(float)
     open_ = df["open"].astype(float)
+    high = df["high"].astype(float)
+    low = df["low"].astype(float)
+    volume = df["volume"].astype(float)
     daily_return = close.pct_change(fill_method=None)
 
     frame = pd.DataFrame(
@@ -201,6 +260,23 @@ def _build_single_symbol_features(
         frame["rsi_14"] = _rsi(close, period=14)
     if feature_config.include_macd:
         frame["macd_hist"] = _macd_hist(close)
+    if feature_config.include_bollinger:
+        for window in feature_config.bollinger_windows or [20]:
+            frame[f"bollinger_pb_{int(window)}"] = _bollinger_percent_b(
+                close, window=int(window)
+            )
+    if feature_config.include_atr:
+        for window in feature_config.atr_windows or [14]:
+            frame[f"atr_{int(window)}"] = _atr(
+                high, low, close, period=int(window)
+            )
+    if feature_config.include_adx:
+        for window in feature_config.adx_windows or [14]:
+            frame[f"adx_{int(window)}"] = _adx(
+                high, low, close, period=int(window)
+            )
+    if feature_config.include_obv:
+        frame["obv"] = _obv(close, volume)
 
     frame["target_return"] = _compute_target_return(
         frame=frame,

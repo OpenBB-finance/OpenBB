@@ -72,6 +72,72 @@ def _risk_contributions(weights: np.ndarray, cov: np.ndarray, epsilon: float) ->
     return np.nan_to_num(rc, nan=0.0, posinf=0.0, neginf=0.0)
 
 
+def _solve_cvar_with_cvxpy(
+    *,
+    mu: np.ndarray,
+    ub: np.ndarray,
+    sector_index: dict[str, list[int]],
+    country_index: dict[str, list[int]],
+    sector_cap: float,
+    country_cap: float,
+    scenarios: np.ndarray,
+    alpha: float,
+    cvar_lambda: float,
+) -> np.ndarray:
+    import cvxpy as cp
+
+    n_assets = len(mu)
+    if n_assets == 0:
+        return np.array([], dtype=float)
+    if scenarios.ndim != 2 or scenarios.shape[1] != n_assets:
+        raise ValueError("invalid_cvar_scenarios_shape")
+
+    n_scenarios = int(scenarios.shape[0])
+    if n_scenarios < 20:
+        raise ValueError("insufficient_cvar_scenarios")
+
+    w = cp.Variable(n_assets)
+    t = cp.Variable()
+    u = cp.Variable(n_scenarios)
+    losses = -scenarios @ w
+
+    objective = cp.Maximize(
+        mu @ w - float(cvar_lambda) * (t + (1.0 / (float(alpha) * n_scenarios)) * cp.sum(u))
+    )
+    constraints = [
+        cp.sum(w) <= 1.0,
+        w >= 0.0,
+        w <= ub,
+        u >= 0.0,
+        u >= losses - t,
+    ]
+    for idxs in sector_index.values():
+        constraints.append(cp.sum(w[idxs]) <= float(sector_cap))
+    for idxs in country_index.values():
+        constraints.append(cp.sum(w[idxs]) <= float(country_cap))
+
+    problem = cp.Problem(objective, constraints)
+    solved = False
+    for solver_name in ("ECOS", "OSQP", "SCS"):
+        try:
+            problem.solve(solver=solver_name, warm_start=True, verbose=False)
+        except Exception:
+            continue
+        if w.value is not None:
+            solved = True
+            break
+    if not solved or w.value is None:
+        raise ValueError("cvar_solver_failed")
+
+    weights = np.asarray(w.value, dtype=float).reshape(-1)
+    weights = np.nan_to_num(weights, nan=0.0, posinf=0.0, neginf=0.0)
+    weights = np.clip(weights, 0.0, ub)
+    total = float(weights.sum())
+    if total > 1.0:
+        weights = weights / total
+    return weights
+
+
 def optimize_weights_v2(
     *,
     mu: np.ndarray,
@@ -82,6 +148,10 @@ def optimize_weights_v2(
     requested_max_weight: float,
     policy: dict[str, Any],
     nav: float = 1.0,
+    optimizer_mode: str = "mv",
+    cvar_alpha: float = 0.05,
+    cvar_lambda: float = 3.0,
+    scenario_returns: np.ndarray | None = None,
 ) -> PortfolioOptimizationResult:
     """Solve constrained long-only optimization with cash buffer."""
     n = len(symbols)
@@ -157,6 +227,38 @@ def optimize_weights_v2(
     for idx, country in enumerate(countries):
         country_index.setdefault(country, []).append(idx)
 
+    requested_mode = str(optimizer_mode or "mv").strip().lower()
+    mode_used = "mv"
+    used_cvar_fallback = False
+    if requested_mode == "cvar":
+        try:
+            if scenario_returns is None:
+                raise ValueError("missing_scenarios")
+            scenarios = np.asarray(scenario_returns, dtype=float)
+            scenarios = np.nan_to_num(scenarios, nan=0.0, posinf=0.0, neginf=0.0)
+            if scenarios.ndim == 1:
+                if n == 1:
+                    scenarios = scenarios.reshape(-1, 1)
+                else:
+                    raise ValueError("invalid_scenario_rank")
+            weights = _solve_cvar_with_cvxpy(
+                mu=mu,
+                ub=ub,
+                sector_index=sector_index,
+                country_index=country_index,
+                sector_cap=sector_cap,
+                country_cap=country_cap,
+                scenarios=scenarios,
+                alpha=max(0.001, min(float(cvar_alpha), 0.2)),
+                cvar_lambda=max(0.01, float(cvar_lambda)),
+            )
+            mode_used = "cvar"
+        except Exception:
+            used_cvar_fallback = True
+            weights = np.array([], dtype=float)
+    else:
+        weights = np.array([], dtype=float)
+
     def objective(weights: np.ndarray) -> float:
         ret = float(np.dot(mu, weights))
         risk = float(weights @ cov @ weights)
@@ -187,21 +289,24 @@ def optimize_weights_v2(
             }
         )
 
-    solved = minimize(
-        objective,
-        initial,
-        method="SLSQP",
-        bounds=bounds,
-        constraints=constraints,
-        options={"maxiter": 400, "ftol": 1e-8},
-    )
+    if weights.size == 0:
+        solved = minimize(
+            objective,
+            initial,
+            method="SLSQP",
+            bounds=bounds,
+            constraints=constraints,
+            options={"maxiter": 400, "ftol": 1e-8},
+        )
 
-    if solved.success:
-        weights = np.clip(solved.x, 0.0, ub)
-        if float(weights.sum()) > 1.0:
-            weights = weights / float(weights.sum())
+        if solved.success:
+            weights = np.clip(solved.x, 0.0, ub)
+            if float(weights.sum()) > 1.0:
+                weights = weights / float(weights.sum())
+        else:
+            weights = _projected_fallback(mu, ub, sectors, countries, sector_cap, country_cap)
     else:
-        weights = _projected_fallback(mu, ub, sectors, countries, sector_cap, country_cap)
+        solved = None
 
     weights = np.clip(weights, 0.0, ub)
     if float(weights.sum()) > 1.0:
@@ -253,6 +358,10 @@ def optimize_weights_v2(
         binding.append("risk_contribution_cap")
     if cash_weight > 1e-6:
         binding.append("cash_buffer")
+    if mode_used == "cvar":
+        binding.append("optimizer_cvar")
+    if used_cvar_fallback:
+        binding.append("optimizer_fallback_mv")
 
     return PortfolioOptimizationResult(
         weights=weights,

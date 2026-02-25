@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import copy
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
@@ -122,6 +124,129 @@ def _fit_xgb(
     val_pred = xgb_model.predict(val_df[feature_columns].values)
     val_mse = float(mean_squared_error(val_df["target_return"].values, val_pred))
     return xgb_model, val_mse
+
+
+def _validation_ic(val_df: pd.DataFrame, y_pred: np.ndarray) -> float:
+    if val_df.empty:
+        return 0.0
+    scored = val_df[["date", "target_return"]].copy()
+    scored["pred"] = y_pred
+    values: list[float] = []
+    for _, group in scored.groupby("date"):
+        if len(group) < 3:
+            continue
+        if (
+            group["pred"].nunique(dropna=True) < 2
+            or group["target_return"].nunique(dropna=True) < 2
+        ):
+            continue
+        corr = spearmanr(group["pred"], group["target_return"], nan_policy="omit").correlation
+        if corr is None or np.isnan(corr):
+            continue
+        values.append(float(corr))
+    return float(np.mean(values)) if values else 0.0
+
+
+def tune_xgb_hyperparameters(
+    feature_data: pd.DataFrame,
+    feature_columns: list[str],
+    config: ModelConfig,
+    *,
+    n_trials: int = 25,
+    timeout_sec: int = 1800,
+    random_state: int = 42,
+    objective_metric: str = "validation_mse",
+) -> tuple[ModelConfig, dict[str, Any]]:
+    """Tune XGBoost hyperparameters with Optuna on a fixed train/validation split."""
+    model_input = feature_data.dropna(subset=["target_return"]).copy()
+    if model_input.empty:
+        return config, {
+            "status": "skipped",
+            "reason": "empty_target_rows",
+            "objective_metric": objective_metric,
+        }
+
+    train_df, val_df = _split_train_validation(model_input, config.train_val_split)
+    if train_df.empty or val_df.empty:
+        return config, {
+            "status": "skipped",
+            "reason": "insufficient_validation_rows",
+            "objective_metric": objective_metric,
+        }
+
+    try:
+        import optuna
+    except Exception as exc:  # noqa: BLE001
+        return config, {
+            "status": "skipped",
+            "reason": f"optuna_unavailable:{exc}",
+            "objective_metric": objective_metric,
+        }
+
+    metric = str(objective_metric or "validation_mse").strip().lower()
+    maximize_metric = metric == "val_ic"
+    direction = "maximize" if maximize_metric else "minimize"
+    sampler = optuna.samplers.TPESampler(seed=int(random_state))
+
+    def objective(trial) -> float:  # noqa: ANN001
+        params = {
+            "n_estimators": trial.suggest_int("n_estimators", 100, 2000),
+            "max_depth": trial.suggest_int("max_depth", 2, 10),
+            "learning_rate": trial.suggest_float("learning_rate", 1e-4, 0.3, log=True),
+            "subsample": trial.suggest_float("subsample", 0.5, 1.0),
+            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
+        }
+        model = XGBRegressor(
+            **params,
+            objective="reg:squarederror",
+            random_state=int(random_state),
+            n_jobs=1,
+        )
+        model.fit(
+            train_df[feature_columns].values,
+            train_df["target_return"].values,
+            eval_set=[(val_df[feature_columns].values, val_df["target_return"].values)],
+            verbose=False,
+        )
+        pred = model.predict(val_df[feature_columns].values)
+        if maximize_metric:
+            return float(_validation_ic(val_df, pred))
+        return float(mean_squared_error(val_df["target_return"].values, pred))
+
+    try:
+        study = optuna.create_study(direction=direction, sampler=sampler)
+        study.optimize(objective, n_trials=int(n_trials), timeout=int(timeout_sec))
+    except Exception as exc:  # noqa: BLE001
+        return config, {
+            "status": "failed",
+            "reason": str(exc),
+            "objective_metric": metric,
+        }
+
+    best_params = study.best_params or {}
+    tuned = copy.deepcopy(config)
+    tuned.xgb_n_estimators = int(best_params.get("n_estimators", config.xgb_n_estimators))
+    tuned.xgb_max_depth = int(best_params.get("max_depth", config.xgb_max_depth))
+    tuned.xgb_learning_rate = float(best_params.get("learning_rate", config.xgb_learning_rate))
+    tuned.xgb_subsample = float(best_params.get("subsample", config.xgb_subsample))
+    tuned.xgb_colsample_bytree = float(
+        best_params.get("colsample_bytree", config.xgb_colsample_bytree)
+    )
+    return tuned, {
+        "status": "ok",
+        "objective_metric": metric,
+        "direction": direction,
+        "n_trials_requested": int(n_trials),
+        "n_trials_completed": int(len(study.trials)),
+        "best_value": float(study.best_value),
+        "best_params": {
+            "xgb_n_estimators": tuned.xgb_n_estimators,
+            "xgb_max_depth": tuned.xgb_max_depth,
+            "xgb_learning_rate": tuned.xgb_learning_rate,
+            "xgb_subsample": tuned.xgb_subsample,
+            "xgb_colsample_bytree": tuned.xgb_colsample_bytree,
+        },
+    }
 
 
 def _build_lstm_sequences(

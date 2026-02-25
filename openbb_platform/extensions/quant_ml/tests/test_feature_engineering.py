@@ -91,3 +91,29 @@ def test_attach_macro_features_asof_does_not_use_future(monkeypatch):
     out = attach_macro_features(panel, include_macro_features=True, subset=["yoy"])
     assert float(out.loc[out["date"] == pd.Timestamp("2025-01-03"), "macro_cpiaucsl_yoy"].iloc[0]) == 1.0
     assert float(out.loc[out["date"] == pd.Timestamp("2025-01-06"), "macro_cpiaucsl_yoy"].iloc[0]) == 2.0
+
+
+def test_build_feature_dataset_with_extended_technical_features():
+    data_by_symbol = {
+        "SPY": _make_symbol_frame("SPY", periods=260),
+        "QQQ": _make_symbol_frame("QQQ", periods=260),
+    }
+    feature_data, feature_columns, skipped = build_feature_dataset(
+        data_by_symbol=data_by_symbol,
+        feature_config=FeatureConfig(
+            include_bollinger=True,
+            include_atr=True,
+            include_adx=True,
+            include_obv=True,
+            include_regime_features=False,
+        ),
+        horizon_days=1,
+        include_macro_features=False,
+    )
+    assert skipped == []
+    assert not feature_data.empty
+    assert "bollinger_pb_20" in feature_columns
+    assert "atr_14" in feature_columns
+    assert "adx_14" in feature_columns
+    assert "obv" in feature_columns
+    assert feature_data[feature_columns].isna().sum().sum() == 0

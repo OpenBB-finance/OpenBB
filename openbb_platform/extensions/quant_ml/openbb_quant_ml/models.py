@@ -21,6 +21,9 @@ DashboardMode = Literal["live", "backtest"]
 DashboardPayloadStatus = Literal["ok", "insufficient_data", "not_found"]
 WorkflowRunStatus = Literal["queued", "running", "completed", "failed", "unknown"]
 WalkForwardJobStatus = Literal["queued", "running", "completed", "failed", "not_found"]
+PurgingMode = Literal["legacy_month_cutoff", "strict_label_overlap"]
+HPOObjectiveMetric = Literal["val_ic", "validation_mse"]
+OptimizerMode = Literal["mv", "cvar"]
 
 
 class DateRange(BaseModel):
@@ -83,6 +86,17 @@ class WalkForwardConfig(BaseModel):
     embargo_months: int = Field(default=1, ge=0, le=12)
     val_months: int = Field(default=1, ge=1, le=12)
     step_months: int = Field(default=1, ge=1, le=12)
+    purging_mode: PurgingMode = "legacy_month_cutoff"
+
+
+class HPOConfig(BaseModel):
+    """Hyperparameter optimization configuration."""
+
+    enabled: bool = False
+    n_trials: int = Field(default=25, ge=1, le=500)
+    timeout_sec: int = Field(default=1800, ge=30, le=86400)
+    objective_metric: HPOObjectiveMetric = "val_ic"
+    random_state: int = 42
 
 
 class SignalConfig(BaseModel):
@@ -100,6 +114,13 @@ class FeatureConfig(BaseModel):
     momentum_windows: list[int] = Field(default_factory=lambda: [5, 20])
     include_rsi: bool = True
     include_macd: bool = True
+    include_bollinger: bool = False
+    bollinger_windows: list[int] = Field(default_factory=lambda: [20])
+    include_atr: bool = False
+    atr_windows: list[int] = Field(default_factory=lambda: [14])
+    include_adx: bool = False
+    adx_windows: list[int] = Field(default_factory=lambda: [14])
+    include_obv: bool = False
     include_regime_features: bool = True
     include_residual_momentum: bool = False
     residual_momentum_windows: list[int] = Field(default_factory=lambda: [20])
@@ -146,6 +167,8 @@ class TrainRequest(BaseModel):
     walk_forward_compact: bool = False
     cross_sectional_sampling: bool = False
     top_liquid_n: int | None = Field(default=None, ge=50, le=5000)
+    market_data_workers: int | None = Field(default=None, ge=1, le=32)
+    hpo_config: HPOConfig = Field(default_factory=HPOConfig)
 
 
 class TrainResponse(BaseModel):
@@ -221,6 +244,10 @@ class BacktestConstraints(BaseModel):
     long_only: bool = True
     risk_aversion: float = Field(default=3.0, gt=0, le=20.0)
     lookback_days: int = Field(default=126, ge=60, le=756)
+    optimizer_mode: OptimizerMode = "mv"
+    cvar_alpha: float = Field(default=0.05, gt=0.0, lt=1.0)
+    cvar_lambda: float = Field(default=3.0, gt=0.0, le=100.0)
+    scenario_lookback_days: int = Field(default=252, ge=60, le=2520)
 
 
 class BacktestRequest(BaseModel):
@@ -289,6 +316,7 @@ class BacktestMetrics(BaseModel):
     max_drawdown: float
     volatility: float
     turnover: float
+    cvar_95: float = 0.0
     gross_return: float = 0.0
     total_cost: float = 0.0
     net_return: float = 0.0

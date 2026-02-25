@@ -247,6 +247,23 @@ def test_regime_and_alerts(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     assert shap_payload.status == "insufficient_data"
 
 
+def test_alerts_include_ic_drift_rules(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    run_dir = _build_test_run(tmp_path)
+    _patch_run(monkeypatch, run_dir)
+
+    ic_index = pd.date_range("2024-01-31", periods=12, freq="M")
+    ic_values = pd.Series(
+        [0.12, 0.11, 0.10, 0.09, 0.08, 0.07, 0.02, 0.01, 0.00, -0.02, -0.03, -0.05],
+        index=ic_index,
+    )
+    monkeypatch.setattr(dm, "_ic_series", lambda predictions: ic_values)
+
+    payload = dm.refresh_alerts_for_run("run-1", "lgbm_ranker")
+    rules = {item.rule_id for item in payload.alerts}
+    assert "ic_rolling_drop_6m" in rules
+    assert "ic_trend_negative" in rules
+
+
 def test_health_insufficient_when_predictions_and_backtest_missing(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):

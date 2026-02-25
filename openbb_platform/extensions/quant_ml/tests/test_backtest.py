@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from openbb_quant_ml.models import BacktestConstraints
 from openbb_quant_ml.service.backtest import run_backtest
+from openbb_quant_ml.service import portfolio_optimizer_v2 as optimizer_v2
 
 
 def test_backtest_constraints_are_respected():
@@ -185,3 +186,60 @@ def test_backtest_execution_price_modes_change_outcome():
     )
 
     assert close_close.metrics["net_return"] != open_close.metrics["net_return"]
+
+
+def test_backtest_cvar_mode_falls_back_to_mv(monkeypatch):
+    rng = np.random.default_rng(33)
+    symbols = ["A", "B", "C", "D", "E", "F"]
+    dates = pd.date_range("2024-01-01", "2024-06-30", freq="B")
+
+    price_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    for symbol in symbols:
+        returns = rng.normal(0.0005, 0.01, len(dates))
+        price_panel[symbol] = 100 * np.cumprod(1 + returns)
+        open_panel[symbol] = price_panel[symbol] * 0.999
+
+    pred_dates = pd.date_range("2024-01-01", "2024-06-30", freq="BMS")
+    predictions = pd.DataFrame(
+        [
+            {"date": d, "symbol": symbol, "predicted_return": float(0.02 - i * 0.003)}
+            for d in pred_dates
+            for i, symbol in enumerate(symbols)
+        ]
+    )
+
+    monkeypatch.setattr(
+        optimizer_v2,
+        "_solve_cvar_with_cvxpy",
+        lambda **kwargs: (_ for _ in ()).throw(ValueError("forced_cvar_fail")),
+    )
+
+    result = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=price_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 6, 30),
+        constraints=BacktestConstraints(
+            max_weight=0.2,
+            long_only=True,
+            risk_aversion=3.0,
+            lookback_days=60,
+            optimizer_mode="cvar",
+            cvar_alpha=0.05,
+            cvar_lambda=3.0,
+            scenario_lookback_days=120,
+        ),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
+    )
+
+    assert len(result.period_weights) > 0
+    assert "cvar_95" in result.metrics
+    assert any(
+        "optimizer_fallback_mv" in item.get("binding_constraints", [])
+        for item in result.rebalance_history_summary
+    )
