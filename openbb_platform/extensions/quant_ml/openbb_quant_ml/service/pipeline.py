@@ -68,6 +68,7 @@ from openbb_quant_ml.service.cache_registry import (
 )
 from openbb_quant_ml.service.dashboard_metrics import (
     get_performance_regime as get_dashboard_performance_regime,
+    get_portfolio_risk as get_dashboard_portfolio_risk,
     refresh_alerts_for_run,
 )
 from openbb_quant_ml.service.data_loader import (
@@ -1783,36 +1784,56 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     write_artifact_parquet(request.run_id, "trades.parquet", trades_frame)
     write_artifact_parquet(request.run_id, "costs.parquet", costs_frame)
     write_artifact_parquet(request.run_id, "returns_daily.parquet", returns_daily_frame)
+    risk_row: dict[str, Any] = {
+        "run_id": request.run_id,
+        "model_name": model_name,
+        "volatility": _safe_float(result.metrics.get("volatility"), default=0.0),
+        "max_drawdown": _safe_float(result.metrics.get("max_drawdown"), default=0.0),
+        "cvar_95": _safe_float(result.metrics.get("cvar_95"), default=0.0),
+        "risk_contribution_max": _safe_float(result.risk_contribution_max, default=0.0),
+        "invalid_rebalance_count": int(
+            sum(
+                1
+                for item in result.constraint_violations
+                if str(item.get("type", "")).strip() == "invalid"
+            )
+        ),
+    }
+    try:
+        risk_payload = get_dashboard_portfolio_risk(
+            run_id=request.run_id,
+            model_name=model_name,
+            lookback=max(20, int(request.constraints.lookback_days)),
+        )
+        factor_exposure = (
+            risk_payload.factor_exposure
+            if isinstance(risk_payload.factor_exposure, dict)
+            else {}
+        )
+        stress_test = (
+            risk_payload.stress_test
+            if isinstance(risk_payload.stress_test, dict)
+            else {}
+        )
+        for key in ("market", "momentum", "value", "size", "volatility", "quality"):
+            risk_row[f"factor_{key}"] = _safe_float(
+                factor_exposure.get(key), default=0.0
+            )
+        for key in (
+            "hist_var_99",
+            "hist_cvar_99",
+            "hist_var_99_5d",
+            "shock_1d_3sigma",
+            "shock_5d_3sigma",
+        ):
+            risk_row[key] = _safe_float(stress_test.get(key), default=0.0)
+    except Exception:  # noqa: BLE001
+        # Risk summary enrichment is best-effort and should not block backtest completion.
+        pass
     write_artifact_parquet(
         request.run_id,
         "risk_summary.parquet",
-        pd.DataFrame(
-            [
-                {
-                    "run_id": request.run_id,
-                    "model_name": model_name,
-                    "volatility": _safe_float(
-                        result.metrics.get("volatility"), default=0.0
-                    ),
-                    "max_drawdown": _safe_float(
-                        result.metrics.get("max_drawdown"), default=0.0
-                    ),
-                    "cvar_95": _safe_float(
-                        result.metrics.get("cvar_95"), default=0.0
-                    ),
-                    "risk_contribution_max": _safe_float(
-                        result.risk_contribution_max, default=0.0
-                    ),
-                    "invalid_rebalance_count": int(
-                        sum(
-                            1
-                            for item in result.constraint_violations
-                            if str(item.get("type", "")).strip() == "invalid"
-                        )
-                    ),
-                }
-            ]
-        ),
+        pd.DataFrame([risk_row]),
     )
     write_artifact_parquet(
         request.run_id, "exposures_sector.parquet", sector_exposure_frame
@@ -1911,6 +1932,11 @@ def get_model_performance(run_id: str) -> ModelPerformanceResponse:
             continue
 
         metrics = metrics_payload.get("metrics", {})
+        model_meta = (
+            metrics_payload.get("model_meta", {})
+            if isinstance(metrics_payload, dict)
+            else {}
+        )
         backtest_payload = load_json(_backtest_path(run_id, model_name), default={})
         ndcg_obj = metrics.get("ndcg") if isinstance(metrics, dict) else None
         ndcg_score = ndcg_obj.get("ndcg_10") if isinstance(ndcg_obj, dict) else None
@@ -1929,6 +1955,20 @@ def get_model_performance(run_id: str) -> ModelPerformanceResponse:
             turnover=_extract_backtest_metric(backtest_payload, "turnover"),
             hit_rate=_optional_metric(
                 metrics.get("hit_rate") if isinstance(metrics, dict) else None
+            ),
+            backend=(
+                str(model_meta.get("backend"))
+                if isinstance(model_meta, dict) and model_meta.get("backend") is not None
+                else None
+            ),
+            primary_backend=(
+                str(model_meta.get("primary_backend"))
+                if isinstance(model_meta, dict)
+                and model_meta.get("primary_backend") is not None
+                else None
+            ),
+            stacked_v1=bool(
+                model_meta.get("stacked_v1") if isinstance(model_meta, dict) else False
             ),
             regime_performance=backtest_payload.get("regime_performance", {}),
         )

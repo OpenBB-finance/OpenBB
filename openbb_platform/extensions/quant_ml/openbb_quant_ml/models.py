@@ -466,6 +466,9 @@ class ModelPerformanceItem(BaseModel):
     max_dd: float | None = None
     turnover: float | None = None
     hit_rate: float | None = None
+    backend: str | None = None
+    primary_backend: str | None = None
+    stacked_v1: bool = False
     regime_performance: dict[str, float | int | None] = Field(default_factory=dict)
 
 

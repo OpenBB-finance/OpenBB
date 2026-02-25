@@ -1691,6 +1691,38 @@ export default function QuantPage() {
               )}
             </pre>
           </PanelCard>
+          <PanelCard title="Feature Drift" description="Alert-driven drift monitor">
+            <pre className="max-h-56 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-2 text-[11px] text-theme-muted">
+              {JSON.stringify(
+                {
+                  drift_alerts:
+                    currentAlertsPayload?.alerts
+                      ?.filter((item) =>
+                        ["ic_non_positive_3m", "ic_rolling_drop_6m", "ic_trend_negative"].includes(
+                          item.rule_id,
+                        ),
+                      )
+                      .map((item) => ({
+                        rule_id: item.rule_id,
+                        severity: item.severity,
+                        value: item.value,
+                        at: item.triggered_at,
+                      })) ?? [],
+                  ic_points: modelIcPayload?.points?.length ?? 0,
+                  latest_ic:
+                    modelIcPayload && modelIcPayload.points.length > 0
+                      ? modelIcPayload.points[modelIcPayload.points.length - 1]?.ic
+                      : null,
+                  latest_rolling_ic:
+                    modelIcPayload && modelIcPayload.points.length > 0
+                      ? modelIcPayload.points[modelIcPayload.points.length - 1]?.rolling_ic
+                      : null,
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </PanelCard>
           <PanelCard title="Risk Snapshot" description="Factor exposure, stress, and regime">
             <pre className="max-h-56 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-2 text-[11px] text-theme-muted">
               {JSON.stringify(

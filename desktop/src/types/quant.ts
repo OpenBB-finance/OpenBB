@@ -360,6 +360,9 @@ export interface ModelPerformanceItem {
   max_dd?: number | null;
   turnover?: number | null;
   hit_rate?: number | null;
+  backend?: string | null;
+  primary_backend?: string | null;
+  stacked_v1?: boolean;
   regime_performance?: Record<string, number | string | null>;
 }
 
