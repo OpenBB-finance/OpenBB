@@ -204,7 +204,11 @@ def is_data_row_header(row):
     # "Three months ended April 30, | 10 | $273.42 | $2,681" are DATA
     # rows whose first cell happens to contain "months ended" as a
     # label — they must NOT be skipped.
-    if re.search(r"(years?\s+ended|months?\s+ended|unaudited|as of)", row_text, re.I):
+    if re.search(
+        r"(years?\s+ended|months?\s+ended|weeks?\s+ended|unaudited|as of)",
+        row_text,
+        re.I,
+    ):
         has_numeric_data = any(
             re.match(
                 r"^[+\-]?[\$]?\(?\$?\s*[\d,]+\.?\d*\s*\)?%?$",
@@ -382,7 +386,11 @@ def _is_continuation_table(table, prev_table=None):
         for t in non_empty:
             if re.match(r"^(19|20)\d{2}$", t):
                 return False
-            if re.search(r"(months?\s+ended|year\s+ended|quarter\s+ended)", t, re.I):
+            if re.search(
+                r"(months?\s+ended|year\s+ended|quarter\s+ended|weeks?\s+ended)",
+                t,
+                re.I,
+            ):
                 return False
         break
 
@@ -883,6 +891,18 @@ def merge_split_rows(rows, rows_with_colspan):
                 i += 1
                 continue
 
+            # If non-label columns have content, this is a header row
+            # where the descriptor sits at col 0 alongside date/year
+            # columns.  Don't merge — the unbalanced paren is just the
+            # descriptor wrapping across the HTML row, and the data in
+            # other columns must be preserved.
+            non_label_content = any(c.strip() for c in row[1:])
+            if non_label_content:
+                merged_data.append(row)
+                merged_colspan.append(row_cs)
+                i += 1
+                continue
+
             # Look ahead for continuation
             merged_text = row_text
             j = i + 1
@@ -1259,7 +1279,7 @@ def detect_and_merge_multiindex_headers(data_rows):
 
         return bool(
             re.search(
-                r"(years?\s+ended|months?\s+ended|unaudited|as\s+of|income\s+statement|balance\s+sheet|statement\s+of)",
+                r"(years?\s+ended|months?\s+ended|weeks?\s+ended|unaudited|as\s+of|income\s+statement|balance\s+sheet|statement\s+of)",
                 row_text,
                 re.I,
             )
@@ -1775,13 +1795,13 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                 break
             elif start > 0 and re.search(
                 rf"(months?\s+ended|year\s+ended|weeks?\s+ended|quarters?\s+ended"
-                rf"|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}},?\s*(19|20)?\d{{2}}"
+                rf"|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}}\s*,?(?:\s*(?:19|20)\d{{2}})?"
                 rf"|(?:As\s+of\s+)?{MONTHS_PATTERN}\s+(19|20)\d{{2}}\b)",
                 t,
                 re.I,
             ):
                 # Catches "Three Months Ended May 31" / "January 26, 2025" / "Ended November"
-                # / "November 2007" / "As of November 2007"
+                # / "November 2007" / "As of November 2007" / "October 31," (bare date fragment)
                 # but NOT standalone unit labels like "Months", "Years", "10 Years"
                 has_year = True
             elif is_category_text(t) and colspan >= 2:
@@ -1857,7 +1877,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                     _tt
                     and has_visible_text(_tt)
                     and re.search(
-                        rf"(months?|quarters?|years?|period)\s+ended|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}}",
+                        rf"(months?|quarters?|years?|weeks?|period)\s+ended|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}}",
                         _tt,
                         re.I,
                     )
@@ -1906,7 +1926,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
         has_large_colspan_period = any(
             colspan > 2
             and re.search(
-                rf"(months?|quarters?|years?)\s+ended|ended\s+{MONTHS_PATTERN}",
+                rf"(months?|quarters?|years?|weeks?)\s+ended|ended\s+{MONTHS_PATTERN}",
                 t,
                 re.I,
             )
@@ -1951,7 +1971,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
             period_phrases_have_year = any(
                 colspan > 2
                 and re.search(
-                    rf"(months?|quarters?|years?)\s+ended|ended\s+{MONTHS_PATTERN}",
+                    rf"(months?|quarters?|years?|weeks?)\s+ended|ended\s+{MONTHS_PATTERN}",
                     t,
                     re.I,
                 )
@@ -2143,7 +2163,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
             if len(first_ne) == 1:
                 super_text, super_cs, _ = first_ne[0]
                 if super_cs > 2 and re.search(
-                    rf"(months?|quarters?|years?|period)\s+ended|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}}",
+                    rf"(months?|quarters?|years?|weeks?|period)\s+ended|ended\s+{MONTHS_PATTERN}|{MONTHS_PATTERN}\s+\d{{1,2}}",
                     super_text,
                     re.I,
                 ):
@@ -2650,7 +2670,7 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                 and (
                     is_category_text(text)
                     or re.search(
-                        rf"(months?|quarters?|years?)\s+ended|ended\s+{MONTHS_PATTERN}",
+                        rf"(months?|quarters?|years?|weeks?)\s+ended|ended\s+{MONTHS_PATTERN}",
                         text,
                         re.I,
                     )
@@ -3265,7 +3285,7 @@ def extract_periods_from_rows(
         has_year_in_headers = bool(re.search(r"\b(19|20)\d{2}\b", all_header_text))
         has_period_in_headers = bool(
             re.search(
-                r"(months?\s+ended|year\s+ended|quarter|period|fiscal)",
+                r"(months?\s+ended|year\s+ended|weeks?\s+ended|quarter|period|fiscal)",
                 all_header_text,
                 re.I,
             )
@@ -4188,6 +4208,58 @@ def convert_table(table, base_url: str = "") -> str:
                 if year_positions[0] == 0 and _year_pos_shift[0] > 0:
                     year_positions = [p + _year_pos_shift[0] for p in year_positions]
                 header_col_positions = year_positions
+
+            # When year_positions alone don't cover all periods (e.g.,
+            # tables with "% Change" or "Basis Point Change" columns
+            # alongside date columns), augment with positions of other
+            # non-empty header texts from the header data rows.  Exclude
+            # category texts (from Layer 0) and financial data values.
+            if (
+                not header_col_positions
+                and year_positions
+                and len(year_positions) < num_periods
+                and num_periods > 0
+            ):
+                category_texts_set: set[str] = set()
+                if header_layers:
+                    for _h in header_layers[0]:
+                        _ht = _h.strip()
+                        if _ht:
+                            category_texts_set.add(_ht)
+
+                all_leaf_positions: set[int] = set(year_positions)
+                for row_idx in range(min(header_row_count, len(data))):
+                    for col_idx, cell in enumerate(data[row_idx]):
+                        if col_idx == 0 or col_idx in all_leaf_positions:
+                            continue
+                        cell_clean = cell.strip().strip("\u200b").strip()
+                        cell_stripped = re.sub(r"[*†‡§+]+$", "", cell_clean)
+                        if not cell_stripped:
+                            continue
+                        # Skip years (already collected)
+                        if re.match(r"^(19|20)\d{2}$", cell_stripped):
+                            continue
+                        # Skip financial data values
+                        if re.match(
+                            r"^[\$]?\s*[\(\)]?\s*[\d,]+\.?\d*\s*[\)\%]?$",
+                            cell_stripped,
+                        ):
+                            continue
+                        # Skip category header texts (from colspan expansion)
+                        if cell_stripped in category_texts_set:
+                            continue
+                        # Skip descriptor text in parentheses
+                        if cell_stripped.startswith("(") and re.search(
+                            r"(million|except|thousand|billion|percent)",
+                            cell_stripped,
+                            re.I,
+                        ):
+                            continue
+                        all_leaf_positions.add(col_idx)
+
+                sorted_all = sorted(all_leaf_positions)
+                if len(sorted_all) == num_periods:
+                    header_col_positions = sorted_all
 
             # For tables with text sub-headers (no year values),
             # dollar signs mark the start of each data column
