@@ -3,20 +3,58 @@
 This module provides a Country type that inherits from str for type checker compatibility
 while providing full access to ISO 3166 country data via a static dataset.
 
-Providers can access alpha_2, alpha_3, name, and numeric properties as needed.
+Providers can access alpha_2, alpha_3, name, numeric, and groups properties as needed.
+
+Supported membership groups:
+    - G7: Group of Seven major advanced economies
+    - G20: Group of Twenty major economies
+    - EU: European Union member states
+    - NATO: North Atlantic Treaty Organization members
+    - OECD: Organisation for Economic Co-operation and Development members
+    - OPEC: Organization of the Petroleum Exporting Countries
+    - BRICS: Brazil, Russia, India, China, South Africa (+ 2024 expansion)
 
 References:
     - ISO 3166-1: https://en.wikipedia.org/wiki/ISO_3166-1
+    - G7: https://en.wikipedia.org/wiki/G7
+    - G20: https://en.wikipedia.org/wiki/G20
+    - EU: https://european-union.europa.eu/principles-countries-history/eu-countries_en
+    - NATO: https://www.nato.int/en/about-us/organization/nato-member-countries
+    - OECD: https://en.wikipedia.org/wiki/OECD
+    - OPEC: https://en.wikipedia.org/wiki/OPEC
+    - BRICS: https://en.wikipedia.org/wiki/BRICS
 """
 
 import json
+import unicodedata
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 from pydantic_core import core_schema
 
 
-def _load_country_data() -> dict[str, dict[str, str]]:
+class CountryData(TypedDict, total=False):
+    """Type definition for country data dictionary."""
+
+    alpha_2: str
+    alpha_3: str
+    name: str
+    numeric: str
+    groups: list[str]
+
+
+_COMMON_ALIASES: dict[str, list[str]] = {
+    "TR": ["turkey"],
+}
+
+
+def _strip_accents(text: str) -> str:
+    """Strip diacritical marks from text (e.g., Curaçao -> Curacao)."""
+    nfd = unicodedata.normalize("NFD", text)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
+
+
+def _load_country_data() -> dict[str, CountryData]:
     """Load country data from JSON and build lookup indices.
 
     Returns a dict with lookup keys (alpha_2, alpha_3, name variants) mapping to country data.
@@ -25,24 +63,30 @@ def _load_country_data() -> dict[str, dict[str, str]]:
     with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
 
-    lookup: dict[str, dict[str, str]] = {}
+    lookup: dict[str, CountryData] = {}
     for country in data["countries"]:
-        # Index by alpha_2 (case-insensitive)
         lookup[country["alpha_2"].upper()] = country
         lookup[country["alpha_2"].lower()] = country
 
-        # Index by alpha_3 (case-insensitive)
         lookup[country["alpha_3"].upper()] = country
         lookup[country["alpha_3"].lower()] = country
 
-        # Index by name (case-insensitive)
         name_lower = country["name"].lower()
         lookup[name_lower] = country
         lookup[country["name"]] = country
 
-        # Index by snake_case name
+        ascii_lower = _strip_accents(name_lower)
+        if ascii_lower != name_lower:
+            lookup[ascii_lower] = country
+
+        for alias in _COMMON_ALIASES.get(country["alpha_2"], []):
+            lookup[alias] = country
+
         snake_name = name_lower.replace(" ", "_").replace(",", "").replace("'", "")
         lookup[snake_name] = country
+        ascii_snake = _strip_accents(snake_name)
+        if ascii_snake != snake_name:
+            lookup[ascii_snake] = country
 
     return lookup
 
@@ -74,9 +118,13 @@ class Country(str):
     'USA'
     >>> c.name
     'United States'
+    >>> c.groups
+    ['G7', 'G20', 'NATO', 'OECD']
+    >>> c.is_member_of("G7")
+    True
     """
 
-    _country_data: dict[str, str]
+    _country_data: CountryData
 
     def __new__(cls, value: Any) -> "Country":
         """Create a new Country instance.
@@ -109,7 +157,7 @@ class Country(str):
         return instance
 
     @staticmethod
-    def _lookup_country(value: Any) -> dict[str, str]:
+    def _lookup_country(value: Any) -> CountryData:
         """Look up a country from various input formats.
 
         Parameters
@@ -119,8 +167,8 @@ class Country(str):
 
         Returns
         -------
-        dict[str, str]
-            The country data dictionary with alpha_2, alpha_3, name, numeric.
+        CountryData
+            The country data dictionary with alpha_2, alpha_3, name, numeric, groups.
 
         Raises
         ------
@@ -129,18 +177,19 @@ class Country(str):
         """
         val = str(value).strip()
 
-        # Convert lower_snake_case to lookup key
         if "_" in val:
             val = val.replace("_", " ")
 
-        # Try direct lookup
         lookup_key = val.lower()
         if lookup_key in _COUNTRY_LOOKUP:
             return _COUNTRY_LOOKUP[lookup_key]
 
-        # Try original case
         if val in _COUNTRY_LOOKUP:
             return _COUNTRY_LOOKUP[val]
+
+        ascii_key = _strip_accents(lookup_key)
+        if ascii_key in _COUNTRY_LOOKUP:
+            return _COUNTRY_LOOKUP[ascii_key]
 
         raise ValueError(
             f"Invalid country: '{value}'. "
@@ -168,6 +217,44 @@ class Country(str):
     def numeric(self) -> str | None:
         """ISO 3166-1 numeric code (e.g., '840'), if available."""
         return self._country_data.get("numeric")
+
+    @property
+    def groups(self) -> list[str]:
+        """List of membership groups this country belongs to.
+
+        Available groups: G7, G20, EU, NATO, OECD, OPEC, BRICS.
+
+        Examples
+        --------
+        >>> c = Country("US")
+        >>> c.groups
+        ['G7', 'G20', 'NATO', 'OECD']
+        """
+        return self._country_data.get("groups", [])
+
+    def is_member_of(self, group: str) -> bool:
+        """Check if country is a member of a specific group.
+
+        Parameters
+        ----------
+        group : str
+            The group to check membership for (e.g., 'G7', 'EU', 'NATO').
+            Case-insensitive.
+
+        Returns
+        -------
+        bool
+            True if the country is a member of the group.
+
+        Examples
+        --------
+        >>> c = Country("Germany")
+        >>> c.is_member_of("G7")
+        True
+        >>> c.is_member_of("OPEC")
+        False
+        """
+        return group.upper() in [g.upper() for g in self.groups]
 
     @classmethod
     def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: Any) -> Any:
