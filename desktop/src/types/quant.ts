@@ -83,6 +83,8 @@ export interface RankerConfigInput {
   reg_lambda: number;
   random_state: number;
   early_stopping_rounds: number;
+  stacking_enabled?: boolean;
+  stacking_alpha?: number;
 }
 
 export interface WalkForwardConfigInput {
@@ -631,6 +633,8 @@ export interface PortfolioRiskPayload {
   position_risk_contrib_top10?: PortfolioRiskContributionItem[];
   position_return_contrib_top5: PortfolioRiskContributionItem[];
   worst5_positions: PortfolioRiskContributionItem[];
+  factor_exposure?: Record<string, number>;
+  stress_test?: Record<string, number>;
 }
 
 export interface ConstraintBindingItemPayload {

@@ -243,3 +243,51 @@ def test_backtest_cvar_mode_falls_back_to_mv(monkeypatch):
         "optimizer_fallback_mv" in item.get("binding_constraints", [])
         for item in result.rebalance_history_summary
     )
+
+
+def test_backtest_mixed_mode_applies_dynamic_risk_budget():
+    rng = np.random.default_rng(71)
+    symbols = ["A", "B", "C", "D", "E", "F"]
+    dates = pd.date_range("2024-01-01", "2024-09-30", freq="B")
+
+    close_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    for symbol in symbols:
+        # Downward and volatile path to trigger mixed-mode risk scaling.
+        returns = rng.normal(-0.0009, 0.02, len(dates))
+        close_panel[symbol] = 120 * np.cumprod(1 + returns)
+        open_panel[symbol] = close_panel[symbol] * 0.998
+
+    pred_dates = pd.date_range("2024-01-01", "2024-09-30", freq="BMS")
+    predictions = pd.DataFrame(
+        [
+            {"date": d, "symbol": symbol, "predicted_return": float(0.01 - i * 0.002)}
+            for d in pred_dates
+            for i, symbol in enumerate(symbols)
+        ]
+    )
+
+    result = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=close_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 9, 30),
+        constraints=BacktestConstraints(
+            max_weight=0.2, long_only=True, risk_aversion=3.0, lookback_days=60
+        ),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
+        portfolio_mode="long_only",
+        regime_policy="mixed",
+    )
+
+    assert result.effective_constraints.get("dynamic_risk_budget_mixed") is True
+    assert result.effective_constraints.get("risk_budget_scale_avg", 1.0) <= 1.0
+    assert result.effective_constraints.get("risk_budget_scale_min", 1.0) <= 1.0
+    assert any(
+        float(item.get("risk_budget_scale", 1.0)) < 0.999
+        for item in result.rebalance_history_summary
+    )

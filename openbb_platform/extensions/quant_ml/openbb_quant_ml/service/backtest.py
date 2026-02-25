@@ -75,6 +75,7 @@ def _optimize_weights(
     *,
     allow_short: bool,
     max_weight: float,
+    risk_aversion: float | None = None,
 ) -> np.ndarray:
     asset_count = len(mu)
     if asset_count == 0:
@@ -88,9 +89,14 @@ def _optimize_weights(
     initial = _safe_initial_weights(asset_count, weight_cap, allow_short=allow_short)
 
     def objective(weights: np.ndarray) -> float:
+        risk_aversion_local = (
+            float(risk_aversion)
+            if risk_aversion is not None
+            else float(constraints.risk_aversion)
+        )
         mean_term = float(np.dot(mu, weights))
         risk_term = float(weights @ cov @ weights)
-        return -(mean_term - constraints.risk_aversion * risk_term)
+        return -(mean_term - risk_aversion_local * risk_term)
 
     if allow_short:
         optimizer_constraints = [
@@ -202,6 +208,19 @@ def _compute_regime_series(
 
 def _mixed_policy_allows_short(trend_regime: str, vol_regime: str) -> bool:
     return trend_regime == "bull" and vol_regime in {"low", "mid"}
+
+
+def _dynamic_risk_budget_scale(
+    trend_regime: str, vol_regime: str, current_drawdown: float
+) -> float:
+    """Return exposure scaling factor in mixed mode (0.30 ~ 1.00)."""
+    trend_key = str(trend_regime or "sideways").lower()
+    vol_key = str(vol_regime or "mid").lower()
+    trend_scale = {"bull": 1.0, "sideways": 0.82, "bear": 0.62}.get(trend_key, 0.82)
+    vol_scale = {"low": 1.0, "mid": 0.90, "high": 0.72}.get(vol_key, 0.9)
+    dd = max(0.0, float(current_drawdown))
+    dd_scale = max(0.35, 1.0 - dd * 3.0)
+    return float(np.clip(trend_scale * vol_scale * dd_scale, 0.30, 1.0))
 
 
 def _consistency_checks(
@@ -440,10 +459,12 @@ def run_backtest(
     rebalance_reports: list[dict[str, Any]] = []
     liquidity_clip_values: list[float] = []
     risk_contribution_values: list[float] = []
+    risk_budget_scales: list[float] = []
     universe_stage_counts_latest: dict[str, int] = {}
 
     base_index = 100.0
     equity = base_index
+    max_equity_seen = float(base_index)
     first_trade_date = pd.Timestamp(trade_dates[0])
     daily_rows.append(
         {
@@ -461,14 +482,29 @@ def run_backtest(
         mu = pred_wide.loc[rebalance_date, symbols].fillna(0.0).values.astype(float)
         hist = returns.loc[:rebalance_date, symbols].tail(constraints.lookback_days)
         cov = hist.cov().fillna(0.0).values
+        trend_regime = "sideways"
+        vol_regime = "mid"
+        if not regime_frame.empty:
+            regime_row = regime_frame.reindex([rebalance_date], method="ffill").iloc[0]
+            trend_regime = str(regime_row.get("trend_regime", "sideways"))
+            vol_regime = str(regime_row.get("vol_regime", "mid"))
+        current_drawdown = max(0.0, 1.0 - float(equity / max(max_equity_seen, 1e-12)))
+        risk_budget_scale = 1.0
+        if regime_policy == "mixed":
+            risk_budget_scale = _dynamic_risk_budget_scale(
+                trend_regime=trend_regime,
+                vol_regime=vol_regime,
+                current_drawdown=current_drawdown,
+            )
+        risk_budget_scales.append(float(risk_budget_scale))
+        dynamic_max_weight = max(0.005, float(effective_max_weight) * float(risk_budget_scale))
+        dynamic_risk_aversion = float(constraints.risk_aversion) / max(
+            float(risk_budget_scale), 0.35
+        )
         allow_short = bool(portfolio_mode == "long_short" and not constraints.long_only)
         mode_used = "long_short" if allow_short else "long_only"
-        if allow_short and regime_policy == "mixed" and not regime_frame.empty:
-            regime_row = regime_frame.reindex([rebalance_date], method="ffill").iloc[0]
-            allow_short = _mixed_policy_allows_short(
-                str(regime_row.get("trend_regime", "sideways")),
-                str(regime_row.get("vol_regime", "mid")),
-            )
+        if allow_short and regime_policy == "mixed":
+            allow_short = _mixed_policy_allows_short(trend_regime, vol_regime)
             mode_used = "long_short" if allow_short else "long_only"
 
         binding_constraints: list[str] = []
@@ -479,18 +515,21 @@ def run_backtest(
                 cov,
                 constraints,
                 allow_short=allow_short,
-                max_weight=effective_max_weight,
+                max_weight=dynamic_max_weight,
+                risk_aversion=dynamic_risk_aversion,
             )
             optimized = np.clip(
                 optimized,
-                -effective_max_weight if allow_short else 0.0,
-                effective_max_weight,
+                -dynamic_max_weight if allow_short else 0.0,
+                dynamic_max_weight,
             )
             weight_sum = float(np.sum(optimized))
             cash_weight = 0.0
             if weight_sum != 1.0:
                 optimized = optimized + ((1.0 - weight_sum) / max(len(optimized), 1))
-                optimized = np.clip(optimized, -effective_max_weight, effective_max_weight)
+                optimized = np.clip(optimized, -dynamic_max_weight, dynamic_max_weight)
+            if regime_policy == "mixed" and risk_budget_scale < 0.999:
+                binding_constraints.append("dynamic_risk_budget")
             liquidity_clip_values.append(0.0)
             risk_contribution_values.append(0.0)
         else:
@@ -544,8 +583,8 @@ def run_backtest(
                     cov=cov_active,
                     symbols=active_symbols,
                     metadata_by_symbol=metadata_active,
-                    risk_aversion=constraints.risk_aversion,
-                    requested_max_weight=effective_max_weight,
+                    risk_aversion=dynamic_risk_aversion,
+                    requested_max_weight=dynamic_max_weight,
                     policy=universe_policy,
                     nav=1.0,
                     optimizer_mode=str(constraints.optimizer_mode),
@@ -554,11 +593,17 @@ def run_backtest(
                     scenario_returns=scenario_frame.fillna(0.0).to_numpy(dtype=float),
                 )
                 optimized_active = opt_result.weights
+                if regime_policy == "mixed" and risk_budget_scale < 0.999:
+                    optimized_active = optimized_active * float(risk_budget_scale)
+                    binding_constraints = list(opt_result.binding_constraints) + [
+                        "dynamic_risk_budget"
+                    ]
+                else:
+                    binding_constraints = list(opt_result.binding_constraints)
                 for local_idx, global_idx in enumerate(active_indices):
                     optimized[global_idx] = float(optimized_active[local_idx])
-                cash_weight = float(opt_result.cash_weight)
+                cash_weight = float(max(0.0, 1.0 - float(np.sum(optimized_active))))
                 latest_cash_weight = cash_weight
-                binding_constraints = list(opt_result.binding_constraints)
                 period_violations = [
                     {"date": rebalance_key, **violation}
                     for violation in opt_result.constraint_violations
@@ -688,6 +733,7 @@ def run_backtest(
                     {"symbol": symbol, "delta": float(delta)} for symbol, delta in decreases
                 ],
                 "turnover": float(turnover),
+                "risk_budget_scale": float(risk_budget_scale),
                 "binding_constraints": binding_constraints,
             }
         )
@@ -722,6 +768,7 @@ def run_backtest(
                     "trading_cost": trading_cost,
                 }
             )
+            max_equity_seen = max(max_equity_seen, float(equity))
             cost_breakdown.append(
                 {
                     "date": trading_date.date().isoformat(),
@@ -798,6 +845,13 @@ def run_backtest(
             "cvar_alpha": float(constraints.cvar_alpha),
             "cvar_lambda": float(constraints.cvar_lambda),
             "scenario_lookback_days": float(constraints.scenario_lookback_days),
+            "dynamic_risk_budget_mixed": bool(regime_policy == "mixed"),
+            "risk_budget_scale_avg": float(np.mean(risk_budget_scales))
+            if risk_budget_scales
+            else 1.0,
+            "risk_budget_scale_min": float(np.min(risk_budget_scales))
+            if risk_budget_scales
+            else 1.0,
             "sector_cap": float(
                 universe_policy.get("portfolio_constraints", {}).get("sector_cap", 0.25)
             ),

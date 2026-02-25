@@ -77,6 +77,8 @@ class RankerConfig(BaseModel):
     reg_lambda: float = Field(default=10.0, ge=0, le=1000)
     random_state: int = 42
     early_stopping_rounds: int = Field(default=200, ge=10, le=2000)
+    stacking_enabled: bool = False
+    stacking_alpha: float = Field(default=1.0, ge=0.0, le=100.0)
 
 
 class WalkForwardConfig(BaseModel):
@@ -742,6 +744,8 @@ class PortfolioRiskResponse(BaseModel):
         default_factory=list
     )
     worst5_positions: list[dict[str, float | str]] = Field(default_factory=list)
+    factor_exposure: dict[str, float] = Field(default_factory=dict)
+    stress_test: dict[str, float] = Field(default_factory=dict)
 
 
 class ICDecayResponse(BaseModel):

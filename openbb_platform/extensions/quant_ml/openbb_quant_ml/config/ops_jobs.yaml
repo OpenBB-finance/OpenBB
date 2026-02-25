@@ -60,6 +60,8 @@ weekly:
   ranker_config:
     n_estimators: 3000
     early_stopping_rounds: 100
+    stacking_enabled: false
+    stacking_alpha: 1.0
   feature_config:
     include_bollinger: false
     include_atr: false
@@ -105,6 +107,8 @@ monthly:
   ranker_config:
     n_estimators: 5000
     early_stopping_rounds: 150
+    stacking_enabled: false
+    stacking_alpha: 1.0
   feature_config:
     include_bollinger: false
     include_atr: false

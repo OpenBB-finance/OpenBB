@@ -11,6 +11,7 @@ from typing import Any, Literal
 import numpy as np
 import pandas as pd
 from scipy.stats import ConstantInputWarning, spearmanr
+from sklearn.linear_model import Ridge
 
 from openbb_quant_ml.models import RankerConfig, WalkForwardConfig
 
@@ -29,6 +30,34 @@ class RankerTrainingOutput:
     inference_backend: str
     label_return_map: dict[int, float]
     label_return_fallback: float
+
+
+@dataclass
+class StackedRankerEnsemble:
+    """Simple two-stage stacked ranker wrapper for inference."""
+
+    primary_model: Any
+    auxiliary_model: Any
+    meta_model: Ridge
+
+    def predict(self, x_input: np.ndarray) -> np.ndarray:
+        x = np.asarray(x_input, dtype=float)
+        primary = np.asarray(self.primary_model.predict(x), dtype=float).reshape(-1)
+        auxiliary = np.asarray(self.auxiliary_model.predict(x), dtype=float).reshape(-1)
+        stacked = np.column_stack([primary, auxiliary])
+        return np.asarray(self.meta_model.predict(stacked), dtype=float).reshape(-1)
+
+    def predict_components(self, x_input: np.ndarray) -> dict[str, np.ndarray]:
+        x = np.asarray(x_input, dtype=float)
+        primary = np.asarray(self.primary_model.predict(x), dtype=float).reshape(-1)
+        auxiliary = np.asarray(self.auxiliary_model.predict(x), dtype=float).reshape(-1)
+        stacked = np.column_stack([primary, auxiliary])
+        combined = np.asarray(self.meta_model.predict(stacked), dtype=float).reshape(-1)
+        return {
+            "primary_score": primary,
+            "auxiliary_score": auxiliary,
+            "combined_score": combined,
+        }
 
 
 def _monthly_index(values: pd.Series) -> pd.Series:
@@ -263,6 +292,38 @@ def _fit_ranker_model(
         return model, feature_importance, "xgb-fallback"
 
 
+def _fit_aux_xgb_regressor(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    feature_columns: list[str],
+    config: RankerConfig,
+) -> tuple[Any, np.ndarray]:
+    """Train an auxiliary XGB regressor used by stacked_v1."""
+    from xgboost import XGBRegressor
+
+    x_train = train_df[feature_columns].to_numpy(dtype=float)
+    y_train = train_df["target_return"].to_numpy(dtype=float)
+    x_val = val_df[feature_columns].to_numpy(dtype=float)
+    y_val = val_df["target_return"].to_numpy(dtype=float)
+
+    model = XGBRegressor(
+        n_estimators=max(300, min(3000, int(config.n_estimators // 2))),
+        max_depth=6,
+        learning_rate=float(config.learning_rate),
+        subsample=float(config.subsample),
+        colsample_bytree=float(config.colsample_bytree),
+        reg_lambda=float(config.reg_lambda),
+        objective="reg:squarederror",
+        random_state=int(config.random_state),
+        n_jobs=1,
+    )
+    model.fit(x_train, y_train, eval_set=[(x_val, y_val)], verbose=False)
+    importance = np.asarray(model.feature_importances_, dtype=float)
+    if importance.size != len(feature_columns):
+        importance = np.zeros(len(feature_columns), dtype=float)
+    return model, importance
+
+
 def _map_score_to_mu(
     train_df: pd.DataFrame,
     scored_df: pd.DataFrame,
@@ -491,10 +552,15 @@ def train_ranker_models(
 
     fold_frames: list[pd.DataFrame] = []
     fold_metrics: list[dict[str, float]] = []
+    fold_bundles: list[dict[str, Any]] = []
     importance_accumulator = np.zeros(len(feature_columns), dtype=float)
     backend_name = "lightgbm"
     ic_skipped_constant_groups = 0
     ic_valid_groups = 0
+    stacking_requested = bool(getattr(ranker_config, "stacking_enabled", False))
+    stacking_enabled = stacking_requested
+    stacking_alpha = float(getattr(ranker_config, "stacking_alpha", 1.0))
+    stacked_meta_model: Ridge | None = None
 
     for fold_idx, (train_df, val_df) in enumerate(splits, start=1):
         emit_progress(
@@ -518,52 +584,212 @@ def train_ranker_models(
         importance_accumulator += feature_importance
 
         train_scored = train_df.copy()
-        train_scored["score"] = model.predict(
+        train_scored["score_primary"] = model.predict(
             train_scored[feature_columns].to_numpy(dtype=float)
         ).astype(float)
 
         scored = val_df.copy()
-        scored["score"] = model.predict(
+        scored["score_primary"] = model.predict(
             scored[feature_columns].to_numpy(dtype=float)
         ).astype(float)
-        scored["predicted_return"] = _map_score_to_mu(train_df, scored).astype(float)
-        scored["predicted_xgb"] = scored["score"]
-        scored["predicted_lstm"] = scored["score"]
-        fold_frames.append(scored)
 
-        train_ic_value, train_ic_stats = _group_ic(
-            train_scored,
-            "score",
-            "target_return",
-            return_stats=True,
-        )
-        val_ic_value, val_ic_stats = _group_ic(
-            scored,
-            "score",
-            "target_return",
-            return_stats=True,
-        )
-        ic_skipped_constant_groups += int(
-            train_ic_stats.get("ic_skipped_constant_groups", 0)
-        ) + int(val_ic_stats.get("ic_skipped_constant_groups", 0))
-        ic_valid_groups += int(train_ic_stats.get("ic_valid_groups", 0)) + int(
-            val_ic_stats.get("ic_valid_groups", 0)
-        )
+        if stacking_enabled:
+            aux_model, _ = _fit_aux_xgb_regressor(
+                train_df=train_df,
+                val_df=val_df,
+                feature_columns=feature_columns,
+                config=ranker_config,
+            )
+            train_scored["score_aux"] = aux_model.predict(
+                train_scored[feature_columns].to_numpy(dtype=float)
+            ).astype(float)
+            scored["score_aux"] = aux_model.predict(
+                scored[feature_columns].to_numpy(dtype=float)
+            ).astype(float)
+            scored["score"] = scored["score_primary"].astype(float)
+        else:
+            train_scored["score"] = train_scored["score_primary"].astype(float)
+            scored["score"] = scored["score_primary"].astype(float)
+            scored["predicted_return"] = _map_score_to_mu(train_df, scored).astype(float)
+            scored["predicted_xgb"] = scored["score"]
+            scored["predicted_lstm"] = scored["score"]
+            fold_frames.append(scored)
 
-        fold_metrics.append(
+            train_ic_value, train_ic_stats = _group_ic(
+                train_scored,
+                "score",
+                "target_return",
+                return_stats=True,
+            )
+            val_ic_value, val_ic_stats = _group_ic(
+                scored,
+                "score",
+                "target_return",
+                return_stats=True,
+            )
+            ic_skipped_constant_groups += int(
+                train_ic_stats.get("ic_skipped_constant_groups", 0)
+            ) + int(val_ic_stats.get("ic_skipped_constant_groups", 0))
+            ic_valid_groups += int(train_ic_stats.get("ic_valid_groups", 0)) + int(
+                val_ic_stats.get("ic_valid_groups", 0)
+            )
+
+            fold_metrics.append(
+                {
+                    "fold": float(fold_idx),
+                    "train_ic": float(train_ic_value),
+                    "val_ic": float(val_ic_value),
+                    "ndcg_5": _group_ndcg(scored, 5),
+                    "ndcg_10": _group_ndcg(scored, 10),
+                    "ndcg_20": _group_ndcg(scored, 20),
+                }
+            )
+        fold_bundles.append(
             {
-                "fold": float(fold_idx),
-                "train_ic": float(train_ic_value),
-                "val_ic": float(val_ic_value),
-                "ndcg_5": _group_ndcg(scored, 5),
-                "ndcg_10": _group_ndcg(scored, 10),
-                "ndcg_20": _group_ndcg(scored, 20),
+                "train_df": train_df,
+                "train_scored": train_scored,
+                "val_scored": scored,
             }
         )
         emit_progress(
             0.2 + 0.6 * (float(fold_idx) / max(float(len(splits)), 1.0)),
             f"Finished ranker fold {fold_idx}/{len(splits)}",
         )
+
+    if stacking_enabled:
+        emit_progress(0.86, "Fitting stacked_v1 meta learner")
+        stacked_train_rows: list[pd.DataFrame] = []
+        for bundle in fold_bundles:
+            val_scored = bundle["val_scored"]
+            if (
+                "score_primary" not in val_scored.columns
+                or "score_aux" not in val_scored.columns
+            ):
+                continue
+            stacked_train_rows.append(
+                val_scored[
+                    ["score_primary", "score_aux", "target_return"]
+                ].dropna(subset=["target_return"])
+            )
+
+        if stacked_train_rows:
+            stacked_train = pd.concat(stacked_train_rows, ignore_index=True)
+        else:
+            stacked_train = pd.DataFrame()
+
+        if stacked_train.empty or len(stacked_train) < 50:
+            stacking_enabled = False
+        else:
+            stacked_meta_model = Ridge(alpha=max(0.0, stacking_alpha))
+            stacked_meta_model.fit(
+                stacked_train[["score_primary", "score_aux"]].to_numpy(dtype=float),
+                stacked_train["target_return"].to_numpy(dtype=float),
+            )
+
+        if stacking_enabled and stacked_meta_model is not None:
+            fold_frames = []
+            fold_metrics = []
+            ic_skipped_constant_groups = 0
+            ic_valid_groups = 0
+            for fold_idx, bundle in enumerate(fold_bundles, start=1):
+                train_df = bundle["train_df"]
+                train_scored = bundle["train_scored"].copy()
+                val_scored = bundle["val_scored"].copy()
+
+                train_stack = train_scored[["score_primary", "score_aux"]].to_numpy(
+                    dtype=float
+                )
+                val_stack = val_scored[["score_primary", "score_aux"]].to_numpy(
+                    dtype=float
+                )
+                train_scored["score"] = stacked_meta_model.predict(train_stack).astype(
+                    float
+                )
+                val_scored["score"] = stacked_meta_model.predict(val_stack).astype(float)
+                val_scored["predicted_return"] = _map_score_to_mu(
+                    train_df, val_scored
+                ).astype(float)
+                val_scored["predicted_xgb"] = val_scored["score_aux"].astype(float)
+                val_scored["predicted_lstm"] = val_scored["score_primary"].astype(float)
+                fold_frames.append(val_scored)
+
+                train_ic_value, train_ic_stats = _group_ic(
+                    train_scored,
+                    "score",
+                    "target_return",
+                    return_stats=True,
+                )
+                val_ic_value, val_ic_stats = _group_ic(
+                    val_scored,
+                    "score",
+                    "target_return",
+                    return_stats=True,
+                )
+                ic_skipped_constant_groups += int(
+                    train_ic_stats.get("ic_skipped_constant_groups", 0)
+                ) + int(val_ic_stats.get("ic_skipped_constant_groups", 0))
+                ic_valid_groups += int(train_ic_stats.get("ic_valid_groups", 0)) + int(
+                    val_ic_stats.get("ic_valid_groups", 0)
+                )
+                fold_metrics.append(
+                    {
+                        "fold": float(fold_idx),
+                        "train_ic": float(train_ic_value),
+                        "val_ic": float(val_ic_value),
+                        "ndcg_5": _group_ndcg(val_scored, 5),
+                        "ndcg_10": _group_ndcg(val_scored, 10),
+                        "ndcg_20": _group_ndcg(val_scored, 20),
+                    }
+                )
+        else:
+            # Fallback to primary ranker scores when stacked meta learner is unavailable.
+            fold_frames = []
+            fold_metrics = []
+            ic_skipped_constant_groups = 0
+            ic_valid_groups = 0
+            for fold_idx, bundle in enumerate(fold_bundles, start=1):
+                train_df = bundle["train_df"]
+                train_scored = bundle["train_scored"].copy()
+                val_scored = bundle["val_scored"].copy()
+                train_scored["score"] = train_scored["score_primary"].astype(float)
+                val_scored["score"] = val_scored["score_primary"].astype(float)
+                val_scored["predicted_return"] = _map_score_to_mu(
+                    train_df, val_scored
+                ).astype(float)
+                val_scored["predicted_xgb"] = val_scored.get(
+                    "score_aux", val_scored["score"]
+                ).astype(float)
+                val_scored["predicted_lstm"] = val_scored["score_primary"].astype(float)
+                fold_frames.append(val_scored)
+
+                train_ic_value, train_ic_stats = _group_ic(
+                    train_scored,
+                    "score",
+                    "target_return",
+                    return_stats=True,
+                )
+                val_ic_value, val_ic_stats = _group_ic(
+                    val_scored,
+                    "score",
+                    "target_return",
+                    return_stats=True,
+                )
+                ic_skipped_constant_groups += int(
+                    train_ic_stats.get("ic_skipped_constant_groups", 0)
+                ) + int(val_ic_stats.get("ic_skipped_constant_groups", 0))
+                ic_valid_groups += int(train_ic_stats.get("ic_valid_groups", 0)) + int(
+                    val_ic_stats.get("ic_valid_groups", 0)
+                )
+                fold_metrics.append(
+                    {
+                        "fold": float(fold_idx),
+                        "train_ic": float(train_ic_value),
+                        "val_ic": float(val_ic_value),
+                        "ndcg_5": _group_ndcg(val_scored, 5),
+                        "ndcg_10": _group_ndcg(val_scored, 10),
+                        "ndcg_20": _group_ndcg(val_scored, 20),
+                    }
+                )
 
     emit_progress(0.9, "Aggregating ranker outputs")
     combined = pd.concat(fold_frames, ignore_index=True)
@@ -603,19 +829,34 @@ def train_ranker_models(
     if final_val_df.empty:
         final_val_df = final_train_df.tail(min(300, len(final_train_df))).copy()
     if backend == "catboost":
-        final_model, _, final_backend = _fit_catboost_ranker(
+        final_primary_model, _, final_primary_backend = _fit_catboost_ranker(
             train_df=final_train_df,
             val_df=final_val_df,
             feature_columns=feature_columns,
             config=ranker_config,
         )
     else:
-        final_model, _, final_backend = _fit_ranker_model(
+        final_primary_model, _, final_primary_backend = _fit_ranker_model(
             train_df=final_train_df,
             val_df=final_val_df,
             feature_columns=feature_columns,
             config=ranker_config,
         )
+    final_model: Any = final_primary_model
+    final_backend = final_primary_backend
+    if stacking_enabled and stacked_meta_model is not None:
+        final_aux_model, _ = _fit_aux_xgb_regressor(
+            train_df=final_train_df,
+            val_df=final_val_df,
+            feature_columns=feature_columns,
+            config=ranker_config,
+        )
+        final_model = StackedRankerEnsemble(
+            primary_model=final_primary_model,
+            auxiliary_model=final_aux_model,
+            meta_model=stacked_meta_model,
+        )
+        final_backend = "stacked_v1"
 
     label_return_map: dict[int, float] = {}
     grouped = final_train_df.groupby("label")["target_return"].mean()
@@ -688,13 +929,29 @@ def train_ranker_models(
         "decile_spread": _decile_spread(combined),
         "fold_count": len(splits),
         "model_backend": final_backend,
+        "primary_backend": final_primary_backend,
+        "stacking_enabled": bool(stacking_enabled and stacked_meta_model is not None),
         "ic_skipped_constant_groups": int(ic_skipped_constant_groups),
         "ic_valid_groups": int(ic_valid_groups),
     }
 
+    stacked_active = bool(stacking_enabled and stacked_meta_model is not None)
+    primary_model_name = (
+        "CatBoostRanker"
+        if str(final_primary_backend).startswith("catboost")
+        else "LGBMRanker"
+    )
     model_meta: dict[str, Any] = {
-        "model": "LGBMRanker",
+        "model": "StackedRankerEnsemble" if stacked_active else primary_model_name,
         "backend": final_backend,
+        "primary_backend": final_primary_backend,
+        "base_models": (
+            [str(final_primary_backend), "xgb_aux"]
+            if stacked_active
+            else [str(final_primary_backend)]
+        ),
+        "stacked_v1": stacked_active,
+        "stacking_alpha": float(stacking_alpha),
         "feature_count": len(feature_columns),
         "walk_forward": walk_forward.model_dump(mode="json"),
         "purging_mode": str(walk_forward.purging_mode),

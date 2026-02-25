@@ -605,19 +605,24 @@ def _rolling_beta(y: pd.Series, x: pd.Series, window: int = 126) -> pd.Series:
 def _factor_exposure(
     strategy_returns: pd.Series, close_panel: pd.DataFrame, lookback: int = 126
 ) -> dict[str, float]:
+    base_out = {
+        "market": 0.0,
+        "momentum": 0.0,
+        "value": 0.0,
+        "size": 0.0,
+        "volatility": 0.0,
+        "quality": 0.0,
+    }
     returns = _returns_panel(close_panel)
     if returns.empty or strategy_returns.empty:
-        return {
-            "momentum": 0.0,
-            "value": 0.0,
-            "size": 0.0,
-            "volatility": 0.0,
-        }
+        return base_out
     aligned = strategy_returns.dropna()
     if aligned.shape[0] > lookback:
         aligned = aligned.tail(lookback)
 
     proxies: dict[str, pd.Series] = {}
+    if "SPY" in returns.columns:
+        proxies["market"] = returns["SPY"]
     if "MTUM" in returns.columns:
         proxies["momentum"] = returns["MTUM"]
     if "VLUE" in returns.columns:
@@ -628,8 +633,14 @@ def _factor_exposure(
         proxies["size"] = returns["IWM"] - returns["SPY"]
     if "USMV" in returns.columns:
         proxies["volatility"] = returns["USMV"]
+    elif "SPLV" in returns.columns:
+        proxies["volatility"] = returns["SPLV"]
+    if "QUAL" in returns.columns:
+        proxies["quality"] = returns["QUAL"]
+    elif "SPHQ" in returns.columns:
+        proxies["quality"] = returns["SPHQ"]
 
-    out = {"momentum": 0.0, "value": 0.0, "size": 0.0, "volatility": 0.0}
+    out = dict(base_out)
     for key, series in proxies.items():
         out[key] = _safe_float(_beta(aligned, series.reindex(aligned.index)), 0.0)
     return out
@@ -1346,6 +1357,40 @@ def get_portfolio_risk(
     if not strategy_returns.empty:
         tail = strategy_returns.nsmallest(max(1, int(strategy_returns.shape[0] * 0.05)))
         cvar_95 = _safe_float(tail.mean())
+    factor_exposure = _factor_exposure(
+        strategy_returns=strategy_returns,
+        close_panel=close_panel,
+        lookback=max(int(lookback), 20),
+    )
+    stress_test = {
+        "hist_var_99": 0.0,
+        "hist_cvar_99": 0.0,
+        "shock_1d_3sigma": 0.0,
+        "shock_5d_3sigma": 0.0,
+    }
+    if not strategy_returns.empty:
+        stress_sample = strategy_returns.tail(max(int(lookback), 20)).astype(float)
+        if not stress_sample.empty:
+            q01 = _safe_float(np.quantile(stress_sample.to_numpy(dtype=float), 0.01))
+            tail_01 = stress_sample[stress_sample <= q01]
+            sigma = _safe_float(stress_sample.std(ddof=0))
+            rolling_5d = (
+                (1.0 + stress_sample).rolling(5, min_periods=5).apply(np.prod, raw=True)
+                - 1.0
+            ).dropna()
+            sigma_5d = _safe_float(stress_sample.std(ddof=0) * np.sqrt(5.0))
+            stress_test = {
+                "hist_var_99": q01,
+                "hist_cvar_99": _safe_float(
+                    tail_01.mean() if not tail_01.empty else q01
+                ),
+                "shock_1d_3sigma": float(-3.0 * sigma),
+                "shock_5d_3sigma": float(-3.0 * sigma_5d),
+            }
+            if not rolling_5d.empty:
+                stress_test["hist_var_99_5d"] = _safe_float(
+                    np.quantile(rolling_5d.to_numpy(dtype=float), 0.01)
+                )
 
     risk_contrib = _risk_contributions(cov, latest_weights)
     return_contrib_rows: list[dict[str, float | str]] = []
@@ -1377,6 +1422,8 @@ def get_portfolio_risk(
             position_risk_contrib_top10=risk_contrib[:10],
             position_return_contrib_top5=return_contrib_rows[:5],
             worst5_positions=worst_rows[:5],
+            factor_exposure=factor_exposure,
+            stress_test=stress_test,
         )
     )
 

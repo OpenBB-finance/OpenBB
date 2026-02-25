@@ -203,6 +203,10 @@ def test_portfolio_exposure_and_risk(monkeypatch: pytest.MonkeyPatch, tmp_path: 
     assert risk.vol_ex_ante >= 0.0
     assert len(risk.position_risk_contrib_top5) <= 5
     assert len(risk.worst5_positions) <= 5
+    assert "market" in risk.factor_exposure
+    assert "quality" in risk.factor_exposure
+    assert "hist_var_99" in risk.stress_test
+    assert "shock_1d_3sigma" in risk.stress_test
 
 
 def test_ic_decay_and_prediction_distribution(

@@ -11,14 +11,19 @@ import { RunStatusCard } from "../components/quant/RunStatusCard";
 import { SignalsTable } from "../components/quant/SignalsTable";
 import {
   createSignals,
+  fetchAlertsCurrent,
   fetchArtifactSummary,
+  fetchModelPerformance,
   fetchRebalanceHistory,
   fetchModelIc,
   fetchPromotedModel,
   fetchModelRegime,
   fetchModelShap,
+  fetchPortfolioExposure,
   fetchPortfolioPolicy,
   fetchPortfolioCurrent,
+  fetchPortfolioRisk,
+  fetchRegimeCurrent,
   fetchRunStatus,
   fetchUniverse,
   fetchUniverseList,
@@ -34,14 +39,19 @@ import { useQuantSession } from "../contexts/QuantSessionContext";
 import type { FeatureActivation } from "../types/feature-activation";
 import type {
   ArtifactSummaryPayload,
+  AlertsPayload,
   BacktestResponsePayload,
   ModelICPayload,
   ModelName,
+  ModelPerformancePayload,
   ModelConfigInput,
   ModelRegimePayload,
   ModelShapPayload,
   PortfolioPolicyPayload,
+  PortfolioExposurePayload,
+  PortfolioRiskPayload,
   PromotedModelPayload,
+  RegimeCurrentPayload,
   RebalanceHistoryItem,
   RankerConfigInput,
   PortfolioCurrentPayload,
@@ -218,6 +228,8 @@ const defaultRankerConfig: RankerConfigInput = {
   reg_lambda: 10.0,
   random_state: 42,
   early_stopping_rounds: 200,
+  stacking_enabled: false,
+  stacking_alpha: 1.0,
 };
 
 const defaultThetaGrid = [0.8, 1.0, 1.2, 1.5];
@@ -325,6 +337,11 @@ export default function QuantPage() {
   const [modelIcPayload, setModelIcPayload] = useState<ModelICPayload | null>(null);
   const [modelRegimePayload, setModelRegimePayload] = useState<ModelRegimePayload | null>(null);
   const [modelShapPayload, setModelShapPayload] = useState<ModelShapPayload | null>(null);
+  const [modelPerformancePayload, setModelPerformancePayload] = useState<ModelPerformancePayload | null>(null);
+  const [portfolioExposurePayload, setPortfolioExposurePayload] = useState<PortfolioExposurePayload | null>(null);
+  const [portfolioRiskPayload, setPortfolioRiskPayload] = useState<PortfolioRiskPayload | null>(null);
+  const [regimeCurrentPayload, setRegimeCurrentPayload] = useState<RegimeCurrentPayload | null>(null);
+  const [currentAlertsPayload, setCurrentAlertsPayload] = useState<AlertsPayload | null>(null);
   const [portfolioPolicy, setPortfolioPolicy] = useState<PortfolioPolicyPayload>(DEFAULT_PORTFOLIO_POLICY);
   const [promotedModel, setPromotedModel] = useState<PromotedModelPayload | null>(null);
   const [walkforwardStatus, setWalkforwardStatus] = useState<WalkForwardBacktestStatusPayload | null>(null);
@@ -771,16 +788,35 @@ export default function QuantPage() {
       setModelIcPayload(null);
       setModelRegimePayload(null);
       setModelShapPayload(null);
+      setModelPerformancePayload(null);
+      setPortfolioExposurePayload(null);
+      setPortfolioRiskPayload(null);
+      setRegimeCurrentPayload(null);
+      setCurrentAlertsPayload(null);
       setDiagnosticsError(null);
       return;
     }
 
     let disposed = false;
     void (async () => {
-      const [icRes, regimeRes, shapRes] = await Promise.allSettled([
+      const [
+        icRes,
+        regimeRes,
+        shapRes,
+        performanceRes,
+        exposureRes,
+        riskRes,
+        regimeCurrentRes,
+        alertsRes,
+      ] = await Promise.allSettled([
         fetchModelIc(backend.baseUrl, runId, selectedModel),
         fetchModelRegime(backend.baseUrl, runId, selectedModel),
         fetchModelShap(backend.baseUrl, runId, selectedModel),
+        fetchModelPerformance(backend.baseUrl, runId),
+        fetchPortfolioExposure(backend.baseUrl, runId, selectedModel),
+        fetchPortfolioRisk(backend.baseUrl, runId, selectedModel),
+        fetchRegimeCurrent(backend.baseUrl, runId, selectedModel),
+        fetchAlertsCurrent(backend.baseUrl, runId, selectedModel),
       ]);
 
       if (disposed) {
@@ -805,6 +841,52 @@ export default function QuantPage() {
       } else {
         setModelShapPayload(null);
         errors.push(shapRes.reason instanceof Error ? shapRes.reason.message : "model/shap failed");
+      }
+      if (performanceRes.status === "fulfilled") {
+        setModelPerformancePayload(performanceRes.value);
+      } else {
+        setModelPerformancePayload(null);
+        errors.push(
+          performanceRes.reason instanceof Error
+            ? performanceRes.reason.message
+            : "model/performance failed",
+        );
+      }
+      if (exposureRes.status === "fulfilled") {
+        setPortfolioExposurePayload(exposureRes.value);
+      } else {
+        setPortfolioExposurePayload(null);
+        errors.push(
+          exposureRes.reason instanceof Error
+            ? exposureRes.reason.message
+            : "portfolio/exposure failed",
+        );
+      }
+      if (riskRes.status === "fulfilled") {
+        setPortfolioRiskPayload(riskRes.value);
+      } else {
+        setPortfolioRiskPayload(null);
+        errors.push(
+          riskRes.reason instanceof Error ? riskRes.reason.message : "portfolio/risk failed",
+        );
+      }
+      if (regimeCurrentRes.status === "fulfilled") {
+        setRegimeCurrentPayload(regimeCurrentRes.value);
+      } else {
+        setRegimeCurrentPayload(null);
+        errors.push(
+          regimeCurrentRes.reason instanceof Error
+            ? regimeCurrentRes.reason.message
+            : "regime/current failed",
+        );
+      }
+      if (alertsRes.status === "fulfilled") {
+        setCurrentAlertsPayload(alertsRes.value);
+      } else {
+        setCurrentAlertsPayload(null);
+        errors.push(
+          alertsRes.reason instanceof Error ? alertsRes.reason.message : "alerts/current failed",
+        );
       }
       setDiagnosticsError(errors.length > 0 ? errors.join(" | ") : null);
     })();
@@ -1590,6 +1672,39 @@ export default function QuantPage() {
                   model_regimes: Object.keys(modelRegimePayload?.regimes ?? {}).length,
                   model_shap_status: modelShapPayload?.status ?? "not_loaded",
                   model_shap_summary_points: modelShapPayload?.summary_points?.length ?? 0,
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </PanelCard>
+          <PanelCard title="Model Comparison" description="Cross-model metrics and drift view">
+            <pre className="max-h-56 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-2 text-[11px] text-theme-muted">
+              {JSON.stringify(
+                {
+                  models: modelPerformancePayload?.models ?? [],
+                  latest_alert_rules:
+                    currentAlertsPayload?.alerts?.map((item) => item.rule_id).slice(0, 10) ?? [],
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </PanelCard>
+          <PanelCard title="Risk Snapshot" description="Factor exposure, stress, and regime">
+            <pre className="max-h-56 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-2 text-[11px] text-theme-muted">
+              {JSON.stringify(
+                {
+                  factor_exposure: portfolioExposurePayload?.factor_exposure ?? {},
+                  risk_factor_exposure: portfolioRiskPayload?.factor_exposure ?? {},
+                  stress_test: portfolioRiskPayload?.stress_test ?? {},
+                  regime_current: regimeCurrentPayload
+                    ? {
+                        trend: regimeCurrentPayload.trend_regime,
+                        vol: regimeCurrentPayload.vol_regime,
+                        liquidity: regimeCurrentPayload.liquidity_regime,
+                      }
+                    : null,
                 },
                 null,
                 2,

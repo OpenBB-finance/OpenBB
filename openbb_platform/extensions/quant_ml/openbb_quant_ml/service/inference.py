@@ -104,7 +104,29 @@ def _score_latest_frame(
             working[column] = 0.0
 
     x_input = working[feature_columns].fillna(0.0).to_numpy(dtype=float)
-    scores = np.asarray(model.predict(x_input), dtype=float).reshape(-1)
+    component_primary: np.ndarray | None = None
+    component_aux: np.ndarray | None = None
+    if hasattr(model, "predict_components"):
+        try:
+            components = model.predict_components(x_input)
+        except Exception:  # noqa: BLE001
+            components = {}
+        if isinstance(components, dict):
+            combined = components.get("combined_score")
+            primary = components.get("primary_score")
+            auxiliary = components.get("auxiliary_score")
+            if combined is not None:
+                scores = np.asarray(combined, dtype=float).reshape(-1)
+            else:
+                scores = np.asarray(model.predict(x_input), dtype=float).reshape(-1)
+            if primary is not None:
+                component_primary = np.asarray(primary, dtype=float).reshape(-1)
+            if auxiliary is not None:
+                component_aux = np.asarray(auxiliary, dtype=float).reshape(-1)
+        else:
+            scores = np.asarray(model.predict(x_input), dtype=float).reshape(-1)
+    else:
+        scores = np.asarray(model.predict(x_input), dtype=float).reshape(-1)
     if scores.shape[0] != len(working):
         raise ValueError("Inference output shape does not match latest feature frame.")
 
@@ -142,8 +164,14 @@ def _score_latest_frame(
     scored["score"] = score_series.astype(float)
     scored["label"] = labels.astype(int)
     scored["predicted_return"] = predicted_return.astype(float)
-    scored["predicted_xgb"] = scored["score"]
-    scored["predicted_lstm"] = scored["score"]
+    if component_aux is not None and component_aux.shape[0] == len(scored):
+        scored["predicted_xgb"] = component_aux.astype(float)
+    else:
+        scored["predicted_xgb"] = scored["score"]
+    if component_primary is not None and component_primary.shape[0] == len(scored):
+        scored["predicted_lstm"] = component_primary.astype(float)
+    else:
+        scored["predicted_lstm"] = scored["score"]
     scored["date"] = pd.to_datetime(scored["date"]).dt.tz_localize(None)
     return scored.sort_values(["date", "symbol"]).reset_index(drop=True)
 
@@ -276,6 +304,7 @@ def refresh_latest_ranker_predictions(
         symbols=symbols,
         start_date=start_date,
         end_date=end_date,
+        max_workers=int(max_workers) if max_workers is not None else 6,
     )
     if not datasets:
         raise ValueError("No market datasets loaded for inference refresh.")
