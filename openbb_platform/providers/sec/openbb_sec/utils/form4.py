@@ -143,6 +143,9 @@ def setup_database(conn):
 
 def add_missing_column(conn, column_name):
     """Add a missing column to the form4_data table."""
+    # Sanitize the column name to prevent SQL injection
+    column_name_clean = column_name.replace('"', '""')
+
     missing_type = (
         "MONEY"
         if "price" in column_name or "value" in column_name
@@ -157,7 +160,9 @@ def add_missing_column(conn, column_name):
         )
     )
     cursor = conn.cursor()
-    cursor.execute(f"ALTER TABLE form4_data ADD COLUMN {column_name} {missing_type}")
+    cursor.execute(
+        f'ALTER TABLE form4_data ADD COLUMN "{column_name_clean}" {missing_type}'
+    )
     conn.commit()
 
 
