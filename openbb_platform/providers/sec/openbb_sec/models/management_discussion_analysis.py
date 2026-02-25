@@ -75,7 +75,46 @@ class SecManagementDiscussionAnalysisFetcher(
         from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
         from pandas import offsets, to_datetime
 
+        def _extract_exhibit_links(
+            index_html: str, type_prefix: str = "EX-99"
+        ) -> list[str]:
+            """Parse a filing index page and return hrefs for rows
+            whose Type cell starts with *type_prefix* (e.g. ``EX-99``).
+
+            The SEC filing-index table has columns:
+            Seq | Description | Document (with <a href>) | Type | Size
+            The TYPE label (e.g. ``EX-99.1``) lives in the cell text,
+            *not* in the href URL, so we must parse the table rows.
+            """
+            _row_re = re.compile(r"<tr[^>]*>(.*?)</tr>", re.I | re.S)
+            results: list[str] = []
+            for rm in _row_re.finditer(index_html):
+                cells = re.findall(r"<td[^>]*>(.*?)</td>", rm.group(1), re.I | re.S)
+                if len(cells) < 4:
+                    continue
+                # Type is column index 3.
+                _type = re.sub(r"<[^>]+>", "", cells[3]).strip()
+                if not _type.upper().startswith(type_prefix.upper()):
+                    continue
+                # Document column (index 2) has the <a href>.
+                _href_m = re.search(r'<a\b[^>]*href="([^"]+)"', cells[2], re.I)
+                if not _href_m:
+                    continue
+                href = _href_m.group(1)
+                # Strip XBRL inline viewer prefix.
+                _ix = re.match(r"/ix\?doc=(/.+)", href)
+                if _ix:
+                    href = _ix.group(1)
+                results.append(href)
+            return results
+
         # Get the company filings to find the URL.
+        # Domestic issuers file 10-K (annual) / 10-Q (quarterly).
+        # Foreign private issuers file 40-F or 20-F (annual) and
+        # 6-K (current/quarterly).  Search for all applicable forms
+        # and let the most-recent-filing logic pick the right one.
+
+        _form_types = "10-K,10-Q,40-F,20-F"
 
         if (
             query.symbol == "BLK" and query.calendar_year and query.calendar_year < 2025
@@ -83,7 +122,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filings = await SecCompanyFilingsFetcher.fetch_data(
                 {
                     "cik": "0001364742" if query.symbol == "BLK" else query.symbol,
-                    "form_type": "10-K,10-Q",
+                    "form_type": _form_types,
                     "use_cache": query.use_cache,
                 },
                 {},
@@ -93,7 +132,7 @@ class SecManagementDiscussionAnalysisFetcher(
             filings = await SecCompanyFilingsFetcher.fetch_data(
                 {
                     "symbol": query.symbol,
-                    "form_type": "10-K,10-Q",
+                    "form_type": _form_types,
                     "use_cache": query.use_cache,
                 },
                 {},
@@ -101,7 +140,7 @@ class SecManagementDiscussionAnalysisFetcher(
 
         if not filings:
             raise OpenBBError(
-                f"Could not find any 10-K or 10-Q filings for the symbol. -> {query.symbol}"
+                f"Could not find any 10-K, 10-Q, 40-F, or 20-F filings for the symbol. -> {query.symbol}"
             )
 
         # If no calendar year or period is provided, get the most recent filing.
@@ -110,12 +149,73 @@ class SecManagementDiscussionAnalysisFetcher(
         calendar_year: Any = None
         calendar_period: Any = None
 
+        _is_foreign_issuer = any(
+            f.report_type in ("40-F", "20-F", "40-F/A", "20-F/A")  # type: ignore
+            for f in filings
+        )
+
         if query.calendar_year is None and query.calendar_period is None:
             target_filing = (
                 filings[0]  # type: ignore
                 if not query.calendar_year and not query.calendar_period
                 else None
             )
+            # For foreign issuers the most-recent 10-K/10-Q/40-F/20-F
+            # may be older than a 6-K that contains quarterly MD&A.
+            # Check whether a newer 6-K with an MD&A exhibit exists.
+            if target_filing and _is_foreign_issuer:
+                _6k_recent = await SecCompanyFilingsFetcher.fetch_data(
+                    {
+                        "symbol": query.symbol if not query.symbol.isnumeric() else "",
+                        "cik": query.symbol if query.symbol.isnumeric() else "",
+                        "form_type": "6-K",
+                        "use_cache": query.use_cache,
+                    },
+                    {},
+                )
+                if _6k_recent and _6k_recent[0].filing_date > target_filing.filing_date:  # type: ignore
+                    # A more-recent 6-K exists.  Scan its index for
+                    # an EX-99 exhibit with MD&A content.
+                    _mda_re = re.compile(r"(?:mda|md&a|quarterly|discussion)", re.I)
+                    for _6kf in _6k_recent:
+                        if _6kf.filing_date <= target_filing.filing_date:  # type: ignore
+                            break  # older than current pick; stop
+                        _idx_url = _6kf.filing_detail_url
+                        try:
+                            if query.use_cache is True:
+                                _cd = (
+                                    f"{get_user_cache_directory()}/http/sec_financials"
+                                )
+                                async with CachedSession(
+                                    cache=SQLiteBackend(_cd)
+                                ) as _sess:
+                                    try:
+                                        _idx_html = await amake_request(  # type: ignore
+                                            _idx_url,
+                                            headers=SEC_HEADERS,
+                                            response_callback=sec_callback,
+                                            session=_sess,
+                                        )
+                                    finally:
+                                        await _sess.close()
+                            else:
+                                _idx_html = await amake_request(
+                                    _idx_url,
+                                    headers=SEC_HEADERS,
+                                    response_callback=sec_callback,
+                                )
+                        except Exception:  # noqa
+                            continue
+                        if not isinstance(_idx_html, str):
+                            continue
+                        _ex99_hrefs = _extract_exhibit_links(_idx_html, "EX-99")
+                        for _href in _ex99_hrefs:
+                            _fname = _href.rsplit("/", 1)[-1]
+                            if _mda_re.search(_fname):
+                                target_filing = _6kf
+                                break
+                        if target_filing.report_type == "6-K":  # type: ignore
+                            break
 
         if not target_filing:
             if query.calendar_period and not query.calendar_year:
@@ -132,7 +232,14 @@ class SecManagementDiscussionAnalysisFetcher(
                 target_filing = [
                     f
                     for f in filings
-                    if f.report_type == "10-K"  # type: ignore
+                    if f.report_type
+                    in (  # type: ignore
+                        "10-K",
+                        "40-F",
+                        "20-F",
+                        "40-F/A",
+                        "20-F/A",
+                    )
                     and f.filing_date.year == query.calendar_year  # type: ignore
                 ]
                 if not target_filing:
@@ -156,6 +263,94 @@ class SecManagementDiscussionAnalysisFetcher(
                 for filing in filings:
                     if start_date < filing.filing_date < end_date:  # type: ignore
                         target_filing = filing
+                        break
+
+        # For foreign private issuer quarterly reports (6-K), the filing
+        # list above only covers 10-K/10-Q/40-F/20-F.  When no match
+        # was found for a specific quarter AND the issuer files foreign
+        # forms, search 6-K filings for a quarterly report instead.
+        #
+        # Foreign issuers file many 6-Ks (press releases, certifications,
+        # etc.).  Only a few contain quarterly results.  Strategy:
+        #   1. Collect 6-Ks in the target date range.
+        #   2. For each candidate, check the filing index page for an
+        #      EX-99 exhibit whose filename suggests MD&A content
+        #      (e.g. contains "mda", "md&a", or "quarterly").
+        #   3. If none match by filename, fall back to the first 6-K
+        #      whose EX-99 exhibit HTML contains "Discussion and Analysis".
+
+        if (
+            not target_filing
+            and _is_foreign_issuer
+            and calendar_year
+            and calendar_period
+        ):
+            _6k_filings = await SecCompanyFilingsFetcher.fetch_data(
+                {
+                    "symbol": query.symbol if not query.symbol.isnumeric() else "",
+                    "cik": query.symbol if query.symbol.isnumeric() else "",
+                    "form_type": "6-K",
+                    "use_cache": query.use_cache,
+                },
+                {},
+            )
+            if _6k_filings:
+                start = to_datetime(f"{calendar_year}Q{calendar_period}")
+                _6k_start_date = (
+                    start - offsets.QuarterBegin(1) + offsets.MonthBegin(1)
+                ).date()
+                _6k_end_date = (
+                    start + offsets.QuarterEnd(0) + offsets.MonthEnd(1)
+                ).date()
+
+                _candidates = [
+                    f
+                    for f in _6k_filings
+                    if _6k_start_date <= f.filing_date <= _6k_end_date  # type: ignore
+                ]
+
+                # Try each candidate's filing index for an MD&A exhibit.
+                _mda_fname_re = re.compile(
+                    r"(?:mda|md&a|quarterly|discussion)", re.IGNORECASE
+                )
+
+                async def _fetch_6k(u: str) -> str | None:
+                    try:
+                        if query.use_cache is True:
+                            _cd = f"{get_user_cache_directory()}/http/sec_financials"
+                            async with CachedSession(cache=SQLiteBackend(_cd)) as _sess:
+                                try:
+                                    return await amake_request(  # type: ignore
+                                        u,
+                                        headers=SEC_HEADERS,
+                                        response_callback=sec_callback,
+                                        session=_sess,
+                                    )
+                                finally:
+                                    await _sess.close()
+                        return await amake_request(  # type: ignore
+                            u,
+                            headers=SEC_HEADERS,
+                            response_callback=sec_callback,
+                        )
+                    except Exception:  # noqa  # pylint: disable=broad-except
+                        return None
+
+                for _6kf in _candidates:
+                    _idx_url = _6kf.filing_detail_url
+                    _idx_html = await _fetch_6k(_idx_url)
+                    if not isinstance(_idx_html, str):
+                        continue
+                    # Parse the filing index table for EX-99
+                    # exhibit links (using the Type cell, not the
+                    # href URL which may not contain 'ex99').
+                    _ex99_hrefs = _extract_exhibit_links(_idx_html, "EX-99")
+                    for _href in _ex99_hrefs:
+                        _fname = _href.rsplit("/", 1)[-1]
+                        if _mda_fname_re.search(_fname):
+                            target_filing = _6kf
+                            break
+                    if target_filing:
                         break
 
         if not target_filing:
@@ -231,15 +426,10 @@ class SecManagementDiscussionAnalysisFetcher(
                             response_callback=sec_callback,
                         )
                     if isinstance(_index_html, str):
-                        # Look for a link whose row has EX-13 type or
-                        # whose filename contains "ex-13" / "ex13".
-                        _ex13_re = re.compile(
-                            r'<a\b[^>]*href="([^"]+ex[\-_]?13[^"]*\.htm[l]?)"',
-                            re.IGNORECASE,
-                        )
-                        _em = _ex13_re.search(_index_html)
-                        if _em:
-                            _href = _em.group(1)
+                        # Parse the filing index table for EX-13 rows.
+                        _ex13_hrefs = _extract_exhibit_links(_index_html, "EX-13")
+                        if _ex13_hrefs:
+                            _href = _ex13_hrefs[0]
                             # Index page links are usually absolute paths
                             if _href.startswith("http"):
                                 _m_url = _href
@@ -281,6 +471,83 @@ class SecManagementDiscussionAnalysisFetcher(
                         headers=SEC_HEADERS,
                         response_callback=sec_callback,
                     )
+
+        # Foreign private issuer filings (40-F / 20-F) typically do not
+        # contain an inline MD&A section.  Instead, the MD&A is filed as
+        # a separate exhibit (usually EX-99.2).  When we detect a foreign
+        # filing, browse the filing index page for EX-99 exhibit links,
+        # fetch each candidate, and use the first one that contains
+        # "Discussion and Analysis" text.
+        _is_foreign = target_filing.report_type in (
+            "40-F",
+            "20-F",
+            "40-F/A",
+            "20-F/A",
+            "6-K",
+        )
+
+        if isinstance(response, str) and _is_foreign and not exhibit_content:
+            _base_dir = url.rsplit("/", 1)[0]
+            _index_url = target_filing.filing_detail_url
+
+            async def _fetch(u: str) -> str | None:
+                """Fetch a URL using cache settings."""
+                try:
+                    if query.use_cache is True:
+                        _cd = f"{get_user_cache_directory()}/http/sec_financials"
+                        async with CachedSession(cache=SQLiteBackend(_cd)) as _sess:
+                            try:
+                                return await amake_request(  # type: ignore
+                                    u,
+                                    headers=SEC_HEADERS,
+                                    response_callback=sec_callback,
+                                    session=_sess,
+                                )
+                            finally:
+                                await _sess.close()
+                    return await amake_request(  # type: ignore
+                        u,
+                        headers=SEC_HEADERS,
+                        response_callback=sec_callback,
+                    )
+                except Exception:  # noqa  # pylint: disable=broad-except
+                    return None
+
+            _index_html = await _fetch(_index_url)
+
+            if isinstance(_index_html, str):
+                # Parse the filing index table for EX-99 exhibit
+                # links using the Type cell (the href URL itself
+                # may not contain 'ex99' in the filename).
+                _raw_hrefs = _extract_exhibit_links(_index_html, "EX-99")
+                _ex99_links: list[str] = []
+                for _href99 in _raw_hrefs:
+                    if _href99.startswith("http"):
+                        _abs99 = _href99
+                    elif _href99.startswith("/"):
+                        _abs99 = "https://www.sec.gov" + _href99
+                    else:
+                        _abs99 = _base_dir + "/" + _href99
+                    if _abs99 not in _ex99_links:
+                        _ex99_links.append(_abs99)
+
+                # Try each exhibit for MD&A content.
+                for _ex_url in _ex99_links:
+                    _ex_html = await _fetch(_ex_url)
+                    if not isinstance(_ex_html, str):
+                        continue
+                    # Use a flexible pattern: the apostrophe between
+                    # "Management" and "s Discussion" may appear as a
+                    # Unicode char, an HTML entity (&#8217;), or ASCII.
+                    if re.search(
+                        r"(?:Management|MANAGEMENT).{0,10}"
+                        r"(?:Discussion|DISCUSSION)\s+and\s+"
+                        r"(?:Analysis|ANALYSIS)",
+                        _ex_html,
+                    ) or re.search(r"MD&amp;A", _ex_html):
+                        exhibit_content = _ex_html
+                        exhibit_url = _ex_url
+                        break
 
         if isinstance(response, str):
             result: dict[str, Any] = {
@@ -355,6 +622,89 @@ class SecManagementDiscussionAnalysisFetcher(
         markdown = re.sub(
             r"^(?:\[[^\]]*\]\(#[^)]*\)\s*)+", "", markdown, flags=re.MULTILINE
         )
+
+        def _normalize_toc_table(md: str) -> str:
+            """Normalize a mangled Table of Contents markdown table.
+
+            Foreign-filer exhibits (and some domestic filings) include a
+            TOC rendered as an HTML table with colspan-driven multi-
+            column layouts.  The converter produces markdown rows with
+            varying column counts (4–7 cells per row).  This helper
+            detects the TOC table and re-builds it as a clean 4-column
+            table:  Page | Section | Page | Section.
+            """
+            _toc_hdr = re.compile(
+                r"^\|[^\n]*Table\s+of\s+Contents[^\n]*\|",
+                re.MULTILINE,
+            )
+            m = _toc_hdr.search(md)
+            if not m:
+                return md
+
+            # Locate the full table block.
+            toc_start = md.rfind("\n", 0, m.start())
+            toc_start = toc_start + 1 if toc_start >= 0 else m.start()
+            # Advance past the header line's trailing newline.
+            toc_end = m.end()
+            first_nl = md.find("\n", toc_end)
+            if first_nl >= 0:
+                toc_end = first_nl + 1
+            while toc_end < len(md):
+                nl = md.find("\n", toc_end)
+                if nl < 0:
+                    toc_end = len(md)
+                    break
+                next_line = md[toc_end:nl].strip()
+                if next_line.startswith("|"):
+                    toc_end = nl + 1
+                else:
+                    toc_end = nl
+                    break
+
+            toc_block = md[toc_start:toc_end]
+            _link_re = re.compile(r"\[([^\]]*)\]\((#[^)]*)\)")
+
+            new_rows: list[tuple[str, str, str, str]] = []
+            for _toc_row in toc_block.splitlines():
+                _toc_row = _toc_row.strip()
+                if not _toc_row.startswith("|") or _toc_row.startswith("|---"):
+                    continue
+                cells = [c.strip() for c in _toc_row.strip("|").split("|")]
+                if any("Table of Contents" in c for c in cells):
+                    continue
+
+                # Pair up (page_link, section_name) from non-empty cells.
+                non_empty = [(i, c) for i, c in enumerate(cells) if c]
+                pairs: list[tuple[str, str]] = []
+                j = 0
+                while j < len(non_empty):
+                    _, val = non_empty[j]
+                    if _link_re.match(val) or val.isdigit():
+                        sect = non_empty[j + 1][1] if j + 1 < len(non_empty) else ""
+                        pairs.append((val, sect))
+                        j += 2
+                    else:
+                        pairs.append(("", val))
+                        j += 1
+
+                if len(pairs) == 1:
+                    new_rows.append((pairs[0][0], pairs[0][1], "", ""))
+                elif len(pairs) >= 2:
+                    new_rows.append(
+                        (pairs[0][0], pairs[0][1], pairs[1][0], pairs[1][1])
+                    )
+
+            if not new_rows:
+                return md
+
+            toc_lines = ["| Table of Contents | | | |", "|---|---|---|---|"]
+            for p1, s1, p2, s2 in new_rows:
+                toc_lines.append(f"| {p1} | {s1} | {p2} | {s2} |")
+            toc_lines.append("")
+            return md[:toc_start] + "\n".join(toc_lines) + md[toc_end:]
+
+        markdown = _normalize_toc_table(markdown)
+
         lines = markdown.splitlines()
         # Matches an Item 7 / Item 2 header for MD&A (the formal SEC item).
         item_header_re = re.compile(
@@ -610,12 +960,11 @@ class SecManagementDiscussionAnalysisFetcher(
                     data["content"] = _section_md.strip()
                     return SecManagementDiscussionAnalysisData(**data)
 
-        # -- Exhibit fallback: Annual Report to Stockholders (Exhibit 13) ---
-        # When the main 10-K document only has a stub Item 7 that says
-        # "Refer to pages X–Y of the Annual Report …, incorporated
-        # herein by reference", the real MD&A lives in the separately
-        # filed Annual Report exhibit.  aextract_data pre-fetched the
-        # exhibit HTML when it detected the cross-reference pattern.
+        # -- Exhibit fallback: Annual Report / Foreign Filing Exhibits ---
+        # When the main document only has a stub Item 7 (10-K) or is a
+        # foreign private issuer filing (40-F / 20-F) whose MD&A lives
+        # in a separately filed exhibit (EX-13 or EX-99.x),
+        # aextract_data pre-fetched the exhibit HTML.
 
         if best_start is None and data.get("exhibit_content"):
             exhibit_base_url = data.get("exhibit_url", "")
@@ -625,9 +974,18 @@ class SecManagementDiscussionAnalysisFetcher(
                 keep_tables=query.include_tables,
             )
             exhibit_md = re.sub(r"<a\s[^>]*>\s*</a>", "", exhibit_md)
+            exhibit_md = re.sub(
+                r"^(?:\[[^\]]*\]\(#[^)]*\)\s*)+",
+                "",
+                exhibit_md,
+                flags=re.MULTILINE,
+            )
+            exhibit_md = _normalize_toc_table(exhibit_md)
             exhibit_lines = exhibit_md.splitlines()
             _exhibit_start_re = re.compile(
-                r"^(?:#{1,4}\s*)?\*{0,2}\s*" + r"MANAGEMENT\s+DISCUSSION",
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:Management|MANAGEMENT).{0,3}s?\s+"
+                r"(?:Discussion|DISCUSSION)",
                 re.IGNORECASE,
             )
             _exhibit_end_re = re.compile(

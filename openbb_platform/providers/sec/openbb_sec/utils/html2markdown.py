@@ -4177,6 +4177,27 @@ def convert_table(table, base_url: str = "") -> str:
         # Treat merged vertical headers with financial terms as financial tables
         use_semantic_parsing = True
 
+    # Guard: verify num_periods matches the actual data width.
+    # Complex multi-index headers (e.g., "Economic value sensitivity" spanning
+    # date sub-headers spanning country sub-sub-headers) can cause the header
+    # detection to undercount periods.  When data rows consistently have more
+    # non-empty values than num_periods, the header structure is wrong and we
+    # must fall back to positional (non-semantic) rendering.
+    if use_semantic_parsing and num_periods > 0 and header_row_count < len(data):
+        _val_re = re.compile(
+            r"^[+\-]?[\$]?\s*\(?[\$]?\s*[\d,]+\.?\d*\s*\)?\s*[*%]*(pts)?$"
+        )
+        _dash_vals = {"—", "–", "-", "$—", "$–", "$-", "N/A", "n/a", "NM", "nm"}
+        for _dr in data[header_row_count:]:
+            _n = sum(
+                1
+                for c in _dr[1:]
+                if c.strip() and (_val_re.match(c.strip()) or c.strip() in _dash_vals)
+            )
+            if _n > num_periods * 2:
+                use_semantic_parsing = False
+                break
+
     if use_semantic_parsing:
         # For multi-level headers, derive column positions from year cells
         # in the expanded data array. This enables position-aware extraction
