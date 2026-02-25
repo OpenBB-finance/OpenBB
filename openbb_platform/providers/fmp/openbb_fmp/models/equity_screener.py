@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.equity_screener import (
 )
 from openbb_core.provider.utils.country_utils import Country
 from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.exchange_utils import Exchange
 from openbb_fmp.utils.definitions import (
     Countries,
     Exchanges,
@@ -127,7 +128,11 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
         description="Filter by country. Accepts ISO 3166-1 alpha-2 codes (e.g., 'US', 'DE'), "
         "alpha-3 codes (e.g., 'USA'), or country names (e.g., 'United States', 'united_states').",
     )
-    exchange: Exchanges | None = Field(default=None, description="Filter by exchange.")
+    exchange: Exchange | None = Field(
+        default=None,
+        description="Filter by exchange. Accepts ISO 10383 MIC codes (e.g., 'XNAS', 'XNYS'), "
+        "acronyms (e.g., 'NASDAQ', 'NYSE'), or exchange names (e.g., 'New York Stock Exchange').",
+    )
     is_etf: bool | None = Field(
         default=None,
         description="If true, includes ETFs.",
@@ -170,6 +175,22 @@ class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
             raise ValueError(
                 f"Country '{v.name}' ({v.alpha_2}) is not supported by FMP. "
                 f"Valid options: {', '.join(sorted(valid_countries)[:20])}..."
+            )
+        return v
+
+    @field_validator("exchange", mode="after")
+    @classmethod
+    def _validate_exchange(cls, v):
+        """Validate exchange is supported by FMP."""
+        if v is None:
+            return v
+        # Exchange stores MIC, FMP expects lowercase acronym
+        exchange_code = v.acronym.lower()
+        valid_exchanges = list(Exchanges.__args__)
+        if exchange_code not in valid_exchanges:
+            raise ValueError(
+                f"Exchange '{v.name}' ({v.mic}) is not supported by FMP. "
+                f"Valid options: {', '.join(sorted(valid_exchanges)[:20])}..."
             )
         return v
 
@@ -269,7 +290,7 @@ class FMPEquityScreenerFetcher(
             .replace("-", "%2D")
             .replace(",", "%2C")
         )
-        exchange: str = query.exchange.upper() if query.exchange else ""
+        exchange: str = query.exchange.acronym.upper() if query.exchange else ""
         country: str = query.country.upper() if query.country else ""
         query.is_active = True if query.is_active is None else query.is_active
         query.is_etf = False if query.is_etf is None else query.is_etf
