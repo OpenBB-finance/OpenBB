@@ -345,6 +345,16 @@ class SecManagementDiscussionAnalysisFetcher(
         # (e.g. <a id="item_2_management"></a>).  These interfere with
         # line-start-anchored regex matching.
         markdown = re.sub(r"<a\s[^>]*>\s*</a>", "", markdown)
+        # Strip leading "Table of Contents" breadcrumb links that XBRL
+        # authoring tools (e.g. Workiva) insert at the start of every
+        # section.  These are internal markdown links like
+        #   [Table of Contents](#hash)
+        # or split variants like [Tab](#hash)[le of Contents](#hash).
+        # They prevent ^-anchored regex patterns from matching Item
+        # headers reliably.
+        markdown = re.sub(
+            r"^(?:\[[^\]]*\]\(#[^)]*\)\s*)+", "", markdown, flags=re.MULTILINE
+        )
         lines = markdown.splitlines()
         # Matches an Item 7 / Item 2 header for MD&A (the formal SEC item).
         item_header_re = re.compile(
@@ -672,6 +682,61 @@ class SecManagementDiscussionAnalysisFetcher(
                 " -> The content can be analyzed by setting"
                 " `raw_html=True` in the query."
             )
+
+        # Ensure the section header has a markdown heading prefix and is
+        # separated from any inline body text.  Many filings emit the
+        # Item header as plain text (no <h1>/<h2> tag), so the converter
+        # never inserts a '#' prefix.
+        #
+        # Detection strategy: ALL-CAPS words at the start of the content
+        # form the section title (e.g. "ITEM 2. MANAGEMENT'S DISCUSSION
+        # AND ANALYSIS …").  The title may span multiple lines; it ends
+        # at the first word containing a lowercase letter.  For mixed-case
+        # filings that use "Item N." we simply prepend '#'.
+        mda_lines = mda_content.splitlines()
+        if mda_lines:
+            first = mda_lines[0].strip()
+            if not first.startswith("#"):
+                # Collect words from the opening lines, noting where the
+                # first lowercase word appears (= end of ALL-CAPS title).
+                all_words: list[str] = []
+                lines_consumed = 0
+                split_idx: int | None = None  # index of first lowercase word
+
+                for i in range(min(len(mda_lines), 6)):
+                    line = mda_lines[i].strip()
+                    if not line:
+                        lines_consumed = i + 1
+                        break
+                    for w in line.split():
+                        if re.search(r"[a-z]", w) and split_idx is None:
+                            split_idx = len(all_words)
+                        all_words.append(w)
+                    lines_consumed = i + 1
+                    if split_idx is not None:
+                        break
+
+                if split_idx is not None:
+                    title_text = " ".join(all_words[:split_idx])
+                    body_text = " ".join(all_words[split_idx:])
+                else:
+                    title_text = " ".join(all_words)
+                    body_text = ""
+
+                is_caps_title = (
+                    bool(title_text) and re.match(r"ITEM\s+\d", title_text) is not None
+                )
+
+                if is_caps_title:
+                    new_lines = ["## " + title_text, ""]
+                    if body_text:
+                        new_lines.append(body_text)
+                    mda_lines = new_lines + mda_lines[lines_consumed:]
+                elif re.match(r"Item\s+\d", first, re.IGNORECASE):
+                    # Mixed-case "Item N." header — just add '#' prefix.
+                    mda_lines[0] = "## " + first
+
+                mda_content = "\n".join(mda_lines)
 
         data["content"] = mda_content
 
