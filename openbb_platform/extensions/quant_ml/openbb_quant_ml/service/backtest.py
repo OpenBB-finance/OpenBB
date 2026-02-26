@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from scipy.optimize import minimize
+from scipy.stats import spearmanr
 
 from openbb_quant_ml.models import BacktestConstraints
 from openbb_quant_ml.service.delisting import apply_delisting_returns
@@ -68,6 +69,102 @@ def _safe_initial_weights(
     return clipped
 
 
+def _apply_cov_shrinkage(cov: np.ndarray, shrinkage: float = 0.1) -> np.ndarray:
+    """Apply Ledoit-Wolf style shrinkage toward diagonal."""
+    n = cov.shape[0]
+    if n == 0:
+        return cov
+    target = np.diag(np.diag(cov))
+    return (1.0 - shrinkage) * cov + shrinkage * target
+
+
+def _estimate_covariance(
+    hist_returns: pd.DataFrame,
+    method: str,
+    ewma_halflife: int,
+    shrinkage: float,
+) -> np.ndarray:
+    """Estimate covariance matrix with configurable method."""
+    hist = hist_returns.copy()
+    n_assets_hint = len(hist.columns)
+    if hist.empty:
+        if n_assets_hint <= 0:
+            return np.zeros((0, 0), dtype=float)
+        return np.eye(n_assets_hint, dtype=float) * 1e-8
+    hist = hist.apply(pd.to_numeric, errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    arr = hist.to_numpy(dtype=float)
+    n_obs, n_assets = arr.shape
+    if n_assets == 0:
+        return np.zeros((0, 0), dtype=float)
+    if n_obs < 2:
+        return np.eye(n_assets, dtype=float) * 1e-8
+
+    method_key = str(method or "sample").strip().lower()
+    if method_key == "sample":
+        cov = np.cov(arr, rowvar=False, ddof=0)
+    elif method_key == "ewma":
+        halflife = max(int(ewma_halflife), 2)
+        decay = np.exp(np.log(0.5) / float(halflife))
+        weights = decay ** np.arange(n_obs - 1, -1, -1)
+        weights = weights / max(float(weights.sum()), 1e-12)
+        mean = np.sum(arr * weights[:, None], axis=0)
+        centered = arr - mean
+        cov = (centered * weights[:, None]).T @ centered
+    elif method_key == "ledoit_wolf":
+        try:
+            from sklearn.covariance import LedoitWolf
+
+            cov = LedoitWolf().fit(arr).covariance_
+        except Exception:
+            cov = np.cov(arr, rowvar=False, ddof=0)
+    elif method_key == "ewma_shrink":
+        ewma_cov = _estimate_covariance(
+            hist_returns=hist,
+            method="ewma",
+            ewma_halflife=ewma_halflife,
+            shrinkage=shrinkage,
+        )
+        cov = _apply_cov_shrinkage(ewma_cov, shrinkage=float(np.clip(shrinkage, 0.0, 1.0)))
+    else:
+        cov = np.cov(arr, rowvar=False, ddof=0)
+
+    cov = np.asarray(cov, dtype=float)
+    cov = np.nan_to_num(cov, nan=0.0, posinf=0.0, neginf=0.0)
+    cov = 0.5 * (cov + cov.T)
+    cov = cov + np.eye(n_assets, dtype=float) * 1e-8
+    return cov
+
+
+def _estimate_trade_cost_components(
+    delta_w: np.ndarray,
+    adv_usd: np.ndarray,
+    commission_bps: float,
+    half_spread_bps: float,
+    impact_k: float,
+    nav: float,
+) -> dict[str, float]:
+    """Estimate normalized trade cost components."""
+    nav = max(float(nav), 1e-9)
+    abs_delta = np.abs(np.asarray(delta_w, dtype=float))
+    adv_arr = np.asarray(adv_usd, dtype=float)
+    if adv_arr.size != abs_delta.size:
+        adv_arr = np.ones(abs_delta.size, dtype=float)
+
+    turnover = float(abs_delta.sum())
+    commission = float((float(commission_bps) / 1e4) * turnover)
+    spread = float((float(half_spread_bps) / 1e4) * turnover)
+
+    adv_weight_capacity = np.clip(adv_arr / nav, 1e-6, None)
+    impact = float((float(impact_k) / 1e4) * np.sum((abs_delta**2) / adv_weight_capacity))
+    total = float(commission + spread + impact)
+    return {
+        "commission": commission,
+        "spread": spread,
+        "impact": impact,
+        "total": total,
+    }
+
+
 def _optimize_weights(
     mu: np.ndarray,
     cov: np.ndarray,
@@ -82,11 +179,23 @@ def _optimize_weights(
         return np.array([])
 
     weight_cap = max(float(max_weight), 1e-6)
+    initial = _safe_initial_weights(asset_count, weight_cap, allow_short=allow_short)
+
+    if float(np.abs(mu).max()) < 1e-12:
+        return initial
+
+    cov_stable = cov.copy()
+    try:
+        cond = float(np.linalg.cond(cov_stable))
+    except (np.linalg.LinAlgError, FloatingPointError):
+        cond = 1e15
+    if cond > 1e10 or not np.isfinite(cond):
+        cov_stable = _apply_cov_shrinkage(cov_stable, shrinkage=0.2)
+
     bounds = [
         (-weight_cap, weight_cap) if allow_short else (0.0, weight_cap)
         for _ in range(asset_count)
     ]
-    initial = _safe_initial_weights(asset_count, weight_cap, allow_short=allow_short)
 
     def objective(weights: np.ndarray) -> float:
         risk_aversion_local = (
@@ -95,7 +204,7 @@ def _optimize_weights(
             else float(constraints.risk_aversion)
         )
         mean_term = float(np.dot(mu, weights))
-        risk_term = float(weights @ cov @ weights)
+        risk_term = float(weights @ cov_stable @ weights)
         return -(mean_term - risk_aversion_local * risk_term)
 
     if allow_short:
@@ -263,6 +372,7 @@ def _compute_metrics(
         return {
             "cagr": 0.0,
             "sharpe": 0.0,
+            "sortino": 0.0,
             "max_drawdown": 0.0,
             "volatility": 0.0,
             "turnover": 0.0,
@@ -280,6 +390,11 @@ def _compute_metrics(
     sharpe = float(
         (daily_returns.mean() / (daily_returns.std(ddof=0) + 1e-12)) * np.sqrt(252)
     )
+    downside = daily_returns[daily_returns < 0.0]
+    downside_std = (
+        float(downside.std(ddof=0) * np.sqrt(252)) if len(downside) > 0 else 0.0
+    )
+    sortino = float((daily_returns.mean() * np.sqrt(252)) / (downside_std + 1e-12))
 
     running_max = equity_curve.cummax()
     drawdown = equity_curve / (running_max + 1e-12) - 1.0
@@ -287,6 +402,7 @@ def _compute_metrics(
     return {
         "cagr": cagr,
         "sharpe": sharpe,
+        "sortino": sortino,
         "max_drawdown": max_drawdown,
         "volatility": vol,
     }
@@ -355,14 +471,41 @@ def _execution_return_panel(
     entry_price: str,
     exit_price: str,
 ) -> pd.DataFrame:
-    if entry_price == "close" and exit_price == "close":
-        return close_panel.pct_change(fill_method=None)
-    if entry_price == "next_open" and exit_price == "close":
-        return close_panel / (open_panel + 1e-12) - 1.0
-    if entry_price == "close" and exit_price == "next_open":
-        return open_panel / (close_panel.shift(1) + 1e-12) - 1.0
-    # Fallback for unsupported combinations.
-    return close_panel / (open_panel + 1e-12) - 1.0
+    entry_panel, exit_panel = _resolve_entry_exit_prices(
+        entry_mode=entry_price,
+        exit_mode=exit_price,
+        open_panel=open_panel,
+        close_panel=close_panel,
+    )
+    return (exit_panel / (entry_panel + 1e-12) - 1.0).replace([np.inf, -np.inf], np.nan)
+
+
+def _resolve_entry_exit_prices(
+    *,
+    entry_mode: str,
+    exit_mode: str,
+    open_panel: pd.DataFrame,
+    close_panel: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Resolve normalized entry/exit price panels for one-period returns."""
+    vwap = (open_panel + close_panel) / 2.0
+    entry_key = str(entry_mode or "next_open").strip().lower()
+    exit_key = str(exit_mode or "close").strip().lower()
+
+    entry_map: dict[str, pd.DataFrame] = {
+        "next_open": open_panel,
+        "close": close_panel.shift(1),
+        "vwap_proxy": vwap,
+    }
+    exit_map: dict[str, pd.DataFrame] = {
+        "close": close_panel,
+        "next_open": open_panel,
+        "next_close": close_panel.shift(-1),
+        "vwap_proxy": vwap,
+    }
+    entry_panel = entry_map.get(entry_key, open_panel)
+    exit_panel = exit_map.get(exit_key, close_panel)
+    return entry_panel, exit_panel
 
 
 def run_backtest(
@@ -417,20 +560,29 @@ def run_backtest(
     window_mask = (returns.index.date >= start_date) & (returns.index.date <= end_date)
     trade_dates = returns.index[window_mask]
     if len(trade_dates) == 0:
-        raise ValueError("No trading days found in the selected date range.")
+        price_min = str(returns.index.min().date()) if len(returns.index) > 0 else "N/A"
+        price_max = str(returns.index.max().date()) if len(returns.index) > 0 else "N/A"
+        raise ValueError(
+            f"No trading days found in the selected date range "
+            f"({start_date} ~ {end_date}). "
+            f"Price data covers {price_min} ~ {price_max}."
+        )
 
-    rebalance_dates = [
-        d for d in _monthly_rebalance_dates(trade_dates) if d in pred_wide.index
-    ]
+    rebalance_dates = _monthly_rebalance_dates(trade_dates)
     if not rebalance_dates:
-        candidates = [d for d in pred_wide.index if d in trade_dates]
-        if not candidates:
-            raise ValueError("Prediction dates and price dates do not overlap.")
-        rebalance_dates = [candidates[0]]
+        raise ValueError("No rebalance dates were derived from trading dates.")
 
     symbols = sorted(list(set(pred_wide.columns).intersection(set(returns.columns))))
     if not symbols:
-        raise ValueError("No overlapping symbols between predictions and prices.")
+        pred_symbols_sample = list(pred_wide.columns[:5])
+        price_symbols_sample = list(returns.columns[:5])
+        raise ValueError(
+            f"No overlapping symbols between predictions ({len(pred_wide.columns)} symbols) "
+            f"and prices ({len(returns.columns)} symbols). "
+            f"Sample prediction symbols: {pred_symbols_sample}. "
+            f"Sample price symbols: {price_symbols_sample}. "
+            f"Verify the same universe was used for training."
+        )
 
     policy = get_portfolio_policy()
     universe_policy = get_universe_policy()
@@ -450,6 +602,10 @@ def run_backtest(
     strategy_returns: list[float] = []
     gross_returns: list[float] = []
     trading_costs: list[float] = []
+    commission_costs: list[float] = []
+    spread_costs: list[float] = []
+    impact_costs: list[float] = []
+    borrow_costs: list[float] = []
     cost_breakdown: list[dict[str, Any]] = []
     regime_mode_rows: list[dict[str, str]] = []
     regime_frame = _compute_regime_series(close_panel, returns.index, benchmark_symbol)
@@ -460,6 +616,12 @@ def run_backtest(
     liquidity_clip_values: list[float] = []
     risk_contribution_values: list[float] = []
     risk_budget_scales: list[float] = []
+    gross_exposure_series: list[float] = []
+    net_exposure_series: list[float] = []
+    long_exposure_series: list[float] = []
+    short_exposure_series: list[float] = []
+    ic_values: list[float] = []
+    rank_ic_values: list[float] = []
     universe_stage_counts_latest: dict[str, int] = {}
 
     base_index = 100.0
@@ -474,14 +636,38 @@ def run_backtest(
         }
     )
 
-    one_way_cost = (float(cost_bps) + float(slippage_bps)) / 10000.0
+    commission_bps = (
+        float(constraints.commission_bps)
+        if constraints.commission_bps is not None
+        else float(cost_bps)
+    )
+    half_spread_bps = (
+        float(constraints.half_spread_bps)
+        if constraints.half_spread_bps is not None
+        else float(slippage_bps) / 2.0
+    )
+    impact_k = float(getattr(constraints, "impact_k", 0.0))
+    borrow_bps = float(getattr(constraints, "borrow_bps", 0.0))
     current_cash_weight = 1.0
     for idx, rebalance_date in enumerate(rebalance_dates):
         rebalance_key = rebalance_date.date().isoformat()
         context = (rebalance_universe_context or {}).get(rebalance_key, {})
-        mu = pred_wide.loc[rebalance_date, symbols].fillna(0.0).values.astype(float)
-        hist = returns.loc[:rebalance_date, symbols].tail(constraints.lookback_days)
-        cov = hist.cov().fillna(0.0).values
+        available_pred_dates = pred_wide.index[pred_wide.index <= rebalance_date]
+        if len(available_pred_dates) == 0:
+            continue
+        signal_date = pd.Timestamp(available_pred_dates.max())
+        if bool(getattr(constraints, "leakage_guard", True)) and signal_date > rebalance_date:
+            raise ValueError(
+                f"leakage_detected: prediction date {signal_date.date()} exceeds rebalance date {rebalance_date.date()}"
+            )
+        mu = pred_wide.loc[signal_date, symbols].fillna(0.0).values.astype(float)
+        hist = returns.loc[returns.index < rebalance_date, symbols].tail(constraints.lookback_days)
+        cov = _estimate_covariance(
+            hist_returns=hist,
+            method=str(getattr(constraints, "cov_method", "sample")),
+            ewma_halflife=int(getattr(constraints, "cov_ewma_halflife", 42)),
+            shrinkage=float(getattr(constraints, "cov_shrinkage", 0.15)),
+        )
         trend_regime = "sideways"
         vol_regime = "mid"
         if not regime_frame.empty:
@@ -568,15 +754,62 @@ def run_backtest(
                     if isinstance(metric_rows, dict):
                         metric_meta = dict(metric_rows.get(symbol, {}))
                     if "adv20_usd" not in metric_meta:
-                        symbol_hist = hist[symbol] if symbol in hist.columns else pd.Series(dtype=float)
-                        metric_meta["adv20_usd"] = float(
-                            pd.to_numeric(symbol_hist.tail(20), errors="coerce").mean()
+                        price_hist = (
+                            close_panel.loc[:rebalance_date, symbol].tail(20)
+                            if symbol in close_panel.columns
+                            else pd.Series(dtype=float)
                         )
+                        px_mean = float(
+                            pd.to_numeric(price_hist, errors="coerce").replace([np.inf, -np.inf], np.nan).dropna().mean()
+                        ) if not price_hist.empty else 0.0
+                        metric_meta["adv20_usd"] = max(px_mean * 100_000.0, 10_000_000.0)
                     metric_meta.setdefault("sector_l1", "other")
                     metric_meta.setdefault(
                         "country", "KR" if symbol.endswith(".KS") or symbol.endswith(".KQ") else "US"
                     )
                     metadata_active[symbol] = metric_meta
+
+                adv_active = np.array(
+                    [
+                        float(metadata_active.get(symbol, {}).get("adv20_usd", 10_000_000.0))
+                        for symbol in active_symbols
+                    ],
+                    dtype=float,
+                )
+                beta_active = np.array(
+                    [
+                        float(
+                            metadata_active.get(symbol, {}).get(
+                                "beta_spy",
+                                metadata_active.get(symbol, {}).get(
+                                    "beta_market",
+                                    metadata_active.get(symbol, {}).get("beta", 0.0),
+                                ),
+                            )
+                        )
+                        for symbol in active_symbols
+                    ],
+                    dtype=float,
+                )
+                current_active = current_weights[active_indices]
+                cost_params = {
+                    "commission_bps": commission_bps,
+                    "half_spread_bps": half_spread_bps,
+                    "impact_k": impact_k,
+                    "turnover_penalty_mode": str(getattr(constraints, "turnover_penalty_mode", "none")),
+                    "turnover_penalty": float(getattr(constraints, "turnover_penalty", 0.0)),
+                }
+                exposure_constraints = {
+                    "allow_short": False,
+                    "gross_exposure_max": float(getattr(constraints, "gross_exposure_max", 1.5)),
+                    "net_exposure_min": float(getattr(constraints, "net_exposure_min", 0.0)),
+                    "net_exposure_max": float(getattr(constraints, "net_exposure_max", 1.0)),
+                    "sector_max_weight": float(getattr(constraints, "sector_max_weight", 0.35)),
+                    "sector_neutral": bool(getattr(constraints, "sector_neutral", False)),
+                    "beta_neutral": bool(getattr(constraints, "beta_neutral", False)),
+                    "beta_tolerance": float(getattr(constraints, "beta_tolerance", 0.05)),
+                    "target_beta": 0.0,
+                }
 
                 opt_result = optimize_weights_v2(
                     mu=mu_active,
@@ -591,6 +824,15 @@ def run_backtest(
                     cvar_alpha=float(constraints.cvar_alpha),
                     cvar_lambda=float(constraints.cvar_lambda),
                     scenario_returns=scenario_frame.fillna(0.0).to_numpy(dtype=float),
+                    current_weights=current_active,
+                    cost_params=cost_params,
+                    exposure_constraints=exposure_constraints,
+                    beta_vector=beta_active,
+                    target_vol=(
+                        float(constraints.target_vol)
+                        if getattr(constraints, "target_vol", None) is not None
+                        else None
+                    ),
                 )
                 optimized_active = opt_result.weights
                 if regime_policy == "mixed" and risk_budget_scale < 0.999:
@@ -678,6 +920,10 @@ def run_backtest(
                             for country, weight in opt_result.country_exposure.items()
                         ],
                         "binding_constraints": binding_constraints,
+                        "estimated_cost": float(opt_result.estimated_cost),
+                        "gross_exposure": float(opt_result.gross_exposure),
+                        "net_exposure": float(opt_result.net_exposure),
+                        "portfolio_beta": float(opt_result.portfolio_beta),
                     }
                 )
 
@@ -738,6 +984,46 @@ def run_backtest(
             }
         )
 
+        metric_rows_all = context.get("symbol_metrics", {})
+        adv_full = np.array(
+            [
+                float(
+                    (
+                        metric_rows_all.get(symbol, {}).get("adv20_usd", 0.0)
+                        if isinstance(metric_rows_all, dict)
+                        else 0.0
+                    )
+                    or (
+                        max(
+                            float(
+                                pd.to_numeric(
+                                    close_panel.loc[:rebalance_date, symbol].tail(20),
+                                    errors="coerce",
+                                )
+                                .replace([np.inf, -np.inf], np.nan)
+                                .dropna()
+                                .mean()
+                            )
+                            * 100_000.0,
+                            10_000_000.0,
+                        )
+                        if symbol in close_panel.columns
+                        else 10_000_000.0
+                    )
+                )
+                for symbol in symbols
+            ],
+            dtype=float,
+        )
+        entry_cost_components = _estimate_trade_cost_components(
+            delta_w=(optimized - current_weights),
+            adv_usd=adv_full,
+            commission_bps=commission_bps,
+            half_spread_bps=half_spread_bps,
+            impact_k=impact_k,
+            nav=1.0,
+        )
+
         next_date = (
             rebalance_dates[idx + 1]
             if idx + 1 < len(rebalance_dates)
@@ -745,18 +1031,82 @@ def run_backtest(
         )
         period_mask = (returns.index > rebalance_date) & (returns.index <= next_date)
         period_dates = returns.index[period_mask]
+
+        if len(period_dates) > 0:
+            realized_first = returns.loc[period_dates[0], symbols].fillna(0.0).astype(float)
+            mu_series = pd.Series(mu, index=symbols, dtype=float)
+            valid_mask = np.isfinite(mu_series.values) & np.isfinite(realized_first.values)
+            if int(valid_mask.sum()) >= 3:
+                mu_valid = mu_series.values[valid_mask]
+                ret_valid = realized_first.values[valid_mask]
+                if np.std(mu_valid) > 1e-12 and np.std(ret_valid) > 1e-12:
+                    ic_values.append(float(np.corrcoef(mu_valid, ret_valid)[0, 1]))
+                rank_ic_stat = spearmanr(mu_valid, ret_valid, nan_policy="omit")
+                if np.isfinite(rank_ic_stat.correlation):
+                    rank_ic_values.append(float(rank_ic_stat.correlation))
+
         if len(period_dates) == 0:
             current_weights = optimized
             current_cash_weight = cash_weight
             continue
 
+        holding_period_days = int(getattr(constraints, "holding_period_days", -1))
+        if holding_period_days < 0:
+            active_count = len(period_dates)
+        elif holding_period_days == 0:
+            active_count = min(1, len(period_dates))
+        else:
+            active_count = min(int(holding_period_days), len(period_dates))
+        liquidate_early = bool(holding_period_days >= 0 and active_count < len(period_dates))
+        exit_cost_components = (
+            _estimate_trade_cost_components(
+                delta_w=(-optimized),
+                adv_usd=adv_full,
+                commission_bps=commission_bps,
+                half_spread_bps=half_spread_bps,
+                impact_k=impact_k,
+                nav=1.0,
+            )
+            if liquidate_early and active_count > 0
+            else {"commission": 0.0, "spread": 0.0, "impact": 0.0, "total": 0.0}
+        )
+
         for day_idx, trading_date in enumerate(period_dates):
-            ret_vec = returns.loc[trading_date, symbols].fillna(0.0).values
-            gross_return = float(np.dot(optimized, ret_vec))
-            trading_cost = (2.0 * one_way_cost * turnover) if day_idx == 0 else 0.0
-            net_return = gross_return - trading_cost
+            invested = bool(day_idx < active_count)
+            weights_today = optimized if invested else np.zeros(len(symbols), dtype=float)
+            ret_vec = returns.loc[trading_date, symbols].fillna(0.0).values.astype(float)
+            gross_return = float(np.dot(weights_today, ret_vec))
+
+            cost_commission = 0.0
+            cost_spread = 0.0
+            cost_impact = 0.0
+            trading_cost = 0.0
+            if day_idx == 0 and active_count > 0:
+                cost_commission += float(entry_cost_components["commission"])
+                cost_spread += float(entry_cost_components["spread"])
+                cost_impact += float(entry_cost_components["impact"])
+                trading_cost += float(entry_cost_components["total"])
+            if liquidate_early and day_idx == active_count:
+                cost_commission += float(exit_cost_components["commission"])
+                cost_spread += float(exit_cost_components["spread"])
+                cost_impact += float(exit_cost_components["impact"])
+                trading_cost += float(exit_cost_components["total"])
+
+            short_exposure = float(np.abs(np.minimum(weights_today, 0.0)).sum())
+            borrow_cost = float(short_exposure * (borrow_bps / 1e4) / 252.0)
+            net_return = gross_return - trading_cost - borrow_cost
+
+            gross_exposure_series.append(float(np.abs(weights_today).sum()))
+            long_exposure_series.append(float(np.maximum(weights_today, 0.0).sum()))
+            short_exposure_series.append(short_exposure)
+            net_exposure_series.append(float(np.sum(weights_today)))
+
             gross_returns.append(gross_return)
             trading_costs.append(trading_cost)
+            commission_costs.append(cost_commission)
+            spread_costs.append(cost_spread)
+            impact_costs.append(cost_impact)
+            borrow_costs.append(borrow_cost)
             strategy_returns.append(net_return)
             equity *= 1.0 + net_return
             daily_rows.append(
@@ -774,6 +1124,10 @@ def run_backtest(
                     "date": trading_date.date().isoformat(),
                     "gross_return": gross_return,
                     "trading_cost": trading_cost,
+                    "commission_cost": cost_commission,
+                    "spread_cost": cost_spread,
+                    "impact_cost": cost_impact,
+                    "borrow_cost": borrow_cost,
                     "net_return": net_return,
                 }
             )
@@ -797,8 +1151,13 @@ def run_backtest(
                 ),
             }
         )
-        current_weights = optimized
-        current_cash_weight = cash_weight
+        if liquidate_early:
+            current_weights = np.zeros(len(symbols), dtype=float)
+            current_cash_weight = 1.0
+            latest_cash_weight = 1.0
+        else:
+            current_weights = optimized
+            current_cash_weight = cash_weight
 
     if not strategy_returns:
         raise ValueError("Backtest produced no return observations.")
@@ -808,13 +1167,45 @@ def run_backtest(
     equity_series = curve["equity"]
     metrics = _compute_metrics(daily_returns, equity_series)
     metrics["turnover"] = float(np.mean(turnover_values)) if turnover_values else 0.0
+    metrics["monthly_turnover"] = float(np.mean(turnover_values)) if turnover_values else 0.0
+    metrics["annual_turnover"] = float(metrics["monthly_turnover"] * 12.0)
     metrics["gross_return"] = (
         float(np.prod(1.0 + np.array(gross_returns)) - 1.0) if gross_returns else 0.0
     )
     metrics["total_cost"] = float(np.sum(trading_costs)) if trading_costs else 0.0
+    metrics["total_commission"] = (
+        float(np.sum(commission_costs)) if commission_costs else 0.0
+    )
+    metrics["total_spread_cost"] = float(np.sum(spread_costs)) if spread_costs else 0.0
+    metrics["total_impact_cost"] = float(np.sum(impact_costs)) if impact_costs else 0.0
+    metrics["total_borrow_cost"] = float(np.sum(borrow_costs)) if borrow_costs else 0.0
     metrics["net_return"] = float(equity_series.iloc[-1] / equity_series.iloc[0] - 1.0)
     tail = daily_returns.nsmallest(max(1, int(len(daily_returns) * 0.05)))
     metrics["cvar_95"] = float(tail.mean()) if not tail.empty else 0.0
+    metrics["gross_exposure_avg"] = (
+        float(np.mean(gross_exposure_series)) if gross_exposure_series else 0.0
+    )
+    metrics["net_exposure_avg"] = (
+        float(np.mean(net_exposure_series)) if net_exposure_series else 0.0
+    )
+    metrics["long_exposure_avg"] = (
+        float(np.mean(long_exposure_series)) if long_exposure_series else 0.0
+    )
+    metrics["short_exposure_avg"] = (
+        float(np.mean(short_exposure_series)) if short_exposure_series else 0.0
+    )
+    metrics["ic_mean"] = float(np.mean(ic_values)) if ic_values else 0.0
+    metrics["ic_ir"] = (
+        float(np.mean(ic_values) / (np.std(ic_values, ddof=0) + 1e-12))
+        if ic_values
+        else 0.0
+    )
+    metrics["rank_ic_mean"] = float(np.mean(rank_ic_values)) if rank_ic_values else 0.0
+    metrics["rank_ic_ir"] = (
+        float(np.mean(rank_ic_values) / (np.std(rank_ic_values, ddof=0) + 1e-12))
+        if rank_ic_values
+        else 0.0
+    )
 
     curve_dates = pd.to_datetime(curve["date"]).dt.tz_localize(None)
     benchmark_curve = _benchmark_curve(
@@ -845,6 +1236,15 @@ def run_backtest(
             "cvar_alpha": float(constraints.cvar_alpha),
             "cvar_lambda": float(constraints.cvar_lambda),
             "scenario_lookback_days": float(constraints.scenario_lookback_days),
+            "cov_method": str(getattr(constraints, "cov_method", "sample")),
+            "cov_ewma_halflife": float(getattr(constraints, "cov_ewma_halflife", 42)),
+            "cov_shrinkage": float(getattr(constraints, "cov_shrinkage", 0.15)),
+            "commission_bps": float(commission_bps),
+            "half_spread_bps": float(half_spread_bps),
+            "impact_k": float(impact_k),
+            "borrow_bps": float(borrow_bps),
+            "holding_period_days": float(getattr(constraints, "holding_period_days", -1)),
+            "leakage_guard": bool(getattr(constraints, "leakage_guard", True)),
             "dynamic_risk_budget_mixed": bool(regime_policy == "mixed"),
             "risk_budget_scale_avg": float(np.mean(risk_budget_scales))
             if risk_budget_scales

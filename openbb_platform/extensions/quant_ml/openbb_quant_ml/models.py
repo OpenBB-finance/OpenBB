@@ -13,8 +13,8 @@ ModelName = Literal["xgb_lstm", "lgbm_ranker", "catboost_ranker"]
 PortfolioMode = Literal["long_only", "long_short"]
 MuMapping = Literal["z_score", "quantile_mean_return"]
 TargetMode = Literal["close_to_close", "close_to_next_open", "next_open_to_close"]
-EntryPriceMode = Literal["next_open", "close"]
-ExitPriceMode = Literal["close", "next_open"]
+EntryPriceMode = Literal["next_open", "close", "vwap_proxy"]
+ExitPriceMode = Literal["close", "next_open", "next_close", "vwap_proxy"]
 CloseToNextOpenHorizonPolicy = Literal["fixed_1", "use_h"]
 ModelChoice = Literal["lgbm_only", "xgb_only", "catboost_only", "dual"]
 DashboardMode = Literal["live", "backtest"]
@@ -24,6 +24,10 @@ WalkForwardJobStatus = Literal["queued", "running", "completed", "failed", "not_
 PurgingMode = Literal["legacy_month_cutoff", "strict_label_overlap"]
 HPOObjectiveMetric = Literal["val_ic", "validation_mse"]
 OptimizerMode = Literal["mv", "cvar"]
+SignalSelectionMode = Literal["z_threshold", "quantile"]
+RiskVolMethod = Literal["ewma", "std"]
+CovarianceMethod = Literal["sample", "ewma", "ledoit_wolf", "ewma_shrink"]
+TurnoverPenaltyMode = Literal["none", "l1", "l2"]
 
 
 class DateRange(BaseModel):
@@ -211,6 +215,29 @@ class SignalRequest(BaseModel):
     top_k: int = Field(default=20, ge=1, le=200)
     score_threshold: float = Field(default=0.5, ge=0, le=5.0)
     balanced_long_short: bool = False
+    selection_mode: SignalSelectionMode = "quantile"
+    q_long: float = Field(default=0.10, gt=0.0, le=0.5)
+    q_short: float = Field(default=0.10, gt=0.0, le=0.5)
+    use_hysteresis: bool = True
+    entry_q_long: float = Field(default=0.10, gt=0.0, le=0.5)
+    exit_q_long: float = Field(default=0.30, gt=0.0, le=1.0)
+    entry_q_short: float = Field(default=0.10, gt=0.0, le=0.5)
+    exit_q_short: float = Field(default=0.30, gt=0.0, le=1.0)
+    min_hold_periods: int = Field(default=1, ge=0, le=12)
+    liquidity_filter_enabled: bool = True
+    min_adv_usd: float = Field(default=5_000_000.0, ge=0.0)
+    min_price: float = Field(default=2.0, ge=0.0)
+    winsorize_pct: float = Field(default=0.01, ge=0.0, le=0.2)
+    use_robust_zscore: bool = True
+    use_rank_gaussianization: bool = True
+    neutralize_sector: bool = True
+    neutralize_size: bool = True
+    neutralize_beta: bool = False
+    risk_scale_enabled: bool = True
+    risk_vol_lookback: int = Field(default=60, ge=5, le=756)
+    risk_vol_method: RiskVolMethod = "ewma"
+    confidence_sizing_enabled: bool = True
+    confidence_disagreement_scale: float = Field(default=1.0, gt=0.0, le=1000.0)
 
 
 class SignalItem(BaseModel):
@@ -250,6 +277,26 @@ class BacktestConstraints(BaseModel):
     cvar_alpha: float = Field(default=0.05, gt=0.0, lt=1.0)
     cvar_lambda: float = Field(default=3.0, gt=0.0, le=100.0)
     scenario_lookback_days: int = Field(default=252, ge=60, le=2520)
+    cov_method: CovarianceMethod = "ewma_shrink"
+    cov_ewma_halflife: int = Field(default=42, ge=2, le=252)
+    cov_shrinkage: float = Field(default=0.15, ge=0.0, le=1.0)
+    commission_bps: float | None = Field(default=None, ge=0.0, le=1000.0)
+    half_spread_bps: float | None = Field(default=None, ge=0.0, le=1000.0)
+    impact_k: float = Field(default=10.0, ge=0.0, le=1000.0)
+    borrow_bps: float = Field(default=100.0, ge=0.0, le=5000.0)
+    turnover_penalty_mode: TurnoverPenaltyMode = "l2"
+    turnover_penalty: float = Field(default=5.0, ge=0.0, le=10000.0)
+    gross_exposure_max: float = Field(default=1.5, ge=0.0, le=5.0)
+    net_exposure_min: float = Field(default=-0.2, ge=-5.0, le=5.0)
+    net_exposure_max: float = Field(default=1.0, ge=-5.0, le=5.0)
+    sector_max_weight: float = Field(default=0.35, ge=0.0, le=1.0)
+    sector_neutral: bool = False
+    beta_neutral: bool = False
+    beta_tolerance: float = Field(default=0.05, ge=0.0, le=1.0)
+    target_vol: float | None = Field(default=None, ge=0.0, le=5.0)
+    target_vol_lookback_days: int = Field(default=63, ge=20, le=2520)
+    holding_period_days: int = Field(default=-1, ge=-1, le=252)
+    leakage_guard: bool = True
 
 
 class BacktestRequest(BaseModel):
@@ -315,13 +362,28 @@ class BacktestMetrics(BaseModel):
 
     cagr: float
     sharpe: float
+    sortino: float = 0.0
     max_drawdown: float
     volatility: float
     turnover: float
+    annual_turnover: float = 0.0
+    monthly_turnover: float = 0.0
     cvar_95: float = 0.0
     gross_return: float = 0.0
     total_cost: float = 0.0
+    total_commission: float = 0.0
+    total_spread_cost: float = 0.0
+    total_impact_cost: float = 0.0
+    total_borrow_cost: float = 0.0
     net_return: float = 0.0
+    gross_exposure_avg: float = 0.0
+    net_exposure_avg: float = 0.0
+    long_exposure_avg: float = 0.0
+    short_exposure_avg: float = 0.0
+    ic_mean: float = 0.0
+    ic_ir: float = 0.0
+    rank_ic_mean: float = 0.0
+    rank_ic_ir: float = 0.0
 
 
 class EquityPoint(BaseModel):

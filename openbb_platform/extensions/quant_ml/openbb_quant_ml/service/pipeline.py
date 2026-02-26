@@ -1439,6 +1439,29 @@ def build_signals(request: SignalRequest) -> SignalResponse:
         top_k=request.top_k,
         score_threshold=request.score_threshold,
         balanced_long_short=request.balanced_long_short,
+        selection_mode=request.selection_mode,
+        q_long=request.q_long,
+        q_short=request.q_short,
+        use_hysteresis=request.use_hysteresis,
+        entry_q_long=request.entry_q_long,
+        exit_q_long=request.exit_q_long,
+        entry_q_short=request.entry_q_short,
+        exit_q_short=request.exit_q_short,
+        min_hold_periods=request.min_hold_periods,
+        liquidity_filter_enabled=request.liquidity_filter_enabled,
+        min_adv_usd=request.min_adv_usd,
+        min_price=request.min_price,
+        winsorize_pct=request.winsorize_pct,
+        use_robust_zscore=request.use_robust_zscore,
+        use_rank_gaussianization=request.use_rank_gaussianization,
+        neutralize_sector=request.neutralize_sector,
+        neutralize_size=request.neutralize_size,
+        neutralize_beta=request.neutralize_beta,
+        risk_scale_enabled=request.risk_scale_enabled,
+        risk_vol_lookback=request.risk_vol_lookback,
+        risk_vol_method=request.risk_vol_method,
+        confidence_sizing_enabled=request.confidence_sizing_enabled,
+        confidence_disagreement_scale=request.confidence_disagreement_scale,
     )
     run_dir = get_run_dir(request.run_id)
     signal_df.to_parquet(_signals_path(request.run_id, model_name), index=False)
@@ -1505,7 +1528,46 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     run_context = ensure_run_context(run_dir, request.run_id)
     market_path = run_dir / "market_data.parquet"
     if not market_path.exists():
-        raise ValueError("Market data artifact is missing.")
+        pred_symbols = sorted(predictions["symbol"].unique().tolist())
+        if pred_symbols:
+            try:
+                import yfinance as yf
+
+                pred_dates = pd.to_datetime(predictions["date"])
+                dl_start = pred_dates.min() - timedelta(days=60)
+                dl_end = pred_dates.max() + timedelta(days=5)
+                downloaded = yf.download(
+                    pred_symbols,
+                    start=dl_start.strftime("%Y-%m-%d"),
+                    end=dl_end.strftime("%Y-%m-%d"),
+                    progress=False,
+                    auto_adjust=True,
+                    threads=True,
+                )
+                if downloaded is not None and not downloaded.empty:
+                    close = downloaded["Close"] if "Close" in downloaded.columns else downloaded
+                    open_price = downloaded["Open"] if "Open" in downloaded.columns else close
+                    if isinstance(close, pd.Series):
+                        close = close.to_frame(name=pred_symbols[0])
+                        open_price = open_price.to_frame(name=pred_symbols[0])
+                    rows = []
+                    for sym in close.columns:
+                        df_sym = pd.DataFrame({
+                            "date": close.index,
+                            "symbol": sym,
+                            "close": close[sym].values,
+                            "open": open_price[sym].values if sym in open_price.columns else close[sym].values,
+                        })
+                        rows.append(df_sym)
+                    if rows:
+                        recovered = pd.concat(rows, ignore_index=True).dropna(subset=["close"])
+                        recovered.to_parquet(market_path, index=False)
+            except Exception:
+                pass
+        if not market_path.exists():
+            raise ValueError(
+                "Market data artifact is missing. Re-run training to regenerate."
+            )
     market_long = pd.read_parquet(market_path)
     market_long = market_long.assign(
         date=pd.to_datetime(market_long["date"]).dt.tz_localize(None)

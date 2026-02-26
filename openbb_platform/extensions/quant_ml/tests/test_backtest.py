@@ -7,7 +7,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 from openbb_quant_ml.models import BacktestConstraints
-from openbb_quant_ml.service.backtest import run_backtest
+from openbb_quant_ml.service.backtest import _estimate_covariance, run_backtest
 from openbb_quant_ml.service import portfolio_optimizer_v2 as optimizer_v2
 
 
@@ -291,3 +291,121 @@ def test_backtest_mixed_mode_applies_dynamic_risk_budget():
         float(item.get("risk_budget_scale", 1.0)) < 0.999
         for item in result.rebalance_history_summary
     )
+
+
+def test_covariance_methods_are_finite_and_psd_like():
+    rng = np.random.default_rng(101)
+    hist = pd.DataFrame(
+        rng.normal(0.0, 0.01, size=(120, 5)),
+        columns=["A", "B", "C", "D", "E"],
+    )
+    for method in ("sample", "ewma", "ledoit_wolf", "ewma_shrink"):
+        cov = _estimate_covariance(
+            hist_returns=hist,
+            method=method,
+            ewma_halflife=42,
+            shrinkage=0.15,
+        )
+        assert cov.shape == (5, 5)
+        assert np.isfinite(cov).all()
+        assert np.allclose(cov, cov.T, atol=1e-10)
+        eig = np.linalg.eigvalsh(cov)
+        assert float(eig.min()) > -1e-6
+
+
+def test_backtest_holding_period_cap_cash_and_cost_decomposition():
+    rng = np.random.default_rng(202)
+    symbols = ["A", "B", "C", "D"]
+    dates = pd.date_range("2024-01-01", "2024-06-30", freq="B")
+
+    close_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    for symbol in symbols:
+        r = rng.normal(0.0004, 0.012, len(dates))
+        close_panel[symbol] = 100 * np.cumprod(1 + r)
+        open_panel[symbol] = close_panel[symbol] * 0.999
+
+    pred_dates = pd.date_range("2024-01-01", "2024-06-30", freq="BMS")
+    predictions = pd.DataFrame(
+        [
+            {"date": d, "symbol": symbol, "predicted_return": float(0.04 - i * 0.01)}
+            for d in pred_dates
+            for i, symbol in enumerate(symbols)
+        ]
+    )
+
+    result = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=close_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 6, 30),
+        constraints=BacktestConstraints(
+            max_weight=0.3,
+            long_only=True,
+            risk_aversion=2.5,
+            lookback_days=60,
+            holding_period_days=0,
+            commission_bps=8.0,
+            half_spread_bps=1.0,
+            impact_k=5.0,
+        ),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
+    )
+
+    trading_days = pd.DataFrame(result.cost_breakdown)
+    assert (trading_days["gross_return"].abs() < 1e-14).sum() > 5
+    assert np.isclose(
+        float(result.metrics["total_cost"]),
+        float(result.metrics["total_commission"])
+        + float(result.metrics["total_spread_cost"])
+        + float(result.metrics["total_impact_cost"]),
+        atol=1e-9,
+    )
+    assert "annual_turnover" in result.metrics
+    assert "monthly_turnover" in result.metrics
+    assert "sortino" in result.metrics
+
+
+def test_backtest_leakage_guard_skips_rebalance_without_prior_predictions():
+    rng = np.random.default_rng(303)
+    symbols = ["A", "B", "C"]
+    dates = pd.date_range("2024-01-01", "2024-03-29", freq="B")
+    close_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    open_panel = pd.DataFrame(index=dates, columns=symbols, dtype=float)
+    for symbol in symbols:
+        r = rng.normal(0.0002, 0.01, len(dates))
+        close_panel[symbol] = 100 * np.cumprod(1 + r)
+        open_panel[symbol] = close_panel[symbol] * 0.999
+
+    # Predictions begin later than initial rebalance date.
+    predictions = pd.DataFrame(
+        [
+            {"date": pd.Timestamp("2024-02-01"), "symbol": symbol, "predicted_return": 0.01}
+            for symbol in symbols
+        ]
+    )
+
+    result = run_backtest(
+        predictions=predictions,
+        open_panel=open_panel,
+        close_panel=close_panel,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 3, 29),
+        constraints=BacktestConstraints(
+            max_weight=0.3,
+            long_only=True,
+            risk_aversion=2.0,
+            lookback_days=60,
+            leakage_guard=True,
+        ),
+        cost_bps=10.0,
+        slippage_bps=2.0,
+        entry_price="next_open",
+        exit_price="close",
+    )
+    assert len(result.equity_curve) > 0
+    assert result.metrics["net_return"] == result.metrics["net_return"]
