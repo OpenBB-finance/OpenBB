@@ -1,6 +1,6 @@
 """SEC Management & Discussion Model."""
 
-# pylint: disable=unused-argument, too-many-locals, too-many-branches, too-many-statements
+# pylint: disable=unused-argument, too-many-locals, too-many-branches, too-many-statements, too-many-lines
 # flake8: noqa: PLR0912, PLR0914
 
 from typing import Any
@@ -337,8 +337,8 @@ class SecManagementDiscussionAnalysisFetcher(
                         return None
 
                 for _6kf in _candidates:
-                    _idx_url = _6kf.filing_detail_url
-                    _idx_html = await _fetch_6k(_idx_url)
+                    _idx_url = _6kf.filing_detail_url  # type: ignore
+                    _idx_html = await _fetch_6k(_idx_url)  # type: ignore
                     if not isinstance(_idx_html, str):
                         continue
                     # Parse the filing index table for EX-99
@@ -385,7 +385,9 @@ class SecManagementDiscussionAnalysisFetcher(
         exhibit_url: str | None = None
 
         if isinstance(response, str) and re.search(
-            r"incorporated\s+herein\s+by\s+reference", response, re.IGNORECASE
+            r"incorporated\s+(?:herein\s+by\s+reference|by\s+reference\s+herein)",
+            response,
+            re.IGNORECASE,
         ):
             _base_dir = url.rsplit("/", 1)[0]
 
@@ -513,7 +515,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 except Exception:  # noqa  # pylint: disable=broad-except
                     return None
 
-            _index_html = await _fetch(_index_url)
+            _index_html = await _fetch(_index_url)  # type: ignore
 
             if isinstance(_index_html, str):
                 # Parse the filing index table for EX-99 exhibit
@@ -531,23 +533,43 @@ class SecManagementDiscussionAnalysisFetcher(
                     if _abs99 not in _ex99_links:
                         _ex99_links.append(_abs99)
 
-                # Try each exhibit for MD&A content.
+                # Fetch each exhibit and remember the HTML so we can
+                # do a multi-pass match without re-downloading.
+                _fetched_exhibits: list[tuple[str, str]] = []
                 for _ex_url in _ex99_links:
                     _ex_html = await _fetch(_ex_url)
-                    if not isinstance(_ex_html, str):
-                        continue
-                    # Use a flexible pattern: the apostrophe between
-                    # "Management" and "s Discussion" may appear as a
-                    # Unicode char, an HTML entity (&#8217;), or ASCII.
+                    if isinstance(_ex_html, str):
+                        _fetched_exhibits.append((_ex_url, _ex_html))
+
+                # Two-pass approach: strong patterns first, weak
+                # fallback second.  "MD&A" appears in many exhibits
+                # (e.g. Annual Information Forms that merely mention
+                # the abbreviation) so we must prefer exhibits whose
+                # HTML contains the full section title.
+                #
+                # Pass 1 – strong: full "Management's Discussion and
+                # Analysis" or "Operating and Financial Review" title.
+                for _ex_url, _ex_html in _fetched_exhibits:
                     if re.search(
                         r"(?:Management|MANAGEMENT).{0,10}"
                         r"(?:Discussion|DISCUSSION)\s+and\s+"
                         r"(?:Analysis|ANALYSIS)",
                         _ex_html,
-                    ) or re.search(r"MD&amp;A", _ex_html):
+                    ) or re.search(
+                        r"(?:Operating|OPERATING)\s+and\s+Financial\s+Review",
+                        _ex_html,
+                    ):
                         exhibit_content = _ex_html
                         exhibit_url = _ex_url
                         break
+
+                # Pass 2 – weak fallback: "MD&A" abbreviation.
+                if not exhibit_content:
+                    for _ex_url, _ex_html in _fetched_exhibits:
+                        if re.search(r"MD&amp;A", _ex_html):
+                            exhibit_content = _ex_html
+                            exhibit_url = _ex_url
+                            break
 
         if isinstance(response, str):
             result: dict[str, Any] = {
@@ -591,7 +613,9 @@ class SecManagementDiscussionAnalysisFetcher(
 
         filing_html = data.get("content", "")
         base_url = data.get("url", "")
-        is_quarterly = data.get("report_type", "").endswith("Q")
+        report_type = data.get("report_type", "")
+        is_quarterly = report_type.endswith("Q")
+        is_20f = report_type in ("20-F", "20-F/A")
 
         # Convert the full HTML filing to markdown.
         markdown = html_to_markdown(
@@ -736,6 +760,36 @@ class SecManagementDiscussionAnalysisFetcher(
             re.IGNORECASE,
         )
 
+        # -- 20-F: Item 5 "Operating and Financial Review and Prospects" --
+        # Foreign private issuers filing on Form 20-F use Item 5 instead
+        # of Item 7 for the MD&A-equivalent section.
+        item5_header_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Part\s+(?:I{1,2}|1|2)[\.\s,\-\u2013\u2014]*\s*)?"
+            r"(?:ITEM|Item)\s*5"
+            r"[\.\s\-\u2013\u2014:]*"
+            r"(?:Operating|OPERATING)\s+and\s+Financial\s+Review",
+            re.IGNORECASE,
+        )
+        bare_item5_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Part\s+(?:I{1,2}|1|2)[\.\s,\-\u2013\u2014]*\s*)?"
+            r"(?:ITEM|Item)\s*5"
+            r"\s*[\.\-\u2013\u2014:]*\s*$",
+            re.IGNORECASE,
+        )
+        item5_title_re = re.compile(
+            r"^(?:#{1,4}\s*)?(?:\*{1,2})?\s*"
+            r"(?:Operating|OPERATING)\s+and\s+Financial\s+Review",
+            re.IGNORECASE,
+        )
+        standalone_item5_re = re.compile(
+            r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+            r"(?:Operating|OPERATING)\s+and\s+Financial\s+Review"
+            r"\s+and\s+Prospects",
+            re.IGNORECASE,
+        )
+
         # Any Item header (to detect section boundaries).
         any_item_re = re.compile(
             r"^(?:#{1,4}\s*)?\*{0,2}\s*" + r"(?:ITEM|Item)\s*\d",
@@ -779,7 +833,45 @@ class SecManagementDiscussionAnalysisFetcher(
             ),
         ]
 
-        end_patterns = end_patterns_quarterly if is_quarterly else end_patterns_annual
+        # 20-F end patterns: Item 6 ("Directors, Senior Management …"),
+        # SIGNATURES, or PART III/IV mark the end of Item 5.
+        end_patterns_20f = [
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:ITEM|Item)\s*(?:6)"
+                r"[.\s\-\u2013\u2014:]",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*SIGNATURES",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"^(?:#{1,4}\s*)?\*{0,2}\s*PART\s+(?:III|IV)",
+                re.IGNORECASE,
+            ),
+        ]
+
+        if is_20f:
+            end_patterns = end_patterns_20f
+        elif is_quarterly:
+            end_patterns = end_patterns_quarterly
+        else:
+            end_patterns = end_patterns_annual
+
+        # Select active header patterns based on filing type.
+        # 20-F uses Item 5 / "Operating and Financial Review";
+        # 10-K / 10-Q use Item 7/2 / "Management's Discussion".
+        if is_20f:
+            _active_header_re = item5_header_re
+            _active_bare_re = bare_item5_re
+            _active_title_re = item5_title_re
+            _active_standalone_re = standalone_item5_re
+        else:
+            _active_header_re = item_header_re
+            _active_bare_re = bare_item_re
+            _active_title_re = mda_title_re
+            _active_standalone_re = standalone_mda_re
 
         def _find_end(start: int) -> int:
             """Find the end line index for a section starting at *start*."""
@@ -844,7 +936,8 @@ class SecManagementDiscussionAnalysisFetcher(
         # -- main extraction --------------------------------------------------
 
         # Strategy:
-        #  1. Find all Item 7/2 header matches.
+        #  1. Find all Item header matches (Item 7/2 for 10-K/Q,
+        #     Item 5 for 20-F).
         #  2. For each, check body length to determine stub vs real.
         #  3. If all are stubs, fall back to standalone heading.
 
@@ -858,7 +951,7 @@ class SecManagementDiscussionAnalysisFetcher(
             if not stripped:
                 continue
 
-            if item_header_re.search(stripped):
+            if _active_header_re.search(stripped):
                 if _is_stub(i):
                     # Check for an internal anchor link pointing to
                     # the actual MD&A content elsewhere in the same
@@ -881,15 +974,15 @@ class SecManagementDiscussionAnalysisFetcher(
                 best_end = _find_end(i)
                 break
             # Handle split headers: "Item 2." on one line, MD&A title on next.
-            if bare_item_re.search(stripped):
-                # Look at the next non-blank line for the MD&A title.
+            if _active_bare_re.search(stripped):
+                # Look at the next non-blank line for the section title.
                 for k in range(i + 1, min(i + 4, len(lines))):
                     next_stripped = lines[k].strip()
 
                     if not next_stripped:
                         continue
 
-                    if mda_title_re.search(next_stripped) and not _is_stub(i):
+                    if _active_title_re.search(next_stripped) and not _is_stub(i):
                         best_start = i
                         best_end = _find_end(i)
                     break  # Only check up to the first non-blank line
@@ -897,7 +990,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 if best_start is not None:
                     break
 
-        # Fallback: standalone "Management's Discussion and Analysis" heading.
+        # Fallback: standalone section heading without Item number.
         if best_start is None:
             for i, line in enumerate(lines):
                 stripped = line.strip()
@@ -905,7 +998,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 if not stripped:
                     continue
 
-                if standalone_mda_re.search(stripped) and not _is_stub(i):
+                if _active_standalone_re.search(stripped) and not _is_stub(i):
                     candidate_end = _find_end(i)
                     body = "\n".join(lines[i:candidate_end]).strip()
 
@@ -984,8 +1077,11 @@ class SecManagementDiscussionAnalysisFetcher(
             exhibit_lines = exhibit_md.splitlines()
             _exhibit_start_re = re.compile(
                 r"^(?:#{1,4}\s*)?\*{0,2}\s*"
+                r"(?:"
                 r"(?:Management|MANAGEMENT).{0,3}s?\s+"
-                r"(?:Discussion|DISCUSSION)",
+                r"(?:Discussion|DISCUSSION)"
+                r"|(?:Operating|OPERATING)\s+and\s+Financial\s+Review"
+                r")",
                 re.IGNORECASE,
             )
             _exhibit_end_re = re.compile(
