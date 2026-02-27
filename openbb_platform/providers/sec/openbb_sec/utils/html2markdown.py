@@ -565,6 +565,11 @@ def is_header_element(tag) -> bool:
     if tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
         return True
 
+    # Elements explicitly marked as body text by the reflow engine
+    # should never be promoted to headings.
+    if tag.get("data-body-text"):
+        return False
+
     # Check for TOC section headers - elements with toc* anchor IDs
     element_id = tag.get("id", "")
 
@@ -977,8 +982,10 @@ def merge_split_cells(rows):
 
                 # Case 3: Cell is a number and next cell is a footnote marker
                 # e.g., "2,264" + "(1)" → "2,264 (1)"
+                # Only merge footnotes with 1-2 digits; 3+ digits like
+                # "(193)" are negative financial values, not footnotes.
                 if re.match(r"^[\$]?[\d,\.]+$", cell_stripped) and re.match(
-                    r"^\(\d+\)$", next_cell
+                    r"^\(\d{1,2}\)$", next_cell
                 ):
                     merged_row.append(cell_stripped + " " + next_cell)
                     merged_row.append("")  # Placeholder to maintain column count
@@ -1770,6 +1777,27 @@ def build_column_headers_from_colspan(rows_with_colspan, _year_pos_shift):
                 r"for\s+the\s+(\w+\s+)?(months?|weeks?|quarters?|years?|period)\s+ended",
                 text,
                 re.I,
+            ):
+                return False, True  # title row - skip but count
+
+            # A single non-empty cell at position 0 that does NOT
+            # reference any year or date is a table title / section
+            # label (e.g. "Financial performance of JPMorganChase"),
+            # NOT a category header.  Category headers appear at
+            # start > 0 spanning data columns, typically with multiple
+            # cells per row.  Mis-classifying titles as categories
+            # breaks the header scan — it causes the scanner to stop
+            # at the very next non-header row, never reaching the
+            # actual year/period row further down.
+            if (
+                start == 0
+                and not re.search(r"\b(19|20)\d{2}\b", text)
+                and not re.search(
+                    rf"(months?\s+ended|year\s+ended|weeks?\s+ended"
+                    rf"|{MONTHS_PATTERN}\s+\d{{1,2}})",
+                    text,
+                    re.I,
+                )
             ):
                 return False, True  # title row - skip but count
 
@@ -3609,6 +3637,307 @@ def extract_periods_from_rows(
     return [], 0
 
 
+# ── Chart-legend helper ─────────────────────────────────────────────
+_LEGEND_BG_RE = re.compile(r"background-color:\s*(#[0-9a-fA-F]{6})")
+
+
+def _extract_chart_legend(table) -> str | None:
+    """Detect a chart-legend table and return an inline legend string.
+
+    SEC filings embed bar/pie charts as ``<img>`` tags followed by
+    small HTML tables that use tiny coloured ``<td>`` cells as colour
+    swatches paired with label text (typically font-family 'Gotham
+    Narrow Book', font-size ~5 pt, rows of height ~3 pt).
+
+    The standard table converter turns these into single-column
+    markdown tables like::
+
+        | Affiliates |
+        |---|
+        | Europe |
+
+    This helper detects the pattern and emits a more useful format
+    that preserves the colour-to-label mapping so the chart can be
+    interpreted::
+
+        **Legend:** ■ (#009dd9) United States · ■ (#0b2d71) Other Americas · …
+
+    Returns ``None`` if the table is *not* a chart legend.
+    """
+    rows = table.find_all("tr")
+    if not rows or len(rows) > 30:
+        return None
+
+    # Quick pre-check: reject tables that look like financial data.
+    # Real chart legends never contain numeric data, dollar signs,
+    # parenthesised negatives, or percentage values in their cells.
+    _data_cell_re = re.compile(
+        r"(?:^\s*[-—]?\s*\$|\d[\d,]+\.\d|^\s*\(\s*\d|\d\s*%\s*$" r"|^\s*\d{4}\s*$)"
+    )
+    data_cell_count = 0
+    for row in rows:
+        for td in row.find_all("td"):
+            cell_text = td.get_text(strip=True)
+            if cell_text and _data_cell_re.search(cell_text):
+                data_cell_count += 1
+    if data_cell_count >= 2:
+        return None
+
+    # Chart-legend tables use tiny coloured cells as colour swatches.
+    # A "swatch cell" MUST be a cell whose ONLY purpose is to show
+    # a background colour — it must have NO text content (or at most
+    # a single non-breaking space).  Cells that combine colour with
+    # text are header/data cells, NOT swatches.
+    #
+    # Additionally, swatch cells should be physically small (height
+    # ≤ 8px or width ≤ 30px via inline style).
+    _height_re = re.compile(r"height:\s*(\d+(?:\.\d+)?)\s*(?:px|pt)", re.I)
+    _width_re = re.compile(r"width:\s*(\d+(?:\.\d+)?)\s*(?:px|pt)", re.I)
+    swatch_count = 0
+    all_labels: list[str] = []
+    all_colors: list[str] = []
+    # Track how many rows have non-empty text in > 2 columns — a sign
+    # this is a real data table, not a legend.
+    multi_col_text_rows = 0
+
+    for row in rows:
+        tds = row.find_all("td")
+        row_color: str | None = None
+        row_label: str | None = None
+        text_cell_count = 0
+        for td in tds:
+            style = td.get("style", "") or ""
+            bg = _LEGEND_BG_RE.search(style)
+            cell_text = td.get_text(strip=True)
+
+            # A swatch cell: has background-color, is NOT white,
+            # and has NO meaningful text content.
+            if bg and bg.group(1).lower() not in ("#ffffff", "#fff") and not cell_text:
+                # Check for small dimensions (strong swatch signal)
+                h_m = _height_re.search(style)
+                w_m = _width_re.search(style)
+                is_tiny = (h_m and float(h_m.group(1)) <= 8) or (
+                    w_m and float(w_m.group(1)) <= 30
+                )
+                if is_tiny:
+                    row_color = bg.group(1)
+                    swatch_count += 1
+                else:
+                    # Empty cell with colour but not tiny — could
+                    # still be a swatch if no dimension is specified
+                    # (some legends omit explicit sizes).  Count it
+                    # but don't bump swatch_count (only truly tiny
+                    # cells are confident swatch detections).
+                    row_color = bg.group(1)
+                # Cell has BOTH colour and text → NOT a swatch.
+                # This is typically a header or data cell with shading.
+
+            if cell_text and len(cell_text) < 80:
+                row_label = cell_text
+                text_cell_count += 1
+
+        if text_cell_count > 2:
+            multi_col_text_rows += 1
+        if row_color and not row_label:
+            all_colors.append(row_color)
+        elif row_label and not row_color:
+            all_labels.append(row_label)
+        elif row_color and row_label:
+            # Both in one row — paired directly
+            all_colors.append(row_color)
+            all_labels.append(row_label)
+
+    # If many rows have text in 3+ columns, this is a data table.
+    if multi_col_text_rows >= 2:
+        return None
+
+    # Require enough CONFIDENT swatch detections (tiny empty colour
+    # cells) and at least two labels.
+    if swatch_count < 2 or len(all_labels) < 2:
+        return None
+
+    # Labels should be category names, NOT numbers/years/percentages.
+    _numeric_label_re = re.compile(r"^\s*[\d,.%$€£()\-—]+\s*$")
+    non_numeric_labels = [lab for lab in all_labels if not _numeric_label_re.match(lab)]
+    if len(non_numeric_labels) < 2:
+        return None
+
+    # Final sanity: the raw text of the whole table should be short
+    # (legends are just a handful of category names).
+    full_text = table.get_text(strip=True)
+    if len(full_text) > 500:
+        return None
+
+    # Pair colours and labels.  The HTML structure typically puts the
+    # label row immediately before its colour swatch row, so
+    # all_labels[i] corresponds to all_colors[i].
+    # Only include labels that have a paired colour swatch.
+    # Unpaired labels (more labels than colours) are typically chart
+    # titles/descriptions embedded in the legend table — omit them.
+    n_pairs = min(len(non_numeric_labels), len(all_colors))
+    if n_pairs < 2:
+        return None
+
+    # Build an HTML legend with actual CSS-styled colour swatches.
+    # Using background-color on inline-block spans is the most reliable
+    # way to render coloured boxes across markdown renderers.
+    swatch = (
+        '<span style="display:inline-block;width:12px;height:12px;'
+        "background:{color};vertical-align:middle;border-radius:2px"
+        '"></span>'
+    )
+    items: list[str] = []
+    for idx in range(n_pairs):
+        box = swatch.format(color=all_colors[idx])
+        items.append(f"{box} {non_numeric_labels[idx]}")
+
+    legend_body = " &nbsp;&middot;&nbsp; ".join(items)
+    return (
+        f'<div style="margin:4px 0;font-size:0.9em"><b>Legend:</b> {legend_body}</div>'
+    )
+
+
+# ── Table-title pattern for composite-table splitting ──────────────
+_TABLE_TITLE_RE = re.compile(r"^TABLE\s+\d+", re.IGNORECASE)
+
+
+def _split_composite_table(table) -> list:
+    """Split a single <table> that contains multiple sub-tables.
+
+    Certent CDM and similar absolute-position SEC filings often group
+    several logical tables (e.g. TABLE 5, TABLE 6, TABLE 7) plus
+    connecting body-text paragraphs into **one** horizontal-rule zone,
+    so ``_build_table_from_zone`` emits a single ``<table>`` for the
+    whole lot.
+
+    This function detects "TABLE X:" header rows and splits the
+    original table element into a list of ``(rows, is_body_text)``
+    tuples.  Each ``rows`` list is a contiguous slice of ``<tr>``
+    elements.  ``is_body_text`` is True when the section between two
+    TABLE headers consists entirely of single-cell (full-width) text
+    rows that should be rendered as paragraphs rather than a table.
+
+    Returns a list of BS4 ``<table>`` elements (and plain-text string
+    fragments for body-text sections) ready for independent conversion.
+    """
+    all_rows = table.find_all("tr")
+    if len(all_rows) < 4:
+        return [table]
+
+    # Find rows whose first cell matches "TABLE X: …"
+    split_indices: list[int] = []
+    for idx, row in enumerate(all_rows):
+        cells = row.find_all(["td", "th"])
+        if not cells:
+            continue
+        first_text = cells[0].get_text(strip=True)
+        if _TABLE_TITLE_RE.match(first_text):
+            split_indices.append(idx)
+
+    # Need at least 2 sub-table headers to justify splitting
+    if len(split_indices) < 2:
+        return [table]
+
+    # Helper: detect if a row-set is purely body text
+    # (all data in column 0, rest empty)
+    def _is_body_text_section(rows):
+        if not rows:
+            return True
+        for row in rows:
+            cells = row.find_all(["td", "th"])
+            # Check if any cell beyond the first has content
+            if any(c.get_text(strip=True) for c in cells[1:]):
+                return False
+        return True
+
+    # Build segments: each segment is a slice of rows
+    # Segments between TABLE headers that are all single-cell → body text
+    # TABLE header row + data rows after it → sub-table
+    parts: list = []
+
+    # Rows before the first TABLE header (belong to whatever table was at top)
+    if split_indices[0] > 0:
+        pre_rows = all_rows[: split_indices[0]]
+        # Check if there's a "TABLE X:" in the very first rows
+        # If so, this is the main table data; otherwise check for body text
+        sub = _make_sub_table(pre_rows, table)
+        parts.append(sub)
+
+    for si in range(len(split_indices)):
+        start = split_indices[si]
+        end = split_indices[si + 1] if si + 1 < len(split_indices) else len(all_rows)
+
+        # Find where body text starts between this and next TABLE header
+        # The sub-table continues until rows become single-cell body text
+        sub_rows = all_rows[start:end]
+
+        # Within this slice, find where the data rows end and body text begins
+        # Body text: every cell after col 0 is empty AND text is long (>60 chars),
+        # OR an all-caps heading followed by body text paragraphs.
+        data_end = len(sub_rows)
+        for ri in range(1, len(sub_rows)):
+            row = sub_rows[ri]
+            cells = row.find_all(["td", "th"])
+            first = cells[0].get_text(strip=True) if cells else ""
+            rest_empty = not any(c.get_text(strip=True) for c in cells[1:])
+            if not rest_empty or not first:
+                continue
+            if _TABLE_TITLE_RE.match(first):
+                continue
+
+            # Long body text paragraph
+            is_body_start = len(first) > 60
+            # Or: all-caps section heading followed by body text
+            if not is_body_start and first.isupper() and len(first) > 5:
+                # Check if the NEXT row is long body text
+                ni = ri + 1
+                if ni < len(sub_rows):
+                    ncells = sub_rows[ni].find_all(["td", "th"])
+                    nfirst = ncells[0].get_text(strip=True) if ncells else ""
+                    nrest = not any(c.get_text(strip=True) for c in ncells[1:])
+                    if nrest and len(nfirst) > 60:
+                        is_body_start = True
+
+            if is_body_start:
+                remaining = sub_rows[ri:]
+                if _is_body_text_section(remaining):
+                    data_end = ri
+                    break
+
+        # Table data part
+        table_rows = sub_rows[:data_end]
+        if table_rows:
+            parts.append(_make_sub_table(table_rows, table))
+
+        # Body text part
+        if data_end < len(sub_rows):
+            body_rows = sub_rows[data_end:]
+            body_text = "\n".join(
+                row.find_all(["td", "th"])[0].get_text(strip=True)
+                for row in body_rows
+                if row.find_all(["td", "th"])
+                and row.find_all(["td", "th"])[0].get_text(strip=True)
+            )
+            if body_text.strip():
+                parts.append(body_text)
+
+    return parts
+
+
+def _make_sub_table(rows, original_table):
+    """Create a new BS4 <table> element from a subset of rows."""
+    import copy as _copy
+
+    soup = BeautifulSoup("<table></table>", "html.parser")
+    new_table = soup.new_tag("table")
+    # Copy attributes from original
+    for attr, val in original_table.attrs.items():
+        new_table[attr] = val
+    for row in rows:
+        new_table.append(_copy.copy(row))
+    return new_table
+
+
 def convert_table(table, base_url: str = "") -> str:
     """Convert HTML table to markdown table or text.
 
@@ -3619,6 +3948,17 @@ def convert_table(table, base_url: str = "") -> str:
     - LAYOUT: Tables with multi-line content cells → section headers + bullet lists
     - DATA: Everything else → markdown table (the default)
     """
+    # ── Chart-legend detection ──────────────────────────────────────
+    # SEC filings embed bar / pie charts as <img> tags with adjacent
+    # HTML tables that use tiny coloured cells as colour swatches
+    # paired with label text (font-family: 'Gotham Narrow Book' /
+    # similar, font-size ~5pt, rows of height 3pt).  The standard
+    # table converter turns these into useless single-column markdown
+    # tables.  Detect them early and emit a compact inline legend.
+    legend = _extract_chart_legend(table)
+    if legend is not None:
+        return legend
+
     # Classify the table
     table_type = _classify_table(table)
 
@@ -3735,13 +4075,27 @@ def convert_table(table, base_url: str = "") -> str:
         # Decrement rowspan counts; drop positions that have expired.
         _rowspan_grid = {pos: rem - 1 for pos, rem in _rowspan_grid.items() if rem > 1}
 
-    # Identify positions that have $ prefixes in ANY row
-    # These are the only positions where "empty + numeric" shift should apply
+    # Identify positions that have currency prefixes ($, €, £) in ANY row.
+    # These are the only positions where "empty + numeric" shift should apply.
+    _CURRENCY_PREFIXES = {
+        "$",
+        "$(",
+        "($",
+        "$-",
+        "€",
+        "€(",
+        "(€",
+        "€-",
+        "£",
+        "£(",
+        "(£",
+        "£-",
+    }
     dollar_positions = set()
     for row_data in raw_extracted_rows:
         for i, cell in enumerate(row_data):
             cell_stripped = strip_all(cell)
-            if cell_stripped in ["$", "$(", "($", "$-"]:
+            if cell_stripped in _CURRENCY_PREFIXES:
                 dollar_positions.add(i)
 
     # Extract all rows, preserving colspan info for headers
@@ -3751,51 +4105,63 @@ def convert_table(table, base_url: str = "") -> str:
     for row_idx, (row_data, row_with_colspan, has_th) in enumerate(
         zip(raw_extracted_rows, raw_extracted_colspans, raw_row_has_th)
     ):
-        # Merge currency prefix cells with their following value cells
-        # SEC tables often have $ in one cell and the number in the next
+        # Merge currency prefix cells with their following value cells.
+        # SEC tables often have $ in one cell and the number in the next.
+        # 20-F filings frequently use € with colspan=3, placing the number
+        # up to 3 positions away after empty expansion cells.
         merged_row = []
         merged_row_with_colspan = []
         i = 0
         while i < len(row_data):
             cell = strip_all(row_data[i])
-            # Check if this is a currency prefix cell (just $, $(, etc.)
-            if cell in ["$", "$(", "($", "$-"] and i + 1 < len(row_data):
-                next_cell = strip_all(row_data[i + 1])
-                # Check if next cell has a number (possibly with parentheses, commas, decimals)
-                # Allow spaces inside parentheses like "( 75 )"
-                if next_cell and re.match(r"^\(?\s*[\d,]+\.?\d*\s*\)?%?$", next_cell):
-                    # Merge: $ + 47 = $47 or $( + 47) = $(47)
-                    merged_val = cell + next_cell
+            # Check if this is a currency prefix cell ($, €, £, etc.)
+            if cell in _CURRENCY_PREFIXES and i + 1 < len(row_data):
+                # Look ahead up to 3 positions for the number
+                # (currency cell may have colspan>1 producing empty gaps)
+                _num_re = re.compile(r"^\(?\s*[\d,]+\.?\d*\s*\)?%?$")
+                _found_offset = None
+                for _look in range(1, min(4, len(row_data) - i)):
+                    _ahead = strip_all(row_data[i + _look])
+                    if _ahead and _num_re.match(_ahead):
+                        _found_offset = _look
+                        break
+                    if _ahead:  # non-empty non-numeric → stop
+                        break
+                if _found_offset is not None:
+                    merged_val = cell + strip_all(row_data[i + _found_offset])
                     merged_row.append(merged_val)
-                    # IMPORTANT: Add empty string to preserve column position
-                    # This maintains alignment with header rows that use colspan=2
-                    merged_row.append("")
-                    # For colspan tracking, use the colspan of the value cell
-                    if i < len(row_with_colspan):
-                        merged_row_with_colspan.append(row_with_colspan[i])
-                    if i + 1 < len(row_with_colspan):
-                        merged_row_with_colspan.append(row_with_colspan[i + 1])
-                    i += 2  # Skip both cells
+                    # Add empty placeholders for all consumed cells
+                    for _ in range(_found_offset):
+                        merged_row.append("")
+                    # Preserve colspan tracking for all consumed cells
+                    for j in range(_found_offset + 1):
+                        if i + j < len(row_with_colspan):
+                            merged_row_with_colspan.append(row_with_colspan[i + j])
+                    i += _found_offset + 1
                     continue
-            # Handle rows WITHOUT $ prefix: empty cell followed by numeric value
-            # These are secondary data rows where $ was only shown on first row
-            # We need to shift the value to the $ position to align with headers
-            # IMPORTANT: Only shift if this position has $ in OTHER rows
-            # This prevents incorrect shifting of non-currency data columns
+            # Handle rows WITHOUT currency prefix: empty cell followed by
+            # a numeric value.  Secondary data rows may omit the currency
+            # symbol shown on the first row.  Shift the value to the
+            # currency position to keep alignment.  Also use look-ahead
+            # (up to 3 cells) for €-style tables with colspan>1 gaps.
             elif cell == "" and i + 1 < len(row_data) and i in dollar_positions:
-                next_cell = strip_all(row_data[i + 1])
-                # Check if next cell is a numeric value (not a label)
-                # Allow spaces inside parentheses like "( 75 )"
-                if next_cell and re.match(r"^\(?\s*[\d,]+\.?\d*\s*\)?%?$", next_cell):
-                    # Move value to current position (where $ would be)
-                    merged_row.append(next_cell)
-                    # Add empty to preserve column count
-                    merged_row.append("")
-                    if i < len(row_with_colspan):
-                        merged_row_with_colspan.append(row_with_colspan[i])
-                    if i + 1 < len(row_with_colspan):
-                        merged_row_with_colspan.append(row_with_colspan[i + 1])
-                    i += 2
+                _num_re2 = re.compile(r"^\(?\s*[\d,]+\.?\d*\s*\)?%?$")
+                _found_offset2 = None
+                for _look2 in range(1, min(4, len(row_data) - i)):
+                    _ahead2 = strip_all(row_data[i + _look2])
+                    if _ahead2 and _num_re2.match(_ahead2):
+                        _found_offset2 = _look2
+                        break
+                    if _ahead2:
+                        break
+                if _found_offset2 is not None:
+                    merged_row.append(strip_all(row_data[i + _found_offset2]))
+                    for _ in range(_found_offset2):
+                        merged_row.append("")
+                    for j in range(_found_offset2 + 1):
+                        if i + j < len(row_with_colspan):
+                            merged_row_with_colspan.append(row_with_colspan[i + j])
+                    i += _found_offset2 + 1
                     continue
             merged_row.append(row_data[i])
             if i < len(row_with_colspan):
@@ -4185,9 +4551,23 @@ def convert_table(table, base_url: str = "") -> str:
     # must fall back to positional (non-semantic) rendering.
     if use_semantic_parsing and num_periods > 0 and header_row_count < len(data):
         _val_re = re.compile(
-            r"^[+\-]?[\$]?\s*\(?[\$]?\s*[\d,]+\.?\d*\s*\)?\s*[*%]*(pts)?$"
+            r"^[+\-]?[\$\u20ac]?\s*\(?[\$\u20ac]?\s*[\d,]+\.?\d*\s*\)?\s*[*%]*(pts)?$"
         )
-        _dash_vals = {"—", "–", "-", "$—", "$–", "$-", "N/A", "n/a", "NM", "nm"}
+        _dash_vals = {
+            "\u2014",
+            "\u2013",
+            "-",
+            "$\u2014",
+            "$\u2013",
+            "$-",
+            "\u20ac\u2014",
+            "\u20ac\u2013",
+            "\u20ac-",
+            "N/A",
+            "n/a",
+            "NM",
+            "nm",
+        }
         for _dr in data[header_row_count:]:
             _n = sum(
                 1
@@ -4401,6 +4781,15 @@ def convert_table(table, base_url: str = "") -> str:
                 new_data.append(collapsed[: num_periods + 1])
 
         # Process data rows - use header_row_count to skip header rows
+        # Use a two-pass approach: first extract values into *groups*
+        # per header range, then flatten.  This correctly interleaves
+        # sub-column values (e.g. absolute change + percentage under a
+        # single "2025 vs. 2024" header) instead of appending overflows
+        # to the end.
+        _extracted_rows: list[tuple] = []
+        _has_sub_columns = False
+        _num_header_entries = len(new_data)  # header rows already added
+
         for i, row in enumerate(data):
             # Skip rows before data starts (headers already extracted)
             if i < header_row_count:
@@ -4424,12 +4813,12 @@ def convert_table(table, base_url: str = "") -> str:
                     ranges.append((pos, end))
 
                 label_parts = []
-                values = [""] * num_periods
+                value_groups: list[list[str]] = [[] for _ in range(num_periods)]
 
                 for col_idx, cell_text in enumerate(row):
                     cell_clean = cell_text.strip().strip("\u200b").strip()
 
-                    if not cell_clean or cell_clean == "$":
+                    if not cell_clean or cell_clean in ("$", "\u20ac"):
                         continue
                     # Before first header position = label column
                     if col_idx < header_col_positions[0]:
@@ -4440,75 +4829,108 @@ def convert_table(table, base_url: str = "") -> str:
                     for hi, (start, end) in enumerate(ranges):
                         if start <= col_idx < end:
                             # Numeric/dash values go as data
-                            # Includes: $1,234  22%  (1.2)pts  73.4%  ($10,707)  —  —%  N/A
-                            # Also handles spaced negatives: $ (186), (11.4) %, — %
-                            # Also handles sign-prefixed values: +6.6, -1.5, +0.8
                             if re.match(
-                                r"^[+\-]?[\$]?\s*\(?[\$]?\s*[\d,]+\.?\d*\s*\)?\s*[*%]*(pts)?$",
+                                r"^[+\-]?[\$\u20ac]?\s*\(?[\$\u20ac]?\s*[\d,]+\.?\d*\s*\)?\s*[*%]*(pts)?$",
                                 cell_clean,
                             ) or cell_clean in (
-                                "—",
-                                "–",
+                                "\u2014",
+                                "\u2013",
                                 "-",
-                                "$—",
-                                "$–",
+                                "$\u2014",
+                                "$\u2013",
                                 "$-",
-                                "$ —",
-                                "$ –",
+                                "$ \u2014",
+                                "$ \u2013",
                                 "$ -",
-                                "—%",
-                                "–%",
+                                "\u20ac\u2014",
+                                "\u20ac\u2013",
+                                "\u20ac-",
+                                "\u2014%",
+                                "\u2013%",
                                 "-%",
-                                "— %",
-                                "– %",
+                                "\u2014 %",
+                                "\u2013 %",
                                 "- %",
                                 "N/A",
                                 "n/a",
                                 "NM",
+                                "nm",
                             ):
-                                # Assign to slot if empty; otherwise overflow
-                                # to preserve values from mid-table column
-                                # structure changes (e.g., extra columns in
-                                # a bottom sub-section of the same HTML table).
-                                if not values[hi]:
-                                    values[hi] = cell_clean
-                                else:
-                                    values.append(cell_clean)
+                                value_groups[hi].append(cell_clean)
+                                if len(value_groups[hi]) > 1:
+                                    _has_sub_columns = True
                             elif (
                                 re.match(
                                     r"^(bps?|pts?|pps?|x)$",
                                     cell_clean,
                                     re.I,
                                 )
-                                and values[hi]
+                                and value_groups[hi]
                             ):
                                 # Unit suffix (e.g. "bps", "pts") that
                                 # belongs to the preceding numeric value
                                 # in the same header range — merge rather
                                 # than creating a spurious extra column.
-                                values[hi] = f"{values[hi]} {cell_clean}"
+                                value_groups[hi][
+                                    -1
+                                ] = f"{value_groups[hi][-1]} {cell_clean}"
                             elif not label_parts:
                                 # Non-numeric before any data = part of label
                                 label_parts.append(cell_clean)
-                            elif not values[hi]:
-                                values[hi] = cell_clean
                             else:
-                                values.append(cell_clean)
+                                value_groups[hi].append(cell_clean)
+                                if len(value_groups[hi]) > 1:
+                                    _has_sub_columns = True
 
                             break
 
                 label = " ".join(label_parts) if label_parts else None
+                _extracted_rows.append((label, value_groups))
             else:
                 label, values = parse_row_semantic(row, num_periods)
+                # Wrap each value as a single-element group
+                _extracted_rows.append((label, [[v] if v else [] for v in values]))
 
-            if label is None and not values:
-                continue  # Skip empty rows
+        # Determine max sub-column count per period across all rows.
+        _max_group_sizes = [1] * num_periods
+        if _has_sub_columns:
+            for _, groups in _extracted_rows:
+                for hi in range(min(num_periods, len(groups))):
+                    _max_group_sizes[hi] = max(_max_group_sizes[hi], len(groups[hi]))
 
-            # Pad values to match minimum of num_periods columns;
-            while len(values) < num_periods:
-                values.append("")
+        _actual_periods = sum(_max_group_sizes)
 
-            new_data.append([label or ""] + values)
+        # Flatten each row's value groups into a flat value list.
+        for label, groups in _extracted_rows:
+            if label is None and all(not g for g in groups):
+                continue
+
+            flat_values: list[str] = []
+            for hi in range(num_periods):
+                g = list(groups[hi]) if hi < len(groups) else []
+                while len(g) < _max_group_sizes[hi]:
+                    g.append("")
+                flat_values.extend(g)
+
+            while len(flat_values) < _actual_periods:
+                flat_values.append("")
+
+            new_data.append([label or ""] + flat_values)
+
+        # Expand header layers if sub-columns were detected.
+        if _has_sub_columns and _actual_periods > num_periods:
+            for li in range(_num_header_entries):
+                old_hdr = new_data[li]
+                expanded = [old_hdr[0]]  # label column
+                for hi in range(num_periods):
+                    h = old_hdr[hi + 1] if hi + 1 < len(old_hdr) else ""
+                    expanded.append(h)
+                    for _ in range(_max_group_sizes[hi] - 1):
+                        expanded.append("")
+                while len(expanded) < _actual_periods + 1:
+                    expanded.append("")
+                new_data[li] = expanded
+            num_periods = _actual_periods
 
         data = new_data
         num_header_rows = len(header_layers) if header_layers else 1
@@ -4714,6 +5136,899 @@ def get_text_content(
     return result
 
 
+# ============================================================================
+# ABSOLUTE-POSITIONED LAYOUT REFLOW
+# ============================================================================
+# Some SEC filings (notably Canadian bank 40-F exhibits like TD) are
+# generated from PDF-to-HTML converters that render every text fragment
+# as an absolutely-positioned <div> with pixel left/top coordinates.
+# These documents contain ZERO <table> tags and thousands of positioned
+# divs.  The regular html_to_markdown converter cannot reconstruct
+# paragraphs or tables from these.
+#
+# _reflow_absolute_layout detects such documents and rewrites the HTML
+# into flowing <p> / <table> elements so the rest of the pipeline works.
+# ============================================================================
+
+# HTML entity map for quick decoding in the reflow function.
+_REFLOW_ENTITIES: dict[str, str] = {
+    "&#160;": " ",
+    "&#8217;": "\u2019",
+    "&#8216;": "\u2018",
+    "&#8220;": "\u201c",
+    "&#8221;": "\u201d",
+    "&#8211;": "\u2013",
+    "&#8212;": "\u2014",
+    "&#8226;": "\u2022",
+    "&#9679;": "\u25cf",
+    "&#8230;": "\u2026",
+    "&#8482;": "\u2122",
+    "&#174;": "\u00ae",
+    "&#169;": "\u00a9",
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&quot;": '"',
+    "&#39;": "'",
+    "&apos;": "'",
+    "&nbsp;": " ",
+}
+
+# Regex to detect the "Page N" footer divs.
+_PAGE_FOOTER_RE = re.compile(
+    r"(?:Page\s+\d+|TD\s+BANK\s+GROUP)",
+    re.IGNORECASE,
+)
+
+
+def _reflow_absolute_layout(html_content: str) -> str | None:
+    """Rewrite position:absolute HTML into flowing HTML.
+
+    Uses a *rule-based* approach: the Certent CDM (and similar PDF-to-HTML
+    generators) encode table row separators as thin (≤ 2 px high), full-width
+    (≥ 500 px) ``position:absolute`` divs.  These horizontal rules provide
+    deterministic table detection — text fragments between consecutive rules
+    belong to the same table, and their horizontal positions map to columns.
+
+    Non-table text (paragraphs, headings, chart annotations) is rendered
+    outside the rule-delimited zones.  When the page contains a side-by-side
+    layout (body text on the left, chart on the right), the fragments are
+    split into two columns so chart content doesn't pollute paragraph text.
+
+    Returns the rewritten HTML string, or ``None`` if the document does
+    not use an absolute-positioned layout and should be processed normally.
+    """
+    # Quick heuristic: is this an abs-positioned document?
+    # Must have MANY absolute-positioned elements, very few <table> tags,
+    # AND the characteristic Certent CDM id="aNN" text-fragment pattern.
+    _sample = html_content[:50_000]
+    _abs_count = len(re.findall(r"position:\s*absolute", _sample, re.I))
+    _table_count = len(re.findall(r"<table\b", html_content[:200_000], re.I))
+    if _abs_count < 30 or _table_count > 2:
+        return None
+
+    _abs_total = len(re.findall(r"position:\s*absolute", html_content, re.I))
+    _div_total = len(re.findall(r"<div\b", html_content, re.I))
+    if _div_total == 0 or _abs_total / _div_total < 0.4:
+        return None
+
+    # Require the Certent CDM text-fragment pattern: divs with
+    # id="aNN" (numeric IDs) that carry the actual text content.
+    # This is the hallmark of PDF-to-HTML absolute-positioned layouts.
+    # Without this, normal filings with many absolute-positioned logos
+    # or headers would be incorrectly rewritten.
+    _text_frag_count = len(re.findall(r'<div[^>]+id="a\d+"', _sample, re.I))
+    if _text_frag_count < 15:
+        return None
+
+    # ---- Parse page boundaries ----
+    _page_re = re.compile(r'id="Page(\d+)"')
+    page_boundaries = list(_page_re.finditer(html_content))
+    if not page_boundaries:
+        return None
+
+    page_map: dict[int, int] = {int(m.group(1)): m.start() for m in page_boundaries}
+    total_pages = max(page_map.keys())
+
+    # ---- Regex toolbox ----
+    _tag_re = re.compile(r"<[^>]+>")
+    _bold_re = re.compile(r"font-weight:\s*bold", re.I)
+    _fsize_re = re.compile(r"font-size:\s*([\d.]+)px", re.I)
+    _content_re = re.compile(
+        r'(.*?)(?=<div\s+id="a\d+"|<div\s+style="[^"]*position:\s*absolute)',
+        re.S,
+    )
+    _content_end_re = re.compile(r"(.*?)</div>", re.S)
+
+    def _decode_entities(text: str) -> str:
+        for ent, ch in _REFLOW_ENTITIES.items():
+            text = text.replace(ent, ch)
+        text = re.sub(
+            r"&#(\d+);",
+            lambda m: chr(int(m.group(1))) if int(m.group(1)) < 0x10000 else "",
+            text,
+        )
+        return text
+
+    def _strip_tags(raw: str) -> str:
+        return _decode_entities(_tag_re.sub("", raw)).strip()
+
+    # ---- Per-page parser ----
+    def _parse_page(
+        page_num: int,
+    ) -> tuple[list[float], list[tuple[float, float, str, bool, float]]]:
+        """Extract horizontal rules and text fragments from a page.
+
+        Returns ``(hrules, text_frags)`` where *hrules* is a sorted list
+        of ``top`` positions of full-width rules and *text_frags* is a
+        list of ``(top, left, text, bold, font_size)`` tuples.
+        """
+        p_start = page_map[page_num]
+        p_end = page_map.get(page_num + 1, len(html_content))
+        page_html = html_content[p_start:p_end]
+
+        hrules: list[float] = []
+        text_frags: list[tuple[float, float, str, bool, float]] = []
+
+        for m in re.finditer(
+            r'<div\s[^>]*?style="([^"]*position:\s*absolute[^"]*)"[^>]*>',
+            page_html,
+            re.I,
+        ):
+            style = m.group(1)
+
+            left_m = re.search(r"left:([\d.]+)px", style)
+            top_m = re.search(r"top:([\d.]+)px", style)
+            if not (left_m and top_m):
+                continue
+            left = float(left_m.group(1))
+            top = float(top_m.group(1))
+
+            width_m = re.search(r"width:([\d.]+)px", style)
+            height_m = re.search(r"height:([\d.]+)px", style)
+            width = float(width_m.group(1)) if width_m else 0
+            height = float(height_m.group(1)) if height_m else 0
+
+            # Horizontal rule: thin + wide-enough + explicit dimensions.
+            # Full-width rules (≥ 500 px) delimit major tables.
+            # Medium rules (200–499 px) delimit smaller tables such as
+            # "Fiscal Year 2026 Targets" boxes or split-page layouts.
+            if height_m and width_m and height <= 2 and width >= 200:
+                hrules.append(top)
+                continue
+
+            # Skip vertical rules (explicit narrow width, e.g. 1px bars)
+            if width_m and width <= 2:
+                continue
+            # Skip coloured rectangles (chart bars) that have no text id
+            if width_m and height_m and width > 5 and height > 5:
+                div_tag = page_html[m.start() : m.end()]
+                if not re.search(r'id="a\d+"', div_tag):
+                    continue
+
+            # Text fragment — must have id="aNN"
+            div_tag = page_html[m.start() : m.end()]
+            id_m = re.search(r'id="(a\d+)"', div_tag)
+            if not id_m:
+                continue
+
+            rest = page_html[m.end() : m.end() + 2000]
+            cm = _content_re.match(rest)
+            if not cm:
+                cm = _content_end_re.match(rest)
+            if not cm:
+                continue
+
+            text = _strip_tags(cm.group(1))
+            if not text:
+                continue
+
+            if _PAGE_FOOTER_RE.search(text) and top > 950:
+                continue
+
+            bold = bool(_bold_re.search(style))
+            fs_m = _fsize_re.search(style)
+            font_size = float(fs_m.group(1)) if fs_m else 10.0
+
+            text_frags.append((top, left, text, bold, font_size))
+
+        hrules = sorted(set(round(r, 1) for r in hrules))
+        text_frags.sort()
+        return hrules, text_frags
+
+    # ---- Table-zone detection ----
+    def _identify_table_zones(
+        hrules: list[float],
+    ) -> list[tuple[float, float]]:
+        """Group consecutive full-width rules into table zones.
+
+        Rules separated by < 300 px are considered part of the same table.
+        Returns a list of ``(zone_top, zone_bottom)`` pairs.
+        """
+        if len(hrules) < 2:
+            return []
+        zones: list[tuple[float, float]] = []
+        zone_start = hrules[0]
+        zone_end = hrules[0]
+        for i in range(1, len(hrules)):
+            if hrules[i] - hrules[i - 1] < 300:
+                zone_end = hrules[i]
+            else:
+                if zone_end > zone_start:
+                    zones.append((zone_start, zone_end))
+                zone_start = hrules[i]
+                zone_end = hrules[i]
+        if zone_end > zone_start:
+            zones.append((zone_start, zone_end))
+        return zones
+
+    # ---- Dedup consecutive identical rows ----
+    def _dedup_rows(
+        rows: list[list[str]],
+    ) -> list[list[str]]:
+        """Remove consecutive duplicate rows (same text ignoring bold)."""
+        if not rows:
+            return rows
+        _bold_tag = re.compile(r"</?b>")
+        result = [rows[0]]
+        for row in rows[1:]:
+            prev_text = [_bold_tag.sub("", c) for c in result[-1]]
+            cur_text = [_bold_tag.sub("", c) for c in row]
+            if cur_text != prev_text:
+                result.append(row)
+            else:
+                prev_bold = sum(1 for c in result[-1] if "<b>" in c)
+                cur_bold = sum(1 for c in row if "<b>" in c)
+                if cur_bold > prev_bold:
+                    result[-1] = row
+        return result
+
+    # ---- Build table from a rule-delimited zone ----
+    def _build_table_from_zone(
+        frags: list[tuple[float, float, str, bool, float]],
+        rules: list[float],
+    ) -> str:
+        if not frags or len(rules) < 2:
+            return ""
+
+        rules = sorted(rules)
+
+        # Build row bands: text between consecutive rules
+        row_bands: list[list[tuple[float, float, str, bool, float]]] = []
+        for i in range(len(rules) - 1):
+            band_top = rules[i]
+            band_bot = rules[i + 1]
+            band_frags = [f for f in frags if band_top - 2 <= f[0] <= band_bot + 2]
+            if band_frags:
+                row_bands.append(band_frags)
+
+        if not row_bands:
+            return ""
+
+        # Determine column positions (cluster left coordinates ±20 px)
+        all_lefts: list[float] = []
+        for band in row_bands:
+            for _, lf, _, _, fs in band:
+                if fs >= 7:
+                    all_lefts.append(lf)
+        if not all_lefts:
+            return ""
+
+        all_lefts.sort()
+        cols: list[float] = []
+        col_n: list[int] = []
+        for lf in all_lefts:
+            merged = False
+            for ci in range(len(cols)):
+                if abs(lf - cols[ci]) <= 20:
+                    cols[ci] = (cols[ci] * col_n[ci] + lf) / (col_n[ci] + 1)
+                    col_n[ci] += 1
+                    merged = True
+                    break
+            if not merged:
+                cols.append(lf)
+                col_n.append(1)
+        cols.sort()
+        ncols = len(cols)
+
+        # Build raw row data
+        raw_rows: list[list[str]] = []
+        for band in row_bands:
+            band.sort()
+            lines: list[list[tuple[float, str, bool, float]]] = []
+            cur_top = band[0][0]
+            cur: list[tuple[float, str, bool, float]] = []
+            for top, lf, text, bold, fs in band:
+                if abs(top - cur_top) <= 3:
+                    cur.append((lf, text, bold, fs))
+                else:
+                    if cur:
+                        lines.append(cur)
+                    cur_top = top
+                    cur = [(lf, text, bold, fs)]
+            if cur:
+                lines.append(cur)
+
+            for line in lines:
+                # Skip superscript footnote markers
+                main = [
+                    (lv, t, b, f)
+                    for lv, t, b, f in line
+                    if not (f < 7 and re.match(r"^\d[\d,]*$", t.strip()))
+                ]
+                if not main:
+                    continue
+
+                cells = [""] * ncols
+                bolds = [False] * ncols
+                for lf, text, bold, _fs in main:
+                    best = 0
+                    best_dist = abs(lf - cols[0])
+                    for ci in range(1, ncols):
+                        d = abs(lf - cols[ci])
+                        if d < best_dist:
+                            best_dist = d
+                            best = ci
+                    if cells[best]:
+                        cells[best] += " " + text
+                    else:
+                        cells[best] = text
+                    if bold:
+                        bolds[best] = True
+
+                formatted: list[str] = []
+                for ci in range(ncols):
+                    c = _html_escape(cells[ci])
+                    if bolds[ci] and c:
+                        c = f"<b>{c}</b>"
+                    formatted.append(c)
+                raw_rows.append(formatted)
+
+        raw_rows = _dedup_rows(raw_rows)
+        if not raw_rows:
+            return ""
+
+        # ---- Pre-merge currency-symbol cells (per-row) ----
+        # Absolute-positioned layouts produce "$" / "€" / "£" as
+        # separate fragments in their own column.  For each row,
+        # merge a lone currency cell with the nearest numeric cell
+        # to its right so that convert_table() receives clean data
+        # (e.g. "$4,602" instead of "$" + "" + "4,602" in three
+        # separate cells).
+        _CURR_PLAIN = {"$", "\u20ac", "\u00a3"}  # $, €, £
+        _re_btag = re.compile(r"</?b>")
+        _re_numval = re.compile(r"^\(?\s*[\d,]+\.?\d*\s*\)?\s*%?$")
+
+        for row in raw_rows:
+            ci = 0
+            while ci < len(row):
+                plain = _re_btag.sub("", row[ci]).strip()
+                if plain not in _CURR_PLAIN or not plain:
+                    ci += 1
+                    continue
+                # Look right: skip empties, merge into first numeric
+                merged = False
+                for cj in range(ci + 1, len(row)):
+                    tgt_plain = _re_btag.sub("", row[cj]).strip()
+                    if not tgt_plain:
+                        continue  # skip empty cells
+                    if _re_numval.match(tgt_plain):
+                        sym_bold = "<b>" in row[ci]
+                        tgt_bold = "<b>" in row[cj]
+                        combo = plain + tgt_plain
+                        if sym_bold or tgt_bold:
+                            combo = f"<b>{combo}</b>"
+                        row[cj] = combo
+                        row[ci] = ""
+                        merged = True
+                    break  # stop on first non-empty (merge or not)
+                ci += 1
+
+        # Remove columns that are entirely empty
+        non_empty = [
+            ci
+            for ci in range(ncols)
+            if any(row[ci].strip() for row in raw_rows if ci < len(row))
+        ]
+
+        parts: list[str] = ["<table>\n"]
+        for row in raw_rows:
+            parts.append("<tr>")
+            for ci in non_empty:
+                parts.append(f"<td>{row[ci]}</td>")
+            parts.append("</tr>\n")
+        parts.append("</table>\n")
+        return "".join(parts)
+
+    # ---- Fragment classification ----
+    def _classify_fragments(
+        frags: list[tuple[float, float, str, bool, float]],
+    ) -> tuple[
+        list[tuple[float, float, str, bool, float]],
+        list[tuple[float, float, str, bool, float]],
+        list[tuple[float, float, str, bool, float]],
+    ]:
+        """Classify free fragments as body text, chart content, or footnotes.
+
+        Uses **per-page body-font detection** so the same logic works on
+        pages where body text is set in 10 px *and* pages where it is set
+        in 8 px (common in the business-segment detail pages).
+
+        1. Detect the page's body font size — the most frequent font size
+           among left-margin (left < 75 px) fragments.
+        2. *Body text*: fragment whose font size is within +/-0.5 px of
+           the detected body font and sits at the left margin, **or**
+           within +/-0.3 px at any position (right-column text / unruled
+           tables).  Large headings (font > 18 px) and bold subheadings
+           at the left margin are also body text.
+        3. *Footnotes*: fragments near the page bottom (top > 950 px).
+        4. *Chart content*: everything else — axis ticks, legend labels,
+           chart titles whose font deviates from the body font.
+
+        Returns ``(body_frags, chart_frags, footnote_frags)``.
+        """
+        if not frags:
+            return [], [], []
+
+        # ---- Detect per-page body font size ----
+        # Use a tight left margin (< 55 px) so chart axis labels that
+        # sit at left ≈ 62–82 px don't bias the detection.
+        body_margin_sizes = [
+            round(fs, 1)
+            for top, left, _, _, fs in frags
+            if left < 55 and top < 950 and 5.0 < fs < 18.0
+        ]
+        body_fs = (
+            Counter(body_margin_sizes).most_common(1)[0][0]
+            if len(body_margin_sizes) >= 3
+            else 10.0
+        )
+
+        # ---- Classify each fragment ----
+        # Short numeric/currency tokens that look like chart axis ticks
+        # are excluded from body text even when their font matches.
+        _chart_val = re.compile(r"^-?[$]\d[\d,.]*$|^-?\d+[%]$|^\d{4}$")
+
+        body: list[tuple[float, float, str, bool, float]] = []
+        chart: list[tuple[float, float, str, bool, float]] = []
+        footnotes: list[tuple[float, float, str, bool, float]] = []
+
+        for frag in frags:
+            top, left, _text, _bold, font_size = frag
+            stripped = _text.strip()
+            is_axis = len(stripped) < 10 and bool(_chart_val.match(stripped))
+
+            if top > 950:
+                footnotes.append(frag)
+            elif font_size > 18:
+                # Large section heading (e.g. "Net Income" at 22.7 px)
+                body.append(frag)
+            elif left < 75 and abs(font_size - body_fs) <= 0.5 and not is_axis:
+                # Body-font fragment at the left margin
+                body.append(frag)
+            elif abs(font_size - body_fs) <= 0.3 and not is_axis:
+                # Body-font fragment anywhere (right column, unruled table)
+                body.append(frag)
+            elif left < 75 and _bold and len(stripped) > 8:
+                # Bold subheading at the left margin
+                body.append(frag)
+            else:
+                chart.append(frag)
+
+        return body, chart, footnotes
+
+    # ---- Free-content (paragraph / heading) builder ----
+    def _build_free_content(
+        frags: list[tuple[float, float, str, bool, float]],
+    ) -> str:
+        """Build body text as flowing HTML with lists, headings, paragraphs.
+
+        Handles bullet lists (●/•), section headings (detected by gap),
+        first-line-indent paragraph breaks, and preserves per-fragment
+        bold formatting.
+        """
+        if not frags:
+            return ""
+
+        frags = sorted(frags)
+
+        # ---- Build lines: group fragments by top (± 2 px) ----
+        # Each line: (top, min_left, fragments)
+        lines: list[tuple[float, float, list[tuple[float, str, bool, float]]]] = []
+        cur_top = frags[0][0]
+        cur: list[tuple[float, str, bool, float]] = []
+        for top, left, text, bold, fs in frags:
+            if abs(top - cur_top) <= 2:
+                cur.append((left, text, bold, fs))
+            else:
+                if cur:
+                    cur.sort()
+                    lines.append((cur_top, cur[0][0], cur))
+                cur_top = top
+                cur = [(left, text, bold, fs)]
+        if cur:
+            cur.sort()
+            lines.append((cur_top, cur[0][0], cur))
+
+        # ---- Split ALL-CAPS heading prefixes from mixed-case text ----
+        # Certent CDM layouts place section headers like
+        # "BUSINESS SEGMENT ANALYSIS" and subsection names like
+        # "Business Focus" at the same top coordinate, forming a
+        # multi-fragment line.  Split the ALL-CAPS bold prefix into
+        # its own line so the single-bold H2 check can fire for each.
+        _ALL_CAPS_RE = re.compile(r"^[A-Z][A-Z &,\-/\u2019\u00a0']+$")
+        split_lines: list[tuple[float, float, list[tuple[float, str, bool, float]]]] = (
+            []
+        )
+        for line_top, line_left, line_frags in lines:
+            if len(line_frags) <= 1:
+                split_lines.append((line_top, line_left, line_frags))
+                continue
+
+            # Find the boundary: consecutive bold ALL-CAPS fragments
+            # at the start, followed by non-ALL-CAPS or non-bold text.
+            caps_end = 0
+            for idx, (_, ftext, fbold, _) in enumerate(line_frags):
+                t = ftext.strip()
+                if fbold and t and _ALL_CAPS_RE.match(t):
+                    caps_end = idx + 1
+                else:
+                    break
+
+            if caps_end > 0 and caps_end < len(line_frags):
+                # Verify the remaining text starts mixed-case
+                rest_text = " ".join(
+                    t.strip() for _, t, _, _ in line_frags[caps_end:]
+                ).strip()
+                if rest_text and not _ALL_CAPS_RE.match(rest_text):
+                    caps_frags = line_frags[:caps_end]
+                    rest_frags = line_frags[caps_end:]
+                    split_lines.append((line_top, caps_frags[0][0], caps_frags))
+                    split_lines.append((line_top + 0.1, rest_frags[0][0], rest_frags))
+                    continue
+
+            split_lines.append((line_top, line_left, line_frags))
+
+        lines = split_lines
+
+        # ---- Helpers ----
+        _BULLET = {"\u25cf", "\u2022"}
+
+        def _has_bullet(
+            lf: list[tuple[float, str, bool, float]],
+        ) -> bool:
+            return any(t.strip() in _BULLET for _, t, _, _ in lf)
+
+        def _strip_bullet(
+            lf: list[tuple[float, str, bool, float]],
+        ) -> list[tuple[float, str, bool, float]]:
+            return [
+                (left_, t, b, f) for left_, t, b, f in lf if t.strip() not in _BULLET
+            ]
+
+        def _rich(
+            lf: list[tuple[float, str, bool, float]],
+        ) -> str:
+            """Combine fragments preserving per-fragment bold."""
+            parts: list[str] = []
+            for _, text, bold, _ in lf:
+                esc = _html_escape(text)
+                if bold and esc.strip():
+                    parts.append(f"<b>{esc}</b>")
+                else:
+                    parts.append(esc)
+            return " ".join(parts)
+
+        # Detect common body-left margin for indent paragraph detection
+        left_vals = [lf[0][0] for _, _, lf in lines if lf]
+        if left_vals:
+            _left_counts: dict[int, int] = {}
+            for _lv in left_vals:
+                _k = round(_lv)
+                _left_counts[_k] = _left_counts.get(_k, 0) + 1
+            body_left = max(_left_counts, key=_left_counts.get)  # type: ignore[arg-type]
+        else:
+            body_left = 48
+
+        # Regex for detecting sentence verbs — a strong signal that
+        # the text is body-paragraph content, not a heading title.
+        _SENTENCE_VERB_RE = re.compile(
+            r"\b(?:is|are|was|were|has|have|had|"
+            r"offers?|provides?|includes?|presents?|enables?|allows?"
+            r"|consists?|describes?|involves?|ensures?|continues?"
+            r"|represents?|reflects?|operates?|serves?|manages?"
+            r"|oversees?|supports?|covers?|conform[s]?"
+            r"|should|shall|will|would|could)\b",
+            re.IGNORECASE,
+        )
+
+        # ---- Main loop ----
+        out: list[str] = []
+        in_list = False
+        i = 0
+
+        while i < len(lines):
+            line_top, line_left, line_frags = lines[i]
+            prev_top = lines[i - 1][0] if i > 0 else None
+            gap = (line_top - prev_top) if prev_top is not None else 999
+
+            # ---- H2: single bold fragment ----
+            # In absolute-positioned SEC layouts a standalone bold
+            # line is always a heading — no gap threshold needed.
+            # However, bold body-text paragraphs can also appear as
+            # single fragments per line; exclude those based on
+            # length, casing, and verb-based sentence detection.
+            if len(line_frags) == 1:
+                _, text, bold, fs = line_frags[0]
+                t = text.strip()
+                if bold and fs >= 9.5 and len(t) > 3:
+                    _is_heading = True
+                    # Starts lowercase → mid-sentence fragment
+                    if (
+                        t[0].islower()
+                        or len(t) > 120
+                        and not t.isupper()
+                        or len(t) > 60
+                        and not t.isupper()
+                        and _SENTENCE_VERB_RE.search(t)
+                        or t.endswith(".")
+                        and not re.search(
+                            r"\b(?:INC|CORP|LTD|LLC|CO|JR|SR|DR|MR|MS" r"|U\.S)\.\s*$",
+                            t,
+                            re.IGNORECASE,
+                        )
+                    ):
+                        _is_heading = False
+
+                    if in_list:
+                        out.append("</ul>\n")
+                        in_list = False
+                    if _is_heading:
+                        out.append(f"<h2>{_html_escape(t)}</h2>\n")
+                    else:
+                        out.append(
+                            f'<p data-body-text="1"><b>{_html_escape(t)}</b></p>\n'
+                        )
+                    i += 1
+                    continue
+
+            # ---- H2: very large font ----
+            max_fs = max(fs for _, _, _, fs in line_frags)
+            if max_fs >= 18:
+                if in_list:
+                    out.append("</ul>\n")
+                    in_list = False
+                parts = [_html_escape(t) for _, t, _, _ in line_frags]
+                out.append(f"<h2>{' '.join(parts)}</h2>\n")
+                i += 1
+                continue
+
+            # ---- Section heading: large gap + short + followed by bullet ----
+            plain = " ".join(t for _, t, _, _ in line_frags).strip()
+            next_is_bullet = i + 1 < len(lines) and _has_bullet(lines[i + 1][2])
+            if (
+                gap > 22
+                and line_left <= 55
+                and len(plain) < 50
+                and not _has_bullet(line_frags)
+                and next_is_bullet
+            ):
+                if in_list:
+                    out.append("</ul>\n")
+                    in_list = False
+                out.append(f"<h3>{_rich(line_frags)}</h3>\n")
+                i += 1
+                continue
+
+            # ---- Bullet line: absorb continuations ----
+            if _has_bullet(line_frags):
+                if not in_list:
+                    out.append("<ul>\n")
+                    in_list = True
+                clean = _strip_bullet(line_frags)
+                parts_list = [_rich(clean)]
+                j = i + 1
+                while j < len(lines):
+                    ntop, nleft, nfrags = lines[j]
+                    ngap = ntop - lines[j - 1][0]
+                    if ngap <= 18 and not _has_bullet(nfrags):
+                        nmax = max(fs for _, _, _, fs in nfrags)
+                        if nmax >= 18:
+                            break
+                        if len(nfrags) == 1 and nfrags[0][2] and nfrags[0][3] >= 9.5:
+                            break
+                        parts_list.append(_rich(nfrags))
+                        j += 1
+                    else:
+                        break
+                out.append(f"<li>{' '.join(parts_list)}</li>\n")
+                i = j
+                continue
+
+            # ---- Close list if we fell out of bullets ----
+            if in_list:
+                out.append("</ul>\n")
+                in_list = False
+
+            # ---- Paragraph: collect lines (gap ≤ 18 px) ----
+            para = [_rich(line_frags)]
+            j = i + 1
+            while j < len(lines):
+                ntop, nleft, nfrags = lines[j]
+                ngap = ntop - lines[j - 1][0]
+                if ngap <= 18 and not _has_bullet(nfrags):
+                    nmax = max(fs for _, _, _, fs in nfrags)
+                    if nmax >= 18:
+                        break
+                    if len(nfrags) == 1 and nfrags[0][2] and nfrags[0][3] >= 9.5:
+                        break
+                    # First-line indent → new paragraph
+                    if nfrags[0][0] > body_left + 5:
+                        break
+                    para.append(_rich(nfrags))
+                    j += 1
+                else:
+                    break
+
+            out.append(f"<p>{' '.join(para)}</p>\n")
+            i = j
+
+        if in_list:
+            out.append("</ul>\n")
+
+        return "".join(out)
+
+    # ---- Chart-summary builder ----
+    def _build_chart_summary(
+        frags: list[tuple[float, float, str, bool, float]],
+    ) -> str:
+        """Build a chart placeholder rendered as a <div class="chart">.
+
+        Extracts bold titles and parenthesised descriptions.  The
+        resulting ``<div>`` is preserved as raw HTML in the final
+        markdown output so downstream consumers can identify and
+        render chart blocks with their own styling.
+        """
+        if not frags:
+            return ""
+
+        titles: list[str] = []
+        descs: list[str] = []
+        seen_titles: set[str] = set()
+        seen_descs: set[str] = set()
+
+        for _top, _left, text, bold, fs in sorted(frags):
+            t = text.strip()
+            if not t:
+                continue
+            if bold and fs > 9 and len(t) > 3 and t not in seen_titles:
+                titles.append(t)
+                seen_titles.add(t)
+            elif t.startswith("(") and len(t) > 10 and t not in seen_descs:
+                descs.append(t)
+                seen_descs.add(t)
+
+        if not titles:
+            return ""
+
+        label = " / ".join(titles)
+        # Build as a SINGLE line so post-processing cleanup steps
+        # (e.g. _remove_repeated_page_elements) cannot split the div
+        # into individual lines and strip them as short repeats.
+        inner = f"<span>{_html_escape(label)}</span>"
+        if descs:
+            inner += f'<span class="chart-desc">{_html_escape("; ".join(descs))}</span>'
+        return f'<div class="chart">{inner}</div>\n'
+
+    # ---- Per-page reflow orchestrator ----
+    def _reflow_page(page_num: int) -> str:
+        hrules, text_frags = _parse_page(page_num)
+        zones = _identify_table_zones(hrules)
+
+        # Classify fragments into table zones vs. free
+        table_frags: dict[int, list[tuple[float, float, str, bool, float]]] = {
+            zi: [] for zi in range(len(zones))
+        }
+        free_frags: list[tuple[float, float, str, bool, float]] = []
+
+        for frag in text_frags:
+            top = frag[0]
+            placed = False
+            for zi, (zt, zb) in enumerate(zones):
+                if zt - 5 <= top <= zb + 15:
+                    table_frags[zi].append(frag)
+                    placed = True
+                    break
+            if not placed:
+                free_frags.append(frag)
+
+        # Classify free fragments into body text, chart, and footnotes
+        body_frags, chart_frags, footnote_frags = _classify_fragments(free_frags)
+
+        # Collect page segments in vertical order
+        segments: list[tuple[float, str]] = []
+
+        for zi, (zt, zb) in enumerate(zones):
+            if table_frags[zi]:
+                rules_in = [r for r in hrules if zt - 1 <= r <= zb + 1]
+                t_html = _build_table_from_zone(table_frags[zi], rules_in)
+                if t_html:
+                    # Split composite tables (TABLE 5 + 6 + 7 in one
+                    # zone) into independent <table> elements so each
+                    # gets converted separately by convert_table().
+                    _t_soup = BeautifulSoup(t_html, "html.parser")
+                    _t_tag = _t_soup.find("table")
+                    if _t_tag:
+                        _parts = _split_composite_table(_t_tag)
+                        if len(_parts) > 1:
+                            _offset = 0.0
+                            for _p in _parts:
+                                if isinstance(_p, str):
+                                    segments.append((zt + _offset, f"<p>{_p}</p>"))
+                                else:
+                                    segments.append((zt + _offset, str(_p)))
+                                _offset += 0.01
+                        else:
+                            segments.append((zt, t_html))
+                    else:
+                        segments.append((zt, t_html))
+
+        # Body text → paragraphs / headings
+        if body_frags:
+            body_frags.sort()
+            groups: list[list[tuple[float, float, str, bool, float]]] = []
+            cur_group = [body_frags[0]]
+            for i in range(1, len(body_frags)):
+                gap = body_frags[i][0] - body_frags[i - 1][0]
+                crosses_zone = any(
+                    body_frags[i - 1][0] < zt and body_frags[i][0] > zb
+                    for zt, zb in zones
+                )
+                if crosses_zone or gap > 40:
+                    groups.append(cur_group)
+                    cur_group = [body_frags[i]]
+                else:
+                    cur_group.append(body_frags[i])
+            groups.append(cur_group)
+
+            for g in groups:
+                content = _build_free_content(g)
+                if content.strip():
+                    segments.append((g[0][0], content))
+
+        # Chart content → compact annotation
+        if chart_frags:
+            chart_html = _build_chart_summary(chart_frags)
+            if chart_html.strip():
+                avg_top = sum(f[0] for f in chart_frags) / len(chart_frags)
+                segments.append((avg_top, chart_html))
+
+        # Footnotes → rendered as body paragraphs at page bottom
+        if footnote_frags:
+            fn_html = _build_free_content(footnote_frags)
+            if fn_html.strip():
+                segments.append((footnote_frags[0][0], fn_html))
+
+        segments.sort(key=lambda s: s[0])
+        return "".join(s[1] for s in segments)
+
+    # ---- Main loop: process every page ----
+    out_parts: list[str] = ["<html><body>\n"]
+
+    for pg in range(1, total_pages + 1):
+        page_html = _reflow_page(pg)
+        if page_html:
+            out_parts.append(page_html)
+
+    out_parts.append("</body></html>")
+    return "".join(out_parts)
+
+
+def _html_escape(text: str) -> str:
+    """Minimal HTML escaping for reflowed text."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def html_to_markdown(
     html_content: str,
     base_url: str = "",
@@ -4751,6 +6066,13 @@ def html_to_markdown(
     for entity, char in WIN1252_MAP.items():
         html_content = html_content.replace(entity, char)
 
+    # Detect and rewrite absolute-positioned layouts (e.g. TD 40-F
+    # exhibits generated by PDF-to-HTML converters) into flowing HTML
+    # before the main converter processes them.
+    _reflowed = _reflow_absolute_layout(html_content)
+    if _reflowed is not None:
+        html_content = _reflowed
+
     soup = BeautifulSoup(html_content, "lxml")
 
     # Remove hidden XBRL elements and junk
@@ -4764,9 +6086,39 @@ def html_to_markdown(
         if tag.attrs and "style" in tag.attrs:
             style = str(tag.get("style", "")).lower().replace(" ", "")
             if "display:none" in style or "visibility:hidden" in style:
-                tag.decompose()
+                # Do NOT decompose table cells (td/th) — their colspan
+                # is structural even when hidden.  Removing them breaks
+                # the column grid and causes data columns to disappear.
+                # Instead, clear their content so they remain as empty
+                # placeholders in the grid.
+                if tag.name in ("td", "th"):
+                    tag.string = ""
+                else:
+                    tag.decompose()
 
     _merge_continuation_tables(soup)
+
+    # Presentation slide decks (e.g. Spotify 6-K EX-99):
+    # Each slide is a <div class="slide"> containing an <img> (the
+    # actual slide) and a <div class="slideText"> with invisible
+    # (1pt / white) accessibility text.  The text is an unstructured
+    # dump that doesn't convert to readable markdown.  Convert the
+    # slideText content into HTML comments so it is preserved for
+    # search / AI consumption but not rendered visually.
+    _slide_divs = soup.find_all("div", class_="slide")
+    if len(_slide_divs) >= 3:  # at least 3 slides → slide deck
+        for _sd in _slide_divs:
+            for _st in _sd.find_all("div", class_="slideText"):
+                _txt = _st.get_text(separator=" ", strip=True)
+                _txt = re.sub(r"\s+", " ", _txt).strip()
+                if _txt:
+                    _comment = Comment(f" {_txt} ")
+                    _st.replace_with(_comment)
+                else:
+                    _st.decompose()
+        # Also remove the spacer divs between slides.
+        for _sp in soup.find_all("div", class_="spaceAfterSlideText"):
+            _sp.decompose()
 
     # Track whether we have already emitted a TOC / page-navigation table.
     # Older SEC exhibits (e.g. IBM 2008 Annual Report) embed the same sidebar
@@ -4777,6 +6129,9 @@ def html_to_markdown(
     def process_element(element, depth=0) -> str:
         """Recursively process element to markdown."""
         if isinstance(element, NavigableString):
+            # Preserve Comment nodes as HTML comments in markdown output.
+            if isinstance(element, Comment):
+                return f"<!--{element}-->\n\n"
             text = str(element)
             # Normalize whitespace: convert tabs/newlines to spaces, collapse multiple spaces
             text = text.replace("\xa0", " ")  # Non-breaking space
@@ -4936,6 +6291,11 @@ def html_to_markdown(
 
         # Paragraphs and divs
         if element.name in ["p", "div"]:
+            # Chart divs produced by _build_chart_summary() should be
+            # preserved as raw HTML blocks in the markdown output.
+            if element.get("class") and "chart" in element.get("class", []):
+                return f"\n\n{str(element)}\n\n"
+
             # Check if this is an inline element (display:inline in style)
             # Be careful not to match "display:inline-block" which is block-level
             style = element.get("style", "")
@@ -5402,6 +6762,22 @@ def html_to_markdown(
     # These should be merged into a single header
     markdown = _merge_consecutive_headers(markdown)
 
+    # Separate footnote markers from text.
+    # SEC filings often have footnotes like "1Refer to Note 11..." or
+    # "2We calculated..." where the footnote number (from a <font> or
+    # <span> tag with small font-size, NOT a <sup> tag) is directly
+    # concatenated with the following text.  Insert a space so it
+    # renders as "1 Refer to Note 11..." instead of "1Refer...".
+    # Only match 1-2 digit markers immediately followed by an uppercase
+    # letter at the start of a line (or after a double-newline paragraph
+    # break) to avoid splitting things like "3M" or "401k".
+    markdown = re.sub(
+        r"^(\d{1,2})([A-Z][a-z])",
+        r"\1 \2",
+        markdown,
+        flags=re.MULTILINE,
+    )
+
     # Final whitespace cleanup - convert any remaining Windows-1252 characters
     for win_char, unicode_char in WIN1252_MAP.items():
         markdown = markdown.replace(win_char, unicode_char)
@@ -5437,7 +6813,60 @@ def _merge_consecutive_headers(markdown: str) -> str:
     This merges them into:
         ### CONDENSED CONSOLIDATED STATEMENTS OF CHANGES IN STOCKHOLDERS EQUITY AND PARTNERS CAPITAL
         **(UNAUDITED)**
+
+    Only merges when the first header looks *incomplete* — i.e. its last
+    word is a preposition, conjunction, article, or determiner.  Two
+    genuinely separate headers (e.g. a section title followed by a
+    subsection title) are left alone.
     """
+    # Words that signal the heading phrase is incomplete.
+    _CONTINUATION_ENDINGS = {
+        "in",
+        "of",
+        "and",
+        "the",
+        "for",
+        "to",
+        "with",
+        "on",
+        "a",
+        "an",
+        "by",
+        "at",
+        "as",
+        "or",
+        "nor",
+        "but",
+        "from",
+        "into",
+        "onto",
+        "upon",
+        "per",
+        "its",
+        "their",
+        "our",
+        "your",
+        "this",
+        "that",
+        "these",
+        "those",
+        "which",
+        "who",
+        "whom",
+        "whose",
+    }
+
+    def _looks_incomplete(text: str) -> bool:
+        """Return True if *text* appears to be an incomplete title phrase."""
+        t = text.rstrip()
+        if not t:
+            return False
+        # Ends with a continuation punctuation mark (comma, dash, colon)
+        if t[-1] in (",", "\u2013", "\u2014", "-"):
+            return True
+        last_word = t.split()[-1].lower().rstrip(".,;:")
+        return last_word in _CONTINUATION_ENDINGS
+
     lines = markdown.split("\n")
     result = []
     i = 0
@@ -5465,21 +6894,26 @@ def _merge_consecutive_headers(markdown: str) -> str:
 
                 # Check if next non-empty line is same-level header
                 next_match = re.match(r"^(#{1,6})\s+(.+)$", next_line)
-                if next_match and next_match.group(1) == level:
-                    # Merge this header text
+                if (
+                    next_match
+                    and next_match.group(1) == level
+                    and _looks_incomplete(header_text)
+                ):
+                    # Merge this header text — first header is an
+                    # incomplete phrase that continues on the next line.
                     header_text = header_text.rstrip() + " " + next_match.group(2)
                     j += 1
-                elif next_match and not header_text.rstrip().endswith(
-                    (".", "!", "?", ":", '"')
+                elif (
+                    next_match
+                    and next_match.group(1) != level
+                    and _looks_incomplete(header_text)
                 ):
-                    # Different-level header but previous didn't end a
-                    # sentence — this is a continuation (e.g. Item 7
-                    # title split across positioned divs).  Merge at the
-                    # higher (fewer-#) level.
+                    # Different-level header but first header is clearly
+                    # incomplete — merge at the current (higher) level.
                     header_text = header_text.rstrip() + " " + next_match.group(2)
                     j += 1
                 else:
-                    # Not a same-level header, stop merging
+                    # Not a continuation — stop merging
                     break
 
             # Output the merged header
@@ -5626,7 +7060,12 @@ def _join_split_paragraphs(markdown: str) -> str:
 
     def _is_joinable_line(s: str) -> bool:
         """Return True if stripped line *s* is eligible for joining."""
-        return bool(s) and not _STRUCTURAL_RE.match(s)
+        return (
+            bool(s)
+            and not _STRUCTURAL_RE.match(s)
+            and not _INLINE_HTML_RE.search(s)
+            and not _PAGE_HEADER_LINK_RE.match(s)
+        )
 
     def _next_nonblank(start: int):
         """Return (index, stripped_text) of next non-blank line, or (start, None)."""
@@ -5640,14 +7079,25 @@ def _join_split_paragraphs(markdown: str) -> str:
     # Bullet prefixes that should participate in forward-joining
     _BULLET_RE = re.compile(r"^(?:- |\* |\d+\.\s)")
     # Non-bullet structural lines that should NEVER join
-    _HARD_STRUCTURAL_RE = re.compile(r"^(?:#|\||\<img|\<a\s)")
+    _HARD_STRUCTURAL_RE = re.compile(r"^(?:#|\||\<img|\<a\s|\<div\s|\*\*Legend:\*\*)")
+    # Lines containing inline HTML spans/divs are intentionally formatted;
+    # they should never be joined or consumed as continuation lines.
+    _INLINE_HTML_RE = re.compile(r"<(?:span|div)\s")
+    # Running page headers: "Section Title [Link](#anchor)" patterns
+    # that repeat on every page of the original filing.
+    _PAGE_HEADER_LINK_RE = re.compile(r"^[A-Z].*\[.*\]\(#[^)]+\)\s*$")
 
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
 
         # Skip blank lines and hard-structural lines (headers, tables, images)
-        if not stripped or _HARD_STRUCTURAL_RE.match(stripped):
+        if (
+            not stripped
+            or _HARD_STRUCTURAL_RE.match(stripped)
+            or _INLINE_HTML_RE.search(stripped)
+            or _PAGE_HEADER_LINK_RE.match(stripped)
+        ):
             result.append(line)
             i += 1
             continue
@@ -5809,6 +7259,7 @@ def _remove_repeated_page_elements(markdown: str) -> str:
             and not stripped.startswith("[")  # Not a link
             and not re.match(r"^!\[", stripped)  # Not a standalone markdown image
             and not re.match(r"^<img\s", stripped)  # Not a standalone HTML image
+            and not re.match(r"^<div[\s>]", stripped)  # Not an HTML div block
             and stripped != "---"
         ):  # Not a horizontal rule
             line_counts[normalized] += 1

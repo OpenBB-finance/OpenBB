@@ -190,8 +190,8 @@ class SecManagementDiscussionAnalysisFetcher(
                                     cache=SQLiteBackend(_cd)
                                 ) as _sess:
                                     try:
-                                        _idx_html = await amake_request(  # type: ignore
-                                            _idx_url,
+                                        _idx_html = await amake_request(
+                                            _idx_url,  # type: ignore
                                             headers=SEC_HEADERS,
                                             response_callback=sec_callback,
                                             session=_sess,
@@ -200,7 +200,7 @@ class SecManagementDiscussionAnalysisFetcher(
                                         await _sess.close()
                             else:
                                 _idx_html = await amake_request(
-                                    _idx_url,
+                                    _idx_url,  # type: ignore
                                     headers=SEC_HEADERS,
                                     response_callback=sec_callback,
                                 )
@@ -215,6 +215,145 @@ class SecManagementDiscussionAnalysisFetcher(
                                 target_filing = _6kf
                                 break
                         if target_filing.report_type == "6-K":  # type: ignore
+                            break
+
+                    # Second pass: filenames didn't match.  Read the
+                    # 6-K cover page for exhibit descriptions like
+                    # "Q4 2025 Update", "Letter to Shareholders", etc.
+                    if target_filing.report_type != "6-K":  # type: ignore
+                        _cover_re = re.compile(
+                            r"Q[1-4]\s+\d{4}\s+Update|"
+                            r"Letter\s+to\s+Shareholders|"
+                            r"Shareholder\s+Letter|"
+                            r"Earnings\s+(?:Release|Update)|"
+                            r"Quarterly\s+(?:Report|Update|Results)",
+                            re.IGNORECASE,
+                        )
+                        for _6kf in _6k_recent:
+                            if _6kf.filing_date <= target_filing.filing_date:  # type: ignore
+                                break
+                            try:
+                                _cover_url = _6kf.report_url
+                                if query.use_cache is True:
+                                    _cd = f"{get_user_cache_directory()}/http/sec_financials"
+                                    async with CachedSession(
+                                        cache=SQLiteBackend(_cd)
+                                    ) as _sess:
+                                        try:
+                                            _cover_html = await amake_request(
+                                                _cover_url,
+                                                headers=SEC_HEADERS,
+                                                response_callback=sec_callback,
+                                                session=_sess,
+                                            )
+                                        finally:
+                                            await _sess.close()
+                                else:
+                                    _cover_html = await amake_request(
+                                        _cover_url,
+                                        headers=SEC_HEADERS,
+                                        response_callback=sec_callback,
+                                    )
+                            except Exception:  # noqa
+                                continue
+                            if isinstance(_cover_html, str) and _cover_re.search(
+                                _cover_html
+                            ):
+                                target_filing = _6kf
+                                break
+
+            # Domestic issuer: check for a more-recent 8-K that
+            # contains earnings results (EX-99 exhibit) filed after
+            # the latest 10-K/10-Q.  This covers the gap between
+            # the earnings announcement and the formal 10-K/Q filing.
+            if target_filing and not _is_foreign_issuer:
+                _8k_recent = await SecCompanyFilingsFetcher.fetch_data(
+                    {
+                        "symbol": query.symbol if not query.symbol.isnumeric() else "",
+                        "cik": query.symbol if query.symbol.isnumeric() else "",
+                        "form_type": "8-K",
+                        "use_cache": query.use_cache,
+                    },
+                    {},
+                )
+                if _8k_recent and _8k_recent[0].filing_date > target_filing.filing_date:  # type: ignore
+                    # Item 2.02 = "Results of Operations and Financial
+                    # Condition" — the standard 8-K item for earnings.
+                    _8k_earnings_re = re.compile(
+                        r"Item\s+2\.02|"
+                        r"Results\s+of\s+Operations\s+and\s+Financial\s+Condition|"
+                        r"Earnings\s+(?:Release|Press\s+Release|Update)|"
+                        r"Financial\s+Results|"
+                        r"Press\s+Release.*(?:Quarter|Annual|Fiscal)",
+                        re.IGNORECASE,
+                    )
+                    for _8kf in _8k_recent:
+                        if _8kf.filing_date <= target_filing.filing_date:  # type: ignore
+                            break  # older than current 10-K/Q; stop
+                        # Check filing index for EX-99 exhibits.
+                        _idx_url = _8kf.filing_detail_url
+                        try:
+                            if query.use_cache is True:
+                                _cd = (
+                                    f"{get_user_cache_directory()}/http/sec_financials"
+                                )
+                                async with CachedSession(
+                                    cache=SQLiteBackend(_cd)
+                                ) as _sess:
+                                    try:
+                                        _idx_html = await amake_request(
+                                            _idx_url,  # type: ignore
+                                            headers=SEC_HEADERS,
+                                            response_callback=sec_callback,
+                                            session=_sess,
+                                        )
+                                    finally:
+                                        await _sess.close()
+                            else:
+                                _idx_html = await amake_request(
+                                    _idx_url,  # type: ignore
+                                    headers=SEC_HEADERS,
+                                    response_callback=sec_callback,
+                                )
+                        except Exception:  # noqa
+                            continue
+                        if not isinstance(_idx_html, str):
+                            continue
+                        _ex99_hrefs = _extract_exhibit_links(_idx_html, "EX-99")
+                        if not _ex99_hrefs:
+                            continue
+                        # Read the 8-K filing for Item 2.02 or
+                        # earnings-related language.
+                        try:
+                            _cover_url = _8kf.report_url
+                            if query.use_cache is True:
+                                _cd = (
+                                    f"{get_user_cache_directory()}/http/sec_financials"
+                                )
+                                async with CachedSession(
+                                    cache=SQLiteBackend(_cd)
+                                ) as _sess:
+                                    try:
+                                        _cover_html = await amake_request(
+                                            _cover_url,
+                                            headers=SEC_HEADERS,
+                                            response_callback=sec_callback,
+                                            session=_sess,
+                                        )
+                                    finally:
+                                        await _sess.close()
+                            else:
+                                _cover_html = await amake_request(
+                                    _cover_url,
+                                    headers=SEC_HEADERS,
+                                    response_callback=sec_callback,
+                                )
+                        except Exception:  # noqa
+                            continue
+                        if isinstance(_cover_html, str) and _8k_earnings_re.search(
+                            _cover_html
+                        ):
+                            target_filing = _8kf
                             break
 
         if not target_filing:
@@ -299,9 +438,7 @@ class SecManagementDiscussionAnalysisFetcher(
                 _6k_start_date = (
                     start - offsets.QuarterBegin(1) + offsets.MonthBegin(1)
                 ).date()
-                _6k_end_date = (
-                    start + offsets.QuarterEnd(0) + offsets.MonthEnd(1)
-                ).date()
+                _6k_end_date = (start + offsets.QuarterEnd(0)).date()
 
                 _candidates = [
                     f
@@ -336,6 +473,7 @@ class SecManagementDiscussionAnalysisFetcher(
                     except Exception:  # noqa  # pylint: disable=broad-except
                         return None
 
+                _6k_with_ex99: list[Any] = []
                 for _6kf in _candidates:
                     _idx_url = _6kf.filing_detail_url  # type: ignore
                     _idx_html = await _fetch_6k(_idx_url)  # type: ignore
@@ -351,6 +489,110 @@ class SecManagementDiscussionAnalysisFetcher(
                             target_filing = _6kf
                             break
                     if target_filing:
+                        break
+                    if _ex99_hrefs:
+                        _6k_with_ex99.append(_6kf)
+
+                # Second pass: filename didn't match but the 6-K has
+                # EX-99 exhibits.  Read the actual 6-K cover page —
+                # it describes the exhibits (e.g. "Q4 2025 Update",
+                # "Letter to Shareholders", "Earnings Release").
+                if not target_filing and _6k_with_ex99:
+                    _cover_desc_re = re.compile(
+                        r"Q[1-4]\s+\d{4}\s+Update|"
+                        r"Letter\s+to\s+Shareholders|"
+                        r"Shareholder\s+Letter|"
+                        r"Earnings\s+(?:Release|Update)|"
+                        r"Quarterly\s+(?:Report|Update|Results)",
+                        re.IGNORECASE,
+                    )
+                    for _6kf in _6k_with_ex99:
+                        _cover_html = await _fetch_6k(_6kf.report_url)  # type: ignore
+                        if isinstance(_cover_html, str) and _cover_desc_re.search(
+                            _cover_html
+                        ):
+                            target_filing = _6kf
+                            break
+
+        # Domestic issuer 8-K fallback: when no 10-K/10-Q has been
+        # filed yet for the requested quarter, the company may have
+        # already published earnings via an 8-K press release (EX-99
+        # exhibit).  Search 8-K filings in the target date range for
+        # an earnings announcement.
+        if (
+            not target_filing
+            and not _is_foreign_issuer
+            and calendar_year
+            and calendar_period
+        ):
+            _8k_filings = await SecCompanyFilingsFetcher.fetch_data(
+                {
+                    "symbol": query.symbol if not query.symbol.isnumeric() else "",
+                    "cik": query.symbol if query.symbol.isnumeric() else "",
+                    "form_type": "8-K",
+                    "use_cache": query.use_cache,
+                },
+                {},
+            )
+            if _8k_filings:
+                start = to_datetime(f"{calendar_year}Q{calendar_period}")
+                _8k_start_date = (
+                    start - offsets.QuarterBegin(1) + offsets.MonthBegin(1)
+                ).date()
+                _8k_end_date = (start + offsets.QuarterEnd(0)).date()
+
+                _8k_candidates = [
+                    f
+                    for f in _8k_filings
+                    if _8k_start_date <= f.filing_date <= _8k_end_date  # type: ignore
+                ]
+
+                async def _fetch_8k(u: str) -> str | None:
+                    try:
+                        if query.use_cache is True:
+                            _cd = f"{get_user_cache_directory()}/http/sec_financials"
+                            async with CachedSession(cache=SQLiteBackend(_cd)) as _sess:
+                                try:
+                                    return await amake_request(  # type: ignore
+                                        u,
+                                        headers=SEC_HEADERS,
+                                        response_callback=sec_callback,
+                                        session=_sess,
+                                    )
+                                finally:
+                                    await _sess.close()
+                        return await amake_request(  # type: ignore
+                            u,
+                            headers=SEC_HEADERS,
+                            response_callback=sec_callback,
+                        )
+                    except Exception:  # noqa  # pylint: disable=broad-except
+                        return None
+
+                _earnings_desc_re = re.compile(
+                    r"Q[1-4]\s+\d{4}\s+(?:Update|Results|Earnings)|"
+                    r"Earnings\s+(?:Release|Press\s+Release|Update)|"
+                    r"Press\s+Release|"
+                    r"Quarterly\s+(?:Report|Update|Results)|"
+                    r"(?:Financial|Operating)\s+Results|"
+                    r"Results\s+(?:of|for)\s+Operations",
+                    re.IGNORECASE,
+                )
+
+                for _8kf in _8k_candidates:
+                    _idx_url = _8kf.filing_detail_url  # type: ignore
+                    _idx_html = await _fetch_8k(_idx_url)  # type: ignore
+                    if not isinstance(_idx_html, str):
+                        continue
+                    _ex99_hrefs = _extract_exhibit_links(_idx_html, "EX-99")
+                    if not _ex99_hrefs:
+                        continue
+                    # Read the 8-K cover page for earnings description.
+                    _cover_html = await _fetch_8k(_8kf.report_url)  # type: ignore
+                    if isinstance(_cover_html, str) and _earnings_desc_re.search(
+                        _cover_html
+                    ):
+                        target_filing = _8kf
                         break
 
         if not target_filing:
@@ -383,6 +625,8 @@ class SecManagementDiscussionAnalysisFetcher(
         # exhibit so that transform_data can extract MD&A from it.
         exhibit_content: str | None = None
         exhibit_url: str | None = None
+        _exhibit_is_full_document: bool = False
+        _index_url: str | None = None
 
         if isinstance(response, str) and re.search(
             r"incorporated\s+(?:herein\s+by\s+reference|by\s+reference\s+herein)",
@@ -480,15 +724,19 @@ class SecManagementDiscussionAnalysisFetcher(
         # filing, browse the filing index page for EX-99 exhibit links,
         # fetch each candidate, and use the first one that contains
         # "Discussion and Analysis" text.
-        _is_foreign = target_filing.report_type in (
+        #
+        # The same logic applies to domestic 8-K earnings releases:
+        # the actual content lives in an EX-99 exhibit.
+        _has_exhibit_content = target_filing.report_type in (
             "40-F",
             "20-F",
             "40-F/A",
             "20-F/A",
             "6-K",
+            "8-K",
         )
 
-        if isinstance(response, str) and _is_foreign and not exhibit_content:
+        if isinstance(response, str) and _has_exhibit_content and not exhibit_content:
             _base_dir = url.rsplit("/", 1)[0]
             _index_url = target_filing.filing_detail_url
 
@@ -571,6 +819,47 @@ class SecManagementDiscussionAnalysisFetcher(
                             exhibit_url = _ex_url
                             break
 
+                # Pass 3 – 6-K / 8-K presentation slide deck or
+                # shareholder update.  When both MD&A passes fail,
+                # the exhibit may be a slide deck or quarterly update
+                # that does NOT contain a dedicated MD&A section.
+                # Read the cover page for exhibit descriptions and
+                # check the exhibit HTML for slide-deck structure.
+                if (
+                    not exhibit_content
+                    and target_filing.report_type in ("6-K", "8-K")
+                    and _fetched_exhibits
+                ):
+                    # (a) Slide-deck HTML fingerprint:
+                    #     <div class="slide"> wrapping <img> tags.
+                    for _ex_url, _ex_html in _fetched_exhibits:
+                        if re.search(r'<div\b[^>]*\bclass="slide"', _ex_html, re.I):
+                            exhibit_content = _ex_html
+                            exhibit_url = _ex_url
+                            _exhibit_is_full_document = True
+                            break
+
+                    # (b) The cover page describes the exhibit
+                    #     (e.g. "Q4 2025 Update", "Letter to
+                    #     Shareholders", "Earnings Release").
+                    if not exhibit_content and isinstance(response, str):
+                        _quarterly_desc_re = re.compile(
+                            r"Q[1-4]\s+\d{4}\s+Update|"
+                            r"Letter\s+to\s+Shareholders|"
+                            r"Shareholder\s+Letter|"
+                            r"Earnings\s+(?:Release|Update)|"
+                            r"Quarterly\s+(?:Report|Update|Results)|"
+                            r"Press\s+Release|"
+                            r"Financial\s+Results|"
+                            r"Results\s+of\s+Operations",
+                            re.IGNORECASE,
+                        )
+                        if _quarterly_desc_re.search(response):
+                            _ex_url, _ex_html = _fetched_exhibits[0]
+                            exhibit_content = _ex_html
+                            exhibit_url = _ex_url
+                            _exhibit_is_full_document = True
+
         if isinstance(response, str):
             result: dict[str, Any] = {
                 "symbol": query.symbol,
@@ -590,6 +879,8 @@ class SecManagementDiscussionAnalysisFetcher(
             if exhibit_content and exhibit_url:
                 result["exhibit_content"] = exhibit_content
                 result["exhibit_url"] = exhibit_url
+                if _exhibit_is_full_document:
+                    result["exhibit_is_full_document"] = True
             return result
 
         raise OpenBBError(
@@ -1007,16 +1298,25 @@ class SecManagementDiscussionAnalysisFetcher(
                         best_end = candidate_end
                         break
 
-        # -- Internal cross-reference fallback --
-        # Some filings (e.g., ExxonMobil 10-K) place the full MD&A
-        # in a "Financial Section" appended to the same document.
+        # -- Internal cross-reference extraction --
+        # Some filings (e.g., Chevron, ExxonMobil 10-K) place the full
+        # MD&A in a "Financial Section" appended to the same document.
         # The formal Item 7 is a one-line stub such as:
         #   "Reference is made to [MD&A title](#anchor) in the
         #    Financial Section of this report."
         # Follow the embedded anchor link directly to the referenced
         # section in the raw HTML, extract it, and convert it.
+        #
+        # When a stub anchor is available the anchor-based extraction
+        # always takes priority.  The main markdown-level extraction
+        # may also find a ``best_start`` inside the Financial Section,
+        # but ``_find_end()`` cannot reliably determine the section
+        # boundary because the Financial Section uses its own heading
+        # structure (no Item 7A / Item 8 headers).  The anchor-based
+        # path reads the Table of Contents that precedes the Financial
+        # Section and uses its anchor IDs to cut precisely.
 
-        if best_start is None and _stub_anchor_id:
+        if _stub_anchor_id:
             _anchor_tag = f'id="{_stub_anchor_id}"'
             _anchor_pos = filing_html.find(_anchor_tag)
             if _anchor_pos >= 0:
@@ -1025,31 +1325,133 @@ class SecManagementDiscussionAnalysisFetcher(
                 _start = _gt + 1 if _gt >= 0 else _anchor_pos
                 _remainder = filing_html[_start:]
 
-                # Locate the end of the MD&A section in the raw HTML.
-                _html_end_pats = [
+                # ── Locate the end of the MD&A section ──────────────
+                # The remainder begins with a Financial Table of
+                # Contents whose <a href="#anchor"> links enumerate
+                # every section.  Parse those links and find the first
+                # anchor whose title indicates a post-MD&A section
+                # (financial statements, auditor reports, etc.).
+                # Cutting at the target anchor's ``id="…"`` attribute
+                # is far more reliable than regex-matching section
+                # titles in raw HTML (which may appear inside TOC
+                # links, cross-references, etc.).
+
+                _href_re = re.compile(
+                    r'href="#([^"]+)"[^>]*>(.*?)</a>',
+                    re.DOTALL | re.IGNORECASE,
+                )
+                _post_mda_pats = [
                     re.compile(
-                        r"Management[\u2019\u2018']s\s+Report\s+"
-                        r"on\s+Internal\s+Control",
+                        r"Consolidated\s+Financial\s+Statements",
                         re.IGNORECASE,
                     ),
+                    re.compile(r"Reports?\s+of\s+Management", re.IGNORECASE),
                     re.compile(
                         r"Report\s+of\s+Independent\s+Registered",
                         re.IGNORECASE,
                     ),
+                    re.compile(
+                        r"To\s+the\s+(?:Stockholders|Shareholders" r"|Board)",
+                        re.IGNORECASE,
+                    ),
+                    re.compile(
+                        r"Financial\s+Statements\s+and\s+" r"Supplementary",
+                        re.IGNORECASE,
+                    ),
+                    re.compile(
+                        r"Changes\s+in\s+and\s+Disagreements",
+                        re.IGNORECASE,
+                    ),
                 ]
-                _cut = len(_remainder)
-                for _hp in _html_end_pats:
-                    _hm = _hp.search(_remainder)
-                    if _hm and _hm.start() > 2000:
-                        _cut = min(_cut, _hm.start())
+
+                # Scan the TOC area (first ~80 KB should be enough).
+                _toc_chunk = _remainder[:80_000]
+                _end_anchor_id: str | None = None
+                _start_anchor_id: str | None = None
+                _seen_toc: set[str] = set()
+
+                # Pattern to detect the MD&A section header in the TOC
+                # so we can skip the TOC itself and start at the real
+                # content.
+                _mda_title_pat = re.compile(
+                    r"Management.s\s+Discussion\s+and\s+Analysis",
+                    re.IGNORECASE,
+                )
+
+                for _hm in _href_re.finditer(_toc_chunk):
+                    _aid = _hm.group(1)
+                    _raw = re.sub(r"<[^>]+>", " ", _hm.group(2))
+                    _raw = re.sub(r"\s+", " ", _raw).strip()
+                    for _ent, _ch in (
+                        ("&#8217;", "\u2019"),
+                        ("&#x2019;", "\u2019"),
+                        ("&rsquo;", "\u2019"),
+                        ("&#160;", " "),
+                        ("&amp;", "&"),
+                        ("&#8212;", "\u2014"),
+                    ):
+                        _raw = _raw.replace(_ent, _ch)
+                    if len(_raw) < 4 or _aid in _seen_toc:
+                        continue
+                    _seen_toc.add(_aid)
+
+                    # Track the first MD&A header anchor (to skip TOC).
+                    if not _start_anchor_id and _mda_title_pat.search(_raw):
+                        _start_anchor_id = _aid
+
+                    for _pp in _post_mda_pats:
+                        if _pp.search(_raw):
+                            _end_anchor_id = _aid
+                            break
+                    if _end_anchor_id:
                         break
 
+                # Determine HTML slice boundaries.
+                # Back up to the opening '<' of the element that carries
+                # the id attribute so we don't splice mid-tag and leak
+                # raw attribute text into the markdown output.
+                _html_start = 0
+                if _start_anchor_id:
+                    _start_tag = f'id="{_start_anchor_id}"'
+                    _sp = _remainder.find(_start_tag)
+                    if _sp > 0:
+                        _lt = _remainder.rfind("<", 0, _sp)
+                        _html_start = _lt if _lt >= 0 else _sp
+
+                _cut = len(_remainder)
+                if _end_anchor_id:
+                    _end_tag = f'id="{_end_anchor_id}"'
+                    _end_pos = _remainder.find(_end_tag)
+                    if _end_pos > _html_start:
+                        _cut = _end_pos
+
                 _section_md = html_to_markdown(
-                    f"<html><body>{_remainder[:_cut]}</body></html>",
+                    f"<html><body>{_remainder[_html_start:_cut]}</body></html>",
                     base_url=base_url,
                     keep_tables=query.include_tables,
                 )
                 if _section_md and len(_section_md.strip()) > 500:
+                    # Strip repeated running page headers that appear
+                    # at the top of every page in the original filing
+                    # (e.g., CVX 10-K: "Management's Discussion …
+                    # [Financial Table of Contents](#anchor)").
+                    _section_md = re.sub(
+                        r"^Management.s\s+Discussion\s+and\s+Analysis"
+                        r"\s+of\s+Financial\s+Condition\s+and\s+Results"
+                        r"\s+of\s+Operations[^\n]*$\n?",
+                        "",
+                        _section_md,
+                        flags=re.MULTILINE | re.IGNORECASE,
+                    )
+                    # Strip standalone "[Financial Table of Contents](#…)"
+                    # or "[Table of Contents](#…)" breadcrumb lines.
+                    _section_md = re.sub(
+                        r"^\[(?:Financial\s+)?Table\s+of\s+Contents\]"
+                        r"\(#[^)]+\)[^\n]*$\n?",
+                        "",
+                        _section_md,
+                        flags=re.MULTILINE | re.IGNORECASE,
+                    )
                     data["content"] = _section_md.strip()
                     return SecManagementDiscussionAnalysisData(**data)
 
@@ -1116,6 +1518,19 @@ class SecManagementDiscussionAnalysisFetcher(
                         data["url"] = exhibit_base_url
                         return SecManagementDiscussionAnalysisData(**data)
 
+            # Full-document fallback: 6-K presentation slide decks
+            # and shareholder updates / earnings releases lack a
+            # dedicated MD&A section.  Return the entire converted
+            # exhibit content (with embedded markdown images).
+            if (
+                data.get("exhibit_is_full_document")
+                and exhibit_md
+                and len(exhibit_md.strip()) > 100
+            ):
+                data["content"] = exhibit_md.strip()
+                data["url"] = exhibit_base_url
+                return SecManagementDiscussionAnalysisData(**data)
+
         if best_start is None:
             raise EmptyDataError(
                 "Could not locate the MD&A section in the filing."
@@ -1128,6 +1543,23 @@ class SecManagementDiscussionAnalysisFetcher(
             best_end = len(lines)
 
         mda_content = "\n".join(lines[best_start:best_end]).strip()
+
+        # Strip repeated running page headers (see stub-path comment).
+        mda_content = re.sub(
+            r"^Management.s\s+Discussion\s+and\s+Analysis"
+            r"\s+of\s+Financial\s+Condition\s+and\s+Results"
+            r"\s+of\s+Operations[^\n]*$\n?",
+            "",
+            mda_content,
+            flags=re.MULTILINE | re.IGNORECASE,
+        )
+        # Strip standalone "[Financial Table of Contents](#…)" breadcrumb lines.
+        mda_content = re.sub(
+            r"^\[(?:Financial\s+)?Table\s+of\s+Contents\]" r"\(#[^)]+\)[^\n]*$\n?",
+            "",
+            mda_content,
+            flags=re.MULTILINE | re.IGNORECASE,
+        )
 
         if not mda_content:
             raise EmptyDataError(
