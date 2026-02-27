@@ -5856,7 +5856,7 @@ def _reflow_absolute_layout(html_content: str) -> str | None:
             para = [_rich(line_frags)]
             j = i + 1
             while j < len(lines):
-                ntop, nleft, nfrags = lines[j]
+                ntop, _, nfrags = lines[j]
                 ngap = ntop - lines[j - 1][0]
                 if ngap <= 18 and not _has_bullet(nfrags):
                     nmax = max(fs for _, _, _, fs in nfrags)
