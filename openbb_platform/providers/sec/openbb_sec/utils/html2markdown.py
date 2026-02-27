@@ -3672,7 +3672,7 @@ def _extract_chart_legend(table) -> str | None:
     # Real chart legends never contain numeric data, dollar signs,
     # parenthesised negatives, or percentage values in their cells.
     _data_cell_re = re.compile(
-        r"(?:^\s*[-—]?\s*\$|\d[\d,]+\.\d|^\s*\(\s*\d|\d\s*%\s*$" r"|^\s*\d{4}\s*$)"
+        r"(?:^\s*[-—]?\s*\$|\d[\d,]+\.\d|^\s*\(\s*\d|\d\s*%\s*$" + r"|^\s*\d{4}\s*$)"
     )
     data_cell_count = 0
     for row in rows:
@@ -3926,6 +3926,7 @@ def _split_composite_table(table) -> list:
 
 def _make_sub_table(rows, original_table):
     """Create a new BS4 <table> element from a subset of rows."""
+    # pylint: disable=import-outside-toplevel
     import copy as _copy
 
     soup = BeautifulSoup("<table></table>", "html.parser")
@@ -5675,7 +5676,7 @@ def _reflow_absolute_layout(html_content: str) -> str | None:
                 else:
                     break
 
-            if caps_end > 0 and caps_end < len(line_frags):
+            if caps_end > 0 and caps_end < len(line_frags):  # pylint: disable=R1716
                 # Verify the remaining text starts mixed-case
                 rest_text = " ".join(
                     t.strip() for _, t, _, _ in line_frags[caps_end:]
@@ -5773,7 +5774,8 @@ def _reflow_absolute_layout(html_content: str) -> str | None:
                         and _SENTENCE_VERB_RE.search(t)
                         or t.endswith(".")
                         and not re.search(
-                            r"\b(?:INC|CORP|LTD|LLC|CO|JR|SR|DR|MR|MS" r"|U\.S)\.\s*$",
+                            r"\b(?:INC|CORP|LTD|LLC|CO|JR|SR|DR|MR|MS"
+                            + r"|U\.S)\.\s*$",
                             t,
                             re.IGNORECASE,
                         )
@@ -5829,7 +5831,7 @@ def _reflow_absolute_layout(html_content: str) -> str | None:
                 parts_list = [_rich(clean)]
                 j = i + 1
                 while j < len(lines):
-                    ntop, nleft, nfrags = lines[j]
+                    ntop, _, nfrags = lines[j]
                     ngap = ntop - lines[j - 1][0]
                     if ngap <= 18 and not _has_bullet(nfrags):
                         nmax = max(fs for _, _, _, fs in nfrags)

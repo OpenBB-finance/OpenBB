@@ -627,6 +627,7 @@ class SecManagementDiscussionAnalysisFetcher(
         exhibit_url: str | None = None
         _exhibit_is_full_document: bool = False
         _index_url: str | None = None
+        _index_html: Any = None
 
         if isinstance(response, str) and re.search(
             r"incorporated\s+(?:herein\s+by\s+reference|by\s+reference\s+herein)",
@@ -1371,11 +1372,11 @@ class SecManagementDiscussionAnalysisFetcher(
                         re.IGNORECASE,
                     ),
                     re.compile(
-                        r"To\s+the\s+(?:Stockholders|Shareholders" r"|Board)",
+                        r"To\s+the\s+(?:Stockholders|Shareholders" + r"|Board)",
                         re.IGNORECASE,
                     ),
                     re.compile(
-                        r"Financial\s+Statements\s+and\s+" r"Supplementary",
+                        r"Financial\s+Statements\s+and\s+" + r"Supplementary",
                         re.IGNORECASE,
                     ),
                     re.compile(
@@ -1575,7 +1576,7 @@ class SecManagementDiscussionAnalysisFetcher(
         )
         # Strip standalone "[Financial Table of Contents](#…)" breadcrumb lines.
         mda_content = re.sub(
-            r"^\[(?:Financial\s+)?Table\s+of\s+Contents\]" r"\(#[^)]+\)[^\n]*$\n?",
+            r"^\[(?:Financial\s+)?Table\s+of\s+Contents\]" + r"\(#[^)]+\)[^\n]*$\n?",
             "",
             mda_content,
             flags=re.MULTILINE | re.IGNORECASE,
