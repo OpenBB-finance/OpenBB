@@ -718,3 +718,18 @@ class ProviderInterface(metaclass=SingletonMeta):
                 __doc__=f"OBBject with results of type {name}",
             )
         return annotations
+
+
+_cached_annotations = None
+
+
+def __getattr__(name: str):
+    if name.startswith("OBBject_"):
+        global _cached_annotations
+        if _cached_annotations is None:
+            pi = ProviderInterface()
+            _cached_annotations = pi.return_annotations
+        model_name = name[len("OBBject_"):]
+        if model_name in _cached_annotations:
+            return _cached_annotations[model_name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
