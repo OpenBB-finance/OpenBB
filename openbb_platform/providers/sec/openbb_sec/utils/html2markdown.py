@@ -6120,6 +6120,30 @@ def html_to_markdown(
         for _sp in soup.find_all("div", class_="spaceAfterSlideText"):
             _sp.decompose()
 
+    # General invisible accessibility text (e.g. LOW 8-K infographics):
+    # Some filings embed tiny white text (<font style="font-size:1pt;
+    # color:white">) as accessibility descriptions for images.  This
+    # text dumps as an unformatted wall of text in markdown.  Convert
+    # it to HTML comments so it's preserved for search / AI but not
+    # rendered visually.  This handles patterns not covered by the
+    # slide-deck detection above.
+    _invisible_re = re.compile(r"font-size\s*:\s*1(?:pt|px)", re.IGNORECASE)
+    _white_re = re.compile(r"color\s*:\s*white", re.IGNORECASE)
+    for _inv_tag in soup.find_all(["font", "span", "div", "p"]):
+        _style = _inv_tag.get("style", "")
+        if not _style:
+            continue
+        if _invisible_re.search(_style) and _white_re.search(_style):
+            _txt = _inv_tag.get_text(separator=" ", strip=True)
+            _txt = re.sub(r"\s+", " ", _txt).strip()
+            if _txt and len(_txt) > 20:
+                _comment = Comment(f" {_txt} ")
+                _inv_tag.replace_with(_comment)
+            elif not _txt:
+                _inv_tag.decompose()
+            # Short text (<= 20 chars) is left alone — unlikely to be
+            # meaningful accessibility description.
+
     # Track whether we have already emitted a TOC / page-navigation table.
     # Older SEC exhibits (e.g. IBM 2008 Annual Report) embed the same sidebar
     # navigation table on every page — dozens of copies.  We keep only the

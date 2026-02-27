@@ -860,6 +860,26 @@ class SecManagementDiscussionAnalysisFetcher(
                             exhibit_url = _ex_url
                             _exhibit_is_full_document = True
 
+                # 8-K filings often split content across multiple
+                # EX-99 exhibits (e.g. EX-99.1 = press release,
+                # EX-99.2 = infographics / supplemental data).
+                # Combine all fetched exhibits into one HTML blob so
+                # the downstream converter gets the full picture.
+                if (
+                    exhibit_content
+                    and target_filing.report_type == "8-K"
+                    and len(_fetched_exhibits) > 1
+                ):
+                    _extra_parts: list[str] = []
+                    for _ex_url, _ex_html in _fetched_exhibits:
+                        if _ex_html is not exhibit_content:
+                            _extra_parts.append(_ex_html)
+                    if _extra_parts:
+                        # Wrap each extra exhibit so the converter
+                        # treats them as separate sections.
+                        for _part in _extra_parts:
+                            exhibit_content += "\n<!-- additional exhibit -->\n" + _part
+
         if isinstance(response, str):
             result: dict[str, Any] = {
                 "symbol": query.symbol,
