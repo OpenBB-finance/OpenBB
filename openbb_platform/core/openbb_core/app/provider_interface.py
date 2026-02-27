@@ -699,3 +699,22 @@ class ProviderInterface(metaclass=SingletonMeta):
                 __doc__=f"OBBject with results of type {name}",
             )
         return annotations
+
+
+# Fix for issue OpenBB-finance/OpenBB#7379
+# OBBject_* types are created dynamically in return_annotations but never
+# registered as module-level attributes, causing ImportError on:
+#   from openbb_core.app.provider_interface import OBBject_EquityInfo
+_provider_interface_annotations: dict = {}
+
+
+def __getattr__(name: str):
+    """Lazily resolve dynamically created OBBject_* types."""
+    if name.startswith("OBBject_"):
+        global _provider_interface_annotations
+        if not _provider_interface_annotations:
+            _provider_interface_annotations = ProviderInterface().return_annotations
+        model_name = name[len("OBBject_"):]
+        if model_name in _provider_interface_annotations:
+            return _provider_interface_annotations[model_name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
