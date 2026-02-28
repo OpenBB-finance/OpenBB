@@ -3806,8 +3806,6 @@ class ReferenceGenerator:
                 "message": MethodDefinition.get_deprecation_message(path),
             }
             # Add endpoint examples
-            # Use .get() instead of .pop() to avoid mutating the shared route
-            # openapi_extra dict (routes are shared across lru_cache calls).
             examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls._get_endpoint_examples(
                 path,
