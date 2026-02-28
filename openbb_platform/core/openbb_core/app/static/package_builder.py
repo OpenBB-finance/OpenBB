@@ -3806,15 +3806,22 @@ class ReferenceGenerator:
                 "message": MethodDefinition.get_deprecation_message(path),
             }
             # Add endpoint examples
-            examples = openapi_extra.pop("examples", [])
+            # Use .get() instead of .pop() to avoid mutating the shared route
+            # openapi_extra dict (routes are shared across lru_cache calls).
+            examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls._get_endpoint_examples(
                 path,
                 route_func,
                 examples,  # type: ignore
             )
-            validate_output = not openapi_extra.pop("no_validate", None)
+            validate_output = not openapi_extra.get("no_validate", None)
             model_map = cls.pi.map.get(standard_model, {})
-            reference[path]["openapi_extra"] = openapi_extra
+            # Exclude transient keys that were only needed above
+            reference[path]["openapi_extra"] = {
+                k: v
+                for k, v in openapi_extra.items()
+                if k not in ("examples", "no_validate")
+            }
 
             # Extract return type information for all endpoints
             return_info = cls._extract_return_type(route_func)
