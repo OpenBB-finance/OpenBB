@@ -4,18 +4,24 @@ import inspect
 from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Annotated, Any, TypeVar, get_args, get_origin
+from typing import Annotated, Any, Literal, TypeVar, get_args, get_origin
 
 from fastapi import APIRouter, Depends, Header
 from fastapi.encoders import jsonable_encoder
 from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
+from openbb_core.api.provider_strategy import (
+    compute_confidence,
+    normalize_provider,
+    resolve_provider_candidates,
+)
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
@@ -35,6 +41,57 @@ except ImportError:
 T = TypeVar("T")
 P = ParamSpec("P")
 router = APIRouter(prefix="")
+
+
+def _provider_annotation_with_auto(annotation: Any) -> Any:
+    """Ensure provider parameter annotations accept 'auto'."""
+    origin = get_origin(annotation)
+
+    if origin is Literal:
+        choices = list(get_args(annotation))
+        if "auto" in choices:
+            return annotation
+        return Literal[tuple(["auto", *choices])]  # type: ignore[misc]
+
+    if origin is Annotated:
+        ann_args = get_args(annotation)
+        if not ann_args:
+            return annotation
+        inner = ann_args[0]
+        metadata = ann_args[1:]
+        new_inner = _provider_annotation_with_auto(inner)
+        if new_inner is inner:
+            return annotation
+        return Annotated.__class_getitem__((new_inner, *metadata))
+
+    return annotation
+
+
+def _attach_unified_meta(
+    output: OBBject,
+    path: str,
+    provider_requested: str,
+    provider_used: str | None,
+    provider_candidates: list[str],
+    fallback_trace: list[dict[str, Any]],
+) -> None:
+    """Attach normalized meta payload for API and MCP consumers."""
+    if not isinstance(output.extra, dict):
+        output.extra = {}
+    payload = {
+        "route": path,
+        "provider_requested": provider_requested,
+        "provider_used": provider_used,
+        "provider_candidates": provider_candidates,
+        "fallback_trace": fallback_trace,
+        "confidence": compute_confidence(provider_used, fallback_trace),
+    }
+    existing = output.extra.get("meta", {})
+    if isinstance(existing, dict):
+        existing.update(payload)
+        output.extra["meta"] = existing
+    else:
+        output.extra["meta"] = payload
 
 
 def build_new_annotation_map(sig: Signature) -> dict[str, Any]:
@@ -59,6 +116,14 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     var_kw_pos = len(parameter_list)
 
     for pos, parameter in enumerate(parameter_list):
+        parameter_annotation = parameter.annotation
+        parameter_default = parameter.default
+
+        if parameter.name == "provider":
+            parameter_annotation = _provider_annotation_with_auto(parameter_annotation)
+            if parameter_default in (Parameter.empty, ...):
+                parameter_default = "auto"
+
         if (
             parameter.name == "cc"
             and parameter.annotation == CommandContext
@@ -88,8 +153,8 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                     Parameter(
                         parameter.name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
-                        default=parameter.default,
-                        annotation=parameter.annotation,
+                        default=parameter_default,
+                        annotation=parameter_annotation,
                     ),
                 )
                 var_kw_pos += 1
@@ -99,8 +164,8 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             Parameter(
                 parameter.name,
                 kind=parameter.kind,
-                default=parameter.default,
-                annotation=parameter.annotation,
+                default=parameter_default,
+                annotation=parameter_annotation,
             )
         )
 
@@ -277,6 +342,17 @@ def build_api_wrapper(
         kwargs["standard_params"] = standard_params
         kwargs["extra_params"] = extra_params
 
+        # Normalize top-level provider to standard_params for consistent strategy handling.
+        if "provider" in kwargs and "provider" not in kwargs["standard_params"]:
+            kwargs["standard_params"]["provider"] = kwargs.pop("provider")
+
+        provider_choices = kwargs.get("provider_choices")
+        provider_from_choices = (
+            getattr(provider_choices, "provider", None) if provider_choices else None
+        )
+        if provider_from_choices and "provider" not in kwargs["standard_params"]:
+            kwargs["standard_params"]["provider"] = provider_from_choices
+
         # We need to insert dependency objects that are
         # Added at the Router level and may not be part
         # of the function signature.
@@ -302,10 +378,74 @@ def build_api_wrapper(
             dep_names.append(dep_name)
 
         execute = partial(command_runner.run, path, user_settings)
+        fallback_trace: list[dict[str, Any]] = []
+        provider_used: str | None = None
+        provider_requested = normalize_provider(kwargs["standard_params"].get("provider"))
+        provider_candidates = resolve_provider_candidates(
+            route=path,
+            requested_provider=provider_requested,
+            command_coverage=command_runner.command_map.command_coverage,
+            provider_credentials=ProviderInterface().credentials,
+            credentials_obj=user_settings.credentials,
+        )
+        if not provider_candidates and provider_requested != "auto":
+            provider_candidates = [provider_requested]
 
-        output = await execute(*args, **kwargs)
+        output: OBBject | JSONResponse
+        if provider_requested == "auto" and provider_candidates:
+            output = None  # type: ignore[assignment]
+            last_error: Exception | None = None
+            for attempt, provider in enumerate(provider_candidates, start=1):
+                kwargs["standard_params"]["provider"] = provider
+                if provider_choices is not None and hasattr(provider_choices, "provider"):
+                    provider_choices.provider = provider
+                try:
+                    output = await execute(*args, **kwargs)
+                    provider_used = provider
+                    fallback_trace.append(
+                        {"attempt": attempt, "provider": provider, "status": "success"}
+                    )
+                    break
+                except Exception as exc:  # pylint: disable=broad-exception-caught
+                    fallback_trace.append(
+                        {
+                            "attempt": attempt,
+                            "provider": provider,
+                            "status": "failed",
+                            "error": str(exc)[:500],
+                        }
+                    )
+                    last_error = exc
+            if output is None:
+                if last_error:
+                    raise last_error
+                raise OpenBBError("Provider auto resolution failed with no candidates.")
+        else:
+            provider_used = kwargs["standard_params"].get("provider")
+            if provider_choices is not None and hasattr(provider_choices, "provider"):
+                provider_choices.provider = provider_used
+            output = await execute(*args, **kwargs)
+            fallback_trace.append(
+                {
+                    "attempt": 1,
+                    "provider": provider_used,
+                    "status": "success",
+                }
+            )
 
         if isinstance(output, OBBject):
+            if not provider_used:
+                provider_used = output.provider
+            if provider_used:
+                output.provider = provider_used
+            _attach_unified_meta(
+                output=output,
+                path=path,
+                provider_requested=provider_requested,
+                provider_used=provider_used,
+                provider_candidates=provider_candidates,
+                fallback_trace=fallback_trace,
+            )
             # This is where we check for `on_command_output` extensions
             mutated_output = getattr(output, "_extension_modified", False)
             results_only = getattr(output, "_results_only", False)

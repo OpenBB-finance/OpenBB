@@ -1,0 +1,105 @@
+{
+  "version": "1.0",
+  "description": "Daily business regression cases for OpenBB API auto-provider strategy.",
+  "cases": [
+    {
+      "id": "equity_aapl_1m_auto",
+      "question_zh": "查询苹果最近一个月日线，要求系统自动选择数据源。",
+      "question_en": "Fetch AAPL daily prices for the last month with automatic provider selection.",
+      "method": "GET",
+      "path": "/api/v1/equity/price/historical",
+      "params": {
+        "symbol": "AAPL",
+        "start_date": "2025-01-02",
+        "end_date": "2025-01-10"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    },
+    {
+      "id": "futures_wti_1w_auto",
+      "question_zh": "查询纽约原油期货（CL=F）近期日线，要求自动选源。",
+      "question_en": "Fetch recent WTI futures (CL=F) daily prices with auto provider.",
+      "method": "GET",
+      "path": "/api/v1/derivatives/futures/historical",
+      "params": {
+        "symbol": "CL=F",
+        "start_date": "2025-01-02",
+        "end_date": "2025-01-10"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    },
+    {
+      "id": "macro_us_real_gdp_auto",
+      "question_zh": "查询美国实际 GDP 历史序列，要求自动选源。",
+      "question_en": "Fetch US real GDP time series with auto provider.",
+      "method": "GET",
+      "path": "/api/v1/economy/gdp/real",
+      "params": {
+        "country": "united_states",
+        "start_date": "2020-01-01",
+        "end_date": "2024-12-31"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    },
+    {
+      "id": "macro_us_cpi_auto",
+      "question_zh": "查询美国 CPI 历史，要求自动选源。",
+      "question_en": "Fetch US CPI history with auto provider.",
+      "method": "GET",
+      "path": "/api/v1/economy/cpi",
+      "params": {
+        "country": "united_states",
+        "start_date": "2020-01-01",
+        "end_date": "2024-12-31"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    },
+    {
+      "id": "rates_us_treasury_auto",
+      "question_zh": "查询美国国债收益率曲线数据，要求自动选源。",
+      "question_en": "Fetch US Treasury rates with auto provider.",
+      "method": "GET",
+      "path": "/api/v1/fixedincome/government/treasury_rates",
+      "params": {
+        "start_date": "2025-01-01",
+        "end_date": "2025-01-10"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    },
+    {
+      "id": "regulatory_sec_cik_auto",
+      "question_zh": "查询 AAPL 的 SEC CIK 映射，要求自动选源。",
+      "question_en": "Fetch SEC CIK mapping for AAPL with auto provider.",
+      "method": "GET",
+      "path": "/api/v1/regulators/sec/cik_map",
+      "params": {
+        "symbol": "AAPL"
+      },
+      "expect": {
+        "min_results": 1,
+        "require_meta": true,
+        "expected_provider_requested": "auto"
+      }
+    }
+  ]
+}
