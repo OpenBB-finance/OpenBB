@@ -4041,12 +4041,13 @@ class ReferenceGenerator:
                         type_str = DocstringGenerator.get_field_type(
                             annotation.__args__[0], False, "website"
                         )
-                        description = (
-                            annotation.__metadata__[0].description
-                            if annotation.__metadata__
-                            and hasattr(annotation.__metadata__, "description")
-                            else ""
-                        )
+                        # Search all metadata items for a description
+                        description = ""
+                        for meta in annotation.__metadata__:
+                            desc = getattr(meta, "description", "")
+                            if desc:
+                                description = desc
+                                break
                     else:
                         type_str = DocstringGenerator.get_field_type(
                             annotation, False, "website"

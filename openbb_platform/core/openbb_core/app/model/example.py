@@ -188,6 +188,9 @@ class APIEx(Example):
                     eg += f"{k}='{v}', "
                 else:
                     eg += f"{k}={v}, "
+            elif isinstance(v, str):
+                # Value is a string but param type is unknown — quote it
+                eg += f"{k}='{v}', "
             else:
                 eg += f"{k}={v}, "
 
