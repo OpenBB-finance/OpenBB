@@ -36,6 +36,7 @@ def test_provider_query_auto_fallback_from_wind_to_tushare():
     assert resp.meta["fallback_trace"][0]["status"] == "failed"
     assert resp.meta["fallback_trace"][1]["provider"] == "tushare"
     assert resp.meta["fallback_trace"][1]["status"] == "success"
+    assert resp.meta["selection_reason"]["mode"] == "auto"
     assert 0 <= resp.meta["confidence"] <= 1
 
 
@@ -54,6 +55,7 @@ def test_provider_query_explicit_provider_no_fallback():
     assert len(resp.meta["fallback_trace"]) == 1
     assert resp.meta["fallback_trace"][0]["provider"] == "wind"
     assert resp.meta["fallback_trace"][0]["status"] == "success"
+    assert resp.meta["selection_reason"]["mode"] == "explicit"
 
 
 @pytest.mark.parametrize(

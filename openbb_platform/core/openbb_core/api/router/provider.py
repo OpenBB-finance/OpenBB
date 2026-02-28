@@ -9,10 +9,15 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any, Literal
 
 from fastapi import APIRouter
-from openbb_core.api.provider_strategy import compute_confidence, normalize_provider
+from openbb_core.api.provider_strategy import (
+    compute_confidence,
+    normalize_provider,
+    resolve_provider_strategy,
+)
 from openbb_core.provider.utils.errors import OpenBBError
 from pydantic import BaseModel, Field
 
@@ -96,13 +101,22 @@ def _compute_confidence(fallback_trace: list[dict[str, Any]]) -> float:
     return compute_confidence(provider_used, fallback_trace)
 
 
-def _run_query_with_fallback(req: ProviderQueryRequest) -> tuple[str, Any, list[dict]]:
-    requested = normalize_provider(req.provider)
-    if requested == "auto":
-        # Priority aligns with product strategy: wind > tushare
-        candidates = ["wind", "tushare"]
-    else:
-        candidates = [requested]
+def _resolve_query_strategy(req: ProviderQueryRequest) -> dict[str, Any]:
+    credentials = _load_user_credentials()
+    return resolve_provider_strategy(
+        route="/provider/query",
+        requested_provider=req.provider,
+        command_coverage={"/provider/query": ["wind", "tushare"]},
+        provider_credentials={"wind": [], "tushare": ["tushare_api_key"]},
+        credentials_obj=SimpleNamespace(**credentials),
+    )
+
+
+def _run_query_with_fallback(
+    req: ProviderQueryRequest, candidates: list[str]
+) -> tuple[str, Any, list[dict]]:
+    if not candidates:
+        raise OpenBBError("Provider query failed: no candidate provider available.")
 
     last_error: Exception | None = None
     fallback_trace: list[dict[str, Any]] = []
@@ -157,7 +171,15 @@ def provider_query(req: ProviderQueryRequest) -> ProviderQueryResponse:
     - `provider=tushare`: calls `pro.query(api_name=req.method, **req.kwargs)` (args ignored)
     - `provider=wind`: calls WindPy via local install or HTTP gateway (args + kwargs)
     """
-    provider_used, data, fallback_trace = _run_query_with_fallback(req)
+    strategy = _resolve_query_strategy(req)
+    provider_candidates = strategy.get("candidates", [])
+    selection_reason = strategy.get("selection_reason", {})
+    provider_used, data, fallback_trace = _run_query_with_fallback(req, provider_candidates)
+    if isinstance(selection_reason, dict):
+        selection_reason = {
+            **selection_reason,
+            "selected_provider": provider_used,
+        }
     return ProviderQueryResponse(
         provider=provider_used,
         method=req.method,
@@ -166,11 +188,10 @@ def provider_query(req: ProviderQueryRequest) -> ProviderQueryResponse:
             "route": "/provider/query",
             "provider_requested": normalize_provider(req.provider),
             "provider_used": provider_used,
-            "provider_candidates": ["wind", "tushare"]
-            if normalize_provider(req.provider) == "auto"
-            else [provider_used],
+            "provider_candidates": provider_candidates,
             "fallback_trace": fallback_trace,
             "confidence": _compute_confidence(fallback_trace),
+            "selection_reason": selection_reason,
         },
     )
 
@@ -211,6 +232,12 @@ def provider_catalog(provider: Literal["tushare", "wind"]) -> ProviderCatalogRes
                     {"attempt": 1, "provider": "tushare", "status": "success"}
                 ],
                 "confidence": 0.95,
+                "selection_reason": {
+                    "mode": "explicit",
+                    "route": "/provider/catalog",
+                    "requested_provider": "tushare",
+                    "selected_provider": "tushare",
+                },
             },
         )
 
@@ -242,6 +269,12 @@ def provider_catalog(provider: Literal["tushare", "wind"]) -> ProviderCatalogRes
                     {"attempt": 1, "provider": "wind", "status": "success"}
                 ],
                 "confidence": 0.95,
+                "selection_reason": {
+                    "mode": "explicit",
+                    "route": "/provider/catalog",
+                    "requested_provider": "wind",
+                    "selected_provider": "wind",
+                },
             },
         )
 

@@ -104,6 +104,8 @@ class TestCommandsAutoProvider:
         assert meta["fallback_trace"][0]["status"] == "failed"
         assert meta["fallback_trace"][1]["provider"] == "tushare"
         assert meta["fallback_trace"][1]["status"] == "success"
+        assert meta["selection_reason"]["mode"] == "auto"
+        assert isinstance(meta["selection_reason"].get("scored_providers"), list)
         assert 0 <= meta.get("confidence", -1) <= 1
 
     def test_provider_choices_explicit_provider_is_respected(self):
@@ -151,3 +153,4 @@ class TestCommandsAutoProvider:
         assert isinstance(out, OBBject)
         assert out.provider == "yfinance"
         assert out.extra["meta"]["provider_requested"] == "yfinance"
+        assert out.extra["meta"]["selection_reason"]["mode"] == "explicit"

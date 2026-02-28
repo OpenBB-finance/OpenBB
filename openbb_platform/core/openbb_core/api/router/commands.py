@@ -14,7 +14,7 @@ from fastapi.routing import APIRoute
 from openbb_core.api.provider_strategy import (
     compute_confidence,
     normalize_provider,
-    resolve_provider_candidates,
+    resolve_provider_strategy,
 )
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -74,6 +74,7 @@ def _attach_unified_meta(
     provider_used: str | None,
     provider_candidates: list[str],
     fallback_trace: list[dict[str, Any]],
+    selection_reason: dict[str, Any] | None,
 ) -> None:
     """Attach normalized meta payload for API and MCP consumers."""
     if not isinstance(output.extra, dict):
@@ -85,6 +86,7 @@ def _attach_unified_meta(
         "provider_candidates": provider_candidates,
         "fallback_trace": fallback_trace,
         "confidence": compute_confidence(provider_used, fallback_trace),
+        "selection_reason": selection_reason or {},
     }
     existing = output.extra.get("meta", {})
     if isinstance(existing, dict):
@@ -381,13 +383,15 @@ def build_api_wrapper(
         fallback_trace: list[dict[str, Any]] = []
         provider_used: str | None = None
         provider_requested = normalize_provider(kwargs["standard_params"].get("provider"))
-        provider_candidates = resolve_provider_candidates(
+        provider_strategy = resolve_provider_strategy(
             route=path,
             requested_provider=provider_requested,
             command_coverage=command_runner.command_map.command_coverage,
             provider_credentials=ProviderInterface().credentials,
             credentials_obj=user_settings.credentials,
         )
+        provider_candidates = provider_strategy.get("candidates", [])
+        selection_reason = provider_strategy.get("selection_reason", {})
         if not provider_candidates and provider_requested != "auto":
             provider_candidates = [provider_requested]
 
@@ -445,6 +449,7 @@ def build_api_wrapper(
                 provider_used=provider_used,
                 provider_candidates=provider_candidates,
                 fallback_trace=fallback_trace,
+                selection_reason=selection_reason,
             )
             # This is where we check for `on_command_output` extensions
             mutated_output = getattr(output, "_extension_modified", False)
