@@ -57,6 +57,14 @@ _ROUTE_POLICY_BONUS: dict[str, dict[str, float]] = {
 
 _CREDENTIAL_READY_BONUS = 1.5
 _CREDENTIAL_MISSING_PENALTY = -4.0
+_DEFAULT_HEALTH_WEIGHTS: dict[str, float] = {
+    "success_weight": 18.0,
+    "error_weight": 20.0,
+    "latency_divisor_ms": 400.0,
+    "latency_cap": 6.0,
+    "max_bonus": 20.0,
+    "min_bonus": -25.0,
+}
 
 
 def normalize_provider(value: str | None) -> str:
@@ -93,14 +101,23 @@ def has_required_credentials(
     return all(_credential_value(credentials_obj, key) for key in required)
 
 
-def _route_bonus(route: str, provider: str) -> tuple[float, dict[str, float]]:
+def _route_bonus(
+    route: str,
+    provider: str,
+    route_policy_bonus: dict[str, dict[str, float]],
+) -> tuple[float, dict[str, float]]:
     policy: dict[str, float] = {}
     best_prefix_len = -1
-    for prefix, mapping in _ROUTE_POLICY_BONUS.items():
+    for prefix, mapping in route_policy_bonus.items():
         if route.startswith(prefix) and len(prefix) > best_prefix_len:
             policy = mapping
             best_prefix_len = len(prefix)
-    return policy.get(provider, 0.0), policy
+    raw_bonus = policy.get(provider, 0.0)
+    try:
+        bonus = float(raw_bonus)
+    except Exception:
+        bonus = 0.0
+    return bonus, policy
 
 
 def _normalize_ratio(value: Any) -> float | None:
@@ -120,7 +137,11 @@ def _normalize_ratio(value: Any) -> float | None:
     return round(f_value, 6)
 
 
-def _health_bonus(provider: str, provider_health: dict[str, Any]) -> float:
+def _health_bonus(
+    provider: str,
+    provider_health: dict[str, Any],
+    health_weights: dict[str, float],
+) -> float:
     """Compute health bonus/penalty from recent provider metrics."""
     metrics = provider_health.get(provider)
     if not isinstance(metrics, dict):
@@ -141,13 +162,20 @@ def _health_bonus(provider: str, provider_health: dict[str, Any]) -> float:
     if latency_ms < 0:
         latency_ms = 0.0
 
+    success_weight = health_weights.get("success_weight", 18.0)
+    error_weight = health_weights.get("error_weight", 20.0)
+    latency_divisor = max(health_weights.get("latency_divisor_ms", 400.0), 1.0)
+    latency_cap = health_weights.get("latency_cap", 6.0)
+    max_bonus = health_weights.get("max_bonus", 20.0)
+    min_bonus = health_weights.get("min_bonus", -25.0)
+
     bonus = 0.0
     if success_rate is not None:
-        bonus += success_rate * 18.0
+        bonus += success_rate * success_weight
     if error_rate is not None:
-        bonus -= error_rate * 20.0
-    bonus -= min(latency_ms / 400.0, 6.0)
-    return round(max(min(bonus, 20.0), -25.0), 4)
+        bonus -= error_rate * error_weight
+    bonus -= min(latency_ms / latency_divisor, latency_cap)
+    return round(max(min(bonus, max_bonus), min_bonus), 4)
 
 
 def _default_provider_health_path() -> Path | None:
@@ -155,6 +183,92 @@ def _default_provider_health_path() -> Path | None:
     if not home:
         return None
     return Path(home) / ".openbb_platform" / "provider_health.json"
+
+
+def _default_provider_strategy_path() -> Path | None:
+    home = os.environ.get("HOME") or os.environ.get("USERPROFILE")
+    if not home:
+        return None
+    return Path(home) / ".openbb_platform" / "provider_strategy.json"
+
+
+def _build_default_strategy_config() -> dict[str, Any]:
+    return {
+        "provider_priority": dict(_PROVIDER_PRIORITY),
+        "route_policy_bonus": {
+            prefix: dict(mapping) for prefix, mapping in _ROUTE_POLICY_BONUS.items()
+        },
+        "credential_ready_bonus": _CREDENTIAL_READY_BONUS,
+        "credential_missing_penalty": _CREDENTIAL_MISSING_PENALTY,
+        "health_weights": dict(_DEFAULT_HEALTH_WEIGHTS),
+    }
+
+
+def _merge_strategy_config(raw: dict[str, Any] | None) -> dict[str, Any]:
+    config = _build_default_strategy_config()
+    if not isinstance(raw, dict):
+        return config
+
+    raw_priority = raw.get("provider_priority")
+    if isinstance(raw_priority, dict):
+        for key, value in raw_priority.items():
+            if isinstance(key, str):
+                try:
+                    config["provider_priority"][key.strip().lower()] = float(value)
+                except Exception:
+                    continue
+
+    raw_route_bonus = raw.get("route_policy_bonus")
+    if isinstance(raw_route_bonus, dict):
+        for route_prefix, mapping in raw_route_bonus.items():
+            if not isinstance(route_prefix, str) or not isinstance(mapping, dict):
+                continue
+            existing = config["route_policy_bonus"].get(route_prefix, {})
+            merged = dict(existing)
+            for provider, bonus in mapping.items():
+                if isinstance(provider, str):
+                    try:
+                        merged[provider.strip().lower()] = float(bonus)
+                    except Exception:
+                        continue
+            config["route_policy_bonus"][route_prefix] = merged
+
+    for key in ("credential_ready_bonus", "credential_missing_penalty"):
+        if key in raw:
+            try:
+                config[key] = float(raw[key])
+            except Exception:
+                pass
+
+    raw_health_weights = raw.get("health_weights")
+    if isinstance(raw_health_weights, dict):
+        merged_weights = dict(config["health_weights"])
+        for key, value in raw_health_weights.items():
+            if isinstance(key, str):
+                try:
+                    merged_weights[key] = float(value)
+                except Exception:
+                    continue
+        config["health_weights"] = merged_weights
+    return config
+
+
+def load_provider_strategy_config() -> tuple[dict[str, Any], str]:
+    """Load provider strategy config from file if available."""
+    configured_path = os.environ.get("OPENBB_PROVIDER_STRATEGY_PATH")
+    strategy_path = (
+        Path(configured_path).expanduser()
+        if configured_path
+        else _default_provider_strategy_path()
+    )
+    if strategy_path is None or not strategy_path.exists():
+        return _build_default_strategy_config(), "builtin"
+
+    try:
+        data = json.loads(strategy_path.read_text(encoding="utf-8"))
+    except Exception:
+        return _build_default_strategy_config(), str(strategy_path)
+    return _merge_strategy_config(data), str(strategy_path)
 
 
 def load_provider_health() -> tuple[dict[str, Any], str]:
@@ -196,30 +310,55 @@ def resolve_provider_strategy(
     credentials_obj: Any,
     provider_health: dict[str, Any] | None = None,
     health_source: str | None = None,
+    strategy_config: dict[str, Any] | None = None,
+    strategy_source: str | None = None,
 ) -> dict[str, Any]:
     """Resolve provider candidates and strategy reason payload."""
     requested = normalize_provider(requested_provider)
+    if strategy_config is None:
+        strategy_config, detected_strategy_source = load_provider_strategy_config()
+    else:
+        detected_strategy_source = strategy_source or "inline"
+
+    provider_priority = strategy_config.get("provider_priority", _PROVIDER_PRIORITY)
+    route_policy_bonus_map = strategy_config.get("route_policy_bonus", _ROUTE_POLICY_BONUS)
+    credential_ready_bonus = float(
+        strategy_config.get("credential_ready_bonus", _CREDENTIAL_READY_BONUS)
+    )
+    credential_missing_penalty = float(
+        strategy_config.get("credential_missing_penalty", _CREDENTIAL_MISSING_PENALTY)
+    )
+    health_weights = strategy_config.get("health_weights", _DEFAULT_HEALTH_WEIGHTS)
+    if not isinstance(provider_priority, dict):
+        provider_priority = _PROVIDER_PRIORITY
+    if not isinstance(route_policy_bonus_map, dict):
+        route_policy_bonus_map = _ROUTE_POLICY_BONUS
+    if not isinstance(health_weights, dict):
+        health_weights = _DEFAULT_HEALTH_WEIGHTS
+
     if provider_health is None:
         provider_health, detected_source = load_provider_health()
     else:
         detected_source = health_source or "inline"
 
     if requested != "auto":
-        base_priority = _PROVIDER_PRIORITY.get(requested, 10)
-        route_policy_bonus, route_policy = _route_bonus(route, requested)
+        base_priority = float(provider_priority.get(requested, 10))
+        route_policy_bonus, route_policy = _route_bonus(
+            route, requested, route_policy_bonus_map
+        )
         required_creds = provider_credentials.get(requested, [])
         credentials_ready = has_required_credentials(
             requested, provider_credentials, credentials_obj
         )
         if required_creds:
             credential_bonus = (
-                _CREDENTIAL_READY_BONUS
+                credential_ready_bonus
                 if credentials_ready
-                else _CREDENTIAL_MISSING_PENALTY
+                else credential_missing_penalty
             )
         else:
             credential_bonus = 0.0
-        health = _health_bonus(requested, provider_health)
+        health = _health_bonus(requested, provider_health, health_weights)
         total = round(
             base_priority + route_policy_bonus + credential_bonus + health,
             4,
@@ -233,6 +372,7 @@ def resolve_provider_strategy(
                 "route_policy_applied": bool(route_policy_bonus),
                 "route_policy": route_policy,
                 "health_source": detected_source,
+                "strategy_source": detected_strategy_source,
                 "scored_providers": [
                     {
                         "provider": requested,
@@ -258,6 +398,7 @@ def resolve_provider_strategy(
                 "route_policy_applied": False,
                 "route_policy": {},
                 "health_source": detected_source,
+                "strategy_source": detected_strategy_source,
                 "scored_providers": [],
             },
         }
@@ -265,8 +406,10 @@ def resolve_provider_strategy(
     scored_providers: list[dict[str, Any]] = []
     applied_policy: dict[str, float] = {}
     for provider in providers:
-        base_priority = _PROVIDER_PRIORITY.get(provider, 10)
-        route_policy_bonus, route_policy = _route_bonus(route, provider)
+        base_priority = float(provider_priority.get(provider, 10))
+        route_policy_bonus, route_policy = _route_bonus(
+            route, provider, route_policy_bonus_map
+        )
         if route_policy and not applied_policy:
             applied_policy = route_policy
         required_creds = provider_credentials.get(provider, [])
@@ -275,13 +418,13 @@ def resolve_provider_strategy(
         )
         if required_creds:
             credential_bonus = (
-                _CREDENTIAL_READY_BONUS
+                credential_ready_bonus
                 if credentials_ready
-                else _CREDENTIAL_MISSING_PENALTY
+                else credential_missing_penalty
             )
         else:
             credential_bonus = 0.0
-        health = _health_bonus(provider, provider_health)
+        health = _health_bonus(provider, provider_health, health_weights)
         total = round(
             base_priority + route_policy_bonus + credential_bonus + health,
             4,
@@ -311,6 +454,7 @@ def resolve_provider_strategy(
             "route_policy_applied": bool(applied_policy),
             "route_policy": applied_policy,
             "health_source": detected_source,
+            "strategy_source": detected_strategy_source,
             "scored_providers": scored_providers,
         },
     }

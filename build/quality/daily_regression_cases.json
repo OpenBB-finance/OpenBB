@@ -16,7 +16,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     },
     {
@@ -33,7 +34,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     },
     {
@@ -50,7 +52,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     },
     {
@@ -67,7 +70,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     },
     {
@@ -83,7 +87,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     },
     {
@@ -98,7 +103,8 @@
       "expect": {
         "min_results": 1,
         "require_meta": true,
-        "expected_provider_requested": "auto"
+        "expected_provider_requested": "auto",
+        "expected_selection_mode": "auto"
       }
     }
   ]

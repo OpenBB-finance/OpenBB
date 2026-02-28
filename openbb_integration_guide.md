@@ -118,6 +118,15 @@ OPENBB_MCP_INCLUDE_TAGS:
 - `extra.meta.provider_candidates`
 - `extra.meta.fallback_trace`
 - `extra.meta.confidence`
+- `extra.meta.selection_reason`（含 `mode`、`scored_providers`、`health_source`、`strategy_source`）
+
+P2（策略配置化）：
+- 默认策略为内置配置；可通过 `OPENBB_PROVIDER_STRATEGY_PATH` 指向外部 JSON 覆盖：
+  - `provider_priority`
+  - `route_policy_bonus`
+  - `credential_ready_bonus`
+  - `credential_missing_penalty`
+  - `health_weights`
 
 ## 2. 数据源字典（动态获取）
 用于让调用方快速确认“数据源 → 可用接口 / 接口 → 可用数据源”。

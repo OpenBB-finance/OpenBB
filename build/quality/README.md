@@ -28,9 +28,13 @@ python3 build/quality/run_daily_regression.py \
   - `provider_candidates`
   - `fallback_trace`
   - `confidence`
+  - `selection_reason`
 - `fallback_trace` 为非空列表
+- `fallback_trace` 最后一跳必须是 `success` 且 provider 与 `provider_used` 一致
+- `provider_used` 必须出现在 `provider_candidates` 中
 - `confidence` 在 `[0, 1]`
 - 若用例声明 `expected_provider_requested=auto`，则必须匹配
+- 若用例声明 `expected_selection_mode`，需与 `meta.selection_reason.mode` 一致
 
 ## 每日任务建议
 可用 cron 在每日北京时间 08:30 运行（按你的系统时区调整）：

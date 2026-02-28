@@ -105,6 +105,7 @@ class TestCommandsAutoProvider:
         assert meta["fallback_trace"][1]["provider"] == "tushare"
         assert meta["fallback_trace"][1]["status"] == "success"
         assert meta["selection_reason"]["mode"] == "auto"
+        assert "strategy_source" in meta["selection_reason"]
         assert isinstance(meta["selection_reason"].get("scored_providers"), list)
         assert 0 <= meta.get("confidence", -1) <= 1
 
@@ -154,3 +155,4 @@ class TestCommandsAutoProvider:
         assert out.provider == "yfinance"
         assert out.extra["meta"]["provider_requested"] == "yfinance"
         assert out.extra["meta"]["selection_reason"]["mode"] == "explicit"
+        assert "strategy_source" in out.extra["meta"]["selection_reason"]

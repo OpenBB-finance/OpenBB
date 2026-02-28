@@ -1,5 +1,6 @@
 """Unit tests for provider auto-selection strategy."""
 
+import json
 from types import SimpleNamespace
 
 from openbb_core.api.provider_strategy import (
@@ -126,3 +127,36 @@ def test_resolve_provider_strategy_includes_selection_reason_details():
     assert {"provider", "base_priority", "total_score"}.issubset(
         set(reason["scored_providers"][0].keys())
     )
+
+
+def test_resolve_provider_strategy_respects_external_strategy_file(
+    tmp_path, monkeypatch
+):
+    strategy_file = tmp_path / "provider_strategy.json"
+    strategy_file.write_text(
+        json.dumps(
+            {
+                "route_policy_bonus": {
+                    "/economy/": {
+                        "oecd": 100.0,
+                        "imf": 0.0,
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("OPENBB_PROVIDER_STRATEGY_PATH", str(strategy_file))
+
+    strategy = resolve_provider_strategy(
+        route="/economy/gdp/real",
+        requested_provider="auto",
+        command_coverage={"/economy/gdp/real": ["imf", "oecd"]},
+        provider_credentials={},
+        credentials_obj=_Credentials(),
+        provider_health={},
+        health_source="inline-test",
+    )
+
+    assert strategy["candidates"][0] == "oecd"
+    assert strategy["selection_reason"]["strategy_source"] == str(strategy_file)

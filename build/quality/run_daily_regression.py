@@ -21,6 +21,7 @@ REQUIRED_META_KEYS = {
     "provider_candidates",
     "fallback_trace",
     "confidence",
+    "selection_reason",
 }
 
 
@@ -71,8 +72,13 @@ def _run_case(base_url: str, case: dict[str, Any], timeout: int) -> CaseResult:
         "meta_present": False,
         "meta_keys_complete": False,
         "provider_requested_match": False,
+        "provider_used_match": False,
+        "provider_used_in_candidates": False,
         "fallback_trace_valid": False,
+        "fallback_trace_consistent": False,
         "confidence_valid": False,
+        "selection_reason_present": False,
+        "selection_mode_match": False,
     }
 
     try:
@@ -88,6 +94,7 @@ def _run_case(base_url: str, case: dict[str, Any], timeout: int) -> CaseResult:
 
         if isinstance(meta, dict):
             checks["meta_keys_complete"] = REQUIRED_META_KEYS.issubset(meta.keys())
+            provider_used = meta.get("provider_used") or provider_used
             expected_provider_requested = expect.get("expected_provider_requested")
             if expected_provider_requested:
                 checks["provider_requested_match"] = (
@@ -96,11 +103,44 @@ def _run_case(base_url: str, case: dict[str, Any], timeout: int) -> CaseResult:
             else:
                 checks["provider_requested_match"] = True
 
+            expected_provider_used = expect.get("expected_provider_used")
+            if expected_provider_used:
+                checks["provider_used_match"] = (
+                    str(provider_used) == str(expected_provider_used)
+                )
+            else:
+                checks["provider_used_match"] = True
+
+            provider_candidates = meta.get("provider_candidates")
+            checks["provider_used_in_candidates"] = (
+                isinstance(provider_candidates, list)
+                and len(provider_candidates) > 0
+                and provider_used in provider_candidates
+            )
+
             fallback_trace = meta.get("fallback_trace")
             checks["fallback_trace_valid"] = isinstance(fallback_trace, list) and len(fallback_trace) > 0
+            if checks["fallback_trace_valid"]:
+                last_step = fallback_trace[-1]
+                checks["fallback_trace_consistent"] = (
+                    isinstance(last_step, dict)
+                    and last_step.get("status") == "success"
+                    and last_step.get("provider") == provider_used
+                )
 
             confidence = meta.get("confidence")
             checks["confidence_valid"] = isinstance(confidence, (int, float)) and 0 <= confidence <= 1
+
+            selection_reason = meta.get("selection_reason")
+            checks["selection_reason_present"] = isinstance(selection_reason, dict) and len(selection_reason) > 0
+            expected_selection_mode = expect.get("expected_selection_mode")
+            if expected_selection_mode:
+                checks["selection_mode_match"] = (
+                    checks["selection_reason_present"]
+                    and str(selection_reason.get("mode")) == str(expected_selection_mode)
+                )
+            else:
+                checks["selection_mode_match"] = checks["selection_reason_present"]
 
         ok = all(checks.values())
         return CaseResult(
