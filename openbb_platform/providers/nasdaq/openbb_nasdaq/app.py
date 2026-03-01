@@ -199,7 +199,7 @@ def main():
                         "label": "Document URL",
                         "description": "Select the document to open.",
                         "type": "endpoint",
-                        "optionsEndpoint": "/get_symbol_choices",
+                        "optionsEndpoint": "/get_symbol_choices", # Now supports real-time search
                         "optionsParams": {
                             "symbol": "$symbol",
                             "year": "$year",

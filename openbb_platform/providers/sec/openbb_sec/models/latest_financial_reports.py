@@ -162,8 +162,7 @@ class SecLatestFinancialReportsFetcher(
         max_redirects = 30
         while n_hits < total_hits:
             if redirect_count > max_redirects:
-                warn("TooManyRedirects: Exceeded 30 redirects.")
-                break
+                raise Exception("TooManyRedirects: Exceeded 30 redirects. Check the request URL or endpoint for redirect loops.")
             offset = n_hits
             url = get_url(date, offset)
             try:
