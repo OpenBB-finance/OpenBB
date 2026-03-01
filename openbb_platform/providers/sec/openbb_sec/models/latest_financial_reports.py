@@ -158,7 +158,12 @@ class SecLatestFinancialReportsFetcher(
 
         n_hits += len(results)
 
+        redirect_count = 0
+        max_redirects = 30
         while n_hits < total_hits:
+            if redirect_count > max_redirects:
+                warn("TooManyRedirects: Exceeded 30 redirects.")
+                break
             offset = n_hits
             url = get_url(date, offset)
             try:
@@ -174,6 +179,7 @@ class SecLatestFinancialReportsFetcher(
                 break
 
             results.extend(new_results)
+            redirect_count += 1
             n_hits += len(new_results)
 
         if not results and query.report_type is None:

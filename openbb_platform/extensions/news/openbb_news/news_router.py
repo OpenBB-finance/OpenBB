@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel, W0613:unused-argument
 """News Router."""
 
 from openbb_core.app.model.command_context import CommandContext
@@ -20,30 +19,11 @@ router = Router(prefix="", description="Financial market news data.")
     examples=[
         APIEx(parameters={"provider": "fmp"}),
         APIEx(parameters={"limit": 100, "provider": "intrinio"}),
-        APIEx(
-            description="Get news on the specified dates.",
-            parameters={
-                "start_date": "2024-02-01",
-                "end_date": "2024-02-07",
-                "provider": "intrinio",
-            },
-        ),
-        APIEx(
-            description="Display the headlines of the news.",
-            parameters={"display": "headline", "provider": "benzinga"},
-        ),
-        APIEx(
-            description="Get news by topics.",
-            parameters={"topics": "finance", "provider": "benzinga"},
-        ),
-        APIEx(
-            description="Get news by source using 'tingo' as provider.",
-            parameters={"provider": "tiingo", "source": "bloomberg"},
-        ),
-        APIEx(
-            description="Filter aticles by term using 'biztoc' as provider.",
-            parameters={"provider": "biztoc", "term": "apple"},
-        ),
+        APIEx(parameters={"start_date": "2024-02-01", "end_date": "2024-02-07", "provider": "intrinio"}),
+        APIEx(parameters={"display": "headline", "provider": "benzinga"}),
+        APIEx(parameters={"topics": "finance", "provider": "benzinga"}),
+        APIEx(parameters={"provider": "tiingo", "source": "bloomberg"}),
+        APIEx(parameters={"provider": "biztoc", "term": "apple"}),
     ],
 )
 async def world(

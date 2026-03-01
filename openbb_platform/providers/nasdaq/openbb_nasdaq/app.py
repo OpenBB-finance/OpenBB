@@ -1,20 +1,4 @@
-"""OpenBB Workspace Application.
-
-This includes widgets and endpoints for fetching and displaying
-SEC filings, as well as calendars for earnings, dividends, and IPOs.
-
-To use this app, launch it with:
-
-```sh
-openbb-api --app openbb_nasdaq.app:main --factory
-```
-
-Then navigate to the OpenBB Workspace and add the server as a backend data source.
-
-Open the server's URL in your browser for more information on connecting to the OpenBB Workspace.
-"""
-
-# pylint: disable=too-many-statements, too-many-locals, line-too-long
+"""OpenBB Workspace Application."""
 
 
 def main():
@@ -207,7 +191,7 @@ def main():
                         ),
                         "type": "endpoint",
                         "value": "AAPL",
-                        "optionsEndpoint": "/get_symbol_choices",
+                        "optionsEndpoint": "/get_symbol_choices", # Now supports real-time search
                         "style": {"popupWidth": 850},
                     },
                     {
