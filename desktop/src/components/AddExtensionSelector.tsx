@@ -424,9 +424,9 @@ export const AddExtensionSelector = ({
 		const totalCount = categoryExtensions.length;
 		const selectedCount = countSelectedInCategory(categoryId);
 
-		if (selectedCount === 0) return 'checked';
-		if (selectedCount === totalCount) return 'indeterminate';
-		return 'indeterminate';
+    if (selectedCount === 0) return 'unchecked';
+    if (selectedCount === totalCount) return 'checked';
+    return 'indeterminate';
 	};
 
   // Update the useEffect to use the new hasMatchingExtensions
