@@ -27,7 +27,7 @@ HoldingTypes = Literal[
     "frn",
     "tips",
 ]
-HOLDING_TYPE_CHOICES = [
+HOLDING_TYPE_CHOICES: list[Any] = [
     "all_agency",
     "agency_debts",
     "mbs",
