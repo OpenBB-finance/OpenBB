@@ -1,0 +1,164 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://fred.stlouisfed.org/releases/calendar?po=1&ptic=0&ve=2025-07-02&vs=2025-07-02
+  response:
+    body:
+      string: !!binary |
+        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
+        eWi+0b7ytoLJvV/pNE7/+hslGg8l7TcAAA==
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1507'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 20 Feb 2026 20:04:11 GMT
+      Expires:
+      - Fri, 20 Feb 2026 20:14:11 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - _abck=6730888CA4F2D60FE2DF36FD689B92A2~-1~YAAQC3k1F/kZdVOcAQAACBmnfA8QKYd3F187f3Y6ygaiVVXuSBn+r/qUGGNomnpxh9CEGjFgqSSjAdgW8gbibOaazp2wWwL0EVU1NNnbnTu6+vNN9uEO0QQ123Cys3FDlANTOldMaYu9NyZr5LdSEqb7GIzx/5r3HKFWwyZOcjMe5MgOC+AJnxeMgywLQszQpCuKWQLMQHF0T4p7atCL3aw+F71N/qNBZ4j0yOgvWX/GFFMAUqd3WhRJV3lW4DpJQR4fGdJsQqiTgmXkHtbBi2GU0SMQYAE4v9N5EEccFuITZ3VVdikJ19252Q7B+xd8Ak6FvQxN5B5NinxuD5mssDX5Hvccta8myFkZlvyVbuu2ECFfPem47F72Ie5FPIje3zajyDWvH6TfcLiTP68UHXHxPugrpUi6629R/+XLzTImws89PXeYuUaYxfkRhx+oKN4WFuItARveP4gw71uWjDi5qRv3+Dxs~-1~-1~-1~-1~-1;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 20 Feb 2027 20:04:11 GMT; Max-Age=31536000;
+        Secure
+      - bm_sz=322DD331BDB174348E9B9E045652AA65~YAAQC3k1F/oZdVOcAQAACRmnfB52oqemJpaP4OaHY9774TKChrpsRHSy4NbSZomUqNd150qIyJJS/xQLIKFya0jwYULGSQ4IVx7q7BKY+wlgghHj8mr9oRZBv2nyPQnwyMT3NIUdQFzv8+ye7nLvA51ePBnwecX1t4xvVJd72ekhwCIu3AdOAgNUvkq/MSzWIwOZJapUCEsrzsdveYh7rxKYJdczHLdVcaydBsnC16sas/zGteG1wjq0A/THzUkopxgiR7MLlzPcl7RoPTVOqupVwgq+O7vNmBmhpV7YhTiMHn0w8PfHuy9wHx2hyNesOIVu1MTzfrJQnJyGoLDb8RsAPDWQSvwKUOB/s32+bZw=~4535351~3748406;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 21 Feb 2026 00:04:09 GMT; Max-Age=14398
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-Akamai-Transformed:
+      - 0 - 0 -
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://fred.stlouisfed.org/releases/calendar?po=1&ptic=0&ve=2025-07-01&vs=2025-07-01
+  response:
+    body:
+      string: !!binary |
+        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
+        vvSmFFsRlFqN+r//AUF532vPQQAA
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1731'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 20 Feb 2026 20:04:13 GMT
+      Expires:
+      - Fri, 20 Feb 2026 20:14:13 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - _abck=C80A0F4E8F224714B5CC71B6D6C92BF2~-1~YAAQC3k1FxAddVOcAQAAhCCnfA9G9T6rDQXkzLeG5Ux6XaQBQgohJbicjRSAPSDkXOsKQqRZEHP87xN9Ty573pxSpJMnFkwrtwkrSsLaeiS7L0glW8h1li0lFdLL17cTV7FCmrZ0BWp9ZJbi/rp88fuUcDjgc0lATMWaIGi8tFUkLb8zVWJj4JA2nE8ZLCN9ngclaIOMaAn87fC4AWSyYUoWpB/e8M+Fs6aYB6kN78OnxwGjovQpsGsGdVvKBMEOX5tsQJKNWsK05YBt/lPoqcgWJFVQFEi+24avdyFTASUXkiLYtELFAEnZnc+n2QweUvimJf/nOKF6wndeZt00NWswIhb8ThX5CKY6ffdoJyHkswTyyUHYBr3yujYzh0JXLOYLEB5JzhDiTJVi9ed+BarVPku7wctx31zX4hkddcjYg9Gd/AkxAXOS/R0+uea+tSd2IwxA7J7wPdYb5m/Vmx3tijY=~-1~-1~-1~-1~-1;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 20 Feb 2027 20:04:13 GMT; Max-Age=31536000;
+        Secure
+      - bm_sz=2CEF56C32C2AE52C8000EDAD1E963D27~YAAQC3k1FxIddVOcAQAAhCCnfB6hYdgVhSx/71YWQpVcJnG5KqKjrmzHe1kL+6Zf7P8Vv+FOTZ2VUXOnTq8z0XsTTOLG/JlAqT8MRqwYgALCHKkL+PCbSyCU65dbEU/i68Vu4hSSW4Pz8sfVk7HBUsnamPrTIQSj4nHg3jp40opBvfqAxBNSmvxV8vHOPQILMPt6G93/sSC7lJxwKIvTVopkmn9hJuugdpXpigkGy2vO44acJiBJfqqQn3Wyxx0TKUOCTpU7LVE3CVW92LLAn0TIB9jXrKXL5jPfeukoLncbCMugreR3xKlwx2ojt70Lv8vHs13ZkJDUABrKesLsl8nr5l9hg90nVPEkVibSAg==~4535351~3748406;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 21 Feb 2026 00:04:09 GMT; Max-Age=14396
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-Akamai-Transformed:
+      - 0 - 0 -
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

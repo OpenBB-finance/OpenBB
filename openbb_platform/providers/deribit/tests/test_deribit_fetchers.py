@@ -14,6 +14,7 @@ from openbb_deribit.models.options_chains import (
     DeribitOptionsChainsData,
     DeribitOptionsChainsFetcher,
 )
+from openbb_deribit.utils.helpers import get_instruments
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -60,6 +61,22 @@ MOCK_OPTIONS_DATA = DeribitOptionsChainsData.model_validate(
         "volume_notional": [0.0, 7083.24],
     }
 )
+
+
+@pytest.fixture(autouse=True)
+def _disable_alru_cache_loop_check(monkeypatch):
+    """Disable the alru_cache event loop safety check during tests.
+
+    async-lru >= 2.2.0 tracks the event loop and raises RuntimeError
+    when the cache is reused across different event loops.  During tests,
+    multiple event loops are created within a single test (e.g. validators
+    calling run_async inside transform_query, then fetcher.test calling
+    run_async for extract_data), so we patch out the loop check entirely.
+    """
+    from async_lru import _LRUCacheWrapper
+
+    monkeypatch.setattr(_LRUCacheWrapper, "_check_loop", lambda self, loop: None)
+    get_instruments.cache_clear()
 
 
 @pytest.fixture(scope="module")
