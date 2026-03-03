@@ -46,6 +46,14 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "end_date": "2023-11-03",
             }
         ),
+        (
+            {
+                "provider": "fred",
+                "start_date": "2025-07-01",
+                "end_date": "2025-07-02",
+                "release_id": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
