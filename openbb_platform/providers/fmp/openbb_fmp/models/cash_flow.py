@@ -64,7 +64,7 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         "net_preferred_equity_issuance": "netPreferredStockIssuance",
         "net_equity_issuance": "netStockIssuance",
         "payment_of_dividends": "dividendsPaid",
-        "other_financing_activities": "otherFinancingActivites",
+        "other_financing_activities": "otherFinancingActivities",
         "net_cash_from_financing_activities": "netCashProvidedByFinancingActivities",
         "effect_of_exchange_rate_changes_on_cash": "effectOfForexChangesOnCash",
         "net_change_in_cash_and_equivalents": "netChangeInCash",

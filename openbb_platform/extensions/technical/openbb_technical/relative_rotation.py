@@ -15,12 +15,12 @@ if TYPE_CHECKING:
 
 
 def absolute_maximum_scale(data: "Series") -> "Series":
-    """Absolute Maximum Scale Normaliztion Method."""
+    """Absolute Maximum Scale Normalization Method."""
     return data / data.abs().max()
 
 
 def min_max_scaling(data: "Series") -> "Series":
-    """Min/Max ScalingNormalization Method."""
+    """Min/Max Scaling Normalization Method."""
     return (data - data.min()) / (data.max() - data.min())
 
 

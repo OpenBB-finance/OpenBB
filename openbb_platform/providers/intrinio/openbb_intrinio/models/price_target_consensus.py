@@ -51,7 +51,7 @@ class IntrinioPriceTargetConsensusData(PriceTargetConsensusData):
         default=None,
         description="The standard deviation of target price estimates.",
     )
-    total_anaylsts: int | None = Field(
+    total_analysts: int | None = Field(
         default=None,
         description="The total number of target price estimates in consensus.",
     )
