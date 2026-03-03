@@ -2944,7 +2944,7 @@
                         "field": "value",
                         "formatterFn": null,
                         "headerName": "Value",
-                        "headerTooltip": "The obersvation value. The units are defined in the search results by series ID.",
+                        "headerTooltip": "The observation value. The units are defined in the search results by series ID.",
                         "cellDataType": "number"
                     },
                     {

@@ -29,7 +29,7 @@ class TmxHistoricalDividendsData(HistoricalDividendsData):
     currency: str | None = Field(
         default=None, description="The currency the dividend is paid in."
     )
-    decalaration_date: dateType | None = Field(
+    declaration_date: dateType | None = Field(
         default=None, description="The date of the announcement."
     )
     record_date: dateType | None = Field(

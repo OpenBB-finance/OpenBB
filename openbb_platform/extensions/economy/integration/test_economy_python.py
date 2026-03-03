@@ -927,7 +927,7 @@ def test_economy_primary_dealer_positioning(params, obb):
 )
 @pytest.mark.integration
 def test_economy_survey_nonfarm_payrolls(params, obb):
-    """Test the economy survery nonfarm payrolls endpoint"""
+    """Test the economy survey nonfarm payrolls endpoint"""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.survey.nonfarm_payrolls(**params)

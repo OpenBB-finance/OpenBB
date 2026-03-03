@@ -612,7 +612,7 @@ def main():
                             {"label": "China", "value": "china"},
                             {"label": "Hong Kong", "value": "hong_kong"},
                             {"label": "Japan", "value": "japan"},
-                            {"label": "Singapore", "value": "signapore"},
+                            {"label": "Singapore", "value": "singapore"},
                             {"label": "South Korea", "value": "south_korea"},
                             {"label": "India", "value": "india"},
                             {"label": "Russia", "value": "russia"},

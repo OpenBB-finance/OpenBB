@@ -590,7 +590,7 @@ INDICES = {
     "arca_xng": {"name": "NYSE ARCA Natural Gas Index", "ticker": "^XNG"},
     "arca_hui": {"name": "NYSE ARCA Gold Bugs Index", "ticker": "^HUI"},
     "arca_ixb": {"name": "NYSE Materials Select Sector Index", "ticker": "^IXB"},
-    "arca_drg": {"name": "NYSE ARCA Phramaceutical Index", "ticker": "^DRG"},
+    "arca_drg": {"name": "NYSE ARCA Pharmaceutical Index", "ticker": "^DRG"},
     "arca_btk": {"name": "NYSE ARCA Biotech Index", "ticker": "^BKT"},
     "arca_pse": {"name": "NYSE ARCA Tech 100 Index", "ticker": "^PSE"},
     "arca_nwx": {"name": "NYSE ARCA Networking Index", "ticker": "^NWX"},

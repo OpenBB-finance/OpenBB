@@ -67,7 +67,7 @@ class OBBjectExtension:
 
 #@nonblocking_plugin.obbject_accessor
 #def empty_plugin_function(obbject):  # This can also be an async function.
-#    """Simulated on_commnd_output function that executes an expensive task
+#    """Simulated on_command_output function that executes an expensive task
 #    in a non-blocking thread."""
 #    print(
 #        "Serializing the obbject and passing to a new thread.\n"

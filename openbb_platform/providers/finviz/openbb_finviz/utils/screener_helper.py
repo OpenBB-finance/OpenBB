@@ -253,7 +253,7 @@ d_signals_desc = {
     "tl_support": "once a falling trendline is broken",
     "wedge_up": "upward trendline support and upward trendline resistance (reversal)",
     "wedge_down": "downward trendline support and downward trendline resistance (reversal)",
-    "wedge": "upward trendline support, downward trendline resistance (contiunation)",
+    "wedge": "upward trendline support, downward trendline resistance (continuation)",
     "triangle_ascending": "upward trendline support and horizontal trendline resistance",
     "triangle_descending": "horizontal trendline support and downward trendline resistance",
     "channel_up": "both support and resistance trendlines slope upward",
