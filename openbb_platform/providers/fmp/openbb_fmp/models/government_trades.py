@@ -138,7 +138,7 @@ class FMPGovernmentTradesFetcher(
             "firstName",
             "lastName",
         }
-        keys_to_rename = {"dateRecieved": "date", "disclosureDate": "date"}
+        keys_to_rename = {"dateReceived": "date", "disclosureDate": "date"}
 
         async def get_one(url):
             """Get data for one URL."""

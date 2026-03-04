@@ -73,7 +73,7 @@ class FMPKeyMetricsData(KeyMetricsData):
         "capex_to_depreciation": "capexToDepreciationTTM",
         "capex_to_revenue": "capexToRevenueTTM",
         "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenueTTM",
-        "research_and_developement_to_revenue": "researchAndDevelopementToRevenueTTM",
+        "research_and_development_to_revenue": "researchAndDevelopmentToRevenueTTM",
         "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenueTTM",
         "intangibles_to_total_assets": "intangiblesToTotalAssetsTTM",
         "average_receivables": "averageReceivablesTTM",
@@ -184,7 +184,7 @@ class FMPKeyMetricsData(KeyMetricsData):
         description="Sales, General and Administrative to Revenue.",
         title="SG&A to Revenue",
     )
-    research_and_developement_to_revenue: float | None = Field(
+    research_and_development_to_revenue: float | None = Field(
         default=None,
         description="Research and Development to Revenue.",
         title="R&D to Revenue",

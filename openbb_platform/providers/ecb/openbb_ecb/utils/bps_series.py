@@ -100,7 +100,7 @@ def generate_bps_series_ids(
             financial_derivatives=f"BPS.{freq}.N.I9.W1.S1.S1.T.N.FA.F.F7.T.EUR._T.T.N.ALL",
             other_investment=f"BPS.{freq}.N.I9.W1.S1.S1.T.N.FA.O.F._Z.EUR._T._X.N.ALL",
             reserve_assets=f"BPS.{freq}.N.I9.W1.S121.S1.T.A.FA.R.F._Z.EUR.X1._X.N.ALL",
-            errors_and_ommissions=f"BPS.{freq}.N.I9.W1.S1.S1.T.N.EO._Z._Z._Z.EUR._T._X.N.ALL",
+            errors_and_omissions=f"BPS.{freq}.N.I9.W1.S1.S1.T.N.EO._Z._Z._Z.EUR._T._X.N.ALL",
         )
         return main_items
 

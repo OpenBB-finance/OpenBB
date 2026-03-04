@@ -29,7 +29,7 @@ class FinvizKeyMetricsData(KeyMetricsData):
     pe_ratio: float | None = Field(
         default=None, description="Price-to-earnings ratio (TTM)."
     )
-    foward_pe: float | None = Field(
+    forward_pe: float | None = Field(
         default=None, description="Forward price-to-earnings ratio (forward P/E)"
     )
     eps: float | None = Field(default=None, description="Earnings per share (EPS)")
@@ -164,7 +164,7 @@ class FinvizKeyMetricsFetcher(
                         if fundament.get("EPS (ttm)", "-") != "-"
                         else None
                     ),
-                    "foward_pe": (
+                    "forward_pe": (
                         fundament.get("Forward P/E", None)
                         if fundament.get("Forward P/E", "-") != "-"
                         else None

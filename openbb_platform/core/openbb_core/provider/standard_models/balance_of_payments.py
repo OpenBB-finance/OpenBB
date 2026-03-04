@@ -16,7 +16,7 @@ class BalanceOfPaymentsQueryParams(QueryParams):
 class BP6BopUsdData(Data):
     """OECD BP6 Balance of Payments Items, in USD."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -95,7 +95,7 @@ class BP6BopUsdData(Data):
 class ECBMain(Data):
     """ECB Main Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -139,7 +139,7 @@ class ECBMain(Data):
     reserve_assets: float | None = Field(
         default=None, description="Reserve Assets Balance (Billions of EUR)"
     )
-    errors_and_ommissions: float | None = Field(
+    errors_and_omissions: float | None = Field(
         default=None, description="Errors and Omissions (Billions of EUR)"
     )
 
@@ -147,7 +147,7 @@ class ECBMain(Data):
 class ECBSummary(Data):
     """ECB Summary Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -203,7 +203,7 @@ class ECBSummary(Data):
 class ECBServices(Data):
     """ECB Services Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -254,7 +254,7 @@ class ECBServices(Data):
 class ECBInvestmentIncome(Data):
     """ECB Investment Income Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -310,7 +310,7 @@ class ECBInvestmentIncome(Data):
 class ECBDirectInvestment(Data):
     """ECB Direct Investment Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -356,7 +356,7 @@ class ECBDirectInvestment(Data):
 class ECBPortfolioInvestment(Data):
     """ECB Portfolio Investment Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -423,7 +423,7 @@ class ECBPortfolioInvestment(Data):
 class ECBOtherInvestment(Data):
     """ECB Other Investment Balance of Payments Items."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )
@@ -483,7 +483,7 @@ class ECBOtherInvestment(Data):
 class ECBCountry(Data):
     """ECB Balance of Payments Items by Country."""
 
-    period: dateType = Field(
+    period: dateType | None = Field(
         default=None,
         description="The date representing the beginning of the reporting period.",
     )

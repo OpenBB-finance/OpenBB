@@ -191,7 +191,7 @@ class FredRegionalData(SeriesData):
     )
     value: int | float | None = Field(
         default=None,
-        description="The obersvation value. The units are defined in the search results by series ID.",
+        description="The observation value. The units are defined in the search results by series ID.",
     )
     series_id: str = Field(
         description="The individual series ID for the region.",
