@@ -22,7 +22,7 @@ const Toast: React.FC<ToastProps> = ({
     <div className="toast-container">
       <div className="flex-col">
         <div className="flex flex-1 items-center justify-between">
-          <div className="flex flex1 gap-2 items-start">
+          <div className="flex flex-1 gap-2 items-start">
             <CustomIcon id="info" className="toast-info-icon w-5 h-5"/>
             <div className="body-sm-bold">{title}</div>
           </div>
