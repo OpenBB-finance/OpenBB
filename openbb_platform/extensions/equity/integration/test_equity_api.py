@@ -2122,11 +2122,9 @@ def test_equity_ownership_government_trades(params, headers):
                 "symbol": "AAPL",
                 "calendar_year": 2024,
                 "calendar_period": "Q2",
-                "wrap_length": 120,
-                "include_tables": False,
+                "include_tables": True,
                 "use_cache": True,
                 "raw_html": False,
-                "strategy": "trafilatura",
                 "provider": "sec",
             }
         ),

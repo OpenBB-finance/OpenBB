@@ -287,21 +287,6 @@ files = [
 ]
 
 [[package]]
-name = "babel"
-version = "2.18.0"
-description = "Internationalization utilities"
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "babel-2.18.0-py3-none-any.whl", hash = "sha256:e2b422b277c2b9a9630c1d7903c2a00d0830c409c59ac8cae9081c92f1aeba35"},
-    {file = "babel-2.18.0.tar.gz", hash = "sha256:b80b99a14bd085fcacfa15c9165f651fbb3406e66cc603abf11c5750937c992d"},
-]
-
-[package.extras]
-dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata ; sys_platform == \"win32\""]
-
-[[package]]
 name = "beautifulsoup4"
 version = "4.14.3"
 description = "Screen-scraping library"
@@ -486,49 +471,6 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
-
-[[package]]
-name = "courlan"
-version = "1.3.2"
-description = "Clean, filter and sample URLs to optimize data collection – includes spam, content type and language filters."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "courlan-1.3.2-py3-none-any.whl", hash = "sha256:d0dab52cf5b5b1000ee2839fbc2837e93b2514d3cb5bb61ae158a55b7a04c6be"},
-    {file = "courlan-1.3.2.tar.gz", hash = "sha256:0b66f4db3a9c39a6e22dd247c72cfaa57d68ea660e94bb2c84ec7db8712af190"},
-]
-
-[package.dependencies]
-babel = ">=2.16.0"
-tld = ">=0.13"
-urllib3 = ">=1.26,<3"
-
-[package.extras]
-dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-urllib3"]
-
-[[package]]
-name = "dateparser"
-version = "1.3.0"
-description = "Date parsing library designed to parse dates from HTML pages"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "dateparser-1.3.0-py3-none-any.whl", hash = "sha256:8dc678b0a526e103379f02ae44337d424bd366aac727d3c6cf52ce1b01efbb5a"},
-    {file = "dateparser-1.3.0.tar.gz", hash = "sha256:5bccf5d1ec6785e5be71cc7ec80f014575a09b4923e762f850e57443bddbf1a5"},
-]
-
-[package.dependencies]
-python-dateutil = ">=2.7.0"
-pytz = ">=2024.2"
-regex = ">=2024.9.11"
-tzlocal = ">=0.2"
-
-[package.extras]
-calendars = ["convertdate (>=2.2.1)", "hijridate"]
-fasttext = ["fasttext (>=0.9.1)", "numpy (>=1.22.0,<2)"]
-langdetect = ["langdetect (>=1.0.0)"]
 
 [[package]]
 name = "defusedxml"
@@ -758,30 +700,6 @@ all = ["chardet (>=2.2)", "genshi", "lxml ; platform_python_implementation == \"
 chardet = ["chardet (>=2.2)"]
 genshi = ["genshi"]
 lxml = ["lxml ; platform_python_implementation == \"CPython\""]
-
-[[package]]
-name = "htmldate"
-version = "1.9.4"
-description = "Fast and robust extraction of original and updated publication dates from URLs and web pages."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "htmldate-1.9.4-py3-none-any.whl", hash = "sha256:1b94bcc4e08232a5b692159903acf95548b6a7492dddca5bb123d89d6325921c"},
-    {file = "htmldate-1.9.4.tar.gz", hash = "sha256:1129063e02dd0354b74264de71e950c0c3fcee191178321418ccad2074cc8ed0"},
-]
-
-[package.dependencies]
-charset_normalizer = ">=3.4.0"
-dateparser = ">=1.1.2"
-lxml = {version = ">=5.3.0", markers = "platform_system != \"Darwin\" or python_version > \"3.8\""}
-python-dateutil = ">=2.9.0.post0"
-urllib3 = ">=1.26,<3"
-
-[package.extras]
-all = ["htmldate[dev]", "htmldate[speed]"]
-dev = ["black", "flake8", "mypy", "pytest", "pytest-cov", "types-dateparser", "types-lxml", "types-python-dateutil", "types-urllib3"]
-speed = ["backports-datetime-fromisoformat ; python_version < \"3.11\"", "faust-cchardet (>=2.1.19)", "urllib3[brotli]"]
 
 [[package]]
 name = "idna"
@@ -1038,9 +956,6 @@ files = [
     {file = "lxml-6.0.2-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:27220da5be049e936c3aca06f174e8827ca6445a4353a1995584311487fc4e3e"},
     {file = "lxml-6.0.2.tar.gz", hash = "sha256:cd79f3367bd74b317dda655dc8fcfa304d9eb6e4fb06b7168c5cf27f96e0cd62"},
 ]
-
-[package.dependencies]
-lxml_html_clean = {version = "*", optional = true, markers = "extra == \"html-clean\""}
 
 [package.extras]
 cssselect = ["cssselect (>=0.7)"]
@@ -1944,6 +1859,7 @@ description = "World timezone definitions, modern and historical"
 optional = false
 python-versions = "*"
 groups = ["main"]
+markers = "python_version == \"3.10\""
 files = [
     {file = "pytz-2026.1.post1-py2.py3-none-any.whl", hash = "sha256:f2fd16142fda348286a75e1a524be810bb05d444e5a081f37f7affc635035f7a"},
     {file = "pytz-2026.1.post1.tar.gz", hash = "sha256:3378dde6a0c3d26719182142c56e60c7f9af7e968076f31aae569d72a0358ee1"},
@@ -2168,43 +2084,6 @@ typing-extensions = {version = ">=4.10.0", markers = "python_version < \"3.13\""
 full = ["httpx (>=0.27.0,<0.29.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.18)", "pyyaml"]
 
 [[package]]
-name = "tld"
-version = "0.13.1"
-description = "Extract the top-level domain (TLD) from the URL given."
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "tld-0.13.1-py2.py3-none-any.whl", hash = "sha256:a2d35109433ac83486ddf87e3c4539ab2c5c2478230e5d9c060a18af4b03aa7c"},
-    {file = "tld-0.13.1.tar.gz", hash = "sha256:75ec00936cbcf564f67361c41713363440b6c4ef0f0c1592b5b0fbe72c17a350"},
-]
-
-[[package]]
-name = "trafilatura"
-version = "2.0.0"
-description = "Python & Command-line tool to gather text and metadata on the Web: Crawling, scraping, extraction, output as CSV, JSON, HTML, MD, TXT, XML."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "trafilatura-2.0.0-py3-none-any.whl", hash = "sha256:77eb5d1e993747f6f20938e1de2d840020719735690c840b9a1024803a4cd51d"},
-    {file = "trafilatura-2.0.0.tar.gz", hash = "sha256:ceb7094a6ecc97e72fea73c7dba36714c5c5b577b6470e4520dca893706d6247"},
-]
-
-[package.dependencies]
-certifi = "*"
-charset_normalizer = ">=3.4.0"
-courlan = ">=1.3.2"
-htmldate = ">=1.9.2"
-justext = ">=3.0.1"
-lxml = {version = ">=5.3.0", markers = "platform_system != \"Darwin\" or python_version > \"3.8\""}
-urllib3 = ">=1.26,<3"
-
-[package.extras]
-all = ["brotli", "cchardet (>=2.1.7) ; python_version < \"3.11\"", "faust-cchardet (>=2.1.19) ; python_version >= \"3.11\"", "htmldate[speed] (>=1.9.2)", "py3langid (>=0.3.0)", "pycurl (>=7.45.3)", "urllib3[socks]", "zstandard (>=0.23.0)"]
-dev = ["flake8", "mypy", "pytest", "pytest-cov", "types-lxml", "types-urllib3"]
-
-[[package]]
 name = "typing-extensions"
 version = "4.15.0"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -2238,29 +2117,11 @@ description = "Provider of IANA time zone data"
 optional = false
 python-versions = ">=2"
 groups = ["main"]
-markers = "sys_platform == \"win32\" or sys_platform == \"emscripten\" or platform_system == \"Windows\" or python_version == \"3.10\""
+markers = "sys_platform == \"win32\" or sys_platform == \"emscripten\" or python_version == \"3.10\""
 files = [
     {file = "tzdata-2025.3-py2.py3-none-any.whl", hash = "sha256:06a47e5700f3081aab02b2e513160914ff0694bce9947d6b76ebd6bf57cfc5d1"},
     {file = "tzdata-2025.3.tar.gz", hash = "sha256:de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7"},
 ]
-
-[[package]]
-name = "tzlocal"
-version = "5.3.1"
-description = "tzinfo object for the local timezone"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "tzlocal-5.3.1-py3-none-any.whl", hash = "sha256:eb1a66c3ef5847adf7a834f1be0800581b683b5608e74f86ecbcef8ab91bb85d"},
-    {file = "tzlocal-5.3.1.tar.gz", hash = "sha256:cceffc7edecefea1f595541dbd6e990cb1ea3d19bf01b2809f362a03dd7921fd"},
-]
-
-[package.dependencies]
-tzdata = {version = "*", markers = "platform_system == \"Windows\""}
-
-[package.extras]
-devenv = ["check-manifest", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)", "zest.releaser"]
 
 [[package]]
 name = "url-normalize"
@@ -2588,4 +2449,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4"
-content-hash = "ba8fc71dae4d8d06cd7ebbeb7e3949721152e781ddfd2e9cb9dbcea3af8a236d"
+content-hash = "a6bc7122467607d7fda06ba4959891d9a74a0ff15ac889f80fed85889b16c1c5"
