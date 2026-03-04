@@ -1040,10 +1040,77 @@ class MethodDefinition:
         return od
 
     @staticmethod
+    def _parse_docstring_params(func: Callable | None) -> dict[str, str]:
+        """Parse parameter descriptions from a NumPy-style docstring.
+
+        Parameters
+        ----------
+        func : Optional[Callable]
+            The function whose docstring to parse.
+
+        Returns
+        -------
+        dict[str, str]
+            Mapping of parameter name to its description text.
+        """
+        if func is None:
+            return {}
+        doc = inspect.getdoc(func) or ""
+        if not doc:
+            return {}
+
+        # Find the Parameters section
+        params_match = re.search(
+            r"^\s*Parameters\s*\n\s*[-=~`]{3,}",
+            doc,
+            re.MULTILINE,
+        )
+        if not params_match:
+            return {}
+
+        # Extract text after the dashes line
+        after_header = doc[params_match.end() :]
+        # Find the next section header (e.g., Returns, Raises, Examples, Notes)
+        next_section = re.search(
+            r"^\s*[A-Z][a-z]+\s*\n\s*[-=~`]{3,}",
+            after_header,
+            re.MULTILINE,
+        )
+        params_text = (
+            after_header[: next_section.start()] if next_section else after_header
+        )
+
+        result: dict[str, str] = {}
+        current_name: str | None = None
+        current_desc_lines: list[str] = []
+
+        for line in params_text.splitlines():
+            # Match a parameter line like "param_name : type" or "param_name: type"
+            param_match = re.match(r"^\s{0,4}(\w+)\s*:\s*", line)
+            if param_match:
+                # Save previous parameter
+                if current_name is not None:
+                    result[current_name] = " ".join(current_desc_lines).strip()
+                current_name = param_match.group(1)
+                current_desc_lines = []
+            elif current_name is not None and line.strip():
+                current_desc_lines.append(line.strip())
+
+        # Save last parameter
+        if current_name is not None:
+            result[current_name] = " ".join(current_desc_lines).strip()
+
+        return result
+
+    @staticmethod
     def format_params(
-        path: str, parameter_map: dict[str, Parameter]
+        path: str,
+        parameter_map: dict[str, Parameter],
+        func: Callable | None = None,
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
+        # Parse docstring descriptions as fallback for unannotated params
+        docstring_descs = MethodDefinition._parse_docstring_params(func)
 
         parameter_map.pop("cc", None)
 
@@ -1262,6 +1329,9 @@ class MethodDefinition:
                 description = (
                     getattr(metadata[0], "description", "") if metadata else ""
                 )
+                # Fall back to docstring description if annotation has none
+                if not description:
+                    description = docstring_descs.get(name, "")
 
                 formatted[name] = Parameter(
                     name=name,
@@ -1291,6 +1361,10 @@ class MethodDefinition:
                 description = (
                     getattr(metadata[0], "description", "") if metadata else ""
                 )
+                # Fall back to docstring description if annotation has none
+                if not description:
+                    description = docstring_descs.get(name, "")
+
                 # Untyped positional arguments are typed as Any
                 updated_type = (
                     Any
@@ -1899,7 +1973,9 @@ class MethodDefinition:
             if name not in parameter_map:
                 parameter_map[name] = param
 
-        formatted_params = cls.format_params(path=path, parameter_map=parameter_map)
+        formatted_params = cls.format_params(
+            path=path, parameter_map=parameter_map, func=func
+        )
 
         has_var_kwargs = any(
             param.kind == Parameter.VAR_KEYWORD for param in formatted_params.values()
@@ -3206,7 +3282,7 @@ class ReferenceGenerator:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         formatted_params = MethodDefinition.format_params(
-            path=path, parameter_map=parameter_map
+            path=path, parameter_map=parameter_map, func=func
         )
         explicit_params = dict(formatted_params)
         explicit_params.pop("extra_params", None)
@@ -3806,15 +3882,20 @@ class ReferenceGenerator:
                 "message": MethodDefinition.get_deprecation_message(path),
             }
             # Add endpoint examples
-            examples = openapi_extra.pop("examples", [])
+            examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls._get_endpoint_examples(
                 path,
                 route_func,
                 examples,  # type: ignore
             )
-            validate_output = not openapi_extra.pop("no_validate", None)
+            validate_output = not openapi_extra.get("no_validate", None)
             model_map = cls.pi.map.get(standard_model, {})
-            reference[path]["openapi_extra"] = openapi_extra
+            # Exclude transient keys that were only needed above
+            reference[path]["openapi_extra"] = {
+                k: v
+                for k, v in openapi_extra.items()
+                if k not in ("examples", "no_validate")
+            }
 
             # Extract return type information for all endpoints
             return_info = cls._extract_return_type(route_func)
@@ -3932,7 +4013,9 @@ class ReferenceGenerator:
                             model_name = model_name or extracted_model
 
                 formatted_params = MethodDefinition.format_params(
-                    path=path, parameter_map=dict(signature(route_func).parameters)
+                    path=path,
+                    parameter_map=dict(signature(route_func).parameters),
+                    func=route_func,
                 )
 
                 docstring = DocstringGenerator.generate(
@@ -3958,12 +4041,13 @@ class ReferenceGenerator:
                         type_str = DocstringGenerator.get_field_type(
                             annotation.__args__[0], False, "website"
                         )
-                        description = (
-                            annotation.__metadata__[0].description
-                            if annotation.__metadata__
-                            and hasattr(annotation.__metadata__, "description")
-                            else ""
-                        )
+                        # Search all metadata items for a description
+                        description = ""
+                        for meta in annotation.__metadata__:
+                            desc = getattr(meta, "description", "")
+                            if desc:
+                                description = desc
+                                break
                     else:
                         type_str = DocstringGenerator.get_field_type(
                             annotation, False, "website"
