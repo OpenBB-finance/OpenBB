@@ -4225,7 +4225,7 @@
               }
             ],
             "title": "Value",
-            "description": "The obersvation value. The units are defined in the search results by series ID."
+            "description": "The observation value. The units are defined in the search results by series ID."
           },
           "series_id": {
             "type": "string",
