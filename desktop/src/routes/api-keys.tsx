@@ -129,7 +129,7 @@ export default function ApiKeysPage() {
 
 			if (newKeys.length > 0) {
 				setImportedKeys(newKeys);
-				setSelectedKeys(new Set(newKeys.map((k) => k.key))); // Pre-select all
+				setSelectedKeys(new Set(newKeys.map((k) => k.key)));
 				setIsImportConfirmModalOpen(true);
 			} else {
 				setError("No new keys found in the imported file.");
