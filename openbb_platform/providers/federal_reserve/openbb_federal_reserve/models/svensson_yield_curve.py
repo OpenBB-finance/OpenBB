@@ -138,13 +138,10 @@ def download_csv() -> str:
         str: URL to the CSV data.
     """
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_user_agent, make_request
+    from openbb_core.provider.utils.helpers import make_request
 
-    headers = {
-        "User-Agent": get_user_agent(),
-    }
     url = "https://www.federalreserve.gov/data/yield-curve-tables/feds200628.csv"
-    response = make_request(url, headers=headers)
+    response = make_request(url)
     response.raise_for_status()
 
     return response.text
