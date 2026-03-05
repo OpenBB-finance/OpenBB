@@ -424,14 +424,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "cachetools"
-version = "7.0.2"
+version = "7.0.3"
 description = "Extensible memoizing collections and decorators"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "cachetools-7.0.2-py3-none-any.whl", hash = "sha256:938dcad184827c5e94928c4fd5526e2b46692b7fb1ae94472da9131d0299343c"},
-    {file = "cachetools-7.0.2.tar.gz", hash = "sha256:7e7f09a4ca8b791d8bb4864afc71e9c17e607a28e6839ca1a644253c97dbeae0"},
+    {file = "cachetools-7.0.3-py3-none-any.whl", hash = "sha256:c128ffca156eef344c25fcd08a96a5952803786fa33097f5f2d49edf76f79d53"},
+    {file = "cachetools-7.0.3.tar.gz", hash = "sha256:8c246313b95849964e54a909c03b327a87ab0428b068fac10da7b105ca275ef6"},
 ]
 
 [[package]]
@@ -2910,14 +2910,14 @@ openbb-core = ">=1.6.1,<2.0.0"
 
 [[package]]
 name = "openbb-core"
-version = "1.6.1"
+version = "1.6.2"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["main"]
 files = [
-    {file = "openbb_core-1.6.1-py3-none-any.whl", hash = "sha256:5176a3a865d35a051a6ec1f3fc37ade92383ce526a535626c31e80ee90e4b82f"},
-    {file = "openbb_core-1.6.1.tar.gz", hash = "sha256:ad4789e15c932790e61298dcc5709c9c7a3c4404ddab288e69085b20de6c114c"},
+    {file = "openbb_core-1.6.2-py3-none-any.whl", hash = "sha256:c416fbf740e17a5d7c2dd3f3bd8095e6f334f44a6727f06e6fafe3211de5b468"},
+    {file = "openbb_core-1.6.2.tar.gz", hash = "sha256:905a493e2314d65051b7d3922c1645209e3030c397834782765f82f129c30c87"},
 ]
 
 [package.dependencies]
@@ -3925,14 +3925,14 @@ psycopg3 = ["psycopg[binary]"]
 
 [[package]]
 name = "platformdirs"
-version = "4.9.2"
+version = "4.9.4"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "platformdirs-4.9.2-py3-none-any.whl", hash = "sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd"},
-    {file = "platformdirs-4.9.2.tar.gz", hash = "sha256:9a33809944b9db043ad67ca0db94b14bf452cc6aeaac46a88ea55b26e2e9d291"},
+    {file = "platformdirs-4.9.4-py3-none-any.whl", hash = "sha256:68a9a4619a666ea6439f2ff250c12a853cd1cbd5158d258bd824a7df6be2f868"},
+    {file = "platformdirs-4.9.4.tar.gz", hash = "sha256:1ec356301b7dc906d83f371c8f487070e99d3ccf9e501686456394622a01a934"},
 ]
 
 [[package]]
