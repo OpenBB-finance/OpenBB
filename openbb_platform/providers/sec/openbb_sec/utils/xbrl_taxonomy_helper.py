@@ -100,8 +100,8 @@ SEC Taxonomy Reference Links
 """  # noqa: E501  # pylint: disable=line-too-long
 
 # flake8: noqa: PLR0912, PLR0914
-# pylint: disable=broad-except, too-many-lines, too-many-instance-attributes
-# pylint: disable=R0912, R0914, R0915
+# pylint: disable=broad-except, too-many-instance-attributes
+# pylint: disable=C0302, R0912, R0914, R0915
 
 import warnings
 from dataclasses import dataclass, field
