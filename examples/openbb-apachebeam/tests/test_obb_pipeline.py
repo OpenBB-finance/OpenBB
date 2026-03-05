@@ -14,13 +14,10 @@ class AsyncProcess(beam.DoFn):
         self.credentials = credentials
         self.fetcher = fetcher
 
-    async def fetch_data(self, element: str):
-        params = dict(symbol=element)
-        data = await self.fetcher.fetch_data(params, self.credentials)
-        return [d.model_dump(exclude_none=True) for d in data]
-
     def process(self, element: str):
-        return asyncio.run(self.fetch_data(element))
+        params = dict(symbol=element)
+        data = asyncio.run(self.fetcher.fetch_data(params, self.credentials))
+        return [d.model_dump(exclude_none=True) for d in data]
 
 
 class MyTestCase(unittest.TestCase):
