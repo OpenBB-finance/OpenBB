@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "4.6.0"
+version = "4.7.0"
 description = "Investment research for everyone, anywhere."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -10,7 +10,7 @@ packages = [{ include = "openbb", from = "core" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-openbb-core = "^1.6.0"
+openbb-core = "^1.6.1"
 openbb-platform-api = "^1.3.0"
 
 openbb-benzinga = "^1.5.1"
